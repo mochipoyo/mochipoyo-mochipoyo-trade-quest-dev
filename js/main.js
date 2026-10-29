@@ -11,6 +11,7 @@
       root.Win.init(document.getElementById('ui'));
       root.Engine.Input.bindPad(document.getElementById('pad'));
       root.Audio.init();
+      if (root.Assets) root.Assets.preload();   // 新画像（assets/）を先読み。未読込・失敗時は従来描画にフォールバック
       // 画面サイズに合わせてキャンバスを拡大縮小（CSS）
       function fit() {
         var wrap = document.getElementById('stage'); var w = wrap.clientWidth; var aspect = canvas.width / canvas.height;

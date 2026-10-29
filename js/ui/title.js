@@ -50,7 +50,7 @@
   Title.newGame = async function () {
     var name = await Win.prompt('主人公の名前（8文字まで）', '勇者', 8); if (!name) name = '勇者';
     var jobs = root.STARTER_JOBS;
-    var ji = await Win.list(jobs.map(function (j) { var J = JOBS[j]; return { label: J.name, right: J.role, sub: J.desc }; }), { title: name + 'の職業を選ぶ（あとで転職できる）', info: function (k) { var J = JOBS[jobs[k]]; return '<div class="muted small">固有：' + esc(J.trait) + '　武器：' + J.weapons.join('/') + '</div><div class="muted small">HP' + J.stats.hp + ' MP' + J.stats.mp + ' 攻' + J.stats.atk + ' 防' + J.stats.def + ' 速' + J.stats.agi + ' 魔' + J.stats.mag + '</div>'; } });
+    var ji = await Win.list(jobs.map(function (j) { var J = JOBS[j]; return { label: J.name, right: J.role, sub: J.desc }; }), { title: name + 'の職業を選ぶ（あとで転職できる）', info: function (k) { var J = JOBS[jobs[k]]; return (root.Assets ? root.Assets.portraitTag('hero_' + jobs[k], 'portrait info-portrait', 120) : '') + '<div class="muted small">固有：' + esc(J.trait) + '　武器：' + J.weapons.join('/') + '</div><div class="muted small">HP' + J.stats.hp + ' MP' + J.stats.mp + ' 攻' + J.stats.atk + ' 防' + J.stats.def + ' 速' + J.stats.agi + ' 魔' + J.stats.mag + '</div>'; } });
     if (ji < 0) return false;
     var c = await Win.choice(name + '（' + JOBS[jobs[ji]].name + '）で冒険を始める？', ['始める', 'やり直す']);
     if (c !== 0) return false;

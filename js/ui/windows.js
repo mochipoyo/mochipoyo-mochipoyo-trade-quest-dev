@@ -39,7 +39,8 @@
     if (typeof lines === 'string') lines = [lines];
     return new Promise(function (resolve) {
       var idx = 0, typing = null, full = '', done = false;
-      var node = el('<div class="rw-msg"><div class="rw-name' + (opts.name ? '' : ' hidden') + '">' + esc(opts.name || '') + '</div><div class="rw-text"></div><div class="rw-next">▼</div></div>');
+      var pt = opts.portrait ? '<img class="rw-portrait" src="' + opts.portrait + '" alt="" draggable="false">' : '';
+      var node = el('<div class="rw-msg' + (pt ? ' has-portrait' : '') + '">' + pt + '<div class="rw-msg-body"><div class="rw-name' + (opts.name ? '' : ' hidden') + '">' + esc(opts.name || '') + '</div><div class="rw-text"></div></div><div class="rw-next">▼</div></div>');
       var textEl = node.querySelector('.rw-text');
       var speed = (root.State && root.State.data && root.State.data.settings.textSpeed) || 'normal';
       function typeLine() {

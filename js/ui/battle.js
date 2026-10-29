@@ -114,10 +114,13 @@
     if (this.victory >= 0) { this.victory += dt; if (Math.random() < 0.5) this.particles.push({ x: Math.random() * 640, y: -10, vx: (Math.random() - 0.5) * 40, vy: 60 + Math.random() * 80, c: ['#ffd24a', '#ff8ab0', '#7fe3a5', '#9fd4ff', '#fff'][Math.floor(Math.random() * 5)], t: 0 }); }
     this.particles = this.particles.filter(function (p) { p.t += dt; p.x += p.vx * dt / 1000; p.y += p.vy * dt / 1000; return p.t < 4000; });
   };
+  // 敵の表示矩形：新画像（assets/）はマニフェストの倍率、従来描画は従来サイズ。足元中央を基準に配置し、混雑時は縮小して重ならないようにする
   BattleScene.prototype.enemyRect = function (i, W, H) {
     var b = this.b; var n = b.enemies.length; var slot = W / (n + 1); var e = b.enemies[i];
-    var size = e.art ? (root.MonsterArt ? root.MonsterArt.sizeOf(e.art) * 3 : 96) : (e.boss ? 144 : 96);
-    return { x: slot * (i + 1) - size / 2, y: H * 0.56 - size, size: size, slot: slot };
+    var v = enemyVisual(e); var w = v.w, h = v.h;
+    var maxW = slot * 0.96, maxH = H * 0.5;
+    var f = Math.min(1, maxW / w, maxH / h); w = Math.round(w * f); h = Math.round(h * f);
+    return { x: slot * (i + 1) - w / 2, y: H * 0.56 - h, w: w, h: h, size: w, slot: slot, smooth: v.smooth || f !== 1 };
   };
   BattleScene.prototype.draw = function (ctx) {
     var W = ctx.canvas.width, H = ctx.canvas.height; var b = this.b; var self = this;
@@ -132,7 +135,7 @@
     b.enemies.forEach(function (e, i) {
       var dying = self.anims.filter(function (a) { return a.type === 'die' && a.idx === i; })[0];
       if (e.dead && !dying) return;
-      var r = self.enemyRect(i, W, H); var x = r.x, y = r.y, size = r.size;
+      var r = self.enemyRect(i, W, H); var x = r.x, y = r.y, size = r.w, hh = r.h;
       var sh = self.shake[i]; if (sh && sh > 0) { x += Math.sin(sh / 20) * 6; self.shake[i] = sh - 16; }
       var lunge = self.anims.filter(function (a) { return a.type === 'lunge' && a.idx === i; })[0];
       if (lunge) { var lp = lunge.t / lunge.dur; y += Math.sin(lp * Math.PI) * 34; }
@@ -147,23 +150,25 @@
       if (e.status.sleep) alpha *= 0.75;
       if (ent) alpha *= Math.min(1, entP * 2);
       ctx.globalAlpha = alpha;
-      var cx = x + size / 2, cy = y + size + bob;
+      var cx = x + size / 2, cy = y + hh + bob;
       ctx.translate(cx, cy); ctx.scale(breathe, dying && !e.fled ? Math.max(0.05, 1 - dying.t / dying.dur) * breathe : breathe); ctx.translate(-cx, -cy);
       // 影
-      ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(cx, y + size + 2, size * 0.38, 6, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.drawImage(img, Math.round(x), Math.round(y + bob));
+      ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(cx, y + hh + 2, size * 0.38, 6, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.imageSmoothingEnabled = !!r.smooth; if (r.smooth) ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, Math.round(x), Math.round(y + bob), size, hh);
       var hf = self.anims.filter(function (a) { return a.type === 'hitflash' && a.idx === i; })[0];
-      if (hf) { ctx.globalAlpha = alpha * (1 - hf.t / hf.dur) * 0.9; ctx.drawImage(enemySilhouette(e), Math.round(x), Math.round(y + bob)); }
+      if (hf) { ctx.globalAlpha = alpha * (1 - hf.t / hf.dur) * 0.9; ctx.drawImage(enemySilhouette(e), Math.round(x), Math.round(y + bob), size, hh); }
+      ctx.imageSmoothingEnabled = false;
       ctx.restore();
       if (dying) return;
       // HPバー・名前
-      ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(x, y + size + 6, size, 6); ctx.fillStyle = e.hp / e.maxHp > 0.3 ? '#4cc38a' : '#e5484d'; ctx.fillRect(x, y + size + 6, size * e.hp / e.maxHp, 6);
+      ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(x, y + hh + 6, size, 6); ctx.fillStyle = e.hp / e.maxHp > 0.3 ? '#4cc38a' : '#e5484d'; ctx.fillRect(x, y + hh + 6, size * e.hp / e.maxHp, 6);
       var st = Object.keys(e.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join('');
       ctx.fillStyle = '#fff'; ctx.font = (e.boss ? 'bold 13px' : '12px') + ' sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.7)';
       var label = e.name + (e.exposed ? '（弱点露出）' : '') + (st ? '［' + st + '］' : ''); ctx.strokeText(label, x + size / 2, y - 6); ctx.fillText(label, x + size / 2, y - 6);
-      self.anims.filter(function (a) { return a.side === 'enemy' && a.idx === i && a.type === 'fx'; }).forEach(function (a) { drawFx(ctx, a, x + size / 2, y + size / 2); });
+      self.anims.filter(function (a) { return a.side === 'enemy' && a.idx === i && a.type === 'fx'; }).forEach(function (a) { drawFx(ctx, a, x + size / 2, y + hh / 2); });
       var ph = self.anims.filter(function (a) { return a.type === 'phase' && a.idx === i; })[0];
-      if (ph) { var pp = ph.t / ph.dur; ctx.strokeStyle = 'rgba(255,80,80,' + (1 - pp) + ')'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + size / 2, y + size / 2, size * 0.5 + pp * 60, 0, Math.PI * 2); ctx.stroke(); }
+      if (ph) { var pp = ph.t / ph.dur; ctx.strokeStyle = 'rgba(255,80,80,' + (1 - pp) + ')'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + size / 2, y + hh / 2, Math.max(size, hh) * 0.5 + pp * 60, 0, Math.PI * 2); ctx.stroke(); }
     });
     // ボス登場バナー
     if (ent && entP > 0.3) { var bp = Math.min(1, (entP - 0.3) / 0.3); ctx.save(); ctx.globalAlpha = bp * (entP > 0.85 ? (1 - entP) / 0.15 : 1); ctx.fillStyle = 'rgba(120,0,20,0.75)'; ctx.fillRect(0, H * 0.42, W, 44); ctx.fillStyle = '#ffd24a'; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('— ' + (b.enemies[0] ? b.enemies[0].name : 'BOSS') + ' —', W / 2, H * 0.42 + 31); ctx.restore(); }
@@ -177,15 +182,22 @@
     ctx.restore();
   };
   var imgCache = {};
-  function enemyImage(e) {
-    if (e._img) return e._img;
-    if (e.art && root.MonsterArt) { e._img = root.MonsterArt.image(e.art, 3, 0); return e._img; }
-    var scale = e.boss ? 9 : 6; var k = e.sprite + ':' + scale; if (imgCache[k]) return imgCache[k]; var c = document.createElement('canvas'); Sprites.draw(c, e.sprite, scale, false); imgCache[k] = c; return c;
+  // 描画優先順位：1) assets/ の新画像（マニフェストで use=true かつ読み込み済み） 2) MonsterArt（art） 3) 従来の Sprites
+  function enemyVisual(e) {
+    if (e._vis) return e._vis;
+    var A = root.Assets; var img = A ? A.image('monsters', e.defId) : null;
+    if (img) { var ent = A.entry('monsters', e.defId); var sc = (ent && ent.scale) || 1; e._vis = { img: img, w: Math.round(img.naturalWidth * sc), h: Math.round(img.naturalHeight * sc), smooth: sc !== 1, source: 'assets' }; return e._vis; }
+    var c;
+    if (e.art && root.MonsterArt) { c = root.MonsterArt.image(e.art, 3, 0); e._vis = { img: c, w: c.width, h: c.height, smooth: false, source: 'monsterart' }; return e._vis; }
+    var scale = e.boss ? 9 : 6; var k = e.sprite + ':' + scale; if (!imgCache[k]) { c = document.createElement('canvas'); Sprites.draw(c, e.sprite, scale, false); imgCache[k] = c; }
+    e._vis = { img: imgCache[k], w: imgCache[k].width, h: imgCache[k].height, smooth: false, source: 'sprites' }; return e._vis;
   }
+  function enemyImage(e) { return enemyVisual(e).img; }
   function enemySilhouette(e) {
-    if (e._sil) return e._sil; var img = enemyImage(e);
-    var c = document.createElement('canvas'); c.width = img.width; c.height = img.height; var x = c.getContext('2d'); x.drawImage(img, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); e._sil = c; return c;
+    if (e._sil) return e._sil; var v = enemyVisual(e);
+    var c = document.createElement('canvas'); c.width = v.w; c.height = v.h; var x = c.getContext('2d'); x.imageSmoothingEnabled = !!v.smooth; x.drawImage(v.img, 0, 0, v.w, v.h); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); e._sil = c; return c;
   }
+  BattleUI.enemyVisual = enemyVisual;
   function drawFx(ctx, a, cx, cy) {
     var p = a.t / a.dur; ctx.save(); ctx.globalAlpha = 1 - p;
     var kind = a.anim;
@@ -277,7 +289,7 @@
 
   function renderParty(b) {
     var pw = document.getElementById('battle-party');
-    pw.innerHTML = b.party.map(function (a) { var s = Actors.stats(a); var st = Object.keys(a.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join(''); return '<div class="bp ' + (a.dead ? 'dead' : a.hp < s.maxHp * 0.3 ? 'low' : '') + '" data-id="' + a.id + '"><div class="bp-name">' + esc(a.name) + (st ? '<span class="st">' + esc(st) + '</span>' : '') + (a.defending ? '<span class="st">防</span>' : '') + '</div><div class="bp-hp">HP <b>' + a.hp + '</b>/' + s.maxHp + '</div><div class="bar hp"><span style="width:' + (a.hp / s.maxHp * 100) + '%"></span></div><div class="bp-mp">MP ' + a.mp + '/' + s.maxMp + '</div></div>'; }).join('');
+    pw.innerHTML = b.party.map(function (a) { var s = Actors.stats(a); var st = Object.keys(a.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join(''); var pu = root.Assets ? root.Assets.portraitUrlFor(a) : null; return '<div class="bp ' + (a.dead ? 'dead' : a.hp < s.maxHp * 0.3 ? 'low' : '') + '" data-id="' + a.id + '">' + (pu ? '<img class="bp-portrait" src="' + pu + '" alt="" draggable="false">' : '') + '<div class="bp-body"><div class="bp-name">' + esc(a.name) + (st ? '<span class="st">' + esc(st) + '</span>' : '') + (a.defending ? '<span class="st">防</span>' : '') + '</div><div class="bp-hp">HP <b>' + a.hp + '</b>/' + s.maxHp + '</div><div class="bar hp"><span style="width:' + (a.hp / s.maxHp * 100) + '%"></span></div><div class="bp-mp">MP ' + a.mp + '/' + s.maxMp + '</div></div></div>'; }).join('');
   }
   function bmsg(text, ms) { var mw = document.getElementById('battle-msg'); mw.textContent = text; var speed = State.data.settings.battleSpeed; return Win.sleep(speed === 'fast' ? Math.round((ms || 500) * 0.45) : (ms || 500)); }
 

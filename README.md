@@ -1,4 +1,4 @@
-# もちぽよFXクエスト ～波形の勇者と相場の魔王～（JRPG版 v3）
+# もちぽよFXクエスト ～波形の勇者と相場の魔王～（JRPG版 v3.1）
 
 2DトップビューのJRPGとして、アルカディア相場大陸を歩き、町で買い物をし、仲間を集め、ダンジョンに挑み、ターン制バトルで戦いながら、FXトレードの判断（上位足・ダウ理論・EMA・RCI・MACD・資金管理）を「チャートの試練」で学べるブラウザゲームです。
 
@@ -8,6 +8,51 @@
 - セーブはブラウザの LocalStorage（3スロット＋オートセーブ）。JSONの書き出し／読み込みも可能
 
 ---
+
+## v3.1 画像差し替え 報告（キャラクター・モンスター）
+
+> 作業ブランチ: `feature/graphics-v3`（main は上書きしていません）。ID・ステータス・ドロップ・戦闘計算・クエスト・学習・セーブ形式は変更なし。
+> 添付の2枚（モンスター図鑑シート／職業キャラクターシート）から1体ずつ切り出し、**実際のゲーム画面で使われる状態**まで実装しました。
+
+### 差し替え率（正確な数）
+| 種別 | 差し替え | 内訳 |
+|---|---|---|
+| モンスター | **73 / 83** | 画像あり78体中、名前・種族と見た目が一致しない5体は不使用（従来描画）。人間系5体は添付画像に該当なし |
+| 職業（主人公の立ち絵） | **12 / 12** | 画像B最上段を左から順に warrior〜master に対応 |
+| 仲間 | **6 / 6** | 画像B2段目を左から リーナ・カイル・ミナ・セリス・ガルド・ルシア |
+| NPC | **12 / 14** | scholar（研究者）・shadow（旧版用）は該当なし → 従来描画 |
+| 4方向歩行スプライト | **0 / 32** | 未制作（下記）。フィールドは従来の `core/chars.js` を使用 |
+
+- **不足画像の一覧**: モンスター `bandit`（山賊）`bandit_archer`（山賊弓兵）`pirate`（海賊）`dark_mage`（闇の魔道士）`boss_bandit_chief`（山賊の頭目ガロン＝ボス）、NPC `scholar` `shadow`
+- **画像はあるが不使用（名前と見た目が不一致）**: `lizard`（ダマシトカゲ→黄色いげっ歯類）、`sand_lizard`／`rock_lizard`（→帽子をかぶった犬）、`ghost_dark`（ダークレイス→紫のタコ）、`treant`（→マンイーターと同じ食虫植物）。`js/data/asset-manifest.js` の該当項目を `use: true` にすれば即使用できます
+- **従来画像にフォールバックしているID**: 上記10体のモンスター（MonsterArt または Sprites）、NPC 2種（Chars）、フィールドの歩行キャラ全員（Chars）
+- 全IDの対応表: `docs/asset-mapping.md`。切り出し結果一覧: `docs/monsters_cut.png` `docs/characters_cut.png`。確認ページ: `asset-preview.html`（ゲームと同じURLで開ける）
+
+### 対応付けの根拠
+- 画像Aの並びは、v3 で生成したモンスター一覧（`docs/monsters_v3.png`、10列×8行・78体）と**同じ順**でした（青スライム→赤スライム→蜂→キノコ…最後が相場魔王）。1体ずつ見比べて一致を確認したうえで、その順でIDに対応付けています。見た目から推測で割り当てた項目はありません
+- 画像Bは、ご指定どおり 1段目=職業12（左→右）、2段目=仲間6、3段目=NPC12（elder, king, guard, merchant, innkeeper, priest, bartender, villager_m, villager_f, child, master, sailor）
+
+### 切り出し
+- `scripts/` は同梱していません（Python/Pillow/scipy の作業スクリプト）。方法：アルファ≥128 の行帯→列投影で分割（モンスター）、接触している職業シートは列投影の谷で分割（期待数12/6/12）。**均等分割はしていません**
+- 背景は黒除去ではなく**アルファで判定**。alpha<96 の半透明の縁・色付きノイズを透明化、隣のキャラの破片を除去、余白2px
+- 結果 108 ファイル（PNG, 透過, 66×72〜255×280px）。`docs/characters_cut.png` `docs/monsters_cut.png` で翼・武器・角・尻尾が欠けていないことを目視確認
+
+### 描画プログラムの改修
+- `js/data/asset-manifest.js`（**新規**）: 全ID（モンスター83・職業12・仲間6・NPC14）× { path, w, h, kind, scale, anchor, status, use, fallback, note }
+- `js/core/assets.js`（**新規**）: マニフェスト駆動の読み込み（起動時に先読み）、`Assets.image(kind,id)`、立ち絵の取得（仲間は転職しても本人の絵を維持）、読み込み失敗時は自動フォールバック。画像パスをコード内に直書きしていません
+- `js/ui/battle.js`: 敵の描画優先順位 **1) assets の新画像 → 2) MonsterArt → 3) Sprites**（`e.art` があっても新画像を優先）。足元中央を基準に配置、サイズ small 0.85 / normal 1.0 / big 1.15 / **ボス 1.5倍**、敵が多いときは枠に収まるよう縮小して重ならない。等倍は `imageSmoothingEnabled=false`、拡大縮小時のみ補間。被弾フラッシュ（シルエット）も新画像から生成。パーティー欄に立ち絵
+- `js/ui/menu.js`: 図鑑は**戦闘と同じ `Assets` を参照**して新画像を表示（従来描画はフォールバック時のみ）。ステータス画面・パーティー画面に立ち絵
+- `js/ui/title.js` `js/ui/services.js`: 職業選択・転職・酒場（編成）に立ち絵
+- `js/ui/windows.js` `js/rpg/events.js` `js/rpg/world.js`: 会話ウィンドウに立ち絵（NPCはスプライトIDから、仲間・主人公は本人、それ以外は名前からの推定で確実なものだけ）
+- `asset-preview.html`（**新規**）: ID・名称・画像・対応状況・サイズの一覧
+
+### フィールドの歩行キャラクター（第2段階・未完了）
+添付画像は正面の立ち姿のみで、背面・左右・歩行フレームは生成できません（このセッションに画像生成ツールがないため）。不自然な画像を配置せず、**フィールドは従来の4方向スプライト（`core/chars.js`）のまま**です。画像ができ次第、`assets/characters/overworld/<spriteId>/{down,up,left,right}_{0,1,2}.png` を置いてマニフェストに登録し、`Chars.frame` の前段で参照する形で差し替えられます
+
+### テスト結果
+- 自動（jsdom）: マニフェストが全ID（モンスター83・職業12・仲間6・NPC14）を網羅、ファイル108個すべて存在・PNG・アルファあり・四隅透明・寸法一致・未登録ファイルなし、`replaced` は必ず path+use、それ以外は必ず fallback 指定。既存テスト（全37マップ到達性・通しプレイ22項目・敵データ/新行動）もすべて通過
+- 実ブラウザ（Chromium、PC 900×640 と スマホ相当 390×780 タッチ）: 103画像すべて読み込み成功（失敗0・404なし）、JSエラー0。職業選択→新規開始→NPC会話（立ち絵）→ステータス→パーティー→酒場→転職→通常戦闘（新画像）→人間系混在戦闘（フォールバック）→ボス戦（1.5倍）→不一致5体の戦闘（従来描画）→相場の試練→リザルト→図鑑（新画像）→セーブ/ロード→フィールド移動（当たり判定・座標変化を確認）。スクリーンショット: `docs/screens_v3_1.png` `docs/asset_preview_page.png`
+- 未検証: iPhone Safari / Android Chrome 実機、GitHub Pages 上での読み込み（相対パスなので同構成で動く想定。`assets/` フォルダごとアップロードしてください）
 
 ## v3 品質向上プロジェクト 報告（グラフィック・建築物・戦闘・モンスター）
 
@@ -35,7 +80,7 @@
 | `docs/` | before/after スクリーンショット、モンスター一覧、戦闘画面（報告用。ゲームには不要） |
 
 ### 2) 新規アセット
-画像ファイルは引き続きゼロ（すべてコード生成）。
+（v3 時点では画像ファイルゼロ。v3.1 で assets/ に切り出し済みPNGを追加）
 - タイル 73種（v2: 約30種）、建物タイプ 12種 × スタイル 3種、看板アイコン 12種
 - モンスター基本形状: **57種**（family + 特徴フラグ + サイズの組み合わせ。色だけが違うものは1種として数えています）＋人間系キャラスプライト 4種
 - 戦闘背景テーマ 8種（草原・森・荒野・山・洞窟・祠・町・屋内）
@@ -74,7 +119,7 @@ VICTORY → 倒した敵（種類×数）→ 獲得EXP → 獲得ゴールド（
 
 ## 1. GitHub Pages へのアップロード手順
 
-1. ZIPを展開し、**中身**（`index.html`・`styles.css`・`README.md`・`.nojekyll`・`js/` フォルダ、任意で `docs/`）を `mochipoyo-trade-quest` リポジトリにアップロードする（既存ファイルは置き換え。`js/` は**フォルダごと**ドラッグ＆ドロップ。`js/core/buildings.js` と `js/core/monsterart.js` が新規ファイルなので、`js/core/` フォルダの中身が揃っていることを確認）。main を直接上書きしたくない場合は、GitHub上で `feature/graphics-v3` ブランチを作ってそこへアップロードし、Pull Request で main に取り込む
+1. ZIPを展開し、**中身**（`index.html`・`asset-preview.html`・`styles.css`・`README.md`・`.nojekyll`・`js/` フォルダ・**`assets/` フォルダ（新画像108枚）**、任意で `docs/`）を `mochipoyo-trade-quest` リポジトリにアップロードする（既存ファイルは置き換え。`js/` は**フォルダごと**ドラッグ＆ドロップ。`js/core/buildings.js` と `js/core/monsterart.js` が新規ファイルなので、`js/core/` フォルダの中身が揃っていることを確認）。main を直接上書きしたくない場合は、GitHub上で `feature/graphics-v3` ブランチを作ってそこへアップロードし、Pull Request で main に取り込む
 2. 旧バージョンの `js/game.js`・`js/ui.js`・`js/data.js`・`js/battle.js` はリポジトリから削除してよい（新版では使わない。`js/data.js` の教材は `js/data/learning.js` へ、`js/battle.js` の判定は `js/trading.js` へ移動した）
 3. 初回のみ **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: main / (root) → Save**
 4. 数分後に上記URLで公開される。更新時はファイルを上書きコミットするだけ
@@ -89,13 +134,14 @@ mochipoyo-trade-quest/
     ├── trading.js       トレード判定・値動き再生・成績（旧 battle.js）
     ├── chart.js         チャート描画 ※旧版から継続
     ├── sprites.js       モンスターのドット絵（旧版＋亜種追加API）
-    ├── core/   engine.js(ループ・入力・シーン) tiles.js(タイルセット73種) chars.js(4方向歩行キャラ) buildings.js(建物の合成描画) monsterart.js(モンスター描画) map.js(タイルマップ・建物・衝突・描画)
-    ├── data/   jobs.js(職業12) skills.js(特技・呪文59) items.js(武器防具道具70) enemies.js(モンスター83) world.js(ワールド160×120)
+    ├── core/   assets.js(画像アセット読み込み) engine.js(ループ・入力・シーン) tiles.js(タイルセット73種) chars.js(4方向歩行キャラ) buildings.js(建物の合成描画) monsterart.js(モンスター描画) map.js(タイルマップ・建物・衝突・描画)
+    ├── data/   asset-manifest.js(画像マニフェスト) jobs.js(職業12) skills.js(特技・呪文59) items.js(武器防具道具70) enemies.js(モンスター83) world.js(ワールド160×120)
     │           towns.js(町・建物内部・NPC会話) dungeons.js(ダンジョン・ギミック・ボス) story.js(仲間・クエスト・講義) learning.js(教材・用語辞典)
     ├── rpg/    actors.js(成長・装備・転職) state.js(セーブ・移行) combat.js(ターン制戦闘ロジック) world.js(探索シーン) events.js(イベントAPI)
     ├── ui/     windows.js(RPG風ウィンドウ) battle.js(戦闘画面) menu.js services.js(店・宿・教会・酒場・ギルド・銀行・修行場) trade.js(チャートの試練) title.js audio.js
     └── main.js
-└── docs/   before_after.png monsters_v3.png battle_v3.png（報告用スクリーンショット。公開には不要）
+└── assets/ monsters/ characters/{jobs,companions,npcs}/ （切り出し済みPNG）
+└── docs/   asset-mapping.md screens_v3_1.png before_after.png monsters_v3.png battle_v3.png（報告用スクリーンショット。公開には不要）
 ```
 
 ---

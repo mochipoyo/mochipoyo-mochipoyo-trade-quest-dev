@@ -199,7 +199,7 @@
   World.talk = function (npc) {
     World.busy = true;
     var p = World.player; npc.dir = { up: 'down', down: 'up', left: 'right', right: 'left' }[p.dir]; npc.moving = false; npc.ox_px = 0; npc.oy_px = 0;
-    Promise.resolve(npc.talk(root.Events.ctx())).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World.applyState(World.map); World.updateHud(); State.autosave(); });
+    Promise.resolve(npc.talk(root.Events.ctx(npc))).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World.applyState(World.map); World.updateHud(); State.autosave(); });
   };
   World.openChest = function (chest) {
     var m = World.map, d = State.data; var key = m.id + ':' + chest.id;

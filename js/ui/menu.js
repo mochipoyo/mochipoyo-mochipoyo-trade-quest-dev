@@ -41,7 +41,7 @@
     var s = Actors.stats(a); var j = JOBS[a.job];
     var eq = Object.keys(a.equip).map(function (slot) { return ({ weapon: '武器', armor: '鎧', shield: '盾', head: '頭', acc: '装飾' })[slot] + '：' + (a.equip[slot] ? ITEMS[a.equip[slot]].name : '―'); }).join('<br>');
     var jl = Object.keys(a.jobLevels).map(function (k) { return JOBS[k].name + 'Lv' + a.jobLevels[k]; }).join('・');
-    await Win.panel('<div class="rw-title">' + esc(a.name) + '　' + esc(j.name) + ' Lv' + a.level + '</div><div class="stat-grid"><div>HP<b>' + a.hp + '/' + s.maxHp + '</b></div><div>MP<b>' + a.mp + '/' + s.maxMp + '</b></div><div>攻撃<b>' + s.atk + '</b></div><div>防御<b>' + s.def + '</b></div><div>素早さ<b>' + s.agi + '</b></div><div>魔力<b>' + s.mag + '</b></div></div><div class="muted small">次のレベルまで ' + (Actors.expForLevel(a.level) - a.exp) + '　状態：' + (a.dead ? '戦闘不能' : Object.keys(a.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join('・') || '正常') + '</div><div class="muted small">固有：' + esc(j.trait) + '　役割：' + esc(j.role) + '</div><h3>装備</h3><div>' + eq + '</div><div class="muted small">職業レベル：' + jl + '</div>');
+    await Win.panel('<div class="rw-title">' + esc(a.name) + '　' + esc(j.name) + ' Lv' + a.level + '</div>' + (root.Assets ? root.Assets.portraitTagFor(a, 'portrait status-portrait', 150) : '') + '<div class="stat-grid"><div>HP<b>' + a.hp + '/' + s.maxHp + '</b></div><div>MP<b>' + a.mp + '/' + s.maxMp + '</b></div><div>攻撃<b>' + s.atk + '</b></div><div>防御<b>' + s.def + '</b></div><div>素早さ<b>' + s.agi + '</b></div><div>魔力<b>' + s.mag + '</b></div></div><div class="muted small">次のレベルまで ' + (Actors.expForLevel(a.level) - a.exp) + '　状態：' + (a.dead ? '戦闘不能' : Object.keys(a.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join('・') || '正常') + '</div><div class="muted small">固有：' + esc(j.trait) + '　役割：' + esc(j.role) + '</div><h3>装備</h3><div>' + eq + '</div><div class="muted small">職業レベル：' + jl + '</div>');
   };
 
   Menu.items = async function () {
@@ -102,7 +102,7 @@
   Menu.party = async function () {
     var d = State.data;
     var ids = ['hero'].concat(Object.keys(d.companions));
-    var i = await Win.list(ids.map(function (id) { var a = State.actor(id); var inP = d.party.indexOf(id) >= 0; return { label: (inP ? '● ' : '○ ') + a.name, right: JOBS[a.job].name + ' Lv' + a.level, sub: (inP ? '戦闘メンバー' : '待機中（酒場で入れ替え）') }; }), { title: 'なかま', info: function (k) { var c = COMPANIONS[ids[k]]; return c ? '<div>' + esc(c.bio) + '</div><div class="muted small">' + esc(c.background) + '　性格：' + esc(c.personality) + '</div>' : '<div class="muted">主人公。相場の波を読む力を持つ。</div>'; } });
+    var i = await Win.list(ids.map(function (id) { var a = State.actor(id); var inP = d.party.indexOf(id) >= 0; return { label: (inP ? '● ' : '○ ') + a.name, right: JOBS[a.job].name + ' Lv' + a.level, sub: (inP ? '戦闘メンバー' : '待機中（酒場で入れ替え）') }; }), { info: function (k) { var a = State.actor(ids[k]); var c = COMPANIONS[ids[k]]; return (root.Assets ? root.Assets.portraitTagFor(a, 'portrait info-portrait', 120) : '') + (c ? '<div class="muted small">' + esc(c.bio) + '</div>' : '<div class="muted small">主人公</div>'); }, title: 'なかま', info: function (k) { var c = COMPANIONS[ids[k]]; return c ? '<div>' + esc(c.bio) + '</div><div class="muted small">' + esc(c.background) + '　性格：' + esc(c.personality) + '</div>' : '<div class="muted">主人公。相場の波を読む力を持つ。</div>'; } });
     if (i < 0) return;
     if (i === 0) return;
     // 並び替え（先頭以外）
@@ -147,6 +147,8 @@
     await Win.panel(html, { cls: 'bestiary', setup: function (node) {
       node.querySelectorAll('.bs-img[data-id]').forEach(function (box) {
         var e = ENEMIES[box.getAttribute('data-id')]; var img;
+        var au = root.Assets && root.Assets.image('monsters', e.id) ? root.Assets.url('monsters', e.id) : null;
+        if (au) { var im = document.createElement('img'); im.src = au; im.alt = ''; im.className = 'bs-photo'; im.draggable = false; box.appendChild(im); return; }   // 戦闘と同じアセット管理を参照
         if (e.art && root.MonsterArt) img = root.MonsterArt.image(e.art, 1, 0);
         else if (root.Sprites && root.Sprites.has(e.sprite)) { img = document.createElement('canvas'); root.Sprites.draw(img, e.sprite, 3, false); }
         if (!img) return; var c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); c.className = 'bs-canvas'; box.appendChild(c);

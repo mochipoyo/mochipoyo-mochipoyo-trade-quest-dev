@@ -26,10 +26,20 @@
     for (var id in QUESTS) { var q = QUESTS[id]; if (!q.counter) continue; var st = d.quests[id]; if (!st || st.state !== 'active') continue; if ((d.counters[q.counter] || 0) >= q.need) await Events.questComplete(id); }
   };
 
-  Events.ctx = function () {
+  // 会話の立ち絵：NPCのスプライトID → 仲間の名前 → 名前からの推定（確実でないものは出さない）
+  Events.portraitFor = function (name, npc) {
+    var A = root.Assets; if (!A) return null;
+    if (npc && npc.sprite && A.portraitUrl(npc.sprite) && (!name || npc.name === name || !Events._isPartyName(name))) return A.portraitUrl(npc.sprite);
+    var cid = Events._companionIdByName(name); if (cid) return A.portraitUrl(cid);
+    if (name && root.State.data && root.State.data.hero && name === root.State.data.hero.name) return A.portraitUrlFor(root.State.data.hero);
+    var g = A.guessSprite(name); return g ? A.portraitUrl(g) : null;
+  };
+  Events._companionIdByName = function (name) { var C = root.COMPANIONS || {}; var ids = Object.keys(C); for (var i = 0; i < ids.length; i++) if (C[ids[i]].name === name) return ids[i]; return null; };
+  Events._isPartyName = function (name) { return !!Events._companionIdByName(name) || (root.State.data && root.State.data.hero && root.State.data.hero.name === name); };
+  Events.ctx = function (npc) {
     var d = State.data;
     return {
-      say: function (name, lines) { return Win.message(lines, { name: name }); },
+      say: function (name, lines) { return Win.message(lines, { name: name, portrait: Events.portraitFor(name, npc) }); },
       msg: function (lines) { return Win.message(lines); },
       choice: function (prompt, options) { return Win.choice(prompt, options); },
       flag: function (k) { return !!d.flags[k]; }, setFlag: function (k, v) { d.flags[k] = v === undefined ? true : v; },

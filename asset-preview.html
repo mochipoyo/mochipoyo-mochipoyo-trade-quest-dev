@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>アセット確認 - もちぽよFXクエスト</title>
+<style>
+  body { margin: 0; padding: 16px; background: #1a1c2c; color: #eee; font-family: system-ui, "Noto Sans JP", sans-serif; }
+  h1 { font-size: 18px; margin: 0 0 6px; } h2 { font-size: 15px; margin: 22px 0 8px; border-bottom: 1px solid #444; padding-bottom: 4px; }
+  .sum { font-size: 13px; color: #bbb; margin-bottom: 8px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+  .card { background: #262a40; border-radius: 6px; padding: 6px; font-size: 12px; border: 1px solid #333; }
+  .card.replaced { border-color: #2f7a4a; } .card.mismatch { border-color: #a07020; } .card.missing { border-color: #8a2a2a; } .card.load_error { border-color: #d03030; }
+  .img { height: 120px; display: flex; align-items: flex-end; justify-content: center; background: repeating-conic-gradient(#2e3250 0 25%, #272b44 0 50%) 0 0 / 16px 16px; border-radius: 4px; }
+  .img img, .img canvas { max-height: 118px; max-width: 100%; image-rendering: auto; }
+  .img canvas { image-rendering: pixelated; }
+  .id { font-family: monospace; color: #9fd4ff; } .name { font-weight: bold; } .st { font-size: 11px; }
+  .st.replaced { color: #7fe3a5; } .st.mismatch { color: #ffd24a; } .st.missing { color: #ff8a8a; } .st.load_error { color: #ff4a4a; }
+  .note { color: #bbb; font-size: 11px; }
+  a { color: #9fd4ff; }
+</style>
+</head>
+<body>
+<h1>アセット確認ページ</h1>
+<div class="sum">ゲーム内ID・名称・画像・対応状況の一覧。緑=新画像を使用、黄=画像はあるが名前・種族と不一致のため従来描画、赤=画像なし（従来描画にフォールバック）。<a href="index.html">ゲームへ戻る</a></div>
+<div id="root"></div>
+<script src="js/config.js"></script>
+<script src="js/sprites.js"></script>
+<script src="js/core/engine.js"></script>
+<script src="js/core/tiles.js"></script>
+<script src="js/core/chars.js"></script>
+<script src="js/core/monsterart.js"></script>
+<script src="js/data/skills.js"></script>
+<script src="js/data/items.js"></script>
+<script src="js/data/enemies.js"></script>
+<script src="js/data/jobs.js"></script>
+<script src="js/data/story.js"></script>
+<script src="js/data/asset-manifest.js"></script>
+<script src="js/core/assets.js"></script>
+<script>
+(function () {
+  var M = window.ASSET_MANIFEST; var rootEl = document.getElementById('root');
+  var SECTIONS = [['monsters', 'モンスター（戦闘・図鑑）'], ['jobs', '職業（主人公の立ち絵）'], ['companions', '仲間'], ['npcs', 'NPC']];
+  function fallbackCanvas(kind, id) {
+    var c = document.createElement('canvas');
+    if (kind === 'monsters') { var e = window.ENEMIES[id]; if (e && e.art && window.MonsterArt) return window.MonsterArt.image(e.art, 2, 0); if (e && window.Sprites && window.Sprites.has(e.sprite)) { window.Sprites.draw(c, e.sprite, 4, false); return c; } }
+    else { var sp = M[kind][id].spriteId; if (window.Chars && window.Chars.has(sp)) { var f = window.Chars.frame(sp, 'down', 0); c.width = f.width * 3; c.height = f.height * 3; var x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(f, 0, 0, c.width, c.height); return c; } }
+    return null;
+  }
+  function render() {
+    rootEl.innerHTML = '';
+    SECTIONS.forEach(function (sec) {
+      var kind = sec[0], g = M[kind]; var ids = Object.keys(g);
+      var rep = ids.filter(function (i) { return g[i].status === 'replaced'; }).length;
+      var h = document.createElement('h2'); h.textContent = sec[1] + '　' + rep + ' / ' + ids.length + ' 差し替え'; rootEl.appendChild(h);
+      var grid = document.createElement('div'); grid.className = 'grid';
+      ids.forEach(function (id) {
+        var e = g[id]; var st = window.Assets.status(kind, id); var cls = e.status === 'replaced' ? (st === 'load_error' ? 'load_error' : 'replaced') : e.status;
+        var card = document.createElement('div'); card.className = 'card ' + cls;
+        var box = document.createElement('div'); box.className = 'img';
+        if (e.status === 'replaced' && st !== 'load_error') { var im = document.createElement('img'); im.src = e.path; im.alt = id; box.appendChild(im); }
+        else { var fc = fallbackCanvas(kind, id); if (fc) box.appendChild(fc); else box.textContent = '（画像なし）'; }
+        card.appendChild(box);
+        var label = { replaced: '新画像', mismatch: '不一致→従来描画', missing: '画像なし→従来描画', load_error: '読み込み失敗→従来描画' }[cls];
+        card.innerHTML += '<div class="name">' + e.name + '</div><div class="id">' + id + (e.spriteId ? '（' + e.spriteId + '）' : '') + '</div><div class="st ' + cls + '">' + label + (e.w ? '　' + e.w + '×' + e.h + (e.scale ? ' ×' + e.scale : '') : '') + '</div>' + (e.note ? '<div class="note">' + e.note + '</div>' : '');
+        grid.appendChild(card);
+      });
+      rootEl.appendChild(grid);
+    });
+  }
+  window.Assets.preload(render); render();
+})();
+</script>
+</body>
+</html>

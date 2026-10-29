@@ -122,7 +122,7 @@
       var ids = Object.keys(d.companions);
       if (!ids.length) { await Win.message(['酒場へようこそ。仲間ができたら、ここで編成を変えられるよ。']); return; }
       var items = ['hero'].concat(ids).map(function (id) { var a = State.actor(id); var inP = d.party.indexOf(id) >= 0; return { label: (inP ? '● ' : '○ ') + a.name, right: JOBS[a.job].name + ' Lv' + a.level, sub: inP ? '戦闘メンバー' : '待機中', disabled: id === 'hero' }; });
-      var i = await Win.list(items, { title: 'パーティー編成（最大4人）', info: function (k) { var id = ['hero'].concat(ids)[k]; var c = COMPANIONS[id]; return c ? '<div class="muted">' + esc(c.bio) + '</div><div class="muted small">' + esc(c.background) + '</div>' : '<div class="muted">主人公は外せない</div>'; } });
+      var i = await Win.list(items, { title: 'パーティー編成（最大4人）', info: function (k) { var id = ['hero'].concat(ids)[k]; var c = COMPANIONS[id]; var pt = root.Assets ? root.Assets.portraitTagFor(State.actor(id), 'portrait info-portrait', 120) : ''; return pt + (c ? '<div class="muted">' + esc(c.bio) + '</div><div class="muted small">' + esc(c.background) + '</div>' : '<div class="muted">主人公は外せない</div>'); } });
       if (i < 0) return;
       var id = ['hero'].concat(ids)[i];
       if (d.party.indexOf(id) >= 0) { if (d.party.length <= 1) continue; d.party.splice(d.party.indexOf(id), 1); await Win.message([State.actor(id).name + 'は待機メンバーになった。']); }
@@ -148,7 +148,7 @@
     var actor = party[pi];
     var jobs = root.JOB_LIST.filter(function (j) { return j !== actor.job; });
     var items = jobs.map(function (j) { var ok = Actors.jobUnlocked(actor, j, d.flags); return { label: JOBS[j].name, right: ok ? ('Lv' + (actor.jobLevels[j] || 1)) : '条件未達', disabled: !ok, sub: JOBS[j].role }; });
-    var ji = await Win.list(items, { title: actor.name + 'の転職先', info: function (k) { var j = JOBS[jobs[k]]; var u = j.unlock; return '<div>' + esc(j.desc) + '</div><div class="muted small">固有：' + esc(j.trait) + '</div><div class="muted small">武器：' + j.weapons.join('/') + '</div>' + (u ? '<div class="muted small">条件：' + (u.jobsAny ? u.jobsAny.map(function (x) { return JOBS[x].name; }).join('か') + 'でLv' + u.level : (u.flag ? '修行場で「' + (u.flag === 'learned_dow' ? 'ダウ理論' : '資金管理') + '」を修了しLv' + u.level : 'Lv' + u.level)) + '</div>' : ''); } });
+    var ji = await Win.list(items, { title: actor.name + 'の転職先', info: function (k) { var j = JOBS[jobs[k]]; var u = j.unlock; return (root.Assets ? root.Assets.portraitTag('hero_' + jobs[k], 'portrait info-portrait', 120) : '') + '<div>' + esc(j.desc) + '</div><div class="muted small">固有：' + esc(j.trait) + '</div><div class="muted small">武器：' + j.weapons.join('/') + '</div>' + (u ? '<div class="muted small">条件：' + (u.jobsAny ? u.jobsAny.map(function (x) { return JOBS[x].name; }).join('か') + 'でLv' + u.level : (u.flag ? '修行場で「' + (u.flag === 'learned_dow' ? 'ダウ理論' : '資金管理') + '」を修了しLv' + u.level : 'Lv' + u.level)) + '</div>' : ''); } });
     if (ji < 0) return;
     var job = jobs[ji]; var cost = 100 * actor.level;
     var c = await Win.choice(JOBS[job].name + 'に転職する？（費用' + cost + 'G。レベルは' + (actor.jobLevels[job] || 1) + 'から）', ['転職する', 'やめる']);
