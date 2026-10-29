@@ -229,3 +229,15 @@ ul.eval .mark { display: inline-block; width: 1.3em; font-weight: bold; } ul.eva
 ul.plain { list-style: none; padding: 0; margin: 0; font-size: 12px; }
 ul.plain li { padding: 2px 0; border-bottom: 1px dashed #3a3f5a; }
 @media (max-width: 520px) { .rec-cols { grid-template-columns: 1fr; } }
+
+/* v4.3 教材拡充：高値安値の指定・ミニチャート・難易度 */
+.swing-pick { padding: 4px 8px; border-top: 1px solid #2e3250; }
+.sp-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.pickbtn { background: #262a40; color: #eee; border: 1px solid #4a4f70; border-radius: 4px; padding: 3px 8px; font-size: 12px; cursor: pointer; }
+.pickbtn.on { background: #a08030; border-color: #ffd24a; color: #fff; }
+.pickbtn.done { border-color: #4cc38a; }
+.mini-chart { width: 100%; height: 190px; display: block; margin: 4px 0; border-radius: 4px; }
+.rw-btn.on { background: #a08030; color: #fff; }
+.lv-tag { font-size: 10px; border-radius: 8px; padding: 0 6px; margin-right: 4px; border: 1px solid #556; }
+.lv-basic { color: #9fe0a8; border-color: #4cc38a; } .lv-mid { color: #ffd24a; border-color: #a08030; } .lv-adv { color: #ffb0b0; border-color: #e5484d; }
+@media (max-width: 720px) { .mini-chart { height: 150px; } }

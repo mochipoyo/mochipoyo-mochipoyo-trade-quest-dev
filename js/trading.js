@@ -84,12 +84,13 @@
 
     // 不正解のトレードはルール違反として分類
     if (!actionOk && action !== 'skip') {
+      var why = REASON_OF[def.id] || 'align';
       if (correct !== 'skip') violations.push('根拠のない逆張り');
-      else if (def.id === 'range') violations.push('レンジ内での無駄な売買');
-      else if (def.id === 'false_breakout' || def.id === 'jump_in') violations.push('飛び乗りエントリー');
-      else if (def.id === 'mtf_conflict') violations.push('上位足を無視したエントリー');
-      else if (def.id === 'bad_rr') violations.push('リスクリワードの悪いトレード');
-      else if (def.id === 'rci_hot_trend') violations.push(action === 'sell' ? 'RCI水準だけの逆張り' : '押し目を待たないエントリー');
+      else if (why === 'range' || why === 'whipsaw') violations.push('レンジ内での無駄な売買');
+      else if (why === 'fake' || why === 'jump') violations.push('飛び乗りエントリー');
+      else if (why === 'conflict' || why === 'div_alone') violations.push('上位足を無視したエントリー');
+      else if (why === 'rr') violations.push('リスクリワードの悪いトレード');
+      else if (why === 'rcihot') violations.push(((action === 'sell' && truth.htf === 'up') || (action === 'buy' && truth.htf === 'down')) ? 'RCI水準だけの逆張り' : '押し目・戻り目を待たないエントリー');
       else violations.push('優位性のない場面でのトレード');
     }
 
@@ -266,25 +267,35 @@
     var div = 'none'; for (var i = 0; i < order.length; i++) if (flags[order[i]]) { div = order[i]; break; }
     // 上位足の方向：4時間足が明確ならそれ、不明瞭なら日足
     var htf = dir(h4) !== 'range' ? dir(h4) : dir(d1);
-    return { htf: htf, d1: dir(d1), trend: (f.dow.trend === 'up' || f.dow.trend === 'down') ? f.dow.trend : 'range', ema: f.emaOrder, rci: f.rciState, macd: div, macdSide: f.macdState, action: def.correct, reason: REASON_OF[def.id] || 'align' };
+    var swing = TradeEval.swingTruth(f);
+    return { swing: swing, htf: htf, d1: dir(d1), trend: (f.dow.trend === 'up' || f.dow.trend === 'down') ? f.dow.trend : 'range', ema: f.emaOrder, rci: f.rciState, macd: div, macdSide: f.macdState, action: def.correct, reason: REASON_OF[def.id] || 'align' };
   };
+  // 直近の「確定した」高値・安値（ZigZag の未確定ピボットは採点根拠にしない）
+  TradeEval.swingTruth = function (f) { var hi = null, lo = null; for (var q = f.pivots.length - 1; q >= 0; q--) { var p = f.pivots[q]; if (!p.confirmed) continue; if (!hi && p.type === 'high') hi = p; if (!lo && p.type === 'low') lo = p; if (hi && lo) break; } return { high: hi ? { index: hi.index, price: hi.price } : null, low: lo ? { index: lo.index, price: lo.price } : null }; };
+  TradeEval.SWING_TOL = 2;   // 指定した足が確定ピボットから±2本以内なら正解
+  TradeEval.swingCheck = function (truthSwing, picked) { var r = {}; ['high', 'low'].forEach(function (k) { var t = truthSwing && truthSwing[k], p = picked && picked[k]; r[k] = !!(t && p && Math.abs(p.index - t.index) <= TradeEval.SWING_TOL); }); r.ok = r.high && r.low; r.count = (r.high ? 1 : 0) + (r.low ? 1 : 0); return r; };
   // 分析の設問（答えは truth のキーと一致）
   TradeEval.ANALYSIS = [
-    { key: 'htf', topic: 'mtf', title: '上位足（4時間足）の方向は？', points: 10, options: [['up', '上昇'], ['down', '下降'], ['range', 'レンジ・不明瞭']], hint: '4時間足に切り替えて、高値・安値の切り上げ／切り下げと、EMAの並びを見よう。' },
-    { key: 'trend', topic: 'dow', title: '15分足の波形（ダウ理論）は？', points: 8, options: [['up', '高値・安値の切り上げ（上昇）'], ['down', '高値・安値の切り下げ（下降）'], ['range', '揃っていない（レンジ）']], hint: '直近の確定した高値と安値が、前の高値・安値より上か下かを比べよう。ZigZagの最後の未確定の波は根拠にしない。' },
-    { key: 'ema', topic: 'ema', title: 'EMA20/30/40の並びは？', points: 7, options: [['up', '20＞30＞40（上昇配列）'], ['down', '20＜30＜40（下降配列）'], ['mixed', '絡み合っている']], hint: '3本の線が上から20・30・40の順なら上昇配列、逆なら下降配列。交差して絡んでいれば方向感なし。' },
+    { key: 'htf', topic: 'mtf', title: '上位足（4時間足）の方向は？', points: 9, options: [['up', '上昇'], ['down', '下降'], ['range', 'レンジ・不明瞭']], hint: '4時間足に切り替えて、高値・安値の切り上げ／切り下げと、EMAの並びを見よう。' },
+    { key: 'trend', topic: 'dow', title: '{tf}の波形（ダウ理論）は？', points: 6, options: [['up', '高値・安値の切り上げ（上昇）'], ['down', '高値・安値の切り下げ（下降）'], ['range', '揃っていない（レンジ）']], hint: '直近の確定した高値と安値が、前の高値・安値より上か下かを比べよう。ZigZagの最後の未確定の波は根拠にしない。' },
+    { key: 'ema', topic: 'ema', title: 'EMA20/30/40の並びは？', points: 6, options: [['up', '20＞30＞40（上昇配列）'], ['down', '20＜30＜40（下降配列）'], ['mixed', '絡み合っている']], hint: '3本の線が上から20・30・40の順なら上昇配列、逆なら下降配列。交差して絡んでいれば方向感なし。' },
     { key: 'rci', topic: 'rci', title: 'RCI(9)の状態は？', points: 7, options: [['overbought', '+70以上（買われすぎ圏）'], ['oversold', '−70以下（売られすぎ圏）'], ['overbought_reversal', '+70圏から反転して下がり始めた'], ['oversold_reversal', '−70圏から反転して上がり始めた'], ['neutral', '中立（±70に達していない）']], hint: 'RCIは±70到達「だけ」では根拠にならない。到達後に反転したか、トレンド方向と合っているかを見る。' },
-    { key: 'macd', topic: 'macd', title: 'MACD(6,13,4)のダイバージェンスは？', points: 8, options: [['none', 'なし'], ['regular_bull', '通常ダイバージェンス（強気：安値切り下げ／MACD切り上げ）'], ['regular_bear', '通常ダイバージェンス（弱気：高値切り上げ／MACD切り下げ）'], ['hidden_bull', 'ヒドゥン（強気：安値切り上げ／MACD切り下げ）'], ['hidden_bear', 'ヒドゥン（弱気：高値切り下げ／MACD切り上げ）']], hint: '確定した直近2つの安値（または高値）とMACDラインの山谷を比べる。価格とMACDの向きが逆ならダイバージェンス。' }
+    { key: 'macd', topic: 'macd', title: 'MACD(6,13,4)のダイバージェンスは？', points: 7, options: [['none', 'なし'], ['regular_bull', '通常ダイバージェンス（強気：安値切り下げ／MACD切り上げ）'], ['regular_bear', '通常ダイバージェンス（弱気：高値切り上げ／MACD切り下げ）'], ['hidden_bull', 'ヒドゥン（強気：安値切り上げ／MACD切り下げ）'], ['hidden_bear', 'ヒドゥン（弱気：高値切り下げ／MACD切り上げ）']], hint: '確定した直近2つの安値（または高値）とMACDラインの山谷を比べる。価格とMACDの向きが逆ならダイバージェンス。' }
   ];
+  TradeEval.qTitle = function (q, scn) { var tf = CONFIG.timeframes.filter(function (t) { return t.id === scn.def.focusTF; })[0]; return q.title.replace('{tf}', tf ? tf.label : '15分足'); };
   TradeEval.ANALYSIS_LABEL = {};
   TradeEval.ANALYSIS.forEach(function (q) { q.options.forEach(function (o) { TradeEval.ANALYSIS_LABEL[q.key + ':' + o[0]] = o[1]; }); });
   // 判断の理由（正解は1つ。誤った理由も混ぜる）
   TradeEval.REASONS = [
     ['align', '上位足と下位足の方向が一致した順張り'], ['pullback', '上位足の方向へ戻る押し目・戻り目で反発し始めた'], ['hidden', 'ヒドゥンダイバージェンスでトレンド継続が示唆された'], ['regular', '上位足方向の押し目で通常ダイバージェンスが出た'],
-    ['range', '高値・安値が揃わないレンジで方向感がない'], ['fake', 'ブレイクがダマシで、根拠が確定していない'], ['conflict', '上位足と下位足の方向が不一致'], ['rr', '損切りが遠く利確が近い（リスクリワードが悪い）'], ['jump', '急騰・急落直後の飛び乗りになる'], ['rcihot', 'RCI+70でも強い上昇が続いており、逆張りせず押し目を待つ'],
+    ['range', '高値・安値が揃わないレンジで方向感がない'], ['fake', 'ブレイクがダマシで、根拠が確定していない'], ['conflict', '上位足と下位足の方向が不一致'], ['rr', '損切りが遠く利確が近い（リスクリワードが悪い）'], ['jump', '急騰・急落直後の飛び乗りになる'], ['rcihot', 'RCI±70に張り付く強いトレンドが続いており、逆張りせず押し目・戻り目を待つ'],
+    ['reversal', '高値・安値の切り上げ／切り下げが崩れ、転換が確定した後の順張り'], ['div_alone', 'ダイバージェンスが出ているが上位足の方向と整合していない'], ['tight_sl', '押し目・戻り目の安値／高値が近く、損切りを小さく置けてリスクリワードが良い'], ['whipsaw', '乱高下で方向感がなく、どちらに入っても損切りが遠い'],
     ['rci_only', 'RCIが±70に達したので逆張りする'], ['feel', '勢いがあるので乗る']
   ];
-  var REASON_OF = { clear_up: 'align', clear_down: 'align', up_pullback: 'pullback', down_rally: 'pullback', hidden_bull: 'hidden', hidden_bear: 'hidden', regular_bull: 'regular', regular_bear: 'regular', range: 'range', false_breakout: 'fake', mtf_conflict: 'conflict', bad_rr: 'rr', jump_in: 'jump', rci_hot_trend: 'rcihot' };
+  var REASON_OF = { clear_up: 'align', clear_down: 'align', up_pullback: 'pullback', down_rally: 'pullback', hidden_bull: 'hidden', hidden_bear: 'hidden', regular_bull: 'regular', regular_bear: 'regular', range: 'range', false_breakout: 'fake', mtf_conflict: 'conflict', bad_rr: 'rr', jump_in: 'jump', rci_hot_trend: 'rcihot',
+    // v4.3 追加シナリオ
+    up_ema_bounce: 'pullback', down_ema_reject: 'pullback', range_high: 'range', clear_up_5m: 'align', clear_down_5m: 'align', mtf_conflict_up: 'conflict', up_pullback_5m: 'pullback', down_rally_5m: 'pullback', rci_cold_trend: 'rcihot', false_breakdown: 'fake', breakout_retest: 'pullback', reversal_confirmed_down: 'reversal', reversal_confirmed_up: 'reversal', up_pullback_1h: 'pullback',
+    div_against_htf: 'div_alone', div_bear_against_htf: 'div_alone', bad_rr_sell: 'rr', jump_in_down: 'jump', pullback_tight_sl: 'tight_sl', whipsaw: 'whipsaw' };
   TradeEval.REASON_OF = REASON_OF;
   TradeEval.reasonLabel = function (key) { for (var i = 0; i < TradeEval.REASONS.length; i++) if (TradeEval.REASONS[i][0] === key) return TradeEval.REASONS[i][1]; return key; };
   // 出題する理由の選択肢（正解＋5つ、シナリオごとに固定の並び）
@@ -306,8 +317,12 @@
     TradeEval.ANALYSIS.forEach(function (q) {
       var ans = an[q.key]; var t = truth[q.key]; var ok = ans === t;
       var note = ok ? '正解：' + TradeEval.ANALYSIS_LABEL[q.key + ':' + t] : (ans ? 'あなた：' + TradeEval.ANALYSIS_LABEL[q.key + ':' + ans] + ' → 実際：' + TradeEval.ANALYSIS_LABEL[q.key + ':' + t] : '未判断 → 実際：' + TradeEval.ANALYSIS_LABEL[q.key + ':' + t]);
-      item(q.title.replace('は？', ''), ok, note, q.points, q.topic);
+      item(TradeEval.qTitle(q, scn).replace('は？', ''), ok, note, q.points, q.topic);
     });
+    // 1b. 重要な高値・安値の指定（5点。片方だけ正解は2点）
+    var sw = TradeEval.swingCheck(truth.swing, decision.swing); var swT = truth.swing || {};
+    var swNote = sw.ok ? '直近の確定した高値（' + (swT.high ? fmt(swT.high.price) : '―') + '）と安値（' + (swT.low ? fmt(swT.low.price) : '―') + '）を正しく指定した' : (!decision.swing || (!decision.swing.high && !decision.swing.low)) ? '未指定 → 確定した高値 ' + (swT.high ? fmt(swT.high.price) : '―') + '・安値 ' + (swT.low ? fmt(swT.low.price) : '―') : (sw.high ? '高値は正解。安値は' : sw.low ? '安値は正解。高値は' : '高値・安値とも') + '確定したピボット（高値 ' + (swT.high ? fmt(swT.high.price) : '―') + '／安値 ' + (swT.low ? fmt(swT.low.price) : '―') + '）とずれている。最後の未確定の波ではなく、左右' + CONFIG.zigzag.depth + '本より高い／低い点を探そう';
+    item('重要な高値・安値の指定', sw.ok, swNote, 5, 'swing', sw.count === 1 ? 2 : 0);
     // 2. 行動（30点）
     var action = decision.action, correct = def.correct; var actionOk = action === correct;
     var partial = actionOk ? 0 : (action === 'skip' ? 12 : (correct === 'skip' ? 3 : 0));
@@ -355,20 +370,20 @@
     }
     score = Math.max(0, Math.min(100, Math.round(score)));
     var summary = TradeEval.explainTruth(scn, truth, an);
-    return { score: score, items: items, violations: violations, actionOk: actionOk, trade: trade, skill: pickSkill(def, action, actionOk, trade), correct: correct, correctLabel: ACTION_LABEL[correct], chosenLabel: ACTION_LABEL[action], summary: summary, truth: truth, topics: topics, hintLevel: decision.hintLevel || 0, reasonOk: reasonOk, analysisOk: TradeEval.ANALYSIS.filter(function (q) { return an[q.key] === truth[q.key]; }).length, analysisTotal: TradeEval.ANALYSIS.length, full: true };
+    return { score: score, items: items, violations: violations, actionOk: actionOk, trade: trade, skill: pickSkill(def, action, actionOk, trade), correct: correct, correctLabel: ACTION_LABEL[correct], chosenLabel: ACTION_LABEL[action], summary: summary, truth: truth, topics: topics, hintLevel: decision.hintLevel || 0, reasonOk: reasonOk, swingOk: sw.ok, analysisOk: TradeEval.ANALYSIS.filter(function (q) { return an[q.key] === truth[q.key]; }).length, analysisTotal: TradeEval.ANALYSIS.length, full: true };
   };
   // 解説文（実際のチャート状態から組み立て、間違えた項目を指摘）
   TradeEval.explainTruth = function (scn, truth, an) {
     var tfL = { '15m': '15分足', '5m': '5分足', '1h': '1時間足' }[scn.def.focusTF] || scn.def.focusTF;
     var D = { up: '上昇', down: '下降', range: 'レンジ', mixed: '絡み合い' };
     var s = '4時間足は' + D[truth.htf] + '方向（日足は' + D[truth.d1] + '）。' + tfL + 'の波形は' + D[truth.trend] + '、EMAは' + (truth.ema === 'mixed' ? '絡み合い' : D[truth.ema] + '配列') + '。RCIは' + TradeEval.ANALYSIS_LABEL['rci:' + truth.rci] + '、MACDは' + (truth.macd === 'none' ? 'ダイバージェンスなし' : TradeEval.ANALYSIS_LABEL['macd:' + truth.macd]) + '。';
-    var miss = TradeEval.ANALYSIS.filter(function (q) { return an[q.key] !== truth[q.key]; }).map(function (q) { return q.title.replace('は？', ''); });
+    var miss = TradeEval.ANALYSIS.filter(function (q) { return an[q.key] !== truth[q.key]; }).map(function (q) { return TradeEval.qTitle(q, scn).replace('は？', ''); });
     s += miss.length ? '確認が不足していた項目：' + miss.join('・') + '。' : '分析はすべて正確でした。';
     s += ' ' + (scn.def.explain[truth.action] || '');
     return s;
   };
   // 分野別の記録（挑戦数・正解・ヒント利用・最終挑戦・未見問題での正解）
-  TradeEval.TOPICS = [['mtf', '上位足の環境認識'], ['dow', 'ダウ理論・波形'], ['ema', 'EMAの並び'], ['rci', 'RCIの状態'], ['macd', 'MACD・ダイバージェンス'], ['action', 'エントリー／見送り判断'], ['reason', '判断の理由'], ['risk', '損切りと資金管理'], ['skip', '見送りの規律']];
+  TradeEval.TOPICS = [['mtf', '上位足の環境認識'], ['dow', 'ダウ理論・波形'], ['ema', 'EMAの並び'], ['rci', 'RCIの状態'], ['macd', 'MACD・ダイバージェンス'], ['swing', '重要な高値・安値の指定'], ['action', 'エントリー／見送り判断'], ['reason', '判断の理由'], ['risk', '損切りと資金管理'], ['skip', '見送りの規律']];
   TradeEval.topicLabel = function (k) { for (var i = 0; i < TradeEval.TOPICS.length; i++) if (TradeEval.TOPICS[i][0] === k) return TradeEval.TOPICS[i][1]; return k; };
   TradeEval.recordTopics = function (tradeState, ev) {
     if (!ev.full) return; var T = tradeState.topics = tradeState.topics || {}; var hinted = ev.hintLevel > 0; var first = !(tradeState.stats.byScenario[ev.scenarioId] && tradeState.stats.byScenario[ev.scenarioId].plays > 1);
@@ -389,7 +404,7 @@
   };
   // 分野 → 練習に向くシナリオ
   TradeEval.scenariosForTopic = function (topic) {
-    var m = { mtf: ['mtf_conflict', 'clear_up', 'clear_down', 'regular_bull', 'regular_bear'], dow: ['clear_up', 'clear_down', 'range', 'false_breakout', 'up_pullback'], ema: ['clear_up', 'clear_down', 'up_pullback', 'down_rally', 'range'], rci: ['up_pullback', 'down_rally', 'rci_hot_trend', 'regular_bull', 'regular_bear'], macd: ['hidden_bull', 'hidden_bear', 'regular_bull', 'regular_bear'], action: ['range', 'false_breakout', 'jump_in', 'up_pullback', 'clear_down'], reason: ['mtf_conflict', 'bad_rr', 'rci_hot_trend', 'hidden_bull', 'range'], risk: ['clear_up', 'clear_down', 'up_pullback', 'down_rally', 'bad_rr'], skip: ['range', 'false_breakout', 'mtf_conflict', 'bad_rr', 'jump_in', 'rci_hot_trend'] };
+    var m = { mtf: ['mtf_conflict', 'mtf_conflict_up', 'clear_up', 'clear_down', 'regular_bull', 'regular_bear', 'up_pullback_1h', 'div_against_htf'], dow: ['clear_up', 'clear_down', 'range', 'range_high', 'false_breakout', 'up_pullback', 'reversal_confirmed_down', 'reversal_confirmed_up', 'breakout_retest'], swing: ['clear_up', 'clear_down', 'up_pullback', 'down_rally', 'reversal_confirmed_down', 'reversal_confirmed_up', 'pullback_tight_sl'], ema: ['clear_up', 'clear_down', 'up_pullback', 'down_rally', 'range', 'up_ema_bounce', 'down_ema_reject', 'whipsaw'], rci: ['up_pullback', 'down_rally', 'rci_hot_trend', 'rci_cold_trend', 'regular_bull', 'regular_bear', 'up_pullback_5m', 'down_rally_5m'], macd: ['hidden_bull', 'hidden_bear', 'regular_bull', 'regular_bear', 'div_against_htf', 'div_bear_against_htf'], action: ['range', 'false_breakout', 'false_breakdown', 'jump_in', 'up_pullback', 'clear_down', 'clear_up_5m', 'clear_down_5m'], reason: ['mtf_conflict', 'bad_rr', 'rci_hot_trend', 'hidden_bull', 'range', 'div_against_htf', 'pullback_tight_sl', 'reversal_confirmed_down'], risk: ['clear_up', 'clear_down', 'up_pullback', 'down_rally', 'bad_rr', 'bad_rr_sell', 'pullback_tight_sl'], skip: ['range', 'false_breakout', 'mtf_conflict', 'bad_rr', 'jump_in', 'rci_hot_trend', 'rci_cold_trend', 'whipsaw', 'jump_in_down', 'div_bear_against_htf'] };
     return m[topic] || root.Scenarios.ids();
   };
   // トレーダーランク：分野別の正解率・上位足認識・ヒントなし正解率・未見問題の対応力（異なるシナリオ数）を総合。回数だけでは上がらない
@@ -408,7 +423,7 @@
     if (r >= 4 && uniq >= 12 && crit.analysis >= 0.8 && crit.action >= 0.8 && noHint >= 0.75 && crit.avgScore >= 75) r = 5; // A
     if (r >= 5 && uniq >= 14 && crit.analysis >= 0.9 && crit.action >= 0.9 && noHint >= 0.85 && crit.avgScore >= 85) r = 6; // S
     var next = TradeEval.RANKS[Math.min(6, r + 1)];
-    var need = r >= 6 ? [] : [[1, '3回以上の挑戦と平均40点以上'], [2, '5回以上の挑戦・異なる4場面で正解・判断5割・分析45%'], [3, '異なる6場面・上位足認識7割・分析6割'], [4, '異なる9場面・損切り/見送り7割・ヒントなし正解6割'], [5, '異なる12場面・分析8割・ヒントなし75%・平均75点'], [6, '全14場面・分析9割・ヒントなし85%・平均85点']].filter(function (x) { return x[0] === r + 1; }).map(function (x) { return x[1]; });
+    var need = r >= 6 ? [] : [[1, '3回以上の挑戦と平均40点以上'], [2, '5回以上の挑戦・異なる4場面で正解・判断5割・分析45%'], [3, '異なる6場面・上位足認識7割・分析6割'], [4, '異なる9場面・損切り/見送り7割・ヒントなし正解6割'], [5, '異なる12場面・分析8割・ヒントなし75%・平均75点'], [6, '異なる14場面・分析9割・ヒントなし85%・平均85点']].filter(function (x) { return x[0] === r + 1; }).map(function (x) { return x[1]; });
     return { index: r, letter: TradeEval.RANKS[r][0], title: TradeEval.RANKS[r][1], next: next, needText: need[0] || '', crit: crit };
   };
 

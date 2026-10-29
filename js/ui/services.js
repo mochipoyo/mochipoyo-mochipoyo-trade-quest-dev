@@ -260,13 +260,22 @@
     } else await Win.message([correct + '/' + ch.quiz.length + '問正解。もう一度、教えを読み返してみるといい。'], { name: '師匠ハケイ' });
     State.autosave();
   }
+  var LEVELS = [['basic', '初級', '上昇・下降・レンジの判断、高値・安値の関係、EMAの方向'], ['mid', '中級', '上位足と下位足の関係、RCIの反転、押し目・戻り目、通常のダイバージェンス'], ['adv', '上級', 'ヒドゥンダイバージェンス、複数根拠の整合、リスクリワード、損切り位置、見送りの判断']];
+  Services.levelLabel = function (lv) { for (var i = 0; i < LEVELS.length; i++) if (LEVELS[i][0] === lv) return LEVELS[i][1]; return '中級'; };
   async function practice() {
-    var defs = root.Scenarios.defs; var d = State.data;
-    var items = [{ label: 'おまかせ（ランダム）', sub: defs.length + '種類の場面から出題' }].concat(defs.map(function (s) { var r = d.trade.stats.byScenario[s.id]; return { label: s.title, right: r ? '正解 ' + r.correct + '/' + r.plays : '未挑戦', sub: '第' + s.chapter + '章の題材' + (r && r.plays ? '' : '　※正解は回答後に表示') }; }));   // v4: 正解の事前表示はしない
-    var i = await Win.list(items, { title: 'チャートの試練（練習）' });
+    var all = root.Scenarios.defs; var d = State.data;
+    function stat(ids) { var p = 0, c = 0; ids.forEach(function (id) { var r = d.trade.stats.byScenario[id]; if (r) { p += r.plays; c += r.correct; } }); return p ? '正解 ' + c + '/' + p : '未挑戦'; }
+    var lvItems = LEVELS.map(function (L) { var ids = root.Scenarios.byLevel(L[0]); return { label: L[1] + '（' + ids.length + '場面）', right: stat(ids), sub: L[2] }; }).concat([{ label: 'すべての場面から選ぶ', right: all.length + '場面', sub: '難易度を問わず一覧から選ぶ' }, { label: 'おまかせ（全難易度からランダム）', sub: all.length + '種類の場面から出題' }]);
+    var li = await Win.list(lvItems, { title: 'チャートの試練（練習）：難易度を選ぶ' });
+    if (li < 0) return;
+    if (li === LEVELS.length + 1) { await root.TradeUI.trial(all.map(function (s) { return s.id; }), { title: '修行場の試練', practice: true }); await Events.checkCounterQuests(); return; }
+    var defs = li < LEVELS.length ? all.filter(function (s) { return (s.level || 'mid') === LEVELS[li][0]; }) : all.slice();
+    var lvName = li < LEVELS.length ? LEVELS[li][1] : 'すべて';
+    var items = [{ label: 'おまかせ（' + lvName + 'からランダム）', sub: defs.length + '種類の場面から出題' }].concat(defs.map(function (s) { var r = d.trade.stats.byScenario[s.id]; var tfL = (root.CONFIG.timeframes.filter(function (t) { return t.id === s.focusTF; })[0] || {}).label || ''; return { label: '[' + Services.levelLabel(s.level || 'mid') + '] ' + s.title, right: r ? '正解 ' + r.correct + '/' + r.plays : '未挑戦', sub: (s.pattern ? s.pattern + '　' : '') + '第' + s.chapter + '章の題材・' + tfL + 'で判断' + (r && r.plays ? '' : '　※正解は回答後に表示') }; }));   // v4: 正解の事前表示はしない
+    var i = await Win.list(items, { title: 'チャートの試練（練習）：' + lvName });
     if (i < 0) return;
     var ids = i === 0 ? defs.map(function (s) { return s.id; }) : [defs[i - 1].id];
-    await root.TradeUI.trial(ids, { title: '修行場の試練', practice: true });
+    await root.TradeUI.trial(ids, { title: '修行場の試練（' + lvName + '）', practice: true });
     await Events.checkCounterQuests();
   }
   async function learningQuests() {

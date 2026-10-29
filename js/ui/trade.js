@@ -31,20 +31,22 @@
     var seedOffset = opts.practice ? Math.floor(Math.random() * 6) : 0;
     var scn = Scenarios.build(id, seedOffset);
     var def = scn.def;
-    var cur = { checkedHigherTF: false, hintLevel: 0, analysis: {}, reason: null };
+    var cur = { checkedHigherTF: false, hintLevel: 0, analysis: {}, reason: null, swing: { high: null, low: null }, pick: null };
     TradeUI.state.tf = def.focusTF;
     var chartCtl = null;
-    TradeUI.current = { scn: scn, id: id, cur: cur };
+    TradeUI.current = { scn: scn, id: id, cur: cur, def: def };
+    var focusLabel = (CONFIG.timeframes.filter(function (t) { return t.id === def.focusTF; })[0] || {}).label || def.focusTF;
     var Q = TradeEval.ANALYSIS; var tutorial = !!opts.tutorial;
 
     return new Promise(function (resolve) {
       var tfs = CONFIG.timeframes.map(function (t) { return '<button class="tf" data-tf="' + t.id + '">' + esc(t.label) + '</button>'; }).join('');
-      var qhtml = Q.map(function (q, i) { return '<div class="aq" data-q="' + q.key + '"><div class="aq-t"><span class="aq-n">' + (i + 1) + '</span>' + esc(q.title) + '</div><div class="aq-o">' + q.options.map(function (o) { return '<button class="aopt" data-q="' + q.key + '" data-v="' + o[0] + '">' + esc(o[1]) + '</button>'; }).join('') + '</div></div>'; }).join('');
+      var qhtml = Q.map(function (q, i) { return '<div class="aq" data-q="' + q.key + '"><div class="aq-t"><span class="aq-n">' + (i + 1) + '</span>' + esc(TradeEval.qTitle(q, scn)) + '</div><div class="aq-o">' + q.options.map(function (o) { return '<button class="aopt" data-q="' + q.key + '" data-v="' + o[0] + '">' + esc(o[1]) + '</button>'; }).join('') + '</div></div>'; }).join('');
       var html = '<div class="trade-head"><b>' + esc(opts.title || 'チャートの試練') + '</b><span class="muted small">　学習用の人工チャート（' + esc(CONFIG.market.pairName) + '）。未来の足は判断後に表示されます</span></div>' +
         '<div class="chart-tools"><div class="tfs">' + tfs + '</div><div class="ctl"><button class="mini" data-zoom="in">＋</button><button class="mini" data-zoom="out">－</button><button class="mini" data-zig="1">ZigZag</button><button class="mini hintbtn" data-cmd="hint">ヒント</button></div></div>' +
         '<canvas class="chart" id="trial-chart"></canvas>' +
         '<div class="trade-msg" id="trial-msg"></div>' +
         '<div class="analysis" id="trial-analysis"><div class="an-title">① チャートを分析する（時間足ボタンで上位足も確認できる）</div>' + qhtml + '</div>' +
+        '<div class="swing-pick" id="trial-swing"><div class="an-title">② ' + esc(focusLabel) + 'の「直近の確定した高値・安値」をチャートでタップして指定</div><div class="sp-row"><button class="pickbtn" data-pick="high">高値を指定</button><button class="pickbtn" data-pick="low">安値を指定</button><span class="small" id="swing-st">未指定</span></div></div>' +
         '<div class="trade-cmds" id="trial-cmds"><button class="tcmd buy" data-cmd="buy">買い</button><button class="tcmd sell" data-cmd="sell">売り</button><button class="tcmd skip" data-cmd="skip">見送り</button></div>';
       Win.panel(html, { cls: 'trade-panel', noClose: true, setup: function (node, close) {
         var canvas = node.querySelector('#trial-chart');
@@ -55,29 +57,43 @@
           var base = Indicators.aggregate(scn.base, tf.factor);
           var rev = chartCtl.revealed.length ? Indicators.aggregate(scn.base.concat(chartCtl.revealed), tf.factor).slice(base.length) : [];
           var an = Chart.buildView(base, rev);
-          var o = { visibleBars: TradeUI.state.visible, showZigzag: d.settings.showZigzag, tfLabel: tf.label }; Object.keys(chartCtl.opts).forEach(function (k) { o[k] = chartCtl.opts[k]; });
+          var onFocus = TradeUI.state.tf === def.focusTF;
+          var o = { visibleBars: TradeUI.state.visible, showZigzag: d.settings.showZigzag && !cur.pick, tfLabel: tf.label, pickMode: cur.pick, marks: onFocus ? [cur.swing.high && { index: cur.swing.high.index, price: cur.swing.high.price, type: 'high' }, cur.swing.low && { index: cur.swing.low.index, price: cur.swing.low.price, type: 'low' }].filter(Boolean) : [] }; Object.keys(chartCtl.opts).forEach(function (k) { o[k] = chartCtl.opts[k]; });
           Chart.render(canvas, an, o);
           node.querySelectorAll('.tf').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tf') === TradeUI.state.tf); });
           node.querySelector('[data-zig]').classList.toggle('on', d.settings.showZigzag);
           return an;
         }
         chartCtl = { revealed: [], opts: {}, render: render };
-        function answered() { return Q.filter(function (q) { return !cur.analysis[q.key]; }).length === 0; }
+        function swingDone() { return !!(cur.swing.high && cur.swing.low); }
+        function answered() { return Q.filter(function (q) { return !cur.analysis[q.key]; }).length === 0 && swingDone(); }
+        function swingStatus() { var el = node.querySelector('#swing-st'); if (!el) return; el.textContent = (cur.swing.high ? '高値 ' + cur.swing.high.price.toFixed(3) : '高値 未指定') + '　' + (cur.swing.low ? '安値 ' + cur.swing.low.price.toFixed(3) : '安値 未指定'); node.querySelectorAll('.pickbtn').forEach(function (b) { b.classList.toggle('on', cur.pick === b.getAttribute('data-pick')); b.classList.toggle('done', !!cur.swing[b.getAttribute('data-pick')]); }); }
         function refreshState() {
           var left = Q.filter(function (q) { return !cur.analysis[q.key]; });
-          cmds.classList.toggle('ready', left.length === 0);
-          if (left.length) msg('② の前に、まず5つの分析を選ぼう（残り ' + left.length + '）。' + (tutorial ? '　' + left[0].hint : ''));
+          cmds.classList.toggle('ready', answered());
+          swingStatus();
+          if (left.length) msg('まず①の5つの分析を選ぼう（残り ' + left.length + '）。' + (tutorial ? '　' + left[0].hint : ''));
+          else if (!swingDone()) msg('②「高値を指定」「安値を指定」を押してから、チャート上の直近の確定した高値・安値をタップしよう。' + (tutorial ? '　最後の未確定の波ではなく、左右に4本以上の足がある山と谷。' : ''));
           else msg('③ 分析を踏まえて、買い・売り・見送りを選ぼう。');
         }
+        // v4.3: チャート上の高値・安値の指定（エントリー時間足に固定。指定中はZigZagを隠す）
+        function setSwing(type, index) { var tf = CONFIG.timeframes.filter(function (t) { return t.id === def.focusTF; })[0]; var base = Indicators.aggregate(scn.base, tf.factor); index = Math.max(0, Math.min(base.length - 1, index)); var c = base[index]; cur.swing[type] = { index: index, price: type === 'high' ? c.h : c.l }; cur.pick = null; refreshState(); render(); }
+        TradeUI.current.setSwing = setSwing;
+        canvas.addEventListener('click', function (e) {
+          if (!cur.pick || node.classList.contains('locked') || !canvas._map) return; e.stopPropagation();
+          var r = canvas.getBoundingClientRect(); var x = e.clientX - r.left, y = e.clientY - r.top; if (!canvas._map.inPrice(y)) { msg('価格チャートの部分（上段）をタップしよう。'); return; }
+          setSwing(cur.pick, canvas._map.xToIndex(x));
+        });
+        node.querySelectorAll('.pickbtn').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); if (node.classList.contains('locked')) return; var t = b.getAttribute('data-pick'); cur.pick = cur.pick === t ? null : t; if (cur.pick) { TradeUI.state.tf = def.focusTF; msg('チャートの価格部分で「直近の確定した' + (t === 'high' ? '高値' : '安値') + '」をタップ（' + focusLabel + '）。ZigZagは一時的に隠します。'); } swingStatus(); render(); }); });
         node.querySelectorAll('.aq-o').forEach(function (row) { row.addEventListener('click', function (e) { var b = e.target.closest('.aopt'); if (!b || node.classList.contains('locked')) return; e.stopPropagation(); var q = b.getAttribute('data-q'); cur.analysis[q] = b.getAttribute('data-v'); row.querySelectorAll('.aopt').forEach(function (x) { x.classList.toggle('on', x === b); }); refreshState(); }); });
         node.addEventListener('click', function (e) {
           var t = e.target.closest('button'); if (!t) return; e.stopPropagation();
-          if (t.getAttribute('data-tf')) { TradeUI.state.tf = t.getAttribute('data-tf'); if (['1h', '4h', '1d'].indexOf(TradeUI.state.tf) >= 0) cur.checkedHigherTF = true; render(); }
+          if (t.getAttribute('data-tf')) { TradeUI.state.tf = t.getAttribute('data-tf'); if (['1h', '4h', '1d'].indexOf(TradeUI.state.tf) >= 0) cur.checkedHigherTF = true; if (cur.pick && TradeUI.state.tf !== def.focusTF) { cur.pick = null; swingStatus(); } render(); }
           if (t.getAttribute('data-zoom')) { TradeUI.state.visible = Engine.clamp(TradeUI.state.visible + (t.getAttribute('data-zoom') === 'in' ? -15 : 15), CONFIG.chart.minVisible, CONFIG.chart.maxVisible); render(); }
           if (t.getAttribute('data-zig')) { d.settings.showZigzag = !d.settings.showZigzag; render(); }
           var c = t.getAttribute('data-cmd'); if (!c || node.classList.contains('locked')) return;
           if (c === 'hint') { showHint(); return; }
-          if (!answered()) { msg('先に5つの分析を選ぼう。わからないときは「ヒント」。'); return; }
+          if (!answered()) { msg(swingDone() ? '先に5つの分析を選ぼう。わからないときは「ヒント」。' : '先に②で直近の確定した高値・安値をチャート上で指定しよう。'); return; }
           if (c === 'skip') chooseReason('skip');
           if (c === 'buy' || c === 'sell') chooseReason(c);
         });
@@ -86,7 +102,7 @@
           cur.hintLevel = Math.min(3, cur.hintLevel + 1);
           var left = Q.filter(function (q) { return !cur.analysis[q.key]; });
           var body;
-          if (cur.hintLevel === 1) body = '<p><b>考え方</b></p><p>' + esc((left[0] || Q[0]).hint) + '</p><p class="muted small">もう一度押すと、この場面のヒント → 数値表示の順に進みます（ヒントの使用は記録されます）。</p>';
+          if (cur.hintLevel === 1) body = '<p><b>考え方</b></p><p>' + esc((left[0] || Q[0]).hint) + '</p>' + (!swingDone() ? '<p><b>高値・安値の指定</b>：左右に' + CONFIG.zigzag.depth + '本以上の足がある山（高値）と谷（安値）のうち、いちばん右のものを探す。最後の数本でできた山谷はまだ「確定」していないので選ばない。</p>' : '')<p class="muted small">もう一度押すと、この場面のヒント → 数値表示の順に進みます（ヒントの使用は記録されます）。</p>';
           else if (cur.hintLevel === 2) body = '<p><b>この場面のヒント</b></p><p>' + esc(def.hint) + '</p>';
           else { var an = render(); body = '<p><b>インジケーターの数値</b>（表示中の時間足・計算結果そのまま）</p><div class="ind-list">' + describeTF(an, TradeUI.state.tf).map(esc).join('<br>') + '</div><p class="muted small">数値を見ても、設問の答えは自分で選ぼう。</p>'; }
           Win.panel('<div class="rw-title">ヒント ' + cur.hintLevel + '/3</div>' + body);
@@ -103,9 +119,14 @@
           var sug = TradeEval.suggestLevels(scn, action);
           var riskOpts = CONFIG.risk.riskOptions.map(function (r) { return '<option value="' + r + '" ' + (r === d.settings.riskPercent ? 'selected' : '') + '>' + r + '%' + (r > CONFIG.risk.maxSafeRiskPercent ? '（過大）' : '') + '</option>'; }).join('');
           var oh = '<div class="rw-title">注文設定（' + (action === 'buy' ? '買い' : '売り') + '）</div><div class="order-grid"><label>エントリー<input type="text" id="o-entry" value="' + sug.entry.toFixed(3) + '" readonly></label><label>損切り<input type="number" step="0.001" id="o-sl" value="' + sug.sl.toFixed(3) + '"></label><label>利確目標<input type="number" step="0.001" id="o-tp" value="' + sug.tp.toFixed(3) + '"></label><label>リスク（資金の%）<select id="o-risk">' + riskOpts + '</select></label></div>' +
+            '<canvas class="chart mini-chart" id="o-chart"></canvas><div class="rw-row"><div class="rw-btn" data-opick="sl">チャートで損切りを指定</div><div class="rw-btn" data-opick="tp">チャートで利確を指定</div></div>' +
             '<div class="rw-row"><div class="rw-btn" id="o-swing">直近スイング外側＋RR1:2</div><div class="rw-btn" id="o-nosl">損切りなし（非推奨）</div></div><div id="o-calc" class="calc"></div><div class="rw-row"><div class="rw-btn ok" id="o-ok">エントリー確定</div><div class="rw-btn" id="o-cancel">やめる</div></div><p class="muted small">損切りは直近スイングの外側、利確は損切り幅の1.5〜3倍が参考値。数値は自分で変えられる。</p>';
           Win.panel(oh, { noClose: true, setup: function (on, oclose) {
-            function recalc() { var sl = parseFloat(on.querySelector('#o-sl').value), tp = parseFloat(on.querySelector('#o-tp').value), rp = parseFloat(on.querySelector('#o-risk').value); var entry = sug.entry; var rpips = isNaN(sl) ? 0 : (action === 'buy' ? entry - sl : sl - entry) / CONFIG.market.pip; var wpips = isNaN(tp) ? 0 : (action === 'buy' ? tp - entry : entry - tp) / CONFIG.market.pip; var lot = TradeEval.lotFor(d.trade.capital, rp, rpips); on.querySelector('#o-calc').innerHTML = '損切り幅 <b>' + rpips.toFixed(0) + 'pips</b>　利確幅 <b>' + wpips.toFixed(0) + 'pips</b>　リスクリワード <b>' + (rpips > 0 ? '1:' + (wpips / rpips).toFixed(2) : '―') + '</b>　許容損失 <b>' + Math.round(d.trade.capital * rp / 100).toLocaleString() + '円</b>　ロット <b>' + lot.toFixed(2) + '</b>'; chartCtl.opts = { sl: isNaN(sl) ? null : sl, tp: isNaN(tp) ? null : tp, entry: entry }; render(); }
+            var opick = null; var oc = on.querySelector('#o-chart');
+            function renderMini(sl, tp) { if (!oc) return; var tf = CONFIG.timeframes.filter(function (t) { return t.id === def.focusTF; })[0]; var an = Chart.buildView(Indicators.aggregate(scn.base, tf.factor), []); Chart.render(oc, an, { visibleBars: Math.min(TradeUI.state.visible, 60), showZigzag: d.settings.showZigzag, tfLabel: tf.label, sl: sl, tp: tp, entry: sug.entry, pickMode: opick, marks: [cur.swing.high && { index: cur.swing.high.index, price: cur.swing.high.price, type: 'high' }, cur.swing.low && { index: cur.swing.low.index, price: cur.swing.low.price, type: 'low' }].filter(Boolean) }); on.querySelectorAll('[data-opick]').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-opick') === opick); }); }
+            on.querySelectorAll('[data-opick]').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); var t = b.getAttribute('data-opick'); opick = opick === t ? null : t; recalc(); }); });
+            if (oc) oc.addEventListener('click', function (e) { if (!opick || !oc._map) return; e.stopPropagation(); var r = oc.getBoundingClientRect(); var y = e.clientY - r.top; if (!oc._map.inPrice(y)) return; var price = Math.round(oc._map.yToPrice(y) * 1000) / 1000; on.querySelector(opick === 'sl' ? '#o-sl' : '#o-tp').value = price.toFixed(3); opick = null; recalc(); });
+            function recalc() { var sl = parseFloat(on.querySelector('#o-sl').value), tp = parseFloat(on.querySelector('#o-tp').value), rp = parseFloat(on.querySelector('#o-risk').value); var entry = sug.entry; renderMini(isNaN(sl) ? null : sl, isNaN(tp) ? null : tp); var rpips = isNaN(sl) ? 0 : (action === 'buy' ? entry - sl : sl - entry) / CONFIG.market.pip; var wpips = isNaN(tp) ? 0 : (action === 'buy' ? tp - entry : entry - tp) / CONFIG.market.pip; var lot = TradeEval.lotFor(d.trade.capital, rp, rpips); on.querySelector('#o-calc').innerHTML = '損切り幅 <b>' + rpips.toFixed(0) + 'pips</b>　利確幅 <b>' + wpips.toFixed(0) + 'pips</b>　リスクリワード <b>' + (rpips > 0 ? '1:' + (wpips / rpips).toFixed(2) : '―') + '</b>　許容損失 <b>' + Math.round(d.trade.capital * rp / 100).toLocaleString() + '円</b>　ロット <b>' + lot.toFixed(2) + '</b>'; chartCtl.opts = { sl: isNaN(sl) ? null : sl, tp: isNaN(tp) ? null : tp, entry: entry }; render(); }
             on.addEventListener('input', recalc); on.addEventListener('change', recalc);
             on.querySelector('#o-swing').onclick = function () { on.querySelector('#o-sl').value = sug.sl.toFixed(3); on.querySelector('#o-tp').value = sug.tp.toFixed(3); recalc(); };
             on.querySelector('#o-nosl').onclick = function () { on.querySelector('#o-sl').value = ''; recalc(); };
@@ -118,7 +139,7 @@
         function decide(decision) {
           if (decided) return; decided = true;   // 二重採点の防止
           node.classList.add('locked');
-          decision.analysis = cur.analysis; decision.reason = cur.reason; decision.hintLevel = cur.hintLevel; decision.checkedHigherTF = cur.checkedHigherTF;
+          decision.analysis = cur.analysis; decision.reason = cur.reason; decision.hintLevel = cur.hintLevel; decision.checkedHigherTF = cur.checkedHigherTF; decision.swing = cur.swing; cur.pick = null;
           if (decision.riskPercent === undefined) decision.riskPercent = d.settings.riskPercent;
           var ev = TradeEval.evaluateFull(scn, decision); ev.scenarioId = id;
           var sim = ev.trade ? TradeEval.simulate(scn, ev.trade, 96) : null;
@@ -147,7 +168,7 @@
             outcome = '<div class="outcome ' + (sim.pips >= 0 ? 'win' : 'lose') + '"><b>その後：' + o + '</b>　' + (sim.pips >= 0 ? '+' : '') + sim.pips.toFixed(0) + 'pips（' + sim.bars + '本後）　仮想損益 ' + (money.pnl >= 0 ? '+' : '') + Math.round(money.pnl).toLocaleString() + '円' + (sim.ambiguous ? '<br><span class="muted small">※同じ足で利確と損切りの両方に触れたため、保守的に損切り扱い</span>' : '') + '<br><span class="muted small">※点数は結果ではなく判断の過程で決まります</span></div>';
           } else outcome = '<div class="outcome"><b>その後の値動き</b>：チャートで確認（' + (ev.actionOk ? '見送りが適切な場面だった' : '根拠が揃った場面だった') + '）</div>';
           var rank = TradeEval.rank(d.trade);
-          var rh = '<div class="result-head"><div class="score">' + ev.score + '<span>点</span></div><div><div class="muted small">場面：' + esc(def.title) + (ev.hintLevel ? '　（ヒント' + ev.hintLevel + '段階使用）' : '　（ヒントなし）') + '</div><div>あなたの判断：<b>' + esc(ev.chosenLabel) + '</b>　適切な判断：<b class="gold-text">' + esc(ev.correctLabel) + '</b>　分析 ' + ev.analysisOk + '/' + ev.analysisTotal + '</div></div></div><ul class="eval-list">' + items + '</ul><div class="explain"><b>解説：</b>' + esc(ev.summary) + '</div>' + outcome + '<div class="muted small">トレーダーランク：' + esc(rank.letter + '　' + rank.title) + '</div>';
+          var rh = '<div class="result-head"><div class="score">' + ev.score + '<span>点</span></div><div><div class="muted small">場面：' + esc(def.title) + (ev.hintLevel ? '　（ヒント' + ev.hintLevel + '段階使用）' : '　（ヒントなし）') + '</div><div>あなたの判断：<b>' + esc(ev.chosenLabel) + '</b>　適切な判断：<b class="gold-text">' + esc(ev.correctLabel) + '</b>　分析 ' + ev.analysisOk + '/' + ev.analysisTotal + '　高値安値 ' + (ev.swingOk ? '○' : '×') + '</div></div></div><ul class="eval-list">' + items + '</ul><div class="explain"><b>解説：</b>' + esc(ev.summary) + '</div>' + outcome + '<div class="muted small">トレーダーランク：' + esc(rank.letter + '　' + rank.title) + '</div>';
           if (root.Audio) root.Audio.sfx(ev.score >= 60 ? 'win' : 'hit');
           Win.panel(rh, { cls: 'result-panel' }).then(function () { close({ score: ev.score, actionOk: ev.actionOk, ev: ev, scenarioId: id }); });
         }

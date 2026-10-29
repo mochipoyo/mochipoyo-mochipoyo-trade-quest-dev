@@ -145,6 +145,19 @@
     hline(opts.tp, COLORS.tp, '利確');
     hline(opts.entry, COLORS.entry, 'エントリー');
 
+    // ---- v4.3: プレイヤーが指定した高値・安値の印 ----
+    (opts.marks || []).forEach(function (m) {
+      if (!m || m.index === undefined || m.index < start || m.index >= n) return;
+      var mx = xOf(m.index), my = yP(m.price); var isHigh = m.type === 'high'; var col = isHigh ? '#ffd24a' : '#7fd4ff';
+      ctx.fillStyle = col; ctx.beginPath();
+      if (isHigh) { ctx.moveTo(mx, my - 4); ctx.lineTo(mx - 6, my - 14); ctx.lineTo(mx + 6, my - 14); } else { ctx.moveTo(mx, my + 4); ctx.lineTo(mx - 6, my + 14); ctx.lineTo(mx + 6, my + 14); }
+      ctx.closePath(); ctx.fill();
+      ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(isHigh ? '高値' : '安値', mx, isHigh ? my - 17 : my + 24);
+    });
+    if (opts.pickMode) { ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fillRect(padL, yPrice0, plotW, hPrice); ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(opts.pickMode === 'high' ? 'タップして「直近の確定した高値」を指定' : opts.pickMode === 'low' ? 'タップして「直近の確定した安値」を指定' : opts.pickMode === 'sl' ? 'タップして損切り価格を指定' : 'タップして利確価格を指定', padL + plotW / 2, yPrice0 + 14); }
+    // 座標 → 足番号・価格（クリック／タップ操作用）
+    canvas._map = { start: start, n: n, slot: slot, padL: padL, xToIndex: function (x) { return Math.max(start, Math.min(n - 1, start + Math.floor((x - padL) / slot))); }, yToPrice: function (y) { return pMin + range * (1 - (y - (yPrice0 + 8)) / (hPrice - 16)); }, inPrice: function (y) { return y >= yPrice0 && y <= yPrice0 + hPrice; } };
+
     // ---- 凡例 ----
     ctx.font = (small ? 9 : 11) + 'px sans-serif'; ctx.textAlign = 'left';
     var lx = padL + 4;

@@ -1,0 +1,147 @@
+/* =========================================================
+   Data / Scenarios extra (v4.3) : 追加の学習シナリオ（人工チャート・固定シード）
+   ・既存14本（js/scenarios.js）に加え、異なる市場パターン・時間足・難易度の場面を追加する
+   ・level: basic（初級：上昇/下降/レンジ、高値安値、EMA）/ mid（中級：MTF、RCI反転、押し目戻り目、通常ダイバージェンス）
+            / adv（上級：ヒドゥン、複数根拠の整合、リスクリワード、損切り、飛び乗りの見送り）
+   ・各シナリオは check() で「生成したチャートが想定どおりの状態か」を検証してから採用する（練習の別シードも同様）
+   ・教育内容は「もちぽよ手法」の範囲：日足・4H環境認識、1H確認、15m/5mエントリー、ダウ理論、EMA20/30/40、RCI9 ±70反転、MACD(6,13,4)、RR1:1.5〜3、損切り・ロット、飛び乗り回避
+   ・人工チャートは学習用データであり、実際の相場の結果を保証しない
+   ========================================================= */
+(function (root) {
+  'use strict';
+  var S = root.Scenarios || require('../scenarios.js'); var CONFIG = root.CONFIG || require('../config.js');
+  var I = S._internal; var seg = I.seg, fit = I.fit, H4 = I.H4, H1 = I.H1, M15 = I.M15;
+  var hot = CONFIG.rci.hot;
+
+  var DEFS = [
+    /* ================= 初級 ================= */
+    { id: 'up_ema_bounce', level: 'basic', pattern: '上昇トレンド・EMA20での浅い反発', title: 'EMA20で支えられる上昇', chapter: 3, correct: 'buy', focusTF: '15m', seed: 201,
+      segments: fit([seg(H4 * 6, 230, { amp: 22, period: H1 * 3 }), seg(H1 * 1, -28, null, 1.4), seg(M15 * 2, 10, null, 1.4)], 1500, 150),
+      future: [seg(H4 * 2, 80, { amp: 18, period: H1 * 2 }), seg(H4 * 10, 110, { amp: 30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['4h'].emaOrder === 'up' && f.emaOrder === 'up' && f.dow.trend === 'up' && f.distFromEma20 < 20 && f.distFromEma20 > -12; },
+      requireHigherTF: true, hint: 'EMAの並びは上昇のまま。価格がEMA20に触れて反発し始めている（グランビルの法則）。',
+      explain: { buy: '4時間足・15分足とも上昇の並びで、価格がEMA20まで浅く押して反発し始めました。グランビルの法則の押し目買いに当たり、上位足と整合した順張りです。', sell: '上昇配列のEMAに支えられた押し目で売るのは逆張りです。', skip: '根拠が重なる浅い押し目でした。見送りは致命傷ではありませんが、EMAでの反発は買いの候補になることを覚えましょう。' } },
+    { id: 'down_ema_reject', level: 'basic', pattern: '下降トレンド・EMA20での浅い反落', title: 'EMA20で抑えられる下降', chapter: 3, correct: 'sell', focusTF: '15m', seed: 202,
+      segments: fit([seg(H4 * 6, -230, { amp: 22, period: H1 * 3 }), seg(H1 * 1, 28, null, 1.4), seg(M15 * 2, -10, null, 1.4)], -1500, 150),
+      future: [seg(H4 * 2, -80, { amp: -18, period: H1 * 2 }), seg(H4 * 10, -110, { amp: -30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['4h'].emaOrder === 'down' && f.emaOrder === 'down' && f.dow.trend === 'down' && f.distFromEma20 > -20 && f.distFromEma20 < 12; },
+      requireHigherTF: true, hint: 'EMAの並びは下降のまま。価格がEMA20まで戻って反落し始めている。',
+      explain: { sell: '4時間足・15分足とも下降の並びで、価格がEMA20まで浅く戻って反落し始めました。グランビルの法則の戻り売りで、上位足と整合した順張りです。', buy: '下降配列のEMAに抑えられた戻りで買うのは逆張りです。', skip: '根拠が重なる浅い戻りでした。EMAでの反落は売りの候補になることを覚えましょう。' } },
+    { id: 'range_high', level: 'basic', pattern: '上昇後の高値圏レンジ（上位足も方向感なし）', title: '高値圏のレンジ', chapter: 2, correct: 'skip', focusTF: '15m', seed: 203,
+      segments: fit([seg(H4 * 6, 160, { amp: 25, period: H1 * 4 }), seg(H4 * 12, 0, { amp: 42, period: H1 * 8 }, 2.0), seg(H4 * 4, 0, { amp: 36, period: H1 * 5 }, 2.0)], 600, 120),
+      future: [seg(H4 * 6, 0, { amp: 40, period: H1 * 5 }, 2.0), seg(H4 * 6, -60, { amp: 40, period: H1 * 6 }, 2.0)],
+      check: function (st) { return (st['4h'].emaOrder === 'mixed' || st['4h'].dow.trend === 'range') && st['15m'].dow.trend !== 'up'; },
+      requireHigherTF: true, hint: '上昇したあと、高値も安値も更新できずに往復している。EMAはどうなっている？',
+      explain: { skip: '上昇のあと高値・安値の更新が止まり、EMAも絡み合うレンジになりました。上位足にも方向感がないため、優位性のある場面ではありません。次の方向が決まるまで見送りが適切です。', buy: '上昇が終わって往復している場面で買うのは、レンジ上限づかみになりやすい行動です。', sell: '上昇が止まったからといって売るのは根拠不足です。高値・安値の切り下げが確定してから考えましょう。' } },
+    { id: 'clear_up_5m', level: 'basic', pattern: '5分足での順張り（上位足と一致）', title: '5分足で見る上昇トレンド', chapter: 2, correct: 'buy', focusTF: '5m', seed: 204,
+      segments: fit([seg(H4 * 6, 220, { amp: 22, period: H1 * 3 }), seg(M15 * 4, -22, null, 1.4), seg(4, 6, null, 1.3)], 1500, 150),
+      future: [seg(H1 * 4, 60, { amp: 12, period: M15 * 6 }), seg(H4 * 10, 120, { amp: 30, period: H1 * 4 })],
+      check: function (st) { var f = st['5m']; return st['4h'].emaOrder === 'up' && st['15m'].emaOrder === 'up' && f.dow.trend === 'up' && f.emaOrder === 'up'; },
+      requireHigherTF: true, hint: '5分足でも高値・安値を切り上げ、EMAは上昇配列。4時間足の方向と揃っているか確認。',
+      explain: { buy: '4時間足・15分足が上昇で、5分足でも高値・安値の切り上げとEMAの上昇配列が揃い、小さな押しから反発し始めた場面です。上位足と整合した5分足エントリーは適切です。', sell: '上位足も5分足も上昇の場面で売るのは逆張りです。', skip: '時間足をまたいで方向が揃った場面でした。見送りは致命傷ではありませんが、5分足での順張りの入口を覚えましょう。' } },
+    { id: 'clear_down_5m', level: 'basic', pattern: '5分足での順張り（下降）', title: '5分足で見る下降トレンド', chapter: 2, correct: 'sell', focusTF: '5m', seed: 205,
+      segments: fit([seg(H4 * 6, -220, { amp: 22, period: H1 * 3 }), seg(M15 * 3, 18, null, 1.4), seg(9, -16, null, 1.3)], -1500, 150),
+      future: [seg(H1 * 4, -60, { amp: -12, period: M15 * 6 }), seg(H4 * 10, -120, { amp: -30, period: H1 * 4 })],
+      check: function (st) { var f = st['5m']; return st['4h'].emaOrder === 'down' && st['15m'].emaOrder === 'down' && f.dow.trend === 'down' && f.emaOrder === 'down'; },
+      requireHigherTF: true, hint: '5分足でも高値・安値を切り下げ、EMAは下降配列。4時間足と揃っているか確認。',
+      explain: { sell: '4時間足・15分足が下降で、5分足でも高値・安値の切り下げとEMAの下降配列が揃い、小さな戻りから反落し始めた場面です。', buy: '上位足も5分足も下降の場面で買うのは逆張りです。', skip: '方向が揃った戻り売りの場面でした。5分足での順張りの入口を覚えましょう。' } },
+
+    /* ================= 中級 ================= */
+    { id: 'mtf_conflict_up', level: 'mid', pattern: '上位足上昇の中の下位足下降（押し目の途中）', title: '上位足上昇・15分足は下降', chapter: 4, correct: 'skip', focusTF: '15m', seed: 206,
+      segments: fit([seg(H4 * 4, -190, { amp: 25, period: H1 * 3 }), seg(H1 * 2, 40, null, 1.6), seg(M15 * 4, -16, null, 1.6)], 2200, 150),
+      future: [seg(H1 * 3, -20, null, 1.8), seg(H4 * 4, 200, { amp: 25, period: H1 * 3 }), seg(H4 * 7, 80, { amp: 30, period: H1 * 4 })],
+      check: function (st) { return st['1d'].emaOrder === 'up' && st['4h'].emaOrder === 'up' && st['15m'].emaOrder === 'down' && st['15m'].dow.trend === 'down'; },
+      requireHigherTF: true, hint: '15分足は下降に見える。でも日足と4時間足は？ 下位足の下降は上位足の押し目かもしれない。',
+      explain: { skip: '15分足は高値・安値を切り下げていますが、日足・4時間足は上昇トレンドです。15分足の下降は上位足の押し目である可能性が高く、まだ押し目が終わった根拠（反発・RCI反転）もありません。方向が揃うまで見送りが適切です。', sell: '上位足を無視した売りです。15分足の下落は4時間足の押し目で、上昇が再開すると巻き込まれます。', buy: '上位足の方向とは合っていますが、15分足はまだ下げている途中で押し目が終わった根拠がありません。反発し始めるのを待ちましょう。' } },
+    { id: 'up_pullback_5m', level: 'mid', pattern: '4H上昇・5分足でのRCI反転押し目', title: '5分足の押し目（RCI反転）', chapter: 5, correct: 'buy', focusTF: '5m', seed: 207,
+      segments: fit([seg(H4 * 5, 250, { amp: 28, period: H1 * 4 }), seg(M15 * 6, -40, null, 1.6), seg(4, 8, null, 1.4)], 1500, 140),
+      future: [seg(H1 * 4, 70, { amp: 12, period: M15 * 6 }), seg(H4 * 10, 110, { amp: 30, period: H1 * 4 })],
+      check: function (st) { var f = st['5m']; return st['4h'].emaOrder === 'up' && st['15m'].emaOrder === 'up' && f.rciState === 'oversold_reversal' && f.dow.trend !== 'down'; },
+      requireHigherTF: true, hint: '4時間足・15分足は上昇。5分足でRCIが−70圏から反転し始めたところ。',
+      explain: { buy: '4時間足・15分足の上昇の中で、5分足が押し目を作りRCIが−70圏から反転し始めました。上位足の方向に合わせた5分足の押し目買いです。', sell: '上位足の上昇に逆らった売りです。5分足の下げは押し目です。', skip: '根拠が重なる5分足の押し目でした。見送りは致命傷ではありませんが、下位足での入口を覚えましょう。' } },
+    { id: 'down_rally_5m', level: 'mid', pattern: '4H下降・5分足でのRCI反転戻り目', title: '5分足の戻り目（RCI反転）', chapter: 5, correct: 'sell', focusTF: '5m', seed: 208,
+      segments: fit([seg(H4 * 5, -250, { amp: 28, period: H1 * 4 }), seg(M15 * 6, 40, null, 1.6), seg(4, -8, null, 1.4)], -1500, 140),
+      future: [seg(H1 * 4, -70, { amp: -12, period: M15 * 6 }), seg(H4 * 10, -110, { amp: -30, period: H1 * 4 })],
+      check: function (st) { var f = st['5m']; return st['4h'].emaOrder === 'down' && st['15m'].emaOrder === 'down' && f.rciState === 'overbought_reversal' && f.dow.trend !== 'up'; },
+      requireHigherTF: true, hint: '4時間足・15分足は下降。5分足でRCIが+70圏から反転し始めたところ。',
+      explain: { sell: '4時間足・15分足の下降の中で、5分足が戻り目を作りRCIが+70圏から反転し始めました。上位足の方向に合わせた5分足の戻り売りです。', buy: '上位足の下降に逆らった買いです。5分足の上げは戻りです。', skip: '根拠が重なる5分足の戻り目でした。下位足での入口を覚えましょう。' } },
+    { id: 'rci_cold_trend', level: 'mid', pattern: 'RCI−70張り付きの強い下降（逆張り買い禁止）', title: 'RCI−70でも続く強い下降', chapter: 5, correct: 'skip', focusTF: '15m', seed: 209,
+      segments: fit([seg(H4 * 6, -180, { amp: 20, period: H1 * 4 }), seg(H1 * 5, -110, { amp: 6, period: M15 * 8 }, 1.4)], -1400, 150),
+      future: [seg(H1 * 3, -35, null, 1.6), seg(H1 * 3, 60, null, 1.6), seg(H4 * 9, -120, { amp: -25, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['4h'].emaOrder === 'down' && f.emaOrder === 'down' && f.rciNow <= -hot && f.rciState !== 'oversold_reversal'; },
+      requireHigherTF: true, hint: 'RCIが−70にいるだけで買うのは正しい？ 戻り目はまだできていない。',
+      explain: { skip: 'RCIが−70以下に張り付いていますが、強い下降トレンドの特徴です。RCIの水準だけで逆張り買いするのは誤りで、戻り目もまだできていないため売りの根拠も不足しています。戻り目（RCIの反転）を待つ見送りが適切です。', buy: 'RCI−70到達だけを根拠にした逆張り買いです。この手法で最も避けるべき行動のひとつです。', sell: '方向は合っていますが、戻りがなくRCIも張り付いたままで損切り位置が遠い場面です。戻り目でRCIが+70側から反転するのを待ちましょう。' } },
+    { id: 'false_breakdown', level: 'mid', pattern: '上位足上昇中のダマシの下抜け（急落・RCI過冷）', title: 'ダマシの下抜け', chapter: 4, correct: 'skip', focusTF: '15m', seed: 210,
+      segments: fit([seg(H4 * 8, 0, { amp: 40, period: H1 * 6 }, 2.0), seg(M15 * 6, -85, null, 2.0)], 1800, 150),
+      future: [seg(H1 * 2, -10, null, 2.0), seg(H4 * 3, 150, { amp: 20, period: H1 * 3 }), seg(H4 * 8, 100, { amp: 30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['4h'].emaOrder === 'up' && f.rciNow <= -hot && f.surge < -40; },
+      requireHigherTF: true, hint: '急落に驚いて売りたくなるが、上位足はどちらを向いている？',
+      explain: { skip: '15分足はレンジの下限を急落で抜けましたが、4時間足は上昇トレンドで、RCIも−70を割って過冷しています。上位足に逆らう下抜けへの飛び乗り売りはダマシになりやすく、見送りが適切です。', sell: '上位足の上昇に逆らうブレイクへの飛び乗りです。押し目になりやすく、損切り位置も遠くなります。', buy: '方向は上位足と整合していますが、急落直後に反射的に買うのは根拠のない逆張りです。押しが終わる根拠（RCIの反転、EMAへの回帰）を待ちましょう。' } },
+    { id: 'breakout_retest', level: 'mid', pattern: 'レンジ上抜け後の押し目（リテスト）', title: 'ブレイク後の押し目買い', chapter: 3, correct: 'buy', focusTF: '15m', seed: 211,
+      segments: fit([seg(H4 * 8, 0, { amp: 35, period: H1 * 6 }, 1.8), seg(H1 * 4, 110, null, 1.6), seg(H1 * 3, -45, null, 1.6), seg(M15 * 3, 14, null, 1.5)], 1400, 150),
+      future: [seg(H4 * 3, 120, { amp: 22, period: H1 * 3 }), seg(H4 * 9, 100, { amp: 30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['4h'].emaOrder === 'up' && f.emaOrder === 'up' && f.dow.trend === 'up' && f.rciState === 'oversold_reversal'; },
+      requireHigherTF: true, hint: 'レンジを上に抜けたあと、押し目を作って反発し始めた。飛び乗りではなく「待ってから」の入口。',
+      explain: { buy: 'レンジ上抜けのブレイクには飛び乗らず、押し目（リテスト）を待ちました。4時間足は上昇、15分足は高値・安値を切り上げ、RCIが−70圏から反転。根拠が揃った押し目買いです。', sell: '上位足上昇の押し目で売るのは逆張りです。', skip: 'ブレイク直後の飛び乗りを避け、押し目を待った場面でした。ここは根拠が揃った入口です。' } },
+    { id: 'reversal_confirmed_down', level: 'mid', pattern: '上昇から下降へ転換後の最初の戻り', title: '転換の確定後（戻り売り）', chapter: 2, correct: 'sell', focusTF: '15m', seed: 212,
+      segments: fit([seg(H4 * 18, 260, { amp: 30, period: H1 * 6 }), seg(H4 * 36, -330, { amp: 75, period: H4 * 8 }), seg(H1 * 2, 48, null, 1.6), seg(M15 * 3, -14, null, 1.5)], 500, 140),
+      future: [seg(H4 * 3, -130, { amp: -22, period: H1 * 3 }), seg(H4 * 9, -100, { amp: -30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['4h'].emaOrder === 'down' && st['4h'].dow.trend !== 'up' && f.emaOrder === 'down' && f.dow.trend === 'down'; },
+      requireHigherTF: true, hint: '上昇が終わり、高値切り下げと安値更新で転換が「確定」した。最初の戻りで反落し始めている。',
+      explain: { sell: '上昇トレンドの高値切り上げが途切れ、安値を割って下降への転換が確定しました。4時間足のEMAも下降配列に変わり、最初の戻りから反落し始めた場面です。転換後の戻り売りが適切です。', buy: '「上昇だった相場」の記憶で買うのは危険です。転換が確定した後の買いは逆張りです。', skip: '転換後の最初の戻り売りは優位性のある場面でした。致命傷ではありませんが、転換の確定を見極められるようになりましょう。' } },
+    { id: 'reversal_confirmed_up', level: 'mid', pattern: '下降から上昇へ転換後の最初の押し目', title: '転換の確定後（押し目買い）', chapter: 2, correct: 'buy', focusTF: '15m', seed: 213,
+      segments: fit([seg(H4 * 18, -260, { amp: 30, period: H1 * 6 }), seg(H4 * 36, 330, { amp: 75, period: H4 * 9 }), seg(H1 * 1, -26, null, 1.5), seg(M15 * 5, 26, null, 1.4)], -500, 140),
+      future: [seg(H4 * 3, 130, { amp: 22, period: H1 * 3 }), seg(H4 * 9, 100, { amp: 30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['4h'].emaOrder === 'up' && st['4h'].dow.trend !== 'down' && f.emaOrder === 'up' && f.dow.trend === 'up'; },
+      requireHigherTF: true, hint: '下降が終わり、安値切り上げと高値更新で転換が確定した。最初の押し目で反発し始めている。',
+      explain: { buy: '下降トレンドの安値切り下げが途切れ、高値を超えて上昇への転換が確定しました。4時間足のEMAも上昇配列に変わり、最初の押し目から反発し始めた場面です。', sell: '「下降だった相場」の記憶で売るのは危険です。転換が確定した後の売りは逆張りです。', skip: '転換後の最初の押し目買いは優位性のある場面でした。転換の確定を見極められるようになりましょう。' } },
+    { id: 'up_pullback_1h', level: 'mid', pattern: '1時間足で確認する深めの押し目', title: '1時間足で見る押し目', chapter: 4, correct: 'buy', focusTF: '1h', seed: 214,
+      segments: fit([seg(H4 * 14, 420, { amp: 40, period: H1 * 8 }), seg(H4 * 2, -120, null, 1.8), seg(H1 * 2, 24, null, 1.6)], 1800, 160),
+      future: [seg(H4 * 4, 160, { amp: 30, period: H1 * 4 }), seg(H4 * 8, 120, { amp: 30, period: H1 * 4 })],
+      check: function (st) { var f = st['1h']; return st['1d'].emaOrder === 'up' && st['4h'].emaOrder === 'up' && f.emaOrder === 'up' && f.rciState === 'oversold_reversal'; },
+      requireHigherTF: true, hint: '日足・4時間足は上昇。1時間足でEMAまで押して、RCIが−70圏から反転し始めた。',
+      explain: { buy: '日足・4時間足が上昇で、1時間足がEMAの束まで深めに押し、RCIが−70圏から反転。1時間足で押し目の終わりを確認した上で、下位足でのエントリーを探す場面です。', sell: '上位足の上昇の押し目で売るのは逆張りです。', skip: '上位足と1時間足の根拠が揃った押し目でした。1時間足を「確認」に使う流れを覚えましょう。' } },
+
+    /* ================= 上級 ================= */
+    { id: 'div_against_htf', level: 'adv', pattern: '強い下降中の強気ダイバージェンス（上位足と不整合）', title: '上位足に逆らうダイバージェンス', chapter: 6, correct: 'skip', focusTF: '15m', seed: 215,
+      segments: fit([seg(H4 * 6, -240, { amp: 25, period: H1 * 3 }), seg(H1 * 3, -85, null, 1.8), seg(H1 * 2, 40, null, 1.5), seg(M15 * 26, -62, null, 1.5), seg(M15 * 4, 14, null, 1.5)], -1800, 150),
+      future: [seg(H1 * 3, 20, null, 1.6), seg(H4 * 3, -140, { amp: -22, period: H1 * 3 }), seg(H4 * 8, -100, { amp: -30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['1d'].emaOrder === 'down' && st['4h'].emaOrder === 'down' && f.div.regularBull && f.dow.ll; },
+      requireHigherTF: true, hint: '強気ダイバージェンスが出ている。でも日足・4時間足はどちらを向いている？',
+      explain: { skip: '15分足では安値切り下げに対してMACDが切り上がる強気ダイバージェンスが出ていますが、日足・4時間足とも強い下降トレンドです。上位足に逆らう転換サインは一時的な戻りで終わりやすく、根拠が整合していません。見送りが適切です。', buy: 'ダイバージェンス単独での逆張りです。上位足の方向と整合していないサインは根拠になりません。', sell: '方向は合っていますが、下落の勢いが弱まっている（ダイバージェンス）場面で安値を追う売りはリスクリワードが悪くなります。戻りを待ちましょう。' } },
+    { id: 'div_bear_against_htf', level: 'adv', pattern: '強い上昇中の弱気ダイバージェンス（上位足と不整合）', title: '上位足に逆らう弱気ダイバージェンス', chapter: 6, correct: 'skip', focusTF: '15m', seed: 216,
+      segments: fit([seg(H4 * 6, 240, { amp: 25, period: H1 * 3 }), seg(H1 * 3, 85, null, 1.8), seg(H1 * 2, -40, null, 1.5), seg(M15 * 26, 62, null, 1.5), seg(M15 * 4, -14, null, 1.5)], 1800, 150),
+      future: [seg(H1 * 3, -20, null, 1.6), seg(H4 * 3, 140, { amp: 22, period: H1 * 3 }), seg(H4 * 8, 100, { amp: 30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['1d'].emaOrder === 'up' && st['4h'].emaOrder === 'up' && f.div.regularBear && f.dow.hh; },
+      requireHigherTF: true, hint: '弱気ダイバージェンスが出ている。でも日足・4時間足は上昇。転換サインは上位足と整合しているか？',
+      explain: { skip: '15分足では高値切り上げに対してMACDが切り下がる弱気ダイバージェンスですが、日足・4時間足とも強い上昇トレンドです。上位足に逆らう転換サインは押し目で終わりやすく、売りの根拠として不十分。見送りが適切です。', sell: 'ダイバージェンス単独での逆張り売りです。上位足の上昇と整合していません。', buy: '方向は合っていますが、上昇の勢いが弱まっている場面で高値を追う買いはリスクリワードが悪くなります。押し目を待ちましょう。' } },
+    { id: 'bad_rr_sell', level: 'adv', pattern: '下降トレンドだが直下に強い安値（利確余地なし）', title: '利確余地が小さい戻り売り', chapter: 7, correct: 'skip', focusTF: '15m', seed: 217,
+      segments: fit([seg(H4 * 6, 0, { amp: 45, period: H1 * 8 }, 2.0), seg(H1 * 4, 120, null, 1.8), seg(H1 * 6, -165, null, 1.8)], -1600, 150),
+      future: [seg(H1 * 3, -25, null, 1.8), seg(H4 * 3, 120, { amp: 20, period: H1 * 3 }), seg(H4 * 8, -60, { amp: -30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['4h'].emaOrder === 'down' && f.distFromEma20 < -25 && f.rciNow <= -hot; },
+      requireHigherTF: true, hint: '方向は合っている。でも損切り（直近高値）は遠く、直下には直前の安値がある。利確までの幅は？',
+      explain: { skip: '上位足は下降で方向は合っていますが、戻りなしで一直線に下げた直後でEMA20から大きく乖離しています。直近高値（損切り位置）は遠く、下には直前の安値が迫っていて、リスクリワードが悪い場面です。戻りを待つ見送りが適切です。', sell: '損切りが遠く利確目標が近い、リスクリワードの悪いトレードです。EMAまで戻るのを待てば同じ方向をより良い条件で狙えます。', buy: '下降トレンド中の逆張りです。「下げすぎた」は根拠になりません。' } },
+    { id: 'jump_in_down', level: 'adv', pattern: '急落直後の飛び乗り売り誘惑', title: '急落直後の飛び乗り誘惑', chapter: 7, correct: 'skip', focusTF: '15m', seed: 218,
+      segments: fit([seg(H4 * 6, -160, { amp: 30, period: H1 * 4 }), seg(H1 * 3, 50, null, 1.6), seg(M15 * 5, -95, null, 2.2)], -1400, 150),
+      future: [seg(H1 * 4, 70, null, 1.8), seg(H4 * 3, -110, { amp: -20, period: H1 * 3 }), seg(H4 * 8, -90, { amp: -30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['4h'].emaOrder === 'down' && f.surge < -60 && f.distFromEma20 < -30; },
+      requireHigherTF: true, hint: 'たった数本で大きく下げた直後。今売ると損切りはどこに置く？',
+      explain: { skip: '上位足は下降で方向は合っていますが、わずか数本で急落した直後です。飛び乗ると損切り位置が遠く、急落後の戻りで振り落とされやすくなります。戻りを待つ見送りが適切です。', sell: '飛び乗りエントリーです。方向は合っていても、急落直後はリスクリワードが悪く、戻りで損切りにかかりやすい場面です。', buy: '下降トレンド中の逆張りです。「下がりすぎたから」は根拠になりません。' } },
+    { id: 'pullback_tight_sl', level: 'adv', pattern: '押し目買い・直近安値が近く損切りを小さく置ける', title: '損切りを近くに置ける押し目', chapter: 7, correct: 'buy', focusTF: '15m', seed: 219,
+      segments: fit([seg(H4 * 5, 240, { amp: 28, period: H1 * 4 }), seg(H1 * 3, -60, null, 1.5), seg(M15 * 5, 4, null, 1.0), seg(M15 * 2, 12, null, 1.3)], 1500, 140),
+      future: [seg(H4 * 3, 140, { amp: 25, period: H1 * 3 }), seg(H4 * 9, 100, { amp: 30, period: H1 * 4 })],
+      check: function (st) { var f = st['15m']; return st['4h'].emaOrder === 'up' && f.emaOrder === 'up' && f.rciState === 'oversold_reversal' && (f.close - Math.min(f.lastLow, f.recentLow)) / CONFIG.market.pip < 45; },
+      requireHigherTF: true, hint: '押し目の安値がすぐ下にある。損切りをその外側に置けば、小さなリスクで上位足方向を狙える。',
+      explain: { buy: '4時間足上昇の押し目で、15分足はEMAの束で小さく揉んでから反発し始め、RCIも−70圏から反転。直近の押し安値がすぐ下にあるため損切りを小さく置け、リスクリワードの良いエントリーです。', sell: '上位足上昇の押し目で売るのは逆張りです。', skip: '損切りを小さく置けてリスクリワードの良い押し目でした。見送りは致命傷ではありませんが、「損切りが近い場面」こそ入る価値があることを覚えましょう。' } },
+    { id: 'whipsaw', level: 'adv', pattern: '急落→急反発のヒゲ相場（EMA絡み・方向不明）', title: '乱高下（上下にヒゲ）', chapter: 7, correct: 'skip', focusTF: '15m', seed: 220,
+      segments: fit([seg(H4 * 12, 0, { amp: 70, period: H1 * 8 }, 1.5), seg(M15 * 2, -60, null, 4.0), seg(M15 * 2, 110, null, 4.0), seg(M15 * 2, -100, null, 4.0), seg(M15 * 2, 80, null, 4.0), seg(M15 * 1, -30, null, 4.0)], 0, 0),
+      future: [seg(M15 * 6, 50, null, 3.0), seg(M15 * 6, -60, null, 3.0), seg(H4 * 10, 0, { amp: 40, period: H1 * 6 }, 2.2)],
+      check: function (st) { var f = st['15m']; return (st['4h'].emaOrder === 'mixed' || st['4h'].dow.trend === 'range') && (f.dow.trend === 'range' || f.emaOrder === 'mixed') && Math.abs(f.surge) > 20; },
+      requireHigherTF: true, hint: '数本で上下に大きく振れている。上位足に方向感はある？ EMAは？',
+      explain: { skip: '急落と急反発が数本で起き、高値・安値は揃わず、4時間足にも方向感がありません。EMAの並びも数本で入れ替わるため当てになりません。どちらに入っても損切りが遠く、ヒゲで刈られやすい場面です。落ち着くまで見送りが適切です。', buy: '乱高下の中での買いは、次のヒゲで損切りにかかりやすい行動です。上位足の方向とEMAの並びが整うまで待ちましょう。', sell: '乱高下の中での売りは根拠がありません。方向感が出るまで待ちましょう。' } }
+  ];
+
+  DEFS.forEach(function (d) { S.add(d); });
+  root.SCENARIO_EXTRA = DEFS;
+  if (typeof module !== 'undefined' && module.exports) module.exports = DEFS;
+})(typeof window !== 'undefined' ? window : globalThis);

@@ -27,7 +27,7 @@
     mq_eye: { title: '自分の眼で見よ', master: true, rank: 1, desc: 'ヒントを使わずに5回正しい判断をし、5項目の分析をすべて正しく行った試練を2回達成する。', needs: [['trial_nohint_ok', 5, 'ヒントなし正解'], ['trial_analysis_full', 2, '分析5項目すべて正解']], reward: { exp: 120, gold: 250, item: 'feather_hat' } },
     mq_env: { title: '環境を読め', master: true, rank: 2, desc: '上位足の環境認識を8回正しく判断し、「上位足と下位足の不一致」の場面を2回正しく見送る。', needs: [['trial_mtf_ok', 8, '上位足の認識'], ['trial_ok:mtf_conflict', 2, '不一致場面の見送り']], reward: { exp: 200, gold: 400, item: 'ring_guard' } },
     mq_discipline: { title: '規律の証', master: true, rank: 3, desc: '根拠の揃わない場面を4回正しく見送り、損切り位置を8回正しく置く。', needs: [['trial_skip_ok', 4, '正しい見送り'], ['trial_sl_ok', 8, '損切り位置']], reward: { exp: 300, gold: 600, item: 'knight_shield' } },
-    mq_master: { title: '導師への道', master: true, rank: 4, desc: '90点以上を3回、ヒントなしの正解を20回、そしてすべての場面で正解する。', needs: [['trial_perfect', 3, '90点以上'], ['trial_nohint_ok', 20, 'ヒントなし正解'], ['trial_unique', 14, '異なる場面で正解']], reward: { exp: 500, gold: 1200, item: 'elixir' } }
+    mq_master: { title: '導師への道', master: true, rank: 4, desc: '90点以上を3回、ヒントなしの正解を20回、そして異なる14場面で正解する。', needs: [['trial_perfect', 3, '90点以上'], ['trial_nohint_ok', 20, 'ヒントなし正解'], ['trial_unique', 14, '異なる場面で正解']], reward: { exp: 500, gold: 1200, item: 'elixir' } }
   };
 
   // 修行場の講義（既存教材 LEARNING.chapters を参照）。講義を修了するとフラグが立つ

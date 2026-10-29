@@ -85,7 +85,7 @@
   // focusTF: エントリー判断を行う時間足（判定・将来の値動き再生もこの足で行う）
   var SCENARIO_DEFS = [
     {
-      id: 'clear_up', title: '明確な上昇トレンド', chapter: 2, correct: 'buy', focusTF: '15m', seed: 101,
+      id: 'clear_up', level: 'basic', title: '明確な上昇トレンド', chapter: 2, correct: 'buy', focusTF: '15m', seed: 101,
       segments: fit([
         seg(H4 * 6, 240, { amp: 25, period: H1 * 3 }),  // 高値安値を切り上げる上昇
         seg(H1 * 2, -45, null, 1.6),                     // 浅い押し
@@ -102,7 +102,7 @@
       }
     },
     {
-      id: 'clear_down', title: '明確な下降トレンド', chapter: 2, correct: 'sell', focusTF: '15m', seed: 102,
+      id: 'clear_down', level: 'basic', title: '明確な下降トレンド', chapter: 2, correct: 'sell', focusTF: '15m', seed: 102,
       segments: fit([
         seg(H4 * 6, -240, { amp: 25, period: H1 * 3 }),
         seg(H1 * 2, 45, null, 1.6),
@@ -119,7 +119,7 @@
       }
     },
     {
-      id: 'up_pullback', title: '上昇トレンド中の押し目', chapter: 3, correct: 'buy', focusTF: '15m', seed: 103,
+      id: 'up_pullback', level: 'mid', title: '上昇トレンド中の押し目', chapter: 3, correct: 'buy', focusTF: '15m', seed: 103,
       segments: fit([
         seg(H4 * 5, 260, { amp: 30, period: H1 * 4 }),
         seg(H1 * 3, -72, null, 1.8),                      // EMA40付近までの押し
@@ -139,7 +139,7 @@
       }
     },
     {
-      id: 'down_rally', title: '下降トレンド中の戻り', chapter: 3, correct: 'sell', focusTF: '15m', seed: 104,
+      id: 'down_rally', level: 'mid', title: '下降トレンド中の戻り', chapter: 3, correct: 'sell', focusTF: '15m', seed: 104,
       segments: fit([
         seg(H4 * 5, -260, { amp: 30, period: H1 * 4 }),
         seg(H1 * 3, 72, null, 1.8),
@@ -159,7 +159,7 @@
       }
     },
     {
-      id: 'hidden_bull', title: '上昇トレンド中のヒドゥンダイバージェンス', chapter: 6, correct: 'buy', focusTF: '15m', seed: 105,
+      id: 'hidden_bull', level: 'adv', title: '上昇トレンド中のヒドゥンダイバージェンス', chapter: 6, correct: 'buy', focusTF: '15m', seed: 105,
       segments: fit([
         seg(H1 * 5, 130, null, 1.8),                       // 推進波1
         seg(M15 * 8, -32, null, 1.5),                      // 速く浅い押し（安値1）
@@ -178,7 +178,7 @@
       }
     },
     {
-      id: 'hidden_bear', title: '下降トレンド中のヒドゥンダイバージェンス', chapter: 6, correct: 'sell', focusTF: '15m', seed: 106,
+      id: 'hidden_bear', level: 'adv', title: '下降トレンド中のヒドゥンダイバージェンス', chapter: 6, correct: 'sell', focusTF: '15m', seed: 106,
       segments: fit([
         seg(H1 * 5, -130, null, 1.8),
         seg(M15 * 8, 32, null, 1.5),
@@ -197,7 +197,7 @@
       }
     },
     {
-      id: 'regular_bull', title: '通常の強気ダイバージェンス（上位足上昇の押し目）', chapter: 6, correct: 'buy', focusTF: '15m', seed: 107,
+      id: 'regular_bull', level: 'mid', title: '通常の強気ダイバージェンス（上位足上昇の押し目）', chapter: 6, correct: 'buy', focusTF: '15m', seed: 107,
       segments: fit([
         seg(H4 * 4, -150, { amp: 20, period: H1 * 3 }),    // 4時間足の押し目（調整波）
         seg(H1 * 3, -85, null, 1.8),                       // 速い下落（安値1）
@@ -216,7 +216,7 @@
       }
     },
     {
-      id: 'regular_bear', title: '通常の弱気ダイバージェンス（上位足下降の戻り）', chapter: 6, correct: 'sell', focusTF: '15m', seed: 108,
+      id: 'regular_bear', level: 'mid', title: '通常の弱気ダイバージェンス（上位足下降の戻り）', chapter: 6, correct: 'sell', focusTF: '15m', seed: 108,
       segments: fit([
         seg(H4 * 4, 150, { amp: 20, period: H1 * 3 }),
         seg(H1 * 3, 85, null, 1.8),
@@ -235,7 +235,7 @@
       }
     },
     {
-      id: 'range', title: 'レンジ相場', chapter: 2, correct: 'skip', focusTF: '15m', seed: 109,
+      id: 'range', level: 'basic', title: 'レンジ相場', chapter: 2, correct: 'skip', focusTF: '15m', seed: 109,
       segments: fit([
         seg(H4 * 14, 0, { amp: 45, period: H1 * 10 }, 2.0),
         seg(H4 * 6, 0, { amp: 40, period: H1 * 5 }, 2.0)
@@ -251,7 +251,7 @@
       }
     },
     {
-      id: 'false_breakout', title: 'ダマシのブレイクアウト', chapter: 4, correct: 'skip', focusTF: '15m', seed: 110,
+      id: 'false_breakout', level: 'mid', title: 'ダマシのブレイクアウト', chapter: 4, correct: 'skip', focusTF: '15m', seed: 110,
       segments: fit([
         seg(H4 * 8, 0, { amp: 40, period: H1 * 6 }, 2.0),  // 4時間足下降の途中にできたレンジ
         seg(M15 * 6, 85, null, 2.0)                        // レンジ上限を急騰で突き抜ける（RCI過熱）
@@ -267,7 +267,7 @@
       }
     },
     {
-      id: 'mtf_conflict', title: '上位足と下位足の方向不一致', chapter: 4, correct: 'skip', focusTF: '15m', seed: 111,
+      id: 'mtf_conflict', level: 'mid', title: '上位足と下位足の方向不一致', chapter: 4, correct: 'skip', focusTF: '15m', seed: 111,
       segments: fit([
         seg(H4 * 4, 190, { amp: 25, period: H1 * 3 }),     // 4時間足下降の中の戻り（15分足では上昇に見える）
         seg(H1 * 2, -40, null, 1.6),
@@ -284,7 +284,7 @@
       }
     },
     {
-      id: 'bad_rr', title: 'リスクリワードが悪く見送るべき場面', chapter: 7, correct: 'skip', focusTF: '15m', seed: 112,
+      id: 'bad_rr', level: 'adv', title: 'リスクリワードが悪く見送るべき場面', chapter: 7, correct: 'skip', focusTF: '15m', seed: 112,
       segments: fit([
         seg(H4 * 6, 0, { amp: 45, period: H1 * 8 }, 2.0),  // 直前の高値が上にある（天井の意識）
         seg(H1 * 4, -120, null, 1.8),
@@ -301,7 +301,7 @@
       }
     },
     {
-      id: 'jump_in', title: '急騰直後の飛び乗り誘惑', chapter: 7, correct: 'skip', focusTF: '15m', seed: 113,
+      id: 'jump_in', level: 'adv', title: '急騰直後の飛び乗り誘惑', chapter: 7, correct: 'skip', focusTF: '15m', seed: 113,
       segments: fit([
         seg(H4 * 6, 160, { amp: 30, period: H1 * 4 }),
         seg(H1 * 3, -50, null, 1.6),
@@ -318,7 +318,7 @@
       }
     },
     {
-      id: 'rci_hot_trend', title: 'RCI+70でも続く強い上昇（逆張り禁止）', chapter: 5, correct: 'skip', focusTF: '15m', seed: 114,
+      id: 'rci_hot_trend', level: 'adv', title: 'RCI+70でも続く強い上昇（逆張り禁止）', chapter: 5, correct: 'skip', focusTF: '15m', seed: 114,
       segments: fit([
         seg(H4 * 6, 180, { amp: 20, period: H1 * 4 }),
         seg(H1 * 5, 110, { amp: 6, period: M15 * 8 }, 1.4)  // 押し目を作らずEMA20に沿って上昇し続ける
@@ -348,6 +348,13 @@
     return st;
   }
 
+  // v4.3: 解説と矛盾するチャートを採用しない（買いの場面で弱気ダイバージェンス、売りの場面で強気ダイバージェンスが出ていない）
+  function consistent(def, st) {
+    var f = st[def.focusTF]; if (!f || !f.div) return true; if (/regular|hidden|div_/.test(def.id)) return true;   // ダイバージェンスが題材の場面は check() 側で判定
+    if (def.correct === 'buy') return !(f.div.regularBear || f.div.hiddenBear);
+    if (def.correct === 'sell') return !(f.div.regularBull || f.div.hiddenBull);
+    return true;
+  }
   // seedOffset を変えると同じ構造の別データ（エンドレスダンジョン用）。check() を通らない乱数は採用しない。
   function build(id, seedOffset) {
     seedOffset = seedOffset || 0;
@@ -359,14 +366,15 @@
     var cfg = CONFIG, pip = cfg.market.pip;
     var result = null;
     var tries = 0, s = def.seed + seedOffset * 7919;
+    var pre = (root.SCENARIO_SEEDS || {})[id]; if (pre && pre[seedOffset] !== undefined) s = pre[seedOffset];   // v4.3: 検証済みシード（js/data/scenario-seeds.js）があれば最初に試す（起動時間の短縮。検証は毎回行う）
     var fallback = null;
-    while (tries < 25) {
+    while (tries < 120) {
       var all = buildCandles(def.segments.concat(def.future), s, cfg.market.basePrice, pip);
       var base = all.slice(0, TOTAL);
       var fut = all.slice(TOTAL);
       var st = statesFor(base, fut, cfg);
       var ok = false;
-      try { ok = !!def.check(st); } catch (e) { ok = false; }
+      try { ok = !!def.check(st) && consistent(def, st); } catch (e) { ok = false; }
       var obj = { def: def, seed: s, states: st, base: base, future: fut, valid: ok };
       if (ok) { result = obj; break; }
       if (!fallback) fallback = obj;
@@ -386,7 +394,9 @@
     byChapter: function (ch) { return SCENARIO_DEFS.filter(function (d) { return d.chapter === ch; }).map(function (d) { return d.id; }); },
     ids: function () { return SCENARIO_DEFS.map(function (d) { return d.id; }); },
     get: function (id) { for (var i = 0; i < SCENARIO_DEFS.length; i++) if (SCENARIO_DEFS[i].id === id) return SCENARIO_DEFS[i]; return null; },
-    _internal: { buildCandles: buildCandles, mulberry32: mulberry32 }
+    add: function (def) { if (!Scenarios.get(def.id)) SCENARIO_DEFS.push(def); },   // v4.3: 追加教材（js/data/scenarios-extra.js）から登録
+    byLevel: function (lv) { return SCENARIO_DEFS.filter(function (d) { return (d.level || 'mid') === lv; }).map(function (d) { return d.id; }); },
+    _internal: { buildCandles: buildCandles, mulberry32: mulberry32, seg: seg, fit: fit, DAY: DAY, H4: H4, H1: H1, M15: M15 }
   };
 
   root.Scenarios = Scenarios;

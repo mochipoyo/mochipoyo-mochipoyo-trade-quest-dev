@@ -168,7 +168,7 @@
         { label: '今の学習テーマ', right: '', sub: theme },
         { label: 'はじめてのトレード（チュートリアル）', right: d.trade.tutorialDone ? '復習できる' : '未完了', sub: 'ローソク足・買いと売り・損切り・上昇/下降/レンジを2〜4分で体験' },
         { label: '講義を受ける', right: nextLecture ? '次：' + nextLecture.title : '修了', sub: '師匠ハケイの講義（どこからでも受けられる）' },
-        { label: 'チャート練習', right: (d.trade.stats.scoreCount || 0) + '回', sub: '14場面から出題。分析→判断→理由の順に答える' },
+        { label: 'チャート練習', right: (d.trade.stats.scoreCount || 0) + '回', sub: root.Scenarios.defs.length + '場面（初級・中級・上級）から出題。分析→高値安値の指定→判断→理由の順に答える' },
         { label: '苦手分野の復習', right: weak.length && weak[0].plays ? weak[0].label : '―', sub: '正解率の低い分野に合う場面を出題' },
         { label: 'トレーダーランク', right: rank.letter + ' ' + rank.title, sub: (rank.needText ? '次のランクへ：' + rank.needText : '最高ランク') + '　称号：' + root.Growth.title() },
         { label: '師匠の特別クエスト', right: mqRight(), sub: 'ランク到達で解放される師匠ハケイからの課題' },
