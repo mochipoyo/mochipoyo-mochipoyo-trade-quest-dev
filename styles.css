@@ -111,3 +111,48 @@ ul.eval .mark { display: inline-block; width: 1.3em; font-weight: bold; } ul.eva
 .violations { background: rgba(229,72,77,.15); border: 1px solid var(--red); padding: 5px 8px; border-radius: 4px; font-size: 12px; margin: 6px 0; }
 .outcome { background: rgba(255,255,255,.05); padding: 6px 8px; border-radius: 4px; margin: 6px 0; font-size: 12px; } .outcome.win { border-left: 4px solid var(--green); } .outcome.lose { border-left: 4px solid var(--red); }
 .warn { color: #ffb0b0; }
+
+/* ---------- 施設名表示 ---------- */
+#place-label { position: absolute; top: 34px; left: 50%; transform: translateX(-50%); background: rgba(11,18,38,.85); border: 2px solid var(--gold); color: #fff; padding: 3px 14px; border-radius: 4px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; white-space: nowrap; }
+#place-label.show { opacity: 1; }
+
+/* ---------- 戦闘リザルト ---------- */
+.result-victory { max-width: 560px; }
+.rs-title { text-align: center; font-size: 1.8rem; font-weight: 900; color: var(--gold); text-shadow: 2px 2px 0 #3a2a0a, 0 0 14px rgba(232,193,90,.6); animation: pop .3s; letter-spacing: .08em; }
+.rs-killed { text-align: center; margin: 4px 0 8px; }
+.rs-rewards { display: flex; justify-content: space-around; gap: 8px; background: rgba(255,255,255,.06); border-radius: 6px; padding: 8px; flex-wrap: wrap; }
+.rs-rewards b { color: var(--gold); font-size: 1.1rem; }
+.rs-members { display: flex; flex-direction: column; gap: 6px; }
+.rs-member { background: rgba(255,255,255,.05); border-left: 3px solid #5b6ea8; padding: 6px 10px; border-radius: 4px; }
+.rs-member.up { border-left-color: var(--gold); background: rgba(232,193,90,.12); animation: glowup 1.2s; }
+.rs-member.dead { opacity: .55; }
+@keyframes glowup { 0% { box-shadow: 0 0 0 rgba(232,193,90,0); } 40% { box-shadow: 0 0 18px rgba(232,193,90,.8); } 100% { box-shadow: 0 0 0 rgba(232,193,90,0); } }
+.rs-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; } .rs-name { font-weight: bold; } .rs-lv b { color: var(--gold); }
+.rs-levelup { color: var(--gold); font-weight: 900; animation: pop .5s; margin-left: auto; }
+.rs-exp { font-size: 13px; }
+.rs-bar { height: 8px; background: #0b1226; border: 1px solid #5b6ea8; border-radius: 4px; overflow: hidden; margin: 4px 0; }
+.rs-bar span { display: block; height: 100%; background: linear-gradient(90deg, #2b5fb3, #8fb8ff); transition: width .6s ease-out; }
+.rs-bar span.reset { transition: none; }
+.rs-stat { font-size: 12px; color: #cfe3ff; } .rs-skill { font-size: 12px; color: var(--gold); }
+.rs-items { display: flex; gap: 8px; flex-wrap: wrap; } .rs-item { background: rgba(255,255,255,.08); padding: 3px 10px; border-radius: 4px; }
+@media (max-width: 720px) { .rs-title { font-size: 1.4rem; } .result-victory { font-size: 13px; } }
+
+/* ---- モンスター図鑑 ---- */
+.rw-panel.bestiary { max-width: 640px; }
+.bs-head { margin: 4px 0 8px; font-size: 13px; }
+.bs-head .bar { height: 6px; margin-top: 4px; }
+.bs-list { display: flex; flex-direction: column; gap: 6px; }
+.bs-row { display: flex; gap: 8px; align-items: flex-start; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 8px; }
+.bs-row.boss { border-color: rgba(229,72,77,0.5); }
+.bs-row.unknown { opacity: 0.55; }
+.bs-no { width: 26px; color: var(--muted); font-size: 12px; padding-top: 4px; }
+.bs-img { width: 52px; height: 52px; display: flex; align-items: flex-end; justify-content: center; background: rgba(0,0,0,0.3); border-radius: 4px; flex: none; }
+.bs-canvas { image-rendering: pixelated; max-width: 52px; max-height: 52px; }
+.bs-body { flex: 1; min-width: 0; font-size: 13px; }
+.bs-name { font-weight: bold; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.bs-kills { margin-left: auto; font-weight: normal; font-size: 12px; color: var(--gold); }
+.bs-tag { font-size: 10px; padding: 1px 5px; border-radius: 3px; background: #7a1a1a; color: #fff; }
+.bs-tag.rare { background: #8a6a10; }
+.bs-sub { font-size: 12px; }
+.bs-line { font-size: 12px; margin-top: 2px; }
+.bs-desc { font-size: 12px; margin-top: 3px; color: #d8d8e8; }

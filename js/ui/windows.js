@@ -108,7 +108,7 @@
   Win.panel = function (html, opts) {
     opts = opts || {};
     return new Promise(function (resolve) {
-      var node = el('<div class="rw-panel ' + (opts.cls || '') + '">' + html + (opts.noClose ? '' : '<div class="rw-panel-close">閉じる（Enter / ✕）</div>') + '</div>');
+      var node = el('<div class="rw-panel ' + (opts.cls || '') + '">' + html + (opts.noClose ? '' : '<div class="rw-panel-close">' + esc(opts.closeLabel || '閉じる') + '（Enter / ✕）</div>') + '</div>');
       var h = open(node, opts.noClose ? {} : { ok: function () { h.close(); resolve(0); }, cancel: function () { h.close(); resolve(-1); } });
       var c = node.querySelector('.rw-panel-close'); if (c) c.addEventListener('click', function (e) { e.stopPropagation(); h.close(); resolve(0); });
       if (opts.setup) opts.setup(node, function (v) { h.close(); resolve(v); });

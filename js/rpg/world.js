@@ -27,6 +27,7 @@
       else if (e.type === 'trial') m.setTile(e.x, e.y, 'gate');
       else if (e.type === 'locked') m.setTile(e.x, e.y, 'door_locked');
       if (e.type === 'hole') m.setTile(e.x, e.y, 'hole');
+      if (e.type === 'boss' && e.optional) m.setTile(e.x, e.y, (e.doneFlag && d.flags[e.doneFlag]) ? (m.def.fallback === 'cave_floor' ? 'cave_floor' : 'floor_stone') : 'boss_mark');
     });
     m.npcs.forEach(function (n) { if (n.showIf) n.hidden = !d.flags[n.showIf]; if (n.hideIf && d.flags[n.hideIf]) n.hidden = true; if (root.COMPANIONS && root.COMPANIONS[n.id] && d.companions[n.id]) n.hidden = true; });
   };
@@ -48,7 +49,7 @@
     State.data.visited[id] = true;
     World.syncPos();
     if (root.Audio) root.Audio.playBgm(World.map.def.bgm || (World.map.kind === 'field' ? 'field' : 'town'));
-    World.updateHud();
+    World.updateHud(); World.updatePlaceLabel();
     State.autosave();
   };
 
@@ -134,6 +135,7 @@
     if (ev && ev.type === 'hole') { World.busy = true; Win.message(ev.text).then(function () { World.busy = false; World.enterMap(ev.to, ev.tx, ev.ty, 'down'); }); return; }
     // 毒の歩行ダメージ
     State.partyActors().forEach(function (a) { if (!a.dead && a.status.poison && d.steps % 4 === 0) { a.hp = Math.max(1, a.hp - 1); } });
+    World.updatePlaceLabel();
     if (m.encounters && !World.busy) {
       var rate = m.encounters.rate; if (d.flags.repel) rate *= 0.3;
       if (Math.random() < rate) World.encounter();
@@ -189,6 +191,7 @@
     var ev = m.eventAt(fx, fy) || m.eventAt(p.x, p.y);
     if (ev && ev.type !== 'hole') { root.Events.run(ev); return; }
     var tile = m.tile(fx, fy);
+    if (tile === 'bld_block') { var bld = m.buildingAt(fx, fy); if (bld) { World.busy = true; Win.message([bld.name + '。入口は' + (bld.doorAbs.x < p.x ? '左' : bld.doorAbs.x > p.x ? '右' : 'この下') + 'のドアだ。']).then(function () { World.busy = false; }); return; } }
     if (tile === 'sign') { Win.message(['何か書いてある……が、かすれて読めない。']); return; }
     if (tile === 'bookshelf') { World.busy = true; Win.message(['『相場の波を読む者へ』——高値と安値を見よ。上位足を見よ。損切りを置け。']).then(function () { World.busy = false; }); return; }
     if (tile === 'crystal') { World.busy = true; Win.message(['均衡のクリスタルの台座だ。淡く光っている。']).then(function () { World.busy = false; }); return; }
@@ -210,6 +213,16 @@
     // 盗賊がいると追加アイテム
     if (State.partyActors().some(function (a) { return a.job === 'thief' && !a.dead; }) && Math.random() < 0.35) { var extra = ['herb', 'potion', 'antidote', 'ether'][Math.floor(Math.random() * 4)]; State.addItem(extra, 1); lines.push('盗賊の目が宝箱の二重底を見抜いた！ ' + ITEMS[extra].name + 'を見つけた！'); }
     Win.message(lines).then(function () { World.busy = false; World.updateHud(); State.autosave(); });
+  };
+
+  // 建物の入口に近づいたら施設名を表示
+  World.updatePlaceLabel = function () {
+    var el = document.getElementById('place-label'); if (!el || !World.map || !World.player) return;
+    var b = World.map.buildingNear(World.player.x, World.player.y);
+    var w = !b && World.map.warpAt(World.player.x, World.player.y + (World.player.dir === 'up' ? -1 : 0));
+    var text = b ? b.name : (w && w.name ? w.name : '');
+    if (el.textContent !== text) el.textContent = text;
+    el.classList.toggle('show', !!text);
   };
 
   /* ---------- HUD ---------- */

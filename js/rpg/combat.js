@@ -8,16 +8,22 @@
   var ENEMIES = root.ENEMIES, SKILLS = root.SKILLS, ITEMS = root.ITEMS, Actors = root.Actors, SPECIALS = root.ENEMY_SPECIALS, JOBS = root.JOBS;
 
   var Combat = {};
-  var STATUS_NAME = { poison: '毒', sleep: '眠り', paralyze: '麻痺', confuse: '混乱' };
+  var STATUS_NAME = { poison: '毒', sleep: '眠り', paralyze: '麻痺', confuse: '混乱', silence: '沈黙' };
+  var MAX_ENEMIES = 5;
   Combat.STATUS_NAME = STATUS_NAME;
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
 
+  function makeEnemy(id, i) {
+    var def = ENEMIES[id]; var e = clone(def); e.defId = id; e.idx = i; e.maxHp = def.hp; e.hp = def.hp; e.maxMp = def.mp || 0; e.mp = def.mp || 0; e.buffs = {}; e.status = {}; e.dead = false; e.exposed = 0; e.phase = 0;
+    return e;
+  }
+  Combat.makeEnemy = makeEnemy;
   Combat.create = function (enemyIds, party, opts) {
     opts = opts || {};
     var enemies = enemyIds.map(function (id, i) {
-      var def = ENEMIES[id]; var e = clone(def); e.defId = id; e.idx = i; e.maxHp = def.hp; e.hp = def.hp; e.maxMp = def.mp || 0; e.mp = def.mp || 0; e.buffs = {}; e.status = {}; e.dead = false; e.exposed = 0;
+      var e = makeEnemy(id, i);
       // 同名の敵にA/Bをつける
       var same = enemyIds.filter(function (x) { return x === id; }).length; if (same > 1) { var n = enemyIds.slice(0, i).filter(function (x) { return x === id; }).length; e.name += String.fromCharCode(65 + n); }
       return e;
@@ -60,7 +66,7 @@
     else if (target.boss && Math.random() < 0.6) return false;
     if (Math.random() > (chance === undefined ? status.chance : chance)) return false;
     if (target.status[id]) return false;
-    target.status[id] = { turns: id === 'poison' ? 99 : (id === 'sleep' ? 3 : 3) };
+    target.status[id] = { turns: id === 'poison' ? 99 : (id === 'silence' ? 4 : 3) };
     return true;
   }
 
@@ -123,6 +129,7 @@
     if (cmd.type === 'item') { useItemInBattle(b, a, cmd, ev); return; }
     if (cmd.type === 'skill') {
       var sk = SKILLS[cmd.skillId]; if (!sk) return;
+      if (a.status.silence && sk.mp > 0) { msg(a.name + 'は沈黙していて' + sk.name + 'が使えない！'); return; }
       var mpCost = sk.mp; if (a.job === 'sage') mpCost = Math.ceil(mpCost * 0.8);
       if (a.mp < mpCost) { msg(a.name + 'はMPが足りない！'); return; }
       if (sk.gold) { if (root.State.data.gold < sk.gold) { msg('ゴールドが足りない！'); return; } root.State.data.gold -= sk.gold; }
@@ -224,13 +231,20 @@
     var es = estats(e);
     if (e.status.confuse && Math.random() < 0.5) { var other = pickRandom(aliveEnemies(b)); msg(e.name + 'は混乱している！'); if (other) { var d0 = physDamage(es.atk, estats(other).def, 1.0); other.hp = Math.max(0, other.hp - d0); ev.push({ type: 'damage', side: 'enemy', idx: other.idx, value: d0, anim: 'hit' }); msg(other.name + 'に' + d0 + 'のダメージ'); if (other.hp <= 0) killEnemy(b, other, ev); } return; }
     // 行動選択（重み付き）
-    var acts = e.actions; var total = acts.reduce(function (s, x) { return s + x.w; }, 0); var r = Math.random() * total; var chosen = acts[0];
+    var ratio = e.hp / e.maxHp;
+    // ボスのフェーズ移行（HP割合で行動が変わる）
+    if (e.boss) { var ph = ratio <= 0.3 ? 2 : ratio <= 0.6 ? 1 : 0; if (ph > e.phase) { e.phase = ph; msg(ph === 2 ? e.name + 'は最後の力を振り絞っている……！' : e.name + 'の様子が変わった！'); ev.push({ type: 'phase', idx: e.idx, phase: ph }); } }
+    var acts = e.actions.filter(function (x) { if (x.hpBelow !== undefined && ratio > x.hpBelow) return false; if (x.hpAbove !== undefined && ratio < x.hpAbove) return false; if (x.id === 'call' && aliveEnemies(b).length >= MAX_ENEMIES) return false; if (x.id === 'heal_self' && ratio > 0.8) return false; return true; });
+    if (!acts.length) acts = [{ type: 'attack', w: 1 }];
+    var total = acts.reduce(function (s, x) { return s + x.w; }, 0); var r = Math.random() * total; var chosen = acts[0];
     for (var i = 0; i < acts.length; i++) { r -= acts[i].w; if (r <= 0) { chosen = acts[i]; break; } }
     if (chosen.type === 'skill' && SKILLS[chosen.id] && e.mp < SKILLS[chosen.id].mp) chosen = { type: 'attack' };
+    if (chosen.type === 'skill' && e.status.silence && SKILLS[chosen.id] && SKILLS[chosen.id].mp > 0) { msg(e.name + 'は沈黙していて呪文が使えない！'); chosen = { type: 'attack' }; }
     if (chosen.type === 'special' && chosen.id === 'trial' && b.trialCount >= 2) chosen = { type: 'attack' };
+    if (chosen.type === 'special' && chosen.id === 'flee' && b.boss) chosen = { type: 'attack' };
     var living = aliveParty(b);
     function pickTarget() { var cov = living.filter(function (a) { return a.cover; })[0]; if (cov) return cov; var kn = living.filter(function (a) { return a.job === 'knight' && Math.random() < 0.35; })[0]; return kn || pickRandom(living); }
-    if (chosen.type === 'attack') { var t = pickTarget(); msg(e.name + 'の攻撃！'); hitActor(b, e, t, 1.0, {}, ev); return; }
+    if (chosen.type === 'attack') { var t = pickTarget(); msg(e.name + 'の攻撃！'); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: 'lunge' }); hitActor(b, e, t, 1.0, {}, ev); return; }
     if (chosen.type === 'skill') {
       var sk = SKILLS[chosen.id]; e.mp -= sk.mp; msg(e.name + 'は' + sk.name + 'を使った！'); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: sk.anim });
       if (sk.kind === 'attack') { var tgs = sk.target === 'enemies' ? living : [pickTarget()]; var hits = sk.hits || 1; for (var h = 0; h < hits; h++) tgs.forEach(function (t2) { if (!t2.dead) hitActor(b, e, t2, sk.power, { element: sk.element, status: sk.status }, ev); }); }
@@ -241,11 +255,18 @@
     }
     if (chosen.type === 'special') {
       var sp = SPECIALS[chosen.id]; if (!sp) return;
-      msg(e.name + sp.msg); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: 'buff' });
+      msg(e.name + sp.msg); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: sp.power ? 'lunge' : 'buff' });
       if (sp.flee) { e.dead = true; e.fled = true; ev.push({ type: 'flee', idx: e.idx }); return; }
       if (sp.trial) { b.trialCount++; ev.push({ type: 'trial', idx: e.idx }); return; }
+      if (sp.call) { var sid = chosen.summon || e.defId; if (!ENEMIES[sid] || b.enemies.length >= 8 || aliveEnemies(b).length >= MAX_ENEMIES) { msg('しかし誰も来なかった'); return; } var ne = makeEnemy(sid, b.enemies.length); var cnt = b.enemies.filter(function (x) { return x.defId === sid; }).length; if (cnt > 0) ne.name += String.fromCharCode(65 + cnt); ne.summoned = true; b.enemies.push(ne); ev.push({ type: 'summon', idx: ne.idx }); msg(ne.name + 'が現れた！'); return; }
+      if (sp.heal) { var hv = Math.max(1, Math.round(e.maxHp * sp.heal)); e.hp = Math.min(e.maxHp, e.hp + hv); ev.push({ type: 'heal', side: 'enemy', idx: e.idx, value: hv }); msg(e.name + 'のHPが' + hv + '回復した'); return; }
       if (sp.buff && sp.self) { Object.keys(sp.buff).forEach(function (k) { e.buffs[k] = { value: sp.buff[k], turns: sp.turns || 2 }; }); return; }
-      if (sp.power) { var t5 = pickTarget(); var dm = hitActor(b, e, t5, sp.power, {}, ev); if (sp.drain && dm > 0) { e.hp = Math.min(e.maxHp, e.hp + Math.round(dm * 0.5)); msg(e.name + 'は体力を吸い取った'); } return; }
+      if (sp.power) {
+        if (sp.all) { living.forEach(function (t7) { if (!t7.dead) hitActor(b, e, t7, sp.power, {}, ev); }); return; }
+        var hits2 = sp.hits || 1;
+        for (var h2 = 0; h2 < hits2; h2++) { if (!aliveParty(b).length) break; var t5 = pickTarget(); if (!t5 || t5.dead) t5 = pickRandom(aliveParty(b)); var dm = hitActor(b, e, t5, sp.power, {}, ev); if (sp.drain && dm > 0) { e.hp = Math.min(e.maxHp, e.hp + Math.round(dm * 0.5)); msg(e.name + 'は体力を吸い取った'); } }
+        return;
+      }
       if (sp.status) { var tg4 = sp.target === 'allies' ? living : [pickTarget()]; tg4.forEach(function (t6) { if (addStatus(t6, sp.status, undefined, true)) msg(t6.name + 'は' + STATUS_NAME[sp.status.id] + '状態になった'); }); }
     }
   }
@@ -273,13 +294,13 @@
     b.party.forEach(function (a) {
       if (a.dead) return;
       if (a.status.poison) { var s = Actors.stats(a); var d = Math.max(1, Math.round(s.maxHp / 12)); a.hp = Math.max(1, a.hp - d); ev.push({ type: 'damage', side: 'party', id: a.id, value: d, anim: 'poison' }); msg(a.name + 'は毒で' + d + 'のダメージ'); }
-      ['paralyze', 'confuse', 'sleep'].forEach(function (k) { if (a.status[k]) { a.status[k].turns--; if (a.status[k].turns <= 0) { delete a.status[k]; msg(a.name + 'の' + STATUS_NAME[k] + 'が治った'); } } });
+      ['paralyze', 'confuse', 'sleep', 'silence'].forEach(function (k) { if (a.status[k]) { a.status[k].turns--; if (a.status[k].turns <= 0) { delete a.status[k]; msg(a.name + 'の' + STATUS_NAME[k] + 'が治った'); } } });
       Object.keys(a.buffs).forEach(function (k) { if (a.buffs[k]) { a.buffs[k].turns--; if (a.buffs[k].turns <= 0) delete a.buffs[k]; } });
     });
     b.enemies.forEach(function (e) {
       if (e.dead) return;
       if (e.status.poison) { var d = Math.max(1, Math.round(e.maxHp / 10)); e.hp = Math.max(0, e.hp - d); ev.push({ type: 'damage', side: 'enemy', idx: e.idx, value: d, anim: 'poison' }); msg(e.name + 'は毒で' + d + 'のダメージ'); if (e.hp <= 0) killEnemy(b, e, ev); }
-      ['paralyze', 'confuse', 'sleep'].forEach(function (k) { if (e.status[k]) { e.status[k].turns--; if (e.status[k].turns <= 0) delete e.status[k]; } });
+      ['paralyze', 'confuse', 'sleep', 'silence'].forEach(function (k) { if (e.status[k]) { e.status[k].turns--; if (e.status[k].turns <= 0) delete e.status[k]; } });
       Object.keys(e.buffs).forEach(function (k) { if (e.buffs[k]) { e.buffs[k].turns--; if (e.buffs[k].turns <= 0) delete e.buffs[k]; } });
       if (e.exposed > 0) e.exposed--;
     });
@@ -288,7 +309,7 @@
 
   function checkEnd(b, ev) {
     if (b.state !== 'command') return;
-    if (aliveEnemies(b).length === 0) { b.state = 'won'; b.result = Combat.rewards(b); ev.push({ type: 'end', result: 'won' }); }
+    if (aliveEnemies(b).length === 0) { if (b.enemies.every(function (e) { return e.fled; })) { b.state = 'fled'; ev.push({ type: 'end', result: 'fled' }); return; } b.state = 'won'; b.result = Combat.rewards(b); ev.push({ type: 'end', result: 'won' }); }
     else if (aliveParty(b).length === 0) { b.state = 'lost'; ev.push({ type: 'end', result: 'lost' }); }
   }
 
@@ -303,19 +324,34 @@
   Combat.rewards = function (b) {
     var exp = 0, gold = 0, drops = [];
     b.enemies.forEach(function (e) { if (e.fled) return; exp += e.exp; gold += e.gold; (e.drops || []).forEach(function (d) { if (Math.random() < d.rate) drops.push(d.item); }); root.State.data.bestiary[e.defId] = Object.assign(root.State.data.bestiary[e.defId] || {}, { seen: true, defeated: (root.State.data.bestiary[e.defId] && root.State.data.bestiary[e.defId].defeated || 0) + 1 }); });
-    if (b.party.some(function (a) { return a.job === 'merchant' && !a.dead; })) gold = Math.round(gold * 1.25);
     gold = Math.round(gold * rnd(0.85, 1.15));
-    return { exp: exp, gold: gold, drops: drops };
+    var goldBase = gold, bonus = 0;
+    if (b.party.some(function (a) { return a.job === 'merchant' && !a.dead; })) { bonus = Math.round(gold * 0.25); gold += bonus; }
+    return { exp: exp, gold: gold, goldBase: goldBase, merchantBonus: bonus, drops: drops };
   };
 
-  // 勝利報酬の配分（生存者で経験値を分ける→各自の成長）
+  // 勝利報酬の配分（1回だけ実行する。戻り値はリザルト画面用の詳細）
   Combat.distribute = function (b) {
-    var r = b.result; var alive = aliveParty(b); var levelUps = [];
-    alive.forEach(function (a) { var ups = Actors.gainExp(a, Math.max(1, Math.round(r.exp / Math.max(1, alive.length)))); if (ups.length) levelUps.push({ actor: a, ups: ups }); });
+    if (b.distributed) return b.distributed;
+    var r = b.result; var alive = aliveParty(b);
+    var share = Math.max(1, Math.round(r.exp / Math.max(1, alive.length)));
+    var members = b.party.map(function (a) {
+      var before = { level: a.level, exp: a.exp, stats: Actors.stats(a), skills: a.skills.slice() };
+      var gained = 0, ups = [];
+      if (!a.dead) { gained = share; ups = Actors.gainExp(a, share); }
+      var after = { level: a.level, exp: a.exp, stats: Actors.stats(a) };
+      return { actor: a, dead: a.dead, gained: gained, before: before, after: after, levelUp: a.level > before.level, levels: ups,
+        newSkills: a.skills.filter(function (k) { return before.skills.indexOf(k) < 0; }), toNext: Actors.expForLevel(a.level) - a.exp };
+    });
+    var goldBase = r.goldBase !== undefined ? r.goldBase : r.gold;
     root.State.data.gold += r.gold;
-    r.drops.forEach(function (d) { root.State.addItem(d, 1); });
+    var dropCounts = {};
+    r.drops.forEach(function (d) { root.State.addItem(d, 1); dropCounts[d] = (dropCounts[d] || 0) + 1; });
     b.party.forEach(Actors.clearBattleState);
-    return levelUps;
+    // 倒した敵の集計
+    var killed = {}; b.enemies.forEach(function (e) { if (e.fled) return; var nm = e.name.replace(/[A-H]$/, ''); killed[nm] = (killed[nm] || 0) + 1; });
+    b.distributed = { exp: r.exp, gold: r.gold, goldBase: goldBase, merchantBonus: r.merchantBonus || 0, drops: dropCounts, killed: killed, members: members };
+    return b.distributed;
   };
 
   root.Combat = Combat;

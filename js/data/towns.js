@@ -11,48 +11,26 @@
   /* ---------- 建物内部の共通テンプレート ---------- */
   // 店：カウンターの奥に店主
   function shopInterior(id, name, town, exitX, exitY, keeper, shopKind, stock, extraLines) {
-    return add({ id: id, name: name, kind: 'interior', bgm: 'town', rows: [
-      '############',
-      '#__KK__KK__#',
-      '#__________#',
-      '#_TTTTTTTT_#',
-      '#__________#',
-      '#__________#',
-      '#_t______t_#',
-      '#__________#',
-      '#####D######'
-    ], warps: [{ x: 5, y: 8, to: town, tx: exitX, ty: exitY }],
-      npcs: [{ id: id + '_keeper', x: 5, y: 2, sprite: keeper, dir: 'down', wander: 0, talk: async function (c) {
-        if (extraLines) await c.say(name, extraLines);
-        await c.shop(shopKind, stock);
-      } }] });
+    var rows = shopKind === 'weapon' ? [
+      '############', '#KK_qq__zKK#', '#__________#', '#_TTTTTTTT_#', '#__________#', '#_z______q_#', '#__t____t__#', '#__________#', '#####D######'
+    ] : shopKind === 'armor' ? [
+      '############', '#KK__II__KK#', '#__________#', '#_TTTTTTTT_#', '#__________#', '#_z________#', '#__t____t__#', '#__________#', '#####D######'
+    ] : [
+      '############', '#KKK_qq_KKK#', '#__________#', '#_TTTTTTTT_#', '#__________#', '#__zz______#', '#__t____t__#', '#__________#', '#####D######'
+    ];
+    return add({ id: id, name: name, kind: 'interior', bgm: 'town', rows: rows, warps: [{ x: 5, y: 8, to: town, tx: exitX, ty: exitY }],
+      npcs: [{ id: id + '_keeper', x: 5, y: 2, sprite: keeper, dir: 'down', wander: 0, talk: async function (c) { if (extraLines) await c.say(name, extraLines); await c.shop(shopKind, stock); } }] });
   }
   function innInterior(id, name, town, exitX, exitY, price) {
     return add({ id: id, name: name, kind: 'interior', bgm: 'town', rows: [
-      '############',
-      '#E__E__E__E#',
-      '#__________#',
-      '#__________#',
-      '#TTTT______#',
-      '#____t__t__#',
-      '#____t__t__#',
-      '#__________#',
-      '#####D######'
+      '############', '#E__E__E__E#', '#__________#', '#_pppppppp_#', '#TTTT_pppp_#', '#____tppppt#', '#_q___pp___#', '#__________#', '#####D######'
     ], warps: [{ x: 5, y: 8, to: town, tx: exitX, ty: exitY }],
       npcs: [{ id: id + '_keeper', x: 2, y: 3, sprite: 'innkeeper', dir: 'down', wander: 0, talk: async function (c) { await c.inn(price); } },
         { id: id + '_guest', x: 8, y: 2, sprite: 'villager_m', dir: 'down', wander: 1, talk: async function (c) { await c.say('宿の客', ['旅の疲れは宿で取るに限る。戦闘不能の仲間は教会でしか治らないから気をつけな。']); } }] });
   }
   function churchInterior(id, name, town, exitX, exitY) {
     return add({ id: id, name: name, kind: 'interior', bgm: 'church', rows: [
-      '############',
-      '#I___XX___I#',
-      '#__________#',
-      '#_pppppppp_#',
-      '#_t_t__t_t_#',
-      '#_t_t__t_t_#',
-      '#_t_t__t_t_#',
-      '#__________#',
-      '#####D######'
+      '############', '#I___XX___I#', '#__ppppppp_#', '#_ppppppppp#', '#_t_tppt_t_#', '#_t_tppt_t_#', '#_t_tppt_t_#', '#I___pp___I#', '#####D######'
     ], warps: [{ x: 5, y: 8, to: town, tx: exitX, ty: exitY }],
       npcs: [{ id: id + '_priest', x: 5, y: 2, sprite: 'priest', dir: 'down', wander: 0, talk: async function (c) { await c.church(); } }] });
   }
@@ -60,47 +38,53 @@
   /* =========================================================
      ポヨ村（始まりの村）
      ========================================================= */
-  add({ id: 'poyo_village', name: 'ポヨ村', kind: 'town', bgm: 'town', fallback: 'grass', rows: [
+  add({ id: 'poyo_village', name: 'ポヨ村', kind: 'town', bgm: 'town', fallback: 'grass', style: 'wood', rows: [
     'ffffffffffffffffffffffff',
-    'f.....,....f...........f',
-    'f..RRRRR..........RRRRR.',
-    'f..#oDo#.....f....#oDo#.',
-    'f...,r,.....,......,r,..',
-    'f....r.............r....',
-    'f....rrrrrrrrrrrrrrr....',
-    'f........r....,.........',
-    'f..BBBBB.r.....VVVVV...f',
-    'f..#oDo#.r.....#oDo#...f',
-    'f....r...r.......r......',
-    'f....rrrrrrrQrrrrr......',
-    'f..,.....r..............',
-    'f........r.....RRRRR....',
-    'f..S.....r.....#oDo#...f',
-    'f........r.......r.....f',
-    'f........rrrrrrrrr.....f',
-    'ff.......r.............f',
-    'ffff.....r.........ffff.',
-    'ffffffff.r.......fffffff'
+    'ffBBBBBB..rr..f.BBBBB..f',
+    'f.BBBBBBa.rr.j..BBBBB..f',
+    'f.BBBBBB..rr....BBBBB..f',
+    'f....rrrrrrrrrrrrrr..6.f',
+    'f.6.......rr...........f',
+    'f........yrry..BBBBBB..f',
+    'f.BBBBBB.,rr...BBBBBB..f',
+    'f.BBBBBBa.rr.e.BBBBBB..f',
+    'f.BBBBBB..rr...BBBBBB..f',
+    'f....rrrrrrrrrrrrrr..xHf',
+    'fxxxx.....rr.........xHf',
+    'f..,.....yrry..BBBBBBxHf',
+    'ffBBBB....rr.qzBBBBBB..f',
+    'f.BBBB....rr.f.BBBBBB..f',
+    'ffBBBB....rrrrrrrrr....f',
+    'f..rrrrrrrrr...f.......f',
+    'f.........rr...........f',
+    'f..S......rr...........f',
+    'ffffffffffrrffffffffffff'
   ],
-  warps: [
-    { x: 9, y: 19, to: 'world', tx: 28, ty: 59, name: '村の外へ' },
-    { x: 5, y: 3, to: 'poyo_elder_house', tx: 5, ty: 7 },
-    { x: 20, y: 3, to: 'poyo_item_shop', tx: 5, ty: 7 },
-    { x: 5, y: 9, to: 'poyo_inn', tx: 5, ty: 7 },
-    { x: 17, y: 9, to: 'poyo_church', tx: 5, ty: 7 },
-    { x: 17, y: 14, to: 'poyo_dojo', tx: 5, ty: 7 }
+  buildings: [
+    { id: 'elder', type: 'elder', name: '村長の家', x: 2, y: 1, w: 6, h: 3, doorX: 3, interior: 'poyo_elder_house', entry: { x: 5, y: 7 } },
+    { id: 'item', type: 'item', name: 'ポヨ村の道具屋', x: 16, y: 1, w: 5, h: 3, doorX: 2, interior: 'poyo_item_shop', entry: { x: 5, y: 7 } },
+    { id: 'inn', type: 'inn', name: 'ポヨ村の宿屋', x: 2, y: 7, w: 6, h: 3, doorX: 3, interior: 'poyo_inn', entry: { x: 5, y: 7 } },
+    { id: 'church', type: 'church', name: 'ポヨ村の教会', x: 15, y: 6, w: 6, h: 4, doorX: 3, interior: 'poyo_church', entry: { x: 5, y: 7 } },
+    { id: 'dojo', type: 'dojo', name: 'トレード修行場', x: 15, y: 12, w: 6, h: 3, doorX: 3, interior: 'poyo_dojo', entry: { x: 5, y: 7 } },
+    { id: 'house', type: 'house', name: '農夫の家', x: 2, y: 13, w: 4, h: 3, doorX: 1, interior: 'poyo_house', entry: { x: 5, y: 7 } }
   ],
-  chests: [{ id: 'poyo1', x: 1, y: 12, item: 'herb', qty: 2 }],
+  warps: [{ x: 10, y: 19, to: 'world', tx: 28, ty: 59, name: '村の外へ' }, { x: 11, y: 19, to: 'world', tx: 28, ty: 59, name: '村の外へ' }],
+  chests: [{ id: 'poyo1', x: 1, y: 17, item: 'herb', qty: 2 }],
   npcs: [
-    { id: 'poyo_child', x: 11, y: 7, sprite: 'child', dir: 'down', wander: 2, talk: async function (c) { await c.say('村の子ども', ['ねえねえ、しってる？ 相場の波は上がったり下がったりするんだって。', 'おじいちゃんが「高値と安値を見ろ」っていつも言ってる！']); } },
-    { id: 'poyo_woman', x: 14, y: 12, sprite: 'villager_f', dir: 'down', wander: 1, talk: async function (c) {
-      if (!c.flag('met_elder')) await c.say('村の女性', ['あなた、見かけない顔ね。村長が北の大きな家で待っているわ。まず話を聞いてきなさいな。']);
+    { id: 'poyo_child', x: 13, y: 7, sprite: 'child', dir: 'down', wander: 2, talk: async function (c) { await c.say('村の子ども', ['ねえねえ、しってる？ 相場の波は上がったり下がったりするんだって。', 'おじいちゃんが「高値と安値を見ろ」っていつも言ってる！']); } },
+    { id: 'poyo_woman', x: 7, y: 5, sprite: 'villager_f', dir: 'down', wander: 1, talk: async function (c) {
+      if (!c.flag('met_elder')) await c.say('村の女性', ['あなた、見かけない顔ね。村長が北西の大きな家で待っているわ。まず話を聞いてきなさいな。']);
       else await c.say('村の女性', ['南の道を行けば港町マリナ、北へ行けばリヴェル城下町よ。東の森には近づかないほうがいいわ。']); } },
-    { id: 'poyo_sign', x: 3, y: 13, sprite: 'guard', dir: 'down', wander: 0, hidden: true },
-    { id: 'poyo_farmer', x: 20, y: 11, sprite: 'villager_m', dir: 'left', wander: 1, talk: async function (c) { await c.say('農夫', ['うちの畑に出るスライムくらいなら、木の剣でも何とかなるさ。', '東の家は「トレード修行場」。師匠がチャートの読み方を教えてくれる。冒険の合間に通うといい。']); } }
+    { id: 'poyo_farmer', x: 20, y: 11, sprite: 'villager_m', dir: 'left', wander: 1, talk: async function (c) { await c.say('農夫', ['うちの畑に出るスライムくらいなら、木の剣でも何とかなるさ。', '東の家は「トレード修行場」。師匠がチャートの読み方を教えてくれる。冒険の合間に通うといい。']); } },
+    { id: 'poyo_traveler', x: 7, y: 11, sprite: 'villager_m', dir: 'down', wander: 1, talk: async function (c) { await c.say('旅人', ['宿屋の前で休ませてもらってる。この村の宿は安くていいね。', '教会でリーナって僧侶を見かけたよ。旅の仲間を探してるみたいだった。']); } }
   ],
-  events: [{ x: 3, y: 14, type: 'inspect', text: ['【立て札】ポヨ村へようこそ。\n北：村長の家／宿屋　東：道具屋／教会／修行場\n南の道→港町マリナ　北の道→リヴェル城下町'] }]
+  events: [{ x: 3, y: 18, type: 'inspect', text: ['【立て札】ポヨ村へようこそ。\n北西：村長の家　北東：道具屋\n西：宿屋　東：教会／トレード修行場\n南の道→港町マリナ　北の道→リヴェル城下町'] }]
   });
+
+  add({ id: 'poyo_house', name: '農夫の家', kind: 'interior', bgm: 'town', rows: [
+    '############', '#E__K__q___#', '#__________#', '#__t__t____#', '#__________#', '#_______zz_#', '#__________#', '#__________#', '#####D######'
+  ], warps: [{ x: 5, y: 8, to: 'poyo_village', tx: 3, ty: 16 }],
+    npcs: [{ id: 'farmer_wife', x: 4, y: 4, sprite: 'villager_f', dir: 'down', wander: 1, talk: async function (c) { await c.say('農夫の妻', ['畑の野菜は村の自慢よ。', '夫が言うには、相場も畑も「種をまく時期を間違えない」ことが大事なんですって。']); } }] });
 
   add({ id: 'poyo_elder_house', name: '村長の家', kind: 'interior', bgm: 'town', rows: [
     '############',
@@ -127,19 +111,19 @@
       }
     } }] });
 
-  shopInterior('poyo_item_shop', '道具屋', 'poyo_village', 20, 4, 'merchant', 'item', ['herb', 'antidote', 'wake_bell', 'potion', 'escape_wing', 'tent'], ['いらっしゃい！ 薬草は冒険の必需品だよ。']);
+  shopInterior('poyo_item_shop', '道具屋', 'poyo_village', 18, 4, 'merchant', 'item', ['herb', 'antidote', 'wake_bell', 'potion', 'escape_wing', 'tent'], ['いらっしゃい！ 薬草は冒険の必需品だよ。']);
   innInterior('poyo_inn', 'ポヨ村の宿屋', 'poyo_village', 5, 10, 10);
   add({ id: 'poyo_church', name: 'ポヨ村の教会', kind: 'interior', bgm: 'church', rows: [
     '############',
     '#I___XX___I#',
-    '#__________#',
-    '#_pppppppp_#',
-    '#_t_t__t_t_#',
-    '#_t_t__t_t_#',
-    '#__________#',
-    '#__________#',
+    '#__ppppppp_#',
+    '#_ppppppppp#',
+    '#_t_tppt_t_#',
+    '#_t_tppt_t_#',
+    '#_t_tppt___#',
+    '#I___pp___I#',
     '#####D######'
-  ], warps: [{ x: 5, y: 8, to: 'poyo_village', tx: 17, ty: 10 }],
+  ], warps: [{ x: 5, y: 8, to: 'poyo_village', tx: 18, ty: 10 }],
     npcs: [
       { id: 'poyo_priest', x: 5, y: 2, sprite: 'priest', dir: 'down', wander: 0, talk: async function (c) { await c.church(); } },
       { id: 'lina', x: 8, y: 6, sprite: 'lina', dir: 'left', wander: 0, talk: async function (c) {
@@ -157,13 +141,13 @@
     '############',
     '#KKKK__KKKK#',
     '#__________#',
-    '#__________#',
-    '#_t______t_#',
-    '#__________#',
-    '#__________#',
+    '#_pppppppp_#',
+    '#_t_pppp_t_#',
+    '#_t_pppp_t_#',
+    '#_pppppppp_#',
     '#__________#',
     '#####D######'
-  ], warps: [{ x: 5, y: 8, to: 'poyo_village', tx: 17, ty: 15 }],
+  ], warps: [{ x: 5, y: 8, to: 'poyo_village', tx: 18, ty: 15 }],
     npcs: [
       { id: 'master_hakei', x: 5, y: 2, sprite: 'master', dir: 'down', wander: 0, talk: async function (c) { await c.dojo('poyo'); } },
       { id: 'dojo_student', x: 9, y: 6, sprite: 'villager_m', dir: 'left', wander: 1, talk: async function (c) { await c.say('修行中の若者', ['師匠は「勝てる場面を探すより、戦わない場面を知れ」って言うんだ。', '修行場のチャートは学習用に作られたものだから、何度失敗しても資金は減らない。安心して練習しなよ。']); } }
@@ -172,70 +156,80 @@
   /* =========================================================
      リヴェル城下町（始まりの王国の都）
      ========================================================= */
-  add({ id: 'rivel_town', name: 'リヴェル城下町', kind: 'town', bgm: 'town', fallback: 'grass', rows: [
-    'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',
-    'C===========CCDCC============C',
-    'C===========C===C============C',
-    'C=====================I===I==C',
-    'C==RRRRR====rrrrr====RRRRR===C',
-    'C==#oDo#====r===r====#oDo#===C',
-    'C====r======r===r=======r====C',
-    'C====rrrrrrrr===rrrrrrrrr====C',
-    'C===========r===r============C',
-    'C==BBBBB====r===r====BBBBB===C',
-    'C==#oDo#====r=Q=r====#oDo#===C',
-    'C====r======r===r=======r====C',
-    'C====rrrrrrrr===rrrrrrrrr====C',
-    'C===========r===r============C',
-    'C==VVVVV====r===r====VVVVV===C',
-    'C==#oDo#====r===r====#oDo#===C',
-    'C====r======r===r=======r====C',
-    'C====rrrrrrrr===rrrrrrrrr====C',
-    'C===========r===r============C',
-    'C==RRRRR====r===r====RRRRR===C',
-    'C==#oDo#====r===r====#oDo#===C',
-    'C====rrrrrrrr===rrrrrrrrr====C',
-    'C===========r===r===S========C',
-    'C===========r===r============C',
-    'CCCCCCCCCCCCCCrrCCCCCCCCCCCCCC'
+  add({ id: 'rivel_town', name: 'リヴェル城下町', kind: 'town', bgm: 'town', fallback: 'stone', style: 'stone', rows: [
+    'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',
+    'C==========BBBBBBBBBB==========C',
+    'C========..BBBBBBBBBB..========C',
+    'C=6======.=BxxBBBBxxB=.======6=C',
+    'C=6========BBBBBBBBBB========6=C',
+    'C==========BBBBBBBBBB==========C',
+    'C==============rr==============C',
+    'C=BBBBBB=======rr=======BBBBBB=C',
+    'C=BBBBBB=y=====rr=====y=BBBBBB=C',
+    'C=BBB=======================BB=C',
+    'C====rrrrrrrrrrrrrrrrrrrrrr====C',
+    'C===========y==rr==y===========C',
+    'C=BBBBBB=====e=rr=e=====BBBBBB=C',
+    'C=BBBBBB=======rr=======BBBBBB=C',
+    'C=BBBBBB=======rr=======BBBBBB=C',
+    'C====rrrrrrrrrrrrrrrrrrrrrr====C',
+    'C============a=rr=a============C',
+    'C=BBBBBB====y==rr==y====BBBBBB=C',
+    'C=BBBBBB=======rr=======BBBBBB=C',
+    'C=BBBBBB=======rr=======BBBBBB=C',
+    'C=BBBBBB=y=====rr=====y========C',
+    'C====rrrrrrrrrrrrrrrrrrrrrr====C',
+    'C=BBBBBB=======rr=======BBBBBB=C',
+    'C=BBBBBB=======rr=======BBBBBB=C',
+    'C=BBBBBB==AA===rr===AA==BBBBBB=C',
+    'C====rrrrrrrrrrrrrrrrrrrrrr====C',
+    'C==S=====q=====rr=====zz====6==C',
+    'CCCCCCCCCCCCCCCrrCCCCCCCCCCCCCCC'
   ],
-  warps: [
-    { x: 14, y: 24, to: 'world', tx: 40, ty: 49, name: '町の外へ' }, { x: 15, y: 24, to: 'world', tx: 40, ty: 49, name: '町の外へ' },
-    { x: 14, y: 1, to: 'rivel_castle', tx: 7, ty: 13 },
-    { x: 5, y: 5, to: 'rivel_weapon_shop', tx: 5, ty: 7 }, { x: 23, y: 5, to: 'rivel_armor_shop', tx: 5, ty: 7 },
-    { x: 5, y: 10, to: 'rivel_item_shop', tx: 5, ty: 7 }, { x: 23, y: 10, to: 'rivel_inn', tx: 5, ty: 7 },
-    { x: 5, y: 15, to: 'rivel_church', tx: 5, ty: 7 }, { x: 23, y: 15, to: 'rivel_tavern', tx: 5, ty: 7 },
-    { x: 5, y: 20, to: 'rivel_guild', tx: 5, ty: 7 }, { x: 23, y: 20, to: 'rivel_bank', tx: 5, ty: 7 }
+  buildings: [
+    { id: 'castle', type: 'castle', name: 'リヴェル城', x: 11, y: 1, w: 10, h: 5, doorX: 4, interior: 'rivel_castle', entry: { x: 7, y: 12 } },
+    { id: 'weapon', type: 'weapon', name: 'リヴェル武器屋', x: 2, y: 7, w: 6, h: 3, doorX: 2, interior: 'rivel_weapon_shop', entry: { x: 5, y: 7 } },
+    { id: 'armor', type: 'armor', name: 'リヴェル防具屋', x: 24, y: 7, w: 6, h: 3, doorX: 2, interior: 'rivel_armor_shop', entry: { x: 5, y: 7 } },
+    { id: 'item', type: 'item', name: 'リヴェル道具屋', x: 2, y: 12, w: 6, h: 3, doorX: 2, interior: 'rivel_item_shop', entry: { x: 5, y: 7 } },
+    { id: 'inn', type: 'inn', name: 'リヴェルの宿屋', x: 24, y: 12, w: 6, h: 3, doorX: 2, interior: 'rivel_inn', entry: { x: 5, y: 7 } },
+    { id: 'church', type: 'church', name: 'リヴェル教会', x: 2, y: 17, w: 6, h: 4, doorX: 2, interior: 'rivel_church', entry: { x: 5, y: 7 } },
+    { id: 'tavern', type: 'tavern', name: 'リヴェルの酒場', x: 24, y: 17, w: 6, h: 3, doorX: 2, interior: 'rivel_tavern', entry: { x: 5, y: 7 } },
+    { id: 'guild', type: 'guild', name: '冒険者ギルド', x: 2, y: 22, w: 6, h: 3, doorX: 2, interior: 'rivel_guild', entry: { x: 5, y: 7 } },
+    { id: 'bank', type: 'bank', name: 'リヴェル銀行', x: 24, y: 22, w: 6, h: 3, doorX: 2, interior: 'rivel_bank', entry: { x: 5, y: 7 } }
   ],
-  chests: [{ id: 'rivel1', x: 27, y: 2, item: 'potion', qty: 1 }],
+  warps: [{ x: 15, y: 27, to: 'world', tx: 40, ty: 49, name: '町の外へ' }, { x: 16, y: 27, to: 'world', tx: 40, ty: 49, name: '町の外へ' }],
+  chests: [{ id: 'rivel1', x: 29, y: 1, item: 'potion', qty: 1 }],
   npcs: [
-    { id: 'rivel_guard1', x: 13, y: 2, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say('城門の衛兵', ['ここはリヴェル城。王はいつでも「波を読む者」との謁見を望んでおられる。中へどうぞ。']); } },
-    { id: 'rivel_woman', x: 10, y: 8, sprite: 'villager_f', dir: 'down', wander: 2, talk: async function (c) { await c.say('町の女性', ['西の列は武器屋、道具屋、教会、冒険者ギルド。東の列は防具屋、宿屋、酒場、銀行よ。', '酒場では旅の仲間が待っているって聞いたわ。']); } },
-    { id: 'rivel_man', x: 18, y: 13, sprite: 'villager_m', dir: 'down', wander: 2, talk: async function (c) { await c.say('町の男', ['北のエマール山道には山賊が出る。頭目のガロンはやたら強いらしい。', '銀行にゴールドを預けておけば、全滅しても減らないぞ。']); } },
-    { id: 'rivel_child', x: 16, y: 18, sprite: 'child', dir: 'down', wander: 2, talk: async function (c) { await c.say('城下町の子ども', ['王様はね、むかし「相場の勇者」と一緒に魔王をふうじこめたんだって！']); } },
-    { id: 'rivel_scholar', x: 24, y: 23, sprite: 'scholar', dir: 'down', wander: 0, talk: async function (c) { await c.say('学者', ['均衡のクリスタルは大陸に10個あったと記録にある。欲望と恐怖の魔物が増えたのは、それが砕けてからだ。', 'ダウの村の師匠ハケイは、波形を読む術を極めた人物だ。彼に会えば「波形剣士」の道も開けるだろう。']); } }
+    { id: 'rivel_guard1', x: 14, y: 6, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say('城門の衛兵', ['ここはリヴェル城。王はいつでも「波を読む者」との謁見を望んでおられる。中へどうぞ。']); } },
+    { id: 'rivel_guard2', x: 17, y: 6, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say('城門の衛兵', ['城下町では武器屋・道具屋・教会・ギルドが西側、防具屋・宿屋・酒場・銀行が東側だ。']); } },
+    { id: 'rivel_woman', x: 13, y: 13, sprite: 'villager_f', dir: 'down', wander: 2, talk: async function (c) { await c.say('町の女性', ['噴水の広場は町の自慢よ。看板を見れば、どの建物が何の店かすぐわかるわ。', '酒場では旅の仲間が待っているって聞いたわ。']); } },
+    { id: 'rivel_man', x: 18, y: 19, sprite: 'villager_m', dir: 'down', wander: 2, talk: async function (c) { await c.say('町の男', ['北のエマール山道には山賊が出る。頭目のガロンはやたら強いらしい。', '銀行にゴールドを預けておけば、全滅しても減らないぞ。']); } },
+    { id: 'rivel_child', x: 19, y: 12, sprite: 'child', dir: 'down', wander: 2, talk: async function (c) { await c.say('城下町の子ども', ['王様はね、むかし「相場の勇者」と一緒に魔王をふうじこめたんだって！']); } },
+    { id: 'rivel_merchant', x: 12, y: 24, sprite: 'merchant', dir: 'down', wander: 0, talk: async function (c) { await c.say('露店の商人', ['新鮮な果物はいかが？ ……と言いたいが、売り物は道具屋に卸してしまったよ。', '武器屋の主人は腕のいい鍛冶屋だ。鉄の剣なら間違いない。']); } },
+    { id: 'rivel_scholar', x: 21, y: 26, sprite: 'scholar', dir: 'down', wander: 0, talk: async function (c) { await c.say('学者', ['均衡のクリスタルは大陸に10個あったと記録にある。欲望と恐怖の魔物が増えたのは、それが砕けてからだ。', 'ダウの村の師匠ハケイは、波形を読む術を極めた人物だ。彼に会えば「波形剣士」の道も開けるだろう。']); } },
+    { id: 'rivel_traveler', x: 27, y: 15, sprite: 'villager_m', dir: 'down', wander: 1, talk: async function (c) { await c.say('旅人', ['宿屋の前で一息ついてるところさ。この町の宿は少し高いが、ベッドが柔らかい。']); } }
   ],
-  events: [{ x: 20, y: 22, type: 'inspect', text: ['【立て札】リヴェル城下町\n北：リヴェル城\n西側：武器屋・道具屋・教会・冒険者ギルド\n東側：防具屋・宿屋・酒場・銀行'] }]
+  events: [{ x: 3, y: 26, type: 'inspect', text: ['【立て札】リヴェル城下町\n北：リヴェル城\n西側：武器屋・道具屋・教会・冒険者ギルド\n東側：防具屋・宿屋・酒場・銀行'] }]
   });
 
-  shopInterior('rivel_weapon_shop', '武器屋', 'rivel_town', 5, 6, 'merchant', 'weapon', ['wooden_sword', 'copper_sword', 'iron_sword', 'dagger', 'bronze_dagger', 'spear', 'hand_axe', 'short_bow', 'oak_staff', 'mage_staff', 'club', 'leather_claw'], ['いらっしゃい。職業によって持てる武器が違うから、よく見て選ぶんだぞ。']);
-  shopInterior('rivel_armor_shop', '防具屋', 'rivel_town', 23, 6, 'merchant', 'armor', ['cloth', 'leather_armor', 'chain_mail', 'robe', 'wooden_shield', 'iron_shield', 'leather_cap', 'feather_hat', 'iron_helm', 'ring_guard', 'amulet_life'], ['防具は命を守る。ケチると後悔するよ。']);
-  shopInterior('rivel_item_shop', '道具屋', 'rivel_town', 5, 11, 'merchant', 'item', ['herb', 'potion', 'ether', 'antidote', 'wake_bell', 'calm_water', 'bomb', 'escape_wing', 'tent'], ['冒険の必需品、そろえてるよ。']);
-  innInterior('rivel_inn', 'リヴェルの宿屋', 'rivel_town', 23, 11, 20);
-  churchInterior('rivel_church', 'リヴェル教会', 'rivel_town', 5, 16);
+  shopInterior('rivel_weapon_shop', '武器屋', 'rivel_town', 4, 10, 'merchant', 'weapon', ['wooden_sword', 'copper_sword', 'iron_sword', 'dagger', 'bronze_dagger', 'spear', 'hand_axe', 'short_bow', 'oak_staff', 'mage_staff', 'club', 'leather_claw'], ['いらっしゃい。職業によって持てる武器が違うから、よく見て選ぶんだぞ。']);
+  shopInterior('rivel_armor_shop', '防具屋', 'rivel_town', 26, 10, 'merchant', 'armor', ['cloth', 'leather_armor', 'chain_mail', 'robe', 'wooden_shield', 'iron_shield', 'leather_cap', 'feather_hat', 'iron_helm', 'ring_guard', 'amulet_life'], ['防具は命を守る。ケチると後悔するよ。']);
+  shopInterior('rivel_item_shop', '道具屋', 'rivel_town', 4, 15, 'merchant', 'item', ['herb', 'potion', 'ether', 'antidote', 'wake_bell', 'calm_water', 'bomb', 'escape_wing', 'tent'], ['冒険の必需品、そろえてるよ。']);
+  innInterior('rivel_inn', 'リヴェルの宿屋', 'rivel_town', 26, 15, 20);
+  churchInterior('rivel_church', 'リヴェル教会', 'rivel_town', 4, 21);
 
   // 酒場（仲間の加入・入れ替え）
   add({ id: 'rivel_tavern', name: 'リヴェルの酒場', kind: 'interior', bgm: 'tavern', rows: [
     '############',
-    '#TTTTT_____#',
-    '#__________#',
+    '#TTTTT_qqq_#',
+    '#______q___#',
     '#_t__t__t__#',
     '#__________#',
     '#_t__t__t__#',
     '#__________#',
-    '#__________#',
+    '#q________z#',
     '#####D######'
-  ], warps: [{ x: 5, y: 8, to: 'rivel_town', tx: 23, ty: 16 }],
+  ], warps: [{ x: 5, y: 8, to: 'rivel_town', tx: 26, ty: 20 }],
     npcs: [
       { id: 'rivel_bartender', x: 2, y: 2, sprite: 'bartender', dir: 'down', wander: 0, talk: async function (c) { await c.tavern(); } },
       { id: 'kyle', x: 8, y: 4, sprite: 'kyle', dir: 'left', wander: 0, talk: async function (c) {
@@ -258,14 +252,14 @@
   add({ id: 'rivel_guild', name: '冒険者ギルド', kind: 'interior', bgm: 'town', rows: [
     '############',
     '#KK_TTTT_KK#',
-    '#__________#',
-    '#__________#',
-    '#_S________#',
-    '#__________#',
-    '#_t______t_#',
+    '#____pp____#',
+    '#____pp____#',
+    '#_S__pp_II_#',
+    '#____pp____#',
+    '#_t__pp__t_#',
     '#__________#',
     '#####D######'
-  ], warps: [{ x: 5, y: 8, to: 'rivel_town', tx: 5, ty: 21 }],
+  ], warps: [{ x: 5, y: 8, to: 'rivel_town', tx: 4, ty: 25 }],
     npcs: [
       { id: 'guild_master', x: 5, y: 2, sprite: 'scholar', dir: 'down', wander: 0, talk: async function (c) { await c.guild(); } },
       { id: 'guild_board', x: 2, y: 5, sprite: 'guard', dir: 'down', wander: 0, hidden: true }
@@ -275,15 +269,15 @@
   // 銀行
   add({ id: 'rivel_bank', name: 'リヴェル銀行', kind: 'interior', bgm: 'town', rows: [
     '############',
-    '#__________#',
+    '#I_zz__zz_I#',
     '#_TTTTTTTT_#',
-    '#__________#',
-    '#__________#',
-    '#__________#',
-    '#_t______t_#',
+    '#__pppppp__#',
+    '#__pppppp__#',
+    '#__pppppp__#',
+    '#It______tI#',
     '#__________#',
     '#####D######'
-  ], warps: [{ x: 5, y: 8, to: 'rivel_town', tx: 23, ty: 21 }],
+  ], warps: [{ x: 5, y: 8, to: 'rivel_town', tx: 26, ty: 25 }],
     npcs: [{ id: 'banker', x: 5, y: 1, sprite: 'merchant', dir: 'down', wander: 0, talk: async function (c) { await c.bank(); } }] });
 
   // リヴェル城
@@ -302,7 +296,7 @@
     'C:I:::pppp:::IC',
     'C:::::pppp::::C',
     'CCCCCCCDCCCCCCC'
-  ], warps: [{ x: 7, y: 13, to: 'rivel_town', tx: 14, ty: 2 }],
+  ], warps: [{ x: 7, y: 13, to: 'rivel_town', tx: 15, ty: 6 }],
     chests: [{ id: 'castle1', x: 1, y: 1, item: 'ring_power', qty: 1 }, { id: 'castle2', x: 13, y: 1, gold: 200 }],
     npcs: [
       { id: 'king', x: 7, y: 1, sprite: 'king', dir: 'down', wander: 0, talk: async function (c) {
@@ -334,42 +328,52 @@
   /* =========================================================
      ダウの村（森の村・師匠ハケイ）
      ========================================================= */
-  add({ id: 'dow_village', name: 'ダウの村', kind: 'town', bgm: 'town', fallback: 'grass', rows: [
-    'ffffffffffffffffffff',
-    'ff.......f.........f',
-    'f..RRRRR....VVVVV..f',
-    'f..#oDo#....#oDo#..f',
-    'f....r........r....f',
-    'f....rrrrrrrrrr....f',
-    'f.......r..........f',
-    'f.......r...BBBBB..f',
-    'f..S....r...#oDo#..f',
-    'f.......r.....r....f',
-    'f.......rrrrrrr....f',
-    'f.......r..........f',
-    'f.......r.,........f',
-    'f.......r.......f..f',
-    'ff......r..........f',
-    'ffff...,r,.......fff',
-    'ffffffffrfffffffffff'
+  add({ id: 'dow_village', name: 'ダウの村', kind: 'town', bgm: 'town', fallback: 'grass', style: 'wood', rows: [
+    'FFFFFFFFFFFFFFFFFFFFFF',
+    'FffffffffffffffffffffF',
+    'Ff.BBBBBB....BBBBB..fF',
+    'Ff.BBBBBBPP..BBBBB.,fF',
+    'Ff.BBBBBBPP..BBBBB..fF',
+    'Ff.f..rrrrrrrrrr..j.fF',
+    'FffZ...6.PP..6...Z..fF',
+    'Ff.....fyPPy....,...fF',
+    'Ff.......PP..BBBBB.ffF',
+    'Ff.BBBB..PP..BBBBB..fF',
+    'Ff.BBBB..PP..BBBBB..fF',
+    'Ff.BBBB..Prrrrrr....fF',
+    'Ff...rrrrrP.........fF',
+    'Ff......NPP..J......fF',
+    'FfS....f.PP.e..qq...fF',
+    'Ff..xHHx.PP.........fF',
+    'Ff...,...PP.........fF',
+    'FFFFFFFFFPPFFFFFFFFFFF'
   ],
-  warps: [
-    { x: 8, y: 16, to: 'world', tx: 55, ty: 71, name: '村の外へ' },
-    { x: 5, y: 3, to: 'dow_dojo', tx: 5, ty: 7 }, { x: 14, y: 3, to: 'dow_weapon_shop', tx: 5, ty: 7 }, { x: 14, y: 8, to: 'dow_inn', tx: 5, ty: 7 }
+  buildings: [
+    { id: 'dojo', type: 'dojo', name: '師匠ハケイの修行場', x: 3, y: 2, w: 6, h: 3, doorX: 3, interior: 'dow_dojo', entry: { x: 5, y: 7 } },
+    { id: 'weapon', type: 'weapon', name: '森の武器屋', x: 13, y: 2, w: 5, h: 3, doorX: 2, interior: 'dow_weapon_shop', entry: { x: 5, y: 7 } },
+    { id: 'inn', type: 'inn', name: 'ダウの村の宿屋', x: 13, y: 8, w: 5, h: 3, doorX: 2, interior: 'dow_inn', entry: { x: 5, y: 7 } },
+    { id: 'house', type: 'house', name: '狩人の家', x: 3, y: 9, w: 4, h: 3, doorX: 1, interior: 'dow_house', entry: { x: 5, y: 7 } }
   ],
-  chests: [{ id: 'dow1', x: 16, y: 12, item: 'ether', qty: 2 }],
+  warps: [{ x: 9, y: 17, to: 'world', tx: 55, ty: 71, name: '村の外へ' }, { x: 10, y: 17, to: 'world', tx: 55, ty: 71, name: '村の外へ' }],
+  chests: [{ id: 'dow1', x: 19, y: 15, item: 'ether', qty: 2 }],
   npcs: [
-    { id: 'dow_hunter', x: 12, y: 12, sprite: 'villager_m', dir: 'down', wander: 2, talk: async function (c) { await c.say('狩人', ['この村は森の民の村だ。師匠ハケイは北西の家にいる。', '迷いの森で「トレンド迷子」を見た。あいつに惑わされると、上下がわからなくなるんだ。']); } },
-    { id: 'mina', x: 4, y: 11, sprite: 'mina', dir: 'down', wander: 1, talk: async function (c) {
+    { id: 'dow_hunter', x: 12, y: 13, sprite: 'villager_m', dir: 'down', wander: 2, talk: async function (c) { await c.say('狩人', ['この村は森の民の村だ。師匠ハケイは北西の家にいる。', '迷いの森で「トレンド迷子」を見た。あいつに惑わされると、上下がわからなくなるんだ。']); } },
+    { id: 'mina', x: 4, y: 13, sprite: 'mina', dir: 'down', wander: 1, talk: async function (c) {
       if (c.hasCompanion('mina')) return;
       if (!c.flag('forest_boss')) { await c.say('ミナ', ['あたしはミナ。森の宝を探してるんだけど、トレンド迷子が邪魔で奥に行けないのよね。']); return; }
       await c.say('ミナ', ['トレンド迷子を倒したの!? すごいじゃない！', 'あたし、盗賊のミナ。宝箱を開けるのと逃げ足には自信があるの。あんたたちについていけば、お宝にありつけそう。仲間にしてよ！']);
       var a = await c.choice('ミナを仲間にしますか？', ['はい', 'いいえ']);
       if (a === 0) { c.join('mina'); await c.msg(['ミナが仲間になった！']); }
-    } }
+    } },
+    { id: 'dow_elder_f', x: 17, y: 13, sprite: 'villager_f', dir: 'down', wander: 1, talk: async function (c) { await c.say('村のおばあさん', ['森の恵みで暮らす村じゃよ。倒木や根っこに足を取られぬようにな。', '昔は迷いの森の祠に、みんなでお参りしたものじゃ。']); } }
   ],
-  events: [{ x: 3, y: 8, type: 'inspect', text: ['【立て札】ダウの村\n北西：師匠ハケイの修行場　北東：武器屋　東：宿屋'] }]
+  events: [{ x: 2, y: 14, type: 'inspect', text: ['【立て札】ダウの村\n北西：師匠ハケイの修行場　北東：武器屋\n東：宿屋　西：狩人の家'] }]
   });
+  add({ id: 'dow_house', name: '狩人の家', kind: 'interior', bgm: 'town', rows: [
+    '############', '#E___K_qq__#', '#__________#', '#__t_______#', '#________z_#', '#__________#', '#__________#', '#__________#', '#####D######'
+  ], warps: [{ x: 5, y: 8, to: 'dow_village', tx: 4, ty: 12 }],
+    npcs: [{ id: 'hunter_boy', x: 7, y: 4, sprite: 'child', dir: 'down', wander: 1, talk: async function (c) { await c.say('狩人の息子', ['父さんは弓の名人なんだ。ぼくも森の武器屋で弓を買ってもらうんだ！']); } }] });
+
   add({ id: 'dow_dojo', name: '師匠ハケイの修行場', kind: 'interior', bgm: 'town', rows: [
     '############',
     '#KKKKKKKKKK#',
@@ -380,7 +384,7 @@
     '#__________#',
     '#__________#',
     '#####D######'
-  ], warps: [{ x: 5, y: 8, to: 'dow_village', tx: 5, ty: 4 }],
+  ], warps: [{ x: 5, y: 8, to: 'dow_village', tx: 6, ty: 5 }],
     npcs: [
       { id: 'master_hakei2', x: 5, y: 2, sprite: 'master', dir: 'down', wander: 0, talk: async function (c) { await c.dojo('dow'); } },
       { id: 'lucia', x: 9, y: 5, sprite: 'lucia', dir: 'left', wander: 0, talk: async function (c) {
@@ -391,44 +395,64 @@
         if (a === 0) { c.join('lucia'); await c.msg(['ルシアが仲間になった！']); }
       } }
     ] });
-  shopInterior('dow_weapon_shop', '森の武器屋', 'dow_village', 14, 4, 'merchant', 'weapon', ['copper_sword', 'iron_sword', 'bronze_dagger', 'spear', 'hunter_bow', 'iron_club', 'iron_claw', 'leather_armor', 'scale_armor', 'feather_hat'], ['森の狩人御用達。弓と爪が自慢だ。']);
-  innInterior('dow_inn', 'ダウの村の宿屋', 'dow_village', 14, 9, 15);
+  shopInterior('dow_weapon_shop', '森の武器屋', 'dow_village', 15, 5, 'merchant', 'weapon', ['copper_sword', 'iron_sword', 'bronze_dagger', 'spear', 'hunter_bow', 'iron_club', 'iron_claw', 'leather_armor', 'scale_armor', 'feather_hat'], ['森の狩人御用達。弓と爪が自慢だ。']);
+  innInterior('dow_inn', 'ダウの村の宿屋', 'dow_village', 15, 11, 15);
 
   /* =========================================================
      港町マリナ
      ========================================================= */
-  add({ id: 'harbor_town', name: '港町マリナ', kind: 'town', bgm: 'town', fallback: 'grass', rows: [
-    '....................',
-    '..BBBBB......RRRRR..',
-    '..#oDo#......#oDo#..',
-    '....r..........r....',
-    '....rrrrrrrrrrrr....',
-    '.........r..........',
-    '.........r...VVVVV..',
-    '..S......r...#oDo#..',
-    '.........r.....r....',
-    '.........rrrrrrr....',
-    '.........r..........',
-    'ssssssssssssssssssss',
-    'ssssssss5sssssssssss',
-    'wwwwwwwwwwwwwwwwwwww',
-    '~~~~~~~~~~~~~~~~~~~~'
+  add({ id: 'harbor_town', name: '港町マリナ', kind: 'town', bgm: 'town', fallback: 'grass', style: 'harbor', rows: [
+    '............==............',
+    '..BBBBBB....==..BBBBBB....',
+    '..BBBBBB...y==y.BBBBBB....',
+    '..BBBBBB....==..BBBBBB.xa.',
+    '.....===============...x..',
+    '............==.........x..',
+    '..BBBBB..BBB==..BBBBB.....',
+    '..BBBBB..BBB==..BBBBB.....',
+    '..BBBBB..BBB==..BBBBB.....',
+    '....===============.......',
+    '...........y==y...........',
+    '...AAA..qq..==...zz.AA....',
+    'ssssssssssssddssssssssssss',
+    'ssssssssssssddssssssssssss',
+    'wwwwwwwwwwwwddwwwwwwwwwwww',
+    'wwwwwwwwwwwwddwwwwwwwwwwww',
+    '~~~~~~~~~~~~dd~~~~~~~~~~~~',
+    '~~~~~~~~~~~~~~~~~~~~~~~~~~'
   ],
-  warps: [
-    { x: 10, y: 0, to: 'world', tx: 22, ty: 71, name: '町の外へ' }, { x: 9, y: 0, to: 'world', tx: 22, ty: 71, name: '町の外へ' },
-    { x: 5, y: 2, to: 'harbor_item_shop', tx: 5, ty: 7 }, { x: 15, y: 2, to: 'harbor_inn', tx: 5, ty: 7 }, { x: 15, y: 7, to: 'harbor_tavern', tx: 5, ty: 7 }
+  buildings: [
+    { id: 'inn', type: 'inn', name: 'マリナの宿屋', x: 2, y: 1, w: 6, h: 3, doorX: 3, interior: 'harbor_inn', entry: { x: 5, y: 7 } },
+    { id: 'tavern', type: 'tavern', name: 'マリナの酒場', x: 16, y: 1, w: 6, h: 3, doorX: 3, interior: 'harbor_tavern', entry: { x: 5, y: 7 } },
+    { id: 'item', type: 'item', name: '港の道具屋', x: 2, y: 6, w: 5, h: 3, doorX: 2, interior: 'harbor_item_shop', entry: { x: 5, y: 7 } },
+    { id: 'house', type: 'house', name: '漁師の家', x: 9, y: 6, w: 3, h: 3, doorX: 1, interior: 'harbor_house', entry: { x: 5, y: 7 } },
+    { id: 'warehouse', type: 'warehouse', name: '港の倉庫', x: 16, y: 6, w: 5, h: 3, doorX: 2, interior: 'harbor_warehouse', entry: { x: 5, y: 7 } },
+    { id: 'ship', type: 'ship', name: '修理中の船', x: 5, y: 14, w: 5, h: 2, doorX: 2 }
   ],
-  chests: [{ id: 'harbor1', x: 18, y: 10, item: 'ring_speed', qty: 1 }],
+  warps: [{ x: 12, y: 0, to: 'world', tx: 22, ty: 71, name: '町の外へ' }, { x: 13, y: 0, to: 'world', tx: 22, ty: 71, name: '町の外へ' }],
+  chests: [{ id: 'harbor1', x: 24, y: 10, item: 'ring_speed', qty: 1 }],
   npcs: [
-    { id: 'sailor', x: 8, y: 11, sprite: 'sailor', dir: 'down', wander: 1, talk: async function (c) {
+    { id: 'sailor', x: 12, y: 13, sprite: 'sailor', dir: 'down', wander: 0, talk: async function (c) {
       if (c.has('royal_letter')) await c.say('船乗り', ['王の親書だって!? こりゃ急がねえと。……だが正直に言うと、帆も舵も壊れてて、直すには時の神殿領の部品が要る。', '山道を越えて部品を持ってきてくれたら、この船で海を渡れる。（※この先の物語は今後の更新で追加予定）']);
       else await c.say('船乗り', ['船は嵐でやられちまってな。修理には時間がかかる。王様の口添えでもあれば別だが。']); } },
-    { id: 'harbor_fisher', x: 3, y: 9, sprite: 'villager_m', dir: 'down', wander: 2, talk: async function (c) { await c.say('漁師', ['海の向こうには砂漠の国や魔導王国があるって話だ。', '波を読むのは漁師も同じさ。大きな波（上位足）を見ずに小舟（5分足）だけ見てたら沈んじまう。']); } }
+    { id: 'harbor_fisher', x: 7, y: 10, sprite: 'villager_m', dir: 'down', wander: 2, talk: async function (c) { await c.say('漁師', ['海の向こうには砂漠の国や魔導王国があるって話だ。', '波を読むのは漁師も同じさ。大きな波（上位足）を見ずに小舟（5分足）だけ見てたら沈んじまう。']); } },
+    { id: 'harbor_vendor', x: 4, y: 10, sprite: 'villager_f', dir: 'down', wander: 0, talk: async function (c) { await c.say('市場の女', ['朝獲れの魚だよ！ ……冒険者さんには道具屋のほうが役に立つかもね。']); } },
+    { id: 'harbor_guard', x: 11, y: 1, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say('港の衛兵', ['港町マリナへようこそ。北の道はポヨ村へ続いている。']); } }
   ],
-  events: [{ x: 2, y: 7, type: 'inspect', text: ['【立て札】港町マリナ\n北西：道具屋　北東：宿屋　東：酒場　南：港'] }]
+  events: [{ x: 2, y: 12, type: 'inspect', text: ['【立て札】港町マリナ\n北西：宿屋　北東：酒場\n西：道具屋　東：倉庫　南：桟橋と市場'] }]
   });
-  shopInterior('harbor_item_shop', '港の道具屋', 'harbor_town', 5, 3, 'merchant', 'item', ['herb', 'potion', 'hi_potion', 'ether', 'antidote', 'calm_water', 'phoenix_feather', 'bomb', 'escape_wing', 'tent'], ['船乗り相手の商売だ。品揃えは自慢だよ。']);
-  innInterior('harbor_inn', 'マリナの宿屋', 'harbor_town', 15, 3, 25);
+  add({ id: 'harbor_house', name: '漁師の家', kind: 'interior', bgm: 'town', rows: [
+    '############', '#E___K_____#', '#______qq__#', '#__t_______#', '#__________#', '#_z________#', '#__________#', '#__________#', '#####D######'
+  ], warps: [{ x: 5, y: 8, to: 'harbor_town', tx: 10, ty: 9 }],
+    npcs: [{ id: 'fisher_wife', x: 7, y: 4, sprite: 'villager_f', dir: 'down', wander: 1, talk: async function (c) { await c.say('漁師の妻', ['夫は海ばかり見ているわ。「潮の流れを読めない者は沖に出るな」が口癖なの。']); } }] });
+  add({ id: 'harbor_warehouse', name: '港の倉庫', kind: 'interior', bgm: 'town', rows: [
+    '############', '#zzz__qq_zz#', '#zz______qq#', '#__________#', '#_qq___zz__#', '#__________#', '#zz_____qqq#', '#__________#', '#####D######'
+  ], warps: [{ x: 5, y: 8, to: 'harbor_town', tx: 18, ty: 9 }],
+    chests: [{ id: 'wh1', x: 5, y: 1, item: 'hi_potion', qty: 1 }],
+    npcs: [{ id: 'warehouse_man', x: 6, y: 4, sprite: 'villager_m', dir: 'down', wander: 1, talk: async function (c) { await c.say('倉庫番', ['船が直ったら、この荷物を全部積み込むんだ。', '奥の箱は勝手に開けるなよ……って、冒険者には言っても無駄か。']); } }] });
+
+  shopInterior('harbor_item_shop', '港の道具屋', 'harbor_town', 4, 9, 'merchant', 'item', ['herb', 'potion', 'hi_potion', 'ether', 'antidote', 'calm_water', 'phoenix_feather', 'bomb', 'escape_wing', 'tent'], ['船乗り相手の商売だ。品揃えは自慢だよ。']);
+  innInterior('harbor_inn', 'マリナの宿屋', 'harbor_town', 5, 4, 25);
   add({ id: 'harbor_tavern', name: 'マリナの酒場', kind: 'interior', bgm: 'tavern', rows: [
     '############',
     '#TTTTT_____#',
@@ -439,7 +463,7 @@
     '#__________#',
     '#__________#',
     '#####D######'
-  ], warps: [{ x: 5, y: 8, to: 'harbor_town', tx: 15, ty: 8 }],
+  ], warps: [{ x: 5, y: 8, to: 'harbor_town', tx: 19, ty: 4 }],
     npcs: [
       { id: 'harbor_bartender', x: 2, y: 2, sprite: 'bartender', dir: 'down', wander: 0, talk: async function (c) { await c.tavern(); } },
       { id: 'gald', x: 8, y: 4, sprite: 'gald', dir: 'left', wander: 0, talk: async function (c) {

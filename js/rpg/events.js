@@ -77,9 +77,11 @@
       }
       else if (ev.type === 'boss') {
         if (d.flags[ev.doneFlag]) { await Win.message(['静かだ。魔物の気配はもうない。']); }
+        else if (ev.requireFlag && !d.flags[ev.requireFlag]) { await Win.message(ev.lockedText || ['何かの気配がするが、今はまだ姿を見せない。']); }
         else {
           if (ev.intro) await Win.message(ev.intro);
-          var result = await root.BattleUI.start([ev.enemy], { boss: true });
+          if (ev.optional) { var go = await Win.choice('強敵の気配がする。戦いますか？', ['戦う', 'やめておく']); if (go !== 0) { World.busy = false; World.updateHud(); return; } }
+          var result = await root.BattleUI.start(ev.enemies || [ev.enemy], { boss: true });
           if (result === 'won') {
             d.flags[ev.doneFlag] = true;
             if (ev.after) await Win.message(ev.after);

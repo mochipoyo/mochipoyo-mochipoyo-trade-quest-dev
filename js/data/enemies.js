@@ -1,86 +1,144 @@
 /* =========================================================
    Data / Enemies : モンスター
-   actions: 行動パターン（重み付き）。type: attack / skill / special
-   resist: 属性倍率（1=通常、0.5=半減、2=弱点、0=無効）
-   drops: [{ item, rate }]
-   area: 出現地域の目安（図鑑表示用）
+   ・art: プロシージャル描画（core/monsterart.js）。family ごとにシルエットが違う
+   ・actions: 重み付き行動。hpBelow / hpAbove でHP割合による行動変化（ボスのフェーズ）
+   ・special: spore drain howl scare feint dig crush greed harden flee trial
+              call(仲間を呼ぶ) heal_self(回復) double_attack(2回攻撃) silence(呪文封じ) sweep(全体攻撃) rage(攻撃力上昇)
+   ・resist: 属性倍率（1=通常、0.5=半減、2=弱点、0=無効）
+   ・zone: 出現地域の管理用タグ（world.js / dungeons.js のエンカウントテーブルが実際の出現を決める）
+   ・region: 'reachable'（現在到達可能）/ 'future'（未解放大陸：データのみ）
    ========================================================= */
 (function (root) {
   'use strict';
 
-  var Sprites = root.Sprites;
-  // 亜種グラフィック（既存の形状＋パレット）
-  if (Sprites && Sprites.addVariant) {
-    Sprites.addVariant('slime_red', 'slime', { B: '#e05a5a', E: '#1b1b2a', M: '#6a1a1a' });
-    Sprites.addVariant('slime_metal', 'slime', { B: '#a0a0b8', E: '#1b1b2a', M: '#4a4a5a' });
-    Sprites.addVariant('slime_gold', 'slime', { B: '#e8c15a', E: '#1b1b2a', M: '#8a6a1a' });
-    Sprites.addVariant('bat_fire', 'bat', { B: '#c94a2a', E: '#ffd24a', M: '#3a1a0a' });
-    Sprites.addVariant('bat_ice', 'bat', { B: '#9ab0e0', E: '#ffffff', M: '#2a3a6a' });
-    Sprites.addVariant('bug_poison', 'bug', { B: '#8a5ad0', A: '#c9e84a', E: '#ff3a3a' });
-    Sprites.addVariant('bug_armor', 'bug', { B: '#5a5a6a', A: '#9a9aaa', E: '#ffd24a' });
-    Sprites.addVariant('mushroom_dark', 'mushroom', { C: '#5a2a8a', A: '#c9a0ff', B: '#d0c0e0', E: '#ff3a3a', M: '#3a1a5a' });
-    Sprites.addVariant('snake_ice', 'beast', { B: '#9ab0e0', E: '#ffffff', M: '#c94a4a' });
-    Sprites.addVariant('wolf', 'beast', { B: '#7a7a8a', E: '#ffd24a', M: '#c94a4a' });
-    Sprites.addVariant('wolf_dark', 'beast', { B: '#2a2a3a', E: '#ff3a3a', M: '#8a1a1a' });
-    Sprites.addVariant('lizard_fire', 'beast', { B: '#e05a2a', E: '#ffd24a', M: '#3a0a0a' });
-    Sprites.addVariant('golem_iron', 'golem', { B: '#5a5a6a', A: '#9a9aaa', E: '#5ab0ff', M: '#2a2a3a' });
-    Sprites.addVariant('golem_greed', 'golem', { B: '#c9a24a', A: '#8a1a1a', E: '#ff3a3a', M: '#3a2a0a' });
-    Sprites.addVariant('ghost_dark', 'ghost', { G: '#3a2a5a', E: '#ff6a3a', M: '#1a0a2a' });
-    Sprites.addVariant('skeleton', 'knight', { H: '#e8e8e8', E: '#ff3a3a', B: '#d0d0d0', A: '#8a8a8a', S: '#e8e8e8' });
-    Sprites.addVariant('bandit', 'sword', { H: '#2a1a0a', F: '#e0b080', E: '#1b1b2a', B: '#5a3a1a', A: '#8a1a1a', S: '#e0b080', L: '#2a2a2a', T: '#1a1a1a', W: '#9a9aaa', G: '#5a3a1a' });
-    Sprites.addVariant('dark_mage', 'mage', { H: '#1a0a2a', F: '#c0a0c0', E: '#ff3a6a', B: '#2a0a3a', A: '#8a5ad0', S: '#c0a0c0', L: '#1a0a2a', T: '#1a0a2a', W: '#5a2a8a', G: '#ff3a6a' });
-    Sprites.addVariant('sand_mole', 'beast', { B: '#c9a870', E: '#1b1b2a', M: '#8a5a2a' });
-    Sprites.addVariant('bee', 'bat', { B: '#e8c15a', E: '#1b1b2a', M: '#3a2a0a' });
-    Sprites.addVariant('crab', 'bug', { B: '#e05a3a', A: '#ffa07a', E: '#1b1b2a' });
-    Sprites.addVariant('imp', 'demon', { H: '#c94a4a', E: '#ffd24a', M: '#1a0010', B: '#8a2a2a', A: '#ffd24a' });
-    Sprites.addVariant('greed_demon', 'demon', { H: '#c9a24a', E: '#ff3a3a', M: '#1a0010', B: '#5a3a0a', A: '#ff3a3a' });
-    Sprites.addVariant('fear_shadow', 'ghost', { G: '#1a1a2a', E: '#8fb8ff', M: '#0a0a1a' });
+  // 人間系の敵はキャラクタースプライト（sprites.js）で描く。それ以外は MonsterArt（art）
+  if (root.Sprites && root.Sprites.addVariant) {
+    root.Sprites.addVariant('bandit', 'sword', { H: '#2a1a0a', F: '#e0b080', E: '#1b1b2a', B: '#5a3a1a', A: '#8a1a1a', S: '#e0b080', L: '#2a2a2a', T: '#1a1a1a', W: '#9a9aaa', G: '#5a3a1a' });
+    root.Sprites.addVariant('bandit_archer', 'sword', { H: '#4a2a0a', F: '#e0b080', E: '#1b1b2a', B: '#3a5a2a', A: '#6a4a1a', S: '#e0b080', L: '#2a2a2a', T: '#1a1a1a', W: '#c9a06a', G: '#5a3a1a' });
+    root.Sprites.addVariant('pirate', 'sword', { H: '#c94a4a', F: '#e0b080', E: '#1b1b2a', B: '#2a2a4a', A: '#8a1a1a', S: '#e0b080', L: '#1a1a2a', T: '#1a1a1a', W: '#9a9aaa', G: '#ffd24a' });
+    root.Sprites.addVariant('dark_mage', 'mage', { H: '#1a0a2a', F: '#c0a0c0', E: '#ff3a6a', B: '#2a0a3a', A: '#8a5ad0', S: '#c0a0c0', L: '#1a0a2a', T: '#1a0a2a', W: '#5a2a8a', G: '#ff3a6a' });
   }
-
   var ENEMIES = {};
-  function E(id, o) { o.id = id; o.mp = o.mp || 0; o.mag = o.mag || 0; o.resist = o.resist || {}; o.drops = o.drops || []; o.actions = o.actions || [{ type: 'attack', w: 1 }]; o.family = o.family || 'other'; ENEMIES[id] = o; }
+  function E(id, o) { o.id = id; o.mp = o.mp || 0; o.mag = o.mag || 0; o.resist = o.resist || {}; o.drops = o.drops || []; o.actions = o.actions || [{ type: 'attack', w: 1 }]; o.family = o.family || 'その他'; o.region = o.region || 'reachable'; o.desc = o.desc || ''; ENEMIES[id] = o; }
+  // レベルから基礎ステータスを作る（arche: normal / tank / fast / mage / glass / rare）
+  function statsFor(lv, arche) {
+    var s = { hp: Math.round(18 + lv * 9.5), atk: Math.round(5 + lv * 2.2), def: Math.round(2 + lv * 1.3), agi: Math.round(3 + lv * 0.9), mag: Math.round(lv * 0.8), exp: Math.round(3 + lv * lv * 0.9), gold: Math.round(3 + lv * 1.7) };
+    if (arche === 'tank') { s.hp = Math.round(s.hp * 1.5); s.def = Math.round(s.def * 1.8); s.agi = Math.round(s.agi * 0.6); s.exp = Math.round(s.exp * 1.3); }
+    if (arche === 'fast') { s.hp = Math.round(s.hp * 0.75); s.agi = Math.round(s.agi * 1.9); s.atk = Math.round(s.atk * 0.9); }
+    if (arche === 'mage') { s.hp = Math.round(s.hp * 0.85); s.mag = Math.round(lv * 2.2 + 4); s.mp = 20 + lv * 3; s.exp = Math.round(s.exp * 1.2); }
+    if (arche === 'glass') { s.hp = Math.round(s.hp * 0.6); s.atk = Math.round(s.atk * 1.5); }
+    if (arche === 'rare') { s.hp = Math.round(s.hp * 0.5); s.def = Math.round(s.def * 3); s.agi = Math.round(s.agi * 2); s.exp = Math.round(s.exp * 8); s.gold = Math.round(s.gold * 4); }
+    return s;
+  }
+  function M(id, o) { var s = statsFor(o.lv, o.arche); Object.keys(s).forEach(function (k) { if (o[k] === undefined) o[k] = s[k]; }); E(id, o); }
+  var A = function (type, idOrW, w) { return type === 'attack' ? { type: 'attack', w: idOrW } : { type: type, id: idOrW, w: w }; };
 
-  // ---- 始まりの王国周辺（Lv1〜5） ----
-  E('slime', { name: 'スライム', sprite: 'slime', family: 'スライム系', hp: 26, atk: 7, def: 3, agi: 3, exp: 3, gold: 4, area: '始まりの草原', drops: [{ item: 'herb', rate: 0.2 }] });
-  E('slime_red', { name: 'レッドスライム', sprite: 'slime_red', family: 'スライム系', hp: 40, atk: 9, def: 4, agi: 4, exp: 5, gold: 6, area: 'ダウの大森林', resist: { fire: 0.5, ice: 1.5 }, drops: [{ item: 'herb', rate: 0.2 }] });
-  E('bee', { name: 'キラービー', sprite: 'bee', family: '昆虫系', hp: 22, atk: 9, def: 1, agi: 9, exp: 4, gold: 3, area: '始まりの草原', actions: [{ type: 'attack', w: 3 }, { type: 'skill', id: 'poison_edge', w: 1 }], drops: [{ item: 'antidote', rate: 0.25 }] });
-  E('mushroom', { name: 'まよいキノコ', sprite: 'mushroom', family: '植物系', hp: 35, atk: 8, def: 5, agi: 2, exp: 5, gold: 5, area: 'ダウの大森林', resist: { fire: 2 }, actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'spore', w: 1 }], drops: [{ item: 'wake_bell', rate: 0.2 }] });
-  E('bug', { name: 'レンジバッタ', sprite: 'bug', family: '昆虫系', hp: 31, atk: 8, def: 4, agi: 8, exp: 4, gold: 4, area: '始まりの草原', drops: [{ item: 'herb', rate: 0.15 }] });
-  E('bat', { name: '乖離コウモリ', sprite: 'bat', family: '獣系', hp: 29, atk: 8, def: 3, agi: 10, exp: 4, gold: 4, area: '忘却の洞窟', resist: { light: 1.5 }, actions: [{ type: 'attack', w: 3 }, { type: 'special', id: 'drain', w: 1 }] });
-  E('wolf', { name: 'グレイウルフ', sprite: 'wolf', family: '獣系', hp: 57, atk: 15, def: 5, agi: 9, exp: 9, gold: 8, area: 'ダウの大森林', actions: [{ type: 'attack', w: 3 }, { type: 'special', id: 'howl', w: 1 }], drops: [{ item: 'leather_cap', rate: 0.08 }] });
-  E('snake', { name: 'ならびヘビ', sprite: 'snake', family: '獣系', hp: 44, atk: 11, def: 4, agi: 7, exp: 6, gold: 6, area: 'ダウの大森林', actions: [{ type: 'attack', w: 2 }, { type: 'skill', id: 'poison_edge', w: 1 }], drops: [{ item: 'antidote', rate: 0.2 }] });
-  E('bandit', { name: '山賊', sprite: 'bandit', family: '人間系', hp: 66, atk: 14, def: 6, agi: 6, exp: 10, gold: 18, area: 'エマール山脈', actions: [{ type: 'attack', w: 3 }, { type: 'skill', id: 'steal_strike', w: 1 }], drops: [{ item: 'dagger', rate: 0.1 }, { item: 'potion', rate: 0.15 }] });
-  E('ghost', { name: '5分足ゴースト', sprite: 'ghost', family: 'アンデッド系', hp: 48, atk: 11, def: 8, agi: 6, mag: 6, exp: 8, gold: 7, area: '忘却の洞窟', resist: { light: 2, dark: 0, none: 0.7 }, actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'scare', w: 1 }] });
-  E('skeleton', { name: 'スケルトン', sprite: 'skeleton', family: 'アンデッド系', hp: 75, atk: 16, def: 10, agi: 5, exp: 12, gold: 10, area: '地下墓地', resist: { light: 2, fire: 1.5, dark: 0 }, drops: [{ item: 'copper_sword', rate: 0.05 }] });
-  E('lizard', { name: 'ダマシトカゲ', sprite: 'lizard', family: '獣系', hp: 62, atk: 14, def: 8, agi: 6, exp: 9, gold: 9, area: '忘却の洞窟', actions: [{ type: 'attack', w: 3 }, { type: 'special', id: 'feint', w: 1 }], drops: [{ item: 'scale_armor', rate: 0.04 }] });
-  E('mole', { name: '反転モグラ', sprite: 'mole', family: '獣系', hp: 53, atk: 12, def: 9, agi: 4, exp: 8, gold: 8, area: '忘却の洞窟', actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'dig', w: 1 }] });
-  E('golem', { name: 'ストーンゴーレム', sprite: 'golem', family: 'ゴーレム系', hp: 132, atk: 19, def: 18, agi: 2, exp: 22, gold: 20, area: 'エマール山脈', resist: { thunder: 1.5, fire: 0.5, wind: 0.5 }, actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'crush', w: 1 }] });
-  E('imp', { name: 'インプ', sprite: 'imp', family: '悪魔系', hp: 55, atk: 12, def: 6, agi: 9, mag: 8, exp: 11, gold: 12, area: '忘却の洞窟', resist: { fire: 0.5, light: 1.5 }, actions: [{ type: 'attack', w: 2 }, { type: 'skill', id: 'fireball', w: 2 }] });
-  E('dark_mage', { name: '闇の魔道士', sprite: 'dark_mage', family: '人間系', hp: 70, atk: 9, def: 6, agi: 7, mag: 12, mp: 30, exp: 16, gold: 20, area: 'マクディア魔導王国', actions: [{ type: 'skill', id: 'fireball', w: 2 }, { type: 'skill', id: 'sleep', w: 1 }, { type: 'attack', w: 1 }], drops: [{ item: 'ether', rate: 0.2 }] });
-  E('slime_metal', { name: 'メタルスライム', sprite: 'slime_metal', family: 'スライム系', hp: 18, atk: 8, def: 52, agi: 20, exp: 60, gold: 10, area: 'どこかの草原（レア）', resist: { fire: 0.3, ice: 0.3, thunder: 0.3, wind: 0.3, light: 0.3, dark: 0.3 }, actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'flee', w: 2 }], rare: true });
-  E('bug_poison', { name: 'ポイズンビートル', sprite: 'bug_poison', family: '昆虫系', hp: 66, atk: 15, def: 12, agi: 6, exp: 12, gold: 9, area: 'ダウの大森林（奥）', resist: { fire: 1.5 }, actions: [{ type: 'attack', w: 2 }, { type: 'skill', id: 'poison_mist', w: 1 }], drops: [{ item: 'antidote', rate: 0.3 }] });
-  E('fear_shadow', { name: '恐怖の影', sprite: 'fear_shadow', family: '相場の魔物系', hp: 79, atk: 15, def: 8, agi: 8, mag: 9, exp: 18, gold: 15, area: '忘却の洞窟（深部）', resist: { light: 2, dark: 0 }, actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'scare', w: 1 }, { type: 'special', id: 'trial', w: 1 }], trial: true });
-  E('crab', { name: '岩ガニ', sprite: 'crab', family: '昆虫系', hp: 88, atk: 16, def: 20, agi: 3, exp: 15, gold: 12, area: '波形の海洋群島', resist: { thunder: 1.5 }, actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'crush', w: 1 }] });
-  E('bat_fire', { name: 'ファイアバット', sprite: 'bat_fire', family: '獣系', hp: 66, atk: 16, def: 6, agi: 12, mag: 8, exp: 14, gold: 10, area: 'リシア砂漠', resist: { fire: 0, ice: 2 }, actions: [{ type: 'attack', w: 2 }, { type: 'skill', id: 'fireball', w: 1 }] });
-  E('sand_mole', { name: '砂モグラ', sprite: 'sand_mole', family: '獣系', hp: 84, atk: 18, def: 12, agi: 5, exp: 15, gold: 13, area: 'リシア砂漠', actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'dig', w: 1 }] });
-  E('snake_ice', { name: 'フロストサーペント', sprite: 'snake_ice', family: '獣系', hp: 97, atk: 20, def: 10, agi: 8, mag: 10, exp: 20, gold: 16, area: '忘却の雪原', resist: { ice: 0, fire: 2 }, actions: [{ type: 'attack', w: 2 }, { type: 'skill', id: 'ice', w: 1 }] });
-  E('wolf_dark', { name: 'シャドウウルフ', sprite: 'wolf_dark', family: '獣系', hp: 121, atk: 24, def: 12, agi: 13, exp: 28, gold: 22, area: '暗黒大陸', resist: { dark: 0.5, light: 1.5 }, actions: [{ type: 'attack', w: 3 }, { type: 'special', id: 'howl', w: 1 }] });
-  E('golem_iron', { name: 'アイアンゴーレム', sprite: 'golem_iron', family: 'ゴーレム系', hp: 242, atk: 30, def: 31, agi: 3, exp: 55, gold: 45, area: '資金管理の鉄壁王国', resist: { thunder: 2, fire: 0.5, wind: 0.3 }, actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'crush', w: 1 }] });
-  E('ghost_dark', { name: 'ダークレイス', sprite: 'ghost_dark', family: 'アンデッド系', hp: 106, atk: 19, def: 10, agi: 9, mag: 14, mp: 30, exp: 26, gold: 18, area: '地下墓地', resist: { light: 2, dark: 0, none: 0.7 }, actions: [{ type: 'skill', id: 'dark_bolt', w: 2 }, { type: 'special', id: 'scare', w: 1 }] });
-  E('bug_armor', { name: 'アーマービートル', sprite: 'bug_armor', family: '昆虫系', hp: 114, atk: 20, def: 26, agi: 4, exp: 24, gold: 18, area: 'エマール山脈', resist: { fire: 1.5, thunder: 1.5 }, actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'harden', w: 1 }] });
-  E('slime_gold', { name: 'ゴールドスライム', sprite: 'slime_gold', family: 'スライム系', hp: 66, atk: 11, def: 16, agi: 10, exp: 20, gold: 150, area: 'どこかの森（レア）', actions: [{ type: 'attack', w: 1 }, { type: 'special', id: 'flee', w: 2 }], rare: true });
+  /* ====================== 既存32種（IDとステータスは維持、art を追加） ====================== */
+  E('slime', { name: 'スライム', sprite: 'slime', art: { family: 'slime', size: 'small', c: { base: '#5ab0ff' } }, family: 'スライム系', hp: 26, atk: 7, def: 3, agi: 3, exp: 3, gold: 4, area: '始まりの草原', drops: [{ item: 'herb', rate: 0.2 }], desc: '相場の世界で最もよく見かける魔物。欲望の欠片が固まったもの。' });
+  E('slime_red', { name: 'レッドスライム', sprite: 'slime_red', art: { family: 'slime', c: { base: '#e05a5a' }, angry: true }, family: 'スライム系', hp: 40, atk: 9, def: 4, agi: 4, exp: 5, gold: 6, area: 'ダウの大森林', resist: { fire: 0.5, ice: 1.5 }, drops: [{ item: 'herb', rate: 0.2 }], desc: '熱を帯びた赤いスライム。氷に弱い。' });
+  E('bee', { name: 'キラービー', sprite: 'bee', art: { family: 'insect', size: 'small', wings: true, striped: true, stinger: true, c: { base: '#e8c15a', accent: '#2a2a2a' } }, family: '昆虫系', hp: 22, atk: 9, def: 1, agi: 9, exp: 4, gold: 3, area: '始まりの草原', actions: [A('attack', 3), A('skill', 'poison_edge', 1)], drops: [{ item: 'antidote', rate: 0.25 }], desc: '毒針を持つ蜂。素早いが打たれ弱い。' });
+  E('mushroom', { name: 'まよいキノコ', sprite: 'mushroom', art: { family: 'plant', mushroom: true, c: { base: '#c94a4a', accent: '#ffffff', light: '#e8d9b8' } }, family: '植物系', hp: 35, atk: 8, def: 5, agi: 2, exp: 5, gold: 5, area: 'ダウの大森林', resist: { fire: 2 }, actions: [A('attack', 2), A('special', 'spore', 1)], drops: [{ item: 'wake_bell', rate: 0.2 }], desc: '眠りの胞子をまき散らすキノコ。炎に弱い。' });
+  E('bug', { name: 'レンジバッタ', sprite: 'bug', art: { family: 'insect', size: 'small', c: { base: '#6a9a2a', accent: '#c9e84a' } }, family: '昆虫系', hp: 31, atk: 8, def: 4, agi: 8, exp: 4, gold: 4, area: '始まりの草原', drops: [{ item: 'herb', rate: 0.15 }], desc: '同じところを跳ね回るバッタ。レンジ相場の化身。' });
+  E('bat', { name: '乖離コウモリ', sprite: 'bat', art: { family: 'bird', size: 'small', c: { base: '#5a3a8a', accent: '#8a5ad0', eye: '#ffd24a' } }, family: '獣系', hp: 29, atk: 8, def: 3, agi: 10, exp: 4, gold: 4, area: '忘却の洞窟', resist: { light: 1.5 }, actions: [A('attack', 3), A('special', 'drain', 1)], desc: '洞窟に棲むコウモリ。血を吸って回復する。' });
+  E('wolf', { name: 'グレイウルフ', sprite: 'wolf', art: { family: 'beast', c: { base: '#7a7a8a' } }, family: '獣系', hp: 57, atk: 15, def: 5, agi: 9, exp: 9, gold: 8, area: 'ダウの大森林', actions: [A('attack', 3), A('special', 'howl', 1)], drops: [{ item: 'leather_cap', rate: 0.08 }], desc: '森の狼。遠吠えで攻撃力を上げる。' });
+  E('snake', { name: 'ならびヘビ', sprite: 'snake', art: { family: 'reptile', snake: true, size: 'small', c: { base: '#3b8a3b', accent: '#ffd24a' } }, family: '爬虫類系', hp: 44, atk: 11, def: 4, agi: 7, exp: 6, gold: 6, area: 'ダウの大森林', actions: [A('attack', 2), A('skill', 'poison_edge', 1)], drops: [{ item: 'antidote', rate: 0.2 }], desc: '3本の線のように並んで進む毒蛇。' });
+  E('bandit', { name: '山賊', sprite: 'bandit', family: '人間系', hp: 66, atk: 14, def: 6, agi: 6, exp: 10, gold: 18, area: 'エマール山脈', actions: [A('attack', 3), A('skill', 'steal_strike', 1)], drops: [{ item: 'dagger', rate: 0.1 }, { item: 'potion', rate: 0.15 }], desc: '街道を荒らす山賊。ゴールドを盗む。' });
+  E('ghost', { name: '5分足ゴースト', sprite: 'ghost', art: { family: 'undead', ghost: true, c: { base: '#e8e8f2', eye: '#2a2d4a' } }, family: 'アンデッド系', hp: 48, atk: 11, def: 8, agi: 6, mag: 6, exp: 8, gold: 7, area: '忘却の洞窟', resist: { light: 2, dark: 0, none: 0.7 }, actions: [A('attack', 2), A('special', 'scare', 1)], desc: '5分足だけを見続けた者の霊。物理が効きにくい。' });
+  E('skeleton', { name: 'スケルトン', sprite: 'skeleton', art: { family: 'undead', weapon: true, c: { base: '#e8e8e8', eye: '#ff3a3a' } }, family: 'アンデッド系', hp: 75, atk: 16, def: 10, agi: 5, exp: 12, gold: 10, area: '地下墓地', resist: { light: 2, fire: 1.5, dark: 0 }, drops: [{ item: 'copper_sword', rate: 0.05 }], desc: '損切りを置かずに果てた冒険者の骨。' });
+  E('lizard', { name: 'ダマシトカゲ', sprite: 'lizard', art: { family: 'reptile', c: { base: '#c9a24a', accent: '#c94a4a' } }, family: '爬虫類系', hp: 62, atk: 14, def: 8, agi: 6, exp: 9, gold: 9, area: '忘却の洞窟', actions: [A('attack', 3), A('special', 'feint', 1)], drops: [{ item: 'scale_armor', rate: 0.04 }], desc: 'ダマシの動きで翻弄するトカゲ。' });
+  E('mole', { name: '反転モグラ', sprite: 'mole', art: { family: 'beast', size: 'small', c: { base: '#6b4a2a', accent: '#e8a0a0' } }, family: '獣系', hp: 53, atk: 12, def: 9, agi: 4, exp: 8, gold: 8, area: '忘却の洞窟', actions: [A('attack', 2), A('special', 'dig', 1)], desc: '地面に潜って強い一撃を狙うモグラ。' });
+  E('golem', { name: 'ストーンゴーレム', sprite: 'golem', art: { family: 'golem', size: 'big', c: { base: '#7a7a8a', accent: '#c96b2a' } }, family: 'ゴーレム系', hp: 132, atk: 19, def: 18, agi: 2, exp: 22, gold: 20, area: 'エマール山脈', resist: { thunder: 1.5, fire: 0.5, wind: 0.5 }, actions: [A('attack', 2), A('special', 'crush', 1)], desc: '岩でできた守護者。雷に弱い。' });
+  E('imp', { name: 'インプ', sprite: 'imp', art: { family: 'demon', size: 'small', c: { base: '#c94a4a', accent: '#ffd24a', eye: '#ffd24a' } }, family: '悪魔系', hp: 55, atk: 12, def: 6, agi: 9, mag: 8, exp: 11, gold: 12, area: '忘却の洞窟', resist: { fire: 0.5, light: 1.5 }, actions: [A('attack', 2), A('skill', 'fireball', 2)], desc: '小悪魔。火球を放つ。' });
+  E('dark_mage', { name: '闇の魔道士', sprite: 'dark_mage', family: '人間系', hp: 70, atk: 9, def: 6, agi: 7, mag: 12, mp: 30, exp: 16, gold: 20, area: 'マクディア魔導王国', region: 'future', actions: [A('skill', 'fireball', 2), A('skill', 'sleep', 1), A('attack', 1)], drops: [{ item: 'ether', rate: 0.2 }], desc: '禁じられた魔法を使う魔道士。' });
+  E('slime_metal', { name: 'メタルスライム', sprite: 'slime_metal', art: { family: 'slime', size: 'small', metal: true, c: { base: '#a0a0b8' } }, family: 'スライム系', hp: 18, atk: 8, def: 52, agi: 20, exp: 60, gold: 10, area: 'どこかの草原（レア）', resist: { fire: 0.3, ice: 0.3, thunder: 0.3, wind: 0.3, light: 0.3, dark: 0.3 }, actions: [A('attack', 2), A('special', 'flee', 2)], rare: true, desc: '金属の体を持つ激レアスライム。倒せば大量の経験値。' });
+  E('bug_poison', { name: 'ポイズンビートル', sprite: 'bug_poison', art: { family: 'insect', shell: true, mandibles: true, c: { base: '#8a5ad0', accent: '#c9e84a', eye: '#ff3a3a' } }, family: '昆虫系', hp: 66, atk: 15, def: 12, agi: 6, exp: 12, gold: 9, area: 'ダウの大森林（奥）', resist: { fire: 1.5 }, actions: [A('attack', 2), A('skill', 'poison_mist', 1)], drops: [{ item: 'antidote', rate: 0.3 }], desc: '毒霧を吐く甲虫。' });
+  E('fear_shadow', { name: '恐怖の影', sprite: 'fear_shadow', art: { family: 'market', c: { base: '#1a1a3a', accent: '#8fb8ff', eye: '#8fb8ff' } }, family: '相場の魔物系', hp: 79, atk: 15, def: 8, agi: 8, mag: 9, exp: 18, gold: 15, area: '忘却の洞窟（深部）', resist: { light: 2, dark: 0 }, actions: [A('attack', 2), A('special', 'scare', 1), A('special', 'trial', 1)], trial: true, desc: '損切りを恐れる心が形になった魔物。相場の試練を仕掛ける。' });
+  E('crab', { name: '岩ガニ', sprite: 'crab', art: { family: 'aquatic', crab: true, c: { base: '#e05a3a' } }, family: '水棲系', hp: 88, atk: 16, def: 20, agi: 3, exp: 15, gold: 12, area: '波形の海洋群島', region: 'future', resist: { thunder: 1.5 }, actions: [A('attack', 2), A('special', 'crush', 1)], desc: '硬い甲羅のカニ。' });
+  E('bat_fire', { name: 'ファイアバット', sprite: 'bat_fire', art: { family: 'bird', size: 'small', c: { base: '#c94a2a', accent: '#ffd24a', eye: '#ffd24a' } }, family: '獣系', hp: 66, atk: 16, def: 6, agi: 12, mag: 8, exp: 14, gold: 10, area: 'リシア砂漠', region: 'future', resist: { fire: 0, ice: 2 }, actions: [A('attack', 2), A('skill', 'fireball', 1)], desc: '炎をまとうコウモリ。' });
+  E('sand_mole', { name: '砂モグラ', sprite: 'sand_mole', art: { family: 'beast', size: 'small', c: { base: '#c9a870', accent: '#8a5a2a' } }, family: '獣系', hp: 84, atk: 18, def: 12, agi: 5, exp: 15, gold: 13, area: 'リシア砂漠', region: 'future', actions: [A('attack', 2), A('special', 'dig', 1)], desc: '砂に潜るモグラ。' });
+  E('snake_ice', { name: 'フロストサーペント', sprite: 'snake_ice', art: { family: 'reptile', snake: true, c: { base: '#9ab0e0', accent: '#ffffff' } }, family: '爬虫類系', hp: 97, atk: 20, def: 10, agi: 8, mag: 10, exp: 20, gold: 16, area: '忘却の雪原', region: 'future', resist: { ice: 0, fire: 2 }, actions: [A('attack', 2), A('skill', 'ice', 1)], desc: '氷の息を吐く大蛇。' });
+  E('wolf_dark', { name: 'シャドウウルフ', sprite: 'wolf_dark', art: { family: 'beast', teeth: true, c: { base: '#2a2a3a', eye: '#ff3a3a' } }, family: '獣系', hp: 121, atk: 24, def: 12, agi: 13, exp: 28, gold: 22, area: '暗黒大陸', region: 'future', resist: { dark: 0.5, light: 1.5 }, actions: [A('attack', 3), A('special', 'howl', 1)], desc: '闇に溶ける狼。' });
+  E('golem_iron', { name: 'アイアンゴーレム', sprite: 'golem_iron', art: { family: 'golem', size: 'big', c: { base: '#5a5a6a', accent: '#5ab0ff' } }, family: 'ゴーレム系', hp: 242, atk: 30, def: 31, agi: 3, exp: 55, gold: 45, area: '資金管理の鉄壁王国', region: 'future', resist: { thunder: 2, fire: 0.5, wind: 0.3 }, actions: [A('attack', 2), A('special', 'crush', 1)], desc: '鉄の巨人。雷が弱点。' });
+  E('ghost_dark', { name: 'ダークレイス', sprite: 'ghost_dark', art: { family: 'undead', ghost: true, c: { base: '#3a2a5a', eye: '#ff6a3a' } }, family: 'アンデッド系', hp: 106, atk: 19, def: 10, agi: 9, mag: 14, mp: 30, exp: 26, gold: 18, area: '地下墓地', region: 'future', resist: { light: 2, dark: 0, none: 0.7 }, actions: [A('skill', 'dark_bolt', 2), A('special', 'scare', 1)], desc: '暗黒弾を放つ亡霊。' });
+  E('bug_armor', { name: 'アーマービートル', sprite: 'bug_armor', art: { family: 'insect', shell: true, c: { base: '#5a5a6a', accent: '#9a9aaa', eye: '#ffd24a' } }, family: '昆虫系', hp: 114, atk: 20, def: 26, agi: 4, exp: 24, gold: 18, area: 'エマール山脈', resist: { fire: 1.5, thunder: 1.5 }, actions: [A('attack', 2), A('special', 'harden', 1)], desc: '鎧のような甲羅を持つ。硬化でさらに固くなる。' });
+  E('slime_gold', { name: 'ゴールドスライム', sprite: 'slime_gold', art: { family: 'slime', size: 'small', metal: true, c: { base: '#e8c15a' } }, family: 'スライム系', hp: 66, atk: 11, def: 16, agi: 10, exp: 20, gold: 150, area: 'どこかの森（レア）', actions: [A('attack', 1), A('special', 'flee', 2)], rare: true, desc: '金色に輝くスライム。倒すと大金を落とす。' });
 
-  // ---- ボス ----
-  E('boss_lost_trend', { name: 'トレンド迷子', sprite: 'lostghost', family: '相場の魔物系', boss: true, hp: 480, atk: 19, def: 8, agi: 6, mag: 8, exp: 80, gold: 120, area: '迷いの森',
-    resist: { light: 1.5, dark: 0.5 }, actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'scare', w: 1 }, { type: 'skill', id: 'confuse', w: 1 }, { type: 'special', id: 'trial', w: 1 }], trial: true, trialScenarios: ['clear_up', 'clear_down', 'range'] });
-  E('boss_greed_golem', { name: '欲望のゴーレム', sprite: 'golem_greed', family: '相場の魔物系', boss: true, hp: 880, atk: 29, def: 18, agi: 3, mag: 6, exp: 200, gold: 300, area: '忘却の洞窟',
-    resist: { thunder: 1.5, fire: 0.5, wind: 0.5 }, actions: [{ type: 'attack', w: 2 }, { type: 'special', id: 'crush', w: 2 }, { type: 'special', id: 'greed', w: 1 }, { type: 'special', id: 'trial', w: 1 }], trial: true, trialScenarios: ['up_pullback', 'jump_in', 'mtf_conflict'] });
+  /* ====================== ボス（既存4体） ====================== */
+  E('boss_lost_trend', { name: 'トレンド迷子', sprite: 'lostghost', art: { family: 'undead', ghost: true, size: 'boss', crownish: true, c: { base: '#9ab0c9', eye: '#2a2d4a', accent: '#5ab0ff' } }, family: '相場の魔物系', boss: true, hp: 480, atk: 19, def: 8, agi: 6, mag: 8, exp: 80, gold: 120, area: '迷いの森',
+    resist: { light: 1.5, dark: 0.5 }, actions: [A('attack', 2), A('special', 'scare', 1), A('skill', 'confuse', 1), A('special', 'trial', 1), { type: 'special', id: 'sweep', w: 2, hpBelow: 0.5 }], trial: true, trialScenarios: ['clear_up', 'clear_down', 'range'], desc: '方向を見失った旅人の迷いが集まった魔物。HPが減ると霧で全体を襲う。' });
+  E('boss_greed_golem', { name: '欲望のゴーレム', sprite: 'golem_greed', art: { family: 'golem', size: 'boss', gem: true, c: { base: '#c9a24a', accent: '#ff3a3a', eye: '#ff3a3a' } }, family: '相場の魔物系', boss: true, hp: 880, atk: 29, def: 18, agi: 3, mag: 6, exp: 200, gold: 300, area: '忘却の洞窟',
+    resist: { thunder: 1.5, fire: 0.5, wind: 0.5 }, actions: [A('attack', 2), A('special', 'crush', 2), A('special', 'greed', 1), A('special', 'trial', 1), { type: 'special', id: 'rage', w: 2, hpBelow: 0.4 }, { type: 'special', id: 'double_attack', w: 2, hpBelow: 0.4 }], trial: true, trialScenarios: ['up_pullback', 'jump_in', 'mtf_conflict'], desc: 'クリスタルの欠片を飲み込んだ黄金の巨人。追い詰められると暴走する。' });
   E('boss_bandit_chief', { name: '山賊の頭目ガロン', sprite: 'bandit', family: '人間系', boss: true, hp: 640, atk: 26, def: 12, agi: 8, exp: 140, gold: 250, area: 'エマール山脈',
-    actions: [{ type: 'attack', w: 3 }, { type: 'skill', id: 'full_slash', w: 1 }, { type: 'skill', id: 'war_cry', w: 1 }], drops: [{ item: 'battle_axe', rate: 1 }] });
-  E('boss_greed_demon', { name: '欲望の魔人', sprite: 'greed_demon', family: '相場の魔物系', boss: true, hp: 1280, atk: 36, def: 18, agi: 9, mag: 16, mp: 60, exp: 400, gold: 500, area: '王家の地下通路',
-    resist: { light: 1.5, dark: 0 }, actions: [{ type: 'attack', w: 2 }, { type: 'skill', id: 'dark_bolt', w: 2 }, { type: 'special', id: 'greed', w: 1 }, { type: 'special', id: 'trial', w: 1 }], trial: true, trialScenarios: ['hidden_bull', 'regular_bear', 'bad_rr', 'false_breakout'] });
+    actions: [A('attack', 3), A('skill', 'full_slash', 1), A('skill', 'war_cry', 1), { type: 'special', id: 'call', summon: 'bandit', w: 2, hpBelow: 0.6 }, { type: 'special', id: 'double_attack', w: 2, hpBelow: 0.3 }], drops: [{ item: 'battle_axe', rate: 1 }], desc: '街道を荒らす山賊団の頭目。手下を呼び寄せる。' });
+  E('boss_greed_demon', { name: '欲望の魔人', sprite: 'greed_demon', art: { family: 'demon', size: 'boss', trident: true, c: { base: '#5a3a0a', accent: '#ff3a3a', eye: '#ff3a3a' } }, family: '相場の魔物系', boss: true, hp: 1280, atk: 36, def: 18, agi: 9, mag: 16, mp: 60, exp: 400, gold: 500, area: '王家の地下通路', region: 'future',
+    resist: { light: 1.5, dark: 0 }, actions: [A('attack', 2), A('skill', 'dark_bolt', 2), A('special', 'greed', 1), A('special', 'trial', 1), { type: 'special', id: 'silence', w: 1, hpBelow: 0.7 }, { type: 'special', id: 'heal_self', w: 1, hpBelow: 0.3 }], trial: true, trialScenarios: ['hidden_bull', 'regular_bear', 'bad_rr', 'false_breakout'], desc: '人の欲望が凝縮した魔人。' });
 
-  // 敵の特殊行動の説明（戦闘ロジックが参照）
+  /* ====================== 新規：始まりの草原（Lv1〜3） ====================== */
+  M('slime_green', { name: 'グリーンスライム', lv: 1, art: { family: 'slime', size: 'small', drip: true, c: { base: '#5fc06a' } }, family: 'スライム系', area: '始まりの草原', drops: [{ item: 'herb', rate: 0.25 }], desc: '草むらに溶け込む緑のスライム。' });
+  M('rabbit', { name: 'ツノウサギ', lv: 2, arche: 'fast', art: { family: 'beast', size: 'small', horns: true, c: { base: '#e8d9b8', accent: '#c9a24a' } }, family: '獣系', area: '始まりの草原', actions: [A('attack', 3), A('special', 'flee', 1)], drops: [{ item: 'herb', rate: 0.2 }], desc: '額に角のある兎。逃げ足が速い。' });
+  M('sparrow_hawk', { name: 'ハイタカ', lv: 2, arche: 'fast', art: { family: 'bird', size: 'small', c: { base: '#8a6a4a', accent: '#ffd24a' } }, family: '鳥系', area: '始まりの草原', actions: [A('attack', 2), A('special', 'double_attack', 1)], desc: '2回連続でつつく小さな鷹。' });
+  M('petal', { name: 'ハナビラ', lv: 2, art: { family: 'plant', petals: true, size: 'small', c: { base: '#3f9a3f', accent: '#ff8ab0' } }, family: '植物系', area: '始まりの草原', resist: { fire: 2 }, actions: [A('attack', 2), A('special', 'heal_self', 1)], drops: [{ item: 'herb', rate: 0.3 }], desc: '花びらを散らして自分を癒やす草花の魔物。' });
+  M('slime_blue_big', { name: 'ビッグスライム', lv: 2, hp: 48, atk: 9, def: 4, agi: 2, exp: 8, gold: 8, art: { family: 'slime', size: 'big', big: true, c: { base: '#3f8ad8' } }, family: 'スライム系', area: '始まりの草原', actions: [A('attack', 2), { type: 'special', id: 'call', summon: 'slime', w: 1 }], drops: [{ item: 'potion', rate: 0.1 }], desc: '大きなスライム。小さな仲間を呼ぶ。' });
+
+  /* ====================== 新規：ダウの大森林（Lv3〜6） ====================== */
+  M('crow', { name: '森ガラス', lv: 3, arche: 'fast', art: { family: 'bird', size: 'small', c: { base: '#2a2a3a', accent: '#ffd24a', eye: '#ff3a3a' } }, family: '鳥系', area: 'ダウの大森林', actions: [A('attack', 3), A('skill', 'steal_strike', 1)], desc: '光るものを盗む賢いカラス。' });
+  M('boar', { name: 'イノシシ', lv: 4, art: { family: 'beast', tusks: true, c: { base: '#6b4a2a', accent: '#ffffff' } }, family: '獣系', area: 'ダウの大森林', actions: [A('attack', 2), A('special', 'crush', 2)], drops: [{ item: 'leather_armor', rate: 0.05 }], desc: '突進してくる猪。体当たりが痛い。' });
+  M('maneater', { name: 'マンイーター', lv: 5, art: { family: 'plant', c: { base: '#3f9a3f', accent: '#c94a4a' } }, family: '植物系', area: 'ダウの大森林', resist: { fire: 2, ice: 0.5 }, actions: [A('attack', 2), A('skill', 'poison_edge', 1), A('special', 'sweep', 1)], drops: [{ item: 'antidote', rate: 0.25 }], desc: '人を喰う食虫植物。蔓で全体を薙ぐ。' });
+  M('mushroom_king', { name: 'キノコ大王', lv: 6, arche: 'tank', art: { family: 'plant', mushroom: true, size: 'big', angry: true, crown: true, c: { base: '#8a5ad0', accent: '#ffd24a', light: '#d0c0e0', eye: '#ff3a3a' } }, family: '植物系', area: 'ダウの大森林（奥）', resist: { fire: 2 }, actions: [A('attack', 2), A('special', 'spore', 2), { type: 'special', id: 'call', summon: 'mushroom', w: 1 }], drops: [{ item: 'wake_bell', rate: 0.4 }], desc: 'キノコたちの王。胞子と手下で惑わす。' });
+  M('forest_fairy', { name: '森の精霊', lv: 4, arche: 'mage', art: { family: 'spirit', size: 'small', c: { base: '#7fd37a', accent: '#ffd24a', light: '#e8ffd0', eye: '#2a5a28' } }, family: '精霊系', area: 'ダウの大森林', resist: { wind: 0, dark: 2 }, actions: [A('skill', 'wind_blade', 2), A('special', 'heal_self', 1), A('attack', 1)], drops: [{ item: 'ether', rate: 0.2 }], desc: '風の刃を放つ森の精霊。闇に弱い。' });
+  M('treant', { name: 'トレント', lv: 7, arche: 'tank', art: { family: 'plant', size: 'big', c: { base: '#5a3a1a', accent: '#4fa048' } }, family: '植物系', area: '迷いの森', resist: { fire: 2, wind: 0.5 }, actions: [A('attack', 2), A('special', 'harden', 1), A('special', 'sweep', 1)], drops: [{ item: 'oak_staff', rate: 0.1 }], desc: '歩く古木。炎に弱い。' });
+
+  /* ====================== 新規：南の荒野（Lv4〜7） ====================== */
+  M('vulture', { name: 'ハゲワシ', lv: 5, arche: 'fast', art: { family: 'bird', crest: true, c: { base: '#4a3a3a', accent: '#e8c15a', eye: '#ff3a3a' } }, family: '鳥系', area: '南の荒野', actions: [A('attack', 3), A('special', 'drain', 1)], desc: '弱った獲物を狙う禿鷲。' });
+  M('scorpion', { name: 'サソリ', lv: 5, art: { family: 'insect', stinger: true, mandibles: true, c: { base: '#8a4a2a', accent: '#ffd24a', eye: '#ff3a3a' } }, family: '昆虫系', area: '南の荒野', actions: [A('attack', 2), A('skill', 'poison_edge', 2)], drops: [{ item: 'antidote', rate: 0.3 }], desc: '毒針を持つサソリ。' });
+  M('wild_dog', { name: 'ワイルドドッグ', lv: 4, arche: 'fast', art: { family: 'beast', size: 'small', teeth: true, c: { base: '#a07040', eye: '#ffd24a' } }, family: '獣系', area: '南の荒野', actions: [A('attack', 3), { type: 'special', id: 'call', summon: 'wild_dog', w: 1 }], desc: '群れで襲う野犬。仲間を呼ぶ。' });
+  M('mimic', { name: 'ミミック', lv: 7, arche: 'tank', art: { family: 'magical', mimic: true, c: { base: '#8a5a30', eye: '#ff3a3a' } }, family: '魔法生物系', area: '南の荒野・洞窟', resist: { fire: 1.5 }, actions: [A('attack', 2), A('special', 'double_attack', 1), A('special', 'greed', 1)], drops: [{ item: 'hi_potion', rate: 0.3 }, { item: 'ring_guard', rate: 0.05 }], desc: '宝箱に化けた魔物。欲張ると噛みつかれる。' });
+  M('sand_lizard', { name: '荒野トカゲ', lv: 5, art: { family: 'reptile', frill: true, c: { base: '#c9a870', accent: '#e05a3a' } }, family: '爬虫類系', area: '南の荒野', actions: [A('attack', 3), A('special', 'feint', 1)], desc: 'エリマキを広げて威嚇するトカゲ。' });
+
+  /* ====================== 新規：忘却の洞窟（Lv5〜8） ====================== */
+  M('cave_crab', { name: '洞窟ガニ', lv: 6, arche: 'tank', art: { family: 'aquatic', crab: true, c: { base: '#6a6a7a', eye: '#ffd24a' } }, family: '水棲系', area: '忘却の洞窟', resist: { thunder: 1.5, ice: 0.5 }, actions: [A('attack', 2), A('special', 'crush', 1), A('special', 'harden', 1)], desc: '水たまりに潜む岩色のカニ。' });
+  M('stalactite_golem', { name: '鍾乳石ゴーレム', lv: 7, arche: 'tank', art: { family: 'golem', c: { base: '#8a8a9a', accent: '#9fe0ff' } }, family: 'ゴーレム系', area: '忘却の洞窟', resist: { thunder: 1.5, fire: 0.5 }, actions: [A('attack', 2), A('special', 'crush', 1)], drops: [{ item: 'iron_shield', rate: 0.05 }], desc: '鍾乳石が命を得た守護者。' });
+  M('zombie', { name: 'ゾンビトレーダー', lv: 6, art: { family: 'undead', zombie: true, c: { base: '#7a9a5a', eye: '#ff3a3a' } }, family: 'アンデッド系', area: '忘却の洞窟', resist: { light: 2, dark: 0, fire: 1.5 }, actions: [A('attack', 2), A('skill', 'poison_edge', 1), A('special', 'heal_self', 1)], desc: 'ナンピンを繰り返して果てた者のなれの果て。' });
+  M('floating_eye', { name: 'ウォッチャー', lv: 7, arche: 'mage', art: { family: 'magical', c: { base: '#8a5ad0', accent: '#ff3a6a', eye: '#1a1a2a' } }, family: '魔法生物系', area: '忘却の洞窟', resist: { light: 1.5 }, actions: [A('skill', 'sleep', 1), A('skill', 'confuse', 1), A('special', 'silence', 1), A('attack', 1)], drops: [{ item: 'ether', rate: 0.2 }], desc: '浮遊する目玉。見つめられると呪文を封じられる。' });
+  M('ore_slime', { name: '鉱石スライム', lv: 6, arche: 'tank', art: { family: 'slime', core: true, c: { base: '#4a6a9a', accent: '#9fe0ff' } }, family: 'スライム系', area: '忘却の洞窟', resist: { thunder: 2, fire: 0.5 }, actions: [A('attack', 2), A('special', 'harden', 1)], drops: [{ item: 'ring_power', rate: 0.03 }], desc: '鉱石を核にしたスライム。雷に弱い。' });
+  M('candle_golem', { name: 'ローソク足ゴーレム', lv: 7, art: { family: 'market', candle: true, c: { base: '#4cc38a', eye: '#1a1a2a' } }, family: '相場の魔物系', area: '忘却の洞窟（深部）', actions: [A('attack', 2), A('special', 'double_attack', 1), A('special', 'trial', 1)], trial: true, trialScenarios: ['clear_up', 'up_pullback', 'rci_hot_trend'], desc: '陽線が魔物化したもの。相場の試練を仕掛ける。' });
+  M('bear_shadow', { name: 'ベアの影', lv: 8, arche: 'tank', art: { family: 'market', bear: true, size: 'big', c: { base: '#3a2a2a', eye: '#ff6a3a' } }, family: '相場の魔物系', area: '忘却の洞窟（深部）', resist: { light: 1.5, dark: 0 }, actions: [A('attack', 2), A('special', 'crush', 1), A('special', 'scare', 1), A('special', 'trial', 1)], trial: true, trialScenarios: ['clear_down', 'down_rally', 'mtf_conflict'], desc: '下落相場の恐怖が熊の姿をとった魔物。' });
+
+  /* ====================== 新規：エマール山道（Lv7〜10） ====================== */
+  M('bandit_archer', { name: '山賊弓兵', lv: 8, arche: 'fast', sprite: 'bandit_archer', family: '人間系', area: 'エマール山脈', actions: [A('attack', 2), A('skill', 'snipe', 1), A('skill', 'paralyze_shot', 1)], drops: [{ item: 'short_bow', rate: 0.1 }], desc: '麻痺矢を放つ山賊の弓兵。' });
+  M('rock_lizard', { name: 'ロックリザード', lv: 8, arche: 'tank', art: { family: 'reptile', frill: true, c: { base: '#7a7a8a', accent: '#c96b2a' } }, family: '爬虫類系', area: 'エマール山脈', resist: { thunder: 1.5, fire: 0.5 }, actions: [A('attack', 2), A('special', 'harden', 1), A('special', 'crush', 1)], desc: '岩のような鱗を持つトカゲ。' });
+  M('mountain_hawk', { name: '山鷹', lv: 8, arche: 'fast', art: { family: 'bird', crest: true, c: { base: '#5a4a3a', accent: '#ffd24a' } }, family: '鳥系', area: 'エマール山脈', actions: [A('attack', 2), A('special', 'double_attack', 2)], drops: [{ item: 'feather_hat', rate: 0.08 }], desc: '急降下で2回切り裂く鷹。' });
+  M('mountain_cat', { name: 'ヤマネコ', lv: 9, arche: 'fast', art: { family: 'beast', stripes: true, c: { base: '#e0a040', accent: '#ffffff' } }, family: '獣系', area: 'エマール山脈', actions: [A('attack', 3), A('skill', 'vital_strike', 1)], desc: '急所を狙う山猫。会心が出やすい。' });
+  M('rock_golem', { name: 'ロックゴーレム', lv: 10, arche: 'tank', art: { family: 'golem', size: 'big', rune: true, c: { base: '#6a6a7a', accent: '#ffd24a' } }, family: 'ゴーレム系', area: 'エマール山脈', resist: { thunder: 2, fire: 0.5, wind: 0.3 }, actions: [A('attack', 2), A('special', 'crush', 2), { type: 'special', id: 'rage', w: 1, hpBelow: 0.4 }], drops: [{ item: 'iron_helm', rate: 0.05 }], desc: 'ルーンを刻まれた岩の巨人。追い詰めると怒る。' });
+  M('harpy', { name: 'ハーピー', lv: 9, arche: 'mage', art: { family: 'bird', size: 'big', crest: true, c: { base: '#c94a8a', accent: '#ffd24a' } }, family: '鳥系', area: 'エマール山脈', resist: { wind: 0.5 }, actions: [A('skill', 'wind_blade', 2), A('skill', 'sleep', 1), A('attack', 1)], desc: '歌で眠らせ、風の刃で襲う。' });
+
+  /* ====================== レア・強敵（到達可能地域） ====================== */
+  M('slime_rainbow', { name: 'レインボースライム', lv: 6, arche: 'rare', art: { family: 'slime', core: true, c: { base: '#ff8ab0', accent: '#5ab0ff', light: '#ffffff' } }, family: 'スライム系', area: 'どこかの森（超レア）', rare: true, resist: { fire: 0.5, ice: 0.5, thunder: 0.5 }, actions: [A('attack', 1), A('special', 'flee', 3)], drops: [{ item: 'elixir', rate: 0.5 }], desc: '七色に輝く幻のスライム。エリクサーを落とすことがある。' });
+  M('wolf_king', { name: '森の狼王', lv: 9, arche: 'tank', boss: true, art: { family: 'beast', size: 'boss', horns: true, crown: true, c: { base: '#c0c0d0', accent: '#e8c15a', eye: '#ff3a3a' } }, family: '獣系', area: '迷いの森（隠しボス）', actions: [A('attack', 2), A('special', 'howl', 1), A('special', 'double_attack', 2), { type: 'special', id: 'call', summon: 'wolf', w: 2, hpBelow: 0.5 }], drops: [{ item: 'tiger_claw', rate: 1 }], desc: '迷いの森に君臨する白銀の狼。群れを呼ぶ。' });
+  M('crystal_golem', { name: 'クリスタルゴーレム', lv: 11, arche: 'tank', boss: true, art: { family: 'golem', size: 'boss', gem: true, c: { base: '#9fd0ff', accent: '#ffffff', light: '#ffffff' } }, family: 'ゴーレム系', area: '忘却の洞窟（隠しボス）', resist: { thunder: 2, fire: 0.5, ice: 0 }, actions: [A('attack', 2), A('special', 'crush', 1), A('special', 'harden', 1), A('special', 'silence', 1), { type: 'special', id: 'heal_self', w: 1, hpBelow: 0.3 }], drops: [{ item: 'sage_staff', rate: 1 }], desc: 'クリスタルの力で動く巨人。自己修復する。' });
+
+  /* ====================== 未解放大陸用（データのみ） ====================== */
+  M('cactus', { name: 'サボテンマン', lv: 10, art: { family: 'plant', size: 'small', c: { base: '#3f9a6a', accent: '#ff8ab0' } }, family: '植物系', area: 'リシア砂漠', region: 'future', resist: { fire: 1.5, ice: 2 }, actions: [A('attack', 2), A('special', 'sweep', 1)], desc: '針を飛ばすサボテン。' });
+  M('mummy', { name: 'ミイラ', lv: 12, arche: 'tank', art: { family: 'undead', zombie: true, c: { base: '#d8c8a0', eye: '#ff3a3a' } }, family: 'アンデッド系', area: 'リシア砂漠', region: 'future', resist: { fire: 2, light: 2, dark: 0 }, actions: [A('attack', 2), A('special', 'silence', 1)], desc: '包帯を巻いた亡者。炎に弱い。' });
+  M('sphinx', { name: 'スフィンクス像', lv: 14, arche: 'tank', boss: true, art: { family: 'golem', size: 'boss', rune: true, c: { base: '#c9a870', accent: '#5ab0ff' } }, family: 'ゴーレム系', area: 'リシア砂漠', region: 'future', actions: [A('attack', 2), A('special', 'trial', 2), A('special', 'crush', 1)], trial: true, desc: '謎かけ（相場の試練）を出す石像。' });
+  M('snow_wolf', { name: 'スノーウルフ', lv: 12, arche: 'fast', art: { family: 'beast', c: { base: '#eef3ff', eye: '#5ab0ff' } }, family: '獣系', area: '忘却の雪原', region: 'future', resist: { ice: 0 }, actions: [A('attack', 3), A('special', 'howl', 1)], desc: '雪原の白狼。' });
+  M('ice_spirit', { name: '氷の精霊', lv: 13, arche: 'mage', art: { family: 'spirit', c: { base: '#9fe0ff', accent: '#ffffff', light: '#ffffff', eye: '#2a4a8a' } }, family: '精霊系', area: '忘却の雪原', region: 'future', resist: { ice: 0, fire: 2 }, actions: [A('skill', 'blizzard', 2), A('skill', 'ice', 1)], desc: '吹雪を呼ぶ精霊。' });
+  M('yeti', { name: 'イエティ', lv: 14, arche: 'tank', art: { family: 'market', bear: true, size: 'big', c: { base: '#e8e8f0', eye: '#2a4a8a' } }, family: '獣系', area: '忘却の雪原', region: 'future', resist: { ice: 0.5 }, actions: [A('attack', 2), A('special', 'crush', 2), A('special', 'rage', 1)], desc: '雪山の巨人。' });
+  M('gargoyle', { name: 'ガーゴイル', lv: 13, art: { family: 'demon', c: { base: '#6a6a7a', accent: '#8a8a9a', eye: '#ffd24a' } }, family: '悪魔系', area: 'マクディア魔導王国', region: 'future', resist: { thunder: 1.5 }, actions: [A('attack', 2), A('special', 'harden', 1), A('special', 'double_attack', 1)], desc: '石像に宿った悪魔。' });
+  M('magitek', { name: '魔導機兵', lv: 15, arche: 'tank', art: { family: 'machine', antenna: true, c: { base: '#8a8a9a', accent: '#ff3a3a' } }, family: '機械系', area: 'マクディア魔導王国', region: 'future', resist: { thunder: 2, fire: 0.5, dark: 0 }, actions: [A('attack', 2), A('skill', 'thunder', 2), A('special', 'silence', 1)], desc: '魔導王国の自動兵器。' });
+  M('kraken', { name: 'クラーケン', lv: 16, arche: 'tank', boss: true, art: { family: 'aquatic', octopus: true, size: 'boss', angry: true, c: { base: '#5a3a8a', accent: '#ff3a6a' } }, family: '水棲系', area: '波形の海洋群島', region: 'future', resist: { thunder: 2, fire: 0.5 }, actions: [A('attack', 2), A('special', 'sweep', 2), A('special', 'crush', 1), { type: 'special', id: 'rage', w: 1, hpBelow: 0.4 }], desc: '海を渡る者を飲み込む巨大なタコ。' });
+  M('dragon_red', { name: 'レッドドラゴン', lv: 18, arche: 'tank', boss: true, art: { family: 'reptile', dragon: true, size: 'boss', c: { base: '#c94a2a', accent: '#ffd24a' } }, family: 'ドラゴン系', area: '暗黒大陸', region: 'future', resist: { fire: 0, ice: 1.5 }, actions: [A('attack', 2), A('skill', 'firestorm', 2), A('special', 'sweep', 1), { type: 'special', id: 'double_attack', w: 2, hpBelow: 0.5 }], desc: '炎を吐く竜。' });
+  M('bull_shadow', { name: 'ブルの影', lv: 12, art: { family: 'market', bull: true, size: 'big', c: { base: '#5a3a1a', accent: '#e8e8e8', eye: '#ff3a3a' } }, family: '相場の魔物系', area: '時の神殿領', region: 'future', actions: [A('attack', 2), A('special', 'crush', 2), A('special', 'trial', 1)], trial: true, trialScenarios: ['false_breakout', 'jump_in', 'bad_rr'], desc: '上昇相場の過熱が牛の姿をとった魔物。飛び乗りを誘う。' });
+  M('chart_wraith', { name: 'チャートの亡霊', lv: 13, arche: 'mage', art: { family: 'market', c: { base: '#1a1a3a', accent: '#ffd24a', eye: '#ff6a3a' } }, family: '相場の魔物系', area: '時の神殿領', region: 'future', resist: { light: 2, dark: 0 }, actions: [A('skill', 'dark_bolt', 2), A('special', 'scare', 1), A('special', 'trial', 1)], trial: true, desc: '損失の記憶が亡霊となったもの。' });
+  M('demon_knight', { name: 'デーモンナイト', lv: 17, arche: 'tank', art: { family: 'demon', trident: true, size: 'big', c: { base: '#3a1a3a', accent: '#c94a4a', eye: '#ff3a3a' } }, family: '悪魔系', area: '暗黒大陸', region: 'future', resist: { dark: 0, light: 2 }, actions: [A('attack', 2), A('skill', 'full_slash', 1), A('special', 'double_attack', 1), A('special', 'silence', 1)], desc: '魔王の親衛隊。' });
+  M('dark_slime', { name: 'ダークスライム', lv: 15, art: { family: 'slime', spikes: true, drip: true, c: { base: '#2a1a3a', accent: '#8a5ad0', eye: '#ff3a6a' } }, family: 'スライム系', area: '暗黒大陸', region: 'future', resist: { dark: 0, light: 2 }, actions: [A('attack', 2), A('skill', 'dark_bolt', 1), { type: 'special', id: 'call', summon: 'dark_slime', w: 1 }], desc: '闇の棘を持つスライム。分裂する。' });
+  M('wisp', { name: 'ウィスプ', lv: 11, arche: 'fast', art: { family: 'spirit', size: 'small', c: { base: '#ff8a2a', accent: '#ffd24a', light: '#ffe08a' } }, family: '精霊系', area: 'リシア砂漠', region: 'future', resist: { fire: 0, ice: 2 }, actions: [A('skill', 'fireball', 2), A('attack', 1)], desc: '火の玉の精霊。' });
+  M('pirate', { name: '海賊', lv: 11, sprite: 'pirate', family: '人間系', area: '波形の海洋群島', region: 'future', actions: [A('attack', 3), A('skill', 'steal_strike', 1), A('skill', 'double_slash', 1)], desc: '海を荒らす海賊。' });
+  M('sea_serpent', { name: 'シーサーペント', lv: 14, art: { family: 'reptile', snake: true, size: 'big', c: { base: '#2f76c4', accent: '#9fe0ff' } }, family: '水棲系', area: '波形の海洋群島', region: 'future', resist: { thunder: 2 }, actions: [A('attack', 2), A('skill', 'ice', 1), A('special', 'sweep', 1)], desc: '海の大蛇。' });
+  M('ruin_guardian', { name: '遺跡の守護者', lv: 15, arche: 'tank', art: { family: 'machine', c: { base: '#c9a870', accent: '#5ab0ff' } }, family: '機械系', area: '時の神殿領', region: 'future', resist: { thunder: 1.5 }, actions: [A('attack', 2), A('special', 'crush', 1), A('special', 'harden', 1)], desc: '古代文明が残した番人。' });
+  M('demon_lord', { name: '相場魔王', lv: 25, arche: 'tank', boss: true, art: { family: 'demon', size: 'boss', trident: true, c: { base: '#1a0a2a', accent: '#ff3a3a', eye: '#ffd24a' } }, family: '相場の魔物系', area: '魔王城', region: 'future', resist: { dark: 0, light: 1.5 }, actions: [A('attack', 2), A('skill', 'meteor', 1), A('skill', 'dark_bolt', 2), A('special', 'greed', 1), A('special', 'trial', 1), { type: 'special', id: 'double_attack', w: 2, hpBelow: 0.5 }, { type: 'special', id: 'heal_self', w: 1, hpBelow: 0.2 }], trial: true, desc: '欲望と恐怖を統べる魔王。' });
+
+  // 敵の特殊行動
   var ENEMY_SPECIALS = {
     spore: { name: '眠りの胞子', msg: 'は眠りの胞子をまき散らした！', status: { id: 'sleep', chance: 0.5 }, target: 'allies' },
     drain: { name: '吸血', msg: 'は血を吸った！', power: 0.8, drain: true },
@@ -92,7 +150,13 @@
     greed: { name: '欲望の誘惑', msg: 'は「全部つぎ込めば一発逆転だ」と誘惑した！', status: { id: 'confuse', chance: 0.5 }, target: 'allies' },
     harden: { name: '硬化', msg: 'は体を硬くした！', buff: { def: 0.5 }, turns: 3, self: true },
     flee: { name: '逃走', msg: 'は逃げ出した！', flee: true },
-    trial: { name: '相場の試練', msg: 'はチャートを突きつけてきた！', trial: true }
+    trial: { name: '相場の試練', msg: 'はチャートを突きつけてきた！', trial: true },
+    call: { name: '仲間を呼ぶ', msg: 'は仲間を呼んだ！', call: true },
+    heal_self: { name: '自己回復', msg: 'は傷を癒やした！', heal: 0.25 },
+    double_attack: { name: '連続攻撃', msg: 'の連続攻撃！', power: 0.85, hits: 2 },
+    silence: { name: '沈黙の呪い', msg: 'は呪文を封じる呪いをかけた！', status: { id: 'silence', chance: 0.6 }, target: 'allies' },
+    sweep: { name: 'なぎ払い', msg: 'は全体をなぎ払った！', power: 0.75, all: true },
+    rage: { name: '怒り', msg: 'は怒り狂った！ 攻撃力が大きく上がった', buff: { atk: 0.5, agi: 0.2 }, turns: 4, self: true }
   };
 
   var ENEMY_LIST = Object.keys(ENEMIES);

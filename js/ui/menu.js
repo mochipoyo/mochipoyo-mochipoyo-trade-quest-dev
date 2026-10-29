@@ -120,12 +120,46 @@
     await Win.list(ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; return { label: (q.main ? '【メイン】' : '【サブ】') + q.title, right: st.state === 'done' ? '達成' : (q.counter ? (d.counters[q.counter] || 0) + '/' + q.need : '進行中'), sub: q.desc, cls: st.state === 'done' ? 'done' : '' }; }), { title: 'クエスト' });
   };
 
+  /* ---------- モンスター図鑑 ---------- */
+  var EL = { fire: '炎', ice: '氷', thunder: '雷', wind: '風', light: '光', dark: '闇', none: '物理' };
+  Menu.bestiary = async function () {
+    var d = State.data; var all = root.ENEMY_LIST;
+    var ids = all.filter(function (id) { return ENEMIES[id].region !== 'future' || d.bestiary[id]; });
+    var seen = ids.filter(function (id) { return d.bestiary[id]; });
+    var defeated = ids.filter(function (id) { return d.bestiary[id] && d.bestiary[id].defeated > 0; });
+    var pct = Math.round(seen.length / ids.length * 100);
+    var rows = ids.map(function (id, n) {
+      var e = ENEMIES[id]; var b = d.bestiary[id];
+      if (!b) return '<div class="bs-row unknown"><div class="bs-no">' + (n + 1) + '</div><div class="bs-img"></div><div class="bs-body"><div class="bs-name">？？？</div><div class="bs-sub muted">未発見　' + esc(e.area) + '</div></div></div>';
+      var kills = b.defeated || 0; var known = kills > 0 || b.scanned;
+      var weak = Object.keys(e.resist).filter(function (k) { return e.resist[k] > 1; }).map(function (k) { return EL[k] || k; });
+      var res = Object.keys(e.resist).filter(function (k) { return e.resist[k] < 1; }).map(function (k) { return (EL[k] || k) + (e.resist[k] === 0 ? '無効' : ''); });
+      var drops = e.drops.map(function (dr) { return ITEMS[dr.item] ? ITEMS[dr.item].name : dr.item; });
+      var detail = '';
+      if (known) detail += '<div class="bs-line">弱点：' + (weak.length ? weak.join('・') : 'なし') + '　耐性：' + (res.length ? res.join('・') : 'なし') + '</div>';
+      if (b.scanned || kills >= 3) detail += '<div class="bs-line">落とす：' + (drops.length ? drops.join('・') : 'なし') + '</div>';
+      else if (known && drops.length) detail += '<div class="bs-line muted">落とす：？？？（3体倒すか「スキャン」で判明）</div>';
+      if (b.scanned || kills >= 1) detail += '<div class="bs-line muted">HP ' + e.hp + '　攻 ' + e.atk + '　防 ' + e.def + '　速 ' + e.agi + '　EXP ' + e.exp + '　' + e.gold + 'G</div>';
+      if (known && e.desc) detail += '<div class="bs-desc">' + esc(e.desc) + '</div>';
+      return '<div class="bs-row' + (e.boss ? ' boss' : '') + '" data-id="' + id + '"><div class="bs-no">' + (n + 1) + '</div><div class="bs-img" data-id="' + id + '"></div><div class="bs-body"><div class="bs-name">' + esc(e.name) + (e.boss ? ' <span class="bs-tag">BOSS</span>' : '') + (e.rare ? ' <span class="bs-tag rare">レア</span>' : '') + '<span class="bs-kills">討伐 ' + kills + '</span></div><div class="bs-sub muted">' + esc(e.family) + '　' + esc(e.area) + '</div>' + detail + '</div></div>';
+    }).join('');
+    var html = '<div class="rw-title">モンスター図鑑</div><div class="bs-head">発見 ' + seen.length + '/' + ids.length + '（' + pct + '%）　討伐済み ' + defeated.length + '種<div class="bar"><span style="width:' + pct + '%"></span></div></div><div class="bs-list">' + rows + '</div>';
+    await Win.panel(html, { cls: 'bestiary', setup: function (node) {
+      node.querySelectorAll('.bs-img[data-id]').forEach(function (box) {
+        var e = ENEMIES[box.getAttribute('data-id')]; var img;
+        if (e.art && root.MonsterArt) img = root.MonsterArt.image(e.art, 1, 0);
+        else if (root.Sprites && root.Sprites.has(e.sprite)) { img = document.createElement('canvas'); root.Sprites.draw(img, e.sprite, 3, false); }
+        if (!img) return; var c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); c.className = 'bs-canvas'; box.appendChild(c);
+      });
+    } });
+  };
+
   Menu.encyclopedia = async function () {
     while (true) {
       var i = await Win.choice('図鑑', ['モンスター図鑑', 'アイテム図鑑', '職業一覧', '冒険の記録', 'やめる']);
       if (i < 0 || i === 4) return;
       var d = State.data;
-      if (i === 0) { var ids = root.ENEMY_LIST; var seen = ids.filter(function (id) { return d.bestiary[id]; }); await Win.list(ids.map(function (id) { var e = ENEMIES[id]; var b = d.bestiary[id]; return b ? { label: e.name, right: (e.boss ? 'BOSS ' : '') + '討伐' + (b.defeated || 0), sub: e.family + '／' + e.area + (b.scanned ? '／HP' + e.hp + ' 攻' + e.atk + ' 防' + e.def + ' 速' + e.agi : '') } : { label: '？？？', right: '', sub: '未発見', disabled: true }; }), { title: 'モンスター図鑑（' + seen.length + '/' + ids.length + '）' }); }
+      if (i === 0) { await Menu.bestiary(); }
       else if (i === 1) { var iids = root.ITEM_LIST; await Win.list(iids.map(function (id) { var it = ITEMS[id]; var known = d.inventory[id] || d.flags['seen_item_' + id] || State.partyActors().some(function (a) { return Object.keys(a.equip).some(function (s) { return a.equip[s] === id; }); }); return known ? { label: it.name, right: ({ weapon: '武器', armor: '防具', consumable: '道具', key: '大事なもの' })[it.cat], sub: it.desc || '' } : { label: '？？？', disabled: true, sub: '未入手' }; }), { title: 'アイテム図鑑' }); }
       else if (i === 2) { await Win.list(root.JOB_LIST.map(function (j) { var J = JOBS[j]; return { label: J.name, right: J.role, sub: J.desc + '　固有：' + J.trait }; }), { title: '職業一覧' }); }
       else if (i === 3) { var ch = root.STORY_CHAPTERS.filter(function (c) { return !c.flag || d.flags[c.flag]; }); var cur = ch[ch.length - 1]; await Win.panel('<div class="rw-title">冒険の記録</div><div>現在：' + esc(cur.title) + '</div><div class="muted small">歩数 ' + d.steps + '　訪れた場所 ' + Object.keys(d.visited).length + '　開けた宝箱 ' + Object.keys(d.chests).length + '　仲間 ' + (Object.keys(d.companions).length + 1) + '人　預金 ' + d.bank + 'G</div><div class="muted small">クリスタルの欠片：' + (d.inventory.crystal_shard || 0) + (d.flags.shard_returned ? '（王に届けた）' : '') + '</div>'); }
