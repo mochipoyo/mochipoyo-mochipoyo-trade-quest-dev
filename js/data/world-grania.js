@@ -43,9 +43,10 @@
     { id: 'verum_town', name: '灰鉱町ヴェルム', icon: 'village', x: 56, y: 58, to: 'verum_town', tx: 20, ty: 29 },
     { id: 'iron_mine', name: '鉄鎖鉱山', icon: 'cave_icon', x: 86, y: 34, to: 'iron_mine_1', tx: 1, ty: 14 },
     { id: 'ash_shore', name: '灰の浜の番小屋', icon: 'village', x: 34, y: 52, to: 'ash_shore_hut', tx: 5, ty: 7 },
-    { id: 'iron_fort', name: '鉄冠将軍の砦', icon: 'castle_icon', x: 106, y: 26, to: 'iron_fort_gate', tx: 5, ty: 7, needFlag: 'iron_fort_open' }
+    { id: 'iron_fort', name: '鉄冠将軍の砦', icon: 'castle_icon', x: 106, y: 26, to: 'iron_fort_gate', tx: 5, ty: 7, needFlag: 'iron_fort_open' },
+    { id: 'grania_pass_s', name: '灰の峠（南口）', icon: 'cave_icon', x: 60, y: 24, to: 'grania_pass', tx: 7, ty: 14 }
   ];
-  var ROADS = [[[34, 52], [56, 58]], [[56, 58], [86, 34]], [[86, 34], [106, 26]]];
+  var ROADS = [[[34, 52], [56, 58]], [[56, 58], [86, 34]], [[86, 34], [106, 26]], [[56, 58], [60, 24]]];
   var def = root.makeWorldRegion({
     id: 'world_grania', name: 'グラニア鉱業地方', MACRO: MACRO, W: 160, H: 120, SEED: 20261105, LOCATIONS: LOCATIONS, ROADS: ROADS, bgm: 'field',
     chests: [{ id: 'g1', x: 40, y: 50, item: 'hi_potion', qty: 2 }, { id: 'g2', x: 70, y: 70, gold: 400 }, { id: 'g3', x: 96, y: 46, item: 'iron_armor', qty: 1 }, { id: 'g4', x: 50, y: 84, item: 'hi_ether', qty: 1 }, { id: 'g5', x: 96, y: 70, item: 'tent', qty: 2 }],

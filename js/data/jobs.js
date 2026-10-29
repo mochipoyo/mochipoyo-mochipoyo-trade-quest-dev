@@ -58,6 +58,15 @@
       skills: [{ lv: 1, id: 'stoploss_shield' }, { lv: 4, id: 'higher_tf_eye' }, { lv: 8, id: 'patience_stance' }, { lv: 12, id: 'risk_barrier' }, { lv: 16, id: 'macd_strike' }], trait: '状態異常耐性' }
   };
 
+  // v5.1 新職業（第6〜7章で解放）。sprite は既存の歩行スプライトを流用
+  JOBS.auditor = { name: '監査官', sprite: 'scholar', desc: '帳簿と契約を見抜く専門家。敵の弱点と強化を暴く。', role: '支援・魔法',
+    stats: { hp: 25, mp: 14, atk: 4, def: 5, agi: 7, mag: 9 }, growth: { hp: 5.0, mp: 2.6, atk: 1.1, def: 1.4, agi: 1.5, mag: 2.2 },
+    weapons: ['staff', 'dagger', 'club'], armors: ['robe', 'light', 'hat', 'acc'],
+    skills: [{ lv: 1, id: 'audit_eye' }, { lv: 5, id: 'ledger_bolt' }, { lv: 9, id: 'contract_break' }, { lv: 14, id: 'weaken' }], trait: '宝箱のゴールド+20%／敵の弱点を見抜きやすい', unlock: { level: 10, flag: 'elna_joined' } };
+  JOBS.oath_knight = { name: '誓約騎士', sprite: 'hero_knight', desc: '仲間を守る誓いを立てた騎士。かばって反撃し、全員の守りを固める。', role: '守りの盾役',
+    stats: { hp: 38, mp: 8, atk: 8, def: 12, agi: 4, mag: 4 }, growth: { hp: 8.5, mp: 1.2, atk: 2.0, def: 2.8, agi: 0.8, mag: 0.7 },
+    weapons: ['sword', 'spear', 'club'], armors: ['heavy', 'light', 'shield', 'helm', 'acc'],
+    skills: [{ lv: 1, id: 'oath_guard' }, { lv: 6, id: 'shield_bash' }, { lv: 10, id: 'oath_wall' }, { lv: 15, id: 'judgment_blade' }], trait: 'かばった時の被ダメージ-20%', unlock: { level: 10, flag: 'ord_joined' } };
   var JOB_LIST = Object.keys(JOBS);
   var STARTER_JOBS = ['warrior', 'mage', 'priest', 'monk', 'thief', 'merchant', 'hunter', 'knight'];
 

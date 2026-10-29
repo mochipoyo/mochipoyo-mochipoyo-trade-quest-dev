@@ -200,6 +200,7 @@
       if (sk.cover) { a.cover = true; a.counter = !!sk.counter; msg(a.name + 'は仲間をかばう構えをとった'); }
       if (sk.scan) { targets.forEach(function (t) { var weak = Object.keys(t.resist || {}).filter(function (k) { return t.resist[k] > 1; }); var drop = (t.drops || []).map(function (d) { return ITEMS[d.item] ? ITEMS[d.item].name : d.item; }); msg(t.name + '：HP ' + t.hp + '/' + t.maxHp + '、弱点：' + (weak.length ? weak.map(elName).join('・') : 'なし') + (drop.length ? '、落とす：' + drop.join('・') : '')); root.State.data.bestiary[t.defId] = Object.assign(root.State.data.bestiary[t.defId] || {}, { scanned: true }); }); }
       if (sk.expose) { targets.forEach(function (t) { t.exposed = 3; var tend = (t.actions || []).map(function (a) { return a.type === 'attack' ? '通常攻撃' : a.type === 'skill' ? (SKILLS[a.id] ? SKILLS[a.id].name : a.id) : (root.ENEMY_SPECIALS[a.id] ? root.ENEMY_SPECIALS[a.id].name : a.id); }).filter(function (v, i, arr) { return arr.indexOf(v) === i; }); msg(t.name + 'の行動傾向：' + tend.join('・') + '。防御の隙を見抜いた（弱点露出）'); ev.push({ type: 'anim', side: 'enemy', idx: t.idx, anim: 'light' }); }); }
+      if (sk.dispel) { targets.forEach(function (t) { var had = Object.keys(t.buffs || {}).length; t.buffs = {}; msg(t.name + 'の' + (had ? '強化を打ち消した' : '強化はない')); }); }
       if (sk.buffAll) { aliveParty(b).forEach(function (t) { Object.keys(sk.buffAll).forEach(function (k) { t.buffs[k] = { value: sk.buffAll[k], turns: sk.turns || 3 }; }); }); msg('味方全体の素早さが上がった'); }
       if (sk.gold && sk.power) { targets.forEach(function (t) { var dmg = Math.max(1, Math.round(sk.gold * sk.power * rnd(0.9, 1.1) - estats(t).def * 0.2)); t.hp = Math.max(0, t.hp - dmg); ev.push({ type: 'damage', side: 'enemy', idx: t.idx, value: dmg, anim: 'hit' }); msg(t.name + 'に' + dmg + 'のダメージ'); if (t.hp <= 0) killEnemy(b, t, ev); }); }
     }
@@ -277,6 +278,8 @@
     var dmg = physDamage(es.atk, ps.def, power, { crit: Math.random() < 1 / 24 });
     if (t.job === 'warrior') dmg = Math.round(dmg * 0.95);
     if (opts.element && opts.element !== 'none' && Actors.stats(t).mdef) dmg = Math.round(dmg * 0.9);
+    // v5.1 装備の受動効果：dmgReduce（単体攻撃の軽減）、cover 中の誓約騎士は -20%
+    var red = 0; Object.keys(t.equip || {}).forEach(function (sl) { var it = t.equip[sl] && ITEMS[t.equip[sl]]; if (it && it.dmgReduce && !opts.all) red = Math.max(red, it.dmgReduce); }); if (t.cover && t.job === 'oath_knight') red = Math.max(red, 0.2); if (red) dmg = Math.round(dmg * (1 - red));
     t.hp = Math.max(0, t.hp - dmg);
     ev.push({ type: 'damage', side: 'party', id: t.id, value: dmg, anim: 'hit' });
     ev.push({ type: 'msg', text: t.name + 'に' + dmg + 'のダメージ' });

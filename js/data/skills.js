@@ -76,6 +76,13 @@
     dow_eye: { name: 'ダウの眼', kind: 'special', target: 'enemy', mp: 3, scan: true, expose: true, desc: '敵の行動傾向と弱点を見抜き、3ターン防御を崩す', anim: 'buff' },
     ema_blessing: { name: 'EMAの加護', kind: 'buff', target: 'allies', mp: 5, buff: { def: 0.3 }, turns: 3, desc: '味方全体の防御力を上げる（3本の線が守る）', anim: 'buff' },
     rci_counter: { name: 'RCIリバーサル（反転）', kind: 'debuff', target: 'enemy', mp: 4, buff: { atk: -0.3 }, turns: 3, desc: '過熱した敵の攻撃力を下げる', anim: 'dark' },
+    // v5.1 新職業：監査官・誓約騎士
+    audit_eye: { name: '監査の眼', kind: 'special', target: 'enemy', mp: 3, scan: true, expose: true, desc: '敵の隠した弱点と行動を見抜き、3ターン防御を崩す', anim: 'buff' },
+    contract_break: { name: '契約破り', kind: 'special', target: 'enemies', mp: 5, dispel: true, desc: '敵全体の能力上昇（強化）を打ち消す', anim: 'dark' },
+    ledger_bolt: { name: '帳簿の裁き', kind: 'magic', target: 'enemy', mp: 6, power: 1.8, element: 'light', desc: '記録の光で敵を撃つ', anim: 'light' },
+    oath_guard: { name: '誓約の盾', kind: 'special', target: 'self', mp: 3, cover: true, counter: true, desc: 'このターン仲間をかばい、反撃する', anim: 'buff' },
+    oath_wall: { name: '誓いの壁', kind: 'buff', target: 'allies', mp: 6, buff: { def: 0.25 }, turns: 3, desc: '味方全体の防御力を上げる', anim: 'buff' },
+    judgment_blade: { name: '裁きの剣', kind: 'attack', target: 'enemy', mp: 7, power: 2.0, element: 'light', desc: '誓いを込めた一撃', anim: 'light' },
     macd_hidden_strike: { name: 'MACDヒドゥンストライク', kind: 'attack', target: 'enemy', mp: 9, power: 2.2, element: 'light', desc: '隠れた継続の力を一点に集める特殊攻撃', anim: 'light' }
   };
 

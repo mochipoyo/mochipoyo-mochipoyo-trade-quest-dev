@@ -289,4 +289,31 @@
     { x: 9, y: 5, type: 'inspect', solid: false, text: ['鉱石の山。砦へ送られるはずだったものだ。淡く脈打つように光っている。', '鉱石に触れると、頭の中に声が流れ込む。「損をしたくない……二度と……」'] }
   ],
   encounters: { rate: 0.035, zones: [{ name: '鉄鎖鉱山', test: function () { return true; }, groups: [['drill_golem'], ['chain_warden', 'mine_imp'], ['smoke_wraith', 'smoke_wraith'], ['ash_golem', 'ore_bat']], level: 13 }] } });
+
+  /* ---------- 灰の峠（グラニア → カリオン徴収連邦。第5章ヴェルム解放後に関所が開く） ---------- */
+  add({ id: 'grania_pass', name: '灰の峠', kind: 'dungeon', bgm: 'dungeon', fallback: 'grass', rows: [
+    'mmmmmmmmmmmmmmmm',
+    'mmmmmmm.mmmmmmmm',
+    'mmmmmmm.mmmmmmmm',
+    'mmmmmm...mmmmmmm',
+    'mmmmmm.....mmmmm',
+    'mmmmmm...m.mhmmm',
+    'mm...mmmm...mmmm',
+    'mm..........mmmm',
+    'mm...mmmm...mmmm',
+    'mmm.mhmmmmmmmmmm',
+    'mmm.mmmmmmmmmmmm',
+    'mmm.....mmmmmmmm',
+    'mmhmmmm.mmmmmmmm',
+    'mmmmmmm.mmmmmmmm',
+    'mmmmmmm.mmmmmmmm',
+    'mmmmmmmmmmmmmmmm'
+  ],
+  warps: [{ x: 7, y: 14, to: 'world_grania', tx: 60, ty: 26, name: 'グラニア側へ' }, { x: 7, y: 1, to: 'world_kalion', tx: 60, ty: 105, name: 'カリオン側へ' }],
+  chests: [{ id: 'gp1', x: 6, y: 4, item: 'hi_potion', qty: 2 }, { id: 'gp2', x: 2, y: 7, gold: 500 }],
+  events: [
+    { x: 3, y: 9, type: 'gate', solid: true, doneFlag: 'kalion_open', needFlag: 'verum_liberated', questStart: 'main_6', text: ['連邦の関所。「魔災復興税の納付証なき者、通行を禁ず」', '柵の向こうに兵の影はない。……ヴェルムの自治会が発行する通行証があれば通れるだろう。'], openText: ['ヴェルム自治会の通行証を見せた。柵が開く。', 'この先はカリオン徴収連邦——腐敗した政府の都市だ。'] },
+    { x: 7, y: 4, type: 'inspect', solid: false, text: ['峠の石碑。「ここより北、カリオン徴収連邦」', '誰かが削った跡がある。「税は人を守らない」'] }
+  ],
+  encounters: { rate: 0.04, zones: [{ name: 'エマール山脈', test: function () { return true; }, groups: [['mountain_hawk', 'mountain_hawk'], ['rock_lizard'], ['ash_golem'], ['chain_hound', 'chain_hound'], ['bandit_archer', 'bandit'], ['harpy']], level: 12 }] } });
 })(typeof window !== 'undefined' ? window : globalThis);

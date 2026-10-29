@@ -30,10 +30,14 @@
       summary: 'MACD(6,13,4)、通常・ヒドゥンダイバージェンス、波形・上位足との整合',
       lesson: ['【MACD(6,13,4)】通常ダイバージェンス：価格が安値を切り下げているのにMACDが切り上げ（強気）／価格が高値を切り上げているのにMACDが切り下げ（弱気）。勢いの衰えを示す。', '【ヒドゥンダイバージェンス】価格が安値を切り上げているのにMACDが切り下げ（強気）／価格が高値を切り下げているのにMACDが切り上げ（弱気）。トレンド継続を示す。', 'ダイバージェンス単独では使わない。波形（ダウ理論）と上位足の方向に整合して初めて根拠になる。'],
       scenarios: ['hidden_bull', 'hidden_bear', 'regular_bull', 'regular_bear', 'div_against_htf', 'div_bear_against_htf'], reward: { exp: 200, gold: 700, item: 'elixir' } },
-    { id: 'learn_risk', chapter: 7, region: '灰鉱町ヴェルム（地下の集会所）', title: '資金管理の試練', topic: 'risk', required: true, mapId: 'verum_hideout', minScore: 60, ability: 'stoploss_shield', next: null,
+    { id: 'learn_risk', chapter: 7, region: '灰鉱町ヴェルム（地下の集会所）', title: '資金管理の試練', topic: 'risk', required: true, mapId: 'verum_hideout', minScore: 60, ability: 'stoploss_shield', next: 'learn_record',
       summary: '損切り、リスクリワード、ロット管理、連敗時の判断、無理なエントリーの回避',
       lesson: ['【損切り】エントリー前に必ず決める。直近スイングの外側が基本。損切りなしは最も危険。', '【リスクリワード】利確幅は損切り幅の1.5〜3倍を参考に。悪い場面は見送る。', '【ロット管理】1トレードの損失を資金の1〜2%程度に抑える。連敗したら休む、ロットを上げて取り返そうとしない。', '根拠が揃わない場面・飛び乗り・リスクリワードの悪い場面は見送る。見送りも判断。'],
       scenarios: ['bad_rr', 'bad_rr_sell', 'jump_in', 'jump_in_down', 'pullback_tight_sl', 'whipsaw', 'false_breakout'], reward: { exp: 250, gold: 1000, item: 'elixir' } },
+    { id: 'learn_record', chapter: 8, region: '徴収都市カリオン（財務局）', title: '記録と検証の試練', topic: 'reason', required: true, mapId: 'kalion_finance', minScore: 60, next: null,
+      summary: '判断の根拠を記録し、結果と照らして検証する。根拠のない判断を「記録」で見抜く',
+      lesson: ['【記録】エントリーも見送りも、判断した理由（上位足の環境・波形・EMA・RCI・MACD）をその場で記録する。あとから理由を付け足さない。', '【検証】結果ではなく「根拠が揃っていたか」で振り返る。根拠が揃って負けたトレードは正しい。根拠がなくて勝ったトレードは間違い。', '【証拠】「なんとなく」「取り返したい」は根拠ではない。記録に書けない理由でのエントリーは見送る。', '帳簿と同じで、記録は書く人を守る。記録のない判断は、あとで誰にも（自分にも）検証できない。'],
+      scenarios: ['mtf_conflict', 'div_against_htf', 'breakout_retest', 'reversal_confirmed_up', 'false_breakout', 'whipsaw', 'up_pullback_1h'], reward: { exp: 300, gold: 1200, item: 'elixir' } },
     // ---- 任意の練習（石碑）：短時間で挑戦。報酬は小さめ・初回のみ ----
     { id: 'practice_forest', chapter: 2, region: 'ダウの森', title: '波形の石碑', topic: 'dow', required: false, mapId: 'lost_forest', scenarios: ['clear_up', 'clear_down', 'range', 'up_pullback', 'range_high', 'clear_up_5m'], reward: { exp: 15, gold: 40 } },
     { id: 'practice_dow_road', chapter: 2, region: 'ダウの森', title: '旅人の石碑', topic: 'dow', required: false, mapId: 'world', scenarios: ['down_rally', 'false_breakout', 'clear_down', 'false_breakdown', 'clear_down_5m'], reward: { exp: 15, gold: 40 } },
@@ -41,6 +45,8 @@
     { id: 'practice_cave', chapter: 5, region: 'RCIの洞窟', title: '反転の石碑', topic: 'rci', required: false, mapId: 'oblivion_cave_1', scenarios: ['rci_hot_trend', 'rci_cold_trend', 'up_pullback', 'up_pullback_5m', 'regular_bull', 'mtf_conflict'], reward: { exp: 30, gold: 80 } },
     { id: 'practice_grania', chapter: 7, region: 'グラニア鉱業地方', title: '灰野の石碑', topic: 'risk', required: false, mapId: 'world_grania', scenarios: ['bad_rr', 'bad_rr_sell', 'pullback_tight_sl', 'jump_in_down'], reward: { exp: 40, gold: 120 } },
     { id: 'practice_mine', chapter: 7, region: '鉄鎖鉱山', title: '坑道の石碑', topic: 'skip', required: false, mapId: 'iron_mine_2', scenarios: ['whipsaw', 'false_breakdown', 'rci_cold_trend', 'div_against_htf'], reward: { exp: 50, gold: 150 } },
+    { id: 'practice_kalion', chapter: 8, region: 'カリオン徴収連邦', title: '平野の石碑', topic: 'reason', required: false, mapId: 'world_kalion', scenarios: ['reversal_confirmed_down', 'breakout_retest', 'mtf_conflict_up', 'jump_in', 'range_high'], reward: { exp: 60, gold: 200 } },
+    { id: 'practice_archive', chapter: 8, region: '地下記録庫', title: '記録庫の石碑', topic: 'swing', required: false, mapId: 'kalion_archive_2', scenarios: ['up_pullback', 'down_rally', 'hidden_bull', 'regular_bear', 'div_bear_against_htf'], reward: { exp: 70, gold: 250 } },
     { id: 'practice_cave2', chapter: 5, region: 'RCIの洞窟', title: '深部の石碑', topic: 'rci', required: false, mapId: 'oblivion_cave_2', scenarios: ['down_rally', 'down_rally_5m', 'regular_bear', 'hidden_bear', 'bad_rr', 'mtf_conflict_up'], reward: { exp: 35, gold: 90 } }
   ];
 

@@ -74,7 +74,7 @@
   Events.run = async function (ev) {
     var d = State.data; World.busy = true;
     try {
-      if (ev.type === 'inspect') { await Win.message(ev.text); }
+      if (ev.type === 'inspect') { await Win.message(ev.text); if (ev.onceFlag) d.flags[ev.onceFlag] = true; }
       else if (ev.type === 'board') { await root.Services.questBoard(); }
       else if (ev.type === 'locked') {
         if (d.flags[ev.doneFlag]) { /* 開いている */ }
@@ -85,6 +85,11 @@
         if (d.flags[ev.doneFlag]) { /* 開いている */ }
         else if (root.Growth && root.Growth.rankReached(ev.rank)) { d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); await Win.message(['扉に刻まれた波形の紋章が、あなたの称号「' + root.Growth.title() + '」に応えて光った。', '扉が開いた！']); }
         else await Win.message((ev.text || ['波形の紋章が刻まれた扉だ。']).concat(['トレーダーランク ' + root.RANK_UNLOCKS[ev.rank].letter + '（' + root.RANK_UNLOCKS[ev.rank].title + '）以上の者に開く。今のランク：' + root.TradeEval.rank(d.trade).letter + '（最高到達 ' + root.RANK_UNLOCKS[root.Growth ? root.Growth.rankBest() : 0].letter + '）', 'ランクは判断の質で上がる。メニューの「トレード修行」で条件を確認できる。']));
+      }
+      else if (ev.type === 'gate') {   // v5.1: フラグで開く関所（鍵アイテム不要）
+        if (d.flags[ev.doneFlag]) { /* 開いている */ }
+        else if (ev.needFlag && d.flags[ev.needFlag]) { d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); await Win.message(ev.openText || ['関所が開いた。']); if (ev.questStart) Events.questStart(ev.questStart); }
+        else await Win.message(ev.text || ['通れない。']);
       }
       else if (ev.type === 'learn') { await root.Learning.run(ev.learnId); World.applyState(World.map); }
       else if (ev.type === 'trial' && ev.learnId) {   // 必修の学習イベント（扉）：教え→試練。合格で扉が開く。達成後は復習できる
