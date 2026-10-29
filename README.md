@@ -1,4 +1,4 @@
-# もちぽよFXクエスト ～波形の勇者と相場の魔王～（JRPG版 v3.2）
+# もちぽよFXクエスト ～波形の勇者と相場の魔王～（JRPG版 v3.3）
 
 2DトップビューのJRPGとして、アルカディア相場大陸を歩き、町で買い物をし、仲間を集め、ダンジョンに挑み、ターン制バトルで戦いながら、FXトレードの判断（上位足・ダウ理論・EMA・RCI・MACD・資金管理）を「チャートの試練」で学べるブラウザゲームです。
 
@@ -8,6 +8,44 @@
 - セーブはブラウザの LocalStorage（3スロット＋オートセーブ）。JSONの書き出し／読み込みも可能
 
 ---
+
+## v3.3 歩行スプライト＋不足画像の補完 報告
+
+> 作業ブランチ: `feature/graphics-v3`。v3.1 のアセット管理（`asset-manifest.js` / `assets.js` / `asset-preview.html`）を拡張。ID・セーブ・計算・クエスト・移動仕様は変更なし。
+
+### 最初に正直な注意
+このセッションには**画像生成ツールがありません**。そのため今回追加した画像（歩行32種・モンスター10・NPC2）は、すべて**コードで描いたドット絵**です（`docs/tools/walker.js` ＋ `js/core/monsterart.js`）。立ち絵と同じ髪型・髪色・服装・装備・配色を手で定義して「同一人物に見える」ようにしましたが、添付シートのAI画風（滑らかな陰影）とは**画風が異なります**。マニフェストでは `style: 'procedural'` を付けて区別しており、同じパスに差し替えるだけで後から置き換えられます。
+
+### 数で報告
+| 項目 | 結果 |
+|---|---|
+| 4方向歩行 | **32 / 32**（職業12・仲間6・NPC14）— 全て 16×24 × 3フレーム × 4方向（down, left, right, up）のシート、コード生成 |
+| 不足モンスター | **5 / 5**（lizard, sand_lizard, rock_lizard, ghost_dark, treant）— MonsterArt の新デザイン（トカゲ＋エリマキ／亡霊＋鎌／歩く古木）、コード生成 |
+| 不足人間系敵 | **5 / 5**（bandit, bandit_archer, pirate, dark_mage, boss_bandit_chief）— 歩行生成器の正面を拡大（ボスは7倍・髭・傷・大斧）、コード生成 |
+| 不足NPC | **2 / 2**（scholar, shadow）— 立ち絵（正面6倍）＋歩行シート、コード生成 |
+| 実装済み総画像数 | **147**（モンスター83・職業12・仲間6・NPC14・歩行32）。ファイル数115（歩行は1キャラ1シート） |
+| フォールバック残数 | **0**（マニフェスト上 `use:false` なし。読み込み失敗時のみ Chars/MonsterArt/Sprites に自動フォールバック） |
+| 添付シート由来（AI画風） | モンスター73・職業12・仲間6・NPC12 ＝ 103 |
+| コード生成（procedural） | モンスター10・NPC2・歩行32 ＝ 44 |
+
+### 変更したファイル
+- `js/core/assets.js`: `Assets.walkFrame(spriteId, dir, frame)` 追加（シートから切り出し位置を返す。未登録・失敗時は null）
+- `js/core/map.js`: `drawChar` の優先順位を **1) overworld シート → 2) Chars.frame → 3) Sprites** に。足元中央をタイル下端に合わせ 2倍表示（32×48px、頭はタイルの上にはみ出す）。y順ソートは従来どおり
+- `js/rpg/world.js`: 歩行サイクル `phase`（待機→左足→待機→右足）を主人公・NPCに追加（既存の `frame` は残す）
+- `js/core/monsterart.js`: `lizard`（トカゲ）・`wraith`（亡霊）・`tree`（古木）の描画を追加
+- `js/data/enemies.js`: 上記5体の `art` を新デザインへ（ステータス等は変更なし）
+- `js/data/asset-manifest.js`: `overworld` 区分（path, w, h, frameW, frameH, cols, rows, dirOrder, frames, scale, anchor, status, use, fallback, style, note）、`style`/`note` の追加
+- `asset-preview.html`: 歩行スプライト一覧（シート＋4方向アニメ）、use/fallback 表示、コード生成の印
+- `docs/tools/walker.js`: 歩行スプライト生成器（32キャラ＋人間系敵の定義）。ゲーム実行には不要
+- 新規画像: `assets/characters/overworld/*.png` 32枚、`assets/monsters/{lizard,sand_lizard,rock_lizard,ghost_dark,treant,bandit,bandit_archer,pirate,dark_mage,boss_bandit_chief}.png`、`assets/characters/npcs/{scholar,shadow}.png`
+
+### テスト結果
+- 自動（jsdom）: 歩行32IDがマニフェストに存在・48×96・frame16×24・dirOrder一致、**up が down の流用でない／left と right が異なる／3フレームが互いに異なる**ことをピクセル比較で確認（shadow は左右対称のため除外）。全115ファイル存在・透過・寸法一致。既存テスト（37マップ到達性・通しプレイ・敵データ）通過
+- 実ブラウザ（Chromium PC 900×640、JSエラー0・404なし・60fps）: 147画像すべて読み込み成功。主人公を右→下→左→上に歩かせ、内部座標 (12,16)→(14,16)→(14,18)→(9,18)→(9,13) と向き・歩行フェーズが更新されることを確認。全12職業の歩行シートが取得できること、転職（魔法使い）で見た目が変わること、町のNPC（child/villager_f/villager_m/guard/merchant/scholar/mina/sailor）が新シートであること。人間系4体・トカゲ3体・亡霊＋古木・山賊の頭目（112×168）が戦闘で `assets` から描画され、図鑑でも同じ画像。会話ウィンドウで研究者（scholar）の立ち絵。セーブ/ロード正常。スクリーンショット: `docs/screens_v3_3.png`、シート一覧: `docs/walk_sheets.png`、新規画像: `docs/new_images_v3_3.png`、確認ページ: `docs/asset_preview_page.png`
+- 未検証: iPhone/Android 実機、GitHub Pages 上での読み込み
+
+### 未完了・今後
+- 画風の統一（AI画風の歩行スプライト・不足12画像）は、画像生成ツールのある環境で `docs/walk_sheets.png` と立ち絵を参考に制作し、**同じファイル名で `assets/` に置き換えるだけ**で反映されます（シートは 48×96、3列×4行 down/left/right/up、足元中央基準）
 
 ## v3.2 ミニマップ・ワールドマップ 報告
 
@@ -55,7 +93,7 @@
 | 職業（主人公の立ち絵） | **12 / 12** | 画像B最上段を左から順に warrior〜master に対応 |
 | 仲間 | **6 / 6** | 画像B2段目を左から リーナ・カイル・ミナ・セリス・ガルド・ルシア |
 | NPC | **12 / 14** | scholar（研究者）・shadow（旧版用）は該当なし → 従来描画 |
-| 4方向歩行スプライト | **0 / 32** | 未制作（下記）。フィールドは従来の `core/chars.js` を使用 |
+| 4方向歩行スプライト | **0 / 32**（v3.1時点。v3.3 で 32/32 をコード生成で実装） | |
 
 - **不足画像の一覧**: モンスター `bandit`（山賊）`bandit_archer`（山賊弓兵）`pirate`（海賊）`dark_mage`（闇の魔道士）`boss_bandit_chief`（山賊の頭目ガロン＝ボス）、NPC `scholar` `shadow`
 - **画像はあるが不使用（名前と見た目が不一致）**: `lizard`（ダマシトカゲ→黄色いげっ歯類）、`sand_lizard`／`rock_lizard`（→帽子をかぶった犬）、`ghost_dark`（ダークレイス→紫のタコ）、`treant`（→マンイーターと同じ食虫植物）。`js/data/asset-manifest.js` の該当項目を `use: true` にすれば即使用できます
@@ -174,7 +212,7 @@ mochipoyo-trade-quest/
     ├── rpg/    actors.js(成長・装備・転職) state.js(セーブ・移行) combat.js(ターン制戦闘ロジック) world.js(探索シーン) events.js(イベントAPI)
     ├── ui/     windows.js(RPG風ウィンドウ) battle.js(戦闘画面) minimap.js(ミニマップ・拡大マップ) menu.js services.js(店・宿・教会・酒場・ギルド・銀行・修行場) trade.js(チャートの試練) title.js audio.js
     └── main.js
-└── assets/ monsters/ characters/{jobs,companions,npcs}/ （切り出し済みPNG）
+└── assets/ monsters/ characters/{jobs,companions,npcs,overworld}/ （切り出し済みPNG＋歩行シート）
 └── docs/   asset-mapping.md screens_v3_1.png before_after.png monsters_v3.png battle_v3.png（報告用スクリーンショット。公開には不要）
 ```
 

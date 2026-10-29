@@ -35,6 +35,12 @@
   Assets.image = function (kind, id) { var e = Assets.entry(kind, id); if (!e || e.use === false || !e.path) return null; var img = Assets.images[key(kind, id)]; return img && img.complete && img.naturalWidth > 0 ? img : null; };
   Assets.status = function (kind, id) { var e = Assets.entry(kind, id); if (!e) return 'unknown'; if (e.use === false) return e.status; var k = key(kind, id); if (Assets.failed[k]) return 'load_error'; return Assets.images[k] ? 'loaded' : 'loading'; };
 
+  // 歩行スプライト（シート）：spriteId（hero_warrior / lina / elder ...）と向き・フレームから切り出し位置を返す。なければ null → Chars.frame にフォールバック
+  Assets.walkFrame = function (spriteId, dir, frame) {
+    var e = Assets.entry('overworld', spriteId); if (!e || e.use === false) return null; var img = Assets.image('overworld', spriteId); if (!img) return null;
+    var row = (e.dirOrder || ['down', 'left', 'right', 'up']).indexOf(dir); if (row < 0) row = 0; var col = Math.max(0, Math.min((e.cols || 3) - 1, frame | 0));
+    return { img: img, sx: col * e.frameW, sy: row * e.frameH, w: e.frameW, h: e.frameH };
+  };
   // 立ち絵：主人公は職業、仲間はID、NPCはスプライトIDで引く
   Assets.portrait = function (actor) {
     if (!actor) return null;

@@ -1,10 +1,11 @@
 /* =========================================================
    Data / Asset manifest : 画像アセット一元管理（自動生成 + 手動判定）
-   kind: monster = 戦闘・図鑑, portrait = 立ち絵（職業選択・ステータス・会話・編成）
+   kind: monster = 戦闘・図鑑, portrait = 立ち絵（職業選択・ステータス・会話・編成）, walk = 歩行シート（16×24 × 3フレーム × 4方向 down,left,right,up / フィールドで2倍表示・足元中央基準）
+   style: procedural = コード生成のドット絵（添付シートのAI画風ではない）
    status: replaced = 新画像を使用 / mismatch = 画像はあるが名前・種族と一致しないため不使用 / missing = 画像なし
    use=false のものは fallback（monsterart = core/monsterart.js, sprites = sprites.js, chars = core/chars.js）で描画
    scale: 戦闘画面での表示倍率（small 0.85 / normal 1.0 / big 1.15 / boss 1.5）。anchor は足元中央
-   ※ 歩行（4方向）スプライトは未制作のため、フィールド上は従来の core/chars.js を使用
+   overworld: フィールドの歩行シート（v3.3）。読み込めない場合は core/chars.js にフォールバック
    ========================================================= */
 (function (root) {
   'use strict';
@@ -112,10 +113,15 @@
      "name": "山賊",
      "kind": "monster",
      "anchor": "bottom-center",
-     "status": "missing",
-     "use": false,
+     "path": "assets/monsters/bandit.png",
+     "w": 64,
+     "h": 96,
+     "scale": 1,
+     "status": "replaced",
+     "use": true,
      "fallback": "sprites",
-     "note": "添付画像に該当なし（人間系）"
+     "style": "procedural",
+     "note": "歩行スプライト生成器の正面フレームを4倍"
     },
     "ghost": {
      "name": "5分足ゴースト",
@@ -146,13 +152,14 @@
      "kind": "monster",
      "anchor": "bottom-center",
      "path": "assets/monsters/lizard.png",
-     "w": 127,
-     "h": 72,
+     "w": 96,
+     "h": 96,
      "scale": 1,
-     "status": "mismatch",
-     "use": false,
-     "note": "黄色いげっ歯類のような姿でトカゲに見えない",
-     "fallback": "monsterart"
+     "status": "replaced",
+     "use": true,
+     "fallback": "monsterart",
+     "style": "procedural",
+     "note": "MonsterArt（トカゲ・エリマキ）で新規作成"
     },
     "mole": {
      "name": "反転モグラ",
@@ -194,10 +201,15 @@
      "name": "闇の魔道士",
      "kind": "monster",
      "anchor": "bottom-center",
-     "status": "missing",
-     "use": false,
+     "path": "assets/monsters/dark_mage.png",
+     "w": 64,
+     "h": 96,
+     "scale": 1,
+     "status": "replaced",
+     "use": true,
      "fallback": "sprites",
-     "note": "添付画像に該当なし（人間系）"
+     "style": "procedural",
+     "note": "同左"
     },
     "slime_metal": {
      "name": "メタルスライム",
@@ -312,13 +324,14 @@
      "kind": "monster",
      "anchor": "bottom-center",
      "path": "assets/monsters/ghost_dark.png",
-     "w": 116,
-     "h": 105,
+     "w": 96,
+     "h": 96,
      "scale": 1,
-     "status": "mismatch",
-     "use": false,
-     "note": "紫のタコの姿で亡霊に見えない",
-     "fallback": "monsterart"
+     "status": "replaced",
+     "use": true,
+     "fallback": "monsterart",
+     "style": "procedural",
+     "note": "MonsterArt（亡霊・鎌）で新規作成"
     },
     "bug_armor": {
      "name": "アーマービートル",
@@ -372,10 +385,15 @@
      "name": "山賊の頭目ガロン",
      "kind": "monster",
      "anchor": "bottom-center",
-     "status": "missing",
-     "use": false,
+     "path": "assets/monsters/boss_bandit_chief.png",
+     "w": 112,
+     "h": 168,
+     "scale": 1,
+     "status": "replaced",
+     "use": true,
      "fallback": "sprites",
-     "note": "添付画像にボスデザインなし"
+     "style": "procedural",
+     "note": "同左（7倍・ボス）"
     },
     "boss_greed_demon": {
      "name": "欲望の魔人",
@@ -514,13 +532,14 @@
      "kind": "monster",
      "anchor": "bottom-center",
      "path": "assets/monsters/treant.png",
-     "w": 118,
-     "h": 119,
+     "w": 120,
+     "h": 120,
      "scale": 1.15,
-     "status": "mismatch",
-     "use": false,
-     "note": "マンイーターと同じ食虫植物の姿で「歩く古木」に見えない",
-     "fallback": "monsterart"
+     "status": "replaced",
+     "use": true,
+     "fallback": "monsterart",
+     "style": "procedural",
+     "note": "MonsterArt（歩く古木）で新規作成"
     },
     "vulture": {
      "name": "ハゲワシ",
@@ -575,13 +594,14 @@
      "kind": "monster",
      "anchor": "bottom-center",
      "path": "assets/monsters/sand_lizard.png",
-     "w": 125,
-     "h": 116,
+     "w": 96,
+     "h": 96,
      "scale": 1,
-     "status": "mismatch",
-     "use": false,
-     "note": "帽子をかぶった犬のような姿",
-     "fallback": "monsterart"
+     "status": "replaced",
+     "use": true,
+     "fallback": "monsterart",
+     "style": "procedural",
+     "note": "MonsterArt で新規作成"
     },
     "cave_crab": {
      "name": "洞窟ガニ",
@@ -671,23 +691,29 @@
      "name": "山賊弓兵",
      "kind": "monster",
      "anchor": "bottom-center",
-     "status": "missing",
-     "use": false,
+     "path": "assets/monsters/bandit_archer.png",
+     "w": 64,
+     "h": 96,
+     "scale": 1,
+     "status": "replaced",
+     "use": true,
      "fallback": "sprites",
-     "note": "添付画像に該当なし（人間系）"
+     "style": "procedural",
+     "note": "同左"
     },
     "rock_lizard": {
      "name": "ロックリザード",
      "kind": "monster",
      "anchor": "bottom-center",
      "path": "assets/monsters/rock_lizard.png",
-     "w": 119,
-     "h": 103,
+     "w": 96,
+     "h": 96,
      "scale": 1,
-     "status": "mismatch",
-     "use": false,
-     "note": "帽子をかぶった犬のような姿",
-     "fallback": "monsterart"
+     "status": "replaced",
+     "use": true,
+     "fallback": "monsterart",
+     "style": "procedural",
+     "note": "MonsterArt で新規作成"
     },
     "mountain_hawk": {
      "name": "山鷹",
@@ -957,10 +983,15 @@
      "name": "海賊",
      "kind": "monster",
      "anchor": "bottom-center",
-     "status": "missing",
-     "use": false,
+     "path": "assets/monsters/pirate.png",
+     "w": 64,
+     "h": 96,
+     "scale": 1,
+     "status": "replaced",
+     "use": true,
      "fallback": "sprites",
-     "note": "添付画像に該当なし（人間系）"
+     "style": "procedural",
+     "note": "同左"
     },
     "sea_serpent": {
      "name": "シーサーペント",
@@ -1345,10 +1376,14 @@
      "kind": "portrait",
      "spriteId": "scholar",
      "anchor": "bottom-center",
-     "status": "missing",
-     "use": false,
+     "w": 96,
+     "h": 144,
+     "path": "assets/characters/npcs/scholar.png",
+     "status": "replaced",
+     "use": true,
      "fallback": "chars",
-     "note": "添付画像に該当なし"
+     "style": "procedural",
+     "note": "歩行スプライト生成器の正面フレームを6倍"
     },
     "bartender": {
      "name": "酒場の主人",
@@ -1379,10 +1414,976 @@
      "kind": "portrait",
      "spriteId": "shadow",
      "anchor": "bottom-center",
-     "status": "missing",
-     "use": false,
+     "w": 96,
+     "h": 144,
+     "path": "assets/characters/npcs/shadow.png",
+     "status": "replaced",
+     "use": true,
      "fallback": "chars",
-     "note": "旧版(v1)の学習バトル用。v2以降は未使用"
+     "style": "procedural",
+     "note": "同左"
+    }
+   },
+   "overworld": {
+    "hero_warrior": {
+     "name": "戦士",
+     "kind": "walk",
+     "spriteId": "hero_warrior",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_warrior.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_mage": {
+     "name": "魔法使い",
+     "kind": "walk",
+     "spriteId": "hero_mage",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_mage.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_priest": {
+     "name": "僧侶",
+     "kind": "walk",
+     "spriteId": "hero_priest",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_priest.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_monk": {
+     "name": "武闘家",
+     "kind": "walk",
+     "spriteId": "hero_monk",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_monk.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_thief": {
+     "name": "盗賊",
+     "kind": "walk",
+     "spriteId": "hero_thief",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_thief.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_merchant": {
+     "name": "商人",
+     "kind": "walk",
+     "spriteId": "hero_merchant",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_merchant.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_hunter": {
+     "name": "狩人",
+     "kind": "walk",
+     "spriteId": "hero_hunter",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_hunter.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_knight": {
+     "name": "騎士",
+     "kind": "walk",
+     "spriteId": "hero_knight",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_knight.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_sage": {
+     "name": "賢者",
+     "kind": "walk",
+     "spriteId": "hero_sage",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_sage.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_magicknight": {
+     "name": "魔法戦士",
+     "kind": "walk",
+     "spriteId": "hero_magicknight",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_magicknight.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_waveblade": {
+     "name": "波形剣士",
+     "kind": "walk",
+     "spriteId": "hero_waveblade",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_waveblade.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "hero_master": {
+     "name": "相場の導師",
+     "kind": "walk",
+     "spriteId": "hero_master",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/hero_master.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "lina": {
+     "name": "リーナ",
+     "kind": "walk",
+     "spriteId": "lina",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/lina.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "kyle": {
+     "name": "カイル",
+     "kind": "walk",
+     "spriteId": "kyle",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/kyle.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "mina": {
+     "name": "ミナ",
+     "kind": "walk",
+     "spriteId": "mina",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/mina.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "seris": {
+     "name": "セリス",
+     "kind": "walk",
+     "spriteId": "seris",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/seris.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "gald": {
+     "name": "ガルド",
+     "kind": "walk",
+     "spriteId": "gald",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/gald.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "lucia": {
+     "name": "ルシア",
+     "kind": "walk",
+     "spriteId": "lucia",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/lucia.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "villager_m": {
+     "name": "男性村人",
+     "kind": "walk",
+     "spriteId": "villager_m",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/villager_m.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "villager_f": {
+     "name": "女性村人",
+     "kind": "walk",
+     "spriteId": "villager_f",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/villager_f.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "elder": {
+     "name": "村長・老人",
+     "kind": "walk",
+     "spriteId": "elder",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/elder.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "child": {
+     "name": "子ども",
+     "kind": "walk",
+     "spriteId": "child",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/child.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "merchant": {
+     "name": "商人",
+     "kind": "walk",
+     "spriteId": "merchant",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/merchant.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "innkeeper": {
+     "name": "宿屋の主人",
+     "kind": "walk",
+     "spriteId": "innkeeper",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/innkeeper.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "priest": {
+     "name": "教会関係者",
+     "kind": "walk",
+     "spriteId": "priest",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/priest.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "guard": {
+     "name": "衛兵",
+     "kind": "walk",
+     "spriteId": "guard",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/guard.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "king": {
+     "name": "王",
+     "kind": "walk",
+     "spriteId": "king",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/king.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "master": {
+     "name": "師匠・ギルド関係者",
+     "kind": "walk",
+     "spriteId": "master",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/master.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "scholar": {
+     "name": "研究者",
+     "kind": "walk",
+     "spriteId": "scholar",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/scholar.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "bartender": {
+     "name": "酒場の主人",
+     "kind": "walk",
+     "spriteId": "bartender",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/bartender.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "sailor": {
+     "name": "船乗り",
+     "kind": "walk",
+     "spriteId": "sailor",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/sailor.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
+    },
+    "shadow": {
+     "name": "影（旧版用）",
+     "kind": "walk",
+     "spriteId": "shadow",
+     "anchor": "bottom-center",
+     "frameW": 16,
+     "frameH": 24,
+     "cols": 3,
+     "rows": 4,
+     "dirOrder": [
+      "down",
+      "left",
+      "right",
+      "up"
+     ],
+     "frames": [
+      "idle",
+      "left_foot",
+      "right_foot"
+     ],
+     "scale": 2,
+     "path": "assets/characters/overworld/shadow.png",
+     "w": 48,
+     "h": 96,
+     "status": "replaced",
+     "use": true,
+     "fallback": "chars",
+     "style": "procedural",
+     "note": "ドット絵生成器（docs/tools/walker.js）で作成"
     }
    }
   };

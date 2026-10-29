@@ -73,16 +73,16 @@
     if (root.Minimap) root.Minimap.frame(dt);
     if (p.moving) {
       p.progress += dt * p.speed / 16;
-      if (p.progress >= 1) { p.x = p.tx; p.y = p.ty; p.px = p.x * TS; p.py = p.y * TS; p.moving = false; p.progress = 0; p.frame = 0; World.onStep(); }
-      else { var dx = (p.tx - p.x) * TS, dy = (p.ty - p.y) * TS; p.px = p.x * TS + dx * p.progress; p.py = p.y * TS + dy * p.progress; p.frame = Math.floor(p.progress * 4) % 2; }
+      if (p.progress >= 1) { p.x = p.tx; p.y = p.ty; p.px = p.x * TS; p.py = p.y * TS; p.moving = false; p.progress = 0; p.frame = 0; p.phase = 0; World.onStep(); }
+      else { var dx = (p.tx - p.x) * TS, dy = (p.ty - p.y) * TS; p.px = p.x * TS + dx * p.progress; p.py = p.y * TS + dy * p.progress; p.frame = Math.floor(p.progress * 4) % 2; p.phase = Math.floor(p.progress * 4) % 4; }
     }
     // NPCの徘徊
     if (!World.busy) m.npcs.forEach(function (n) {
       if (n.hidden || !n.wander) return;
       if (n.moveT === undefined) n.moveT = Math.random() * 2000;
       if (n.moving) {
-        n.prog += dt / 420; if (n.prog >= 1) { n.x = n.nx; n.y = n.ny; n.moving = false; n.ox_px = 0; n.oy_px = 0; n.frame = 0; }
-        else { n.ox_px = (n.nx - n.x) * TS * n.prog; n.oy_px = (n.ny - n.y) * TS * n.prog; n.frame = Math.floor(n.prog * 4) % 2; }
+        n.prog += dt / 420; if (n.prog >= 1) { n.x = n.nx; n.y = n.ny; n.moving = false; n.ox_px = 0; n.oy_px = 0; n.frame = 0; n.phase = 0; }
+        else { n.ox_px = (n.nx - n.x) * TS * n.prog; n.oy_px = (n.ny - n.y) * TS * n.prog; n.frame = Math.floor(n.prog * 4) % 2; n.phase = Math.floor(n.prog * 4) % 4; }
         return;
       }
       n.moveT -= dt; if (n.moveT > 0) return; n.moveT = 1500 + Math.random() * 2500;

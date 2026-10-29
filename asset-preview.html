@@ -16,7 +16,8 @@
   .img canvas { image-rendering: pixelated; }
   .id { font-family: monospace; color: #9fd4ff; } .name { font-weight: bold; } .st { font-size: 11px; }
   .st.replaced { color: #7fe3a5; } .st.mismatch { color: #ffd24a; } .st.missing { color: #ff8a8a; } .st.load_error { color: #ff4a4a; }
-  .note { color: #bbb; font-size: 11px; }
+  .note { color: #bbb; font-size: 11px; } .meta { color: #889; font-size: 10px; font-family: monospace; } .proc { color: #ffd24a; }
+  .img.walk { gap: 10px; } .img.walk .sheet { height: 96px; image-rendering: pixelated; } .img.walk .anim { width: 64px; height: 96px; image-rendering: pixelated; }
   a { color: #9fd4ff; }
 </style>
 </head>
@@ -40,15 +41,18 @@
 <script>
 (function () {
   var M = window.ASSET_MANIFEST; var rootEl = document.getElementById('root');
-  var SECTIONS = [['monsters', 'モンスター（戦闘・図鑑）'], ['jobs', '職業（主人公の立ち絵）'], ['companions', '仲間'], ['npcs', 'NPC']];
+  var SECTIONS = [['monsters', 'モンスター（戦闘・図鑑）'], ['jobs', '職業（主人公の立ち絵）'], ['companions', '仲間'], ['npcs', 'NPC'], ['overworld', '歩行スプライト（フィールド：4方向×3フレーム）']];
+  var anims = [];
+  // 歩行アニメ（down→left→right→up を順に、待機→左足→待機→右足）
+  setInterval(function () { var t = Math.floor(Date.now() / 180); var dir = ['down', 'left', 'right', 'up'][Math.floor(t / 8) % 4]; var fr = [0, 1, 0, 2][t % 4]; anims.forEach(function (cv) { var wf = window.Assets.walkFrame(cv.getAttribute('data-id'), dir, fr); if (!wf) return; var x = cv.getContext('2d'); x.imageSmoothingEnabled = false; x.clearRect(0, 0, 32, 48); x.drawImage(wf.img, wf.sx, wf.sy, wf.w, wf.h, 0, 0, 32, 48); }); }, 90);
   function fallbackCanvas(kind, id) {
     var c = document.createElement('canvas');
     if (kind === 'monsters') { var e = window.ENEMIES[id]; if (e && e.art && window.MonsterArt) return window.MonsterArt.image(e.art, 2, 0); if (e && window.Sprites && window.Sprites.has(e.sprite)) { window.Sprites.draw(c, e.sprite, 4, false); return c; } }
-    else { var sp = M[kind][id].spriteId; if (window.Chars && window.Chars.has(sp)) { var f = window.Chars.frame(sp, 'down', 0); c.width = f.width * 3; c.height = f.height * 3; var x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(f, 0, 0, c.width, c.height); return c; } }
+    else { var sp = (M[kind][id] || {}).spriteId || id; if (window.Chars && window.Chars.has(sp)) { var f = window.Chars.frame(sp, 'down', 0); c.width = f.width * 3; c.height = f.height * 3; var x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(f, 0, 0, c.width, c.height); return c; } }
     return null;
   }
   function render() {
-    rootEl.innerHTML = '';
+    rootEl.innerHTML = ''; anims.length = 0;
     SECTIONS.forEach(function (sec) {
       var kind = sec[0], g = M[kind]; var ids = Object.keys(g);
       var rep = ids.filter(function (i) { return g[i].status === 'replaced'; }).length;
@@ -58,11 +62,12 @@
         var e = g[id]; var st = window.Assets.status(kind, id); var cls = e.status === 'replaced' ? (st === 'load_error' ? 'load_error' : 'replaced') : e.status;
         var card = document.createElement('div'); card.className = 'card ' + cls;
         var box = document.createElement('div'); box.className = 'img';
-        if (e.status === 'replaced' && st !== 'load_error') { var im = document.createElement('img'); im.src = e.path; im.alt = id; box.appendChild(im); }
+        if (kind === 'overworld') { box.className = 'img walk'; if (e.status === 'replaced' && st !== 'load_error') { var sh = document.createElement('img'); sh.src = e.path; sh.className = 'sheet'; sh.alt = id; box.appendChild(sh); var an = document.createElement('canvas'); an.width = 32; an.height = 48; an.className = 'anim'; an.setAttribute('data-id', id); box.appendChild(an); anims.push(an); } else { var fc2 = fallbackCanvas('overworld', id); if (fc2) box.appendChild(fc2); } }
+        else if (e.status === 'replaced' && st !== 'load_error') { var im = document.createElement('img'); im.src = e.path; im.alt = id; box.appendChild(im); }
         else { var fc = fallbackCanvas(kind, id); if (fc) box.appendChild(fc); else box.textContent = '（画像なし）'; }
         card.appendChild(box);
         var label = { replaced: '新画像', mismatch: '不一致→従来描画', missing: '画像なし→従来描画', load_error: '読み込み失敗→従来描画' }[cls];
-        card.innerHTML += '<div class="name">' + e.name + '</div><div class="id">' + id + (e.spriteId ? '（' + e.spriteId + '）' : '') + '</div><div class="st ' + cls + '">' + label + (e.w ? '　' + e.w + '×' + e.h + (e.scale ? ' ×' + e.scale : '') : '') + '</div>' + (e.note ? '<div class="note">' + e.note + '</div>' : '');
+        card.innerHTML += '<div class="name">' + e.name + '</div><div class="id">' + id + (e.spriteId && e.spriteId !== id ? '（' + e.spriteId + '）' : '') + '</div><div class="st ' + cls + '">' + label + (e.w ? '　' + e.w + '×' + e.h + (e.scale ? ' ×' + e.scale : '') : '') + (e.style === 'procedural' ? '　<span class="proc">コード生成</span>' : '') + '</div><div class="meta">use: ' + (e.use ? 'true' : 'false') + ' / fallback: ' + (e.fallback || '―') + '</div>' + (e.note ? '<div class="note">' + e.note + '</div>' : '');
         grid.appendChild(card);
       });
       rootEl.appendChild(grid);

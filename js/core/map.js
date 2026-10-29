@@ -81,8 +81,8 @@
       ctx.drawImage(root.Buildings.image(b), b.x * TS - cam.x, b.y * TS - cam.y);
     });
     // エンティティ（y順）
-    var ents = this.npcs.filter(function (n) { return !n.hidden; }).map(function (n) { return { y: n.y * TS + (n.oy_px || 0), draw: function () { drawChar(ctx, n.sprite, n.dir, n.frame, n.x * TS + (n.ox_px || 0) - cam.x, n.y * TS + (n.oy_px || 0) - cam.y); } }; });
-    if (player) ents.push({ y: player.py, draw: function () { drawChar(ctx, player.sprite, player.dir, player.frame, player.px - cam.x, player.py - cam.y); } });
+    var ents = this.npcs.filter(function (n) { return !n.hidden; }).map(function (n) { return { y: n.y * TS + (n.oy_px || 0), draw: function () { drawChar(ctx, n.sprite, n.dir, n.frame, n.x * TS + (n.ox_px || 0) - cam.x, n.y * TS + (n.oy_px || 0) - cam.y, n.phase); } }; });
+    if (player) ents.push({ y: player.py, draw: function () { drawChar(ctx, player.sprite, player.dir, player.frame, player.px - cam.x, player.py - cam.y, player.phase); } });
     ents.sort(function (a, b) { return a.y - b.y; });
     ents.forEach(function (e) { e.draw(); });
     // 夜：全体を暗くし、灯り・松明の周りを明るく
@@ -93,10 +93,14 @@
       ctx.restore();
     }
   };
-  function drawChar(ctx, sprite, dir, frame, px, py) {
-    var img = Chars.has(sprite) ? Chars.frame(sprite, dir, frame) : (root.Sprites && root.Sprites.has(sprite) ? legacySprite(sprite) : Chars.frame('villager_m', dir, frame));
+  // 歩行キャラの描画優先順位：1) assets/characters/overworld のシート（4方向×3フレーム） 2) Chars.frame（従来） 3) Sprites（旧）
+  // phase: 歩行サイクル 0..3（待機0 → 左足1 → 待機0 → 右足2）。省略時は frame(0/1) から推定
+  function drawChar(ctx, sprite, dir, frame, px, py, phase) {
     // 足元の影
     ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(px + Engine.TS / 2, py + Engine.TS - 2, Engine.TS * 0.3, Engine.TS * 0.12, 0, 0, Math.PI * 2); ctx.fill();
+    var wf = root.Assets ? root.Assets.walkFrame(sprite, dir, phase === undefined ? (frame ? 1 : 0) : [0, 1, 0, 2][phase & 3]) : null;
+    if (wf) { var S = Engine.SCALE; var dw = wf.w * S, dh = wf.h * S; ctx.imageSmoothingEnabled = false; ctx.drawImage(wf.img, wf.sx, wf.sy, wf.w, wf.h, Math.round(px + (Engine.TS - dw) / 2), Math.round(py + Engine.TS - dh), dw, dh); return; }   // 足元中央＝タイル下端
+    var img = Chars.has(sprite) ? Chars.frame(sprite, dir, frame) : (root.Sprites && root.Sprites.has(sprite) ? legacySprite(sprite) : Chars.frame('villager_m', dir, frame));
     ctx.drawImage(img, px, py - 4);
   }
   var legacyCache = {};
