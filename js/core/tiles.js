@@ -133,6 +133,8 @@
   // ===== ダンジョン =====
   // 隠しボスの印（床に刻まれた魔法陣）
   def('boss_mark', { anim: true, paint: function (g, v, f) { g.fill('#3a3a48'); g.speckle(10, ['#33333f', '#44445a']); var c = f ? '#c94a6a' : '#8a2a4a'; g.disc(8, 8, 6, c); g.disc(8, 8, 5, '#3a3a48'); g.disc(8, 8, 3, c); g.disc(8, 8, 2, '#3a3a48'); g.px(8, 2, c); g.px(8, 14, c); g.px(2, 8, c); g.px(14, 8, c); g.px(4, 4, c); g.px(12, 12, c); g.px(12, 4, c); g.px(4, 12, c); } });
+  // 学習の石碑（通行可・光る紋様）
+  def('learn_rune', { anim: true, paint: function (g, v, f) { g.fill('#3a3a48'); g.speckle(8, ['#33333f', '#44445a']); var c = f ? '#9fe0ff' : '#5ab0ff'; g.rect(5, 3, 6, 10, '#6a6a7a'); g.rect(6, 2, 4, 1, '#8a8a9a'); g.rect(6, 4, 4, 8, '#2a2a3a'); g.px(7, 5, c); g.px(8, 6, c); g.px(7, 7, c); g.px(8, 8, c); g.px(7, 9, c); g.px(8, 10, c); g.hline(4, 13, 8, '#8a8a9a'); g.px(3, 12, c); g.px(12, 12, c); } });
   def('cave_floor', { ch: 'g', variants: 3, paint: function (g, v) { g.fill('#4a4a58'); g.speckle(20, ['#3f3f4c', '#565664', '#434350']); if (v === 1) { g.hline(3, 6, 6, '#35353f'); g.px(9, 7, '#35353f'); } if (v === 2) { g.px(4, 4, '#6a6a7a'); g.px(5, 4, '#7a7a8a'); g.px(11, 11, '#6a6a7a'); } } });
   def('cave_wall', { ch: 'G', solid: true, variants: 2, paint: function (g, v) { g.fill('#2a2a36'); for (var i = 0; i < 7; i++) { var x = Math.floor(g.rnd() * 14), y = 4 + Math.floor(g.rnd() * 10); g.disc(x, y, 2, '#3a3a48'); g.px(x - 1, y - 1, '#4a4a5a'); } g.rect(0, 0, 16, 3, '#5a5a6c'); g.hline(0, 0, 16, '#707084'); g.hline(0, 3, 16, '#1c1c26'); g.speckle(8, ['#1c1c26', '#3a3a48'], 0, 4, 15, 15); } });
   def('moss', { ch: 'M', variants: 2, paint: function (g, v) { grassBase(g, 3); g.disc(5, 5, 3, '#2f6b2a'); g.disc(11, 11, 2, '#2f6b2a'); g.speckle(6, ['#4fa048', '#1f4a22']); } });

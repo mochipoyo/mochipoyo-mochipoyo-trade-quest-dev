@@ -71,7 +71,12 @@
     stoploss_shield: { name: '損切りシールド', kind: 'buff', target: 'ally', mp: 3, buff: { def: 0.4 }, turns: 2, desc: '味方1人の被ダメージを大きく減らす', anim: 'buff' },
     risk_barrier: { name: '資金管理の結界', kind: 'buff', target: 'allies', mp: 8, buff: { def: 0.25, mdef: 0.25 }, turns: 3, desc: '味方全体を守る結界', anim: 'buff' },
     higher_tf_eye: { name: '上位足の眼', kind: 'special', target: 'enemies', mp: 3, scan: true, desc: '敵全体の弱点を見抜き、味方の命中・会心を上げる', anim: 'buff', buffAll: { agi: 0.15 }, turns: 3 },
-    patience_stance: { name: '忍耐の構え', kind: 'special', target: 'self', mp: 2, cover: true, counter: true, desc: 'このターン仲間をかばい、反撃する', anim: 'buff' }
+    patience_stance: { name: '忍耐の構え', kind: 'special', target: 'self', mp: 2, cover: true, counter: true, desc: 'このターン仲間をかばい、反撃する', anim: 'buff' },
+    // ---- 学習で解放される能力（js/data/learning-events.js） ----
+    dow_eye: { name: 'ダウの眼', kind: 'special', target: 'enemy', mp: 3, scan: true, expose: true, desc: '敵の行動傾向と弱点を見抜き、3ターン防御を崩す', anim: 'buff' },
+    ema_blessing: { name: 'EMAの加護', kind: 'buff', target: 'allies', mp: 5, buff: { def: 0.3 }, turns: 3, desc: '味方全体の防御力を上げる（3本の線が守る）', anim: 'buff' },
+    rci_counter: { name: 'RCIリバーサル（反転）', kind: 'debuff', target: 'enemy', mp: 4, buff: { atk: -0.3 }, turns: 3, desc: '過熱した敵の攻撃力を下げる', anim: 'dark' },
+    macd_hidden_strike: { name: 'MACDヒドゥンストライク', kind: 'attack', target: 'enemy', mp: 9, power: 2.2, element: 'light', desc: '隠れた継続の力を一点に集める特殊攻撃', anim: 'light' }
   };
 
   Object.keys(SKILLS).forEach(function (k) { SKILLS[k].id = k; });

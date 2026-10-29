@@ -28,6 +28,7 @@
       else if (e.type === 'trial') m.setTile(e.x, e.y, 'gate');
       else if (e.type === 'locked') m.setTile(e.x, e.y, 'door_locked');
       if (e.type === 'hole') m.setTile(e.x, e.y, 'hole');
+      if (e.type === 'learn') m.setTile(e.x, e.y, 'learn_rune');
       if (e.type === 'boss' && e.optional) m.setTile(e.x, e.y, (e.doneFlag && d.flags[e.doneFlag]) ? (m.def.fallback === 'cave_floor' ? 'cave_floor' : 'floor_stone') : 'boss_mark');
     });
     m.npcs.forEach(function (n) { if (n.showIf) n.hidden = !d.flags[n.showIf]; if (n.hideIf && d.flags[n.hideIf]) n.hidden = true; if (root.COMPANIONS && root.COMPANIONS[n.id] && d.companions[n.id]) n.hidden = true; });

@@ -221,6 +221,7 @@
     opts = opts || {};
     var d = State.data; var party = State.partyActors();
     var b = Combat.create(enemyIds, party, opts);
+    if (opts.exposeFirst) b.enemies.forEach(function (e) { e.exposed = opts.exposeFirst; });
     var mapKind = root.World.map ? root.World.map.kind : 'field';
     var scene = new BattleScene(b, mapKind, opts); BattleUI.battle = b; BattleUI.scene = scene;
     Engine.push(scene);

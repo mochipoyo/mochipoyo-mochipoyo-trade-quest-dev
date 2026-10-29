@@ -162,7 +162,8 @@
     while (true) {
       var rank = TE.rank(d.trade); var weak = TE.weakTopics(d.trade);
       var nextLecture = LECT.filter(function (L) { return !d.trade.lectures[L.id] && !d.flags[L.id]; })[0];
-      var theme = !d.trade.tutorialDone ? 'はじめてのトレード（チュートリアル）' : nextLecture ? '第' + nextLecture.chapter + '章「' + nextLecture.title + '」' : (weak.length && weak[0].plays ? '復習：' + weak[0].label : '全講義修了。場面練習で精度を上げよう');
+      var nextEv = root.Learning.nextRecommended();
+      var theme = !d.trade.tutorialDone ? 'はじめてのトレード（チュートリアル）' : nextEv ? '第' + nextEv.chapter + '章「' + nextEv.title + '」（' + nextEv.region + '）' : nextLecture ? '第' + nextLecture.chapter + '章「' + nextLecture.title + '」' : (weak.length && weak[0].plays ? '復習：' + weak[0].label : '全講義修了。場面練習で精度を上げよう');
       var items = [
         { label: '今の学習テーマ', right: '', sub: theme },
         { label: 'はじめてのトレード（チュートリアル）', right: d.trade.tutorialDone ? '復習できる' : '未完了', sub: 'ローソク足・買いと売り・損切り・上昇/下降/レンジを2〜4分で体験' },
@@ -170,7 +171,8 @@
         { label: 'チャート練習', right: (d.trade.stats.scoreCount || 0) + '回', sub: '14場面から出題。分析→判断→理由の順に答える' },
         { label: '苦手分野の復習', right: weak.length && weak[0].plays ? weak[0].label : '―', sub: '正解率の低い分野に合う場面を出題' },
         { label: 'トレーダーランク', right: rank.letter + ' ' + rank.title, sub: rank.needText ? '次のランクへ：' + rank.needText : '最高ランク' },
-        { label: '学習進捗・記録', right: '', sub: '分野別の挑戦数・正解率・ヒント利用率・習熟度' }
+        { label: '学習進捗・記録', right: '', sub: '分野別の挑戦数・正解率・ヒント利用率・習熟度' },
+        { label: '章ごとの学習イベント', right: root.Learning.progress().filter(function (p) { return p.status === 'done'; }).length + '/' + root.Learning.progress().length + ' 達成', sub: '必修イベントの場所・任意練習・解放される能力' }
       ];
       var i = await Win.list(items, { title: 'トレード修行', cls: 'main-menu' });
       if (i < 0) return;
@@ -181,7 +183,13 @@
       else if (i === 4) await Services.reviewWeak();
       else if (i === 5) await Menu.rankPanel();
       else if (i === 6) await root.TradeUI.showRecord();
+      else if (i === 7) await Menu.learnProgress();
     }
+  };
+  Menu.learnProgress = async function () {
+    var P = root.Learning.progress();
+    var html = '<div class="rw-title">章ごとの学習イベント</div>' + P.map(function (p) { var e = p.event; var st = p.status === 'done' ? '<span class="ok-text">達成</span>' : p.status === 'open' ? '<span class="gold-text">挑戦できる</span>' : '<span class="muted">未解放の地域</span>'; var place = e.tutorial ? 'ポヨ村の修行場（師匠ハケイ）／メニュー' : e.mapId ? ({ lost_forest: '迷いの森の扉', emal_pass: 'エマール山道の石碑', oblivion_cave_3: '忘却の洞窟 最深部の扉' })[e.mapId] || e.mapId : e.region + '（未実装）'; var pr = p.practices.length ? '<div class="small muted">任意練習：' + p.practices.map(function (x) { return esc(x.title) + (x.done ? '✓' : ''); }).join('・') + '</div>' : ''; var ab = p.ability ? '<div class="small">解放される能力：' + esc(p.ability.name) + (p.abilityOn ? '（習得済み）' : '（達成＋分野の理解で解放）') + '</div>' : ''; return '<div class="learn-row"><div><b>第' + e.chapter + '章 ' + esc(e.title) + '</b>　' + st + '</div><div class="small">' + esc(e.summary || '') + '</div><div class="small muted">場所：' + esc(place) + '</div>' + pr + ab + '</div>'; }).join('');
+    await Win.panel(html + '<p class="muted small">能力は「必修イベントの達成」と「その分野の理解（3回以上挑戦し直近の正解率60%以上）」で解放されます。丸暗記では解放されません。</p>');
   };
   Menu.rankPanel = async function () {
     var d = State.data; var TE = root.TradeEval; var r = TE.rank(d.trade); var c = r.crit;

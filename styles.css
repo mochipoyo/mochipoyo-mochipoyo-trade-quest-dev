@@ -213,3 +213,5 @@ ul.eval .mark { display: inline-block; width: 1.3em; font-weight: bold; } ul.eva
 .topic-tbl td { padding: 2px 6px; font-size: 12px; } .topic-tbl .lv-苦手 { color: #ff8a8a; } .topic-tbl .lv-理解 { color: #7fe3a5; } .topic-tbl .lv-練習中 { color: var(--gold); } .topic-tbl .lv-未習熟 { color: #aaa; }
 .rank-box { display: flex; align-items: center; gap: 12px; margin: 6px 0; } .rank-letter { font-size: 40px; font-weight: bold; color: var(--gold); text-shadow: 0 0 10px rgba(232,193,90,.6); }
 @media (max-width: 720px) { .aq-t { min-width: 100%; font-size: 11px; } .aopt { font-size: 10px; padding: 2px 5px; } .analysis { padding: 4px 6px; } .trade-panel .chart { height: 160px; } }
+
+.learn-row { border-top: 1px dashed rgba(255,255,255,.15); padding: 5px 0; } .ok-text { color: #7fe3a5; }

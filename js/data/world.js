@@ -131,6 +131,7 @@
       { id: 'w_hermit', x: 45, y: 83, sprite: 'elder', dir: 'down', wander: 0, talk: async function (c) { await c.say('老人', ['この先の洞窟は「忘却の洞窟」。奥に欲望の魔物が棲みついてから、村の若者が何人も帰ってこん。', '魔物は「チャートの試練」を仕掛けてくる。上位足を見ずに飛び乗る者から順に食われるそうじゃ。']); } },
       { id: 'w_sign', x: 41, y: 50, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say('衛兵', ['ここから北がリヴェル城下町だ。南の村から来たのか？ 魔物が増えているから気をつけろ。']); } }
     ],
+    events: [{ x: 52, y: 74, type: 'learn', solid: false, learnId: 'practice_dow_road' }],
     // ランダムエンカウント（地域ごと）: rate は1歩あたりの確率
     encounters: { rate: 0.035, zones: [
       { name: '始まりの草原', test: function (x, y) { return x < 46 && y < 66 && y > 36; }, groups: [['slime'], ['slime', 'slime'], ['bee'], ['bug'], ['bug', 'slime'], ['slime', 'slime', 'slime'], ['slime_green', 'slime'], ['rabbit'], ['rabbit', 'rabbit'], ['sparrow_hawk'], ['petal', 'slime_green'], ['slime_blue_big'], ['sparrow_hawk', 'bee'], ['petal', 'petal', 'bug']], rare: [['slime_metal']], rareRate: 0.03, level: 1 },

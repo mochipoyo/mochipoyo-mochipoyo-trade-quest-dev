@@ -154,7 +154,7 @@
         if (tutorial) msg('まず時間足ボタンで「4時間足」を見て方向を確かめ、次に15分足に戻って波形・EMA・RCI・MACDを順に選ぼう。');
         requestAnimationFrame(render);
         root.onresize = function () { if (document.getElementById('trial-chart')) render(); };
-      } }).then(function (res) { State.autosave(); resolve(res || null); });
+      } }).then(function (res) { State.autosave(); var p = (root.Learning && res) ? root.Learning.checkUnlocks(true) : null; Promise.resolve(p).then(function () { resolve(res || null); }); });
     });
   };
 

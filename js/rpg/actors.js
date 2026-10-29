@@ -26,6 +26,7 @@
   Actors.refreshSkills = function (a) {
     var j = JOBS[a.job];
     j.skills.forEach(function (s) { if (a.level >= s.lv && a.skills.indexOf(s.id) < 0) a.skills.push(s.id); });
+    if (a.id === 'hero' && root.State && root.State.data && root.State.data.trade && root.State.data.trade.abilities && root.LEARN_ABILITIES) { Object.keys(root.State.data.trade.abilities).forEach(function (k) { var sk = root.LEARN_ABILITIES[k] && root.LEARN_ABILITIES[k].skill; if (sk && a.skills.indexOf(sk) < 0) a.skills.push(sk); }); }   // 学習で解放した能力は転職しても残る
   };
 
   // 装備込みの最終ステータス

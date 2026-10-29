@@ -73,6 +73,11 @@
         else if (State.hasItem(ev.key)) { await Win.message([ITEMS[ev.key].name + 'を使った。扉が開いた！']); d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); }
         else await Win.message(ev.text);
       }
+      else if (ev.type === 'learn') { await root.Learning.run(ev.learnId); World.applyState(World.map); }
+      else if (ev.type === 'trial' && ev.learnId) {   // 必修の学習イベント（扉）：教え→試練。合格で扉が開く。達成後は復習できる
+        if (d.flags[ev.doneFlag]) { var rr = await Win.choice('扉は開いている。', ['通る', '「' + root.learnEvent(ev.learnId).title + '」を復習する']); if (rr === 1) await root.Learning.run(ev.learnId); }
+        else { await Win.message(ev.text); var lr = await root.Learning.run(ev.learnId); if (lr.passed) { d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); await Win.message(['扉がゆっくりと開いた！']); } }
+      }
       else if (ev.type === 'trial') {
         if (d.flags[ev.doneFlag]) { await Win.message(['扉は開いている。']); }
         else {
@@ -91,7 +96,9 @@
         else {
           if (ev.intro) await Win.message(ev.intro);
           if (ev.optional) { var go = await Win.choice('強敵の気配がする。戦いますか？', ['戦う', 'やめておく']); if (go !== 0) { World.busy = false; World.updateHud(); return; } }
-          var result = await root.BattleUI.start(ev.enemies || [ev.enemy], { boss: true });
+          var bopts = { boss: true };
+          if (root.Learning && root.Learning.hasAbility('dow_eye')) { bopts.exposeFirst = 3; await Win.message(['ダウの眼が魔物の波形を見抜いた！ 最初の3ターン、敵の防御が崩れる。']); }   // 学習能力とボス戦の連動
+          var result = await root.BattleUI.start(ev.enemies || [ev.enemy], bopts);
           if (result === 'won') {
             d.flags[ev.doneFlag] = true;
             if (ev.after) await Win.message(ev.after);
