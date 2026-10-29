@@ -8,7 +8,7 @@
 
   var Actors = {};
 
-  Actors.expForLevel = function (lv) { return Math.round(12 * Math.pow(lv, 2.1) + 8 * lv); }; // 累積ではなく「次のレベルまで」
+  Actors.expForLevel = function (lv) { return Math.round(9 * Math.pow(lv, 1.85) + 6 * lv); };   // v3.4: 緩やかに（Lv1→15, Lv5→224, Lv10→696） // 累積ではなく「次のレベルまで」
   Actors.baseStat = function (job, stat, level) { var j = JOBS[job]; return Math.round(j.stats[stat] + j.growth[stat] * (level - 1)); };
 
   // 新しいアクターを作る

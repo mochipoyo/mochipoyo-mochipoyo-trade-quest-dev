@@ -7,7 +7,7 @@
   var Actors = root.Actors, ITEMS = root.ITEMS, COMPANIONS = root.COMPANIONS, TradeEval = root.TradeEval, CONFIG = root.CONFIG;
   var KEY_PREFIX = 'mtq-rpg-v2-slot-';   // 新セーブキー（旧 'mochipoyo-trade-quest-save-v1' は破壊しない）
   var LEGACY_KEY = 'mochipoyo-trade-quest-save-v1';
-  var SAVE_VERSION = 2;
+  var SAVE_VERSION = 3;   // 3: 町・城の2倍拡大（座標を補正）
 
   var State = { data: null };
 
@@ -17,7 +17,7 @@
       version: SAVE_VERSION, createdAt: Date.now(), playTime: 0,
       hero: hero, companions: {}, party: ['hero'],      // party: 戦闘メンバー（最大4）
       gold: 0, bank: 0, inventory: {}, flags: {}, counters: {}, quests: {}, chests: {},
-      pos: { map: 'poyo_village', x: 12, y: 16, dir: 'up' }, lastInn: { map: 'poyo_village', x: 12, y: 16 }, visited: { poyo_village: true },
+      pos: { map: 'poyo_village', x: 24, y: 32, dir: 'up' }, lastInn: { map: 'poyo_village', x: 24, y: 32 }, visited: { poyo_village: true },
       steps: 0, timeOfDay: 0.3, bestiary: {}, trade: { stats: TradeEval.emptyStats(), capital: CONFIG.risk.capital, lectures: {} },
       settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true, minimap: 'on', minimapSize: 'normal' },
       mapDiscovery: {},   // ミニマップの探索状況（マップID → 行ごとのビット列）。visited とは別
@@ -67,6 +67,11 @@
     function merge(t, s) { for (var k in t) { if (!Object.prototype.hasOwnProperty.call(t, k)) continue; if (s[k] === undefined) s[k] = t[k]; else if (t[k] && typeof t[k] === 'object' && !Array.isArray(t[k]) && s[k] && typeof s[k] === 'object' && !Array.isArray(s[k])) merge(t[k], s[k]); } return s; }
     merge(def, d);
     [d.hero].concat(Object.keys(d.companions).map(function (k) { return d.companions[k]; })).forEach(function (a) { if (!a.jobLevels) a.jobLevels = {}; if (!a.jobLevels[a.job]) a.jobLevels[a.job] = a.level; if (!a.buffs) a.buffs = {}; if (!a.status) a.status = {}; });
+    // v3.4: 町・城が2倍になったので、旧データの位置を補正（壁の中なら町の入口へ）
+    if ((d.version || 2) < 3 && root.MAP_ENLARGE) {
+      ['pos', 'lastInn'].forEach(function (key) { var pz = d[key]; if (!pz) return; var k = root.MAP_ENLARGE[pz.map]; if (k) { pz.x *= k; pz.y *= k; } });
+      d.stepsSinceBattle = 0;
+    }
     d.version = SAVE_VERSION;
     return d;
   };

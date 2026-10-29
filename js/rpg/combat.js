@@ -323,7 +323,7 @@
 
   Combat.rewards = function (b) {
     var exp = 0, gold = 0, drops = [];
-    b.enemies.forEach(function (e) { if (e.fled) return; exp += e.exp; gold += e.gold; (e.drops || []).forEach(function (d) { if (Math.random() < d.rate) drops.push(d.item); }); root.State.data.bestiary[e.defId] = Object.assign(root.State.data.bestiary[e.defId] || {}, { seen: true, defeated: (root.State.data.bestiary[e.defId] && root.State.data.bestiary[e.defId].defeated || 0) + 1 }); });
+    b.enemies.forEach(function (e) { if (e.fled) return; exp += Math.round(e.exp * 1.5); gold += e.gold; (e.drops || []).forEach(function (d) { if (Math.random() < d.rate) drops.push(d.item); }); root.State.data.bestiary[e.defId] = Object.assign(root.State.data.bestiary[e.defId] || {}, { seen: true, defeated: (root.State.data.bestiary[e.defId] && root.State.data.bestiary[e.defId].defeated || 0) + 1 }); });
     gold = Math.round(gold * rnd(0.85, 1.15));
     var goldBase = gold, bonus = 0;
     if (b.party.some(function (a) { return a.job === 'merchant' && !a.dead; })) { bonus = Math.round(gold * 0.25); gold += bonus; }
@@ -334,7 +334,7 @@
   Combat.distribute = function (b) {
     if (b.distributed) return b.distributed;
     var r = b.result; var alive = aliveParty(b);
-    var share = Math.max(1, Math.round(r.exp / Math.max(1, alive.length)));
+    var share = Math.max(1, r.exp);   // v3.4: 分配せず、生存メンバー全員が全額を得る
     var members = b.party.map(function (a) {
       var before = { level: a.level, exp: a.exp, stats: Actors.stats(a), skills: a.skills.slice() };
       var gained = 0, ups = [];

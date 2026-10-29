@@ -141,8 +141,13 @@
     State.partyActors().forEach(function (a) { if (!a.dead && a.status.poison && d.steps % 4 === 0) { a.hp = Math.max(1, a.hp - 1); } });
     World.updatePlaceLabel();
     if (m.encounters && !World.busy) {
-      var rate = m.encounters.rate; if (d.flags.repel) rate *= 0.3;
-      if (Math.random() < rate) World.encounter();
+      // 戦闘直後はしばらく出ない（猶予8歩）→ その後は歩くほど確率が上がる（基礎×0.5 → 25歩で基礎×1.5）
+      d.stepsSinceBattle = (d.stepsSinceBattle || 0) + 1;
+      var since = d.stepsSinceBattle;
+      if (since > 8) {
+        var rate = m.encounters.rate * Math.min(1.5, 0.5 + (since - 8) / 25); if (d.flags.repel) rate *= 0.3;
+        if (Math.random() < rate) World.encounter();
+      }
     }
     World.updateHud();
   };
@@ -164,7 +169,7 @@
     World.startBattle(group, { zone: zone.name });
   };
   World.startBattle = function (enemyIds, opts) {
-    World.busy = true; opts = opts || {};
+    World.busy = true; opts = opts || {}; State.data.stepsSinceBattle = 0;
     return root.BattleUI.start(enemyIds, opts).then(function (result) {
       World.busy = false;
       if (result === 'lost') return World.gameOver();

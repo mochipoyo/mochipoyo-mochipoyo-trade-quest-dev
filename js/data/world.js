@@ -132,7 +132,7 @@
       { id: 'w_sign', x: 41, y: 50, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say('衛兵', ['ここから北がリヴェル城下町だ。南の村から来たのか？ 魔物が増えているから気をつけろ。']); } }
     ],
     // ランダムエンカウント（地域ごと）: rate は1歩あたりの確率
-    encounters: { rate: 0.065, zones: [
+    encounters: { rate: 0.035, zones: [
       { name: '始まりの草原', test: function (x, y) { return x < 46 && y < 66 && y > 36; }, groups: [['slime'], ['slime', 'slime'], ['bee'], ['bug'], ['bug', 'slime'], ['slime', 'slime', 'slime'], ['slime_green', 'slime'], ['rabbit'], ['rabbit', 'rabbit'], ['sparrow_hawk'], ['petal', 'slime_green'], ['slime_blue_big'], ['sparrow_hawk', 'bee'], ['petal', 'petal', 'bug']], rare: [['slime_metal']], rareRate: 0.03, level: 1 },
       { name: 'ダウの大森林', test: function (x, y) { return x >= 46 && y < 66; }, groups: [['slime_red', 'slime_red'], ['wolf'], ['snake', 'mushroom'], ['mushroom', 'mushroom', 'slime_red'], ['wolf', 'snake'], ['crow', 'crow'], ['boar'], ['maneater'], ['forest_fairy', 'petal'], ['boar', 'crow'], ['maneater', 'snake'], ['mushroom_king'], ['forest_fairy', 'slime_red', 'slime_red']], rare: [['slime_gold'], ['slime_rainbow']], rareRate: 0.025, level: 3 },
       { name: '南の荒野', test: function (x, y) { return y >= 66; }, groups: [['bat', 'bat'], ['lizard'], ['mole', 'bat'], ['snake', 'snake'], ['bandit'], ['lizard', 'mole'], ['wild_dog', 'wild_dog'], ['scorpion'], ['vulture', 'vulture'], ['sand_lizard', 'scorpion'], ['mimic'], ['wild_dog', 'vulture'], ['sand_lizard', 'sand_lizard', 'wild_dog']], rare: [['slime_metal']], rareRate: 0.02, level: 4 },

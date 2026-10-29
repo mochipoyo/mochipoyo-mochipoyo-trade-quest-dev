@@ -30,6 +30,7 @@
       hline: function (x, y, w, c) { g.rect(x, y, w, 1, c); },
       vline: function (x, y, h, c) { g.rect(x, y, 1, h, c); },
       // 円（塗り）
+      tri: function (x0, y0, x1, y1, x2, y2, c) { var minY = Math.min(y0, y1, y2), maxY = Math.max(y0, y1, y2); for (var y = Math.floor(minY); y <= Math.ceil(maxY); y++) { var xs = []; [[x0, y0, x1, y1], [x1, y1, x2, y2], [x2, y2, x0, y0]].forEach(function (e) { var ax = e[0], ay = e[1], bx = e[2], by = e[3]; if ((y >= Math.min(ay, by)) && (y <= Math.max(ay, by)) && ay !== by) xs.push(ax + (y - ay) * (bx - ax) / (by - ay)); }); if (xs.length >= 2) { var a = Math.round(Math.min.apply(null, xs)), b = Math.round(Math.max.apply(null, xs)); for (var x = a; x <= b; x++) g.px(x, y, c); } } },
       disc: function (cx, cy, r, c) { for (var y = -r; y <= r; y++) for (var x = -r; x <= r; x++) if (x * x + y * y <= r * r + r * 0.5) g.px(Math.round(cx + x), Math.round(cy + y), c); },
       // ノイズ散布
       speckle: function (n, colors, x0, y0, x1, y1) { x0 = x0 || 0; y0 = y0 || 0; x1 = x1 === undefined ? 15 : x1; y1 = y1 === undefined ? 15 : y1; for (var i = 0; i < n; i++) { var x = x0 + Math.floor(g.rnd() * (x1 - x0 + 1)), y = y0 + Math.floor(g.rnd() * (y1 - y0 + 1)); g.px(x, y, colors[Math.floor(g.rnd() * colors.length)]); } },

@@ -39,7 +39,7 @@
   events: [
     { x: 15, y: 14, type: 'trial', solid: true, doneFlag: 'lf_gate', scenarios: ['clear_up', 'clear_down', 'range'], text: ['扉に古い文字が浮かび上がる。\n「高値と安値の向きを読み、正しき行いを示せ。無理に戦う者は通さぬ」'], minScore: 60 }
   ],
-  encounters: { rate: 0.08, zones: [{ name: '迷いの森', test: function () { return true; }, groups: [['slime_red', 'slime_red', 'slime_red'], ['wolf', 'wolf'], ['mushroom', 'mushroom'], ['snake', 'bug_poison'], ['wolf', 'mushroom', 'slime_red'], ['treant'], ['maneater', 'maneater'], ['forest_fairy', 'crow', 'crow'], ['mushroom_king', 'mushroom'], ['boar', 'wolf'], ['treant', 'forest_fairy']], rare: [['slime_rainbow']], rareRate: 0.02, level: 4 }] }
+  encounters: { rate: 0.045, zones: [{ name: '迷いの森', test: function () { return true; }, groups: [['slime_red', 'slime_red', 'slime_red'], ['wolf', 'wolf'], ['mushroom', 'mushroom'], ['snake', 'bug_poison'], ['wolf', 'mushroom', 'slime_red'], ['treant'], ['maneater', 'maneater'], ['forest_fairy', 'crow', 'crow'], ['mushroom_king', 'mushroom'], ['boar', 'wolf'], ['treant', 'forest_fairy']], rare: [['slime_rainbow']], rareRate: 0.02, level: 4 }] }
   });
 
   // 森の祠（ボス部屋）
@@ -99,7 +99,7 @@
     { x: 25, y: 12, type: 'locked', solid: true, doneFlag: 'oc_lock', key: 'cave_key', text: ['王家の封印が施された扉だ。「洞窟の鍵」が必要だ。'] },
     { x: 11, y: 7, type: 'inspect', text: ['壁に誰かが刻んだ文字がある。\n「損切りを置かずに潜った者は、ここで全てを失った。引き返すなら今だ」'] }
   ],
-  encounters: { rate: 0.075, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['bat', 'bat'], ['lizard'], ['mole', 'bat'], ['bat', 'bat', 'bat'], ['lizard', 'mole'], ['cave_crab'], ['ore_slime', 'ore_slime'], ['zombie'], ['cave_crab', 'bat', 'bat'], ['zombie', 'mole']], level: 5 }] }
+  encounters: { rate: 0.045, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['bat', 'bat'], ['lizard'], ['mole', 'bat'], ['bat', 'bat', 'bat'], ['lizard', 'mole'], ['cave_crab'], ['ore_slime', 'ore_slime'], ['zombie'], ['cave_crab', 'bat', 'bat'], ['zombie', 'mole']], level: 5 }] }
   });
   add({ id: 'oblivion_cave_2', name: '忘却の洞窟 2階', kind: 'dungeon', bgm: 'dungeon', fallback: 'cave_floor', rows: [
     'GGGGGGGGGGGGGGGGGGGGGGkGkGGGGG',
@@ -120,7 +120,7 @@
   warps: [{ x: 1, y: 1, to: 'oblivion_cave_1', tx: 26, ty: 1 }, { x: 27, y: 12, to: 'oblivion_cave_3', tx: 1, ty: 1 }],
   chests: [{ id: 'oc2_1', x: 8, y: 6, item: 'ether', qty: 2 }, { id: 'oc2_2', x: 25, y: 3, item: 'iron_sword', qty: 1 }, { id: 'oc2_3', x: 3, y: 9, item: 'tent', qty: 1 }],
   events: [{ x: 11, y: 10, type: 'hole', to: 'oblivion_cave_3', tx: 12, ty: 5, text: ['足元が崩れた！'] }],
-  encounters: { rate: 0.08, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['ghost', 'bat'], ['lizard', 'lizard'], ['imp'], ['mole', 'mole', 'bat'], ['ghost', 'ghost'], ['floating_eye'], ['stalactite_golem'], ['zombie', 'zombie', 'ghost'], ['skeleton'], ['skeleton', 'zombie'], ['floating_eye', 'imp'], ['ore_slime', 'cave_crab'], ['mimic']], level: 6 }] }
+  encounters: { rate: 0.045, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['ghost', 'bat'], ['lizard', 'lizard'], ['imp'], ['mole', 'mole', 'bat'], ['ghost', 'ghost'], ['floating_eye'], ['stalactite_golem'], ['zombie', 'zombie', 'ghost'], ['skeleton'], ['skeleton', 'zombie'], ['floating_eye', 'imp'], ['ore_slime', 'cave_crab'], ['mimic']], level: 6 }] }
   });
   add({ id: 'oblivion_cave_3', name: '忘却の洞窟 最深部', kind: 'dungeon', bgm: 'boss_area', fallback: 'cave_floor', rows: [
     'GkGGGGGGGGGGGGGGGGGGGGGGGG',
@@ -145,7 +145,7 @@
     { x: 16, y: 10, type: 'boss', optional: true, solid: false, doneFlag: 'cave_hidden_boss', requireFlag: 'cave_boss', enemy: 'crystal_golem', intro: ['壁の中のクリスタルが輝き、透き通った巨人が姿を現した。', 'クリスタルゴーレム「……欲望ノ主ヲ倒シタ者ヨ。我ノ力ヲ試セ」'], after: ['ゴーレムは静かに砕け、光る杖だけが残った。'], lockedText: ['クリスタルの壁が淡く光っている。今はまだ何も起こらない。'] },
     { x: 12, y: 11, type: 'boss', solid: false, doneFlag: 'cave_boss', enemy: 'boss_greed_golem', intro: ['砕けたクリスタルの欠片を抱え、巨大な黄金のゴーレムが立ち上がった。', '欲望のゴーレム「ゴゴゴ……もっと……もっと欲しい……全部つぎ込めば、取り返せる……！」'], after: ['ゴーレムは崩れ落ち、抱えていた欠片だけが静かに光っている。', '均衡のクリスタルの欠片を手に入れた！ リヴェル王に報告しよう。'], reward: { item: 'crystal_shard', qty: 1 } }
   ],
-  encounters: { rate: 0.07, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['fear_shadow'], ['imp', 'ghost'], ['lizard', 'lizard', 'bat'], ['fear_shadow', 'bat'], ['candle_golem'], ['bear_shadow'], ['candle_golem', 'floating_eye'], ['stalactite_golem', 'ore_slime'], ['bear_shadow', 'ghost', 'ghost']], level: 7 }] }
+  encounters: { rate: 0.04, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['fear_shadow'], ['imp', 'ghost'], ['lizard', 'lizard', 'bat'], ['fear_shadow', 'bat'], ['candle_golem'], ['bear_shadow'], ['candle_golem', 'floating_eye'], ['stalactite_golem', 'ore_slime'], ['bear_shadow', 'ghost', 'ghost']], level: 7 }] }
   });
 
   /* ---------- エマール山道（山賊のアジト・サブクエスト） ---------- */
@@ -170,7 +170,7 @@
   warps: [{ x: 0, y: 14, to: 'world', tx: 36, ty: 41, name: '山道の外へ' }, { x: 14, y: 14, to: 'bandit_hideout', tx: 5, ty: 8 }],
   chests: [{ id: 'ep1', x: 4, y: 1, item: 'hi_potion', qty: 1 }, { id: 'ep2', x: 27, y: 1, item: 'iron_helm', qty: 1 }, { id: 'ep3', x: 25, y: 13, gold: 300 }],
   npcs: [{ id: 'ep_merchant', x: 3, y: 2, sprite: 'merchant', dir: 'down', wander: 0, talk: async function (c) { await c.say('行商人', ['山賊に荷物を奪われた……頭目のガロンはこの先のアジトにいる。倒してくれたら礼をする。']); if (!c.flag('q_bandit_started')) { c.setFlag('q_bandit_started', true); c.questStart('sub_bandit'); } } }],
-  encounters: { rate: 0.08, zones: [{ name: 'エマール山道', test: function () { return true; }, groups: [['bandit'], ['bandit', 'bandit'], ['golem'], ['bug_armor', 'bandit'], ['wolf', 'wolf', 'bandit'], ['bandit_archer', 'bandit_archer'], ['rock_lizard', 'rock_lizard'], ['mountain_hawk', 'mountain_hawk', 'mountain_hawk'], ['harpy', 'bandit_archer'], ['rock_golem'], ['mountain_cat', 'mountain_cat'], ['rock_golem', 'bug_armor']], level: 8 }] }
+  encounters: { rate: 0.045, zones: [{ name: 'エマール山道', test: function () { return true; }, groups: [['bandit'], ['bandit', 'bandit'], ['golem'], ['bug_armor', 'bandit'], ['wolf', 'wolf', 'bandit'], ['bandit_archer', 'bandit_archer'], ['rock_lizard', 'rock_lizard'], ['mountain_hawk', 'mountain_hawk', 'mountain_hawk'], ['harpy', 'bandit_archer'], ['rock_golem'], ['mountain_cat', 'mountain_cat'], ['rock_golem', 'bug_armor']], level: 8 }] }
   });
   add({ id: 'bandit_hideout', name: '山賊のアジト', kind: 'dungeon', bgm: 'boss_area', rows: [
     '############',

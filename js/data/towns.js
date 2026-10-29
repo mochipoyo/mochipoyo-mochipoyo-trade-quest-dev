@@ -156,7 +156,7 @@
   /* =========================================================
      リヴェル城下町（始まりの王国の都）
      ========================================================= */
-  add({ id: 'rivel_town', name: 'リヴェル城下町', kind: 'town', bgm: 'town', fallback: 'stone', style: 'stone', rows: [
+  add({ id: 'rivel_town', name: 'リヴェル城下町', kind: 'town', bgm: 'town', fallback: 'stone', style: 'stone', plaza: { x: 31, y: 31 }, rows: [
     'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',
     'C==========BBBBBBBBBB==========C',
     'C========..BBBBBBBBBB..========C',
@@ -473,5 +473,81 @@
         if (a === 0) { c.join('gald'); await c.msg(['ガルドが仲間になった！']); }
       } }
     ] });
+
+
+  /* =========================================================
+     v3.4: 町・城を2倍に拡大して壮大にする（データ駆動：rows / buildings / npcs / warps / chests / events と
+     他マップからの進入座標をすべて同じ倍率で変換。手作業の地図は持たない）
+     ========================================================= */
+  var ENLARGE = { poyo_village: 2, rivel_town: 2, dow_village: 2, harbor_town: 2, rivel_castle: 2 };
+  var PROPS = 'yejqzeaASx6QiKtTEIv';   // 1タイルだけ残す小物（街灯・ベンチ・井戸・樽・木箱・花壇・屋台・看板・柵・小木・噴水・松明・本棚・机・カウンター・ベッド・柱・レバー）
+  var GROUNDS = { '.': 1, ',': 1, '=': 1, 'r': 1, 'P': 1, 's': 1, '_': 1, ':': 1, 'p': 1, 'g': 1, 'd': 1, 'b': 1, 'H': 1, 'M': 1 };
+  function enlargeRows(rows, k, fallbackCh) {
+    var H = rows.length, W = rows[0].length; var out = [];
+    function groundNear(x, y) { // 小物の足元に敷く地面：左右上下の地面タイルを優先
+        var cands = [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1], [x - 1, y - 1], [x + 1, y + 1]];
+        for (var i = 0; i < cands.length; i++) { var cx = cands[i][0], cy = cands[i][1]; if (cx < 0 || cy < 0 || cx >= W || cy >= H) continue; var ch = rows[cy][cx]; if (GROUNDS[ch]) return ch; }
+        return fallbackCh;
+    }
+    for (var y = 0; y < H; y++) for (var dy = 0; dy < k; dy++) { var line = ''; for (var x = 0; x < W; x++) { var ch = rows[y][x]; for (var dx = 0; dx < k; dx++) { if (ch === 'I' ? dx !== 0 : (PROPS.indexOf(ch) >= 0 && !(dx === 0 && dy === 0))) line += groundNear(x, y); else line += ch; } /* 柱は縦に長く残す */ } out.push(line); }
+    return out;
+  }
+  Object.keys(ENLARGE).forEach(function (id) {
+    var def = MAPS[id]; var k = ENLARGE[id]; if (!def || def._enlarged) return; def._enlarged = k;
+    var fb = def.fallback === 'stone' ? '=' : def.fallback === 'cave_floor' ? 'g' : def.kind === 'interior' ? ':' : '.';
+    def.rows = enlargeRows(def.rows, k, fb);
+    (def.buildings || []).forEach(function (b) { b.x *= k; b.y *= k; b.w = (b.w || 5) * k; b.h = (b.h || 3) * k; b.doorX = (b.doorX === undefined ? 2 : b.doorX) * k; });
+    (def.npcs || []).forEach(function (n) { n.x *= k; n.y *= k; });
+    (def.chests || []).forEach(function (c) { c.x *= k; c.y *= k; });
+    (def.events || []).forEach(function (e) { e.x *= k; e.y *= k; });
+    // ワープ：元の1タイルが k×k になる。全マスから出られるようにする
+    var nw = []; (def.warps || []).forEach(function (w) { for (var dy = 0; dy < k; dy++) for (var dx = 0; dx < k; dx++) nw.push(Object.assign({}, w, { x: w.x * k + dx, y: w.y * k + dy })); }); def.warps = nw;
+  });
+  // 拡大で生まれた広い空間を飾る（街灯・ベンチ・花壇・小木・茂み・噴水）。決定的な擬似乱数で配置し、
+  // ワープ・宝箱・イベント・NPC・建物の出入口まわり・道は空けたままにする
+  function decorateTown(def) {
+    if (def.kind !== 'town') return;
+    var rows = def.rows.map(function (r) { return r.split(''); }); var H = rows.length, W = rows[0].length;
+    var blocked = {}; function block(x, y, r) { for (var dy = -r; dy <= r; dy++) for (var dx = -r; dx <= r; dx++) blocked[(x + dx) + ',' + (y + dy)] = true; }
+    (def.warps || []).forEach(function (w) { block(w.x, w.y, 2); }); (def.chests || []).forEach(function (c) { block(c.x, c.y, 1); }); (def.events || []).forEach(function (e) { block(e.x, e.y, 1); }); (def.npcs || []).forEach(function (n) { block(n.x, n.y, 2); });
+    (def.buildings || []).forEach(function (b) { for (var y = b.y - 1; y <= b.y + b.h; y++) for (var x = b.x - 1; x <= b.x + b.w; x++) blocked[x + ',' + y] = true; block(b.x + b.doorX, b.y + b.h, 2); block(b.x + b.doorX, b.y + b.h + 1, 1); });
+    function at(x, y) { return (x < 0 || y < 0 || x >= W || y >= H) ? '#' : rows[y][x]; }
+    function isGround(ch) { return ch === '.' || ch === ',' || ch === '='; }
+    function rnd(x, y) { var n = Math.sin(x * 127.1 + y * 311.7 + W * 3.3) * 43758.5453; return n - Math.floor(n); }
+    function free(x, y) { return !blocked[x + ',' + y] && isGround(at(x, y)); }
+    function allAround(x, y, pred) { for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) if (!pred(at(x + dx, y + dy))) return false; return true; }
+    var placed = 0;
+    for (var y = 1; y < H - 1; y++) for (var x = 1; x < W - 1; x++) {
+      if (!free(x, y)) continue;
+      var ch = at(x, y); var nearRoad = at(x - 1, y) === 'r' || at(x + 1, y) === 'r' || at(x, y - 1) === 'r' || at(x, y + 1) === 'r';
+      var r = rnd(x, y);
+      if (nearRoad) { // 道沿い：街灯（7マスおき・左右交互）、たまにベンチ
+        if ((x + y) % 7 === 0 && r < 0.8) { rows[y][x] = 'y'; block(x, y, 1); placed++; }
+        else if ((x * 3 + y) % 11 === 0 && r < 0.4) { rows[y][x] = 'e'; block(x, y, 1); placed++; }
+        continue;
+      }
+      if (!allAround(x, y, isGround)) continue;   // 周囲1マスがすべて地面のところだけ（通路をふさがない）
+      if (ch === '=') { if (r < 0.025) { rows[y][x] = 'a'; block(x, y, 1); placed++; } else if (r < 0.04) { rows[y][x] = 'e'; block(x, y, 1); placed++; } }
+      else { if (r < 0.05) { rows[y][x] = '6'; block(x, y, 1); placed++; } else if (r < 0.08) { rows[y][x] = 'Z'; block(x, y, 1); placed++; } else if (r < 0.1) { rows[y][x] = 'a'; block(x, y, 1); placed++; } }
+    }
+    // 城下町の中央広場：噴水と花壇（道の交差点の中央）
+    if (def.plaza) { var px = def.plaza.x, py = def.plaza.y; if (isGround(at(px, py)) || at(px, py) === 'r') { rows[py][px] = 'Q'; [[-2, -2], [2, -2], [-2, 2], [2, 2]].forEach(function (d) { var ax = px + d[0], ay = py + d[1]; if (isGround(at(ax, ay))) rows[ay][ax] = 'a'; }); } }
+    def.rows = rows.map(function (r) { return r.join(''); });
+    def._decorated = placed;
+  }
+  // 城の内部：壁に松明を等間隔で
+  function decorateHall(def) {
+    if (def.kind !== 'interior') return; var rows = def.rows.map(function (r) { return r.split(''); }); var H = rows.length, W = rows[0].length;
+    for (var y = 2; y < H - 2; y += 4) { if (rows[y][0] === 'C' && rows[y][1] === ':') rows[y][0] = 'i'; if (rows[y][W - 1] === 'C' && rows[y][W - 2] === ':') rows[y][W - 1] = 'i'; }
+    for (var x = 3; x < W - 3; x += 5) { if (rows[0][x] === 'C' && rows[1][x] === ':') rows[0][x] = 'i'; }
+    def.rows = rows.map(function (r) { return r.join(''); });
+  }
+  Object.keys(ENLARGE).forEach(function (id) { if (MAPS[id]) { decorateTown(MAPS[id]); decorateHall(MAPS[id]); } });
+  // 拡大したマップへ入る座標（他マップのワープ・建物の entry・ワールドの入口）も同じ倍率に
+  function scaleTarget(w) { var k = ENLARGE[w.to]; if (k && !w._scaled) { w.tx *= k; w.ty *= k; w._scaled = true; } }
+  Object.keys(MAPS).forEach(function (id) { var def = MAPS[id]; (def.warps || []).forEach(scaleTarget); (def.buildings || []).forEach(function (b) { var k = ENLARGE[b.interior]; if (k && b.entry && !b._entryScaled) { b.entry.x *= k; b.entry.y *= k; b._entryScaled = true; } }); });
+  if (root.WORLD_LOCATIONS) root.WORLD_LOCATIONS.forEach(function (L) { var k = ENLARGE[L.to]; if (k && !L._scaled) { L.tx *= k; L.ty *= k; L._scaled = true; } });
+  if (root.WORLD_DEF && root.WORLD_DEF.warps) root.WORLD_DEF.warps.forEach(scaleTarget);
+  root.MAP_ENLARGE = ENLARGE;
 
 })(typeof window !== 'undefined' ? window : globalThis);
