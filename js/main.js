@@ -18,7 +18,10 @@
         var maxH = root.innerHeight - (root.innerWidth < 720 ? 170 : 40);
         var h = Math.min(w / aspect, maxH); canvas.style.width = Math.round(h * aspect) + 'px'; canvas.style.height = Math.round(h) + 'px';
         var ui = document.getElementById('ui'); ui.style.width = canvas.style.width; ui.style.height = canvas.style.height;
+        var ml = document.getElementById('minimap-layer'); if (ml) { ml.style.width = canvas.style.width; ml.style.height = canvas.style.height; }
+        if (root.Minimap && root.Minimap.resize) root.Minimap.resize();
       }
+      if (root.Minimap) root.Minimap.init();
       root.addEventListener('resize', fit); fit();
       root.Engine.start();
       root.Title.show();

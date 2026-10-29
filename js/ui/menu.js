@@ -183,6 +183,7 @@
         { label: '音（BGM・効果音）', right: st.mute ? 'OFF' : 'ON' }, { label: 'BGM音量', right: Math.round(st.bgm * 100) + '%' }, { label: '効果音音量', right: Math.round(st.se * 100) + '%' },
         { label: '文字速度', right: ({ normal: 'ふつう', fast: 'はやい', instant: '一瞬' })[st.textSpeed] }, { label: '戦闘速度', right: st.battleSpeed === 'fast' ? 'はやい' : 'ふつう' },
         { label: 'チャート試練のリスク%', right: st.riskPercent + '%' }, { label: 'ZigZag表示', right: st.showZigzag ? 'ON' : 'OFF' },
+        { label: 'ミニマップ', right: st.minimap === 'off' ? '表示しない' : '表示する' }, { label: 'ミニマップの大きさ', right: st.minimapSize === 'large' ? '大きい' : 'ふつう' },
         { label: 'データ管理（書き出し・読み込み・初期化）' }, { label: 'タイトルに戻る' }
       ], { title: '設定' });
       if (i < 0) return;
@@ -193,8 +194,10 @@
       if (i === 4) { st.battleSpeed = st.battleSpeed === 'fast' ? 'normal' : 'fast'; }
       if (i === 5) { var ro = root.CONFIG.risk.riskOptions; st.riskPercent = ro[(ro.indexOf(st.riskPercent) + 1) % ro.length]; }
       if (i === 6) { st.showZigzag = !st.showZigzag; }
-      if (i === 7) { await Menu.dataManagement(); }
-      if (i === 8) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
+      if (i === 7) { st.minimap = st.minimap === 'off' ? 'on' : 'off'; }
+      if (i === 8) { st.minimapSize = st.minimapSize === 'large' ? 'normal' : 'large'; if (root.Minimap) root.Minimap.resize(); }
+      if (i === 9) { await Menu.dataManagement(); }
+      if (i === 10) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
       State.autosave();
     }
   };

@@ -21,6 +21,7 @@
   // セーブ状態をマップに反映（開けた宝箱・開いた扉・条件つきNPC）
   World.applyState = function (m) {
     var d = State.data;
+    if (root.Minimap) root.Minimap.markDirty(m.id);
     m.chests.forEach(function (c) { var opened = d.chests[m.id + ':' + c.id]; m.setTile(c.x, c.y, opened ? 'chest_open' : 'chest'); });
     m.events.forEach(function (e) {
       if ((e.type === 'trial' || e.type === 'locked') && e.doneFlag && d.flags[e.doneFlag]) m.setTile(e.x, e.y, m.kind === 'dungeon' && m.tile(e.x, e.y) === 'gate' ? 'warp' : 'door');
@@ -48,6 +49,7 @@
     p.sprite = State.data.hero.sprite;
     State.data.visited[id] = true;
     World.syncPos();
+    if (root.Minimap) root.Minimap.onEnterMap(World.map, p);
     if (root.Audio) root.Audio.playBgm(World.map.def.bgm || (World.map.kind === 'field' ? 'field' : 'town'));
     World.updateHud(); World.updatePlaceLabel();
     State.autosave();
@@ -68,6 +70,7 @@
   };
   ExploreScene.prototype.update = function (dt) {
     var p = World.player; var m = World.map;
+    if (root.Minimap) root.Minimap.frame(dt);
     if (p.moving) {
       p.progress += dt * p.speed / 16;
       if (p.progress >= 1) { p.x = p.tx; p.y = p.ty; p.px = p.x * TS; p.py = p.y * TS; p.moving = false; p.progress = 0; p.frame = 0; World.onStep(); }
@@ -128,6 +131,7 @@
   World.onStep = function () {
     var p = World.player, m = World.map, d = State.data;
     d.steps++; World.syncPos();
+    if (root.Minimap) root.Minimap.onStep(m, p);
     if (m.kind === 'field') d.timeOfDay = (d.timeOfDay + 0.0025) % 1;
     var w = m.warpAt(p.x, p.y);
     if (w && (!w.needFlag || d.flags[w.needFlag])) { World.doWarp(w); return; }
@@ -229,7 +233,7 @@
   World.updateHud = function () {
     var h = document.getElementById('hud'); if (!h || !State.data) return;
     var d = State.data; var party = State.partyActors();
-    h.innerHTML = '<div class="hud-loc">' + Win.esc(World.map ? World.map.name : '') + '</div><div class="hud-gold">' + d.gold + ' G</div>' +
+    h.innerHTML = '<div class="hud-top"><div class="hud-loc">' + Win.esc(World.map ? World.map.name : '') + '</div><div class="hud-gold">' + d.gold + ' G</div></div>' +
       '<div class="hud-party">' + party.map(function (a) { var s = root.Actors.stats(a); var cls = a.dead ? 'dead' : (a.hp < s.maxHp * 0.3 ? 'low' : ''); return '<div class="hud-a ' + cls + '"><span>' + Win.esc(a.name) + '</span> <b>' + a.hp + '</b>/' + s.maxHp + ' <i>' + a.mp + '</i></div>'; }).join('') + '</div>';
   };
 

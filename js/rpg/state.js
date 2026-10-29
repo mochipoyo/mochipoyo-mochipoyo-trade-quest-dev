@@ -19,7 +19,8 @@
       gold: 0, bank: 0, inventory: {}, flags: {}, counters: {}, quests: {}, chests: {},
       pos: { map: 'poyo_village', x: 12, y: 16, dir: 'up' }, lastInn: { map: 'poyo_village', x: 12, y: 16 }, visited: { poyo_village: true },
       steps: 0, timeOfDay: 0.3, bestiary: {}, trade: { stats: TradeEval.emptyStats(), capital: CONFIG.risk.capital, lectures: {} },
-      settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true },
+      settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true, minimap: 'on', minimapSize: 'normal' },
+      mapDiscovery: {},   // ミニマップの探索状況（マップID → 行ごとのビット列）。visited とは別
       legacyImported: null
     };
     State.data = d;

@@ -19,7 +19,7 @@
     keys: {}, pressed: {}, dirHeld: null, _queue: [],
     init: function () {
       var map = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right',
-        Enter: 'ok', z: 'ok', Z: 'ok', ' ': 'ok', Escape: 'cancel', x: 'cancel', X: 'cancel', Backspace: 'cancel' };
+        Enter: 'ok', z: 'ok', Z: 'ok', ' ': 'ok', Escape: 'cancel', x: 'cancel', X: 'cancel', Backspace: 'cancel', m: 'map', M: 'map' };
       document.addEventListener('keydown', function (e) {
         var k = map[e.key]; if (!k) return;
         if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA')) return;
