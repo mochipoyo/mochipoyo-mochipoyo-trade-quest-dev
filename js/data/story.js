@@ -22,7 +22,12 @@
     learn_pullback: { title: '押し目を見極めよ', desc: '修行場で「上昇トレンド中の押し目」の試練に3回成功する。', counter: 'trial_ok:up_pullback', need: 3, reward: { exp: 100, gold: 150, item: 'amulet_mind' } },
     learn_range: { title: 'レンジを見送れ', desc: '修行場で「レンジ相場」の試練に2回成功する（見送りが正解）。', counter: 'trial_ok:range', need: 2, reward: { exp: 80, gold: 100, item: 'ether' } },
     learn_hidden: { title: 'ヒドゥンダイバージェンスを見つけよ', desc: '修行場で「ヒドゥンダイバージェンス」の試練に2回成功する。', counter: 'trial_ok:hidden', need: 2, reward: { exp: 150, gold: 200, item: 'time_amulet' } },
-    learn_stoploss: { title: '損切り位置を極めよ', desc: '修行場の試練で「損切り位置」を5回正しく設定する。', counter: 'trial_sl_ok', need: 5, reward: { exp: 120, gold: 150, item: 'stoploss_shield' } }
+    learn_stoploss: { title: '損切り位置を極めよ', desc: '修行場の試練で「損切り位置」を5回正しく設定する。', counter: 'trial_sl_ok', need: 5, reward: { exp: 120, gold: 150, item: 'stoploss_shield' } },
+    // v4.2: 師匠の特別クエスト（トレーダーランク到達で解放。複数条件 needs = [[カウンター, 必要数], ...]）
+    mq_eye: { title: '自分の眼で見よ', master: true, rank: 1, desc: 'ヒントを使わずに5回正しい判断をし、5項目の分析をすべて正しく行った試練を2回達成する。', needs: [['trial_nohint_ok', 5, 'ヒントなし正解'], ['trial_analysis_full', 2, '分析5項目すべて正解']], reward: { exp: 120, gold: 250, item: 'feather_hat' } },
+    mq_env: { title: '環境を読め', master: true, rank: 2, desc: '上位足の環境認識を8回正しく判断し、「上位足と下位足の不一致」の場面を2回正しく見送る。', needs: [['trial_mtf_ok', 8, '上位足の認識'], ['trial_ok:mtf_conflict', 2, '不一致場面の見送り']], reward: { exp: 200, gold: 400, item: 'ring_guard' } },
+    mq_discipline: { title: '規律の証', master: true, rank: 3, desc: '根拠の揃わない場面を4回正しく見送り、損切り位置を8回正しく置く。', needs: [['trial_skip_ok', 4, '正しい見送り'], ['trial_sl_ok', 8, '損切り位置']], reward: { exp: 300, gold: 600, item: 'knight_shield' } },
+    mq_master: { title: '導師への道', master: true, rank: 4, desc: '90点以上を3回、ヒントなしの正解を20回、そしてすべての場面で正解する。', needs: [['trial_perfect', 3, '90点以上'], ['trial_nohint_ok', 20, 'ヒントなし正解'], ['trial_unique', 14, '異なる場面で正解']], reward: { exp: 500, gold: 1200, item: 'elixir' } }
   };
 
   // 修行場の講義（既存教材 LEARNING.chapters を参照）。講義を修了するとフラグが立つ

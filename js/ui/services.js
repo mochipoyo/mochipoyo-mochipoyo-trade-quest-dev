@@ -163,7 +163,7 @@
   Services.questBoard = async function () {
     var d = State.data;
     var ids = Object.keys(QUESTS);
-    var items = ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; var tag = !st ? '未受注' : st.state === 'done' ? '達成' : '進行中'; var prog = q.counter && st && st.state === 'active' ? '（' + (d.counters[q.counter] || 0) + '/' + q.need + '）' : ''; return { label: (q.main ? '【メイン】' : '【サブ】') + q.title, right: tag + prog, sub: q.desc, cls: st && st.state === 'done' ? 'done' : '' }; });
+    var items = ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; var locked = !root.Growth.questAvailable(q); var tag = locked ? 'ランク' + root.RANK_UNLOCKS[q.rank].letter + 'で解放' : !st ? '未受注' : st.state === 'done' ? '達成' : '進行中'; var prog = st && st.state === 'active' ? '（' + Events.questProgress(id) + '）' : ''; return { label: (q.main ? '【メイン】' : q.master ? '【師匠】' : '【サブ】') + q.title, right: tag + prog, sub: q.desc, cls: st && st.state === 'done' ? 'done' : '', disabled: locked }; });
     var i = await Win.list(items, { title: 'クエスト掲示板', info: function (k) { var q = QUESTS[ids[k]]; var r = q.reward || {}; return '<div class="muted small">報酬：' + [r.exp ? '経験値' + r.exp : '', r.gold ? r.gold + 'G' : '', r.item ? ITEMS[r.item].name : ''].filter(Boolean).join('・') + '</div>'; } });
     if (i < 0) return;
     var id = ids[i]; var q = QUESTS[id];
@@ -221,7 +221,7 @@
     var i = await Win.list(list.map(function (t) { return { label: t.label, right: t.plays ? Math.round(t.acc * 100) + '%（' + t.plays + '回）' : '未挑戦', sub: '習熟度：' + t.level + (t.hintRate > 0.5 && t.plays >= 3 ? '　ヒント依存が高い' : '') }; }), { title: '苦手分野の復習（正解率の低い順）' });
     if (i < 0) return;
     var ids = TradeEval.scenariosForTopic(list[i].key);
-    await root.TradeUI.trial(ids, { title: '復習：' + list[i].label, practice: true });
+    await root.TradeUI.trial(ids, { title: '復習：' + list[i].label, practice: true, review: list[i].key });
     await Events.checkCounterQuests();
   };
   Services.dojo = async function (where) {
@@ -255,7 +255,7 @@
       await Win.message([(ok ? '正解！ ' : '不正解…… ') + qz.explain]);
     }
     if (correct >= Math.ceil(ch.quiz.length * 0.75)) {
-      if (!d.flags[L.id]) { d.flags[L.id] = true; d.trade.lectures[L.id] = true; await Win.message(['講義「' + L.title + '」を修了した！（' + correct + '/' + ch.quiz.length + '問正解）'], { name: '師匠ハケイ' }); var exp = 40 * L.chapter; State.partyActors().forEach(function (x) { Actors.gainExp(x, exp); }); await Win.message(['パーティー全員が経験値' + exp + 'を得た！']); if (root.Audio) root.Audio.playJingle('levelup'); }
+      if (!d.flags[L.id]) { d.flags[L.id] = true; d.trade.lectures[L.id] = true; await Win.message(['講義「' + L.title + '」を修了した！（' + correct + '/' + ch.quiz.length + '問正解）'], { name: '師匠ハケイ' }); var exp = 40 * L.chapter; State.partyActors().forEach(function (x) { Actors.gainExp(x, exp); }); await Win.message(['パーティー全員が経験値' + exp + 'を得た！']); if (root.Audio) root.Audio.playJingle('levelup'); if (root.Growth) await root.Growth.check(true); }
       else await Win.message(['復習ご苦労。' + correct + '/' + ch.quiz.length + '問正解だ。'], { name: '師匠ハケイ' });
     } else await Win.message([correct + '/' + ch.quiz.length + '問正解。もう一度、教えを読み返してみるといい。'], { name: '師匠ハケイ' });
     State.autosave();
@@ -270,14 +270,15 @@
     await Events.checkCounterQuests();
   }
   async function learningQuests() {
-    var d = State.data; var ids = ['learn_pullback', 'learn_range', 'learn_hidden', 'learn_stoploss'];
-    var items = ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; return { label: q.title, right: !st ? '未受注' : st.state === 'done' ? '達成' : (d.counters[q.counter] || 0) + '/' + q.need, sub: q.desc }; });
-    var i = await Win.list(items, { title: '学習クエスト', info: function (k) { var r = QUESTS[ids[k]].reward; return '<div class="muted small">報酬：経験値' + r.exp + '・' + r.gold + 'G・' + ITEMS[r.item].name + '</div>'; } });
+    var d = State.data; var ids = ['learn_pullback', 'learn_range', 'learn_hidden', 'learn_stoploss'].concat(Object.keys(QUESTS).filter(function (k) { return QUESTS[k].master; }));
+    var items = ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; var locked = !root.Growth.questAvailable(q); return { label: (q.master ? '【師匠の特別クエスト】' : '') + q.title, right: locked ? 'ランク' + root.RANK_UNLOCKS[q.rank].letter + '到達で解放' : !st ? '未受注' : st.state === 'done' ? '達成' : Events.questProgress(id), sub: q.desc, disabled: locked, cls: st && st.state === 'done' ? 'done' : '' }; });
+    var i = await Win.list(items, { title: '学習クエスト・師匠の特別クエスト', info: function (k) { var q = QUESTS[ids[k]]; var r = q.reward; return '<div class="muted small">報酬：経験値' + r.exp + '・' + r.gold + 'G・' + ITEMS[r.item].name + '</div>' + (q.rank ? '<div class="muted small">条件：トレーダーランク' + root.RANK_UNLOCKS[q.rank].letter + '「' + esc(root.RANK_UNLOCKS[q.rank].title) + '」到達</div>' : ''); } });
     if (i < 0) return;
-    var id = ids[i];
-    if (!d.quests[id]) { var a = await Win.choice('「' + QUESTS[id].title + '」を受ける？', ['受ける', 'やめる']); if (a === 0) { Events.questStart(id); await Win.message(['試練で成功すると進行する。「チャートの試練」で練習しよう。'], { name: '師匠ハケイ' }); } }
-    else await Win.message([QUESTS[id].desc]);
+    var id = ids[i]; var q = QUESTS[id];
+    if (!d.quests[id]) { var a = await Win.choice('「' + q.title + '」を受ける？', ['受ける', 'やめる']); if (a === 0) { Events.questStart(id); await Win.message([q.master ? 'ランクに恥じぬ眼を見せてくれ。進み具合はメニューの「クエスト」でも確認できる。' : '試練で成功すると進行する。「チャートの試練」で練習しよう。'], { name: '師匠ハケイ' }); await Events.checkCounterQuests(); } }
+    else { await Win.message([q.desc, d.quests[id].state === 'done' ? '達成済み。' : '進み具合：' + Events.questProgress(id)]); }
   }
+  Services.learningQuests = learningQuests;
 
   root.Services = Services;
 })(typeof window !== 'undefined' ? window : globalThis);

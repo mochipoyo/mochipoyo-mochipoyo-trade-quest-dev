@@ -128,6 +128,7 @@
           if (ev.actionOk) { State.count('trial_ok:' + id); if (id === 'hidden_bull' || id === 'hidden_bear') State.count('trial_ok:hidden'); }
           if (ev.trade && ev.items.some(function (it) { return it.name === '損切り位置' && it.ok; })) State.count('trial_sl_ok');
           if (ev.score >= 90) State.count('trial_perfect');
+          if (root.Growth) root.Growth.afterTrial(ev, opts);   // v4.2: 特別クエスト用カウンター・苦手な判断・復習履歴
           msg(ev.skill.name + '！ ' + (ev.trade ? 'エントリー確定。その後の値動きを進める……' : '見送りを選択。その後の値動きを確認する……'));
           chartCtl.opts = ev.trade ? { sl: ev.trade.sl, tp: ev.trade.tp, entry: ev.trade.entry } : {};
           TradeUI.state.tf = def.focusTF;
@@ -154,7 +155,7 @@
         if (tutorial) msg('まず時間足ボタンで「4時間足」を見て方向を確かめ、次に15分足に戻って波形・EMA・RCI・MACDを順に選ぼう。');
         requestAnimationFrame(render);
         root.onresize = function () { if (document.getElementById('trial-chart')) render(); };
-      } }).then(function (res) { State.autosave(); var p = (root.Learning && res) ? root.Learning.checkUnlocks(true) : null; Promise.resolve(p).then(function () { resolve(res || null); }); });
+      } }).then(function (res) { State.autosave(); var p = (root.Learning && res) ? root.Learning.checkUnlocks(true) : null; Promise.resolve(p).then(function () { return (root.Growth && res) ? root.Growth.check(true) : null; }).then(function () { resolve(res || null); }); });
     });
   };
 
@@ -163,8 +164,10 @@
     var rows = [['判断回数', st.scoreCount], ['トレード回数', sm.trades], ['勝率', sm.winRate.toFixed(0) + '%'], ['平均リスクリワード', sm.avgRR ? '1:' + sm.avgRR.toFixed(2) : '―'], ['最大ドローダウン', sm.maxDrawdown.toFixed(1) + '%'], ['見送り判断', sm.skips + '（正しい見送り ' + sm.correctSkips + '）'], ['ルール違反', sm.violations], ['学習スコア（平均点）', sm.learningScore.toFixed(1)], ['仮想証拠金', Math.round(State.data.trade.capital).toLocaleString() + '円'], ['トレーダーランク', (function () { var r = TradeEval.rank(State.data.trade); return r.letter + '　' + r.title; })()]];
     var bySc = Object.keys(st.byScenario).map(function (id) { var dd = Scenarios.get(id); var r = st.byScenario[id]; return '<tr><td>' + esc(dd ? dd.title : id) + '</td><td>' + r.correct + '/' + r.plays + '</td></tr>'; }).join('');
     var topics = TradeEval.topicSummary(State.data.trade); var rank = TradeEval.rank(State.data.trade);
-    var tt = '<h3>分野別の記録</h3><table class="tbl topic-tbl"><tr><th>分野</th><th>挑戦</th><th>正解率</th><th>ヒント利用</th><th>習熟度</th><th>前回</th></tr>' + topics.map(function (t) { return '<tr><td>' + esc(t.label) + '</td><td>' + t.plays + '</td><td>' + (t.acc === null ? '―' : Math.round(t.acc * 100) + '%') + '</td><td>' + (t.plays ? Math.round(t.hintRate * 100) + '%' : '―') + '</td><td class="lv-' + t.level + '">' + t.level + '</td><td>' + (t.plays ? (t.lastOk ? '○' : '×') : '―') + '</td></tr>'; }).join('') + '</table><div class="small">トレーダーランク：<b class="gold-text">' + esc(rank.letter + ' ' + rank.title) + '</b>　ヒントなし正解 ' + (st.noHintPlays ? Math.round((st.noHintCorrect || 0) / st.noHintPlays * 100) + '%' : '―') + '　異なる場面の正解 ' + Object.keys(st.uniqueCorrect || {}).length + '</div>';
-    var extra = tt;
+    var TP = State.data.trade.topics || {}; var dateS = function (ms) { var dt = new Date(ms); return (dt.getMonth() + 1) + '/' + dt.getDate(); };
+    var tt = '<h3>分野別の記録</h3><table class="tbl topic-tbl"><tr><th>分野</th><th>挑戦</th><th>正解率</th><th>ヒント利用</th><th>習熟度</th><th>前回</th><th>復習</th></tr>' + topics.map(function (t) { var rv = TP[t.key] && TP[t.key].reviews || 0; return '<tr><td>' + esc(t.label) + '</td><td>' + t.plays + '</td><td>' + (t.acc === null ? '―' : Math.round(t.acc * 100) + '%') + '</td><td>' + (t.plays ? Math.round(t.hintRate * 100) + '%' : '―') + '</td><td class="lv-' + t.level + '">' + t.level + '</td><td>' + (t.plays ? (t.lastOk ? '○' : '×') + (t.last ? ' ' + dateS(t.last) : '') : '―') + '</td><td>' + (rv ? rv + '回' : '―') + '</td></tr>'; }).join('') + '</table><div class="small">トレーダーランク：<b class="gold-text">' + esc(rank.letter + ' ' + rank.title) + '</b>　ヒントなし正解 ' + (st.noHintPlays ? Math.round((st.noHintCorrect || 0) / st.noHintPlays * 100) + '%' : '―') + '　異なる場面の正解 ' + Object.keys(st.uniqueCorrect || {}).length + '</div>';
+    var G = root.Growth; var mist = G ? G.topMistakes(3) : []; var rlog = (State.data.trade.reviewLog || []).slice(-5).reverse();
+    var extra = tt + '<div class="rec-cols"><div><h3>苦手な判断</h3>' + (mist.length ? '<ul class="plain">' + mist.map(function (m) { return '<li>' + esc(m[0]) + '　<b>' + m[1] + '回</b></li>'; }).join('') + '</ul>' : '<div class="muted small">まだ記録なし</div>') + '</div><div><h3>復習履歴</h3>' + (rlog.length ? '<ul class="plain">' + rlog.map(function (r) { return '<li>' + dateS(r.at) + '　' + esc(TradeEval.topicLabel(r.topic)) + '　' + r.score + '点' + (r.ok ? ' ○' : ' ×') + '</li>'; }).join('') + '</ul>' : '<div class="muted small">「苦手分野の復習」から出題すると記録されます</div>') + '</div></div>';
     return Win.panel('<div class="rw-title">トレード学習記録</div><table class="tbl">' + rows.map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td><b>' + esc(r[1]) + '</b></td></tr>'; }).join('') + '</table><p class="muted small">仮想証拠金は学習用で、冒険のゴールド（G）とは別管理。ランクは判断の質で決まる。</p>' + extra + (bySc ? '<h3>場面別の正答</h3><table class="tbl">' + bySc + '</table>' : ''));
   };
 

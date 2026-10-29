@@ -24,9 +24,9 @@
     if (root.Minimap) root.Minimap.markDirty(m.id);
     m.chests.forEach(function (c) { var opened = d.chests[m.id + ':' + c.id]; m.setTile(c.x, c.y, opened ? 'chest_open' : 'chest'); });
     m.events.forEach(function (e) {
-      if ((e.type === 'trial' || e.type === 'locked') && e.doneFlag && d.flags[e.doneFlag]) m.setTile(e.x, e.y, m.kind === 'dungeon' && m.tile(e.x, e.y) === 'gate' ? 'warp' : 'door');
+      if ((e.type === 'trial' || e.type === 'locked' || e.type === 'rank_door') && e.doneFlag && d.flags[e.doneFlag]) m.setTile(e.x, e.y, m.kind === 'dungeon' && m.tile(e.x, e.y) === 'gate' ? 'warp' : 'door');
       else if (e.type === 'trial') m.setTile(e.x, e.y, 'gate');
-      else if (e.type === 'locked') m.setTile(e.x, e.y, 'door_locked');
+      else if (e.type === 'locked' || e.type === 'rank_door') m.setTile(e.x, e.y, 'door_locked');
       if (e.type === 'hole') m.setTile(e.x, e.y, 'hole');
       if (e.type === 'learn') m.setTile(e.x, e.y, 'learn_rune');
       if (e.type === 'boss' && e.optional) m.setTile(e.x, e.y, (e.doneFlag && d.flags[e.doneFlag]) ? (m.def.fallback === 'cave_floor' ? 'cave_floor' : 'floor_stone') : 'boss_mark');

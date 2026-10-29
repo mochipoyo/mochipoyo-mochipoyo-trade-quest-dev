@@ -215,3 +215,17 @@ ul.eval .mark { display: inline-block; width: 1.3em; font-weight: bold; } ul.eva
 @media (max-width: 720px) { .aq-t { min-width: 100%; font-size: 11px; } .aopt { font-size: 10px; padding: 2px 5px; } .analysis { padding: 4px 6px; } .trade-panel .chart { height: 160px; } }
 
 .learn-row { border-top: 1px dashed rgba(255,255,255,.15); padding: 5px 0; } .ok-text { color: #7fe3a5; }
+
+/* v4.2 成長システム */
+.title-badge { font-size: 12px; color: #ffd24a; border: 1px solid #a08030; border-radius: 10px; padding: 1px 8px; margin-left: 4px; vertical-align: middle; }
+.unlock-tbl td { vertical-align: top; font-size: 12px; }
+.unlock-tbl tr.got td { color: #cfe8cf; }
+.ach-list { display: flex; flex-direction: column; gap: 6px; max-height: 50vh; overflow: auto; }
+.ach { display: flex; gap: 8px; align-items: flex-start; padding: 6px 8px; border: 1px solid #3a3f5a; border-radius: 6px; background: rgba(0,0,0,.2); opacity: .75; }
+.ach.done { opacity: 1; border-color: #a08030; background: rgba(120, 90, 20, .18); }
+.ach .mark { color: #ffd24a; font-size: 16px; line-height: 1.2; }
+.rec-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rec-cols h3 { margin: 8px 0 4px; }
+ul.plain { list-style: none; padding: 0; margin: 0; font-size: 12px; }
+ul.plain li { padding: 2px 0; border-bottom: 1px dashed #3a3f5a; }
+@media (max-width: 520px) { .rec-cols { grid-template-columns: 1fr; } }

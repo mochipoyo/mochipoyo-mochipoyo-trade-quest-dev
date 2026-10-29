@@ -402,13 +402,13 @@
     var crit = { analysis: coreAvg, mtf: acc('mtf'), action: acc('action'), risk: Math.max(acc('risk'), acc('skip')), noHint: noHint, variety: uniq, plays: plays, avgScore: plays ? S.scoreSum / plays : 0 };
     var r = 0;
     if (plays >= 3 && crit.avgScore >= 40) r = 1;                                                                    // E
-    if (r >= 1 && uniq >= 3 && crit.action >= 0.5 && crit.analysis >= 0.45) r = 2;                                   // D
+    if (r >= 1 && plays >= 5 && uniq >= 4 && crit.action >= 0.5 && crit.analysis >= 0.45) r = 2;   // v4.2: ランクに報酬・解放が付いたため D は5回以上・異なる4場面に                                   // D
     if (r >= 2 && uniq >= 6 && crit.mtf >= 0.7 && crit.action >= 0.6 && crit.analysis >= 0.6) r = 3;                // C
     if (r >= 3 && uniq >= 9 && crit.risk >= 0.7 && crit.action >= 0.7 && noHint >= 0.6 && crit.analysis >= 0.7) r = 4;   // B
     if (r >= 4 && uniq >= 12 && crit.analysis >= 0.8 && crit.action >= 0.8 && noHint >= 0.75 && crit.avgScore >= 75) r = 5; // A
     if (r >= 5 && uniq >= 14 && crit.analysis >= 0.9 && crit.action >= 0.9 && noHint >= 0.85 && crit.avgScore >= 85) r = 6; // S
     var next = TradeEval.RANKS[Math.min(6, r + 1)];
-    var need = r >= 6 ? [] : [[1, '3回以上の挑戦と平均40点以上'], [2, '異なる3場面で正解・判断6割・分析45%'], [3, '異なる6場面・上位足認識7割・分析6割'], [4, '異なる9場面・損切り/見送り7割・ヒントなし正解6割'], [5, '異なる12場面・分析8割・ヒントなし75%・平均75点'], [6, '全14場面・分析9割・ヒントなし85%・平均85点']].filter(function (x) { return x[0] === r + 1; }).map(function (x) { return x[1]; });
+    var need = r >= 6 ? [] : [[1, '3回以上の挑戦と平均40点以上'], [2, '5回以上の挑戦・異なる4場面で正解・判断5割・分析45%'], [3, '異なる6場面・上位足認識7割・分析6割'], [4, '異なる9場面・損切り/見送り7割・ヒントなし正解6割'], [5, '異なる12場面・分析8割・ヒントなし75%・平均75点'], [6, '全14場面・分析9割・ヒントなし85%・平均85点']].filter(function (x) { return x[0] === r + 1; }).map(function (x) { return x[1]; });
     return { index: r, letter: TradeEval.RANKS[r][0], title: TradeEval.RANKS[r][1], next: next, needText: need[0] || '', crit: crit };
   };
 

@@ -59,8 +59,9 @@
     '#:::::::::::::#',
     '#######D#######'
   ],
-  warps: [{ x: 7, y: 12, to: 'lost_forest', tx: 15, ty: 13 }, { x: 1, y: 9, to: 'lost_forest_treasure', tx: 4, ty: 7, needFlag: 'lf_lock' }],
+  warps: [{ x: 7, y: 12, to: 'lost_forest', tx: 15, ty: 13 }, { x: 1, y: 9, to: 'lost_forest_treasure', tx: 4, ty: 7, needFlag: 'lf_lock' }, { x: 14, y: 9, to: 'forest_hidden_room', tx: 1, ty: 4, needFlag: 'hidden_forest_open' }],
   events: [
+    { x: 14, y: 9, type: 'rank_door', solid: true, doneFlag: 'hidden_forest_open', rank: 2, text: ['東の壁に、波形の紋章が刻まれた小さな扉がある。'] },
     { x: 7, y: 5, type: 'boss', solid: false, doneFlag: 'forest_boss', enemy: 'boss_lost_trend', intro: ['祠の中央、淡く光るクリスタルの前に、揺れる影が立っていた。', 'トレンド迷子「うろうろ……どっちへ行けばいいの……？ あなたも一緒に迷いましょう……」'], after: ['影は霧のように消えた。クリスタルの光が少しだけ強くなった気がする。', '祠の奥で、何かが「カチリ」と音を立てた。'], reward: { item: 'forest_key', qty: 1 }, questComplete: null },
     { x: 1, y: 9, type: 'locked', solid: true, doneFlag: 'lf_lock', key: 'forest_key', text: ['鍵のかかった扉だ。'] }
   ] });
@@ -76,6 +77,25 @@
   ], warps: [{ x: 4, y: 7, to: 'lost_forest_shrine', tx: 2, ty: 9 }],
     chests: [{ id: 'lft1', x: 4, y: 1, item: 'wave_sword', qty: 1 }, { id: 'lft2', x: 1, y: 6, gold: 500 }, { id: 'lft3', x: 7, y: 6, item: 'phoenix_feather', qty: 1 }],
     events: [{ x: 4, y: 4, type: 'boss', optional: true, solid: false, doneFlag: 'forest_hidden_boss', requireFlag: 'forest_boss', enemies: ['wolf_king', 'wolf'], intro: ['宝物庫の奥から、白銀の毛並みの巨大な狼が現れた。', '森の狼王は低く唸り、群れを呼ぶように遠吠えした。'], after: ['狼王は深く一礼するように頭を下げ、森の奥へと去っていった。'], lockedText: ['宝物庫の奥で何かが眠っている気配がする。祠の魔物を倒してから来るべきだ。'] }] });
+
+  // v4.2: 祠の隠し書庫（トレーダーランクDで開く扉の先。寄り道。メインストーリーには不要）
+  add({ id: 'forest_hidden_room', name: '祠の隠し書庫', kind: 'dungeon', bgm: 'boss_area', rows: [
+    '###########',
+    '#KKK:::KKK#',
+    '#:::::::::#',
+    '#:I:::::I:#',
+    'D:::::::::#',
+    '#:I:::::I:#',
+    '#:::::::::#',
+    '#KKK:::KKK#',
+    '###########'
+  ],
+    warps: [{ x: 0, y: 4, to: 'lost_forest_shrine', tx: 13, ty: 9 }],
+    chests: [{ id: 'fh1', x: 9, y: 2, item: 'amulet_life', qty: 1 }, { id: 'fh2', x: 9, y: 6, gold: 600 }, { id: 'fh3', x: 5, y: 1, item: 'hi_ether', qty: 2 }],
+    events: [
+      { x: 5, y: 4, type: 'inspect', solid: false, text: ['師匠ハケイの古い手記が置かれている。', '「押し目とは、上位足の流れに対する一時的な逆行だ。逆行の『終わり』を、高値・安値の切り上げとEMAへの反発で確かめてから入る。終わりを待てぬ者は、押し目ではなく転換を買ってしまう」', '「見送った場面を悔やむな。入らなかった損は、ゼロだ」'] },
+      { x: 5, y: 7, type: 'inspect', solid: false, text: ['棚の本：『波形研究者の心得』', '「同じ場面を百回解いても、眼は育たない。異なる場面を、ヒントなしで、自分の言葉で説明できるか——それが研究者の証だ」'] }
+    ] });
 
   /* ---------- 忘却の洞窟（3フロア） ---------- */
   add({ id: 'oblivion_cave_1', name: '忘却の洞窟 1階', kind: 'dungeon', bgm: 'dungeon', fallback: 'cave_floor', rows: [
@@ -119,12 +139,30 @@
     'GGGGGGGGGGGGGGGGGgugggggggggGG',
     'GGGGGGGGGGGGGGGGGGGGGGkGGGiGGG'
   ],
-  warps: [{ x: 1, y: 1, to: 'oblivion_cave_1', tx: 26, ty: 1 }, { x: 27, y: 12, to: 'oblivion_cave_3', tx: 1, ty: 1 }],
+  warps: [{ x: 1, y: 1, to: 'oblivion_cave_1', tx: 26, ty: 1 }, { x: 27, y: 12, to: 'oblivion_cave_3', tx: 1, ty: 1 }, { x: 13, y: 5, to: 'cave_hidden_room', tx: 1, ty: 3, needFlag: 'hidden_cave_open' }],
   chests: [{ id: 'oc2_1', x: 8, y: 6, item: 'ether', qty: 2 }, { id: 'oc2_2', x: 25, y: 3, item: 'iron_sword', qty: 1 }, { id: 'oc2_3', x: 3, y: 9, item: 'tent', qty: 1 }],
   events: [
+    { x: 13, y: 5, type: 'rank_door', solid: true, doneFlag: 'hidden_cave_open', rank: 3, text: ['岩壁に、波形の紋章が刻まれた扉が埋まっている。'] },
     { x: 15, y: 3, type: 'learn', solid: false, learnId: 'practice_cave2' },{ x: 11, y: 10, type: 'hole', to: 'oblivion_cave_3', tx: 12, ty: 5, text: ['足元が崩れた！'] }],
   encounters: { rate: 0.045, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['ghost', 'bat'], ['lizard', 'lizard'], ['imp'], ['mole', 'mole', 'bat'], ['ghost', 'ghost'], ['floating_eye'], ['stalactite_golem'], ['zombie', 'zombie', 'ghost'], ['skeleton'], ['skeleton', 'zombie'], ['floating_eye', 'imp'], ['ore_slime', 'cave_crab'], ['mimic']], level: 6 }] }
   });
+  // v4.2: 洞窟の隠し工房（トレーダーランクCで開く扉の先。寄り道）
+  add({ id: 'cave_hidden_room', name: '洞窟の隠し工房', kind: 'dungeon', bgm: 'boss_area', fallback: 'cave_floor', rows: [
+    'GGGGGGGGGGGG',
+    'GkggggggggkG',
+    'GggggYggggGG',
+    'DggggggggggG',
+    'GggggYggggGG',
+    'GkggggggggkG',
+    'GGGGGGGGGGGG'
+  ],
+    warps: [{ x: 0, y: 3, to: 'oblivion_cave_2', tx: 12, ty: 5 }],
+    chests: [{ id: 'ch1', x: 10, y: 3, item: 'knight_helm', qty: 1 }, { id: 'ch2', x: 2, y: 2, gold: 900 }, { id: 'ch3', x: 2, y: 4, item: 'elixir', qty: 1 }],
+    events: [
+      { x: 6, y: 3, type: 'inspect', solid: false, text: ['作業台に、師匠ハケイの手記が広げられている。', '「RCIが+70に届いた。それだけで売る者は、強い上昇トレンドの中で何度も刈られる。+70は『買われすぎ』ではなく『勢いが強い』の印でもある」', '「使うなら、上位足の方向と同じ向きに、±70圏から反転し始めたことを確かめてからだ。逆張りは、根拠が重なったときだけ」'] },
+      { x: 6, y: 1, type: 'inspect', solid: false, text: ['壁の刻印：『環境認識の修行者へ』', '「日足と4時間足で流れを知り、15分足と5分足で入口を探す。入口だけを見て流れを忘れる者は、川に逆らって泳ぐ」'] }
+    ] });
+
   add({ id: 'oblivion_cave_3', name: '忘却の洞窟 最深部', kind: 'dungeon', bgm: 'boss_area', fallback: 'cave_floor', rows: [
     'GkGGGGGGGGGGGGGGGGGGGGGGGG',
     'GgggggGGGGGGGGGGGGGGGGGGGG',

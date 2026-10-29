@@ -41,7 +41,7 @@
     var s = Actors.stats(a); var j = JOBS[a.job];
     var eq = Object.keys(a.equip).map(function (slot) { return ({ weapon: '武器', armor: '鎧', shield: '盾', head: '頭', acc: '装飾' })[slot] + '：' + (a.equip[slot] ? ITEMS[a.equip[slot]].name : '―'); }).join('<br>');
     var jl = Object.keys(a.jobLevels).map(function (k) { return JOBS[k].name + 'Lv' + a.jobLevels[k]; }).join('・');
-    await Win.panel('<div class="rw-title">' + esc(a.name) + '　' + esc(j.name) + ' Lv' + a.level + '</div>' + (root.Assets ? root.Assets.portraitTagFor(a, 'portrait status-portrait', 150) : '') + '<div class="stat-grid"><div>HP<b>' + a.hp + '/' + s.maxHp + '</b></div><div>MP<b>' + a.mp + '/' + s.maxMp + '</b></div><div>攻撃<b>' + s.atk + '</b></div><div>防御<b>' + s.def + '</b></div><div>素早さ<b>' + s.agi + '</b></div><div>魔力<b>' + s.mag + '</b></div></div><div class="muted small">次のレベルまで ' + (Actors.expForLevel(a.level) - a.exp) + '　状態：' + (a.dead ? '戦闘不能' : Object.keys(a.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join('・') || '正常') + '</div><div class="muted small">固有：' + esc(j.trait) + '　役割：' + esc(j.role) + '</div><h3>装備</h3><div>' + eq + '</div><div class="muted small">職業レベル：' + jl + '</div>');
+    await Win.panel('<div class="rw-title">' + esc(a.name) + '　' + esc(j.name) + ' Lv' + a.level + (a.id === 'hero' && root.Growth ? '　<span class="title-badge">' + esc(root.Growth.title()) + '</span>' : '') + '</div>' + (root.Assets ? root.Assets.portraitTagFor(a, 'portrait status-portrait', 150) : '') + '<div class="stat-grid"><div>HP<b>' + a.hp + '/' + s.maxHp + '</b></div><div>MP<b>' + a.mp + '/' + s.maxMp + '</b></div><div>攻撃<b>' + s.atk + '</b></div><div>防御<b>' + s.def + '</b></div><div>素早さ<b>' + s.agi + '</b></div><div>魔力<b>' + s.mag + '</b></div></div><div class="muted small">次のレベルまで ' + (Actors.expForLevel(a.level) - a.exp) + '　状態：' + (a.dead ? '戦闘不能' : Object.keys(a.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join('・') || '正常') + '</div><div class="muted small">固有：' + esc(j.trait) + '　役割：' + esc(j.role) + '</div><h3>装備</h3><div>' + eq + '</div><div class="muted small">職業レベル：' + jl + '</div>');
   };
 
   Menu.items = async function () {
@@ -117,7 +117,7 @@
     var d = State.data; var ids = Object.keys(d.quests);
     if (!ids.length) { await Win.message(['受注しているクエストはない。']); return; }
     ids.sort(function (a, b) { var sa = d.quests[a].state === 'done' ? 1 : 0, sb = d.quests[b].state === 'done' ? 1 : 0; return sa - sb; });
-    await Win.list(ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; return { label: (q.main ? '【メイン】' : '【サブ】') + q.title, right: st.state === 'done' ? '達成' : (q.counter ? (d.counters[q.counter] || 0) + '/' + q.need : '進行中'), sub: q.desc, cls: st.state === 'done' ? 'done' : '' }; }), { title: 'クエスト' });
+    await Win.list(ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; var prog = root.Events.questProgress(id); return { label: (q.main ? '【メイン】' : q.master ? '【師匠】' : '【サブ】') + q.title, right: st.state === 'done' ? '達成' : (prog || '進行中'), sub: q.desc, cls: st.state === 'done' ? 'done' : '' }; }), { title: 'クエスト' });
   };
 
   /* ---------- モンスター図鑑 ---------- */
@@ -170,10 +170,13 @@
         { label: '講義を受ける', right: nextLecture ? '次：' + nextLecture.title : '修了', sub: '師匠ハケイの講義（どこからでも受けられる）' },
         { label: 'チャート練習', right: (d.trade.stats.scoreCount || 0) + '回', sub: '14場面から出題。分析→判断→理由の順に答える' },
         { label: '苦手分野の復習', right: weak.length && weak[0].plays ? weak[0].label : '―', sub: '正解率の低い分野に合う場面を出題' },
-        { label: 'トレーダーランク', right: rank.letter + ' ' + rank.title, sub: rank.needText ? '次のランクへ：' + rank.needText : '最高ランク' },
-        { label: '学習進捗・記録', right: '', sub: '分野別の挑戦数・正解率・ヒント利用率・習熟度' },
+        { label: 'トレーダーランク', right: rank.letter + ' ' + rank.title, sub: (rank.needText ? '次のランクへ：' + rank.needText : '最高ランク') + '　称号：' + root.Growth.title() },
+        { label: '師匠の特別クエスト', right: mqRight(), sub: 'ランク到達で解放される師匠ハケイからの課題' },
+        { label: '学習実績', right: root.Growth.achievementList().filter(function (a) { return a.done; }).length + '/' + root.LEARN_ACHIEVEMENTS.length, sub: '判断の質で解除される実績と報酬' },
+        { label: '学習進捗・記録', right: '', sub: '分野別の挑戦数・正解率・ヒント利用率・習熟度・苦手な判断・復習履歴' },
         { label: '章ごとの学習イベント', right: root.Learning.progress().filter(function (p) { return p.status === 'done'; }).length + '/' + root.Learning.progress().length + ' 達成', sub: '必修イベントの場所・任意練習・解放される能力' }
       ];
+      function mqRight() { var ids = Object.keys(root.QUESTS).filter(function (k) { return root.QUESTS[k].master; }); var open = ids.filter(function (k) { return root.Growth.questAvailable(root.QUESTS[k]); }); var active = ids.filter(function (k) { return d.quests[k] && d.quests[k].state === 'active'; }); var done = ids.filter(function (k) { return d.quests[k] && d.quests[k].state === 'done'; }); return active.length ? '進行中 ' + active.length : (open.length > done.length ? '受けられる' : done.length + '/' + ids.length + ' 達成'); }
       var i = await Win.list(items, { title: 'トレード修行', cls: 'main-menu' });
       if (i < 0) return;
       if (i === 0) await Win.message(['今のおすすめ：' + theme, !d.trade.tutorialDone ? 'まずチュートリアルで判断の順番（上位足→波形→EMA→RCI→MACD→判断→理由→損切り）を体験しよう。' : '講義で考え方を学び、練習で判断を磨き、苦手分野を復習する。ランクは回数ではなく、分析の正確さ・ヒントなしの正解・異なる場面への対応で上がる。'], { name: '師匠ハケイ' });
@@ -182,8 +185,10 @@
       else if (i === 3) await Services.practice();
       else if (i === 4) await Services.reviewWeak();
       else if (i === 5) await Menu.rankPanel();
-      else if (i === 6) await root.TradeUI.showRecord();
-      else if (i === 7) await Menu.learnProgress();
+      else if (i === 6) await Services.learningQuests();
+      else if (i === 7) await Menu.achievements();
+      else if (i === 8) await root.TradeUI.showRecord();
+      else if (i === 9) await Menu.learnProgress();
     }
   };
   Menu.learnProgress = async function () {
@@ -195,8 +200,16 @@
     var d = State.data; var TE = root.TradeEval; var r = TE.rank(d.trade); var c = r.crit;
     var pct = function (v) { return Math.round((v || 0) * 100) + '%'; };
     var rows = [['分析の正確さ（上位足・波形・EMA・RCI・MACD）', pct(c.analysis)], ['上位足の環境認識', pct(c.mtf)], ['エントリー／見送り判断', pct(c.action)], ['損切り・資金管理／見送りの規律', pct(c.risk)], ['ヒントなしでの正解率', pct(c.noHint)], ['異なる場面での正解（分析3項目以上）', c.variety + ' / ' + root.Scenarios.ids().length + ' 場面'], ['挑戦回数・平均点', c.plays + '回・' + Math.round(c.avgScore) + '点']];
+    var best = root.Growth.rankBest();
     var ladder = TE.RANKS.map(function (x, i) { return '<span class="' + (i === r.index ? 'cur' : i < r.index ? 'done' : '') + '">' + x[0] + '</span>'; }).join(' → ');
-    await Win.panel('<div class="rw-title">トレーダーランク</div><div class="rank-box"><div class="rank-letter">' + esc(r.letter) + '</div><div><b>' + esc(r.title) + '</b><div class="muted small">' + ladder + '</div><div class="small">' + (r.needText ? '次のランクへ：' + esc(r.needText) : '最高ランクです') + '</div></div></div><table class="tbl">' + rows.map(function (x) { return '<tr><td>' + esc(x[0]) + '</td><td><b>' + esc(x[1]) + '</b></td></tr>'; }).join('') + '</table><p class="muted small">回数や仮想利益ではなく、判断の過程・ヒントなしの正解・異なる場面への対応で評価されます。同じ場面の繰り返しだけではランクは上がりません。</p>');
+    var unl = '<h3>ランクで解放されるもの</h3><table class="tbl unlock-tbl">' + root.RANK_UNLOCKS.filter(function (u) { return u.index > 0; }).map(function (u) { var rw = u.reward ? [u.reward.gold ? u.reward.gold + 'G' : '', u.reward.item ? ITEMS[u.reward.item].name + (u.reward.qty > 1 ? '×' + u.reward.qty : '') : ''].filter(Boolean).join('・') : '―'; return '<tr class="' + (best >= u.index ? 'got' : '') + '"><td><b>' + u.letter + '</b> ' + esc(u.title) + '</td><td>' + esc(rw) + '</td><td>' + (u.unlocks || []).map(esc).join('<br>') + '</td><td>' + (best >= u.index ? '<span class="ok-text">到達</span>' : '') + '</td></tr>'; }).join('') + '</table>';
+    await Win.panel('<div class="rw-title">トレーダーランク</div><div class="rank-box"><div class="rank-letter">' + esc(r.letter) + '</div><div><b>' + esc(r.title) + '</b>　<span class="muted small">称号：' + esc(root.Growth.title()) + '（最高到達 ' + root.RANK_UNLOCKS[best].letter + '）</span><div class="muted small">' + ladder + '</div><div class="small">' + (r.needText ? '次のランクへ：' + esc(r.needText) : '最高ランクです') + '</div></div></div><table class="tbl">' + rows.map(function (x) { return '<tr><td>' + esc(x[0]) + '</td><td><b>' + esc(x[1]) + '</b></td></tr>'; }).join('') + '</table>' + unl + '<p class="muted small">回数や仮想利益ではなく、判断の過程・ヒントなしの正解・異なる場面への対応で評価されます。同じ場面の繰り返しだけではランクは上がりません。称号・解放済みの内容は、ランクが一時的に下がっても失われません。</p>');
+  };
+
+  Menu.achievements = async function () {
+    var list = root.Growth.achievementList(); var n = list.filter(function (a) { return a.done; }).length;
+    var html = '<div class="rw-title">学習実績　' + n + ' / ' + list.length + '</div><div class="ach-list">' + list.map(function (a) { var rw = a.def.reward || {}; var rs = [rw.gold ? rw.gold + 'G' : '', rw.exp ? '経験値' + rw.exp : '', rw.item ? ITEMS[rw.item].name + (rw.qty > 1 ? '×' + rw.qty : '') : ''].filter(Boolean).join('・'); return '<div class="ach ' + (a.done ? 'done' : '') + '"><span class="mark">' + (a.done ? '★' : '☆') + '</span><div><b>' + esc(a.def.name) + '</b><div class="small">' + esc(a.def.desc) + '</div><div class="muted small">報酬：' + esc(rs || '―') + (a.done ? '　達成 ' + new Date(a.at).toLocaleDateString('ja-JP') : '') + '</div></div></div>'; }).join('') + '</div><p class="muted small">実績は判断の質（ヒントなしの正解・分析の正確さ・異なる場面・見送りと損切りの規律）で解除されます。報酬は1回限りです。</p>';
+    await Win.panel(html);
   };
 
   Menu.encyclopedia = async function () {

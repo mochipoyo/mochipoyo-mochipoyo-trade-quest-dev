@@ -44,6 +44,7 @@
       if (r.item) { State.addItem(r.item, 1); lines.push(root.ITEMS[r.item].name + ' を手に入れた'); }
       await Win.message(lines);
       var ab = await Learning.checkUnlocks(true);
+      if (root.Growth) await root.Growth.check(true);
       if (e.required && e.next) { var n = ev(e.next); if (n) await Win.message([n.mapId ? '次のおすすめ：第' + n.chapter + '章「' + n.title + '」（' + n.region + '）。' + n.summary : '次の章「' + n.title + '」（' + n.region + '）は、まだ解放されていない地域だ。今は練習とボスで腕を磨こう。'], { name: '師匠ハケイ' }); }
     } else await Win.message([e.required ? '復習の評価 ' + score + '点。' + (score >= 80 ? '見事だ。' : '基本に立ち返って、もう一度。') : '練習の評価 ' + score + '点。']);
     root.World.updateHud(); State.autosave();

@@ -9,7 +9,11 @@
   var Events = {};
 
   // クエストの開始・完了（報酬つき）
-  Events.questStart = function (id) { var d = State.data; if (!QUESTS[id] || d.quests[id]) return; d.quests[id] = { state: 'active', at: Date.now() }; Win.toast('クエスト受注：' + QUESTS[id].title); };
+  Events.questStart = function (id) { var d = State.data; if (!QUESTS[id] || d.quests[id]) return; if (root.Growth && !root.Growth.questAvailable(QUESTS[id])) return; d.quests[id] = { state: 'active', at: Date.now() }; Win.toast('クエスト受注：' + QUESTS[id].title); };
+  // クエストの条件（counter/need の単一条件、または needs = [[counter, need, label], ...] の複数条件）
+  Events.questNeeds = function (q) { return q.needs ? q.needs : (q.counter ? [[q.counter, q.need, '']] : []); };
+  Events.questProgress = function (id) { var d = State.data; var q = QUESTS[id]; if (!q) return ''; return Events.questNeeds(q).map(function (n) { return (n[2] ? n[2] + ' ' : '') + Math.min(n[1], d.counters[n[0]] || 0) + '/' + n[1]; }).join('　'); };
+  Events.questSatisfied = function (id) { var d = State.data; var q = QUESTS[id]; var needs = Events.questNeeds(q); return needs.length > 0 && needs.every(function (n) { return (d.counters[n[0]] || 0) >= n[1]; }); };
   Events.questComplete = async function (id) {
     var d = State.data; var q = QUESTS[id]; if (!q) return; if (d.quests[id] && d.quests[id].state === 'done') return;
     d.quests[id] = { state: 'done', at: Date.now() };
@@ -23,7 +27,7 @@
   // カウンター型クエストの進行チェック
   Events.checkCounterQuests = async function () {
     var d = State.data;
-    for (var id in QUESTS) { var q = QUESTS[id]; if (!q.counter) continue; var st = d.quests[id]; if (!st || st.state !== 'active') continue; if ((d.counters[q.counter] || 0) >= q.need) await Events.questComplete(id); }
+    for (var id in QUESTS) { var q = QUESTS[id]; if (!q.counter && !q.needs) continue; var st = d.quests[id]; if (!st || st.state !== 'active') continue; if (Events.questSatisfied(id)) await Events.questComplete(id); }
   };
 
   // 会話の立ち絵：NPCのスプライトID → 仲間の名前 → 名前からの推定（確実でないものは出さない）
@@ -72,6 +76,11 @@
         if (d.flags[ev.doneFlag]) { /* 開いている */ }
         else if (State.hasItem(ev.key)) { await Win.message([ITEMS[ev.key].name + 'を使った。扉が開いた！']); d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); }
         else await Win.message(ev.text);
+      }
+      else if (ev.type === 'rank_door') {   // v4.2: トレーダーランクで開く隠し部屋の扉（最高到達ランクで判定。下がっても閉じない）
+        if (d.flags[ev.doneFlag]) { /* 開いている */ }
+        else if (root.Growth && root.Growth.rankReached(ev.rank)) { d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); await Win.message(['扉に刻まれた波形の紋章が、あなたの称号「' + root.Growth.title() + '」に応えて光った。', '扉が開いた！']); }
+        else await Win.message((ev.text || ['波形の紋章が刻まれた扉だ。']).concat(['トレーダーランク ' + root.RANK_UNLOCKS[ev.rank].letter + '（' + root.RANK_UNLOCKS[ev.rank].title + '）以上の者に開く。今のランク：' + root.TradeEval.rank(d.trade).letter + '（最高到達 ' + root.RANK_UNLOCKS[root.Growth ? root.Growth.rankBest() : 0].letter + '）', 'ランクは判断の質で上がる。メニューの「トレード修行」で条件を確認できる。']));
       }
       else if (ev.type === 'learn') { await root.Learning.run(ev.learnId); World.applyState(World.map); }
       else if (ev.type === 'trial' && ev.learnId) {   // 必修の学習イベント（扉）：教え→試練。合格で扉が開く。達成後は復習できる
