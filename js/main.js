@@ -1,0 +1,26 @@
+/* =========================================================
+   main : 起動
+   ========================================================= */
+(function (root) {
+  'use strict';
+
+  root.MochiQuest = {
+    boot: function () {
+      var canvas = document.getElementById('game');
+      root.Engine.init(canvas);
+      root.Win.init(document.getElementById('ui'));
+      root.Engine.Input.bindPad(document.getElementById('pad'));
+      root.Audio.init();
+      // 画面サイズに合わせてキャンバスを拡大縮小（CSS）
+      function fit() {
+        var wrap = document.getElementById('stage'); var w = wrap.clientWidth; var aspect = canvas.width / canvas.height;
+        var maxH = root.innerHeight - (root.innerWidth < 720 ? 170 : 40);
+        var h = Math.min(w / aspect, maxH); canvas.style.width = Math.round(h * aspect) + 'px'; canvas.style.height = Math.round(h) + 'px';
+        var ui = document.getElementById('ui'); ui.style.width = canvas.style.width; ui.style.height = canvas.style.height;
+      }
+      root.addEventListener('resize', fit); fit();
+      root.Engine.start();
+      root.Title.show();
+    }
+  };
+})(typeof window !== 'undefined' ? window : globalThis);

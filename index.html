@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="description" content="もちぽよFXクエスト ～波形の勇者と相場の魔王～：2DトップビューJRPGを冒険しながらFXトレードの判断を学ぶブラウザゲーム（学習用人工データ）">
+<title>もちぽよFXクエスト ～波形の勇者と相場の魔王～</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230b1226'/%3E%3Crect x='3' y='9' width='2' height='4' fill='%234cc38a'/%3E%3Crect x='7' y='5' width='2' height='8' fill='%23e5484d'/%3E%3Crect x='11' y='2' width='2' height='9' fill='%23ffd24a'/%3E%3C/svg%3E">
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="game" width="640" height="416"></canvas>
+    <div id="hud"></div>
+    <div id="ui"></div>
+    <div id="battle-party"></div>
+    <div id="battle-msg"></div>
+    <div id="fade"></div>
+    <div id="fatal" class="rw-panel"><div class="rw-title">エラーが発生しました</div><pre class="msg"></pre><p class="muted small">再読み込みしてください。問題が続く場合はタイトルの「データ管理」からセーブデータを確認してください。</p><div class="rw-row"><div class="rw-btn ok" onclick="location.reload()">再読み込み</div></div></div>
+  </div>
+  <div id="pad">
+    <div class="dpad"><button data-key="up">▲</button><button data-key="left">◀</button><button data-key="right">▶</button><button data-key="down">▼</button></div>
+    <div class="abtn"><button data-key="ok" class="ok">決定<small>Z/Enter</small></button><button data-key="cancel" class="cancel">メニュー<small>X/Esc</small></button></div>
+  </div>
+  <div id="toast"></div>
+</div>
+<noscript><div class="rw-panel" style="margin:2rem">このゲームはJavaScriptが必要です。</div></noscript>
+
+<!-- 通常のscript読み込み（ビルド・fetch不要・相対パス） -->
+<script src="js/config.js"></script>
+<script src="js/indicators.js"></script>
+<script src="js/scenarios.js"></script>
+<script src="js/trading.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/sprites.js"></script>
+<script src="js/core/engine.js"></script>
+<script src="js/core/tiles.js"></script>
+<script src="js/core/chars.js"></script>
+<script src="js/core/map.js"></script>
+<script src="js/data/learning.js"></script>
+<script src="js/data/jobs.js"></script>
+<script src="js/data/skills.js"></script>
+<script src="js/data/items.js"></script>
+<script src="js/data/enemies.js"></script>
+<script src="js/data/story.js"></script>
+<script src="js/data/world.js"></script>
+<script src="js/data/towns.js"></script>
+<script src="js/data/dungeons.js"></script>
+<script src="js/rpg/actors.js"></script>
+<script src="js/rpg/state.js"></script>
+<script src="js/rpg/combat.js"></script>
+<script src="js/ui/windows.js"></script>
+<script src="js/rpg/world.js"></script>
+<script src="js/rpg/events.js"></script>
+<script src="js/ui/audio.js"></script>
+<script src="js/ui/services.js"></script>
+<script src="js/ui/trade.js"></script>
+<script src="js/ui/battle.js"></script>
+<script src="js/ui/menu.js"></script>
+<script src="js/ui/title.js"></script>
+<script src="js/main.js"></script>
+<script>
+  (function () {
+    function showError(msg) { var box = document.getElementById('fatal'); if (!box) return; box.style.display = 'block'; box.querySelector('.msg').textContent = String(msg); }
+    window.addEventListener('error', function (e) { showError(e.message || e); });
+    window.addEventListener('unhandledrejection', function (e) { showError((e.reason && e.reason.stack) || e.reason || e); });
+    try {
+      if (!window.MochiQuest) throw new Error('スクリプトの読み込みに失敗しました（js/ フォルダがリポジトリ直下にあるか確認してください）');
+      window.MochiQuest.boot();
+    } catch (e) { showError(e.stack || e.message || e); }
+  })();
+</script>
+</body>
+</html>

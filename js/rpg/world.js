@@ -1,0 +1,233 @@
+/* =========================================================
+   RPG / World : 探索シーン（移動・カメラ・出入り・会話・宝箱・エンカウント・昼夜）
+   ========================================================= */
+(function (root) {
+  'use strict';
+
+  var Engine = root.Engine, Input = Engine.Input, GameMap = root.GameMap, Tiles = root.Tiles, State = root.State, Win = root.Win, ITEMS = root.ITEMS;
+  var TS = Engine.TS;
+
+  var World = { maps: {}, map: null, player: null, busy: false, scene: null, hud: null };
+
+  World.getMap = function (id) {
+    if (World.maps[id]) return World.maps[id];
+    var def = root.MAP_DEFS[id] || (id === 'world' ? root.WORLD_DEF : null);
+    if (!def) throw new Error('マップが見つかりません: ' + id);
+    var m = new GameMap(def);
+    World.maps[id] = m;
+    World.applyState(m);
+    return m;
+  };
+  // セーブ状態をマップに反映（開けた宝箱・開いた扉・条件つきNPC）
+  World.applyState = function (m) {
+    var d = State.data;
+    m.chests.forEach(function (c) { var opened = d.chests[m.id + ':' + c.id]; m.setTile(c.x, c.y, opened ? 'chest_open' : 'chest'); });
+    m.events.forEach(function (e) {
+      if ((e.type === 'trial' || e.type === 'locked') && e.doneFlag && d.flags[e.doneFlag]) m.setTile(e.x, e.y, m.kind === 'dungeon' && m.tile(e.x, e.y) === 'gate' ? 'warp' : 'door');
+      else if (e.type === 'trial') m.setTile(e.x, e.y, 'gate');
+      else if (e.type === 'locked') m.setTile(e.x, e.y, 'door_locked');
+      if (e.type === 'hole') m.setTile(e.x, e.y, 'hole');
+    });
+    m.npcs.forEach(function (n) { if (n.showIf) n.hidden = !d.flags[n.showIf]; if (n.hideIf && d.flags[n.hideIf]) n.hidden = true; if (root.COMPANIONS && root.COMPANIONS[n.id] && d.companions[n.id]) n.hidden = true; });
+  };
+
+  /* ---------- プレイヤー ---------- */
+  World.makePlayer = function () {
+    var d = State.data; var hero = d.hero;
+    World.player = { x: d.pos.x, y: d.pos.y, px: d.pos.x * TS, py: d.pos.y * TS, dir: d.pos.dir || 'down', frame: 0, moving: false, tx: 0, ty: 0, progress: 0, sprite: hero.sprite, speed: 0.11 };
+    return World.player;
+  };
+  World.syncPos = function () { var p = World.player; State.data.pos = { map: World.map.id, x: p.x, y: p.y, dir: p.dir }; };
+
+  World.enterMap = function (id, x, y, dir) {
+    World.map = World.getMap(id);
+    World.applyState(World.map);
+    var p = World.player || World.makePlayer();
+    p.x = x; p.y = y; p.px = x * TS; p.py = y * TS; p.moving = false; if (dir) p.dir = dir;
+    p.sprite = State.data.hero.sprite;
+    State.data.visited[id] = true;
+    World.syncPos();
+    if (root.Audio) root.Audio.playBgm(World.map.def.bgm || (World.map.kind === 'field' ? 'field' : 'town'));
+    World.updateHud();
+    State.autosave();
+  };
+
+  /* ---------- シーン ---------- */
+  function ExploreScene() { }
+  ExploreScene.prototype.enter = function () { World.updateHud(); };
+  ExploreScene.prototype.handleInput = function () {
+    if (World.busy) return;
+    var p = World.player;
+    if (Input.consume('cancel')) { root.Menu.open(); return; }
+    if (Input.consume('ok')) { World.interact(); return; }
+    if (!p.moving) {
+      var dir = Input.direction();
+      if (dir) World.tryMove(dir);
+    }
+  };
+  ExploreScene.prototype.update = function (dt) {
+    var p = World.player; var m = World.map;
+    if (p.moving) {
+      p.progress += dt * p.speed / 16;
+      if (p.progress >= 1) { p.x = p.tx; p.y = p.ty; p.px = p.x * TS; p.py = p.y * TS; p.moving = false; p.progress = 0; p.frame = 0; World.onStep(); }
+      else { var dx = (p.tx - p.x) * TS, dy = (p.ty - p.y) * TS; p.px = p.x * TS + dx * p.progress; p.py = p.y * TS + dy * p.progress; p.frame = Math.floor(p.progress * 4) % 2; }
+    }
+    // NPCの徘徊
+    if (!World.busy) m.npcs.forEach(function (n) {
+      if (n.hidden || !n.wander) return;
+      if (n.moveT === undefined) n.moveT = Math.random() * 2000;
+      if (n.moving) {
+        n.prog += dt / 420; if (n.prog >= 1) { n.x = n.nx; n.y = n.ny; n.moving = false; n.ox_px = 0; n.oy_px = 0; n.frame = 0; }
+        else { n.ox_px = (n.nx - n.x) * TS * n.prog; n.oy_px = (n.ny - n.y) * TS * n.prog; n.frame = Math.floor(n.prog * 4) % 2; }
+        return;
+      }
+      n.moveT -= dt; if (n.moveT > 0) return; n.moveT = 1500 + Math.random() * 2500;
+      var dirs = ['up', 'down', 'left', 'right']; var dir = dirs[Math.floor(Math.random() * 4)]; var dd = delta(dir);
+      var nx = n.x + dd[0], ny = n.y + dd[1];
+      n.dir = dir;
+      if (Math.abs(nx - n.ox) > n.wander || Math.abs(ny - n.oy) > n.wander) return;
+      if (!m.passable(nx, ny, State.data) || (nx === p.x && ny === p.y) || (nx === p.tx && ny === p.ty && p.moving)) return;
+      if (m.warpAt(nx, ny) || m.eventAt(nx, ny)) return;
+      n.moving = true; n.nx = nx; n.ny = ny; n.prog = 0;
+    });
+  };
+  ExploreScene.prototype.draw = function (ctx) {
+    var m = World.map, p = World.player;
+    var cam = World.camera();
+    m.draw(ctx, cam, p, World.tint());
+  };
+  World.camera = function () {
+    var p = World.player; var m = World.map; var vw = Engine.VIEW_W * TS, vh = Engine.VIEW_H * TS;
+    var cx = p.px + TS / 2 - vw / 2, cy = p.py + TS / 2 - vh / 2;
+    var maxX = m.w * TS - vw, maxY = m.h * TS - vh;
+    if (maxX < 0) cx = maxX / 2; else cx = Engine.clamp(cx, 0, maxX);
+    if (maxY < 0) cy = maxY / 2; else cy = Engine.clamp(cy, 0, maxY);
+    return { x: Math.round(cx), y: Math.round(cy) };
+  };
+  // 昼夜（フィールドのみ）: timeOfDay 0..1
+  World.tint = function () {
+    if (World.map.kind !== 'field' && World.map.kind !== 'town') return null;
+    var t = State.data.timeOfDay; // 0=深夜 0.25=朝 0.5=昼 0.75=夕
+    var night = Math.max(0, Math.cos(t * Math.PI * 2)); // 0付近で1
+    if (night < 0.15) return null;
+    return 'rgba(10,15,60,' + (night * 0.5).toFixed(2) + ')';
+  };
+  function delta(dir) { return { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[dir]; }
+  World.delta = delta;
+
+  World.tryMove = function (dir) {
+    var p = World.player, m = World.map; p.dir = dir; var d = delta(dir);
+    var nx = p.x + d[0], ny = p.y + d[1];
+    if (!m.passable(nx, ny, State.data)) return false;
+    p.moving = true; p.tx = nx; p.ty = ny; p.progress = 0;
+    return true;
+  };
+
+  // 1歩進んだとき：ワープ・落とし穴・エンカウント・時間経過
+  World.onStep = function () {
+    var p = World.player, m = World.map, d = State.data;
+    d.steps++; World.syncPos();
+    if (m.kind === 'field') d.timeOfDay = (d.timeOfDay + 0.0025) % 1;
+    var w = m.warpAt(p.x, p.y);
+    if (w && (!w.needFlag || d.flags[w.needFlag])) { World.doWarp(w); return; }
+    var ev = m.eventAt(p.x, p.y);
+    if (ev && ev.type === 'hole') { World.busy = true; Win.message(ev.text).then(function () { World.busy = false; World.enterMap(ev.to, ev.tx, ev.ty, 'down'); }); return; }
+    // 毒の歩行ダメージ
+    State.partyActors().forEach(function (a) { if (!a.dead && a.status.poison && d.steps % 4 === 0) { a.hp = Math.max(1, a.hp - 1); } });
+    if (m.encounters && !World.busy) {
+      var rate = m.encounters.rate; if (d.flags.repel) rate *= 0.3;
+      if (Math.random() < rate) World.encounter();
+    }
+    World.updateHud();
+  };
+  World.doWarp = function (w) {
+    World.busy = true;
+    var fade = document.getElementById('fade'); if (fade) fade.classList.add('on');
+    setTimeout(function () {
+      var dir = World.player.dir;
+      World.enterMap(w.to, w.tx, w.ty, w.to === 'world' ? 'down' : dir);
+      setTimeout(function () { if (fade) fade.classList.remove('on'); World.busy = false; if (root.Audio) root.Audio.sfx('step'); }, 150);
+    }, 180);
+  };
+
+  World.encounter = function () {
+    var m = World.map, p = World.player; var enc = m.encounters;
+    var zone = enc.zones.filter(function (z) { return z.test(p.x, p.y); })[0]; if (!zone) return;
+    var group = zone.groups[Math.floor(Math.random() * zone.groups.length)];
+    if (zone.rare && Math.random() < (zone.rareRate || 0.02)) group = zone.rare[Math.floor(Math.random() * zone.rare.length)];
+    World.startBattle(group, { zone: zone.name });
+  };
+  World.startBattle = function (enemyIds, opts) {
+    World.busy = true; opts = opts || {};
+    return root.BattleUI.start(enemyIds, opts).then(function (result) {
+      World.busy = false;
+      if (result === 'lost') return World.gameOver();
+      World.updateHud(); State.autosave();
+      return result;
+    });
+  };
+  World.gameOver = function () {
+    World.busy = true;
+    return Win.message(['全滅してしまった……', '所持金の半分を失い、最後に泊まった宿で目を覚ました。']).then(function () {
+      var d = State.data; d.gold = Math.floor(d.gold / 2);
+      State.partyActors().forEach(function (a) { root.Actors.fullHeal(a); });
+      World.busy = false;
+      World.enterMap(d.lastInn.map, d.lastInn.x, d.lastInn.y, 'down');
+      return 'lost';
+    });
+  };
+
+  // 目の前を調べる
+  World.interact = function () {
+    var p = World.player, m = World.map; var d = delta(p.dir); var fx = p.x + d[0], fy = p.y + d[1];
+    var npc = m.npcAt(fx, fy);
+    // カウンター越しに店主と話せる
+    if (!npc && m.tile(fx, fy) === 'counter') npc = m.npcAt(fx + d[0], fy + d[1]);
+    if (npc && npc.talk) { World.talk(npc); return; }
+    var chest = m.chestAt(fx, fy);
+    if (chest) { World.openChest(chest); return; }
+    var ev = m.eventAt(fx, fy) || m.eventAt(p.x, p.y);
+    if (ev && ev.type !== 'hole') { root.Events.run(ev); return; }
+    var tile = m.tile(fx, fy);
+    if (tile === 'sign') { Win.message(['何か書いてある……が、かすれて読めない。']); return; }
+    if (tile === 'bookshelf') { World.busy = true; Win.message(['『相場の波を読む者へ』——高値と安値を見よ。上位足を見よ。損切りを置け。']).then(function () { World.busy = false; }); return; }
+    if (tile === 'crystal') { World.busy = true; Win.message(['均衡のクリスタルの台座だ。淡く光っている。']).then(function () { World.busy = false; }); return; }
+  };
+  World.talk = function (npc) {
+    World.busy = true;
+    var p = World.player; npc.dir = { up: 'down', down: 'up', left: 'right', right: 'left' }[p.dir]; npc.moving = false; npc.ox_px = 0; npc.oy_px = 0;
+    Promise.resolve(npc.talk(root.Events.ctx())).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World.applyState(World.map); World.updateHud(); State.autosave(); });
+  };
+  World.openChest = function (chest) {
+    var m = World.map, d = State.data; var key = m.id + ':' + chest.id;
+    if (d.chests[key]) { World.busy = true; Win.message(['宝箱は空っぽだ。']).then(function () { World.busy = false; }); return; }
+    World.busy = true;
+    d.chests[key] = true; m.setTile(chest.x, chest.y, 'chest_open');
+    if (root.Audio) root.Audio.sfx('chest');
+    var lines = [];
+    if (chest.gold) { d.gold += chest.gold; lines.push(chest.gold + 'Gを手に入れた！'); }
+    if (chest.item) { State.addItem(chest.item, chest.qty || 1); lines.push(ITEMS[chest.item].name + (chest.qty > 1 ? '×' + chest.qty : '') + 'を手に入れた！'); }
+    // 盗賊がいると追加アイテム
+    if (State.partyActors().some(function (a) { return a.job === 'thief' && !a.dead; }) && Math.random() < 0.35) { var extra = ['herb', 'potion', 'antidote', 'ether'][Math.floor(Math.random() * 4)]; State.addItem(extra, 1); lines.push('盗賊の目が宝箱の二重底を見抜いた！ ' + ITEMS[extra].name + 'を見つけた！'); }
+    Win.message(lines).then(function () { World.busy = false; World.updateHud(); State.autosave(); });
+  };
+
+  /* ---------- HUD ---------- */
+  World.updateHud = function () {
+    var h = document.getElementById('hud'); if (!h || !State.data) return;
+    var d = State.data; var party = State.partyActors();
+    h.innerHTML = '<div class="hud-loc">' + Win.esc(World.map ? World.map.name : '') + '</div><div class="hud-gold">' + d.gold + ' G</div>' +
+      '<div class="hud-party">' + party.map(function (a) { var s = root.Actors.stats(a); var cls = a.dead ? 'dead' : (a.hp < s.maxHp * 0.3 ? 'low' : ''); return '<div class="hud-a ' + cls + '"><span>' + Win.esc(a.name) + '</span> <b>' + a.hp + '</b>/' + s.maxHp + ' <i>' + a.mp + '</i></div>'; }).join('') + '</div>';
+  };
+
+  World.start = function () {
+    var d = State.data;
+    World.maps = {};
+    World.makePlayer();
+    World.scene = new ExploreScene();
+    Engine.replace(World.scene);
+    World.enterMap(d.pos.map, d.pos.x, d.pos.y, d.pos.dir);
+  };
+
+  root.World = World;
+})(typeof window !== 'undefined' ? window : globalThis);
