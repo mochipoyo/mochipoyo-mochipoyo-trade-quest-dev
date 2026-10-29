@@ -43,7 +43,10 @@
   };
 
   /* ---------- 地形キャッシュ ---------- */
-  function cellFor(map, big) { if (big) return map.id === 'world' ? 4 : 10; if (map.id === 'world') return 2; return Math.max(3, Math.min(8, Math.floor(150 / Math.max(map.w, map.h * 1.25)))); }
+  function isRegion(map) { return !!(map && map.def && map.def.region); }
+  function regionLocations() { var out = []; Object.keys(root.MAP_DEFS || {}).forEach(function (k) { var d = root.MAP_DEFS[k]; if (d.region && d.locations) d.locations.forEach(function (L) { out.push(Object.assign({ region: k }, L)); }); }); if (!out.length && root.WORLD_LOCATIONS) out = root.WORLD_LOCATIONS.map(function (L) { return Object.assign({ region: 'world' }, L); }); return out; }
+  Minimap.isRegion = isRegion; Minimap.regionLocations = regionLocations;
+  function cellFor(map, big) { if (big) return isRegion(map) ? 4 : 10; if (isRegion(map)) return 2; return Math.max(3, Math.min(8, Math.floor(150 / Math.max(map.w, map.h * 1.25)))); }
   function renderTerrain(map, cell) {
     var c = document.createElement('canvas'); c.width = map.w * cell; c.height = map.h * cell; var ctx = c.getContext('2d');
     for (var y = 0; y < map.h; y++) for (var x = 0; x < map.w; x++) {
@@ -57,7 +60,7 @@
     // 記号（階段・出入口・宝箱・扉・落とし穴・ボスの印・ワールドのアイコン）。霧は後から上に重ねるので未探索分は見えない
     var r = Math.max(2, cell * 0.45);
     for (var sy = 0; sy < map.h; sy++) for (var sx = 0; sx < map.w; sx++) { var sym = SYMBOL[map.tiles[sy][sx]]; if (sym) drawSymbol(ctx, sym, sx * cell + cell / 2, sy * cell + cell / 2, r); }
-    if (map.id !== 'world') map.warps.forEach(function (w) { var tn = map.tiles[w.y] && map.tiles[w.y][w.x]; if (SYMBOL[tn] || tn === 'bld_door') return; drawSymbol(ctx, 'warp', w.x * cell + cell / 2, w.y * cell + cell / 2, r); });
+    if (!isRegion(map)) map.warps.forEach(function (w) { var tn = map.tiles[w.y] && map.tiles[w.y][w.x]; if (SYMBOL[tn] || tn === 'bld_door') return; drawSymbol(ctx, 'warp', w.x * cell + cell / 2, w.y * cell + cell / 2, r); });
     return c;
   }
   function getTerrain(map, big) {
@@ -204,8 +207,8 @@
 
   /* ---------- ワールド上の位置解決（町の内部座標とワールド座標を混同しない） ---------- */
   Minimap.worldPosOf = function (mapId, depth) {
-    depth = depth || 0; if (mapId === 'world') return null; if (depth > 8) return null;
-    var L = (root.WORLD_LOCATIONS || []).filter(function (l) { return l.to === mapId; })[0]; if (L) return { x: L.x, y: L.y, loc: L };
+    depth = depth || 0; if (mapId === 'world' || (root.MAP_DEFS[mapId] && root.MAP_DEFS[mapId].region)) return null; if (depth > 8) return null;
+    var L = regionLocations().filter(function (l) { return l.to === mapId; })[0]; if (L) return { x: L.x, y: L.y, loc: L, region: L.region };
     // このマップへ入るワープを持つ親マップをたどる
     var defs = root.MAP_DEFS; var ids = Object.keys(defs);
     for (var i = 0; i < ids.length; i++) { var pid = ids[i]; if (pid === mapId) continue; var pm = root.World.maps[pid] || null; var warps = pm ? pm.warps : (defs[pid].warps || []).concat((defs[pid].buildings || []).map(function (b) { return { to: b.interior }; })); if (warps.some(function (w) { return w.to === mapId; })) { var r = Minimap.worldPosOf(pid, depth + 1); if (r) return r; } }
@@ -234,7 +237,9 @@
     var body = Minimap.big.querySelector('.bm-body'); var rect = body.getBoundingClientRect(); var dpr = Math.min(2, root.devicePixelRatio || 1);
     Minimap.bigCanvas.width = Math.max(1, Math.round(rect.width * dpr)); Minimap.bigCanvas.height = Math.max(1, Math.round(rect.height * dpr)); Minimap.bigCanvas.style.width = rect.width + 'px'; Minimap.bigCanvas.style.height = rect.height + 'px'; Minimap.bigW = rect.width; Minimap.bigH = rect.height; Minimap.bigDpr = dpr;
   };
-  function currentBigMap() { if (Minimap.mode === 'world') return root.World.getMap('world'); var id = Minimap._floor || root.World.map.id; var m = root.World.maps[id] || root.World.getMap(id); if (m !== root.World.map) root.World.applyState(m); return m; }
+  // 世界地図モード：今いる地域（町・ダンジョンの中なら、それが属する地域）
+  Minimap.currentRegionId = function () { var W = root.World; if (isRegion(W.map)) return W.map.id; var wp = Minimap.worldPosOf(W.map.id); return wp && wp.region ? wp.region : 'world'; };
+  function currentBigMap() { if (Minimap.mode === 'world') return root.World.getMap(Minimap.currentRegionId()); var id = Minimap._floor || root.World.map.id; var m = root.World.maps[id] || root.World.getMap(id); if (m !== root.World.map) root.World.applyState(m); return m; }
   Minimap.home = function () {
     var m = currentBigMap(); var t = getTerrain(m, true); var cell = t.cell; var W = root.World;
     var fit = Math.min(Minimap.bigW / (m.w * cell), Minimap.bigH / (m.h * cell));
@@ -247,7 +252,7 @@
   // 注目タイル：エリアなら自分の位置（他の階層ならその階の入口）、世界地図なら現在地域
   Minimap.focusTile = function (m) {
     var W = root.World;
-    if (Minimap.mode === 'world') { if (W.map.id === 'world') return { x: W.player.x, y: W.player.y }; var wp = Minimap.worldPosOf(W.map.id); return wp ? { x: wp.x, y: wp.y } : { x: m.w / 2, y: m.h / 2 }; }
+    if (Minimap.mode === 'world') { if (isRegion(W.map)) return { x: W.player.x, y: W.player.y }; var wp = Minimap.worldPosOf(W.map.id); return wp ? { x: wp.x, y: wp.y } : { x: m.w / 2, y: m.h / 2 }; }
     if (m === W.map) return { x: W.player.x, y: W.player.y };
     var w0 = m.warps[0]; return w0 ? { x: w0.x, y: w0.y } : { x: m.w / 2, y: m.h / 2 };
   };
@@ -290,7 +295,7 @@
     function toScreen(tx, ty) { return { x: Minimap.pan.x + (tx + 0.5) * cell * z, y: Minimap.pan.y + (ty + 0.5) * cell * z }; }
     if (Minimap.mode === 'world') {
       title.textContent = m.name;
-      (root.WORLD_LOCATIONS || []).forEach(function (L) {
+      regionLocations().filter(function (L) { return L.region === m.id; }).forEach(function (L) {
         var visited = !!d.visited[L.to]; var s = toScreen(L.x, L.y);
         if (!visited) return;
         drawSymbol(ctx, L.icon === 'village' ? 'town' : L.icon === 'castle_icon' ? 'castle' : 'cave', s.x, s.y, 7);
@@ -298,7 +303,9 @@
         hot.push({ x: s.x, y: s.y, text: L.name + (L.icon === 'cave_icon' ? '（ダンジョン）' : '（町）') });
       });
       // 現在地（ワールド上にいる／町やダンジョンの中にいる）
-      var cur = W.map.id === 'world' ? { x: W.player.x, y: W.player.y, dir: W.player.dir } : (function () { var wp = Minimap.worldPosOf(W.map.id); return wp ? { x: wp.x, y: wp.y, dir: 'down', inside: wp.loc ? wp.loc.name : W.map.name } : null; })();
+      // 乗り物（この地域にある船など）
+      if (root.Vehicle) root.Vehicle.onMap(m.id).forEach(function (v) { if (v.aboard) return; var sv = toScreen(v.x, v.y); ctx.fillStyle = '#ffd24a'; ctx.beginPath(); ctx.moveTo(sv.x - 7, sv.y + 2); ctx.lineTo(sv.x + 7, sv.y + 2); ctx.lineTo(sv.x + 4, sv.y + 6); ctx.lineTo(sv.x - 4, sv.y + 6); ctx.closePath(); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillRect(sv.x - 1, sv.y - 8, 2, 10); ctx.beginPath(); ctx.moveTo(sv.x + 1, sv.y - 8); ctx.lineTo(sv.x + 7, sv.y - 3); ctx.lineTo(sv.x + 1, sv.y - 1); ctx.closePath(); ctx.fill(); hot.push({ x: sv.x, y: sv.y, text: root.VEHICLES[v.id].name + '（停泊中）' }); });
+      var cur = isRegion(W.map) ? { x: W.player.x, y: W.player.y, dir: W.player.dir } : (function () { var wp = Minimap.worldPosOf(W.map.id); return wp ? { x: wp.x, y: wp.y, dir: 'down', inside: wp.loc ? wp.loc.name : W.map.name } : null; })();
       if (cur) { var cs = toScreen(cur.x, cur.y); if (cur.inside) { ctx.strokeStyle = '#ffd24a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(cs.x, cs.y, 13 + Math.sin(Date.now() / 200) * 2, 0, Math.PI * 2); ctx.stroke(); } drawArrow(ctx, cs.x, cs.y, cur.dir, 8, '#ffd24a'); title.textContent = m.name + '　—　現在地：' + (cur.inside || ('フィールド（' + cur.x + ', ' + cur.y + '）')); }
       else title.textContent = m.name + '　—　現在地：不明';
       Minimap.renderLegend([['town', '町（訪問済み）'], ['cave', 'ダンジョン（発見済み）'], ['arrow', '現在地'], ['mtn', '山脈'], ['forest', '森'], ['sand', '砂漠'], ['snow', '雪原'], ['water', '海']]);

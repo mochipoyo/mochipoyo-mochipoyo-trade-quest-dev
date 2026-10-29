@@ -162,7 +162,7 @@
   };
   Services.questBoard = async function () {
     var d = State.data;
-    var ids = Object.keys(QUESTS);
+    var ids = Object.keys(QUESTS).filter(function (id) { var q = QUESTS[id]; return !(q.future || q.companion) || d.quests[id]; });   // 未実装の章・仲間専用クエストは受注前は掲示しない
     var items = ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; var locked = !root.Growth.questAvailable(q); var tag = locked ? 'ランク' + root.RANK_UNLOCKS[q.rank].letter + 'で解放' : !st ? '未受注' : st.state === 'done' ? '達成' : '進行中'; var prog = st && st.state === 'active' ? '（' + Events.questProgress(id) + '）' : ''; return { label: (q.main ? '【メイン】' : q.master ? '【師匠】' : '【サブ】') + q.title, right: tag + prog, sub: q.desc, cls: st && st.state === 'done' ? 'done' : '', disabled: locked }; });
     var i = await Win.list(items, { title: 'クエスト掲示板', info: function (k) { var q = QUESTS[ids[k]]; var r = q.reward || {}; return '<div class="muted small">報酬：' + [r.exp ? '経験値' + r.exp : '', r.gold ? r.gold + 'G' : '', r.item ? ITEMS[r.item].name : ''].filter(Boolean).join('・') + '</div>'; } });
     if (i < 0) return;

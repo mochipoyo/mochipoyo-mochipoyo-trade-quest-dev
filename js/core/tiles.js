@@ -168,6 +168,8 @@
   def('tree_small', { ch: '6', solid: true, paint: function (g) { grassBase(g, 0); treeOn(g, 0, 8, 8, 4, '#3f8a36', '#5fb34a', '#2a5a28', '#6a4a2a'); } });
 
   // ===== ワールドマップのアイコン =====
+  def('ash', { ch: '8', variants: 3, paint: function (g, v) { g.fill(['#6e6a66', '#716d68', '#6a6662'][v % 3]); g.speckle(14, ['#7e7a74', '#5e5a56', '#8a857e']); g.px(3 + v, 5, '#4e4a46'); g.px(11, 9 + v, '#4e4a46'); } });
+  def('slag', { ch: '9', solid: true, variants: 2, paint: function (g, v) { g.fill('#6e6a66'); g.speckle(8, ['#7e7a74', '#5e5a56']); g.disc(8, 9, 6, '#3a3634'); g.disc(7, 8, 4, '#4a4642'); g.px(6, 6, '#5a5652'); g.hline(3, 14, 10, '#2a2826'); if (v) g.px(12, 4, '#8a2a1a'); } });
   def('village', { ch: '1', paint: function (g) { grassBase(g, 0); g.rect(3, 8, 10, 7, '#c9b89a'); g.rect(3, 8, 10, 1, '#e0d0b0'); for (var y = 2; y < 8; y++) g.hline(8 - (y - 2) - 1, y, (y - 2) * 2 + 3, '#b8403f'); g.rect(7, 11, 3, 4, '#5a3a1a'); g.rect(4, 10, 2, 2, '#8fd0ff'); g.rect(11, 10, 2, 2, '#8fd0ff'); } });
   def('castle_icon', { ch: '2', paint: function (g) { grassBase(g, 0); g.rect(2, 5, 12, 10, '#c0c0d0'); g.rect(2, 5, 12, 1, '#e0e0ec'); for (var x = 2; x < 14; x += 3) g.rect(x, 2, 2, 3, '#c0c0d0'); g.rect(6, 9, 4, 6, '#3a3a4a'); g.rect(4, 7, 2, 2, '#5a5a6a'); g.rect(10, 7, 2, 2, '#5a5a6a'); g.rect(7, 0, 1, 3, '#8a5a30'); g.rect(8, 0, 3, 2, '#c94a4a'); } });
   def('cave_icon', { ch: '3', paint: function (g) { grassBase(g, 0); g.disc(8, 10, 7, '#6a6a76'); g.disc(8, 9, 6, '#8a8a96'); g.disc(8, 11, 4, '#1a1a24'); g.disc(8, 12, 3, '#0a0a10'); g.hline(1, 15, 14, '#3f8a36'); } });

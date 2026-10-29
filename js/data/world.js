@@ -57,10 +57,12 @@
     [[28, 58], [40, 48]], [[40, 48], [36, 40]], [[28, 58], [42, 78]], [[40, 48], [60, 57]], [[60, 57], [55, 70]], [[28, 58], [22, 72]], [[42, 78], [55, 70]]
   ];
 
-  function hash(x, y) { var h = (x * 374761393 + y * 668265263 + SEED) | 0; h = (h ^ (h >> 13)) * 1274126177; h = h ^ (h >> 16); return ((h >>> 0) % 1000) / 1000; }
-
-  var cache = null;
-  function generate() {
+  // v5.0: 地域マップの生成を汎用化（複数の大陸・島を同じ方式で作る）。cfg = { MACRO, W, H, SEED, LOCATIONS, ROADS, chests, npcs }
+  function makeGenerator(cfg) {
+    var MACRO = cfg.MACRO, W = cfg.W, H = cfg.H, SEED = cfg.SEED, LOCATIONS = cfg.LOCATIONS, ROADS = cfg.ROADS || [];
+    function hash(x, y) { var h = (x * 374761393 + y * 668265263 + SEED) | 0; h = (h ^ (h >> 13)) * 1274126177; h = h ^ (h >> 16); return ((h >>> 0) % 1000) / 1000; }
+    var cache = null;
+    return function generate() {
     if (cache) return cache;
     var rows = [];
     function macroAt(mx, my) { if (mx < 0 || my < 0 || my >= MACRO.length || mx >= MACRO[0].length) return '~'; return MACRO[my][mx]; }
@@ -85,6 +87,9 @@
           case 's': ch = n2 < 0.06 ? 'c' : 's'; break;
           case 'n': ch = n2 < 0.07 ? 'f' : 'n'; break;
           case 'h': ch = n2 < 0.5 ? 'h' : (n2 < 0.6 ? 'f' : '.'); break;
+          case 'a': ch = n2 < 0.08 ? '9' : (n2 < 0.14 ? 'h' : '8'); break;   // 灰の荒地（グラニア）：灰色の荒れ地（8）に黒い岩（9）
+          case 'l': ch = 'l'; break;                                        // 溶岩
+          case 'c': ch = 'c'; break;                                        // 崖
           default: ch = n2 < 0.07 ? 'f' : (n2 < 0.16 ? ',' : '.');
         }
         row += ch;
@@ -107,16 +112,26 @@
     });
     // 場所のアイコンを置き、周囲を歩けるようにする
     LOCATIONS.forEach(function (L) {
-      for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var c = rows[L.y + dy][L.x + dx]; if (c === 'f' || c === 'F' || c === 'm' || c === 'c') rows[L.y + dy][L.x + dx] = '.'; }
+      for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var c = rows[L.y + dy][L.x + dx]; if (c === 'f' || c === 'F' || c === 'm' || c === 'c' || c === '9') rows[L.y + dy][L.x + dx] = (c === '9' ? '8' : '.'); }
       rows[L.y][L.x] = { village: '1', castle_icon: '2', cave_icon: '3', tower_icon: '4' }[L.icon] || '1';
     });
-    // 宝箱・NPCの周囲を歩けるようにする
-    ((root.WORLD_DEF && root.WORLD_DEF.chests) || []).concat((root.WORLD_DEF && root.WORLD_DEF.npcs) || []).forEach(function (o) {
-      for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var c = rows[o.y + dy][o.x + dx]; if (c === 'f' || c === 'F' || c === 'm' || c === 'c') rows[o.y + dy][o.x + dx] = '.'; }
+    // 宝箱・NPC・イベントの周囲を歩けるようにする
+    (cfg.chests || []).concat(cfg.npcs || [], cfg.events || []).forEach(function (o) {
+      for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var c = rows[o.y + dy][o.x + dx]; if (c === 'f' || c === 'F' || c === 'm' || c === 'c' || c === '9') rows[o.y + dy][o.x + dx] = (c === '9' ? '8' : '.'); }
     });
     cache = rows.map(function (r) { return r.join(''); });
     return cache;
+    };
   }
+  root.makeWorldRegion = function (cfg) {
+    var def = { id: cfg.id, name: cfg.name, kind: 'field', rows: null, fallback: cfg.fallback || 'grass', bgm: cfg.bgm || 'field', region: true, locations: cfg.LOCATIONS,
+      warps: cfg.LOCATIONS.map(function (L) { return { x: L.x, y: L.y, to: L.to, tx: L.tx, ty: L.ty, name: L.name, needFlag: L.needFlag }; }),
+      chests: cfg.chests || [], npcs: cfg.npcs || [], events: cfg.events || [], encounters: cfg.encounters || null };
+    def.rows = makeGenerator(cfg);
+    root.MAP_DEFS = root.MAP_DEFS || {}; root.MAP_DEFS[cfg.id] = def;
+    return def;
+  };
+  var generate = null;
 
   var WORLD_DEF = {
     id: 'world', name: 'アルカディア相場大陸', kind: 'field', rows: generate, fallback: 'grass', bgm: 'field',
@@ -141,6 +156,9 @@
     ] }
   };
 
+  generate = makeGenerator({ MACRO: MACRO, W: W, H: H, SEED: SEED, LOCATIONS: LOCATIONS, ROADS: ROADS, chests: WORLD_DEF.chests, npcs: WORLD_DEF.npcs, events: WORLD_DEF.events });
+  WORLD_DEF.rows = generate; WORLD_DEF.region = true; WORLD_DEF.locations = LOCATIONS;
+  root.MAP_DEFS = root.MAP_DEFS || {}; root.MAP_DEFS.world = WORLD_DEF;   // v5.0: 地域マップとして他の地域と同じ扱いに
   root.WORLD_DEF = WORLD_DEF; root.WORLD_LOCATIONS = LOCATIONS;
   root.WORLD_GENERATE = generate;
 })(typeof window !== 'undefined' ? window : globalThis);

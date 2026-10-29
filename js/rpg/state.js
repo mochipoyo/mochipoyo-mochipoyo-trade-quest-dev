@@ -21,6 +21,7 @@
       steps: 0, timeOfDay: 0.3, bestiary: {}, trade: { stats: TradeEval.emptyStats(), capital: CONFIG.risk.capital, lectures: {}, topics: {}, tutorialDone: false, abilities: {}, learnFails: {}, learnSeen: {}, rankBest: 0, achievements: {}, mistakes: {}, reviewLog: [], wasWeak: {} },
       settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', walkSpeed: 'fast', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true, minimap: 'on', minimapSize: 'normal' },
       mapDiscovery: {},   // ミニマップの探索状況（マップID → 行ごとのビット列）。visited とは別
+      vehicles: {}, aboard: null,   // v5.0: 乗り物（js/rpg/vehicle.js）
       legacyImported: null
     };
     State.data = d;

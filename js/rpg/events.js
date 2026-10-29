@@ -13,6 +13,8 @@
   // クエストの条件（counter/need の単一条件、または needs = [[counter, need, label], ...] の複数条件）
   Events.questNeeds = function (q) { return q.needs ? q.needs : (q.counter ? [[q.counter, q.need, '']] : []); };
   Events.questProgress = function (id) { var d = State.data; var q = QUESTS[id]; if (!q) return ''; return Events.questNeeds(q).map(function (n) { return (n[2] ? n[2] + ' ' : '') + Math.min(n[1], d.counters[n[0]] || 0) + '/' + n[1]; }).join('　'); };
+  // v5.0: クエストの現在の目的（steps = [[flag, text], ...] の、まだ立っていない最初のフラグ）
+  Events.questObjective = function (id) { var d = State.data; var q = QUESTS[id]; if (!q || !q.steps) return ''; for (var i = 0; i < q.steps.length; i++) if (!d.flags[q.steps[i][0]]) return '目的：' + q.steps[i][1]; return '目的：達成'; };
   Events.questSatisfied = function (id) { var d = State.data; var q = QUESTS[id]; var needs = Events.questNeeds(q); return needs.length > 0 && needs.every(function (n) { return (d.counters[n[0]] || 0) >= n[1]; }); };
   Events.questComplete = async function (id) {
     var d = State.data; var q = QUESTS[id]; if (!q) return; if (d.quests[id] && d.quests[id].state === 'done') return;
@@ -62,7 +64,9 @@
       battle: function (ids, opts) { return root.BattleUI.start(ids, opts); },
       warp: function (map, x, y) { World.enterMap(map, x, y, 'down'); },
       heal: function () { State.partyActors().forEach(root.Actors.fullHeal); World.updateHud(); },
-      party: function () { return State.partyActors(); }
+      party: function () { return State.partyActors(); },
+      // v5.0: 仲間がパーティーにいるときだけ出る一言（1回だけ出すときは onceFlag を渡す）
+      remark: async function (id, lines, onceFlag) { if (!d.companions[id] || d.party.indexOf(id) < 0) return false; if (onceFlag && d.flags[onceFlag]) return false; if (onceFlag) d.flags[onceFlag] = true; await Win.message(lines, { name: root.COMPANIONS[id].name, portrait: Events.portraitFor(root.COMPANIONS[id].name, null) }); return true; }
     };
   };
 

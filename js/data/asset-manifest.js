@@ -2387,4 +2387,6 @@
     }
    }
   };
+  // v5.0: 画像が未作成のモンスター（第4〜5章の追加分）は manifest に「missing」として登録し、従来のコード描画（monsterart）で表示する
+  if (root.ENEMIES) Object.keys(root.ENEMIES).forEach(function (id) { if (!root.ASSET_MANIFEST.monsters[id]) root.ASSET_MANIFEST.monsters[id] = { name: root.ENEMIES[id].name, kind: 'monster', anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'monsterart', style: 'procedural', note: 'v5.0 追加。画像未作成のためコード描画' }; });
 })(typeof window !== 'undefined' ? window : globalThis);

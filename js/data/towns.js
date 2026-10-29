@@ -433,9 +433,27 @@
   chests: [{ id: 'harbor1', x: 24, y: 10, item: 'ring_speed', qty: 1 }],
   npcs: [
     { id: 'sailor', x: 12, y: 13, sprite: 'sailor', dir: 'down', wander: 0, talk: async function (c) {
-      if (c.has('royal_letter')) await c.say('船乗り', ['王の親書だって!? こりゃ急がねえと。……だが正直に言うと、帆も舵も壊れてて、直すには時の神殿領の部品が要る。', '山道を越えて部品を持ってきてくれたら、この船で海を渡れる。（※この先の物語は今後の更新で追加予定）']);
+      if (c.flag('ship_ready')) { await c.say('船乗り', ['船は港の西の海に泊めてある。浜から海へ向かって進めば乗れる。', '沿岸づたいに東へ回れば、海路の先はグラニア鉱業地方だ。煙の立つ島が見えたら灰鉱町ヴェルムが近い。', '陸へ降りたいときは、船のまま岸へ進めばいい。船はその場で待ってる。']); await c.remark('mina', ['海の向こう……。父さんは船で出ていって、帰ってこなかった。', '手がかりがある気がするの。根拠はないけど。……行こう。'], 'mina_remark_sea'); return; }
+      if (c.has('royal_letter') && c.has('sailcloth') && c.has('old_compass')) {
+        await c.say('船乗り', ['帆布と羅針盤……揃ったな！ 王の親書もある。よし、今夜中に直す。']);
+        await c.msg(['……夜が明けた。帆は張り替えられ、羅針盤は舵の前に据えられた。']);
+        await c.say('船乗り', ['試しに出してみるぞ。……ん？ 波が……おかしい。何かが来る！']);
+        await c.msg(['港の水面が盛り上がり、巨大な蛇が姿を現した！', '潮の大蛇ウルガ「……この港は、わしの縄張りだ。船など出させぬ」']);
+        var r = await c.battle(['boss_tide_serpent'], { boss: true });
+        if (r !== 'won') { if (r === 'lost') await root.World.gameOver(); return; }
+        c.take('sailcloth', 1); c.take('old_compass', 1); c.setFlag('ship_ready', true); c.setFlag('harbor_boss', true);
+        await c.msg(['大蛇は海の底へ沈んでいった。港に静けさが戻る。']);
+        await c.say('船乗り', ['……助かった。これで船が出せる。小型帆船だが、沿岸なら十分だ。', '港の西の海に泊めておく。浜から海へ進めば乗れる。海路を東へ抜ければグラニア鉱業地方——ガルドの故郷だ。']);
+        if (c.hasCompanion('gald')) await c.say('ガルド', ['……グラニアか。煙と鎖の町だ。', '俺はあそこで、人を「守る」つもりで鞭を持ってた。……行こう。今度こそ、助ける側に立つ。']);
+        await c.questComplete('main_4'); c.questStart('main_5');
+        if (root.Vehicle) root.Vehicle.unlockIfReady();
+        return;
+      }
+      if (c.has('royal_letter')) await c.say('船乗り', ['王の親書だって!? こりゃ急がねえと。帆も舵も壊れてるが、材料さえあれば直せる。', '要るのは「帆布」と「羅針盤」だ。帆布は港の倉庫の奥に眠ってるはず。羅針盤は……漁師のじいさんが古いのを持ってる。頼んでみてくれ。']);
       else await c.say('船乗り', ['船は嵐でやられちまってな。修理には時間がかかる。王様の口添えでもあれば別だが。']); } },
-    { id: 'harbor_fisher', x: 7, y: 10, sprite: 'villager_m', dir: 'down', wander: 2, talk: async function (c) { await c.say('漁師', ['海の向こうには砂漠の国や魔導王国があるって話だ。', '波を読むのは漁師も同じさ。大きな波（上位足）を見ずに小舟（5分足）だけ見てたら沈んじまう。']); } },
+    { id: 'harbor_fisher', x: 7, y: 10, sprite: 'villager_m', dir: 'down', wander: 2, talk: async function (c) {
+      if (c.has('royal_letter') && !c.flag('compass_given')) { await c.say('漁師', ['王様の親書を持ってるって？ ……船乗りが羅針盤を欲しがってるんだろう。', 'これは親父の形見だ。針は今でも北を指す。持っていけ。海の向こうで、波を読み間違えるなよ。']); c.give('old_compass', 1); c.setFlag('compass_given', true); await c.msg(['古い羅針盤を手に入れた！']); return; }
+      await c.say('漁師', ['海の向こうには砂漠の国や魔導王国があるって話だ。', '波を読むのは漁師も同じさ。大きな波（上位足）を見ずに小舟（5分足）だけ見てたら沈んじまう。']); } },
     { id: 'harbor_vendor', x: 4, y: 10, sprite: 'villager_f', dir: 'down', wander: 0, talk: async function (c) { await c.say('市場の女', ['朝獲れの魚だよ！ ……冒険者さんには道具屋のほうが役に立つかもね。']); } },
     { id: 'harbor_guard', x: 11, y: 1, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say('港の衛兵', ['港町マリナへようこそ。北の道はポヨ村へ続いている。']); } }
   ],
@@ -448,7 +466,7 @@
   add({ id: 'harbor_warehouse', name: '港の倉庫', kind: 'interior', bgm: 'town', rows: [
     '############', '#zzz__qq_zz#', '#zz______qq#', '#__________#', '#_qq___zz__#', '#__________#', '#zz_____qqq#', '#__________#', '#####D######'
   ], warps: [{ x: 5, y: 8, to: 'harbor_town', tx: 18, ty: 9 }],
-    chests: [{ id: 'wh1', x: 5, y: 1, item: 'hi_potion', qty: 1 }],
+    chests: [{ id: 'wh1', x: 5, y: 1, item: 'hi_potion', qty: 1 }, { id: 'wh2', x: 8, y: 1, item: 'sailcloth', qty: 1 }],
     npcs: [{ id: 'warehouse_man', x: 6, y: 4, sprite: 'villager_m', dir: 'down', wander: 1, talk: async function (c) { await c.say('倉庫番', ['船が直ったら、この荷物を全部積み込むんだ。', '奥の箱は勝手に開けるなよ……って、冒険者には言っても無駄か。']); } }] });
 
   shopInterior('harbor_item_shop', '港の道具屋', 'harbor_town', 4, 9, 'merchant', 'item', ['herb', 'potion', 'hi_potion', 'ether', 'antidote', 'calm_water', 'phoenix_feather', 'bomb', 'escape_wing', 'tent'], ['船乗り相手の商売だ。品揃えは自慢だよ。']);
@@ -589,5 +607,6 @@
   if (root.WORLD_LOCATIONS) root.WORLD_LOCATIONS.forEach(function (L) { var k = ENLARGE[L.to]; if (k && !L._scaled) { L.tx *= k; L.ty *= k; L._scaled = true; } });
   if (root.WORLD_DEF && root.WORLD_DEF.warps) root.WORLD_DEF.warps.forEach(scaleTarget);
   root.MAP_ENLARGE = ENLARGE;
+  root.TownKit = { add: add, shopInterior: shopInterior, innInterior: innInterior, churchInterior: churchInterior };   // v5.0: 追加地域（js/data/grania.js など）から使う
 
 })(typeof window !== 'undefined' ? window : globalThis);

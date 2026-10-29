@@ -30,7 +30,7 @@
       summary: 'MACD(6,13,4)、通常・ヒドゥンダイバージェンス、波形・上位足との整合',
       lesson: ['【MACD(6,13,4)】通常ダイバージェンス：価格が安値を切り下げているのにMACDが切り上げ（強気）／価格が高値を切り上げているのにMACDが切り下げ（弱気）。勢いの衰えを示す。', '【ヒドゥンダイバージェンス】価格が安値を切り上げているのにMACDが切り下げ（強気）／価格が高値を切り下げているのにMACDが切り上げ（弱気）。トレンド継続を示す。', 'ダイバージェンス単独では使わない。波形（ダウ理論）と上位足の方向に整合して初めて根拠になる。'],
       scenarios: ['hidden_bull', 'hidden_bear', 'regular_bull', 'regular_bear', 'div_against_htf', 'div_bear_against_htf'], reward: { exp: 200, gold: 700, item: 'elixir' } },
-    { id: 'learn_risk', chapter: 7, region: '資金管理の城', title: '資金管理の試練', topic: 'risk', required: true, mapId: null, minScore: 60, ability: 'stoploss_shield', next: null,
+    { id: 'learn_risk', chapter: 7, region: '灰鉱町ヴェルム（地下の集会所）', title: '資金管理の試練', topic: 'risk', required: true, mapId: 'verum_hideout', minScore: 60, ability: 'stoploss_shield', next: null,
       summary: '損切り、リスクリワード、ロット管理、連敗時の判断、無理なエントリーの回避',
       lesson: ['【損切り】エントリー前に必ず決める。直近スイングの外側が基本。損切りなしは最も危険。', '【リスクリワード】利確幅は損切り幅の1.5〜3倍を参考に。悪い場面は見送る。', '【ロット管理】1トレードの損失を資金の1〜2%程度に抑える。連敗したら休む、ロットを上げて取り返そうとしない。', '根拠が揃わない場面・飛び乗り・リスクリワードの悪い場面は見送る。見送りも判断。'],
       scenarios: ['bad_rr', 'bad_rr_sell', 'jump_in', 'jump_in_down', 'pullback_tight_sl', 'whipsaw', 'false_breakout'], reward: { exp: 250, gold: 1000, item: 'elixir' } },
@@ -39,6 +39,8 @@
     { id: 'practice_dow_road', chapter: 2, region: 'ダウの森', title: '旅人の石碑', topic: 'dow', required: false, mapId: 'world', scenarios: ['down_rally', 'false_breakout', 'clear_down', 'false_breakdown', 'clear_down_5m'], reward: { exp: 15, gold: 40 } },
     { id: 'practice_mountain', chapter: 3, region: '移動平均の山', title: 'EMAの石碑', topic: 'ema', required: false, mapId: 'emal_pass', scenarios: ['up_pullback', 'down_rally', 'jump_in', 'range', 'up_ema_bounce', 'down_ema_reject'], reward: { exp: 25, gold: 60 } },
     { id: 'practice_cave', chapter: 5, region: 'RCIの洞窟', title: '反転の石碑', topic: 'rci', required: false, mapId: 'oblivion_cave_1', scenarios: ['rci_hot_trend', 'rci_cold_trend', 'up_pullback', 'up_pullback_5m', 'regular_bull', 'mtf_conflict'], reward: { exp: 30, gold: 80 } },
+    { id: 'practice_grania', chapter: 7, region: 'グラニア鉱業地方', title: '灰野の石碑', topic: 'risk', required: false, mapId: 'world_grania', scenarios: ['bad_rr', 'bad_rr_sell', 'pullback_tight_sl', 'jump_in_down'], reward: { exp: 40, gold: 120 } },
+    { id: 'practice_mine', chapter: 7, region: '鉄鎖鉱山', title: '坑道の石碑', topic: 'skip', required: false, mapId: 'iron_mine_2', scenarios: ['whipsaw', 'false_breakdown', 'rci_cold_trend', 'div_against_htf'], reward: { exp: 50, gold: 150 } },
     { id: 'practice_cave2', chapter: 5, region: 'RCIの洞窟', title: '深部の石碑', topic: 'rci', required: false, mapId: 'oblivion_cave_2', scenarios: ['down_rally', 'down_rally_5m', 'regular_bear', 'hidden_bear', 'bad_rr', 'mtf_conflict_up'], reward: { exp: 35, gold: 90 } }
   ];
 

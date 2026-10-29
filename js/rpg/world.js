@@ -10,8 +10,8 @@
   var World = { maps: {}, map: null, player: null, busy: false, scene: null, hud: null };
 
   World.getMap = function (id) {
-    if (World.maps[id]) return World.maps[id];
     var def = root.MAP_DEFS[id] || (id === 'world' ? root.WORLD_DEF : null);
+    if (World.maps[id]) { if (def && World.maps[id].buildingKey === root.GameMap.buildingKey(def, State.data.flags)) return World.maps[id]; delete World.maps[id]; }   // 建物の表示条件が変わっていたら作り直す
     if (!def) throw new Error('マップが見つかりません: ' + id);
     var m = new GameMap(def);
     World.maps[id] = m;
@@ -51,7 +51,10 @@
     World.map = World.getMap(id);
     World.applyState(World.map);
     var p = World.player || World.makePlayer();
-    if (!World.map.passable(x, y, State.data)) { var nf = World.nearestFree(World.map, x, y); if (nf) { x = nf.x; y = nf.y; } }   // v4.4: 建物配置の変更などで立ち位置が塞がっていたら近くの通れるマスへ
+    var aboardOk = State.data.aboard && root.Vehicle && root.Vehicle.terrainOk(State.data.aboard, World.map, x, y);
+    if (!aboardOk && State.data.aboard && root.Vehicle) { root.Vehicle.disembark(); }   // 乗船中のはずが海上でなければ下船扱い（セーブ破損対策）
+    if (!aboardOk && !World.map.passable(x, y, State.data)) { var nf = World.nearestFree(World.map, x, y); if (nf) { x = nf.x; y = nf.y; } }
+    if (root.Vehicle) { root.Vehicle.unlockIfReady(); if (State.data.aboard) root.Vehicle.syncToPlayer(World.map, x, y); }   // v4.4: 建物配置の変更などで立ち位置が塞がっていたら近くの通れるマスへ
     p.x = x; p.y = y; p.px = x * TS; p.py = y * TS; p.moving = false; if (dir) p.dir = dir;
     p.sprite = State.data.hero.sprite;
     State.data.visited[id] = true;
@@ -105,7 +108,9 @@
   ExploreScene.prototype.draw = function (ctx) {
     var m = World.map, p = World.player;
     var cam = World.camera();
-    m.draw(ctx, cam, p, World.tint());
+    p.vehicle = State.data.aboard || null;
+    var extras = root.Vehicle ? root.Vehicle.onMap(m.id).filter(function (v) { return !v.aboard; }).map(function (v) { return { x: v.x, y: v.y, vehicle: v.id }; }) : [];
+    m.draw(ctx, cam, p, World.tint(), extras);
   };
   World.camera = function () {
     var p = World.player; var m = World.map; var vw = Engine.VIEW_W * TS, vh = Engine.VIEW_H * TS;
@@ -129,7 +134,10 @@
   World.tryMove = function (dir) {
     var p = World.player, m = World.map; p.dir = dir; var d = delta(dir);
     var nx = p.x + d[0], ny = p.y + d[1];
-    if (!m.passable(nx, ny, State.data)) return false;
+    p.vehicleAction = null;
+    var vr = root.Vehicle ? root.Vehicle.resolveMove(m, nx, ny) : null;   // v5.0: 乗船・航行・下船
+    if (vr) { if (!vr.ok) return false; p.vehicleAction = vr; }
+    else if (!m.passable(nx, ny, State.data)) return false;
     p.moving = true; p.tx = nx; p.ty = ny; p.progress = 0;
     return true;
   };
@@ -138,6 +146,17 @@
   World.onStep = function () {
     var p = World.player, m = World.map, d = State.data;
     d.steps++; World.syncPos();
+    if (root.Vehicle) {   // v5.0: 乗り物
+      var va = p.vehicleAction; p.vehicleAction = null;
+      if (va && va.board) { root.Vehicle.board(va.board, m, p.x, p.y); Win.toast(root.VEHICLES[va.board].name + 'に乗った'); if (root.Audio) root.Audio.sfx('step'); }
+      else if (va && va.disembark) { root.Vehicle.disembark(); Win.toast('上陸した'); }
+      if (d.aboard) {
+        root.Vehicle.syncToPlayer(m, p.x, p.y);
+        var route = root.Vehicle.routeAt(m, p.x, p.y);
+        if (route) { var arr = root.Vehicle.arrival(route, p.x, p.y); if (arr) { World.busy = true; Win.message([route.name + '。' + (root.MAP_DEFS[arr.map] || {}).name + 'の海域に入った。']).then(function () { World.busy = false; World.doWarp({ to: arr.map, tx: arr.x, ty: arr.y }); }); return; } }
+      }
+      World.updatePlaceLabel();
+    }
     if (root.Minimap) root.Minimap.onStep(m, p);
     if (m.kind === 'field') d.timeOfDay = (d.timeOfDay + 0.0025) % 1;
     var w = m.warpAt(p.x, p.y);
@@ -147,13 +166,14 @@
     // 毒の歩行ダメージ
     State.partyActors().forEach(function (a) { if (!a.dead && a.status.poison && d.steps % 4 === 0) { a.hp = Math.max(1, a.hp - 1); } });
     World.updatePlaceLabel();
-    if (m.encounters && !World.busy) {
+    var encDef = (d.aboard && root.Vehicle) ? root.Vehicle.encounters() : m.encounters;
+    if (encDef && !World.busy) {
       // 戦闘直後はしばらく出ない（猶予8歩）→ その後は歩くほど確率が上がる（基礎×0.5 → 25歩で基礎×1.5）
       d.stepsSinceBattle = (d.stepsSinceBattle || 0) + 1;
       var since = d.stepsSinceBattle;
       if (since > 8) {
-        var rate = m.encounters.rate * Math.min(1.5, 0.5 + (since - 8) / 25); if (d.flags.repel) rate *= 0.3;
-        if (Math.random() < rate) World.encounter();
+        var rate = encDef.rate * Math.min(1.5, 0.5 + (since - 8) / 25); if (d.flags.repel) rate *= 0.3;
+        if (Math.random() < rate) World.encounter(encDef);
       }
     }
     World.updateHud();
@@ -163,13 +183,13 @@
     var fade = document.getElementById('fade'); if (fade) fade.classList.add('on');
     setTimeout(function () {
       var dir = World.player.dir;
-      World.enterMap(w.to, w.tx, w.ty, w.to === 'world' ? 'down' : dir);
+      World.enterMap(w.to, w.tx, w.ty, (root.MAP_DEFS[w.to] && root.MAP_DEFS[w.to].region) ? (State.data.aboard ? dir : 'down') : dir);
       setTimeout(function () { if (fade) fade.classList.remove('on'); World.busy = false; if (root.Audio) root.Audio.sfx('step'); }, 150);
     }, 180);
   };
 
-  World.encounter = function () {
-    var m = World.map, p = World.player; var enc = m.encounters;
+  World.encounter = function (encDef) {
+    var m = World.map, p = World.player; var enc = encDef || m.encounters; if (!enc) return;
     var zone = enc.zones.filter(function (z) { return z.test(p.x, p.y); })[0]; if (!zone) return;
     var group = zone.groups[Math.floor(Math.random() * zone.groups.length)];
     if (zone.rare && Math.random() < (zone.rareRate || 0.02)) group = zone.rare[Math.floor(Math.random() * zone.rare.length)];
@@ -188,6 +208,7 @@
     World.busy = true;
     return Win.message(['全滅してしまった……', '所持金の半分を失い、最後に泊まった宿で目を覚ました。']).then(function () {
       var d = State.data; d.gold = Math.floor(d.gold / 2);
+      if (root.Vehicle) root.Vehicle.onGameOver();
       State.partyActors().forEach(function (a) { root.Actors.fullHeal(a); });
       World.busy = false;
       World.enterMap(d.lastInn.map, d.lastInn.x, d.lastInn.y, 'down');
@@ -215,7 +236,7 @@
   World.talk = function (npc) {
     World.busy = true;
     var p = World.player; npc.dir = { up: 'down', down: 'up', left: 'right', right: 'left' }[p.dir]; npc.moving = false; npc.ox_px = 0; npc.oy_px = 0;
-    Promise.resolve(npc.talk(root.Events.ctx(npc))).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World.applyState(World.map); World.updateHud(); State.autosave(); });
+    Promise.resolve(npc.talk(root.Events.ctx(npc))).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World.applyState(World.map); if (root.Vehicle) root.Vehicle.unlockIfReady(); World.updateHud(); State.autosave(); });
   };
   World.openChest = function (chest) {
     var m = World.map, d = State.data; var key = m.id + ':' + chest.id;
@@ -237,6 +258,8 @@
     var b = World.map.buildingNear(World.player.x, World.player.y);
     var w = !b && World.map.warpAt(World.player.x, World.player.y + (World.player.dir === 'up' ? -1 : 0));
     var text = b ? b.name : (w && w.name ? w.name : '');
+    if (!text && State.data && State.data.aboard && root.Vehicle) text = root.Vehicle.label() + '　隣の陸へ進むと上陸';
+    else if (!text && root.Vehicle && root.Vehicle.at(World.map.id, World.player.x + World.delta(World.player.dir)[0], World.player.y + World.delta(World.player.dir)[1])) text = '船に乗る（そのまま進む）';
     if (el.textContent !== text) el.textContent = text;
     el.classList.toggle('show', !!text);
   };

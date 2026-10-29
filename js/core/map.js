@@ -24,7 +24,9 @@
     this.buildings = [];
     // 建物：足元を通行不可にし、ドアにワープを作る
     var self = this;
-    (def.buildings || []).forEach(function (b) {
+    var flags = (root.State && root.State.data) ? root.State.data.flags : {};
+    this.buildingKey = GameMap.buildingKey(def, flags);
+    (def.buildings || []).filter(function (b) { return !b.showIf || flags[b.showIf]; }).forEach(function (b) {   // v5.0: showIf で物語の進行により現れる建物
       var bb = Object.assign({ w: 5, h: 3, doorX: 2, style: def.style || 'wood' }, b);
       bb.doorAbs = { x: bb.x + bb.doorX, y: bb.y + bb.h - 1 };
       for (var yy = bb.y; yy < bb.y + bb.h; yy++) for (var xx = bb.x; xx < bb.x + bb.w; xx++) self.setTile(xx, yy, (xx === bb.doorAbs.x && yy === bb.doorAbs.y) ? 'bld_door' : 'bld_block');
@@ -32,6 +34,7 @@
       self.buildings.push(bb);
     });
   }
+  GameMap.buildingKey = function (def, flags) { return (def.buildings || []).filter(function (b) { return b.showIf; }).map(function (b) { return b.showIf + '=' + (flags[b.showIf] ? 1 : 0); }).join(','); };
   // 建物の足元タイル（描画は建物画像が担当）
   if (!Tiles.defs.bld_block) { Tiles.defs.bld_block = { name: 'bld_block', solid: true, paint: function (g) { g.fill('#5a4a3a'); } }; Tiles.defs.bld_door = { name: 'bld_door', paint: function (g) { g.fill('#8e8e9c'); } }; }
 
@@ -55,7 +58,7 @@
   };
 
   /* ---------- 描画 ---------- */
-  GameMap.prototype.draw = function (ctx, cam, player, timeTint) {
+  GameMap.prototype.draw = function (ctx, cam, player, timeTint, extras) {
     var TS = Engine.TS; var frame = Math.floor(Engine.frame / 28) % 2;
     var x0 = Math.floor(cam.x / TS), y0 = Math.floor(cam.y / TS);
     var x1 = Math.min(this.w - 1, x0 + Engine.VIEW_W + 1), y1 = Math.min(this.h - 1, y0 + Engine.VIEW_H + 1);
@@ -82,7 +85,8 @@
     });
     // エンティティ（y順）
     var ents = this.npcs.filter(function (n) { return !n.hidden; }).map(function (n) { return { y: n.y * TS + (n.oy_px || 0), draw: function () { drawChar(ctx, n.sprite, n.dir, n.frame, n.x * TS + (n.ox_px || 0) - cam.x, n.y * TS + (n.oy_px || 0) - cam.y, n.phase); } }; });
-    if (player) ents.push({ y: player.py, draw: function () { drawChar(ctx, player.sprite, player.dir, player.frame, player.px - cam.x, player.py - cam.y, player.phase); } });
+    (extras || []).forEach(function (e) { ents.push({ y: e.y * TS, draw: function () { if (e.vehicle && root.VehicleArt) root.VehicleArt.draw(ctx, e.vehicle, 'down', e.x * TS - cam.x, e.y * TS - cam.y, false); } }); });
+    if (player) ents.push({ y: player.py, draw: function () { if (player.vehicle && root.VehicleArt) root.VehicleArt.draw(ctx, player.vehicle, player.dir, player.px - cam.x, player.py - cam.y, player.moving); else drawChar(ctx, player.sprite, player.dir, player.frame, player.px - cam.x, player.py - cam.y, player.phase); } });
     ents.sort(function (a, b) { return a.y - b.y; });
     ents.forEach(function (e) { e.draw(); });
     // 夜：全体を暗くし、灯り・松明の周りを明るく
