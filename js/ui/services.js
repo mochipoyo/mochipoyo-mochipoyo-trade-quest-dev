@@ -4,7 +4,7 @@
 (function (root) {
   'use strict';
 
-  var Win = root.Win, State = root.State, ITEMS = root.ITEMS, JOBS = root.JOBS, Actors = root.Actors, World = root.World, QUESTS = root.QUESTS, COMPANIONS = root.COMPANIONS, LEARNING = root.LEARNING, LECTURES = root.LECTURES, Events = root.Events;
+  var Win = root.Win, State = root.State, ITEMS = root.ITEMS, JOBS = root.JOBS, Actors = root.Actors, World = root.World, QUESTS = root.QUESTS, COMPANIONS = root.COMPANIONS, LEARNING = root.LEARNING, LECTURES = root.LECTURES, Events = root.Events, TradeEval = root.TradeEval;
   var esc = Win.esc;
 
   var Services = {};
@@ -184,15 +184,58 @@
   };
 
   /* ---------- 修行場（講義・チャートの試練・学習クエスト） ---------- */
+  /* ---------- はじめてのトレード（チュートリアル：師匠ハケイ） ---------- */
+  var TUTORIAL_LESSONS = [
+    ['ローソク足の基本', ['ローソク足は、ある時間（5分・15分・4時間など）の値動きを1本で表す。', '太い部分（実体）は「始値→終値」。終値が上なら陽線（上昇）、下なら陰線（下降）。細い線（ヒゲ）はその時間の最高値・最安値だ。', '大事なのは1本ではなく「並び」。高値と安値がどう動いているかを見る。']],
+    ['買いと売り・損切り', ['FXでは「買い（上がると思う）」と「売り（下がると思う）」の両方ができる。', 'そして必ず「ここまで来たら負けを認める」価格＝損切りを先に決める。損切りなしは一番危険だ。', '利確（目標）は損切り幅の1.5〜3倍が参考値。これがリスクリワードだ。']],
+    ['上昇・下降・レンジ', ['高値も安値も切り上がっていれば上昇、切り下がっていれば下降。揃わないならレンジ（方向感なし）。', 'EMA20・30・40の並びも手がかりだ。上から20＞30＞40なら上昇の並び、逆なら下降の並び。', '上昇なら買い、下降なら売り、レンジや根拠が揃わないときは「見送り」。見送りも立派な判断だ。', 'では実際にチャートを見て、分析→判断→理由の順に選んでみよう。4時間足も確認するのを忘れずに。']]
+  ];
+  Services.tutorial = async function (opts) {
+    opts = opts || {}; var d = State.data;
+    var replay = !!d.trade.tutorialDone;
+    var mode = await Win.choice(replay ? 'チュートリアルを復習する？' : '「はじめてのトレード」を始める？', ['説明を聞いてから挑戦', '説明を短縮して挑戦', 'やめる']);
+    if (mode < 0 || mode === 2) return false;
+    if (mode === 0) { for (var i = 0; i < TUTORIAL_LESSONS.length; i++) { await Win.panel('<div class="rw-title">' + (i + 1) + '. ' + Win.esc(TUTORIAL_LESSONS[i][0]) + '</div><div class="lesson">' + TUTORIAL_LESSONS[i][1].map(Win.esc).join('\n') + '</div>' + (i === 0 ? candleFigure() : ''), { closeLabel: '次へ' }); } }
+    else await Win.message(['要点だけ：高値・安値の切り上げ＝上昇、切り下げ＝下降、揃わなければレンジ。上位足の方向に合わせ、損切りを先に決める。', 'では、分析→判断→理由の順に選んでみよう。'], { name: '師匠ハケイ' });
+    var res = await root.TradeUI.trial(['clear_up'], { title: 'はじめてのトレード', tutorial: true, scenarioId: 'clear_up' });
+    if (!res) return false;
+    if (!d.trade.tutorialDone) {
+      d.trade.tutorialDone = true; d.flags.tutorial_done = true;
+      d.gold += 100; State.addItem('herb', 2); State.partyActors().forEach(function (a) { root.Actors.gainExp(a, 15); });
+      await Win.message(['初回学習報酬：100G・薬草×2・経験値15を受け取った！', 'メニューの「トレード修行」からいつでも復習や練習ができる。次のおすすめは講義「相場の基本」と「ダウ理論と波形」だ。'], { name: '師匠ハケイ' });
+      await Events.checkCounterQuests();
+    } else await Win.message([res.score >= 70 ? 'よく覚えているな。次は別の場面にも挑んでみよう。' : '焦らなくていい。分析の順番を思い出しながら、もう一度やってみよう。'], { name: '師匠ハケイ' });
+    World.updateHud(); State.autosave(); return true;
+  };
+  function candleFigure() {
+    // ローソク足の説明図（陽線・陰線）
+    return '<svg viewBox="0 0 220 90" width="220" height="90" style="display:block;margin:6px auto;background:rgba(0,0,0,.25);border-radius:4px"><line x1="55" y1="8" x2="55" y2="82" stroke="#4cc38a" stroke-width="2"/><rect x="43" y="28" width="24" height="36" fill="#4cc38a"/><text x="55" y="88" fill="#9fe0a8" font-size="9" text-anchor="middle">陽線（終値＞始値）</text><text x="12" y="31" fill="#ccc" font-size="8">終値</text><text x="12" y="66" fill="#ccc" font-size="8">始値</text><text x="70" y="12" fill="#ccc" font-size="8">高値</text><text x="70" y="82" fill="#ccc" font-size="8">安値</text>' +
+      '<line x1="160" y1="8" x2="160" y2="82" stroke="#e5484d" stroke-width="2"/><rect x="148" y="28" width="24" height="36" fill="#e5484d"/><text x="160" y="88" fill="#ffb0b0" font-size="9" text-anchor="middle">陰線（終値＜始値）</text><text x="178" y="31" fill="#ccc" font-size="8">始値</text><text x="178" y="66" fill="#ccc" font-size="8">終値</text></svg>';
+  }
+  Services.lectureAt = function (where) { return lecture(where); };
+  Services.practice = function () { return practice(); };
+  // 苦手分野の復習：分野を選び、その分野に向く場面から出題
+  Services.reviewWeak = async function () {
+    var d = State.data; var weak = TradeEval.weakTopics(d.trade); var all = TradeEval.topicSummary(d.trade);
+    var list = (weak.length ? weak : all).slice(0, 6);
+    var i = await Win.list(list.map(function (t) { return { label: t.label, right: t.plays ? Math.round(t.acc * 100) + '%（' + t.plays + '回）' : '未挑戦', sub: '習熟度：' + t.level + (t.hintRate > 0.5 && t.plays >= 3 ? '　ヒント依存が高い' : '') }; }), { title: '苦手分野の復習（正解率の低い順）' });
+    if (i < 0) return;
+    var ids = TradeEval.scenariosForTopic(list[i].key);
+    await root.TradeUI.trial(ids, { title: '復習：' + list[i].label, practice: true });
+    await Events.checkCounterQuests();
+  };
   Services.dojo = async function (where) {
     var d = State.data;
+    if (!d.flags.met_master && !d.trade.tutorialDone) { d.flags.met_master = true; await Win.message(['私は師匠ハケイ。相場の波を読む術を教えている。', 'まずは「はじめてのトレード」で、チャートの見方と判断の順番を体験してみよう。'], { name: '師匠ハケイ' }); await Services.tutorial(); }
     if (!d.flags.met_master) { await Win.message(['私は師匠ハケイ。相場の波を読む術を教えている。', 'この修行場では「講義」で考え方を学び、「チャートの試練」で判断を練習できる。試練のチャートは学習用に作られたもので、何度失敗しても資金は減らない。', '学んだ者にしか就けない職業もある。焦らず、一つずつだ。'], { name: '師匠ハケイ' }); d.flags.met_master = true; }
     while (true) {
-      var a = await Win.choice('何をする？', ['講義を受ける', 'チャートの試練（練習）', '学習クエストを受ける', 'トレード記録を見る', 'やめる']);
-      if (a === 0) await lecture(where);
-      else if (a === 1) await practice();
-      else if (a === 2) await learningQuests();
-      else if (a === 3) await root.TradeUI.showRecord();
+      var a = await Win.choice('何をする？', ['はじめてのトレード（チュートリアル）', '講義を受ける', 'チャートの試練（練習）', '苦手分野の復習', '学習クエストを受ける', 'トレード記録を見る', 'やめる']);
+      if (a === 0) await Services.tutorial();
+      else if (a === 1) await lecture(where);
+      else if (a === 2) await practice();
+      else if (a === 3) await Services.reviewWeak();
+      else if (a === 4) await learningQuests();
+      else if (a === 5) await root.TradeUI.showRecord();
       else { await Win.message(['無理に戦わぬことも、立派な判断だ。']); return; }
     }
   };
@@ -219,7 +262,7 @@
   }
   async function practice() {
     var defs = root.Scenarios.defs; var d = State.data;
-    var items = [{ label: 'おまかせ（ランダム）', sub: '14種類の場面から出題' }].concat(defs.map(function (s) { var r = d.trade.stats.byScenario[s.id]; return { label: s.title, right: r ? r.correct + '/' + r.plays : '―', sub: '正解：' + (s.correct === 'skip' ? '見送り' : s.correct === 'buy' ? '買い' : '売り') + '（答えを見ずに挑もう）' }; }));
+    var items = [{ label: 'おまかせ（ランダム）', sub: defs.length + '種類の場面から出題' }].concat(defs.map(function (s) { var r = d.trade.stats.byScenario[s.id]; return { label: s.title, right: r ? '正解 ' + r.correct + '/' + r.plays : '未挑戦', sub: '第' + s.chapter + '章の題材' + (r && r.plays ? '' : '　※正解は回答後に表示') }; }));   // v4: 正解の事前表示はしない
     var i = await Win.list(items, { title: 'チャートの試練（練習）' });
     if (i < 0) return;
     var ids = i === 0 ? defs.map(function (s) { return s.id; }) : [defs[i - 1].id];

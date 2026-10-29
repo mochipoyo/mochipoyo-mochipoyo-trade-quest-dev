@@ -21,28 +21,35 @@
     return lines;
   }
 
-  // scenarios: 出題候補のID配列。opts: {title, practice, minScore}
+  // scenarios: 出題候補のID配列。opts: {title, practice, minScore, tutorial, scenarioId}
+  // 流れ：①チャートを見て5つの分析（上位足・波形・EMA・RCI・MACD）→ ②買い/売り/見送り → ③理由 → ④注文設定（トレード時）→ ⑤結果（判断過程ごとの採点）
+  // 正解は回答前に一切表示しない。ヒントは段階式（考え方 → 場面のヒント → 数値表示）で、使うと記録に残る
   TradeUI.trial = function (scenarioIds, opts) {
     opts = opts || {};
     var d = State.data;
-    var id = scenarioIds[Math.floor(Math.random() * scenarioIds.length)];
+    var id = opts.scenarioId || scenarioIds[Math.floor(Math.random() * scenarioIds.length)];
     var seedOffset = opts.practice ? Math.floor(Math.random() * 6) : 0;
     var scn = Scenarios.build(id, seedOffset);
     var def = scn.def;
-    var cur = { checkedHigherTF: false, checkedIndicators: false, usedHint: false };
+    var cur = { checkedHigherTF: false, hintLevel: 0, analysis: {}, reason: null };
     TradeUI.state.tf = def.focusTF;
     var chartCtl = null;
-    TradeUI.current = { scn: scn, id: id };
+    TradeUI.current = { scn: scn, id: id, cur: cur };
+    var Q = TradeEval.ANALYSIS; var tutorial = !!opts.tutorial;
 
     return new Promise(function (resolve) {
       var tfs = CONFIG.timeframes.map(function (t) { return '<button class="tf" data-tf="' + t.id + '">' + esc(t.label) + '</button>'; }).join('');
-      var html = '<div class="trade-head"><b>' + esc(opts.title || 'チャートの試練') + '</b><span class="muted small">　この場面でどう行動する？（学習用人工データ・' + esc(CONFIG.market.pairName) + '）</span></div>' +
-        '<div class="chart-tools"><div class="tfs">' + tfs + '</div><div class="ctl"><button class="mini" data-zoom="in">＋</button><button class="mini" data-zoom="out">－</button><button class="mini" data-zig="1">ZigZag</button></div></div>' +
+      var qhtml = Q.map(function (q, i) { return '<div class="aq" data-q="' + q.key + '"><div class="aq-t"><span class="aq-n">' + (i + 1) + '</span>' + esc(q.title) + '</div><div class="aq-o">' + q.options.map(function (o) { return '<button class="aopt" data-q="' + q.key + '" data-v="' + o[0] + '">' + esc(o[1]) + '</button>'; }).join('') + '</div></div>'; }).join('');
+      var html = '<div class="trade-head"><b>' + esc(opts.title || 'チャートの試練') + '</b><span class="muted small">　学習用の人工チャート（' + esc(CONFIG.market.pairName) + '）。未来の足は判断後に表示されます</span></div>' +
+        '<div class="chart-tools"><div class="tfs">' + tfs + '</div><div class="ctl"><button class="mini" data-zoom="in">＋</button><button class="mini" data-zoom="out">－</button><button class="mini" data-zig="1">ZigZag</button><button class="mini hintbtn" data-cmd="hint">ヒント</button></div></div>' +
         '<canvas class="chart" id="trial-chart"></canvas>' +
-        '<div class="trade-cmds"><button class="tcmd buy" data-cmd="buy">買い</button><button class="tcmd sell" data-cmd="sell">売り</button><button class="tcmd skip" data-cmd="skip">見送り</button><button class="tcmd" data-cmd="higher">上位足を確認</button><button class="tcmd" data-cmd="ind">インジケーター確認</button><button class="tcmd" data-cmd="hint">ヒント</button></div>' +
-        '<div class="trade-msg" id="trial-msg">まず上位足（日足・4時間足）を確認してから判断しよう。</div>';
+        '<div class="trade-msg" id="trial-msg"></div>' +
+        '<div class="analysis" id="trial-analysis"><div class="an-title">① チャートを分析する（時間足ボタンで上位足も確認できる）</div>' + qhtml + '</div>' +
+        '<div class="trade-cmds" id="trial-cmds"><button class="tcmd buy" data-cmd="buy">買い</button><button class="tcmd sell" data-cmd="sell">売り</button><button class="tcmd skip" data-cmd="skip">見送り</button></div>';
       Win.panel(html, { cls: 'trade-panel', noClose: true, setup: function (node, close) {
         var canvas = node.querySelector('#trial-chart');
+        var msgEl = node.querySelector('#trial-msg'); var cmds = node.querySelector('#trial-cmds');
+        function msg(t) { msgEl.textContent = t; }
         function render() {
           var tf = CONFIG.timeframes.filter(function (t) { return t.id === TradeUI.state.tf; })[0];
           var base = Indicators.aggregate(scn.base, tf.factor);
@@ -55,27 +62,50 @@
           return an;
         }
         chartCtl = { revealed: [], opts: {}, render: render };
-        var msgEl = node.querySelector('#trial-msg');
-        function msg(t) { msgEl.textContent = t; }
+        function answered() { return Q.filter(function (q) { return !cur.analysis[q.key]; }).length === 0; }
+        function refreshState() {
+          var left = Q.filter(function (q) { return !cur.analysis[q.key]; });
+          cmds.classList.toggle('ready', left.length === 0);
+          if (left.length) msg('② の前に、まず5つの分析を選ぼう（残り ' + left.length + '）。' + (tutorial ? '　' + left[0].hint : ''));
+          else msg('③ 分析を踏まえて、買い・売り・見送りを選ぼう。');
+        }
+        node.querySelectorAll('.aq-o').forEach(function (row) { row.addEventListener('click', function (e) { var b = e.target.closest('.aopt'); if (!b || node.classList.contains('locked')) return; e.stopPropagation(); var q = b.getAttribute('data-q'); cur.analysis[q] = b.getAttribute('data-v'); row.querySelectorAll('.aopt').forEach(function (x) { x.classList.toggle('on', x === b); }); refreshState(); }); });
         node.addEventListener('click', function (e) {
-          var t = e.target; e.stopPropagation();
-          if (t.getAttribute('data-tf')) { TradeUI.state.tf = t.getAttribute('data-tf'); if (['1h', '4h', '1d'].indexOf(TradeUI.state.tf) >= 0 && !cur.checkedHigherTF) { cur.checkedHigherTF = true; msg('上位足を確認した。' + describeTF(scn.states[TradeUI.state.tf], TradeUI.state.tf).slice(1, 3).join(' ')); } render(); }
+          var t = e.target.closest('button'); if (!t) return; e.stopPropagation();
+          if (t.getAttribute('data-tf')) { TradeUI.state.tf = t.getAttribute('data-tf'); if (['1h', '4h', '1d'].indexOf(TradeUI.state.tf) >= 0) cur.checkedHigherTF = true; render(); }
           if (t.getAttribute('data-zoom')) { TradeUI.state.visible = Engine.clamp(TradeUI.state.visible + (t.getAttribute('data-zoom') === 'in' ? -15 : 15), CONFIG.chart.minVisible, CONFIG.chart.maxVisible); render(); }
           if (t.getAttribute('data-zig')) { d.settings.showZigzag = !d.settings.showZigzag; render(); }
           var c = t.getAttribute('data-cmd'); if (!c || node.classList.contains('locked')) return;
-          if (c === 'higher') { cur.checkedHigherTF = true; TradeUI.state.tf = '4h'; render(); var st = scn.states; msg('上位足を確認した。' + describeTF(st['1d'], '1d').slice(1, 2).join('') + ' ／ ' + describeTF(st['4h'], '4h').slice(1, 3).join(' ')); }
-          if (c === 'ind') { cur.checkedIndicators = true; var an = render(); Win.panel('<div class="rw-title">インジケーター確認</div><div class="ind-list">' + describeTF(an, TradeUI.state.tf).map(esc).join('<br>') + '</div><p class="muted small">※表示チャートと同じ計算結果。未確定のピボットは含まない。</p>'); }
-          if (c === 'hint') { cur.usedHint = true; Win.panel('<div class="rw-title">ヒント</div><p>' + esc(def.hint) + '</p>'); }
-          if (c === 'skip') decide({ action: 'skip' });
-          if (c === 'buy' || c === 'sell') openOrder(c);
+          if (c === 'hint') { showHint(); return; }
+          if (!answered()) { msg('先に5つの分析を選ぼう。わからないときは「ヒント」。'); return; }
+          if (c === 'skip') chooseReason('skip');
+          if (c === 'buy' || c === 'sell') chooseReason(c);
         });
+        // 段階式ヒント：1) 未回答の設問の考え方 2) 場面のヒント 3) 数値（インジケーター）を表示
+        function showHint() {
+          cur.hintLevel = Math.min(3, cur.hintLevel + 1);
+          var left = Q.filter(function (q) { return !cur.analysis[q.key]; });
+          var body;
+          if (cur.hintLevel === 1) body = '<p><b>考え方</b></p><p>' + esc((left[0] || Q[0]).hint) + '</p><p class="muted small">もう一度押すと、この場面のヒント → 数値表示の順に進みます（ヒントの使用は記録されます）。</p>';
+          else if (cur.hintLevel === 2) body = '<p><b>この場面のヒント</b></p><p>' + esc(def.hint) + '</p>';
+          else { var an = render(); body = '<p><b>インジケーターの数値</b>（表示中の時間足・計算結果そのまま）</p><div class="ind-list">' + describeTF(an, TradeUI.state.tf).map(esc).join('<br>') + '</div><p class="muted small">数値を見ても、設問の答えは自分で選ぼう。</p>'; }
+          Win.panel('<div class="rw-title">ヒント ' + cur.hintLevel + '/3</div>' + body);
+        }
+        // 理由の選択（正解＋誤りを混ぜた6択）
+        function chooseReason(action) {
+          var opts2 = TradeEval.reasonOptions(scn);
+          Win.list(opts2.map(function (r) { return { label: r[1] }; }), { title: '「' + ({ buy: '買い', sell: '売り', skip: '見送り' })[action] + '」を選んだ理由は？', cancel: true }).then(function (i) {
+            if (i < 0) return; cur.reason = opts2[i][0];
+            if (action === 'skip') decide({ action: 'skip' }); else openOrder(action);
+          });
+        }
         function openOrder(action) {
           var sug = TradeEval.suggestLevels(scn, action);
           var riskOpts = CONFIG.risk.riskOptions.map(function (r) { return '<option value="' + r + '" ' + (r === d.settings.riskPercent ? 'selected' : '') + '>' + r + '%' + (r > CONFIG.risk.maxSafeRiskPercent ? '（過大）' : '') + '</option>'; }).join('');
-          var oh = '<div class="rw-title">注文設定（' + (action === 'buy' ? '買い' : '売り') + '）</div><div class="order-grid"><label>エントリー<input type="text" id="o-entry" value="' + sug.entry.toFixed(3) + '" readonly></label><label>損切り<input type="number" step="0.001" id="o-sl" value="' + sug.sl.toFixed(3) + '"></label><label>利確<input type="number" step="0.001" id="o-tp" value="' + sug.tp.toFixed(3) + '"></label><label>リスク<select id="o-risk">' + riskOpts + '</select></label></div>' +
-            '<div class="rw-row"><div class="rw-btn" id="o-swing">直近スイング外側＋RR1:2</div><div class="rw-btn" id="o-nosl">損切りなし（非推奨）</div></div><div id="o-calc" class="calc"></div><div class="rw-row"><div class="rw-btn ok" id="o-ok">エントリー確定</div><div class="rw-btn" id="o-cancel">キャンセル</div></div>';
+          var oh = '<div class="rw-title">注文設定（' + (action === 'buy' ? '買い' : '売り') + '）</div><div class="order-grid"><label>エントリー<input type="text" id="o-entry" value="' + sug.entry.toFixed(3) + '" readonly></label><label>損切り<input type="number" step="0.001" id="o-sl" value="' + sug.sl.toFixed(3) + '"></label><label>利確目標<input type="number" step="0.001" id="o-tp" value="' + sug.tp.toFixed(3) + '"></label><label>リスク（資金の%）<select id="o-risk">' + riskOpts + '</select></label></div>' +
+            '<div class="rw-row"><div class="rw-btn" id="o-swing">直近スイング外側＋RR1:2</div><div class="rw-btn" id="o-nosl">損切りなし（非推奨）</div></div><div id="o-calc" class="calc"></div><div class="rw-row"><div class="rw-btn ok" id="o-ok">エントリー確定</div><div class="rw-btn" id="o-cancel">やめる</div></div><p class="muted small">損切りは直近スイングの外側、利確は損切り幅の1.5〜3倍が参考値。数値は自分で変えられる。</p>';
           Win.panel(oh, { noClose: true, setup: function (on, oclose) {
-            function recalc() { var sl = parseFloat(on.querySelector('#o-sl').value), tp = parseFloat(on.querySelector('#o-tp').value), rp = parseFloat(on.querySelector('#o-risk').value); var entry = sug.entry; var rpips = isNaN(sl) ? 0 : (action === 'buy' ? entry - sl : sl - entry) / CONFIG.market.pip; var wpips = isNaN(tp) ? 0 : (action === 'buy' ? tp - entry : entry - tp) / CONFIG.market.pip; var rr = rpips > 0 ? wpips / rpips : 0; on.querySelector('#o-calc').innerHTML = '損切り幅 <b>' + (rpips > 0 ? rpips.toFixed(0) : '―') + 'pips</b>／利確幅 <b>' + (wpips > 0 ? wpips.toFixed(0) : '―') + 'pips</b>／RR <b>' + (rr > 0 ? '1:' + rr.toFixed(2) : '―') + '</b>／ロット ' + (rpips > 0 ? TradeEval.lotFor(d.trade.capital, rp, rpips) + '万通貨' : '―') + '（許容損失 ' + Math.round(d.trade.capital * rp / 100).toLocaleString() + '円）'; chartCtl.opts = { sl: isNaN(sl) ? null : sl, tp: isNaN(tp) ? null : tp, entry: entry }; render(); }
+            function recalc() { var sl = parseFloat(on.querySelector('#o-sl').value), tp = parseFloat(on.querySelector('#o-tp').value), rp = parseFloat(on.querySelector('#o-risk').value); var entry = sug.entry; var rpips = isNaN(sl) ? 0 : (action === 'buy' ? entry - sl : sl - entry) / CONFIG.market.pip; var wpips = isNaN(tp) ? 0 : (action === 'buy' ? tp - entry : entry - tp) / CONFIG.market.pip; var lot = TradeEval.lotFor(d.trade.capital, rp, rpips); on.querySelector('#o-calc').innerHTML = '損切り幅 <b>' + rpips.toFixed(0) + 'pips</b>　利確幅 <b>' + wpips.toFixed(0) + 'pips</b>　リスクリワード <b>' + (rpips > 0 ? '1:' + (wpips / rpips).toFixed(2) : '―') + '</b>　許容損失 <b>' + Math.round(d.trade.capital * rp / 100).toLocaleString() + '円</b>　ロット <b>' + lot.toFixed(2) + '</b>'; chartCtl.opts = { sl: isNaN(sl) ? null : sl, tp: isNaN(tp) ? null : tp, entry: entry }; render(); }
             on.addEventListener('input', recalc); on.addEventListener('change', recalc);
             on.querySelector('#o-swing').onclick = function () { on.querySelector('#o-sl').value = sug.sl.toFixed(3); on.querySelector('#o-tp').value = sug.tp.toFixed(3); recalc(); };
             on.querySelector('#o-nosl').onclick = function () { on.querySelector('#o-sl').value = ''; recalc(); };
@@ -84,13 +114,16 @@
             recalc();
           } });
         }
+        var decided = false;
         function decide(decision) {
+          if (decided) return; decided = true;   // 二重採点の防止
           node.classList.add('locked');
-          decision.checkedHigherTF = cur.checkedHigherTF; decision.checkedIndicators = cur.checkedIndicators; decision.usedHint = cur.usedHint;
+          decision.analysis = cur.analysis; decision.reason = cur.reason; decision.hintLevel = cur.hintLevel; decision.checkedHigherTF = cur.checkedHigherTF;
           if (decision.riskPercent === undefined) decision.riskPercent = d.settings.riskPercent;
-          var ev = TradeEval.evaluate(scn, decision); ev.scenarioId = id;
+          var ev = TradeEval.evaluateFull(scn, decision); ev.scenarioId = id;
           var sim = ev.trade ? TradeEval.simulate(scn, ev.trade, 96) : null;
           var money = TradeEval.applyResult(d.trade.stats, d.trade, ev, sim);
+          TradeEval.recordTopics(d.trade, ev);
           // 学習クエスト用カウンター
           if (ev.actionOk) { State.count('trial_ok:' + id); if (id === 'hidden_bull' || id === 'hidden_bear') State.count('trial_ok:hidden'); }
           if (ev.trade && ev.items.some(function (it) { return it.name === '損切り位置' && it.ok; })) State.count('trial_sl_ok');
@@ -106,16 +139,19 @@
           }, d.settings.textSpeed === 'instant' ? 20 : 70);
         }
         function showResult(ev, sim, money) {
-          var items = ev.items.map(function (it) { return '<li class="' + (it.ok ? 'ok' : 'ng') + '"><span class="mark">' + (it.ok ? '✓' : '✗') + '</span><b>' + esc(it.name) + '</b>：' + esc(it.note) + '</li>'; }).join('');
+          var items = ev.items.map(function (it) { return '<li class="' + (it.ok ? 'ok' : 'ng') + '"><span class="mark">' + (it.ok ? '✓' : '✗') + '</span><b>' + esc(it.name) + '</b>：' + esc(it.note) + '<span class="pts">' + (it.ok ? it.points : 0) + '/' + it.points + '</span></li>'; }).join('');
           var outcome = '';
           if (ev.trade && sim) {
             var o = ({ tp: '利確に到達', sl: '損切りに到達', time: '時間切れで決済' })[sim.outcome];
-            outcome = '<div class="outcome ' + (sim.pips >= 0 ? 'win' : 'lose') + '"><b>その後：' + o + '</b>　' + (sim.pips >= 0 ? '+' : '') + sim.pips.toFixed(0) + 'pips（' + sim.bars + '本後）　仮想損益 ' + (money.pnl >= 0 ? '+' : '') + Math.round(money.pnl).toLocaleString() + '円' + (sim.ambiguous ? '<br><span class="warn">※同じ足で利確と損切りの両方に到達したため、保守的に損切り扱い</span>' : '') + (sim.worstPips !== undefined ? '<br><span class="warn">※損切りなしのため最大含み損 ' + sim.worstPips.toFixed(0) + 'pips</span>' : '') + '<br><span class="muted small">' + (ev.actionOk && sim.pips < 0 ? '正しい判断でも損切りになることはある。評価されるのは判断の過程。' : (!ev.actionOk && sim.pips >= 0 ? '結果は利益でも判断の過程に問題がある。繰り返すと資金を失う。' : '過程と結果が一致した。この判断を繰り返そう。')) + '</span></div>';
+            outcome = '<div class="outcome ' + (sim.pips >= 0 ? 'win' : 'lose') + '"><b>その後：' + o + '</b>　' + (sim.pips >= 0 ? '+' : '') + sim.pips.toFixed(0) + 'pips（' + sim.bars + '本後）　仮想損益 ' + (money.pnl >= 0 ? '+' : '') + Math.round(money.pnl).toLocaleString() + '円' + (sim.ambiguous ? '<br><span class="muted small">※同じ足で利確と損切りの両方に触れたため、保守的に損切り扱い</span>' : '') + '<br><span class="muted small">※点数は結果ではなく判断の過程で決まります</span></div>';
           } else outcome = '<div class="outcome"><b>その後の値動き</b>：チャートで確認（' + (ev.actionOk ? '見送りが適切な場面だった' : '根拠が揃った場面だった') + '）</div>';
-          var rh = '<div class="result-head"><div class="score">' + ev.score + '<span>点</span></div><div><div class="muted small">場面：' + esc(def.title) + '</div><div>あなたの判断：<b>' + esc(ev.chosenLabel) + '</b>　適切な判断：<b class="gold-text">' + esc(ev.correctLabel) + '</b></div></div></div><ul class="eval">' + items + '</ul>' + (ev.violations.length ? '<div class="violations">ルール違反：' + ev.violations.map(esc).join('、') + '</div>' : '') + outcome;
+          var rank = TradeEval.rank(d.trade);
+          var rh = '<div class="result-head"><div class="score">' + ev.score + '<span>点</span></div><div><div class="muted small">場面：' + esc(def.title) + (ev.hintLevel ? '　（ヒント' + ev.hintLevel + '段階使用）' : '　（ヒントなし）') + '</div><div>あなたの判断：<b>' + esc(ev.chosenLabel) + '</b>　適切な判断：<b class="gold-text">' + esc(ev.correctLabel) + '</b>　分析 ' + ev.analysisOk + '/' + ev.analysisTotal + '</div></div></div><ul class="eval-list">' + items + '</ul><div class="explain"><b>解説：</b>' + esc(ev.summary) + '</div>' + outcome + '<div class="muted small">トレーダーランク：' + esc(rank.letter + '　' + rank.title) + '</div>';
           if (root.Audio) root.Audio.sfx(ev.score >= 60 ? 'win' : 'hit');
           Win.panel(rh, { cls: 'result-panel' }).then(function () { close({ score: ev.score, actionOk: ev.actionOk, ev: ev, scenarioId: id }); });
         }
+        refreshState();
+        if (tutorial) msg('まず時間足ボタンで「4時間足」を見て方向を確かめ、次に15分足に戻って波形・EMA・RCI・MACDを順に選ぼう。');
         requestAnimationFrame(render);
         root.onresize = function () { if (document.getElementById('trial-chart')) render(); };
       } }).then(function (res) { State.autosave(); resolve(res || null); });
@@ -124,9 +160,12 @@
 
   TradeUI.showRecord = function () {
     var st = State.data.trade.stats; var sm = TradeEval.summarizeStats(st);
-    var rows = [['判断回数', st.scoreCount], ['トレード回数', sm.trades], ['勝率', sm.winRate.toFixed(0) + '%'], ['平均リスクリワード', sm.avgRR ? '1:' + sm.avgRR.toFixed(2) : '―'], ['最大ドローダウン', sm.maxDrawdown.toFixed(1) + '%'], ['見送り判断', sm.skips + '（正しい見送り ' + sm.correctSkips + '）'], ['ルール違反', sm.violations], ['学習スコア（平均点）', sm.learningScore.toFixed(1)], ['仮想証拠金', Math.round(State.data.trade.capital).toLocaleString() + '円'], ['トレーダーランク', TradeEval.rank(st)]];
+    var rows = [['判断回数', st.scoreCount], ['トレード回数', sm.trades], ['勝率', sm.winRate.toFixed(0) + '%'], ['平均リスクリワード', sm.avgRR ? '1:' + sm.avgRR.toFixed(2) : '―'], ['最大ドローダウン', sm.maxDrawdown.toFixed(1) + '%'], ['見送り判断', sm.skips + '（正しい見送り ' + sm.correctSkips + '）'], ['ルール違反', sm.violations], ['学習スコア（平均点）', sm.learningScore.toFixed(1)], ['仮想証拠金', Math.round(State.data.trade.capital).toLocaleString() + '円'], ['トレーダーランク', (function () { var r = TradeEval.rank(State.data.trade); return r.letter + '　' + r.title; })()]];
     var bySc = Object.keys(st.byScenario).map(function (id) { var dd = Scenarios.get(id); var r = st.byScenario[id]; return '<tr><td>' + esc(dd ? dd.title : id) + '</td><td>' + r.correct + '/' + r.plays + '</td></tr>'; }).join('');
-    return Win.panel('<div class="rw-title">トレード学習記録</div><table class="tbl">' + rows.map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td><b>' + esc(r[1]) + '</b></td></tr>'; }).join('') + '</table><p class="muted small">仮想証拠金は学習用で、冒険のゴールド（G）とは別管理。ランクは判断の質で決まる。</p>' + (bySc ? '<h3>場面別の正答</h3><table class="tbl">' + bySc + '</table>' : ''));
+    var topics = TradeEval.topicSummary(State.data.trade); var rank = TradeEval.rank(State.data.trade);
+    var tt = '<h3>分野別の記録</h3><table class="tbl topic-tbl"><tr><th>分野</th><th>挑戦</th><th>正解率</th><th>ヒント利用</th><th>習熟度</th><th>前回</th></tr>' + topics.map(function (t) { return '<tr><td>' + esc(t.label) + '</td><td>' + t.plays + '</td><td>' + (t.acc === null ? '―' : Math.round(t.acc * 100) + '%') + '</td><td>' + (t.plays ? Math.round(t.hintRate * 100) + '%' : '―') + '</td><td class="lv-' + t.level + '">' + t.level + '</td><td>' + (t.plays ? (t.lastOk ? '○' : '×') : '―') + '</td></tr>'; }).join('') + '</table><div class="small">トレーダーランク：<b class="gold-text">' + esc(rank.letter + ' ' + rank.title) + '</b>　ヒントなし正解 ' + (st.noHintPlays ? Math.round((st.noHintCorrect || 0) / st.noHintPlays * 100) + '%' : '―') + '　異なる場面の正解 ' + Object.keys(st.uniqueCorrect || {}).length + '</div>';
+    var extra = tt;
+    return Win.panel('<div class="rw-title">トレード学習記録</div><table class="tbl">' + rows.map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td><b>' + esc(r[1]) + '</b></td></tr>'; }).join('') + '</table><p class="muted small">仮想証拠金は学習用で、冒険のゴールド（G）とは別管理。ランクは判断の質で決まる。</p>' + extra + (bySc ? '<h3>場面別の正答</h3><table class="tbl">' + bySc + '</table>' : ''));
   };
 
   root.TradeUI = TradeUI;

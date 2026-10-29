@@ -13,7 +13,7 @@
     try {
       while (true) {
         var d = State.data;
-        var i = await Win.list([{ label: 'ステータス' }, { label: 'どうぐ' }, { label: 'そうび' }, { label: 'じゅもん・とくぎ' }, { label: 'なかま' }, { label: 'クエスト' }, { label: '図鑑' }, { label: 'トレード記録' }, { label: 'セーブ' }, { label: '設定' }], { title: 'メニュー　' + d.gold + 'G　' + World.map.name, cls: 'main-menu' });
+        var i = await Win.list([{ label: 'ステータス' }, { label: 'どうぐ' }, { label: 'そうび' }, { label: 'じゅもん・とくぎ' }, { label: 'なかま' }, { label: 'クエスト' }, { label: '図鑑' }, { label: 'トレード修行' }, { label: 'セーブ' }, { label: '設定' }], { title: 'メニュー　' + d.gold + 'G　' + World.map.name, cls: 'main-menu' });
         if (i < 0) break;
         if (i === 0) await Menu.status();
         else if (i === 1) await Menu.items();
@@ -22,7 +22,7 @@
         else if (i === 4) await Menu.party();
         else if (i === 5) await Menu.quests();
         else if (i === 6) await Menu.encyclopedia();
-        else if (i === 7) await root.TradeUI.showRecord();
+        else if (i === 7) await Menu.training();
         else if (i === 8) await Menu.save();
         else if (i === 9) { var r = await Menu.settings(); if (r === 'title') return; }
       }
@@ -154,6 +154,41 @@
         if (!img) return; var c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); c.className = 'bs-canvas'; box.appendChild(c);
       });
     } });
+  };
+
+  /* ---------- トレード修行（学習への入口をメニューに） ---------- */
+  Menu.training = async function () {
+    var d = State.data; var TE = root.TradeEval; var LECT = root.LECTURES; var Services = root.Services;
+    while (true) {
+      var rank = TE.rank(d.trade); var weak = TE.weakTopics(d.trade);
+      var nextLecture = LECT.filter(function (L) { return !d.trade.lectures[L.id] && !d.flags[L.id]; })[0];
+      var theme = !d.trade.tutorialDone ? 'はじめてのトレード（チュートリアル）' : nextLecture ? '第' + nextLecture.chapter + '章「' + nextLecture.title + '」' : (weak.length && weak[0].plays ? '復習：' + weak[0].label : '全講義修了。場面練習で精度を上げよう');
+      var items = [
+        { label: '今の学習テーマ', right: '', sub: theme },
+        { label: 'はじめてのトレード（チュートリアル）', right: d.trade.tutorialDone ? '復習できる' : '未完了', sub: 'ローソク足・買いと売り・損切り・上昇/下降/レンジを2〜4分で体験' },
+        { label: '講義を受ける', right: nextLecture ? '次：' + nextLecture.title : '修了', sub: '師匠ハケイの講義（どこからでも受けられる）' },
+        { label: 'チャート練習', right: (d.trade.stats.scoreCount || 0) + '回', sub: '14場面から出題。分析→判断→理由の順に答える' },
+        { label: '苦手分野の復習', right: weak.length && weak[0].plays ? weak[0].label : '―', sub: '正解率の低い分野に合う場面を出題' },
+        { label: 'トレーダーランク', right: rank.letter + ' ' + rank.title, sub: rank.needText ? '次のランクへ：' + rank.needText : '最高ランク' },
+        { label: '学習進捗・記録', right: '', sub: '分野別の挑戦数・正解率・ヒント利用率・習熟度' }
+      ];
+      var i = await Win.list(items, { title: 'トレード修行', cls: 'main-menu' });
+      if (i < 0) return;
+      if (i === 0) await Win.message(['今のおすすめ：' + theme, !d.trade.tutorialDone ? 'まずチュートリアルで判断の順番（上位足→波形→EMA→RCI→MACD→判断→理由→損切り）を体験しよう。' : '講義で考え方を学び、練習で判断を磨き、苦手分野を復習する。ランクは回数ではなく、分析の正確さ・ヒントなしの正解・異なる場面への対応で上がる。'], { name: '師匠ハケイ' });
+      else if (i === 1) await Services.tutorial();
+      else if (i === 2) await Services.lectureAt('dow');
+      else if (i === 3) await Services.practice();
+      else if (i === 4) await Services.reviewWeak();
+      else if (i === 5) await Menu.rankPanel();
+      else if (i === 6) await root.TradeUI.showRecord();
+    }
+  };
+  Menu.rankPanel = async function () {
+    var d = State.data; var TE = root.TradeEval; var r = TE.rank(d.trade); var c = r.crit;
+    var pct = function (v) { return Math.round((v || 0) * 100) + '%'; };
+    var rows = [['分析の正確さ（上位足・波形・EMA・RCI・MACD）', pct(c.analysis)], ['上位足の環境認識', pct(c.mtf)], ['エントリー／見送り判断', pct(c.action)], ['損切り・資金管理／見送りの規律', pct(c.risk)], ['ヒントなしでの正解率', pct(c.noHint)], ['異なる場面での正解（分析3項目以上）', c.variety + ' / ' + root.Scenarios.ids().length + ' 場面'], ['挑戦回数・平均点', c.plays + '回・' + Math.round(c.avgScore) + '点']];
+    var ladder = TE.RANKS.map(function (x, i) { return '<span class="' + (i === r.index ? 'cur' : i < r.index ? 'done' : '') + '">' + x[0] + '</span>'; }).join(' → ');
+    await Win.panel('<div class="rw-title">トレーダーランク</div><div class="rank-box"><div class="rank-letter">' + esc(r.letter) + '</div><div><b>' + esc(r.title) + '</b><div class="muted small">' + ladder + '</div><div class="small">' + (r.needText ? '次のランクへ：' + esc(r.needText) : '最高ランクです') + '</div></div></div><table class="tbl">' + rows.map(function (x) { return '<tr><td>' + esc(x[0]) + '</td><td><b>' + esc(x[1]) + '</b></td></tr>'; }).join('') + '</table><p class="muted small">回数や仮想利益ではなく、判断の過程・ヒントなしの正解・異なる場面への対応で評価されます。同じ場面の繰り返しだけではランクは上がりません。</p>');
   };
 
   Menu.encyclopedia = async function () {

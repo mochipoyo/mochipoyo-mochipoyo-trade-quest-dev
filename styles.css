@@ -196,3 +196,20 @@ ul.eval .mark { display: inline-block; width: 1.3em; font-weight: bold; } ul.eva
 .bm-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; padding: 4px 10px; border-top: 1px solid rgba(232,193,90,.4); font-size: 11px; color: #ddd; }
 .bm-legend .lg { display: inline-flex; align-items: center; gap: 4px; } .bm-legend canvas { width: 18px; height: 18px; }
 @media (max-width: 720px) { #hud { padding-right: 112px; } .bm-legend { display: none; } .bm-head { padding: 3px 6px; gap: 4px; } .bm-title { min-width: 80px; } .mm-title { font-size: 9px; max-width: 104px; } .mm-compass { top: 15px; } .bm-title { font-size: 12px; } .bm-legend { font-size: 10px; gap: 2px 8px; } .bm-tabs button, .bm-close, .bm-ctl button, .bm-floors button { padding: 3px 7px; font-size: 11px; } .bigmap { inset: 1.5%; } }
+
+/* ---- トレード学習 v4：分析ステップ ---- */
+.analysis { margin-top: 6px; border: 1px solid rgba(232,193,90,.4); border-radius: 6px; padding: 6px 8px; background: rgba(11,18,38,.5); }
+.an-title { font-size: 12px; color: var(--gold); font-weight: bold; margin-bottom: 4px; }
+.aq { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 3px 0; border-top: 1px dashed rgba(255,255,255,.12); }
+.aq-t { font-size: 12px; min-width: 190px; } .aq-n { display: inline-block; width: 16px; height: 16px; border-radius: 50%; background: var(--gold); color: #1a1407; font-size: 11px; text-align: center; line-height: 16px; margin-right: 5px; font-weight: bold; }
+.aq-o { display: flex; flex-wrap: wrap; gap: 3px; flex: 1; }
+.aopt { font-family: inherit; font-size: 11px; background: rgba(255,255,255,.06); color: #ddd; border: 1px solid rgba(255,255,255,.25); border-radius: 4px; padding: 3px 7px; cursor: pointer; }
+.aopt.on { background: rgba(232,193,90,.3); border-color: var(--gold); color: #fff; font-weight: bold; }
+.trade-cmds:not(.ready) .tcmd { opacity: .45; }
+.hintbtn { border-color: #c97bd6 !important; }
+.eval-list .pts { float: right; color: var(--gold); font-size: 11px; }
+.explain { margin: 6px 0; font-size: 13px; line-height: 1.6; background: rgba(255,255,255,.05); padding: 6px 8px; border-radius: 4px; }
+.trade-panel { max-width: 760px; }
+.topic-tbl td { padding: 2px 6px; font-size: 12px; } .topic-tbl .lv-苦手 { color: #ff8a8a; } .topic-tbl .lv-理解 { color: #7fe3a5; } .topic-tbl .lv-練習中 { color: var(--gold); } .topic-tbl .lv-未習熟 { color: #aaa; }
+.rank-box { display: flex; align-items: center; gap: 12px; margin: 6px 0; } .rank-letter { font-size: 40px; font-weight: bold; color: var(--gold); text-shadow: 0 0 10px rgba(232,193,90,.6); }
+@media (max-width: 720px) { .aq-t { min-width: 100%; font-size: 11px; } .aopt { font-size: 10px; padding: 2px 5px; } .analysis { padding: 4px 6px; } .trade-panel .chart { height: 160px; } }

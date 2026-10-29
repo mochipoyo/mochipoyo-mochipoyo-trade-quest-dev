@@ -18,7 +18,7 @@
       hero: hero, companions: {}, party: ['hero'],      // party: 戦闘メンバー（最大4）
       gold: 0, bank: 0, inventory: {}, flags: {}, counters: {}, quests: {}, chests: {},
       pos: { map: 'poyo_village', x: 24, y: 32, dir: 'up' }, lastInn: { map: 'poyo_village', x: 24, y: 32 }, visited: { poyo_village: true },
-      steps: 0, timeOfDay: 0.3, bestiary: {}, trade: { stats: TradeEval.emptyStats(), capital: CONFIG.risk.capital, lectures: {} },
+      steps: 0, timeOfDay: 0.3, bestiary: {}, trade: { stats: TradeEval.emptyStats(), capital: CONFIG.risk.capital, lectures: {}, topics: {}, tutorialDone: false },
       settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true, minimap: 'on', minimapSize: 'normal' },
       mapDiscovery: {},   // ミニマップの探索状況（マップID → 行ごとのビット列）。visited とは別
       legacyImported: null
