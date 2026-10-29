@@ -28,33 +28,71 @@
     return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
   }
 
-  /* ---------- セグメントからローソク足を生成 ---------- */
-  // segment: { bars, drift(pips 合計), wave:{amp(pips), period(bars)}, noise(pips, 省略可) }
+  /* ---------- セグメントからローソク足を生成（v4.4：実際の為替5分足の統計的性質を参考にした乱数モデル） ----------
+     segment: { bars, drift(pips 合計), wave:{amp(pips), period(bars)}, noise(pips, 省略可) }
+     ・drift：その区間で価格が向かう方向（相場の「流れ」）。wave：区間内の押し・戻りの目安（振幅・周期は乱数で毎回ばらつく）
+     ・1本の足は8つのサブティックで作り、ヒゲ・実体の大きさが自然にばらつく
+     ・ボラティリティの集中（GARCH風）、時間帯による値動きの大小（東京・ロンドン・NY）、太い裾（たまの急変動）、
+       短い勢いの持続（モメンタム）を入れている。実在の相場・特定の期間を再現したものではない（学習用データ）
+  */
+  var SUB = 8;
+  // 時間帯の値動きの大きさ（日本時間の時刻ごと、1.0 が平均）
+  var SESSION = [0.55, 0.5, 0.5, 0.5, 0.5, 0.6, 0.75, 0.9, 1.05, 1.1, 1.0, 0.9, 0.85, 0.85, 0.9, 1.1, 1.35, 1.45, 1.3, 1.2, 1.15, 1.4, 1.5, 1.35, 1.1, 0.9, 0.75];
+  function tDist(rnd) { // 太い裾：正規分布に、たまに大きな値（自由度5の t 分布に近い形）
+    var g = gauss(rnd); var u = rnd();
+    if (u < 0.03) return g * (2.2 + rnd() * 2.5);
+    if (u < 0.12) return g * 1.5;
+    return g;
+  }
   function buildCandles(segments, seed, basePrice, pip) {
     var rnd = mulberry32(seed);
     var candles = [];
-    var level = basePrice;
+    var level = basePrice;      // 流れ（ドリフト＋押し戻り）の中心
+    var price = basePrice;      // 実際の価格（level を追いかけつつノイズで揺れる）
+    var vol = 1.0;              // ボラティリティ状態（GARCH風に集中）
+    var mom = 0;                // 短期モメンタム
+    var spike = 0;              // 急変動の残り本数
     var prevClose = basePrice;
-    var ar = 0; // 自己相関つきノイズ
+    var bg = 0;                 // 区間の設計とは無関係な、ゆっくりした揺らぎ（平均回帰する乱歩。流れを壊さない程度）
     var t = 0;
     for (var s = 0; s < segments.length; s++) {
       var seg = segments[s];
       var per = seg.drift * pip / seg.bars;
       var noiseAmp = (seg.noise === undefined ? 2.2 : seg.noise) * pip;
+      // 押し・戻り：周期・振幅を乱数でばらつかせた波（滑らかな乱数波）。sin の規則的な波にはしない
+      var wv = seg.wave ? { amp: seg.wave.amp * pip, period: seg.wave.period } : null;
+      var phase = rnd() * Math.PI * 2, wAmp = wv ? wv.amp * (0.6 + rnd() * 0.8) : 0, wPer = wv ? wv.period * (0.6 + rnd() * 0.8) : 1, wavePrev = wv ? wAmp * Math.sin(phase) : 0;
+      var phase2 = rnd() * Math.PI * 2, wAmp2 = wv ? wAmp * (0.15 + rnd() * 0.35) : 0, wPer2 = wv ? wPer / (2.2 + rnd() * 1.5) : 1, wave2Prev = wv ? wAmp2 * Math.sin(phase2) : 0;   // 小さな副次波（波形を単調にしない）
       for (var i = 0; i < seg.bars; i++) {
+        // 波：1周期ごとに次の振幅・周期を引き直す（同じ形の繰り返しを避ける）
         var wave = 0;
-        if (seg.wave) {
-          // 波の差分（前の位置との差）を加える
-          var ph0 = (i / seg.wave.period) * Math.PI * 2;
-          var ph1 = ((i + 1) / seg.wave.period) * Math.PI * 2;
-          wave = seg.wave.amp * pip * (Math.sin(ph1) - Math.sin(ph0));
+        if (wv) {
+          phase += Math.PI * 2 / wPer;
+          if (phase > Math.PI * 2) { phase -= Math.PI * 2; wAmp = wv.amp * (0.5 + rnd() * 1.0); wPer = wv.period * (0.55 + rnd() * 0.9); wAmp2 = wAmp * (0.15 + rnd() * 0.35); wPer2 = wPer / (2.2 + rnd() * 1.5); }
+          var wNow = wAmp * Math.sin(phase); wave = wNow - wavePrev; wavePrev = wNow;
+          phase2 += Math.PI * 2 / wPer2; var w2 = wAmp2 * Math.sin(phase2); wave += w2 - wave2Prev; wave2Prev = w2;
         }
-        level += per + wave;
-        ar = ar * 0.6 + gauss(rnd) * noiseAmp;
-        var close = level + ar;
-        var open = prevClose;
-        var hi = Math.max(open, close) + Math.abs(gauss(rnd)) * noiseAmp * 0.8;
-        var lo = Math.min(open, close) - Math.abs(gauss(rnd)) * noiseAmp * 0.8;
+        var bgPrev = bg; bg += -bg * 0.0015 + gauss(rnd) * 0.7 * pip; 
+        level += per + wave + (bg - bgPrev);
+        // 時間帯・ボラティリティ・急変動
+        var hour = Math.floor((t * 5 / 60) % 24); var sess = SESSION[hour];
+        if (spike <= 0 && rnd() < 0.0025) spike = 2 + Math.floor(rnd() * 3);
+        var spikeMul = spike > 0 ? 2.6 : 1; if (spike > 0) spike--;
+        var sigma = noiseAmp * 0.42 * vol * sess * spikeMul;   // サブティックあたりの標準偏差
+        var open = prevClose, hi = open, lo = open, p = open, sumSq = 0;
+        for (var k = 0; k < SUB; k++) {
+          var shock = tDist(rnd) * sigma;
+          mom = mom * 0.55 + shock * 0.35;
+          var pull = (level - p) * 0.09;              // 流れへ引き戻す力（ラグつき）
+          p += pull + shock + mom * 0.6;
+          if (p > hi) hi = p; if (p < lo) lo = p; sumSq += shock * shock;
+        }
+        // ボラティリティの更新（大きく動いた後はしばらく大きく動きやすい）
+        var realized = Math.sqrt(sumSq / SUB) / (noiseAmp * 0.42 * sess * spikeMul);
+        vol = Math.max(0.55, Math.min(2.4, 0.9 * vol + 0.1 * realized * realized));
+        var close = p;
+        // ヒゲの微調整：終値と高安が同値にならないよう最小幅を確保
+        hi = Math.max(hi, Math.max(open, close) + pip * 0.1 * rnd()); lo = Math.min(lo, Math.min(open, close) - pip * 0.1 * rnd());
         candles.push({ o: round(open), h: round(hi), l: round(lo), c: round(close), t: t++ });
         prevClose = close;
       }

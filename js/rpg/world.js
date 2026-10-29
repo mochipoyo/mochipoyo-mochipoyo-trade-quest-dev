@@ -37,15 +37,21 @@
   /* ---------- プレイヤー ---------- */
   World.makePlayer = function () {
     var d = State.data; var hero = d.hero;
-    World.player = { x: d.pos.x, y: d.pos.y, px: d.pos.x * TS, py: d.pos.y * TS, dir: d.pos.dir || 'down', frame: 0, moving: false, tx: 0, ty: 0, progress: 0, sprite: hero.sprite, speed: 0.11 };
+    World.player = { x: d.pos.x, y: d.pos.y, px: d.pos.x * TS, py: d.pos.y * TS, dir: d.pos.dir || 'down', frame: 0, moving: false, tx: 0, ty: 0, progress: 0, sprite: hero.sprite, speed: World.walkSpeed() };
     return World.player;
   };
+  // 歩く速度（設定）：ふつう 1.0 / はやい 1.5 / とてもはやい 2.0
+  World.WALK = { normal: 1, fast: 1.5, faster: 2 };
+  World.walkSpeed = function () { var st = State.data && State.data.settings; var m = World.WALK[st && st.walkSpeed] || 1; return 0.11 * m; };
+  World.applyWalkSpeed = function () { if (World.player) World.player.speed = World.walkSpeed(); };
+  World.nearestFree = function (m, x, y) { for (var r = 1; r <= 8; r++) for (var dy = -r; dy <= r; dy++) for (var dx = -r; dx <= r; dx++) { if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue; var nx = x + dx, ny = y + dy; if (nx < 0 || ny < 0 || nx >= m.w || ny >= m.h) continue; if (m.passable(nx, ny, State.data) && !m.warpAt(nx, ny)) return { x: nx, y: ny }; } return null; };
   World.syncPos = function () { var p = World.player; State.data.pos = { map: World.map.id, x: p.x, y: p.y, dir: p.dir }; };
 
   World.enterMap = function (id, x, y, dir) {
     World.map = World.getMap(id);
     World.applyState(World.map);
     var p = World.player || World.makePlayer();
+    if (!World.map.passable(x, y, State.data)) { var nf = World.nearestFree(World.map, x, y); if (nf) { x = nf.x; y = nf.y; } }   // v4.4: 建物配置の変更などで立ち位置が塞がっていたら近くの通れるマスへ
     p.x = x; p.y = y; p.px = x * TS; p.py = y * TS; p.moving = false; if (dir) p.dir = dir;
     p.sprite = State.data.hero.sprite;
     State.data.visited[id] = true;

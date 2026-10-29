@@ -134,7 +134,7 @@
       requireHigherTF: true, hint: '押し目の安値がすぐ下にある。損切りをその外側に置けば、小さなリスクで上位足方向を狙える。',
       explain: { buy: '4時間足上昇の押し目で、15分足はEMAの束で小さく揉んでから反発し始め、RCIも−70圏から反転。直近の押し安値がすぐ下にあるため損切りを小さく置け、リスクリワードの良いエントリーです。', sell: '上位足上昇の押し目で売るのは逆張りです。', skip: '損切りを小さく置けてリスクリワードの良い押し目でした。見送りは致命傷ではありませんが、「損切りが近い場面」こそ入る価値があることを覚えましょう。' } },
     { id: 'whipsaw', level: 'adv', pattern: '急落→急反発のヒゲ相場（EMA絡み・方向不明）', title: '乱高下（上下にヒゲ）', chapter: 7, correct: 'skip', focusTF: '15m', seed: 220,
-      segments: fit([seg(H4 * 12, 0, { amp: 70, period: H1 * 8 }, 1.5), seg(M15 * 2, -60, null, 4.0), seg(M15 * 2, 110, null, 4.0), seg(M15 * 2, -100, null, 4.0), seg(M15 * 2, 80, null, 4.0), seg(M15 * 1, -30, null, 4.0)], 0, 0),
+      segments: fit([seg(H4 * 12, 0, { amp: 70, period: H1 * 8 }, 1.5), seg(M15 * 2, -60, null, 3.2), seg(M15 * 2, 110, null, 3.2), seg(M15 * 2, -100, null, 3.2), seg(M15 * 2, 80, null, 3.2), seg(M15 * 1, -30, null, 3.2)], 0, 70),
       future: [seg(M15 * 6, 50, null, 3.0), seg(M15 * 6, -60, null, 3.0), seg(H4 * 10, 0, { amp: 40, period: H1 * 6 }, 2.2)],
       check: function (st) { var f = st['15m']; return (st['4h'].emaOrder === 'mixed' || st['4h'].dow.trend === 'range') && (f.dow.trend === 'range' || f.emaOrder === 'mixed') && Math.abs(f.surge) > 20; },
       requireHigherTF: true, hint: '数本で上下に大きく振れている。上位足に方向感はある？ EMAは？',

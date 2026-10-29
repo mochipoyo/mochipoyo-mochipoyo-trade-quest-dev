@@ -542,7 +542,47 @@
     for (var x = 3; x < W - 3; x += 5) { if (rows[0][x] === 'C' && rows[1][x] === ':') rows[0][x] = 'i'; }
     def.rows = rows.map(function (r) { return r.join(''); });
   }
-  Object.keys(ENLARGE).forEach(function (id) { if (MAPS[id]) { decorateTown(MAPS[id]); decorateHall(MAPS[id]); } });
+  // v4.4: 建物の配置を自然にばらつかせる（決定的な擬似乱数）。各建物を数マスずらし、幅を少し変える。
+  // 入口の前（下2マス）と周囲1マスが地面で、他の建物・道・ワープ・宝箱・NPC・イベントに重ならない位置だけ採用する
+  function jitterBuildings(def) {
+    if (def.kind !== 'town' || !def.buildings) return;
+    var rows = def.rows.map(function (r) { return r.split(''); }); var H = rows.length, W = rows[0].length;
+    var fb = def.fallback === 'stone' ? '=' : '.';
+    function at(x, y) { return (x < 0 || y < 0 || x >= W || y >= H) ? '#' : rows[y][x]; }
+    function rnd(n) { var v = Math.sin(n * 12.9898 + W * 78.233 + H * 37.719) * 43758.5453; return v - Math.floor(v); }
+    var fixed = {}; (def.warps || []).forEach(function (w) { fixed[w.x + ',' + w.y] = 1; }); (def.chests || []).forEach(function (c) { fixed[c.x + ',' + c.y] = 1; }); (def.events || []).forEach(function (e) { fixed[e.x + ',' + e.y] = 1; }); (def.npcs || []).forEach(function (n) { for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) fixed[(n.x + dx) + ',' + (n.y + dy)] = 1; });
+    // 建物の元の足元（B）を地面に戻しておき、採用した位置に改めて置く
+    def.buildings.forEach(function (b) { for (var y = b.y; y < b.y + b.h; y++) for (var x = b.x; x < b.x + b.w; x++) if (at(x, y) === 'B') rows[y][x] = fb; });
+    var placed = [];
+    function groundOk(ch) { return ch === '.' || ch === ',' || ch === '=' || ch === 'P' || ch === 's'; }
+    function overlaps(x, y, w, h) { for (var i = 0; i < placed.length; i++) { var o = placed[i]; if (x < o.x + o.w + 1 && x + w + 1 > o.x && y < o.y + o.h + 1 && y + h + 1 > o.y) return true; } return false; }
+    function fits(x, y, w, h, doorX) {
+      if (x < 1 || y < 1 || x + w >= W - 1 || y + h >= H - 1) return false;
+      for (var yy = y - 1; yy <= y + h; yy++) for (var xx = x - 1; xx <= x + w; xx++) { var ch = at(xx, yy); if (fixed[xx + ',' + yy]) return false; if (ch === 'r') { if (yy >= y && yy < y + h && xx >= x && xx < x + w) return false; continue; } if (!groundOk(ch) && !(PROPS.indexOf(ch) >= 0)) return false; }
+      var dx = x + doorX, dy1 = y + h, dy2 = y + h + 1; if (!(groundOk(at(dx, dy1)) || at(dx, dy1) === 'r') || !(groundOk(at(dx, dy2)) || at(dx, dy2) === 'r') || fixed[dx + ',' + dy1] || fixed[dx + ',' + dy2]) return false;
+      return !overlaps(x, y, w, h);
+    }
+    def.buildings.forEach(function (b, bi) {
+      var cands = [];
+      if (b.type !== 'castle') { for (var oy = -2; oy <= 2; oy++) for (var ox = -3; ox <= 3; ox++) for (var ow = -2; ow <= 2; ow += 2) { var w = b.w + ow; if (w < 6 || ox === 0 && oy === 0 && ow === 0) continue; var doorX = Math.min(w - 2, Math.max(1, b.doorX + Math.round(ow / 2))); if (fits(b.x + ox, b.y + oy, w, b.h, doorX)) cands.push({ x: b.x + ox, y: b.y + oy, w: w, doorX: doorX, d: Math.abs(ox) + Math.abs(oy) + Math.abs(ow) / 2 }); } }
+      var pick = null;
+      if (cands.length) { // 近すぎる候補ばかりにならないよう、ずれの大きさで重みづけして選ぶ
+        var r = rnd(bi * 7 + 1); cands.sort(function (a, c) { return rnd(bi * 131 + a.x * 7 + a.y * 13 + a.w) - rnd(bi * 131 + c.x * 7 + c.y * 13 + c.w); });
+        pick = cands[Math.floor(r * Math.min(cands.length, 6))];
+      }
+      if (!pick && !fits(b.x, b.y, b.w, b.h, b.doorX)) { /* 元の位置に戻す */ }
+      if (pick) { b.x = pick.x; b.y = pick.y; b.w = pick.w; b.doorX = pick.doorX; b._jittered = true;
+        // 建物の中から町へ戻るワープの行き先を、新しい入口の前に合わせる（拡大後の絶対座標なので、以降の倍率補正は行わない）
+        var inside = b.interior && MAPS[b.interior]; if (inside) (inside.warps || []).forEach(function (w) { if (w.to === def.id) { w.tx = b.x + b.doorX; w.ty = b.y + b.h; w._scaled = true; } }); }
+      placed.push({ x: b.x, y: b.y, w: b.w, h: b.h });
+      // 足元を 'B'（屋根の下＝地図生成時に建物ブロックへ置換される）に。小物があれば取り除く
+      for (var y = b.y; y < b.y + b.h; y++) for (var x = b.x; x < b.x + b.w; x++) rows[y][x] = 'B';
+      // 入口の前は必ず通れる地面に
+      var dx = b.x + b.doorX; if (!groundOk(at(dx, b.y + b.h)) && at(dx, b.y + b.h) !== 'r') rows[b.y + b.h][dx] = fb; if (!groundOk(at(dx, b.y + b.h + 1)) && at(dx, b.y + b.h + 1) !== 'r') rows[b.y + b.h + 1][dx] = fb;
+    });
+    def.rows = rows.map(function (r) { return r.join(''); });
+  }
+  Object.keys(ENLARGE).forEach(function (id) { if (MAPS[id]) { jitterBuildings(MAPS[id]); decorateTown(MAPS[id]); decorateHall(MAPS[id]); } });
   // 拡大したマップへ入る座標（他マップのワープ・建物の entry・ワールドの入口）も同じ倍率に
   function scaleTarget(w) { var k = ENLARGE[w.to]; if (k && !w._scaled) { w.tx *= k; w.ty *= k; w._scaled = true; } }
   Object.keys(MAPS).forEach(function (id) { var def = MAPS[id]; (def.warps || []).forEach(scaleTarget); (def.buildings || []).forEach(function (b) { var k = ENLARGE[b.interior]; if (k && b.entry && !b._entryScaled) { b.entry.x *= k; b.entry.y *= k; b._entryScaled = true; } }); });

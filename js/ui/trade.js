@@ -102,7 +102,7 @@
           cur.hintLevel = Math.min(3, cur.hintLevel + 1);
           var left = Q.filter(function (q) { return !cur.analysis[q.key]; });
           var body;
-          if (cur.hintLevel === 1) body = '<p><b>考え方</b></p><p>' + esc((left[0] || Q[0]).hint) + '</p>' + (!swingDone() ? '<p><b>高値・安値の指定</b>：左右に' + CONFIG.zigzag.depth + '本以上の足がある山（高値）と谷（安値）のうち、いちばん右のものを探す。最後の数本でできた山谷はまだ「確定」していないので選ばない。</p>' : '')<p class="muted small">もう一度押すと、この場面のヒント → 数値表示の順に進みます（ヒントの使用は記録されます）。</p>';
+          if (cur.hintLevel === 1) body = '<p><b>考え方</b></p><p>' + esc((left[0] || Q[0]).hint) + '</p>' + (!swingDone() ? '<p><b>高値・安値の指定</b>：左右に' + CONFIG.zigzag.depth + '本以上の足がある山（高値）と谷（安値）のうち、いちばん右のものを探す。最後の数本でできた山谷はまだ「確定」していないので選ばない。</p>' : '') + '<p class="muted small">もう一度押すと、この場面のヒント → 数値表示の順に進みます（ヒントの使用は記録されます）。</p>';
           else if (cur.hintLevel === 2) body = '<p><b>この場面のヒント</b></p><p>' + esc(def.hint) + '</p>';
           else { var an = render(); body = '<p><b>インジケーターの数値</b>（表示中の時間足・計算結果そのまま）</p><div class="ind-list">' + describeTF(an, TradeUI.state.tf).map(esc).join('<br>') + '</div><p class="muted small">数値を見ても、設問の答えは自分で選ぼう。</p>'; }
           Win.panel('<div class="rw-title">ヒント ' + cur.hintLevel + '/3</div>' + body);
