@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>もちぽよFXクエスト 3D版（開発プレビュー）</title>
+<!--LEGACY_CSS-->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230b1226'/%3E%3Crect x='3' y='9' width='2' height='4' fill='%234cc38a'/%3E%3Crect x='7' y='5' width='2' height='8' fill='%23e5484d'/%3E%3Crect x='11' y='2' width='2' height='9' fill='%23ffd24a'/%3E%3C/svg%3E">
+<script>
+  // 3D版のセーブは別の枠（mtq-3d-slot-*）。2D版のセーブ（mtq-rpg-v2-slot-*）は読むだけで書き換えない
+  window.MTQ_SAVE_PREFIX = 'mtq-3d-slot-';
+</script>
+<script type="module" src="/src/main.js"></script>
+</head>
+<body class="mtq3d">
+<!--APP_DOM-->
+<noscript><div class="rw-panel" style="margin:2rem">このゲームはJavaScriptが必要です。</div></noscript>
+<!-- 2D版と同じスクリプト（ゲームの中身は1か所だけ：リポジトリ直下の js/） -->
+<!--LEGACY_SCRIPTS-->
+<script>
+  (function () {
+    function showError(msg) { var box = document.getElementById('fatal'); if (!box) return; box.style.display = 'block'; box.querySelector('.msg').textContent = String(msg); }
+    window.addEventListener('error', function (e) { if (e && e.filename && /three|assets\/main/.test(e.filename)) return; showError(e.message || e); });
+    window.addEventListener('unhandledrejection', function (e) { console.error(e.reason); });
+    var booted = false;
+    // 安全装置：2D版のセーブ枠（mtq-rpg-v2-slot-*）へ書き込む状態では起動しない（js/rpg/state.js が古い場合）
+    function savesSafe() { return !!(window.State && /^mtq-3d-/.test(window.State.keyPrefix || '')); }
+    window.__mtq3dUnsafe = function () { showError('3D版を起動できません：js/rpg/state.js が3D版に対応していない（古い）ため、このまま起動すると2D版のセーブを上書きするおそれがあります。3D版の納品ファイルに入っている js/rpg/state.js をアップロードしてください。'); };
+    window.__mtqBoot2D = function () {
+      if (booted) return; booted = true;
+      if (!savesSafe()) { window.__mtq3dUnsafe(); return; }
+      try { if (!window.MochiQuest) throw new Error('スクリプトの読み込みに失敗しました（3d/ フォルダと js/ フォルダが同じリポジトリ直下にあるか確認してください）'); window.MochiQuest.boot(); }
+      catch (e) { showError(e.stack || e.message || e); }
+    };
+    // 3D のモジュールが読み込めない場合も、2D版として遊べるようにする
+    setTimeout(function () { if (!window.MTQ3D && !window.MTQ3D_BLOCKED) window.__mtqBoot2D(); }, 7000);
+  })();
+</script>
+<script nomodule>window.__mtqBoot2D && window.__mtqBoot2D();</script>
+</body>
+</html>

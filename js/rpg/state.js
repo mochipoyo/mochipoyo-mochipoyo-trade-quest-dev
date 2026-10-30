@@ -9,10 +9,12 @@
   // v5.6 確認用（URL に ?debug=1）：セーブは通常のデータとは別の場所に保存し、通常のセーブを書き換えない
   var DEBUG = !!(root.location && /[?&]debug=1(?:&|$)/.test(root.location.search || ''));
   var KEY_PREFIX = DEBUG ? 'mtq-rpg-v2-debug-slot-' : NORMAL_PREFIX;
+  // 3D版（/3d/）：別の保存先を使う（例 'mtq-3d-slot-'）。2D版の通常のセーブは読むだけ（State.loadNormal）で書き換えない
+  var ALT = root.MTQ_SAVE_PREFIX; if (typeof ALT === 'string' && /^mtq-3d-[a-z0-9-]*slot-$/.test(ALT) && ALT !== NORMAL_PREFIX) KEY_PREFIX = DEBUG ? ALT.replace(/slot-$/, 'debug-slot-') : ALT;
   var LEGACY_KEY = 'mochipoyo-trade-quest-save-v1';
   var SAVE_VERSION = 3;   // 3: 町・城の2倍拡大（座標を補正）
 
-  var State = { data: null, debug: DEBUG };
+  var State = { data: null, debug: DEBUG, keyPrefix: KEY_PREFIX };
 
   State.newGame = function (name, job) {
     var hero = Actors.create('hero', name, job, 1);

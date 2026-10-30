@@ -1,0 +1,15 @@
+{
+  "name": "mochipoyo-trade-quest-3d",
+  "private": true,
+  "version": "0.1.0",
+  "description": "もちぽよFXクエスト 3Dリマスター（プレビュー）。既存2D版のロジックを再利用し、Three.jsで3D描画する",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "assets": "python3 tools/blender/build_assets.py && python3 tools/textures/make_textures.py"
+  },
+  "devDependencies": {
+    "three": "0.186.1",
+    "vite": "8.3.4"
+  }
+}
