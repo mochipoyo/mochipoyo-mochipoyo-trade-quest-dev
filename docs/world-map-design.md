@@ -44,9 +44,9 @@
 | 7 | world_kalion | kalion_city | 徴収都市カリオン | 6 | データ |
 | 8 | world_kalion | sentra_capital | 王都セントラ | 7 | データ |
 | 9 | world_kalion | erased_village | 地図から消えた村 | 6〜 | 未着手 |
-| 10 | world_islands | aruna_village | 灰灯島アルナ・生存者の村 | 8 | データ |
-| 11 | world_islands | aruna_ruins | 廃墟の街（拠点扱い） | 8 | データ |
-| 12 | world_islands | elmina_undersea | 海底都市エルミナ | 9 | データ |
+| 10 | world_islands | aruna_village | 灰灯島アルナ・生存者の村 | 8 | v5.2 実装 |
+| 11 | world_islands | aruna_ruins | 廃墟の街（拠点扱い） | 8 | v5.2 実装 |
+| 12 | world_islands | elmina_undersea | 海底都市エルミナ | 9 | v5.2 実装 |
 | 13 | world_desert | sahar_city | 砂都サハル | 9〜 | 未着手 |
 | 14 | world_desert | mirror_market | 鏡の市場 | 9〜 | 未着手 |
 | 15 | world_snow | ciel_port | 氷港シエル | 9〜 | 未着手 |
@@ -78,10 +78,10 @@
 | 11 | world_kalion | underground_archive | 地下記録庫 | 3 | 鍵・守護者 | データ |
 | 12 | world_kalion | secret_lab | 秘密研究所 | 2 | 欠片の研究記録 | データ |
 | 13 | world_kalion | sentra_palace | 王宮 | 3 | 親衛隊・帳簿中枢 | データ |
-| 14 | world_islands | aruna_lighthouse | 灯台 | 1 | 部品修復 | データ |
-| 15 | world_islands | aruna_ruins_dungeon | 廃墟街（東側） | 2 | 手紙・時計・物資 | データ |
-| 16 | world_islands | aruna_underground | 地下施設 | 2 | 災害記録 | データ |
-| 17 | world_islands | memory_library | 記憶の図書館 | 3 | 封印区画 | データ |
+| 14 | world_islands | aruna_lighthouse | 灯台 | 2 | 部品修復 | v5.2 実装 |
+| 15 | world_islands | aruna_ruins_1/2 | 時計塔（廃墟街） | 2 | 手紙・時計・物資・廃墟の記憶 | v5.2 実装 |
+| 16 | world_islands | aruna_underground_1/2 | 地下施設 | 2 | 天秤の鏡・潜航装置 | v5.2 実装 |
+| 17 | world_islands | memory_library(+seal) | 記憶の図書館 | 2 | 3区画＋封印区画・守護機構 | v5.2 実装 |
 | 18 | world_desert | mirage_temple | 蜃気楼神殿 | 3 | 幻の道 | 未着手 |
 | 19 | world_desert | sandstorm_corridor | 砂嵐の回廊 | 2 | 視界制限 | 未着手 |
 | 20 | world_snow | frozen_clock_tower | 凍結時計塔（隠し3） | 4 | 時限ギミック | 未着手 |

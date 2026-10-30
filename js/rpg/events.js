@@ -86,6 +86,15 @@
         else if (root.Growth && root.Growth.rankReached(ev.rank)) { d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); await Win.message(['扉に刻まれた波形の紋章が、あなたの称号「' + root.Growth.title() + '」に応えて光った。', '扉が開いた！']); }
         else await Win.message((ev.text || ['波形の紋章が刻まれた扉だ。']).concat(['トレーダーランク ' + root.RANK_UNLOCKS[ev.rank].letter + '（' + root.RANK_UNLOCKS[ev.rank].title + '）以上の者に開く。今のランク：' + root.TradeEval.rank(d.trade).letter + '（最高到達 ' + root.RANK_UNLOCKS[root.Growth ? root.Growth.rankBest() : 0].letter + '）', 'ランクは判断の質で上がる。メニューの「トレード修行」で条件を確認できる。']));
       }
+      else if (ev.type === 'pickup') {   // v5.2: 拾えるもの（宝箱の見た目。アイテム＋フラグ）
+        if (d.flags[ev.doneFlag]) { await Win.message(ev.emptyText || ['もう何もない。']); }
+        else { if (ev.text) await Win.message(ev.text); State.addItem(ev.item, ev.qty || 1); d.flags[ev.doneFlag] = true; await Win.message([ITEMS[ev.item].name + 'を手に入れた！']); if (root.Audio) root.Audio.sfx('chest'); World.applyState(World.map); }
+      }
+      else if (ev.type === 'script') { await ev.run(Events.ctx(null), ev); }   // v5.2: 自由なスクリプトイベント
+      else if (ev.type === 'dive') {   // v5.2: 潜航装置（フラグがあれば選択して特殊ワープ）
+        if (ev.needFlag && !d.flags[ev.needFlag]) { await Win.message(ev.lockedText || ['海の底へ続く何かがあるが、今は進めない。']); }
+        else { if (ev.text) await Win.message(ev.text); var dv = await Win.choice(ev.prompt || '潜航装置で海底へ向かいますか？', ['向かう', 'やめる']); if (dv === 0) { World.busy = false; World.enterMap(ev.to, ev.tx, ev.ty, 'down'); return; } }
+      }
       else if (ev.type === 'gate') {   // v5.1: フラグで開く関所（鍵アイテム不要）
         if (d.flags[ev.doneFlag]) { /* 開いている */ }
         else if (ev.needFlag && d.flags[ev.needFlag]) { d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); await Win.message(ev.openText || ['関所が開いた。']); if (ev.questStart) Events.questStart(ev.questStart); }

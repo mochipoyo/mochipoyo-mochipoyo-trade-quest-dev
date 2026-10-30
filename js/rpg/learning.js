@@ -28,7 +28,10 @@
       if (first) await Win.message(['【' + e.title + '】石碑に波形が刻まれている。触れると、相場の場面が浮かび上がった。', '（任意の練習。初回のみ報酬。何度でも挑戦できる）']);
       else { var c3 = await Win.choice('石碑の練習に挑む？', ['挑む', 'やめる']); if (c3 !== 0) return { passed: done, score: 0 }; }
     }
-    var res = await root.TradeUI.trial(e.scenarios, { title: e.title, minScore: pass, practice: !e.required });
+    // v5.2: 検証の試練（learn_review）：挑戦前に分野ごとの正答率を見せ、苦手分野からシナリオを選ぶ
+    if (e.review) { var ts = root.TradeEval.topicSummary(d.trade); await Win.message(['【これまでの判断記録】'].concat(ts.map(function (t) { return t.label + '：' + (t.plays ? Math.round((t.acc || 0) * 100) + '%（' + t.plays + '回）' : '記録なし') + ' ' + t.level; })).concat(['苦手な分野の場面から出題する。']), { name: 'イーリス' }); }
+    var scnList = typeof e.scenarios === 'function' ? e.scenarios() : e.scenarios;
+    var res = await root.TradeUI.trial(scnList, { title: e.title, minScore: pass, practice: !e.required });
     var score = res ? res.score : 0; var passed = e.required ? score >= pass : score >= 60;
     if (!passed) {
       d.trade.learnFails = d.trade.learnFails || {}; d.trade.learnFails[id] = (d.trade.learnFails[id] || 0) + 1;

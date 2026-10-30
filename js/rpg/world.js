@@ -30,6 +30,7 @@
       else if (e.type === 'gate') m.setTile(e.x, e.y, 'fence');
       if (e.type === 'hole') m.setTile(e.x, e.y, 'hole');
       if (e.type === 'learn') m.setTile(e.x, e.y, 'learn_rune');
+      if (e.type === 'pickup') m.setTile(e.x, e.y, d.flags[e.doneFlag] ? 'chest_open' : 'chest');   // v5.2
       if (e.type === 'boss' && e.optional) m.setTile(e.x, e.y, (e.doneFlag && d.flags[e.doneFlag]) ? (m.def.fallback === 'cave_floor' ? 'cave_floor' : 'floor_stone') : 'boss_mark');
     });
     m.npcs.forEach(function (n) { if (n.showIf) n.hidden = !d.flags[n.showIf]; if (n.hideIf && d.flags[n.hideIf]) n.hidden = true; if (root.COMPANIONS && root.COMPANIONS[n.id] && d.companions[n.id]) n.hidden = true; });
@@ -137,7 +138,7 @@
     var nx = p.x + d[0], ny = p.y + d[1];
     p.vehicleAction = null;
     var vr = root.Vehicle ? root.Vehicle.resolveMove(m, nx, ny) : null;   // v5.0: 乗船・航行・下船
-    if (vr) { if (!vr.ok) return false; p.vehicleAction = vr; }
+    if (vr) { if (!vr.ok) { var why = root.Vehicle.blockReason(m, nx, ny); if (why && !p._blockToastAt || (why && Date.now() - p._blockToastAt > 1500)) { p._blockToastAt = Date.now(); Win.toast(why); } return false; } p.vehicleAction = vr; }
     else if (!m.passable(nx, ny, State.data)) return false;
     p.moving = true; p.tx = nx; p.ty = ny; p.progress = 0;
     return true;
@@ -155,6 +156,8 @@
         root.Vehicle.syncToPlayer(m, p.x, p.y);
         var route = root.Vehicle.routeAt(m, p.x, p.y);
         if (route) { var arr = root.Vehicle.arrival(route, p.x, p.y); if (arr) { World.busy = true; Win.message([route.name + '。' + (root.MAP_DEFS[arr.map] || {}).name + 'の海域に入った。']).then(function () { World.busy = false; World.doWarp({ to: arr.map, tx: arr.x, ty: arr.y }); }); return; } }
+        var drift = root.Vehicle.drift(m, p.x, p.y);   // v5.2: 外海の海流・嵐
+        if (drift) { p.x = drift.x; p.y = drift.y; p.px = p.x * 32; p.py = p.y * 32; root.Vehicle.syncToPlayer(m, p.x, p.y); Win.toast(drift.text); if (!d.flags.drift_seen) { d.flags.drift_seen = true; World.busy = true; Win.message(['外海の海流に船が流された。', '外海では海流に流されることがある。嵐に遭うと大きく流される。航海士がいれば海流を読んで避けやすい。']).then(function () { World.busy = false; }); return; } }
       }
       World.updatePlaceLabel();
     }
@@ -191,7 +194,7 @@
 
   World.encounter = function (encDef) {
     var m = World.map, p = World.player; var enc = encDef || m.encounters; if (!enc) return;
-    var zone = enc.zones.filter(function (z) { return z.test(p.x, p.y); })[0]; if (!zone) return;
+    var zone = enc.zones.filter(function (z) { return z.test(p.x, p.y, m); })[0]; if (!zone) return;
     var group = zone.groups[Math.floor(Math.random() * zone.groups.length)];
     if (zone.rare && Math.random() < (zone.rareRate || 0.02)) group = zone.rare[Math.floor(Math.random() * zone.rare.length)];
     World.startBattle(group, { zone: zone.name });

@@ -8,7 +8,20 @@
     var key = id + ':' + dir; if (cache[key]) return cache[key];
     var S = 2, c = document.createElement('canvas'); c.width = 16 * S; c.height = 20 * S; var g = c.getContext('2d'); g.imageSmoothingEnabled = false;
     function px(x, y, col, w, h) { g.fillStyle = col; g.fillRect(x * S, y * S, (w || 1) * S, (h || 1) * S); }
-    var big = id === 'galleon'; var hull = id === 'airship' ? '#8a6a3a' : '#7a4a22', hull2 = id === 'airship' ? '#c9a06a' : '#a0683a';
+    var big = id === 'galleon'; var hull = id === 'airship' ? '#8a6a3a' : big ? '#4a2a14' : '#7a4a22', hull2 = id === 'airship' ? '#c9a06a' : big ? '#7a4a22' : '#a0683a';
+    if (big) {   // v5.2 遠洋航海船：大きく濃い船体・2本マスト・3枚の帆
+      if (dir === 'left' || dir === 'right') {
+        px(1, 12, hull, 14, 5); px(2, 17, hull2, 12, 1); px(0, 11, hull2, 16, 1); px(1, 11, '#e8d8b0', 3, 1); px(12, 11, '#e8d8b0', 3, 1); px(3, 14, '#ffd24a', 1, 1); px(6, 14, '#ffd24a', 1, 1); px(9, 14, '#ffd24a', 1, 1); px(12, 14, '#ffd24a', 1, 1);
+        px(5, 2, '#3a2a1a', 1, 10); px(10, 1, '#3a2a1a', 1, 11);
+        if (dir === 'right') { px(6, 3, '#f4f0e6', 4, 5); px(11, 2, '#f4f0e6', 4, 6); px(6, 8, '#d8d0c0', 4, 1); px(11, 8, '#d8d0c0', 4, 1); px(14, 4, '#1f4f9a', 1, 2); } else { px(1, 3, '#f4f0e6', 4, 5); px(6, 2, '#f4f0e6', 4, 6); px(1, 8, '#d8d0c0', 4, 1); px(6, 8, '#d8d0c0', 4, 1); px(1, 4, '#1f4f9a', 1, 2); }
+        px(10, 0, '#1f4f9a', 3, 1); px(5, 1, '#c9302a', 3, 1);
+      } else {
+        px(3, 11, hull, 10, 6); px(4, 17, hull2, 8, 1); px(2, 10, hull2, 12, 1); px(5, 10, '#e8d8b0', 6, 1); px(4, 13, '#ffd24a', 1, 1); px(11, 13, '#ffd24a', 1, 1);
+        px(7, 1, '#3a2a1a', 2, 10); px(3, 3, '#f4f0e6', 10, 6); px(3, 8, '#d8d0c0', 10, 1); if (dir === 'up') px(5, 4, '#1f4f9a', 6, 1);
+        px(7, 0, '#1f4f9a', 3, 1);
+      }
+      cache[key] = c; return c;
+    }
     // 船体（横向きの舟。up/down は正面・背面の簡略）
     if (dir === 'left' || dir === 'right') {
       px(2, 13, hull, 12, 3); px(3, 16, hull2, 10, 1); px(1, 12, hull2, 14, 1); px(2, 12, '#e8d8b0', 2, 1); px(12, 12, '#e8d8b0', 2, 1);

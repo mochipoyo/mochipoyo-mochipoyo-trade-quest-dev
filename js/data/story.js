@@ -13,6 +13,9 @@
     lucia: { name: 'ルシア', job: 'waveblade', sprite: 'lucia', joinLevel: 9, personality: '静かで負けず嫌い', background: '師匠ハケイの一番弟子。波を読む力をさらに高めたいと願う。', bio: '波形を読む剣技の使い手。' },
     // v5.1 新しい仲間（第6〜7章）
     elna: { name: 'エルナ', job: 'auditor', sprite: 'scholar', joinLevel: 14, personality: '冷静で正確、しかし情に厚い', background: 'カリオン徴収政府の元財務官。帳簿の不正を見つけ、証拠を隠したことで追われている。', bio: '監査官。敵の弱点と強化を見抜く支援役。' },
+    // v5.2 新しい仲間（第8章）
+    nagi: { name: 'ナギ', job: 'navigator', sprite: 'sailor', joinLevel: 19, personality: '快活で物怖じしない', background: '港町マリナ育ちの船乗り。父が残した外海の航路図を継ぎ、断裂群島への航海を夢見てきた。', bio: '航海士。海上のエンカウントを減らし、味方の回避を上げる。' },
+    iris: { name: 'イーリス', job: 'surveyor', sprite: 'villager_f', joinLevel: 20, personality: '無口だが観察が鋭い', background: '灰灯島の生き残り。ヨルン老人の孫。災害で失われた街の地図を描き続けている。', bio: '測量士。ダンジョンの宝箱の位置が見え、遠距離攻撃が得意。' },
     ord: { name: 'オルド', job: 'oath_knight', sprite: 'guard', joinLevel: 17, personality: '寡黙で誠実', background: '王都の親衛隊にいた騎士。命令で民の財産を没収した過去を償うため、主人公に剣を預ける。', bio: '誓約騎士。仲間をかばい、反撃する盾役。' }
   };
 
@@ -32,8 +35,12 @@
     main_7: { title: '奪われた財産', desc: '王都セントラで監察官リーヴと被害者の証言を集め、騎士団長ヴァレンから王宮の通行証を得る。帳簿中枢を止め、大宰相セヴランと対峙し、財産返還令を徴収都市で執行する。', main: true, chapter: 7, reward: { exp: 900, gold: 2000, item: 'shield_risk' }, next: 'main_8',
       steps: [['sentra_arrived', '王都セントラに入る'], ['riev_met', '監察官の事務所でリーヴに会う'], ['testimony_1', '城壁の外のテント村の老人の証言を聞く'], ['testimony_2', 'テント村の没収された商人の証言を聞く'], ['testimony_3', '王都の酒場の元兵士の証言を聞く'], ['kyle_oath_done', '騎士団詰所でヴァレン団長と一騎打ちし、通行証を得る'], ['palace_open', '王宮の門を通行証で開く'], ['royal_captain_defeated', '王宮で親衛隊長ドレクを倒す'], ['ledger_core_stopped', '帳簿中枢の守護機構を止める'], ['sevran_fallen', '大宰相セヴランと対峙し、処遇を決める'], ['kalion_reformed', '徴収都市の財務局で財産返還令を執行する']],
       after: '徴収都市から兵の監視が消え、自治組織と新しい商人が現れる。一部の住民は不安を口にする。' },
-    main_8: { title: '灰灯島の灯火', desc: '遠洋航海船で半分が廃墟となった灰灯島アルナへ。灯台を修復し、廃墟を探索する。（今後の更新）', main: true, chapter: 8, future: true, reward: { exp: 1200, gold: 2500 }, next: 'main_9' },
-    main_9: { title: '海底の記憶', desc: '古代の潜航装置で海底都市へ。記憶の図書館でミナの父の記録を見つける。（今後の更新）', main: true, chapter: 9, future: true, reward: { exp: 1400, gold: 3000 }, next: 'main_10' },
+    main_8: { title: '灰灯島の灯火', desc: 'ナギの航路図とヴェルムの鉄で遠洋航海船を建造し、外海を越えて灰灯島アルナへ。消えた灯台の部品を廃墟で集めて灯りを戻し、地下施設で災害の真相を知る。', main: true, chapter: 8, reward: { exp: 1200, gold: 2500, item: 'lost_chart' }, next: 'main_9', learn: 'learn_review',
+      steps: [['nagi_joined', '港町マリナの船着き場でナギに会う'], ['galleon_ready', '灰鉱町ヴェルムのハルトから鉄の竜骨をもらい、ナギに渡して遠洋航海船を建造する'], ['aruna_arrived', '遠洋航海船で南の遠洋航路を抜け、灰灯島アルナの村でヨルン老人に会う'], ['lighthouse_part_1', '廃墟の郵便局で灯台のレンズを見つける'], ['lighthouse_part_2', '時計塔の機構から歯車を外す（廃墟の記憶と戦う）'], ['lighthouse_part_3', '廃墟の倉庫で灯台の油を見つける'], ['lighthouse_lit', '灯台の最上階で部品を取り付け、灯りを戻す'], ['iris_joined', '測量士イーリスに会い、地下施設の場所を聞く'], ['undercity_record', '地下施設の最深部で「天秤の鏡」の記録を読む'], ['yorn_letter_done', 'ヨルン老人に手紙を届ける']],
+      after: '灯台に光が戻り、船が訪れるようになる。商人が戻り、村の会話が変わる。' },
+    main_9: { title: '海底の記憶', desc: '地下施設で見つけた古代の潜航装置で、沈んだ都エルミナへ。記憶の図書館の3つの区画を読み、封印区画でミナの父の最後の記録を見つける。', main: true, chapter: 9, reward: { exp: 1400, gold: 3000, item: 'undersea_record' }, next: 'main_10',
+      steps: [['submarine_owned', '地下施設で古代の潜航装置を手に入れる'], ['elmina_arrived', '灰灯島の南岸の台座から潜航し、海底都市エルミナに着く'], ['library_1', '記憶の図書館・第一区画（予測の記録）を読む'], ['library_2', '第二区画（避難の記録）を読む'], ['library_3', '第三区画（失敗の記録）を読む'], ['seal_opened', '司書の残像から封印区画の鍵を受け取り、扉を開ける'], ['library_guardian_defeated', '図書館の守護機構を倒す'], ['mina_father_record', '封印区画の最後の記録を読み、記憶の扱いを決める']],
+      after: '大災害がクリスタルの異常（未来を固定する試み）と関係していたことを知る。' },
     main_10: { title: '選ばれなかった未来', desc: '時の神殿の試練を突破し、未来が確定していないことを知る。（今後の更新）', main: true, chapter: 10, future: true, reward: { exp: 1600, gold: 3500 }, next: 'main_11' },
     main_11: { title: '理想の島', desc: '異空間の島ゼロメアで、AI「オラクル」が統治する都市を調査する。（今後の更新）', main: true, chapter: 11, future: true, reward: { exp: 1800, gold: 4000 }, next: 'main_12' },
     main_12: { title: 'オラクルの真実', desc: 'AI中枢で統治の仕組みを解明し、人間が選択権を取り戻す方法を探る。（今後の更新）', main: true, chapter: 12, future: true, reward: { exp: 2000, gold: 4500 }, next: 'main_13' },
@@ -41,6 +48,11 @@
     main_14: { title: '天空への航路', desc: 'クリスタルの欠片を集め、古代の飛空艇を復活させる。（今後の更新）', main: true, chapter: 14, future: true, reward: { exp: 2500, gold: 6000 }, next: 'main_15' },
     main_15: { title: '暗黒大陸', desc: '飛空艇で暗黒大陸へ。魔王城への道を開く。（今後の更新）', main: true, chapter: 15, future: true, reward: { exp: 3000, gold: 7000 }, next: 'main_16' },
     main_16: { title: '均衡の天秤', desc: '相場魔王との最終決戦と、クリスタルをどうするかの選択。（今後の更新）', main: true, chapter: 16, future: true, reward: { exp: 5000, gold: 10000 }, next: null },
+    // ===== 第8〜9章のサブクエスト =====
+    castaway: { title: '漂流者の帰還', desc: '断裂群島の東の小島で見つけた漂流者を、灰灯島アルナの村まで送り届ける。', reward: { exp: 300, gold: 600, item: 'sea_coat' } },
+    lantern_night: { title: '港の灯り', desc: '毎晩ひとりで港に灯りをともすヨルン老人の話を聞き、廃墟で息子の手紙を見つけて届ける。', reward: { exp: 400, gold: 0, item: 'amulet_life' } },
+    mina_father: { title: 'ミナの父', desc: 'ミナを連れて海底都市の記憶の図書館へ。封印区画で父の最後の記録を読む。', reward: { exp: 400, gold: 0, item: 'ring_speed' }, companion: 'mina' },
+    mist_isle: { title: '霧の島の測量', desc: 'イーリス加入後に地図に現れる霧の島へ渡り、古い測量標を調べる。', reward: { exp: 350, gold: 800, item: 'survey_bow' } },
     // ===== 第6〜7章のサブクエスト =====
     erased_village: { title: '地図から消えた村', desc: 'カリオン平野の西の森の奥、記録から抹消された村。病人のために、村を記録に戻すか、消えたままにするかを村長と決める。', reward: { exp: 250, gold: 300, item: 'amulet_life' } },
     kyle_oath: { title: 'カイルの誓い', desc: 'カイルを連れて王都の騎士団詰所へ。かつての上官ヴァレン団長と向き合う。', reward: { exp: 300, gold: 0, item: 'knight_helm' }, companion: 'kyle' },
@@ -80,8 +92,8 @@
     { id: 5, title: '第五章　灰鉱の町と鎖につながれた人々', flag: 'ship_ready' },
     { id: 6, title: '第六章　黒い帳簿の都市', flag: 'kalion_open' },
     { id: 7, title: '第七章　奪われた財産と王国の裁定', flag: 'kalion_capital_open' },
-    { id: 8, title: '第八章　半分が死んだ島', flag: 'galleon_ready', future: true },
-    { id: 9, title: '第九章　海底の記憶', flag: 'undersea_open', future: true },
+    { id: 8, title: '第八章　半分が死んだ島', flag: 'galleon_ready' },
+    { id: 9, title: '第九章　海底の記憶', flag: 'submarine_owned' },
     { id: 10, title: '第十章　時の神殿と選ばれなかった未来', flag: 'tempus_open', future: true },
     { id: 11, title: '第十一章　AIが統治する理想の島', flag: 'zeromea_open', future: true },
     { id: 12, title: '第十二章　誤差のない未来', flag: 'oracle_core_open', future: true },

@@ -34,10 +34,17 @@
       summary: '損切り、リスクリワード、ロット管理、連敗時の判断、無理なエントリーの回避',
       lesson: ['【損切り】エントリー前に必ず決める。直近スイングの外側が基本。損切りなしは最も危険。', '【リスクリワード】利確幅は損切り幅の1.5〜3倍を参考に。悪い場面は見送る。', '【ロット管理】1トレードの損失を資金の1〜2%程度に抑える。連敗したら休む、ロットを上げて取り返そうとしない。', '根拠が揃わない場面・飛び乗り・リスクリワードの悪い場面は見送る。見送りも判断。'],
       scenarios: ['bad_rr', 'bad_rr_sell', 'jump_in', 'jump_in_down', 'pullback_tight_sl', 'whipsaw', 'false_breakout'], reward: { exp: 250, gold: 1000, item: 'elixir' } },
-    { id: 'learn_record', chapter: 8, region: '徴収都市カリオン（財務局）', title: '記録と検証の試練', topic: 'reason', required: true, mapId: 'kalion_finance', minScore: 60, next: null,
+    { id: 'learn_record', chapter: 8, region: '徴収都市カリオン（財務局）', title: '記録と検証の試練', topic: 'reason', required: true, mapId: 'kalion_finance', minScore: 60, next: 'learn_review',
       summary: '判断の根拠を記録し、結果と照らして検証する。根拠のない判断を「記録」で見抜く',
       lesson: ['【記録】エントリーも見送りも、判断した理由（上位足の環境・波形・EMA・RCI・MACD）をその場で記録する。あとから理由を付け足さない。', '【検証】結果ではなく「根拠が揃っていたか」で振り返る。根拠が揃って負けたトレードは正しい。根拠がなくて勝ったトレードは間違い。', '【証拠】「なんとなく」「取り返したい」は根拠ではない。記録に書けない理由でのエントリーは見送る。', '帳簿と同じで、記録は書く人を守る。記録のない判断は、あとで誰にも（自分にも）検証できない。'],
       scenarios: ['mtf_conflict', 'div_against_htf', 'breakout_retest', 'reversal_confirmed_up', 'false_breakout', 'whipsaw', 'up_pullback_1h'], reward: { exp: 300, gold: 1200, item: 'elixir' } },
+    { id: 'learn_review', chapter: 9, region: '灰灯島アルナ（測量士の家）', title: '過去の検証の試練', topic: 'reason', required: true, mapId: 'aruna_house_iris', minScore: 60, next: null, review: true,
+      summary: '過去の自分の判断記録（分野ごとの正答率）を振り返り、苦手な分野の場面で判断する',
+      lesson: ['【検証】トレード記録は、書いただけでは意味がない。分野ごとに「どこで間違えたか」を数える。', '【苦手の特定】正答率が低い分野＝自分の癖。上位足を見ない、RCIの到達だけで入る、根拠が揃わないのに入る……。', '【復習】苦手分野の場面を集中的に繰り返す。得意分野の練習は気持ちがいいが、成績は変わらない。', '廃墟の地図を描き続けるイーリスのように、失ったものを数えることから検証は始まる。'],
+      scenarios: function () { var T = root.TradeEval, d = root.State.data; var weak = T.weakTopics ? T.weakTopics(d.trade) : []; var pick = { mtf: ['mtf_conflict', 'mtf_conflict_up', 'div_against_htf'], dow: ['clear_up', 'clear_down', 'range', 'false_breakout'], ema: ['up_ema_bounce', 'down_ema_reject', 'jump_in'], rci: ['rci_hot_trend', 'rci_cold_trend', 'up_pullback'], macd: ['hidden_bull', 'regular_bear', 'div_bear_against_htf'], swing: ['up_pullback_5m', 'down_rally_5m'], action: ['whipsaw', 'false_breakdown', 'breakout_retest'], reason: ['reversal_confirmed_up', 'reversal_confirmed_down'], risk: ['bad_rr', 'bad_rr_sell', 'pullback_tight_sl'], skip: ['jump_in_down', 'range_high', 'whipsaw'] };
+        var out = []; weak.slice(0, 3).forEach(function (t) { (pick[t.key] || []).forEach(function (id) { if (out.indexOf(id) < 0) out.push(id); }); });
+        if (out.length < 5) ['mtf_conflict', 'bad_rr', 'whipsaw', 'up_pullback', 'regular_bear', 'false_breakout'].forEach(function (id) { if (out.length < 6 && out.indexOf(id) < 0) out.push(id); }); return out.slice(0, 7); },
+      reward: { exp: 400, gold: 1500, item: 'elixir' } },
     // ---- 任意の練習（石碑）：短時間で挑戦。報酬は小さめ・初回のみ ----
     { id: 'practice_forest', chapter: 2, region: 'ダウの森', title: '波形の石碑', topic: 'dow', required: false, mapId: 'lost_forest', scenarios: ['clear_up', 'clear_down', 'range', 'up_pullback', 'range_high', 'clear_up_5m'], reward: { exp: 15, gold: 40 } },
     { id: 'practice_dow_road', chapter: 2, region: 'ダウの森', title: '旅人の石碑', topic: 'dow', required: false, mapId: 'world', scenarios: ['down_rally', 'false_breakout', 'clear_down', 'false_breakdown', 'clear_down_5m'], reward: { exp: 15, gold: 40 } },
@@ -47,6 +54,8 @@
     { id: 'practice_mine', chapter: 7, region: '鉄鎖鉱山', title: '坑道の石碑', topic: 'skip', required: false, mapId: 'iron_mine_2', scenarios: ['whipsaw', 'false_breakdown', 'rci_cold_trend', 'div_against_htf'], reward: { exp: 50, gold: 150 } },
     { id: 'practice_kalion', chapter: 8, region: 'カリオン徴収連邦', title: '平野の石碑', topic: 'reason', required: false, mapId: 'world_kalion', scenarios: ['reversal_confirmed_down', 'breakout_retest', 'mtf_conflict_up', 'jump_in', 'range_high'], reward: { exp: 60, gold: 200 } },
     { id: 'practice_archive', chapter: 8, region: '地下記録庫', title: '記録庫の石碑', topic: 'swing', required: false, mapId: 'kalion_archive_2', scenarios: ['up_pullback', 'down_rally', 'hidden_bull', 'regular_bear', 'div_bear_against_htf'], reward: { exp: 70, gold: 250 } },
+    { id: 'practice_islands', chapter: 9, region: '断裂群島', title: '灰灯島の石碑', topic: 'skip', required: false, mapId: 'world_islands', scenarios: ['whipsaw', 'jump_in', 'range', 'false_breakdown', 'bad_rr_sell'], reward: { exp: 80, gold: 300 } },
+    { id: 'practice_ruins', chapter: 9, region: '廃墟の街', title: '時計塔の石碑', topic: 'mtf', required: false, mapId: 'aruna_ruins_2', scenarios: ['mtf_conflict', 'mtf_conflict_up', 'up_pullback_1h', 'div_against_htf', 'clear_down_5m'], reward: { exp: 90, gold: 350 } },
     { id: 'practice_cave2', chapter: 5, region: 'RCIの洞窟', title: '深部の石碑', topic: 'rci', required: false, mapId: 'oblivion_cave_2', scenarios: ['down_rally', 'down_rally_5m', 'regular_bear', 'hidden_bear', 'bad_rr', 'mtf_conflict_up'], reward: { exp: 35, gold: 90 } }
   ];
 

@@ -83,6 +83,13 @@
     oath_guard: { name: '誓約の盾', kind: 'special', target: 'self', mp: 3, cover: true, counter: true, desc: 'このターン仲間をかばい、反撃する', anim: 'buff' },
     oath_wall: { name: '誓いの壁', kind: 'buff', target: 'allies', mp: 6, buff: { def: 0.25 }, turns: 3, desc: '味方全体の防御力を上げる', anim: 'buff' },
     judgment_blade: { name: '裁きの剣', kind: 'attack', target: 'enemy', mp: 7, power: 2.0, element: 'light', desc: '誓いを込めた一撃', anim: 'light' },
+    // v5.2 航海士・測量士
+    storm_helm: { name: '嵐の舵', kind: 'buff', target: 'allies', mp: 5, buff: { agi: 0.3 }, turns: 3, desc: '味方全体の素早さ（回避）を上げる', anim: 'buff' },
+    tide_slash: { name: '潮目斬り', kind: 'attack', target: 'enemy', mp: 6, power: 1.8, element: 'ice', desc: '潮の流れを読んだ水の一撃', anim: 'ice' },
+    chart_sense: { name: '海図の勘', kind: 'special', target: 'enemy', mp: 3, scan: true, desc: '敵の弱点と行動を見抜く', anim: 'buff' },
+    terrain_read: { name: '地形読み', kind: 'buff', target: 'allies', mp: 4, buff: { agi: 0.25, def: 0.1 }, turns: 3, desc: '足場を読み、味方全体の素早さと防御を少し上げる', anim: 'buff' },
+    range_shot: { name: '測距射撃', kind: 'attack', target: 'enemy', mp: 6, power: 1.9, element: 'none', desc: '距離を測って急所を射抜く', anim: 'arrow' },
+    survey_volley: { name: '測量斉射', kind: 'attack', target: 'enemies', mp: 10, power: 1.3, element: 'none', desc: '敵全体に矢を射かける', anim: 'arrow' },
     macd_hidden_strike: { name: 'MACDヒドゥンストライク', kind: 'attack', target: 'enemy', mp: 9, power: 2.2, element: 'light', desc: '隠れた継続の力を一点に集める特殊攻撃', anim: 'light' }
   };
 

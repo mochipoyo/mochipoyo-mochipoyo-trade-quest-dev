@@ -82,6 +82,7 @@
         switch (m) {
           case '~': ch = '~'; break;
           case 'w': ch = 'w'; break;
+          case 'o': ch = '0'; break;                                        // v5.2: 外海（深い海流。遠洋航海船のみ航行可）
           case 'F': ch = n2 < 0.12 ? '.' : 'F'; break;
           case 'm': ch = n2 < 0.15 ? 'h' : 'm'; break;
           case 's': ch = n2 < 0.06 ? 'c' : 's'; break;
@@ -100,13 +101,13 @@
     for (var y2 = 0; y2 < H; y2++) for (var x2 = 0; x2 < W; x2++) {
       if (rows[y2][x2] !== '~') continue;
       var land = false;
-      for (var dy = -1; dy <= 1 && !land; dy++) for (var dx = -1; dx <= 1; dx++) { var yy = y2 + dy, xx = x2 + dx; if (yy < 0 || xx < 0 || yy >= H || xx >= W) continue; var c = rows[yy][xx]; if (c !== '~' && c !== 'w') { land = true; break; } }
+      for (var dy = -1; dy <= 1 && !land; dy++) for (var dx = -1; dx <= 1; dx++) { var yy = y2 + dy, xx = x2 + dx; if (yy < 0 || xx < 0 || yy >= H || xx >= W) continue; var c = rows[yy][xx]; if (c !== '~' && c !== 'w' && c !== '0') { land = true; break; } }
       if (land) rows[y2][x2] = 'w';
     }
     // 道を敷く（L字で接続、水上は橋）
     ROADS.forEach(function (r) {
       var x = r[0][0], y = r[0][1], tx = r[1][0], ty = r[1][1];
-      function lay(px, py) { var c = rows[py][px]; if (c === '~' || c === 'w') rows[py][px] = 'b'; else if (c !== '1' && c !== '2' && c !== '3') rows[py][px] = 'r'; }
+      function lay(px, py) { var c = rows[py][px]; if (c === '~' || c === 'w' || c === '0') rows[py][px] = 'b'; else if (c !== '1' && c !== '2' && c !== '3') rows[py][px] = 'r'; }
       while (x !== tx) { x += x < tx ? 1 : -1; lay(x, y); }
       while (y !== ty) { y += y < ty ? 1 : -1; lay(x, y); }
     });

@@ -98,6 +98,7 @@
 
   // ===== 水 =====
   def('water', { ch: '~', solid: true, anim: true, paint: function (g, v, f) { g.fill('#1f4f9a'); g.speckle(10, ['#1a4488', '#2a5cab']); for (var i = 0; i < 3; i++) { var y = (3 + i * 5 + f * 2) % 16; g.hline((i * 5 + f * 3) % 10, y, 4, '#4f8fe0'); g.px((i * 5 + f * 3) % 10 + 1, y - 1, '#7fb8ff'); } } });
+  def('deep', { ch: '0', solid: true, anim: true, paint: function (g, v, f) { g.fill('#122f6a'); g.speckle(8, ['#0f2858', '#183a7a']); for (var i = 0; i < 2; i++) { var y = (5 + i * 7 + f * 2) % 16; g.hline((i * 6 + f * 2) % 11, y, 5, '#2a5aa8'); g.px((i * 6 + f * 2) % 11 + 2, y - 1, '#3f74c4'); } } });   // v5.2: 外海（海流。遠洋航海船のみ）
   def('shallow', { ch: 'w', solid: true, anim: true, paint: function (g, v, f) { g.fill('#3f8ad8'); g.speckle(12, ['#5aa0e8', '#2f76c4', '#8fc8ff']); for (var i = 0; i < 3; i++) { var y = (2 + i * 5 + f * 2) % 16; g.hline((i * 4 + f * 3) % 11, y, 5, '#9fd4ff'); g.px((i * 4 + f * 3) % 11 + 2, y + 1, '#d8f0ff'); } } });
   def('bridge', { ch: 'b', paint: function (g) { g.fill('#3f8ad8'); for (var y = 0; y < 16; y += 2) { g.hline(2, y, 12, y % 4 === 0 ? '#a07040' : '#8a5a30'); g.px(2, y, '#6a4420'); } g.vline(1, 0, 16, '#5a3a1a'); g.vline(14, 0, 16, '#5a3a1a'); g.vline(0, 0, 16, '#c9a06a'); g.vline(15, 0, 16, '#c9a06a'); } });
   def('dock', { ch: 'd', paint: function (g) { g.fill('#2f76c4'); for (var y = 0; y < 16; y += 2) { g.hline(0, y, 16, y % 4 === 0 ? '#a07040' : '#8a5a30'); } g.vline(3, 0, 16, '#6a4420'); g.vline(12, 0, 16, '#6a4420'); g.speckle(4, ['#c9a06a']); } });
@@ -214,7 +215,7 @@
   };
   Tiles.isSolid = function (name) { var d = Tiles.defs[name]; return !!(d && d.solid); };
   Tiles.has = function (name) { return !!Tiles.defs[name]; };
-  Tiles.isWater = function (name) { return name === 'water' || name === 'shallow'; };
+  Tiles.isWater = function (name) { return name === 'water' || name === 'shallow' || name === 'deep'; };
   Tiles.isTall = function (name) { return name === 'tree' || name === 'forest' || name === 'mountain' || name === 'cliff' || name === 'cave_wall' || name === 'wall' || name === 'wall_wood' || name === 'castle_wall'; };
   Tiles.isGrassy = function (name) { return name === 'grass' || name === 'grass2' || name === 'hill' || name === 'moss'; };
   Tiles.isPaved = function (name) { return name === 'road' || name === 'stone' || name === 'sand' || name === 'crops' || name === 'path_stone'; };

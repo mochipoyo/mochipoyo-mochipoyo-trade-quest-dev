@@ -67,6 +67,15 @@
     stats: { hp: 38, mp: 8, atk: 8, def: 12, agi: 4, mag: 4 }, growth: { hp: 8.5, mp: 1.2, atk: 2.0, def: 2.8, agi: 0.8, mag: 0.7 },
     weapons: ['sword', 'spear', 'club'], armors: ['heavy', 'light', 'shield', 'helm', 'acc'],
     skills: [{ lv: 1, id: 'oath_guard' }, { lv: 6, id: 'shield_bash' }, { lv: 10, id: 'oath_wall' }, { lv: 15, id: 'judgment_blade' }], trait: 'かばった時の被ダメージ-20%', unlock: { level: 10, flag: 'ord_joined' } };
+  // v5.2 新職業（第8章で解放）
+  JOBS.navigator = { name: '航海士', sprite: 'sailor', desc: '海流を読み、嵐を越える船乗り。航海中のエンカウントが減る。', role: '素早い支援・水属性',
+    stats: { hp: 30, mp: 10, atk: 7, def: 6, agi: 10, mag: 6 }, growth: { hp: 6.2, mp: 1.8, atk: 1.7, def: 1.5, agi: 2.4, mag: 1.3 },
+    weapons: ['dagger', 'bow', 'sword'], armors: ['light', 'hat', 'acc'],
+    skills: [{ lv: 1, id: 'chart_sense' }, { lv: 4, id: 'storm_helm' }, { lv: 8, id: 'tide_slash' }, { lv: 13, id: 'haste' }], trait: '海流読み：航海中のエンカウント率半減・海流を避けやすい（パッシブ）', unlock: { level: 10, flag: 'nagi_joined' } };
+  JOBS.surveyor = { name: '測量士', sprite: 'hero_hunter', desc: '地形と距離を測る探索の専門家。ダンジョンの宝箱の位置が見える。', role: '探索・遠距離攻撃',
+    stats: { hp: 30, mp: 9, atk: 8, def: 6, agi: 9, mag: 5 }, growth: { hp: 6.4, mp: 1.5, atk: 2.0, def: 1.5, agi: 2.2, mag: 1.0 },
+    weapons: ['bow', 'dagger'], armors: ['light', 'hat', 'acc'],
+    skills: [{ lv: 1, id: 'terrain_read' }, { lv: 5, id: 'range_shot' }, { lv: 9, id: 'survey_volley' }, { lv: 14, id: 'paralyze_shot' }], trait: '測量：ダンジョンの宝箱の位置がミニマップに見える（パッシブ）', unlock: { level: 10, flag: 'iris_joined' } };
   var JOB_LIST = Object.keys(JOBS);
   var STARTER_JOBS = ['warrior', 'mage', 'priest', 'monk', 'thief', 'merchant', 'hunter', 'knight'];
 

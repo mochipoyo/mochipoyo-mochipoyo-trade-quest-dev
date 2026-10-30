@@ -83,7 +83,30 @@
   };
   // 全滅時：乗り物を港へ戻し、下船状態にする
   Vehicle.onGameOver = function () { var d = D(); if (d.aboard) { var s = V()[d.aboard]; if (s && s.port) { s.map = s.port.map; s.x = s.port.x; s.y = s.port.y; } d.aboard = null; } };
-  Vehicle.encounters = function () { var id = D().aboard; return id ? (Vehicle.def(id).encounters || null) : null; };
+  Vehicle.encounters = function () { var id = D().aboard; if (!id) return null; var e = Vehicle.def(id).encounters; if (!e) return null;
+    // v5.2: 航海士（ナギ／主人公の職業）がパーティーにいると海上エンカウント率が半減（海流読み）
+    if (Vehicle.hasJob('navigator')) { var e2 = {}; for (var k in e) e2[k] = e[k]; e2.rate = e.rate * 0.5; return e2; } return e; };
+  Vehicle.hasJob = function (job) { var S = root.State; if (!S || !S.partyActors) return false; return S.partyActors().some(function (a) { return a.job === job && !a.dead; }); };
+  // v5.2: 進めない理由（別の乗り物が必要な海路・外海）。tryMove が失敗したときの案内用
+  Vehicle.blockReason = function (map, nx, ny) {
+    var d = D(); var id = d.aboard; if (!id) return null;
+    var out = nx < 0 || ny < 0 || nx >= map.w || ny >= map.h;
+    if (out) { var edge = nx < 0 ? 'west' : nx >= map.w ? 'east' : ny < 0 ? 'north' : 'south'; var r = (root.SEA_ROUTES || []).filter(function (rt) { return rt.from.map === map.id && rt.from.edge === edge && rt.vehicle.indexOf(id) < 0; })[0]; if (r) return r.name + 'は潮流が強く、' + Vehicle.def(id).name + 'では進めない（' + r.vehicle.map(function (v) { return root.VEHICLES[v].name; }).join('・') + 'が必要）'; return null; }
+    if (map.tiles[ny][nx] === 'deep' && Vehicle.def(id).terrain.indexOf('deep') < 0) return '外海の潮流が強く、' + Vehicle.def(id).name + 'では進めない（遠洋航海船が必要）';
+    return null;
+  };
+  // v5.2: 外海の海流と嵐。遠洋航海船で deep の上を進んだとき、ときどき流される。戻り値 { x, y, text } | null
+  Vehicle.drift = function (map, x, y, rnd) {
+    var d = D(); var id = d.aboard; if (!id || map.tiles[y][x] !== 'deep') return null; rnd = rnd === undefined ? Math.random() : rnd;
+    var storm = rnd < 0.025, cur = rnd < 0.14; if (!cur) return null;
+    var dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+    // 海流は場所で決まる一定の向き（x+y で4方向）。嵐はランダムに2〜3マス
+    var di = storm ? Math.floor(Math.random() * 4) : (((x >> 3) + (y >> 3)) & 3); var dv = dirs[di]; var n = storm ? 2 + Math.floor(Math.random() * 2) : 1;
+    var cx = x, cy = y; for (var i = 0; i < n; i++) { var tx = cx + dv[0], ty = cy + dv[1]; if (!Vehicle.terrainOk(id, map, tx, ty) || map.warpAt(tx, ty)) break; cx = tx; cy = ty; }
+    if (cx === x && cy === y) return null;
+    if (Vehicle.hasJob('navigator') && !storm && Math.random() < 0.5) return null;   // 航海士は海流を読んで避けることがある
+    return { x: cx, y: cy, text: storm ? '嵐！ 船が大きく流された' : '海流に流された', storm: storm };
+  };
   Vehicle.label = function () { var id = D().aboard; return id ? Vehicle.def(id).name + '（航海中）' : ''; };
   root.Vehicle = Vehicle;
 })(typeof window !== 'undefined' ? window : globalThis);
