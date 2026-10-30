@@ -44,7 +44,12 @@
     { id: 'iron_mine', name: '鉄鎖鉱山', icon: 'cave_icon', x: 86, y: 34, to: 'iron_mine_1', tx: 1, ty: 14 },
     { id: 'ash_shore', name: '灰の浜の番小屋', icon: 'village', x: 34, y: 52, to: 'ash_shore_hut', tx: 5, ty: 7 },
     { id: 'iron_fort', name: '鉄冠将軍の砦', icon: 'castle_icon', x: 106, y: 26, to: 'iron_fort_gate', tx: 5, ty: 7, needFlag: 'iron_fort_open' },
-    { id: 'grania_pass_s', name: '灰の峠（南口）', icon: 'cave_icon', x: 60, y: 24, to: 'grania_pass', tx: 7, ty: 14 }
+    { id: 'grania_pass_s', name: '灰の峠（南口）', icon: 'cave_icon', x: 60, y: 24, to: 'grania_pass', tx: 7, ty: 14 },
+    // v5.6：隠しダンジョン1（平野の北）・2（南東の海の礁。船でのみ）、海の小島2つ（船でのみ）
+    { id: 'ash_cave', name: '灰の洞窟', icon: 'cave_icon', x: 44, y: 38, to: 'ash_cave_1', tx: 1, ty: 12 },
+    { id: 'sunken_reef', name: '沈没船の礁', icon: 'cave_icon', x: 134, y: 96, to: 'sunken_reef_1', tx: 2, ty: 12 },
+    { id: 'pirate_nest', name: '海賊カモメの巣', icon: 'village', x: 20, y: 100, to: 'pirate_nest', tx: 7, ty: 6 },
+    { id: 'ash_cape', name: '灰の岬', icon: 'village', x: 128, y: 20, to: 'ash_cape', tx: 8, ty: 5 }
   ];
   var ROADS = [[[34, 52], [56, 58]], [[56, 58], [86, 34]], [[86, 34], [106, 26]], [[56, 58], [60, 24]]];
   var def = root.makeWorldRegion({

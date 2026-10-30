@@ -344,7 +344,7 @@
   /* ---------- v5.5 「世界」タブ：全地域の模式図（位置関係・航路・必要な乗り物・訪問状況） ---------- */
   var GLOBE = [
     { id: 'world_dark', name: '暗黒大陸', x: 0.17, y: 0.09 }, { id: 'world_sky', name: '天空群島', x: 0.17, y: 0.28 },
-    { id: 'world_kalion', name: 'カリオン連邦', x: 0.50, y: 0.28 }, { id: 'world_snow', name: '忘却の雪原', x: 0.83, y: 0.28, future: true },
+    { id: 'world_kalion', name: 'カリオン連邦', x: 0.50, y: 0.28 }, { id: 'world_snow', name: '忘却の雪原', x: 0.83, y: 0.28 },
     { id: 'world', name: 'アルカディア', x: 0.17, y: 0.47 }, { id: 'world_grania', name: 'グラニア', x: 0.50, y: 0.47 },
     { id: 'world_islands', name: '断裂群島', x: 0.17, y: 0.67 }, { id: 'world_tempus', name: '時の神殿領', x: 0.50, y: 0.67 }, { id: 'world_magicka', name: 'マクディア', x: 0.83, y: 0.67 },
     { id: 'world_desert', name: 'リシア砂漠', x: 0.17, y: 0.88 }, { id: 'world_machine', name: 'ゼロメア', x: 0.50, y: 0.88 }, { id: 'world_dragon', name: '竜炎火山群島', x: 0.83, y: 0.88 }

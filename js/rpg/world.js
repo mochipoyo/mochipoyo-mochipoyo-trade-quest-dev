@@ -24,14 +24,15 @@
     if (root.Minimap) root.Minimap.markDirty(m.id);
     m.chests.forEach(function (c) { var opened = d.chests[m.id + ':' + c.id]; m.setTile(c.x, c.y, opened ? 'chest_open' : 'chest'); });
     m.events.forEach(function (e) {
-      if ((e.type === 'trial' || e.type === 'locked' || e.type === 'rank_door' || e.type === 'gate') && e.doneFlag && d.flags[e.doneFlag]) m.setTile(e.x, e.y, e.type === 'gate' ? ({ grass: 'grass', sand: 'sand', cave_floor: 'cave_floor', ash: 'ash' }[m.def.fallback] || 'floor_stone') : (m.kind === 'dungeon' && m.tile(e.x, e.y) === 'gate' ? 'warp' : 'door'));
+      if ((e.type === 'trial' || e.type === 'locked' || e.type === 'rank_door' || e.type === 'gate') && e.doneFlag && d.flags[e.doneFlag]) m.setTile(e.x, e.y, e.type === 'gate' ? ({ grass: 'grass', sand: 'sand', cave_floor: 'cave_floor', ash: 'ash', snow: 'snow', darkland: 'darkland' }[m.def.fallback] || 'floor_stone') : (m.kind === 'dungeon' && m.tile(e.x, e.y) === 'gate' ? 'warp' : 'door'));
       else if (e.type === 'trial') m.setTile(e.x, e.y, 'gate');
       else if (e.type === 'locked' || e.type === 'rank_door') m.setTile(e.x, e.y, 'door_locked');
       else if (e.type === 'gate') m.setTile(e.x, e.y, 'fence');
       if (e.type === 'hole') m.setTile(e.x, e.y, 'hole');
       if (e.type === 'learn') m.setTile(e.x, e.y, 'learn_rune');
       if (e.type === 'pickup') m.setTile(e.x, e.y, d.flags[e.doneFlag] ? 'chest_open' : 'chest');   // v5.2
-      if (e.type === 'boss' && e.optional) m.setTile(e.x, e.y, (e.doneFlag && d.flags[e.doneFlag]) ? (m.def.fallback === 'cave_floor' ? 'cave_floor' : 'floor_stone') : 'boss_mark');
+      if (e.tile && root.Tiles && root.Tiles.has(e.tile)) m.setTile(e.x, e.y, (e.doneTile && d.flags[e.tileFlag || e.doneFlag]) ? e.doneTile : e.tile);   // v5.6 調べる物の見た目（灯籠・レバー・記憶の核など）
+      if (e.type === 'boss' && e.optional) m.setTile(e.x, e.y, (e.doneFlag && d.flags[e.doneFlag]) ? ({ cave_floor: 'cave_floor', ash: 'ash', snow: 'snow', sand: 'sand', grass: 'grass', darkland: 'darkland', floor_wood: 'floor_wood' }[m.def.fallback] || 'floor_stone') : 'boss_mark');
     });
     m.npcs.forEach(function (n) { if (n.showIf) n.hidden = !d.flags[n.showIf]; if (n.hideIf && d.flags[n.hideIf]) n.hidden = true; if (root.COMPANIONS && root.COMPANIONS[n.id] && d.companions[n.id]) n.hidden = true; });
   };
@@ -49,8 +50,10 @@
   World.nearestFree = function (m, x, y) { for (var r = 1; r <= 8; r++) for (var dy = -r; dy <= r; dy++) for (var dx = -r; dx <= r; dx++) { if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue; var nx = x + dx, ny = y + dy; if (nx < 0 || ny < 0 || nx >= m.w || ny >= m.h) continue; if (m.passable(nx, ny, State.data) && !m.warpAt(nx, ny)) return { x: nx, y: ny }; } return null; };
   World.syncPos = function () { var p = World.player; State.data.pos = { map: World.map.id, x: p.x, y: p.y, dir: p.dir }; };
 
+  World.enterHooks = root.MAP_ENTER_HOOKS = root.MAP_ENTER_HOOKS || [];   // データ側（snow.js など）が先に読み込まれて登録する
   World.enterMap = function (id, x, y, dir) {
     World.map = World.getMap(id);
+    World.enterHooks.forEach(function (fn) { try { fn(World.map); } catch (e) { console.error(e); } });   // v5.6 マップに入るときの処理（凍結時計塔の時限など）
     World.applyState(World.map);
     var p = World.player || World.makePlayer();
     var aboardOk = State.data.aboard && root.Vehicle && root.Vehicle.terrainOk(State.data.aboard, World.map, x, y);
@@ -167,7 +170,8 @@
     if (root.Minimap) root.Minimap.onStep(m, p);
     if (m.kind === 'field') d.timeOfDay = (d.timeOfDay + 0.0025) % 1;
     var w = m.warpAt(p.x, p.y);
-    if (w && (!w.needFlag || d.flags[w.needFlag])) { World.doWarp(w); return; }
+    if (w && (!w.needFlag || d.flags[w.needFlag])) { if (m.def.onStep) m.def.onStep(m, p, true); World.doWarp(w); return; }
+    if (m.def.onStep && m.def.onStep(m, p)) return;   // v5.6 マップごとの歩数処理（凍結時計塔の時限扉など）。true なら以降の処理をしない
     var ev = m.eventAt(p.x, p.y);
     if (ev && ev.type === 'hole') { World.busy = true; Win.message(ev.text).then(function () { World.busy = false; World.enterMap(ev.to, ev.tx, ev.ty, 'down'); }); return; }
     // 毒の歩行ダメージ

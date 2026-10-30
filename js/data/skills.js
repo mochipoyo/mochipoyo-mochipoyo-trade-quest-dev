@@ -105,6 +105,28 @@
     overhaul: { name: '総点検', kind: 'buff', target: 'allies', mp: 10, buff: { atk: 0.15, def: 0.15 }, turns: 3, desc: '味方全体の装備を点検し、攻撃と防御を少し上げる', anim: 'buff' },
     // v5.5 装備で使える特技（ダウの大剣）
     dow_break: { name: '波形崩し', kind: 'attack', target: 'enemy', mp: 5, power: 1.3, element: 'none', exposeTurns: 2, desc: '高値・安値の切り下げを断ち、敵の防御を2ターン崩す', anim: 'slash' },
+    // v5.6 精霊守（アステル）
+    spirit_shield: { name: '精霊の盾', kind: 'buff', target: 'ally', mp: 4, buff: { mres: 0.35, def: 0.1 }, turns: 3, desc: '味方1人が受ける魔法のダメージを35%減らし、防御を少し上げる（3ターン）', anim: 'buff' },
+    healing_wind: { name: '癒しの風', kind: 'heal', target: 'allies', mp: 6, power: 14, desc: '味方全体のHPを少し回復', anim: 'heal' },
+    harmony: { name: '調和', kind: 'cure', target: 'allies', mp: 8, cures: ['poison', 'sleep', 'paralyze', 'confuse', 'silence'], desc: '味方全体の状態異常を治す', anim: 'heal' },
+    spirit_ward: { name: '精霊の守り', kind: 'buff', target: 'allies', mp: 9, buff: { mres: 0.25, def: 0.15 }, turns: 3, desc: '味方全体が受ける魔法のダメージを25%減らし、防御を上げる（3ターン）', anim: 'buff' },
+    aurora: { name: '極光', kind: 'magic', target: 'enemies', mp: 12, power: 1.6, element: 'light', desc: '精霊の光で敵全体を撃つ', anim: 'light' },
+    spirit_rebirth: { name: '精霊の息吹', kind: 'revive', target: 'dead_ally', mp: 16, power: 1.0, desc: '戦闘不能の仲間をHP満タンで復活', anim: 'light' },
+    // v5.6 新職業の高位スキル（Lv20・Lv25）
+    full_audit: { name: '総監査', kind: 'special', target: 'enemies', mp: 10, scan: true, expose: true, desc: '敵全体の弱点と行動を見抜き、3ターン防御を崩す', anim: 'buff' },
+    final_ledger: { name: '決算の光', kind: 'magic', target: 'enemies', mp: 14, power: 1.6, element: 'light', desc: '帳簿の最後の一行で、敵全体を裁く', anim: 'light' },
+    oath_bastion: { name: '不落の誓い', kind: 'buff', target: 'allies', mp: 10, buff: { def: 0.4 }, turns: 3, desc: '味方全体の防御力を大きく上げる', anim: 'buff' },
+    oath_judgment: { name: '審判の剣', kind: 'attack', target: 'enemy', mp: 12, power: 2.6, element: 'light', desc: '誓いのすべてを込めた一撃', anim: 'light' },
+    maelstrom: { name: '渦潮', kind: 'magic', target: 'enemies', mp: 12, power: 1.5, element: 'ice', desc: '渦潮で敵全体を巻き込む', anim: 'ice' },
+    fair_wind: { name: '順風', kind: 'buff', target: 'allies', mp: 9, buff: { agi: 0.4, atk: 0.15 }, turns: 3, desc: '追い風を読み、味方全体の素早さと攻撃を上げる', anim: 'buff' },
+    pinpoint: { name: '精密測距', kind: 'attack', target: 'enemy', mp: 8, power: 2.4, element: 'none', desc: '距離を測りきった一射', anim: 'arrow' },
+    triangulate: { name: '三角測量', kind: 'attack', target: 'enemies', mp: 14, power: 1.6, element: 'none', desc: '三点から敵全体を射抜く', anim: 'arrow' },
+    time_rewind: { name: '時の巻き戻し', kind: 'heal', target: 'allies', mp: 14, power: 30, desc: '少し前の時間に戻し、味方全体のHPを回復', anim: 'heal' },
+    time_stop: { name: '時間停止', kind: 'debuff', target: 'enemies', mp: 14, buff: { agi: -0.6 }, turns: 2, desc: '敵全体の素早さを大きく下げる', anim: 'dark' },
+    gear_barrage: { name: '機巧連射', kind: 'attack', target: 'enemy', mp: 9, power: 0.9, hits: 3, element: 'none', desc: '機巧弾を3連射する', anim: 'arrow' },
+    overclock: { name: '過負荷', kind: 'buff', target: 'allies', mp: 10, buff: { atk: 0.3 }, turns: 3, desc: '機巧の出力を上げ、味方全体の攻撃力を上げる', anim: 'buff' },
+    masterwork: { name: '名工の一撃', kind: 'attack', target: 'enemy', mp: 10, power: 2.2, element: 'none', familyBonus: { families: ['機械系', 'ゴーレム系'], mult: 1.6 }, desc: '名工の一撃。機械・ゴーレムに特に効く', anim: 'hit' },
+    field_forge: { name: '野戦工房', kind: 'buff', target: 'allies', mp: 14, buff: { atk: 0.25, def: 0.25 }, turns: 3, desc: '戦場で装備を打ち直し、味方全体の攻撃と防御を上げる', anim: 'buff' },
     macd_hidden_strike: { name: 'MACDヒドゥンストライク', kind: 'attack', target: 'enemy', mp: 9, power: 2.2, element: 'light', desc: '隠れた継続の力を一点に集める特殊攻撃', anim: 'light' }
   };
 

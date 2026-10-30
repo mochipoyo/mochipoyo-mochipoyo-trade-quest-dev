@@ -214,7 +214,7 @@
     } else if (sk.kind === 'revive') {
       targets.forEach(function (t) { var st = Actors.stats(t); t.dead = false; t.hp = Math.max(1, Math.round(st.maxHp * sk.power)); t.status = {}; ev.push({ type: 'revive', id: t.id }); msg(t.name + 'が復活した！'); });
     } else if (sk.kind === 'buff' || sk.kind === 'debuff') {
-      targets.forEach(function (t) { Object.keys(sk.buff).forEach(function (k) { t.buffs[k] = { value: sk.buff[k], turns: sk.turns || 3 }; }); var what = Object.keys(sk.buff).map(function (k) { return ({ atk: '攻撃力', def: '防御力', agi: '素早さ', mdef: '魔法防御', mag: '魔力' })[k] + (sk.buff[k] > 0 ? 'が上がった' : 'が下がった'); }).join('、'); msg(t.name + 'の' + what); });
+      targets.forEach(function (t) { Object.keys(sk.buff).forEach(function (k) { t.buffs[k] = { value: sk.buff[k], turns: sk.turns || 3 }; }); var what = Object.keys(sk.buff).map(function (k) { return ({ atk: '攻撃力', def: '防御力', agi: '素早さ', mdef: '魔法防御', mag: '魔力', mres: '魔法への耐性' })[k] + (sk.buff[k] > 0 ? 'が上がった' : 'が下がった'); }).join('、'); msg(t.name + 'の' + what); });
     } else if (sk.kind === 'status') {
       targets.forEach(function (t) { if (addStatus(t, sk.status)) msg(t.name + 'は' + STATUS_NAME[sk.status.id] + '状態になった'); else msg(t.name + 'には効かなかった'); });
     } else if (sk.kind === 'special') {
@@ -272,7 +272,7 @@
     if (chosen.type === 'skill') {
       var sk = SKILLS[chosen.id]; e.mp -= sk.mp; msg(e.name + 'は' + sk.name + 'を使った！'); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: sk.anim });
       if (sk.kind === 'attack') { var tgs = sk.target === 'enemies' ? living : [pickTarget()]; var hits = sk.hits || 1; for (var h = 0; h < hits; h++) tgs.forEach(function (t2) { if (!t2.dead) hitActor(b, e, t2, sk.power, { element: sk.element, status: sk.status }, ev); }); }
-      else if (sk.kind === 'magic') { var tg2 = sk.target === 'enemies' ? living : [pickTarget()]; tg2.forEach(function (t3) { var ps = pstats(t3); var dmg = magDamage(es.mag, ps.mdef, sk.power); dmg = partyTakes(b, t3, dmg, ev); t3.hp = Math.max(0, t3.hp - dmg); ev.push({ type: 'damage', side: 'party', id: t3.id, value: dmg, anim: sk.anim }); msg(t3.name + 'に' + dmg + 'のダメージ'); if (t3.hp <= 0) killActor(t3, ev); }); }
+      else if (sk.kind === 'magic') { var tg2 = sk.target === 'enemies' ? living : [pickTarget()]; tg2.forEach(function (t3) { var ps = pstats(t3); var dmg = magDamage(es.mag, ps.mdef, sk.power); if (t3.job === 'spirit_warden' && ['ice', 'fire', 'thunder'].indexOf(sk.element) >= 0) dmg = Math.round(dmg * 0.85); /* v5.6 精霊守の加護 */ if (t3.buffs && t3.buffs.mres && t3.buffs.mres.turns > 0) dmg = Math.max(1, Math.round(dmg * (1 - t3.buffs.mres.value))); /* v5.6 精霊の盾・精霊の守り */ dmg = partyTakes(b, t3, dmg, ev); t3.hp = Math.max(0, t3.hp - dmg); ev.push({ type: 'damage', side: 'party', id: t3.id, value: dmg, anim: sk.anim }); msg(t3.name + 'に' + dmg + 'のダメージ'); if (t3.hp <= 0) killActor(t3, ev); }); }
       else if (sk.kind === 'status') { var tg3 = sk.target === 'enemies' ? living : [pickTarget()]; tg3.forEach(function (t4) { if (addStatus(t4, sk.status, undefined, true)) msg(t4.name + 'は' + STATUS_NAME[sk.status.id] + '状態になった'); else msg(t4.name + 'には効かなかった'); }); }
       else if (sk.kind === 'buff') { Object.keys(sk.buff).forEach(function (k) { e.buffs[k] = { value: sk.buff[k], turns: sk.turns || 3 }; }); msg(e.name + 'の能力が上がった'); }
       return;

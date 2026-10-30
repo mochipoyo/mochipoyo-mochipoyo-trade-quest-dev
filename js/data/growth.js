@@ -14,8 +14,8 @@
     { index: 2, letter: 'D', title: '波形研究者', reward: { gold: 400, item: 'potion', qty: 2 }, quest: 'mq_env', hiddenRoom: { map: 'lost_forest_shrine', name: '祠の隠し書庫（森の祠の東の扉）' }, unlocks: ['師匠の特別クエスト「環境を読め」', '隠し部屋：祠の隠し書庫'] },
     { index: 3, letter: 'C', title: '環境認識の修行者', reward: { gold: 800, item: 'amulet_mind', qty: 1 }, quest: 'mq_discipline', hiddenRoom: { map: 'oblivion_cave_2', name: '洞窟の隠し工房（忘却の洞窟2階の東の扉）' }, ability: 'higher_tf_eye', unlocks: ['師匠の特別クエスト「規律の証」', '隠し部屋：洞窟の隠し工房', '能力「上位足の眼」'] },
     { index: 4, letter: 'B', title: '規律あるトレーダー', reward: { gold: 1500, item: 'ring_guard', qty: 1 }, quest: 'mq_master', ability: 'stoploss_shield', unlocks: ['師匠の特別クエスト「導師への道」', '能力「損切りシールド」'] },
-    { index: 5, letter: 'A', title: '相場分析の達人', reward: { gold: 3000, item: 'elixir', qty: 1 }, ability: 'macd_hidden_strike', unlocks: ['能力「MACDヒドゥンストライク」'] },
-    { index: 6, letter: 'S', title: '波形の導師', reward: { gold: 5000, item: 'phoenix_feather', qty: 2 }, unlocks: ['称号「波形の導師」'] }
+    { index: 5, letter: 'A', title: '相場分析の達人', reward: { gold: 3000, item: 'elixir', qty: 1 }, ability: 'macd_hidden_strike', quest: 'mq_a', unlocks: ['能力「MACDヒドゥンストライク」', '師匠の特別クエスト「達人の眼」'] },
+    { index: 6, letter: 'S', title: '波形の導師', reward: { gold: 5000, item: 'phoenix_feather', qty: 2 }, quest: 'mq_s', unlocks: ['称号「波形の導師」', '師匠の特別クエスト「導師の証」'] }
   ];
 
   // 学習実績：条件はすべて「記録された判断の質」から判定する（回数だけで取れる実績は最初の1つのみ）

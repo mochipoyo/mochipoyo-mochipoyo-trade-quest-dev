@@ -61,13 +61,23 @@
   };
 
   /* ---------- 選択肢 ---------- */
+  // v5.6 縦長スマホなど画面の高さが足りないとき、選択肢の窓が上にはみ出さないよう下げる（それでも入らなければ窓の中でスクロール）
+  function fitChoice(n) {
+    try {
+      var p = n.offsetParent; if (!p || !root.getComputedStyle) return;
+      var top = n.offsetTop; if (top >= 6) return;
+      var b = parseFloat(root.getComputedStyle(n).bottom) || 0;
+      n.style.bottom = Math.max(8, b + top - 6) + 'px';
+      if (n.offsetTop < 6) { n.style.bottom = '8px'; n.style.maxHeight = (p.clientHeight - 16) + 'px'; n.style.overflowY = 'auto'; n._scroll = true; }
+    } catch (e) { /* 表示の調整だけなので失敗しても続ける */ }
+  }
   Win.choice = function (prompt, options, opts) {
     opts = opts || {};
     return new Promise(function (resolve) {
       var cur = opts.initial || 0;
       var node = el('<div class="rw-choice"><div class="rw-prompt' + (prompt ? '' : ' hidden') + '">' + esc(prompt || '') + '</div><div class="rw-opts">' + options.map(function (o, i) { return '<div class="rw-opt" data-i="' + i + '">' + esc(o) + '</div>'; }).join('') + '</div></div>');
       var optEls = node.querySelectorAll('.rw-opt');
-      function render() { optEls.forEach(function (o, i) { o.classList.toggle('cur', i === cur); }); }
+      function render() { optEls.forEach(function (o, i) { o.classList.toggle('cur', i === cur); }); if (node._scroll && optEls[cur] && optEls[cur].scrollIntoView) optEls[cur].scrollIntoView({ block: 'nearest' }); }
       var h = open(node, {
         ok: function () { h.close(); resolve(cur); },
         cancel: function () { if (opts.cancel === false) return; h.close(); resolve(-1); },
@@ -75,6 +85,7 @@
         down: function () { cur = (cur + 1) % options.length; render(); }
       });
       optEls.forEach(function (o) { o.addEventListener('click', function (e) { e.stopPropagation(); cur = parseInt(o.getAttribute('data-i'), 10); h.close(); resolve(cur); }); });
+      fitChoice(node);
       render();
     });
   };

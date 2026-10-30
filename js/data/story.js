@@ -21,6 +21,7 @@
     io: { name: 'イオ', job: 'mechanist', sprite: 'child', joinLevel: 25, personality: '素直で、問いが多い', background: 'オラクル製の人工生命体。命令に従うだけだったが、主人公たちとの出会いで「自分の意思」を考え始める。', bio: '機巧師。解析と機巧弾で戦う。' },
     // v5.5 新しい仲間（Phase 7）
     ganes: { name: 'ガネス', job: 'artisan', sprite: 'villager_m', joinLevel: 14, personality: '無口で頑固、手は器用', background: '灰鉱町ヴェルムの鉱石工場の職人。ガルドが監督側にいた時代に、弟ティモを落盤で失った。', bio: '工匠。味方の防御と攻撃を整え、機械・ゴーレムに強い。' },
+    aster: { name: 'アステル', job: 'spirit_warden', sprite: 'hero_sage', joinLevel: 26, personality: '穏やかで芯が強い', background: '精霊の森の精霊守。名を呼ばれなくなった精霊たちの名を、ひとりで呼び続けてきた。', bio: '精霊守。属性の守り・全体回復・状態異常の回復。' },
     ord: { name: 'オルド', job: 'oath_knight', sprite: 'guard', joinLevel: 17, personality: '寡黙で誠実', background: '王都の親衛隊にいた騎士。命令で民の財産を没収した過去を償うため、主人公に剣を預ける。', bio: '誓約騎士。仲間をかばい、反撃する盾役。' }
   };
 
@@ -68,6 +69,34 @@
       steps: [['castle_seal_1', '魔王城2階：欲望の間の封印を解く'], ['castle_seal_2', '魔王城3階：恐怖の間の封印を解く'], ['castle_seal_3', '魔王城4階：支配の間の封印を解く'], ['demon_fear', '玉座の間：相場魔王〈恐怖〉'], ['demon_greed', '相場魔王〈欲望〉'], ['demon_fixed', '相場魔王〈固定〉'], ['crystal_choice_done', 'クリスタルをどうするか選ぶ'], ['game_cleared', 'それぞれの未来へ']],
       after: 'エピローグ。ポヨ村へ帰る。' },
     // ===== Phase 7（v5.5）のサブクエスト =====
+    // ===== v5.6（Phase 7-2）既存地域の残りのサブクエスト・仲間の個別クエスト =====
+    verum_school: { title: '学校を作ろう', desc: 'ヴェルムの学び舎の教師ミレに、ポヨ村の修行場の師匠ハケイから「波形の書」の写しを届ける。', reward: { exp: 300, gold: 800, item: 'sage_robe' } },
+    verum_market: { title: '市場の再開', desc: 'ヴェルムの商人に仕入れ金1000Gを貸す。第6章のあとに返済される。', reward: { exp: 200, gold: 1500 } },
+    verum_lost_workers: { title: '残された者', desc: '鉄鎖鉱山の最深部、崩れた壁の奥に取り残された鉱夫2人を救う（工匠が必要）。', reward: { exp: 400, gold: 600, item: 'knight_helm' } },
+    grania_sea_pirates: { title: '海賊カモメの巣', desc: 'グラニアの南西の海の小島。帆船の積荷を狙う海賊カモメの頭を追い払う（船で）。', reward: { exp: 300, gold: 800, item: 'sea_coat' } },
+    grania_lighthouse_rock: { title: '灰の岬の宝', desc: 'グラニアの北東の海、船でしか行けない灰の岬で、灯台守の小箱を見つけて番人ロウに届ける。', reward: { exp: 200, gold: 2000, item: 'amulet_life' } },
+    lina_clinic: { title: 'スラムの診療所', desc: 'リーナを連れてカリオンのスラムの診療所へ。薬草5つと毒消し3つで子どもたちを救う。', reward: { exp: 500, gold: 0, item: 'healer_robe' }, companion: 'lina' },
+    kalion_ledger_lost: { title: '消えた帳簿', desc: '財産を没収された男のために、財務局の奥から家族の財産の記録を探す。', reward: { exp: 300, gold: 1000, item: 'ring_guard' } },
+    kalion_informant: { title: '密告者', desc: '改革後のカリオンの酒場。密告で報奨金を得た男の話を聞く。', reward: { exp: 250, gold: 0 } },
+    kalion_bread: { title: 'パン一つの税', desc: 'パン屋の魔災税の計算ミスを証明し、改革後の自治会に出す。', reward: { exp: 300, gold: 1200, item: 'ring_power' } },
+    elna_audit: { title: '最初の監査', desc: 'エルナを連れて税務庁舎へ。十年前に握りつぶされた「合わない一行」を、もう一度見つける。', reward: { exp: 500, gold: 0, item: 'auditor_seal' }, companion: 'elna' },
+    sentra_dissent: { title: '反発する者', desc: '改革後の王都で、改革に反対する元官吏と話す。', reward: { exp: 300, gold: 800 } },
+    ord_penance: { title: '誓約の償い', desc: 'オルドを連れて王都の野営地へ。かつて家を没収した家族を3軒訪ねる。', reward: { exp: 600, gold: 0, item: 'oath_mail' }, companion: 'ord' },
+    poyo_return: { title: '故郷の変化', desc: '旅が進むたびに、ポヨ村の人々の話が変わる（第5・8・11・14章のあと、クリア後の5段階）。', reward: { exp: 800, gold: 3000, item: 'elixir' } },
+    rivel_king_report: { title: '王への報告', desc: '第5章のあと、リヴェル王に鉄鎖鉱山の真相を報告する。', reward: { exp: 400, gold: 2000, item: 'knight_sword' } },
+    aruna_letters: { title: '届かなかった手紙', desc: '廃墟の街に残る、災害の日の朝の手紙5通を見つけ、アルナの村の女に託す。', reward: { exp: 400, gold: 1000, item: 'amulet_life' } },
+    aruna_clock: { title: '壊れた時計', desc: '廃墟の時計塔の止まった懐中時計を、アルナの時計職人に直してもらい、災害の時刻を知る。', reward: { exp: 300, gold: 800, item: 'time_amulet' } },
+    aruna_supplies: { title: '届けられなかった物資', desc: '廃墟の倉庫跡の物資を、アルナの子ども・船乗り・ヨルンに配る。', reward: { exp: 300, gold: 1000, item: 'tent' } },
+    library_lost_books: { title: '散逸した記録', desc: '記憶の図書館と海底都市に散らばった記録5巻を集め、司書の影に届ける。', reward: { exp: 500, gold: 1500, item: 'sage_staff' } },
+    iris_map: { title: '完成しない地図', desc: 'イーリスを連れて、断裂群島の3つの測量標を調べる。', reward: { exp: 600, gold: 0, item: 'surveyor_ring' }, companion: 'iris' },
+    nagi_chart: { title: '父の航路図', desc: 'ナギを連れて断裂群島の漁師に話を聞き、グラニアの南東の沈没船の礁で父ハヤテの航海日誌を見つける。', reward: { exp: 600, gold: 0, item: 'navigator_compass' }, companion: 'nagi' },
+    tempus_bells: { title: '鐘の音', desc: '時の神殿の3つの回廊から鐘楼の歯車を取り戻し、鐘都テンプスの鐘を鳴らす。', reward: { exp: 500, gold: 2000, item: 'hi_ether' } },
+    lucia_wave: { title: '波を読むとは', desc: 'ルシアを連れて鐘都の広場の波読みの老人に会い、ルシアの試練（チャートの試練・60点以上）に挑む。', reward: { exp: 700, gold: 0, item: 'wave_sword' }, companion: 'lucia' },
+    zeromea_job_choice: { title: '初めての職業', desc: 'ゼロメア解放後の演算都市で、仕事を自分で選ぶことになった住民3人の相談にのる。', reward: { exp: 500, gold: 1500, item: 'ring_speed' } },
+    io_memory: { title: 'イオの最初の命令', desc: 'イオを連れて自動工場2階の古い端末へ。製造時の最初の命令を読む。', reward: { exp: 600, gold: 0, item: 'io_core' }, companion: 'io' },
+    dark_memorial: { title: '記憶の墓標', desc: '暗黒大陸の前線基地の黒い石柱に、旅で失われた人々の名を刻む。', reward: { exp: 800, gold: 0, item: 'phoenix_feather' } },
+    mq_a: { title: '達人の眼', master: true, rank: 5, desc: '90点以上を6回、5項目の分析をすべて正しく行った試練を10回、「ダイバージェンスと上位足が食い違う場面」を2回正しく見送る。', needs: [['trial_perfect', 6, '90点以上'], ['trial_analysis_full', 10, '分析5項目すべて正解'], ['trial_ok:div_against_htf', 2, '上位足に逆らうダイバージェンスの見送り']], reward: { exp: 1000, gold: 3000, item: 'wave_charm' } },
+    mq_s: { title: '導師の証', master: true, rank: 6, desc: '異なる30場面で正解し、ヒントなしの正解を40回、90点以上を12回達成する。', needs: [['trial_unique', 30, '異なる場面で正解'], ['trial_nohint_ok', 40, 'ヒントなし正解'], ['trial_perfect', 12, '90点以上']], reward: { exp: 2000, gold: 5000, item: 'mentor_crown' } },
     ganes_brother: { title: '弟の名前', desc: 'ヴェルムの鉱石工場のガネスは、ガルドを許していない。鉄鎖鉱山2階に残る作業日誌から、弟ティモの最後の一日を知る。', reward: { exp: 400, gold: 500, item: 'ore_chunk' } },
     ganes_trident: { title: '三本の穂先', desc: 'ガネスが加入したあと、鉄鎖鉱山の赤い鉱石を3つ集めて工場長に渡し、EMA三重槍を打ってもらう。', reward: { exp: 200, gold: 0, item: 'ema_trident' } },
     // リシア砂漠（断裂群島の南の遠洋航路。main_8 達成後）
@@ -84,6 +113,15 @@
       steps: [['magma_wyrm_defeated', '竜脈洞窟の奥で溶岩の番竜を倒す'], ['dragon_answered', '古竜の三つの問いに答える']] },
     ignas_festival: { title: '火口の祭り', desc: 'イグナスの火入れの祭り。火口の祭壇で、炎の揺らぎが底から反転した瞬間に聖火を点す。', reward: { exp: 800, gold: 2500, item: 'ember_robe' },
       steps: [['festival_started', '祭りの世話役から火種を預かる'], ['festival_lit', '火口の祭壇で聖火を点す']] },
+    // 忘却の雪原（時の神殿領の北の遠洋航路）
+    memory_town: { title: '記憶を売る町', desc: 'フロストの少年リクは、パンのために母の記憶を売った。記憶庫の番人を退け、核の前で記憶の扱いを決める（壊す／買い戻す／上限を決める）。', reward: { exp: 900, gold: 0, item: 'necklace_skip' },
+      steps: [['vel_talked', '記憶市場で記憶商人ヴェルと話す'], ['memory_keeper_defeated', '記憶庫の番人を退ける'], ['memory_core_done', '記憶庫の核の前で、記憶の扱いを決める']] },
+    aster_spirits: { title: '精霊の森', desc: '精霊の森の灯籠に精霊の名を呼んで火をともし、凍てついた大精霊を鎮める。精霊守アステルが仲間になる。', reward: { exp: 800, gold: 1500, item: 'ice_staff' },
+      steps: [['spirit_lights', '森の灯籠3つに火をともす'], ['frost_spirit_freed', '凍てついた大精霊を鎮める'], ['aster_joined', 'アステルと話す']] },
+    hidden_frozen_tower: { title: '凍結時計塔', desc: '隠しダンジョン3。アステルの精霊の火で扉を溶かし、各階の大時計の針が動くあいだに階段へ。最上階に凍結の時計守。', reward: { exp: 3000, gold: 0, item: 'phoenix_feather' } },
+    hidden_grania_cave: { title: '灰の洞窟', desc: '隠しダンジョン1。グラニア平野の北の洞窟の奥、波形の紋章の扉（トレーダーランクC）の先に灰の王が眠る。', reward: { exp: 1200, gold: 0, item: 'elixir' } },
+    hidden_sea_reef: { title: '沈没船の礁', desc: '隠しダンジョン2。グラニアの南東の海、船でしか行けない礁に沈んだ「暁の羅針号」。船長室に幽霊船長。', reward: { exp: 1400, gold: 0, item: 'elixir' } },
+    hidden_old_city: { title: '旧都市 深層', desc: '隠しダンジョン4。ゼロメアの旧都市2階の封印昇降機（トレーダーランクA）の先、最初の予測機械が眠る。', reward: { exp: 3500, gold: 0, item: 'phoenix_feather' } },
     hidden_dragon_vein: { title: '竜脈の最深部', desc: '竜脈洞窟の奥、波形の紋章の扉の先（トレーダーランクB以上）。原初の炎竜が眠る。', reward: { exp: 3000, gold: 0, item: 'dragon_scale' } },
     // ===== 第13〜16章のサブクエスト =====
     archive_keeper: { title: '禁書庫の番人の問い', desc: '禁書庫の番人に「技術を否定するのか」と問われる。古文書3巻を読んだあと、もう一度答える。', reward: { exp: 600, gold: 2000, item: 'arcane_staff' } },

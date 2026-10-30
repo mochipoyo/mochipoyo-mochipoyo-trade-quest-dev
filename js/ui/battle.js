@@ -17,6 +17,7 @@
     if (/祠|shrine|treasure/.test(mapId)) return 'shrine';
     if (/竜|火山|火口|dragon|crater|ignas/.test(zone + mapId)) return 'volcano';   // v5.5 竜炎火山群島
     if (/砂漠|砂嵐|desert|sandstorm/.test(zone + mapId)) return 'wasteland';       // v5.5 リシア砂漠
+    if (/pirate_nest|ash_cape/.test(mapId)) return 'grassland';                    // v5.6 海の小島
     if (/洞窟|cave/.test(zone + mapId)) return 'cave';
     if (/山|emal|pass|bandit/.test(zone + mapId)) return 'mountain';
     if (/荒野/.test(zone)) return 'wasteland';

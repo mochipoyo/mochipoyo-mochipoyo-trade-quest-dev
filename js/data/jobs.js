@@ -90,6 +90,14 @@
     stats: { hp: 36, mp: 8, atk: 9, def: 11, agi: 5, mag: 4 }, growth: { hp: 8.0, mp: 1.2, atk: 2.3, def: 2.5, agi: 1.0, mag: 0.8 },
     weapons: ['axe', 'club', 'spear'], armors: ['heavy', 'light', 'helm', 'shield', 'acc'],
     skills: [{ lv: 1, id: 'quick_repair' }, { lv: 5, id: 'iron_hammer' }, { lv: 10, id: 'weapon_tune' }, { lv: 15, id: 'overhaul' }], trait: '鉄槌：機械・ゴーレム系に特効', unlock: { level: 10, flag: 'ganes_joined' } };
+  // v5.6 新職業（アステル加入で解放）
+  JOBS.spirit_warden = { name: '精霊守', sprite: 'hero_sage', desc: '精霊の名を呼び、自然の力で仲間を守る。属性の守りと回復に長ける。', role: '補助・回復',
+    stats: { hp: 27, mp: 15, atk: 5, def: 7, agi: 6, mag: 10 }, growth: { hp: 5.6, mp: 2.7, atk: 1.2, def: 1.7, agi: 1.4, mag: 2.3 },
+    weapons: ['staff', 'spear'], armors: ['robe', 'shield', 'hat', 'acc'],
+    skills: [{ lv: 1, id: 'spirit_shield' }, { lv: 5, id: 'healing_wind' }, { lv: 10, id: 'harmony' }, { lv: 15, id: 'spirit_ward' }, { lv: 20, id: 'aurora' }, { lv: 25, id: 'spirit_rebirth' }], trait: '精霊の加護：敵の氷・炎・雷の魔法のダメージ−15%', unlock: { level: 10, flag: 'aster_joined' } };
+  // v5.6 新職業の高位スキル（Lv20・Lv25）
+  [['auditor', 'full_audit', 'final_ledger'], ['oath_knight', 'oath_bastion', 'oath_judgment'], ['navigator', 'maelstrom', 'fair_wind'], ['surveyor', 'pinpoint', 'triangulate'],
+   ['chronomancer', 'time_rewind', 'time_stop'], ['mechanist', 'gear_barrage', 'overclock'], ['artisan', 'masterwork', 'field_forge']].forEach(function (r) { JOBS[r[0]].skills.push({ lv: 20, id: r[1] }, { lv: 25, id: r[2] }); });
   var JOB_LIST = Object.keys(JOBS);
   var STARTER_JOBS = ['warrior', 'mage', 'priest', 'monk', 'thief', 'merchant', 'hunter', 'knight'];
 

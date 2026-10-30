@@ -29,7 +29,8 @@
 - 第6〜7章：world_grania の北の山道（ダンジョン「灰の峠」）→ world_kalion（データのみ）
 - 第8章：遠洋航海船で world 南 → world_islands。砂漠・竜炎・雪原も遠洋船で
 - v5.5：world_islands の南端 → world_desert の北端（遠洋船／飛空艇、main_8 達成後）、world_magicka の南端 → world_dragon の北端（遠洋船／飛空艇、魔導都に入ったあと）。リシア砂漠は中央の断崖で南北に分かれ、徒歩では砂嵐の回廊（ダンジョン）を通る。竜炎火山群島は主島（イグナス・火口の祭壇）と東の島（竜脈洞窟）を船で渡る
-- 第10章：world_tempus（v5.3：断裂群島の東端から遠洋航路。雪原経由は未実装）→ 転移門 → world_machine（v5.3 実装）
+- 第10章：world_tempus（v5.3：断裂群島の東端から遠洋航路）→ 転移門 → world_machine（v5.3 実装）
+- v5.6：world_tempus の北端 ⇄ world_snow の南端（遠洋船／飛空艇）。忘却の雪原はサブ地域（本編の進行には不要）。設計の「雪原から東の道で時の神殿領へ」は、時の神殿領を先に航路で実装したため、時の神殿領から北へ渡る形に変更
 - 第14章：飛空艇で world_sky、第15章：world_dark
 
 ## 3. 拠点（町・村・城）一覧：24か所以上
@@ -40,18 +41,18 @@
 | 2 | world | rivel_town / rivel_castle | リヴェル城下町・城 | 1 | 実装済 |
 | 3 | world | dow_village | ダウの村 | 2 | 実装済 |
 | 4 | world | harbor_town | 港町マリナ | 4 | 実装済（船着き場追加：今回） |
-| 5 | world_grania | verum_town | 灰鉱町ヴェルム | 5 | 今回 |
-| 6 | world_grania | grania_outpost | 灰の峠の駐屯地（小集落） | 5 | 今回（宿・店のみ） |
-| 7 | world_kalion | kalion_city | 徴収都市カリオン | 6 | データ |
-| 8 | world_kalion | sentra_capital | 王都セントラ | 7 | データ |
-| 9 | world_kalion | erased_village | 地図から消えた村 | 6〜 | 未着手 |
+| 5 | world_grania | verum_town | 灰鉱町ヴェルム | 5 | v5.0 実装 |
+| 6 | world_grania | grania_outpost | 灰の峠の駐屯地（小集落） | 5 | v5.0 実装（宿・店のみ） |
+| 7 | world_kalion | kalion_city | 徴収都市カリオン | 6 | v5.1 実装 |
+| 8 | world_kalion | sentra_capital | 王都セントラ | 7 | v5.1 実装 |
+| 9 | world_kalion | erased_village | 地図から消えた村 | 6〜 | v5.1 実装 |
 | 10 | world_islands | aruna_village | 灰灯島アルナ・生存者の村 | 8 | v5.2 実装 |
 | 11 | world_islands | aruna_ruins | 廃墟の街（拠点扱い） | 8 | v5.2 実装 |
 | 12 | world_islands | elmina_undersea | 海底都市エルミナ | 9 | v5.2 実装 |
 | 13 | world_desert | sahar_city | 砂都サハル | 9〜 | v5.5 実装 |
 | 14 | world_desert | mirror_market | 鏡の市場 | 9〜 | v5.5 実装 |
-| 15 | world_snow | ciel_port | 氷港シエル | 9〜 | 未着手 |
-| 16 | world_snow | frost_town | 記憶を売る町フロスト | 9〜 | 未着手 |
+| 15 | world_snow | ciel_port | 氷港シエル | 9〜 | v5.6 実装（宿・道具屋・武器屋・港の詰所） |
+| 16 | world_snow | frost_town | 記憶を売る町フロスト | 9〜 | v5.6 実装（記憶市場・記憶庫・宿・店3軒・民家） |
 | 17 | world_tempus | tempus_city | 鐘都テンプス | 10 | v5.3 実装 |
 | 18 | world_magicka | magicka_city | 魔導都マクディア | 13 | v5.4 実装 |
 | 19 | world_machine | node_city | 演算都市ノード | 11 | v5.3 実装 |
@@ -60,7 +61,7 @@
 | 22 | world_dragon | ignas_town | 鍛冶街イグナス | 13〜 | v5.5 実装 |
 | 23 | world_sky | star_camp | 星見塔の野営地 | 14 | v5.4 実装 |
 | 24 | world_dark | dark_camp | 虚無の荒野の前線基地 | 15 | v5.4 実装 |
-| 25 | world_grania | verum_hideout | 地下の抵抗組織（拠点機能：休憩・修行） | 5 | 今回 |
+| 25 | world_grania | verum_hideout | 地下の抵抗組織（拠点機能：休憩・修行） | 5 | v5.0 実装 |
 
 ## 4. ダンジョン一覧：30か所以上
 
@@ -69,25 +70,25 @@
 | 1 | world | lost_forest（+shrine, treasure） | 迷いの森 | 3 | 試練の扉・鍵・隠しボス | 実装済 |
 | 2 | world | oblivion_cave_1〜3 | 忘却の洞窟 | 3 | 落とし穴・封印扉・隠しボス | 実装済 |
 | 3 | world | emal_pass / bandit_hideout | エマール山道・山賊のアジト | 2 | 学習石碑 | 実装済 |
-| 4 | world | harbor_warehouse（魔物） | 港の倉庫 | 1 | 魔物戦・帆布 | 今回 |
-| 5 | world_grania | iron_mine_1〜3 | 鉄鎖鉱山 | 3 | 鎖の扉（労働者救出で開く）、帳簿の切れ端、隠し部屋、トロッコ跡の近道、ボス | 今回 |
-| 6 | world_grania | verum_factory | 工場 | 1 | 搬出記録、ガネス | 今回 |
-| 7 | world_grania | ash_cave | 灰の洞窟（隠し1） | 2 | ランクC扉 | 今回 |
-| 8 | world_grania | grania_pass | 灰の峠（→カリオン） | 2 | 山道 | データ |
-| 9 | 海 | sunken_reef | 沈没船の礁（隠し2） | 1 | 船でのみ | データ |
-| 10 | world_kalion | finance_bureau | 財務局 | 2 | 帳簿照合パズル | データ |
-| 11 | world_kalion | underground_archive | 地下記録庫 | 3 | 鍵・守護者 | データ |
-| 12 | world_kalion | secret_lab | 秘密研究所 | 2 | 欠片の研究記録 | データ |
-| 13 | world_kalion | sentra_palace | 王宮 | 3 | 親衛隊・帳簿中枢 | データ |
+| 4 | world | harbor_warehouse（魔物） | 港の倉庫 | 1 | 魔物戦・帆布 | v5.0 実装 |
+| 5 | world_grania | iron_mine_1〜3 | 鉄鎖鉱山 | 3 | 鎖の扉（労働者救出で開く）、帳簿の切れ端、隠し部屋、トロッコ跡の近道、ボス | v5.0 実装（v5.6：3層の崩れた壁＝サブ「残された者」） |
+| 6 | world_grania | verum_factory | 工場 | 1 | 搬出記録、ガネス | v5.0 実装（ガネスは v5.5） |
+| 7 | world_grania | ash_cave_1/2 | 灰の洞窟（隠し1） | 2 | ランクCの扉・灰の王（任意） | v5.6 実装 |
+| 8 | world_grania | grania_pass | 灰の峠（→カリオン） | 2 | 山道 | v5.1 実装 |
+| 9 | world_grania の海 | sunken_reef_1/2 | 沈没船の礁（隠し2） | 2 | 船でのみ上陸・幽霊船長（任意）・ナギの父の航海日誌 | v5.6 実装 |
+| 10 | world_kalion | kalion_finance | 財務局 | 1 | 帳簿の照合 | v5.1 実装 |
+| 11 | world_kalion | kalion_archive_1/2 | 地下記録庫 | 2 | 鍵・守護者 | v5.1 実装 |
+| 12 | world_kalion | kalion_lab | 秘密研究所 | 1 | 欠片の研究記録 | v5.1 実装 |
+| 13 | world_kalion | sentra_palace_1/2 | 王宮 | 2 | 親衛隊・帳簿中枢 | v5.1 実装 |
 | 14 | world_islands | aruna_lighthouse | 灯台 | 2 | 部品修復 | v5.2 実装 |
 | 15 | world_islands | aruna_ruins_1/2 | 時計塔（廃墟街） | 2 | 手紙・時計・物資・廃墟の記憶 | v5.2 実装 |
 | 16 | world_islands | aruna_underground_1/2 | 地下施設 | 2 | 天秤の鏡・潜航装置 | v5.2 実装 |
 | 17 | world_islands | memory_library(+seal) | 記憶の図書館 | 2 | 3区画＋封印区画・守護機構 | v5.2 実装 |
 | 18 | world_desert | mirage_temple_1〜4 | 蜃気楼神殿 | 3＋最奥 | 上位足の石板で扉を選ぶ（誤ると入口へ） | v5.5 実装 |
 | 19 | world_desert | sandstorm_corridor_1/2 | 砂嵐の回廊 | 2 | 視界制限（map.vision）・関所・襲撃 | v5.5 実装 |
-| 20 | world_snow | frozen_clock_tower | 凍結時計塔（隠し3） | 4 | 時限ギミック | 未着手 |
-| 21 | world_snow | spirit_forest | 精霊の森 | 2 | 精霊の試練 | 未着手 |
-| 22 | world_snow | memory_vault | 記憶庫 | 1 | 選択肢 | 未着手 |
+| 20 | world_snow | frozen_tower_1〜4 | 凍結時計塔（隠し3） | 4 | レバーを引くと扉が開き、決められた歩数のうちに上の階へ（時間切れで扉が閉じ入口へ戻る）。アステル加入後に入れる。最上階に凍結の時計守（任意） | v5.6 実装 |
+| 21 | world_snow | spirit_forest_1/2 | 精霊の森 | 2 | 灯籠3つに精霊の名を呼ぶ → 扉 → 凍てついた大精霊 | v5.6 実装 |
+| 22 | world_snow | memory_vault | 記憶庫 | 1 | 記憶庫の番人 → 核の前の3択 | v5.6 実装 |
 | 23 | world_tempus | time_bank_vault_1/2 | 時間銀行 地下契約室 | 2 | 契約の書き換え | v5.3 実装 |
 | 24 | world_tempus | temple_of_time_1/2/3 | 時の神殿 | 3 | 未来の回廊×3・時の守護者・MTF試練 | v5.3 実装 |
 | 25 | world_magicka | forbidden_archive_1/2/3 | 禁書庫 | 3 | 古文書3巻・裏切り・複合分析の試練 | v5.4 実装 |
@@ -101,6 +102,8 @@
 | 33 | world_sky | sky_temple_1/2 | 天空神殿 | 2 | 守護者・制御装置の間 | v5.4 実装 |
 | 34 | world_dark | void_wasteland_1/2 | 虚無の荒野 | 2 | ザルグの残滓・セヴランの影 | v5.4 実装 |
 | 35 | world_dark | demon_castle_gate＋1〜5 | 魔王城 | 5＋門 | 封印3・相場魔王3連戦 | v5.4 実装 |
+| 36 | world_machine | old_city_deep_1/2 | 廃棄された旧都市 深層（隠し4） | 2 | 旧都市2階のランクAの扉・旧都市の演算核（任意） | v5.6 実装 |
+| 37 | world_grania の海 | pirate_nest / ash_cape | 海賊カモメの巣・灰の岬（海の小島） | 各1 | 船でのみ上陸。海賊カモメの頭／灯台守の小箱 | v5.6 実装 |
 
 ## 5. 章ごとの到達範囲
 | 章 | 到達できる地域 | 解放される移動手段 |
@@ -122,7 +125,14 @@
 - 海路：world_grania の西端（x=0〜1、水上）⇄ world の東端（x=158〜159、水上）。同じ相対 y で移る
 - エンカウント：灰の平野（smoke_wraith, iron_beetle, chain_hound, ash_golem、Lv9〜11）、沿岸の海（sea_serpent, gull_pirate, jelly_float, reef_crab、Lv8〜10。乗船中のみ）
 
-## 7. ワールド画面の表示【一部実装】
+## 7. ワールド画面の表示【v5.5 実装】
 - 「現在のエリア」タブ：既存のミニマップ拡大（地域マップ・町・ダンジョン）
-- 「世界」タブ：12地域の模式図。到達済みは名前と色、未到達はシルエット＋「？」。乗り物の現在位置、主人公の位置、海路を線で表示【未着手】
+- 「世界」タブ：12地域の模式図。到達済みは名前と色、未到達はシルエット＋「？」。乗り物の現在位置、主人公の位置、海路を線で表示【v5.5 実装。v5.6 で時の神殿領⇄忘却の雪原の航路を追加】
 - ミニマップ（拡大表示）に乗り物のアイコン（停泊中の船）を表示【今回実装】
+
+## 8. 忘却の雪原（world_snow）の設計図【v5.6 実装】
+- サイズ：40×30 MACRO → 160×120（`js/data/world-snow.js`、SEED 20261101）。地面は雪（n）・氷の森（F）・山（m）。南の海に面して氷港シエル
+- 到達：時の神殿領の北端 ⇄ 雪原の南端（「北の遠洋航路」、遠洋航海船／飛空艇）。本編の進行には不要なサブ地域
+- 場所：ciel_port（氷港シエル x58,y94）、frost_town（記憶を売る町フロスト x82,y54）、spirit_forest（精霊の森 x34,y30）、frozen_tower（凍結時計塔 x146,y38。アステル加入後に入れる）。宝箱4つ（防寒の外套ほか）、雪原の隠者・行商人、学習石碑 practice_snow（RCI）
+- エンカウント：雪原 Lv25（フロストウルフ・吹雪のハーピー・アイスレイス・記憶喰い・スノーゴーレム）、北の雪原（y<50）Lv27
+- 凍結時計塔の時限：レバーを引くと `State.data.ftTimer = { map, next, left, gate, done }`。歩くたびに残り歩数を減らし（残り10歩以下と5の倍数で表示）、0になると扉が閉じて入口へ戻る。時間内に上の階へ入れば扉は開いたまま（ft1_done など）。塔を出ると扉は閉じる。制限歩数は 1階33・2階30・3階58（最短は29・26・51歩。マップ定義の `onStep` と、マップに入るときの `MAP_ENTER_HOOKS`）
