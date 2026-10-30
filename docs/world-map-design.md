@@ -5,7 +5,7 @@
 - 新しい地域はそれぞれ独立した「地域マップ」（kind: 'field'）として追加する。IDは `world_*`。各地域は 40×30 の設計図（MACRO）を4倍に拡大する既存の生成方式（`js/data/world.js` の generate を汎用化した `WorldGen.region(def)`）で作る
 - 地域間は**海路**（SEA_ROUTES：乗り物で地域マップの端に達すると隣の地域へ移る）、**山道**（ダンジョン経由のワープ）、**転移門**（イベントワープ）で接続する
 - 読み込みは「現在の地域だけ」：`World.getMap(id)` は要求されたマップだけ生成・キャッシュする（既存の遅延生成を踏襲）。全地域を同時には生成しない
-- ワールドマップ画面（Mキー／ミニマップ拡大）は「現在の地域」タブに加えて「世界」タブで12地域の位置関係を模式図として表示する【未着手：v5.0 では「現在のエリア」タブが現在いる地域（world / world_grania）を表示し、停泊中の船を表示する。12地域の模式図タブは次フェーズ＋未解放地域はシルエット表示】
+- ワールドマップ画面（Mキー／ミニマップ拡大）は「現在の地域」タブに加えて「世界」タブで12地域の位置関係を模式図として表示する【v5.5 実装：拡大マップのタブは「現在のエリア」「地域の地図」（旧「世界地図」：現在いる地域の全体）「世界」（12地域の模式図）。「世界」タブは訪問済み＝名前と「訪問済み」、通れる航路の先＝名前と「未踏」、それ以外＝「？？？」。航路・道の線の上に必要な乗り物（小型帆船／遠洋航海船／飛空艇／徒歩）を表示し、まだ通れない航路は点線。忘却の雪原は 7-2 で実装するため、現時点では常に「？？？」】
 
 ## 2. 地域接続図
 
@@ -28,6 +28,7 @@
 - 第4章：小型帆船で world の沿岸と東の海路 → world_grania（第5章）
 - 第6〜7章：world_grania の北の山道（ダンジョン「灰の峠」）→ world_kalion（データのみ）
 - 第8章：遠洋航海船で world 南 → world_islands。砂漠・竜炎・雪原も遠洋船で
+- v5.5：world_islands の南端 → world_desert の北端（遠洋船／飛空艇、main_8 達成後）、world_magicka の南端 → world_dragon の北端（遠洋船／飛空艇、魔導都に入ったあと）。リシア砂漠は中央の断崖で南北に分かれ、徒歩では砂嵐の回廊（ダンジョン）を通る。竜炎火山群島は主島（イグナス・火口の祭壇）と東の島（竜脈洞窟）を船で渡る
 - 第10章：world_tempus（v5.3：断裂群島の東端から遠洋航路。雪原経由は未実装）→ 転移門 → world_machine（v5.3 実装）
 - 第14章：飛空艇で world_sky、第15章：world_dark
 
@@ -47,8 +48,8 @@
 | 10 | world_islands | aruna_village | 灰灯島アルナ・生存者の村 | 8 | v5.2 実装 |
 | 11 | world_islands | aruna_ruins | 廃墟の街（拠点扱い） | 8 | v5.2 実装 |
 | 12 | world_islands | elmina_undersea | 海底都市エルミナ | 9 | v5.2 実装 |
-| 13 | world_desert | sahar_city | 砂都サハル | 9〜 | 未着手 |
-| 14 | world_desert | mirror_market | 鏡の市場 | 9〜 | 未着手 |
+| 13 | world_desert | sahar_city | 砂都サハル | 9〜 | v5.5 実装 |
+| 14 | world_desert | mirror_market | 鏡の市場 | 9〜 | v5.5 実装 |
 | 15 | world_snow | ciel_port | 氷港シエル | 9〜 | 未着手 |
 | 16 | world_snow | frost_town | 記憶を売る町フロスト | 9〜 | 未着手 |
 | 17 | world_tempus | tempus_city | 鐘都テンプス | 10 | v5.3 実装 |
@@ -56,7 +57,7 @@
 | 19 | world_machine | node_city | 演算都市ノード | 11 | v5.3 実装 |
 | 20 | world_machine | scheduled_district | 明日が決まっている町（第7居住区） | 11 | v5.3 実装 |
 | 21 | world_machine | no_failure_school | 失敗を禁止された学校（屋上あり） | 11 | v5.3 実装 |
-| 22 | world_dragon | ignas_town | 鍛冶街イグナス | 13〜 | 未着手 |
+| 22 | world_dragon | ignas_town | 鍛冶街イグナス | 13〜 | v5.5 実装 |
 | 23 | world_sky | star_camp | 星見塔の野営地 | 14 | v5.4 実装 |
 | 24 | world_dark | dark_camp | 虚無の荒野の前線基地 | 15 | v5.4 実装 |
 | 25 | world_grania | verum_hideout | 地下の抵抗組織（拠点機能：休憩・修行） | 5 | 今回 |
@@ -82,8 +83,8 @@
 | 15 | world_islands | aruna_ruins_1/2 | 時計塔（廃墟街） | 2 | 手紙・時計・物資・廃墟の記憶 | v5.2 実装 |
 | 16 | world_islands | aruna_underground_1/2 | 地下施設 | 2 | 天秤の鏡・潜航装置 | v5.2 実装 |
 | 17 | world_islands | memory_library(+seal) | 記憶の図書館 | 2 | 3区画＋封印区画・守護機構 | v5.2 実装 |
-| 18 | world_desert | mirage_temple | 蜃気楼神殿 | 3 | 幻の道 | 未着手 |
-| 19 | world_desert | sandstorm_corridor | 砂嵐の回廊 | 2 | 視界制限 | 未着手 |
+| 18 | world_desert | mirage_temple_1〜4 | 蜃気楼神殿 | 3＋最奥 | 上位足の石板で扉を選ぶ（誤ると入口へ） | v5.5 実装 |
+| 19 | world_desert | sandstorm_corridor_1/2 | 砂嵐の回廊 | 2 | 視界制限（map.vision）・関所・襲撃 | v5.5 実装 |
 | 20 | world_snow | frozen_clock_tower | 凍結時計塔（隠し3） | 4 | 時限ギミック | 未着手 |
 | 21 | world_snow | spirit_forest | 精霊の森 | 2 | 精霊の試練 | 未着手 |
 | 22 | world_snow | memory_vault | 記憶庫 | 1 | 選択肢 | 未着手 |
@@ -94,8 +95,8 @@
 | 27 | world_machine | oracle_core_1/2/3 | オラクル中枢 | 3 | 認証鍵・テオドルの記録・防衛機構・対話 | v5.3 実装 |
 | 28 | world_machine | auto_factory_1/2 | 自動工場 | 2 | 機械敵・制御室 | v5.3 実装（任意） |
 | 29 | world_machine | old_city_1/2 | 廃棄された旧都市 | 2 | ドローン群・旧記録 | v5.3 実装 |
-| 30 | world_dragon | dragon_vein_cave | 竜脈洞窟（隠し5：最深部） | 4 | 竜との対話 | 未着手 |
-| 31 | world_dragon | crater_altar | 火口の祭壇 | 1 | 祭り | 未着手 |
+| 30 | world_dragon | dragon_vein_1/2＋dragon_vein_deep_1/2 | 竜脈洞窟（隠し5：最深部） | 2＋隠し2 | 番竜・古竜の問い・ランクBの扉 | v5.5 実装 |
+| 31 | world_dragon | crater_altar | 火口の祭壇 | 1 | 火入れ（炎の揺らぎ） | v5.5 実装 |
 | 32 | world_sky | star_tower_1/2 | 星見塔 | 2 | 記録者 | v5.4 実装 |
 | 33 | world_sky | sky_temple_1/2 | 天空神殿 | 2 | 守護者・制御装置の間 | v5.4 実装 |
 | 34 | world_dark | void_wasteland_1/2 | 虚無の荒野 | 2 | ザルグの残滓・セヴランの影 | v5.4 実装 |

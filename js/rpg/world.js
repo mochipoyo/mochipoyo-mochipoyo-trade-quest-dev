@@ -24,7 +24,7 @@
     if (root.Minimap) root.Minimap.markDirty(m.id);
     m.chests.forEach(function (c) { var opened = d.chests[m.id + ':' + c.id]; m.setTile(c.x, c.y, opened ? 'chest_open' : 'chest'); });
     m.events.forEach(function (e) {
-      if ((e.type === 'trial' || e.type === 'locked' || e.type === 'rank_door' || e.type === 'gate') && e.doneFlag && d.flags[e.doneFlag]) m.setTile(e.x, e.y, e.type === 'gate' ? (m.def.fallback === 'grass' ? 'grass' : 'floor_stone') : (m.kind === 'dungeon' && m.tile(e.x, e.y) === 'gate' ? 'warp' : 'door'));
+      if ((e.type === 'trial' || e.type === 'locked' || e.type === 'rank_door' || e.type === 'gate') && e.doneFlag && d.flags[e.doneFlag]) m.setTile(e.x, e.y, e.type === 'gate' ? ({ grass: 'grass', sand: 'sand', cave_floor: 'cave_floor', ash: 'ash' }[m.def.fallback] || 'floor_stone') : (m.kind === 'dungeon' && m.tile(e.x, e.y) === 'gate' ? 'warp' : 'door'));
       else if (e.type === 'trial') m.setTile(e.x, e.y, 'gate');
       else if (e.type === 'locked' || e.type === 'rank_door') m.setTile(e.x, e.y, 'door_locked');
       else if (e.type === 'gate') m.setTile(e.x, e.y, 'fence');
@@ -113,6 +113,8 @@
     p.vehicle = State.data.aboard || null;
     var extras = root.Vehicle ? root.Vehicle.onMap(m.id).filter(function (v) { return !v.aboard; }).map(function (v) { return { x: v.x, y: v.y, vehicle: v.id }; }) : [];
     m.draw(ctx, cam, p, World.tint(), extras);
+    // v5.5 視界制限（砂嵐の回廊など）：map.def.vision タイル。上位足の眼鏡（sight）で広がる
+    var vis = m.def && m.def.vision; if (vis && ctx.createRadialGradient) { var sight = (root.Minimap && root.Minimap.partyFx) ? (root.Minimap.partyFx('sight') || 0) : 0; var R = (vis + sight) * TS; var sx = p.px - cam.x + TS / 2, sy = p.py - cam.y + TS / 2; var grd = ctx.createRadialGradient(sx, sy, R * 0.35, sx, sy, R); grd.addColorStop(0, 'rgba(0,0,0,0)'); grd.addColorStop(1, m.def.visionColor || 'rgba(170,128,70,0.97)'); ctx.fillStyle = grd; ctx.fillRect(-TS, -TS, (Engine.VIEW_W + 2) * TS, (Engine.VIEW_H + 2) * TS); }
   };
   World.camera = function () {
     var p = World.player; var m = World.map; var vw = Engine.VIEW_W * TS, vh = Engine.VIEW_H * TS;

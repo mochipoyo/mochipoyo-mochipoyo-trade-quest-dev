@@ -133,7 +133,7 @@
   Minimap.init = function () {
     var layer = document.getElementById('minimap-layer'); if (!layer) return;
     layer.innerHTML = '<div class="mm-box" id="mm-box" title="クリックで拡大（M）"><div class="mm-title" id="mm-title"></div><canvas id="mm-canvas"></canvas><div class="mm-compass">N</div></div>' +
-      '<div class="bigmap" id="bigmap"><div class="bm-head"><div class="bm-title" id="bm-title"></div><div class="bm-tabs"><button data-mode="area" class="on">現在のエリア</button><button data-mode="world">世界地図</button></div><button class="bm-close" id="bm-close">✕ 閉じる</button></div>' +
+      '<div class="bigmap" id="bigmap"><div class="bm-head"><div class="bm-title" id="bm-title"></div><div class="bm-tabs"><button data-mode="area" class="on">現在のエリア</button><button data-mode="world">地域の地図</button><button data-mode="globe">世界</button></div><button class="bm-close" id="bm-close">✕ 閉じる</button></div>' +
       '<div class="bm-body"><canvas id="bm-canvas"></canvas><div class="bm-floors" id="bm-floors"></div><div class="bm-tip" id="bm-tip"></div><div class="bm-ctl"><button data-act="in">＋</button><button data-act="out">－</button><button data-act="home">◎ 現在地</button></div></div>' +
       '<div class="bm-legend" id="bm-legend"></div></div>';
     Minimap.layer = layer; Minimap.box = document.getElementById('mm-box'); Minimap.canvas = document.getElementById('mm-canvas'); Minimap.titleEl = document.getElementById('mm-title');
@@ -204,7 +204,10 @@
 
   /* ---------- 探索イベント ---------- */
   Minimap.onEnterMap = function (map, p) { Minimap.reveal(map, p.x, p.y, 3); Minimap._floor = null; };
-  Minimap.onStep = function (map, p) { Minimap.reveal(map, p.x, p.y, 3); };
+  Minimap.partyFx = function (k) { return partyFx(k); };
+  function partyFx(key) { var S = root.State; if (!S || !S.partyActors || !root.Combat || !root.Combat.fx) return undefined; var v; S.partyActors().forEach(function (a) { var x = root.Combat.fx(a, key); if (x !== undefined) v = x; }); return v; }
+  Minimap.onStep = function (map, p) { Minimap.reveal(map, p.x, p.y, 3 + (partyFx('sight') || 0)); if (hasFog(map) && partyFx('compass')) Minimap.revealCompass(map); };   // v5.5 上位足の眼鏡（範囲+2）・波形の羅針盤
+  Minimap.revealCompass = function (map) { var ch = false; (map.warps || []).forEach(function (w) { if (!isDiscovered(map, w.x, w.y)) { discover(map, w.x, w.y); ch = true; } }); (map.events || []).forEach(function (e) { if (['locked', 'trial', 'rank_door', 'gate', 'boss'].indexOf(e.type) >= 0 && !isDiscovered(map, e.x, e.y)) { discover(map, e.x, e.y); ch = true; } }); if (ch) Minimap.markDirty(map.id); };
 
   /* ---------- ワールド上の位置解決（町の内部座標とワールド座標を混同しない） ---------- */
   Minimap.worldPosOf = function (mapId, depth) {
@@ -242,6 +245,7 @@
   Minimap.currentRegionId = function () { var W = root.World; if (isRegion(W.map)) return W.map.id; var wp = Minimap.worldPosOf(W.map.id); return wp && wp.region ? wp.region : 'world'; };
   function currentBigMap() { if (Minimap.mode === 'world') return root.World.getMap(Minimap.currentRegionId()); var id = Minimap._floor || root.World.map.id; var m = root.World.maps[id] || root.World.getMap(id); if (m !== root.World.map) root.World.applyState(m); return m; }
   Minimap.home = function () {
+    if (Minimap.mode === 'globe') { Minimap.zoom = 1; Minimap.pan = { x: 0, y: 0 }; return; }
     var m = currentBigMap(); var t = getTerrain(m, true); var cell = t.cell; var W = root.World;
     var fit = Math.min(Minimap.bigW / (m.w * cell), Minimap.bigH / (m.h * cell));
     Minimap.zoom = Minimap.mode === 'world' ? Math.max(fit, 0.9) : Math.max(fit, Math.min(1.2, fit * 1.0));
@@ -285,10 +289,14 @@
     var tip = document.getElementById('bm-tip'); if (best) { tip.textContent = best.text; tip.style.left = Math.round(best.x) + 'px'; tip.style.top = Math.round(best.y) + 'px'; tip.classList.add('on'); } else tip.classList.remove('on');
   };
   Minimap.drawBig = function () {
+    // v5.5: 見出しの折り返しなどで表示領域の大きさが変わったら、キャンバスを合わせ直す（スマホ縦向きで下端が切れないように）
+    var body0 = Minimap.big.querySelector('.bm-body'); if (body0) { var rr0 = body0.getBoundingClientRect(); if (rr0.height > 0 && (Math.abs(rr0.height - Minimap.bigH) > 1 || Math.abs(rr0.width - Minimap.bigW) > 1)) { Minimap.layoutBig(); Minimap.home(); } }
     var W = root.World, d = root.State.data; var m = currentBigMap(); var t = getTerrain(m, true); var cell = t.cell; var z = Minimap.zoom;
     var cv = Minimap.bigCanvas; var ctx = cv.getContext('2d'); var dpr = Minimap.bigDpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.fillStyle = '#0b1226'; ctx.fillRect(0, 0, Minimap.bigW, Minimap.bigH);
     var title = document.getElementById('bm-title');
+    var ctl0 = Minimap.big.querySelector('.bm-ctl'); if (ctl0) { var dsp = Minimap.mode === 'globe' ? 'none' : ''; if (ctl0.style.display !== dsp) ctl0.style.display = dsp; }   // 「世界」タブではズームボタンを隠す
+    if (Minimap.mode === 'globe') { drawGlobe(ctx, title); return; }
     ctx.save(); ctx.translate(Minimap.pan.x, Minimap.pan.y); ctx.scale(z, z);
     drawMapLayer(ctx, m, cell, true);
     ctx.restore();
@@ -333,6 +341,63 @@
     Minimap._hot = hot;
     if (Minimap._tip) { ctx.strokeStyle = '#ffd24a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(Minimap._tip.x, Minimap._tip.y, 14, 0, Math.PI * 2); ctx.stroke(); }
   };
+  /* ---------- v5.5 「世界」タブ：全地域の模式図（位置関係・航路・必要な乗り物・訪問状況） ---------- */
+  var GLOBE = [
+    { id: 'world_dark', name: '暗黒大陸', x: 0.17, y: 0.09 }, { id: 'world_sky', name: '天空群島', x: 0.17, y: 0.28 },
+    { id: 'world_kalion', name: 'カリオン連邦', x: 0.50, y: 0.28 }, { id: 'world_snow', name: '忘却の雪原', x: 0.83, y: 0.28, future: true },
+    { id: 'world', name: 'アルカディア', x: 0.17, y: 0.47 }, { id: 'world_grania', name: 'グラニア', x: 0.50, y: 0.47 },
+    { id: 'world_islands', name: '断裂群島', x: 0.17, y: 0.67 }, { id: 'world_tempus', name: '時の神殿領', x: 0.50, y: 0.67 }, { id: 'world_magicka', name: 'マクディア', x: 0.83, y: 0.67 },
+    { id: 'world_desert', name: 'リシア砂漠', x: 0.17, y: 0.88 }, { id: 'world_machine', name: 'ゼロメア', x: 0.50, y: 0.88 }, { id: 'world_dragon', name: '竜炎火山群島', x: 0.83, y: 0.88 }
+  ];
+  var GLOBE_LAND = [{ a: 'world_grania', b: 'world_kalion', label: '徒歩', name: '灰の峠（山道）', open: function (d) { return !!d.visited.world_kalion; } }, { a: 'world_tempus', b: 'world_machine', label: '徒歩', name: '転移門', open: function (d) { return !!d.visited.world_machine; } }];
+  var VNAME = { sailboat: '小型帆船', galleon: '遠洋航海船', airship: '飛空艇' };
+  Minimap.globeEdges = function () {
+    var d = root.State.data; var map = {};
+    (root.SEA_ROUTES || []).forEach(function (r) {
+      var a = r.from.map, b = r.to.map; var key = [a, b].sort().join('|'); var e = map[key] || (map[key] = { a: a, b: b, names: [], vehicles: r.vehicle.slice(), open: false, sky: !!r.sky });
+      e.names.push(r.name);
+      var flagOk = !r.needFlag || !!d.flags[r.needFlag]; var have = r.vehicle.some(function (v) { return root.Vehicle && root.Vehicle.owned(v); });
+      if (flagOk && have) e.open = true;
+    });
+    var list = Object.keys(map).map(function (k) { var e = map[k]; var v = e.vehicles.indexOf('sailboat') >= 0 ? 'sailboat' : e.vehicles.indexOf('galleon') >= 0 ? 'galleon' : 'airship'; e.label = VNAME[v]; e.name = e.names[0].replace(/（.*$/, ''); return e; });
+    GLOBE_LAND.forEach(function (L) { list.push({ a: L.a, b: L.b, label: L.label, name: L.name, open: L.open(d) }); });
+    return list;
+  };
+  function drawGlobe(ctx, title) {
+    var d = root.State.data, W = Minimap.bigW, H = Minimap.bigH; var cur = Minimap.currentRegionId(); var hot = [];
+    var fs = Math.max(10, Math.min(13, Math.round(W / 42))); var rowGap = (H - 20) * 0.19; var compact = rowGap < fs * 3.8; if (compact) fs = Math.max(8, Math.min(fs, Math.floor(rowGap / 2.3))); var bw = Math.min(W * 0.27, fs * 7.4), bh = compact ? fs * 1.7 : fs * 3.0;   // 縦が狭い画面（スマホ縦向き）は1行表示
+    function pos(n) { return { x: 12 + n.x * (W - 24), y: 10 + n.y * (H - 20) }; }
+    var byId = {}; GLOBE.forEach(function (n) { byId[n.id] = n; });
+    var edges = Minimap.globeEdges();
+    edges.forEach(function (e) {
+      var A = byId[e.a], B = byId[e.b]; if (!A || !B) return; var pa = pos(A), pb = pos(B);
+      var known = d.visited[e.a] || d.visited[e.b];
+      ctx.save(); ctx.lineWidth = e.open ? 3 : 2; ctx.strokeStyle = e.open ? (d.visited[e.a] && d.visited[e.b] ? '#ffd24a' : 'rgba(255,210,74,0.55)') : 'rgba(160,170,190,0.45)';
+      if (!e.open) ctx.setLineDash([6, 5]); else if (e.sky) ctx.setLineDash([2, 4]);
+      ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke(); ctx.restore();
+      var mx = (pa.x + pb.x) / 2, my = (pa.y + pb.y) / 2; var lab = known ? e.label : '？';
+      ctx.font = Math.max(8, fs - 2) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; var tw = ctx.measureText(lab).width + 8;
+      ctx.fillStyle = 'rgba(11,18,38,0.92)'; ctx.fillRect(mx - tw / 2, my - fs * 0.6, tw, fs * 1.2); ctx.fillStyle = e.open ? '#ffe9a8' : '#9aa3b5'; ctx.fillText(lab, mx, my);
+      hot.push({ x: mx, y: my, text: known ? (e.name + '：' + e.label + (e.open ? '' : '（まだ通れない）')) : '未知の航路' });
+    });
+    GLOBE.forEach(function (n) {
+      var p = pos(n); var vis = !!d.visited[n.id]; var reach = !vis && !n.future && edges.some(function (e) { return e.open && ((e.a === n.id && d.visited[e.b]) || (e.b === n.id && d.visited[e.a])); });
+      var x0 = p.x - bw / 2, y0 = p.y - bh / 2;
+      ctx.save(); ctx.fillStyle = vis ? 'rgba(40,64,110,0.95)' : reach ? 'rgba(30,40,64,0.95)' : 'rgba(18,22,34,0.95)'; ctx.strokeStyle = n.id === cur ? '#ffd24a' : vis ? '#c9a24a' : reach ? '#8a7a5a' : '#4a5168'; ctx.lineWidth = n.id === cur ? 3 : 1.5;
+      ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x0, y0, bw, bh, 6); else ctx.rect(x0, y0, bw, bh); ctx.fill(); ctx.stroke(); ctx.restore();
+      var label = vis || reach ? n.name : '？？？';
+      ctx.font = 'bold ' + fs + 'px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = vis ? '#ffffff' : reach ? '#c8cee0' : '#6a7188'; ctx.fillText(label, p.x, p.y - ((vis || reach) && !compact ? fs * 0.5 : 0));
+      if ((vis || reach) && !compact) { ctx.font = (fs - 3) + 'px sans-serif'; ctx.fillStyle = vis ? '#9fe0a8' : '#c8a86a'; ctx.fillText(vis ? '訪問済み' : '未踏', p.x, p.y + fs * 0.72); }
+      if (n.id === cur) { var rr = bw / 2 + 6 + Math.sin(Date.now() / 220) * 2; ctx.strokeStyle = 'rgba(255,210,74,0.6)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse ? ctx.ellipse(p.x, p.y, rr, bh / 2 + 6, 0, 0, Math.PI * 2) : ctx.arc(p.x, p.y, rr, 0, Math.PI * 2); ctx.stroke(); drawArrow(ctx, p.x - bw / 2 - 2, p.y, 'right', 6, '#ffd24a'); }
+      hot.push({ x: p.x, y: p.y, text: vis ? n.name + '（訪問済み）' + (n.id === cur ? '・現在地' : '') : reach ? n.name + '（未踏・行ける）' : 'まだ誰も知らない地域' });
+    });
+    var curNode = byId[cur]; title.textContent = '世界　—　現在地：' + (curNode ? curNode.name : '不明');
+    Minimap._hot = hot;
+    if (Minimap._tip) { ctx.strokeStyle = '#ffd24a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(Minimap._tip.x, Minimap._tip.y, 14, 0, Math.PI * 2); ctx.stroke(); }
+    Minimap.renderLegend([['arrow', '現在地'], ['town', '訪れた地域'], ['road', '通れる航路・道（線の上は必要な乗り物）'], ['fog', '？？？＝まだ知らない']]);
+    document.getElementById('bm-floors').innerHTML = '';
+  }
+  Minimap.GLOBE = GLOBE;
   Minimap.renderLegend = function (items) {
     var el = document.getElementById('bm-legend'); var key = items.map(function (i) { return i[0]; }).join(',');
     if (el.getAttribute('data-key') === key) return; el.setAttribute('data-key', key);

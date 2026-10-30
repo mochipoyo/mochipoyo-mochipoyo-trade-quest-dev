@@ -40,6 +40,11 @@
     { vehicle: ['airship'], from: { map: 'world', edge: 'north' }, to: { map: 'world_sky', edge: 'south' }, name: '北の空路（天空群島へ）', sky: true },
     { vehicle: ['airship'], from: { map: 'world_sky', edge: 'south' }, to: { map: 'world', edge: 'north' }, name: '下降の空路（アルカディア相場大陸へ）', sky: true },
     { vehicle: ['airship'], from: { map: 'world_sky', edge: 'north' }, to: { map: 'world_dark', edge: 'south' }, name: '闇の空路（暗黒大陸へ）', sky: true, needFlag: 'dark_route_open' },
+    // v5.5: リシア砂漠（断裂群島の南／main_8 達成後）・竜炎火山群島（マクディアの南／魔導都に入ったあと）
+    { vehicle: ['galleon', 'airship'], from: { map: 'world_islands', edge: 'south' }, to: { map: 'world_desert', edge: 'north' }, name: '南の遠洋航路（リシア砂漠へ）', needFlag: 'yorn_letter_done' },
+    { vehicle: ['galleon', 'airship'], from: { map: 'world_desert', edge: 'north' }, to: { map: 'world_islands', edge: 'south' }, name: '北の遠洋航路（断裂群島へ）' },
+    { vehicle: ['galleon', 'airship'], from: { map: 'world_magicka', edge: 'south' }, to: { map: 'world_dragon', edge: 'north' }, name: '南の遠洋航路（竜炎火山群島へ）', needFlag: 'magicka_arrived' },
+    { vehicle: ['galleon', 'airship'], from: { map: 'world_dragon', edge: 'north' }, to: { map: 'world_magicka', edge: 'south' }, name: '北の遠洋航路（マクディア魔導王国へ）' },
     { vehicle: ['airship'], from: { map: 'world_dark', edge: 'south' }, to: { map: 'world_sky', edge: 'north' }, name: '帰りの空路（天空群島へ）', sky: true }
   ];
   root.VEHICLES = VEHICLES; root.SEA_ROUTES = SEA_ROUTES;

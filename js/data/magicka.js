@@ -114,8 +114,8 @@
       c.give('archive_permit_doc', 1); d.flags.archive_permit = true; await c.msg(['禁書庫の入館許可証を手に入れた！ 北の丘の禁書庫に入れる。']);
       await c.remark('seris', ['ミレイユ先生……。師の同期だった人。', '師が追放された理由を、先生は知っているはず。……今は、聞かない。禁書庫で、自分で読む。'], 'seris_remark_academy');
     } }] });
-  K.shopInterior('magicka_weapon', '魔導武具店', 'magicka_city', 6, 18, 'merchant', 'weapon', ['rune_blade', 'arcane_staff', 'astral_spear', 'balance_mace', 'void_dagger', 'shadow_claw', 'gear_bow', 'chrono_staff', 'knight_sword', 'halberd'], ['魔導の武具だ。値は張るが、命の値段よりは安い。']);
-  K.shopInterior('magicka_armor', '魔導防具店', 'magicka_city', 36, 18, 'merchant', 'armor', ['rune_mail', 'star_cloak', 'sky_robe', 'aegis_shield', 'star_helm', 'arcane_hat', 'temporal_robe', 'knight_armor', 'ring_guard', 'amulet_life'], ['ルーンメイルは雷をはじく。……らしい。']);
+  K.shopInterior('magicka_weapon', '魔導武具店', 'magicka_city', 6, 18, 'merchant', 'weapon', ['rune_blade', 'arcane_staff', 'astral_spear', 'balance_mace', 'void_dagger', 'shadow_claw', 'gear_bow', 'chrono_staff', 'macd_twin', 'knight_sword', 'halberd'], ['魔導の武具だ。値は張るが、命の値段よりは安い。']);
+  K.shopInterior('magicka_armor', '魔導防具店', 'magicka_city', 36, 18, 'merchant', 'armor', ['rune_mail', 'star_cloak', 'sky_robe', 'aegis_shield', 'star_helm', 'arcane_hat', 'temporal_robe', 'knight_armor', 'amulet_macd', 'ring_guard', 'amulet_life'], ['ルーンメイルは雷をはじく。……らしい。']);
   K.shopInterior('magicka_item', '魔導具店', 'magicka_city', 6, 27, 'merchant', 'item', ['potion', 'hi_potion', 'ether', 'hi_ether', 'elixir', 'antidote', 'calm_water', 'wake_bell', 'phoenix_feather', 'tent', 'escape_wing'], ['エリクサーもある。値段を見て驚くなよ。']);
   K.innInterior('magicka_inn', '星詠みの宿', 'magicka_city', 36, 27, 120);
   K.churchInterior('magicka_church', '魔導教会', 'magicka_city', 35, 8);

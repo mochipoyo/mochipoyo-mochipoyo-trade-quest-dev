@@ -94,7 +94,7 @@
 
   Menu.skills = async function () {
     var a = await pickActor('じゅもん・とくぎを見る', true); if (!a) return;
-    var list = a.skills.filter(function (s) { return SKILLS[s]; });
+    var list = root.Actors.allSkills(a).filter(function (s) { return SKILLS[s]; });
     if (!list.length) { await Win.message([a.name + 'はまだ特技を覚えていない。']); return; }
     await Win.list(list.map(function (s) { var sk = SKILLS[s]; return { label: sk.name, right: 'MP' + sk.mp, sub: sk.desc }; }), { title: a.name + 'の特技' });
   };

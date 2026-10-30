@@ -5,7 +5,7 @@
    ・ドアに内部マップへのワープを作る
    ・描画はここでキャッシュした1枚絵を使う
    type: weapon armor item inn church tavern bank guild dojo house elder castle warehouse
-   style: wood(木造) stone(石造) harbor(白壁)
+   style: wood(木造) stone(石造) harbor(白壁) adobe(日干し煉瓦) basalt(玄武岩)
    ========================================================= */
 (function (root) {
   'use strict';
@@ -33,7 +33,9 @@
   var STYLES = {
     wood: { wall: '#c8a878', wallD: '#a88858', wallL: '#e0c498', beam: '#5a3a1a', trim: '#7a4e26' },
     stone: { wall: '#b4b4c2', wallD: '#8e8e9c', wallL: '#d0d0dc', beam: '#5a5a6a', trim: '#6e6e80' },
-    harbor: { wall: '#f0ece0', wallD: '#c8c2b0', wallL: '#ffffff', beam: '#2a4a7a', trim: '#3f6fc9' }
+    harbor: { wall: '#f0ece0', wallD: '#c8c2b0', wallL: '#ffffff', beam: '#2a4a7a', trim: '#3f6fc9' },
+    adobe: { wall: '#d8b47a', wallD: '#b08a52', wallL: '#ecd2a0', beam: '#8a5a2a', trim: '#a8743a' },    // v5.5 砂都サハル（日干し煉瓦）
+    basalt: { wall: '#5a5458', wallD: '#3e3a3e', wallL: '#7a7478', beam: '#c94a2a', trim: '#8a2a1a' }    // v5.5 鍛冶街イグナス（玄武岩）
   };
 
   /* ---------- アイコン（16×16 論理ピクセル） ---------- */

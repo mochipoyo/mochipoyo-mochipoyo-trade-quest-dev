@@ -19,6 +19,8 @@
     // v5.3 新しい仲間（第10・12章）
     sophia: { name: 'ソフィア', job: 'chronomancer', sprite: 'priest', joinLevel: 23, personality: '静かで、断言しない', background: '時の神殿の守護者。未来の可能性を見るが、どれも確定していないことを知っている。', bio: '時詠み師。味方の行動順を操り、全体を支援する。' },
     io: { name: 'イオ', job: 'mechanist', sprite: 'child', joinLevel: 25, personality: '素直で、問いが多い', background: 'オラクル製の人工生命体。命令に従うだけだったが、主人公たちとの出会いで「自分の意思」を考え始める。', bio: '機巧師。解析と機巧弾で戦う。' },
+    // v5.5 新しい仲間（Phase 7）
+    ganes: { name: 'ガネス', job: 'artisan', sprite: 'villager_m', joinLevel: 14, personality: '無口で頑固、手は器用', background: '灰鉱町ヴェルムの鉱石工場の職人。ガルドが監督側にいた時代に、弟ティモを落盤で失った。', bio: '工匠。味方の防御と攻撃を整え、機械・ゴーレムに強い。' },
     ord: { name: 'オルド', job: 'oath_knight', sprite: 'guard', joinLevel: 17, personality: '寡黙で誠実', background: '王都の親衛隊にいた騎士。命令で民の財産を没収した過去を償うため、主人公に剣を預ける。', bio: '誓約騎士。仲間をかばい、反撃する盾役。' }
   };
 
@@ -65,6 +67,24 @@
     main_16: { title: '均衡の天秤', desc: '魔王城の5層を登り、欲望・恐怖・支配の間の封印を解く。玉座の間で相場魔王（恐怖／欲望／固定）と戦い、クリスタルをどうするかを選ぶ。', main: true, chapter: 16, reward: { exp: 5000, gold: 10000, item: 'final_proof' }, next: null,
       steps: [['castle_seal_1', '魔王城2階：欲望の間の封印を解く'], ['castle_seal_2', '魔王城3階：恐怖の間の封印を解く'], ['castle_seal_3', '魔王城4階：支配の間の封印を解く'], ['demon_fear', '玉座の間：相場魔王〈恐怖〉'], ['demon_greed', '相場魔王〈欲望〉'], ['demon_fixed', '相場魔王〈固定〉'], ['crystal_choice_done', 'クリスタルをどうするか選ぶ'], ['game_cleared', 'それぞれの未来へ']],
       after: 'エピローグ。ポヨ村へ帰る。' },
+    // ===== Phase 7（v5.5）のサブクエスト =====
+    ganes_brother: { title: '弟の名前', desc: 'ヴェルムの鉱石工場のガネスは、ガルドを許していない。鉄鎖鉱山2階に残る作業日誌から、弟ティモの最後の一日を知る。', reward: { exp: 400, gold: 500, item: 'ore_chunk' } },
+    ganes_trident: { title: '三本の穂先', desc: 'ガネスが加入したあと、鉄鎖鉱山の赤い鉱石を3つ集めて工場長に渡し、EMA三重槍を打ってもらう。', reward: { exp: 200, gold: 0, item: 'ema_trident' } },
+    // リシア砂漠（断裂群島の南の遠洋航路。main_8 達成後）
+    mirror_market: { title: '鏡の市場', desc: '砂都サハルの東、噂で値が変わる「鏡の市場」。3日間、噂に乗るか、実需を確かめるか、見送るかを選んで売買する（ゲーム内のG。学習用の架空市場）。', reward: { exp: 600, gold: 0, item: 'scale_rr' },
+      steps: [['market_day_1', '1日目の取引を終える'], ['market_day_2', '2日目の取引を終える'], ['market_day_3', '3日目の取引を終え、老商人に結果を見せる']] },
+    sahar_caravan: { title: '隊商護衛', desc: '隊商ギルドの隊商長ハミドの依頼。砂嵐の回廊を抜けて、南の砂漠のオアシスまで隊商を護衛する。', reward: { exp: 700, gold: 2000, item: 'dune_cloak' },
+      steps: [['caravan_ambush_1', '回廊1階：荷を狙う隊商荒らしを追い払う'], ['caravan_ambush_2', '回廊2階：二度目の襲撃を退ける'], ['caravan_done', '回廊の出口で砂嵐の頭目を倒す']] },
+    sahar_mirage: { title: '蜃気楼神殿', desc: '隊商長から聞いた、南の砂漠の神殿。上位足の向きを読んで幻の道を見分け、最奥の古代の記録を読む。', reward: { exp: 900, gold: 3000, item: 'sun_spear' },
+      steps: [['mirage_1', '1階：石板の上位足を読み、正しい道を選ぶ'], ['mirage_2', '2階：正しい道を選ぶ'], ['mirage_3', '3階：正しい道を選ぶ'], ['mirage_lord', '最奥：蜃気楼の主を倒す'], ['mirage_record', '古代の記録を読む']] },
+    sahar_water: { title: '水の権利', desc: 'サハルの水番所。隊商ギルドと畑の民が、オアシスの水の配分をめぐって争っている。四十年分の水位の記録をもとに調停する。', reward: { exp: 500, gold: 1500, item: 'sand_turban' } },
+    // 竜炎火山群島（マクディアの南の遠洋航路。第13章〜）
+    ignas_forge: { title: '竜の鍛冶', desc: '鍛冶街イグナスの鍛冶長イグナに、トレード武器を竜の鱗で鍛え直してもらう（竜の鱗1枚＋3000G）。', reward: { exp: 400, gold: 0, item: 'dragon_scale' } },
+    ignas_dragon: { title: '竜脈の古竜', desc: '竜脈洞窟の奥で眠る古竜。番竜を退け、結晶に宿る古竜の三つの問いに答える。', reward: { exp: 1200, gold: 3000, item: 'dragon_helm' },
+      steps: [['magma_wyrm_defeated', '竜脈洞窟の奥で溶岩の番竜を倒す'], ['dragon_answered', '古竜の三つの問いに答える']] },
+    ignas_festival: { title: '火口の祭り', desc: 'イグナスの火入れの祭り。火口の祭壇で、炎の揺らぎが底から反転した瞬間に聖火を点す。', reward: { exp: 800, gold: 2500, item: 'ember_robe' },
+      steps: [['festival_started', '祭りの世話役から火種を預かる'], ['festival_lit', '火口の祭壇で聖火を点す']] },
+    hidden_dragon_vein: { title: '竜脈の最深部', desc: '竜脈洞窟の奥、波形の紋章の扉の先（トレーダーランクB以上）。原初の炎竜が眠る。', reward: { exp: 3000, gold: 0, item: 'dragon_scale' } },
     // ===== 第13〜16章のサブクエスト =====
     archive_keeper: { title: '禁書庫の番人の問い', desc: '禁書庫の番人に「技術を否定するのか」と問われる。古文書3巻を読んだあと、もう一度答える。', reward: { exp: 600, gold: 2000, item: 'arcane_staff' } },
     seris_origin: { title: '師の最後の手記', desc: 'セリスを連れて起源の実験室の最深部へ。テオドルが研究を続けた理由を知る。', reward: { exp: 600, gold: 0, item: 'sky_robe' }, companion: 'seris' },

@@ -29,6 +29,8 @@
     if (a.id === 'hero' && root.State && root.State.data && root.State.data.trade && root.State.data.trade.abilities && root.LEARN_ABILITIES) { Object.keys(root.State.data.trade.abilities).forEach(function (k) { var sk = root.LEARN_ABILITIES[k] && root.LEARN_ABILITIES[k].skill; if (sk && a.skills.indexOf(sk) < 0) a.skills.push(sk); }); }   // 学習で解放した能力は転職しても残る
   };
 
+  // v5.5 装備で使える特技も含めたスキル一覧（ダウの大剣の「波形崩し」など）
+  Actors.allSkills = function (a) { var out = (a.skills || []).slice(); Object.keys(a.equip || {}).forEach(function (sl) { var it = a.equip[sl] && ITEMS[a.equip[sl]]; if (it && it.grantSkills) it.grantSkills.forEach(function (k) { if (out.indexOf(k) < 0) out.push(k); }); }); return out; };
   // 装備込みの最終ステータス
   Actors.stats = function (a) {
     var lv = a.level, job = a.job;

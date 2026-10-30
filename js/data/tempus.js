@@ -122,7 +122,7 @@
   K.churchInterior('tempus_church', '鐘の教会', 'tempus_city', 32, 8);
   K.shopInterior('tempus_weapon', '鐘都の武具店', 'tempus_city', 32, 18, 'merchant', 'weapon', ['knight_sword', 'halberd', 'long_bow', 'assassin_dagger', 'tide_dagger', 'survey_bow', 'chrono_staff', 'sage_staff', 'holy_mace', 'iron_claw'], ['鐘都の武具だ。時間がかかった分、いい物だ。']);
   K.shopInterior('tempus_item', '鐘都の道具店', 'tempus_city', 6, 26, 'merchant', 'item', ['herb', 'potion', 'hi_potion', 'ether', 'hi_ether', 'antidote', 'calm_water', 'wake_bell', 'phoenix_feather', 'tent', 'escape_wing'], ['目覚ましの鈴は売れ筋だよ。この町じゃ、時間がすぐ狂う。']);
-  K.shopInterior('tempus_armor', '鐘都の防具店', 'tempus_city', 32, 26, 'merchant', 'armor', ['knight_armor', 'ninja_garb', 'sage_robe', 'temporal_robe', 'sea_coat', 'knight_shield', 'knight_helm', 'wizard_hat', 'ring_guard', 'amulet_mind'], ['時のローブは魔法に強い。神殿へ行くなら持っていけ。']);
+  K.shopInterior('tempus_armor', '鐘都の防具店', 'tempus_city', 32, 26, 'merchant', 'armor', ['knight_armor', 'ninja_garb', 'sage_robe', 'temporal_robe', 'sea_coat', 'knight_shield', 'knight_helm', 'helm_timeframe', 'wizard_hat', 'bracelet_reverse', 'ring_guard', 'amulet_mind'], ['時のローブは魔法に強い。神殿へ行くなら持っていけ。']);
 
   /* ---------- 時の神殿（3階層：回廊×3 → 最深部） ---------- */
   add({ id: 'temple_of_time_1', name: '時の神殿 第一の回廊', kind: 'dungeon', bgm: 'dungeon', fallback: 'floor_stone', rows: [

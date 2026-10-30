@@ -57,8 +57,15 @@
 変更点：飛空艇の復活はガネス（未実装）の代わりにイオ（同行時）と実験室の手順書。暗黒大陸へは天空群島の北から（設計の「飛空艇で暗黒大陸へ」を空路で実装）。キャンプ会話は野営地の焚き火（加入済みの仲間全員が一言ずつ）。
 未着手（Phase 7 へ）：忘却の雪原・砂漠・竜炎火山群島、ガネス・アステル、残りの職業（工匠・精霊守）、トレード装備、サブクエスト60本の残り、隠しダンジョン、「世界」タブ、画像
 
-## Phase 7：職業・仲間・装備・サブクエスト【各Phaseで順次】
-残りの新職業（精霊守・時詠み師・機巧師・誓約騎士・測量士・監査官・航海士の高位スキル）、残りの仲間、トレード装備の残り、サブクエスト60本、隠しダンジョン5
+## Phase 7：職業・仲間・装備・サブクエスト【2回に分けて納品】
+### 7-1（v5.5）【今回】
+1. トレード装備20種の効果を戦闘・探索で実装（`js/rpg/combat.js` の fx：multiHit / followUp / afterDefend / onHit / supportBoost / bigHitCut / defendCut / defendMp / evade / lowHpDef / guts / cureAtk / rrScale、`Actors.allSkills` の grantSkills、immune、ミニマップの sight / compass、視界制限マップの sight）と入手場所の配置（`js/data/sidequests.js`）
+2. ガネス加入（クエスト「弟の名前」）と工匠（artisan）、「三本の穂先」（EMA三重槍）
+3. リシア砂漠（`world-desert.js`・`desert.js`）：砂都サハル、鏡の市場、砂嵐の回廊（視界制限）、蜃気楼神殿、水の権利
+4. 竜炎火山群島（`world-dragon.js`・`dragon.js`）：鍛冶街イグナス（竜の鍛冶）、火口の祭壇（火入れの祭り）、竜脈洞窟（番竜・古竜）、隠しダンジョン5「竜脈の最深部」
+5. 拡大マップの「世界」タブ（12地域の模式図）
+### 7-2（v5.6）【次回】
+忘却の雪原（アステル・精霊守・記憶を売る町フロスト＝見送りの首飾り・凍結時計塔）、既存地域の残りのサブクエスト、隠しダンジョン1・2・4（灰の洞窟・沈没船の礁・旧都市深層）、仲間の個別クエスト（nagi_chart, iris_map, elna_audit, ord_penance, lina_clinic, lucia_wave, io_memory）、poyo_return、rivel_king_report、師匠の特別クエスト A/S、新職業の高位スキル
 
 ## テスト条件（仕様書 §18 に対応）
 | 条件 | 確認方法 | Phase |

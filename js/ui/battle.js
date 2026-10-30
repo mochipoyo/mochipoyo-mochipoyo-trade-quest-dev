@@ -15,6 +15,8 @@
   function themeFor(kind, zone, mapId) {
     zone = zone || ''; mapId = mapId || '';
     if (/祠|shrine|treasure/.test(mapId)) return 'shrine';
+    if (/竜|火山|火口|dragon|crater|ignas/.test(zone + mapId)) return 'volcano';   // v5.5 竜炎火山群島
+    if (/砂漠|砂嵐|desert|sandstorm/.test(zone + mapId)) return 'wasteland';       // v5.5 リシア砂漠
     if (/洞窟|cave/.test(zone + mapId)) return 'cave';
     if (/山|emal|pass|bandit/.test(zone + mapId)) return 'mountain';
     if (/荒野/.test(zone)) return 'wasteland';
@@ -60,6 +62,14 @@
       ground(ctx, W, H, horizon, '#c9a060', '#9a7040', '#e0c080', 17);
       ctx.fillStyle = '#6a4a2a'; for (var rk = 0; rk < 8; rk++) { var rx = hrange(rk + 60) * W, ry = horizon + 10 + hrange(rk + 70) * 100; ctx.beginPath(); ctx.ellipse(rx, ry, 8 + hrange(rk) * 10, 5, 0, 0, Math.PI * 2); ctx.fill(); }
       for (var cc = 0; cc < 3; cc++) { var cx2 = 60 + hrange(cc + 80) * (W - 120), cy2 = horizon - 4, chh = 30 + hrange(cc + 85) * 16; ctx.fillStyle = '#2f7a50'; ctx.fillRect(cx2 - 6, cy2 - chh, 12, chh); ctx.beginPath(); ctx.arc(cx2, cy2 - chh, 6, Math.PI, 0); ctx.fill(); ctx.fillRect(cx2 - 16, cy2 - chh * 0.6, 6, chh * 0.4); ctx.fillRect(cx2 - 16, cy2 - chh * 0.6, 12, 5); ctx.fillRect(cx2 + 10, cy2 - chh * 0.75, 6, chh * 0.45); ctx.fillRect(cx2 + 4, cy2 - chh * 0.75 + chh * 0.45 - 5, 12, 5); ctx.fillStyle = '#4fb070'; ctx.fillRect(cx2 - 4, cy2 - chh, 2, chh); ctx.fillStyle = '#ff8ab0'; ctx.fillRect(cx2 - 2, cy2 - chh - 6, 4, 3); }
+    } else if (theme === 'volcano') {   // v5.5 竜炎火山群島：赤い空・黒い火山・溶岩の筋
+      vgrad(ctx, W, H, [[0, '#2a0a0a'], [0.55, '#7a2a14'], [1, '#c9602a']]);
+      ctx.fillStyle = 'rgba(255,110,40,0.22)'; ctx.fillRect(0, horizon - 70, W, 70);
+      peaks(ctx, W, horizon - 10, 130, '#2a2226', 21, 4);
+      ctx.fillStyle = 'rgba(80,80,90,0.35)'; for (var sm = 0; sm < 5; sm++) { var smx = hrange(sm + 41) * W, smy = 40 + hrange(sm + 51) * 80; ctx.beginPath(); ctx.ellipse(smx, smy, 60 + hrange(sm) * 50, 16, 0, 0, Math.PI * 2); ctx.fill(); }   // 噴煙
+      peaks(ctx, W, horizon, 60, '#3e3438', 33, 7);
+      ground(ctx, W, H, horizon, '#5a5050', '#2e2828', '#7a6a66', 29);
+      ctx.strokeStyle = '#ff7a2a'; ctx.lineWidth = 3; for (var lr = 0; lr < 3; lr++) { var lry = horizon + 30 + lr * 45; ctx.beginPath(); ctx.moveTo(0, lry); for (var lx2 = 0; lx2 <= W; lx2 += 40) ctx.lineTo(lx2, lry + Math.sin(lx2 * 0.02 + lr) * 8); ctx.stroke(); }
     } else if (theme === 'mountain') {
       vgrad(ctx, W, H, [[0, '#2f6ab0'], [0.5, '#7fb0e0'], [1, '#c0d8f0']]);
       peaks(ctx, W, horizon - 30, 170, '#6a7a9a', 11, 5, '#e8f0ff');
@@ -312,7 +322,7 @@
 
   async function commandFor(b, a) {
     while (true) {
-      var skills = a.skills.filter(function (s) { return SKILLS[s]; });
+      var skills = Actors.allSkills(a).filter(function (s) { return SKILLS[s]; });
       var opts = [{ label: 'たたかう' }, { label: 'じゅもん・とくぎ', disabled: !skills.length }, { label: 'どうぐ' }, { label: 'ぼうぎょ' }, { label: 'にげる', disabled: !b.canEscape }];
       var sel = await Win.list(opts, { title: a.name + 'の行動', cancel: true, cls: 'cmd-list' });
       if (sel < 0) return 'back';

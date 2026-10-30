@@ -85,6 +85,11 @@
     stats: { hp: 30, mp: 11, atk: 8, def: 7, agi: 7, mag: 8 }, growth: { hp: 6.0, mp: 2.0, atk: 1.9, def: 1.6, agi: 1.5, mag: 1.8 },
     weapons: ['bow', 'staff', 'dagger'], armors: ['light', 'hat', 'acc'],
     skills: [{ lv: 1, id: 'gear_shot' }, { lv: 5, id: 'analyze' }, { lv: 12, id: 'overdrive' }, { lv: 16, id: 'thunder' }], trait: '解析：機械系の敵の弱点を見抜きやすい', unlock: { level: 10, flag: 'io_joined' } };
+  // v5.5 新職業（ガネス加入で解放）
+  JOBS.artisan = { name: '工匠', sprite: 'hero_warrior', desc: '装備を直し、機械を扱う職人。前衛で味方の装備を整える。', role: '前衛・支援',
+    stats: { hp: 36, mp: 8, atk: 9, def: 11, agi: 5, mag: 4 }, growth: { hp: 8.0, mp: 1.2, atk: 2.3, def: 2.5, agi: 1.0, mag: 0.8 },
+    weapons: ['axe', 'club', 'spear'], armors: ['heavy', 'light', 'helm', 'shield', 'acc'],
+    skills: [{ lv: 1, id: 'quick_repair' }, { lv: 5, id: 'iron_hammer' }, { lv: 10, id: 'weapon_tune' }, { lv: 15, id: 'overhaul' }], trait: '鉄槌：機械・ゴーレム系に特効', unlock: { level: 10, flag: 'ganes_joined' } };
   var JOB_LIST = Object.keys(JOBS);
   var STARTER_JOBS = ['warrior', 'mage', 'priest', 'monk', 'thief', 'merchant', 'hunter', 'knight'];
 

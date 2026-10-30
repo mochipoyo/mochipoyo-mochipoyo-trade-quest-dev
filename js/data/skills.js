@@ -98,6 +98,13 @@
     gear_shot: { name: '機巧弾', kind: 'attack', target: 'enemy', mp: 3, power: 1.6, element: 'none', desc: '無属性の遠距離弾', anim: 'arrow' },
     analyze: { name: '解析', kind: 'special', target: 'enemy', mp: 3, scan: true, expose: true, desc: '敵を解析し、弱点を暴いて防御を崩す', anim: 'buff' },
     overdrive: { name: '高度な機巧', kind: 'magic', target: 'enemies', mp: 12, power: 1.5, element: 'thunder', desc: '機巧の全出力で敵全体に雷撃', anim: 'thunder' },
+    // v5.5 工匠
+    quick_repair: { name: '応急修理', kind: 'buff', target: 'ally', mp: 3, buff: { def: 0.3 }, turns: 3, desc: '味方1人の防御の乱れを直し、防御力を上げる（防御低下も上書き）', anim: 'buff' },
+    iron_hammer: { name: '鉄槌', kind: 'attack', target: 'enemy', mp: 5, power: 1.5, element: 'none', familyBonus: { families: ['機械系', 'ゴーレム系'], mult: 1.6 }, desc: '機械・ゴーレムに特に効く一撃', anim: 'hit' },
+    weapon_tune: { name: '改造', kind: 'buff', target: 'ally', mp: 5, buff: { atk: 0.35 }, turns: 3, desc: '味方1人の武器を調整し、攻撃力を上げる', anim: 'buff' },
+    overhaul: { name: '総点検', kind: 'buff', target: 'allies', mp: 10, buff: { atk: 0.15, def: 0.15 }, turns: 3, desc: '味方全体の装備を点検し、攻撃と防御を少し上げる', anim: 'buff' },
+    // v5.5 装備で使える特技（ダウの大剣）
+    dow_break: { name: '波形崩し', kind: 'attack', target: 'enemy', mp: 5, power: 1.3, element: 'none', exposeTurns: 2, desc: '高値・安値の切り下げを断ち、敵の防御を2ターン崩す', anim: 'slash' },
     macd_hidden_strike: { name: 'MACDヒドゥンストライク', kind: 'attack', target: 'enemy', mp: 9, power: 2.2, element: 'light', desc: '隠れた継続の力を一点に集める特殊攻撃', anim: 'light' }
   };
 

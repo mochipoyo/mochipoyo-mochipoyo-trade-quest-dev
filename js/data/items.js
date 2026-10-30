@@ -149,6 +149,51 @@
   A('star_helm', '星の兜', 'helm', 15, 3500, { desc: '星見の番人の兜' });
   A('arcane_hat', '魔導帽', 'hat', 10, 3200, { desc: '魔力が上がる帽子', mag: 6 });
   A('iron_crown', '鉄の冠', 'acc', 8, 0, { desc: 'グロートが最後に託した冠。最大HP+40', hp: 40 });
+  // ===== v5.5 トレード装備（ゲーム内の戦闘・探索にだけ作用する。現実のトレードの利益を保証するものではない） =====
+  W('dow_greatsword', 'ダウの大剣', 'sword', 42, 0, { desc: '高値と安値の切り上げを刻んだ大剣。特技「波形崩し」：敵の防御を2ターン崩す', grantSkills: ['dow_break'], trade: true });
+  W('ema_trident', 'EMA三重槍', 'spear', 36, 0, { desc: '20・30・40の三本の穂先。通常攻撃が3回ヒット（各0.5倍）', fx: { multiHit: { n: 3, mult: 0.5 } }, trade: true });
+  W('rci_bow', 'RCI転輪弓', 'bow', 34, 0, { desc: '命中した敵の素早さを2ターン25%下げる', fx: { onHit: { agi: -0.25, turns: 2 } }, trade: true });
+  W('macd_twin', 'MACD双剣', 'dagger', 30, 4200, { desc: '前のターンにも攻撃していれば追撃（0.6倍）', fx: { followUp: 0.6 }, trade: true });
+  W('hidden_staff', 'ヒドゥンの魔杖', 'staff', 18, 0, { desc: '魔力+12。補助魔法を使った次のターン、攻撃魔法が1.5倍', mag: 12, fx: { supportBoost: 1.5 }, trade: true });
+  W('stoploss_dagger', '損切りの短剣', 'dagger', 26, 1500, { desc: '防御した次のターン、通常攻撃の威力+30%', fx: { afterDefend: 0.3 }, trade: true });
+  A('armor_risk', '資金管理の鎧', 'heavy', 24, 0, { desc: '最大HPの25%を超える一撃を30%軽減する', fx: { bigHitCut: { over: 0.25, cut: 0.3 } }, trade: true });
+  A('robe_skip', '見送りの法衣', 'robe', 12, 1400, { desc: '防御したとき、最大MPの10%を回復', fx: { defendMp: 0.1 }, trade: true });
+  A('cloak_volatility', '変動相場のマント', 'light', 16, 0, { desc: '敵の単体攻撃を15%の確率でかわす', fx: { evade: 0.15 }, trade: true });
+  A('helm_timeframe', '時間軸の兜', 'helm', 10, 3000, { desc: '混乱・睡眠・沈黙にかからない', immune: ['confuse', 'sleep', 'silence'], trade: true });
+  A('armor_patience', '忍耐の鎧', 'heavy', 22, 0, { desc: 'HPが50%以下のとき防御力+40%', fx: { lowHpDef: { below: 0.5, mult: 0.4 } }, trade: true });
+  A('compass_wave', '波形の羅針盤', 'acc', 2, 0, { desc: 'ダンジョンで階段・扉・鍵扉の位置がミニマップに最初から見える', fx: { compass: true }, trade: true });
+  A('ring_rci', 'RCIの指輪', 'acc', 2, 0, { desc: '素早さ+8', agi: 8, trade: true });
+  A('amulet_macd', 'MACDの護符', 'acc', 2, 3800, { desc: '魔力+8', mag: 8, trade: true });
+  A('scale_rr', 'リスクリワードの天秤', 'acc', 1, 0, { desc: 'HPを失わずに勝つと報酬G+20%、戦闘不能者が出ると−10%', fx: { rrScale: { win: 0.2, loss: 0.1 } }, trade: true });
+  A('charm_stoploss', '損切りのお守り', 'acc', 2, 0, { desc: '倒れるダメージを30%の確率でHP1で踏みとどまる（戦闘中1回）', fx: { guts: 0.3 }, trade: true });
+  A('glasses_htf', '上位足の眼鏡', 'acc', 1, 0, { desc: 'ダンジョンのミニマップで見える範囲+2', fx: { sight: 2 }, trade: true });
+  A('necklace_skip', '見送りの首飾り', 'acc', 2, 0, { desc: '防御中の被ダメージをさらに40%軽減', fx: { defendCut: 0.4 }, trade: true });
+  A('bracelet_reverse', '反転の腕輪', 'acc', 2, 3500, { desc: '状態異常が治ったとき、攻撃力+20%（2ターン）', fx: { cureAtk: { atk: 0.2, turns: 2 } }, trade: true });
+  // 鍛冶街イグナスで鍛え直したトレード武器（+1）
+  W('dow_greatsword_2', 'ダウの大剣＋', 'sword', 54, 0, { desc: '鍛え直したダウの大剣。特技「波形崩し」', grantSkills: ['dow_break'], trade: true });
+  W('ema_trident_2', 'EMA三重槍＋', 'spear', 46, 0, { desc: '通常攻撃が3回ヒット（各0.6倍）', fx: { multiHit: { n: 3, mult: 0.6 } }, trade: true });
+  W('rci_bow_2', 'RCI転輪弓＋', 'bow', 44, 0, { desc: '命中した敵の素早さを2ターン35%下げる', fx: { onHit: { agi: -0.35, turns: 2 } }, trade: true });
+  W('macd_twin_2', 'MACD双剣＋', 'dagger', 40, 0, { desc: '前のターンにも攻撃していれば追撃（0.8倍）', fx: { followUp: 0.8 }, trade: true });
+  W('hidden_staff_2', 'ヒドゥンの魔杖＋', 'staff', 24, 0, { desc: '魔力+18。補助魔法を使った次のターン、攻撃魔法が1.7倍', mag: 18, fx: { supportBoost: 1.7 }, trade: true });
+  W('stoploss_dagger_2', '損切りの短剣＋', 'dagger', 36, 0, { desc: '防御した次のターン、通常攻撃の威力+45%', fx: { afterDefend: 0.45 }, trade: true });
+  K('shift_log', '作業日誌', '鉄鎖鉱山第三坑道の、落盤の日の作業日誌');
+  K('ore_chunk', '赤い鉱石', 'ヴェルムの鉱山で採れる、淡く光る鉱石。工匠が武器に使う');
+  K('dragon_scale', '竜の鱗', '竜脈洞窟で見つかる鱗。鍛冶街イグナスで武器を鍛え直すのに使う');
+  // ---- v5.5 リシア砂漠（第9章〜）・竜炎火山群島（第13章〜）の装備 ----
+  W('scimitar', '砂漠の曲刀', 'sword', 34, 3400, { desc: '砂都サハルの鍛冶が打つ曲刀' });
+  W('sun_spear', '陽炎の槍', 'spear', 32, 3200, { desc: '陽炎のように揺らめく穂先' });
+  W('caravan_bow', '隊商の弓', 'bow', 29, 2800, { desc: '隊商の護衛が使う短く強い弓' });
+  A('dune_cloak', '砂避けのマント', 'light', 22, 2400, { desc: '砂嵐を防ぐ厚手のマント。素早さ+2', agi: 2 });
+  A('sand_turban', '砂漠のターバン', 'hat', 7, 1400, { desc: '日差しと砂を防ぐ布' });
+  A('mirage_veil', '蜃気楼のヴェール', 'robe', 24, 0, { desc: '蜃気楼神殿の祭司の衣。魔力+6', mag: 6 });
+  W('dragon_axe', '竜骨の斧', 'axe', 50, 6600, { desc: '竜の骨を芯にした大斧' });
+  W('flame_claw', '炎の爪', 'claw', 42, 5600, { desc: '火山の鉄で打った爪' });
+  A('dragon_mail', '竜鱗の鎧', 'heavy', 38, 6800, { desc: '竜の鱗を重ねた鎧' });
+  A('ember_robe', '熾火のローブ', 'robe', 30, 5200, { desc: '熱に強い糸で織ったローブ。魔力+4', mag: 4 });
+  A('dragon_helm', '竜の兜', 'helm', 14, 3400, { desc: '竜の角をかたどった兜' });
+  W('ryumyaku_blade', '竜脈の剣', 'sword', 60, 0, { desc: '竜脈の最深部で眠っていた剣。「流れに逆らわぬ者の剣」' });
+  K('festival_ember', '祭りの火種', 'イグナスの火入れの祭りで、火口の祭壇の聖火を点し直す火種');
+  K('water_record', '水位の記録', 'サハルの水番所に残る、四十年分の井戸の水位の記録');
   A('shield_risk', 'リスク分散の盾', 'shield', 20, 0, { desc: '単体攻撃の被ダメージを20%軽減する盾。「ひとつの攻撃に全てを賭けない」', dmgReduce: 0.2 });
 
   var ITEM_LIST = Object.keys(ITEMS);
