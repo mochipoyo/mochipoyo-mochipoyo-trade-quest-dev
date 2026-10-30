@@ -36,4 +36,4 @@
 
 ### 2-3. 資料 `docs/3d/`
 
-`3D移行設計書.md`・`機能互換チェックリスト.md`・`アセット制作リスト.md`・`開発ロードマップ.md`・`Phase1_テスト結果.md`・`変更ファイル一覧.md`・`images/`（画面写真）
+`01_3d-design.md`・`02_feature-checklist.md`・`03_asset-list.md`・`04_roadmap.md`・`05_phase1-test-results.md`・`06_changed-files.md`・`images/`（画面写真）
