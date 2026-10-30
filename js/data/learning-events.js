@@ -18,7 +18,7 @@
       summary: 'EMA20/30/40の並びと傾き、グランビルの法則、押し目・戻り目との整合',
       lesson: ['【EMA20/30/40】上から20＞30＞40の順なら上昇の並び、20＜30＜40なら下降の並び。3本が絡み合っていれば方向感なし。', '並びだけでなく傾きも見る。3本が同じ方向に傾き、間隔が開いていくほどトレンドが強い。', '【グランビルの法則（基本）】上昇の並びの中で価格がEMAまで押して反発する場面は買いの候補。下降の並びで戻って反落する場面は売りの候補。EMAから大きく離れた場面での飛び乗りは避ける。', 'EMAの押し目・戻り目は、ダウ理論の押し目・戻り目と重なっているかを確認する。根拠が重なるほど優位性が高い。'],
       scenarios: ['clear_up', 'clear_down', 'up_pullback', 'down_rally', 'jump_in', 'up_ema_bounce', 'down_ema_reject', 'breakout_retest'], reward: { exp: 70, gold: 250, item: 'hi_potion' } },
-    { id: 'learn_mtf', chapter: 4, region: '時間軸の神殿', title: '時間軸の試練', topic: 'mtf', required: true, mapId: null, minScore: 60, ability: 'higher_tf_eye', next: 'learn_rci',
+    { id: 'learn_mtf', chapter: 4, region: '時の神殿（最深部）', title: '時間軸の試練', topic: 'mtf', required: true, mapId: 'temple_of_time_3', minScore: 60, ability: 'higher_tf_eye', next: 'learn_rci',
       summary: '日足・4時間足で環境認識、1時間足で確認、15分足・5分足でエントリー判断',
       lesson: ['【マルチタイムフレーム】日足・4時間足で大きな方向（環境）を認識し、1時間足で必要に応じて確認し、15分足・5分足でエントリーの判断をする。', '上位足と下位足の方向が一致した場面だけを狙う。不一致なら見送り。', '下位足だけを見て飛び乗ると、上位足の流れに逆らった「逆張り」になりやすい。'],
       scenarios: ['mtf_conflict', 'mtf_conflict_up', 'clear_up_5m', 'clear_down_5m', 'up_pullback_1h', 'regular_bull', 'regular_bear'], reward: { exp: 120, gold: 400, item: 'ether' } },
@@ -38,13 +38,17 @@
       summary: '判断の根拠を記録し、結果と照らして検証する。根拠のない判断を「記録」で見抜く',
       lesson: ['【記録】エントリーも見送りも、判断した理由（上位足の環境・波形・EMA・RCI・MACD）をその場で記録する。あとから理由を付け足さない。', '【検証】結果ではなく「根拠が揃っていたか」で振り返る。根拠が揃って負けたトレードは正しい。根拠がなくて勝ったトレードは間違い。', '【証拠】「なんとなく」「取り返したい」は根拠ではない。記録に書けない理由でのエントリーは見送る。', '帳簿と同じで、記録は書く人を守る。記録のない判断は、あとで誰にも（自分にも）検証できない。'],
       scenarios: ['mtf_conflict', 'div_against_htf', 'breakout_retest', 'reversal_confirmed_up', 'false_breakout', 'whipsaw', 'up_pullback_1h'], reward: { exp: 300, gold: 1200, item: 'elixir' } },
-    { id: 'learn_review', chapter: 9, region: '灰灯島アルナ（測量士の家）', title: '過去の検証の試練', topic: 'reason', required: true, mapId: 'aruna_house_iris', minScore: 60, next: null, review: true,
+    { id: 'learn_review', chapter: 9, region: '灰灯島アルナ（測量士の家）', title: '過去の検証の試練', topic: 'reason', required: true, mapId: 'aruna_house_iris', minScore: 60, next: 'learn_overfit', review: true,
       summary: '過去の自分の判断記録（分野ごとの正答率）を振り返り、苦手な分野の場面で判断する',
       lesson: ['【検証】トレード記録は、書いただけでは意味がない。分野ごとに「どこで間違えたか」を数える。', '【苦手の特定】正答率が低い分野＝自分の癖。上位足を見ない、RCIの到達だけで入る、根拠が揃わないのに入る……。', '【復習】苦手分野の場面を集中的に繰り返す。得意分野の練習は気持ちがいいが、成績は変わらない。', '廃墟の地図を描き続けるイーリスのように、失ったものを数えることから検証は始まる。'],
       scenarios: function () { var T = root.TradeEval, d = root.State.data; var weak = T.weakTopics ? T.weakTopics(d.trade) : []; var pick = { mtf: ['mtf_conflict', 'mtf_conflict_up', 'div_against_htf'], dow: ['clear_up', 'clear_down', 'range', 'false_breakout'], ema: ['up_ema_bounce', 'down_ema_reject', 'jump_in'], rci: ['rci_hot_trend', 'rci_cold_trend', 'up_pullback'], macd: ['hidden_bull', 'regular_bear', 'div_bear_against_htf'], swing: ['up_pullback_5m', 'down_rally_5m'], action: ['whipsaw', 'false_breakdown', 'breakout_retest'], reason: ['reversal_confirmed_up', 'reversal_confirmed_down'], risk: ['bad_rr', 'bad_rr_sell', 'pullback_tight_sl'], skip: ['jump_in_down', 'range_high', 'whipsaw'] };
         var out = []; weak.slice(0, 3).forEach(function (t) { (pick[t.key] || []).forEach(function (id) { if (out.indexOf(id) < 0) out.push(id); }); });
         if (out.length < 5) ['mtf_conflict', 'bad_rr', 'whipsaw', 'up_pullback', 'regular_bear', 'false_breakout'].forEach(function (id) { if (out.length < 6 && out.indexOf(id) < 0) out.push(id); }); return out.slice(0, 7); },
       reward: { exp: 400, gold: 1500, item: 'elixir' } },
+    { id: 'learn_overfit', chapter: 10, region: 'オラクル中枢（第3層）', title: '誤差ゼロの予測の試練', topic: 'action', required: true, mapId: 'oracle_core_3', minScore: 60, next: null, altSeed: true,
+      summary: '「過去の全場面に完璧に当てはまるルール」は、未見の場面では通用しない（過剰最適化）。未見の場面で自分の根拠で判断する',
+      lesson: ['【オラクルの予測】オラクルは過去の全場面に100%当てはまるルールを持っている。「この形のあとは必ず上がる」。だがそれは、過去の形に合わせて作ったルールだ。', '【過剰最適化】過去に完璧に当てはまるほど、未来には当てはまらない。ルールは「過去を説明する」のではなく「根拠を揃える」ためにある。', '【未見の場面】この試練は、これまでに見たことのない場面（同じ型の別の値動き）で出題される。覚えた答えではなく、上位足・波形・EMA・RCI・MACDの根拠で判断する。', '勝率100%のルールを売る者は、過去のチャートに線を引いているだけだ。'],
+      scenarios: ['mtf_conflict', 'false_breakout', 'false_breakdown', 'whipsaw', 'up_pullback', 'down_rally', 'breakout_retest', 'div_against_htf'], reward: { exp: 500, gold: 2000, item: 'elixir' } },
     // ---- 任意の練習（石碑）：短時間で挑戦。報酬は小さめ・初回のみ ----
     { id: 'practice_forest', chapter: 2, region: 'ダウの森', title: '波形の石碑', topic: 'dow', required: false, mapId: 'lost_forest', scenarios: ['clear_up', 'clear_down', 'range', 'up_pullback', 'range_high', 'clear_up_5m'], reward: { exp: 15, gold: 40 } },
     { id: 'practice_dow_road', chapter: 2, region: 'ダウの森', title: '旅人の石碑', topic: 'dow', required: false, mapId: 'world', scenarios: ['down_rally', 'false_breakout', 'clear_down', 'false_breakdown', 'clear_down_5m'], reward: { exp: 15, gold: 40 } },
@@ -56,6 +60,8 @@
     { id: 'practice_archive', chapter: 8, region: '地下記録庫', title: '記録庫の石碑', topic: 'swing', required: false, mapId: 'kalion_archive_2', scenarios: ['up_pullback', 'down_rally', 'hidden_bull', 'regular_bear', 'div_bear_against_htf'], reward: { exp: 70, gold: 250 } },
     { id: 'practice_islands', chapter: 9, region: '断裂群島', title: '灰灯島の石碑', topic: 'skip', required: false, mapId: 'world_islands', scenarios: ['whipsaw', 'jump_in', 'range', 'false_breakdown', 'bad_rr_sell'], reward: { exp: 80, gold: 300 } },
     { id: 'practice_ruins', chapter: 9, region: '廃墟の街', title: '時計塔の石碑', topic: 'mtf', required: false, mapId: 'aruna_ruins_2', scenarios: ['mtf_conflict', 'mtf_conflict_up', 'up_pullback_1h', 'div_against_htf', 'clear_down_5m'], reward: { exp: 90, gold: 350 } },
+    { id: 'practice_tempus', chapter: 10, region: '時の神殿領', title: '鐘の石碑', topic: 'mtf', required: false, mapId: 'world_tempus', scenarios: ['mtf_conflict', 'mtf_conflict_up', 'up_pullback_1h', 'clear_up_5m', 'clear_down_5m'], reward: { exp: 100, gold: 400 } },
+    { id: 'practice_zeromea', chapter: 10, region: 'ゼロメア', title: '演算の石碑', topic: 'action', required: false, mapId: 'world_machine', scenarios: ['false_breakout', 'whipsaw', 'jump_in', 'range_high', 'reversal_confirmed_down'], reward: { exp: 110, gold: 450 } },
     { id: 'practice_cave2', chapter: 5, region: 'RCIの洞窟', title: '深部の石碑', topic: 'rci', required: false, mapId: 'oblivion_cave_2', scenarios: ['down_rally', 'down_rally_5m', 'regular_bear', 'hidden_bear', 'bad_rr', 'mtf_conflict_up'], reward: { exp: 35, gold: 90 } }
   ];
 

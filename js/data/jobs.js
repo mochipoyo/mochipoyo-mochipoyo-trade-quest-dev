@@ -76,6 +76,15 @@
     stats: { hp: 30, mp: 9, atk: 8, def: 6, agi: 9, mag: 5 }, growth: { hp: 6.4, mp: 1.5, atk: 2.0, def: 1.5, agi: 2.2, mag: 1.0 },
     weapons: ['bow', 'dagger'], armors: ['light', 'hat', 'acc'],
     skills: [{ lv: 1, id: 'terrain_read' }, { lv: 5, id: 'range_shot' }, { lv: 9, id: 'survey_volley' }, { lv: 14, id: 'paralyze_shot' }], trait: '測量：ダンジョンの宝箱の位置がミニマップに見える（パッシブ）', unlock: { level: 10, flag: 'iris_joined' } };
+  // v5.3 新職業（第10・12章で解放）
+  JOBS.chronomancer = { name: '時詠み師', sprite: 'hero_priest', desc: '未来の可能性を読む神殿の魔法使い。行動順と補助に長ける。', role: '補助魔法・行動順',
+    stats: { hp: 24, mp: 16, atk: 4, def: 5, agi: 8, mag: 10 }, growth: { hp: 4.8, mp: 2.9, atk: 1.0, def: 1.3, agi: 1.8, mag: 2.4 },
+    weapons: ['staff'], armors: ['robe', 'hat', 'acc'],
+    skills: [{ lv: 1, id: 'foresight' }, { lv: 5, id: 'time_blessing' }, { lv: 10, id: 'delay' }, { lv: 16, id: 'chrono_burst' }], trait: '未来視：味方の行動順を操る', unlock: { level: 10, flag: 'sophia_joined' } };
+  JOBS.mechanist = { name: '機巧師', sprite: 'hero_hunter', desc: '機械を扱う技師。解析と機巧弾で戦う。', role: '遠距離・解析',
+    stats: { hp: 30, mp: 11, atk: 8, def: 7, agi: 7, mag: 8 }, growth: { hp: 6.0, mp: 2.0, atk: 1.9, def: 1.6, agi: 1.5, mag: 1.8 },
+    weapons: ['bow', 'staff', 'dagger'], armors: ['light', 'hat', 'acc'],
+    skills: [{ lv: 1, id: 'gear_shot' }, { lv: 5, id: 'analyze' }, { lv: 12, id: 'overdrive' }, { lv: 16, id: 'thunder' }], trait: '解析：機械系の敵の弱点を見抜きやすい', unlock: { level: 10, flag: 'io_joined' } };
   var JOB_LIST = Object.keys(JOBS);
   var STARTER_JOBS = ['warrior', 'mage', 'priest', 'monk', 'thief', 'merchant', 'hunter', 'knight'];
 

@@ -28,7 +28,7 @@
     opts = opts || {};
     var d = State.data;
     var id = opts.scenarioId || scenarioIds[Math.floor(Math.random() * scenarioIds.length)];
-    var seedOffset = opts.practice ? Math.floor(Math.random() * 6) : 0;
+    var seedOffset = opts.seedOffset !== undefined ? opts.seedOffset : (opts.practice ? Math.floor(Math.random() * 6) : 0);   // v5.3: 学習イベント側から別シードを指定できる
     var scn = Scenarios.build(id, seedOffset);
     var def = scn.def;
     var cur = { checkedHigherTF: false, hintLevel: 0, analysis: {}, reason: null, swing: { high: null, low: null }, pick: null };

@@ -26,7 +26,10 @@
     { vehicle: ['sailboat', 'galleon'], from: { map: 'world_grania', edge: 'west' }, to: { map: 'world', edge: 'east' }, name: '西の海路（アルカディア相場大陸へ）' },
     // v5.2: 遠洋航路（遠洋航海船のみ）
     { vehicle: ['galleon'], from: { map: 'world', edge: 'south' }, to: { map: 'world_islands', edge: 'north' }, name: '南の遠洋航路（断裂群島へ）' },
-    { vehicle: ['galleon'], from: { map: 'world_islands', edge: 'north' }, to: { map: 'world', edge: 'south' }, name: '北の遠洋航路（アルカディア相場大陸へ）' }
+    { vehicle: ['galleon'], from: { map: 'world_islands', edge: 'north' }, to: { map: 'world', edge: 'south' }, name: '北の遠洋航路（アルカディア相場大陸へ）' },
+    // v5.3: 時の神殿領へ（失われた航海図＝main_8 達成後）
+    { vehicle: ['galleon'], from: { map: 'world_islands', edge: 'east' }, to: { map: 'world_tempus', edge: 'west' }, name: '東の遠洋航路（時の神殿領へ）', needFlag: 'yorn_letter_done' },
+    { vehicle: ['galleon'], from: { map: 'world_tempus', edge: 'west' }, to: { map: 'world_islands', edge: 'east' }, name: '西の遠洋航路（断裂群島へ）' }
   ];
   root.VEHICLES = VEHICLES; root.SEA_ROUTES = SEA_ROUTES;
 })(typeof window !== 'undefined' ? window : globalThis);

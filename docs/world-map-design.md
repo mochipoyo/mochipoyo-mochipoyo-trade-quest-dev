@@ -28,7 +28,7 @@
 - 第4章：小型帆船で world の沿岸と東の海路 → world_grania（第5章）
 - 第6〜7章：world_grania の北の山道（ダンジョン「灰の峠」）→ world_kalion（データのみ）
 - 第8章：遠洋航海船で world 南 → world_islands。砂漠・竜炎・雪原も遠洋船で
-- 第10章：world_tempus（雪原から東の道）→ 転移門 → world_machine
+- 第10章：world_tempus（v5.3：断裂群島の東端から遠洋航路。雪原経由は未実装）→ 転移門 → world_machine（v5.3 実装）
 - 第14章：飛空艇で world_sky、第15章：world_dark
 
 ## 3. 拠点（町・村・城）一覧：24か所以上
@@ -51,11 +51,11 @@
 | 14 | world_desert | mirror_market | 鏡の市場 | 9〜 | 未着手 |
 | 15 | world_snow | ciel_port | 氷港シエル | 9〜 | 未着手 |
 | 16 | world_snow | frost_town | 記憶を売る町フロスト | 9〜 | 未着手 |
-| 17 | world_tempus | tempus_city | 鐘都テンプス | 10 | 未着手 |
+| 17 | world_tempus | tempus_city | 鐘都テンプス | 10 | v5.3 実装 |
 | 18 | world_magicka | magicka_city | 魔導都マクディア | 13 | 未着手 |
-| 19 | world_machine | node_city | 演算都市ノード | 11 | 未着手 |
-| 20 | world_machine | scheduled_district | 明日が決まっている町（第7居住区） | 11 | 未着手 |
-| 21 | world_machine | no_failure_school | 失敗を禁止された学校 | 11 | 未着手 |
+| 19 | world_machine | node_city | 演算都市ノード | 11 | v5.3 実装 |
+| 20 | world_machine | scheduled_district | 明日が決まっている町（第7居住区） | 11 | v5.3 実装 |
+| 21 | world_machine | no_failure_school | 失敗を禁止された学校（屋上あり） | 11 | v5.3 実装 |
 | 22 | world_dragon | ignas_town | 鍛冶街イグナス | 13〜 | 未着手 |
 | 23 | world_sky | star_tower_camp | 星見塔の野営地 | 14 | 未着手 |
 | 24 | world_dark | dark_camp | 虚無の荒野の前線基地 | 15 | 未着手 |
@@ -87,13 +87,13 @@
 | 20 | world_snow | frozen_clock_tower | 凍結時計塔（隠し3） | 4 | 時限ギミック | 未着手 |
 | 21 | world_snow | spirit_forest | 精霊の森 | 2 | 精霊の試練 | 未着手 |
 | 22 | world_snow | memory_vault | 記憶庫 | 1 | 選択肢 | 未着手 |
-| 23 | world_tempus | time_bank_vault | 時間銀行 地下契約室 | 2 | 契約の書き換え | 未着手 |
-| 24 | world_tempus | temple_of_time | 時の神殿 | 3 | 未来の回廊×3・MTF試練 | 未着手 |
+| 23 | world_tempus | time_bank_vault_1/2 | 時間銀行 地下契約室 | 2 | 契約の書き換え | v5.3 実装 |
+| 24 | world_tempus | temple_of_time_1/2/3 | 時の神殿 | 3 | 未来の回廊×3・時の守護者・MTF試練 | v5.3 実装 |
 | 25 | world_magicka | forbidden_archive | 禁書庫 | 3 | 裏切り | 未着手 |
 | 26 | world_magicka | origin_lab | 起源の実験室 | 2 | 師の手記 | 未着手 |
-| 27 | world_machine | oracle_core | オラクル中枢 | 3 | 認証鍵・対話 | 未着手 |
-| 28 | world_machine | auto_factory | 自動工場 | 2 | 機械敵 | 未着手 |
-| 29 | world_machine | old_city | 廃棄された旧都市（隠し4：深層） | 3 | 旧記録 | 未着手 |
+| 27 | world_machine | oracle_core_1/2/3 | オラクル中枢 | 3 | 認証鍵・テオドルの記録・防衛機構・対話 | v5.3 実装 |
+| 28 | world_machine | auto_factory_1/2 | 自動工場 | 2 | 機械敵・制御室 | v5.3 実装（任意） |
+| 29 | world_machine | old_city_1/2 | 廃棄された旧都市 | 2 | ドローン群・旧記録 | v5.3 実装 |
 | 30 | world_dragon | dragon_vein_cave | 竜脈洞窟（隠し5：最深部） | 4 | 竜との対話 | 未着手 |
 | 31 | world_dragon | crater_altar | 火口の祭壇 | 1 | 祭り | 未着手 |
 | 32 | world_sky | star_tower | 星見塔 | 3 | 記録 | 未着手 |

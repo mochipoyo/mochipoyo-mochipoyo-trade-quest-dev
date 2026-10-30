@@ -90,6 +90,14 @@
     terrain_read: { name: '地形読み', kind: 'buff', target: 'allies', mp: 4, buff: { agi: 0.25, def: 0.1 }, turns: 3, desc: '足場を読み、味方全体の素早さと防御を少し上げる', anim: 'buff' },
     range_shot: { name: '測距射撃', kind: 'attack', target: 'enemy', mp: 6, power: 1.9, element: 'none', desc: '距離を測って急所を射抜く', anim: 'arrow' },
     survey_volley: { name: '測量斉射', kind: 'attack', target: 'enemies', mp: 10, power: 1.3, element: 'none', desc: '敵全体に矢を射かける', anim: 'arrow' },
+    // v5.3 時詠み師・機巧師
+    foresight: { name: '未来視', kind: 'buff', target: 'ally', mp: 4, buff: { agi: 0.6 }, turns: 2, desc: '味方1人の素早さを大きく上げ、先に動けるようにする', anim: 'buff' },
+    time_blessing: { name: '時の加護', kind: 'buff', target: 'allies', mp: 7, buff: { agi: 0.3, mdef: 0.15 }, turns: 3, desc: '味方全体の素早さと魔法防御を上げる', anim: 'buff' },
+    delay: { name: '遅延', kind: 'debuff', target: 'enemy', mp: 5, buff: { agi: -0.5 }, turns: 2, desc: '敵1体の素早さを大きく下げ、行動を遅らせる', anim: 'dark' },
+    chrono_burst: { name: '時間の奔流', kind: 'magic', target: 'enemies', mp: 12, power: 1.4, element: 'light', desc: '時間の奔流で敵全体を押し流す', anim: 'light' },
+    gear_shot: { name: '機巧弾', kind: 'attack', target: 'enemy', mp: 3, power: 1.6, element: 'none', desc: '無属性の遠距離弾', anim: 'arrow' },
+    analyze: { name: '解析', kind: 'special', target: 'enemy', mp: 3, scan: true, expose: true, desc: '敵を解析し、弱点を暴いて防御を崩す', anim: 'buff' },
+    overdrive: { name: '高度な機巧', kind: 'magic', target: 'enemies', mp: 12, power: 1.5, element: 'thunder', desc: '機巧の全出力で敵全体に雷撃', anim: 'thunder' },
     macd_hidden_strike: { name: 'MACDヒドゥンストライク', kind: 'attack', target: 'enemy', mp: 9, power: 2.2, element: 'light', desc: '隠れた継続の力を一点に集める特殊攻撃', anim: 'light' }
   };
 

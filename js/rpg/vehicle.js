@@ -69,7 +69,7 @@
   // 海路：端に到達したか
   Vehicle.routeAt = function (map, x, y) {
     var d = D(); var id = d.aboard; if (!id) return null;
-    var routes = (root.SEA_ROUTES || []).filter(function (r) { return r.from.map === map.id && r.vehicle.indexOf(id) >= 0; });
+    var routes = (root.SEA_ROUTES || []).filter(function (r) { return r.from.map === map.id && r.vehicle.indexOf(id) >= 0 && (!r.needFlag || d.flags[r.needFlag]); });
     for (var i = 0; i < routes.length; i++) { var e = routes[i].from.edge; if ((e === 'east' && x >= map.w - 1) || (e === 'west' && x <= 0) || (e === 'north' && y <= 0) || (e === 'south' && y >= map.h - 1)) return routes[i]; }
     return null;
   };

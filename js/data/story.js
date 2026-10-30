@@ -16,6 +16,9 @@
     // v5.2 新しい仲間（第8章）
     nagi: { name: 'ナギ', job: 'navigator', sprite: 'sailor', joinLevel: 19, personality: '快活で物怖じしない', background: '港町マリナ育ちの船乗り。父が残した外海の航路図を継ぎ、断裂群島への航海を夢見てきた。', bio: '航海士。海上のエンカウントを減らし、味方の回避を上げる。' },
     iris: { name: 'イーリス', job: 'surveyor', sprite: 'villager_f', joinLevel: 20, personality: '無口だが観察が鋭い', background: '灰灯島の生き残り。ヨルン老人の孫。災害で失われた街の地図を描き続けている。', bio: '測量士。ダンジョンの宝箱の位置が見え、遠距離攻撃が得意。' },
+    // v5.3 新しい仲間（第10・12章）
+    sophia: { name: 'ソフィア', job: 'chronomancer', sprite: 'priest', joinLevel: 23, personality: '静かで、断言しない', background: '時の神殿の守護者。未来の可能性を見るが、どれも確定していないことを知っている。', bio: '時詠み師。味方の行動順を操り、全体を支援する。' },
+    io: { name: 'イオ', job: 'mechanist', sprite: 'child', joinLevel: 25, personality: '素直で、問いが多い', background: 'オラクル製の人工生命体。命令に従うだけだったが、主人公たちとの出会いで「自分の意思」を考え始める。', bio: '機巧師。解析と機巧弾で戦う。' },
     ord: { name: 'オルド', job: 'oath_knight', sprite: 'guard', joinLevel: 17, personality: '寡黙で誠実', background: '王都の親衛隊にいた騎士。命令で民の財産を没収した過去を償うため、主人公に剣を預ける。', bio: '誓約騎士。仲間をかばい、反撃する盾役。' }
   };
 
@@ -41,13 +44,24 @@
     main_9: { title: '海底の記憶', desc: '地下施設で見つけた古代の潜航装置で、沈んだ都エルミナへ。記憶の図書館の3つの区画を読み、封印区画でミナの父の最後の記録を見つける。', main: true, chapter: 9, reward: { exp: 1400, gold: 3000, item: 'undersea_record' }, next: 'main_10',
       steps: [['submarine_owned', '地下施設で古代の潜航装置を手に入れる'], ['elmina_arrived', '灰灯島の南岸の台座から潜航し、海底都市エルミナに着く'], ['library_1', '記憶の図書館・第一区画（予測の記録）を読む'], ['library_2', '第二区画（避難の記録）を読む'], ['library_3', '第三区画（失敗の記録）を読む'], ['seal_opened', '司書の残像から封印区画の鍵を受け取り、扉を開ける'], ['library_guardian_defeated', '図書館の守護機構を倒す'], ['mina_father_record', '封印区画の最後の記録を読み、記憶の扱いを決める']],
       after: '大災害がクリスタルの異常（未来を固定する試み）と関係していたことを知る。' },
-    main_10: { title: '選ばれなかった未来', desc: '時の神殿の試練を突破し、未来が確定していないことを知る。（今後の更新）', main: true, chapter: 10, future: true, reward: { exp: 1600, gold: 3500 }, next: 'main_11' },
-    main_11: { title: '理想の島', desc: '異空間の島ゼロメアで、AI「オラクル」が統治する都市を調査する。（今後の更新）', main: true, chapter: 11, future: true, reward: { exp: 1800, gold: 4000 }, next: 'main_12' },
-    main_12: { title: 'オラクルの真実', desc: 'AI中枢で統治の仕組みを解明し、人間が選択権を取り戻す方法を探る。（今後の更新）', main: true, chapter: 12, future: true, reward: { exp: 2000, gold: 4500 }, next: 'main_13' },
+    main_10: { title: '選ばれなかった未来', desc: '断裂群島の東の遠洋航路で時の神殿領へ。時間を担保にする銀行を調べ、時の神殿の三つの回廊で「栄える未来」「滅ぶ未来」「決まらない未来」を見る。守護者と時間軸の試練を越え、転移門を開く。', main: true, chapter: 10, reward: { exp: 1600, gold: 3500, item: 'crystal_shard' }, next: 'main_11', learn: 'learn_mtf',
+      steps: [['tempus_arrived', '鐘都テンプスに入り、時間銀行の噂を聞く'], ['time_bank_freed', '時間銀行の地下契約室で契約書を書き換え、預けられた時間を返す'], ['corridor_1', '時の神殿 第一の回廊：栄える未来を見る'], ['corridor_2', '第二の回廊：滅ぶ未来を見る'], ['corridor_3', '第三の回廊：何も決まっていない未来を見る'], ['time_guardian_defeated', '最深部で時の守護者を倒す'], ['temple_trial_passed', '守護者の石碑で時間軸の試練（マルチタイムフレーム）に合格する'], ['sophia_joined', '時詠み師ソフィアと話す']],
+      after: '転移門が開く。鐘都の人々は「確実な未来」の代わりに、自分で選ぶ明日を持て余す。' },
+    main_11: { title: '理想の島', desc: '転移門の先、異空間の島ゼロメア。AI「オラクル」が職業も移動も決める都市で、監視ドローンを避けながら住民の話を聞き、人工生命体イオと出会い、旧都市でオラクル以前の記録を見つける。', main: true, chapter: 11, reward: { exp: 1800, gold: 4000, item: 'auth_key' }, next: 'main_12',
+      steps: [['zeromea_arrived', '転移門からゼロメアに入る（未登録個体としてドローンに追われる）'], ['interview_1', '演算都市ノードの住民の話を聞く'], ['interview_2', '第7居住区の住民の話を聞く'], ['interview_3', '失敗を禁止された学校の生徒の話を聞く'], ['io_met', '学校の屋上で人工生命体イオと出会う'], ['drone_swarm_defeated', '旧都市の最深部で監視ドローン群を倒す'], ['old_city_record', '旧都市の記録（オラクル以前の島）を読む'], ['io_key', 'イオに旧都市の記録を見せ、中枢の認証鍵を受け取る']],
+      after: 'イオが「自分の意思」を考え始める。中枢への扉が開く。' },
+    main_12: { title: 'オラクルの真実', desc: 'オラクル中枢の3層を登り、AIと対話する。セリスの師テオドルの記録を読み、統治をどう再設計するかを選ぶ。「AIによる予測の限界・過剰最適化」の試練。', main: true, chapter: 12, reward: { exp: 2000, gold: 5000, item: 'oracle_charter' }, next: 'main_13', learn: 'learn_overfit',
+      steps: [['core_1', 'オラクル中枢 第1層を越える'], ['core_2', '第2層でテオドルの記録を読む'], ['core_3', '第3層で中枢防衛機構を倒す'], ['overfit_seen', 'オラクルの「誤差ゼロの予測」の試練（過剰最適化）を受ける'], ['oracle_dialogue', 'オラクルと対話する'], ['zeromea_choice_done', '統治の再設計を選ぶ（権限制限／段階的移行／現状維持）'], ['io_joined', 'イオと話す']],
+      after: '選択によって、ゼロメアの住民の生活と対立が変わる。イオが仲間になる。' },
     main_13: { title: '魔導王国の秘密', desc: 'マクディア魔導王国の禁書庫でクリスタルの起源を発見する。（今後の更新）', main: true, chapter: 13, future: true, reward: { exp: 2200, gold: 5000 }, next: 'main_14' },
     main_14: { title: '天空への航路', desc: 'クリスタルの欠片を集め、古代の飛空艇を復活させる。（今後の更新）', main: true, chapter: 14, future: true, reward: { exp: 2500, gold: 6000 }, next: 'main_15' },
     main_15: { title: '暗黒大陸', desc: '飛空艇で暗黒大陸へ。魔王城への道を開く。（今後の更新）', main: true, chapter: 15, future: true, reward: { exp: 3000, gold: 7000 }, next: 'main_16' },
     main_16: { title: '均衡の天秤', desc: '相場魔王との最終決戦と、クリスタルをどうするかの選択。（今後の更新）', main: true, chapter: 16, future: true, reward: { exp: 5000, gold: 10000 }, next: null },
+    // ===== 第10〜12章のサブクエスト =====
+    time_bank: { title: '時間銀行の契約', desc: '鐘都テンプスの時間銀行。明日を担保に取られた住民の契約書を、地下契約室で書き換える。', reward: { exp: 500, gold: 1500, item: 'temporal_robe' } },
+    sophia_lucia: { title: '見える未来と選ぶ未来', desc: 'ソフィアとルシアを連れて時の神殿の第三の回廊へ。「読む」ことと「決める」ことについて語り合う。', reward: { exp: 400, gold: 0, item: 'chrono_staff' }, companion: 'lucia' },
+    no_failure_school: { title: '失敗を禁止された学校', desc: 'ゼロメアの学校で、失敗が記録されない授業を見る。生徒に「失敗の記録」の意味を伝える。', reward: { exp: 500, gold: 1200, item: 'gear_bow' } },
+    seris_master: { title: 'セリスの師', desc: 'セリスを連れてオラクル中枢の第2層へ。師テオドルの記録を読み、「師は正しかったのか」に向き合う。', reward: { exp: 500, gold: 0, item: 'amulet_mind' }, companion: 'seris' },
     // ===== 第8〜9章のサブクエスト =====
     castaway: { title: '漂流者の帰還', desc: '断裂群島の東の小島で見つけた漂流者を、灰灯島アルナの村まで送り届ける。', reward: { exp: 300, gold: 600, item: 'sea_coat' } },
     lantern_night: { title: '港の灯り', desc: '毎晩ひとりで港に灯りをともすヨルン老人の話を聞き、廃墟で息子の手紙を見つけて届ける。', reward: { exp: 400, gold: 0, item: 'amulet_life' } },
@@ -94,9 +108,9 @@
     { id: 7, title: '第七章　奪われた財産と王国の裁定', flag: 'kalion_capital_open' },
     { id: 8, title: '第八章　半分が死んだ島', flag: 'galleon_ready' },
     { id: 9, title: '第九章　海底の記憶', flag: 'submarine_owned' },
-    { id: 10, title: '第十章　時の神殿と選ばれなかった未来', flag: 'tempus_open', future: true },
-    { id: 11, title: '第十一章　AIが統治する理想の島', flag: 'zeromea_open', future: true },
-    { id: 12, title: '第十二章　誤差のない未来', flag: 'oracle_core_open', future: true },
+    { id: 10, title: '第十章　時の神殿と選ばれなかった未来', flag: 'tempus_arrived' },
+    { id: 11, title: '第十一章　AIが統治する理想の島', flag: 'zeromea_arrived' },
+    { id: 12, title: '第十二章　誤差のない未来', flag: 'core_1' },
     { id: 13, title: '第十三章　魔導王国の裏切り', flag: 'magicka_open', future: true },
     { id: 14, title: '第十四章　天空の境界', flag: 'airship_ready', future: true },
     { id: 15, title: '第十五章　暗黒大陸と最後の選択', flag: 'dark_open', future: true },
