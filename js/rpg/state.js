@@ -5,11 +5,14 @@
   'use strict';
 
   var Actors = root.Actors, ITEMS = root.ITEMS, COMPANIONS = root.COMPANIONS, TradeEval = root.TradeEval, CONFIG = root.CONFIG;
-  var KEY_PREFIX = 'mtq-rpg-v2-slot-';   // 新セーブキー（旧 'mochipoyo-trade-quest-save-v1' は破壊しない）
+  var NORMAL_PREFIX = 'mtq-rpg-v2-slot-';   // 新セーブキー（旧 'mochipoyo-trade-quest-save-v1' は破壊しない）
+  // v5.6 確認用（URL に ?debug=1）：セーブは通常のデータとは別の場所に保存し、通常のセーブを書き換えない
+  var DEBUG = !!(root.location && /[?&]debug=1(?:&|$)/.test(root.location.search || ''));
+  var KEY_PREFIX = DEBUG ? 'mtq-rpg-v2-debug-slot-' : NORMAL_PREFIX;
   var LEGACY_KEY = 'mochipoyo-trade-quest-save-v1';
   var SAVE_VERSION = 3;   // 3: 町・城の2倍拡大（座標を補正）
 
-  var State = { data: null };
+  var State = { data: null, debug: DEBUG };
 
   State.newGame = function (name, job) {
     var hero = Actors.create('hero', name, job, 1);
@@ -57,6 +60,13 @@
   State.slotInfo = function (slot) {
     try { var raw = root.localStorage ? root.localStorage.getItem(key(slot)) : null; if (!raw) return null; var d = JSON.parse(raw);
       return { name: d.hero.name, level: d.hero.level, job: d.hero.job, map: d.pos.map, gold: d.gold, savedAt: d.savedAt, playTime: d.playTime || 0, party: d.party.length }; } catch (e) { return null; }
+  };
+  // 確認用：通常のセーブを読むだけ（書き込みはしない）
+  State.loadNormal = function (slot) {
+    try { var raw = root.localStorage ? root.localStorage.getItem(NORMAL_PREFIX + slot) : null; if (!raw) return null; return State.migrate(JSON.parse(raw)); } catch (e) { return null; }
+  };
+  State.normalSlotInfo = function (slot) {
+    try { var raw = root.localStorage ? root.localStorage.getItem(NORMAL_PREFIX + slot) : null; if (!raw) return null; var d = JSON.parse(raw); return { name: d.hero.name, level: d.hero.level, map: d.pos.map }; } catch (e) { return null; }
   };
   State.deleteSlot = function (slot) { try { root.localStorage.removeItem(key(slot)); } catch (e) { /* ignore */ } };
   State.exportJSON = function () { return JSON.stringify(State.data, null, 2); };
