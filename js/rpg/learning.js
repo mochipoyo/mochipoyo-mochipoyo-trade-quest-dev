@@ -30,6 +30,8 @@
     }
     // v5.2: 検証の試練（learn_review）：挑戦前に分野ごとの正答率を見せ、苦手分野からシナリオを選ぶ
     if (e.review) { var ts = root.TradeEval.topicSummary(d.trade); await Win.message(['【これまでの判断記録】'].concat(ts.map(function (t) { return t.label + '：' + (t.plays ? Math.round((t.acc || 0) * 100) + '%（' + t.plays + '回）' : '記録なし') + ' ' + t.level; })).concat(['苦手な分野の場面から出題する。']), { name: 'イーリス' }); }
+    // v5.4: 感情の試練（learn_emotion）：挑戦前に「連敗の幻」を見せる
+    if (e.tilt) { await Win.message(['門の石碑が黒く光った。……目の前に、チャートの幻が浮かぶ。', '一回目：損切り。−2%。', '二回目：損切り。−2%。', '三回目：損切り。−2%。', '……「三連敗だ。次で取り返せ。ロットを三倍にすれば、一回で全部戻る」', '囁きが聞こえる。次の場面が来た。']); }
     var scnList = typeof e.scenarios === 'function' ? e.scenarios() : e.scenarios;
     var topts = { title: e.title, minScore: pass, practice: !e.required }; if (e.altSeed) topts.seedOffset = 1 + Math.floor(Math.random() * 5);   // v5.3: 未見の場面（別シード）で出題
     var res = await root.TradeUI.trial(scnList, topts);

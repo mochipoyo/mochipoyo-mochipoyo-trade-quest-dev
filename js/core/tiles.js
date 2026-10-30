@@ -169,6 +169,9 @@
   def('tree_small', { ch: '6', solid: true, paint: function (g) { grassBase(g, 0); treeOn(g, 0, 8, 8, 4, '#3f8a36', '#5fb34a', '#2a5a28', '#6a4a2a'); } });
 
   // ===== ワールドマップのアイコン =====
+  // v5.4: 雲海（天空群島。歩けない・船も進めない。飛空艇だけが上を飛ぶ）と、暗黒大陸の荒れ地
+  def('cloud', { ch: '7', solid: true, anim: true, paint: function (g, v, f) { g.fill('#cfe0f4'); g.speckle(10, ['#e8f2ff', '#b8cce6', '#ffffff']); for (var i = 0; i < 2; i++) { var y = (4 + i * 7 + f) % 16; g.hline((i * 5 + f * 2) % 10, y, 6, '#ffffff'); } } });
+  def('darkland', { ch: '+', variants: 3, paint: function (g, v) { g.fill(['#3a2e44', '#352a40', '#3e3248'][v % 3]); g.speckle(14, ['#4a3a56', '#2a2234', '#5a4466']); g.px(4 + v, 6, '#7a4a8a'); g.px(11, 10 + v, '#24202c'); } });
   def('ash', { ch: '8', variants: 3, paint: function (g, v) { g.fill(['#6e6a66', '#716d68', '#6a6662'][v % 3]); g.speckle(14, ['#7e7a74', '#5e5a56', '#8a857e']); g.px(3 + v, 5, '#4e4a46'); g.px(11, 9 + v, '#4e4a46'); } });
   def('slag', { ch: '9', solid: true, variants: 2, paint: function (g, v) { g.fill('#6e6a66'); g.speckle(8, ['#7e7a74', '#5e5a56']); g.disc(8, 9, 6, '#3a3634'); g.disc(7, 8, 4, '#4a4642'); g.px(6, 6, '#5a5652'); g.hline(3, 14, 10, '#2a2826'); if (v) g.px(12, 4, '#8a2a1a'); } });
   def('village', { ch: '1', paint: function (g) { grassBase(g, 0); g.rect(3, 8, 10, 7, '#c9b89a'); g.rect(3, 8, 10, 1, '#e0d0b0'); for (var y = 2; y < 8; y++) g.hline(8 - (y - 2) - 1, y, (y - 2) * 2 + 3, '#b8403f'); g.rect(7, 11, 3, 4, '#5a3a1a'); g.rect(4, 10, 2, 2, '#8fd0ff'); g.rect(11, 10, 2, 2, '#8fd0ff'); } });

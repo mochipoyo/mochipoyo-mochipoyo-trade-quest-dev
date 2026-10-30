@@ -156,6 +156,7 @@
         root.Vehicle.syncToPlayer(m, p.x, p.y);
         var route = root.Vehicle.routeAt(m, p.x, p.y);
         if (route) { var arr = root.Vehicle.arrival(route, p.x, p.y); if (arr) { World.busy = true; Win.message([route.name + '。' + (root.MAP_DEFS[arr.map] || {}).name + 'の海域に入った。']).then(function () { World.busy = false; World.doWarp({ to: arr.map, tx: arr.x, ty: arr.y }); }); return; } }
+        if (root.Vehicle.flies()) { World.updatePlaceLabel(); if (root.Minimap) root.Minimap.onStep(m, p); return; }   // v5.4: 飛行中は町・洞窟・イベント・エンカウントなし
         var drift = root.Vehicle.drift(m, p.x, p.y);   // v5.2: 外海の海流・嵐
         if (drift) { p.x = drift.x; p.y = drift.y; p.px = p.x * 32; p.py = p.y * 32; root.Vehicle.syncToPlayer(m, p.x, p.y); Win.toast(drift.text); if (!d.flags.drift_seen) { d.flags.drift_seen = true; World.busy = true; Win.message(['外海の海流に船が流された。', '外海では海流に流されることがある。嵐に遭うと大きく流される。航海士がいれば海流を読んで避けやすい。']).then(function () { World.busy = false; }); return; } }
       }
@@ -223,6 +224,10 @@
   // 目の前を調べる
   World.interact = function () {
     var p = World.player, m = World.map; var d = delta(p.dir); var fx = p.x + d[0], fy = p.y + d[1];
+    if (State.data.aboard && root.Vehicle && root.Vehicle.flies()) {   // v5.4: 飛空艇は決定キーで着陸
+      if (root.Vehicle.land(m, p.x, p.y)) { Win.toast('着陸した'); if (root.Audio) root.Audio.sfx('step'); World.updatePlaceLabel(); State.autosave(); } else Win.toast('ここには着陸できない（草原・砂地・道などの平地のみ）');
+      return;
+    }
     var npc = m.npcAt(fx, fy);
     // カウンター越しに店主と話せる
     if (!npc && m.tile(fx, fy) === 'counter') npc = m.npcAt(fx + d[0], fy + d[1]);
@@ -262,8 +267,8 @@
     var b = World.map.buildingNear(World.player.x, World.player.y);
     var w = !b && World.map.warpAt(World.player.x, World.player.y + (World.player.dir === 'up' ? -1 : 0));
     var text = b ? b.name : (w && w.name ? w.name : '');
-    if (!text && State.data && State.data.aboard && root.Vehicle) text = root.Vehicle.label() + '　隣の陸へ進むと上陸';
-    else if (!text && root.Vehicle && root.Vehicle.at(World.map.id, World.player.x + World.delta(World.player.dir)[0], World.player.y + World.delta(World.player.dir)[1])) text = '船に乗る（そのまま進む）';
+    if (!text && State.data && State.data.aboard && root.Vehicle) text = root.Vehicle.label() + (root.Vehicle.flies() ? '　決定キーで着陸（平地のみ）' : '　隣の陸へ進むと上陸');
+    else if (!text && root.Vehicle && root.Vehicle.at(World.map.id, World.player.x + World.delta(World.player.dir)[0], World.player.y + World.delta(World.player.dir)[1])) text = (root.Vehicle.at(World.map.id, World.player.x + World.delta(World.player.dir)[0], World.player.y + World.delta(World.player.dir)[1]) === 'airship' ? '飛空艇に乗る' : '船に乗る') + '（そのまま進む）';
     if (el.textContent !== text) el.textContent = text;
     el.classList.toggle('show', !!text);
   };

@@ -13,7 +13,7 @@
   /* ---------- 地形の色分け（タイル名 → 色・記号） ---------- */
   var C = {
     grass: '#4f9a3f', grass2: '#4f9a3f', crops: '#8aa84a', flowerbed: '#6fb04a', bush: '#2f7a30', tree_small: '#2f7a30', tree: '#1f5a2a', forest: '#1a4a22',
-    hill: '#7a8a4a', mountain: '#8a7a6a', cliff: '#6a5a4a', sand: '#d8c070', snow: '#e8f0ff', lava: '#d8401a', water: '#1f4f9a', deep: '#122f6a', shallow: '#4f8fe0', bridge: '#8a5a30', dock: '#8a5a30',
+    hill: '#7a8a4a', mountain: '#8a7a6a', cliff: '#6a5a4a', sand: '#d8c070', snow: '#e8f0ff', lava: '#d8401a', water: '#1f4f9a', deep: '#122f6a', cloud: '#cfe0f4', darkland: '#3a2e44', shallow: '#4f8fe0', bridge: '#8a5a30', dock: '#8a5a30',
     road: '#b08a5a', path_stone: '#b8a890', stone: '#9a9aa8', floor_wood: '#b8a080', floor_stone: '#a8a8b8', carpet: '#a04a4a',
     wall: '#3a3a4a', wall_wood: '#4a3a2a', castle_wall: '#4a4a5a', roof_red: '#8a6a4a', roof_blue: '#8a6a4a', roof_green: '#8a6a4a', bld_block: '#8a6a4a', bld_door: '#e8c15a', door: '#e8c15a', door_locked: '#c94a4a', gate: '#c9a24a',
     window: '#6a6a7a', counter: '#6a6a7a', table: '#6a6a7a', bed: '#6a6a7a', bookshelf: '#6a6a7a', pillar: '#6a6a7a', fountain: '#4f8fe0', torch: '#8a8a98', crystal: '#9fd0ff', sign: '#6a6a7a', barrel: '#6a6a7a', crate: '#6a6a7a', bench: '#6a6a7a', stall: '#c96b2a', lamp: '#6a6a7a', well: '#6a6a7a', fence: '#7a6a5a', lever: '#6a6a7a',

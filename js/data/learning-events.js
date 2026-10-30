@@ -26,10 +26,10 @@
       summary: 'RCI9、±70到達後の反転、トレンド方向との整合、単純な逆張りの危険',
       lesson: ['【RCI(9)】+70以上は買われすぎ圏、−70以下は売られすぎ圏。ただし到達「だけ」では根拠にならない。', '強いトレンドでは+70に張り付いたまま上昇が続く。+70だから売る、という逆張りは危険。', '使い方は「上位足の方向と同じ向きに、±70圏から反転し始めたのを確認する」。上昇トレンドの押し目で−70圏から上向きに反転した場面などが候補。', '反転の確認がない、またはトレンド方向と逆の反転はエントリーしない。'],
       scenarios: ['up_pullback', 'down_rally', 'rci_hot_trend', 'rci_cold_trend', 'up_pullback_5m', 'down_rally_5m', 'regular_bull', 'regular_bear'], reward: { exp: 150, gold: 500, item: 'ether' } },
-    { id: 'learn_macd', chapter: 6, region: 'MACDの塔', title: 'MACDの試練', topic: 'macd', required: true, mapId: null, minScore: 60, ability: 'macd_hidden_strike', next: 'learn_risk',
-      summary: 'MACD(6,13,4)、通常・ヒドゥンダイバージェンス、波形・上位足との整合',
-      lesson: ['【MACD(6,13,4)】通常ダイバージェンス：価格が安値を切り下げているのにMACDが切り上げ（強気）／価格が高値を切り上げているのにMACDが切り下げ（弱気）。勢いの衰えを示す。', '【ヒドゥンダイバージェンス】価格が安値を切り上げているのにMACDが切り下げ（強気）／価格が高値を切り下げているのにMACDが切り上げ（弱気）。トレンド継続を示す。', 'ダイバージェンス単独では使わない。波形（ダウ理論）と上位足の方向に整合して初めて根拠になる。'],
-      scenarios: ['hidden_bull', 'hidden_bear', 'regular_bull', 'regular_bear', 'div_against_htf', 'div_bear_against_htf'], reward: { exp: 200, gold: 700, item: 'elixir' } },
+    { id: 'learn_macd', chapter: 13, region: '魔導都マクディア（禁書庫・最深部）', title: 'MACDと複合分析の試練', topic: 'macd', required: true, mapId: 'forbidden_archive_3', minScore: 60, ability: 'macd_hidden_strike', next: 'learn_emotion',
+      summary: 'MACD(6,13,4)の通常・ヒドゥンダイバージェンスと、上位足・波形・EMA・RCI・MACDの複合分析（すべて整合する場面と、1つだけ食い違う場面）',
+      lesson: ['【MACD(6,13,4)】通常ダイバージェンス：価格が安値を切り下げているのにMACDが切り上げ（強気）／価格が高値を切り上げているのにMACDが切り下げ（弱気）。勢いの衰えを示す。', '【ヒドゥンダイバージェンス】価格が安値を切り上げているのにMACDが切り下げ（強気）／価格が高値を切り下げているのにMACDが切り上げ（弱気）。トレンド継続を示す。', '【複合分析】上位足の環境・波形（ダウ理論）・EMA20/30/40の並び・RCI(9)の反転・MACDのダイバージェンス。すべてが同じ方向を向いた場面だけが、根拠の揃った場面。', '【1つだけ食い違う場面】たとえば下位足のダイバージェンスが上位足の流れに逆らっているとき。4つが揃っていても、上位足と逆なら見送る。ダイバージェンス単独では使わない。'],
+      scenarios: ['hidden_bull', 'hidden_bear', 'regular_bull', 'regular_bear', 'div_against_htf', 'div_bear_against_htf', 'up_pullback', 'down_rally'], reward: { exp: 600, gold: 2500, item: 'elixir' } },
     { id: 'learn_risk', chapter: 7, region: '灰鉱町ヴェルム（地下の集会所）', title: '資金管理の試練', topic: 'risk', required: true, mapId: 'verum_hideout', minScore: 60, ability: 'stoploss_shield', next: 'learn_record',
       summary: '損切り、リスクリワード、ロット管理、連敗時の判断、無理なエントリーの回避',
       lesson: ['【損切り】エントリー前に必ず決める。直近スイングの外側が基本。損切りなしは最も危険。', '【リスクリワード】利確幅は損切り幅の1.5〜3倍を参考に。悪い場面は見送る。', '【ロット管理】1トレードの損失を資金の1〜2%程度に抑える。連敗したら休む、ロットを上げて取り返そうとしない。', '根拠が揃わない場面・飛び乗り・リスクリワードの悪い場面は見送る。見送りも判断。'],
@@ -45,10 +45,14 @@
         var out = []; weak.slice(0, 3).forEach(function (t) { (pick[t.key] || []).forEach(function (id) { if (out.indexOf(id) < 0) out.push(id); }); });
         if (out.length < 5) ['mtf_conflict', 'bad_rr', 'whipsaw', 'up_pullback', 'regular_bear', 'false_breakout'].forEach(function (id) { if (out.length < 6 && out.indexOf(id) < 0) out.push(id); }); return out.slice(0, 7); },
       reward: { exp: 400, gold: 1500, item: 'elixir' } },
-    { id: 'learn_overfit', chapter: 10, region: 'オラクル中枢（第3層）', title: '誤差ゼロの予測の試練', topic: 'action', required: true, mapId: 'oracle_core_3', minScore: 60, next: null, altSeed: true,
+    { id: 'learn_overfit', chapter: 10, region: 'オラクル中枢（第3層）', title: '誤差ゼロの予測の試練', topic: 'action', required: true, mapId: 'oracle_core_3', minScore: 60, next: 'learn_macd', altSeed: true,
       summary: '「過去の全場面に完璧に当てはまるルール」は、未見の場面では通用しない（過剰最適化）。未見の場面で自分の根拠で判断する',
       lesson: ['【オラクルの予測】オラクルは過去の全場面に100%当てはまるルールを持っている。「この形のあとは必ず上がる」。だがそれは、過去の形に合わせて作ったルールだ。', '【過剰最適化】過去に完璧に当てはまるほど、未来には当てはまらない。ルールは「過去を説明する」のではなく「根拠を揃える」ためにある。', '【未見の場面】この試練は、これまでに見たことのない場面（同じ型の別の値動き）で出題される。覚えた答えではなく、上位足・波形・EMA・RCI・MACDの根拠で判断する。', '勝率100%のルールを売る者は、過去のチャートに線を引いているだけだ。'],
       scenarios: ['mtf_conflict', 'false_breakout', 'false_breakdown', 'whipsaw', 'up_pullback', 'down_rally', 'breakout_retest', 'div_against_htf'], reward: { exp: 500, gold: 2000, item: 'elixir' } },
+    { id: 'learn_emotion', chapter: 15, region: '魔王城の門', title: '感情に支配されない判断の試練', topic: 'skip', required: true, mapId: 'demon_castle_gate', minScore: 60, next: null, tilt: true,
+      summary: '連敗のあとに現れる「取り返したい」「飛び乗りたい」誘惑の場面で、根拠がなければ見送れるか',
+      lesson: ['【連敗のあと】負けが続くと、人は「次で取り返す」ためにロットを上げ、根拠の揃わない場面に飛び乗る。これが一番大きな損失を生む。', '【取り返しトレード】直前の損失は、次の場面の根拠にならない。チャートは、あなたが負けたことを知らない。', '【見送りも判断】根拠が揃わなければ見送る。損切りは負けではなく、資金を守った判断。連敗したら休む、ロットを下げる。', 'この試練は、門が見せる「連敗の幻」のあとに出題される。感情ではなく、根拠で答えよ。'],
+      scenarios: ['jump_in', 'jump_in_down', 'bad_rr', 'bad_rr_sell', 'whipsaw', 'range', 'range_high', 'false_breakout'], reward: { exp: 800, gold: 3000, item: 'elixir' } },
     // ---- 任意の練習（石碑）：短時間で挑戦。報酬は小さめ・初回のみ ----
     { id: 'practice_forest', chapter: 2, region: 'ダウの森', title: '波形の石碑', topic: 'dow', required: false, mapId: 'lost_forest', scenarios: ['clear_up', 'clear_down', 'range', 'up_pullback', 'range_high', 'clear_up_5m'], reward: { exp: 15, gold: 40 } },
     { id: 'practice_dow_road', chapter: 2, region: 'ダウの森', title: '旅人の石碑', topic: 'dow', required: false, mapId: 'world', scenarios: ['down_rally', 'false_breakout', 'clear_down', 'false_breakdown', 'clear_down_5m'], reward: { exp: 15, gold: 40 } },
@@ -62,6 +66,9 @@
     { id: 'practice_ruins', chapter: 9, region: '廃墟の街', title: '時計塔の石碑', topic: 'mtf', required: false, mapId: 'aruna_ruins_2', scenarios: ['mtf_conflict', 'mtf_conflict_up', 'up_pullback_1h', 'div_against_htf', 'clear_down_5m'], reward: { exp: 90, gold: 350 } },
     { id: 'practice_tempus', chapter: 10, region: '時の神殿領', title: '鐘の石碑', topic: 'mtf', required: false, mapId: 'world_tempus', scenarios: ['mtf_conflict', 'mtf_conflict_up', 'up_pullback_1h', 'clear_up_5m', 'clear_down_5m'], reward: { exp: 100, gold: 400 } },
     { id: 'practice_zeromea', chapter: 10, region: 'ゼロメア', title: '演算の石碑', topic: 'action', required: false, mapId: 'world_machine', scenarios: ['false_breakout', 'whipsaw', 'jump_in', 'range_high', 'reversal_confirmed_down'], reward: { exp: 110, gold: 450 } },
+    { id: 'practice_magicka', chapter: 13, region: 'マクディア魔導王国', title: '魔導の石碑', topic: 'macd', required: false, mapId: 'world_magicka', scenarios: ['hidden_bull', 'regular_bear', 'div_against_htf', 'up_pullback', 'down_rally'], reward: { exp: 120, gold: 500 } },
+    { id: 'practice_sky', chapter: 14, region: '天空群島', title: '星見の石碑', topic: 'dow', required: false, mapId: 'world_sky', scenarios: ['clear_up', 'clear_down', 'reversal_confirmed_up', 'reversal_confirmed_down', 'breakout_retest'], reward: { exp: 130, gold: 550 } },
+    { id: 'practice_dark', chapter: 15, region: '暗黒大陸', title: '虚無の石碑', topic: 'skip', required: false, mapId: 'world_dark', scenarios: ['jump_in', 'bad_rr', 'whipsaw', 'false_breakdown', 'range'], reward: { exp: 140, gold: 600 } },
     { id: 'practice_cave2', chapter: 5, region: 'RCIの洞窟', title: '深部の石碑', topic: 'rci', required: false, mapId: 'oblivion_cave_2', scenarios: ['down_rally', 'down_rally_5m', 'regular_bear', 'hidden_bear', 'bad_rr', 'mtf_conflict_up'], reward: { exp: 35, gold: 90 } }
   ];
 

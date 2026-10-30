@@ -53,10 +53,22 @@
     main_12: { title: 'オラクルの真実', desc: 'オラクル中枢の3層を登り、AIと対話する。セリスの師テオドルの記録を読み、統治をどう再設計するかを選ぶ。「AIによる予測の限界・過剰最適化」の試練。', main: true, chapter: 12, reward: { exp: 2000, gold: 5000, item: 'oracle_charter' }, next: 'main_13', learn: 'learn_overfit',
       steps: [['core_1', 'オラクル中枢 第1層を越える'], ['core_2', '第2層でテオドルの記録を読む'], ['core_3', '第3層で中枢防衛機構を倒す'], ['overfit_seen', 'オラクルの「誤差ゼロの予測」の試練（過剰最適化）を受ける'], ['oracle_dialogue', 'オラクルと対話する'], ['zeromea_choice_done', '統治の再設計を選ぶ（権限制限／段階的移行／現状維持）'], ['io_joined', 'イオと話す']],
       after: '選択によって、ゼロメアの住民の生活と対立が変わる。イオが仲間になる。' },
-    main_13: { title: '魔導王国の秘密', desc: 'マクディア魔導王国の禁書庫でクリスタルの起源を発見する。（今後の更新）', main: true, chapter: 13, future: true, reward: { exp: 2200, gold: 5000 }, next: 'main_14' },
-    main_14: { title: '天空への航路', desc: 'クリスタルの欠片を集め、古代の飛空艇を復活させる。（今後の更新）', main: true, chapter: 14, future: true, reward: { exp: 2500, gold: 6000 }, next: 'main_15' },
-    main_15: { title: '暗黒大陸', desc: '飛空艇で暗黒大陸へ。魔王城への道を開く。（今後の更新）', main: true, chapter: 15, future: true, reward: { exp: 3000, gold: 7000 }, next: 'main_16' },
-    main_16: { title: '均衡の天秤', desc: '相場魔王との最終決戦と、クリスタルをどうするかの選択。（今後の更新）', main: true, chapter: 16, future: true, reward: { exp: 5000, gold: 10000 }, next: null },
+    main_13: { title: '魔導王国の秘密', desc: '時の神殿領の東の遠洋航路でマクディア魔導王国へ。禁書庫の古文書3巻でクリスタルとオラクルの起源を知り、大臣の裏切りを止め、起源の実験室でテオドルの手記を読む。', main: true, chapter: 13, reward: { exp: 2200, gold: 5000, item: 'crystal_shard' }, next: 'main_14', learn: 'learn_macd',
+      steps: [['magicka_arrived', '魔導都マクディアに入る'], ['archive_permit', '王立学院の学院長に会い、禁書庫の入館許可をもらう'], ['tome_1', '禁書庫1階：古文書 第一巻「均衡のクリスタル」を読む'], ['tome_2', '禁書庫2階：第二巻「演算機構」を読む'], ['tome_3', '禁書庫3階：第三巻「利用者名簿」を読む'], ['minister_defeated', '禁書庫の最深部で大臣ヴォルクの裏切りを止める'], ['learn_macd', '禁書庫の石碑で「MACDと複合分析の試練」に合格する'], ['origin_notes', '起源の実験室でテオドルの手記を読む'], ['magicka_choice_done', '国王に報告し、研究の扱いを決める']],
+      after: 'クリスタルの制御装置が天空神殿にあると分かる。起源の実験室の格納庫に、古代の飛空艇が眠っている。' },
+    main_14: { title: '天空への航路', desc: '起源の実験室の格納庫で、クリスタルの欠片3つを動力に古代の飛空艇を復活させる。北の空路で天空群島へ渡り、創始者たちの記録を読み、天空神殿の制御装置の間へ。', main: true, chapter: 14, reward: { exp: 2500, gold: 6000, item: 'sky_navigator' }, next: 'main_15',
+      steps: [['airship_owned', '起源の実験室の格納庫で、欠片3つを使って飛空艇を復活させる'], ['sky_arrived', '飛空艇でアルカディア大陸の北の空へ抜け、天空群島に着く'], ['sky_1', '星見島の記録碑を読む'], ['sky_2', '風の島の記録碑を読む（飛空艇で渡る）'], ['sky_3', '神殿島の記録碑を読む'], ['camp_talk', '星見塔の野営地で、焚き火を囲んで仲間と話す'], ['sky_record', '星見塔の最上階で、記録者と話す'], ['sky_guardian_defeated', '天空神殿で守護者を倒す'], ['control_room', '制御装置の間を調べる']],
+      after: '封印を破ったのは魔王ではなく、魔王に導かれた人間たちだった。暗黒大陸への空路が開く。' },
+    main_15: { title: '暗黒大陸', desc: '闇の空路で暗黒大陸へ。前線基地でハルドと再会し、虚無の荒野でザルグの残滓とセヴランの影に向き合う。魔王城の門でグロートと戦い、感情に支配されない判断の試練を越える。', main: true, chapter: 15, reward: { exp: 3000, gold: 7000, item: 'balance_scale' }, next: 'main_16', learn: 'learn_emotion',
+      steps: [['dark_arrived', '天空群島の北の空路から暗黒大陸へ渡り、前線基地に着く'], ['hald_met', '前線基地でハルドと話す'], ['zarg_remnant', '虚無の荒野1階：ザルグの残滓と向き合う'], ['sevran_shadow', '虚無の荒野2階：セヴランの影と向き合う'], ['grote_rematch', '魔王城の門の前で、鉄冠将軍グロートと戦う'], ['learn_emotion', '門の石碑で「感情に支配されない判断の試練」に合格する'], ['castle_gate_open', '魔王城の門を開く']],
+      after: '「敵を倒すこと」と「世界を良くすること」は同じではない。魔王城の門が開く。' },
+    main_16: { title: '均衡の天秤', desc: '魔王城の5層を登り、欲望・恐怖・支配の間の封印を解く。玉座の間で相場魔王（恐怖／欲望／固定）と戦い、クリスタルをどうするかを選ぶ。', main: true, chapter: 16, reward: { exp: 5000, gold: 10000, item: 'final_proof' }, next: null,
+      steps: [['castle_seal_1', '魔王城2階：欲望の間の封印を解く'], ['castle_seal_2', '魔王城3階：恐怖の間の封印を解く'], ['castle_seal_3', '魔王城4階：支配の間の封印を解く'], ['demon_fear', '玉座の間：相場魔王〈恐怖〉'], ['demon_greed', '相場魔王〈欲望〉'], ['demon_fixed', '相場魔王〈固定〉'], ['crystal_choice_done', 'クリスタルをどうするか選ぶ'], ['game_cleared', 'それぞれの未来へ']],
+      after: 'エピローグ。ポヨ村へ帰る。' },
+    // ===== 第13〜16章のサブクエスト =====
+    archive_keeper: { title: '禁書庫の番人の問い', desc: '禁書庫の番人に「技術を否定するのか」と問われる。古文書3巻を読んだあと、もう一度答える。', reward: { exp: 600, gold: 2000, item: 'arcane_staff' } },
+    seris_origin: { title: '師の最後の手記', desc: 'セリスを連れて起源の実験室の最深部へ。テオドルが研究を続けた理由を知る。', reward: { exp: 600, gold: 0, item: 'sky_robe' }, companion: 'seris' },
+    dark_hald: { title: 'ハルドの金貨', desc: '前線基地で、王都から持ち逃げした金貨を抱えるハルドと話す。金が意味を持たない大陸で、彼はどうするのか。', reward: { exp: 700, gold: 0, item: 'star_cloak' } },
     // ===== 第10〜12章のサブクエスト =====
     time_bank: { title: '時間銀行の契約', desc: '鐘都テンプスの時間銀行。明日を担保に取られた住民の契約書を、地下契約室で書き換える。', reward: { exp: 500, gold: 1500, item: 'temporal_robe' } },
     sophia_lucia: { title: '見える未来と選ぶ未来', desc: 'ソフィアとルシアを連れて時の神殿の第三の回廊へ。「読む」ことと「決める」ことについて語り合う。', reward: { exp: 400, gold: 0, item: 'chrono_staff' }, companion: 'lucia' },
@@ -111,10 +123,10 @@
     { id: 10, title: '第十章　時の神殿と選ばれなかった未来', flag: 'tempus_arrived' },
     { id: 11, title: '第十一章　AIが統治する理想の島', flag: 'zeromea_arrived' },
     { id: 12, title: '第十二章　誤差のない未来', flag: 'core_1' },
-    { id: 13, title: '第十三章　魔導王国の裏切り', flag: 'magicka_open', future: true },
-    { id: 14, title: '第十四章　天空の境界', flag: 'airship_ready', future: true },
-    { id: 15, title: '第十五章　暗黒大陸と最後の選択', flag: 'dark_open', future: true },
-    { id: 16, title: '第十六章　均衡の天秤を壊す者', flag: 'final_open', future: true }
+    { id: 13, title: '第十三章　魔導王国の裏切り', flag: 'magicka_arrived' },
+    { id: 14, title: '第十四章　天空の境界', flag: 'airship_owned' },
+    { id: 15, title: '第十五章　暗黒大陸と最後の選択', flag: 'dark_arrived' },
+    { id: 16, title: '第十六章　均衡の天秤を壊す者', flag: 'castle_gate_open' }
   ];
 
   root.COMPANIONS = COMPANIONS; root.QUESTS = QUESTS; root.LECTURES = LECTURES; root.STORY_CHAPTERS = CHAPTERS;

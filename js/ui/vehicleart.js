@@ -9,6 +9,13 @@
     var S = 2, c = document.createElement('canvas'); c.width = 16 * S; c.height = 20 * S; var g = c.getContext('2d'); g.imageSmoothingEnabled = false;
     function px(x, y, col, w, h) { g.fillStyle = col; g.fillRect(x * S, y * S, (w || 1) * S, (h || 1) * S); }
     var big = id === 'galleon'; var hull = id === 'airship' ? '#8a6a3a' : big ? '#4a2a14' : '#7a4a22', hull2 = id === 'airship' ? '#c9a06a' : big ? '#7a4a22' : '#a0683a';
+    if (id === 'airship') {   // v5.4 飛空艇：気嚢（ふくらみ）＋ゴンドラ＋プロペラ
+      px(2, 2, '#c9a24a', 12, 6); px(1, 3, '#c9a24a', 14, 4); px(3, 2, '#e8d090', 9, 1); px(2, 7, '#8a6a2a', 12, 1); px(5, 4, '#7a1a1a', 6, 1);
+      px(4, 8, '#5a4a3a', 1, 3); px(11, 8, '#5a4a3a', 1, 3);
+      px(3, 11, '#7a4a22', 10, 3); px(4, 14, '#a0683a', 8, 1); px(4, 12, '#9fe0ff', 1, 1); px(7, 12, '#9fe0ff', 1, 1); px(10, 12, '#9fe0ff', 1, 1);
+      if (dir === 'left') { px(14, 11, '#d0d0d8', 1, 3); px(15, 10, '#8a8a9a', 1, 5); } else if (dir === 'right') { px(1, 11, '#d0d0d8', 1, 3); px(0, 10, '#8a8a9a', 1, 5); } else { px(7, 15, '#8a8a9a', 2, 1); }
+      cache[key] = c; return c;
+    }
     if (big) {   // v5.2 遠洋航海船：大きく濃い船体・2本マスト・3枚の帆
       if (dir === 'left' || dir === 'right') {
         px(1, 12, hull, 14, 5); px(2, 17, hull2, 12, 1); px(0, 11, hull2, 16, 1); px(1, 11, '#e8d8b0', 3, 1); px(12, 11, '#e8d8b0', 3, 1); px(3, 14, '#ffd24a', 1, 1); px(6, 14, '#ffd24a', 1, 1); px(9, 14, '#ffd24a', 1, 1); px(12, 14, '#ffd24a', 1, 1);
@@ -40,6 +47,7 @@
   var VehicleArt = {};
   VehicleArt.draw = function (ctx, id, dir, px, py, moving) {
     var img = boat(id, dir); var bob = Math.round(Math.sin(root.Engine.frame / 9) * 1.5);
+    if (id === 'airship') { var lift = moving !== undefined && root.State && root.State.data && root.State.data.aboard === 'airship' ? 14 : 4; ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(px + 16, py + 28, 12, 4, 0, 0, Math.PI * 2); ctx.fill(); ctx.imageSmoothingEnabled = false; ctx.drawImage(img, px, py - 8 - lift + bob); return; }
     // 水面の揺れ・影
     ctx.fillStyle = 'rgba(0,0,0,0.22)'; ctx.beginPath(); ctx.ellipse(px + 16, py + 30, 13, 4, 0, 0, Math.PI * 2); ctx.fill();
     ctx.imageSmoothingEnabled = false; ctx.drawImage(img, px, py - 8 + bob);

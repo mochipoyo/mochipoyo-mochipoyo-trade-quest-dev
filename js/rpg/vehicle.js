@@ -91,13 +91,13 @@
   Vehicle.blockReason = function (map, nx, ny) {
     var d = D(); var id = d.aboard; if (!id) return null;
     var out = nx < 0 || ny < 0 || nx >= map.w || ny >= map.h;
-    if (out) { var edge = nx < 0 ? 'west' : nx >= map.w ? 'east' : ny < 0 ? 'north' : 'south'; var r = (root.SEA_ROUTES || []).filter(function (rt) { return rt.from.map === map.id && rt.from.edge === edge && rt.vehicle.indexOf(id) < 0; })[0]; if (r) return r.name + 'は潮流が強く、' + Vehicle.def(id).name + 'では進めない（' + r.vehicle.map(function (v) { return root.VEHICLES[v].name; }).join('・') + 'が必要）'; return null; }
+    if (out) { var edge = nx < 0 ? 'west' : nx >= map.w ? 'east' : ny < 0 ? 'north' : 'south'; var r = (root.SEA_ROUTES || []).filter(function (rt) { return rt.from.map === map.id && rt.from.edge === edge && rt.vehicle.indexOf(id) < 0; })[0]; if (r) return r.sky ? r.name + 'は空の道。' + Vehicle.def(id).name + 'では進めない（飛空艇が必要）' : r.name + 'は潮流が強く、' + Vehicle.def(id).name + 'では進めない（' + r.vehicle.map(function (v) { return root.VEHICLES[v].name; }).join('・') + 'が必要）'; var r2 = (root.SEA_ROUTES || []).filter(function (rt) { return rt.from.map === map.id && rt.from.edge === edge && rt.vehicle.indexOf(id) >= 0 && rt.needFlag && !D().flags[rt.needFlag]; })[0]; if (r2) return r2.name + 'の先は、まだ見えない。'; return null; }
     if (map.tiles[ny][nx] === 'deep' && Vehicle.def(id).terrain.indexOf('deep') < 0) return '外海の潮流が強く、' + Vehicle.def(id).name + 'では進めない（遠洋航海船が必要）';
     return null;
   };
   // v5.2: 外海の海流と嵐。遠洋航海船で deep の上を進んだとき、ときどき流される。戻り値 { x, y, text } | null
   Vehicle.drift = function (map, x, y, rnd) {
-    var d = D(); var id = d.aboard; if (!id || map.tiles[y][x] !== 'deep') return null; rnd = rnd === undefined ? Math.random() : rnd;
+    var d = D(); var id = d.aboard; if (!id || Vehicle.flies(id) || map.tiles[y][x] !== 'deep') return null; rnd = rnd === undefined ? Math.random() : rnd;
     var storm = rnd < 0.025, cur = rnd < 0.14; if (!cur) return null;
     var dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
     // 海流は場所で決まる一定の向き（x+y で4方向）。嵐はランダムに2〜3マス
@@ -107,6 +107,11 @@
     if (Vehicle.hasJob('navigator') && !storm && Math.random() < 0.5) return null;   // 航海士は海流を読んで避けることがある
     return { x: cx, y: cy, text: storm ? '嵐！ 船が大きく流された' : '海流に流された', storm: storm };
   };
-  Vehicle.label = function () { var id = D().aboard; return id ? Vehicle.def(id).name + '（航海中）' : ''; };
+  Vehicle.label = function () { var id = D().aboard; return id ? Vehicle.def(id).name + (Vehicle.flies(id) ? '（飛行中）' : '（航海中）') : ''; };
+  // v5.4 飛空艇
+  Vehicle.flies = function (id) { var def = Vehicle.def(id || D().aboard); return !!(def && def.terrain[0] === '*'); };
+  Vehicle.canLand = function (map, x, y) { var id = D().aboard; var def = Vehicle.def(id); if (!def || !def.landOn) return false; var t = map.tiles[y][x]; return def.landOn.indexOf(t) >= 0 && map.passable(x, y, D()) && !map.warpAt(x, y); };
+  // 決定キーで着陸。飛空艇はその場に残る（乗り込むときは、そのマスに歩いて戻る）。戻り値 true＝着陸した
+  Vehicle.land = function (map, x, y) { if (!Vehicle.flies()) return false; if (!Vehicle.canLand(map, x, y)) return false; var s = V()[D().aboard]; s.map = map.id; s.x = x; s.y = y; s.port = { map: map.id, x: x, y: y }; D().aboard = null; return true; };
   root.Vehicle = Vehicle;
 })(typeof window !== 'undefined' ? window : globalThis);

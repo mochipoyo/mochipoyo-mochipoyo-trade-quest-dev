@@ -82,7 +82,9 @@
         switch (m) {
           case '~': ch = '~'; break;
           case 'w': ch = 'w'; break;
-          case 'o': ch = '0'; break;                                        // v5.2: 外海（深い海流。遠洋航海船のみ航行可）
+          case 'o': ch = '0'; break;
+          case 'k': ch = '7'; break;                                        // v5.4: 雲海（天空群島）
+          case 'v': ch = n2 < 0.07 ? '9' : (n2 < 0.12 ? '8' : '+'); break;   // v5.4: 暗黒大陸の荒れ地（+）に黒い岩（9）と灰（8）                                        // v5.2: 外海（深い海流。遠洋航海船のみ航行可）
           case 'F': ch = n2 < 0.12 ? '.' : 'F'; break;
           case 'm': ch = n2 < 0.15 ? 'h' : 'm'; break;
           case 's': ch = n2 < 0.06 ? 'c' : 's'; break;

@@ -52,13 +52,13 @@
 | 15 | world_snow | ciel_port | 氷港シエル | 9〜 | 未着手 |
 | 16 | world_snow | frost_town | 記憶を売る町フロスト | 9〜 | 未着手 |
 | 17 | world_tempus | tempus_city | 鐘都テンプス | 10 | v5.3 実装 |
-| 18 | world_magicka | magicka_city | 魔導都マクディア | 13 | 未着手 |
+| 18 | world_magicka | magicka_city | 魔導都マクディア | 13 | v5.4 実装 |
 | 19 | world_machine | node_city | 演算都市ノード | 11 | v5.3 実装 |
 | 20 | world_machine | scheduled_district | 明日が決まっている町（第7居住区） | 11 | v5.3 実装 |
 | 21 | world_machine | no_failure_school | 失敗を禁止された学校（屋上あり） | 11 | v5.3 実装 |
 | 22 | world_dragon | ignas_town | 鍛冶街イグナス | 13〜 | 未着手 |
-| 23 | world_sky | star_tower_camp | 星見塔の野営地 | 14 | 未着手 |
-| 24 | world_dark | dark_camp | 虚無の荒野の前線基地 | 15 | 未着手 |
+| 23 | world_sky | star_camp | 星見塔の野営地 | 14 | v5.4 実装 |
+| 24 | world_dark | dark_camp | 虚無の荒野の前線基地 | 15 | v5.4 実装 |
 | 25 | world_grania | verum_hideout | 地下の抵抗組織（拠点機能：休憩・修行） | 5 | 今回 |
 
 ## 4. ダンジョン一覧：30か所以上
@@ -89,17 +89,17 @@
 | 22 | world_snow | memory_vault | 記憶庫 | 1 | 選択肢 | 未着手 |
 | 23 | world_tempus | time_bank_vault_1/2 | 時間銀行 地下契約室 | 2 | 契約の書き換え | v5.3 実装 |
 | 24 | world_tempus | temple_of_time_1/2/3 | 時の神殿 | 3 | 未来の回廊×3・時の守護者・MTF試練 | v5.3 実装 |
-| 25 | world_magicka | forbidden_archive | 禁書庫 | 3 | 裏切り | 未着手 |
-| 26 | world_magicka | origin_lab | 起源の実験室 | 2 | 師の手記 | 未着手 |
+| 25 | world_magicka | forbidden_archive_1/2/3 | 禁書庫 | 3 | 古文書3巻・裏切り・複合分析の試練 | v5.4 実装 |
+| 26 | world_magicka | origin_lab_1/2 | 起源の実験室 | 2 | 師の手記・飛空艇の格納庫 | v5.4 実装 |
 | 27 | world_machine | oracle_core_1/2/3 | オラクル中枢 | 3 | 認証鍵・テオドルの記録・防衛機構・対話 | v5.3 実装 |
 | 28 | world_machine | auto_factory_1/2 | 自動工場 | 2 | 機械敵・制御室 | v5.3 実装（任意） |
 | 29 | world_machine | old_city_1/2 | 廃棄された旧都市 | 2 | ドローン群・旧記録 | v5.3 実装 |
 | 30 | world_dragon | dragon_vein_cave | 竜脈洞窟（隠し5：最深部） | 4 | 竜との対話 | 未着手 |
 | 31 | world_dragon | crater_altar | 火口の祭壇 | 1 | 祭り | 未着手 |
-| 32 | world_sky | star_tower | 星見塔 | 3 | 記録 | 未着手 |
-| 33 | world_sky | sky_temple | 天空神殿 | 3 | 制御装置の間 | 未着手 |
-| 34 | world_dark | void_wasteland | 虚無の荒野 | 2 | 感情の魔物 | 未着手 |
-| 35 | world_dark | demon_castle_1〜5 | 魔王城 | 5 | 最終決戦 | 未着手 |
+| 32 | world_sky | star_tower_1/2 | 星見塔 | 2 | 記録者 | v5.4 実装 |
+| 33 | world_sky | sky_temple_1/2 | 天空神殿 | 2 | 守護者・制御装置の間 | v5.4 実装 |
+| 34 | world_dark | void_wasteland_1/2 | 虚無の荒野 | 2 | ザルグの残滓・セヴランの影 | v5.4 実装 |
+| 35 | world_dark | demon_castle_gate＋1〜5 | 魔王城 | 5＋門 | 封印3・相場魔王3連戦 | v5.4 実装 |
 
 ## 5. 章ごとの到達範囲
 | 章 | 到達できる地域 | 解放される移動手段 |
