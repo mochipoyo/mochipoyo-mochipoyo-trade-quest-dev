@@ -42,9 +42,10 @@
     { id: 'sentra_capital', name: '王都セントラ', icon: 'castle_icon', x: 64, y: 26, to: 'sentra_capital', tx: 24, ty: 35 },
     { id: 'grania_pass_n', name: '灰の峠（北口）', icon: 'cave_icon', x: 60, y: 104, to: 'grania_pass', tx: 7, ty: 1 },
     { id: 'erased_village', name: '地図から消えた村', icon: 'village', x: 42, y: 44, to: 'erased_village', tx: 12, ty: 17, needFlag: 'erased_hint', hidden: true },
-    { id: 'secret_lab', name: '秘密研究所', icon: 'cave_icon', x: 92, y: 52, to: 'kalion_lab', tx: 5, ty: 9, needFlag: 'lab_known' }
+    { id: 'secret_lab', name: '秘密研究所', icon: 'cave_icon', x: 92, y: 52, to: 'kalion_lab', tx: 5, ty: 9, needFlag: 'lab_known' },
+    { id: 'luxbell', name: '娯楽都市ラックスベル', icon: 'castle_icon', x: 96, y: 80, to: 'luxbell', tx: 20, ty: 28 }   // v6.1 カジノの町（js/data/luxbell.js）
   ];
-  var ROADS = [[[60, 104], [60, 76]], [[60, 76], [64, 26]], [[60, 76], [92, 52]]];
+  var ROADS = [[[60, 104], [60, 76]], [[60, 76], [64, 26]], [[60, 76], [92, 52]], [[60, 76], [96, 80]]];
   var def = root.makeWorldRegion({
     id: 'world_kalion', name: 'カリオン徴収連邦', MACRO: MACRO, W: 160, H: 120, SEED: 20261112, LOCATIONS: LOCATIONS, ROADS: ROADS, bgm: 'field',
     chests: [{ id: 'k1', x: 48, y: 70, item: 'hi_potion', qty: 2 }, { id: 'k2', x: 84, y: 40, gold: 600 }, { id: 'k3', x: 36, y: 56, item: 'phoenix_feather', qty: 1 }, { id: 'k4', x: 76, y: 88, item: 'hi_ether', qty: 2 }, { id: 'k5', x: 40, y: 30, item: 'silk_robe', qty: 1 }],

@@ -40,9 +40,10 @@
   var LOCATIONS = [
     { id: 'tempus_city', name: '鐘都テンプス', icon: 'castle_icon', x: 58, y: 62, to: 'tempus_city', tx: 19, ty: 28 },
     { id: 'temple_of_time', name: '時の神殿', icon: 'tower_icon', x: 126, y: 38, to: 'temple_of_time_1', tx: 9, ty: 14 },
-    { id: 'dimension_gate', name: '転移門', icon: 'cave_icon', x: 134, y: 90, to: 'world_machine', tx: 82, ty: 100, needFlag: 'dimension_gate' }
+    { id: 'dimension_gate', name: '転移門', icon: 'cave_icon', x: 134, y: 90, to: 'world_machine', tx: 82, ty: 100, needFlag: 'dimension_gate' },
+    { id: 'volatilia', name: 'ボラティリティア学院', icon: 'tower_icon', x: 100, y: 88, to: 'volatilia', tx: 19, ty: 30 }   // v6.1 学院（js/data/academy.js）
   ];
-  var ROADS = [[[58, 62], [126, 38]], [[58, 62], [134, 90]], [[26, 60], [58, 62]]];
+  var ROADS = [[[58, 62], [126, 38]], [[58, 62], [134, 90]], [[26, 60], [58, 62]], [[58, 62], [100, 88]]];
   var def = root.makeWorldRegion({
     id: 'world_tempus', name: '時の神殿領', MACRO: MACRO, W: 160, H: 120, SEED: 20261128, LOCATIONS: LOCATIONS, ROADS: ROADS, bgm: 'field',
     chests: [{ id: 't1', x: 41, y: 47, item: 'hi_potion', qty: 3 }, { id: 't2', x: 100, y: 80, gold: 1800 }, { id: 't3', x: 45, y: 80, item: 'elixir', qty: 1 }, { id: 't4', x: 118, y: 52, item: 'hi_ether', qty: 2 }, { id: 't5', x: 86, y: 96, item: 'sage_robe', qty: 1 }],

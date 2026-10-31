@@ -16,6 +16,7 @@
       function fit() {
         var wrap = document.getElementById('stage'); var aspect = canvas.width / canvas.height;
         var pc = root.Sidebar && root.Sidebar.isPC(); document.body.classList.toggle('pc', !!pc);
+        if (root.MobileUI && root.MobileUI.active && !pc) { root.MobileUI.fit(canvas); if (root.Minimap && root.Minimap.resize) root.Minimap.resize(); return; }   // v6.1 スマホ：ビューポート全面・縦横・セーフエリア（js/ui/mobile.js）
         var w = wrap.clientWidth;
         if (pc) w = Math.min(w, Math.round(canvas.width * 1.8));   // PC版：メイン画面は内部解像度の1.8倍（1152×749）まで
         var guide = document.getElementById('guide'); var guideH = pc && guide ? guide.offsetHeight + 12 : 0;
@@ -27,6 +28,7 @@
       }
       if (root.Minimap) root.Minimap.init();
       if (root.Sidebar) root.Sidebar.init();
+      if (root.MobileUI) root.MobileUI.init();   // v6.1 スマホの操作パネル（タッチ → 共通の入力コマンド）
       root.addEventListener('resize', fit); fit();
       root.Engine.start();
       root.Title.show();

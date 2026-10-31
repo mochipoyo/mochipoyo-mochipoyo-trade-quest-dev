@@ -14,6 +14,7 @@
   var Search = { points: {}, byMap: {}, events: {} };
   var KINDS = {
     sparkle: { name: '光っている場所', solid: false, stand: true },
+    relic: { name: '淡く光る場所', solid: false, stand: true },   // v6.1 オーパーツの気配（紫の光）
     pot: { name: '壺', solid: true },
     desk: { name: '机', solid: true }, stone: { name: '石碑', solid: true }, box: { name: '箱', solid: true }, shelf: { name: '棚', solid: true },
     barrel: { name: '樽', tile: 'barrel', solid: true }, crate: { name: '木箱', tile: 'crate', solid: true }, well: { name: '井戸', tile: 'well', solid: true }
@@ -71,8 +72,8 @@
   Search.inspect = async function (p) {
     var Win = root.Win, State = root.State, d = D(); var W = root.World;
     if (!p) return false;
-    if (!Search.available(p)) { await Win.message([p.kind === 'sparkle' ? 'もう何も光っていない。' : p.kind === 'well' ? '井戸の底をのぞいた。……もう何もない。' : nameOf(p) + 'の中は空っぽだ。']); return true; }
-    var opening = p.msg ? p.msg.slice() : [p.kind === 'sparkle' ? '地面で何かが光っている……' : p.kind === 'well' ? '井戸の中をのぞきこんだ……' : nameOf(p) + 'を調べた。'];
+    if (!Search.available(p)) { await Win.message([p.kind === 'sparkle' || p.kind === 'relic' ? 'もう何も光っていない。' : p.kind === 'well' ? '井戸の底をのぞいた。……もう何もない。' : nameOf(p) + 'の中は空っぽだ。']); return true; }
+    var opening = p.msg ? p.msg.slice() : [p.kind === 'sparkle' || p.kind === 'relic' ? '地面で何かが光っている……' : p.kind === 'well' ? '井戸の中をのぞきこんだ……' : nameOf(p) + 'を調べた。'];
     // 特別なイベント（Search.event で登録した処理）
     if (p.event && Search.events[p.event]) { await Win.message(opening); var r = await Search.events[p.event](p); if (r !== false) mark(p); return true; }
     // 危険な場所：敵が飛び出す（勝てば中身を手に入れる）
@@ -110,19 +111,21 @@
     var out = []; var m = Search.byMap[map.id]; if (!m) return out; var t = Date.now();
     Object.keys(m).forEach(function (k) {
       var p = m[k]; if (p.x < x0 - 1 || p.x > x1 + 1 || p.y < y0 - 1 || p.y > y1 + 1 || !Search.shown(p)) return;
-      if (p.kind === 'sparkle') { if (Search.taken(p)) return; out.push({ y: p.y * TS - 1, draw: function (ctx) { drawSparkle(ctx, p.x * TS - cam.x + TS / 2, p.y * TS - cam.y + TS * 0.62, TS, t + (p.x * 97 + p.y * 31) % 1000); } }); }
+      if (p.kind === 'sparkle' || p.kind === 'relic') { if (Search.taken(p)) return; var relic = p.kind === 'relic'; out.push({ y: p.y * TS - 1, draw: function (ctx) { drawSparkle(ctx, p.x * TS - cam.x + TS / 2, p.y * TS - cam.y + TS * 0.62, TS, t + (p.x * 97 + p.y * 31) % 1000, relic); } }); }
+      else if (p.kind === 'well') return;   // 井戸は地形の絵のまま
       else if (p.kind === 'pot') out.push({ y: p.y * TS, draw: function (ctx) { ctx.drawImage(potImage(TS), p.x * TS - cam.x, p.y * TS - cam.y); } });
       else out.push({ y: p.y * TS, draw: function (ctx) { ctx.fillStyle = '#8a6a4a'; ctx.fillRect(p.x * TS - cam.x + TS * 0.2, p.y * TS - cam.y + TS * 0.35, TS * 0.6, TS * 0.5); } });
     });
     return out;
   };
-  function drawSparkle(ctx, cx, cy, TS, t) {
+  function drawSparkle(ctx, cx, cy, TS, t, relic) {
     var ph = (t % 1400) / 1400; var a = 0.55 + 0.45 * Math.sin(ph * Math.PI * 2); var r = TS * (0.16 + 0.05 * Math.sin(ph * Math.PI * 4));
-    ctx.save(); var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, TS * 0.42); g.addColorStop(0, 'rgba(255,250,200,' + (0.7 * a) + ')'); g.addColorStop(1, 'rgba(255,230,120,0)');
+    ctx.save(); var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, TS * 0.42); g.addColorStop(0, relic ? 'rgba(210,170,255,' + (0.75 * a) + ')' : 'rgba(255,250,200,' + (0.7 * a) + ')'); g.addColorStop(1, relic ? 'rgba(150,90,255,0)' : 'rgba(255,230,120,0)');
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, TS * 0.42, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,240,' + a + ')'; ctx.beginPath(); ctx.moveTo(cx, cy - r * 1.8); ctx.lineTo(cx + r * 0.35, cy - r * 0.35); ctx.lineTo(cx + r * 1.8, cy); ctx.lineTo(cx + r * 0.35, cy + r * 0.35); ctx.lineTo(cx, cy + r * 1.8); ctx.lineTo(cx - r * 0.35, cy + r * 0.35); ctx.lineTo(cx - r * 1.8, cy); ctx.lineTo(cx - r * 0.35, cy - r * 0.35); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = relic ? 'rgba(245,235,255,' + a + ')' : 'rgba(255,255,240,' + a + ')'; ctx.beginPath(); ctx.moveTo(cx, cy - r * 1.8); ctx.lineTo(cx + r * 0.35, cy - r * 0.35); ctx.lineTo(cx + r * 1.8, cy); ctx.lineTo(cx + r * 0.35, cy + r * 0.35); ctx.lineTo(cx, cy + r * 1.8); ctx.lineTo(cx - r * 0.35, cy + r * 0.35); ctx.lineTo(cx - r * 1.8, cy); ctx.lineTo(cx - r * 0.35, cy - r * 0.35); ctx.closePath(); ctx.fill();
     ctx.restore();
   }
   root.Search = Search;
   if (root.SEARCH_POINTS) Search.register(root.SEARCH_POINTS);
+  if (root.SEARCH_EVENTS) Object.keys(root.SEARCH_EVENTS).forEach(function (k) { Search.event(k, root.SEARCH_EVENTS[k]); });   // データ側で先に登録した特別イベント（学院の観測装置など）
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -48,6 +48,8 @@ export class MapScene3D {
       for (const c of map.chests) this.addChest(c);
       this.addMotes(map);
     }
+    // v6.1 調べる共通システムの探索ポイント（光る場所・壺・机など）。データは2D版と同じ Search
+    this.addSearchPoints(map);
     // NPC
     for (const n of map.npcs) {
       const ch = await Character3D.create(app.models, characterModelFor(n.sprite), { scale: n.sprite === 'child' ? 1.0 : 1.0 });
@@ -94,6 +96,27 @@ export class MapScene3D {
     g.rotation.y = yaw; this.root.add(g); this.chests.push({ c, g, lid, glow, open: 0 });
   }
 
+  // v6.1 探索ポイント：光る場所（黄・オーパーツは紫）は光の玉、壺は素焼きの壺、机などは箱。取得済みの光は消える
+  addSearchPoints(map) {
+    const S = window.Search; this.searchObjs = []; if (!S) return;
+    const M = this.app.mats; const clay = M.tinted('planks', '#b8683a');
+    for (const p of S.forMap(map.id)) {
+      if (p.kind === 'well') continue;   // 井戸は地形の井戸のまま
+      const g = new THREE.Group(); g.position.set(p.x + 0.5, this.heightAt(p.x + 0.5, p.y + 0.5), p.y + 0.5); g.name = 'search_' + p.id;
+      let glow = null, core = null;
+      if (p.kind === 'sparkle' || p.kind === 'relic') {
+        const relic = p.kind === 'relic'; const col = relic ? 'rgba(200,150,255,1)' : 'rgba(255,240,170,1)';
+        glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: softTexture(col, 64), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); glow.scale.set(0.9, 0.9, 0.9); glow.position.y = 0.35; g.add(glow);
+        core = new THREE.Mesh(new THREE.OctahedronGeometry(0.09, 0), new THREE.MeshBasicMaterial({ color: relic ? 0xe6d0ff : 0xfff6c8 })); core.position.y = 0.35; g.add(core);
+      } else if (p.kind === 'pot') {
+        const pts = [[0, 0], [0.16, 0.02], [0.24, 0.14], [0.25, 0.3], [0.18, 0.44], [0.12, 0.5], [0.14, 0.56], [0, 0.56]].map(([x, y]) => new THREE.Vector2(x, y));
+        const pot = new THREE.Mesh(new THREE.LatheGeometry(pts, 12), clay); pot.castShadow = true; g.add(pot);
+      } else {
+        const bx = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.75, 0.55), M.tinted('planks', '#8a6a4a')); bx.position.y = 0.375; bx.castShadow = true; g.add(bx);
+      }
+      this.root.add(g); this.searchObjs.push({ p, g, glow, core, ph: (p.x * 97 + p.y * 31) % 7 });
+    }
+  }
   npcPos(n) { const k = n.moving ? n.prog : 0; return { x: n.x + 0.5 + (n.moving ? (n.nx - n.x) * k : 0), z: n.y + 0.5 + (n.moving ? (n.ny - n.y) * k : 0) }; }
   placeNpc(ch, dt, snap) {
     const n = ch.npc; const p = this.npcPos(n);
@@ -113,6 +136,8 @@ export class MapScene3D {
       ch.faceTo(yaw); ch.play(n.moving ? 'Walk' : 'Idle', 0.2); if (n.moving) ch.setSpeed(0.9);
       ch.update(dt);
     }
+    // v6.1 探索ポイント：条件（ボス撃破後など）を満たすまで隠し、取得済みの光は消す
+    if (this.searchObjs && window.Search) { const S = window.Search; for (const o of this.searchObjs) { const stand = o.glow; o.g.visible = S.shown(o.p) && !(stand && S.taken(o.p)); if (stand && o.g.visible) { const k = 0.75 + 0.25 * Math.sin(t * 3 + o.ph); o.glow.material.opacity = k; o.glow.scale.setScalar(0.7 + 0.25 * k); o.core.rotation.y = t * 1.5; o.core.position.y = 0.32 + Math.sin(t * 2 + o.ph) * 0.05; } } }
     // 宝箱のふた
     for (const c of this.chests) {
       const opened = this.map.tile(c.c.x, c.c.y) === 'chest_open'; c.open += ((opened ? 1 : 0) - c.open) * Math.min(1, dt * 5);
@@ -146,6 +171,7 @@ export class MapScene3D {
     const m = this.map; if (x < 0 || y < 0 || x >= m.w || y >= m.h) return true;
     const t = m.tiles[y][x]; if (window.Tiles.isSolid(t)) return true;
     const ev = m.eventAt(x, y); const d = window.State.data; if (ev && ev.solid && !(d && ev.doneFlag && d.flags[ev.doneFlag])) return true;
+    if (window.Search && window.Search.solidAt(m, x, y)) return true;   // v6.1 壺など（2D版の passable と同じ）
     return false;
   }
   // 円（中心 x,z 半径 r）をタイル・NPC から押し出す

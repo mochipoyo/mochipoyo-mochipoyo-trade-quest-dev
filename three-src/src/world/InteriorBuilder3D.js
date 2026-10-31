@@ -118,6 +118,11 @@ export class InteriorBuilder3D {
         case 'barrel': props.push({ id: 'barrel', m: M4(cx, 0, cz, rnd() * 6) }); break;
         case 'crate': props.push({ id: 'crate', m: M4(cx, 0, cz, rnd() * 0.5) }); break;
         case 'pillar': props.push({ id: 'furn_pillar', m: M4(cx, 0, cz) }); break;
+        case 'slot_machine': {   // v6.1 カジノのスロット台
+          b.add(M.tinted('planks', '#7a1a3a'), box(0.82, 1.45, 0.62, 1), M4(cx, 0.725, cz)); b.add(M.get('gold'), box(0.86, 0.12, 0.66, 1), M4(cx, 1.5, cz));
+          b.add(M.get('glass'), box(0.62, 0.36, 0.04, 1), M4(cx, 1.05, cz + 0.32)); b.add(M.get('iron'), box(0.05, 0.45, 0.05, 1), M4(cx + 0.46, 0.95, cz));
+          lights.push({ pos: new THREE.Vector3(cx, 1.6, cz + 0.6), color: 0xffb04a, power: 0.35, dist: 2.5 }); break;
+        }
         case 'crystal': {
           b.add(stone, box(0.9, 0.5, 0.8, 1), M4(cx, 0.25, cz)); props.push({ id: 'furn_crystal', m: M4(cx, 0.5, cz, rnd() * 3, 0, 0, 0.8) });
           lights.push({ pos: new THREE.Vector3(cx, 1.5, cz + 0.4), color: 0x7fc8ff, power: 0.8, dist: 5 }); break;

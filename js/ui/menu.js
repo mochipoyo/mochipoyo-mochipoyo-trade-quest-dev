@@ -216,8 +216,10 @@
 
   Menu.encyclopedia = async function () {
     while (true) {
-      var i = await Win.choice('図鑑', ['モンスター図鑑', 'アイテム図鑑', '職業一覧', '冒険の記録', 'やめる']);
-      if (i < 0 || i === 4) return;
+      var i = await Win.choice('図鑑', ['モンスター図鑑', 'アイテム図鑑', '職業一覧', '冒険の記録', 'オーパーツ（' + (root.Ooparts ? root.Ooparts.count() + '/' + root.Ooparts.total() : '0') + '）', 'カジノ・学院の記録', 'やめる']);
+      if (i < 0 || i === 6) return;
+      if (i === 4) { if (root.OopartsUI) await root.OopartsUI.list(); continue; }   // v6.1
+      if (i === 5) { await Menu.studyRecord(); continue; }   // v6.1
       var d = State.data;
       if (i === 0) { await Menu.bestiary(); }
       else if (i === 1) { var iids = root.ITEM_LIST; await Win.list(iids.map(function (id) { var it = ITEMS[id]; var known = d.inventory[id] || d.flags['seen_item_' + id] || State.partyActors().some(function (a) { return Object.keys(a.equip).some(function (s) { return a.equip[s] === id; }); }); return known ? { label: it.name, right: ({ weapon: '武器', armor: '防具', consumable: '道具', key: '大事なもの' })[it.cat], sub: it.desc || '' } : { label: '？？？', disabled: true, sub: '未入手' }; }), { title: 'アイテム図鑑' }); }
@@ -234,6 +236,20 @@
     await Win.message([ok ? 'スロット' + (i + 1) + 'にセーブした。' : 'セーブに失敗した（ブラウザの保存領域を確認してください）。']);
   };
 
+  // v6.1 カジノ・研究室・学院の記録（コイン残高・遊んだ結果・学習の記念・研究クエスト）
+  Menu.studyRecord = function () {
+    var d = State.data; var C = root.Casino; var st = C ? C.stats() : {}; var lab = (C && C.state().lab) || {}; var rw = lab.rewards || {};
+    function g(k, label) { var x = st[k]; return '<tr><td>' + label + '</td><td>' + (x ? x.plays + '回' : '―') + '</td><td>' + (x ? x.bet : 0) + '</td><td>' + (x ? x.paid : 0) + '</td><td>' + (x && x.bet ? (x.paid / x.bet * 100).toFixed(1) + '%' : '―') + '</td></tr>'; }
+    var labs = [['lln', '大数の法則の実験'], ['ev', '期待値の問題'], ['fallacy', 'ギャンブラーの誤謬'], ['martingale', 'マーチンゲール法の実験'], ['strategy', '増し玉シミュレーター']].map(function (x) { return '<li>' + esc(x[1]) + '：' + (rw[x[0]] ? '修了' : '未修了') + '</li>'; }).join('');
+    var aq = ['academy_consciousness', 'academy_entangle', 'academy_ancient', 'academy_cosmos', 'academy_soul', 'academy_zero'].map(function (id) { var q = QUESTS[id]; if (!q) return ''; var s = d.quests[id]; return '<li>' + esc(q.title) + '：' + (s ? (s.state === 'done' ? '達成' : '進行中　' + esc(root.Events.questObjective(id))) : '未受注') + '</li>'; }).join('');
+    var html = '<div class="rw-title">カジノ・学院の記録</div>' +
+      '<div>カジノコイン <b>' + (C ? C.coins() : 0) + '</b>枚（コインはゴールドに戻せません）</div>' +
+      '<table class="tbl cs-tbl"><tr><th>ゲーム</th><th>回数</th><th>賭けた</th><th>戻った</th><th>実際の還元</th></tr>' + g('slot', 'スロット') + g('roulette', 'ルーレット') + g('card', 'ハイ＆ロー') + '</table>' +
+      '<div class="small gold-text">確率研究室・投資戦略研究室（ラックスベル）</div><ul class="small">' + labs + '</ul>' +
+      '<div class="small gold-text">ボラティリティア学院</div><ul class="small">' + (d.flags.academy_visited ? aq : '<li>まだ訪れていない</li>') + '<li>講義「統計学」：' + (d.flags.academy_stats ? '修了（チャートの試練に損益分岐の勝率を表示）' : '未修了') + '</li></ul>';
+    return Win.panel(html, { cls: 'lab-panel' });
+  };
+
   Menu.settings = async function () {
     while (true) {
       var st = State.data.settings;
@@ -242,6 +258,7 @@
         { label: '文字速度', right: ({ normal: 'ふつう', fast: 'はやい', instant: '一瞬' })[st.textSpeed] }, { label: '戦闘速度', right: st.battleSpeed === 'fast' ? 'はやい' : 'ふつう' }, { label: '歩く速度', right: ({ normal: 'ふつう', fast: 'はやい', faster: 'とてもはやい' })[st.walkSpeed] || 'はやい' },
         { label: 'チャート試練のリスク%', right: st.riskPercent + '%' }, { label: 'ZigZag表示', right: st.showZigzag ? 'ON' : 'OFF' },
         { label: 'ミニマップ', right: st.minimap === 'off' ? '表示しない' : '表示する' }, { label: 'ミニマップの大きさ', right: st.minimapSize === 'large' ? '大きい' : 'ふつう' },
+        { label: 'スマホの移動操作', right: st.pad === 'dpad' ? '十字キー' : 'スティック' },
         { label: 'データ管理（書き出し・読み込み・初期化）' }, { label: 'タイトルに戻る' }
       ], { title: '設定' });
       if (i < 0) return;
@@ -253,10 +270,11 @@
       if (i === 5) { st.walkSpeed = ({ normal: 'fast', fast: 'faster', faster: 'normal' })[st.walkSpeed] || 'fast'; World.applyWalkSpeed(); }
       if (i === 6) { var ro = root.CONFIG.risk.riskOptions; st.riskPercent = ro[(ro.indexOf(st.riskPercent) + 1) % ro.length]; }
       if (i === 7) { st.showZigzag = !st.showZigzag; }
-      if (i === 8) { st.minimap = st.minimap === 'off' ? 'on' : 'off'; }
+      if (i === 8) { if (root.Minimap && root.Minimap.setVisible) root.Minimap.setVisible(st.minimap === 'off', true); else st.minimap = st.minimap === 'off' ? 'on' : 'off'; }
       if (i === 9) { st.minimapSize = st.minimapSize === 'large' ? 'normal' : 'large'; if (root.Minimap) root.Minimap.resize(); }
-      if (i === 10) { await Menu.dataManagement(); }
-      if (i === 11) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
+      if (i === 10) { st.pad = st.pad === 'dpad' ? 'stick' : 'dpad'; }   // v6.1
+      if (i === 11) { await Menu.dataManagement(); }
+      if (i === 12) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
       State.autosave();
     }
   };

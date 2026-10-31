@@ -26,7 +26,9 @@
     elder: { label: '村長の家', roof: '#8a6a2a', roofL: '#b89a4a', roofD: '#5a4414', icon: 'scroll' },
     warehouse: { label: '倉庫', roof: '#5a6a7a', roofL: '#7a8a9a', roofD: '#3a4450', icon: 'crate', stoneFront: true },
     castle: { label: '城', roof: '#4a4a6a', roofL: '#7a7a9a', roofD: '#2a2a44', icon: 'crown' },
-    ship: { label: '船', roof: '#7a4e26', roofL: '#c9a06a', roofD: '#5a3a1a', icon: null }
+    ship: { label: '船', roof: '#7a4e26', roofL: '#c9a06a', roofD: '#5a3a1a', icon: null },
+    casino: { label: 'カジノ', roof: '#8a2a5a', roofL: '#c84a88', roofD: '#5a1438', icon: 'coin', banner: '#ffd24a', lit: true, flags: true },   // v6.1 ラックスベル
+    academy: { label: '学院', roof: '#2a4a7a', roofL: '#4a78b8', roofD: '#142a4a', icon: 'scroll', banner: '#c9a2ff', tower: true }   // v6.1 ボラティリティア学院
   };
   Buildings.TYPES = TYPES;
 

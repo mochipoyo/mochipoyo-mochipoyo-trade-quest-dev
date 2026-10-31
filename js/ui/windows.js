@@ -126,7 +126,7 @@
         ? '<div class="rw-panel-foot"><div class="rw-panel-close">' + esc(opts.closeLabel || '閉じる') + '（Enter）</div><div class="rw-panel-quit">' + esc(opts.quit === true ? '中断する' : opts.quit) + '（Esc）</div></div>'
         : '<div class="rw-panel-close">' + esc(opts.closeLabel || '閉じる') + '（Enter / ✕）</div>';
       var node = el('<div class="rw-panel ' + (opts.cls || '') + '">' + html + foot + '</div>');
-      var hd = opts.noClose ? (opts.onCancel ? { cancel: function () { opts.onCancel(); } } : {}) : { ok: function () { h.close(); resolve(0); }, cancel: function () { h.close(); resolve(opts.quit ? 'quit' : -1); } };
+      var hd = opts.noClose ? (function () { var o = {}; if (opts.onCancel) o.cancel = function () { opts.onCancel(); }; if (opts.onOk) o.ok = function () { opts.onOk(); }; if (opts.onKey) ['up', 'down', 'left', 'right'].forEach(function (k) { o[k] = function () { opts.onKey(k); }; }); return o; })() : { ok: function () { h.close(); resolve(0); }, cancel: function () { h.close(); resolve(opts.quit ? 'quit' : -1); } };
       var h = open(node, hd);
       var c = node.querySelector('.rw-panel-close'); if (c) c.addEventListener('click', function (e) { e.stopPropagation(); h.close(); resolve(0); });
       var q = node.querySelector('.rw-panel-quit'); if (q) q.addEventListener('click', function (e) { e.stopPropagation(); h.close(); resolve('quit'); });

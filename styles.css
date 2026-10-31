@@ -379,3 +379,102 @@ body.bm-tall .bigmap { inset: 0; }
 .wm-tp:hover:not([disabled]) { background: #2a4f8a; } .wm-tp[disabled] { opacity: .45; cursor: default; }
 .wm-travel-rest { margin-left: 4px; }
 .wm-info-body { max-height: 46vh; overflow-y: auto; }
+
+/* ---------- v6.1 カジノ・研究室・オーパーツ ---------- */
+.casino-panel { max-width: 640px; }
+.cs-coins { color: var(--gold); font-size: 14px; margin: 2px 0 6px; } .cs-coins b { font-size: 18px; }
+.cs-row { display: flex; gap: 6px; margin: 6px 0; align-items: center; } .cs-row.wrap { flex-wrap: wrap; }
+.cs-btn { min-height: 34px; padding: 4px 10px; border: 2px solid #5b6ea8; background: #16224a; color: var(--text); border-radius: 5px; font: inherit; font-size: 13px; cursor: pointer; touch-action: manipulation; }
+.cs-btn.on { border-color: var(--gold); background: rgba(232,193,90,.18); color: var(--gold); }
+.cs-btn.go { background: linear-gradient(180deg, #e8c15a, #b8902e); color: #1a1407; border-color: #fff0b0; font-weight: bold; }
+.cs-btn.hi { border-color: #4cc38a; } .cs-btn.lo { border-color: #e5484d; }
+.cs-btn:disabled { opacity: .4; cursor: default; }
+.cs-msg { min-height: 1.5em; margin: 6px 0; font-size: 14px; }
+.cs-reels { position: relative; display: flex; justify-content: center; gap: 8px; padding: 10px; background: linear-gradient(180deg, #2a0f2a, #120612); border: 3px solid var(--gold); border-radius: 10px; }
+.cs-reel { width: 78px; height: 78px; background: #fdf7e8; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; }
+.cs-reel svg { width: 64px; height: 64px; }
+.cs-line { position: absolute; left: 6px; right: 6px; top: 50%; height: 2px; background: rgba(229,72,77,.6); pointer-events: none; }
+.casino-panel.cs-win .cs-reels { animation: csWin .5s ease-in-out 3; }
+@keyframes csWin { 50% { box-shadow: 0 0 24px #ffd24a; } }
+.cs-tbl th { text-align: left; font-weight: normal; color: var(--gold); font-size: 12px; padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,.2); }
+.cs-tbl td { font-size: 12px; } .cs-tbl td:last-child { text-align: left; }
+.cs-det summary { cursor: pointer; color: var(--gold); font-size: 13px; margin: 4px 0; }
+.cs-hist { margin-top: 4px; }
+.cs-rl { display: flex; gap: 10px; align-items: flex-start; }
+.cs-wheel { position: relative; width: 200px; flex: 0 0 200px; } .cs-wheel-svg { width: 200px; height: 200px; display: block; } .cs-wheel-rot { transform-origin: 0 0; }
+.cs-rl-side { flex: 1; min-width: 0; }
+.cs-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; margin: 4px 0; } .cs-grid.dim { opacity: .55; }
+.cs-num { padding: 4px 0; font-size: 11px; border: 1px solid rgba(255,255,255,.25); border-radius: 3px; color: #fff; cursor: pointer; font-family: inherit; }
+.cs-num.c-red { background: #a8222a; } .cs-num.c-black { background: #1a1a22; } .cs-num.c-green { background: #1f7a34; } .cs-num.on { outline: 2px solid var(--gold); }
+.cs-chips { display: flex; flex-wrap: wrap; gap: 3px; } .cs-chip { min-width: 22px; text-align: center; font-size: 11px; padding: 2px 3px; border-radius: 10px; color: #fff; }
+.cs-chip.c-red { background: #a8222a; } .cs-chip.c-black { background: #2a2a34; } .cs-chip.c-green { background: #1f7a34; }
+.cs-ev { font-size: 12px; margin: 6px 0; background: rgba(255,255,255,.06); padding: 6px; border-radius: 5px; }
+.cs-cards { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 8px 0; }
+.cs-card { width: 64px; height: 90px; border-radius: 7px; background: #fdfdf8; color: #1a1a22; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,.4); }
+.cs-card.red { color: #c8262e; } .cs-card.back { background: repeating-linear-gradient(45deg, #3a1a5a 0 6px, #5a2a8a 6px 12px); border: 2px solid #e8c15a; }
+.cs-vs { font-size: 22px; color: var(--gold); }
+.lab-panel { max-width: 640px; }
+.lab-chart { width: 100%; height: auto; display: block; margin: 4px 0; background: rgba(0,0,0,.2); border-radius: 4px; }
+.lab-box { border-left: 3px solid var(--blue); background: rgba(90,176,255,.08); padding: 4px 8px; margin: 6px 0; border-radius: 0 4px 4px 0; } .lab-box.warn { border-color: #e8a14a; background: rgba(232,161,74,.08); }
+.lab-box-t { font-size: 12px; font-weight: bold; color: var(--gold); } .lab-box p { margin: 2px 0; line-height: 1.6; }
+.lab-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+.lab-st tr { cursor: pointer; } .lab-st tr.on td { background: rgba(232,193,90,.12); } .lab-st td.pos, .lab-stat .pos { color: var(--green); } .lab-st td.neg, .lab-stat .neg { color: var(--red); }
+.lab-stat { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; margin: 4px 0; }
+.lab-bars { margin: 6px 0; } .lab-bar { display: flex; align-items: center; gap: 6px; font-size: 12px; margin: 3px 0; } .lab-bar .l { width: 130px; } .lab-bar .b { flex: 1; height: 12px; background: #0b1226; border-radius: 3px; overflow: hidden; } .lab-bar .b i { display: block; height: 100%; background: linear-gradient(90deg, #5ab0ff, #c9a2ff); } .lab-bar .r { width: 60px; text-align: right; }
+.op-panel { max-width: 640px; }
+.op-rewards { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; } .op-rw { font-size: 11px; padding: 2px 6px; border-radius: 10px; border: 1px solid rgba(255,255,255,.25); color: var(--muted); } .op-rw.ready { border-color: var(--gold); color: var(--gold); } .op-rw.got { border-color: var(--green); color: var(--green); }
+.op-filter .cs-btn { min-height: 28px; font-size: 11px; padding: 2px 6px; }
+.op-list { max-height: 46vh; overflow-y: auto; } .op-row { display: flex; flex-wrap: wrap; gap: 0 8px; padding: 4px 2px; border-bottom: 1px solid rgba(255,255,255,.08); font-size: 13px; }
+.op-no { color: var(--muted); width: 58px; } .op-name { flex: 1; } .op-row.got .op-name { color: #d8c0ff; } .op-reg { color: var(--muted); font-size: 11px; } .op-desc { width: 100%; font-size: 11px; color: var(--muted); padding-left: 58px; }
+@media (max-width: 560px) { .cs-rl { flex-direction: column; align-items: center; } .cs-reel { width: 64px; height: 64px; } .cs-reel svg { width: 52px; height: 52px; } .lab-bar .l { width: 100px; } .op-desc { padding-left: 0; } }
+
+/* ---------- v6.1 スマートフォン（js/ui/mobile.js が body.mobile を付ける） ---------- */
+html.m-root, body.mobile { height: 100%; }
+body.mobile { overflow: hidden; overscroll-behavior: none; touch-action: manipulation; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+body.mobile #app { max-width: none; width: 100%; height: 100vh; height: 100dvh; box-sizing: border-box; padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); gap: 0; justify-content: flex-start; overflow: hidden; }
+body.mobile #stage { flex: 0 0 auto; }
+body.mobile #game { border-width: 2px; border-radius: 4px; box-shadow: none; }
+body.mobile .rw-item, body.mobile .rw-opt { min-height: 34px; align-items: center; }
+body.mobile .rw-opt { display: flex; align-items: center; }
+body.mobile .rw-close { font-size: 20px; padding: 4px 10px; }
+body.mobile .rw-panel { max-height: calc(100% - 8px); -webkit-overflow-scrolling: touch; }
+body.mobile .cs-btn { min-height: 40px; }
+/* 操作パネル */
+#pad.mpad { display: none; }
+body.mobile #pad.mpad { display: grid; position: fixed; z-index: 30; box-sizing: border-box; max-width: none; padding: 0; gap: 6px; }
+body.mobile.pc #pad.mpad { display: none !important; }
+.mpad button { font-family: inherit; color: #fff; touch-action: none; -webkit-tap-highlight-color: transparent; }
+.mp-move { position: relative; }
+.mp-stick { position: relative; width: 128px; height: 128px; border-radius: 50%; background: radial-gradient(circle, rgba(91,110,168,.35), rgba(22,34,74,.85)); border: 2px solid #5b6ea8; touch-action: none; }
+.mp-stick i { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #f7dc8a, #c9a24a); box-shadow: 0 2px 6px rgba(0,0,0,.5); pointer-events: none; }
+.mp-stick.on { border-color: var(--gold); }
+.mpad .dpad { display: none; grid-template-columns: 52px 52px 52px; grid-template-rows: 52px 52px 52px; grid-template-areas: ". up ." "left . right" ". down ."; gap: 2px; }
+body.m-dpad .mpad .dpad { display: grid; } body.m-dpad .mp-stick { display: none; }
+.mp-act { display: flex; gap: 10px; align-items: center; }
+.mp-b { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #5b6ea8; font-size: 13px; white-space: nowrap; font-weight: bold; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.15; }
+.mp-b small { font-size: 9px; font-weight: normal; color: rgba(255,255,255,.75); }
+.mp-b.ok { width: 84px; height: 84px; background: linear-gradient(180deg, #2e9a66, #1f6b45); font-size: 17px; }
+.mp-b.cancel { background: linear-gradient(180deg, #243463, #16224a); }
+.mp-b .lb-back { display: none; } body.mctx-dialog .mp-b .lb-back, body.mctx-battle .mp-b .lb-back, body.mctx-title .mp-b .lb-back { display: inline; } body.mctx-dialog .mp-b .lb-menu, body.mctx-battle .mp-b .lb-menu, body.mctx-title .mp-b .lb-menu { display: none; }
+.mp-tools { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-content: flex-start; }
+.mp-t { min-height: 38px; min-width: 64px; padding: 4px 10px; border-radius: 8px; border: 1px solid #5b6ea8; background: rgba(22,34,74,.92); font-size: 12px; }
+.mp-t.off { opacity: .55; text-decoration: line-through; }
+body.mctx-dialog .mp-tools, body.mctx-battle .mp-tools, body.mctx-title .mp-tools { visibility: hidden; }
+#pad button.on, .mp-t:active, .mp-b:active { filter: brightness(1.4); }
+/* 縦画面：画面の下に操作パネル（ツール列／スティック・ボタン） */
+body.mobile.m-port #pad.mpad { left: env(safe-area-inset-left, 0px); right: env(safe-area-inset-right, 0px); bottom: 0; height: calc(var(--m-pad-h) + env(safe-area-inset-bottom, 0px)); padding: 6px 12px calc(8px + env(safe-area-inset-bottom, 0px)); grid-template-columns: auto 1fr auto; grid-template-rows: auto 1fr; grid-template-areas: "tools tools tools" "move . act"; align-items: end; background: linear-gradient(180deg, rgba(8,12,30,0), rgba(8,12,30,.6) 30%); }
+body.mobile.m-port .mp-tools { grid-area: tools; flex-wrap: nowrap; } body.mobile.m-port .mp-tools .mp-t { flex: 1 1 0; min-width: 0; padding: 4px 2px; white-space: nowrap; overflow: hidden; text-overflow: clip; font-size: 11px; letter-spacing: -.3px; } body.mobile.m-port .mp-move { grid-area: move; } body.mobile.m-port .mp-act { grid-area: act; }
+body.mobile.m-port .mp-stick { width: 118px; height: 118px; } body.mobile.m-port .mp-b.ok { width: 80px; height: 80px; } body.mobile.m-port .mp-b { width: 66px; height: 66px; }
+/* 横画面：ゲーム画面を高さいっぱいに。左右の余白にスティックとボタン（余白が狭いときは画面の上に半透明で重ねる） */
+body.mobile.m-land #app { flex-direction: row; justify-content: center; align-items: center; }
+body.mobile.m-land #pad.mpad { inset: 0; pointer-events: none; display: block; z-index: 30; }
+body.mobile.m-land .mpad > * { pointer-events: auto; position: fixed; }
+body.mobile.m-land .mp-move { left: calc(env(safe-area-inset-left, 0px) + 10px); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); }
+body.mobile.m-land .mp-act { right: calc(env(safe-area-inset-right, 0px) + 10px); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); flex-direction: column-reverse; gap: 8px; }
+body.mobile.m-land .mp-tools { right: calc(env(safe-area-inset-right, 0px) + 8px); top: calc(env(safe-area-inset-top, 0px) + 8px); flex-direction: column; width: 104px; }
+body.mobile.m-land:not(.m-wide) .mp-tools { left: 50%; right: auto; top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 8px); transform: translateX(-50%); flex-direction: row; width: auto; }
+body.mobile.m-land:not(.m-wide) .mp-stick, body.mobile.m-land:not(.m-wide) .mp-b { opacity: .78; }
+body.mobile.m-land:not(.m-wide) .mp-t { min-width: 0; padding: 4px 8px; font-size: 11px; }
+body.mobile.m-land .mp-stick { width: 116px; height: 116px; }
+body.mobile.m-land .mp-b { width: 62px; height: 62px; } body.mobile.m-land .mp-b.ok { width: 76px; height: 76px; }
+@media (max-height: 360px) { body.mobile.m-land .mp-tools .mp-t { min-height: 32px; } body.mobile.m-land .mp-stick { width: 100px; height: 100px; } }

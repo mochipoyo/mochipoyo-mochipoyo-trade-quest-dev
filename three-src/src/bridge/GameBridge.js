@@ -220,9 +220,17 @@ export class App3D {
     }
     for (const c of m.chests) { const cx = c.x + 0.5, cz = c.y + 0.5; const dx = cx - px, dz = cz - pz; const d = Math.hypot(dx, dz); const dot = (dx * fx + dz * fz) / (d || 1); if (d < 1.45 && dot > 0.3) consider({ kind: 'chest', chest: c, score: d - dot * 0.5 + 0.1, x: cx, z: cz, y: 0.9 }); }
     for (const e of m.events) { if (e.type === 'hole') continue; const cx = e.x + 0.5, cz = e.y + 0.5; const dx = cx - px, dz = cz - pz; const d = Math.hypot(dx, dz); const dot = (dx * fx + dz * fz) / (d || 1); if ((d < 1.45 && dot > 0.3) || d < 0.5) consider({ kind: 'event', ev: e, score: d - dot * 0.5 + 0.2, x: cx, z: cz, y: 1.3 }); }
+    // v6.1 調べる共通システム（光る場所・壺・机など）：2D版と同じデータ（Search）を使う
+    const S = G.Search;
+    if (S) for (const sp of S.forMap(m.id)) {
+      if (!S.shown(sp)) continue; const stand = S.KINDS[sp.kind] && S.KINDS[sp.kind].stand; if (stand && S.taken(sp)) continue;
+      const cx = sp.x + 0.5, cz = sp.y + 0.5; const dx = cx - px, dz = cz - pz; const d = Math.hypot(dx, dz); const dot = (dx * fx + dz * fz) / (d || 1);
+      if ((d < 1.45 && dot > 0.3) || (stand && d < 0.6)) consider({ kind: 'search', sp, score: d - dot * 0.5 + 0.15, x: cx, z: cz, y: stand ? 0.7 : 1.0 });
+    }
     if (!best) {   // 正面のタイル（看板・本棚・建物の壁など）は2D版の World.interact に任せる
-      const p = W.player; const dd = W.delta(yawToDir(this.yaw)); const t = m.tile(p.x + dd[0], p.y + dd[1]);
-      if (t === 'sign' || t === 'bookshelf' || t === 'crystal') best = { kind: 'tile', score: 9, x: p.x + dd[0] + 0.5, z: p.y + dd[1] + 0.5, y: 1.4 };
+      const p = W.player; const dd = W.delta(yawToDir(this.yaw)); const fx2 = p.x + dd[0], fy2 = p.y + dd[1]; const t = m.tile(fx2, fy2);
+      if (t === 'sign' || t === 'bookshelf' || t === 'crystal') best = { kind: 'tile', score: 9, x: fx2 + 0.5, z: fy2 + 0.5, y: 1.4 };
+      else if (S && (t === 'barrel' || t === 'crate' || t === 'well')) { const sp = S.at(m, fx2, fy2); if (sp) best = { kind: 'search', sp, score: 9, x: fx2 + 0.5, z: fy2 + 0.5, y: 1.0 }; }   // v6.1 地形の樽・木箱・井戸
     }
     return best;
   }
@@ -231,6 +239,7 @@ export class App3D {
     if (t && t.kind === 'npc') { p.dir = yawToDir(Math.atan2(t.x - this.pos.x, t.z - this.pos.z)); this.yaw = Math.atan2(t.x - this.pos.x, t.z - this.pos.z); this.talkNpc = t.npc; W.talk(t.npc); return; }
     if (t && t.kind === 'chest') { W.openChest(t.chest); return; }
     if (t && t.kind === 'event') { G.Events.run(t.ev); return; }
+    if (t && t.kind === 'search') { p.dir = yawToDir(Math.atan2(t.x - this.pos.x, t.z - this.pos.z)); W.searchPoint(t.sp); return; }   // v6.1 2D版と同じ World.searchPoint
     p.dir = yawToDir(this.yaw); W.interact();
   }
 

@@ -171,7 +171,7 @@
 
   function attackEnemy(b, a, target, power, opts, ev) {
     var s = pstats(a); var es = estats(target);
-    var critRate = (a.job === 'monk' ? 2 : 1) / 16 + (opts.crit || 0);
+    var critRate = (a.job === 'monk' ? 2 : 1) / 16 + (opts.crit || 0) + (fx(a, 'critUp') || 0);   // v6.1 確率の剣などの会心率アップ
     var crit = Math.random() < critRate;
     var mult = resistOf(target, opts.element);
     if (a.job === 'magicknight' && opts.element && opts.element !== 'none') mult *= 1.15;
