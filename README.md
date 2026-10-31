@@ -30,6 +30,12 @@
 - 実ブラウザ（Chromium、2D版 PC・スマホのエミュレーション・3D版）：4地域で遺跡へ歩いて乗り、調べて話が出る、村のまわりの畑の表示 → ページのエラーなし。3D版のページでもフィールドは従来どおり 2D 表示です。
 - 既存の回帰テスト一式 → 結果は下の「Phase A 第3〜5段階の回帰テスト」。
 
+### Phase A 第3〜5段階の回帰テスト（実行済み）
+第5段階まで（第3・第4段階を含む）入れた版のファイル一式のコピーに対して、既存の回帰テスト30本と v6.4 のテスト11本を実行しました。第3・第4段階の専用テストは、それぞれの段階だけを入れた版でも実行しています（expandA3test 21項目・expandA4test 38項目、エラーなし）。
+- エラーなし：maptest（失敗0）・enemytest・assettest・tradeeq・tradetest・growthtest・learntest・playtest・ch5test・ch67test・ch89test・ch1012test・ch1316test・ch17test・skill56・v57test・v58test・v59test・v60test・p1test・p2test・ptcheck・potcheck・ftmenu・npctest（12項目）・navtest・navsim（全114か所）・harbortest・entryaudit・gear64test（56項目）・skills64test（34項目）・balance64test（34項目）・followtest（42項目）・tradiatest（63項目）・expandAtest（80項目）・expandA2test（45項目）・expandA3test（21項目）・expandA4test（38項目）・expandA5test（10項目）・savecompat64（37項目）
+- ch18test：2回とも、任意の隠しボス（旧都市の演算核）に負けた1項目だけが失敗。ほかの項目はエラーなし。全員 Lv60・「攻撃」だけで戦うテストのため（勝率は v6.3 から約30〜39%で変わらない。上の Phase F の項）。第3〜5段階は戦闘のデータを変えていません。
+- 到達の監査（ワープのマスを通り抜けない探索）：行けないものがあったのは3マップで、上の第4段階の項のとおり、意図どおりか実害のないものです。
+
 ## v6.4 大型拡張 Phase A 第4段階：ダンジョンの隠し区画（2D版・3D版 共通）
 
 10のダンジョンに隠し区画を1つずつ足しました。仕掛けはダンジョンごとにすべて別です。データは `js/data/expand-a4.js`。
@@ -129,6 +135,13 @@
 - `maptest`：新しいマップも含めて失敗0。
 - 実ブラウザ（Chromium、2D版 PC・スマホのエミュレーション・3D版）：新しい4枚の表示、キー入力で歩いて階段を上り下り（魔導王宮の2階・地下）、王宮の階段は決着の前に理由が出て止まり、決着の後は上がれる → ページのエラーなし。
 - 既存の回帰テスト一式 → 結果は下の「Phase A 第2段階の回帰テスト」。
+
+### Phase A 第2段階の回帰テスト（実行済み）
+既存の回帰テスト30本と v6.4 のテスト8本（gear64test・skills64test・balance64test・followtest・tradiatest・expandAtest・expandA2test・savecompat64）を、第2段階のファイル一式のコピーに対して実行しました。
+- エラーなし：maptest（失敗0）・enemytest・assettest・tradeeq・tradetest・growthtest・learntest・playtest・ch5test・ch67test・ch89test・ch1316test・ch17test・skill56・v57test・v58test・v59test・v60test・p1test・p2test・ptcheck・potcheck・ftmenu・npctest（12項目）・navtest・navsim（全114か所）・harbortest・entryaudit・gear64test（56項目）・skills64test（34項目）・balance64test（34項目）・followtest（42項目）・tradiatest（63項目）・expandAtest（80項目）・expandA2test（45項目）・savecompat64（37項目）
+- ch1012test：1回目は第12章のボス（中枢防衛機構）に負けて、そのあとの項目が失敗。このテストは全員 Lv34・「攻撃」だけで戦い、これまでの版でも1人しか残らないぎりぎりの勝ち方でした。第2段階は戦闘や第12章の場所を変えていません。再実行してエラーなし。
+- ch18test：任意の隠しボス（凍結の時計守）に負けてその項目が失敗（これまでの段階と同じ。上の Phase F の項）。ほかの項目はエラーなし。
+- `expandAtest`・`expandA2test` は、あとの段階で別の既存マップが変わっても前の段階の確認が続けられるように、比べ方を直しました（第1段階・第2段階で変えたマップの中身の確認はそのまま）。
 
 ## v6.4 大型拡張 Phase A（第1段階）：リヴェル城の上の階と地下・職人通り・忘却の洞窟の地底湖（2D版・3D版 共通）
 
