@@ -29,6 +29,7 @@
       vehicles: {}, aboard: null,   // v5.0: 乗り物（js/rpg/vehicle.js）
       // v6.1 追加（旧セーブは State.migrate がこの初期値で補う）：探索ポイントの取得記録、ファストトラベル、オーパーツ、カジノ、学院
       searched: {}, travel: {}, ooparts: { found: {}, rewards: {} }, casino: { coins: 0, history: { slot: [], roulette: [], card: [] }, stats: {}, lab: {} }, academy: {},
+      tradia: { wins: {}, losses: {}, draws: {}, best: {}, titles: [], log: [], lev: null },   // v6.4 Phase D 相場都市トレディア（トレードバトルの記録・レバレッジ取引の口座。lev は最初に取引所を使ったときに作る）
       legacyImported: null
     };
     State.data = d;

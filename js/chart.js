@@ -144,6 +144,13 @@
     hline(opts.sl, COLORS.sl, '損切り');
     hline(opts.tp, COLORS.tp, '利確');
     hline(opts.entry, COLORS.entry, 'エントリー');
+    // v6.4 追加の水平線（レバレッジ取引のロスカットの価格など）。表示範囲の外なら、上下の端に矢印と価格だけを出す（縮尺は変えない）
+    (opts.lines || []).forEach(function (L) {
+      if (!L || L.v === null || L.v === undefined || isNaN(L.v)) return;
+      if (L.v >= pMin && L.v <= pMax) { hline(L.v, L.color || '#ff8a3a', L.label || ''); return; }
+      ctx.fillStyle = L.color || '#ff8a3a'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left';
+      ctx.fillText((L.label || '') + ' ' + L.v.toFixed(3) + (L.v > pMax ? ' ↑（表示範囲の外）' : ' ↓（表示範囲の外）'), padL + 4, L.v > pMax ? yPrice0 + 10 : yPrice0 + hPrice - 4);
+    });
 
     // ---- v4.3: プレイヤーが指定した高値・安値の印 ----
     (opts.marks || []).forEach(function (m) {
