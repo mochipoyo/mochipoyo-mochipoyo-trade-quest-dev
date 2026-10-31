@@ -62,6 +62,12 @@
 - 実ブラウザ（Chromium、2D版 PC・スマホのエミュレーション・3D版）：トレディアの町とワールドの入口の表示、取引所の画面（888倍の注文確認・10倍で損切り・利確つきの注文→1本ずつ進める→終える→結果）、トレードバトル（試練の答えは自動）→ 結果の表、トレーダーの記録 → ページのエラーなし。
 - 既存の回帰テスト一式 → 結果は下の「Phase D の回帰テスト」。
 
+### Phase D の回帰テスト（実行済み）
+既存の回帰テスト30本と v6.4 のテスト5本（gear64test・skills64test・balance64test・followtest・tradiatest）を、Phase D のファイル一式のコピーに対して実行しました。
+- エラーなし：maptest・enemytest・tradeeq・tradetest・growthtest・learntest・playtest・ch5test・ch67test・ch89test・ch1012test・ch1316test・ch17test・skill56・v57test・v58test・v59test・v60test・p1test・p2test・ptcheck・potcheck・ftmenu・npctest（12項目）・navtest・navsim（全114か所）・harbortest・entryaudit・gear64test（56項目）・skills64test（34項目）・balance64test（34項目）・followtest（42項目）・tradiatest（63項目）
+- assettest：トレーダー12人の歩行キャラ（色だけで描く `td_*`）がアセットの一覧（`js/data/asset-manifest.js`）に載っていない、というエラー24件 → **ゲーム側の登録漏れ**だったので、画像のない NPC を「missing（コード描画）」として一覧に登録するよう直しました（表示は変わりません）。直したあと再実行してエラーなし。
+- ch18test：①クエストの総数の確認が Phase D の2つ（トレディアの十二人・証拠金の講習）を数えていなかった → テストの期待値を 91 → 93 に直しました。②任意の隠しボス（凍結の時計守・旧都市の演算核）に負ける失敗（Phase F の項と同じ。全員 Lv60・攻撃だけで戦うテストのため。近い条件の勝率は Phase D でも 34.0%・31.5% で v6.3 から変わらない）。直したあと再実行：1回目はエラーなし（クエストの総数93も一致）、2回目は隠しボス2体に負けてその2項目だけ失敗（ほかの項目はエラーなし）。
+
 ## v6.4 大型拡張 Phase F：仲間の隊列表示と「なかま」画面（2D版・3D版 共通）
 
 ### 仲間が後ろをついて歩く（`js/rpg/follow.js`、2D版・3D版で同じ処理）
@@ -84,6 +90,11 @@
 - 実ブラウザ（Chromium）：2D版 PC とスマホ（iPhone 13 のエミュレーション）でポヨ村を歩いて仲間がついてくる・なかま画面の表示、3D版（ソフトウェアの WebGL）でポヨ村を歩いて3人の 3D モデルが後ろに並ぶ・村の中のワープと宿屋への出入りのあとに並べ直す（マップの中・通れるマスだけ）→ ページのエラーなし。
 - 3D版は `three-src` をビルドし直しました（`3d/assets/main-*.js` が新しくなりました。前のファイルは残しています）。
 - 既存の回帰テスト一式 → 結果は下の「Phase F の回帰テスト」。
+
+### Phase F の回帰テスト（実行済み）
+既存の回帰テスト30本と v6.4 のテスト4本（gear64test・skills64test・balance64test・followtest）を、Phase F のファイル一式のコピーに対して実行しました。
+- エラーなし：maptest・enemytest・assettest・tradeeq・tradetest・growthtest・learntest・playtest・ch5test・ch67test・ch89test・ch1012test・ch1316test・ch17test・skill56・v57test・v58test・v59test・v60test・p1test・p2test・ptcheck・potcheck・ftmenu・npctest（12項目）・navtest・navsim（全114か所）・harbortest・entryaudit・gear64test（56項目）・skills64test（34項目）・balance64test（34項目）・followtest（42項目）
+- ch18test：3回実行して1回はエラーなし、2回は任意の隠しボス（凍結の時計守・旧都市の演算核）に負けて失敗。このテストは全員 Lv60・「攻撃」だけで戦うので、隠しボスに負けることがあります。近い条件（全員 Lv60・同じテスト用の装備・攻撃だけ。仲間の顔ぶれが1人違う）で版ごとに200戦ずつ勝率を比べると、凍結の時計守は v6.3 30.5%／Phase E 33.5%／Phase F 35.5%、旧都市の演算核は v6.3 36.5%／Phase E 39.0%／Phase F 31.5% で、v6.3 から変わっていません（200戦の勝率のぶれは95%の範囲でおよそ±6〜7ポイント）。Phase F は戦闘の計算を変えていません。
 
 ## v6.4 大型拡張 Phase E：レベルの上がり方と回復・蘇生の習得時期（2D版・3D版 共通）
 
