@@ -194,6 +194,11 @@ ul.eval .mark { display: inline-block; width: 1.3em; font-weight: bold; } ul.eva
 .bm-tabs button, .bm-close, .bm-ctl button, .bm-floors button { font-family: inherit; font-size: 12px; background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(232,193,90,.5); border-radius: 4px; padding: 4px 10px; cursor: pointer; }
 .bm-tabs button.on, .bm-floors button.on { background: rgba(232,193,90,.25); border-color: var(--gold); color: var(--gold); }
 .bm-floors button[disabled] { opacity: .4; cursor: default; }
+/* v5.9 地域の地図：見る地域を選ぶ */
+.bm-region { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--gold); background: rgba(11,18,38,.85); border: 1px solid rgba(232,193,90,.5); border-radius: 4px; padding: 3px 6px; }
+.bm-region select { font-family: inherit; font-size: 12px; background: #16224a; color: #fff; border: 1px solid #5b6ea8; border-radius: 3px; padding: 2px 4px; max-width: 46vw; }
+/* v5.9 本のページ */
+.book-page { font-size: 15px; line-height: 1.8; margin: 8px 2px; }
 .bm-close { border-color: #e5484d; }
 .bm-body { position: relative; flex: 1; min-height: 0; }
 .bm-body canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }

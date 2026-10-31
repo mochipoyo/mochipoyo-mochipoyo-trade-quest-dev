@@ -53,7 +53,7 @@
     events: [{ x: 70, y: 56, type: 'learn', solid: false, learnId: 'practice_tempus' }],
     encounters: { rate: 0.035, zones: [
       { name: '神殿の山地', test: function (x, y) { return x >= 100 && y <= 60; }, groups: [['hourglass_golem'], ['chrono_moth', 'chrono_moth'], ['bell_wraith', 'chrono_moth'], ['hourglass_golem', 'bell_wraith']], level: 23 },
-      { name: '鐘都の平野', test: function () { return true; }, groups: [['chrono_moth', 'chrono_moth'], ['debt_collector'], ['bell_wraith'], ['debt_collector', 'chrono_moth'], ['salt_wolf', 'salt_wolf', 'chrono_moth']], rare: [['slime_gold']], rareRate: 0.03, level: 22 }
+      { name: '鐘都の平野', test: function () { return true; }, groups: [['pojipoji_phantom'], ['pojipoji_phantom', 'chrono_moth'], ['chrono_moth', 'chrono_moth'], ['debt_collector'], ['bell_wraith'], ['debt_collector', 'chrono_moth'], ['salt_wolf', 'salt_wolf', 'chrono_moth']], rare: [['slime_gold']], rareRate: 0.03, level: 22 }
     ] }
   });
   root.TEMPUS_DEF = def;

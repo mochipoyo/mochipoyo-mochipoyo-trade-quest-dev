@@ -61,7 +61,7 @@
     ],
     events: [{ x: 48, y: 66, type: 'learn', solid: false, learnId: 'practice_grania' }],
     encounters: { rate: 0.035, zones: [
-      { name: 'グラニアの灰野', test: function (x, y) { return x < 70 || y > 60; }, groups: [['smoke_wraith'], ['iron_beetle', 'iron_beetle'], ['chain_hound'], ['chain_hound', 'smoke_wraith'], ['iron_beetle', 'chain_hound'], ['ash_golem'], ['smoke_wraith', 'smoke_wraith'], ['gull_pirate', 'gull_pirate']], rare: [['slime_metal']], rareRate: 0.02, level: 10 },
+      { name: 'グラニアの灰野', test: function (x, y) { return x < 70 || y > 60; }, groups: [['simple_cultist'], ['simple_cultist', 'smoke_wraith'], ['smoke_wraith'], ['iron_beetle', 'iron_beetle'], ['chain_hound'], ['chain_hound', 'smoke_wraith'], ['iron_beetle', 'chain_hound'], ['ash_golem'], ['smoke_wraith', 'smoke_wraith'], ['gull_pirate', 'gull_pirate']], rare: [['slime_metal']], rareRate: 0.02, level: 10 },
       { name: '鉱山地帯', test: function (x, y) { return x >= 70 && y <= 60; }, groups: [['ash_golem', 'iron_beetle'], ['chain_hound', 'chain_hound'], ['mine_imp', 'mine_imp'], ['ore_bat', 'ore_bat', 'mine_imp'], ['ash_golem'], ['chain_warden'], ['smoke_wraith', 'mine_imp']], level: 12 }
     ] }
   });

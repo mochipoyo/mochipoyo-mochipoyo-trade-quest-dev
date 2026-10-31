@@ -263,6 +263,18 @@
   M('boss_old_core', { name: '旧都市の演算核', lv: 43, arche: 'mage', boss: true, art: { family: 'machine', antenna: true, size: 'boss', angry: true, c: { base: '#2a2a3a', accent: '#ff3a3a', eye: '#ff3a3a' } }, family: '機械系', area: '旧都市 深層・演算核', hp: 10000, atk: 120, mag: 118, resist: { thunder: 1.6, fire: 0.8, ice: 0.8 }, actions: [A('attack', 2), A('skill', 'thunder', 2), A('special', 'sweep', 1), A('special', 'silence', 1), A('special', 'trial', 1), { type: 'special', id: 'call', summon: 'core_sentinel', w: 1, hpBelow: 0.6 }, { type: 'special', id: 'heal_self', w: 1, hpBelow: 0.3 }, { type: 'special', id: 'rage', w: 2, hpBelow: 0.5 }], trial: true, trialScenarios: ['whipsaw', 'div_against_htf', 'mtf_conflict', 'bad_rr_sell'], drops: [{ item: 'zero_bow', rate: 1 }], gold: 6000, desc: '誤差0.8%を切り捨てた、最初の予測機械。' });
   M('boss_gull_admiral', { name: '海賊カモメの頭', lv: 13, boss: true, art: { family: 'bird', size: 'big', c: { base: '#e8e8f0', accent: '#c94a3a', eye: '#ffd24a' } }, family: '鳥系', area: '海賊カモメの巣', hp: 2000, atk: 58, resist: { thunder: 1.5, wind: 0.6 }, actions: [A('attack', 2), A('special', 'double_attack', 1), A('skill', 'wind_blade', 1), { type: 'special', id: 'call', summon: 'gull_pirate', w: 1, hpBelow: 0.7 }], drops: [{ item: 'hi_potion', rate: 1 }], gold: 600, desc: '帆船の積荷を狙う海賊カモメの群れの頭。眼帯をしている。' });
   // 敵の特殊行動
+  // ===== v5.9 追加の通常モンスター（絵は assets/monsters/ のイラスト。読み込めないときは art のドット絵で表示） =====
+  M('yosen_slime', { name: '陽線スライム', lv: 2, hp: 32, art: { family: 'slime', size: 'small', crown: true, angry: true, c: { base: '#ff5a3a', accent: '#ffd24a' } }, family: 'スライム系', area: '始まりの草原・ダウの大森林', actions: [A('attack', 3), A('special', 'yosen_rally', 1)], drops: [{ item: 'herb', rate: 0.25 }], desc: '終値が始値より高い「陽線」の気が固まったスライム。大陽線を立てると勢いづいて攻撃力が上がる。陽線が続いても、上位足の流れを確かめるのを忘れずに。' });
+  M('insen_slime', { name: '陰線スライム', lv: 3, hp: 40, art: { family: 'slime', size: 'small', crown: true, angry: true, c: { base: '#3a5aff', accent: '#c0c0d0' } }, family: 'スライム系', area: '始まりの草原・ダウの大森林', actions: [A('attack', 3), A('special', 'insen_drop', 1)], drops: [{ item: 'antidote', rate: 0.15 }], desc: '終値が始値より低い「陰線」の気が固まったスライム。大陰線で叩きつけてくる。陰線が1本出ただけで下降と決めつけず、高値・安値の並びで判断しよう。' });
+  M('contrarian_bat', { name: '逆張りバット', lv: 5, arche: 'fast', art: { family: 'bird', size: 'small', wings: true, c: { base: '#3a2040', accent: '#e03a4a', eye: '#ffb03a' } }, family: '獣系', area: '南の荒野・忘却の洞窟', actions: [A('attack', 2), A('special', 'contrarian_dive', 1), A('special', 'drain', 1)], drops: [{ item: 'herb', rate: 0.2 }], desc: '流れに逆らって飛び込んでくる蝙蝠。上がれば売り、下がれば買い。トレンドに逆らう勝負は、当たれば大きいが外れると痛い。' });
+  M('stoploss_zombie', { name: '損切りゾンビ', lv: 6, art: { family: 'undead', zombie: true, c: { base: '#8aa86a', eye: '#ff5a3a' } }, family: 'アンデッド系', area: '忘却の洞窟', resist: { light: 2, dark: 0, fire: 1.5 }, actions: [A('attack', 2), A('special', 'hold_loss', 1), A('special', 'scare', 1)], drops: [{ item: 'antidote', rate: 0.2 }], desc: '損切りできずに含み損を抱え続けた者のなれの果て。「塩漬け」で傷を癒やして居座る。損切りは小さいうちほど傷が浅い。光と炎に弱い。' });
+  M('nanpin_goblin', { name: 'ナンピンゴブリン', lv: 8, gold: 32, art: { family: 'demon', size: 'small', teeth: true, c: { base: '#6ab04a', accent: '#c94a3a', eye: '#ffb03a' } }, family: '魔物系', area: 'エマール山脈・エマール山道', actions: [A('attack', 3), { type: 'special', id: 'nanpin', summon: 'nanpin_goblin', w: 1 }], drops: [{ item: 'potion', rate: 0.15 }], desc: '下がるたびに買い増す「ナンピン」の小鬼。放っておくと仲間（ポジション）がどんどん増える。増える前に倒そう。金貨を多く抱えている。' });
+  M('simple_cultist', { name: 'シンプル教信徒', lv: 11, arche: 'mage', art: { family: 'magical', c: { base: '#f0e8d8', accent: '#d03a2a', eye: '#ffb03a' } }, family: '人間系', area: 'グラニアの灰野', actions: [A('skill', 'fireball', 2), A('special', 'simple_sermon', 1), A('attack', 1)], drops: [{ item: 'ether', rate: 0.15 }], desc: '「ローソク足だけ見ればいい」と説く教団の信徒。教えを唱えると守りが固くなる。シンプルなのは良いことだが、上位足まで見ないのが玉にきず。' });
+  M('fullleva_ogre', { name: 'フルレバオーガ', lv: 14, arche: 'glass', gold: 60, art: { family: 'demon', big: true, horns: true, teeth: true, c: { base: '#d03a2a', accent: '#ffd24a', eye: '#ffd24a' } }, family: '魔物系', area: 'カリオン平野・王都周辺', actions: [A('attack', 2), A('special', 'full_leverage', 1), A('special', 'rage', 1)], drops: [{ item: 'hi_potion', rate: 0.1 }], desc: '全資金にレバレッジをかけて殴りかかる鬼。一撃はとても重いが、体力（資金）は少ない。大振りの前に倒してしまおう。' });
+  M('kotsukotsu_knight', { name: 'コツコツドカンナイト', lv: 19, arche: 'tank', art: { family: 'golem', metal: true, c: { base: '#e8d8b0', accent: '#d4a020', eye: '#ffd24a' } }, family: '人間系', area: '灰灯島（廃墟側の荒地）', actions: [A('special', 'kotsukotsu', 3), A('special', 'dokan', 1), A('special', 'harden', 1)], drops: [{ item: 'hi_potion', rate: 0.12 }], desc: '小さな利益をコツコツ積み上げる騎士。ただし、ときどきそれを全部吹き飛ばす「ドカン」の一撃を放つ。損切りを置かずに勝ち続けた者の末路。' });
+  M('pojipoji_phantom', { name: 'ポジポジファントム', lv: 22, arche: 'fast', mp: 30, art: { family: 'undead', ghost: true, c: { base: '#8aa0e8', eye: '#3ae0ff' } }, family: 'アンデッド系', area: '鐘都テンプス（鐘都の平野・地下契約室）', resist: { light: 2, dark: 0 }, actions: [A('special', 'pojipoji', 2), A('attack', 1), A('skill', 'confuse', 1)], drops: [{ item: 'hi_potion', rate: 0.1 }], desc: '常にポジションを持たずにはいられない亡霊。BUYとSELLの札を乱れ打ちしてくるが、一撃一撃は軽い。「休むも相場」。' });
+  M('indicator_mage', { name: 'インジケーター依存メイジ', lv: 26, arche: 'mage', art: { family: 'magical', c: { base: '#7a3ad0', accent: '#ffd24a', eye: '#e0c0ff' } }, family: '魔法生物系', area: 'マクディア魔導王国（マクディア平原・禁書庫）', resist: { thunder: 0.7 }, actions: [A('skill', 'fireball', 1), A('skill', 'ice', 1), A('skill', 'thunder', 1), A('special', 'indicator_overload', 1)], drops: [{ item: 'ether', rate: 0.2 }], desc: '画面じゅうにインジケーターを並べすぎて、どれを信じればいいか分からなくなった魔導士。判断を鈍らせる術を使う。見る指標は絞り込もう。' });
+
   var ENEMY_SPECIALS = {
     spore: { name: '眠りの胞子', msg: 'は眠りの胞子をまき散らした！', status: { id: 'sleep', chance: 0.5 }, target: 'allies' },
     drain: { name: '吸血', msg: 'は血を吸った！', power: 0.8, drain: true },
@@ -280,7 +292,19 @@
     double_attack: { name: '連続攻撃', msg: 'の連続攻撃！', power: 0.85, hits: 2 },
     silence: { name: '沈黙の呪い', msg: 'は呪文を封じる呪いをかけた！', status: { id: 'silence', chance: 0.6 }, target: 'allies' },
     sweep: { name: 'なぎ払い', msg: 'は全体をなぎ払った！', power: 0.75, all: true },
-    rage: { name: '怒り', msg: 'は怒り狂った！ 攻撃力が大きく上がった', buff: { atk: 0.5, agi: 0.2 }, turns: 4, self: true }
+    rage: { name: '怒り', msg: 'は怒り狂った！ 攻撃力が大きく上がった', buff: { atk: 0.5, agi: 0.2 }, turns: 4, self: true },
+    // v5.9 追加モンスター用
+    yosen_rally: { name: '大陽線', msg: 'は大陽線を立てて勢いづいた！ 攻撃力が上がった', buff: { atk: 0.3 }, turns: 3, self: true },
+    insen_drop: { name: '大陰線', msg: 'は大陰線で叩きつけてきた！', power: 1.4 },
+    contrarian_dive: { name: '逆張り突撃', msg: 'は流れに逆らって突っ込んできた！', power: 1.5 },
+    hold_loss: { name: '塩漬け', msg: 'は含み損を抱えたまま居座った！', heal: 0.3 },
+    nanpin: { name: 'ナンピン', msg: 'は「下がったら買い増しだ！」と仲間を増やした！', call: true },
+    simple_sermon: { name: 'シンプルの教え', msg: 'は「ローソク足だけ見ればいい」と唱えた！ 守りが固くなった', buff: { def: 0.4, mdef: 0.4 }, turns: 3, self: true },
+    full_leverage: { name: 'フルレバ一撃', msg: 'は全資金を乗せて大槌を振り下ろした！', power: 1.8 },
+    kotsukotsu: { name: 'コツコツ', msg: 'の小刻みな連撃！（コツコツ）', power: 0.55, hits: 2 },
+    dokan: { name: 'ドカン', msg: 'は積み上げたものを全部吹き飛ばす一撃を放った！（ドカン）', power: 2.2 },
+    pojipoji: { name: 'ポジポジ', msg: 'はBUYとSELLの札を乱れ打ちした！', power: 0.5, hits: 3 },
+    indicator_overload: { name: 'インジケーター過多', msg: 'は画面いっぱいにインジケーターを並べた！ 判断が鈍る……', status: { id: 'confuse', chance: 0.35 }, target: 'allies' }
   };
 
   var ENEMY_LIST = Object.keys(ENEMIES);

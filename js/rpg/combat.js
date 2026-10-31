@@ -269,7 +269,7 @@
     var ratio = e.hp / e.maxHp;
     // ボスのフェーズ移行（HP割合で行動が変わる）
     if (e.boss) { var ph = ratio <= 0.3 ? 2 : ratio <= 0.6 ? 1 : 0; if (ph > e.phase) { e.phase = ph; msg(ph === 2 ? e.name + 'は最後の力を振り絞っている……！' : e.name + 'の様子が変わった！'); ev.push({ type: 'phase', idx: e.idx, phase: ph }); } }
-    var acts = e.actions.filter(function (x) { if (x.hpBelow !== undefined && ratio > x.hpBelow) return false; if (x.hpAbove !== undefined && ratio < x.hpAbove) return false; if (x.id === 'call' && aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) return false; if (x.id === 'heal_self' && ratio > 0.8) return false; return true; });
+    var acts = e.actions.filter(function (x) { if (x.hpBelow !== undefined && ratio > x.hpBelow) return false; if (x.hpAbove !== undefined && ratio < x.hpAbove) return false; if ((x.id === 'call' || (SPECIALS[x.id] && SPECIALS[x.id].call)) && aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) return false; if (x.id === 'heal_self' && ratio > 0.8) return false; return true; });
     if (!acts.length) acts = [{ type: 'attack', w: 1 }];
     var total = acts.reduce(function (s, x) { return s + x.w; }, 0); var r = Math.random() * total; var chosen = acts[0];
     for (var i = 0; i < acts.length; i++) { r -= acts[i].w; if (r <= 0) { chosen = acts[i]; break; } }

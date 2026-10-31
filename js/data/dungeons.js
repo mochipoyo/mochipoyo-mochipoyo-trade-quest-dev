@@ -121,7 +121,7 @@
     { x: 25, y: 12, type: 'locked', solid: true, doneFlag: 'oc_lock', key: 'cave_key', text: ['王家の封印が施された扉だ。「洞窟の鍵」が必要だ。'] },
     { x: 11, y: 7, type: 'inspect', text: ['壁に誰かが刻んだ文字がある。\n「損切りを置かずに潜った者は、ここで全てを失った。引き返すなら今だ」'] }
   ],
-  encounters: { rate: 0.045, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['bat', 'bat'], ['lizard'], ['mole', 'bat'], ['bat', 'bat', 'bat'], ['lizard', 'mole'], ['cave_crab'], ['ore_slime', 'ore_slime'], ['zombie'], ['cave_crab', 'bat', 'bat'], ['zombie', 'mole']], level: 5 }] }
+  encounters: { rate: 0.045, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['stoploss_zombie'], ['contrarian_bat', 'bat'], ['bat', 'bat'], ['lizard'], ['mole', 'bat'], ['bat', 'bat', 'bat'], ['lizard', 'mole'], ['cave_crab'], ['ore_slime', 'ore_slime'], ['zombie'], ['cave_crab', 'bat', 'bat'], ['zombie', 'mole']], level: 5 }] }
   });
   add({ id: 'oblivion_cave_2', name: '忘却の洞窟 2階', kind: 'dungeon', bgm: 'dungeon', fallback: 'cave_floor', rows: [
     'GGGGGGGGGGGGGGGGGGGGGGkGkGGGGG',
@@ -144,7 +144,7 @@
   events: [
     { x: 13, y: 5, type: 'rank_door', solid: true, doneFlag: 'hidden_cave_open', rank: 3, text: ['岩壁に、波形の紋章が刻まれた扉が埋まっている。'] },
     { x: 15, y: 3, type: 'learn', solid: false, learnId: 'practice_cave2' },{ x: 11, y: 10, type: 'hole', to: 'oblivion_cave_3', tx: 12, ty: 5, text: ['足元が崩れた！'] }],
-  encounters: { rate: 0.045, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['ghost', 'bat'], ['lizard', 'lizard'], ['imp'], ['mole', 'mole', 'bat'], ['ghost', 'ghost'], ['floating_eye'], ['stalactite_golem'], ['zombie', 'zombie', 'ghost'], ['skeleton'], ['skeleton', 'zombie'], ['floating_eye', 'imp'], ['ore_slime', 'cave_crab'], ['mimic']], level: 6 }] }
+  encounters: { rate: 0.045, zones: [{ name: '忘却の洞窟', test: function () { return true; }, groups: [['stoploss_zombie', 'ghost'], ['ghost', 'bat'], ['lizard', 'lizard'], ['imp'], ['mole', 'mole', 'bat'], ['ghost', 'ghost'], ['floating_eye'], ['stalactite_golem'], ['zombie', 'zombie', 'ghost'], ['skeleton'], ['skeleton', 'zombie'], ['floating_eye', 'imp'], ['ore_slime', 'cave_crab'], ['mimic']], level: 6 }] }
   });
   // v4.2: 洞窟の隠し工房（トレーダーランクCで開く扉の先。寄り道）
   add({ id: 'cave_hidden_room', name: '洞窟の隠し工房', kind: 'dungeon', bgm: 'boss_area', fallback: 'cave_floor', rows: [
@@ -212,7 +212,7 @@
   events: [{ x: 6, y: 9, type: 'learn', solid: false, learnId: 'learn_ema' }, { x: 14, y: 9, type: 'learn', solid: false, learnId: 'practice_mountain' }],
   chests: [{ id: 'ep1', x: 4, y: 1, item: 'hi_potion', qty: 1 }, { id: 'ep2', x: 27, y: 1, item: 'iron_helm', qty: 1 }, { id: 'ep3', x: 25, y: 13, gold: 300 }],
   npcs: [{ id: 'ep_merchant', x: 3, y: 2, sprite: 'merchant', dir: 'down', wander: 0, talk: async function (c) { await c.say('行商人', ['山賊に荷物を奪われた……頭目のガロンはこの先のアジトにいる。倒してくれたら礼をする。']); if (!c.flag('q_bandit_started')) { c.setFlag('q_bandit_started', true); c.questStart('sub_bandit'); } } }],
-  encounters: { rate: 0.045, zones: [{ name: 'エマール山道', test: function () { return true; }, groups: [['bandit'], ['bandit', 'bandit'], ['golem'], ['bug_armor', 'bandit'], ['wolf', 'wolf', 'bandit'], ['bandit_archer', 'bandit_archer'], ['rock_lizard', 'rock_lizard'], ['mountain_hawk', 'mountain_hawk', 'mountain_hawk'], ['harpy', 'bandit_archer'], ['rock_golem'], ['mountain_cat', 'mountain_cat'], ['rock_golem', 'bug_armor']], level: 8 }] }
+  encounters: { rate: 0.045, zones: [{ name: 'エマール山道', test: function () { return true; }, groups: [['nanpin_goblin'], ['nanpin_goblin', 'bandit_archer'], ['bandit'], ['bandit', 'bandit'], ['golem'], ['bug_armor', 'bandit'], ['wolf', 'wolf', 'bandit'], ['bandit_archer', 'bandit_archer'], ['rock_lizard', 'rock_lizard'], ['mountain_hawk', 'mountain_hawk', 'mountain_hawk'], ['harpy', 'bandit_archer'], ['rock_golem'], ['mountain_cat', 'mountain_cat'], ['rock_golem', 'bug_armor']], level: 8 }] }
   });
   add({ id: 'bandit_hideout', name: '山賊のアジト', kind: 'dungeon', bgm: 'boss_area', rows: [
     '############',

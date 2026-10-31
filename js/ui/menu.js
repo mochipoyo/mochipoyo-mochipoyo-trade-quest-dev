@@ -174,7 +174,8 @@
         { label: '師匠の特別クエスト', right: mqRight(), sub: 'ランク到達で解放される師匠ハケイからの課題' },
         { label: '学習実績', right: root.Growth.achievementList().filter(function (a) { return a.done; }).length + '/' + root.LEARN_ACHIEVEMENTS.length, sub: '判断の質で解除される実績と報酬' },
         { label: '学習進捗・記録', right: '', sub: '分野別の挑戦数・正解率・ヒント利用率・習熟度・苦手な判断・復習履歴' },
-        { label: '章ごとの学習イベント', right: root.Learning.progress().filter(function (p) { return p.status === 'done'; }).length + '/' + root.Learning.progress().length + ' 達成', sub: '必修イベントの場所・任意練習・解放される能力' }
+        { label: '章ごとの学習イベント', right: root.Learning.progress().filter(function (p) { return p.status === 'done'; }).length + '/' + root.Learning.progress().length + ' 達成', sub: '必修イベントの場所・任意練習・解放される能力' },
+        { label: '読んだ本', right: (Services.booksReadCount ? Services.booksReadCount() : 0) + '/' + (root.Books ? root.Books.all.length : 0) + '冊', sub: '各地の本棚で読んだトレードのヒント・相場格言・伝承を読み返す' }
       ];
       function mqRight() { var ids = Object.keys(root.QUESTS).filter(function (k) { return root.QUESTS[k].master; }); var open = ids.filter(function (k) { return root.Growth.questAvailable(root.QUESTS[k]); }); var active = ids.filter(function (k) { return d.quests[k] && d.quests[k].state === 'active'; }); var done = ids.filter(function (k) { return d.quests[k] && d.quests[k].state === 'done'; }); return active.length ? '進行中 ' + active.length : (open.length > done.length ? '受けられる' : done.length + '/' + ids.length + ' 達成'); }
       var i = await Win.list(items, { title: 'トレード修行', cls: 'main-menu' });
@@ -189,6 +190,7 @@
       else if (i === 7) await Menu.achievements();
       else if (i === 8) await root.TradeUI.showRecord();
       else if (i === 9) await Menu.learnProgress();
+      else if (i === 10) await Services.bookList();   // v5.9
     }
   };
   Menu.learnProgress = async function () {

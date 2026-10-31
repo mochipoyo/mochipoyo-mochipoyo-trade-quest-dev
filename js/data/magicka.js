@@ -160,7 +160,7 @@
     else await c.say('禁書庫の番人', ['善悪はない、か。では、使った結果の責任は誰が取る？ ……ヴォルクも、同じことを言っていた。', 'それでも、考えて答えたことは認める。持っていけ。']);
     d.flags.archive_keeper_answer = a < 0 ? 0 : a; await c.questComplete('archive_keeper');
   } }],
-  encounters: { rate: 0.04, zones: [{ name: '禁書庫', test: function () { return true; }, groups: [['grimoire', 'grimoire'], ['arcane_eye', 'arcane_eye'], ['mana_golem'], ['grimoire', 'arcane_eye']], level: 28 }] } });
+  encounters: { rate: 0.04, zones: [{ name: '禁書庫', test: function () { return true; }, groups: [['indicator_mage', 'arcane_eye'], ['grimoire', 'grimoire'], ['arcane_eye', 'arcane_eye'], ['mana_golem'], ['grimoire', 'arcane_eye']], level: 28 }] } });
   add({ id: 'forbidden_archive_2', name: '禁書庫 2階', kind: 'dungeon', bgm: 'dungeon', fallback: 'floor_wood', rows: [
     '######################',
     '#____#________#_____>#',

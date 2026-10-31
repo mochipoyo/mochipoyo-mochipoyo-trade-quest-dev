@@ -62,7 +62,7 @@
       { x: 60, y: 66, type: 'learn', solid: false, learnId: 'practice_islands' }
     ],
     encounters: { rate: 0.035, zones: [
-      { name: '廃墟側の荒地', test: function (x, y) { return x >= 72; }, groups: [['ruin_shade'], ['ruin_shade', 'ruin_shade'], ['lantern_wisp', 'ruin_shade'], ['drift_golem'], ['rust_crab', 'rust_crab'], ['lantern_wisp', 'lantern_wisp']], level: 19 },
+      { name: '廃墟側の荒地', test: function (x, y) { return x >= 72; }, groups: [['kotsukotsu_knight'], ['kotsukotsu_knight', 'ruin_shade'], ['ruin_shade'], ['ruin_shade', 'ruin_shade'], ['lantern_wisp', 'ruin_shade'], ['drift_golem'], ['rust_crab', 'rust_crab'], ['lantern_wisp', 'lantern_wisp']], level: 19 },
       { name: '灰灯島の草地', test: function () { return true; }, groups: [['salt_wolf', 'salt_wolf'], ['rust_crab'], ['gull_pirate', 'gull_pirate'], ['salt_wolf', 'rust_crab'], ['lantern_wisp']], rare: [['slime_gold']], rareRate: 0.03, level: 18 }
     ] }
   });

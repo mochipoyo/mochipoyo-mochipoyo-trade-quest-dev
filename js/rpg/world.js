@@ -273,7 +273,7 @@
     var tile = m.tile(fx, fy);
     if (tile === 'bld_block') { var bld = m.buildingAt(fx, fy); if (bld) { World.busy = true; Win.message([bld.name + '。入口は' + (bld.doorAbs.x < p.x ? '左' : bld.doorAbs.x > p.x ? '右' : 'この下') + 'のドアだ。']).then(function () { World.busy = false; }); return; } }
     if (tile === 'sign') { Win.message(['何か書いてある……が、かすれて読めない。']); return; }
-    if (tile === 'bookshelf') { World.busy = true; Win.message(['『相場の波を読む者へ』——高値と安値を見よ。上位足を見よ。損切りを置け。']).then(function () { World.busy = false; }); return; }
+    if (tile === 'bookshelf') { World.busy = true; Promise.resolve(root.Services && root.Services.bookshelf ? root.Services.bookshelf(m.id, fx, fy) : Win.message(['『相場の波を読む者へ』——高値と安値を見よ。上位足を見よ。損切りを置け。'])).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; }); return; }   // v5.9 本棚の本を選んで読める
     if (tile === 'crystal') { World.busy = true; Win.message(['均衡のクリスタルの台座だ。淡く光っている。']).then(function () { World.busy = false; }); return; }
   };
   World.talk = function (npc) {

@@ -53,7 +53,7 @@
     events: [{ x: 70, y: 60, type: 'learn', solid: false, learnId: 'practice_magicka' }],
     encounters: { rate: 0.035, zones: [
       { name: '実験室の山地', test: function (x, y) { return x >= 104; }, groups: [['mana_golem'], ['arcane_eye', 'arcane_eye'], ['mana_golem', 'grimoire'], ['rune_knight', 'arcane_eye']], level: 29 },
-      { name: 'マクディア平原', test: function () { return true; }, groups: [['grimoire', 'grimoire'], ['rune_knight'], ['arcane_eye', 'grimoire'], ['rune_knight', 'arcane_eye'], ['storm_ray']], rare: [['slime_gold']], rareRate: 0.03, level: 28 }
+      { name: 'マクディア平原', test: function () { return true; }, groups: [['indicator_mage'], ['indicator_mage', 'grimoire'], ['grimoire', 'grimoire'], ['rune_knight'], ['arcane_eye', 'grimoire'], ['rune_knight', 'arcane_eye'], ['storm_ray']], rare: [['slime_gold']], rareRate: 0.03, level: 28 }
     ] }
   });
   root.MAGICKA_DEF = def;

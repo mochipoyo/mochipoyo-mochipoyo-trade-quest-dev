@@ -304,5 +304,42 @@
   }
   Services.learningQuests = learningQuests;
 
+  /* ---------- v5.9 本棚の本（js/data/learning.js の Books） ---------- */
+  function booksRead() { var d = State.data; if (!d.booksRead) d.booksRead = {}; return d.booksRead; }
+  Services.booksReadCount = function () { var r = booksRead(); return root.Books ? root.Books.all.filter(function (b) { return r[b.id]; }).length : 0; };
+  // 1冊を1ページずつ読む（「次へ」／最後は「本を閉じる」。Esc か「閉じる」で途中でも閉じられる）
+  Services.readBook = async function (b) {
+    var first = !booksRead()[b.id]; booksRead()[b.id] = true;
+    for (var i = 0; i < b.pages.length; i++) {
+      var last = i === b.pages.length - 1;
+      var html = '<div class="rw-title">『' + esc(b.title) + '』<span class="muted small">　' + esc(b.cat) + '（' + (i + 1) + '/' + b.pages.length + '）</span></div><p class="lesson book-page">' + esc(b.pages[i]) + '</p>' + (last && b.cat === 'トレードのヒント' ? '<p class="muted small">' + esc(root.Books.NOTE) + '</p>' : '');
+      var r = await Win.panel(html, last ? { closeLabel: '本を閉じる' } : { closeLabel: '次へ', quit: '閉じる' });
+      if (r === 'quit' || r === -1) break;
+    }
+    if (first) { State.autosave(); if (root.Win.toast) root.Win.toast('読んだ本 ' + Services.booksReadCount() + '/' + root.Books.all.length + '冊'); }
+  };
+  // 本棚を調べたとき：その本棚に並ぶ本から選んで読む
+  Services.bookshelf = async function (mapId, x, y) {
+    if (!root.Books) { await Win.message(['本がぎっしり並んでいる。']); return; }
+    var list = root.Books.forShelf(mapId, x, y); var cur = 0;
+    while (true) {
+      var r = booksRead();
+      var i = await Win.list(list.map(function (b) { return { label: '『' + b.title + '』', right: r[b.id] ? '読んだ' : '未読', sub: b.cat }; }), { title: '本棚（読んだ本 ' + Services.booksReadCount() + '/' + root.Books.all.length + '冊）', initial: cur });
+      if (i < 0) return;
+      cur = i; await Services.readBook(list[i]);
+    }
+  };
+  // メニュー「トレード修行」→「読んだ本」：一度読んだ本を読み返せる
+  Services.bookList = async function () {
+    if (!root.Books) return; var cur = 0;
+    while (true) {
+      var r = booksRead(); var read = root.Books.all.filter(function (b) { return r[b.id]; });
+      if (!read.length) { await Win.message(['まだ本を読んでいない。町や建物の本棚を調べると、トレードのヒントや相場格言の本が読める。']); return; }
+      var i = await Win.list(read.map(function (b) { return { label: '『' + b.title + '』', right: b.cat, sub: b.pages[0].slice(0, 40) + (b.pages[0].length > 40 ? '…' : '') }; }), { title: '読んだ本 ' + read.length + '/' + root.Books.all.length + '冊（ほかの本は各地の本棚に）', initial: Math.min(cur, read.length - 1) });
+      if (i < 0) return;
+      cur = i; await Services.readBook(read[i]);
+    }
+  };
+
   root.Services = Services;
 })(typeof window !== 'undefined' ? window : globalThis);

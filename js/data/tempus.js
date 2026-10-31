@@ -92,7 +92,7 @@
   warps: [{ x: 1, y: 1, to: 'time_bank', tx: 6, ty: 2 }, { x: 20, y: 10, to: 'time_bank_vault_2', tx: 1, ty: 1 }],
   chests: [{ id: 'tv1', x: 6, y: 7, gold: 1500 }, { id: 'tv2', x: 18, y: 6, item: 'hi_potion', qty: 3 }],
   events: [{ x: 14, y: 2, type: 'inspect', solid: false, text: ['棚いっぱいの契約書。「明日 3年分」「明日 10年分」……名前と、預けた時間の量。', '使途の欄は、すべて空白。'] }],
-  encounters: { rate: 0.04, zones: [{ name: '契約室', test: function () { return true; }, groups: [['bell_wraith'], ['debt_collector', 'debt_collector'], ['bell_wraith', 'chrono_moth'], ['debt_collector', 'bell_wraith']], level: 22 }] } });
+  encounters: { rate: 0.04, zones: [{ name: '契約室', test: function () { return true; }, groups: [['pojipoji_phantom', 'debt_collector'], ['bell_wraith'], ['debt_collector', 'debt_collector'], ['bell_wraith', 'chrono_moth'], ['debt_collector', 'bell_wraith']], level: 22 }] } });
   add({ id: 'time_bank_vault_2', name: '地下契約室 最深部', kind: 'dungeon', bgm: 'boss_area', fallback: 'floor_stone', rows: [
     '################',
     '#<____KKKK_____#',

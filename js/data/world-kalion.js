@@ -55,8 +55,8 @@
     ],
     events: [{ x: 52, y: 84, type: 'learn', solid: false, learnId: 'practice_kalion' }],
     encounters: { rate: 0.035, zones: [
-      { name: 'カリオン平野', test: function (x, y) { return y > 48; }, groups: [['tax_hound'], ['tax_hound', 'tax_hound'], ['paper_wraith'], ['coin_golem'], ['federal_soldier', 'tax_hound'], ['paper_wraith', 'paper_wraith'], ['bandit', 'wild_dog'], ['coin_golem', 'paper_wraith']], rare: [['slime_gold']], rareRate: 0.03, level: 13 },
-      { name: '王都周辺', test: function (x, y) { return y <= 48; }, groups: [['federal_soldier', 'federal_soldier'], ['royal_guard'], ['coin_golem', 'coin_golem'], ['paper_wraith', 'tax_hound'], ['royal_guard', 'federal_soldier'], ['harpy', 'harpy']], level: 15 }
+      { name: 'カリオン平野', test: function (x, y) { return y > 48; }, groups: [['fullleva_ogre'], ['tax_hound'], ['tax_hound', 'tax_hound'], ['paper_wraith'], ['coin_golem'], ['federal_soldier', 'tax_hound'], ['paper_wraith', 'paper_wraith'], ['bandit', 'wild_dog'], ['coin_golem', 'paper_wraith']], rare: [['slime_gold']], rareRate: 0.03, level: 13 },
+      { name: '王都周辺', test: function (x, y) { return y <= 48; }, groups: [['fullleva_ogre', 'federal_soldier'], ['federal_soldier', 'federal_soldier'], ['royal_guard'], ['coin_golem', 'coin_golem'], ['paper_wraith', 'tax_hound'], ['royal_guard', 'federal_soldier'], ['harpy', 'harpy']], level: 15 }
     ] }
   });
   root.KALION_DEF = def;
