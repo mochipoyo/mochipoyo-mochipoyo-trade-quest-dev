@@ -30,11 +30,18 @@
   }
 
   /* ---------- 店 ---------- */
+  // v6.4 店ごとの追加の品ぞろえ（SHOP_ADD[店のマップID] = [{ id, after }]）。after のメインクエストを達成していれば並ぶ
+  Services.addedStock = function (stock, mapId) {
+    var add = root.SHOP_ADD && (mapId || (World.map && World.map.id)) ? root.SHOP_ADD[mapId || World.map.id] : null; if (!add) return stock;
+    var q = State.data.quests || {};
+    return stock.concat(add.filter(function (e) { return ITEMS[e.id] && stock.indexOf(e.id) < 0 && (!e.after || (q[e.after] && q[e.after].state === 'done')); }).map(function (e) { return e.id; }));
+  };
   Services.shop = async function (kind, stock) {
     var d = State.data;
     // v6.1 飲食物：お店（マップID）ごとの追加の品ぞろえを、既存の品の後ろに並べる（js/data/food.js）
     var extra = kind === 'item' && root.SHOP_EXTRAS && World.map ? root.SHOP_EXTRAS[World.map.id] : null;
     if (extra) stock = stock.concat(extra.filter(function (id) { return ITEMS[id] && stock.indexOf(id) < 0; }));
+    stock = Services.addedStock(stock);   // v6.4 新しい装備・道具（js/data/gear64.js の SHOP_ADD。物語の進み具合で並ぶ）
     while (true) {
       var a = await Win.choice('いらっしゃい。何をする？（所持金 ' + d.gold + 'G）', ['買う', '売る', 'やめる']);
       if (a === 2 || a === -1) { await Win.message(['またどうぞ。']); return; }
@@ -69,6 +76,9 @@
     a.equip[slot] = itemId; State.addItem(itemId, -1);
   }
   Services.equipItem = equipItem;
+  Services.statLine = statLine; Services.compareInfo = compareInfo;
+  // v6.4 装備できる職業の名前（どうぐ画面の詳細）
+  Services.equipJobs = function (it) { if (!it || (it.cat !== 'weapon' && it.cat !== 'armor')) return []; return (root.JOB_LIST || Object.keys(JOBS)).filter(function (j) { var J = JOBS[j]; return it.cat === 'weapon' ? J.weapons.indexOf(it.type) >= 0 : J.armors.indexOf(it.type) >= 0; }).map(function (j) { return JOBS[j].name; }); };
   async function sellLoop() {
     var d = State.data;
     while (true) {

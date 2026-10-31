@@ -406,7 +406,7 @@
         if (!ids.length) { await Win.message(['使える道具がない。']); continue; }
         var ii = await Win.list(ids.map(function (id) { return { label: ITEMS[id].name, right: '×' + inv[id], sub: ITEMS[id].desc }; }), { title: 'どうぐ' }); if (ii < 0) continue;
         var it = ITEMS[ids[ii]]; var tg = null;
-        if (!it.effect.damage) { var tid = await pickAlly(b, !!it.effect.revive); if (!tid) continue; tg = { side: 'party', id: tid }; }
+        if (!it.effect.damage && !it.effect.escape) { var tid = await pickAlly(b, !!it.effect.revive); if (!tid) continue; tg = { side: 'party', id: tid }; }   // v6.4 撤退の煙玉は対象なし
         return { actorId: a.id, type: 'item', itemId: it.id, target: tg };
       }
       if (sel === 3) return { actorId: a.id, type: 'defend' };

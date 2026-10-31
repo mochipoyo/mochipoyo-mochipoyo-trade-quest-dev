@@ -48,34 +48,73 @@
     await Win.panel('<div class="rw-title">' + esc(a.name) + '　' + esc(j.name) + ' Lv' + a.level + (a.id === 'hero' && root.Growth ? '　<span class="title-badge">' + esc(root.Growth.title()) + '</span>' : '') + '</div>' + (root.Assets ? root.Assets.portraitTagFor(a, 'portrait status-portrait', 150) : '') + '<div class="stat-grid"><div>HP<b>' + a.hp + '/' + s.maxHp + '</b></div><div>MP<b>' + a.mp + '/' + s.maxMp + '</b></div><div>攻撃<b>' + s.atk + '</b></div><div>防御<b>' + s.def + '</b></div><div>素早さ<b>' + s.agi + '</b></div><div>魔力<b>' + s.mag + '</b></div></div><div class="muted small">次のレベルまで ' + (Actors.expForLevel(a.level) - a.exp) + '　状態：' + (a.dead ? '戦闘不能' : Object.keys(a.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join('・') || '正常') + '</div><div class="muted small">固有：' + esc(j.trait) + '　役割：' + esc(j.role) + '</div><h3>装備</h3><div>' + eq + '</div><div class="muted small">職業レベル：' + jl + '</div>');
   };
 
+  /* ---------- どうぐ（v6.4 ジャンル別・並び替え・使えるものだけ・詳細と装備比較） ---------- */
+  var ITEM_SORTS = [{ id: 'kind', name: '種類順' }, { id: 'name', name: '名前順' }, { id: 'count', name: '所持数順' }];
+  var TARGET_NAME = { ally: '味方1人', dead_ally: '戦闘不能の味方1人', party: '味方全員', self: '自分', enemies: '敵全体' };
+  function itemTarget(it) { if (it.target) return TARGET_NAME[it.target] || ''; var e = it.effect || {}; return e.damage ? '敵全体' : e.revive ? '戦闘不能の味方1人' : e.all ? '味方全員' : e.warpTown ? '全員（移動）' : '味方1人'; }
+  function inTown() { return World.map && (World.map.kind === 'town' || World.map.kind === 'interior'); }
+  function canUseNow(id) { var it = ITEMS[id]; if (!it || it.cat !== 'consumable' || it.battleOnly) return false; if (it.fieldOnly && inTown() && !it.effect.warpTown) return false; return true; }
+  Menu.itemDetail = function (id) {
+    var it = ITEMS[id]; if (!it) return ''; var IC = root.ItemCat; var S = root.Services; var d = State.data;
+    var g = IC ? IC.GENRES.filter(function (x) { return x.id === IC.of(id); })[0] : null;
+    var h = '<div class="it-detail"><div class="it-name">' + esc(it.name) + ' <span class="muted small">' + esc(g ? g.name : '') + '　所持 ' + (d.inventory[id] || 0) + '</span></div>';
+    h += '<div>' + esc(it.desc || '') + '</div>';
+    if (it.cat === 'consumable') h += '<div class="muted small">使える場面：' + esc(IC.scene(id)) + '　対象：' + esc(itemTarget(it)) + (it.price ? '　値段 ' + it.price + 'G' : '') + '</div>';
+    else if (it.cat === 'weapon' || it.cat === 'armor') {
+      if (S && S.statLine) h += '<div class="small">' + esc(S.statLine(it)) + '</div>';
+      if (S && S.equipJobs) h += '<div class="muted small">装備できる職業：' + esc(S.equipJobs(it).join('・') || 'なし') + '</div>';
+      if (S && S.compareInfo) h += '<div class="it-cmp small">' + S.compareInfo(it).replace(/^<div class="muted">[\s\S]*?<\/div>(<div>[\s\S]*?<\/div>)?/, '') + '</div>';
+    } else h += '<div class="muted small">' + (it.subcategory === 'material' ? '素材：鍛冶などで使う。使ったり売ったりはできない' : '重要アイテム：使ったり売ったりはできない') + '</div>';
+    return h + '</div>';
+  };
   Menu.items = async function () {
+    var tab = 0, sort = 0, usableOnly = false, initial = 0;
+    var IC = root.ItemCat; var G = IC.GENRES;
     while (true) {
-      var d = State.data; var ids = Object.keys(d.inventory).filter(function (id) { return ITEMS[id]; });
-      ids.sort(function (a, b) { var ca = ITEMS[a].cat, cb = ITEMS[b].cat; return ca === cb ? 0 : ca === 'consumable' ? -1 : cb === 'consumable' ? 1 : ca === 'key' ? 1 : cb === 'key' ? -1 : 0; });
-      var i = await Win.list(ids.map(function (id) { var it = ITEMS[id]; return { label: it.name, right: '×' + d.inventory[id], sub: it.desc || '' }; }), { title: 'どうぐ' });
-      if (i < 0) return;
-      var it = ITEMS[ids[i]];
-      if (it.cat === 'consumable') {
-        if (it.battleOnly) { await Win.message(['戦闘中にしか使えない。']); continue; }
-        var ef = it.effect;
-        if (ef.warpTown) { var a0 = await Win.choice(it.name + 'を使って最後に泊まった町へ戻る？', ['使う', 'やめる']); if (a0 === 0) { State.addItem(it.id, -1); var li = d.lastInn; await Win.message(['翼が光り、体がふわりと浮いた……']); World.enterMap(li.map, li.x, li.y, 'down'); return; } continue; }
-        if (ef.all) { if (World.map.kind === 'town' || World.map.kind === 'interior') { await Win.message(['ここでは使えない（フィールドやダンジョンで使う）。']); continue; } State.addItem(it.id, -1); State.partyActors().forEach(function (a) { if (!a.dead) { var s = Actors.stats(a); a.hp = s.maxHp; a.mp = s.maxMp; } }); await Win.message(['テントを張って休んだ。全員のHPとMPが回復した！']); continue; }
-        var target = await pickActor(it.name + 'を誰に使う？', !!ef.revive); if (!target) continue;
-        var s = Actors.stats(target); var lines = [];
-        if (ef.revive) { if (!target.dead) { await Win.message(['効果がない。']); continue; } target.dead = false; target.hp = Math.max(1, Math.round(s.maxHp * ef.revive)); target.status = {}; lines.push(target.name + 'が復活した！'); }
-        else if (target.dead) { await Win.message(['倒れている仲間には効果がない。']); continue; }
-        if (ef.hp) { var bh = target.hp; target.hp = Math.min(s.maxHp, target.hp + ef.hp); lines.push(target.name + 'のHPが' + (target.hp - bh) + '回復した'); }
-        if (ef.mp) { var bm = target.mp; target.mp = Math.min(s.maxMp, target.mp + ef.mp); lines.push(target.name + 'のMPが' + (target.mp - bm) + '回復した'); }
-        if (ef.cure) { var cured = []; ef.cure.forEach(function (c) { if (target.status[c]) { delete target.status[c]; cured.push(Combat.STATUS_NAME[c]); } }); lines.push(cured.length ? target.name + 'の' + cured.join('・') + 'が治った' : '状態異常はなかった'); }
-        State.addItem(it.id, -1); if (root.Audio) root.Audio.sfx('heal');
-        await Win.message(lines); World.updateHud();
-      } else if (it.cat === 'weapon' || it.cat === 'armor') {
-        var cands = State.partyActors().filter(function (x) { return Actors.canEquip(x, it.id); });
-        if (!cands.length) { await Win.message(['誰も装備できない。']); continue; }
-        var ci = await Win.choice(it.name + 'を誰が装備する？', cands.map(function (x) { return x.name; }).concat(['やめる'])); if (ci < 0 || ci >= cands.length) continue;
-        root.Services.equipItem(cands[ci], it.id); await Win.message([cands[ci].name + 'は' + it.name + 'を装備した。']);
-      } else await Win.message([it.desc]);
+      var d = State.data; var all = Object.keys(d.inventory).filter(function (id) { return ITEMS[id]; });
+      var order = {}; G.forEach(function (g, i) { order[g.id] = i; });
+      var ids = all.filter(function (id) { return G[tab].id === 'all' || IC.of(id) === G[tab].id; });
+      if (usableOnly) ids = ids.filter(canUseNow);
+      var sid = ITEM_SORTS[sort].id;
+      ids.sort(function (a, b) { if (sid === 'name') return ITEMS[a].name.localeCompare(ITEMS[b].name, 'ja'); if (sid === 'count') return (d.inventory[b] || 0) - (d.inventory[a] || 0); return (order[IC.of(a)] - order[IC.of(b)]) || ((ITEMS[a].tier || 0) - (ITEMS[b].tier || 0)); });
+      var rows = ids.map(function (id) { var it = ITEMS[id]; return { label: it.name, right: '×' + d.inventory[id], sub: (it.cat === 'consumable' ? (canUseNow(id) ? '' : '【' + IC.scene(id) + '】') : '') + (it.desc || ''), cls: 'g-' + IC.of(id) + (it.cat === 'key' ? ' key' : '') }; });
+      if (!rows.length) rows = [{ label: usableOnly ? '（いま使えるものはない）' : '（このジャンルの持ち物はない）', disabled: true }];
+      var counts = G.map(function (g) { return g.id === 'all' ? all.length : all.filter(function (id) { return IC.of(id) === g.id; }).length; });
+      var r = await Win.list(rows, { title: 'どうぐ', cls: 'items-menu', tabs: G.map(function (g, i) { return { label: g.name, count: counts[i] }; }), tab: tab,
+        tools: [{ id: 'sort', label: '並び：' + ITEM_SORTS[sort].name }, { id: 'usable', label: '使えるものだけ', on: usableOnly }],
+        initial: Math.min(initial, Math.max(0, ids.length - 1)), info: function (k) { return ids[k] ? Menu.itemDetail(ids[k]) : ''; } });
+      if (r === -1) return;
+      if (r && typeof r === 'object') { if (r.tab !== undefined) { tab = r.tab; initial = 0; } else if (r.tool === 'sort') sort = (sort + 1) % ITEM_SORTS.length; else if (r.tool === 'usable') usableOnly = !usableOnly; continue; }
+      if (!ids.length) continue; initial = r;
+      if (await Menu.useItem(ids[r]) === 'warp') return;
     }
+  };
+  Menu.useItem = async function (id) {
+    var d = State.data; var it = ITEMS[id]; if (!it) return;
+    if (it.cat === 'consumable') {
+      if (it.battleOnly) { await Win.message(['戦闘中にしか使えない。']); return; }
+      var ef = it.effect;
+      if (ef.warpTown) { var a0 = await Win.choice(it.name + 'を使って最後に泊まった町へ戻る？', ['使う', 'やめる']); if (a0 === 0) { State.addItem(it.id, -1); var li = d.lastInn; await Win.message(['翼が光り、体がふわりと浮いた……']); World.enterMap(li.map, li.x, li.y, 'down'); return 'warp'; } return; }
+      if (it.fieldOnly && inTown()) { await Win.message(['ここでは使えない（フィールドやダンジョンで使う）。']); return; }
+      if (ef.all) { State.addItem(it.id, -1); State.partyActors().forEach(function (a) { if (!a.dead) { var s = Actors.stats(a); a.hp = s.maxHp; a.mp = s.maxMp; } }); await Win.message(['テントを張って休んだ。全員のHPとMPが回復した！']); return; }
+      if (ef.partyHeal) { State.addItem(it.id, -1); var hl = []; State.partyActors().forEach(function (a) { if (a.dead) return; var s = Actors.stats(a); var h0 = a.hp, m0 = a.mp; a.hp = Math.min(s.maxHp, a.hp + Math.round(s.maxHp * ef.partyHeal)); a.mp = Math.min(s.maxMp, a.mp + Math.round(s.maxMp * ef.partyHeal)); hl.push(a.name + '：HP+' + (a.hp - h0) + '　MP+' + (a.mp - m0)); }); if (root.Audio) root.Audio.sfx('heal'); await Win.message(['宿営セットを広げて一息ついた。'].concat(hl)); World.updateHud(); return; }   // v6.4 携帯宿営セット
+      if (ef.repel) { State.addItem(it.id, -1); d.counters.repel_steps = Math.max(d.counters.repel_steps || 0, ef.repel); await Win.message(['鐘を鳴らした。魔物の気配に気づきやすくなった（' + ef.repel + '歩のあいだ、陸の敵に出会いにくい）']); return; }   // v6.4 危険察知の鐘
+      if (ef.seaRepel) { State.addItem(it.id, -1); d.counters.seacharm_steps = Math.max(d.counters.seacharm_steps || 0, ef.seaRepel); await Win.message(['潮風の護符を掲げた（船に乗っているあいだ' + ef.seaRepel + '歩、海の敵に出会いにくい）']); return; }   // v6.4 潮風の護符
+      var target = await pickActor(it.name + 'を誰に使う？', !!ef.revive); if (!target) return;
+      var s = Actors.stats(target); var lines = [];
+      if (ef.revive) { if (!target.dead) { await Win.message(['効果がない。']); return; } target.dead = false; target.hp = Math.max(1, Math.round(s.maxHp * ef.revive)); target.status = {}; lines.push(target.name + 'が復活した！'); }
+      else if (target.dead) { await Win.message(['倒れている仲間には効果がない。']); return; }
+      if (ef.hp) { var bh = target.hp; target.hp = Math.min(s.maxHp, target.hp + ef.hp); lines.push(target.name + 'のHPが' + (target.hp - bh) + '回復した'); }
+      if (ef.mp) { var bm = target.mp; target.mp = Math.min(s.maxMp, target.mp + ef.mp); lines.push(target.name + 'のMPが' + (target.mp - bm) + '回復した'); }
+      if (ef.cure) { var cured = []; ef.cure.forEach(function (c) { if (target.status[c]) { delete target.status[c]; cured.push(Combat.STATUS_NAME[c]); } }); lines.push(cured.length ? target.name + 'の' + cured.join('・') + 'が治った' : '状態異常はなかった'); }
+      State.addItem(it.id, -1); if (root.Audio) root.Audio.sfx('heal');
+      await Win.message(lines); World.updateHud();
+    } else if (it.cat === 'weapon' || it.cat === 'armor') {
+      var cands = State.partyActors().filter(function (x) { return Actors.canEquip(x, it.id); });
+      if (!cands.length) { await Win.message(['誰も装備できない。（装備できる職業：' + ((root.Services.equipJobs && root.Services.equipJobs(it).join('・')) || 'なし') + '）']); return; }
+      var ci = await Win.choice(it.name + 'を誰が装備する？', cands.map(function (x) { return x.name; }).concat(['やめる'])); if (ci < 0 || ci >= cands.length) return;
+      root.Services.equipItem(cands[ci], it.id); await Win.message([cands[ci].name + 'は' + it.name + 'を装備した。']);
+    } else await Win.message([it.desc, it.subcategory === 'material' ? '（素材。使ったり売ったりはできない）' : '（重要アイテム。使ったり売ったりはできない）']);
   };
 
   Menu.equip = async function () {
@@ -96,11 +135,26 @@
     }
   };
 
+  /* ---------- じゅもん・とくぎ（v6.4 分類表示：攻撃魔法・物理特技・回復・補助） ---------- */
+  var SKILL_GROUPS = [{ id: 'all', name: 'すべて' }, { id: 'magic', name: '攻撃魔法' }, { id: 'attack', name: '物理特技' }, { id: 'heal', name: '回復・蘇生' }, { id: 'support', name: '補助・妨害' }];
+  function skillGroup(sk) { return sk.kind === 'magic' ? 'magic' : sk.kind === 'attack' ? 'attack' : (sk.kind === 'heal' || sk.kind === 'revive' || sk.kind === 'cure' || sk.kind === 'mp_heal') ? 'heal' : 'support'; }
+  Menu.skillGroup = function (id) { return SKILLS[id] ? skillGroup(SKILLS[id]) : 'support'; };
+  var SK_TARGET = { enemy: '敵1体', enemies: '敵全体', ally: '味方1人', allies: '味方全体', self: '自分', dead_ally: '戦闘不能の味方' };
+  var EL_NAME = { fire: '炎', ice: '氷', thunder: '雷', wind: '風', light: '光', dark: '闇' };
   Menu.skills = async function () {
     var a = await pickActor('じゅもん・とくぎを見る', true); if (!a) return;
     var list = root.Actors.allSkills(a).filter(function (s) { return SKILLS[s]; });
     if (!list.length) { await Win.message([a.name + 'はまだ特技を覚えていない。']); return; }
-    await Win.list(list.map(function (s) { var sk = SKILLS[s]; return { label: sk.name, right: 'MP' + sk.mp, sub: sk.desc }; }), { title: a.name + 'の特技' });
+    var tab = 0;
+    while (true) {
+      var ids = list.filter(function (s) { return SKILL_GROUPS[tab].id === 'all' || skillGroup(SKILLS[s]) === SKILL_GROUPS[tab].id; });
+      var rows = ids.map(function (s) { var sk = SKILLS[s]; return { label: sk.name, right: 'MP' + (a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp), sub: (SK_TARGET[sk.target] || '') + (sk.element && EL_NAME[sk.element] ? '・' + EL_NAME[sk.element] : '') + '　' + sk.desc }; });
+      if (!rows.length) rows = [{ label: '（この分類の特技はない）', disabled: true }];
+      var counts = SKILL_GROUPS.map(function (g) { return g.id === 'all' ? list.length : list.filter(function (s) { return skillGroup(SKILLS[s]) === g.id; }).length; });
+      var r = await Win.list(rows, { title: a.name + 'の特技', tabs: SKILL_GROUPS.map(function (g, i) { return { label: g.name, count: counts[i] }; }), tab: tab });
+      if (r === -1) return;
+      if (r && typeof r === 'object' && r.tab !== undefined) { tab = r.tab; continue; }
+    }
   };
 
   Menu.party = async function () {

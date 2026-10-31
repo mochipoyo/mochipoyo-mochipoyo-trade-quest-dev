@@ -215,6 +215,9 @@
     // 毒の歩行ダメージ
     State.partyActors().forEach(function (a) { if (!a.dead && a.status.poison && d.steps % 4 === 0) { a.hp = Math.max(1, a.hp - 1); } });
     World.updatePlaceLabel();
+    // v6.4 危険察知の鐘（陸）・潮風の護符（海）の残り歩数。切れたら知らせる（セーブの counters に入る）
+    if (d.counters && !d.aboard && d.counters.repel_steps > 0) { d.counters.repel_steps--; if (d.counters.repel_steps === 0) Win.toast('危険察知の鐘の効果が切れた'); }
+    if (d.counters && d.aboard && d.counters.seacharm_steps > 0) { d.counters.seacharm_steps--; if (d.counters.seacharm_steps === 0) Win.toast('潮風の護符の効果が切れた'); }
     var encDef = (d.aboard && root.Vehicle) ? root.Vehicle.encounters() : m.encounters;
     if (encDef && !World.busy) {
       // 戦闘直後はしばらく出ない（猶予8歩）→ その後は歩くほど確率が上がる（基礎×0.5 → 25歩で基礎×1.5）
@@ -222,6 +225,7 @@
       var since = d.stepsSinceBattle;
       if (since > 8) {
         var rate = encDef.rate * Math.min(1.5, 0.5 + (since - 8) / 25); if (d.flags.repel) rate *= 0.3;
+        if (!d.aboard && (d.counters.repel_steps || 0) > 0) rate *= 0.35;   // v6.4 危険察知の鐘
         if (Math.random() < rate) World.encounter(encDef);
       }
     }

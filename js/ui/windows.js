@@ -92,8 +92,15 @@
 
   /* ---------- リスト（メニュー・ショップなど） ---------- */
   // items: [{label, right, sub, disabled, cls}] ; opts: {title, cancel, info(index)->html, columns}
+  // v6.4 opts.tabs（見出しのタブ）：[{label, count}] と opts.tab（今のタブ）。タブを押す・左右キーで { tab: 番号 } を返す（それ以外は従来どおり番号）
+  //      opts.tools：タブの下に並べるボタン [{ id, label, on }]。押すと { tool: id } を返す
   Win.list = function (items, opts) {
     opts = opts || {};
+    if (opts.tabs) {
+      var tb = '<div class="rw-tabs">' + opts.tabs.map(function (t, i) { return '<span class="rw-tab' + (i === opts.tab ? ' cur' : '') + (t.count === 0 ? ' empty' : '') + '" data-tab="' + i + '">' + esc(t.label) + (t.count !== undefined ? '<small>' + t.count + '</small>' : '') + '</span>'; }).join('') + '</div>';
+      var tl = opts.tools ? '<div class="rw-tools">' + opts.tools.map(function (t) { return '<span class="rw-tool' + (t.on ? ' on' : '') + '" data-tool="' + esc(t.id) + '">' + esc(t.label) + '</span>'; }).join('') + '</div>' : '';
+      opts = Object.assign({}, opts, { head: tb + tl + (opts.head || '') });
+    }
     return new Promise(function (resolve) {
       var cur = opts.initial || 0;
       var node = el('<div class="rw-list ' + (opts.cls || '') + '">' + (opts.title ? '<div class="rw-title">' + esc(opts.title) + '</div>' : '') + (opts.head ? '<div class="rw-head">' + opts.head + '</div>' : '') + '<div class="rw-items"></div>' + (opts.info ? '<div class="rw-info"></div>' : '') + (opts.footer ? '<div class="rw-footer">' + opts.footer + '</div>' : '') + '</div>');
@@ -107,9 +114,14 @@
         cancel: function () { if (opts.cancel === false) return; h.close(); resolve(-1); },
         up: function () { if (!items.length) return; cur = (cur + items.length - 1) % items.length; render(); },
         down: function () { if (!items.length) return; cur = (cur + 1) % items.length; render(); },
-        left: function () { if (opts.columns && items.length) { cur = Math.max(0, cur - opts.columns); render(); } },
-        right: function () { if (opts.columns && items.length) { cur = Math.min(items.length - 1, cur + opts.columns); render(); } }
+        left: function () { if (opts.tabs) { h.close(); resolve({ tab: (opts.tab + opts.tabs.length - 1) % opts.tabs.length }); return; } if (opts.columns && items.length) { cur = Math.max(0, cur - opts.columns); render(); } },
+        right: function () { if (opts.tabs) { h.close(); resolve({ tab: (opts.tab + 1) % opts.tabs.length }); return; } if (opts.columns && items.length) { cur = Math.min(items.length - 1, cur + opts.columns); render(); } }
       });
+      if (opts.tabs) {
+        node.querySelectorAll('.rw-tab').forEach(function (t) { t.addEventListener('click', function (e) { e.stopPropagation(); h.close(); resolve({ tab: parseInt(t.getAttribute('data-tab'), 10) }); }); });
+        node.querySelectorAll('.rw-tool').forEach(function (t) { t.addEventListener('click', function (e) { e.stopPropagation(); h.close(); resolve({ tool: t.getAttribute('data-tool') }); }); });
+        var ct = node.querySelector('.rw-tab.cur'); if (ct && ct.scrollIntoView) try { ct.scrollIntoView({ block: 'nearest', inline: 'center' }); } catch (e) { }
+      }
       itemEls.forEach(function (o) { o.addEventListener('click', function (e) { e.stopPropagation(); var i = parseInt(o.getAttribute('data-i'), 10); if (isNaN(i)) return; if (cur === i) choose(); else { cur = i; render(); } }); });
       if (opts.cancel !== false) { var cb = el('<div class="rw-close">✕</div>'); node.appendChild(cb); cb.addEventListener('click', function (e) { e.stopPropagation(); h.close(); resolve(-1); }); }
       render();

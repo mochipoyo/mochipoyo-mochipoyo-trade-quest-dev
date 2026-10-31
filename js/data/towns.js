@@ -18,7 +18,7 @@
     ] : [
       '############', '#KKK_qq_KKK#', '#__________#', '#_TTTTTTTT_#', '#__________#', '#__zz______#', '#__t____t__#', '#__________#', '#####D######'
     ];
-    return add({ id: id, name: name, kind: 'interior', bgm: 'town', rows: rows, warps: [{ x: 5, y: 8, to: town, tx: exitX, ty: exitY }],
+    return add({ id: id, name: name, kind: 'interior', bgm: 'town', rows: rows, warps: [{ x: 5, y: 8, to: town, tx: exitX, ty: exitY }], shop: { kind: shopKind, stock: stock },   // v6.4 shop：品ぞろえの記録（テスト・一覧用。処理は会話の c.shop）
       npcs: [{ id: id + '_keeper', x: 5, y: 2, sprite: keeper, dir: 'down', wander: 0, talk: async function (c) { if (extraLines) await c.say(name, extraLines); await c.shop(shopKind, stock); } }] });
   }
   function innInterior(id, name, town, exitX, exitY, price) {

@@ -85,7 +85,11 @@
   Vehicle.onGameOver = function () { var d = D(); if (d.aboard) { var s = V()[d.aboard]; if (s && s.port) { s.map = s.port.map; s.x = s.port.x; s.y = s.port.y; } d.aboard = null; } };
   Vehicle.encounters = function () { var id = D().aboard; if (!id) return null; var e = Vehicle.def(id).encounters; if (!e) return null;
     // v5.2: 航海士（ナギ／主人公の職業）がパーティーにいると海上エンカウント率が半減（海流読み）
-    if (Vehicle.hasJob('navigator')) { var e2 = {}; for (var k in e) e2[k] = e[k]; e2.rate = e.rate * 0.5; return e2; } return e; };
+    var mult = Vehicle.hasJob('navigator') ? 0.5 : 1;
+    // v6.4 航海星図のコンパス・海図の兜（装備の積・下限 0.4）と潮風の護符（歩数のあいだ -60%）
+    var S0 = root.State, C0 = root.Combat; if (S0 && C0 && C0.fx) { var g = 1; S0.partyActors().forEach(function (a) { if (a.dead || !a.equip) return; Object.keys(a.equip).forEach(function (sl) { var it = a.equip[sl] && root.ITEMS[a.equip[sl]]; if (it && it.fx && it.fx.seaEnc) g *= it.fx.seaEnc; }); }); mult *= Math.max((root.FX_CAP && root.FX_CAP.seaEncFloor) || 0.4, g); }
+    if ((D().counters || {}).seacharm_steps > 0) mult *= 0.4;
+    if (mult !== 1) { var e2 = {}; for (var k in e) e2[k] = e[k]; e2.rate = e.rate * mult; return e2; } return e; };
   Vehicle.hasJob = function (job) { var S = root.State; if (!S || !S.partyActors) return false; return S.partyActors().some(function (a) { return a.job === job && !a.dead; }); };
   // v5.2: 進めない理由（別の乗り物が必要な海路・外海）。tryMove が失敗したときの案内用
   Vehicle.blockReason = function (map, nx, ny) {
