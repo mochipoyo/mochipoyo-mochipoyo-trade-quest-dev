@@ -2681,6 +2681,12 @@
   var MF = root.ASSET_MANIFEST;
   if (root.JOB_LIST) root.JOB_LIST.forEach(function (j) { var id = 'hero_' + j; if (!MF.overworld[id]) MF.overworld[id] = { name: (root.JOBS[j] || {}).name || j, kind: 'walk', spriteId: id, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v5.1 追加。画像未作成のためコード描画' }; if (!MF.jobs[j]) MF.jobs[j] = { name: (root.JOBS[j] || {}).name || j, kind: 'portrait', spriteId: id, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v5.1 追加。画像未作成' }; });
   if (root.COMPANIONS) Object.keys(root.COMPANIONS).forEach(function (id) { if (!MF.overworld[id]) MF.overworld[id] = { name: root.COMPANIONS[id].name, kind: 'walk', spriteId: id, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v5.1 追加。画像未作成のためコード描画（' + root.COMPANIONS[id].sprite + '）' }; if (!MF.companions[id]) MF.companions[id] = { name: root.COMPANIONS[id].name, kind: 'portrait', spriteId: id, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v5.1 追加。画像未作成' }; });
+  // v6.4: 画像が未作成の NPC（トレディアのトレーダー12人 td_* など、色だけで描く歩行キャラ）は「missing」として登録し、コード描画（chars）で表示する
+  if (root.Chars && root.Chars.PALS) Object.keys(root.Chars.PALS).filter(function (k) { return !/^hero_/.test(k) && !(root.COMPANIONS && root.COMPANIONS[k]); }).forEach(function (id) {
+    var tr = root.TRADERS ? Object.keys(root.TRADERS).map(function (k) { return root.TRADERS[k]; }).filter(function (t) { return t.sprite === id; })[0] : null; var nm = tr ? tr.name : id;
+    if (!MF.npcs[id]) MF.npcs[id] = { name: nm, kind: 'portrait', spriteId: id, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v6.4 追加。画像未作成のためコード描画' };
+    if (!MF.overworld[id]) MF.overworld[id] = { name: nm, kind: 'walk', spriteId: id, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v6.4 追加。画像未作成のためコード描画' };
+  });
   /* ---------- v6.3 ボス画像パック（全44体 + 特殊戦闘5種）：docs/boss_asset_mapping.json（素材パス・名前・配置の対応表。2026-10-31 生成）から登録 ----------
      ・画像：assets/bosses_new/<敵ID>.png（512×512 RGBA）、assets/boss_encounters/<ID>.png。ID→パスは1対1（ファイル名＝ID）
      ・どれも lazy（起動時には読まない）。戦闘の直前とボスのいるマップに入ったときに core/bossart.js が読む
