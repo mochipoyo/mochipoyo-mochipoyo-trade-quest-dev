@@ -140,17 +140,18 @@
     var layer = document.getElementById('minimap-layer'); if (!layer) return;
     layer.innerHTML = '<div class="mm-box" id="mm-box" title="クリックで拡大（M）"><div class="mm-title" id="mm-title"></div><canvas id="mm-canvas"></canvas><div class="mm-compass">N</div></div>' +
       '<div class="bigmap" id="bigmap"><div class="bm-head"><div class="bm-title" id="bm-title"></div><div class="bm-tabs"><button data-mode="area" class="on">現在のエリア</button><button data-mode="world">地域の地図</button><button data-mode="globe">世界</button></div><button class="bm-close" id="bm-close">✕ 閉じる</button></div>' +
-      '<div class="bm-body"><canvas id="bm-canvas"></canvas><div class="bm-floors" id="bm-floors"></div><div class="bm-tip" id="bm-tip"></div><div class="bm-ctl"><button data-act="in">＋</button><button data-act="out">－</button><button data-act="home">◎ 現在地</button></div></div>' +
+      '<div class="bm-body"><canvas id="bm-canvas"></canvas><div class="bm-floors" id="bm-floors"></div><div class="bm-tip" id="bm-tip"></div><div class="bm-ctl"><button data-act="in">＋</button><button data-act="out">－</button><button data-act="home">◎ 現在地</button><button data-act="fit">全体</button></div></div>' +
       '<div class="bm-legend" id="bm-legend"></div></div>';
     Minimap.layer = layer; Minimap.box = document.getElementById('mm-box'); Minimap.canvas = document.getElementById('mm-canvas'); Minimap.titleEl = document.getElementById('mm-title');
     Minimap.big = document.getElementById('bigmap'); Minimap.bigCanvas = document.getElementById('bm-canvas');
     Minimap.box.addEventListener('click', function (e) { e.stopPropagation(); Minimap.toggle(); });
     document.getElementById('bm-close').addEventListener('click', function () { Minimap.close(); });
     Minimap.big.querySelectorAll('.bm-tabs button').forEach(function (b) { b.addEventListener('click', function () { Minimap.setMode(b.getAttribute('data-mode')); }); });
-    Minimap.big.querySelectorAll('.bm-ctl button').forEach(function (b) { b.addEventListener('click', function () { var a = b.getAttribute('data-act'); if (a === 'in') Minimap.zoomBy(1.25); else if (a === 'out') Minimap.zoomBy(0.8); else { if (Minimap.mode === 'world') Minimap.viewRegion = null; Minimap.home(); } }); });   // v5.9 「◎ 現在地」で今いる地域へ戻る
+    Minimap.big.querySelectorAll('.bm-ctl button').forEach(function (b) { b.addEventListener('click', function () { Minimap.ctl(b.getAttribute('data-act')); }); });
     bindPointer(Minimap.bigCanvas);
     Minimap.resize();
     root.addEventListener('resize', Minimap.resize);
+    root.addEventListener('resize', function () { if (Minimap.open) { Minimap.tallLayout(true); Minimap.layoutBig(); if (root.WorldMap) root.WorldMap.relayout(); } });
     // 探索シーン以外（戦闘・タイトル・リザルト等）では frame() が呼ばれないので、表示状態だけ定期的に同期する
     setInterval(function () { try { var show = Minimap.shouldShow(); if (!show) { Minimap.box.classList.remove('on'); if (Minimap.open && root.Engine.top() !== root.World.scene) Minimap.close(); } } catch (e) { } }, 120);
   };
@@ -179,7 +180,13 @@
   Minimap._frame = function () {
     var W = root.World, Input = root.Engine.Input;
     // Mキー：拡大マップの開閉（探索中のみ）
-    if (Minimap.open) { if (Input.consume('map') || Input.consume('cancel')) Minimap.close(); Input.consume('ok'); }
+    if (Minimap.open) {
+      var WMk = Minimap.mode === 'globe' && root.WorldMap && root.WorldMap.isShown() ? root.WorldMap : null;
+      if (Input.consume('map')) Minimap.close();
+      else if (Input.consume('cancel')) { if (WMk && WMk.sel) WMk.select(null); else Minimap.close(); }   // v6.0 世界タブ：Esc は情報を閉じる→もう一度で地図を閉じる
+      else if (WMk) WMk.input(Input);   // v6.0 方向キーで地域を選ぶ・決定で地形
+      Input.consume('ok');
+    }
     else if (Input.consume('map') && !W.busy && root.Engine.top() === W.scene && !(document.getElementById('ui').children.length)) Minimap.openBig();
     var show = Minimap.shouldShow();
     Minimap.box.classList.toggle('on', show);
@@ -238,9 +245,29 @@
     Minimap.open = true; W.busy = true; root.Engine.Input.clear();
     Minimap.big.classList.add('on'); Minimap.mode = 'area'; Minimap._floor = W.map.id; Minimap.viewRegion = null; Minimap.clearTip();
     Minimap.big.querySelectorAll('.bm-tabs button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-mode') === 'area'); });
+    Minimap.tallLayout(true);
     Minimap.layoutBig(); Minimap.home();
   };
-  Minimap.close = function () { if (!Minimap.open) return; Minimap.open = false; Minimap.big.classList.remove('on'); root.World.busy = false; root.Engine.Input.clear(); };
+  Minimap.close = function () { if (!Minimap.open) return; Minimap.open = false; Minimap.big.classList.remove('on'); if (root.WorldMap) root.WorldMap.hide(); Minimap.tallLayout(false); root.World.busy = false; root.Engine.Input.clear(); };
+  // v6.0 右下のボタン：＋／－／◎ 現在地／全体（「世界」タブはイラスト地図、それ以外はキャンバスの地図）
+  Minimap.ctl = function (a) {
+    var WMp = Minimap.mode === 'globe' && root.WorldMap && root.WorldMap.isShown() ? root.WorldMap : null;
+    if (a === 'in') { if (WMp) WMp.zoomAt(1.25); else Minimap.zoomBy(1.25); }
+    else if (a === 'out') { if (WMp) WMp.zoomAt(0.8); else Minimap.zoomBy(0.8); }
+    else if (a === 'fit') { if (WMp) WMp.fit(); else Minimap.fitAll(); }
+    else { if (WMp) { WMp.home(); } else { if (Minimap.mode === 'world') Minimap.viewRegion = null; Minimap.home(); } }   // 「◎ 現在地」で今いる地域へ戻る
+  };
+  Minimap.fitAll = function () { if (Minimap.mode === 'globe') return; var m = currentBigMap(); var cell = getTerrain(m, true).cell; Minimap.zoom = Math.min(Minimap.bigW / (m.w * cell), Minimap.bigH / (m.h * cell)); Minimap.clampPan(m, cell); };
+  // v6.0 スマホ縦向き：拡大マップを開いている間は地図の表示エリアを縦に広げる（下の方向キー・決定・メニューはその下へずらして使える）
+  Minimap.tallLayout = function (on) {
+    var b = document.body; var st = document.getElementById('stage'); var cv = document.getElementById('game'); if (!b || !st || !cv) return;
+    var narrow = root.innerWidth <= 720 && !b.classList.contains('pc');
+    if (!on || !narrow) { b.classList.remove('bm-tall'); st.style.removeProperty('--bm-h'); return; }
+    var pad = document.getElementById('pad'); var padH = pad && pad.offsetHeight ? pad.offsetHeight + 14 : 0;
+    var top = st.getBoundingClientRect().top + (root.scrollY || 0); var ch = cv.offsetHeight || 240;
+    var h = Math.round(Math.max(ch, Math.min(root.innerHeight - top - padH - 10, (cv.offsetWidth || 360) * 1.75)));
+    st.style.setProperty('--bm-h', h + 'px'); b.classList.add('bm-tall');
+  };
   Minimap.clearTip = function () { Minimap._tip = null; var tip = document.getElementById('bm-tip'); if (tip) tip.classList.remove('on'); };
   Minimap.setMode = function (mode, region) { Minimap.mode = mode; if (mode === 'world') Minimap.viewRegion = region || null; Minimap.clearTip(); Minimap.big.querySelectorAll('.bm-tabs button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-mode') === mode); }); Minimap.home(); };
   Minimap.layoutBig = function () {
@@ -254,7 +281,7 @@
   Minimap.viewRegionId = function () { var v = Minimap.viewRegion; return v && root.MAP_DEFS[v] && root.MAP_DEFS[v].region ? v : Minimap.currentRegionId(); };
   function currentBigMap() { if (Minimap.mode === 'world') return root.World.getMap(Minimap.viewRegionId()); var id = Minimap._floor || root.World.map.id; var m = root.World.maps[id] || root.World.getMap(id); if (m !== root.World.map) root.World.applyState(m); return m; }
   Minimap.home = function () {
-    if (Minimap.mode === 'globe') { Minimap.zoom = 1; Minimap.pan = { x: 0, y: 0 }; return; }
+    if (Minimap.mode === 'globe') { Minimap.zoom = 1; Minimap.pan = { x: 0, y: 0 }; if (root.WorldMap && root.WorldMap.isShown()) root.WorldMap.home(); return; }
     var m = currentBigMap(); var t = getTerrain(m, true); var cell = t.cell; var W = root.World;
     var fit = Math.min(Minimap.bigW / (m.w * cell), Minimap.bigH / (m.h * cell));
     Minimap.zoom = Minimap.mode === 'world' ? Math.max(fit, 0.9) : Math.max(fit, Math.min(1.2, fit * 1.0));
@@ -300,12 +327,14 @@
   };
   Minimap.drawBig = function () {
     // v5.5: 見出しの折り返しなどで表示領域の大きさが変わったら、キャンバスを合わせ直す（スマホ縦向きで下端が切れないように）
-    var body0 = Minimap.big.querySelector('.bm-body'); if (body0) { var rr0 = body0.getBoundingClientRect(); if (rr0.height > 0 && (Math.abs(rr0.height - Minimap.bigH) > 1 || Math.abs(rr0.width - Minimap.bigW) > 1)) { Minimap.layoutBig(); Minimap.home(); } }
+    var body0 = Minimap.big.querySelector('.bm-body'); if (body0) { var rr0 = body0.getBoundingClientRect(); if (rr0.height > 0 && (Math.abs(rr0.height - Minimap.bigH) > 1 || Math.abs(rr0.width - Minimap.bigW) > 1)) { Minimap.layoutBig(); Minimap.home(); if (root.WorldMap) root.WorldMap.relayout(); } }
     var W = root.World, d = root.State.data; var m = currentBigMap(); var t = getTerrain(m, true); var cell = t.cell; var z = Minimap.zoom;
     var cv = Minimap.bigCanvas; var ctx = cv.getContext('2d'); var dpr = Minimap.bigDpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.fillStyle = '#0b1226'; ctx.fillRect(0, 0, Minimap.bigW, Minimap.bigH);
     var title = document.getElementById('bm-title');
-    var ctl0 = Minimap.big.querySelector('.bm-ctl'); if (ctl0) { var dsp = Minimap.mode === 'globe' ? 'none' : ''; if (ctl0.style.display !== dsp) ctl0.style.display = dsp; }   // 「世界」タブではズームボタンを隠す
+    var ctl0 = Minimap.big.querySelector('.bm-ctl'); if (ctl0) { var dsp = Minimap.mode === 'globe' && !root.WorldMap ? 'none' : ''; if (ctl0.style.display !== dsp) ctl0.style.display = dsp; }   // 「世界」タブではズームボタンを隠す
+    if (Minimap.mode === 'globe' && root.WorldMap) { root.WorldMap.draw(title); Minimap.renderLegend([['arrow', '現在地（金色に光る地域）'], ['road', '航路・道（マークは必要な乗り物）'], ['fog', '薄い点線＝まだ通れない'], ['warp', '地域をタップ＝情報／もう一度で地形']]); return; }   // v6.0 イラスト型の世界地図
+    if (root.WorldMap && root.WorldMap.isShown()) root.WorldMap.hide();
     if (Minimap.mode === 'globe') { drawGlobe(ctx, title); return; }
     ctx.save(); ctx.translate(Minimap.pan.x, Minimap.pan.y); ctx.scale(z, z);
     drawMapLayer(ctx, m, cell, true);

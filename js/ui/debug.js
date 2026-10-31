@@ -6,7 +6,7 @@
    ========================================================= */
 (function (root) {
   'use strict';
-  var Debug = { on: !!(root.State && root.State.debug), VERSION: 'v5.9' };
+  var Debug = { on: !!(root.State && root.State.debug), VERSION: 'v6.0' };
   root.MTQDebug = Debug;
   if (!Debug.on) return;
 
@@ -81,9 +81,11 @@
     var v58 = !!(root.World && root.World.soloCap && root.Combat && root.Combat.earlyAssist && root.STARTER_WEAPON && root.Win && root.Win.confirmQuit && root.Services && root.Services.quitNote);
     // v5.9：追加モンスター10種・本棚の本・地域の地図で全地域の地形
     var v59 = !!(root.ENEMIES && root.ENEMIES.yosen_slime && root.ENEMIES.indicator_mage && root.Books && root.Minimap && root.Minimap.viewRegionId);
+    // v6.0：世界マップ（イラスト型）
+    var v60 = !!(root.WorldMap && root.WorldMap.LAYOUT && root.ASSET_MANIFEST && root.ASSET_MANIFEST.worldmap && root.Minimap && root.Minimap.ctl);
     var ok = !!M.world_snow && !!M.frozen_tower_1 && !!M.old_city_deep_1;
     return ['このページが読み込んでいるデータ：マップ ' + Object.keys(M).length + '／クエスト ' + Object.keys(Q).length + '／敵 ' + Object.keys(root.ENEMIES || {}).length + '／職業 ' + Object.keys(root.JOBS || {}).length,
-      ok ? '忘却の雪原・凍結時計塔・旧都市 深層のデータあり → v5.6 のファイルが読み込まれています（v5.6 の想定：マップ226・クエスト85）。' : '忘却の雪原などのデータがありません → v5.6 のファイルが読み込まれていません（アップロード漏れ、または古いキャッシュ）。', v57 ? 'v5.7 の変更あり（オート戦闘・大きな町と城・迷いの森の通り道・レベルの上がりやすさ）。' : 'v5.7 の変更が見つかりません（js/core/landmarks.js・js/rpg/combat.js などが古い可能性）。', v58 ? 'v5.8 の変更あり（修行場の中断・ひとりのときの出現数1〜2体・序盤の与ダメージ／被ダメージ補正・職業に合う最初の武器）。' : 'v5.8 の変更が見つかりません（js/rpg/world.js・js/rpg/combat.js・js/ui/windows.js・js/ui/services.js などが古い可能性）。', v59 ? 'v5.9 の変更あり（追加モンスター10種・本棚の本・地域の地図で全地域の地形）。' : 'v5.9 の変更が見つかりません（js/data/enemies.js・js/data/learning.js・js/ui/minimap.js・assets/monsters などが古い可能性）。'];
+      ok ? '忘却の雪原・凍結時計塔・旧都市 深層のデータあり → v5.6 のファイルが読み込まれています（v5.6 の想定：マップ226・クエスト85）。' : '忘却の雪原などのデータがありません → v5.6 のファイルが読み込まれていません（アップロード漏れ、または古いキャッシュ）。', v57 ? 'v5.7 の変更あり（オート戦闘・大きな町と城・迷いの森の通り道・レベルの上がりやすさ）。' : 'v5.7 の変更が見つかりません（js/core/landmarks.js・js/rpg/combat.js などが古い可能性）。', v58 ? 'v5.8 の変更あり（修行場の中断・ひとりのときの出現数1〜2体・序盤の与ダメージ／被ダメージ補正・職業に合う最初の武器）。' : 'v5.8 の変更が見つかりません（js/rpg/world.js・js/rpg/combat.js・js/ui/windows.js・js/ui/services.js などが古い可能性）。', v59 ? 'v5.9 の変更あり（追加モンスター10種・本棚の本・地域の地図で全地域の地形）。' : 'v5.9 の変更が見つかりません（js/data/enemies.js・js/data/learning.js・js/ui/minimap.js・assets/monsters などが古い可能性）。', v60 ? 'v6.0 の変更あり（イラスト型の世界マップ）。' : 'v6.0 の変更が見つかりません（js/ui/worldmap.js・js/ui/minimap.js・assets/worldmap などが古い可能性）。'];
   }
 
   async function regionMenu() {

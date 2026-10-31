@@ -41,7 +41,7 @@
 <script>
 (function () {
   var M = window.ASSET_MANIFEST; var rootEl = document.getElementById('root');
-  var SECTIONS = [['monsters', 'モンスター（戦闘・図鑑）'], ['jobs', '職業（主人公の立ち絵）'], ['companions', '仲間'], ['npcs', 'NPC'], ['overworld', '歩行スプライト（フィールド：4方向×3フレーム）']];
+  var SECTIONS = [['monsters', 'モンスター（戦闘・図鑑）'], ['jobs', '職業（主人公の立ち絵）'], ['companions', '仲間'], ['npcs', 'NPC'], ['overworld', '歩行スプライト（フィールド：4方向×3フレーム）'], ['worldmap', '世界マップ（地域の絵・海の背景）']];
   var anims = [];
   // 歩行アニメ（down→left→right→up を順に、待機→左足→待機→右足）
   setInterval(function () { var t = Math.floor(Date.now() / 180); var dir = ['down', 'left', 'right', 'up'][Math.floor(t / 8) % 4]; var fr = [0, 1, 0, 2][t % 4]; anims.forEach(function (cv) { var wf = window.Assets.walkFrame(cv.getAttribute('data-id'), dir, fr); if (!wf) return; var x = cv.getContext('2d'); x.imageSmoothingEnabled = false; x.clearRect(0, 0, 32, 48); x.drawImage(wf.img, wf.sx, wf.sy, wf.w, wf.h, 0, 0, 32, 48); }); }, 90);

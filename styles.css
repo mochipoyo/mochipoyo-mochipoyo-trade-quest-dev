@@ -288,3 +288,86 @@ body.pc #pad { display: none !important; }
 #auto-battle.active b { color: #1a1a2a; }
 @keyframes autopulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(232,193,90,.6); } 50% { box-shadow: 0 0 0 6px rgba(232,193,90,0); } }
 @media (max-width: 720px) { #auto-battle { font-size: 12px; padding: 3px 10px; } }
+
+/* ===== v6.0 世界マップ（拡大マップの「世界」タブ）：イラスト型の世界地図 ===== */
+.bm-floors, .bm-tip, .bm-ctl { z-index: 3; }
+.bm-ctl button { background: rgba(11,18,38,.92); box-shadow: 0 2px 6px rgba(0,0,0,.5); }
+.wm { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; z-index: 1; background: #061730; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+.wm:active { cursor: grabbing; }
+.wm-stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; --ls: 1; will-change: transform; }
+.wm-sea { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, #16497f 0%, #0b2b58 55%, #061730 100%); background-size: 100% 100%; }
+.wm-routes { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.wm-frame { position: absolute; inset: 12px; border: 3px double rgba(232,193,90,.75); border-radius: 18px; box-shadow: inset 0 0 0 6px rgba(232,193,90,.12), inset 0 0 60px rgba(0,0,0,.45); pointer-events: none; }
+.wm-frame i { position: absolute; width: 34px; height: 34px; border: 3px solid #e8c15a; transform: rotate(45deg); background: rgba(11,18,38,.9); box-shadow: 0 0 10px rgba(232,193,90,.5); }
+.wm-frame .c1 { left: -19px; top: -19px; } .wm-frame .c2 { right: -19px; top: -19px; } .wm-frame .c3 { left: -19px; bottom: -19px; } .wm-frame .c4 { right: -19px; bottom: -19px; }
+.wm-compass { position: absolute; width: 120px; height: 120px; opacity: .9; pointer-events: none; filter: drop-shadow(0 0 6px rgba(0,0,0,.6)); }
+.wm-compass svg { width: 100%; height: 100%; }
+/* 航路：乗り物ごとに線の形を変える。通れない航路は薄い灰色の点線 */
+.wm-routes .rt-halo { fill: none; stroke: rgba(3,10,26,.55); stroke-width: 9; stroke-linecap: round; }
+.wm-routes .rt { fill: none; stroke-linecap: round; }
+.wm-routes .rt-walk { stroke: #f2dca8; stroke-width: 5; stroke-dasharray: 1 12; }
+.wm-routes .rt-boat { stroke: #d6ecff; stroke-width: 3.5; stroke-dasharray: 12 9; }
+.wm-routes .rt-ship { stroke: #ffe39a; stroke-width: 4; stroke-dasharray: 22 11; }
+.wm-routes .rt-air { stroke: #b8f0ff; stroke-width: 5; stroke-dasharray: 1 11; }
+.wm-routes .rt.closed { stroke: #8a93a8; opacity: .5; }
+.wm-routes .rt.open { filter: drop-shadow(0 0 3px rgba(255,230,160,.45)); }
+.wm-badges { position: absolute; inset: 0; pointer-events: none; }
+.wm-badge { position: absolute; display: flex; align-items: center; gap: 4px; padding: 3px 9px 3px 6px; border-radius: 12px; background: rgba(8,16,36,.88); border: 1.5px solid rgba(232,193,90,.75); color: #ffeeb8; font-size: 13px; font-weight: bold; white-space: nowrap; transform: translate(-50%, -50%) scale(var(--ls)); pointer-events: auto; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.5); }
+.wm-badge svg { width: 20px; height: 20px; fill: currentColor; }
+.wm-badge.rb-walk { color: #f6e2b4; } .wm-badge.rb-boat { color: #dff2ff; } .wm-badge.rb-air { color: #c6f4ff; }
+.wm-badge.closed { color: #9aa3b5; border-color: rgba(154,163,181,.6); background: rgba(14,20,34,.85); }
+/* 地域 */
+.wm-region { position: absolute; cursor: pointer; }
+.wm-region .wm-pic { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform .25s ease, filter .25s ease; filter: drop-shadow(0 10px 14px rgba(0,0,0,.55)); pointer-events: none; }
+.wm-region.unvisited .wm-pic { filter: drop-shadow(0 10px 14px rgba(0,0,0,.55)) saturate(.78) brightness(.86); }
+.wm-region .wm-fallback { position: absolute; inset: 8% 4%; border-radius: 50%; background: radial-gradient(ellipse at 50% 45%, var(--rc) 0%, rgba(0,0,0,.25) 70%, transparent 72%); opacity: 0; }
+.wm-region.noimg .wm-fallback { opacity: 1; }
+.wm-region .wm-glow { position: absolute; inset: -14% -10%; border-radius: 50%; opacity: 0; pointer-events: none; }
+.wm-region .wm-ring { position: absolute; inset: -6% -5%; border-radius: 50%; border: 3px solid #ffd24a; box-shadow: 0 0 16px rgba(255,210,74,.75), inset 0 0 16px rgba(255,210,74,.35); opacity: 0; transition: opacity .2s; pointer-events: none; }
+.wm-region .wm-label { position: absolute; left: 50%; top: 100%; margin-top: -10px; display: flex; flex-direction: column; align-items: center; transform: translateX(-50%) scale(var(--ls)); transform-origin: 50% 0; pointer-events: none; }
+.wm-region .wm-name { font-size: 19px; font-weight: bold; color: #fff6dc; letter-spacing: .06em; padding: 3px 16px; border-radius: 6px; white-space: nowrap; background: linear-gradient(180deg, rgba(20,28,52,.95), rgba(8,12,28,.95)); border: 2px solid rgba(232,193,90,.85); box-shadow: 0 2px 8px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,240,190,.15); text-shadow: 0 1px 2px #000; }
+.wm-region .wm-name { position: relative; }
+.wm-region .wm-sub { position: absolute; right: -10px; top: -11px; font-size: 11px; font-weight: bold; letter-spacing: 0; color: #e8ecf8; background: #3a4566; border: 1px solid #8a96b8; border-radius: 8px; padding: 0 6px; line-height: 16px; text-shadow: none; white-space: nowrap; }
+.wm-region .wm-here { position: absolute; left: 50%; top: 4px; transform: translate(-50%, 0) scale(var(--ls)); transform-origin: 50% 0; font-size: 13px; font-weight: bold; color: #1a1407; background: #ffd24a; padding: 2px 10px; border-radius: 10px; box-shadow: 0 0 12px rgba(255,210,74,.9); display: none; white-space: nowrap; }
+.wm-region .wm-here::after { content: ''; position: absolute; left: 50%; bottom: -6px; margin-left: -6px; border: 6px solid transparent; border-top-color: #ffd24a; border-bottom: 0; }
+/* 現在地：金色のやわらかな光がゆっくり明滅 */
+.wm-region.cur .wm-glow { opacity: 1; background: radial-gradient(ellipse at 50% 55%, rgba(255,214,90,.55) 0%, rgba(255,190,60,.22) 45%, transparent 70%); animation: wm-pulse 2.6s ease-in-out infinite; }
+.wm-region.cur .wm-here { display: block; }
+.wm-region.cur .wm-name { color: #ffe08a; border-color: #ffd24a; box-shadow: 0 0 14px rgba(255,210,74,.7), 0 2px 8px rgba(0,0,0,.6); }
+/* 選択中：少し拡大・選択枠・地名を強調 */
+.wm-region.sel { z-index: 2; }
+.wm-region.sel .wm-pic { transform: scale(1.07); }
+.wm-region.sel .wm-ring { opacity: 1; animation: wm-ring 1.6s ease-in-out infinite; }
+.wm-region.sel .wm-name { background: linear-gradient(180deg, #f3d27a, #c9982e); color: #1a1407; text-shadow: none; border-color: #fff0b0; }
+@keyframes wm-pulse { 0%, 100% { opacity: .65; transform: scale(.97); } 50% { opacity: 1; transform: scale(1.04); } }
+@keyframes wm-ring { 0%, 100% { opacity: .65; } 50% { opacity: 1; } }
+/* 地域ごとの演出（軽い CSS アニメーション） */
+.wm-region.fx-dark::before { content: ''; position: absolute; inset: -8% -6%; border-radius: 50%; background: radial-gradient(ellipse at 50% 45%, rgba(170,70,255,.55), transparent 65%); animation: wm-pulse 4s ease-in-out infinite; pointer-events: none; }
+.wm-region.fx-lava::before { content: ''; position: absolute; inset: 10% 6% -6%; border-radius: 50%; background: radial-gradient(ellipse at 50% 60%, rgba(255,90,20,.6), rgba(255,40,0,.15) 50%, transparent 70%); animation: wm-pulse 2.2s ease-in-out infinite; pointer-events: none; }
+.wm-region .wm-time { position: absolute; left: 50%; top: 32%; width: 46%; aspect-ratio: 1; margin-left: -23%; transform: translateY(-50%); border-radius: 50%; background: conic-gradient(from 0deg, transparent 0 20%, rgba(255,240,180,.35) 25%, transparent 30% 70%, rgba(255,240,180,.35) 75%, transparent 80%); animation: wm-spin 14s linear infinite; pointer-events: none; }
+@keyframes wm-spin { to { transform: translateY(-50%) rotate(360deg); } }
+.wm-region .wm-cloud { position: absolute; width: 55%; height: 26%; border-radius: 50%; background: radial-gradient(ellipse, rgba(255,255,255,.55), rgba(255,255,255,0) 70%); pointer-events: none; animation: wm-drift 16s ease-in-out infinite alternate; }
+.wm-region .wm-cloud.c1 { left: 2%; top: 58%; } .wm-region .wm-cloud.c2 { left: 42%; top: 8%; animation-duration: 21s; animation-delay: -6s; }
+@keyframes wm-drift { from { transform: translateX(-18%); } to { transform: translateX(22%); } }
+.wm-region .wm-snow { position: absolute; inset: 0; overflow: hidden; pointer-events: none; -webkit-mask-image: radial-gradient(ellipse at 50% 52%, #000 50%, transparent 72%); mask-image: radial-gradient(ellipse at 50% 52%, #000 50%, transparent 72%); }
+.wm-region .wm-snow::before { content: ''; position: absolute; left: 0; right: 0; top: -100%; height: 200%; background-image: radial-gradient(2px 2px at 12px 18px, #fff 99%, transparent), radial-gradient(1.6px 1.6px at 38px 52px, rgba(255,255,255,.9) 99%, transparent), radial-gradient(2.4px 2.4px at 64px 30px, #fff 99%, transparent); background-size: 80px 70px; animation: wm-snowfall 9s linear infinite; opacity: .85; }
+@keyframes wm-snowfall { to { transform: translateY(50%); } }
+/* 選んだ地域の情報（地図の上に重ねる。拡大・移動の影響を受けない） */
+.wm-info { position: absolute; left: 8px; bottom: 8px; right: 64px; max-width: 420px; z-index: 2; display: none; background: rgba(8,14,32,.95); border: 2px solid var(--gold); border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,.6); color: #fff; font-size: 13px; }
+.wm-info.on { display: block; }
+.wm-info-head { display: flex; align-items: center; gap: 8px; padding: 6px 8px 4px 10px; border-bottom: 1px solid rgba(232,193,90,.35); }
+.wm-info-head b { color: var(--gold); font-size: 15px; flex: 1; }
+.wm-chip { font-size: 11px; padding: 1px 8px; border-radius: 9px; background: #2a3554; color: #c8d0e4; white-space: nowrap; }
+.wm-chip.cur { background: #ffd24a; color: #1a1407; font-weight: bold; } .wm-chip.vis { background: #1f5a3a; color: #bff0c8; }
+.wm-x { font-family: inherit; background: none; border: 0; color: #ccc; font-size: 15px; cursor: pointer; padding: 2px 6px; }
+.wm-info-body { padding: 4px 10px; } .wm-info-body .small { color: #c8d0e4; }
+.wm-routes-list { list-style: none; margin: 4px 0 0; padding: 0; max-height: 7.5em; overflow-y: auto; }
+.wm-routes-list li { padding: 1px 0; color: #e8eaf0; } .wm-routes-list li.ng { color: #9aa3b5; } .wm-routes-list li b { color: #fff; }
+.wm-info-foot { padding: 4px 10px 8px; }
+.wm-go { font-family: inherit; font-size: 13px; font-weight: bold; color: #1a1407; background: linear-gradient(180deg, #f3d27a, #c9982e); border: 1px solid #fff0b0; border-radius: 5px; padding: 6px 12px; cursor: pointer; width: 100%; }
+@media (max-width: 720px) { .wm-info { font-size: 11px; right: 58px; left: 6px; bottom: 6px; } .wm-info-head { padding: 4px 6px 3px 8px; } .wm-info-head b { font-size: 13px; } .wm-info-body { padding: 3px 8px; } .wm-routes-list { max-height: 4.4em; } .wm-info-foot { padding: 3px 8px 6px; } .wm-go { padding: 4px 10px; font-size: 12px; } }
+/* スマホ縦向き：拡大マップを開いている間は地図の表示エリアを縦に広げる（方向キー・決定・メニューはその下へ） */
+body.bm-tall #stage { height: var(--bm-h); align-items: flex-start; }
+body.bm-tall #minimap-layer { height: var(--bm-h) !important; }
+body.bm-tall .bigmap { inset: 0; }
+@media (prefers-reduced-motion: reduce) { .wm-region .wm-glow, .wm-region::before, .wm-region .wm-ring, .wm-region .wm-time, .wm-region .wm-cloud, .wm-region .wm-snow::before { animation: none !important; } }

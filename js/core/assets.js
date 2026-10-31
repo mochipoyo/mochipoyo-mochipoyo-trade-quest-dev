@@ -21,7 +21,7 @@
 
   Assets.preload = function (done) {
     var list = [];
-    Object.keys(M).forEach(function (kind) { if (typeof M[kind] !== 'object' || !M[kind]) return; Object.keys(M[kind]).forEach(function (id) { var e = M[kind][id]; if (e && e.path && e.use !== false) list.push([kind, id, e.path]); }); });
+    Object.keys(M).forEach(function (kind) { if (typeof M[kind] !== 'object' || !M[kind]) return; Object.keys(M[kind]).forEach(function (id) { var e = M[kind][id]; if (e && e.path && e.use !== false && !e.lazy) list.push([kind, id, e.path]); }); });   // v6.0 lazy（世界マップの絵など）は使うときに読み込む
     Assets.total = list.length; var n = 0;
     if (!list.length) { if (done) done(); return; }
     list.forEach(function (it) {
