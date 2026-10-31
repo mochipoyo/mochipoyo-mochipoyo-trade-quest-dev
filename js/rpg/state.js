@@ -24,9 +24,11 @@
       gold: 0, bank: 0, inventory: {}, flags: {}, counters: {}, quests: {}, chests: {},
       pos: { map: 'poyo_village', x: 24, y: 32, dir: 'up' }, lastInn: { map: 'poyo_village', x: 24, y: 32 }, visited: { poyo_village: true },
       steps: 0, timeOfDay: 0.3, bestiary: {}, trade: { stats: TradeEval.emptyStats(), capital: CONFIG.risk.capital, lectures: {}, topics: {}, tutorialDone: false, abilities: {}, learnFails: {}, learnSeen: {}, rankBest: 0, achievements: {}, mistakes: {}, reviewLog: [], wasWeak: {} },
-      settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', walkSpeed: 'fast', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true, minimap: 'on', minimapSize: 'normal' },
+      settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', walkSpeed: 'fast', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true, minimap: 'on', minimapSize: 'normal', pad: 'stick' },
       mapDiscovery: {},   // ミニマップの探索状況（マップID → 行ごとのビット列）。visited とは別
       vehicles: {}, aboard: null,   // v5.0: 乗り物（js/rpg/vehicle.js）
+      // v6.1 追加（旧セーブは State.migrate がこの初期値で補う）：探索ポイントの取得記録、ファストトラベル、オーパーツ、カジノ、学院
+      searched: {}, travel: {}, ooparts: { found: {}, rewards: {} }, casino: { coins: 0, history: { slot: [], roulette: [], card: [] }, stats: {}, lab: {} }, academy: {},
       legacyImported: null
     };
     State.data = d;

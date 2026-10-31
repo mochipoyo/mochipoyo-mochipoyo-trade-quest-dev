@@ -138,7 +138,7 @@
   /* ---------- 右上ミニマップ ---------- */
   Minimap.init = function () {
     var layer = document.getElementById('minimap-layer'); if (!layer) return;
-    layer.innerHTML = '<div class="mm-box" id="mm-box" title="クリックで拡大（M）"><div class="mm-title" id="mm-title"></div><canvas id="mm-canvas"></canvas><div class="mm-compass">N</div></div>' +
+    layer.innerHTML = '<div class="mm-box" id="mm-box" title="クリックで全体マップ（N）／M で表示・非表示"><div class="mm-title" id="mm-title"></div><canvas id="mm-canvas"></canvas><div class="mm-compass">N</div></div>' +
       '<div class="bigmap" id="bigmap"><div class="bm-head"><div class="bm-title" id="bm-title"></div><div class="bm-tabs"><button data-mode="area" class="on">現在のエリア</button><button data-mode="world">地域の地図</button><button data-mode="globe">世界</button></div><button class="bm-close" id="bm-close">✕ 閉じる</button></div>' +
       '<div class="bm-body"><canvas id="bm-canvas"></canvas><div class="bm-floors" id="bm-floors"></div><div class="bm-tip" id="bm-tip"></div><div class="bm-ctl"><button data-act="in">＋</button><button data-act="out">－</button><button data-act="home">◎ 現在地</button><button data-act="fit">全体</button></div></div>' +
       '<div class="bm-legend" id="bm-legend"></div></div>';
@@ -163,6 +163,10 @@
     Minimap.canvas.width = w * dpr; Minimap.canvas.height = h * dpr; Minimap.canvas.style.width = w + 'px'; Minimap.canvas.style.height = h + 'px'; Minimap.mmW = w; Minimap.mmH = h; Minimap.dpr = dpr;
     if (Minimap.open) Minimap.layoutBig();
   };
+  // v6.1 ミニマップの表示・非表示（設定 settings.minimap に保存＝セーブデータに残る）。位置の追跡（探索済みの記録）は表示と関係なく続く
+  Minimap.isVisible = function () { var d = root.State.data; return !(d && d.settings && d.settings.minimap === 'off'); };
+  Minimap.setVisible = function (on, quiet) { var d = root.State.data; if (!d) return; d.settings.minimap = on ? 'on' : 'off'; if (!quiet && root.Win) root.Win.toast(on ? 'ミニマップを表示（M で隠す）' : 'ミニマップを非表示（M で表示・N で全体マップ）'); if (root.MobileUI) root.MobileUI.refresh(); };
+  Minimap.toggleVisible = function () { Minimap.setVisible(!Minimap.isVisible()); };
   // 表示してよい状態か（探索シーンが最前面・モーダルなし・設定ON）
   Minimap.shouldShow = function () {
     var W = root.World, E = root.Engine; var d = root.State.data; if (!d || !W || !W.map || !W.scene) return false;
@@ -179,7 +183,8 @@
   };
   Minimap._frame = function () {
     var W = root.World, Input = root.Engine.Input;
-    // Mキー：拡大マップの開閉（探索中のみ）
+    // v6.1 Mキー：ミニマップの表示・非表示（探索中のみ。全体マップとは別）。N（Tab）キー：全体マップの開閉
+    if (Input.consume('minimap')) { if (!Minimap.open && !W.busy && root.Engine.top() === W.scene && !(document.getElementById('ui').children.length)) Minimap.toggleVisible(); }
     if (Minimap.open) {
       var WMk = Minimap.mode === 'globe' && root.WorldMap && root.WorldMap.isShown() ? root.WorldMap : null;
       if (Input.consume('map')) Minimap.close();

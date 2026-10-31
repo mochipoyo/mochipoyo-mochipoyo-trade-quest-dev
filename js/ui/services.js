@@ -32,6 +32,9 @@
   /* ---------- 店 ---------- */
   Services.shop = async function (kind, stock) {
     var d = State.data;
+    // v6.1 飲食物：お店（マップID）ごとの追加の品ぞろえを、既存の品の後ろに並べる（js/data/food.js）
+    var extra = kind === 'item' && root.SHOP_EXTRAS && World.map ? root.SHOP_EXTRAS[World.map.id] : null;
+    if (extra) stock = stock.concat(extra.filter(function (id) { return ITEMS[id] && stock.indexOf(id) < 0; }));
     while (true) {
       var a = await Win.choice('いらっしゃい。何をする？（所持金 ' + d.gold + 'G）', ['買う', '売る', 'やめる']);
       if (a === 2 || a === -1) { await Win.message(['またどうぞ。']); return; }
@@ -93,6 +96,7 @@
     if (root.Audio) root.Audio.playJingle('inn');
     await Win.sleep(900);
     party.forEach(function (x) { if (!x.dead) { Actors.fullHeal(x); } });
+    State.count('inn_rest');   // v6.1 宿に泊まった回数（探索ポイントの「宿に泊まると再出現」に使う）
     d.timeOfDay = 0.3; d.lastInn = { map: World.map.def.warps[0].to, x: World.map.def.warps[0].tx, y: World.map.def.warps[0].ty };
     if (fade) fade.classList.remove('on');
     World.updateHud();
@@ -116,8 +120,16 @@
   };
 
   /* ---------- 酒場（パーティー編成） ---------- */
+  // v6.1 食事・飲み物の注文（酒場・食堂・学院の食堂など。品書きは js/data/food.js、買い物の画面は道具屋と同じ）
+  Services.foodStand = async function (menu, title) {
+    menu = (menu || []).filter(function (id) { return ITEMS[id]; }); if (!menu.length) return;
+    await Win.message([title || 'いらっしゃい。食べ物はHP、飲み物はMPを回復するよ。戦闘中にも使える。']);
+    await buyLoop(menu);
+  };
   Services.tavern = async function () {
     var d = State.data;
+    var fm = root.FOOD_STANDS && World.map ? root.FOOD_STANDS[World.map.id] : null;
+    if (fm) { var o = await Win.choice('酒場へようこそ。何にする？', ['食事・飲み物を注文する', '仲間の編成', 'やめる']); if (o === 0) { await Services.foodStand(fm); return; } if (o !== 1) return; }
     while (true) {
       var ids = Object.keys(d.companions);
       if (!ids.length) { await Win.message(['酒場へようこそ。仲間ができたら、ここで編成を変えられるよ。']); return; }

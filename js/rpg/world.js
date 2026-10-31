@@ -270,11 +270,19 @@
     if (chest) { World.openChest(chest); return; }
     var ev = m.eventAt(fx, fy) || m.eventAt(p.x, p.y);
     if (ev && ev.type !== 'hole') { root.Events.run(ev); return; }
+    // v6.1 調べる：光る場所（足元・正面）・壺・地形の樽／木箱／井戸（js/rpg/search.js）
+    var sp = root.Search && (root.Search.at(m, fx, fy) || (function () { var q = root.Search.at(m, p.x, p.y); return q && q.kind === 'sparkle' ? q : null; })());
+    if (sp) { World.searchPoint(sp); return; }
     var tile = m.tile(fx, fy);
     if (tile === 'bld_block') { var bld = m.buildingAt(fx, fy); if (bld) { World.busy = true; Win.message([bld.name + '。入口は' + (bld.doorAbs.x < p.x ? '左' : bld.doorAbs.x > p.x ? '右' : 'この下') + 'のドアだ。']).then(function () { World.busy = false; }); return; } }
     if (tile === 'sign') { Win.message(['何か書いてある……が、かすれて読めない。']); return; }
     if (tile === 'bookshelf') { World.busy = true; Promise.resolve(root.Services && root.Services.bookshelf ? root.Services.bookshelf(m.id, fx, fy) : Win.message(['『相場の波を読む者へ』——高値と安値を見よ。上位足を見よ。損切りを置け。'])).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; }); return; }   // v5.9 本棚の本を選んで読める
     if (tile === 'crystal') { World.busy = true; Win.message(['均衡のクリスタルの台座だ。淡く光っている。']).then(function () { World.busy = false; }); return; }
+  };
+  // v6.1 探索ポイントを調べる（3D 版からも同じ関数を呼ぶ）
+  World.searchPoint = function (sp) {
+    World.busy = true;
+    Promise.resolve(root.Search.inspect(sp)).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World.updateHud(); });
   };
   World.talk = function (npc) {
     World.busy = true;

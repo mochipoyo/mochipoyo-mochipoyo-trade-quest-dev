@@ -84,6 +84,18 @@
   C('escape_wing', '帰還の翼', 150, { warpTown: true }, '最後に泊まった町へ戻る', { fieldOnly: true });
   C('tent', 'テント', 120, { hp: 999, mp: 999, all: true }, 'フィールド・ダンジョンで全員を全回復', { fieldOnly: true });
   C('elixir', 'エリクサー', 1500, { hp: 999, mp: 999 }, '1人のHPとMPを全回復');
+  // ---- v6.1 飲食物：食べ物＝HP回復、飲み物＝MP回復（店・酒場・食堂・宝箱・探索で手に入る） ----
+  C('onigiri', 'おにぎり', 12, { hp: 20 }, 'HPを20回復。旅の基本', { food: 'food' });
+  C('yakitori', '焼き鳥', 18, { hp: 30 }, 'HPを30回復。香ばしい串焼き', { food: 'food' });
+  C('ramen', 'ラーメン', 55, { hp: 80 }, 'HPを80回復。湯気ごと元気になる', { food: 'food' });
+  C('curry_rice', 'カレーライス', 70, { hp: 100 }, 'HPを100回復。冒険者の定番', { food: 'food' });
+  C('deluxe_steak', '豪華ステーキ', 190, { hp: 200 }, 'HPを200回復。分厚い一枚', { food: 'food' });
+  C('legend_bento', '伝説の特製弁当', 800, { hp: 999 }, '1人のHPを全回復。中身は日によって違うらしい', { food: 'food' });
+  C('green_tea', 'お茶', 80, { mp: 15 }, 'MPを15回復。心が落ち着く', { food: 'drink' });
+  C('coffee', 'コーヒー', 150, { mp: 30 }, 'MPを30回復。目が冴える', { food: 'drink' });
+  C('fruit_juice', 'フルーツジュース', 240, { mp: 50 }, 'MPを50回復。南の島の果物', { food: 'drink' });
+  C('mana_soda', '魔力のソーダ', 480, { mp: 100 }, 'MPを100回復。はじける魔力', { food: 'drink' });
+  C('mystic_water', '神秘の霊水', 1200, { mp: 999 }, '1人のMPを全回復。学院の泉で汲まれる', { food: 'drink' });
 
   // ---- 大事なもの ----
   K('crystal_shard', '均衡のクリスタルの欠片', '世界を支えていたクリスタルの破片。淡く光る');

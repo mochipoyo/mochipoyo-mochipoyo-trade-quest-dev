@@ -54,6 +54,7 @@
     if (Tiles.isSolid(t)) return false;
     if (this.npcAt(x, y)) return false;
     var ev = this.eventAt(x, y); if (ev && ev.solid && !(state && ev.doneFlag && state.flags[ev.doneFlag])) return false;
+    if (root.Search && root.Search.solidAt(this, x, y)) return false;   // v6.1 壺など（光る場所は通れる）
     return true;
   };
 
@@ -90,6 +91,7 @@
     var lms = (this.def.locations && root.Landmarks) ? this.def.locations.filter(function (L) { var Mg = root.Landmarks.MARGIN; return L.x >= x0 - Mg && L.x <= x1 + Mg && L.y >= y0 - 1 && L.y <= y1 + Mg * 2; }) : [];
     var selfMap = this;
     lms.forEach(function (L) { var fbk = root.Landmarks.terrainOf(selfMap, L); ents.push({ y: L.y * TS + 0.5, draw: function () { root.Landmarks.draw(ctx, L, fbk, cam.x, cam.y); } }); });
+    if (root.Search) root.Search.drawList(this, cam, x0, y0, x1, y1, TS).forEach(function (e) { ents.push({ y: e.y, draw: function () { e.draw(ctx); } }); });   // v6.1 光る場所・壺
     (extras || []).forEach(function (e) { ents.push({ y: e.y * TS, draw: function () { if (e.vehicle && root.VehicleArt) root.VehicleArt.draw(ctx, e.vehicle, 'down', e.x * TS - cam.x, e.y * TS - cam.y, false); } }); });
     if (player) ents.push({ y: player.py, draw: function () { if (player.vehicle && root.VehicleArt) root.VehicleArt.draw(ctx, player.vehicle, player.dir, player.px - cam.x, player.py - cam.y, player.moving); else drawChar(ctx, player.sprite, player.dir, player.frame, player.px - cam.x, player.py - cam.y, player.phase); } });
     ents.sort(function (a, b) { return a.y - b.y; });

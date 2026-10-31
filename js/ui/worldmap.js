@@ -99,6 +99,7 @@
       var b = e.target.closest('[data-act]'); if (!b) return; e.stopPropagation();
       var a = b.getAttribute('data-act');
       if (a === 'terrain') WM.openTerrain(WM.sel); else if (a === 'close') WM.select(null);
+      else if (a === 'travel' && root.Travel) { var tid = b.getAttribute('data-id'); MM().close(); root.Travel.go(tid); }   // v6.1 確認のあと移動
     });
     WM.built = true; WM.key = ''; return true;
   };
@@ -141,8 +142,15 @@
     var d = data(); var s = status(id);
     var routes = edges().filter(function (e) { return e.a === id || e.b === id; }).map(function (e) { var o = e.a === id ? e.b : e.a; return '<li class="' + (e.open ? 'ok' : 'ng') + '"><b>' + esc(shortName(o)) + '</b>へ：' + esc(e.label) + '（' + (e.open ? '通れる' : 'まだ通れない') + '）</li>'; }).join('');
     var locs = MM().regionLocations().filter(function (L) { return L.region === id; }); var seen = locs.filter(function (L) { return d.visited[L.to]; }).length;
+    // v6.1 ファストトラベル：訪れた町・城・ダンジョンの入口へ（未訪問の場所は名前を出さず数だけ）
+    var TR = root.Travel; var tl = ''; if (TR) {
+      var pts = TR.byRegion(id).filter(function (p) { return !p.hidden || TR.unlocked(p); }); var open = pts.filter(TR.unlocked); var cu = TR.canUse(root.World.map);
+      tl = '<div class="wm-travel"><div class="wm-travel-h">ファストトラベル' + (cu.ok ? '' : '<span class="wm-travel-ng">（' + esc(cu.reason) + '）</span>') + '</div>' +
+        (open.length ? open.map(function (p) { var here = root.World.map && root.World.map.id === p.to; return '<button class="wm-tp" data-act="travel" data-id="' + esc(p.id) + '"' + (!cu.ok || here ? ' disabled' : '') + '>' + esc(p.name) + (p.kind === 'dungeon' ? '（入口）' : '') + (here ? '・現在地' : '') + '</button>'; }).join('') : '<span class="small muted">まだ訪れた場所がない</span>') +
+        (pts.length > open.length ? '<span class="small muted wm-travel-rest">未訪問の場所 ' + (pts.length - open.length) + 'か所</span>' : '') + '</div>';
+    }
     info.innerHTML = '<div class="wm-info-head"><b>' + esc(fullName(id)) + '</b><span class="wm-chip ' + (s.cur ? 'cur' : s.vis ? 'vis' : 'new') + '">' + (s.cur ? '現在地' : s.vis ? '訪問済み' : s.reach ? '未踏（行ける）' : '未踏') + '</span><button class="wm-x" data-act="close" aria-label="閉じる">✕</button></div>' +
-      '<div class="wm-info-body"><div class="small">訪れた町・ダンジョン：' + seen + '／' + locs.length + '</div>' + (routes ? '<ul class="wm-routes-list">' + routes + '</ul>' : '') + '</div>' +
+      '<div class="wm-info-body"><div class="small">訪れた町・ダンジョン：' + seen + '／' + locs.length + '</div>' + (routes ? '<ul class="wm-routes-list">' + routes + '</ul>' : '') + tl + '</div>' +
       '<div class="wm-info-foot"><button class="wm-go" data-act="terrain">地形を見る（地域の地図）</button></div>';
     info.classList.add('on');
   };
