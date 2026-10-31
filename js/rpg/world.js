@@ -77,7 +77,7 @@
     if (World.busy) return;
     var p = World.player;
     if (Input.consume('cancel')) { root.Menu.open(); return; }
-    if (Input.consume('ok')) { World.interact(); return; }
+    if (Input.consume('ok')) { if (!World.justTalked()) World.interact(); return; }   // v6.2 会話を閉じた直後の連打で、同じ人との会話がすぐ始まらないように
     if (!p.moving) {
       var dir = Input.direction();
       if (dir) World.tryMove(dir);
@@ -101,6 +101,7 @@
         return;
       }
       n.moveT -= dt; if (n.moveT > 0) return; n.moveT = 1500 + Math.random() * 2500;
+      if (World.facingNpc(n) || (n.holdUntil && Date.now() < n.holdUntil)) { n.moveT = 700; return; }   // holdUntil：3D版で「話す」の対象になっている   // v6.2 主人公が隣で向き合っている（話しかけようとしている）あいだは歩き出さない
       var dirs = ['up', 'down', 'left', 'right']; var dir = dirs[Math.floor(Math.random() * 4)]; var dd = delta(dir);
       var nx = n.x + dd[0], ny = n.y + dd[1];
       n.dir = dir;
@@ -116,6 +117,8 @@
     p.vehicle = State.data.aboard || null;
     var extras = root.Vehicle ? root.Vehicle.onMap(m.id).filter(function (v) { return !v.aboard; }).map(function (v) { return { x: v.x, y: v.y, vehicle: v.id }; }) : [];
     m.draw(ctx, cam, p, World.tint(), extras);
+    // v6.2 次の目的地：画面の中にあれば、控えめな赤い輪（地図の上の文字や人を隠さない細い線）
+    if (root.Nav && root.Nav.enabled()) { try { var TSz = Engine.TS; root.Nav.markers(m.id).forEach(function (mk) { var sx = mk.x * TSz - cam.x + TSz / 2, sy = mk.y * TSz - cam.y + TSz / 2; if (sx < -TSz || sy < -TSz || sx > ctx.canvas.width + TSz || sy > ctx.canvas.height + TSz) return; var a = 0.4 + 0.35 * Math.sin(Date.now() / 420); ctx.save(); ctx.lineWidth = mk.primary ? 3 : 2; ctx.strokeStyle = 'rgba(0,0,0,' + (a * 0.5) + ')'; ctx.beginPath(); ctx.arc(sx, sy, TSz * 0.66 + 1.5, 0, Math.PI * 2); ctx.stroke(); ctx.strokeStyle = 'rgba(255,58,58,' + a + ')'; if (!mk.primary && ctx.setLineDash) ctx.setLineDash([6, 5]); ctx.beginPath(); ctx.arc(sx, sy, TSz * 0.66, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }); } catch (e) { if (!World._navErr) { World._navErr = true; console.error('nav', e); } } }
     // v5.5 視界制限（砂嵐の回廊など）：map.def.vision タイル。上位足の眼鏡（sight）で広がる
     var vis = m.def && m.def.vision; if (vis && ctx.createRadialGradient) { var sight = (root.Minimap && root.Minimap.partyFx) ? (root.Minimap.partyFx('sight') || 0) : 0; var R = (vis + sight) * TS; var sx = p.px - cam.x + TS / 2, sy = p.py - cam.y + TS / 2; var grd = ctx.createRadialGradient(sx, sy, R * 0.35, sx, sy, R); grd.addColorStop(0, 'rgba(0,0,0,0)'); grd.addColorStop(1, m.def.visionColor || 'rgba(170,128,70,0.97)'); ctx.fillStyle = grd; ctx.fillRect(-TS, -TS, (Engine.VIEW_W + 2) * TS, (Engine.VIEW_H + 2) * TS); }
   };
@@ -144,11 +147,31 @@
     p.vehicleAction = null;
     var vr = root.Vehicle ? root.Vehicle.resolveMove(m, nx, ny) : null;   // v5.0: 乗船・航行・下船
     if (vr) { if (!vr.ok) { var why = root.Vehicle.blockReason(m, nx, ny); if (why && !p._blockToastAt || (why && Date.now() - p._blockToastAt > 1500)) { p._blockToastAt = Date.now(); Win.toast(why); } return false; } p.vehicleAction = vr; }
-    else if (!m.passable(nx, ny, State.data)) { var bn = m.npcAt(nx, ny); if (bn) World.nudgeNpc(bn); return false; }   // v5.7 歩き回る人は道をあける
+    else if (!m.passable(nx, ny, State.data)) { var bn = m.npcOn(nx, ny); if (bn) World.pushAgainst(bn); return false; }   // v5.7 歩き回る人は道をあける（v6.2：押し続けたときだけ。近づいた・向いただけでは動かない）
     p.moving = true; p.tx = nx; p.ty = ny; p.progress = 0;
     return true;
   };
 
+  // v6.2 主人公が NPC の隣にいて、その NPC の方を向いているか（会話しようとしている）
+  World.facingNpc = function (n) {
+    var p = World.player; if (!p || !n || n.hidden || p.moving) return false; var d = delta(p.dir); if (!d) return false;
+    var fx = p.x + d[0], fy = p.y + d[1]; return (n.x === fx && n.y === fy) || (n.moving && n.nx === fx && n.ny === fy);
+  };
+  // v6.2 道をあけてもらう判定（2D・3D 共通）。NPC に向かって進もうとし続けたときだけ、横へよけてもらう
+  //  ・話せる NPC：1.2秒押し続けたら（近づいて向いただけ・話しかけるために近づいただけでは動かない）
+  //  ・話さない NPC：0.35秒
+  //  ・立ち止まっている NPC（門番・警備兵など wander 0）は動かさない（従来どおり）
+  World.PASS_DELAY = { talk: 1200, other: 350 };
+  // v6.2 決定キーの連打：会話を閉じてから 220ms 以内に、同じ人へ話しかけ直そうとしたか（キー入力からの話しかけだけで使う。宝箱・イベント・ほかの人は待たない）
+  World.justTalked = function () { var p = World.player, m = World.map; if (!p || !m || !World._talkEndNpc || !World._talkEnd || Date.now() - World._talkEnd >= 220) return false; var d = delta(p.dir); if (!d) return false; var n = m.npcOn(p.x + d[0], p.y + d[1]) || (m.tile(p.x + d[0], p.y + d[1]) === 'counter' ? m.npcOn(p.x + d[0] * 2, p.y + d[1] * 2) : null); return n === World._talkEndNpc; };
+  World.pushAgainst = function (n) {
+    if (!n || n.hidden || !n.wander || World.busy) { World._push = null; return false; }
+    var now = Date.now(); var st = World._push;
+    if (!st || st.n !== n || now - st.last > 260) st = World._push = { n: n, since: now, last: now };
+    st.last = now;
+    if (n.moving || now - st.since < (n.talk ? World.PASS_DELAY.talk : World.PASS_DELAY.other)) return false;
+    World._push = null; return World.nudgeNpc(n);
+  };
   // v5.7 歩き回る NPC に主人公がぶつかったら、横（なければ奥）へ1歩よけてもらう。立ち止まっている NPC（wander 0）は動かさない
   World.nudgeNpc = function (n) {
     var m = World.map, p = World.player, d = State.data; if (!n || n.hidden || !n.wander || n.moving || World.busy) return false;
@@ -170,11 +193,11 @@
     if (root.Vehicle) {   // v5.0: 乗り物
       var va = p.vehicleAction; p.vehicleAction = null;
       if (va && va.board) { root.Vehicle.board(va.board, m, p.x, p.y); Win.toast(root.VEHICLES[va.board].name + 'に乗った'); if (root.Audio) root.Audio.sfx('step'); }
-      else if (va && va.disembark) { root.Vehicle.disembark(); Win.toast('上陸した'); }
+      else if (va && va.disembark) { root.Vehicle.disembark(); Win.toast('上陸した：' + (root.Harbors ? root.Harbors.areaName(m, p.x, p.y) : m.name)); }   // v6.2 上陸したときに地名
       if (d.aboard) {
         root.Vehicle.syncToPlayer(m, p.x, p.y);
         var route = root.Vehicle.routeAt(m, p.x, p.y);
-        if (route) { var arr = root.Vehicle.arrival(route, p.x, p.y); if (arr) { World.busy = true; Win.message([route.name + '。' + (root.MAP_DEFS[arr.map] || {}).name + 'の海域に入った。']).then(function () { World.busy = false; World.doWarp({ to: arr.map, tx: arr.x, ty: arr.y }); }); return; } }
+        if (route) { var arr = root.Vehicle.arrival(route, p.x, p.y); if (arr) { World.busy = true; var arrLines = [route.name + '。' + (root.MAP_DEFS[arr.map] || {}).name + 'の海域に入った。']; var ah = root.Harbors && root.Harbors.arrivalHint(arr.map, arr.x, arr.y); if (ah) arrLines.push(ah); Win.message(arrLines).then(function () { World.busy = false; World.doWarp({ to: arr.map, tx: arr.x, ty: arr.y }); }); return; } }   // v6.2 着いた海域の桟橋の方角
         if (root.Vehicle.flies()) { World.updatePlaceLabel(); if (root.Minimap) root.Minimap.onStep(m, p); return; }   // v5.4: 飛行中は町・洞窟・イベント・エンカウントなし
         var drift = root.Vehicle.drift(m, p.x, p.y);   // v5.2: 外海の海流・嵐
         if (drift) { p.x = drift.x; p.y = drift.y; p.px = p.x * 32; p.py = p.y * 32; root.Vehicle.syncToPlayer(m, p.x, p.y); Win.toast(drift.text); if (!d.flags.drift_seen) { d.flags.drift_seen = true; World.busy = true; Win.message(['外海の海流に船が流された。', '外海では海流に流されることがある。嵐に遭うと大きく流される。航海士がいれば海流を読んで避けやすい。']).then(function () { World.busy = false; }); return; } }
@@ -185,6 +208,7 @@
     if (m.kind === 'field') d.timeOfDay = (d.timeOfDay + 0.0025) % 1;
     var w = m.warpAt(p.x, p.y);
     if (w && (!w.needFlag || d.flags[w.needFlag])) { if (m.def.onStep) m.def.onStep(m, p, true); World.doWarp(w); return; }
+    if (w && w.needFlag && !d.flags[w.needFlag] && !w.hidden) { World.lockedWarp(w); return; }   // v6.2 閉ざされた場所：理由を表示（フラグは変えない）
     if (m.def.onStep && m.def.onStep(m, p)) return;   // v5.6 マップごとの歩数処理（凍結時計塔の時限扉など）。true なら以降の処理をしない
     var ev = m.eventAt(p.x, p.y);
     if (ev && ev.type === 'hole') { World.busy = true; Win.message(ev.text).then(function () { World.busy = false; World.enterMap(ev.to, ev.tx, ev.ty, 'down'); }); return; }
@@ -202,6 +226,12 @@
       }
     }
     World.updateHud();
+  };
+  // v6.2 needFlag で閉ざされた場所に乗ったとき：理由（lockedText）と、ヒント設定が「詳細」なら次にすること
+  World.lockedWarp = function (w) {
+    var lines = (w.lockedText && w.lockedText.length) ? w.lockedText.slice() : [(w.name || 'この場所') + 'は、今は閉ざされていて入れない。'];
+    var hint = root.Nav && root.Nav.unlockHint ? root.Nav.unlockHint(w.needFlag) : null; if (hint) lines.push(hint);
+    World.busy = true; Win.message(lines, { name: w.name }).then(function () { World.busy = false; World.updateHud(); });
   };
   World.doWarp = function (w) {
     World.busy = true;
@@ -262,9 +292,9 @@
       if (root.Vehicle.land(m, p.x, p.y)) { Win.toast('着陸した'); if (root.Audio) root.Audio.sfx('step'); World.updatePlaceLabel(); State.autosave(); } else Win.toast('ここには着陸できない（草原・砂地・道などの平地のみ）');
       return;
     }
-    var npc = m.npcAt(fx, fy);
+    var npc = m.npcOn(fx, fy);   // v6.2 歩いている途中の NPC も、見えている位置で話せる
     // カウンター越しに店主と話せる
-    if (!npc && m.tile(fx, fy) === 'counter') npc = m.npcAt(fx + d[0], fy + d[1]);
+    if (!npc && m.tile(fx, fy) === 'counter') npc = m.npcOn(fx + d[0], fy + d[1]);
     if (npc && npc.talk) { World.talk(npc); return; }
     var chest = m.chestAt(fx, fy);
     if (chest) { World.openChest(chest); return; }
@@ -285,9 +315,13 @@
     Promise.resolve(root.Search.inspect(sp)).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World.updateHud(); });
   };
   World.talk = function (npc) {
-    World.busy = true;
+    if (World.busy || !npc) return;   // v6.2 二重起動しない
+    World.busy = true; World._push = null;
+    // v6.2 歩いている途中なら、近い方のマスで止まる（半分以上進んでいれば行き先のマス）
+    if (npc.moving) { if (npc.prog >= 0.5) { npc.x = npc.nx; npc.y = npc.ny; } npc.moving = false; npc.prog = 0; npc.frame = 0; npc.phase = 0; }
+    npc.moveT = Math.max(npc.moveT || 0, 1200);
     var p = World.player; npc.dir = { up: 'down', down: 'up', left: 'right', right: 'left' }[p.dir]; npc.moving = false; npc.ox_px = 0; npc.oy_px = 0;
-    Promise.resolve(npc.talk(root.Events.ctx(npc))).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World.applyState(World.map); if (root.Vehicle) root.Vehicle.unlockIfReady(); World.updateHud(); State.autosave(); });
+    Promise.resolve(npc.talk(root.Events.ctx(npc))).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World._talkEnd = Date.now(); World._talkEndNpc = npc; npc.moveT = Math.max(npc.moveT || 0, 900); World.applyState(World.map); if (root.Vehicle) root.Vehicle.unlockIfReady(); World.updateHud(); State.autosave(); });
   };
   World.openChest = function (chest) {
     var m = World.map, d = State.data; var key = m.id + ':' + chest.id;

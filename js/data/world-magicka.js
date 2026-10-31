@@ -39,8 +39,8 @@
   ];
   var LOCATIONS = [
     { id: 'magicka_city', name: '魔導都マクディア', icon: 'castle_icon', x: 80, y: 58, to: 'magicka_city', tx: 21, ty: 30 },
-    { id: 'forbidden_archive', name: '禁書庫', icon: 'tower_icon', x: 80, y: 30, to: 'forbidden_archive_1', tx: 10, ty: 13, needFlag: 'archive_permit' },
-    { id: 'origin_lab', name: '起源の実験室', icon: 'cave_icon', x: 124, y: 56, to: 'origin_lab_1', tx: 1, ty: 12, needFlag: 'minister_defeated' }
+    { id: 'forbidden_archive', name: '禁書庫', icon: 'tower_icon', x: 80, y: 30, to: 'forbidden_archive_1', tx: 10, ty: 13, needFlag: 'archive_permit', lockedText: ['禁書庫の扉には、王立学院の封印がかかっている。', '入館許可証がなければ入れない。'] },
+    { id: 'origin_lab', name: '起源の実験室', icon: 'cave_icon', x: 124, y: 56, to: 'origin_lab_1', tx: 1, ty: 12, needFlag: 'minister_defeated', lockedText: ['実験室の扉は、内側から魔法で封じられている。', '……封じた者がいる限り、開きそうにない。'] }
   ];
   var ROADS = [[[26, 58], [80, 58]], [[80, 58], [80, 30]], [[80, 58], [124, 56]]];
   var def = root.makeWorldRegion({

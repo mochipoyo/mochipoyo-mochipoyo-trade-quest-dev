@@ -40,7 +40,7 @@
   var LOCATIONS = [
     { id: 'star_tower', name: '星見塔', icon: 'tower_icon', x: 48, y: 76, to: 'star_tower_1', tx: 7, ty: 12 },
     { id: 'star_camp', name: '星見塔の野営地', icon: 'village', x: 42, y: 86, to: 'star_camp', tx: 9, ty: 12 },
-    { id: 'sky_temple', name: '天空神殿', icon: 'castle_icon', x: 76, y: 24, to: 'sky_temple_1', tx: 9, ty: 14, needFlag: 'sky_record' }
+    { id: 'sky_temple', name: '天空神殿', icon: 'castle_icon', x: 76, y: 24, to: 'sky_temple_1', tx: 9, ty: 14, needFlag: 'sky_record', lockedText: ['神殿の前に、見えない壁がある。風だけが通り抜けていく。', '……道を開く記録が、どこかにあるはずだ。'] }
   ];
   var ROADS = [[[42, 86], [48, 76]]];
   function stone(id, n, title, lines) { return { x: 0, y: 0, type: 'script', solid: true, _id: id, run: async function (c) { var d = root.State.data; await c.msg(['【' + title + '】'].concat(lines)); if (!d.flags[id]) { d.flags[id] = true; await c.msg(['記録碑を読んだ。（天空の記録 ' + ['sky_1', 'sky_2', 'sky_3'].filter(function (f) { return d.flags[f]; }).length + '/3）']); } } }; }

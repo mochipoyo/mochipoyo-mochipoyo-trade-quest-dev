@@ -125,15 +125,18 @@ export class BuildingBuilder3D {
     const ovZ = 0.3, ovX = 0.38;
     const ex = (two ? W + jet * 2 : W), ez = (two ? D + jet * 2 : D);
     const half = ez / 2 + ovZ; const rise = (ez / 2) * Math.tan(pitch); const slope = half / Math.cos(pitch);
-    const roofMat = M.roof(ROOF[type] || '#a8483a'); roofMat.vertexColors = true;
-    const rowLen = 0.27; const rows = Math.ceil(slope / (rowLen * 0.92));
-    const roofColRng = () => 0.82 + rng() * 0.3;
+    // v6.2 場所のデザイン（materials.roof3d・thatch3d）。茅葺き：わら色・厚い段・色むらを小さく
+    const des = opts && opts.design; const r3 = des && des.materials && des.materials.roof3d; const thatch = !!(des && des.materials && des.materials.thatch3d && type !== 'church' && type !== 'dojo');
+    const roofMat = M.roof((r3 && (r3[type] || r3.default)) || ROOF[type] || '#a8483a'); roofMat.vertexColors = true;
+    const rowLen = thatch ? 0.22 : 0.27; const rows = Math.ceil(slope / (rowLen * 0.92));
+    const roofColRng = thatch ? () => 0.9 + rng() * 0.14 : () => 0.82 + rng() * 0.3;
+    const rowThick = thatch ? 0.1 : 0.055;
     for (const s of [1, -1]) {
       for (let r = 0; r < rows; r++) {
         const t = (r + 0.5) / rows;   // 0=軒先 1=棟
         const dist = slope * (1 - t);
         const zz = cz + s * Math.cos(pitch) * dist, yy = top + rise - Math.sin(pitch) * dist + 0.05 + r * 0.006;
-        const g = box(ex + ovX * 2 + (rng() - 0.5) * 0.05, 0.055, rowLen + 0.05, 1);
+        const g = box(ex + ovX * 2 + (rng() - 0.5) * 0.05 + (thatch ? 0.12 : 0), rowThick, rowLen + 0.05, 1);
         // 板瓦のUV：横は 2 単位で1回、縦は1段＝テクスチャの1行
         const uv = g.attributes.uv, pos = g.attributes.position, nrm = g.attributes.normal;
         for (let i = 0; i < uv.count; i++) { if (nrm.getY(i) > 0.5) { uv.setXY(i, (pos.getX(i) + cx) / 2.0 + (r % 2) * 0.0, ((r % 8) + (pos.getZ(i) * s > 0 ? 0 : 1)) / 8); } }

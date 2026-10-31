@@ -96,7 +96,7 @@
     opts = opts || {};
     return new Promise(function (resolve) {
       var cur = opts.initial || 0;
-      var node = el('<div class="rw-list ' + (opts.cls || '') + '">' + (opts.title ? '<div class="rw-title">' + esc(opts.title) + '</div>' : '') + '<div class="rw-items"></div>' + (opts.info ? '<div class="rw-info"></div>' : '') + (opts.footer ? '<div class="rw-footer">' + opts.footer + '</div>' : '') + '</div>');
+      var node = el('<div class="rw-list ' + (opts.cls || '') + '">' + (opts.title ? '<div class="rw-title">' + esc(opts.title) + '</div>' : '') + (opts.head ? '<div class="rw-head">' + opts.head + '</div>' : '') + '<div class="rw-items"></div>' + (opts.info ? '<div class="rw-info"></div>' : '') + (opts.footer ? '<div class="rw-footer">' + opts.footer + '</div>' : '') + '</div>');
       var itemsEl = node.querySelector('.rw-items'); var infoEl = node.querySelector('.rw-info');
       itemsEl.innerHTML = items.map(function (it, i) { return '<div class="rw-item' + (it.disabled ? ' disabled' : '') + (it.cls ? ' ' + it.cls : '') + '" data-i="' + i + '"><span class="l">' + esc(it.label) + '</span>' + (it.right !== undefined ? '<span class="r">' + esc(it.right) + '</span>' : '') + (it.sub ? '<div class="s">' + esc(it.sub) + '</div>' : '') + '</div>'; }).join('') || '<div class="rw-item disabled">（なし）</div>';
       var itemEls = itemsEl.querySelectorAll('.rw-item');

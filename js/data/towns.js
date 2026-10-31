@@ -437,7 +437,11 @@
   chests: [{ id: 'harbor1', x: 24, y: 10, item: 'ring_speed', qty: 1 }],
   npcs: [
     { id: 'sailor', x: 12, y: 13, sprite: 'sailor', dir: 'down', wander: 0, talk: async function (c) {
-      if (c.flag('ship_ready')) { await c.say('船乗り', ['船は港の西の海に泊めてある。浜から海へ向かって進めば乗れる。', '沿岸づたいに東へ回れば、海路の先はグラニア鉱業地方だ。煙の立つ島が見えたら灰鉱町ヴェルムが近い。', '陸へ降りたいときは、船のまま岸へ進めばいい。船はその場で待ってる。']); await c.remark('mina', ['海の向こう……。父さんは船で出ていって、帰ってこなかった。', '手がかりがある気がするの。根拠はないけど。……行こう。'], 'mina_remark_sea'); return; }
+      if (c.flag('ship_ready')) { await c.say('船乗り', ['船は港の西の海に泊めてある。浜から海へ向かって進めば乗れる。', '沿岸づたいに大陸を回って東の端の海路を抜ければ、グラニア鉱業地方の西の海に出る。', '向こうの西岸には「灰の浜の桟橋」がある。船に乗っている間は、ミニマップに航路の点線が出る。それに沿って進めばいい。', '陸へ降りたいときは、船のまま岸へ進めばいい。船はその場で待ってる。']); await c.remark('mina', ['海の向こう……。父さんは船で出ていって、帰ってこなかった。', '手がかりがある気がするの。根拠はないけど。……行こう。'], 'mina_remark_sea');
+        // v6.2 取り残した船を港へ戻す（母港＝港の西の海）
+        var away = root.Harbors ? root.Harbors.away(root.Harbors.get('marina')) : [];
+        if (away.length) { var ri = await c.choice('船が港にいないようだな。呼び戻すか？', away.map(function (v) { return root.VEHICLES[v].name + 'を港に戻す'; }).concat(['このままでいい'])); if (ri >= 0 && ri < away.length) { var rr = root.Harbors.recall(away[ri], root.Harbors.get('marina')); await c.msg(rr ? [root.VEHICLES[away[ri]].name + 'が港の西の海に戻ってきた。'] : ['……今は停める場所が空いていない。']); if (rr) root.State.autosave(); } }
+        return; }
       if (c.has('royal_letter') && c.has('sailcloth') && c.has('old_compass')) {
         await c.say('船乗り', ['帆布と羅針盤……揃ったな！ 王の親書もある。よし、今夜中に直す。']);
         await c.msg(['……夜が明けた。帆は張り替えられ、羅針盤は舵の前に据えられた。']);

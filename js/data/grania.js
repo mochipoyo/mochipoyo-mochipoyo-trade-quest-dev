@@ -206,7 +206,9 @@
   add({ id: 'iron_fort_gate', name: '鉄冠将軍の砦・門前', kind: 'dungeon', bgm: 'boss_area', fallback: 'ash', rows: [
     'CCCCCCCCCCCC', 'C8888LL8888C', 'C8888888888C', 'C8i88888i88C', 'C8888888888C', 'C8888888888C', 'C8888888888C', 'C8888888888C', 'C8888888888C', 'CCCCC88CCCCC'
   ], warps: [{ x: 5, y: 9, to: 'world_grania', tx: 106, ty: 28 }, { x: 6, y: 9, to: 'world_grania', tx: 106, ty: 28 }],
-    events: [{ x: 5, y: 1, type: 'locked', solid: true, doneFlag: 'iron_fort_open', key: 'iron_fort_key', text: ['鉄の門は固く閉ざされている。中から、鎖と機械の音が響く。', '（鉄冠将軍グロートの砦。この先は今後の章で）'] }] });
+    events: [{ x: 5, y: 1, type: 'locked', solid: true, doneFlag: 'iron_fort_open', key: 'iron_fort_key', text: ['鉄の門は固く閉ざされている。中から、鎖と機械の音が響く。', '門には鍵穴がひとつ。合う鍵は持っていない。', '（鉄冠将軍グロートの砦。今は中に入れない）'] },
+      // v6.2 門前の見張り台の跡（理由の表示）
+      { x: 3, y: 2, type: 'inspect', solid: true, tile: 'sign', text: ['錆びた札がかかっている。「関係者以外 立入禁止 —— 鉄冠将軍麾下」', '……砦の中へは、この門からしか入れないようだ。'] }] });
 
   /* ---------- 鉄鎖鉱山 1階（労働区：労働者救出） ---------- */
   add({ id: 'iron_mine_1', name: '鉄鎖鉱山 1階', kind: 'dungeon', bgm: 'dungeon', fallback: 'cave_floor', rows: [

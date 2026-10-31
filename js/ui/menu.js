@@ -9,25 +9,29 @@
   var Menu = {};
 
   Menu.open = async function () {
-    if (World.busy) return; World.busy = true;
+    if (World.busy) return; World.busy = true; var openMap = false;
     try {
       while (true) {
         var d = State.data;
-        var i = await Win.list([{ label: 'ステータス' }, { label: 'どうぐ' }, { label: 'そうび' }, { label: 'じゅもん・とくぎ' }, { label: 'なかま' }, { label: 'クエスト' }, { label: '図鑑' }, { label: 'トレード修行' }, { label: 'セーブ' }, { label: '設定' }], { title: 'メニュー　' + d.gold + 'G　' + World.map.name, cls: 'main-menu' });
-        if (i < 0) break;
-        if (i === 0) await Menu.status();
-        else if (i === 1) await Menu.items();
-        else if (i === 2) await Menu.equip();
-        else if (i === 3) await Menu.skills();
-        else if (i === 4) await Menu.party();
-        else if (i === 5) await Menu.quests();
-        else if (i === 6) await Menu.encyclopedia();
-        else if (i === 7) await Menu.training();
-        else if (i === 8) await Menu.save();
-        else if (i === 9) { var r = await Menu.settings(); if (r === 'title') return; }
+        var MENU = ['ステータス', 'どうぐ', 'そうび', 'じゅもん・とくぎ', 'なかま', 'クエスト', '次の目的地', '図鑑', 'トレード修行', 'ファストトラベル', 'セーブ', '設定'];   // v6.2「次の目的地」を追加（項目名で振り分け）
+        var i = await Win.list(MENU.map(function (l) { return { label: l }; }), { title: 'メニュー　' + d.gold + 'G　' + World.map.name, cls: 'main-menu' });
+        if (i < 0) break; var lb = MENU[i];
+        if (lb === 'ステータス') await Menu.status();
+        else if (lb === 'どうぐ') await Menu.items();
+        else if (lb === 'そうび') await Menu.equip();
+        else if (lb === 'じゅもん・とくぎ') await Menu.skills();
+        else if (lb === 'なかま') await Menu.party();
+        else if (lb === 'クエスト') await Menu.quests();
+        else if (lb === '次の目的地') { if (await Menu.objective() === 'map') { openMap = true; break; } }
+        else if (lb === '図鑑') await Menu.encyclopedia();
+        else if (lb === 'トレード修行') await Menu.training();
+        else if (lb === 'ファストトラベル') { if (await Menu.travel()) break; }   // v6.1 移動したらメニューを閉じる
+        else if (lb === 'セーブ') await Menu.save();
+        else if (lb === '設定') { var r = await Menu.settings(); if (r === 'title') return; }
       }
     } catch (e) { root.Engine.onError(e); }
     World.busy = false; World.updateHud(); State.autosave();
+    if (openMap && root.Minimap) root.Minimap.openBig();   // v6.2「次の目的地」→「全体マップで見る」
   };
 
   async function pickActor(title, includeDead) {
@@ -236,6 +240,60 @@
     await Win.message([ok ? 'スロット' + (i + 1) + 'にセーブした。' : 'セーブに失敗した（ブラウザの保存領域を確認してください）。']);
   };
 
+  // v6.1 ファストトラベル：訪れた町・村・城・ダンジョン入口の一覧（地域ごと）。移動したら true
+  // v6.2 次の目的地：いまの目的・場所・段階式ヒント（最初はヒント1だけ。「詳細」設定なら全部）
+  Menu.objective = async function () {
+    var N = root.Nav; if (!N) return; var esc = Win.esc; var st = State.data.settings;
+    var shown = N.detail() ? 3 : 1;
+    while (true) {
+      var p = N.panel();
+      if (!p || p.none) { await Win.message([p && p.text ? p.text : '今は、メインストーリーの目的地はない。']); return; }
+      var hs = p.hints.slice(0, shown).map(function (h, k) { return '<div class="nav-hint"><b>ヒント' + (k + 1) + '：</b>' + esc(h) + '</div>'; }).join('');
+      var html = '<div class="nav-panel"><div class="nav-h">' + esc(p.header) + '</div>' +
+        '<div class="nav-l">現在の目的：</div><div class="nav-v">' + esc(p.objective) + (p.objective !== p.step ? '<div class="small muted">（そのあと：' + esc(p.step) + '）</div>' : '') + '</div>' +
+        '<div class="nav-l">場所：</div><div class="nav-v">' + esc(shown >= 2 ? p.placeDetail : p.place) + '</div>' + hs +
+        (p.note ? '<div class="nav-note">' + esc(p.note) + '</div>' : '') +
+        (p.others ? '<div class="small muted">ほかに行ける候補が ' + p.others + ' か所ある（地図では点線の赤丸）。順番は自由。</div>' : '') +
+        (p.side.length ? '<div class="small muted">同時に進行中：' + p.side.map(esc).join(' ／ ') + '</div>' : '') +
+        (st.nav === 'off' ? '<div class="small muted">目的地ナビは OFF（地図に赤丸を出さない）。</div>' : '<div class="small muted">ミニマップ・全体マップ（N / Tab）・世界地図の赤丸が目的地。</div>') + '</div>';
+      var acts = [];
+      if (shown < 3 && p.hints.length > shown) acts.push({ label: 'ヒント' + (shown + 1) + 'を見る', right: shown === 1 ? '町・建物・人の名前' : '詳しい場所とすること', act: 'more' });
+      acts.push({ label: '全体マップで見る', act: 'map' });
+      acts.push({ label: '目的地ナビ（赤丸）', right: st.nav === 'off' ? 'OFF → ON にする' : 'ON → OFF にする', act: 'toggle' });
+      acts.push({ label: '閉じる', act: 'close' });
+      var i = await Win.list(acts, { title: '次の目的地', head: html, cls: 'nav-menu' });
+      if (i < 0 || acts[i].act === 'close') return;
+      if (acts[i].act === 'more') shown++;
+      else if (acts[i].act === 'toggle') { st.nav = st.nav === 'off' ? 'on' : 'off'; State.autosave(); }
+      else if (acts[i].act === 'map') return 'map';
+    }
+  };
+
+  Menu.travel = async function () {
+    var T = root.Travel; if (!T) return false;
+    var cu = T.canUse(null, { fromMenu: true }); if (!cu.ok) { await Win.message([cu.reason + '。']); return false; }
+    var defs = root.MAP_DEFS; var all = T.points().filter(function (p) { return !p.hidden || T.unlocked(p); });
+    var open = all.filter(function (p) { return T.unlocked(p); }); var locked = all.length - open.length;
+    var KIND = { town: '町・村', castle: '城・都市', dungeon: 'ダンジョン入口' };
+    var here = World.map && World.map.id;
+    var items = open.map(function (p) { return { label: p.name + (p.to === here ? '（いまいる場所）' : ''), right: (defs[p.region] && defs[p.region].name) || '', sub: KIND[p.kind] || '', disabled: p.to === here }; });
+    if (root.Harbors && root.Harbors.awayFromHome().length) items.push({ label: '（乗り物を母港へ戻す）', right: root.Harbors.awayFromHome().length + '台', sub: '船・飛空艇を置いてきたとき' });   // v6.2
+    if (!items.length) { await Win.message(['まだ移動できる場所がない。町や村を訪れると、ここから移動できるようになる。']); return false; }
+    var i = await Win.list(items, { title: 'ファストトラベル（訪れた場所 ' + open.length + '）', footer: '<span class="muted small">' + (locked ? 'まだ訪れていない場所 ' + locked + ' か所（名前は訪れると表示）。' : '') + 'ダンジョンは入口へ移動します。</span>' });
+    if (i < 0) return false;
+    if (i >= open.length) { await Menu.recallVehicle(); return false; }
+    return await T.go(open[i].id, { fromMenu: true });
+  };
+  // v6.2 取り残した船・飛空艇を母港へ戻す（乗っていないときだけ。乗り物の解放条件は変えない）
+  Menu.recallVehicle = async function () {
+    var H = root.Harbors; if (!H) return;
+    var away = H.awayFromHome(); if (!away.length) { await Win.message(['どの乗り物も母港にいる。']); return; }
+    var home = function (v) { var h = H.homeOf(v); var md = root.MAP_DEFS[h.map]; return (md ? md.name : h.map); };
+    var j = await Win.list(away.map(function (v) { var st = root.Vehicle.state(v); var md = root.MAP_DEFS[st.map]; return { label: root.VEHICLES[v].name + 'を母港へ戻す', right: '母港：' + home(v), sub: 'いまの場所：' + (md ? md.name : st.map) + '（' + st.x + ', ' + st.y + '）' }; }), { title: '乗り物を母港へ戻す' });
+    if (j < 0) return;
+    var r = H.recallHome(away[j]); await Win.message(r ? [root.VEHICLES[away[j]].name + 'を母港（' + home(away[j]) + '）へ戻した。'] : ['今は戻せない（停める場所が見つからない）。']); if (r) root.State.autosave();
+  };
+
   // v6.1 カジノ・研究室・学院の記録（コイン残高・遊んだ結果・学習の記念・研究クエスト）
   Menu.studyRecord = function () {
     var d = State.data; var C = root.Casino; var st = C ? C.stats() : {}; var lab = (C && C.state().lab) || {}; var rw = lab.rewards || {};
@@ -259,6 +317,7 @@
         { label: 'チャート試練のリスク%', right: st.riskPercent + '%' }, { label: 'ZigZag表示', right: st.showZigzag ? 'ON' : 'OFF' },
         { label: 'ミニマップ', right: st.minimap === 'off' ? '表示しない' : '表示する' }, { label: 'ミニマップの大きさ', right: st.minimapSize === 'large' ? '大きい' : 'ふつう' },
         { label: 'スマホの移動操作', right: st.pad === 'dpad' ? '十字キー' : 'スティック' },
+        { label: '目的地ナビ（赤丸）', right: st.nav === 'off' ? 'OFF' : 'ON' }, { label: 'ヒント表示', right: st.navHint === 'detail' ? '詳細' : '控えめ' },
         { label: 'データ管理（書き出し・読み込み・初期化）' }, { label: 'タイトルに戻る' }
       ], { title: '設定' });
       if (i < 0) return;
@@ -273,8 +332,10 @@
       if (i === 8) { if (root.Minimap && root.Minimap.setVisible) root.Minimap.setVisible(st.minimap === 'off', true); else st.minimap = st.minimap === 'off' ? 'on' : 'off'; }
       if (i === 9) { st.minimapSize = st.minimapSize === 'large' ? 'normal' : 'large'; if (root.Minimap) root.Minimap.resize(); }
       if (i === 10) { st.pad = st.pad === 'dpad' ? 'stick' : 'dpad'; }   // v6.1
-      if (i === 11) { await Menu.dataManagement(); }
-      if (i === 12) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
+      if (i === 11) { st.nav = st.nav === 'off' ? 'on' : 'off'; Win.toast(st.nav === 'off' ? '目的地ナビ：OFF（赤丸を出さない）' : '目的地ナビ：ON'); }   // v6.2
+      if (i === 12) { st.navHint = st.navHint === 'detail' ? 'low' : 'detail'; }
+      if (i === 13) { await Menu.dataManagement(); }
+      if (i === 14) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
       State.autosave();
     }
   };

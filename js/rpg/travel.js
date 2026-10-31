@@ -5,7 +5,7 @@
    ・解放＝その場所（町・ダンジョンの1階）を訪れたことがある（State.data.visited。セーブデータにすでにある記録）
    ・移動先は、その場所の通常の入口（地域の地図から入ったときと同じ座標）。ダンジョンは入口
    ・使えないとき：戦闘・会話・イベント中、乗り物に乗っている、ダンジョンの中にいる
-   ・画面（世界地図の地域の情報）から呼ぶだけ。移動の処理は World.enterMap（既存）
+   ・画面（世界地図の地域の情報・メニューの「ファストトラベル」）から呼ぶだけ。移動の処理は World.enterMap（既存）
    ========================================================= */
 (function (root) {
   'use strict';
@@ -29,11 +29,11 @@
   Travel.unlocked = function (p) { var d = D(); return !!(d && p && d.visited[p.to] && (!p.needFlag || d.flags[p.needFlag])); };
   Travel.byRegion = function (rid) { return Travel.points().filter(function (p) { return p.region === rid; }); };
   // 今使えるか（理由つき）
-  Travel.canUse = function (fromMap) {
+  Travel.canUse = function (fromMap, opts) {
     var d = D(), W = root.World; if (!d || !W || !W.map) return { ok: false, reason: 'ゲームを始めてから使える' };
     if (d.aboard) return { ok: false, reason: '乗り物から降りてから使える' };
     var m = fromMap || W.map; if (m.kind === 'dungeon') return { ok: false, reason: 'ダンジョンの中では使えない（外に出てから）' };
-    if (root.Engine && W.scene && root.Engine.top() !== W.scene) return { ok: false, reason: '戦闘や会話の途中では使えない' };
+    if (root.Engine && W.scene && root.Engine.top() !== W.scene && !(opts && opts.fromMenu && !(root.BattleUI && root.BattleUI.scene && root.Engine.scenes.indexOf(root.BattleUI.scene) >= 0))) return { ok: false, reason: '戦闘や会話の途中では使えない' };   // メニューから（探索中に開いたメニューの上）は使える
     if (d.flags.no_travel) return { ok: false, reason: '今は移動できない' };
     return { ok: true };
   };
@@ -41,7 +41,7 @@
   Travel.go = async function (id, opts) {
     opts = opts || {}; var W = root.World, Win = root.Win; var p = Travel.get(id); var d = D();
     if (!p || !Travel.unlocked(p)) { if (Win) await Win.message(['まだ訪れていない場所には移動できない。']); return false; }
-    var cu = Travel.canUse(); if (!cu.ok) { if (Win) await Win.message([cu.reason + '。']); return false; }
+    var cu = Travel.canUse(null, opts); if (!cu.ok) { if (Win) await Win.message([cu.reason + '。']); return false; }
     if (W.map && W.map.id === p.to) { if (Win) await Win.message(['いまいる場所だ。']); return false; }
     W.busy = true;
     var a = opts.confirm === false ? 0 : await Win.choice(p.name + 'へ移動しますか？' + (p.kind === 'dungeon' ? '（入口へ）' : ''), ['移動する', 'やめる']);

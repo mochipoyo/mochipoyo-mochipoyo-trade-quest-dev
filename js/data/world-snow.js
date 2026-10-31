@@ -41,7 +41,7 @@
     { id: 'ciel_port', name: '氷港シエル', icon: 'village', x: 58, y: 94, to: 'ciel_port', tx: 14, ty: 1 },
     { id: 'frost_town', name: '記憶を売る町フロスト', icon: 'village', x: 82, y: 54, to: 'frost_town', tx: 19, ty: 28 },
     { id: 'spirit_forest', name: '精霊の森', icon: 'cave_icon', x: 34, y: 30, to: 'spirit_forest_1', tx: 1, ty: 15 },
-    { id: 'frozen_tower', name: '凍結時計塔', icon: 'tower_icon', x: 146, y: 38, to: 'frozen_tower_1', tx: 2, ty: 13, needFlag: 'aster_joined' }
+    { id: 'frozen_tower', name: '凍結時計塔', icon: 'tower_icon', x: 146, y: 38, to: 'frozen_tower_1', tx: 2, ty: 13, needFlag: 'aster_joined', lockedText: ['塔の扉は、厚い氷に閉ざされている。', 'ふつうの火では溶けない。……精霊の力が要りそうだ。'] }
   ];
   var ROADS = [[[58, 94], [82, 54]], [[82, 54], [34, 30]], [[82, 54], [146, 38]]];
   var def = root.makeWorldRegion({

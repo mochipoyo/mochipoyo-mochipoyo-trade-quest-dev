@@ -8,8 +8,8 @@
   var Sidebar = { el: null, timer: null };
   var ITEMS = [
     ['ステータス', function () { return root.Menu.status(); }], ['どうぐ', function () { return root.Menu.items(); }], ['そうび', function () { return root.Menu.equip(); }],
-    ['じゅもん・とくぎ', function () { return root.Menu.skills(); }], ['なかま', function () { return root.Menu.party(); }], ['クエスト', function () { return root.Menu.quests(); }],
-    ['図鑑', function () { return root.Menu.encyclopedia(); }], ['トレード修行', function () { return root.Menu.training(); }], ['ワールドマップ', 'map'], ['セーブ', function () { return root.Menu.save(); }], ['設定', function () { return root.Menu.settings(); }]
+    ['じゅもん・とくぎ', function () { return root.Menu.skills(); }], ['なかま', function () { return root.Menu.party(); }], ['クエスト', function () { return root.Menu.quests(); }], ['次の目的地', function () { return root.Menu.objective(); }],
+    ['図鑑', function () { return root.Menu.encyclopedia(); }], ['トレード修行', function () { return root.Menu.training(); }], ['ワールドマップ', 'map'], ['ファストトラベル', function () { return root.Menu.travel(); }], ['セーブ', function () { return root.Menu.save(); }], ['設定', function () { return root.Menu.settings(); }]
   ];
   function esc(s) { return root.Win ? root.Win.esc(s) : String(s); }
   Sidebar.isPC = function () { return root.innerWidth >= 1100 && root.matchMedia && root.matchMedia('(pointer: fine)').matches; };
@@ -19,7 +19,7 @@
     var W = root.World, S = root.State;
     if (item[1] === 'map') { root.Engine.Input.press('map'); return; }
     W.busy = true;
-    Promise.resolve().then(function () { return item[1](); }).catch(function (e) { root.Engine.onError(e); }).then(function () { W.busy = false; W.updateHud(); S.autosave(); Sidebar.refresh(); });
+    Promise.resolve().then(function () { return item[1](); }).catch(function (e) { root.Engine.onError(e); }).then(function (r) { W.busy = false; W.updateHud(); S.autosave(); Sidebar.refresh(); if (r === 'map' && root.Minimap) root.Minimap.openBig(); });   // v6.2「全体マップで見る」
   };
   Sidebar.init = function () {
     var side = document.getElementById('side'), guide = document.getElementById('guide'); if (!side) return; Sidebar.el = side;
@@ -35,7 +35,7 @@
     var party = S.partyActors(); var rank = root.TradeEval ? root.TradeEval.rank(d.trade) : null; var title = root.Growth ? root.Growth.title() : '';
     st.innerHTML = '<div class="sb-loc">' + esc(W.map.name) + '</div><div class="sb-gold">' + d.gold + ' G　<span class="muted small">預金 ' + d.bank + ' G</span></div>' +
       party.map(function (a) { var s = root.Actors.stats(a); var pct = Math.max(0, Math.min(100, Math.round(a.hp / s.maxHp * 100))); return '<div class="sb-a' + (a.dead ? ' dead' : '') + '"><div class="sb-an">' + esc(a.name) + ' <span class="muted small">Lv' + a.level + '</span></div><div class="sb-bar"><i style="width:' + pct + '%"></i></div><div class="sb-hp small">HP ' + a.hp + '/' + s.maxHp + '　MP ' + a.mp + '/' + s.maxMp + '</div></div>'; }).join('') +
-      (rank ? '<div class="sb-rank small">トレーダーランク <b>' + esc(rank.letter) + '</b> ' + esc(title) + '</div>' : '') + '<div class="sb-ctl small muted">' + (Sidebar.canOpen() ? '探索中' : '会話・戦闘・画面表示中') + '</div>';
+      (rank ? '<div class="sb-rank small">トレーダーランク <b>' + esc(rank.letter) + '</b> ' + esc(title) + '</div>' : '') + (function () { var N = root.Nav; if (!N || !N.enabled()) return ''; var c = N.compute(); if (!c || c.none || !c.text) return ''; return '<div class="sb-nav small"><span class="sb-nav-dot"></span>次の目的：' + esc(c.text) + '</div>'; })() + '<div class="sb-ctl small muted">' + (Sidebar.canOpen() ? '探索中' : '会話・戦闘・画面表示中') + '</div>';
   };
   root.Sidebar = Sidebar;
 })(typeof window !== 'undefined' ? window : globalThis);

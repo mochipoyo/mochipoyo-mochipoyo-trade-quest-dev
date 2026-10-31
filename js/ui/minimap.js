@@ -124,6 +124,42 @@
     ctx.restore();
   }
 
+  /* ---------- v6.2 目的地ナビ・航路・桟橋（Nav / Harbors の結果を描くだけ） ---------- */
+  // 赤丸：中を塗らずに輪だけ（アイコンや地名を隠さない）。ゆっくり点滅
+  function navPulse() { return 0.68 + 0.32 * Math.sin(Date.now() / 420); }   // ゆっくり点滅（いちばん薄いときも見える）
+  function drawNavRing(ctx, cx, cy, r, primary) {
+    ctx.save(); var a = navPulse();
+    ctx.lineWidth = primary ? Math.max(2, r * 0.22) : Math.max(1.2, r * 0.14); ctx.strokeStyle = 'rgba(0,0,0,' + (0.55 * a) + ')';
+    ctx.beginPath(); ctx.arc(cx, cy, r + ctx.lineWidth * 0.6, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = primary ? 'rgba(255,58,58,' + a + ')' : 'rgba(255,120,120,' + (0.75 * a) + ')'; if (!primary && ctx.setLineDash) ctx.setLineDash([r * 0.5, r * 0.35]);
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+  }
+  function drawAnchor(ctx, cx, cy, r) {
+    ctx.save(); ctx.strokeStyle = '#1a1a2a'; ctx.fillStyle = '#e8f0ff'; ctx.lineWidth = Math.max(1, r * 0.28);
+    ctx.beginPath(); ctx.arc(cx, cy, r * 1.05, 0, Math.PI * 2); ctx.fillStyle = 'rgba(20,40,80,0.85)'; ctx.fill();
+    ctx.strokeStyle = '#e8f0ff'; ctx.beginPath(); ctx.moveTo(cx, cy - r * 0.7); ctx.lineTo(cx, cy + r * 0.6); ctx.moveTo(cx - r * 0.45, cy - r * 0.25); ctx.lineTo(cx + r * 0.45, cy - r * 0.25); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy + r * 0.05, r * 0.55, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke(); ctx.restore();
+  }
+  // 乗船中の航路（点線）・桟橋・目的地。ctx はタイル座標 × cell の空間（ミニマップ）。toXY が渡されれば画面座標（拡大マップ）
+  function drawNav(ctx, map, cell, toXY, rScale) {
+    var Nav = root.Nav, H = root.Harbors; var W = root.World; var out = [];
+    var P = toXY || function (x, y) { return { x: (x + 0.5) * cell, y: (y + 0.5) * cell }; }; var k = rScale || cell;
+    if (H && map.def && map.def.region) H.list(map.id).forEach(function (h) { var hl = h.land || h.moor; var s = P(hl.x, hl.y); drawAnchor(ctx, s.x, s.y, Math.max(3.5, k * 1.4)); out.push({ x: s.x, y: s.y, text: '上陸できる場所：' + h.name }); });
+    if (!Nav || !Nav.enabled()) return out;
+    if (map === W.map) {
+      var lane = Nav.lane();
+      if (lane && lane.path.length > 1) {
+        ctx.save(); if (ctx.setLineDash) ctx.setLineDash([Math.max(2, k * 1.2), Math.max(2, k * 1.1)]); ctx.lineDashOffset = -(Date.now() / 60) % 100;
+        ctx.strokeStyle = 'rgba(255,236,170,0.95)'; ctx.lineWidth = Math.max(1.4, k * 0.55); ctx.beginPath();
+        lane.path.forEach(function (pt, i) { if (i % 2 && i !== lane.path.length - 1) return; var s = P(pt.x, pt.y); if (!i) ctx.moveTo(s.x, s.y); else ctx.lineTo(s.x, s.y); }); ctx.stroke(); ctx.restore();
+        var le = P(lane.end.x, lane.end.y); if (lane.landing) { drawAnchor(ctx, le.x, le.y, Math.max(3.5, k * 1.4)); out.push({ x: le.x, y: le.y, text: '上陸地点：' + (lane.label || '') }); }
+      }
+    }
+    Nav.markers(map.id).forEach(function (mk) { var s = P(mk.x, mk.y); drawNavRing(ctx, s.x, s.y, Math.max(toXY ? 11 : 5, k * (mk.primary ? 2.6 : 2.0)), mk.primary); out.push({ x: s.x, y: s.y, text: (mk.primary ? '次の目的地：' : 'ほかの候補：') + (mk.label || ''), nav: mk }); });
+    return out;
+  }
+  Minimap.drawNav = drawNav;
+
   /* ---------- 共通：マップ1枚を「地形＋霧＋記号」で描く（ctx は既に scale 済み、1タイル = cell px） ---------- */
   function drawMapLayer(ctx, map, cell, big, opts) {
     opts = opts || {}; var d = root.State.data;
@@ -213,11 +249,17 @@
     drawMapLayer(ctx, m, cell, false);
     // 建物の施設アイコン（町）
     m.buildings.forEach(function (b) { drawIcon(ctx, b.type, b.doorAbs.x * cell + cell / 2, (b.y + b.h / 2) * cell, Math.max(3, cell * 0.9)); });
+    // v6.2 航路・桟橋・次の目的地
+    var navHot = []; try { navHot = drawNav(ctx, m, cell); } catch (e) { if (!Minimap._navErr) { Minimap._navErr = true; console.error('nav', e); } }
     // プレイヤー
     drawArrow(ctx, pxT * cell, pyT * cell, p.dir, Math.max(4, cell * 1.1), '#ffd24a');
     ctx.restore();
     // 内側の縁（ビネット）
     var g = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.35, w / 2, h / 2, Math.max(w, h) * 0.75); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.45)'); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    // 画面の外にある目的地：縁に赤い矢印
+    navHot.forEach(function (hh) { if (!hh.nav || !hh.nav.primary) return; var sx = hh.x - ox, sy = hh.y - oy; if (sx >= 4 && sy >= 4 && sx <= w - 4 && sy <= h - 4) return;
+      var cx = w / 2, cy = h / 2, dx = sx - cx, dy = sy - cy; var t = Math.min((w / 2 - 9) / Math.max(1e-6, Math.abs(dx)), (h / 2 - 9) / Math.max(1e-6, Math.abs(dy))); var ex = cx + dx * t, ey = cy + dy * t;
+      ctx.save(); ctx.translate(ex, ey); ctx.rotate(Math.atan2(dy, dx)); ctx.globalAlpha = navPulse(); ctx.fillStyle = '#ff3a3a'; ctx.strokeStyle = '#1a1a2a'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(7, 0); ctx.lineTo(-5, -5); ctx.lineTo(-5, 5); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore(); });
   };
 
   /* ---------- 探索イベント ---------- */
@@ -338,7 +380,7 @@
     ctx.fillStyle = '#0b1226'; ctx.fillRect(0, 0, Minimap.bigW, Minimap.bigH);
     var title = document.getElementById('bm-title');
     var ctl0 = Minimap.big.querySelector('.bm-ctl'); if (ctl0) { var dsp = Minimap.mode === 'globe' && !root.WorldMap ? 'none' : ''; if (ctl0.style.display !== dsp) ctl0.style.display = dsp; }   // 「世界」タブではズームボタンを隠す
-    if (Minimap.mode === 'globe' && root.WorldMap) { root.WorldMap.draw(title); Minimap.renderLegend([['arrow', '現在地（金色に光る地域）'], ['road', '航路・道（マークは必要な乗り物）'], ['fog', '薄い点線＝まだ通れない'], ['warp', '地域をタップ＝情報／もう一度で地形']]); return; }   // v6.0 イラスト型の世界地図
+    if (Minimap.mode === 'globe' && root.WorldMap) { root.WorldMap.draw(title); Minimap.renderLegend([['arrow', '現在地（金色に光る地域）'], ['nav', '次の目的地の地域（赤い輪）'], ['road', '航路・道（マークは必要な乗り物）'], ['fog', '薄い点線＝まだ通れない'], ['warp', '地域をタップ＝情報／もう一度で地形']]); return; }   // v6.0 イラスト型の世界地図
     if (root.WorldMap && root.WorldMap.isShown()) root.WorldMap.hide();
     if (Minimap.mode === 'globe') { drawGlobe(ctx, title); return; }
     ctx.save(); ctx.translate(Minimap.pan.x, Minimap.pan.y); ctx.scale(z, z);
@@ -355,6 +397,8 @@
         ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.8)'; ctx.fillStyle = '#fff'; ctx.strokeText(L.name, s.x, s.y + 20); ctx.fillText(L.name, s.x, s.y + 20);
         hot.push({ x: s.x, y: s.y, text: L.name + (L.icon === 'cave_icon' ? '（ダンジョン）' : '（町）') });
       });
+      // v6.2 航路・桟橋・次の目的地（この地域の中にあれば、その町・ダンジョンの入口を赤丸で）
+      try { hot = hot.concat(drawNav(ctx, m, cell, function (x, y) { return toScreen(x, y); }, Math.max(2.5, cell * z * 0.9))); } catch (e) { console.error('nav', e); }
       // 現在地（ワールド上にいる／町やダンジョンの中にいる）
       // 乗り物（この地域にある船など）
       if (root.Vehicle) root.Vehicle.onMap(m.id).forEach(function (v) { if (v.aboard) return; var sv = toScreen(v.x, v.y); ctx.fillStyle = '#ffd24a'; ctx.beginPath(); ctx.moveTo(sv.x - 7, sv.y + 2); ctx.lineTo(sv.x + 7, sv.y + 2); ctx.lineTo(sv.x + 4, sv.y + 6); ctx.lineTo(sv.x - 4, sv.y + 6); ctx.closePath(); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillRect(sv.x - 1, sv.y - 8, 2, 10); ctx.beginPath(); ctx.moveTo(sv.x + 1, sv.y - 8); ctx.lineTo(sv.x + 7, sv.y - 3); ctx.lineTo(sv.x + 1, sv.y - 1); ctx.closePath(); ctx.fill(); hot.push({ x: sv.x, y: sv.y, text: root.VEHICLES[v.id].name + '（停泊中）' }); });
@@ -363,7 +407,7 @@
       if (!here) title.textContent = m.name + (d.visited[m.id] ? '（訪問済み）' : '（未踏・地形のみ）');
       else if (cur) { var cs = toScreen(cur.x, cur.y); if (cur.inside) { ctx.strokeStyle = '#ffd24a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(cs.x, cs.y, 13 + Math.sin(Date.now() / 200) * 2, 0, Math.PI * 2); ctx.stroke(); } drawArrow(ctx, cs.x, cs.y, cur.dir, 8, '#ffd24a'); title.textContent = m.name + '　—　現在地：' + (cur.inside || ('フィールド（' + cur.x + ', ' + cur.y + '）')); }
       else title.textContent = m.name + '　—　現在地：不明';
-      Minimap.renderLegend([['town', '町（訪問済み）'], ['cave', 'ダンジョン（発見済み）'], ['arrow', '現在地'], ['mtn', '山脈'], ['forest', '森'], ['sand', '砂漠'], ['snow', '雪原'], ['water', '海']]);
+      Minimap.renderLegend([['nav', '次の目的地'], ['anchor', '桟橋・上陸地点'], ['town', '町（訪問済み）'], ['cave', 'ダンジョン（発見済み）'], ['arrow', '現在地'], ['mtn', '山脈'], ['forest', '森'], ['sand', '砂漠'], ['snow', '雪原'], ['water', '海']]);
       Minimap.regionSelect(m.id);
     } else {
       title.textContent = m.name;
@@ -373,6 +417,8 @@
       m.warps.forEach(function (w) { if (hasFog(m) && !isDiscovered(m, w.x, w.y)) return; var tn = m.tiles[w.y][w.x]; if (tn === 'bld_door') return; var s = toScreen(w.x, w.y); var to = root.MAP_DEFS[w.to] || (w.to === 'world' ? root.WORLD_DEF : null); hot.push({ x: s.x, y: s.y, text: (tn === 'stairs_down' || tn === 'stairs_up' ? '階段：' : '出入口：') + (to ? to.name : w.to) }); });
       // 宝箱（発見済み）
       m.chests.forEach(function (c) { if (hasFog(m) && !isDiscovered(m, c.x, c.y)) return; var s = toScreen(c.x, c.y); hot.push({ x: s.x, y: s.y, text: d.chests[m.id + ':' + c.id] ? '宝箱（開封済み）' : '宝箱' }); });
+      // v6.2 航路・桟橋・次の目的地
+      try { hot = hot.concat(drawNav(ctx, m, cell, function (x, y) { return toScreen(x, y); }, Math.max(2.5, cell * z * 0.9))); } catch (e) { console.error('nav', e); }
       // 自分
       if (m === W.map) { var ps = toScreen(W.player.px / root.Engine.TS, W.player.py / root.Engine.TS); drawArrow(ctx, ps.x, ps.y, W.player.dir, 9, '#ffd24a'); }
       // 階層タブ（ダンジョン）
@@ -380,9 +426,9 @@
       var fl = document.getElementById('bm-floors');
       var html = floors.length > 1 ? floors.map(function (id) { var vis = !!d.visited[id]; var nm = root.MAP_DEFS[id].name; return '<button data-floor="' + id + '" class="' + (id === m.id ? 'on' : '') + '" ' + (vis ? '' : 'disabled') + '>' + root.Win.esc(vis ? nm : '？？？') + '</button>'; }).join('') : '';
       if (fl.getAttribute('data-html') !== html) { fl.innerHTML = html; fl.setAttribute('data-html', html); fl.querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { Minimap._floor = b.getAttribute('data-floor'); Minimap.clearTip(); Minimap.home(); }); }); }
-      Minimap.renderLegend(m.kind === 'dungeon' ? [['arrow', '現在地'], ['floor', '通路（探索済み）'], ['wall', '壁'], ['fog', '未探索'], ['stairs', '階段・出入口'], ['chest', '宝箱'], ['lock', '鍵の扉'], ['gate', '試練の扉'], ['boss', '強敵の気配']] :
-        m.kind === 'field' ? [['arrow', '現在地'], ['grass', '草原'], ['forest', '森'], ['mtn', '山'], ['road', '道'], ['water', '海・川'], ['town', '町・ダンジョン']] :
-        [['arrow', '現在地'], ['weapon', '武器屋'], ['armor', '防具屋'], ['item', '道具屋'], ['inn', '宿屋'], ['church', '教会'], ['tavern', '酒場'], ['bank', '銀行'], ['guild', 'ギルド'], ['dojo', '修行場'], ['house', '民家'], ['warp', '出入口']]);
+      Minimap.renderLegend(m.kind === 'dungeon' ? [['nav', '次の目的地'], ['arrow', '現在地'], ['floor', '通路（探索済み）'], ['wall', '壁'], ['fog', '未探索'], ['stairs', '階段・出入口'], ['chest', '宝箱'], ['lock', '鍵の扉'], ['gate', '試練の扉'], ['boss', '強敵の気配']] :
+        m.kind === 'field' ? [['nav', '次の目的地'], ['anchor', '桟橋'], ['arrow', '現在地'], ['grass', '草原'], ['forest', '森'], ['mtn', '山'], ['road', '道'], ['water', '海・川'], ['town', '町・ダンジョン']] :
+        [['nav', '次の目的地'], ['arrow', '現在地'], ['weapon', '武器屋'], ['armor', '防具屋'], ['item', '道具屋'], ['inn', '宿屋'], ['church', '教会'], ['tavern', '酒場'], ['bank', '銀行'], ['guild', 'ギルド'], ['dojo', '修行場'], ['house', '民家'], ['warp', '出入口']]);
     }
     Minimap._hot = hot;
     if (Minimap._tip) { ctx.strokeStyle = '#ffd24a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(Minimap._tip.x, Minimap._tip.y, 14, 0, Math.PI * 2); ctx.stroke(); }
@@ -464,7 +510,7 @@
     el.innerHTML = items.map(function (it) { return '<span class="lg"><canvas width="18" height="18" data-k="' + it[0] + '"></canvas>' + root.Win.esc(it[1]) + '</span>'; }).join('');
     el.querySelectorAll('canvas').forEach(function (cv) { var k = cv.getAttribute('data-k'); var ctx = cv.getContext('2d');
       var colors = { mtn: '#8a7a6a', forest: '#1f5a2a', sand: '#d8c070', snow: '#e8f0ff', water: '#1f4f9a', grass: '#4f9a3f', road: '#b08a5a', floor: '#8a8a98', wall: '#2e2e3a', fog: '#0a0c18' };
-      if (k === 'arrow') drawArrow(ctx, 9, 9, 'up', 6, '#ffd24a'); else if (colors[k]) { ctx.fillStyle = colors[k]; ctx.fillRect(2, 2, 14, 14); } else if (['stairs', 'chest', 'lock', 'gate', 'boss', 'town', 'cave', 'warp'].indexOf(k) >= 0) drawSymbol(ctx, k, 9, 9, 6); else drawIcon(ctx, k, 9, 9, 8); });
+      if (k === 'arrow') drawArrow(ctx, 9, 9, 'up', 6, '#ffd24a'); else if (k === 'nav') drawNavRing(ctx, 9, 9, 6, true); else if (k === 'anchor') drawAnchor(ctx, 9, 9, 6); else if (colors[k]) { ctx.fillStyle = colors[k]; ctx.fillRect(2, 2, 14, 14); } else if (['stairs', 'chest', 'lock', 'gate', 'boss', 'town', 'cave', 'warp'].indexOf(k) >= 0) drawSymbol(ctx, k, 9, 9, 6); else drawIcon(ctx, k, 9, 9, 8); });
   };
 
   root.Minimap = Minimap;

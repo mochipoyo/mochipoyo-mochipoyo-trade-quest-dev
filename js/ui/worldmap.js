@@ -110,10 +110,12 @@
   WM.status = status;
   WM.refresh = function (force) {
     var d = data(); if (!d || !WM.built) return; var E = edges(); var cur = MM().currentRegionId();
-    var key = cur + '|' + ids().map(function (id) { return d.visited[id] ? 1 : 0; }).join('') + '|' + E.map(function (e) { return e.open ? 1 : 0; }).join('') + '|' + WM.sel;
+    var navR = root.Nav && root.Nav.enabled() ? root.Nav.region() : null;   // v6.2 次の目的地がある地域
+    var key = cur + '|' + ids().map(function (id) { return d.visited[id] ? 1 : 0; }).join('') + '|' + E.map(function (e) { return e.open ? 1 : 0; }).join('') + '|' + WM.sel + '|' + navR;
     if (!force && key === WM.key) return; WM.key = key;
     ids().forEach(function (id) {
       var r = WM.regions[id]; var s = status(id);
+      r.classList.toggle('navt', id === navR);
       r.classList.toggle('cur', s.cur); r.classList.toggle('visited', s.vis); r.classList.toggle('unvisited', !s.vis); r.classList.toggle('sel', WM.sel === id);
       var sub = r.querySelector('.wm-sub'); sub.textContent = s.cur || s.vis ? '' : s.reach ? '未踏・行ける' : '未踏'; sub.style.display = sub.textContent ? '' : 'none';
     });

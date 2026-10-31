@@ -122,13 +122,15 @@
     (cfg.chests || []).concat(cfg.npcs || [], cfg.events || []).forEach(function (o) {
       for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var c = rows[o.y + dy][o.x + dx]; if (c === 'f' || c === 'F' || c === 'm' || c === 'c' || c === '9') rows[o.y + dy][o.x + dx] = (c === '9' ? '8' : '.'); }
     });
+    // v6.2 地形の上書き（桟橋など）：[x, y, 文字]。場所・宝箱の処理のあとに置く
+    (cfg.PATCHES || []).forEach(function (pt) { if (rows[pt[1]] && rows[pt[1]][pt[0]] !== undefined) rows[pt[1]][pt[0]] = pt[2]; });
     cache = rows.map(function (r) { return r.join(''); });
     return cache;
     };
   }
   root.makeWorldRegion = function (cfg) {
     var def = { id: cfg.id, name: cfg.name, kind: 'field', rows: null, fallback: cfg.fallback || 'grass', bgm: cfg.bgm || 'field', region: true, locations: cfg.LOCATIONS,
-      warps: cfg.LOCATIONS.map(function (L) { return { x: L.x, y: L.y, to: L.to, tx: L.tx, ty: L.ty, name: L.name, needFlag: L.needFlag }; }),
+      warps: cfg.LOCATIONS.map(function (L) { return { x: L.x, y: L.y, to: L.to, tx: L.tx, ty: L.ty, name: L.name, needFlag: L.needFlag, hidden: L.hidden, lockedText: L.lockedText, locId: L.id }; }),   // v6.2 hidden・lockedText（閉ざされているときの理由）
       chests: cfg.chests || [], npcs: cfg.npcs || [], events: cfg.events || [], encounters: cfg.encounters || null };
     def.rows = makeGenerator(cfg);
     root.MAP_DEFS = root.MAP_DEFS || {}; root.MAP_DEFS[cfg.id] = def;
@@ -138,7 +140,7 @@
 
   var WORLD_DEF = {
     id: 'world', name: 'アルカディア相場大陸', kind: 'field', rows: generate, fallback: 'grass', bgm: 'field',
-    warps: LOCATIONS.map(function (L) { return { x: L.x, y: L.y, to: L.to, tx: L.tx, ty: L.ty, name: L.name }; }),
+    warps: LOCATIONS.map(function (L) { return { x: L.x, y: L.y, to: L.to, tx: L.tx, ty: L.ty, name: L.name, locId: L.id }; }),
     chests: [
       { id: 'w1', x: 33, y: 52, item: 'herb', qty: 3 }, { id: 'w2', x: 47, y: 61, item: 'potion', qty: 2 }, { id: 'w3', x: 30, y: 66, gold: 120 },
       { id: 'w4', x: 52, y: 60, item: 'hunter_bow', qty: 1 }, { id: 'w5', x: 48, y: 84, item: 'ring_guard', qty: 1 }, { id: 'w6', x: 24, y: 44, item: 'tent', qty: 1 },

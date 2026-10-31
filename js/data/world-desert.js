@@ -43,7 +43,7 @@
     { id: 'mirror_market', name: '鏡の市場', icon: 'village', x: 86, y: 34, to: 'mirror_market', tx: 15, ty: 20 },
     { id: 'storm_north', name: '砂嵐の回廊（北口）', icon: 'cave_icon', x: 98, y: 49, to: 'sandstorm_corridor_1', tx: 2, ty: 9 },
     { id: 'storm_south', name: '砂嵐の回廊（南口）', icon: 'cave_icon', x: 98, y: 62, to: 'sandstorm_corridor_2', tx: 27, ty: 9 },
-    { id: 'mirage_temple', name: '蜃気楼神殿', icon: 'castle_icon', x: 122, y: 98, to: 'mirage_temple_1', tx: 9, ty: 12, needFlag: 'caravan_done' }
+    { id: 'mirage_temple', name: '蜃気楼神殿', icon: 'castle_icon', x: 122, y: 98, to: 'mirage_temple_1', tx: 9, ty: 12, needFlag: 'caravan_done', lockedText: ['砂の上に、神殿の影が揺れている。', '近づくと、蜃気楼のように遠のいてしまう。……今は辿り着けない。'] }
   ];
   var ROADS = [[[50, 34], [86, 34]], [[86, 34], [98, 49]], [[50, 34], [50, 22]], [[98, 62], [122, 98]]];
   var def = root.makeWorldRegion({

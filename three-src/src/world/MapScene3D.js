@@ -34,8 +34,10 @@ export class MapScene3D {
       // 建物
       const bb = new BuildingBuilder3D(app.mats, app.models); const rnd = rngFrom(5150);
       const shared = new Batch(); const bgroup = new THREE.Group(); bgroup.name = 'buildings'; this.root.add(bgroup);
+      // v6.2 場所ごとの固有デザイン（2D の地図の建物絵と同じ LOCATION_DESIGNS）：屋根の色・茅葺きなど
+      const design = (window.LocationDesign && window.LocationDesign.forMap) ? window.LocationDesign.forMap(map.id) : null; this.design = design;
       for (const b of map.buildings) {
-        const o = await bb.build(b, rnd, { batch: shared }); bgroup.add(o.group);
+        const o = await bb.build(b, rnd, { batch: shared, design }); bgroup.add(o.group);
         o.lights.forEach((l) => this.lampSpots.push(l));
         o.smokes.forEach((s) => this.addSmoke(s));
         o.props.forEach((p) => { const v = new THREE.Vector3().setFromMatrixPosition(p.m); tb.put(p.id, p.m, v.x, v.z); });

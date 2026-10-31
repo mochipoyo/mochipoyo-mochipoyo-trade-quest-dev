@@ -478,3 +478,17 @@ body.mobile.m-land:not(.m-wide) .mp-t { min-width: 0; padding: 4px 8px; font-siz
 body.mobile.m-land .mp-stick { width: 116px; height: 116px; }
 body.mobile.m-land .mp-b { width: 62px; height: 62px; } body.mobile.m-land .mp-b.ok { width: 76px; height: 76px; }
 @media (max-height: 360px) { body.mobile.m-land .mp-tools .mp-t { min-height: 32px; } body.mobile.m-land .mp-stick { width: 100px; height: 100px; } }
+/* v6.2 次の目的地（ナビ）：パネル・サイドバー・世界地図の赤丸 */
+.rw-head { margin: 2px 0 6px; }
+.nav-menu { max-width: 560px; }
+.nav-panel { font-size: 13px; line-height: 1.55; }
+.nav-panel .nav-h { color: #ff8a8a; font-weight: bold; margin-bottom: 4px; }
+.nav-panel .nav-l { color: var(--gold); font-size: 12px; margin-top: 4px; }
+.nav-panel .nav-v { padding-left: 10px; }
+.nav-panel .nav-hint { margin-top: 5px; padding: 4px 8px; border-left: 3px solid #ff5a5a; background: rgba(255,80,80,.08); border-radius: 3px; }
+.nav-panel .nav-note { margin-top: 6px; color: #ffd0a0; font-size: 12px; }
+.sb-nav { margin-top: 6px; padding: 4px 6px; border: 1px solid rgba(255,90,90,.35); border-radius: 4px; background: rgba(255,60,60,.07); line-height: 1.4; }
+.sb-nav-dot { display: inline-block; width: 9px; height: 9px; border: 2px solid #ff4a4a; border-radius: 50%; margin-right: 5px; vertical-align: -1px; animation: navblink 1.7s ease-in-out infinite; }
+@keyframes navblink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.wm-region.navt::after { content: ''; position: absolute; inset: -9% -7%; border-radius: 50%; border: 4px solid #ff3a3a; box-shadow: 0 0 18px rgba(255,58,58,.7); pointer-events: none; animation: navblink 1.8s ease-in-out infinite; }
+.wm-region.navt .wm-label::before { content: '次の目的地'; display: block; font-size: 12px; font-weight: bold; color: #fff; background: #d83a3a; border-radius: 8px; padding: 0 8px; margin-bottom: 2px; }

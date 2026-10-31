@@ -40,7 +40,7 @@
   var LOCATIONS = [
     { id: 'tempus_city', name: '鐘都テンプス', icon: 'castle_icon', x: 58, y: 62, to: 'tempus_city', tx: 19, ty: 28 },
     { id: 'temple_of_time', name: '時の神殿', icon: 'tower_icon', x: 126, y: 38, to: 'temple_of_time_1', tx: 9, ty: 14 },
-    { id: 'dimension_gate', name: '転移門', icon: 'cave_icon', x: 134, y: 90, to: 'world_machine', tx: 82, ty: 100, needFlag: 'dimension_gate' },
+    { id: 'dimension_gate', name: '転移門', icon: 'cave_icon', x: 134, y: 90, to: 'world_machine', tx: 82, ty: 100, needFlag: 'dimension_gate', lockedText: ['古い石の門が立っている。門の内側には、ただ風が吹いているだけだ。', '……今は何も起こらない。門を開く力が、まだどこかに眠っている。'] },
     { id: 'volatilia', name: 'ボラティリティア学院', icon: 'tower_icon', x: 100, y: 88, to: 'volatilia', tx: 19, ty: 30 }   // v6.1 学院（js/data/academy.js）
   ];
   var ROADS = [[[58, 62], [126, 38]], [[58, 62], [134, 90]], [[26, 60], [58, 62]], [[58, 62], [100, 88]]];

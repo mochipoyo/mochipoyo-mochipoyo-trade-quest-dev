@@ -24,7 +24,7 @@
       gold: 0, bank: 0, inventory: {}, flags: {}, counters: {}, quests: {}, chests: {},
       pos: { map: 'poyo_village', x: 24, y: 32, dir: 'up' }, lastInn: { map: 'poyo_village', x: 24, y: 32 }, visited: { poyo_village: true },
       steps: 0, timeOfDay: 0.3, bestiary: {}, trade: { stats: TradeEval.emptyStats(), capital: CONFIG.risk.capital, lectures: {}, topics: {}, tutorialDone: false, abilities: {}, learnFails: {}, learnSeen: {}, rankBest: 0, achievements: {}, mistakes: {}, reviewLog: [], wasWeak: {} },
-      settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', walkSpeed: 'fast', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true, minimap: 'on', minimapSize: 'normal', pad: 'stick' },
+      settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', walkSpeed: 'fast', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true, minimap: 'on', minimapSize: 'normal', pad: 'stick', nav: 'on', navHint: 'low' },   // v6.2 目的地ナビ（on/off）・ヒント表示（low＝控えめ / detail＝詳細）
       mapDiscovery: {},   // ミニマップの探索状況（マップID → 行ごとのビット列）。visited とは別
       vehicles: {}, aboard: null,   // v5.0: 乗り物（js/rpg/vehicle.js）
       // v6.1 追加（旧セーブは State.migrate がこの初期値で補う）：探索ポイントの取得記録、ファストトラベル、オーパーツ、カジノ、学院
@@ -87,6 +87,7 @@
       ['pos', 'lastInn'].forEach(function (key) { var pz = d[key]; if (!pz) return; var k = root.MAP_ENLARGE[pz.map]; if (k) { pz.x *= k; pz.y *= k; } });
       d.stepsSinceBattle = 0;
     }
+    if (root.Nav && root.Nav.repairFlags) root.Nav.repairFlags(d);   // v6.2 到着フラグ（zeromea_arrived・sky_arrived）の補正
     d.version = SAVE_VERSION;
     return d;
   };

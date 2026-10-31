@@ -42,6 +42,8 @@
   GameMap.prototype.setTile = function (x, y, name) { if (x >= 0 && y >= 0 && x < this.w && y < this.h) this.tiles[y][x] = name; };
   GameMap.prototype.chestAt = function (x, y) { for (var i = 0; i < this.chests.length; i++) if (this.chests[i].x === x && this.chests[i].y === y) return this.chests[i]; return null; };
   GameMap.prototype.npcAt = function (x, y) { for (var i = 0; i < this.npcs.length; i++) { var n = this.npcs[i]; if (n.hidden) continue; if (n.x === x && n.y === y) return n; } return null; };
+  // v6.2 歩いている途中の NPC も含めて、そのマスにいる（またはそこへ向かっている）NPC。会話の対象・通行判定に使う
+  GameMap.prototype.npcOn = function (x, y) { for (var i = 0; i < this.npcs.length; i++) { var n = this.npcs[i]; if (n.hidden) continue; if (n.moving ? ((n.prog >= 0.5 ? n.nx === x && n.ny === y : n.x === x && n.y === y)) : (n.x === x && n.y === y)) return n; } return this.npcAt(x, y); };
   GameMap.prototype.warpAt = function (x, y) { for (var i = 0; i < this.warps.length; i++) if (this.warps[i].x === x && this.warps[i].y === y) return this.warps[i]; return null; };
   GameMap.prototype.eventAt = function (x, y) { for (var i = 0; i < this.events.length; i++) if (this.events[i].x === x && this.events[i].y === y) return this.events[i]; return null; };
   GameMap.prototype.buildingAt = function (x, y) { for (var i = 0; i < this.buildings.length; i++) { var b = this.buildings[i]; if (x >= b.x && x < b.x + b.w && y >= b.y && y < b.y + b.h) return b; } return null; };
@@ -53,6 +55,7 @@
     var t = this.tiles[y][x];
     if (Tiles.isSolid(t)) return false;
     if (this.npcAt(x, y)) return false;
+    for (var ni = 0; ni < this.npcs.length; ni++) { var nn = this.npcs[ni]; if (!nn.hidden && nn.moving && nn.nx === x && nn.ny === y) return false; }   // v6.2 歩いて向かっている先のマスもふさがっている
     var ev = this.eventAt(x, y); if (ev && ev.solid && !(state && ev.doneFlag && state.flags[ev.doneFlag])) return false;
     if (root.Search && root.Search.solidAt(this, x, y)) return false;   // v6.1 壺など（光る場所は通れる）
     return true;

@@ -174,10 +174,11 @@ export class App3D {
     for (let i = 0; i < steps; i++) { const d = dist / steps; const r = ms.resolve(this.pos.x + ix * d, this.pos.z + iz * d, RADIUS); this.pos.x = r.x; this.pos.z = r.z; }
     // v5.7 歩き回る人にぶつかって進めないときは、2D版と同じく横へよけてもらう
     const now = performance.now();
-    if (dist > 0.01 && (!this._nudgeAt || now - this._nudgeAt > 500)) {
+    // v6.2 押し続けたときだけ道をあけてもらう（2D版と同じ World.pushAgainst。話しかけるために近づいただけでは動かない）
+    if (dist > 0.01) {
       for (const ch of ms.npcs) {
         if (!ch.root.visible || !ch.npc.wander) continue; const dx = ch.root.position.x - this.pos.x, dz = ch.root.position.z - this.pos.z; const d = Math.hypot(dx, dz);
-        if (d < RADIUS + 0.36 + 0.12 && (dx * ix + dz * iz) / (d || 1) > 0.5) { this._nudgeAt = now; if (W.nudgeNpc) W.nudgeNpc(ch.npc); break; }
+        if (d < RADIUS + 0.36 + 0.12 && (dx * ix + dz * iz) / (d || 1) > 0.5) { if (W.pushAgainst) W.pushAgainst(ch.npc); else if (W.nudgeNpc) W.nudgeNpc(ch.npc); break; }
       }
     }
     this.pos.y = ms.heightAt(this.pos.x, this.pos.z);
@@ -236,11 +237,26 @@ export class App3D {
   }
   interact() {
     const W = G.World, p = W.player; const t = this.findTarget();
+    if (t && t.kind === 'npc' && t.npc === W._talkEndNpc && W._talkEnd && Date.now() - W._talkEnd < 220) return;   // v6.2 会話を閉じた直後の連打で同じ会話をすぐ始めない（2D版と同じ）
     if (t && t.kind === 'npc') { p.dir = yawToDir(Math.atan2(t.x - this.pos.x, t.z - this.pos.z)); this.yaw = Math.atan2(t.x - this.pos.x, t.z - this.pos.z); this.talkNpc = t.npc; W.talk(t.npc); return; }
     if (t && t.kind === 'chest') { W.openChest(t.chest); return; }
     if (t && t.kind === 'event') { G.Events.run(t.ev); return; }
     if (t && t.kind === 'search') { p.dir = yawToDir(Math.atan2(t.x - this.pos.x, t.z - this.pos.z)); W.searchPoint(t.sp); return; }   // v6.1 2D版と同じ World.searchPoint
     p.dir = yawToDir(this.yaw); W.interact();
+  }
+
+  /* ---------- v6.2 次の目的地：2D版の Nav.markers() と同じ場所に、足もとの赤い輪（控えめ・ゆっくり点滅） ---------- */
+  updateNavRing(t) {
+    const N = G.Nav, W = G.World;
+    if (!this.navRing) {
+      const mat = new THREE.MeshBasicMaterial({ color: 0xff3a3a, transparent: true, opacity: 0.8, depthWrite: false, side: THREE.DoubleSide });
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.46, 0.56, 40), mat); ring.rotation.x = -Math.PI / 2; ring.renderOrder = 5;
+      const g = new THREE.Group(); g.add(ring); g.name = 'nav_ring'; g.visible = false; this.navRing = g; this.navRingMat = mat; this.scene.add(g);
+    }
+    let mk = null; try { mk = (N && N.enabled()) ? N.markers(W.map.id).filter((m) => m.primary)[0] : null; } catch (e) { mk = null; }
+    if (!mk || !this.current) { this.navRing.visible = false; return; }
+    const x = mk.x + 0.5, z = mk.y + 0.5; this.navRing.position.set(x, (this.current.heightAt(x, z) || 0) + 0.04, z);
+    this.navRingMat.opacity = 0.45 + 0.35 * Math.sin(t * 2.4); this.navRing.visible = true;
   }
 
   /* ---------- 毎フレーム：表示の切り替えと描画 ---------- */
@@ -274,8 +290,10 @@ export class App3D {
     this.updateCutout();
     if (L) this.renderer.resize(L.w, L.h);
     if (!this.paused) this.renderer.render();   // paused：自動テストで描画だけ止める（ソフトウェア描画の環境用）
+    this.updateNavRing(t);
     // 「話す・調べる」の案内
     const tg = (!W.busy && E.top() === W.scene) ? this.findTarget() : null;
+    if (tg && tg.kind === 'npc') tg.npc.holdUntil = Date.now() + 700;   // v6.2 話しかけられる位置にいるあいだは、その NPC は歩き出さない（2D版の徘徊処理が見る）
     if (tg && L) {
       const v = new THREE.Vector3(tg.x, (this.current.heightAt(tg.x, tg.z) || 0) + tg.y, tg.z).project(this.camera.camera);
       const sx = L.l + (v.x * 0.5 + 0.5) * L.w, sy = L.t + (-v.y * 0.5 + 0.5) * L.h;
