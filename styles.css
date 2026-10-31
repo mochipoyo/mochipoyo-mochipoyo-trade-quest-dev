@@ -55,6 +55,8 @@ h3 { margin: 10px 0 4px; color: var(--gold); font-size: 1rem; }
 .rw-panel-foot .rw-panel-close { flex: 2; margin-top: 0; }
 .rw-panel-quit { flex: 1; text-align: center; color: #c9c9d6; cursor: pointer; border: 1px solid #6a6a80; border-radius: 4px; padding: 6px; }
 .rw-panel-quit:hover { color: #fff; border-color: #a0a0b8; }
+/* v5.8 チャートの試練を開いている間は、戦闘のHP窓・メッセージ・オートボタンを隠す（試練の画面のボタンに重なって押せなかった） */
+#stage.trade-open #battle-party, #stage.trade-open #battle-msg, #stage.trade-open #auto-battle { visibility: hidden !important; pointer-events: none !important; }
 /* v5.8 チャートの試練の「中断」ボタン */
 .chart-tools .mini.quitbtn { border-color: #8a6a6a; color: #f0c8c8; }
 .rw-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }

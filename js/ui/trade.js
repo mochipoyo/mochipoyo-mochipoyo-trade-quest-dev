@@ -39,6 +39,8 @@
     var Q = TradeEval.ANALYSIS; var tutorial = !!opts.tutorial;
     // v5.8 中断：判断を確定する前なら、いつでもやめて戻れる（採点・記録・報酬なし。結果は null）。戦闘中の試練（noQuit）は中断できない
     var canQuit = !opts.noQuit; var askQuit = null; TradeUI.lastAborted = false;
+    // v5.8 試練の画面を開いている間は、戦闘のHP窓・メッセージ・オートボタンを隠す（戦闘中の「相場の試練」で下のボタンが押せなかった）
+    var stageEl = document.getElementById('stage'); if (stageEl) stageEl.classList.add('trade-open');
 
     return new Promise(function (resolve) {
       var tfs = CONFIG.timeframes.map(function (t) { return '<button class="tf" data-tf="' + t.id + '">' + esc(t.label) + '</button>'; }).join('');
@@ -183,7 +185,7 @@
         if (tutorial) msg('まず時間足ボタンで「4時間足」を見て方向を確かめ、次に15分足に戻って波形・EMA・RCI・MACDを順に選ぼう。');
         requestAnimationFrame(render);
         root.onresize = function () { if (document.getElementById('trial-chart')) render(); };
-      } }).then(function (res) { State.autosave(); var p = (root.Learning && res) ? root.Learning.checkUnlocks(true) : null; Promise.resolve(p).then(function () { return (root.Growth && res) ? root.Growth.check(true) : null; }).then(function () { resolve(res || null); }); });
+      } }).then(function (res) { if (stageEl) stageEl.classList.remove('trade-open'); State.autosave(); var p = (root.Learning && res) ? root.Learning.checkUnlocks(true) : null; Promise.resolve(p).then(function () { return (root.Growth && res) ? root.Growth.check(true) : null; }).then(function () { resolve(res || null); }); });
     });
   };
 
