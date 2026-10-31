@@ -501,7 +501,7 @@
     }
     return false;
   }
-  var ddEv = []; for (var dy = 5; dy <= 9; dy++) (function (y) { var e = { x: 9, y: y, type: 'inspect', solid: false, a6vent: true, text: ['熱の噴き出し口。歩くたびに、熱くなる口が順に移っていく。'] }; Object.defineProperty(e, 'tile', { enumerable: true, get: function () { return (root.State && root.State.data && ddHot(y)) ? 'lava' : 'ash'; } }); ddEv.push(e); })(dy);   // 熱い口は溶岩（通れない）、冷めた口は灰
+  var ddEv = []; for (var dy = 5; dy <= 9; dy++) (function (y) { var e = { x: 9, y: y, type: 'inspect', solid: false, a6vent: true, timed: 'ash', text: ['熱の噴き出し口。歩くたびに、熱くなる口が順に移っていく。'] }; Object.defineProperty(e, 'tile', { enumerable: true, get: function () { return (root.State && root.State.data && ddHot(y)) ? 'lava' : 'ash'; } }); ddEv.push(e); })(dy);   // 熱い口は溶岩（通れない）、冷めた口は灰。timed＝歩くたびに通れる／通れないが変わるマス（地図の到達チェックでは、通れるときの絵 'ash' として扱う）
   hidden6({ key: 'dd', ch: 13, host: 'dragon_vein_deep_1', dead: [9, 2], wall: [9, 3], wallTile: 'cave_wall', floorTile: 'cave_floor', id: 'a6_dd_vents', name: '竜脈の最深部・熱の通り道', fallback: 'cave_floor', back: [dd.cx, 11], arrive: [dd.cx, 10], openFlag: 'a6_dd_open', gimmick: 'rhythm',
     hint: ['岩の割れ目から、規則正しく熱い風が吹き出している。', '……三拍子。割れ目の奥に、細い通り道が見える。'], ask: '割れ目に入る？',
     def: { rows: dd.rows(), onStep: ddStep, chests: [{ id: 'a6dd_1', x: 7, y: 1, item: 'elixir', qty: 2 }, { id: 'a6dd_2', x: 11, y: 1, item: 'mystic_water', qty: 1 }],

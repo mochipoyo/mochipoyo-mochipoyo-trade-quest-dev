@@ -13,7 +13,7 @@
     boss_lost_trend: { ch: 2, hp: [480, 480], atk: [19, 54], mag: [8, 23] },   // トレンド迷子
     boss_greed_golem: { ch: 3, hp: [880, 1360], atk: [29, 74], mag: [6, 15] },   // 欲望のゴーレム
     boss_bandit_chief: { ch: 3, hp: [640, 1280], atk: [26, 90] },   // 山賊の頭目ガロン
-    boss_tide_serpent: { ch: 4, hp: [760, 1750], atk: [27, 72], mag: [8, 21] },   // 潮の大蛇ウルガ
+    boss_tide_serpent: { ch: 4, hp: [760, 1750], atk: [27, 65], mag: [8, 19] },   // 潮の大蛇ウルガ
     boss_overseer: { ch: 5, hp: [1300, 4030], atk: [34, 87], mag: [10, 26] },   // 監督官ザルグ
     boss_ledger_guardian: { ch: 6, hp: [1500, 4130], atk: [38, 118], mag: [12, 37] },   // 帳簿の守護者
     boss_valen: { ch: 7, hp: [1400, 4270], atk: [42, 155], mag: [14, 52] },   // 騎士団長ヴァレン
