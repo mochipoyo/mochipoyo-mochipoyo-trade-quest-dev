@@ -107,9 +107,13 @@
 
 ### テストの変更（ボスを強くしたため）
 - 章の流れのテスト（`ch5test`・`ch67test`・`ch89test`・`ch1012test`・`ch1316test`・`ch17test`・`ch18test`）は、これまで「攻撃」だけの自動操作で戦っていました。強くしたボスには「攻撃」だけでは勝てないことが多いので、**ボス戦をゲームのオート戦闘（回復・蘇生・補助も使う）に変え、レベルを上げました**：ch5test 18→28、ch67test 20→34、ch89test 28→46、ch1012test 32→58、ch1316test 46→76、ch17test 40→60（ch18test は 60 のまま）。いずれも物語の流れの確認用で、難しさはシミュレーション（上の表）で別に確認しています。
-- `maptest`・到達の監査：歩くたびに通れる／通れないが変わるマス（イベントの `timed`）は、通れるときの絵で到達を調べるようにしました。
+- `maptest`・`entryaudit`・到達の監査：歩くたびに通れる／通れないが変わるマス（イベントの `timed`）は、通れるときの絵で到達を調べるようにしました。
 
-<!--REGRESSION-->
+### 回帰テスト（実行済み）
+ボスの強化と第6段階を入れた版で、既存の回帰テスト30本と v6.4 のテスト13本（`expandA6test`・`boss64test` を含む）を実行しました。
+- エラーなし：maptest（失敗0）・enemytest・assettest・tradeeq・tradetest・growthtest・learntest・playtest・ch5test・ch67test・ch89test・ch1012test・ch1316test・ch17test・skill56・ch18test・v57test・v58test（38項目）・v59test（49項目）・v60test（21項目）・p1test（38項目）・p2test（125項目）・ptcheck・potcheck・ftmenu・npctest（12項目）・navtest（24項目）・navsim・harbortest（23項目）・gear64test（56項目）・skills64test（34項目）・balance64test・followtest・tradiatest・expandAtest（80項目）・expandA2test（45項目）・expandA3test（21項目）・expandA4test（38項目）・expandA5test（10項目）・savecompat64（37項目）・expandA6test（51項目）・boss64test（10項目）
+- entryaudit：1回目は「竜脈の最深部・熱の通り道の落とし穴（15,4）に、到着マスから行けない」で失敗。熱い噴き出し口（溶岩の絵＝通れない）を壁として数えていたためで、歩くたびに通れる口が変わるので実際には渡れます（`expandA6test` で1歩ずつ歩いて確認）。`maptest`・到達の監査と同じく `timed` のマスを通れるものとして扱うように直して再実行 → エラーなし。
+- ch18test：これまで「攻撃」だけの操作で任意の隠しボス2体にときどき負けていましたが、オート戦闘にしてからは2回ともエラーなし（隠しボスの強さは変えていません）。
 
 ## v6.4 大型拡張 Phase A 第5段階：フィールドの道・畑・遺跡（2D版・3D版 共通）
 
