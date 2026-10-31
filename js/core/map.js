@@ -67,6 +67,7 @@
     for (var y = Math.max(0, y0); y <= y1; y++) for (var x = Math.max(0, x0); x <= x1; x++) {
       var name = this.tiles[y][x]; var px = x * TS - cam.x, py = y * TS - cam.y;
       var variant = Math.floor(Tiles.hash(x, y, 3) * 4);
+      if (root.Landmarks && this.def.locations && (name === 'village' || name === 'castle_icon' || name === 'cave_icon' || name === 'tower_icon')) { var Lm = this.def.locations.filter(function (L) { return L.x === x && L.y === y; })[0]; if (Lm && Tiles.has(root.Landmarks.groundTile(root.Landmarks.terrainOf(this, Lm)))) name = root.Landmarks.groundTile(root.Landmarks.terrainOf(this, Lm)); }   // v5.7 入口のマスは地面（絵を上に描く）
       ctx.drawImage(Tiles.get(name, frame, variant), px, py);
       // 縁取り（オートタイル）
       if (Tiles.isWater(name)) {
@@ -85,6 +86,10 @@
     });
     // エンティティ（y順）
     var ents = this.npcs.filter(function (n) { return !n.hidden; }).map(function (n) { return { y: n.y * TS + (n.oy_px || 0), draw: function () { drawChar(ctx, n.sprite, n.dir, n.frame, n.x * TS + (n.ox_px || 0) - cam.x, n.y * TS + (n.oy_px || 0) - cam.y, n.phase); } }; });
+    // v5.7 ワールドマップの町・城・洞窟・塔を大きな絵で（入口のマスの下端を基準に y 順で描く）
+    var lms = (this.def.locations && root.Landmarks) ? this.def.locations.filter(function (L) { var Mg = root.Landmarks.MARGIN; return L.x >= x0 - Mg && L.x <= x1 + Mg && L.y >= y0 - 1 && L.y <= y1 + Mg * 2; }) : [];
+    var selfMap = this;
+    lms.forEach(function (L) { var fbk = root.Landmarks.terrainOf(selfMap, L); ents.push({ y: L.y * TS + 0.5, draw: function () { root.Landmarks.draw(ctx, L, fbk, cam.x, cam.y); } }); });
     (extras || []).forEach(function (e) { ents.push({ y: e.y * TS, draw: function () { if (e.vehicle && root.VehicleArt) root.VehicleArt.draw(ctx, e.vehicle, 'down', e.x * TS - cam.x, e.y * TS - cam.y, false); } }); });
     if (player) ents.push({ y: player.py, draw: function () { if (player.vehicle && root.VehicleArt) root.VehicleArt.draw(ctx, player.vehicle, player.dir, player.px - cam.x, player.py - cam.y, player.moving); else drawChar(ctx, player.sprite, player.dir, player.frame, player.px - cam.x, player.py - cam.y, player.phase); } });
     ents.sort(function (a, b) { return a.y - b.y; });
@@ -94,6 +99,7 @@
       ctx.fillStyle = timeTint; ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
       for (var ly = Math.max(0, y0); ly <= y1; ly++) for (var lx = Math.max(0, x0); lx <= x1; lx++) { var tn = this.tiles[ly][lx]; if (tn === 'lamp' || tn === 'torch' || tn === 'bld_door') { var gcx = lx * TS - cam.x + TS / 2, gcy = ly * TS - cam.y + TS / 3; var gr = ctx.createRadialGradient(gcx, gcy, 4, gcx, gcy, TS * 1.6); gr.addColorStop(0, 'rgba(255,200,100,0.35)'); gr.addColorStop(1, 'rgba(255,200,100,0)'); ctx.fillStyle = gr; ctx.fillRect(gcx - TS * 1.6, gcy - TS * 1.6, TS * 3.2, TS * 3.2); } }
+      lms.forEach(function (L) { root.Landmarks.glow(ctx, L, cam.x, cam.y); });
       ctx.restore();
     }
   };

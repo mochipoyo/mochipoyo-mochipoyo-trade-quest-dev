@@ -102,7 +102,8 @@ export class BuildingBuilder3D {
     if (D > 3) { window_(f1.x0 - 0.02, wy1, cz, 'L', 0.75, 0.85); window_(f1.x1 + 0.02, wy1, cz, 'R', 0.75, 0.85); }
 
     // ---- 扉（枠・石段・取っ手）。教会は鐘楼の正面
-    const dz = type === 'church' ? (zf - 0.6 + 1.0) : f1.z1;
+    // 教会は鐘楼の正面に扉（扉のタイルの中に収め、塔の正面と面をそろえる）
+    const dz = type === 'church' ? zf + 0.5 : f1.z1;
     const doorMat = M.get('door'); const iron = M.get('iron');
     batch.add(doorMat, box(1.0, 1.95, 0.08, 1.2), M4(doorX, base + 0.98, dz + 0.0));
     for (const sx of [-1, 1]) batch.add(timber, box(0.16, 2.12, 0.16, 1), M4(doorX + sx * 0.58, base + 1.06, dz + 0.05));
@@ -208,7 +209,7 @@ export class BuildingBuilder3D {
 
   async churchTower(b, batch, out, o) {
     const M = this.mats; const { cx, zf, base, plaster, timber, stone } = o;
-    const tw = 2.0, tz = zf - 0.6; const h = 6.4;
+    const tw = 2.0, tz = zf - tw / 2 - 0.01; const h = 6.4;   // zf＝扉の面。塔の正面は扉のすぐ後ろ
     batch.add(stone, box(tw + 0.2, base + 0.1, tw + 0.2, 1.6), M4(cx, (base + 0.1) / 2, tz));
     batch.add(plaster, box(tw, h - base, tw, 2.2), M4(cx, base + (h - base) / 2, tz));
     for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) batch.add(timber, box(0.2, h - base, 0.2, 1), M4(cx + sx * tw / 2, base + (h - base) / 2, tz + sz * tw / 2));

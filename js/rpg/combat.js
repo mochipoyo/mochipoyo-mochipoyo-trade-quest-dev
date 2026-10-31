@@ -351,7 +351,7 @@
 
   Combat.rewards = function (b) {
     var exp = 0, gold = 0, drops = [];
-    b.enemies.forEach(function (e) { if (e.fled) return; exp += Math.round(e.exp * 1.5); gold += e.gold; (e.drops || []).forEach(function (d) { if (Math.random() < d.rate) drops.push(d.item); }); root.State.data.bestiary[e.defId] = Object.assign(root.State.data.bestiary[e.defId] || {}, { seen: true, defeated: (root.State.data.bestiary[e.defId] && root.State.data.bestiary[e.defId].defeated || 0) + 1 }); });
+    b.enemies.forEach(function (e) { if (e.fled) return; exp += Math.round(e.exp * 2.0);   /* v5.7 ×1.5→×2.0（レベルを上げやすく） */ gold += e.gold; (e.drops || []).forEach(function (d) { if (Math.random() < d.rate) drops.push(d.item); }); root.State.data.bestiary[e.defId] = Object.assign(root.State.data.bestiary[e.defId] || {}, { seen: true, defeated: (root.State.data.bestiary[e.defId] && root.State.data.bestiary[e.defId].defeated || 0) + 1 }); });
     gold = Math.round(gold * rnd(0.85, 1.15));
     var goldBase = gold, bonus = 0;
     if (b.party.some(function (a) { return a.job === 'merchant' && !a.dead; })) { bonus = Math.round(gold * 0.25); gold += bonus; }
@@ -382,6 +382,51 @@
     var killed = {}; b.enemies.forEach(function (e) { if (e.fled) return; var nm = e.name.replace(/[A-H]$/, ''); killed[nm] = (killed[nm] || 0) + 1; });
     b.distributed = { exp: r.exp, gold: r.gold, goldBase: goldBase, merchantBonus: r.merchantBonus || 0, drops: dropCounts, killed: killed, members: members };
     return b.distributed;
+  };
+
+  /* ---------- v5.7 オート戦闘：1人ぶんの行動を自動で決める ----------
+     優先順位：倒れた仲間の蘇生 → HPが減った仲間の回復 → 状態異常の治療 → 攻撃（効きそうな特技・呪文、MPに余裕がなければ通常攻撃）
+     ・道具は使わない（消耗品を勝手に減らさない）。逃げない。ゴールドを使う特技・逃走用の特技は使わない
+     ・回復役（回復の呪文を持つ人）は MP を半分残すように攻撃呪文を控える */
+  function skillCost(a, sk) { return a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp; }
+  Combat.autoCommand = function (b, a) {
+    var s = Actors.stats(a);
+    var known = Actors.allSkills(a).filter(function (id) { return SKILLS[id]; });
+    var usable = known.filter(function (id) { var sk = SKILLS[id]; return !sk.gold && !sk.escape && !sk.scan && a.mp >= skillCost(a, sk); });
+    var allies = b.party.filter(function (x) { return !x.dead; }), dead = b.party.filter(function (x) { return x.dead; });
+    var foes = aliveEnemies(b).filter(function (e) { return !e.fled; });
+    if (!foes.length) return { actorId: a.id, type: 'defend' };
+    var cmd = function (id, target) { return { actorId: a.id, type: 'skill', skillId: id, target: target || null }; };
+    var ratio = function (x) { return x.hp / Math.max(1, Actors.stats(x).maxHp); };
+    // 1) 蘇生
+    if (dead.length) { var rv = usable.filter(function (id) { return SKILLS[id].kind === 'revive'; })[0]; if (rv) return cmd(rv, { side: 'party', id: dead[0].id }); }
+    // 2) 回復
+    var hurt = allies.filter(function (x) { return ratio(x) < 0.45; }).sort(function (p, q) { return ratio(p) - ratio(q); });
+    if (hurt.length) {
+      var heals = usable.filter(function (id) { return SKILLS[id].kind === 'heal'; }).sort(function (p, q) { return (SKILLS[q].power || 0) - (SKILLS[p].power || 0); });
+      var all = heals.filter(function (id) { return SKILLS[id].target === 'allies'; }), one = heals.filter(function (id) { return SKILLS[id].target === 'ally'; });
+      if (hurt.length >= 2 && all.length) return cmd(all[0]);
+      if (one.length) return cmd(one[0], { side: 'party', id: hurt[0].id });
+      if (all.length) return cmd(all[0]);
+    }
+    // 3) 状態異常の治療
+    var sick = allies.filter(function (x) { return x.status && (x.status.poison || x.status.paralyze || x.status.sleep || x.status.confuse || x.status.silence); })[0];
+    if (sick) { var cu = usable.filter(function (id) { return SKILLS[id].kind === 'cure'; })[0]; if (cu) return cmd(cu, SKILLS[cu].target === 'ally' ? { side: 'party', id: sick.id } : null); }
+    // 4) 攻撃：HP の少ない敵から倒す
+    var target = foes.slice().sort(function (p, q) { return p.hp - q.hp; })[0]; var es = estats(target);
+    var normal = Math.max(1, s.atk - es.def * 0.5) * resistOf(target, s.element);
+    var healer = known.some(function (id) { return SKILLS[id].kind === 'heal'; });
+    var reserve = healer ? 0.5 : 0.25; var mpRatio = a.mp / Math.max(1, s.maxMp);
+    var best = null, bestScore = normal * 1.3;
+    if (mpRatio > reserve) usable.forEach(function (id) {
+      var sk = SKILLS[id]; if (sk.target !== 'enemy' && sk.target !== 'enemies') return; if (sk.kind !== 'attack' && sk.kind !== 'magic') return;
+      var n = sk.target === 'enemies' ? foes.length : 1; var r = resistOf(target, sk.element);
+      var est = sk.kind === 'attack' ? Math.max(1, s.atk * (sk.power || 1) - es.def * 0.5 * (1 - (sk.pierce || 0))) * (sk.hits || 1) : Math.max(1, (sk.power || 0) + s.mag * 1.2 - es.mdef * 0.5);
+      var score = est * r * (n > 1 ? n * 0.85 : 1);
+      if (score > bestScore) { bestScore = score; best = id; }
+    });
+    if (best) return cmd(best, SKILLS[best].target === 'enemy' ? { side: 'enemy', idx: target.idx } : null);
+    return { actorId: a.id, type: 'attack', target: { side: 'enemy', idx: target.idx } };
   };
 
   root.Combat = Combat;

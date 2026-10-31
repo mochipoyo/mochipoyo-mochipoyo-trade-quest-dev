@@ -144,9 +144,23 @@
     p.vehicleAction = null;
     var vr = root.Vehicle ? root.Vehicle.resolveMove(m, nx, ny) : null;   // v5.0: 乗船・航行・下船
     if (vr) { if (!vr.ok) { var why = root.Vehicle.blockReason(m, nx, ny); if (why && !p._blockToastAt || (why && Date.now() - p._blockToastAt > 1500)) { p._blockToastAt = Date.now(); Win.toast(why); } return false; } p.vehicleAction = vr; }
-    else if (!m.passable(nx, ny, State.data)) return false;
+    else if (!m.passable(nx, ny, State.data)) { var bn = m.npcAt(nx, ny); if (bn) World.nudgeNpc(bn); return false; }   // v5.7 歩き回る人は道をあける
     p.moving = true; p.tx = nx; p.ty = ny; p.progress = 0;
     return true;
+  };
+
+  // v5.7 歩き回る NPC に主人公がぶつかったら、横（なければ奥）へ1歩よけてもらう。立ち止まっている NPC（wander 0）は動かさない
+  World.nudgeNpc = function (n) {
+    var m = World.map, p = World.player, d = State.data; if (!n || n.hidden || !n.wander || n.moving || World.busy) return false;
+    var ax = n.x - p.x, ay = n.y - p.y;   // 主人公 → NPC の向き
+    var cand = [[ay, ax], [-ay, -ax], [ax, ay]];   // 横・反対の横・奥
+    if (Math.random() < 0.5) cand = [cand[1], cand[0], cand[2]];
+    for (var i = 0; i < cand.length; i++) {
+      var dx = cand[i][0], dy = cand[i][1]; if (!dx && !dy) continue; var nx = n.x + dx, ny = n.y + dy;
+      if ((nx === p.x && ny === p.y) || !m.passable(nx, ny, d) || m.warpAt(nx, ny) || m.eventAt(nx, ny)) continue;
+      n.dir = dx > 0 ? 'right' : dx < 0 ? 'left' : dy > 0 ? 'down' : 'up'; n.moving = true; n.nx = nx; n.ny = ny; n.prog = 0; n.moveT = 2500; return true;
+    }
+    return false;
   };
 
   // 1歩進んだとき：ワープ・落とし穴・エンカウント・時間経過

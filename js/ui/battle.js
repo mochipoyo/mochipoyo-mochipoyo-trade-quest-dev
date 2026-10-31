@@ -239,6 +239,7 @@
     if (root.Audio) root.Audio.playBgm(opts.boss ? 'boss' : 'battle');
     var pw = document.getElementById('battle-party'); pw.classList.add('on');
     var mw = document.getElementById('battle-msg'); mw.classList.add('on'); mw.textContent = '';
+    BattleUI.autoButton(true);   // v5.7 オート戦闘ボタン
     renderParty(b);
     b.enemies.forEach(function (e) { d.bestiary[e.defId] = Object.assign(d.bestiary[e.defId] || {}, { seen: true }); });
     var names = b.enemies.map(function (e) { return e.name; });
@@ -265,7 +266,7 @@
     else if (result === 'escaped') { await Win.sleep(300); }
     else if (result === 'fled') { await bmsg('魔物は逃げてしまった……', 700); }
     b.party.forEach(Actors.clearBattleState);
-    pw.classList.remove('on'); mw.classList.remove('on');
+    pw.classList.remove('on'); mw.classList.remove('on'); BattleUI.autoButton(false);
     Engine.pop();
     if (root.Audio) root.Audio.playBgm(root.World.map ? (root.World.map.def.bgm || 'field') : 'field');
     State.autosave();
@@ -305,6 +306,26 @@
   }
   function bmsg(text, ms) { var mw = document.getElementById('battle-msg'); mw.textContent = text; var speed = State.data.settings.battleSpeed; return Win.sleep(speed === 'fast' ? Math.round((ms || 500) * 0.45) : (ms || 500)); }
 
+  /* ---------- v5.7 オート戦闘 ----------
+     ・画面右上の「オート」ボタン、またはコマンドの「オート戦闘」で開始。もう一度押すか X / Esc で解除
+     ・オンにすると次の戦闘でも続く（設定 settings.autoBattle に保存）
+     ・相場の試練（チャートの問題）はオートでも自分で答える */
+  BattleUI.isAuto = function () { return !!(State.data && State.data.settings && State.data.settings.autoBattle); };
+  BattleUI.setAuto = function (on) {
+    if (!State.data) return; State.data.settings.autoBattle = !!on; BattleUI.autoButton(true);
+    if (on) { var top = Engine.top(); if (top && top.overlay && BattleUI.battle && BattleUI.battle.state === 'command') Engine.Input.press('cancel'); }   // 開いている行動メニューを閉じて自動に
+    if (Win.toast) Win.toast(on ? 'オート戦闘：オン' : 'オート戦闘：オフ（次のターンから手動）');
+  };
+  BattleUI.autoButton = function (show) {
+    var el = document.getElementById('auto-battle');
+    if (!el) { el = document.createElement('button'); el.id = 'auto-battle'; el.type = 'button'; var st = document.getElementById('stage'); if (!st) return; st.appendChild(el); el.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); BattleUI.setAuto(!BattleUI.isAuto()); }); }
+    el.classList.toggle('on', show); el.classList.toggle('active', BattleUI.isAuto());
+    el.innerHTML = '<b>オート</b>' + (BattleUI.isAuto() ? 'ON' : 'OFF');
+    var g = document.getElementById('game'), mw = document.getElementById('battle-msg'); if (g && show) { var top = g.offsetTop + g.clientTop + 8; if (mw && mw.offsetHeight) top = Math.max(top, mw.offsetTop + mw.offsetHeight + 6); el.style.top = top + 'px'; el.style.left = (g.offsetLeft + g.clientLeft + g.clientWidth - el.offsetWidth - 10) + 'px'; }   // 上のメッセージ欄の下・右端
+  };
+  // 戦闘の演出中に X / Esc を押すとオートを解除
+  BattleScene.prototype.handleInput = function () { if (BattleUI.isAuto() && Engine.Input.consume('cancel')) BattleUI.setAuto(false); };
+
   /* ---------- コマンド入力 ---------- */
   async function collectCommands(b) {
     var cmds = []; var alive = b.party.filter(function (a) { return !a.dead; });
@@ -312,7 +333,9 @@
       var a = alive[i];
       if (a.status.sleep || (a.status.paralyze && Math.random() < 0.3)) { cmds.push({ actorId: a.id, type: 'defend' }); continue; }
       highlight(a.id);
-      var c = await commandFor(b, a);
+      var c = BattleUI.isAuto() ? 'auto' : await commandFor(b, a);
+      if (c === 'back' && BattleUI.isAuto()) c = 'auto';   // 入力中にオートへ切り替えた
+      if (c === 'auto') { if (!BattleUI.isAuto()) BattleUI.setAuto(true); await Win.sleep(State.data.settings.battleSpeed === 'fast' ? 60 : 140); cmds.push(Combat.autoCommand(b, a)); continue; }
       if (c === 'back') { if (i > 0) { i -= 2; cmds.pop(); continue; } else { i = -1; cmds = []; continue; } }
       cmds.push(c);
     }
@@ -323,9 +346,12 @@
 
   async function commandFor(b, a) {
     while (true) {
+      if (BattleUI.isAuto()) return 'auto';
       var skills = Actors.allSkills(a).filter(function (s) { return SKILLS[s]; });
-      var opts = [{ label: 'たたかう' }, { label: 'じゅもん・とくぎ', disabled: !skills.length }, { label: 'どうぐ' }, { label: 'ぼうぎょ' }, { label: 'にげる', disabled: !b.canEscape }];
+      var opts = [{ label: 'たたかう' }, { label: 'じゅもん・とくぎ', disabled: !skills.length }, { label: 'どうぐ' }, { label: 'ぼうぎょ' }, { label: 'にげる', disabled: !b.canEscape }, { label: 'オート戦闘', right: '自動' }];
       var sel = await Win.list(opts, { title: a.name + 'の行動', cancel: true, cls: 'cmd-list' });
+      if (BattleUI.isAuto()) return 'auto';
+      if (sel === 5) return 'auto';
       if (sel < 0) return 'back';
       if (sel === 0) { var t = await pickEnemy(b); if (t < 0) continue; return { actorId: a.id, type: 'attack', target: { side: 'enemy', idx: t } }; }
       if (sel === 1) {

@@ -264,3 +264,13 @@ body.pc #pad { display: none !important; }
 .sb-note { margin-top: 8px; }
 .gd-row { display: flex; align-items: center; gap: 4px; }
 .key { display: inline-block; background: #16224a; border: 1px solid #5b6ea8; border-radius: 4px; padding: 0 6px; font-size: 12px; line-height: 20px; color: #fff; margin-right: 2px; }
+/* v5.7 オート戦闘ボタン。行動メニューは画面からはみ出さない高さに（多いときは中でスクロール） */
+.rw-list.cmd-list { max-height: calc(100% - 104px); }
+@media (max-width: 720px) { .rw-list.cmd-list { max-height: calc(100% - 150px); min-height: 84px; } .rw-list.cmd-list .rw-title { display: none; } }
+#auto-battle { position: absolute; display: none; z-index: 30; font-family: inherit; font-size: 13px; color: #fff; background: rgba(11,18,38,.9); border: 2px solid var(--gold); border-radius: 18px; padding: 4px 12px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.5); }
+#auto-battle b { margin-right: 6px; color: var(--gold); }
+#auto-battle.on { display: block; }
+#auto-battle.active { background: linear-gradient(180deg, #e8c15a, #b8862a); color: #1a1a2a; animation: autopulse 1.6s ease-in-out infinite; }
+#auto-battle.active b { color: #1a1a2a; }
+@keyframes autopulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(232,193,90,.6); } 50% { box-shadow: 0 0 0 6px rgba(232,193,90,0); } }
+@media (max-width: 720px) { #auto-battle { font-size: 12px; padding: 3px 10px; } }

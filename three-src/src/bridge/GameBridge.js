@@ -172,6 +172,14 @@ export class App3D {
     // 移動（大きく動くときは分割）＋押し出し
     let dist = sp * Math.min(dt, 0.05); const steps = Math.ceil(dist / 0.2);
     for (let i = 0; i < steps; i++) { const d = dist / steps; const r = ms.resolve(this.pos.x + ix * d, this.pos.z + iz * d, RADIUS); this.pos.x = r.x; this.pos.z = r.z; }
+    // v5.7 歩き回る人にぶつかって進めないときは、2D版と同じく横へよけてもらう
+    const now = performance.now();
+    if (dist > 0.01 && (!this._nudgeAt || now - this._nudgeAt > 500)) {
+      for (const ch of ms.npcs) {
+        if (!ch.root.visible || !ch.npc.wander) continue; const dx = ch.root.position.x - this.pos.x, dz = ch.root.position.z - this.pos.z; const d = Math.hypot(dx, dz);
+        if (d < RADIUS + 0.36 + 0.12 && (dx * ix + dz * iz) / (d || 1) > 0.5) { this._nudgeAt = now; if (W.nudgeNpc) W.nudgeNpc(ch.npc); break; }
+      }
+    }
     this.pos.y = ms.heightAt(this.pos.x, this.pos.z);
     p.dir = yawToDir(this.yaw);
     const tx = Math.floor(this.pos.x), ty = Math.floor(this.pos.z);

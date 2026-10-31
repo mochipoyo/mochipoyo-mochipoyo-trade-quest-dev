@@ -35,7 +35,7 @@
   ],
   warps: [{ x: 0, y: 12, to: 'world', tx: 59, ty: 57, name: '森の外へ' }, { x: 15, y: 13, to: 'lost_forest_shrine', tx: 7, ty: 12 }],
   chests: [{ id: 'lf1', x: 6, y: 1, item: 'potion', qty: 2 }, { id: 'lf2', x: 27, y: 1, item: 'hunter_bow', qty: 1 }, { id: 'lf3', x: 12, y: 20, gold: 180 }, { id: 'lf4', x: 26, y: 17, item: 'antidote_charm', qty: 1 }, { id: 'lf5', x: 20, y: 9, item: 'ether', qty: 2 }],
-  npcs: [{ id: 'lf_lost', x: 6, y: 11, sprite: 'villager_m', dir: 'down', wander: 0, talk: async function (c) { await c.say('迷った旅人', ['た、助けてくれ……同じ場所をぐるぐる回っている気がする。', '森の中央の祠に魔物がいる。祠の扉は「相場の試練」を解かないと開かないらしい。']); } }],
+  npcs: [{ id: 'lf_lost', x: 9, y: 11, sprite: 'villager_m', dir: 'down', wander: 0, talk: async function (c) { await c.say('迷った旅人', ['た、助けてくれ……同じ場所をぐるぐる回っている気がする。', '森の中央の祠に魔物がいる。祠の扉は「相場の試練」を解かないと開かないらしい。']); } }],
   events: [
     { x: 19, y: 6, type: 'learn', solid: false, learnId: 'practice_forest' },
     { x: 15, y: 14, type: 'trial', solid: true, doneFlag: 'lf_gate', learnId: 'learn_dow', scenarios: ['clear_up', 'clear_down', 'range'], text: ['扉に古い文字が浮かび上がる。\n「高値と安値の向きを読み、正しき行いを示せ。無理に戦う者は通さぬ」'], minScore: 60 }
