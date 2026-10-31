@@ -17,8 +17,8 @@
   // 回復・蘇生（8）
   S('drop_heal', { name: '癒しの滴', kind: 'heal', target: 'ally', mp: 2, power: 16, desc: '味方1人のHPを少し回復（消費MPが少ない）', anim: 'heal', school: 'spell' });
   S('torrent_heal', { name: '癒しの奔流', kind: 'heal', target: 'ally', mp: 6, power: 58, desc: '味方1人のHPを中〜大量に回復', anim: 'heal', school: 'spell' });
-  S('gentle_rain', { name: '慈雨', kind: 'heal', target: 'allies', mp: 10, power: 18, desc: '味方全体のHPを少し回復', anim: 'heal', school: 'spell' });
-  S('great_rain', { name: '大慈雨', kind: 'heal', target: 'allies', mp: 24, power: 70, desc: '味方全体のHPを大きく回復', anim: 'heal', school: 'spell' });
+  S('gentle_rain', { name: '慈雨', kind: 'heal', target: 'allies', mp: 9, power: 20, desc: '味方全体のHPを少し回復', anim: 'heal', school: 'spell' });
+  S('great_rain', { name: '大慈雨', kind: 'heal', target: 'allies', mp: 26, power: 80, desc: '味方全体のHPを大きく回復', anim: 'heal', school: 'spell' });
   S('life_lamp', { name: '生命の灯', kind: 'revive', target: 'dead_ally', mp: 8, power: 0.25, desc: '戦闘不能の仲間をHP25%で復活', anim: 'light', school: 'spell' });
   S('rebirth_prayer', { name: '再生の祈り', kind: 'revive', target: 'dead_ally', mp: 14, power: 0.5, regen: { value: 0.06, turns: 3 }, desc: '戦闘不能の仲間をHP50%で復活し、3ターンのあいだ毎ターン最大HPの6%を回復', anim: 'light', school: 'spell' });
   S('soul_return', { name: '魂返し', kind: 'revive', target: 'dead_ally', mp: 26, power: 1.0, desc: '戦闘不能の仲間をHP100%で復活', anim: 'light', school: 'spell' });
@@ -86,11 +86,11 @@
 
   /* ---------- 職業ごとの習得レベル（新しいもの） ---------- */
   var LEARN = {
-    priest: [[1, 'drop_heal'], [8, 'calm_light'], [13, 'torrent_heal'], [16, 'unyielding_prayer'], [18, 'purify_ring'], [22, 'gentle_rain'], [24, 'life_lamp'], [26, 'loss_limit_ward'], [40, 'soul_return'], [43, 'great_rain']],
+    priest: [[1, 'drop_heal'], [8, 'calm_light'], [13, 'torrent_heal'], [16, 'unyielding_prayer'], [18, 'purify_ring'], [21, 'gentle_rain'], [25, 'life_lamp'], [26, 'loss_limit_ward'], [40, 'soul_return'], [43, 'great_rain']],   // Phase E：慈雨 22→21・生命の灯 24→25
     sage: [[6, 'insight_flash'], [10, 'focus_blessing'], [15, 'torrent_heal'], [18, 'mana_cycle'], [20, 'purify_ring'], [23, 'gentle_rain'], [26, 'stardust_rain'], [32, 'thunder_array'], [34, 'pale_flame'], [44, 'soul_return'], [46, 'great_rain'], [48, 'celestial_impact']],
     mage: [[5, 'insight_flash'], [12, 'flame_lance'], [13, 'slow_mist'], [16, 'freezing_rain'], [20, 'thunder_array'], [23, 'gale_fault'], [28, 'imaginary_bolt'], [32, 'pale_flame'], [45, 'celestial_impact']],
-    spirit_warden: [[3, 'drop_heal'], [14, 'torrent_heal'], [16, 'mana_cycle'], [22, 'life_lamp'], [30, 'rebirth_prayer']],
-    chronomancer: [[3, 'insight_flash'], [7, 'future_shield'], [8, 'slow_mist'], [12, 'focus_blessing'], [22, 'stardust_rain'], [30, 'rebirth_prayer']],
+    spirit_warden: [[3, 'drop_heal'], [14, 'torrent_heal'], [16, 'mana_cycle'], [24, 'life_lamp'], [30, 'rebirth_prayer']],   // Phase E：生命の灯 22→24
+    chronomancer: [[3, 'insight_flash'], [7, 'future_shield'], [8, 'slow_mist'], [12, 'focus_blessing'], [22, 'stardust_rain'], [32, 'rebirth_prayer']],   // Phase E：再生の祈り 30→32
     master: [[3, 'drop_heal'], [6, 'future_shield'], [8, 'calm_light'], [16, 'purify_ring'], [18, 'loss_limit_ward'], [20, 'mana_cycle']],
     auditor: [[10, 'focus_blessing'], [24, 'imaginary_bolt']],
     navigator: [[16, 'gale_fault']],

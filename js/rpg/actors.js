@@ -8,7 +8,13 @@
 
   var Actors = {};
 
-  Actors.expForLevel = function (lv) { return Math.round(9 * Math.pow(lv, 1.8) + 6 * lv); };   // v5.7 1.85→1.8（次のレベルまで：Lv5→193, Lv10→628, Lv20→2097。旧 207／697／2417）   // v3.4: 緩やかに（Lv1→15, Lv5→224, Lv10→696） // 累積ではなく「次のレベルまで」
+  // v6.4 Phase E：次のレベルまでの経験値を中盤から少しずつ増やす（Lv6までは v5.7 と同じ → Lv24以上は v5.7 の1.2倍）
+  //   Lv5→193（同じ）, Lv10→656（旧628）, Lv15→1395（旧1268）, Lv20→2423（旧2097）, Lv30→5140（旧4283）。シミュレーションは docs/balance-v64.md
+  //   既存セーブのレベル・経験値はそのまま（必要量が増えるだけなので、読み込んだ瞬間にレベルが上がったり下がったりはしない）
+  Actors.EXP_RAMP = { from: 6, to: 24, max: 0.20 };
+  Actors.expForLevelV57 = function (lv) { return Math.round(9 * Math.pow(lv, 1.8) + 6 * lv); };
+  Actors.expForLevel = function (lv) { var R = Actors.EXP_RAMP; var r = Math.max(0, Math.min(1, (lv - R.from) / (R.to - R.from))); return Math.round(Actors.expForLevelV57(lv) * (1 + R.max * r)); };
+  // 以下は v5.7 の式についての記録： 1.85→1.8（次のレベルまで：Lv5→193, Lv10→628, Lv20→2097。旧 207／697／2417）   // v3.4: 緩やかに（Lv1→15, Lv5→224, Lv10→696） // 累積ではなく「次のレベルまで」
   Actors.baseStat = function (job, stat, level) { var j = JOBS[job]; return Math.round(j.stats[stat] + j.growth[stat] * (level - 1)); };
 
   // 新しいアクターを作る

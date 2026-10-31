@@ -47,8 +47,8 @@
     poison_mist: { name: '毒霧', kind: 'status', target: 'enemies', mp: 4, status: { id: 'poison', chance: 0.7 }, desc: '敵全体を毒にする', anim: 'dark' },
     // ---- 回復・補助 ----
     heal: { name: '小回復', kind: 'heal', target: 'ally', mp: 3, power: 25, desc: '味方1人のHPを回復', anim: 'heal' },
-    heal_all: { name: '全体回復', kind: 'heal', target: 'allies', mp: 9, power: 22, desc: '味方全体のHPを回復', anim: 'heal' },
-    big_heal: { name: '大回復', kind: 'heal', target: 'ally', mp: 7, power: 70, desc: '味方1人のHPを大きく回復', anim: 'heal' },
+    heal_all: { name: '全体回復', kind: 'heal', target: 'allies', mp: 12, power: 36, desc: '味方全体のHPを中程度回復', anim: 'heal' },   // v6.4 Phase E：「全体中回復」の段に（僧侶Lv31・賢者Lv33）。慈雨（全体小）・大慈雨（全体大）との差のため 22→36、MP 9→12
+    big_heal: { name: '大回復', kind: 'heal', target: 'ally', mp: 10, power: 95, desc: '味方1人のHPを大きく回復', anim: 'heal' },   // v6.4 Phase E：僧侶Lv24・賢者Lv26で覚えるようにした（それまでどの職業も覚えなかった）。癒しの奔流（58）と差をつけて 70→95、MP 7→10
     cure_poison: { name: '解毒', kind: 'cure', target: 'ally', mp: 2, cures: ['poison'], desc: '毒を治す', anim: 'heal' },
     cure_all: { name: '浄化', kind: 'cure', target: 'ally', mp: 4, cures: ['poison', 'sleep', 'paralyze', 'confuse'], desc: 'すべての状態異常を治す', anim: 'heal' },
     revive: { name: '蘇生', kind: 'revive', target: 'dead_ally', mp: 10, power: 0.5, desc: '戦闘不能の仲間をHP半分で復活', anim: 'light' },

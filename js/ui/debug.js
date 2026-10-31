@@ -76,7 +76,7 @@
     var M = root.MAP_DEFS || {}, Q = root.QUESTS || {};
     // v5.7：オート戦闘・ワールドマップの大きな町と城・迷いの森の旅人の位置・経験値
     var lf = M.lost_forest && (M.lost_forest.npcs || []).filter(function (n) { return n.id === 'lf_lost'; })[0];
-    var v57 = !!(root.Landmarks && root.Combat && root.Combat.autoCommand && lf && lf.x === 9 && root.Actors && root.Actors.expForLevel(10) === 628);
+    var v57 = !!(root.Landmarks && root.Combat && root.Combat.autoCommand && lf && lf.x === 9 && root.Actors && root.Actors.expForLevel(5) === 193);   // v6.4 で Lv7以降の必要経験値を増やしたため、Lv5（v5.7 から同じ）で確かめる
     // v5.8：修行場の中断・ひとりのときの出現数・序盤補正・最初の武器
     var v58 = !!(root.World && root.World.soloCap && root.Combat && root.Combat.earlyAssist && root.STARTER_WEAPON && root.Win && root.Win.confirmQuit && root.Services && root.Services.quitNote);
     // v5.9：追加モンスター10種・本棚の本・地域の地図で全地域の地形

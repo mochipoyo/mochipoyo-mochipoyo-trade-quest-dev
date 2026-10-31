@@ -82,7 +82,7 @@
   C('phoenix_feather', '不死鳥の羽', 500, { revive: 0.5 }, '戦闘不能の仲間をHP半分で復活');
   C('bomb', '火炎瓶', 80, { damage: 40, element: 'fire', target: 'enemies' }, '敵全体に炎のダメージ', { battleOnly: true });
   C('escape_wing', '帰還の翼', 150, { warpTown: true }, '最後に泊まった町へ戻る', { fieldOnly: true });
-  C('tent', 'テント', 120, { hp: 999, mp: 999, all: true }, 'フィールド・ダンジョンで全員を全回復', { fieldOnly: true });
+  C('tent', 'テント', 300, { hp: 999, mp: 999, all: true }, 'フィールド・ダンジョンで全員を全回復', { fieldOnly: true });   // v6.4 Phase E：120→300G（どこでも宿屋と同じ全快になるのに、第6章以降は4人の宿代より安く、半分回復の携帯宿営セット150Gより安かったため。序盤に手が届かなくなりすぎないよう 300G。docs/balance-v64.md）
   C('elixir', 'エリクサー', 1500, { hp: 999, mp: 999 }, '1人のHPとMPを全回復');
   // ---- v6.1 飲食物：食べ物＝HP回復、飲み物＝MP回復（店・酒場・食堂・宝箱・探索で手に入る） ----
   C('onigiri', 'おにぎり', 12, { hp: 20 }, 'HPを20回復。旅の基本', { food: 'food' });

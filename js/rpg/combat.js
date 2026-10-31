@@ -419,9 +419,22 @@
     return ev;
   };
 
+  // v6.4 Phase E：ボスとレアモンスターの経験値（雑魚の経験値は変えない。必要経験値の増加と二重に下げないため）
+  // ・ボス（敵データの boss: true）：Lv10から少しずつ増え、Lv15以上は従来の2.5倍。中盤以降のボスは「1回でレベルの1/3〜1/2」くらいになる
+  //   （従来はレベルが上がるほどボスの経験値が雑魚の群れ1〜2回分にしかならなかった。docs/balance-v64.md）。Lv の決まっていない序盤のボスは従来どおり
+  // ・レアモンスター（RARE_EXP の3種）：生きている仲間の平均レベルの「次のレベルまで」の一定割合を下限にする（序盤は従来の値のほうが大きいので変わらない）
+  Combat.bossExpMult = function (def) { if (!def || !def.boss || !def.lv) return 1; return Math.max(1, Math.min(2.5, 1 + (def.lv - 9) * 0.25)); };
+  Combat.RARE_EXP = { slime_metal: 0.5, slime_rainbow: 0.5, slime_gold: 0.25 };
+  Combat.enemyExp = function (e, b) {
+    var def = root.ENEMIES[e.defId] || {}; var v = Math.round(e.exp * 2.0);   /* v5.7 ×1.5→×2.0（レベルを上げやすく） */
+    var bm = Combat.bossExpMult(def); if (bm > 1) v = Math.round(v * bm);
+    var rr = Combat.RARE_EXP[e.defId];
+    if (rr && b) { var al = aliveParty(b); if (al.length) { var lv = Math.round(al.reduce(function (s, a) { return s + a.level; }, 0) / al.length); v = Math.max(v, Math.round(Actors.expForLevel(lv) * rr)); } }
+    return v;
+  };
   Combat.rewards = function (b) {
     var exp = 0, gold = 0, drops = [];
-    b.enemies.forEach(function (e) { if (e.fled) return; exp += Math.round(e.exp * 2.0);   /* v5.7 ×1.5→×2.0（レベルを上げやすく） */ gold += e.gold; (e.drops || []).forEach(function (d) { if (Math.random() < d.rate) drops.push(d.item); }); root.State.data.bestiary[e.defId] = Object.assign(root.State.data.bestiary[e.defId] || {}, { seen: true, defeated: (root.State.data.bestiary[e.defId] && root.State.data.bestiary[e.defId].defeated || 0) + 1 }); });
+    b.enemies.forEach(function (e) { if (e.fled) return; exp += Combat.enemyExp(e, b); gold += e.gold; (e.drops || []).forEach(function (d) { if (Math.random() < d.rate) drops.push(d.item); }); root.State.data.bestiary[e.defId] = Object.assign(root.State.data.bestiary[e.defId] || {}, { seen: true, defeated: (root.State.data.bestiary[e.defId] && root.State.data.bestiary[e.defId].defeated || 0) + 1 }); });
     gold = Math.round(gold * rnd(0.85, 1.15));
     var goldBase = gold, bonus = 0;
     if (b.party.some(function (a) { return a.job === 'merchant' && !a.dead; })) { bonus = Math.round(gold * 0.25); gold += bonus; }

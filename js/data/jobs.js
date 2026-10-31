@@ -19,7 +19,7 @@
     priest: { name: '僧侶', sprite: 'hero_priest', desc: '回復と補助で仲間を守る。', role: '回復・補助',
       stats: { hp: 24, mp: 14, atk: 4, def: 5, agi: 5, mag: 8 }, growth: { hp: 5.0, mp: 2.8, atk: 1.0, def: 1.4, agi: 1.0, mag: 2.0 },
       weapons: ['staff', 'club'], armors: ['robe', 'light', 'hat', 'shield', 'acc'],
-      skills: [{ lv: 1, id: 'heal' }, { lv: 3, id: 'cure_poison' }, { lv: 6, id: 'protect' }, { lv: 9, id: 'holy_light' }, { lv: 12, id: 'heal_all' }, { lv: 16, id: 'revive' }], trait: '回復量+15%' },
+      skills: [{ lv: 1, id: 'heal' }, { lv: 3, id: 'cure_poison' }, { lv: 6, id: 'protect' }, { lv: 9, id: 'holy_light' }, { lv: 24, id: 'big_heal' }, { lv: 29, id: 'revive' }, { lv: 31, id: 'heal_all' }], trait: '回復量+15%' },   /* v6.4 Phase E：全体回復 12→31・蘇生 16→29、大回復（未使用だった呪文）を Lv24 に */
     monk: { name: '武闘家', sprite: 'hero_monk', desc: '素早く手数が多い。会心が出やすい。', role: '高速アタッカー',
       stats: { hp: 28, mp: 6, atk: 8, def: 5, agi: 10, mag: 3 }, growth: { hp: 6.0, mp: 1.0, atk: 2.2, def: 1.3, agi: 2.4, mag: 0.6 },
       weapons: ['claw', 'club'], armors: ['light', 'hat', 'acc'],
@@ -43,7 +43,7 @@
     sage: { name: '賢者', sprite: 'hero_sage', desc: '攻撃魔法と回復魔法の両方を扱う。転職で開放。', role: '万能魔法',
       stats: { hp: 24, mp: 18, atk: 4, def: 5, agi: 6, mag: 11 }, growth: { hp: 5.0, mp: 3.4, atk: 1.0, def: 1.2, agi: 1.2, mag: 2.8 }, unlock: { level: 15, jobsAny: ['mage', 'priest'] },
       weapons: ['staff', 'club'], armors: ['robe', 'light', 'hat', 'acc'],
-      skills: [{ lv: 1, id: 'fireball' }, { lv: 1, id: 'heal' }, { lv: 5, id: 'thunder' }, { lv: 8, id: 'heal_all' }, { lv: 12, id: 'firestorm' }, { lv: 16, id: 'revive' }, { lv: 20, id: 'meteor' }], trait: 'MP消費-20%' },
+      skills: [{ lv: 1, id: 'fireball' }, { lv: 1, id: 'heal' }, { lv: 5, id: 'thunder' }, { lv: 12, id: 'firestorm' }, { lv: 20, id: 'meteor' }, { lv: 26, id: 'big_heal' }, { lv: 31, id: 'revive' }, { lv: 33, id: 'heal_all' }], trait: 'MP消費-20%' },   /* v6.4 Phase E：全体回復 8→33・蘇生 16→31、大回復を Lv26 に（転職してすぐの低いレベルで覚えないように） */
     magicknight: { name: '魔法戦士', sprite: 'hero_magicknight', desc: '剣に魔法をまとわせる。転職で開放。', role: '属性物理',
       stats: { hp: 30, mp: 12, atk: 8, def: 7, agi: 7, mag: 7 }, growth: { hp: 6.5, mp: 2.0, atk: 2.1, def: 1.7, agi: 1.5, mag: 1.8 }, unlock: { level: 15, jobsAny: ['warrior', 'mage', 'knight'] },
       weapons: ['sword', 'spear', 'staff'], armors: ['light', 'heavy', 'shield', 'helm', 'acc'],
@@ -94,10 +94,11 @@
   JOBS.spirit_warden = { name: '精霊守', sprite: 'hero_sage', desc: '精霊の名を呼び、自然の力で仲間を守る。属性の守りと回復に長ける。', role: '補助・回復',
     stats: { hp: 27, mp: 15, atk: 5, def: 7, agi: 6, mag: 10 }, growth: { hp: 5.6, mp: 2.7, atk: 1.2, def: 1.7, agi: 1.4, mag: 2.3 },
     weapons: ['staff', 'spear'], armors: ['robe', 'shield', 'hat', 'acc'],
-    skills: [{ lv: 1, id: 'spirit_shield' }, { lv: 5, id: 'healing_wind' }, { lv: 10, id: 'harmony' }, { lv: 15, id: 'spirit_ward' }, { lv: 20, id: 'aurora' }, { lv: 25, id: 'spirit_rebirth' }], trait: '精霊の加護：敵の氷・炎・雷の魔法のダメージ−15%', unlock: { level: 10, flag: 'aster_joined' } };
+    skills: [{ lv: 1, id: 'spirit_shield' }, { lv: 10, id: 'harmony' }, { lv: 15, id: 'spirit_ward' }, { lv: 20, id: 'healing_wind' }, { lv: 20, id: 'aurora' }, { lv: 40, id: 'spirit_rebirth' }],   /* v6.4 Phase E：癒しの風 5→20・精霊の息吹（HP全快の蘇生）25→40 */ trait: '精霊の加護：敵の氷・炎・雷の魔法のダメージ−15%', unlock: { level: 10, flag: 'aster_joined' } };
   // v5.6 新職業の高位スキル（Lv20・Lv25）
   [['auditor', 'full_audit', 'final_ledger'], ['oath_knight', 'oath_bastion', 'oath_judgment'], ['navigator', 'maelstrom', 'fair_wind'], ['surveyor', 'pinpoint', 'triangulate'],
    ['chronomancer', 'time_rewind', 'time_stop'], ['mechanist', 'gear_barrage', 'overclock'], ['artisan', 'masterwork', 'field_forge']].forEach(function (r) { JOBS[r[0]].skills.push({ lv: 20, id: r[1] }, { lv: 25, id: r[2] }); });
+  JOBS.chronomancer.skills.forEach(function (k) { if (k.id === 'time_rewind') k.lv = 31; });   // v6.4 Phase E：時の巻き戻し（味方全体の回復）20→31
   var JOB_LIST = Object.keys(JOBS);
   var STARTER_JOBS = ['warrior', 'mage', 'priest', 'monk', 'thief', 'merchant', 'hunter', 'knight'];
 
