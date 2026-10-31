@@ -106,7 +106,7 @@
     var odds = Casino.cardOdds(rd.first.r)[dir]; if (!odds || odds.mult <= 0) return { ok: false, reason: 'その予想は当たる札がない' };
     if (Casino.coins() < bet) return { ok: false, reason: 'コインが足りない' };
     addCoins(-bet); var next = rd.deck[rint(rd.deck.length)];
-    var hit = dir === 'high' ? next.r > rd.first.r : next.r < rd.first.r; var payout = hit ? Math.round(bet * odds.mult) : 0;   // 10枚単位なので bet×倍率 は整数（浮動小数の誤差だけ丸める） if (payout) addCoins(payout);
+    var hit = dir === 'high' ? next.r > rd.first.r : next.r < rd.first.r; var payout = hit ? Math.round(bet * odds.mult) : 0; if (payout) addCoins(payout);   // 10枚単位なので bet×倍率 は整数（Math.round は浮動小数の誤差を丸めるだけ）
     stat('card', bet, payout); pushHist('card', { first: Casino.cardLabel(rd.first), next: Casino.cardLabel(next), dir: dir, bet: bet, payout: payout }, 20); c.cardRound = null;
     return { ok: true, first: rd.first, next: next, hit: hit, payout: payout, mult: odds.mult, prob: odds.prob, coins: Casino.coins() };
   };
