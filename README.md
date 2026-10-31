@@ -31,6 +31,13 @@
 - 実ブラウザ（Chromium、2D版 PC・スマホのエミュレーション・3D版）：新しいマップ8枚と城の階段・城下町の東門・洞窟2階の行き止まりの表示、キー入力で実際に歩いてワープ（玉座の間→2階、2階→玉座の間、玉座の間→地下、城下町→職人通り、職人通り→城下町）、古井戸（→城の地下）と壁のひび（→地底湖）→ ページのエラーなし。3D版のページでも新しい場所は 2D 表示であることを確認。
 - 既存の回帰テスト一式 → 結果は下の「Phase A の回帰テスト」。
 
+### Phase A の回帰テスト（実行済み。Phase G の総合回帰テストを兼ねる）
+既存の回帰テスト30本と v6.4 のテスト7本（gear64test・skills64test・balance64test・followtest・tradiatest・expandAtest・savecompat64）を、Phase A までのすべてを入れた v6.4 のファイル一式のコピーに対して実行しました。
+- エラーなし：maptest（失敗0）・enemytest・tradeeq・tradetest・growthtest・learntest・playtest・ch5test・ch67test・ch89test・ch1012test・ch1316test・ch17test・skill56・v57test・v58test・v59test・v60test・p1test・p2test・ptcheck・potcheck・ftmenu・npctest（12項目）・navtest・navsim（全114か所）・harbortest・entryaudit・gear64test（56項目）・skills64test（34項目）・balance64test（34項目）・followtest（42項目）・tradiatest（63項目）・expandAtest（80項目）・savecompat64（37項目）
+- assettest：1回目は Phase D の登録漏れを直す前のファイルで実行したためエラー（Phase D の項と同じ内容）→ 直した版で再実行してエラーなし。
+- ch18test：3回実行。1回目は任意の隠しボス2体（凍結の時計守・旧都市の演算核）、2回目は旧都市の演算核に負けてその項目が失敗、3回目はエラーなし。ほかの項目（クエストの総数93を含む）は3回ともエラーなし。近い条件の勝率は Phase A でも 30.5%・35.0% で v6.3 と変わりません（Phase F の項）。
+- `savecompat64`（新規、37項目）：公開していた v6.3 の版で4つのセーブ（序盤・中盤・終盤・僧侶Lv20）を作り、v6.4 で読み込み。レベル・経験値・HP・MP・装備・覚えた技・持ち物・所持金・預金・フラグ・クエスト・宝箱・位置・隊列・設定はそのまま、なくなった項目なし（増えたのは `tradia` と設定 `followers` だけ）、保存と読み直しで同じ。v6.3 で Lv16・Lv12 に覚えた蘇生・全体回復は、v6.4 で習得を遅くしたあとも消えない。読み込んだセーブで隊列・なかま画面・リヴェル城の新しい階段と宝物庫・トレディア・レバレッジ取引・戦闘が動く。
+
 ## v6.4 大型拡張 Phase D：相場都市トレディア（2D版・3D版 共通）
 
 世界中のトレーダー・投資家・研究者・商人が集まる経済都市を追加しました。一覧と計算式は [docs/tradia-v64.md](docs/tradia-v64.md)。データは `js/data/tradia.js`、計算は `js/rpg/tradebattle.js`・`js/rpg/leverage.js`、画面は `js/ui/tradia.js`。既存の町・物語・クエストは変えていません（ワールドに入口と道を足しただけ）。
