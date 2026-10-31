@@ -1,0 +1,988 @@
+{
+  "source": "image-generated concept-sheet; individual cropped/upscaled cutout PNGs; 512x512; prototype resolution",
+  "generated": "2026-10-31",
+  "boss_count": 44,
+  "special_encounter_count": 5,
+  "entries": [
+    {
+      "index": 1,
+      "id": "boss_lost_trend",
+      "name_ja": "トレンド迷子",
+      "group": "メイン",
+      "location": "迷いの森・祠",
+      "path": "assets/bosses_new/boss_lost_trend.png",
+      "source_crop": [
+        4,
+        115,
+        136,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 2,
+      "id": "boss_greed_golem",
+      "name_ja": "欲望のゴーレム",
+      "group": "メイン",
+      "location": "忘却の洞窟・最深部",
+      "path": "assets/bosses_new/boss_greed_golem.png",
+      "source_crop": [
+        144,
+        115,
+        275,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 3,
+      "id": "boss_tide_serpent",
+      "name_ja": "潮の大蛇ウルガ",
+      "group": "メイン",
+      "location": "港町マリナ・出航",
+      "path": "assets/bosses_new/boss_tide_serpent.png",
+      "source_crop": [
+        283,
+        115,
+        415,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 4,
+      "id": "boss_overseer",
+      "name_ja": "監督官ザルグ",
+      "group": "メイン",
+      "location": "鉄鎖鉱山・最深部",
+      "path": "assets/bosses_new/boss_overseer.png",
+      "source_crop": [
+        423,
+        115,
+        555,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 5,
+      "id": "boss_ledger_guardian",
+      "name_ja": "帳簿の守護者",
+      "group": "メイン",
+      "location": "カリオン・地下記録庫",
+      "path": "assets/bosses_new/boss_ledger_guardian.png",
+      "source_crop": [
+        563,
+        115,
+        694,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 6,
+      "id": "boss_valen",
+      "name_ja": "騎士団長ヴァレン",
+      "group": "メイン",
+      "location": "王都セントラ・騎士団詰所",
+      "path": "assets/bosses_new/boss_valen.png",
+      "source_crop": [
+        702,
+        115,
+        834,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 7,
+      "id": "boss_royal_captain",
+      "name_ja": "親衛隊長ドレク",
+      "group": "メイン",
+      "location": "王都セントラ・王宮",
+      "path": "assets/bosses_new/boss_royal_captain.png",
+      "source_crop": [
+        842,
+        115,
+        973,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 8,
+      "id": "boss_ledger_core",
+      "name_ja": "帳簿中枢の守護機構",
+      "group": "メイン",
+      "location": "王都セントラ・王宮深部",
+      "path": "assets/bosses_new/boss_ledger_core.png",
+      "source_crop": [
+        981,
+        115,
+        1113,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 9,
+      "id": "boss_ruin_memory",
+      "name_ja": "廃墟の記憶",
+      "group": "メイン",
+      "location": "灰灯島アルナ・廃墟",
+      "path": "assets/bosses_new/boss_ruin_memory.png",
+      "source_crop": [
+        1121,
+        115,
+        1253,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 10,
+      "id": "boss_library_guardian",
+      "name_ja": "図書館の守護機構",
+      "group": "メイン",
+      "location": "海底都市エルミナ・記憶の図書館",
+      "path": "assets/bosses_new/boss_library_guardian.png",
+      "source_crop": [
+        1261,
+        115,
+        1392,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 11,
+      "id": "boss_time_guardian",
+      "name_ja": "時の守護者",
+      "group": "メイン",
+      "location": "時の神殿",
+      "path": "assets/bosses_new/boss_time_guardian.png",
+      "source_crop": [
+        1400,
+        115,
+        1532,
+        229
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 12,
+      "id": "boss_drone_swarm",
+      "name_ja": "監視ドローン群",
+      "group": "メイン",
+      "location": "ゼロメア・旧都市",
+      "path": "assets/bosses_new/boss_drone_swarm.png",
+      "source_crop": [
+        10,
+        289,
+        139,
+        408
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 13,
+      "id": "boss_core_defense",
+      "name_ja": "中枢防衛機構",
+      "group": "メイン",
+      "location": "ゼロメア・オラクル中枢",
+      "path": "assets/bosses_new/boss_core_defense.png",
+      "source_crop": [
+        159,
+        289,
+        287,
+        408
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 14,
+      "id": "boss_minister",
+      "name_ja": "裏切りの大臣ヴォルク",
+      "group": "メイン",
+      "location": "マクディア・禁書庫",
+      "path": "assets/bosses_new/boss_minister.png",
+      "source_crop": [
+        307,
+        289,
+        435,
+        408
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 15,
+      "id": "boss_sky_guardian",
+      "name_ja": "天空の守護者",
+      "group": "メイン",
+      "location": "天空神殿",
+      "path": "assets/bosses_new/boss_sky_guardian.png",
+      "source_crop": [
+        455,
+        289,
+        583,
+        408
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 16,
+      "id": "boss_zarg_remnant",
+      "name_ja": "ザルグの残滓",
+      "group": "メイン",
+      "location": "暗黒大陸・虚無の荒野1階",
+      "path": "assets/bosses_new/boss_zarg_remnant.png",
+      "source_crop": [
+        603,
+        289,
+        731,
+        408
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 17,
+      "id": "boss_sevran_shadow",
+      "name_ja": "セヴランの影",
+      "group": "メイン",
+      "location": "暗黒大陸・虚無の荒野2階",
+      "path": "assets/bosses_new/boss_sevran_shadow.png",
+      "source_crop": [
+        751,
+        289,
+        879,
+        408
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 18,
+      "id": "boss_grote_2",
+      "name_ja": "鉄冠将軍グロート（再戦）",
+      "group": "メイン",
+      "location": "魔王城の門",
+      "path": "assets/bosses_new/boss_grote_2.png",
+      "source_crop": [
+        899,
+        289,
+        1027,
+        408
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 19,
+      "id": "boss_demon_fear",
+      "name_ja": "相場魔王〈恐怖〉",
+      "group": "メイン",
+      "location": "魔王城・玉座の間",
+      "path": "assets/bosses_new/boss_demon_fear.png",
+      "source_crop": [
+        1047,
+        289,
+        1175,
+        408
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 20,
+      "id": "boss_demon_greed",
+      "name_ja": "相場魔王〈欲望〉",
+      "group": "メイン",
+      "location": "魔王城・玉座の間",
+      "path": "assets/bosses_new/boss_demon_greed.png",
+      "source_crop": [
+        1195,
+        289,
+        1364,
+        408
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 21,
+      "id": "boss_demon_fixed",
+      "name_ja": "相場魔王〈固定〉",
+      "group": "メイン",
+      "location": "魔王城・玉座の間",
+      "path": "assets/bosses_new/boss_demon_fixed.png",
+      "source_crop": [
+        1384,
+        289,
+        1526,
+        408
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 22,
+      "id": "boss_bandit_chief",
+      "name_ja": "山賊の頭目ガロン",
+      "group": "サブ・隠し",
+      "location": "エマール山道・山賊のアジト",
+      "path": "assets/bosses_new/boss_bandit_chief.png",
+      "source_crop": [
+        11,
+        504,
+        129,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 23,
+      "id": "wolf_king",
+      "name_ja": "森の狼王",
+      "group": "サブ・隠し",
+      "location": "迷いの森・隠し宝物庫",
+      "path": "assets/bosses_new/wolf_king.png",
+      "source_crop": [
+        151,
+        504,
+        268,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 24,
+      "id": "crystal_golem",
+      "name_ja": "クリスタルゴーレム",
+      "group": "サブ・隠し",
+      "location": "忘却の洞窟3階",
+      "path": "assets/bosses_new/crystal_golem.png",
+      "source_crop": [
+        290,
+        504,
+        408,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 25,
+      "id": "boss_storm_chief",
+      "name_ja": "砂嵐の頭目ザイード",
+      "group": "サブ・隠し",
+      "location": "砂嵐の回廊2階",
+      "path": "assets/bosses_new/boss_storm_chief.png",
+      "source_crop": [
+        430,
+        504,
+        548,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 26,
+      "id": "boss_mirage_lord",
+      "name_ja": "蜃気楼の主",
+      "group": "サブ・隠し",
+      "location": "蜃気楼の神殿",
+      "path": "assets/bosses_new/boss_mirage_lord.png",
+      "source_crop": [
+        570,
+        504,
+        687,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 27,
+      "id": "boss_magma_wyrm",
+      "name_ja": "溶岩の番竜",
+      "group": "サブ・隠し",
+      "location": "竜脈洞窟2階",
+      "path": "assets/bosses_new/boss_magma_wyrm.png",
+      "source_crop": [
+        709,
+        504,
+        827,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 28,
+      "id": "boss_primal_flame",
+      "name_ja": "原初の炎竜",
+      "group": "サブ・隠し",
+      "location": "竜脈洞窟・深部2階",
+      "path": "assets/bosses_new/boss_primal_flame.png",
+      "source_crop": [
+        849,
+        504,
+        966,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 29,
+      "id": "boss_memory_keeper",
+      "name_ja": "記憶庫の番人",
+      "group": "サブ・隠し",
+      "location": "忘却の雪原・記憶庫",
+      "path": "assets/bosses_new/boss_memory_keeper.png",
+      "source_crop": [
+        988,
+        504,
+        1106,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 30,
+      "id": "boss_frost_spirit",
+      "name_ja": "凍てついた大精霊",
+      "group": "サブ・隠し",
+      "location": "精霊の森・最奥部",
+      "path": "assets/bosses_new/boss_frost_spirit.png",
+      "source_crop": [
+        1128,
+        504,
+        1246,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 31,
+      "id": "boss_clock_warden",
+      "name_ja": "凍結の時計守",
+      "group": "サブ・隠し",
+      "location": "凍結時計塔4階",
+      "path": "assets/bosses_new/boss_clock_warden.png",
+      "source_crop": [
+        1268,
+        504,
+        1385,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 32,
+      "id": "boss_ash_lord",
+      "name_ja": "灰の王",
+      "group": "サブ・隠し",
+      "location": "グラニア・灰の洞窟2階",
+      "path": "assets/bosses_new/boss_ash_lord.png",
+      "source_crop": [
+        1407,
+        504,
+        1525,
+        622
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 33,
+      "id": "boss_ghost_captain",
+      "name_ja": "幽霊船長",
+      "group": "サブ・隠し",
+      "location": "沈没船の礁・船長室",
+      "path": "assets/bosses_new/boss_ghost_captain.png",
+      "source_crop": [
+        14,
+        679,
+        125,
+        790
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 34,
+      "id": "boss_old_core",
+      "name_ja": "旧都市の演算核",
+      "group": "サブ・隠し",
+      "location": "ゼロメア・旧都市深層",
+      "path": "assets/bosses_new/boss_old_core.png",
+      "source_crop": [
+        147,
+        679,
+        259,
+        790
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 35,
+      "id": "boss_gull_admiral",
+      "name_ja": "海賊カモメの頭",
+      "group": "サブ・隠し",
+      "location": "グラニア・海賊の巣",
+      "path": "assets/bosses_new/boss_gull_admiral.png",
+      "source_crop": [
+        281,
+        679,
+        394,
+        790
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 36,
+      "id": "observer_echo",
+      "name_ja": "観測者の残響",
+      "group": "サブ・隠し",
+      "location": "ボラティリティア学院・地下1階",
+      "path": "assets/bosses_new/observer_echo.png",
+      "source_crop": [
+        416,
+        679,
+        528,
+        790
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 37,
+      "id": "soul_warden",
+      "name_ja": "魂の番人",
+      "group": "サブ・隠し",
+      "location": "ボラティリティア学院・地下2階",
+      "path": "assets/bosses_new/soul_warden.png",
+      "source_crop": [
+        550,
+        679,
+        663,
+        790
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 38,
+      "id": "zero_echo",
+      "name_ja": "ゼロポイントの残響",
+      "group": "サブ・隠し",
+      "location": "ボラティリティア学院・地下2階",
+      "path": "assets/bosses_new/zero_echo.png",
+      "source_crop": [
+        685,
+        679,
+        800,
+        790
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": true
+    },
+    {
+      "index": 39,
+      "id": "boss_greed_demon",
+      "name_ja": "欲望の魔人",
+      "group": "配置未確認",
+      "location": "王家の地下通路（敵データ記載）",
+      "path": "assets/bosses_new/boss_greed_demon.png",
+      "source_crop": [
+        825,
+        711,
+        924,
+        813
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": false
+    },
+    {
+      "index": 40,
+      "id": "boss_grote",
+      "name_ja": "鉄冠将軍グロート（旧）",
+      "group": "配置未確認",
+      "location": "鉄冠将軍の砦（旧定義）",
+      "path": "assets/bosses_new/boss_grote.png",
+      "source_crop": [
+        946,
+        711,
+        1043,
+        813
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": false
+    },
+    {
+      "index": 41,
+      "id": "sphinx",
+      "name_ja": "スフィンクス像",
+      "group": "配置未確認",
+      "location": "リシア砂漠（敵データ記載）",
+      "path": "assets/bosses_new/sphinx.png",
+      "source_crop": [
+        1065,
+        711,
+        1162,
+        813
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": false
+    },
+    {
+      "index": 42,
+      "id": "kraken",
+      "name_ja": "クラーケン",
+      "group": "配置未確認",
+      "location": "波形の海洋群島（敵データ記載）",
+      "path": "assets/bosses_new/kraken.png",
+      "source_crop": [
+        1184,
+        711,
+        1282,
+        813
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": false
+    },
+    {
+      "index": 43,
+      "id": "dragon_red",
+      "name_ja": "レッドドラゴン",
+      "group": "配置未確認",
+      "location": "暗黒大陸（敵データ記載）",
+      "path": "assets/bosses_new/dragon_red.png",
+      "source_crop": [
+        1304,
+        711,
+        1403,
+        813
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": false
+    },
+    {
+      "index": 44,
+      "id": "demon_lord",
+      "name_ja": "相場魔王（旧）",
+      "group": "配置未確認",
+      "location": "魔王城（旧定義）",
+      "path": "assets/bosses_new/demon_lord.png",
+      "source_crop": [
+        1425,
+        711,
+        1525,
+        813
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "enemy",
+      "placed": false
+    },
+    {
+      "index": 45,
+      "id": "event_mine_captain",
+      "name_ja": "鉄鎖鉱山の看守長",
+      "group": "特殊戦闘",
+      "location": "鉄鎖鉱山2階",
+      "path": "assets/boss_encounters/event_mine_captain.png",
+      "source_crop": [
+        15,
+        898,
+        147,
+        986
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "encounter_event",
+      "placed": true
+    },
+    {
+      "index": 46,
+      "id": "event_federal_captain",
+      "name_ja": "連邦隊長",
+      "group": "特殊戦闘",
+      "location": "カリオン・財務局",
+      "path": "assets/boss_encounters/event_federal_captain.png",
+      "source_crop": [
+        169,
+        898,
+        302,
+        986
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "encounter_event",
+      "placed": true
+    },
+    {
+      "index": 47,
+      "id": "castle_seal_1",
+      "name_ja": "魔王城・欲望の間",
+      "group": "特殊戦闘",
+      "location": "魔王城2階（複数敵の特別戦）",
+      "path": "assets/boss_encounters/castle_seal_1.png",
+      "source_crop": [
+        324,
+        898,
+        456,
+        986
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "encounter_event",
+      "placed": true
+    },
+    {
+      "index": 48,
+      "id": "castle_seal_2",
+      "name_ja": "魔王城・恐怖の間",
+      "group": "特殊戦闘",
+      "location": "魔王城3階（複数敵の特別戦）",
+      "path": "assets/boss_encounters/castle_seal_2.png",
+      "source_crop": [
+        478,
+        898,
+        611,
+        986
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "encounter_event",
+      "placed": true
+    },
+    {
+      "index": 49,
+      "id": "castle_seal_3",
+      "name_ja": "魔王城・支配の間",
+      "group": "特殊戦闘",
+      "location": "魔王城4階（複数敵の特別戦）",
+      "path": "assets/boss_encounters/castle_seal_3.png",
+      "source_crop": [
+        633,
+        898,
+        766,
+        986
+      ],
+      "render_size": [
+        512,
+        512
+      ],
+      "asset_kind": "encounter_event",
+      "placed": true
+    }
+  ]
+}

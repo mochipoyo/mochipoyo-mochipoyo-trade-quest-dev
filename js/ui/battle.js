@@ -114,6 +114,14 @@
     this.b = b; this.kind = kind; this.pops = []; this.shake = {}; this.flash = 0; this.anims = []; this.t = 0; this.screenShake = 0; this.victory = -1; this.particles = [];
     this.theme = themeFor(kind, opts.zone, root.World.map ? root.World.map.id : '');
     this.bg = null; this.entrance = b.boss ? { t: 0, dur: 1400 } : null;
+    // v6.3 特殊戦闘のカットイン（マップと敵の組み合わせが一致し、画像が読み込めたときだけ）。終わったら消える
+    this.cutin = null;
+    var BA = root.BossArt;
+    if (BA && b.boss) {
+      var encId = BA.matchEncounter(b.enemies.map(function (e) { return e.defId; }), opts, root.World.map ? root.World.map.id : null);
+      var encV = encId ? BA.getEncounter(encId) : null;
+      if (encV) { this.cutin = { id: encId, v: encV, name: (BA.encounter(encId) || {}).name || '', t: 0, dur: 1900 }; this.hadCutin = encId; if (this.entrance) this.entrance.delay = 1200; }
+    }
   }
   BattleScene.prototype.update = function (dt) {
     this.t += dt; var self = this;
@@ -121,7 +129,10 @@
     this.anims = this.anims.filter(function (a) { a.t += dt; return a.t < a.dur; });
     if (this.flash > 0) this.flash -= dt;
     if (this.screenShake > 0) this.screenShake -= dt;
-    if (this.entrance) { this.entrance.t += dt; if (this.entrance.t >= this.entrance.dur) this.entrance = null; }
+    if (this.cutin) { this.cutin.t += dt; if (this.cutin.t >= this.cutin.dur) this.cutin = null; }
+    // v6.3 ボス画像が開始に間に合わず従来の絵で始めたとき：登場演出（暗転からせり上がる）の間に読み込めたら新画像に切り替える。演出が終わったあとは切り替えない
+    if (this.entrance && root.BossArt) { var BA = root.BossArt; this.b.enemies.forEach(function (e) { if (e._vis && e._vis.source !== 'bossart' && BA.wants(e.defId) && BA.get(e.defId)) { delete e._vis; delete e._sil; } }); }
+    if (this.entrance) { if (this.entrance.delay > 0) this.entrance.delay -= dt; else { this.entrance.t += dt; if (this.entrance.t >= this.entrance.dur) this.entrance = null; } }
     if (this.victory >= 0) { this.victory += dt; if (Math.random() < 0.5) this.particles.push({ x: Math.random() * 640, y: -10, vx: (Math.random() - 0.5) * 40, vy: 60 + Math.random() * 80, c: ['#ffd24a', '#ff8ab0', '#7fe3a5', '#9fd4ff', '#fff'][Math.floor(Math.random() * 5)], t: 0 }); }
     this.particles = this.particles.filter(function (p) { p.t += dt; p.x += p.vx * dt / 1000; p.y += p.vy * dt / 1000; return p.t < 4000; });
   };
@@ -181,8 +192,10 @@
       var ph = self.anims.filter(function (a) { return a.type === 'phase' && a.idx === i; })[0];
       if (ph) { var pp = ph.t / ph.dur; ctx.strokeStyle = 'rgba(255,80,80,' + (1 - pp) + ')'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + size / 2, y + hh / 2, Math.max(size, hh) * 0.5 + pp * 60, 0, Math.PI * 2); ctx.stroke(); }
     });
-    // ボス登場バナー
-    if (ent && entP > 0.3) { var bp = Math.min(1, (entP - 0.3) / 0.3); ctx.save(); ctx.globalAlpha = bp * (entP > 0.85 ? (1 - entP) / 0.15 : 1); ctx.fillStyle = 'rgba(120,0,20,0.75)'; ctx.fillRect(0, H * 0.42, W, 44); ctx.fillStyle = '#ffd24a'; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('— ' + (b.enemies[0] ? b.enemies[0].name : 'BOSS') + ' —', W / 2, H * 0.42 + 31); ctx.restore(); }
+    // v6.3 特殊戦闘のカットイン
+    if (this.cutin) drawCutin(ctx, this.cutin, W, H);
+    // ボス登場バナー（カットインのある戦闘ではカットインの見出しが代わり）
+    if (ent && entP > 0.3 && !this.hadCutin) { var bp = Math.min(1, (entP - 0.3) / 0.3); ctx.save(); ctx.globalAlpha = bp * (entP > 0.85 ? (1 - entP) / 0.15 : 1); ctx.fillStyle = 'rgba(120,0,20,0.75)'; ctx.fillRect(0, H * 0.42, W, 44); ctx.fillStyle = '#ffd24a'; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('— ' + (b.enemies[0] ? b.enemies[0].name : 'BOSS') + ' —', W / 2, H * 0.42 + 31); ctx.restore(); }
     // 味方側のエフェクト（画面下部）
     this.anims.filter(function (a) { return a.side === 'party' && a.type === 'fx'; }).forEach(function (a) { var i = Math.max(0, b.party.map(function (p) { return p.id; }).indexOf(a.id)); drawFx(ctx, a, (W / (b.party.length + 1)) * (i + 1), H * 0.8); });
     if (this.flash > 0) { ctx.fillStyle = 'rgba(255,255,255,' + Math.min(0.6, this.flash / 200) + ')'; ctx.fillRect(0, 0, W, H); }
@@ -193,9 +206,33 @@
     ctx.restore();
   };
   var imgCache = {};
+  function drawCutin(ctx, ci, W, H) {
+    var p = ci.t / ci.dur; var a = p < 0.13 ? p / 0.13 : p > 0.79 ? (1 - p) / 0.21 : 1; a = Math.max(0, Math.min(1, a));
+    var ease = 1 - Math.pow(1 - Math.min(1, p / 0.3), 3);
+    ctx.save(); ctx.globalAlpha = a;
+    ctx.fillStyle = 'rgba(0,0,0,0.75)'; ctx.fillRect(0, 0, W, H);
+    // 素材は一覧画像からの拡大なので、元の 0.62 倍までにとどめる（大きくするとぼやける）
+    var v = ci.v; var f = Math.min(W * 0.94 / v.img.width, (H * 0.62) / v.img.height, 0.62) * (1.05 - 0.05 * ease);
+    var dw = Math.round(v.img.width * f), dh = Math.round(v.img.height * f);
+    var bh = Math.round(v.img.height * Math.min(W * 0.94 / v.img.width, (H * 0.62) / v.img.height, 0.62)) + 16, by = Math.round(H * 0.42 - bh / 2);
+    var g = ctx.createLinearGradient(0, by, 0, by + bh); g.addColorStop(0, 'rgba(90,10,30,0.0)'); g.addColorStop(0.5, 'rgba(90,10,30,0.6)'); g.addColorStop(1, 'rgba(90,10,30,0.0)'); ctx.fillStyle = g; ctx.fillRect(0, by, W, bh);
+    ctx.fillStyle = 'rgba(255,210,74,0.8)'; ctx.fillRect(0, by + bh, W, 2);
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(v.img, Math.round((W - dw) / 2 + (1 - ease) * 40), Math.round(by + bh - dh - 2), dw, dh);
+    ctx.imageSmoothingEnabled = false;
+    ctx.font = 'bold 24px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.fillStyle = '#ffd24a';
+    var label = '— ' + ci.name + ' —'; ctx.strokeText(label, W / 2, by + bh + 32); ctx.fillText(label, W / 2, by + bh + 32);
+    ctx.restore();
+  }
   // 描画優先順位：1) assets/ の新画像（マニフェストで use=true かつ読み込み済み） 2) MonsterArt（art） 3) 従来の Sprites
   function enemyVisual(e) {
     if (e._vis) return e._vis;
+    // v6.3 ボス画像パック（core/bossart.js）：採用した新画像 → 読めないときは元の画像（prev）→ 以下の従来の順
+    var BA = root.BossArt;
+    if (BA && BA.isBossId(e.defId)) {
+      var bv = BA.wants(e.defId) ? BA.visual(e.defId) : null; if (bv) { e._vis = bv; return bv; }
+      var pv = BA.prevImage(e.defId); if (pv) { e._vis = pv; return pv; }
+    }
     var A = root.Assets; var img = A ? A.image('monsters', e.defId) : null;
     if (img) { var ent = A.entry('monsters', e.defId); var sc = (ent && ent.scale) || 1; e._vis = { img: img, w: Math.round(img.naturalWidth * sc), h: Math.round(img.naturalHeight * sc), smooth: sc !== 1, source: 'assets' }; return e._vis; }
     var c;
@@ -230,6 +267,7 @@
   /* ---------- 開始 ---------- */
   BattleUI.start = async function (enemyIds, opts) {
     opts = opts || {};
+    if (root.BossArt) { try { var artWait = root.BossArt.prepare(enemyIds, opts); if (artWait) await artWait; } catch (err) { console.warn('BossArt', err); } }   // v6.3 間に合わなければ従来の画像で始める
     var d = State.data; var party = State.partyActors();
     var b = Combat.create(enemyIds, party, opts);
     if (opts.exposeFirst) b.enemies.forEach(function (e) { e.exposed = opts.exposeFirst; });
@@ -243,7 +281,7 @@
     renderParty(b);
     b.enemies.forEach(function (e) { d.bestiary[e.defId] = Object.assign(d.bestiary[e.defId] || {}, { seen: true }); });
     var names = b.enemies.map(function (e) { return e.name; });
-    if (opts.boss) { scene.screenShake = 600; if (root.Audio) root.Audio.sfx('crit'); await Win.sleep(1300); }
+    if (opts.boss) { scene.screenShake = 600; if (root.Audio) root.Audio.sfx('crit'); await Win.sleep(1300 + (scene.cutin ? 600 : 0)); }   // v6.3 特殊戦闘のカットインがあるときだけ 0.6 秒長く
     await bmsg(uniq(names).join('、') + 'が現れた！', 700);
     var result = null;
     while (b.state === 'command') {

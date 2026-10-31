@@ -2681,4 +2681,77 @@
   var MF = root.ASSET_MANIFEST;
   if (root.JOB_LIST) root.JOB_LIST.forEach(function (j) { var id = 'hero_' + j; if (!MF.overworld[id]) MF.overworld[id] = { name: (root.JOBS[j] || {}).name || j, kind: 'walk', spriteId: id, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v5.1 追加。画像未作成のためコード描画' }; if (!MF.jobs[j]) MF.jobs[j] = { name: (root.JOBS[j] || {}).name || j, kind: 'portrait', spriteId: id, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v5.1 追加。画像未作成' }; });
   if (root.COMPANIONS) Object.keys(root.COMPANIONS).forEach(function (id) { if (!MF.overworld[id]) MF.overworld[id] = { name: root.COMPANIONS[id].name, kind: 'walk', spriteId: id, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v5.1 追加。画像未作成のためコード描画（' + root.COMPANIONS[id].sprite + '）' }; if (!MF.companions[id]) MF.companions[id] = { name: root.COMPANIONS[id].name, kind: 'portrait', spriteId: id, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v5.1 追加。画像未作成' }; });
+  /* ---------- v6.3 ボス画像パック（全44体 + 特殊戦闘5種）：docs/boss_asset_mapping.json（素材パス・名前・配置の対応表。2026-10-31 生成）から登録 ----------
+     ・画像：assets/bosses_new/<敵ID>.png（512×512 RGBA）、assets/boss_encounters/<ID>.png。ID→パスは1対1（ファイル名＝ID）
+     ・どれも lazy（起動時には読まない）。戦闘の直前とボスのいるマップに入ったときに core/bossart.js が読む
+     ・status 'replaced' = 戦闘・図鑑で使う（採用）／'candidate' = 既存画像を優先し、切替フラグ（?bossart=new か localStorage mtq-bossart=new）のときだけ使う
+     ・既存画像がある敵は、採用なら prev に元の画像を残し（読み込み失敗時のフォールバック）、保留なら既存の項目の candidate に入れる
+     ・scale 0.36：不透明部分で切り抜いた絵にかける倍率（512px 枠全体なら約0.30〜0.34 相当）。fit は最大の幅・高さ。戦闘画面ではさらに敵の数・画面幅で縮小（足元中央基準）
+     ・clean：一覧画像由来の枠線（bars）・白い背景の残り（white）・切り口の白い線（trim）を表示時に取り除く指定。元のPNGは変更しない
+     ・bbox：不透明部分の外接矩形 [x, y, 幅, 高さ]（ピクセルを読めない環境で切り抜きに使う） */
+  var BOSS_PACK = [   // [敵ID, 名前, 区分, 戦闘配置あり, status, clean, bbox, 品質メモ]
+    ["boss_lost_trend", "トレンド迷子", "メイン", true, "replaced", {"bars":true,"trim":true}, [18, 65, 476, 431], "目立つ欠陥なし／新画像を採用：既存（白いおばけ）より名前・設定（トレンド・ローソク足）に合い、目立つ欠陥なし"],
+    ["boss_greed_golem", "欲望のゴーレム", "メイン", true, "replaced", {"bars":true,"trim":true,"white":{}}, [18, 84, 478, 412], "腕と胴のすき間に白い背景が残る→表示時に除去／新画像を採用：既存（四角いロボット）より「欲望のゴーレム」らしい"],
+    ["boss_tide_serpent", "潮の大蛇ウルガ", "メイン", true, "replaced", {"bars":true,"trim":true,"white":{}}, [18, 81, 476, 415], "頭の後ろ・波間に白い背景→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_overseer", "監督官ザルグ", "メイン", true, "replaced", {"bars":true,"trim":true,"white":{}}, [16, 78, 478, 418], "足もとの鎖の間に白い背景→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_ledger_guardian", "帳簿の守護者", "メイン", true, "replaced", {"bars":true,"trim":true,"white":{}}, [16, 75, 478, 421], "本と歯車の間に白い背景→表示時に除去。破片が散らばる構図／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_valen", "騎士団長ヴァレン", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 81, 480, 415], "目立つ欠陥なし（白い衣は絵の一部として残す）／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_royal_captain", "親衛隊長ドレク", "メイン", true, "replaced", {"bars":true,"trim":true,"white":{}}, [18, 80, 478, 416], "マントのすそに小さな白→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_ledger_core", "帳簿中枢の守護機構", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 81, 478, 415], "左端に一覧画像の枠線→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_ruin_memory", "廃墟の記憶", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 81, 480, 415], "左端に枠線→表示時に除去。淡い白の部分は背景か絵か判別できないため残す／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_library_guardian", "図書館の守護機構", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 78, 480, 418], "左端に枠線→表示時に除去。白い円盤（時計盤）は残す／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_time_guardian", "時の守護者", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 68, 478, 428], "左端に枠線→表示時に除去。白い衣・光輪は絵の一部として残す／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_drone_swarm", "監視ドローン群", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 53, 480, 443], "小さな機体が散らばる構図（細かい破片が多い）／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_core_defense", "中枢防衛機構", "メイン", true, "replaced", {"bars":true,"trim":true,"white":{}}, [16, 50, 480, 446], "中央左に大きな白い背景→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_minister", "裏切りの大臣ヴォルク", "メイン", true, "replaced", {"bars":true,"trim":true,"white":{}}, [16, 50, 480, 446], "左上の魔法の間に白→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_sky_guardian", "天空の守護者", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 50, 480, 446], "目立つ欠陥なし（白い翼・衣は絵の一部）／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_zarg_remnant", "ザルグの残滓", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 50, 480, 446], "白い霧に包まれた絵（霧は残す）／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_sevran_shadow", "セヴランの影", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 50, 480, 446], "目立つ欠陥なし／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_grote_2", "鉄冠将軍グロート（再戦）", "メイン", true, "replaced", {"bars":true,"trim":true,"white":{}}, [16, 50, 480, 446], "左肩の横に白い背景→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_demon_fear", "相場魔王〈恐怖〉", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 50, 480, 446], "下端が直線で切れ、切り口に白い線→線は表示時に除去。炎の中の白は光として残す／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_demon_greed", "相場魔王〈欲望〉", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 158, 480, 338], "左右に枠線→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_demon_fixed", "相場魔王〈固定〉", "メイン", true, "replaced", {"bars":true,"trim":true}, [16, 94, 480, 402], "左右・下の炎が直線で切れている（素材の切り抜き）／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_bandit_chief", "山賊の頭目ガロン", "サブ・隠し", true, "replaced", {"bars":true,"trim":true,"white":{}}, [16, 16, 480, 480], "右腕と胴の間に白い背景→表示時に除去（輪郭線がわずかに残る）／新画像を採用：既存は村人と同じ型の小さなドット絵。新画像は頭目らしい"],
+    ["wolf_king", "森の狼王", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [18, 16, 476, 480], "目立つ欠陥なし／新画像を採用：既存画像は角のある猪のような絵で「狼王」と一致しない。新画像は狼"],
+    ["crystal_golem", "クリスタルゴーレム", "サブ・隠し", true, "replaced", {"bars":true,"trim":true,"white":{"keepGlow":false}}, [16, 16, 480, 477], "脚の間に白い背景→表示時に除去／新画像を採用：既存（四角いロボット）より結晶のゴーレムらしい"],
+    ["boss_storm_chief", "砂嵐の頭目ザイード", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [16, 31, 480, 465], "下の砂嵐が直線で切れている／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_mirage_lord", "蜃気楼の主", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [18, 16, 476, 480], "左端に枠線→表示時に除去。白い渦は絵の一部として残す／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_magma_wyrm", "溶岩の番竜", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [16, 16, 480, 480], "右端に枠線→表示時に除去。右側が直線で切れている／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_primal_flame", "原初の炎竜", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [18, 16, 476, 480], "右端に枠線→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_memory_keeper", "記憶庫の番人", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [16, 16, 480, 480], "右端に枠線→表示時に除去。背景の建物（時計塔・本）まで絵に含まれている／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_frost_spirit", "凍てついた大精霊", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [16, 16, 477, 480], "目立つ欠陥なし（白い氷は絵の一部）／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_clock_warden", "凍結の時計守", "サブ・隠し", true, "replaced", {"bars":true,"trim":true,"white":{}}, [18, 16, 476, 480], "左と中央に白い背景→表示時に除去（輪郭線がわずかに残る）／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_ash_lord", "灰の王", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [16, 16, 480, 480], "左右・下が直線で切れている（胸像のような切り抜き）／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_ghost_captain", "幽霊船長", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [16, 16, 480, 480], "目立つ欠陥なし（霧は絵の一部）／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_old_core", "旧都市の演算核", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [16, 20, 480, 476], "細かい破片が多い構図／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_gull_admiral", "海賊カモメの頭", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [16, 24, 480, 472], "目立つ欠陥なし／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["observer_echo", "観測者の残響", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [19, 16, 477, 480], "目立つ欠陥なし／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["soul_warden", "魂の番人", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [16, 24, 480, 472], "右端に枠線→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["zero_echo", "ゼロポイントの残響", "サブ・隠し", true, "replaced", {"bars":true,"trim":true}, [16, 33, 480, 463], "細かい破片が多い構図／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["boss_greed_demon", "欲望の魔人", "配置未確認", false, "candidate", {"bars":true,"trim":true}, [25, 16, 458, 480], "右端に枠の板→表示時に除去／既存画像を優先：新画像は左右・下が四角く切れている（見切れ）。戦闘配置なし"],
+    ["boss_grote", "鉄冠将軍グロート（旧）", "配置未確認", false, "replaced", {"bars":true,"trim":true}, [28, 16, 456, 480], "右端に枠線→表示時に除去／新画像を採用：従来はコード描画（共通の型）か村人型のドット絵で、名前・設定に合う専用の絵がなかった"],
+    ["sphinx", "スフィンクス像", "配置未確認", false, "candidate", {"bars":true,"trim":true}, [28, 16, 456, 480], "右端に枠線→表示時に除去／既存画像を優先：新画像は右・下が直線で切れている（見切れ）。戦闘配置なし"],
+    ["kraken", "クラーケン", "配置未確認", false, "candidate", {"bars":true,"trim":true,"white":{}}, [28, 16, 453, 480], "触手の間に白い背景→表示時に除去／既存画像を優先：新画像は右側が直線で切れている（見切れ）。戦闘配置なし"],
+    ["dragon_red", "レッドドラゴン", "配置未確認", false, "candidate", {"bars":true,"trim":true,"white":{}}, [23, 16, 466, 480], "尾の内側に白い背景→表示時に除去／既存画像を優先：新画像は翼・尾のまわりに白い背景のかけらが残る。戦闘配置なし"],
+    ["demon_lord", "相場魔王（旧）", "配置未確認", false, "candidate", {"bars":true,"trim":true}, [20, 16, 471, 480], "目立つ欠陥なし／既存画像を優先：新画像は左右・下が四角く切れている（見切れ）。戦闘配置なし（現在の魔王戦は3形態の別ID）"]
+  ];
+  var BOSS_ENC = [   // [ID, 名前, マップ, 敵の組み合わせ（順不同で一致したときだけカットイン）, clean, bbox, 品質メモ]
+    ["event_mine_captain", "鉄鎖鉱山の看守長", "iron_mine_2", ["chain_warden", "chain_warden", "mine_imp"], {"bars":true,"trim":true}, [16, 176, 480, 320], "目立つ欠陥なし"],
+    ["event_federal_captain", "連邦隊長", "kalion_finance", ["federal_captain", "federal_soldier", "federal_soldier"], {"bars":true,"trim":true}, [16, 178, 480, 318], "下が直線で切れている"],
+    ["castle_seal_1", "魔王城・欲望の間", "demon_castle_2", ["greed_shade", "greed_shade", "void_beast"], {"bars":true,"trim":true,"keepX":[0,466]}, [16, 171, 478, 325], "右端に枠と隣のコマ→範囲外を透明に"],
+    ["castle_seal_2", "魔王城・恐怖の間", "demon_castle_3", ["fear_shade", "fear_shade", "control_shade"], {"bars":true,"trim":true,"keepX":[0,441]}, [16, 178, 480, 318], "右端に枠と隣のコマのかけら→範囲外を透明に"],
+    ["castle_seal_3", "魔王城・支配の間", "demon_castle_4", ["control_shade", "control_shade", "void_beast"], {"bars":true,"trim":true}, [16, 174, 478, 322], "目立つ欠陥なし"]
+  ];
+  (function () {
+    var MON = MF.monsters; MF.encounters = MF.encounters || {};
+    BOSS_PACK.forEach(function (r) {
+      var id = r[0]; var ent = { pack: 'boss49', name: r[1], kind: 'monster', group: r[2], placed: r[3], anchor: 'bottom-center', path: 'assets/bosses_new/' + id + '.png', w: 512, h: 512, scale: 0.36, fit: [250, 180], status: r[4], use: true, lazy: true, fallback: 'monsterart', clean: r[5], bbox: r[6], qa: r[7], source: 'trade_quest_boss_assets_49（一覧画像からのアップスケール素材）' };
+      var old = MON[id];
+      if (old && old.pack !== 'boss49') {
+        if (r[4] === 'replaced') { ent.prev = { path: old.path, w: old.w, h: old.h, scale: old.scale }; ent.fallback = 'prev'; MON[id] = ent; }   // 採用：元の画像を prev に
+        else { ent.fallback = 'existing'; old.candidate = ent; }                                                                      // 保留：既存画像のまま、新画像は候補
+      } else MON[id] = ent;
+    });
+    BOSS_ENC.forEach(function (r) { MF.encounters[r[0]] = { pack: 'boss49', name: r[1], kind: 'encounter', path: 'assets/boss_encounters/' + r[0] + '.png', w: 512, h: 512, trigger: { map: r[2], enemies: r[3] }, scale: 1, fit: [600, 260], status: 'replaced', use: true, lazy: true, fallback: 'none', clean: r[4], bbox: r[5], qa: r[6] }; });
+  })();
 })(typeof window !== 'undefined' ? window : globalThis);

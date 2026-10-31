@@ -149,8 +149,16 @@
     }).join('');
     var html = '<div class="rw-title">モンスター図鑑</div><div class="bs-head">発見 ' + seen.length + '/' + ids.length + '（' + pct + '%）　討伐済み ' + defeated.length + '種<div class="bar"><span style="width:' + pct + '%"></span></div></div><div class="bs-list">' + rows + '</div>';
     await Win.panel(html, { cls: 'bestiary', setup: function (node) {
+      var BA = root.BossArt; var bossQ = Promise.resolve();
       node.querySelectorAll('.bs-img[data-id]').forEach(function (box) {
         var e = ENEMIES[box.getAttribute('data-id')]; var img;
+        // v6.3 ボス画像パック：まず従来の絵を出し、新画像が読めたら差し替える（1枚ずつ順に読む。読めなければ従来の絵のまま）
+        if (BA && BA.isBossId(e.id) && BA.wants(e.id)) bossQ = bossQ.then(function () { return BA.load(e.id); }).then(function (v) {
+          if (!v || !box.isConnected) return; var f = Math.min(104 / v.img.width, 104 / v.img.height, 1); var c2 = document.createElement('canvas'); c2.width = Math.max(1, Math.round(v.img.width * f)); c2.height = Math.max(1, Math.round(v.img.height * f));
+          var x2 = c2.getContext('2d'); x2.imageSmoothingEnabled = true; x2.imageSmoothingQuality = 'high'; x2.drawImage(v.img, 0, 0, c2.width, c2.height); c2.className = 'bs-canvas bs-boss'; box.innerHTML = ''; box.appendChild(c2);
+        }).catch(function () { });
+        var pu = BA && BA.prevUrl ? BA.prevUrl(e.id) : null;
+        if (pu) { var pim = document.createElement('img'); pim.src = pu; pim.alt = ''; pim.className = 'bs-photo'; pim.draggable = false; box.appendChild(pim); return; }   // 採用前の画像（新画像を使わない・読めないとき）
         var au = root.Assets && root.Assets.image('monsters', e.id) ? root.Assets.url('monsters', e.id) : null;
         if (au) { var im = document.createElement('img'); im.src = au; im.alt = ''; im.className = 'bs-photo'; im.draggable = false; box.appendChild(im); return; }   // 戦闘と同じアセット管理を参照
         if (e.art && root.MonsterArt) img = root.MonsterArt.image(e.art, 1, 0);
