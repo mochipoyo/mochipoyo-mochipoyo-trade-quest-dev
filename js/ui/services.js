@@ -195,10 +195,15 @@
     var replay = !!d.trade.tutorialDone;
     var mode = await Win.choice(replay ? 'チュートリアルを復習する？' : '「はじめてのトレード」を始める？', ['説明を聞いてから挑戦', '説明を短縮して挑戦', 'やめる']);
     if (mode < 0 || mode === 2) return false;
-    if (mode === 0) { for (var i = 0; i < TUTORIAL_LESSONS.length; i++) { await Win.panel('<div class="rw-title">' + (i + 1) + '. ' + Win.esc(TUTORIAL_LESSONS[i][0]) + '</div><div class="lesson">' + TUTORIAL_LESSONS[i][1].map(Win.esc).join('\n') + '</div>' + (i === 0 ? candleFigure() : ''), { closeLabel: '次へ' }); } }
+    if (mode === 0) {
+      for (var i = 0; i < TUTORIAL_LESSONS.length; i++) {
+        var pr = await Win.panel('<div class="rw-title">' + (i + 1) + '. ' + Win.esc(TUTORIAL_LESSONS[i][0]) + '</div><div class="lesson">' + TUTORIAL_LESSONS[i][1].map(Win.esc).join('\n') + '</div>' + (i === 0 ? candleFigure() : ''), { closeLabel: '次へ', quit: '中断' });
+        if (pr === 'quit') { if (await Win.confirmQuit('チュートリアル')) { await quitNote('チュートリアル'); return false; } i--; }   // v5.8 途中で中断できる
+      }
+    }
     else await Win.message(['要点だけ：高値・安値の切り上げ＝上昇、切り下げ＝下降、揃わなければレンジ。上位足の方向に合わせ、損切りを先に決める。', 'では、分析→判断→理由の順に選んでみよう。'], { name: '師匠ハケイ' });
     var res = await root.TradeUI.trial(['clear_up'], { title: 'はじめてのトレード', tutorial: true, scenarioId: 'clear_up' });
-    if (!res) return false;
+    if (!res) { await quitNote('チュートリアル'); return false; }   // v5.8 試練の途中で中断した
     if (!d.trade.tutorialDone) {
       d.trade.tutorialDone = true; d.flags.tutorial_done = true;
       d.gold += 100; State.addItem('herb', 2); State.partyActors().forEach(function (a) { root.Actors.gainExp(a, 15); });
@@ -207,6 +212,9 @@
     } else await Win.message([res.score >= 70 ? 'よく覚えているな。次は別の場面にも挑んでみよう。' : '焦らなくていい。分析の順番を思い出しながら、もう一度やってみよう。'], { name: '師匠ハケイ' });
     World.updateHud(); State.autosave(); return true;
   };
+  // v5.8 中断したときのひとこと（記録・報酬は増えない。いつでも最初から受け直せる）
+  function quitNote(what) { return Win.message([what + 'を中断した。記録や報酬は増えないが、いつでも最初から受け直せる。'], { name: '師匠ハケイ' }); }
+  Services.quitNote = quitNote;
   function candleFigure() {
     // ローソク足の説明図（陽線・陰線）
     return '<svg viewBox="0 0 220 90" width="220" height="90" style="display:block;margin:6px auto;background:rgba(0,0,0,.25);border-radius:4px"><line x1="55" y1="8" x2="55" y2="82" stroke="#4cc38a" stroke-width="2"/><rect x="43" y="28" width="24" height="36" fill="#4cc38a"/><text x="55" y="88" fill="#9fe0a8" font-size="9" text-anchor="middle">陽線（終値＞始値）</text><text x="12" y="31" fill="#ccc" font-size="8">終値</text><text x="12" y="66" fill="#ccc" font-size="8">始値</text><text x="70" y="12" fill="#ccc" font-size="8">高値</text><text x="70" y="82" fill="#ccc" font-size="8">安値</text>' +
@@ -221,7 +229,8 @@
     var i = await Win.list(list.map(function (t) { return { label: t.label, right: t.plays ? Math.round(t.acc * 100) + '%（' + t.plays + '回）' : '未挑戦', sub: '習熟度：' + t.level + (t.hintRate > 0.5 && t.plays >= 3 ? '　ヒント依存が高い' : '') }; }), { title: '苦手分野の復習（正解率の低い順）' });
     if (i < 0) return;
     var ids = TradeEval.scenariosForTopic(list[i].key);
-    await root.TradeUI.trial(ids, { title: '復習：' + list[i].label, practice: true, review: list[i].key });
+    var res = await root.TradeUI.trial(ids, { title: '復習：' + list[i].label, practice: true, review: list[i].key });
+    if (!res) { await quitNote('復習'); return; }
     await Events.checkCounterQuests();
   };
   Services.dojo = async function (where) {
@@ -247,10 +256,15 @@
     if (i < 0) return;
     var L = avail[i]; var ch = LEARNING.chapters[L.chapter - 1];
     // 講義：教材を1項目ずつ表示 → 練習問題
-    for (var k = 0; k < ch.lessons.length; k++) { await Win.panel('<div class="rw-title">' + esc(L.title) + '（' + (k + 1) + '/' + ch.lessons.length + '）</div><h3>' + esc(ch.lessons[k].title) + '</h3><p class="lesson">' + esc(ch.lessons[k].text) + '</p>'); }
+    // v5.8 教材のページは「中断」ボタン（または Esc）、確認問題は最後の選択肢「講義を中断する」（または Esc）で中断できる
+    for (var k = 0; k < ch.lessons.length; k++) {
+      var pr = await Win.panel('<div class="rw-title">' + esc(L.title) + '（' + (k + 1) + '/' + ch.lessons.length + '）</div><h3>' + esc(ch.lessons[k].title) + '</h3><p class="lesson">' + esc(ch.lessons[k].text) + '</p>', { closeLabel: k < ch.lessons.length - 1 ? '次へ' : '確認問題へ', quit: '中断' });
+      if (pr === 'quit') { if (await Win.confirmQuit('講義')) { await quitNote('講義'); return; } k--; }
+    }
     var correct = 0;
     for (var q = 0; q < ch.quiz.length; q++) {
-      var qz = ch.quiz[q]; var ans = await Win.choice('問' + (q + 1) + '：' + qz.q, qz.options, { cancel: false });
+      var qz = ch.quiz[q]; var ans = await Win.choice('問' + (q + 1) + '/' + ch.quiz.length + '：' + qz.q, qz.options.concat(['（講義を中断する）']), { cancel: true });
+      if (ans < 0 || ans >= qz.options.length) { if (await Win.confirmQuit('講義', 'ここまでの解答は記録されない')) { await quitNote('講義'); return; } q--; continue; }
       var ok = ans === qz.answer; if (ok) correct++;
       await Win.message([(ok ? '正解！ ' : '不正解…… ') + qz.explain]);
     }
@@ -268,14 +282,15 @@
     var lvItems = LEVELS.map(function (L) { var ids = root.Scenarios.byLevel(L[0]); return { label: L[1] + '（' + ids.length + '場面）', right: stat(ids), sub: L[2] }; }).concat([{ label: 'すべての場面から選ぶ', right: all.length + '場面', sub: '難易度を問わず一覧から選ぶ' }, { label: 'おまかせ（全難易度からランダム）', sub: all.length + '種類の場面から出題' }]);
     var li = await Win.list(lvItems, { title: 'チャートの試練（練習）：難易度を選ぶ' });
     if (li < 0) return;
-    if (li === LEVELS.length + 1) { await root.TradeUI.trial(all.map(function (s) { return s.id; }), { title: '修行場の試練', practice: true }); await Events.checkCounterQuests(); return; }
+    if (li === LEVELS.length + 1) { var r0 = await root.TradeUI.trial(all.map(function (s) { return s.id; }), { title: '修行場の試練', practice: true }); if (!r0) { await quitNote('試練'); return; } await Events.checkCounterQuests(); return; }
     var defs = li < LEVELS.length ? all.filter(function (s) { return (s.level || 'mid') === LEVELS[li][0]; }) : all.slice();
     var lvName = li < LEVELS.length ? LEVELS[li][1] : 'すべて';
     var items = [{ label: 'おまかせ（' + lvName + 'からランダム）', sub: defs.length + '種類の場面から出題' }].concat(defs.map(function (s) { var r = d.trade.stats.byScenario[s.id]; var tfL = (root.CONFIG.timeframes.filter(function (t) { return t.id === s.focusTF; })[0] || {}).label || ''; return { label: '[' + Services.levelLabel(s.level || 'mid') + '] ' + s.title, right: r ? '正解 ' + r.correct + '/' + r.plays : '未挑戦', sub: (s.pattern ? s.pattern + '　' : '') + '第' + s.chapter + '章の題材・' + tfL + 'で判断' + (r && r.plays ? '' : '　※正解は回答後に表示') }; }));   // v4: 正解の事前表示はしない
     var i = await Win.list(items, { title: 'チャートの試練（練習）：' + lvName });
     if (i < 0) return;
     var ids = i === 0 ? defs.map(function (s) { return s.id; }) : [defs[i - 1].id];
-    await root.TradeUI.trial(ids, { title: '修行場の試練（' + lvName + '）', practice: true });
+    var r1 = await root.TradeUI.trial(ids, { title: '修行場の試練（' + lvName + '）', practice: true });
+    if (!r1) { await quitNote('試練'); return; }
     await Events.checkCounterQuests();
   }
   async function learningQuests() {

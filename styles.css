@@ -50,6 +50,13 @@ h3 { margin: 10px 0 4px; color: var(--gold); font-size: 1rem; }
 .rw-panel { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 94%; max-width: 600px; max-height: 94%; overflow-y: auto; padding: 10px 14px; font-size: 14px; }
 .rw-panel .lesson { line-height: 1.8; white-space: pre-wrap; }
 .rw-panel-close { margin-top: 10px; text-align: center; color: var(--gold); cursor: pointer; border: 1px solid var(--gold); border-radius: 4px; padding: 6px; }
+/* v5.8 講義・チュートリアルの「次へ」と「中断」を横に並べる */
+.rw-panel-foot { display: flex; gap: 8px; margin-top: 10px; }
+.rw-panel-foot .rw-panel-close { flex: 2; margin-top: 0; }
+.rw-panel-quit { flex: 1; text-align: center; color: #c9c9d6; cursor: pointer; border: 1px solid #6a6a80; border-radius: 4px; padding: 6px; }
+.rw-panel-quit:hover { color: #fff; border-color: #a0a0b8; }
+/* v5.8 チャートの試練の「中断」ボタン */
+.chart-tools .mini.quitbtn { border-color: #8a6a6a; color: #f0c8c8; }
 .rw-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
 .rw-btn { border: 2px solid #5b6ea8; background: #16224a; padding: 7px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; }
 .rw-btn.ok { background: linear-gradient(180deg, #e8c15a, #b8902e); color: #1a1407; border-color: #fff0b0; font-weight: bold; }

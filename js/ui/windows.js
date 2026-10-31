@@ -117,14 +117,25 @@
   };
 
   /* ---------- 情報パネル（静的、閉じるまで表示） ---------- */
+  // opts.quit（v5.8）：「中断」ボタンを付ける（true なら「中断する」、文字列ならその表記）。押すか Esc で 'quit' を返す
+  // opts.onCancel（v5.8）：noClose のパネルで Esc を押したときに呼ぶ
   Win.panel = function (html, opts) {
     opts = opts || {};
     return new Promise(function (resolve) {
-      var node = el('<div class="rw-panel ' + (opts.cls || '') + '">' + html + (opts.noClose ? '' : '<div class="rw-panel-close">' + esc(opts.closeLabel || '閉じる') + '（Enter / ✕）</div>') + '</div>');
-      var h = open(node, opts.noClose ? {} : { ok: function () { h.close(); resolve(0); }, cancel: function () { h.close(); resolve(-1); } });
+      var foot = opts.noClose ? '' : opts.quit
+        ? '<div class="rw-panel-foot"><div class="rw-panel-close">' + esc(opts.closeLabel || '閉じる') + '（Enter）</div><div class="rw-panel-quit">' + esc(opts.quit === true ? '中断する' : opts.quit) + '（Esc）</div></div>'
+        : '<div class="rw-panel-close">' + esc(opts.closeLabel || '閉じる') + '（Enter / ✕）</div>';
+      var node = el('<div class="rw-panel ' + (opts.cls || '') + '">' + html + foot + '</div>');
+      var hd = opts.noClose ? (opts.onCancel ? { cancel: function () { opts.onCancel(); } } : {}) : { ok: function () { h.close(); resolve(0); }, cancel: function () { h.close(); resolve(opts.quit ? 'quit' : -1); } };
+      var h = open(node, hd);
       var c = node.querySelector('.rw-panel-close'); if (c) c.addEventListener('click', function (e) { e.stopPropagation(); h.close(); resolve(0); });
+      var q = node.querySelector('.rw-panel-quit'); if (q) q.addEventListener('click', function (e) { e.stopPropagation(); h.close(); resolve('quit'); });
       if (opts.setup) opts.setup(node, function (v) { h.close(); resolve(v); });
     });
+  };
+  // v5.8 中断の確認（「中断する」で true）。Esc は「続ける」扱い
+  Win.confirmQuit = function (what, note) {
+    return Win.choice(what + 'を中断しますか？' + (note ? '（' + note + '）' : ''), ['中断する', '続ける'], { initial: 0 }).then(function (a) { return a === 0; });
   };
 
   // 名前入力（HTML input を使う）

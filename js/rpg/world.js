@@ -218,7 +218,21 @@
     var zone = enc.zones.filter(function (z) { return z.test(p.x, p.y, m); })[0]; if (!zone) return;
     var group = zone.groups[Math.floor(Math.random() * zone.groups.length)];
     if (zone.rare && Math.random() < (zone.rareRate || 0.02)) group = zone.rare[Math.floor(Math.random() * zone.rare.length)];
-    World.startBattle(group, { zone: zone.name });
+    var bopts = { zone: zone.name };
+    if (World.isSolo()) { group = World.soloCap(group); bopts.maxEnemies = World.SOLO_MAX; }   // v5.8 仲間がいないときは1〜2体まで
+    World.startBattle(group, bopts);
+  };
+  // v5.8 仲間がいない（戦闘メンバーが主人公1人）ときは、ランダムに出現する敵を1〜2体にする
+  // ・3体以上の群れは、並び順を保ったままランダムに2体だけ残す。戦闘中の「仲間を呼ぶ」も2体まで
+  // ・ボス戦・イベントの戦闘は対象外（ここはランダムエンカウント専用）
+  World.SOLO_MAX = 2;
+  World.isSolo = function () { return State.partyActors().length <= 1; };
+  World.soloCap = function (group) {
+    var g = (group || []).slice(); if (g.length <= World.SOLO_MAX) return g;
+    var idx = g.map(function (_, i) { return i; }); var keep = [];
+    while (keep.length < World.SOLO_MAX) keep.push(idx.splice(Math.floor(Math.random() * idx.length), 1)[0]);
+    keep.sort(function (a, b) { return a - b; });
+    return keep.map(function (i) { return g[i]; });
   };
   World.startBattle = function (enemyIds, opts) {
     World.busy = true; opts = opts || {}; State.data.stepsSinceBattle = 0;

@@ -101,6 +101,9 @@
   var JOB_LIST = Object.keys(JOBS);
   var STARTER_JOBS = ['warrior', 'mage', 'priest', 'monk', 'thief', 'merchant', 'hunter', 'knight'];
 
-  root.JOBS = JOBS; root.JOB_LIST = JOB_LIST; root.STARTER_JOBS = STARTER_JOBS;
+  // v5.8 冒険の初めに村長からもらう武器（職業に合うもの。もらった時点で装備する）
+  var STARTER_WEAPON = { warrior: 'wooden_sword', knight: 'wooden_sword', thief: 'dagger', mage: 'oak_staff', priest: 'oak_staff', monk: 'leather_claw', merchant: 'club', hunter: 'short_bow' };
+
+  root.JOBS = JOBS; root.JOB_LIST = JOB_LIST; root.STARTER_JOBS = STARTER_JOBS; root.STARTER_WEAPON = STARTER_WEAPON;
   if (typeof module !== 'undefined' && module.exports) module.exports = JOBS;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -100,8 +100,12 @@
     npcs: [{ id: 'elder_mochizo', x: 5, y: 3, sprite: 'elder', dir: 'down', wander: 0, talk: async function (c) {
       if (!c.flag('met_elder')) {
         await c.say('村長モチゾウ', ['おお……目を覚ましたか。お前さんは三日前、村はずれの草原で倒れておったんじゃ。', 'ここはアルカディア相場大陸、ポヨ村。世界を支えておった「均衡のクリスタル」が砕けてから、人の欲望や恐怖が魔物の姿をとって彷徨っておる。', 'お前さんの胸に光る痣……それは「波を読む者」の印じゃ。古い伝承にある。', 'まずは北のリヴェル城下町へ行き、王に会うがよい。路銀として、これを持っていきなさい。']);
-        c.addGold(100); c.give('herb', 3); c.give('wooden_sword', 1);
-        await c.msg(['100Gと薬草3つ、木の剣を手に入れた！']);
+        // v5.8 武器は職業に合うものを渡し、その場で装備する（以前は誰にでも木の剣で、魔法使いなどは装備できなかった）
+        var hero = root.State.data.hero; var wid = (root.STARTER_WEAPON && root.STARTER_WEAPON[hero.job]) || 'wooden_sword';
+        c.addGold(100); c.give('herb', 3); c.give(wid, 1);
+        var wname = root.ITEMS[wid].name; var equipped = false;
+        if (!hero.equip.weapon && root.Actors.canEquip(hero, wid) && root.Services && root.Services.equipItem) { root.Services.equipItem(hero, wid); equipped = true; }
+        await c.msg(['100Gと薬草3つ、' + wname + 'を手に入れた！'].concat(equipped ? [hero.name + 'は' + wname + 'を装備した。'] : []));
         await c.say('村長モチゾウ', ['教会にいる僧侶のリーナも、お前さんと同じ日に村へ来た旅の者じゃ。一緒に行くとよかろう。', '道具は東の道具屋、休むなら宿屋じゃ。東の修行場では「波の読み方」も学べる。']);
         c.setFlag('met_elder', true); c.questStart('main_1');
       } else if (!c.flag('king_quest1')) {

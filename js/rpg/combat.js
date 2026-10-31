@@ -29,7 +29,7 @@
       return e;
     });
     party.forEach(function (a) { a.buffs = {}; a.cover = false; a.counter = false; a.defending = false; a._gutsUsed = false; a._atkTurn = -9; a._defTurn = -9; a._supTurn = -9; });
-    return { enemies: enemies, party: party, turn: 0, state: 'command', boss: !!opts.boss, canEscape: opts.canEscape !== false && !opts.boss, log: [], trialCount: 0, result: null };
+    return { enemies: enemies, party: party, turn: 0, state: 'command', boss: !!opts.boss, canEscape: opts.canEscape !== false && !opts.boss, log: [], trialCount: 0, result: null, maxEnemies: opts.maxEnemies || MAX_ENEMIES };
   };
 
   /* ---------- 計算 ---------- */
@@ -45,6 +45,7 @@
   function pstats(a) { var s = Actors.stats(a); if (a.defending) { s.def = Math.round(s.def * 2); s.mdef = Math.round(s.mdef * 1.5); } var lh = fx(a, 'lowHpDef'); if (lh && a.hp <= s.maxHp * lh.below) s.def = Math.round(s.def * (1 + lh.mult)); return s; }
   // v5.5 味方が受けるダメージの最終調整：大きな一撃の軽減（資金管理の鎧）、防御中の追加軽減（見送りの首飾り）、くいしばり（損切りのお守り）
   function partyTakes(b, t, dmg, ev) {
+    dmg = early(t, 'take', dmg);   // v5.8 序盤補正（下の EARLY）
     var st = Actors.stats(t);
     var bh = fx(t, 'bigHitCut'); if (bh && dmg > st.maxHp * bh.over) { dmg = Math.round(dmg * (1 - bh.cut)); ev.push({ type: 'msg', text: t.name + 'の資金管理の鎧が大きな損失を抑えた' }); }
     var dc = fx(t, 'defendCut'); if (dc && t.defending) dmg = Math.round(dmg * (1 - dc));
@@ -64,6 +65,16 @@
     v *= (opts.mult || 1);
     return Math.max(1, Math.round(v));
   }
+  // v5.8 冒険の序盤補正：レベルが低いうちは、味方が与えるダメージを増やし、受けるダメージを減らす
+  // ・補正は各キャラのレベルで決まり、Lv1が最大、レベルが上がるほど小さくなり、EARLY.until（Lv12）以上はなし
+  // ・ボス戦にも効く（低レベルで挑むほど助けが大きい）。回復量・アイテムの固定ダメージは変えない
+  var EARLY = { until: 12, deal: 0.7, take: 0.35 };
+  Combat.EARLY = EARLY;
+  Combat.earlyAssist = function (a) {
+    var lv = (a && a.level) || 99; var r = Math.max(0, Math.min(1, (EARLY.until - lv) / (EARLY.until - 1)));
+    return { deal: 1 + EARLY.deal * r, take: 1 - EARLY.take * r, ratio: r };
+  };
+  function early(a, kind, dmg) { if (!(dmg > 0)) return dmg; var f = Combat.earlyAssist(a)[kind]; return f === 1 ? dmg : Math.max(1, Math.round(dmg * f)); }
   function magDamage(mag, mdef, power, mult) { var base = power + mag * 1.2 - mdef * 0.5; return Math.max(1, Math.round(base * rnd(0.9, 1.1) * (mult || 1))); }
 
   /* ---------- 対象選択ヘルパー ---------- */
@@ -166,7 +177,7 @@
     if (a.job === 'magicknight' && opts.element && opts.element !== 'none') mult *= 1.15;
     if (opts.reversal) mult *= 1 + (1 - target.hp / target.maxHp) * 1.5;
     if (opts.familyBonus && opts.familyBonus.families.indexOf(target.family) >= 0) mult *= opts.familyBonus.mult;   // v5.5 鉄槌：機械・ゴーレム特効
-    var dmg = physDamage(s.atk, es.def, power, { crit: crit, pierce: opts.pierce, mult: mult });
+    var dmg = early(a, 'deal', physDamage(s.atk, es.def, power, { crit: crit, pierce: opts.pierce, mult: mult }));
     if (mult === 0) dmg = 0;
     target.hp = Math.max(0, target.hp - dmg);
     ev.push({ type: 'damage', side: 'enemy', idx: target.idx, value: dmg, crit: crit, anim: opts.anim || 'slash', weak: mult > 1, resist: mult < 1 });
@@ -201,7 +212,7 @@
       targets.forEach(function (t) {
         var es = estats(t); var mult = resistOf(t, sk.element); if (a.job === 'mage') mult *= 1.1; var sb = fx(a, 'supportBoost'); if (sb && a._supTurn === b.turn - 1) mult *= sb;
         if (sk.element === 'light' && t.family === 'アンデッド系') mult *= 1.5;
-        var dmg = mult === 0 ? 0 : magDamage(s.mag, es.mdef, sk.power, mult);
+        var dmg = mult === 0 ? 0 : early(a, 'deal', magDamage(s.mag, es.mdef, sk.power, mult));
         t.hp = Math.max(0, t.hp - dmg);
         ev.push({ type: 'damage', side: 'enemy', idx: t.idx, value: dmg, anim: sk.anim, weak: mult > 1, resist: mult < 1 });
         msg(t.name + 'に' + dmg + 'のダメージ' + (mult > 1 ? '（効果は抜群だ）' : mult === 0 ? '（効かない）' : mult < 1 ? '（効果はいまひとつ）' : ''));
@@ -258,7 +269,7 @@
     var ratio = e.hp / e.maxHp;
     // ボスのフェーズ移行（HP割合で行動が変わる）
     if (e.boss) { var ph = ratio <= 0.3 ? 2 : ratio <= 0.6 ? 1 : 0; if (ph > e.phase) { e.phase = ph; msg(ph === 2 ? e.name + 'は最後の力を振り絞っている……！' : e.name + 'の様子が変わった！'); ev.push({ type: 'phase', idx: e.idx, phase: ph }); } }
-    var acts = e.actions.filter(function (x) { if (x.hpBelow !== undefined && ratio > x.hpBelow) return false; if (x.hpAbove !== undefined && ratio < x.hpAbove) return false; if (x.id === 'call' && aliveEnemies(b).length >= MAX_ENEMIES) return false; if (x.id === 'heal_self' && ratio > 0.8) return false; return true; });
+    var acts = e.actions.filter(function (x) { if (x.hpBelow !== undefined && ratio > x.hpBelow) return false; if (x.hpAbove !== undefined && ratio < x.hpAbove) return false; if (x.id === 'call' && aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) return false; if (x.id === 'heal_self' && ratio > 0.8) return false; return true; });
     if (!acts.length) acts = [{ type: 'attack', w: 1 }];
     var total = acts.reduce(function (s, x) { return s + x.w; }, 0); var r = Math.random() * total; var chosen = acts[0];
     for (var i = 0; i < acts.length; i++) { r -= acts[i].w; if (r <= 0) { chosen = acts[i]; break; } }
@@ -282,7 +293,7 @@
       msg(e.name + sp.msg); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: sp.power ? 'lunge' : 'buff' });
       if (sp.flee) { e.dead = true; e.fled = true; ev.push({ type: 'flee', idx: e.idx }); return; }
       if (sp.trial) { b.trialCount++; ev.push({ type: 'trial', idx: e.idx }); return; }
-      if (sp.call) { var sid = chosen.summon || e.defId; if (!ENEMIES[sid] || b.enemies.length >= 8 || aliveEnemies(b).length >= MAX_ENEMIES) { msg('しかし誰も来なかった'); return; } var ne = makeEnemy(sid, b.enemies.length); var cnt = b.enemies.filter(function (x) { return x.defId === sid; }).length; if (cnt > 0) ne.name += String.fromCharCode(65 + cnt); ne.summoned = true; b.enemies.push(ne); ev.push({ type: 'summon', idx: ne.idx }); msg(ne.name + 'が現れた！'); return; }
+      if (sp.call) { var sid = chosen.summon || e.defId; if (!ENEMIES[sid] || b.enemies.length >= 8 || aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) { msg('しかし誰も来なかった'); return; } var ne = makeEnemy(sid, b.enemies.length); var cnt = b.enemies.filter(function (x) { return x.defId === sid; }).length; if (cnt > 0) ne.name += String.fromCharCode(65 + cnt); ne.summoned = true; b.enemies.push(ne); ev.push({ type: 'summon', idx: ne.idx }); msg(ne.name + 'が現れた！'); return; }
       if (sp.heal) { var hv = Math.max(1, Math.round(e.maxHp * sp.heal)); e.hp = Math.min(e.maxHp, e.hp + hv); ev.push({ type: 'heal', side: 'enemy', idx: e.idx, value: hv }); msg(e.name + 'のHPが' + hv + '回復した'); return; }
       if (sp.buff && sp.self) { Object.keys(sp.buff).forEach(function (k) { e.buffs[k] = { value: sp.buff[k], turns: sp.turns || 2 }; }); return; }
       if (sp.power) {
@@ -310,7 +321,7 @@
     if (t.status.sleep && Math.random() < 0.7) { delete t.status.sleep; ev.push({ type: 'msg', text: t.name + 'は目を覚ました' }); }
     if (opts.status && addStatus(t, opts.status, undefined, true)) ev.push({ type: 'msg', text: t.name + 'は' + STATUS_NAME[opts.status.id] + '状態になった' });
     if (t.hp <= 0) killActor(t, ev);
-    else if (t.counter && !e.dead) { var cd = physDamage(pstats(t).atk, es.def, 1.0); e.hp = Math.max(0, e.hp - cd); ev.push({ type: 'damage', side: 'enemy', idx: e.idx, value: cd, anim: 'slash' }); ev.push({ type: 'msg', text: t.name + 'の反撃！ ' + e.name + 'に' + cd + 'のダメージ' }); if (e.hp <= 0) killEnemy(b, e, ev); }
+    else if (t.counter && !e.dead) { var cd = early(t, 'deal', physDamage(pstats(t).atk, es.def, 1.0)); e.hp = Math.max(0, e.hp - cd); ev.push({ type: 'damage', side: 'enemy', idx: e.idx, value: cd, anim: 'slash' }); ev.push({ type: 'msg', text: t.name + 'の反撃！ ' + e.name + 'に' + cd + 'のダメージ' }); if (e.hp <= 0) killEnemy(b, e, ev); }
     return dmg;
   }
 

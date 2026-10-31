@@ -37,18 +37,20 @@
     TradeUI.current = { scn: scn, id: id, cur: cur, def: def };
     var focusLabel = (CONFIG.timeframes.filter(function (t) { return t.id === def.focusTF; })[0] || {}).label || def.focusTF;
     var Q = TradeEval.ANALYSIS; var tutorial = !!opts.tutorial;
+    // v5.8 中断：判断を確定する前なら、いつでもやめて戻れる（採点・記録・報酬なし。結果は null）。戦闘中の試練（noQuit）は中断できない
+    var canQuit = !opts.noQuit; var askQuit = null; TradeUI.lastAborted = false;
 
     return new Promise(function (resolve) {
       var tfs = CONFIG.timeframes.map(function (t) { return '<button class="tf" data-tf="' + t.id + '">' + esc(t.label) + '</button>'; }).join('');
       var qhtml = Q.map(function (q, i) { return '<div class="aq" data-q="' + q.key + '"><div class="aq-t"><span class="aq-n">' + (i + 1) + '</span>' + esc(TradeEval.qTitle(q, scn)) + '</div><div class="aq-o">' + q.options.map(function (o) { return '<button class="aopt" data-q="' + q.key + '" data-v="' + o[0] + '">' + esc(o[1]) + '</button>'; }).join('') + '</div></div>'; }).join('');
       var html = '<div class="trade-head"><b>' + esc(opts.title || 'チャートの試練') + '</b><span class="muted small">　学習用の人工チャート（' + esc(CONFIG.market.pairName) + '）。未来の足は判断後に表示されます</span></div>' +
-        '<div class="chart-tools"><div class="tfs">' + tfs + '</div><div class="ctl"><button class="mini" data-zoom="in">＋</button><button class="mini" data-zoom="out">－</button><button class="mini" data-zig="1">ZigZag</button><button class="mini hintbtn" data-cmd="hint">ヒント</button></div></div>' +
+        '<div class="chart-tools"><div class="tfs">' + tfs + '</div><div class="ctl"><button class="mini" data-zoom="in">＋</button><button class="mini" data-zoom="out">－</button><button class="mini" data-zig="1">ZigZag</button><button class="mini hintbtn" data-cmd="hint">ヒント</button>' + (canQuit ? '<button class="mini quitbtn" data-cmd="quit" title="この試練をやめて戻る（記録されない）">中断</button>' : '') + '</div></div>' +
         '<canvas class="chart" id="trial-chart"></canvas>' +
         '<div class="trade-msg" id="trial-msg"></div>' +
         '<div class="analysis" id="trial-analysis"><div class="an-title">① チャートを分析する（時間足ボタンで上位足も確認できる）</div>' + qhtml + '</div>' +
         '<div class="swing-pick" id="trial-swing"><div class="an-title">② ' + esc(focusLabel) + 'の「直近の確定した高値・安値」をチャートでタップして指定</div><div class="sp-row"><button class="pickbtn" data-pick="high">高値を指定</button><button class="pickbtn" data-pick="low">安値を指定</button><span class="small" id="swing-st">未指定</span></div></div>' +
         '<div class="trade-cmds" id="trial-cmds"><button class="tcmd buy" data-cmd="buy">買い</button><button class="tcmd sell" data-cmd="sell">売り</button><button class="tcmd skip" data-cmd="skip">見送り</button></div>';
-      Win.panel(html, { cls: 'trade-panel', noClose: true, setup: function (node, close) {
+      Win.panel(html, { cls: 'trade-panel', noClose: true, onCancel: function () { if (askQuit) askQuit(); }, setup: function (node, close) {
         var canvas = node.querySelector('#trial-chart');
         var msgEl = node.querySelector('#trial-msg'); var cmds = node.querySelector('#trial-cmds');
         function msg(t) { msgEl.textContent = t; }
@@ -93,6 +95,7 @@
           if (t.getAttribute('data-zig')) { d.settings.showZigzag = !d.settings.showZigzag; render(); }
           var c = t.getAttribute('data-cmd'); if (!c || node.classList.contains('locked')) return;
           if (c === 'hint') { showHint(); return; }
+          if (c === 'quit') { if (askQuit) askQuit(); return; }
           if (!answered()) { msg(swingDone() ? '先に5つの分析を選ぼう。わからないときは「ヒント」。' : '先に②で直近の確定した高値・安値をチャート上で指定しよう。'); return; }
           if (c === 'skip') chooseReason('skip');
           if (c === 'buy' || c === 'sell') chooseReason(c);
@@ -135,7 +138,11 @@
             recalc();
           } });
         }
-        var decided = false;
+        var decided = false, quitAsking = false;
+        if (canQuit) askQuit = function () {
+          if (decided || quitAsking || node.classList.contains('locked')) return; if (Win.layer && Win.layer.lastElementChild && Win.layer.lastElementChild !== node) return;   /* 理由・注文などの窓が上に開いているときは、先にそちらを閉じる */ quitAsking = true;
+          Win.confirmQuit('この試練', '採点・記録はされない').then(function (yes) { quitAsking = false; if (!yes || decided) return; decided = true; TradeUI.lastAborted = true; close(null); });
+        };
         function decide(decision) {
           if (decided) return; decided = true;   // 二重採点の防止
           node.classList.add('locked');

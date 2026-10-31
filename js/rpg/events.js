@@ -112,7 +112,8 @@
           var a = await Win.choice('試練に挑みますか？', ['挑む', 'やめておく']);
           if (a === 0) {
             var res = await root.TradeUI.trial(ev.scenarios, { title: 'チャートの試練', minScore: ev.minScore || 60 });
-            if (res && res.score >= (ev.minScore || 60)) { d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); await Win.message(['扉がゆっくりと開いた！（評価 ' + res.score + '点）']); }
+            if (!res) await Win.message(['試練を中断した。扉を調べれば、いつでも挑み直せる。']);   // v5.8
+            else if (res.score >= (ev.minScore || 60)) { d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); await Win.message(['扉がゆっくりと開いた！（評価 ' + res.score + '点）']); }
             else await Win.message(['扉は開かない……（評価 ' + (res ? res.score : 0) + '点。' + (ev.minScore || 60) + '点以上で開く）', 'ヒント：上位足を確認し、根拠が揃わない場面は見送ること。']);
           }
         }

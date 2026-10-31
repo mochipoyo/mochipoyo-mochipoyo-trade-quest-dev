@@ -6,7 +6,7 @@
    ========================================================= */
 (function (root) {
   'use strict';
-  var Debug = { on: !!(root.State && root.State.debug), VERSION: 'v5.7' };
+  var Debug = { on: !!(root.State && root.State.debug), VERSION: 'v5.8' };
   root.MTQDebug = Debug;
   if (!Debug.on) return;
 
@@ -77,9 +77,11 @@
     // v5.7：オート戦闘・ワールドマップの大きな町と城・迷いの森の旅人の位置・経験値
     var lf = M.lost_forest && (M.lost_forest.npcs || []).filter(function (n) { return n.id === 'lf_lost'; })[0];
     var v57 = !!(root.Landmarks && root.Combat && root.Combat.autoCommand && lf && lf.x === 9 && root.Actors && root.Actors.expForLevel(10) === 628);
+    // v5.8：修行場の中断・ひとりのときの出現数・序盤補正・最初の武器
+    var v58 = !!(root.World && root.World.soloCap && root.Combat && root.Combat.earlyAssist && root.STARTER_WEAPON && root.Win && root.Win.confirmQuit && root.Services && root.Services.quitNote);
     var ok = !!M.world_snow && !!M.frozen_tower_1 && !!M.old_city_deep_1;
     return ['このページが読み込んでいるデータ：マップ ' + Object.keys(M).length + '／クエスト ' + Object.keys(Q).length + '／敵 ' + Object.keys(root.ENEMIES || {}).length + '／職業 ' + Object.keys(root.JOBS || {}).length,
-      ok ? '忘却の雪原・凍結時計塔・旧都市 深層のデータあり → v5.6 のファイルが読み込まれています（v5.6 の想定：マップ226・クエスト85）。' : '忘却の雪原などのデータがありません → v5.6 のファイルが読み込まれていません（アップロード漏れ、または古いキャッシュ）。', v57 ? 'v5.7 の変更あり（オート戦闘・大きな町と城・迷いの森の通り道・レベルの上がりやすさ）。' : 'v5.7 の変更が見つかりません（js/core/landmarks.js・js/rpg/combat.js などが古い可能性）。'];
+      ok ? '忘却の雪原・凍結時計塔・旧都市 深層のデータあり → v5.6 のファイルが読み込まれています（v5.6 の想定：マップ226・クエスト85）。' : '忘却の雪原などのデータがありません → v5.6 のファイルが読み込まれていません（アップロード漏れ、または古いキャッシュ）。', v57 ? 'v5.7 の変更あり（オート戦闘・大きな町と城・迷いの森の通り道・レベルの上がりやすさ）。' : 'v5.7 の変更が見つかりません（js/core/landmarks.js・js/rpg/combat.js などが古い可能性）。', v58 ? 'v5.8 の変更あり（修行場の中断・ひとりのときの出現数1〜2体・序盤の与ダメージ／被ダメージ補正・職業に合う最初の武器）。' : 'v5.8 の変更が見つかりません（js/rpg/world.js・js/rpg/combat.js・js/ui/windows.js・js/ui/services.js などが古い可能性）。'];
   }
 
   async function regionMenu() {

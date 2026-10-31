@@ -22,8 +22,8 @@
     d.trade.learnSeen = d.trade.learnSeen || {}; d.trade.learnSeen[id] = true;
     var pass = Learning.passScore(e);
     if (e.required) {
-      if (first) { await Win.message([(e.region ? '【' + e.region + '】' : '') + e.title + '。' + (e.summary || ''), 'まず教えを読み、そのあとチャートで判断する。合格は' + pass + '点以上。失敗しても復習と再挑戦ができる。'], { name: '師匠ハケイ' }); await Learning.showLesson(e); }
-      else { var c = await Win.choice(done ? '「' + e.title + '」を復習する？' : '「' + e.title + '」に再挑戦する？（合格 ' + pass + '点以上）', ['挑戦する', '教えを読み返す', 'やめる']); if (c < 0 || c === 2) return { passed: done, score: 0 }; if (c === 1) { await Learning.showLesson(e); var c2 = await Win.choice('挑戦する？', ['挑戦する', 'やめる']); if (c2 !== 0) return { passed: done, score: 0 }; } }
+      if (first) { await Win.message([(e.region ? '【' + e.region + '】' : '') + e.title + '。' + (e.summary || ''), 'まず教えを読み、そのあとチャートで判断する。合格は' + pass + '点以上。失敗しても復習と再挑戦ができる。'], { name: '師匠ハケイ' }); if (await Learning.showLesson(e) === 'quit') return quitResult(id); }
+      else { var c = await Win.choice(done ? '「' + e.title + '」を復習する？' : '「' + e.title + '」に再挑戦する？（合格 ' + pass + '点以上）', ['挑戦する', '教えを読み返す', 'やめる']); if (c < 0 || c === 2) return { passed: done, score: 0 }; if (c === 1) { if (await Learning.showLesson(e) === 'quit') return quitResult(id); var c2 = await Win.choice('挑戦する？', ['挑戦する', 'やめる']); if (c2 !== 0) return { passed: done, score: 0 }; } }
     } else {
       if (first) await Win.message(['【' + e.title + '】石碑に波形が刻まれている。触れると、相場の場面が浮かび上がった。', '（任意の練習。初回のみ報酬。何度でも挑戦できる）']);
       else { var c3 = await Win.choice('石碑の練習に挑む？', ['挑む', 'やめる']); if (c3 !== 0) return { passed: done, score: 0 }; }
@@ -35,6 +35,7 @@
     var scnList = typeof e.scenarios === 'function' ? e.scenarios() : e.scenarios;
     var topts = { title: e.title, minScore: pass, practice: !e.required }; if (e.altSeed) topts.seedOffset = 1 + Math.floor(Math.random() * 5);   // v5.3: 未見の場面（別シード）で出題
     var res = await root.TradeUI.trial(scnList, topts);
+    if (!res) return quitResult(id);   // v5.8 試練の途中で中断：失敗には数えない
     var score = res ? res.score : 0; var passed = e.required ? score >= pass : score >= 60;
     if (!passed) {
       d.trade.learnFails = d.trade.learnFails || {}; d.trade.learnFails[id] = (d.trade.learnFails[id] || 0) + 1;
@@ -56,9 +57,16 @@
     root.World.updateHud(); State.autosave();
     return { passed: true, score: score };
   };
+  // v5.8 中断したとき：失敗回数（合格点の引き下げ）には数えず、達成状況もそのまま
+  async function quitResult(id) { var done = Learning.isDone(id); await root.Win.message(['中断した。失敗には数えない。いつでも挑み直せる。'], { name: '師匠ハケイ' }); root.State.autosave(); return { passed: done, score: 0, aborted: true }; }
+  // 教えを1ページずつ表示。「中断」で 'quit' を返す
   Learning.showLesson = async function (e) {
     var Win = root.Win; var lines = e.lesson || [];
-    for (var i = 0; i < lines.length; i++) await Win.panel('<div class="rw-title">' + Win.esc(e.title) + '　' + (i + 1) + '/' + lines.length + '</div><div class="lesson">' + Win.esc(lines[i]) + '</div><p class="muted small">※学習用の人工チャートで練習します。実際の相場での結果を保証するものではありません。</p>', { closeLabel: i < lines.length - 1 ? '次へ' : '試練へ' });
+    for (var i = 0; i < lines.length; i++) {
+      var pr = await Win.panel('<div class="rw-title">' + Win.esc(e.title) + '　' + (i + 1) + '/' + lines.length + '</div><div class="lesson">' + Win.esc(lines[i]) + '</div><p class="muted small">※学習用の人工チャートで練習します。実際の相場での結果を保証するものではありません。</p>', { closeLabel: i < lines.length - 1 ? '次へ' : '試練へ', quit: '中断' });
+      if (pr === 'quit') { if (await Win.confirmQuit('この学習')) return 'quit'; i--; }
+    }
+    return 'ok';
   };
 
   // 特殊能力の解放：必修イベント達成 ＋ 分野の理解度（3回以上挑戦し、直近の正解率60%以上）

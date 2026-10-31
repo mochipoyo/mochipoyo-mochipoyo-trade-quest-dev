@@ -412,7 +412,7 @@
         var enemy = b.enemies[e.idx];
         await bmsg(enemy.name + 'の相場の試練！ チャートを読み、正しい行動を選べ！', 700);
         var scs = enemy.trialScenarios || ['clear_up', 'clear_down', 'range', 'up_pullback', 'down_rally'];
-        var res = await root.TradeUI.trial(scs, { title: enemy.name + 'の相場の試練' });
+        var res = await root.TradeUI.trial(scs, { title: enemy.name + 'の相場の試練', noQuit: true });   // v5.8 戦闘中の試練は中断できない
         var ev2 = Combat.applyTrialResult(b, e.idx, res ? res.score : 0);
         await playEvents(b, ev2, scene);
       }
