@@ -138,6 +138,7 @@ export class App3D {
     this.pos.set(p.x + 0.5, 0, p.y + 0.5); this.pos.y = this.current.heightAt(this.pos.x, this.pos.z);
     this.yaw = DIR_YAW[p.dir] || 0; this.hero.yaw = this.hero.wantYaw = this.yaw;
     this.lastTile = [p.x, p.y]; this.lastMap = G.World.map; this.camera.first = true; this.speed = 0;
+    if (G.Follow) G.Follow.reset(G.World.map, this.pos.x, this.pos.z, p.dir);   // v6.4 Phase F 隊列：ワープ・出入りのあとに並べ直す
   }
   setPitch(deg) { this.userPitch = deg; try { localStorage.setItem('mtq3d-pitch', String(deg)); } catch (e) { /* なし */ } if (!this.current || !this.current.interior) this.camera.setPitch(deg); this.ui.refresh(); }
   async changeQuality(q) {
@@ -183,6 +184,7 @@ export class App3D {
     }
     this.pos.y = ms.heightAt(this.pos.x, this.pos.z);
     p.dir = yawToDir(this.yaw);
+    if (G.Follow) G.Follow.update(W.map, this.pos.x, this.pos.z, p.dir);   // v6.4 Phase F 隊列：2D版と同じ足跡の処理（座標の単位も同じ：マスの中心＝x+0.5）
     const tx = Math.floor(this.pos.x), ty = Math.floor(this.pos.z);
     if (tx !== p.x || ty !== p.y) {
       p.x = tx; p.y = ty; p.px = tx * E.TS; p.py = ty * E.TS; this.lastTile = [tx, ty];
@@ -191,6 +193,32 @@ export class App3D {
     }
   }
 
+  // v6.4 Phase F 隊列の仲間（3Dモデル）。位置は js/rpg/follow.js（2D版と共通）が決める。モデルは仲間ごとに1回だけ作る
+  // ・専用モデルのない仲間は manifest の characterModelFor（村人などの代用）で表示する
+  // ・戦闘不能の仲間は半透明（マテリアルは仲間ごとに複製してから変えるので、村人など他の人には影響しない）
+  updateFollowers(dt) {
+    const F = G.Follow; const list = (F && this.current) ? F.positions() : [];
+    if (!this.followers) this.followers = new Map();
+    const seen = new Set();
+    for (const f of list) {
+      seen.add(f.id); let ent = this.followers.get(f.id);
+      if (ent && ent.sprite !== f.sprite && ent.ch) { this.scene.remove(ent.ch.root); this.followers.delete(f.id); ent = null; }
+      if (!ent) {
+        ent = { sprite: f.sprite, ch: null, model: characterModelFor(f.sprite), alpha: 1 }; this.followers.set(f.id, ent);
+        Character3D.create(this.models, ent.model, {}).then((ch) => { if (!ch) return; ch.root.traverse((o) => { if (o.isMesh && o.material) o.material = Array.isArray(o.material) ? o.material.map((m) => m.clone()) : o.material.clone(); }); ch.root.visible = false; ent.ch = ch; this.scene.add(ch.root); }).catch((e) => console.warn('follower model', f.id, e));
+        continue;
+      }
+      const ch = ent.ch; if (!ch) continue;
+      ch.root.visible = true; ch.root.position.set(f.x, this.current.heightAt(f.x, f.y), f.y);
+      if (f.vx || f.vy) ch.faceTo(Math.atan2(f.vx, f.vy));
+      if (this.speed > 0.1) { ch.play(this.running ? 'Run' : 'Walk', 0.15); ch.setSpeed(this.running ? this.speed / RUN : this.speed / WALK); } else ch.play('Idle', 0.25);
+      const al = f.dead ? 0.45 : 1; if (al !== ent.alpha) { ent.alpha = al; ch.root.traverse((o) => { if (o.isMesh && o.material) [].concat(o.material).forEach((m) => { m.transparent = al < 1; m.opacity = al; m.needsUpdate = true; }); }); }
+      ch.update(dt);
+    }
+    this.followers.forEach((ent, id) => { if (!seen.has(id) && ent.ch) ent.ch.root.visible = false; });
+  }
+  // 確認用：いま表示している隊列の仲間（id・使っているモデル・位置）
+  followerInfo() { const out = []; if (this.followers) this.followers.forEach((ent, id) => { out.push({ id, model: ent.model, visible: !!(ent.ch && ent.ch.root.visible), x: ent.ch ? +ent.ch.root.position.x.toFixed(2) : null, z: ent.ch ? +ent.ch.root.position.z.toFixed(2) : null }); }); return out; }
   // 主人公の手前を抜く範囲（Cutout）
   updateCutout() {
     const cam = this.camera.camera; cam.updateMatrixWorld();
@@ -280,6 +308,7 @@ export class App3D {
     else if (this._emote && t < this._emote.until) h.play(this._emote.name, 0.2);
     else if (!h.onceName) { this._emote = null; h.play('Idle', 0.25); }
     h.update(dt);
+    this.updateFollowers(dt);
     this.current.update(dt, t, this.pos);
     if (this.current.interior && this.current.bounds) {   // 屋内：部屋全体が入るよう、部屋の中心寄りに見る
       const b = this.current.bounds; const cx = (b.x0 + b.x1) / 2, cz = (b.z0 + b.z1) / 2 - 0.4;

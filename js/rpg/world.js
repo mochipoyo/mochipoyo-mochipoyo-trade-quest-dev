@@ -91,6 +91,8 @@
       if (p.progress >= 1) { p.x = p.tx; p.y = p.ty; p.px = p.x * TS; p.py = p.y * TS; p.moving = false; p.progress = 0; p.frame = 0; p.phase = 0; World.onStep(); }
       else { var dx = (p.tx - p.x) * TS, dy = (p.ty - p.y) * TS; p.px = p.x * TS + dx * p.progress; p.py = p.y * TS + dy * p.progress; p.frame = Math.floor(p.progress * 4) % 2; p.phase = Math.floor(p.progress * 4) % 4; }
     }
+    // v6.4 Phase F 仲間の隊列：主人公の足跡を記録（3D表示中は3D側が自由移動の位置で記録する）
+    if (root.Follow && !(root.MTQ3D && root.MTQ3D.mode3D && root.MTQ3D.mode3D())) root.Follow.update(m, p.px / TS + 0.5, p.py / TS + 0.5, p.dir);
     // NPCの徘徊
     if (!World.busy) m.npcs.forEach(function (n) {
       if (n.hidden || !n.wander) return;
@@ -108,6 +110,7 @@
       if (Math.abs(nx - n.ox) > n.wander || Math.abs(ny - n.oy) > n.wander) return;
       if (!m.passable(nx, ny, State.data) || (nx === p.x && ny === p.y) || (nx === p.tx && ny === p.ty && p.moving)) return;
       if (m.warpAt(nx, ny) || m.eventAt(nx, ny)) return;
+      if (root.Follow && root.Follow.occupies(nx, ny)) return;   // v6.4 隊列の仲間が立っているマスへは歩かない
       n.moving = true; n.nx = nx; n.ny = ny; n.prog = 0;
     });
   };
@@ -115,6 +118,7 @@
     var m = World.map, p = World.player;
     var cam = World.camera();
     p.vehicle = State.data.aboard || null;
+    p.followers = (root.Follow && !p.vehicle) ? root.Follow.drawList(TS, p) : null;   // v6.4 Phase F 仲間の隊列
     var extras = root.Vehicle ? root.Vehicle.onMap(m.id).filter(function (v) { return !v.aboard; }).map(function (v) { return { x: v.x, y: v.y, vehicle: v.id }; }) : [];
     m.draw(ctx, cam, p, World.tint(), extras);
     // v6.2 次の目的地：画面の中にあれば、控えめな赤い輪（地図の上の文字や人を隠さない細い線）

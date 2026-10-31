@@ -157,18 +157,69 @@
     }
   };
 
+  /* ---------- なかま（v6.4 Phase F：立ち絵・ステータス・装備・呪文と特技・紹介・隊列の変更） ----------
+     PC：左に一覧、中央に立ち絵と紹介、右にステータス・装備・じゅもんとくぎ（タブ）。スマホ：縦に並べてスクロール
+     ・上下キー／タップで仲間を選ぶ、左右キー／タップでタブ、Enter で隊列の変更（前へ・後ろへ）、Esc で閉じる
+     ・主人公は先頭のまま。待機メンバーとの入れ替えと戦闘メンバーの上限は従来どおり酒場で（ここでは変えない）
+     ・旧版は info を2回指定していて立ち絵が表示されていなかった（後の info で上書き）→ 1つの画面にまとめて修正 */
+  var PT_TABS = ['ステータス', '装備', 'じゅもん・とくぎ'];
+  var SLOT_NAME = { weapon: '武器', armor: '鎧', shield: '盾', head: '頭', acc: '装飾' };
+  Menu.partyOrder = function () { var d = State.data; var waiting = Object.keys(d.companions).filter(function (id) { return d.party.indexOf(id) < 0; }); return d.party.slice().concat(waiting); };
+  Menu.partyHtml = {
+    row: function (a, cur) {
+      var d = State.data; var s = Actors.stats(a); var inP = d.party.indexOf(a.id) >= 0; var pos = d.party.indexOf(a.id);
+      var hpPct = Math.max(0, Math.min(100, Math.round(a.hp / Math.max(1, s.maxHp) * 100)));
+      return '<div class="pt-row' + (cur ? ' cur' : '') + (inP ? '' : ' waiting') + (a.dead ? ' dead' : '') + '" data-id="' + esc(a.id) + '"><div class="pt-rn"><span class="pt-mark">' + (inP ? (pos + 1) : '待') + '</span>' + esc(a.name) + '</div><div class="pt-rj">' + esc(JOBS[a.job].name) + ' Lv' + a.level + (a.dead ? '　<b class="bad">戦闘不能</b>' : '') + '</div><div class="pt-hp"><span style="width:' + hpPct + '%"></span></div></div>';
+    },
+    art: function (a) {
+      var c = root.COMPANIONS && root.COMPANIONS[a.id]; var tag = root.Assets ? root.Assets.portraitTagFor(a, 'portrait pt-portrait', 300) : '';
+      var title = a.id === 'hero' && root.Growth ? '<span class="title-badge">' + esc(root.Growth.title()) + '</span>' : '';
+      var bio = c ? '<div class="pt-bio">' + esc(c.bio || '') + '</div>' + (c.background || c.personality ? '<div class="pt-bio2 muted small">' + esc(c.background || '') + (c.personality ? '　性格：' + esc(c.personality) : '') + '</div>' : '') : '<div class="pt-bio">主人公。相場の波を読む力を持つ。</div>';
+      return '<div class="pt-artbox">' + (tag || '<div class="pt-noart">立ち絵なし</div>') + '</div><div class="pt-name">' + esc(a.name) + ' ' + title + '</div><div class="pt-job">' + esc(JOBS[a.job].name) + ' Lv' + a.level + '</div>' + bio;
+    },
+    status: function (a) {
+      var s = Actors.stats(a); var j = JOBS[a.job];
+      var st = a.dead ? '戦闘不能' : (Object.keys(a.status || {}).map(function (k) { return Combat.STATUS_NAME[k] || k; }).join('・') || '正常');
+      var jl = Object.keys(a.jobLevels || {}).filter(function (k) { return JOBS[k]; }).map(function (k) { return JOBS[k].name + ' Lv' + a.jobLevels[k]; }).join('・');
+      return '<div class="pt-stats"><div>HP<b>' + a.hp + ' / ' + s.maxHp + '</b></div><div>MP<b>' + a.mp + ' / ' + s.maxMp + '</b></div><div>攻撃力<b>' + s.atk + '</b></div><div>防御力<b>' + s.def + '</b></div><div>素早さ<b>' + s.agi + '</b></div><div>魔力<b>' + s.mag + '</b></div><div>魔法防御<b>' + s.mdef + '</b></div><div>次のレベルまで<b>' + Math.max(0, Actors.expForLevel(a.level) - a.exp) + '</b></div></div>' +
+        '<div class="pt-line"><span>状態</span>' + esc(st) + '</div><div class="pt-line"><span>固有能力</span>' + esc(j.trait || '―') + '</div><div class="pt-line"><span>役割</span>' + esc(j.role || '―') + '</div><div class="pt-line"><span>職業レベル</span>' + esc(jl || '―') + '</div>';
+    },
+    equip: function (a) {
+      return Object.keys(SLOT_NAME).map(function (sl) { var id = a.equip && a.equip[sl]; var it = id && ITEMS[id];
+        return '<div class="pt-eq"><span class="pt-slot">' + SLOT_NAME[sl] + '</span><b>' + (it ? esc(it.name) : '―') + '</b>' + (it ? '<div class="muted small">' + esc(root.Services && root.Services.statLine ? root.Services.statLine(it) : '') + (it.desc ? '　' + esc(it.desc) : '') + '</div>' : '') + '</div>'; }).join('');
+    },
+    skills: function (a) {
+      var list = Actors.allSkills(a).filter(function (k) { return SKILLS[k]; }); if (!list.length) return '<div class="muted">まだ呪文・特技を覚えていない。</div>';
+      var own = a.skills || [];
+      return SKILL_GROUPS.filter(function (g) { return g.id !== 'all'; }).map(function (g) { var ids = list.filter(function (k) { return skillGroup(SKILLS[k]) === g.id; }); if (!ids.length) return '';
+        return '<div class="pt-skg"><div class="pt-skh">' + esc(g.name) + '（' + ids.length + '）</div>' + ids.map(function (k) { var sk = SKILLS[k]; return '<div class="pt-sk"><b>' + esc(sk.name) + '</b><span class="pt-mp">MP' + (a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp) + '</span>' + (own.indexOf(k) < 0 ? '<span class="pt-tag">装備</span>' : '') + '<div class="muted small">' + esc((SK_TARGET[sk.target] || '') + (sk.element && EL_NAME[sk.element] ? '・' + EL_NAME[sk.element] : '') + '　' + (sk.desc || '')) + '</div></div>'; }).join('') + '</div>'; }).join('');
+    }
+  };
+  // 隊列（戦闘メンバーの並び）を1つ動かす。主人公は先頭のまま。戻り値：動いたら true
+  Menu.moveInParty = function (id, delta) { var d = State.data; var pos = d.party.indexOf(id); if (pos < 1) return false; var np = pos + delta; if (np < 1 || np >= d.party.length) return false; d.party.splice(pos, 1); d.party.splice(np, 0, id); return true; };
   Menu.party = async function () {
-    var d = State.data;
-    var ids = ['hero'].concat(Object.keys(d.companions));
-    var i = await Win.list(ids.map(function (id) { var a = State.actor(id); var inP = d.party.indexOf(id) >= 0; return { label: (inP ? '● ' : '○ ') + a.name, right: JOBS[a.job].name + ' Lv' + a.level, sub: (inP ? '戦闘メンバー' : '待機中（酒場で入れ替え）') }; }), { info: function (k) { var a = State.actor(ids[k]); var c = COMPANIONS[ids[k]]; return (root.Assets ? root.Assets.portraitTagFor(a, 'portrait info-portrait', 120) : '') + (c ? '<div class="muted small">' + esc(c.bio) + '</div>' : '<div class="muted small">主人公</div>'); }, title: 'なかま', info: function (k) { var c = COMPANIONS[ids[k]]; return c ? '<div>' + esc(c.bio) + '</div><div class="muted small">' + esc(c.background) + '　性格：' + esc(c.personality) + '</div>' : '<div class="muted">主人公。相場の波を読む力を持つ。</div>'; } });
-    if (i < 0) return;
-    if (i === 0) return;
-    // 並び替え（先頭以外）
-    var id = ids[i]; if (d.party.indexOf(id) < 0) { await Win.message(['待機メンバーの入れ替えは酒場で行える。']); return; }
-    var pos = d.party.indexOf(id);
-    var c = await Win.choice(State.actor(id).name + 'の並び', ['前へ', '後ろへ', 'やめる']);
-    if (c === 0 && pos > 1) { d.party.splice(pos, 1); d.party.splice(pos - 1, 0, id); }
-    if (c === 1 && pos < d.party.length - 1) { d.party.splice(pos, 1); d.party.splice(pos + 1, 0, id); }
+    var d = State.data; var order = Menu.partyOrder(); var sel = 0, tab = 0; var node = null, done = null;
+    function cur() { return State.actor(order[sel]); }
+    function render() {
+      if (!node) return; order = Menu.partyOrder(); if (sel >= order.length) sel = order.length - 1; var a = cur(); if (!a) return;
+      node.querySelector('.pt-list').innerHTML = '<div class="pt-lh">戦闘メンバー</div>' + order.map(function (id, i) { var x = State.actor(id); return (i === d.party.length ? '<div class="pt-lh">待機（酒場で入れ替え）</div>' : '') + Menu.partyHtml.row(x, i === sel); }).join('');
+      node.querySelector('.pt-art').innerHTML = Menu.partyHtml.art(a);
+      node.querySelectorAll('.pt-tab').forEach(function (t, i) { t.classList.toggle('cur', i === tab); });
+      node.querySelector('.pt-body').innerHTML = tab === 0 ? Menu.partyHtml.status(a) : tab === 1 ? Menu.partyHtml.equip(a) : Menu.partyHtml.skills(a);
+      var pos = d.party.indexOf(a.id); var canMove = pos >= 1;
+      node.querySelector('.pt-acts').innerHTML = canMove ? '<span class="pt-btn" data-mv="-1"' + (pos <= 1 ? ' data-off="1"' : '') + '>▲ 隊列で前へ</span><span class="pt-btn" data-mv="1"' + (pos >= d.party.length - 1 ? ' data-off="1"' : '') + '>▼ 隊列で後ろへ</span>' : '<span class="muted small">' + (a.id === 'hero' ? '主人公は隊列の先頭です' : '待機メンバーとの入れ替えは酒場で行えます') + '</span>';
+      node.querySelectorAll('.pt-row').forEach(function (r) { r.addEventListener('click', function (e) { e.stopPropagation(); var i = order.indexOf(r.getAttribute('data-id')); if (i >= 0) { sel = i; render(); } }); });
+      node.querySelectorAll('.pt-btn').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); if (b.getAttribute('data-off')) return; move(parseInt(b.getAttribute('data-mv'), 10)); }); });
+      var cr = node.querySelector('.pt-row.cur'); if (cr && cr.scrollIntoView) try { cr.scrollIntoView({ block: 'nearest' }); } catch (e) { }
+    }
+    function move(delta) { var a = cur(); if (a && Menu.moveInParty(a.id, delta)) { order = Menu.partyOrder(); sel = order.indexOf(a.id); render(); if (root.World && root.World.updateHud) root.World.updateHud(); } }
+    var busy = false;
+    async function formation() { var a = cur(); if (!a || d.party.indexOf(a.id) < 1 || busy) return; busy = true; var c = await Win.choice(a.name + 'の隊列', ['前へ', '後ろへ', 'やめる']); busy = false; if (c === 0) move(-1); else if (c === 1) move(1); }
+    var html = '<div class="pt-wrap"><div class="pt-list"></div><div class="pt-art"></div><div class="pt-side"><div class="pt-tabs">' + PT_TABS.map(function (t, i) { return '<span class="pt-tab" data-t="' + i + '">' + esc(t) + '</span>'; }).join('') + '</div><div class="pt-body"></div><div class="pt-acts"></div></div></div><div class="pt-foot"><span class="muted small">↑↓ 仲間　←→ タブ　Enter 隊列の変更　Esc 閉じる</span><span class="pt-close">閉じる</span></div>';
+    await Win.panel(html, { cls: 'party-screen', noClose: true,
+      onCancel: function () { if (!busy && done) done(-1); }, onOk: function () { formation(); },
+      onKey: function (k) { if (busy) return; if (k === 'up') { sel = (sel + order.length - 1) % order.length; render(); } else if (k === 'down') { sel = (sel + 1) % order.length; render(); } else if (k === 'left') { tab = (tab + PT_TABS.length - 1) % PT_TABS.length; render(); } else if (k === 'right') { tab = (tab + 1) % PT_TABS.length; render(); } },
+      setup: function (n, fin) { node = n; done = fin; n.querySelectorAll('.pt-tab').forEach(function (t) { t.addEventListener('click', function (e) { e.stopPropagation(); tab = parseInt(t.getAttribute('data-t'), 10); render(); }); }); n.querySelector('.pt-close').addEventListener('click', function (e) { e.stopPropagation(); fin(-1); }); render(); } });
   };
 
   Menu.quests = async function () {
@@ -380,6 +431,7 @@
         { label: 'ミニマップ', right: st.minimap === 'off' ? '表示しない' : '表示する' }, { label: 'ミニマップの大きさ', right: st.minimapSize === 'large' ? '大きい' : 'ふつう' },
         { label: 'スマホの移動操作', right: st.pad === 'dpad' ? '十字キー' : 'スティック' },
         { label: '目的地ナビ（赤丸）', right: st.nav === 'off' ? 'OFF' : 'ON' }, { label: 'ヒント表示', right: st.navHint === 'detail' ? '詳細' : '控えめ' },
+        { label: '仲間の隊列表示（後ろをついて歩く）', right: st.followers === 'off' ? '表示しない' : '表示する' },
         { label: 'データ管理（書き出し・読み込み・初期化）' }, { label: 'タイトルに戻る' }
       ], { title: '設定' });
       if (i < 0) return;
@@ -396,8 +448,9 @@
       if (i === 10) { st.pad = st.pad === 'dpad' ? 'stick' : 'dpad'; }   // v6.1
       if (i === 11) { st.nav = st.nav === 'off' ? 'on' : 'off'; Win.toast(st.nav === 'off' ? '目的地ナビ：OFF（赤丸を出さない）' : '目的地ナビ：ON'); }   // v6.2
       if (i === 12) { st.navHint = st.navHint === 'detail' ? 'low' : 'detail'; }
-      if (i === 13) { await Menu.dataManagement(); }
-      if (i === 14) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
+      if (i === 13) { st.followers = st.followers === 'off' ? 'on' : 'off'; Win.toast(st.followers === 'off' ? '仲間の隊列：表示しない' : '仲間の隊列：表示する'); }   // v6.4 Phase F
+      if (i === 14) { await Menu.dataManagement(); }
+      if (i === 15) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
       State.autosave();
     }
   };
