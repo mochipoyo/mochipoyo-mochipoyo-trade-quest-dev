@@ -490,7 +490,11 @@ export class App3D {
     const built = want && this.current && this.current.map === W.map;
     const show = want && baseIsWorld;
     const L = this.ui.layout();
-    this.ui.show(show, !built, baseIsWorld && !W.busy);   // 3D設定のボタンは、2Dのマップでも探索中は出す（3Dへ戻す・状態を見るため）
+    // 3D設定のボタン：探索中で、ほかの画面（全体マップ・メニュー・会話）を開いていないときだけ出す（2Dのマップでも出す。3Dへ戻す・状態を見るため）
+    //   全体マップの「＋・－・現在地・全体」と重なって押せなかったため、開いている間は出さない
+    const uiOpen = (document.getElementById('ui') || { children: [] }).children.length > 0; const mapOpen = !!(G.Minimap && G.Minimap.open);
+    const toolsOn = baseIsWorld && !W.busy && E.top() === W.scene && !uiOpen && !mapOpen;
+    this.ui.show(show, !built, toolsOn);
     if (this._fc % 30 === 0) { const pn = document.getElementById('g3-panel'); if (pn && pn.classList.contains('show')) this.ui.setDiag(this.diagText()); }   // 3D設定の「状態」（2Dのマップでも更新）
     if (!show || !built) { this.ui.setPrompt(null); return; }
     if (!W.busy) this.talkNpc = null;

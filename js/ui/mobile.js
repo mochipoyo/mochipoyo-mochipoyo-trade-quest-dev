@@ -93,7 +93,7 @@
 
   /* ---------- 画面の大きさ（main.js の fit から呼ばれる） ---------- */
   MobileUI.fit = function (canvas) {
-    var vw = root.innerWidth, vh = root.innerHeight; var typing = document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName); if (!typing && root.visualViewport && root.visualViewport.height > 100) vh = Math.min(vh, Math.round(root.visualViewport.height));   // 実際に見えている高さ（ツールバーの分を除く）に合わせる。文字の入力中（キーボード）は除く
+    var vw = root.innerWidth, vh = root.innerHeight; var typing = document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName); var vv = root.visualViewport; if (!typing && vv && vv.height > 100 && !(vv.scale > 1.01)) vh = Math.min(vh, Math.round(vv.height));   // 実際に見えている高さ（ツールバーの分を除く）に合わせる。文字の入力中（キーボード）は除く
     var land = vw > vh; document.body.classList.toggle('m-land', land); document.body.classList.toggle('m-port', !land);
     var sl = safe('l'), sr = safe('r'), st = safe('t'), sb = safe('b'); var E = root.Engine;
     var w, h, padH = 0;
@@ -137,11 +137,26 @@
     document.addEventListener('touchmove', function (e) { if (!e.target.closest('.rw-items, .rw-panel, .rw-info, .op-list, .bigmap, .wm-wrap, .rw-list, .rw-choice, .trade-panel, .bestiary')) e.preventDefault(); }, { passive: false });
     // ページ全体が下へずれたままにならないように（iPhone の Safari で、ゲーム画面の上（ミニマップ）が切れることがあった）
     //   一覧のカーソル移動（scrollIntoView）などでページが動いたら、元の位置（一番上）へ戻す。文字の入力中（キーボード表示中）は戻さない
-    var unscroll = function () { var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return; if (root.scrollY || root.scrollX) root.scrollTo(0, 0); };
+    var typing = function () { var a = document.activeElement; return !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)); };
+    var zoomed = function () { var v = root.visualViewport; return !!(v && v.scale > 1.01); };
+    var unscroll = function () { if (typing() || zoomed()) return; if (root.scrollY || root.scrollX) root.scrollTo(0, 0); };
     root.addEventListener('scroll', unscroll, { passive: true });
-    document.addEventListener('focusout', function () { setTimeout(unscroll, 120); });
-    // 見えている範囲（ツールバーの出し入れで変わる）が変わったら、画面の大きさを合わせ直す
-    if (root.visualViewport) { var vvT = 0; root.visualViewport.addEventListener('resize', function () { clearTimeout(vvT); vvT = setTimeout(function () { var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return; root.dispatchEvent(new Event('resize')); unscroll(); }, 150); }); }
+    document.addEventListener('focusout', function () { setTimeout(function () { unscroll(); resetZoom(); }, 150); });
+    // 画面全体の拡大（ピンチ・ダブルタップ・入力欄の自動拡大）を止める。ゲームの中の2本指の操作（全体マップ・3Dのズーム）は、それぞれの画面が自分で受け取る
+    //   iPhone の Safari では user-scalable=no が効かず、拡大したまま戻せなくなることがあった
+    ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (t) { document.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false }); });
+    document.documentElement.style.touchAction = 'manipulation';
+    // 拡大されたままになったら元に戻す（viewport の指定を一度書き換えると、Safari が等倍に戻す）
+    var zT = 0;
+    function resetZoom() {
+      if (!zoomed() || typing() || Date.now() - zT < 1500) return; zT = Date.now();
+      var m = document.querySelector('meta[name="viewport"]'); if (!m) return; var c0 = m.getAttribute('content');
+      m.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+      setTimeout(function () { m.setAttribute('content', c0); setTimeout(unscroll, 100); }, 250);
+    }
+    MobileUI.resetZoom = resetZoom;
+    // 見えている範囲（ツールバーの出し入れで変わる）が変わったら、画面の大きさを合わせ直す。拡大中は合わせ直さず、等倍に戻す
+    if (root.visualViewport) { var vvT = 0; root.visualViewport.addEventListener('resize', function () { clearTimeout(vvT); vvT = setTimeout(function () { if (typing()) return; if (zoomed()) { resetZoom(); return; } root.dispatchEvent(new Event('resize')); unscroll(); }, 150); }); }
   };
   root.MobileUI = MobileUI;
 })(typeof window !== 'undefined' ? window : globalThis);
