@@ -202,6 +202,7 @@
     var ent = this.entrance; var entP = ent ? Math.min(1, ent.t / ent.dur) : 1;
     if (ent) { ctx.fillStyle = 'rgba(0,0,0,' + (0.7 * (1 - entP)) + ')'; ctx.fillRect(0, 0, W, H); }
     // 敵
+    this._lab = [];
     b.enemies.forEach(function (e, i) {
       var dying = self.anims.filter(function (a) { return a.type === 'die' && a.idx === i; })[0];
       var ve = self.view.e[i]; if (!ve) return;   // v6.5 まだ現れていない（呼ばれる前の）敵
@@ -241,7 +242,9 @@
       ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(x, y + hh + 6, size, 6); ctx.fillStyle = ve.hp / ve.maxHp > 0.3 ? '#4cc38a' : '#e5484d'; ctx.fillRect(x, y + hh + 6, size * ratio, 6);
       var st = ve.st.map(function (k) { return Combat.STATUS_NAME[k]; }).join('');
       ctx.fillStyle = '#fff'; ctx.font = (e.boss ? 'bold 13px' : '12px') + ' sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.7)';
-      var label = e.name + (ve.ex ? '（弱点露出）' : '') + (st ? '［' + st + '］' : ''); ctx.strokeText(label, x + size / 2, y - 6); ctx.fillText(label, x + size / 2, y - 6);
+      var label = e.name + (ve.ex ? '（弱点露出）' : '') + (st ? '［' + st + '］' : ''); var ly = y - 6;
+      if (r.from3d) { var lw = ctx.measureText(label).width, lx = x + size / 2; self._lab = self._lab || []; for (var li = 0; li < 6 && self._lab.some(function (o) { return Math.abs(o.x - lx) < (o.w + lw) / 2 + 4 && Math.abs(o.y - ly) < 15; }); li++) ly -= 15; self._lab.push({ x: lx, y: ly, w: lw }); }   // 3D版 Phase 2：名前が重なるときは上へずらす
+      ctx.strokeText(label, x + size / 2, ly); ctx.fillText(label, x + size / 2, ly);
       self.anims.filter(function (a) { return a.side === 'enemy' && a.idx === i && a.type === 'fx'; }).forEach(function (a) { drawFx(ctx, a, x + size / 2, y + hh / 2); });
       var ph = self.anims.filter(function (a) { return a.type === 'phase' && a.idx === i; })[0];
       if (ph) { var pp = ph.t / ph.dur; ctx.strokeStyle = 'rgba(255,80,80,' + (1 - pp) + ')'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + size / 2, y + hh / 2, Math.max(size, hh) * 0.5 + pp * 60, 0, Math.PI * 2); ctx.stroke(); }

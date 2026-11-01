@@ -9,6 +9,13 @@
 - v6.5（開発中）：Phase A（戦闘のタイミング・クラウドセーブ・町の外周・脱出の羽と帰還の術）、Phase B（地域ごとの新しいモンスター40種・ボスのシンボル・イベントA〜E）、Phase C（全呪文・特技の演出と、命中の瞬間の同期）、Phase D（戦闘背景の作り直し・3D版の戦闘の舞台）、Phase E（星界航行船アストラ号と、つながった世界）を公開。クラウドセーブは **Supabase の設定待ち**（手順：[docs/cloud/README.md](docs/cloud/README.md)）。v6.5 の報告：[docs/report-v65.md](docs/report-v65.md)
 - v6.4 大型拡張（Phase A〜G）の最終報告：[docs/report-v64.md](docs/report-v64.md)（各フェーズの状態・追加した数・習得レベルの変更・バランスの前後・互換テスト・変更したファイル・未実装と未検証）
 
+
+## 本格フル3D化（開発中・未公開。ブランチ feature/3d-full）
+- 全330マップを3Dで表示（ポヨ村と屋内6＝専用の3D、ほかの323＝タイルから自動生成する汎用3D＝仮3D）
+- 戦闘：左に敵・右に主人公たち。敵は2D版の絵から厚みのある立体を自動生成（元のデザインのまま）
+- Blender＋Three.js の制作方式（.blend の保存・登録表・自動検証）
+- 報告：[docs/3d/07_phase0-status.md](docs/3d/07_phase0-status.md)・[docs/3d/08_blender-threejs-pipeline.md](docs/3d/08_blender-threejs-pipeline.md)・[docs/3d/09_phase1-2-report.md](docs/3d/09_phase1-2-report.md)・集計表 [docs/3d/status.md](docs/3d/status.md)
+- 未検証：GPU のある実機での3D版（fps・同期・操作感）
 ---
 
 ## トレードクイズモンスター5体・100問／師匠の立ち絵と目印／振り返りの画面／自動プレイでのバランス調整（2D版・3D版 共通）

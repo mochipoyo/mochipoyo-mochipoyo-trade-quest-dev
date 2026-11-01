@@ -1,0 +1,371 @@
+{
+ "generated": "2026-11-01T15:05:01.340Z",
+ "rows": [
+  {
+   "name": "マップ",
+   "total": 330,
+   "done": 7,
+   "prov": 323,
+   "d2": 0,
+   "none": 0,
+   "note": "種類：field 12・town 25・interior 167・dungeon 126。3D完成＝ポヨ村と屋内6（専用の場面）。仮3D＝WorldBuilder3D がタイルから自動生成。全マップ組み立てテスト：330/330 成功"
+  },
+  {
+   "name": "主人公・仲間",
+   "total": 15,
+   "done": 2,
+   "prov": 13,
+   "d2": 0,
+   "none": 0,
+   "note": "主人公の職業別の見た目（20職）は1つのモデルを共用。hero→hero（専用）、lina→lina（専用）、kyle→kyle（自動生成）、mina→mina（自動生成）、seris→seris（自動生成）、gald→gald（自動生成）、lucia→lucia（自動生成）、elna→scholar（代用：2D版と同じ scholar の見た目）、nagi→sailor（代用：2D版と同じ sailor の見た目）、iris→villager_f（代用：2D版と同じ villager_f の見た目）、sophia→priest（代用：2D版と同じ priest の見た目）、io→child（代用：2D版と同じ child の見た目）、ganes→villager_m（代用：2D版と同じ villager_m の見た目）、aster→hero_sage（代用：2D版と同じ hero_sage の見た目）、ord→guard（代用：2D版と同じ guard の見た目）"
+  },
+  {
+   "name": "NPC",
+   "total": 473,
+   "done": 323,
+   "prov": 150,
+   "d2": 0,
+   "none": 0,
+   "note": "見た目の種類 56。手作業のモデル 323人／自動生成のモデル 102人／別のモデルで代用 48人（村人の男性で代用）"
+  },
+  {
+   "name": "通常モンスター",
+   "total": 204,
+   "done": 0,
+   "prov": 204,
+   "d2": 0,
+   "none": 0,
+   "note": "戦闘：2D版の絵（新しい画像・従来の絵）をそのまま使い、絵から厚みのある立体（2.5D）を自動で作る（ArtVolume）。元のデザインを保つ方式。専用の3Dモデルはない"
+  },
+  {
+   "name": "ボス",
+   "total": 44,
+   "done": 0,
+   "prov": 44,
+   "d2": 0,
+   "none": 0,
+   "note": "戦闘：ボス画像（BossArt）から同じく2.5D。探索中のボスのシンボルは2D版の絵の立て札（ビルボード）"
+  },
+  {
+   "name": "乗り物",
+   "total": 4,
+   "done": 0,
+   "prov": 4,
+   "d2": 0,
+   "none": 0,
+   "note": "帆船・大型船・飛空艇＝Blender の仮モデル（build_world.py）。アストラ号＝止めてある姿は飛空艇の仮モデルの色違い、空を飛ぶ場面は2D版の画面（sailboat・galleon・airship・astra）"
+  },
+  {
+   "name": "重要イベント",
+   "total": 313,
+   "done": 0,
+   "prov": 0,
+   "d2": 313,
+   "none": 0,
+   "note": "内訳：dive 1・script 275・board 1・trial 2・boss 34。出来事の場所は3Dのマップの上にあるが、会話・演出は2D版の画面（専用の3D演出はない）"
+  }
+ ],
+ "detail": {
+  "maps": {
+   "total": 330,
+   "byKind": {
+    "field": 12,
+    "town": 25,
+    "interior": 167,
+    "dungeon": 126
+   },
+   "done": [
+    "poyo_village",
+    "poyo_elder_house",
+    "poyo_item_shop",
+    "poyo_inn",
+    "poyo_church",
+    "poyo_dojo",
+    "poyo_house"
+   ],
+   "failed": []
+  },
+  "npcSprites": {
+   "villager_m": {
+    "n": 94,
+    "status": "done",
+    "model": "villager_m"
+   },
+   "elder": {
+    "n": 32,
+    "status": "done",
+    "model": "elder"
+   },
+   "guard": {
+    "n": 31,
+    "status": "provisional",
+    "model": "guard"
+   },
+   "sailor": {
+    "n": 9,
+    "status": "provisional",
+    "model": "sailor"
+   },
+   "villager_f": {
+    "n": 64,
+    "status": "done",
+    "model": "villager_f"
+   },
+   "scholar": {
+    "n": 32,
+    "status": "provisional",
+    "model": "scholar"
+   },
+   "merchant": {
+    "n": 68,
+    "status": "done",
+    "model": "merchant"
+   },
+   "child": {
+    "n": 26,
+    "status": "done",
+    "model": "child"
+   },
+   "innkeeper": {
+    "n": 22,
+    "status": "done",
+    "model": "innkeeper"
+   },
+   "priest": {
+    "n": 10,
+    "status": "done",
+    "model": "priest"
+   },
+   "lina": {
+    "n": 1,
+    "status": "done",
+    "model": "lina"
+   },
+   "master": {
+    "n": 6,
+    "status": "done",
+    "model": "master"
+   },
+   "bartender": {
+    "n": 10,
+    "status": "provisional",
+    "model": "bartender"
+   },
+   "kyle": {
+    "n": 1,
+    "status": "provisional",
+    "model": "kyle"
+   },
+   "seris": {
+    "n": 1,
+    "status": "provisional",
+    "model": "seris"
+   },
+   "npc_treasurer": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "king": {
+    "n": 9,
+    "status": "provisional",
+    "model": "king"
+   },
+   "mina": {
+    "n": 1,
+    "status": "provisional",
+    "model": "mina"
+   },
+   "lucia": {
+    "n": 1,
+    "status": "provisional",
+    "model": "lucia"
+   },
+   "tm_galen": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "tm_seiran": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "gald": {
+    "n": 1,
+    "status": "provisional",
+    "model": "gald"
+   },
+   "tm_bard": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "federal_soldier": {
+    "n": 4,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "royal_guard": {
+    "n": 4,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "tm_mirea": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "tm_lione": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "shadow": {
+    "n": 5,
+    "status": "provisional",
+    "model": "shadow"
+   },
+   "tm_chrono": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "tm_raizen": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "rune_knight": {
+    "n": 4,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "tm_arzen": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "minister": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "tm_ordis": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "desert_raider": {
+    "n": 2,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "debt_collector": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "hero_sage": {
+    "n": 1,
+    "status": "provisional",
+    "model": "hero_sage"
+   },
+   "npc_scholar": {
+    "n": 3,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "tm_volte": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "npc_wizard": {
+    "n": 2,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "npc_elder": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "npc_priestess": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "npc_ranger": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "npc_monk": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_galva": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_emma": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_leo": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_ren": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_kai": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_jin": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_seil": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_dow": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_lisia": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_max": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_zeno": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   },
+   "td_mira": {
+    "n": 1,
+    "status": "fallback",
+    "model": "villager_m"
+   }
+  }
+ }
+}

@@ -12,6 +12,7 @@
    ========================================================= */
 import * as THREE from 'three';
 import { BattleActors3D } from './BattleActors3D.js';
+import { CUT } from '../engine/Cutout.js';
 
 const G = typeof window !== 'undefined' ? window : globalThis;
 const TAU = Math.PI * 2;
@@ -94,11 +95,19 @@ export class BattleStage3D {
     if (scene !== this.lastScene) { this.build(scene, W, H); this.lastScene = scene; this.t0 = now; this.last = now; scene._stage3d = true; }
     if (!this.scene3) return null;
     this.cw = W; this.ch = H;
-    if (this.size !== W + 'x' + H) { this.size = W + 'x' + H; this.renderer.setSize(W, H, false); this.camera.aspect = W / H; this.camera.updateProjectionMatrix(); }
+    if (this.size !== W + 'x' + H) { this.size = W + 'x' + H; this.renderer.setSize(W, H, false); this.camera.aspect = W / H; this.camera.updateProjectionMatrix(); if (this.actorMode) this.fitCamera(W, H); }
     const dt = Math.min(0.05, (now - this.last) / 1000); this.last = now; const t = (now - this.t0) / 1000;
     this.update(dt, t, scene, W, H);
+    const cutR = CUT.uCutRadius.value; CUT.uCutRadius.value = 0;   // 探索の「主人公の手前を抜く」処理は戦闘では使わない（共有のマテリアルのため一時的に止める）
     this.renderer.render(this.scene3, this.camera); this.stats.frames++;
+    CUT.uCutRadius.value = cutR;
     return this.canvas;
+  }
+  // Phase 2：左右の敵・味方（ワールドで横 ±6 ほど）が画面の幅に入るよう、カメラの距離を画面の縦横比から決める（スマホの縦画面でも全員が入る）
+  fitCamera(W, H) {
+    const fovH = THREE.MathUtils.degToRad(this.camera.fov / 2); const a = Math.max(0.4, W / Math.max(1, H));
+    const need = 6.0 / (Math.tan(fovH) * a); const z = Math.max(11.5, 1.6 + need); const k = Math.tan(Math.atan2(1.8, 11.5));
+    this.camBase.set(0, 1.2 + z * k, z); this.pitch = Math.atan2(z * k, z);
   }
   /* ---------- 舞台を作る ---------- */
   build(scene, W, H) {
@@ -111,7 +120,7 @@ export class BattleStage3D {
     this.camBase = new THREE.Vector3(0, 1.1, 9); const fovH = THREE.MathUtils.degToRad(this.camera.fov / 2); this.camera.aspect = W / H; this.camera.updateProjectionMatrix();
     const thetaPoint = Math.atan2(this.camBase.y, this.camBase.z); this.pitch = thetaPoint - Math.atan(0.12 * Math.tan(fovH));
     this.actorMode = this.actorsEnabled();
-    if (this.actorMode) { this.camBase.set(0.0, 3.0, 11.5); this.pitch = Math.atan2(3.0 - 1.2, 11.5); }   // Phase 2：左に敵・右に味方を、斜め前の少し上から見る
+    if (this.actorMode) this.fitCamera(W, H);   // Phase 2：左に敵・右に味方を、斜め前の少し上から見る
     // 遠景：2D版の背景（同じ景色・同じ地平線）を奥の板に貼る。板の地平線（絵の上から 58%）を 3D の地平線に合わせ、画面の上の端まで覆う
     const dist = far + this.camBase.z, hz3 = 0.7; const topY = this.camBase.y - dist * Math.tan(this.pitch) + dist * Math.tan(fovH) + 1.5 + 6.6 * dist / 71;
     const hgt = (topY - hz3) / 0.58, wid = 2 * dist * Math.tan(fovH) * (W / H) * 1.18; const bw = Math.min(2048, Math.round(H * wid / hgt));
@@ -233,7 +242,7 @@ export class BattleStage3D {
           [[-3.6, -0.5], [3.6, -0.5], [-3.6, -6], [3.6, -6]].forEach(([x, z]) => torch(x, z, '#ffb24a')); } break;
       case 'harbor': { const wood = std('#7a5a3a'); const pier = new THREE.Mesh(new THREE.BoxGeometry(this.actorMode ? 17 : 9, 0.3, this.actorMode ? 12 : 14), wood); pier.position.set(0, 0.12, this.actorMode ? 0 : -1); pier.receiveShadow = true; pier.castShadow = true; S.add(pier);
           this.scatter(S, new THREE.CylinderGeometry(0.16, 0.16, 2.4, 8).translate(0, -0.4, 0), wood, 12, (i) => ({ x: (i % 2 ? 1 : -1) * 4.4, z: 5 - Math.floor(i / 2) * 2.6 }), true);
-          this.scatter(S, new THREE.BoxGeometry(0.9, 0.9, 0.9).translate(0, 0.45, 0), std('#9a7a4a'), 5, (i) => ({ x: -3.4 + (i % 2) * 0.95, z: 3 - i * 0.7, y: 0.27, ry: i * 0.4 }), true);
+          this.scatter(S, new THREE.BoxGeometry(0.9, 0.9, 0.9).translate(0, 0.45, 0), std('#9a7a4a'), 5, (i) => ({ x: (this.actorMode ? -7.6 : -3.4) + (i % 2) * 0.95, z: (this.actorMode ? -1.5 : 3) - i * 0.7, y: 0.27, ry: i * 0.4 }), true);
           const hull = new THREE.Mesh(new THREE.BoxGeometry(5, 1.4, 1.8), std('#6a4a2a')); hull.position.set(9, 0.5, -10); hull.castShadow = true; S.add(hull); const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 6), std('#5a3a22')); mast.position.set(9, 3.8, -10); S.add(mast);
           const sail = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 3.4), std('#f0eee0', { side: THREE.DoubleSide })); sail.position.set(9.2, 4.2, -10); S.add(sail); this.anim.push((dt, t) => { hull.position.y = 0.5 + Math.sin(t * 1.1) * 0.08; hull.rotation.z = Math.sin(t * 0.9) * 0.03; }); } break;
       case 'sea': { const deck = new THREE.Mesh(new THREE.BoxGeometry(this.actorMode ? 18 : 14, 0.4, this.actorMode ? 9 : 5), std('#7a5a3a')); deck.position.set(0, 0.1, this.actorMode ? 0.4 : 5.4); deck.receiveShadow = true; S.add(deck); const rail = std('#5a3a22'); const r = new THREE.Mesh(new THREE.BoxGeometry(14, 0.15, 0.15), rail); r.position.set(0, 0.9, this.actorMode ? 4.8 : 3.0); S.add(r);

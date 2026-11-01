@@ -223,6 +223,10 @@ export class WorldBuilder3D {
     let trees = 0;
     for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
       const t = T(x, z);
+      if (t === 'forest' && outdoorD && [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dz]) => { const n = T(x + dx, z + dz); return !TREE_SOLID[n] && !WALL_TILES[n] && n !== '_void' && !Tiles().isSolid(n); })) {
+        // 屋外ダンジョンの道ぞいの森：背の低い木と茂みにして、道が隠れないようにする
+        put(rnd() < 0.5 ? 'bush_a' : 'tree_oak_c', M4(x + 0.5 + (rnd() - 0.5) * 0.3, heightAt(x + 0.5, z + 0.5), z + 0.5 + (rnd() - 0.5) * 0.3, rnd() * 6.28, 0, 0, 0.55 + rnd() * 0.2), x, z); trees++; continue;
+      }
       if (t === 'forest') { const n = (hi && field) ? 2 : 1; for (let k = 0; k < n; k++) { tree(x + (n > 1 ? 0.2 + rnd() * 0.6 : 0.4 + rnd() * 0.2), z + (n > 1 ? 0.2 + rnd() * 0.6 : 0.4 + rnd() * 0.2), 0.8 + rnd() * 0.45); trees++; } }
       else if (t === 'tree') { tree(x + 0.5 + (rnd() - 0.5) * 0.3, z + 0.5 + (rnd() - 0.5) * 0.3, 0.8 + rnd() * 0.35); trees++; }
       else if (t === 'tree_small') { put('tree_oak_c', M4(x + 0.5, heightAt(x + 0.5, z + 0.5), z + 0.5, rnd() * 6.28, 0, 0, 0.45), x, z); }

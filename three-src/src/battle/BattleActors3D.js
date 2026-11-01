@@ -25,6 +25,7 @@ const PARTY_FACE = -Math.PI / 2 + 0.42;   // 左（敵）を向き、少しカ�
 
 // 立ち位置（添付の構図：敵は左の手前と奥、味方は右に2列）
 const ENEMY_SLOTS = [[-2.2, 2.2], [-3.9, 0.6], [-0.9, 0.3], [-4.0, 3.0], [-2.6, -0.9], [-5.0, -0.5], [-1.2, 3.3], [-5.4, 1.6]];
+const ENEMY_LAYOUT = { 2: [[-1.4, 2.0], [-3.9, 0.4]], 3: [[-0.9, 2.3], [-2.9, -0.3], [-4.0, 2.5]], 4: [[-0.9, 2.4], [-2.5, -0.5], [-3.6, 2.6], [-4.6, -0.3]] };
 const PARTY_SLOTS = [[1.7, 3.1], [2.7, 2.1], [3.3, 3.2], [4.2, 2.2], [4.7, 3.3], [5.2, 2.3]];
 const PARTY_SCALE = 1.0;
 
@@ -66,8 +67,9 @@ export class BattleActors3D {
   }
 
   enemyHome(i) {
-    const s = ENEMY_SLOTS[i % ENEMY_SLOTS.length]; const n = this.enemies.length; const ent = this.enemies[i];
+    const n = this.enemies.length; const ent = this.enemies[i];
     if (n === 1 || (ent && ent.e.boss && n <= 2 && i === 0)) return new THREE.Vector3(-2.6, 0, 1.2);
+    const set = ENEMY_LAYOUT[n]; const s = set ? set[i] : ENEMY_SLOTS[i % ENEMY_SLOTS.length];   // 数ごとの並び（名前・HPバーが重なりにくいよう、手前と奥で左右をずらす）
     return new THREE.Vector3(s[0], 0, s[1]);
   }
   partyHome(j) { const s = PARTY_SLOTS[j % PARTY_SLOTS.length]; return new THREE.Vector3(s[0], 0, s[1]); }
