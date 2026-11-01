@@ -31,6 +31,8 @@
       if (root.MobileUI) root.MobileUI.init();   // v6.1 スマホの操作パネル（タッチ → 共通の入力コマンド）
       root.addEventListener('resize', fit); fit();
       root.Engine.start();
+      if (root.Saves) { root.Saves.initialBackup(); root.Saves.startClock(); }   // v6.5 初回だけ既存セーブのバックアップ／プレイ時間
+      if (root.Cloud) root.Cloud.init();                                       // v6.5 クラウドセーブ（未設定なら何もしない）
       root.Title.show();
     }
   };

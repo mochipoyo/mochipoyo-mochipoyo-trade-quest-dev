@@ -109,10 +109,30 @@
     return true;
   }
 
+  /* ---------- v6.5 演出の同期：イベントごとの状態の写し ----------
+     runTurn はターンの結果を先にすべて計算する。画面は「いま再生しているイベントの時点」の HP・MP・状態を表示するため、
+     イベントを追加するたびに、その時点の全員の HP・MP・倒れているか・状態異常・弱点露出を snap として添える（js/ui/battle.js が使う。3D の演出も同じイベント列を使う前提）
+     ・act：行動の始まり（攻撃・呪文・道具を使うモーションの合図）
+     ・g：全体攻撃・全体回復などで「同時に当たる」ダメージ／回復をまとめる印（同じ g は同時に表示してよい） */
+  function snapOf(b) {
+    return { e: b.enemies.map(function (e) { return { hp: e.hp, maxHp: e.maxHp, dead: !!e.dead, st: Object.keys(e.status || {}), ex: e.exposed || 0, fled: !!e.fled }; }),
+      p: b.party.map(function (a) { return { id: a.id, hp: a.hp, mp: a.mp, dead: !!a.dead, st: Object.keys(a.status || {}), def: !!a.defending }; }) };
+  }
+  Combat.snapshot = snapOf;
+  var GROUP = null, GSEQ = 0;   // いま同時に当たる処理の中なら { id, side }
+  function beginGroup(side) { GROUP = { id: ++GSEQ, side: side }; }
+  function endGroup() { GROUP = null; }
+  function evList(b) {
+    var ev = [];
+    ev.push = function (x) { if (x && typeof x === 'object') { x.snap = snapOf(b); if (GROUP && (x.type === 'damage' || x.type === 'heal') && x.side === GROUP.side) x.g = GROUP.id; } return Array.prototype.push.call(ev, x); };
+    return ev;
+  }
+  Combat.evList = evList;
+
   /* ---------- ターン処理 ---------- */
   // commands: [{ actorId, type:'attack'|'skill'|'item'|'defend'|'escape', skillId, itemId, target:{side:'enemy'|'party', idx} }]
   Combat.runTurn = function (b, commands) {
-    var ev = []; b.turn += 1;
+    var ev = evList(b); b.turn += 1; endGroup();
     function msg(t) { ev.push({ type: 'msg', text: t }); }
     b.party.forEach(function (a) { a._turn = b.turn; });
     // v6.4 オラクル解析杖・観測者のレンズ：戦闘の始めに敵の弱点と耐性を表示（1回だけ）
@@ -154,6 +174,7 @@
   function execParty(b, x, ev) {
     var a = x.actor, cmd = x.cmd; var s = pstats(a);
     function msg(t) { ev.push({ type: 'msg', text: t }); }
+    ev.push({ type: 'act', side: 'party', id: a.id, kind: cmd.type, skillId: cmd.type === 'skill' ? cmd.skillId : null, itemId: cmd.type === 'item' ? cmd.itemId : null });   // v6.5 行動の始まり
     // 混乱：ランダム行動
     if (a.status.confuse && Math.random() < 0.6) {
       var all = aliveParty(b).concat(aliveEnemies(b)); var t = pickRandom(all); msg(a.name + 'は混乱している！');
@@ -247,12 +268,15 @@
       a._atkTurn = b.turn;
       var hits = sk.hits || 1;
       for (var h = 0; h < hits; h++) {
+        if (targets.length > 1) beginGroup('enemy');   // v6.5 全体攻撃：1回分の当たりは同時に表示
         targets.forEach(function (t) { if (t.dead) return; attackEnemy(b, a, t, sk.power, { element: sk.element, crit: sk.crit, pierce: sk.pierce, status: sk.status, steal: sk.steal, reversal: sk.reversal, anim: sk.anim, familyBonus: sk.familyBonus, steady: sk.steady, execute: sk.execute, fastBonus: sk.fastBonus }, ev); if (sk.exposeTurns && !t.dead) { t.exposed = Math.max(t.exposed || 0, sk.exposeTurns); ev.push({ type: 'msg', text: t.name + 'の防御が崩れた！（' + sk.exposeTurns + 'ターン）' }); } });
+        endGroup();
         if (hits > 1 && targets.every(function (t) { return t.dead; })) break;
       }
       if (sk.targetDebuff) applyDebuff(targets, sk.targetDebuff, ev);   // v6.4 抵抗線砕きなど
       if (sk.selfBuff) applySelfBuff(a, sk.selfBuff, ev);                 // v6.4 転換脚
     } else if (sk.kind === 'magic') {
+      if (targets.length > 1) beginGroup('enemy');
       targets.forEach(function (t) {
         var es = estats(t); var mult = resistOf(t, sk.element); if (a.job === 'mage') mult *= 1.1; var sb = fx(a, 'supportBoost'); if (sb && a._supTurn === b.turn - 1) mult *= sb; var spm = fx(a, 'spellMult'); if (spm) mult *= spm;   // v6.4 統計の魔杖など
         if (sk.element === 'light' && t.family === 'アンデッド系') mult *= 1.5;
@@ -262,12 +286,14 @@
         msg(t.name + 'に' + dmg + 'のダメージ' + (mult > 1 ? '（効果は抜群だ）' : mult === 0 ? '（効かない）' : mult < 1 ? '（効果はいまひとつ）' : ''));
         if (t.hp <= 0) { killEnemy(b, t, ev); onKill(a, ev); }
       });
+      endGroup();
       if (sk.targetDebuff) applyDebuff(targets, sk.targetDebuff, ev);   // v6.4 凍雨
     } else if (sk.kind === 'mp_heal') {   // v6.4 魔力循環：味方のMPを回復
       targets.forEach(function (t) { var st = Actors.stats(t); var v = Math.round(sk.power + s.mag * 0.3); var before = t.mp; t.mp = Math.min(st.maxMp, t.mp + v); msg(t.name + 'のMPが' + (t.mp - before) + '回復した'); });
     } else if (sk.kind === 'heal') {
       var hm = fx(a, 'healMult') || 1;   // v6.4 天秤の聖槌
-      targets.forEach(function (t) { var st = Actors.stats(t); var v = Math.round((sk.power + s.mag * 0.8) * (a.job === 'priest' ? 1.15 : 1) * hm * rnd(0.9, 1.1)); var before = t.hp; t.hp = Math.min(st.maxHp, t.hp + v); ev.push({ type: 'heal', side: 'party', id: t.id, value: t.hp - before }); msg(t.name + 'のHPが' + (t.hp - before) + '回復した'); });
+      if (targets.length > 1) beginGroup('party');
+      targets.forEach(function (t) { var st = Actors.stats(t); var v = Math.round((sk.power + s.mag * 0.8) * (a.job === 'priest' ? 1.15 : 1) * hm * rnd(0.9, 1.1)); var before = t.hp; t.hp = Math.min(st.maxHp, t.hp + v); ev.push({ type: 'heal', side: 'party', id: t.id, value: t.hp - before }); msg(t.name + 'のHPが' + (t.hp - before) + '回復した'); }); endGroup();
     } else if (sk.kind === 'cure') {
       targets.forEach(function (t) { var cured = []; sk.cures.forEach(function (c) { if (t.status[c]) { delete t.status[c]; cured.push(STATUS_NAME[c]); } }); msg(cured.length ? t.name + 'の' + cured.join('・') + 'が治った' : 'しかし何も起こらなかった'); if (cured.length) cureBonus(t, ev); });
     } else if (sk.kind === 'revive') {
@@ -287,7 +313,7 @@
       if (sk.expose) { targets.forEach(function (t) { t.exposed = 3; var tend = (t.actions || []).map(function (a) { return a.type === 'attack' ? '通常攻撃' : a.type === 'skill' ? (SKILLS[a.id] ? SKILLS[a.id].name : a.id) : (root.ENEMY_SPECIALS[a.id] ? root.ENEMY_SPECIALS[a.id].name : a.id); }).filter(function (v, i, arr) { return arr.indexOf(v) === i; }); msg(t.name + 'の行動傾向：' + tend.join('・') + '。防御の隙を見抜いた（弱点露出）'); ev.push({ type: 'anim', side: 'enemy', idx: t.idx, anim: 'light' }); }); }
       if (sk.dispel) { targets.forEach(function (t) { var had = Object.keys(t.buffs || {}).length; t.buffs = {}; msg(t.name + 'の' + (had ? '強化を打ち消した' : '強化はない')); }); }
       if (sk.buffAll) { aliveParty(b).forEach(function (t) { Object.keys(sk.buffAll).forEach(function (k) { t.buffs[k] = { value: sk.buffAll[k], turns: sk.turns || 3 }; }); }); msg('味方全体の素早さが上がった'); }
-      if (sk.gold && sk.power) { targets.forEach(function (t) { var dmg = Math.max(1, Math.round(sk.gold * sk.power * rnd(0.9, 1.1) - estats(t).def * 0.2)); t.hp = Math.max(0, t.hp - dmg); ev.push({ type: 'damage', side: 'enemy', idx: t.idx, value: dmg, anim: 'hit' }); msg(t.name + 'に' + dmg + 'のダメージ'); if (t.hp <= 0) killEnemy(b, t, ev); }); }
+      if (sk.gold && sk.power) { if (targets.length > 1) beginGroup('enemy'); targets.forEach(function (t) { var dmg = Math.max(1, Math.round(sk.gold * sk.power * rnd(0.9, 1.1) - estats(t).def * 0.2)); t.hp = Math.max(0, t.hp - dmg); ev.push({ type: 'damage', side: 'enemy', idx: t.idx, value: dmg, anim: 'hit' }); msg(t.name + 'に' + dmg + 'のダメージ'); if (t.hp <= 0) killEnemy(b, t, ev); }); endGroup(); }
     }
   }
   // v6.4 攻撃のあとに相手を弱める・自分を強める
@@ -304,7 +330,8 @@
     msg(a.name + 'は' + it.name + 'を使った！');
     if (ef.damage) {
       root.State.addItem(cmd.itemId, -1);
-      aliveEnemies(b).forEach(function (t) { var mult = resistOf(t, ef.element); var dmg = Math.max(0, Math.round(ef.damage * mult * rnd(0.9, 1.1))); t.hp = Math.max(0, t.hp - dmg); ev.push({ type: 'damage', side: 'enemy', idx: t.idx, value: dmg, anim: 'fire' }); msg(t.name + 'に' + dmg + 'のダメージ'); if (t.hp <= 0) killEnemy(b, t, ev); });
+      beginGroup('enemy');
+      aliveEnemies(b).forEach(function (t) { var mult = resistOf(t, ef.element); var dmg = Math.max(0, Math.round(ef.damage * mult * rnd(0.9, 1.1))); t.hp = Math.max(0, t.hp - dmg); ev.push({ type: 'damage', side: 'enemy', idx: t.idx, value: dmg, anim: 'fire' }); msg(t.name + 'に' + dmg + 'のダメージ'); if (t.hp <= 0) killEnemy(b, t, ev); }); endGroup();
       return;
     }
     var t = b.party.filter(function (q) { return cmd.target && q.id === cmd.target.id; })[0] || a;
@@ -319,6 +346,7 @@
 
   function execEnemy(b, e, ev) {
     function msg(t) { ev.push({ type: 'msg', text: t }); }
+    ev.push({ type: 'act', side: 'enemy', idx: e.idx });   // v6.5 行動の始まり
     var es = estats(e);
     if (e.status.confuse && Math.random() < 0.5) { var other = pickRandom(aliveEnemies(b)); msg(e.name + 'は混乱している！'); if (other) { var d0 = physDamage(es.atk, estats(other).def, 1.0); other.hp = Math.max(0, other.hp - d0); ev.push({ type: 'damage', side: 'enemy', idx: other.idx, value: d0, anim: 'hit' }); msg(other.name + 'に' + d0 + 'のダメージ'); if (other.hp <= 0) killEnemy(b, other, ev); } return; }
     // 行動選択（重み付き）
@@ -338,8 +366,8 @@
     if (chosen.type === 'attack') { var t = pickTarget(); msg(e.name + 'の攻撃！'); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: 'lunge' }); hitActor(b, e, t, 1.0, {}, ev); return; }
     if (chosen.type === 'skill') {
       var sk = SKILLS[chosen.id]; e.mp -= sk.mp; msg(e.name + 'は' + sk.name + 'を使った！'); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: sk.anim });
-      if (sk.kind === 'attack') { var tgs = sk.target === 'enemies' ? living : [pickTarget()]; var hits = sk.hits || 1; for (var h = 0; h < hits; h++) tgs.forEach(function (t2) { if (!t2.dead) hitActor(b, e, t2, sk.power, { element: sk.element, status: sk.status }, ev); }); }
-      else if (sk.kind === 'magic') { var tg2 = sk.target === 'enemies' ? living : [pickTarget()]; tg2.forEach(function (t3) { var ps = pstats(t3); var dmg = magDamage(es.mag, ps.mdef, sk.power); if (t3.job === 'spirit_warden' && ['ice', 'fire', 'thunder'].indexOf(sk.element) >= 0) dmg = Math.round(dmg * 0.85); /* v5.6 精霊守の加護 */ if (t3.buffs && t3.buffs.mres && t3.buffs.mres.turns > 0) dmg = Math.max(1, Math.round(dmg * (1 - t3.buffs.mres.value))); /* v5.6 精霊の盾・精霊の守り */ dmg = Math.max(1, Math.round(dmg * partyResist(t3, sk.element))); /* v6.4 防具の属性耐性 */ dmg = partyTakes(b, t3, dmg, ev); t3.hp = Math.max(0, t3.hp - dmg); ev.push({ type: 'damage', side: 'party', id: t3.id, value: dmg, anim: sk.anim }); msg(t3.name + 'に' + dmg + 'のダメージ'); if (t3.hp <= 0) killActor(t3, ev); }); }
+      if (sk.kind === 'attack') { var tgs = sk.target === 'enemies' ? living : [pickTarget()]; var hits = sk.hits || 1; for (var h = 0; h < hits; h++) { if (tgs.length > 1) beginGroup('party'); tgs.forEach(function (t2) { if (!t2.dead) hitActor(b, e, t2, sk.power, { element: sk.element, status: sk.status }, ev); }); endGroup(); } }
+      else if (sk.kind === 'magic') { var tg2 = sk.target === 'enemies' ? living : [pickTarget()]; if (tg2.length > 1) beginGroup('party'); tg2.forEach(function (t3) { var ps = pstats(t3); var dmg = magDamage(es.mag, ps.mdef, sk.power); if (t3.job === 'spirit_warden' && ['ice', 'fire', 'thunder'].indexOf(sk.element) >= 0) dmg = Math.round(dmg * 0.85); /* v5.6 精霊守の加護 */ if (t3.buffs && t3.buffs.mres && t3.buffs.mres.turns > 0) dmg = Math.max(1, Math.round(dmg * (1 - t3.buffs.mres.value))); /* v5.6 精霊の盾・精霊の守り */ dmg = Math.max(1, Math.round(dmg * partyResist(t3, sk.element))); /* v6.4 防具の属性耐性 */ dmg = partyTakes(b, t3, dmg, ev); t3.hp = Math.max(0, t3.hp - dmg); ev.push({ type: 'damage', side: 'party', id: t3.id, value: dmg, anim: sk.anim }); msg(t3.name + 'に' + dmg + 'のダメージ'); if (t3.hp <= 0) killActor(t3, ev); }); endGroup(); }
       else if (sk.kind === 'status') { var tg3 = sk.target === 'enemies' ? living : [pickTarget()]; tg3.forEach(function (t4) { if (addStatus(t4, sk.status, undefined, true)) msg(t4.name + 'は' + STATUS_NAME[sk.status.id] + '状態になった'); else msg(t4.name + 'には効かなかった'); }); }
       else if (sk.kind === 'buff') { Object.keys(sk.buff).forEach(function (k) { e.buffs[k] = { value: sk.buff[k], turns: sk.turns || 3 }; }); msg(e.name + 'の能力が上がった'); }
       return;
@@ -353,7 +381,7 @@
       if (sp.heal) { var hv = Math.max(1, Math.round(e.maxHp * sp.heal)); e.hp = Math.min(e.maxHp, e.hp + hv); ev.push({ type: 'heal', side: 'enemy', idx: e.idx, value: hv }); msg(e.name + 'のHPが' + hv + '回復した'); return; }
       if (sp.buff && sp.self) { Object.keys(sp.buff).forEach(function (k) { e.buffs[k] = { value: sp.buff[k], turns: sp.turns || 2 }; }); return; }
       if (sp.power) {
-        if (sp.all) { living.forEach(function (t7) { if (!t7.dead) hitActor(b, e, t7, sp.power, {}, ev); }); return; }
+        if (sp.all) { beginGroup('party'); living.forEach(function (t7) { if (!t7.dead) hitActor(b, e, t7, sp.power, {}, ev); }); endGroup(); return; }
         var hits2 = sp.hits || 1;
         for (var h2 = 0; h2 < hits2; h2++) { if (!aliveParty(b).length) break; var t5 = pickTarget(); if (!t5 || t5.dead) t5 = pickRandom(aliveParty(b)); var dm = hitActor(b, e, t5, sp.power, {}, ev); if (sp.drain && dm > 0) { e.hp = Math.min(e.maxHp, e.hp + Math.round(dm * 0.5)); msg(e.name + 'は体力を吸い取った'); } }
         return;
@@ -413,7 +441,7 @@
 
   // 相場の試練の結果を戦闘に反映（成功：敵の弱点露出＋味方強化／失敗：混乱の囁き）
   Combat.applyTrialResult = function (b, idx, score) {
-    var e = b.enemies[idx]; var ev = []; function msg(t) { ev.push({ type: 'msg', text: t }); }
+    var e = b.enemies[idx]; var ev = evList(b); function msg(t) { ev.push({ type: 'msg', text: t }); }
     if (score >= 60) { e.exposed = 3; aliveParty(b).forEach(function (a) { a.buffs.atk = { value: 0.25, turns: 3 }; }); msg('正しい判断が魔物の核心を暴いた！ ' + e.name + 'の防御が崩れ、味方の攻撃力が上がった！'); if (score >= 90) { var d = Math.round(e.maxHp * 0.1); e.hp = Math.max(1, e.hp - d); ev.push({ type: 'damage', side: 'enemy', idx: e.idx, value: d, anim: 'light' }); msg('見事な分析！ ' + e.name + 'に' + d + 'のダメージ'); } }
     else { msg('魔物の誘惑に惑わされた……！'); aliveParty(b).forEach(function (a) { if (Math.random() < 0.5 && addStatus(a, { id: 'confuse', chance: 1 }, 1, true)) msg(a.name + 'は混乱した'); }); }
     return ev;

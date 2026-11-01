@@ -56,7 +56,9 @@
   /* ---------- セーブ ---------- */
   function key(slot) { return KEY_PREFIX + slot; } // slot: 1..3, 0=auto
   State.save = function (slot) {
-    try { if (!root.localStorage) return false; State.data.savedAt = Date.now(); root.localStorage.setItem(key(slot), JSON.stringify(State.data)); return true; } catch (e) { return false; }
+    try { if (!root.localStorage) return false; State.data.savedAt = Date.now(); root.localStorage.setItem(key(slot), JSON.stringify(State.data)); } catch (e) { return false; }
+    if (root.Cloud && root.Cloud.afterLocalSave) { try { root.Cloud.afterLocalSave(slot); } catch (e) { /* クラウドの失敗は端末の保存に影響させない */ } }   // v6.5 クラウドセーブ（同期がオンのスロットだけ）
+    return true;
   };
   State.autosave = function () { return State.save(0); };
   State.load = function (slot) {
@@ -73,7 +75,7 @@
   State.normalSlotInfo = function (slot) {
     try { var raw = root.localStorage ? root.localStorage.getItem(NORMAL_PREFIX + slot) : null; if (!raw) return null; var d = JSON.parse(raw); return { name: d.hero.name, level: d.hero.level, map: d.pos.map }; } catch (e) { return null; }
   };
-  State.deleteSlot = function (slot) { try { root.localStorage.removeItem(key(slot)); } catch (e) { /* ignore */ } };
+  State.deleteSlot = function (slot) { if (root.Saves) root.Saves.backup('スロット削除の前（' + (slot === 0 ? 'オート' : 'スロット' + slot) + '）', [slot]); if (root.Cloud && root.Cloud.setLinked) root.Cloud.setLinked(slot, false); try { root.localStorage.removeItem(key(slot)); } catch (e) { /* ignore */ } };   // v6.5 消す前にバックアップ。クラウドの自動同期は外す（クラウドのデータは消さない）
   State.exportJSON = function () { return JSON.stringify(State.data, null, 2); };
   State.importJSON = function (text) { var d = JSON.parse(text); if (!d || !d.hero || !d.pos) throw new Error('セーブデータの形式が正しくありません'); return State.migrate(d); };
 

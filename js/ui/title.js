@@ -40,7 +40,9 @@
       var legacy = State.legacyInfo();
       var opts = [{ label: 'はじめから' }, { label: 'つづきから', disabled: !hasAny }, { label: 'データ管理' }];
       if (legacy) opts.push({ label: '旧バージョンのデータを確認' });
+      var cloudOn = root.Cloud && root.Cloud.configured(); if (cloudOn) opts.push({ label: 'クラウドセーブ（PC・スマホで共有）', sub: root.Cloud.status === 'signedin' ? 'ログイン中' : 'ログインすると、ほかの端末のセーブを読み込めます' });   // v6.5
       var i = await Win.list(opts, { title: 'タイトル', cancel: false, cls: 'title-menu' });
+      if (cloudOn && i === opts.length - 1) { await root.SaveUI.cloud(); continue; }
       if (i === 0) { var ok = await Title.newGame(); if (ok) return; }
       if (i === 1) { var ld = await Title.load(); if (ld) return; }
       if (i === 2) { await Title.data(); }
@@ -63,14 +65,17 @@
     return true;
   };
   Title.load = async function () {
-    var slots = [0, 1, 2, 3].map(function (s) { var info = State.slotInfo(s); return { label: s === 0 ? 'オートセーブ' : 'スロット' + s, right: info ? info.name + ' ' + JOBS[info.job].name + ' Lv' + info.level : '（空き）', disabled: !info, sub: info ? (root.MAP_DEFS[info.map] ? root.MAP_DEFS[info.map].name : 'フィールド') + '　' + info.gold + 'G　' + new Date(info.savedAt).toLocaleString('ja-JP') : '' }; });
+    if (root.SaveUI) await root.SaveUI.titleNotice();   // v6.5 クラウドの方が新しいスロットがあれば知らせる
+    var slots = [0, 1, 2, 3].map(function (s) { return root.SaveUI.slotItem(s, { needData: true }); });   // v6.5 名前・レベル・場所・日時・プレイ時間・クラウドの状態
     var i = await Win.list(slots, { title: 'つづきから' });
     if (i < 0) return false;
     var d = State.load(i); if (!d) { await Win.message(['読み込めなかった。']); return false; }
     State.data = d; World.start(); return true;
   };
   Title.data = async function () {
-    var i = await Win.choice('データ管理', ['JSONを読み込んで再開', 'スロットを削除', 'やめる']);
+    var i = await Win.choice('データ管理', ['JSONを読み込んで再開', 'スロットを削除', 'やめる', 'クラウドセーブ（PC・スマホで共有）', 'バックアップ・ファイル']);
+    if (i === 3) { await root.SaveUI.cloud(); return; }   // v6.5
+    if (i === 4) { await root.SaveUI.backups(); return; }   // v6.5
     if (i === 0) { var inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.json,application/json'; var text = await new Promise(function (res) { inp.onchange = function () { var f = inp.files[0]; if (!f) return res(null); var r = new FileReader(); r.onload = function () { res(r.result); }; r.readAsText(f); }; inp.click(); setTimeout(function () { res(null); }, 60000); }); if (!text) return; try { State.data = State.importJSON(text); State.autosave(); World.start(); } catch (e) { await Win.message(['読み込みに失敗：' + e.message]); } }
     if (i === 1) { var s = await Win.choice('どのスロットを削除する？', ['オートセーブ', 'スロット1', 'スロット2', 'スロット3', 'やめる']); if (s >= 0 && s < 4) { var c = await Win.choice('本当に削除する？', ['削除', 'やめる']); if (c === 0) { State.deleteSlot(s); await Win.message(['削除した。']); } } }
   };

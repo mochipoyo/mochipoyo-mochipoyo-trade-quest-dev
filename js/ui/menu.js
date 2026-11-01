@@ -346,7 +346,7 @@
   };
 
   Menu.save = async function () {
-    var slots = [1, 2, 3].map(function (s) { var info = State.slotInfo(s); return { label: 'スロット' + s, right: info ? info.name + ' Lv' + info.level : '（空き）', sub: info ? (root.MAP_DEFS[info.map] ? root.MAP_DEFS[info.map].name : info.map) + '　' + new Date(info.savedAt).toLocaleString('ja-JP') : '' }; });
+    var slots = [1, 2, 3].map(function (s) { return root.SaveUI ? root.SaveUI.slotItem(s) : { label: 'スロット' + s }; });   // v6.5 名前・レベル・場所・日時・プレイ時間・クラウドの状態
     var i = await Win.list(slots, { title: 'セーブ（オートセーブも常時動作）' });
     if (i < 0) return;
     var ok = State.save(i + 1);
@@ -457,8 +457,10 @@
 
   Menu.dataManagement = async function () {
     while (true) {
-      var i = await Win.choice('データ管理', ['セーブデータをJSONで書き出す', 'JSONを読み込む', 'スロットを削除', 'やめる']);
+      var i = await Win.choice('データ管理', ['セーブデータをJSONで書き出す', 'JSONを読み込む', 'スロットを削除', 'やめる', 'クラウドセーブ（PC・スマホで共有）', 'バックアップ・ファイル']);
       if (i < 0 || i === 3) return;
+      if (i === 4) { await root.SaveUI.cloud(); continue; }   // v6.5
+      if (i === 5) { await root.SaveUI.backups(); continue; }   // v6.5
       if (i === 0) { var blob = new Blob([State.exportJSON()], { type: 'application/json' }); var u = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = u; a.download = 'mochipoyo-trade-quest-save.json'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 1000); await Win.message(['書き出した。ブラウザの保存データを消すと進行が失われるので、JSONを保管しておこう。']); }
       if (i === 1) { var inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.json,application/json'; var text = await new Promise(function (res) { inp.onchange = function () { var f = inp.files[0]; if (!f) return res(null); var r = new FileReader(); r.onload = function () { res(r.result); }; r.readAsText(f); }; inp.click(); setTimeout(function () { res(null); }, 60000); }); if (!text) continue; try { var dd = State.importJSON(text); State.data = dd; State.autosave(); await Win.message(['読み込んだ。マップを再読み込みする。']); World.start(); return; } catch (e) { await Win.message(['読み込みに失敗：' + e.message]); } }
       if (i === 2) { var s = await Win.choice('どのスロットを削除する？', ['スロット1', 'スロット2', 'スロット3', 'やめる']); if (s >= 0 && s < 3) { var c = await Win.choice('本当に削除する？（元に戻せない）', ['削除', 'やめる']); if (c === 0) { State.deleteSlot(s + 1); await Win.message(['削除した。']); } } }

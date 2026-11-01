@@ -112,6 +112,8 @@
   /* =============== 戦闘シーン =============== */
   function BattleScene(b, kind, opts) {
     this.b = b; this.kind = kind; this.pops = []; this.shake = {}; this.flash = 0; this.anims = []; this.t = 0; this.screenShake = 0; this.victory = -1; this.particles = [];
+    // v6.5 表示は「いま再生しているイベントの時点」の状態（Combat.snapshot）。gone＝消える演出を再生した敵、bar＝HPバーの表示中の値
+    this.view = Combat.snapshot(b); this.gone = {}; this.bar = {}; this.acting = null;
     this.theme = themeFor(kind, opts.zone, root.World.map ? root.World.map.id : '');
     this.bg = null; this.entrance = b.boss ? { t: 0, dur: 1400 } : null;
     // v6.3 特殊戦闘のカットイン（マップと敵の組み合わせが一致し、画像が読み込めたときだけ）。終わったら消える
@@ -126,6 +128,7 @@
   BattleScene.prototype.update = function (dt) {
     this.t += dt; var self = this;
     this.pops = this.pops.filter(function (p) { p.t += dt; return p.t < 900; });
+    (this.view.e || []).forEach(function (ve, i) { var cur = self.bar[i]; if (cur === undefined) { self.bar[i] = ve.hp; return; } var step = Math.max(1, ve.maxHp * dt / 260); self.bar[i] = cur > ve.hp ? Math.max(ve.hp, cur - step) : Math.min(ve.hp, cur + step); });   // v6.5 命中の瞬間から減り始める
     this.anims = this.anims.filter(function (a) { a.t += dt; return a.t < a.dur; });
     if (this.flash > 0) this.flash -= dt;
     if (this.screenShake > 0) this.screenShake -= dt;
@@ -138,7 +141,7 @@
   };
   // 敵の表示矩形：新画像（assets/）はマニフェストの倍率、従来描画は従来サイズ。足元中央を基準に配置し、混雑時は縮小して重ならないようにする
   BattleScene.prototype.enemyRect = function (i, W, H) {
-    var b = this.b; var n = b.enemies.length; var slot = W / (n + 1); var e = b.enemies[i];
+    var b = this.b; var n = Math.max(1, (this.view && this.view.e.length) || b.enemies.length); var slot = W / (n + 1); var e = b.enemies[i];
     var v = enemyVisual(e); var w = v.w, h = v.h;
     var maxW = slot * 0.96, maxH = H * 0.5;
     var f = Math.min(1, maxW / w, maxH / h); w = Math.round(w * f); h = Math.round(h * f);
@@ -156,7 +159,8 @@
     // 敵
     b.enemies.forEach(function (e, i) {
       var dying = self.anims.filter(function (a) { return a.type === 'die' && a.idx === i; })[0];
-      if (e.dead && !dying) return;
+      var ve = self.view.e[i]; if (!ve) return;   // v6.5 まだ現れていない（呼ばれる前の）敵
+      if (self.gone[i] && !dying) return;          // 消える演出を再生し終えた敵だけ消す（計算上倒れていても、演出の前は表示を続ける）
       var r = self.enemyRect(i, W, H); var x = r.x, y = r.y, size = r.w, hh = r.h;
       var sh = self.shake[i]; if (sh && sh > 0) { x += Math.sin(sh / 20) * 6; self.shake[i] = sh - 16; }
       var lunge = self.anims.filter(function (a) { return a.type === 'lunge' && a.idx === i; })[0];
@@ -169,7 +173,7 @@
       var alpha = 1;
       if (dying) { var dp = dying.t / dying.dur; alpha = 1 - dp; if (e.fled) { x += dp * 80; } else { y += dp * 20; } }
       if (appear) alpha *= appear.t / appear.dur;
-      if (e.status.sleep) alpha *= 0.75;
+      if (ve.st.indexOf('sleep') >= 0) alpha *= 0.75;
       if (ent) alpha *= Math.min(1, entP * 2);
       ctx.globalAlpha = alpha;
       var cx = x + size / 2, cy = y + hh + bob;
@@ -184,10 +188,11 @@
       ctx.restore();
       if (dying) return;
       // HPバー・名前
-      ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(x, y + hh + 6, size, 6); ctx.fillStyle = e.hp / e.maxHp > 0.3 ? '#4cc38a' : '#e5484d'; ctx.fillRect(x, y + hh + 6, size * e.hp / e.maxHp, 6);
-      var st = Object.keys(e.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join('');
+      var bv = self.bar[i] !== undefined ? self.bar[i] : ve.hp; var ratio = Math.max(0, Math.min(1, bv / ve.maxHp));
+      ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(x, y + hh + 6, size, 6); ctx.fillStyle = ve.hp / ve.maxHp > 0.3 ? '#4cc38a' : '#e5484d'; ctx.fillRect(x, y + hh + 6, size * ratio, 6);
+      var st = ve.st.map(function (k) { return Combat.STATUS_NAME[k]; }).join('');
       ctx.fillStyle = '#fff'; ctx.font = (e.boss ? 'bold 13px' : '12px') + ' sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.7)';
-      var label = e.name + (e.exposed ? '（弱点露出）' : '') + (st ? '［' + st + '］' : ''); ctx.strokeText(label, x + size / 2, y - 6); ctx.fillText(label, x + size / 2, y - 6);
+      var label = e.name + (ve.ex ? '（弱点露出）' : '') + (st ? '［' + st + '］' : ''); ctx.strokeText(label, x + size / 2, y - 6); ctx.fillText(label, x + size / 2, y - 6);
       self.anims.filter(function (a) { return a.side === 'enemy' && a.idx === i && a.type === 'fx'; }).forEach(function (a) { drawFx(ctx, a, x + size / 2, y + hh / 2); });
       var ph = self.anims.filter(function (a) { return a.type === 'phase' && a.idx === i; })[0];
       if (ph) { var pp = ph.t / ph.dur; ctx.strokeStyle = 'rgba(255,80,80,' + (1 - pp) + ')'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + size / 2, y + hh / 2, Math.max(size, hh) * 0.5 + pp * 60, 0, Math.PI * 2); ctx.stroke(); }
@@ -202,7 +207,7 @@
     // 勝利演出
     if (this.victory >= 0) { var vp = Math.min(1, this.victory / 600); ctx.save(); ctx.globalAlpha = 0.5 * vp; ctx.fillStyle = '#ffd24a'; for (var ray = 0; ray < 12; ray++) { var ang = ray * Math.PI / 6 + this.t / 3000; ctx.beginPath(); ctx.moveTo(W / 2, H * 0.3); ctx.lineTo(W / 2 + Math.cos(ang) * 900, H * 0.3 + Math.sin(ang) * 900); ctx.lineTo(W / 2 + Math.cos(ang + 0.08) * 900, H * 0.3 + Math.sin(ang + 0.08) * 900); ctx.closePath(); ctx.fill(); } ctx.restore(); this.particles.forEach(function (p) { ctx.fillStyle = p.c; ctx.fillRect(Math.round(p.x), Math.round(p.y), 4, 6); }); }
     // ダメージ数値
-    this.pops.forEach(function (p) { var i = p.idx; var x = p.side === 'enemy' ? self.enemyRect(Math.min(i, b.enemies.length - 1), W, H).x + self.enemyRect(Math.min(i, b.enemies.length - 1), W, H).size / 2 : (W / (b.party.length + 1)) * (i + 1); var y = p.side === 'enemy' ? H * 0.3 : H * 0.75; y -= p.t / 12; ctx.font = 'bold ' + (p.crit ? 26 : 20) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#000'; ctx.strokeText(p.text, x, y); ctx.fillStyle = p.color; ctx.fillText(p.text, x, y); });
+    this.pops.forEach(function (p) { var i = p.idx; var ne = Math.max(1, self.view.e.length); var x = p.side === 'enemy' ? self.enemyRect(Math.min(i, ne - 1), W, H).x + self.enemyRect(Math.min(i, ne - 1), W, H).size / 2 : (W / (b.party.length + 1)) * (i + 1); var y = p.side === 'enemy' ? H * 0.3 : H * 0.75; y -= p.t / 12; ctx.font = 'bold ' + (p.crit ? 26 : 20) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#000'; ctx.strokeText(p.text, x, y); ctx.fillStyle = p.color; ctx.fillText(p.text, x, y); });
     ctx.restore();
   };
   var imgCache = {};
@@ -338,10 +343,28 @@
     } });
   }
 
-  function renderParty(b) {
-    var pw = document.getElementById('battle-party');
-    pw.innerHTML = b.party.map(function (a) { var s = Actors.stats(a); var st = Object.keys(a.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join(''); var pu = root.Assets ? root.Assets.portraitUrlFor(a) : null; return '<div class="bp ' + (a.dead ? 'dead' : a.hp < s.maxHp * 0.3 ? 'low' : '') + '" data-id="' + a.id + '">' + (pu ? '<img class="bp-portrait" src="' + pu + '" alt="" draggable="false">' : '') + '<div class="bp-body"><div class="bp-name">' + esc(a.name) + (st ? '<span class="st">' + esc(st) + '</span>' : '') + (a.defending ? '<span class="st">防</span>' : '') + '</div><div class="bp-hp">HP <b>' + a.hp + '</b>/' + s.maxHp + '</div><div class="bar hp"><span style="width:' + (a.hp / s.maxHp * 100) + '%"></span></div><div class="bp-mp">MP ' + a.mp + '/' + s.maxMp + '</div></div></div>'; }).join('');
+  // v6.5 味方の欄：view（いま再生しているイベントの時点の状態）があればそれで表示。欄は作り直さずに中身だけ更新する（揺れ・行動中の印が消えないように）
+  function renderParty(b, view) {
+    var pw = document.getElementById('battle-party'); if (!pw) return;
+    if (!view && BattleUI.scene && BattleUI.scene.b === b) view = BattleUI.scene.view;
+    var pv = {}; if (view) view.p.forEach(function (x) { pv[x.id] = x; });
+    var cards = pw.querySelectorAll('.bp');
+    var same = cards.length === b.party.length && b.party.every(function (a, i) { return cards[i].getAttribute('data-id') === a.id; });
+    if (!same) {
+      pw.innerHTML = b.party.map(function (a) { var pu = root.Assets ? root.Assets.portraitUrlFor(a) : null; return '<div class="bp" data-id="' + a.id + '">' + (pu ? '<img class="bp-portrait" src="' + pu + '" alt="" draggable="false">' : '') + '<div class="bp-body"><div class="bp-name"></div><div class="bp-hp"></div><div class="bar hp"><span></span></div><div class="bp-mp"></div></div></div>'; }).join('');
+      cards = pw.querySelectorAll('.bp');
+    }
+    b.party.forEach(function (a, i) {
+      var v = pv[a.id] || { hp: a.hp, mp: a.mp, dead: !!a.dead, st: Object.keys(a.status || {}), def: !!a.defending }; var s = Actors.stats(a); var el = cards[i];
+      el.classList.toggle('dead', !!v.dead); el.classList.toggle('low', !v.dead && v.hp < s.maxHp * 0.3);
+      var st = v.st.map(function (k) { return Combat.STATUS_NAME[k]; }).join('');
+      el.querySelector('.bp-name').innerHTML = esc(a.name) + (st ? '<span class="st">' + esc(st) + '</span>' : '') + (v.def ? '<span class="st">防</span>' : '');
+      el.querySelector('.bp-hp').innerHTML = 'HP <b>' + v.hp + '</b>/' + s.maxHp;
+      el.querySelector('.bar.hp span').style.width = Math.max(0, Math.min(100, v.hp / s.maxHp * 100)) + '%';
+      el.querySelector('.bp-mp').textContent = 'MP ' + v.mp + '/' + s.maxMp;
+    });
   }
+  function actingCard(id) { document.querySelectorAll('#battle-party .bp').forEach(function (el) { el.classList.toggle('acting', !!id && el.getAttribute('data-id') === id); }); }
   function bmsg(text, ms) { var mw = document.getElementById('battle-msg'); mw.textContent = text; var speed = State.data.settings.battleSpeed; return Win.sleep(speed === 'fast' ? Math.round((ms || 500) * 0.45) : (ms || 500)); }
 
   /* ---------- v5.7 オート戦闘 ----------
@@ -426,27 +449,60 @@
     return i < 0 ? null : list[i].id;
   }
 
-  /* ---------- イベント再生 ---------- */
+  /* ---------- イベント再生（v6.5：命中・数字・HPバー・消滅を同じ瞬間に） ----------
+     Combat.runTurn は結果を先に計算し、イベントごとにその時点の状態（snap）を添える。ここでは
+     1) act（行動の始まり）で行動する人の動き → 2) damage で命中の演出・ダメージの数字・HPバーの減少を同時に（全体攻撃は同じ g をまとめて同時に）
+     → 3) HP0 なら enemy_dead／actor_dead で倒れる演出を最後まで再生 → 4) 次の行動、の順に進める。表示する値は snap だけを使い、計算し直さない */
+  function setView(scene, e, b) { if (e && e.snap) { scene.view = e.snap; renderParty(b, scene.view); } }
+  function showHit(scene, b, e, shakeIds) {
+    if (e.type === 'damage' && e.side === 'enemy') {
+      scene.shake[e.idx] = 240; scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim || 'hit', t: 0, dur: 420 }); if (e.value > 0) scene.anims.push({ type: 'hitflash', idx: e.idx, t: 0, dur: 160 });
+      scene.pops.push({ side: 'enemy', idx: e.idx, text: e.value === 0 ? 'MISS' : String(e.value), color: e.crit ? '#ffd24a' : e.weak ? '#ff8a3a' : '#fff', crit: e.crit, t: 0 });
+      if (root.Audio) root.Audio.sfx(e.crit ? 'crit' : 'hit');
+    } else if (e.type === 'damage') {
+      var idx = b.party.map(function (p) { return p.id; }).indexOf(e.id); scene.pops.push({ side: 'party', idx: idx, text: String(e.value), color: '#ffb0b0', t: 0 }); scene.flash = 120;
+      scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim || 'hit', t: 0, dur: 400 }); if (root.Audio) root.Audio.sfx('hurt'); shakeIds.push(e.id);
+    } else if (e.type === 'heal' && e.side === 'enemy') {
+      scene.pops.push({ side: 'enemy', idx: e.idx, text: '+' + e.value, color: '#7fe3a5', t: 0 }); scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal');
+    } else if (e.type === 'heal') {
+      var hi = b.party.map(function (p) { return p.id; }).indexOf(e.id); scene.pops.push({ side: 'party', idx: hi, text: '+' + e.value, color: '#7fe3a5', t: 0 }); scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal');
+    }
+  }
   async function playEvents(b, ev, scene) {
-    var fast = State.data.settings.battleSpeed === 'fast';
+    var fast = State.data.settings.battleSpeed === 'fast'; var played = {};
+    if (BattleUI.timeline) BattleUI.timeline.length = 0;
     for (var i = 0; i < ev.length; i++) {
-      var e = ev[i];
-      if (e.type === 'msg') { await bmsg(e.text, 420); }
-      else if (e.type === 'damage') {
-        if (e.side === 'enemy') { scene.shake[e.idx] = 240; scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim || 'hit', t: 0, dur: 420 }); if (e.value > 0) scene.anims.push({ type: 'hitflash', idx: e.idx, t: 0, dur: 160 }); scene.pops.push({ side: 'enemy', idx: e.idx, text: e.value === 0 ? 'MISS' : String(e.value), color: e.crit ? '#ffd24a' : e.weak ? '#ff8a3a' : '#fff', crit: e.crit, t: 0 }); if (root.Audio) root.Audio.sfx(e.crit ? 'crit' : 'hit'); }
-        else { var idx = b.party.map(function (p) { return p.id; }).indexOf(e.id); scene.pops.push({ side: 'party', idx: idx, text: String(e.value), color: '#ffb0b0', t: 0 }); scene.flash = 120; scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim || 'hit', t: 0, dur: 400 }); if (root.Audio) root.Audio.sfx('hurt'); var el = document.querySelector('#battle-party .bp[data-id="' + e.id + '"]'); if (el) { el.classList.add('shake'); setTimeout(function () { el.classList.remove('shake'); }, 400); } }
-        renderParty(b); await Win.sleep(fast ? 120 : 260);
+      if (played[i]) continue;
+      var e = ev[i]; if (BattleUI.timeline) BattleUI.timeline.push({ type: e.type, i: i, t: Date.now() });
+      if (e.type === 'act') {   // 行動の始まり：味方は欄が少し前へ出る、敵は次の攻撃の踏み込み（lunge）で動く
+        setView(scene, e, b);
+        if (e.side === 'party') { actingCard(e.id); await Win.sleep(fast ? 70 : 150); } else actingCard(null);
+        continue;
       }
-      else if (e.type === 'heal' && e.side === 'enemy') { scene.pops.push({ side: 'enemy', idx: e.idx, text: '+' + e.value, color: '#7fe3a5', t: 0 }); scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal'); await Win.sleep(fast ? 120 : 260); }
-      else if (e.type === 'heal') { var hi = b.party.map(function (p) { return p.id; }).indexOf(e.id); scene.pops.push({ side: 'party', idx: hi, text: '+' + e.value, color: '#7fe3a5', t: 0 }); scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal'); renderParty(b); await Win.sleep(fast ? 120 : 260); }
-      else if (e.type === 'anim' && e.side === 'enemy' && e.anim === 'lunge') { scene.anims.push({ type: 'lunge', idx: e.idx, t: 0, dur: 260 }); await Win.sleep(fast ? 80 : 140); }
-      else if (e.type === 'summon') { var se = b.enemies[e.idx]; if (se) State.data.bestiary[se.defId] = Object.assign(State.data.bestiary[se.defId] || {}, { seen: true }); scene.anims.push({ type: 'appear', idx: e.idx, t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('magic'); await Win.sleep(fast ? 200 : 500); }
-      else if (e.type === 'phase') { scene.anims.push({ type: 'phase', idx: e.idx, t: 0, dur: 700 }); scene.screenShake = 350; if (root.Audio) root.Audio.sfx('crit'); await Win.sleep(fast ? 250 : 600); }
-      else if (e.type === 'anim') { if (e.side === 'enemy') scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim, t: 0, dur: 450 }); else if (e.target === 'self' || e.target === 'ally' || e.target === 'allies' || e.target === 'dead_ally') scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim, t: 0, dur: 450 }); if (root.Audio) root.Audio.sfx('magic'); await Win.sleep(fast ? 100 : 220); }
-      else if (e.type === 'enemy_dead' || e.type === 'flee') { var isBoss = b.enemies[e.idx] && b.enemies[e.idx].boss; var dur = e.type === 'flee' ? 400 : isBoss ? 1400 : 550; scene.anims.push({ type: 'die', idx: e.idx, t: 0, dur: dur }); if (isBoss) { scene.screenShake = 900; scene.flash = 300; } if (root.Audio) root.Audio.sfx('die'); await Win.sleep(fast ? Math.round(dur * 0.5) : dur); }
-      else if (e.type === 'actor_dead') { renderParty(b); await Win.sleep(300); }
-      else if (e.type === 'revive') { renderParty(b); }
+      if (e.type === 'msg') { setView(scene, e, b); await bmsg(e.text, 420); }
+      else if (e.type === 'damage' || e.type === 'heal') {
+        var group = [e];
+        if (e.g) for (var j = i + 1; j < ev.length && ev[j].type !== 'act'; j++) if (!played[j] && ev[j].g === e.g && (ev[j].type === 'damage' || ev[j].type === 'heal')) { group.push(ev[j]); played[j] = true; }
+        var shakeIds = [];
+        group.forEach(function (g) { showHit(scene, b, g, shakeIds); });   // 命中の演出・数字を同時に出し、
+        setView(scene, group[group.length - 1], b);                        // 同じ瞬間に HP（数字とバー）を当たった後の値へ
+        shakeIds.forEach(function (id) { var el = document.querySelector('#battle-party .bp[data-id="' + id + '"]'); if (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); } });
+        if (BattleUI.timeline) BattleUI.timeline.push({ type: 'hit', n: group.length, t: Date.now() });
+        await Win.sleep(fast ? 130 : 280);
+      }
+      else if (e.type === 'anim' && e.side === 'enemy' && e.anim === 'lunge') { setView(scene, e, b); scene.anims.push({ type: 'lunge', idx: e.idx, t: 0, dur: 260 }); await Win.sleep(fast ? 80 : 140); }
+      else if (e.type === 'summon') { setView(scene, e, b); var se = b.enemies[e.idx]; if (se) State.data.bestiary[se.defId] = Object.assign(State.data.bestiary[se.defId] || {}, { seen: true }); scene.anims.push({ type: 'appear', idx: e.idx, t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('magic'); await Win.sleep(fast ? 200 : 500); }
+      else if (e.type === 'phase') { setView(scene, e, b); scene.anims.push({ type: 'phase', idx: e.idx, t: 0, dur: 700 }); scene.screenShake = 350; if (root.Audio) root.Audio.sfx('crit'); await Win.sleep(fast ? 250 : 600); }
+      else if (e.type === 'anim') { setView(scene, e, b); if (e.side === 'enemy') scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim, t: 0, dur: 450 }); else if (e.target === 'self' || e.target === 'ally' || e.target === 'allies' || e.target === 'dead_ally') scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim, t: 0, dur: 450 }); if (root.Audio) root.Audio.sfx('magic'); await Win.sleep(fast ? 100 : 220); }
+      else if (e.type === 'enemy_dead' || e.type === 'flee') {   // 倒れる演出を最後まで再生してから次へ
+        setView(scene, e, b); scene.gone[e.idx] = true;
+        var isBoss = b.enemies[e.idx] && b.enemies[e.idx].boss; var dur = e.type === 'flee' ? 400 : isBoss ? 1400 : 550; scene.anims.push({ type: 'die', idx: e.idx, t: 0, dur: fast ? Math.round(dur * 0.5) : dur });
+        if (isBoss) { scene.screenShake = 900; scene.flash = 300; } if (root.Audio) root.Audio.sfx('die'); await Win.sleep(fast ? Math.round(dur * 0.5) : dur);
+      }
+      else if (e.type === 'actor_dead') { setView(scene, e, b); await Win.sleep(fast ? 150 : 300); }
+      else if (e.type === 'revive') { setView(scene, e, b); scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'light', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal'); await Win.sleep(fast ? 150 : 320); }
       else if (e.type === 'trial') {
+        setView(scene, e, b);
         var enemy = b.enemies[e.idx];
         await bmsg(enemy.name + 'の相場の試練！ チャートを読み、正しい行動を選べ！', 700);
         var scs = enemy.trialScenarios || ['clear_up', 'clear_down', 'range', 'up_pullback', 'down_rally'];
@@ -454,9 +510,13 @@
         var ev2 = Combat.applyTrialResult(b, e.idx, res ? res.score : 0);
         await playEvents(b, ev2, scene);
       }
-      else if (e.type === 'end') { await Win.sleep(200); }
+      else if (e.type === 'end') { setView(scene, e, b); await Win.sleep(200); }
+      else setView(scene, e, b);
     }
+    actingCard(null);
+    scene.view = Combat.snapshot(b); renderParty(b, scene.view);   // 再生し終えたら計算上の最終状態と一致させる
   }
+  BattleUI.playEvents = playEvents;
 
   root.BattleUI = BattleUI;
 })(typeof window !== 'undefined' ? window : globalThis);
