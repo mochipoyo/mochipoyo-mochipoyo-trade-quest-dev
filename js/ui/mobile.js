@@ -93,7 +93,8 @@
 
   /* ---------- 画面の大きさ（main.js の fit から呼ばれる） ---------- */
   MobileUI.fit = function (canvas) {
-    var vw = root.innerWidth, vh = root.innerHeight; var land = vw > vh; document.body.classList.toggle('m-land', land); document.body.classList.toggle('m-port', !land);
+    var vw = root.innerWidth, vh = root.innerHeight; var typing = document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName); if (!typing && root.visualViewport && root.visualViewport.height > 100) vh = Math.min(vh, Math.round(root.visualViewport.height));   // 実際に見えている高さ（ツールバーの分を除く）に合わせる。文字の入力中（キーボード）は除く
+    var land = vw > vh; document.body.classList.toggle('m-land', land); document.body.classList.toggle('m-port', !land);
     var sl = safe('l'), sr = safe('r'), st = safe('t'), sb = safe('b'); var E = root.Engine;
     var w, h, padH = 0;
     if (land) { E.setView(E.VIEW_W0, E.VIEW_H0); var aspect = canvas.width / canvas.height; h = vh - st - sb; w = Math.min(vw - sl - sr, h * aspect); h = w / aspect; }
@@ -134,6 +135,13 @@
     document.addEventListener('fullscreenchange', function () { setTimeout(function () { root.dispatchEvent(new Event('resize')); }, 120); });
     // ページ全体のスクロール・ダブルタップ拡大を抑える（ゲーム画面の外のスワイプでページが動かないように）
     document.addEventListener('touchmove', function (e) { if (!e.target.closest('.rw-items, .rw-panel, .rw-info, .op-list, .bigmap, .wm-wrap, .rw-list, .rw-choice, .trade-panel, .bestiary')) e.preventDefault(); }, { passive: false });
+    // ページ全体が下へずれたままにならないように（iPhone の Safari で、ゲーム画面の上（ミニマップ）が切れることがあった）
+    //   一覧のカーソル移動（scrollIntoView）などでページが動いたら、元の位置（一番上）へ戻す。文字の入力中（キーボード表示中）は戻さない
+    var unscroll = function () { var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return; if (root.scrollY || root.scrollX) root.scrollTo(0, 0); };
+    root.addEventListener('scroll', unscroll, { passive: true });
+    document.addEventListener('focusout', function () { setTimeout(unscroll, 120); });
+    // 見えている範囲（ツールバーの出し入れで変わる）が変わったら、画面の大きさを合わせ直す
+    if (root.visualViewport) { var vvT = 0; root.visualViewport.addEventListener('resize', function () { clearTimeout(vvT); vvT = setTimeout(function () { var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return; root.dispatchEvent(new Event('resize')); unscroll(); }, 150); }); }
   };
   root.MobileUI = MobileUI;
 })(typeof window !== 'undefined' ? window : globalThis);

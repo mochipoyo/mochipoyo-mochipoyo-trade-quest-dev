@@ -13,6 +13,7 @@ import { WorldBuilder3D } from './WorldBuilder3D.js';
 import { themeFor } from './themes.js';
 import { mapCoverage } from './coverage.js';
 import { buildArtVolume } from '../battle/ArtVolume.js';
+import { readable } from '../battle/readable.js';
 import { Character3D, DIR_YAW } from '../entities/Character3D.js';
 import { characterModelFor } from '../assets/manifest.js';
 import { Batch, box, M4, softTexture } from '../engine/Materials.js';
@@ -196,11 +197,14 @@ export class MapScene3D {
       if (s.kind === 'npc') continue; const key = s.enemy + '@' + s.x + ',' + s.y; seen.add(key); let o = this.bossSyms.get(key);
       if (!o) {
         const v = BS.visual(s.enemy); if (!v || !v.img) continue;
-        const tex = new THREE.CanvasTexture(v.img); tex.colorSpace = THREE.SRGBColorSpace; if (!v.smooth) { tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter; }
+        const ok = v.img instanceof HTMLCanvasElement || (v.img.complete && v.img.naturalWidth > 0); if (!ok) continue;   // 読み込み中：次のフレームでもう一度
+        // 別のサイト扱いの画像（iPhone の Safari のテストプレイで発生）は WebGL に渡すと例外になり、マップ全体が2Dに戻っていた → 読めるように読み直す。読めなければ光の輪だけ
+        const rd = readable(v.img); if (rd.state === 'loading') continue; const src = rd.state === 'ok' ? rd.img : null;
         let sp = null, vol = null; const H = 2.4, Wd = Math.min(3.4, H * v.w / Math.max(1, v.h));
         // Phase 2：戦闘と同じく、ボスの絵から厚みのある立体（2.5D）にする（元のデザインのまま）。作れないときは従来の立て札
-        try { const ok = v.img instanceof HTMLCanvasElement || (v.img.complete && v.img.naturalWidth > 0); if (ok) { vol = buildArtVolume(v.img, { height: Wd * v.h / Math.max(1, v.w), aspect: v.w / Math.max(1, v.h), smooth: v.smooth !== false, depth: 0.14, grid: 44 }); sp = vol.mesh; } } catch (e) { vol = null; }
-        if (!sp) { sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, alphaTest: 0.05 })); sp.scale.set(Wd, Wd * v.h / Math.max(1, v.w), 1); sp.center.set(0.5, 0); }
+        if (src) { try { vol = buildArtVolume(src, { height: Wd * v.h / Math.max(1, v.w), aspect: v.w / Math.max(1, v.h), smooth: v.smooth !== false, depth: 0.14, grid: 44 }); sp = vol.mesh; } catch (e) { vol = null; } }
+        if (!sp && src) { const tex = new THREE.CanvasTexture(src); tex.colorSpace = THREE.SRGBColorSpace; if (!v.smooth) { tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter; } sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, alphaTest: 0.05 })); sp.scale.set(Wd, Wd * v.h / Math.max(1, v.w), 1); sp.center.set(0.5, 0); }
+        if (!sp) { sp = new THREE.Object3D(); }   // 絵なし（光の輪と光だけ）
         const col = new THREE.Color('rgb(' + ((BS.auraColor && BS.auraColor(s.enemy)) || '255,60,80') + ')');
         const ring = new THREE.Mesh(new THREE.RingGeometry(0.55, 0.85, 40), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })); ring.rotation.x = -Math.PI / 2; ring.position.y = 0.04;
         const light = new THREE.PointLight(col, 2.5, 5, 1.6); light.position.y = 1.2;

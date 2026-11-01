@@ -126,10 +126,11 @@ export class UIOverlay {
     this.badge.style.left = (l + 6) + 'px'; this.badge.style.top = (t + h - 18) + 'px';
     return { w, h, l, t };
   }
-  show(on, loading) {
+  show(on, loading, toolsOn) {
     const d = on ? 'block' : 'none';
     if (this.canvas.style.display !== d) this.canvas.style.display = d;
-    this.tools.style.display = on ? 'flex' : 'none'; this.badge.style.display = on ? 'block' : 'none';
+    const td = on || toolsOn ? 'flex' : 'none'; if (this.tools.style.display !== td) this.tools.style.display = td; this.badge.style.display = on ? 'block' : 'none';
+    this.tools.querySelectorAll('[data-a="zin"],[data-a="zout"]').forEach((b) => { const v = on ? '' : 'none'; if (b.style.display !== v) b.style.display = v; });   // 2Dのマップではズームは使わない
     this.veil.style.display = on && loading ? 'flex' : 'none';
     if (!on) { this.prompt.style.display = 'none'; this.stickEl.style.display = 'none'; }
   }

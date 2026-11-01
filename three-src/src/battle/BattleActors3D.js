@@ -13,6 +13,7 @@ import * as THREE from 'three';
 import { Character3D } from '../entities/Character3D.js';
 import { MODELS, characterModelFor } from '../assets/manifest.js';
 import { buildArtVolume } from './ArtVolume.js';
+import { readable, isClean } from './readable.js';
 
 const G = typeof window !== 'undefined' ? window : globalThis;
 const ATTACK_HIT = 0.43;   // Attack の命中の瞬間（秒。Blender のフレーム 13/30）
@@ -45,18 +46,19 @@ export function partyStyle() { try { return /[?&]party=model(&|$)/.test(location
 function cropPixels(img, sx, sy, sw, sh) {
   const w = sw || img.naturalWidth || img.width, h = sh || img.naturalHeight || img.height;
   const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d', { willReadFrequently: true }); g.imageSmoothingEnabled = false; g.drawImage(img, sx || 0, sy || 0, w, h, 0, 0, w, h);
-  const d = g.getImageData(0, 0, w, h).data; let x0 = w, y0 = h, x1 = -1, y1 = -1;
+  let d; try { d = g.getImageData(0, 0, w, h).data; } catch (e) { return null; }   // 読めない画像（別のサイト扱い）は使わない
+  let x0 = w, y0 = h, x1 = -1, y1 = -1;
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (d[(y * w + x) * 4 + 3] > 16) { if (x < x0) x0 = x; if (y < y0) y0 = y; if (x > x1) x1 = x; if (y > y1) y1 = y; }
   if (x1 < 0) return null; const o = document.createElement('canvas'); o.width = x1 - x0 + 1; o.height = y1 - y0 + 1; const og = o.getContext('2d'); og.imageSmoothingEnabled = false; og.drawImage(c, x0, y0, o.width, o.height, 0, 0, o.width, o.height); return o;
 }
 // 味方のドット絵：2D版の戦闘のパーティ欄と同じ立ち絵（主人公＝職業、仲間＝本人、ほか＝見た目のID）→ なければ歩行のドット絵（左向き）→ なければ2D版の簡易ドット
 function partyPixelArt(a) {
-  const A = G.Assets; let img = null, kind = 'portrait';
+  const A = G.Assets; let img = null, kind = 'portrait', wait = false;
   try { img = A && A.portrait ? A.portrait(a) : null; if (!img && A && A.portraitBySprite) img = A.portraitBySprite(a.sprite); } catch (e) { img = null; }   // パーティ欄と同じ順（本人 → 見た目のIDの立ち絵）
-  if (img) { const c = cropPixels(img); if (c) return { canvas: c, kind }; }
-  try { const f = A && A.walkFrame ? A.walkFrame(a.sprite, 'left', 1) : null; if (f) { const c = cropPixels(f.img, f.sx, f.sy, f.w, f.h); if (c) return { canvas: c, kind: 'walk' }; } } catch (e) { /* なし */ }
-  try { if (G.Chars && G.Chars.frame) { const c = cropPixels(G.Chars.frame(a.sprite, 'left', 0)); if (c) return { canvas: c, kind: 'chars' }; } } catch (e) { /* なし */ }
-  return null;
+  if (img) { const r = readable(img); if (r.state === 'ok') { const c = cropPixels(r.img); if (c) return { canvas: c, kind }; } else if (r.state === 'loading') wait = true; }
+  try { const f = A && A.walkFrame ? A.walkFrame(a.sprite, 'left', 1) : null; if (f) { const r = readable(f.img); if (r.state === 'ok') { const c = cropPixels(r.img, f.sx, f.sy, f.w, f.h); if (c) return { canvas: c, kind: 'walk', wait }; } else if (r.state === 'loading') wait = true; } } catch (e) { /* なし */ }
+  try { if (G.Chars && G.Chars.frame) { const fr = G.Chars.frame(a.sprite, 'left', 0); if (fr && isClean(fr)) { const c = cropPixels(fr); if (c) return { canvas: c, kind: 'chars', wait }; } } } catch (e) { /* なし */ }
+  return wait ? { wait: true } : null;
 }
 
 export class BattleActors3D {
@@ -82,11 +84,14 @@ export class BattleActors3D {
     if (!v || !v.img) { ent.failed = true; return; }
     const img = v.img; const ok = img instanceof HTMLCanvasElement || (img.complete && (img.naturalWidth || 0) > 0);
     if (!ok) { ent.waitImg = img; return; }   // 読み込み中：次のフレームでもう一度
+    const rd = readable(img); ent.waitClean = rd.state === 'loading';   // 別のサイト扱いの画像は CORS で読み直す（読み直し中は次のフレームでもう一度）
+    if (rd.state === 'loading') return;
+    if (rd.state !== 'ok') { ent.failed = true; ent.visImg = img; this.failedArt++; this.why = this.why || '敵の絵を読めない（別のサイト扱いの画像）'; return; }   // この敵は2D版の絵のまま（battle.js が描く）
     const old = ent.art, oldGroup = ent.group;
     try {
       const boss = !!ent.e.boss; const crowd = this.scene && this.scene.b.enemies.length >= 4 ? 0.82 : 1;
       const hgt = Math.max(0.9, Math.min(boss ? 6.2 : 3.8, v.h * PX2W * (boss ? 1.25 : 1.0) * crowd));
-      ent.art = buildArtVolume(img, { height: hgt, aspect: v.w / Math.max(1, v.h), smooth: v.smooth !== false, depth: 0.15 });
+      ent.art = buildArtVolume(rd.img, { height: hgt, aspect: v.w / Math.max(1, v.h), smooth: v.smooth !== false, depth: 0.15 });
       ent.lift = (v.lift || 0) * PX2W; ent.visImg = img; ent.source = v.source || null; ent.waitImg = null;
       const g = new THREE.Group(); g.name = 'enemy_' + ent.i; g.add(ent.art.mesh); ent.group = g; ent.art.mesh.position.y = ent.lift;
       const shadow = new THREE.Mesh(new THREE.CircleGeometry(1, 28), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.32, depthWrite: false })); shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.02;
@@ -100,9 +105,10 @@ export class BattleActors3D {
 
   // 味方：ドット絵を、ごく薄い板（光と影がつく）にして立てる。ドットはぼかさない
   buildSprite(ent) {
-    const art = partyPixelArt(ent.a);
-    if (!art) { ent.tries++; return false; }   // 立ち絵の画像がまだ読めていない：次のフレームでもう一度
-    if (art.kind !== 'portrait' && ent.tries < 90) { ent.tries++; return false; }   // 立ち絵を少し待ってから、歩行のドット絵で代用
+    let art = null; try { art = partyPixelArt(ent.a); } catch (err) { console.warn('battle party sprite', err); art = null; }
+    const now = performance.now(); if (!ent.t0) ent.t0 = now; const waited = now - ent.t0;
+    if (!art || (art.wait && !art.canvas)) { ent.tries++; if (!art && waited > 6000) { ent.failed = true; this.why = this.why || '味方のドット絵を読めない'; } return false; }   // 画像がまだ読めていない：次のフレームでもう一度
+    if (art.kind !== 'portrait' && waited < 4000) { ent.tries++; return false; }   // 立ち絵を少し待ってから（最大4秒）、歩行のドット絵で代用
     try {
       const c = art.canvas; const h = art.kind === 'portrait' ? SPRITE_H : SPRITE_H * 0.85;
       ent.art = buildArtVolume(c, { height: h, aspect: c.width / c.height, smooth: false, depth: 0.05, grid: Math.min(64, Math.max(24, c.width)) });
@@ -163,6 +169,7 @@ export class BattleActors3D {
     this.enemies.forEach((en, i) => {
       if (!en) return;
       if (en.waitImg) { if (en.waitImg.complete && en.waitImg.naturalWidth > 0) this.buildArt(en); else return; }
+      if (en.waitClean && !en.art) this.buildArt(en);   // CORS で読み直し中
       // 2D版が新しい画像へ切り替えたら作り直す（EnemyArt の遅い読み込み）
       try { const v = G.BattleUI.enemyVisual(en.e); if (v && v.img && en.visImg && v.img !== en.visImg) this.buildArt(en); } catch (err) { /* なし */ }
       if (!en.art) return; const U = en.uniforms; const g = en.group; const home = this.enemyHome(i); const ve = view.e && view.e[i];
@@ -276,7 +283,7 @@ export class BattleActors3D {
     return { x: Math.round(Math.min(...xs)), y: Math.round(Math.min(...ys)), w: Math.round(Math.max(...xs) - Math.min(...xs)), h: Math.round(Math.max(...ys) - Math.min(...ys)) };
   }
   drawn(i) { const en = this.enemies[i]; return !!(en && en.ready && en.art); }
-  allReady() { return this.want > 0 && this.ready >= this.want; }
+  allReady() { let f = 0; for (const e of this.party.values()) if (e.failed && !e.ready) f++; for (const e of this.enemies) if (e && e.failed && !e.ready) f++; return this.want > 0 && this.ready + f >= this.want; }   // 読めずに2Dのままの敵・味方も「準備できた」に数える
   info() {
     return { want: this.want, ready: this.ready, failedArt: this.failedArt,
       enemies: this.enemies.filter(Boolean).map((e) => ({ i: e.i, id: e.e.defId, source: e.source, ready: e.ready, vis: !!e.vis, size: e.art ? { w: +e.art.size.w.toFixed(2), h: +e.art.size.h.toFixed(2) } : null, tris: e.art ? e.art.stats.tris : 0, plan: e.plan ? e.plan.anim : null, dissolve: e.uniforms ? +e.uniforms.uDissolve.value.toFixed(2) : 0 })),

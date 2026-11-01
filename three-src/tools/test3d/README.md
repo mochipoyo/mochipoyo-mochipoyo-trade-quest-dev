@@ -30,6 +30,9 @@
 | p2_wipesave.js | 全滅のメッセージの間に読み込み直したときのセーブと、次の戦闘（PAGE=2d／3d） |
 | p2_battleguard.js | 全員倒れたままの戦闘・戦闘中の例外・味方がドット絵に固定されていること |
 | p2_deadstart.js / p2_wipe.js | 全員倒れたまま戦闘を始めたとき／オート戦闘で全滅させたとき |
+| p2_taint.js ＋ cors_server.py | 画像を別のサイト扱いにして（iPhone の Safari と同じ条件）3Dの戦闘が止まらないか。`python3 cors_server.py 8771 1`（CORS 許可）／`8772 0`（許可なし）を立ててから ORIGIN を指定 |
+| p2_tools2d.js | 2Dのマップでも3D設定のボタンが出るか・3Dへ戻せるか・ページがずれたら戻るか |
+| p2_scroll.js | スマホでページの高さ・ゲーム画面・ミニマップの位置（2D版・3D版） |
 | p2_2dmobile.js | 2D版のスマホの戦闘画面に3D版だけの変更が入っていないこと |
 | p2_2dcheck.js | 2D版の戦闘画面が変わっていないこと |
 | p3_save.js | セーブの互換（3D版の枠・2D版のキー） |

@@ -13,6 +13,7 @@
 import * as THREE from 'three';
 import { BattleActors3D, layoutSpan } from './BattleActors3D.js';
 import { CUT } from '../engine/Cutout.js';
+import { isClean } from './readable.js';
 
 const G = typeof window !== 'undefined' ? window : globalThis;
 const TAU = Math.PI * 2;
@@ -102,13 +103,14 @@ export class BattleStage3D {
     if (!this.failed) { try { if (this.renderer.getContext().isContextLost()) { this.failed = true; this.failReason = 'WebGL の文脈が失われた（端末のメモリ不足など）'; } } catch (e) { /* なし */ } }   // 知らせ（イベント）より先に気づくため
     if (!this.enabled() || !scene || !scene.bg65) return null;
     const now = performance.now();
-    if (scene !== this.lastScene) { this.build(scene, W, H); this.lastScene = scene; this.t0 = now; this.last = now; scene._stage3d = true; }
+    if (scene !== this.lastScene) { this.step = '組み立て'; this.build(scene, W, H); this.lastScene = scene; this.t0 = now; this.last = now; scene._stage3d = true; }
     if (!this.scene3) return null;
     this.cw = W; this.ch = H;
     if (this.size !== W + 'x' + H) { this.size = W + 'x' + H; this.renderer.setSize(W, H, false); this.camera.aspect = W / H; this.camera.updateProjectionMatrix(); if (this.actorMode) { this.fitCamera(W, H); if (this.backSize !== W + 'x' + H) this.backdrop(scene, W, H); } }
     const dt = Math.min(0.05, (now - this.last) / 1000); this.last = now; const t = (now - this.t0) / 1000;
-    this.update(dt, t, scene, W, H);
+    this.step = '動き'; this.update(dt, t, scene, W, H);
     if (this.actorMode) this.applyBand(W, H);
+    this.step = '描画';
     const cutR = CUT.uCutRadius.value; CUT.uCutRadius.value = 0;   // 探索の「主人公の手前を抜く」処理は戦闘では使わない（共有のマテリアルのため一時的に止める）
     this.renderer.render(this.scene3, this.camera); this.stats.frames++;
     CUT.uCutRadius.value = cutR;
@@ -150,7 +152,8 @@ export class BattleStage3D {
     this.backSize = W + 'x' + H; const far = this.far, fovH = THREE.MathUtils.degToRad(this.camera.fov / 2);
     const dist = far + this.camBase.z, hz3 = 0.7; const topY = this.camBase.y - dist * Math.tan(this.pitch) + dist * Math.tan(fovH) * (this.actorMode && document.body.classList.contains('mobile') ? 1.65 : 1) + 1.5 + 6.6 * dist / 71;   // スマホは絵を下へずらす（applyBand）ぶん、上を広く覆う
     const hgt = (topY - hz3) / 0.58, wid = 2 * dist * Math.tan(fovH) * (W / H) * 1.18; const bw = Math.min(2048, Math.round(H * wid / hgt));
-    const bgc = BG.render(info, bw, H) || scene.bg;
+    let bgc = BG.render(info, bw, H) || scene.bg;
+    if (bgc && !isClean(bgc)) { console.warn('battle backdrop: 読めない背景（別のサイト扱い）→ 板なし'); this.backWhy = '遠景の絵を読めない'; bgc = null; }   // 汚れたキャンバスを WebGL に渡すと例外になる
     if (bgc) { const tex = new THREE.CanvasTexture(bgc); tex.colorSpace = THREE.SRGBColorSpace; this.backTex = tex;
       const m = new THREE.Mesh(new THREE.PlaneGeometry(wid, hgt), new THREE.MeshBasicMaterial({ map: tex, fog: false, toneMapped: false, depthWrite: false }));
       m.position.set(this.camBase.x, hz3 + hgt * 0.08, -far); m.renderOrder = -10; S.add(m); this.backMesh = m; }
