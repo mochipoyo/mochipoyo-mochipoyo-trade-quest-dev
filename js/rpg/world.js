@@ -120,6 +120,7 @@
     p.vehicle = State.data.aboard || null;
     p.followers = (root.Follow && !p.vehicle) ? root.Follow.drawList(TS, p) : null;   // v6.4 Phase F 仲間の隊列
     var extras = root.Vehicle ? root.Vehicle.onMap(m.id).filter(function (v) { return !v.aboard; }).map(function (v) { return { x: v.x, y: v.y, vehicle: v.id }; }) : [];
+    if (root.Astra) extras = extras.concat(root.Astra.extras(m.id));   // v6.5 Phase E 止めてあるアストラ号
     m.draw(ctx, cam, p, World.tint(), extras);
     // v6.2 次の目的地：画面の中にあれば、控えめな赤い輪（地図の上の文字や人を隠さない細い線）
     if (root.Nav && root.Nav.enabled()) { try { var TSz = Engine.TS; root.Nav.markers(m.id).forEach(function (mk) { var sx = mk.x * TSz - cam.x + TSz / 2, sy = mk.y * TSz - cam.y + TSz / 2; if (sx < -TSz || sy < -TSz || sx > ctx.canvas.width + TSz || sy > ctx.canvas.height + TSz) return; var a = 0.4 + 0.35 * Math.sin(Date.now() / 420); ctx.save(); ctx.lineWidth = mk.primary ? 3 : 2; ctx.strokeStyle = 'rgba(0,0,0,' + (a * 0.5) + ')'; ctx.beginPath(); ctx.arc(sx, sy, TSz * 0.66 + 1.5, 0, Math.PI * 2); ctx.stroke(); ctx.strokeStyle = 'rgba(255,58,58,' + a + ')'; if (!mk.primary && ctx.setLineDash) ctx.setLineDash([6, 5]); ctx.beginPath(); ctx.arc(sx, sy, TSz * 0.66, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }); } catch (e) { if (!World._navErr) { World._navErr = true; console.error('nav', e); } } }
@@ -150,6 +151,7 @@
     var nx = p.x + d[0], ny = p.y + d[1];
     p.vehicleAction = null;
     if ((nx < 0 || ny < 0 || nx >= m.w || ny >= m.h) && root.EdgeExit && root.EdgeExit.tryLeave(m, p.x, p.y, dir)) return false;   // v6.5 村・町の開いている外周から外へ（登録した区間だけ）
+    if (!State.data.aboard && root.Astra && root.Astra.bump(m, nx, ny)) return false;   // v6.5 Phase E 止めてあるアストラ号へ進む＝飛び立つか聞く
     var vr = root.Vehicle ? root.Vehicle.resolveMove(m, nx, ny) : null;   // v5.0: 乗船・航行・下船
     if (vr) { if (!vr.ok) { var why = root.Vehicle.blockReason(m, nx, ny); if (why && !p._blockToastAt || (why && Date.now() - p._blockToastAt > 1500)) { p._blockToastAt = Date.now(); Win.toast(why); } return false; } p.vehicleAction = vr; }
     else if (!m.passable(nx, ny, State.data)) { if (root.BossSymbol && root.BossSymbol.bump(m, nx, ny, dir)) return false; var bn = m.npcOn(nx, ny); if (bn) World.pushAgainst(bn); return false; }   // v6.5 ボスのシンボルにぶつかる＝調べる   // v5.7 歩き回る人は道をあける（v6.2：押し続けたときだけ。近づいた・向いただけでは動かない）

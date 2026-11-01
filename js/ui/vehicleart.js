@@ -46,6 +46,7 @@
   }
   var VehicleArt = {};
   VehicleArt.draw = function (ctx, id, dir, px, py, moving) {
+    if (id === 'astra') { if (root.AstraView) root.AstraView.drawParked(ctx, dir, px, py); return; }   // v6.5 Phase E 星界航行船アストラ号
     var img = boat(id, dir); var bob = Math.round(Math.sin(root.Engine.frame / 9) * 1.5);
     if (id === 'airship') { var lift = moving !== undefined && root.State && root.State.data && root.State.data.aboard === 'airship' ? 14 : 4; ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(px + 16, py + 28, 12, 4, 0, 0, Math.PI * 2); ctx.fill(); ctx.imageSmoothingEnabled = false; ctx.drawImage(img, px, py - 8 - lift + bob); return; }
     // 水面の揺れ・影

@@ -43,6 +43,12 @@
     if (!ref) return null; var p = ref.split(':'); var kind = p[0], defs = DEFS();
     if (kind === 'loc') { var rd = defs[p[1]]; var L = rd && (rd.locations || []).filter(function (l) { return l.id === p[2]; })[0]; return L ? { ref: ref, kind: 'loc', map: p[1], x: L.x, y: L.y, label: L.name, loc: L } : null; }
     if (kind === 'map') { return defs[p[1]] ? { ref: ref, kind: 'map', map: p[1], x: null, y: null, label: defs[p[1]].name } : null; }
+    if (kind === 'astra') {   // v6.5 Phase E アストラ号：止めてある場所／まだ観測していない地域
+      var A0 = root.Astra, s0 = A0 && A0.state();
+      if (p[1] === 'ship') { if (s0 && s0.owned && !s0.flying && defs[s0.map]) return { ref: ref, kind: 'loc', map: s0.map, x: s0.x, y: s0.y, label: 'アストラ号', loc: { id: 'astra', name: 'アストラ号', x: s0.x, y: s0.y, region: s0.map, to: s0.map } }; return defs.world_sky ? { ref: ref, kind: 'map', map: 'world_sky', x: null, y: null, label: 'アストラ号' } : null; }
+      if (p[1] === 'log') { var rest = A0 ? A0.ids().filter(function (id) { return !(s0 && s0.log && s0.log[id]); }) : []; return rest.length ? { ref: ref, kind: 'map', map: rest[0], x: null, y: null, label: defs[rest[0]].name + 'の上空' } : null; }
+      return null;
+    }
     var def = defs[p[1]]; if (!def) return null;
     if (kind === 'npc') {
       var n = (def.npcs || []).filter(function (o) { return o.id === p[2]; })[0]; if (!n) return null;
