@@ -23,7 +23,7 @@
   Quiz.questionsFor = function (mid) { return ((root.QUIZ_BY_MONSTER || {})[mid] || []).slice(); };
 
   /* ---------- セーブ ---------- */
-  function emptyMon() { return { defeated: false, defeatedAt: 0, attempts: 0, correct: 0, wrong: 0, stolen: 0, firstReward: false, fled: false, lastAt: 0 }; }
+  function emptyMon() { return { defeated: false, defeatedAt: 0, attempts: 0, correct: 0, wrong: 0, stolen: 0, firstReward: false, fled: false, lastAt: 0, seen: false }; }
   Quiz.defaults = function () { return { v: 1, mon: {}, asked: {}, history: {}, titles: [], tokens: [], log: [], pending: {} }; };
   Quiz.ensure = function (d) {
     if (!d || typeof d !== 'object') return null;

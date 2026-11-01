@@ -85,7 +85,7 @@
   };
   // 近づいたとき（1マップ1回）
   QS.onStep = function (m, p) {
-    if (!m || !p) return; QS.list(m).forEach(function (s) { var k = m.id + '@' + s.mon.id; if (QS.near[k]) return; if (Math.abs(p.x - s.x) + Math.abs(p.y - s.y) <= 4) { QS.near[k] = 1; if (root.Audio) root.Audio.sfx('magic'); if (root.Win && root.Win.toast) root.Win.toast('不思議な気配がする……（' + s.mon.name + '）'); } });
+    if (!m || !p) return; QS.list(m).forEach(function (s) { var k = m.id + '@' + s.mon.id; if (QS.near[k]) return; if (Math.abs(p.x - s.x) + Math.abs(p.y - s.y) <= 4) { QS.near[k] = 1; var r0 = rec(s.mon.id); if (r0) r0.seen = true; if (root.Audio) root.Audio.sfx('magic'); if (root.Win && root.Win.toast) root.Win.toast('不思議な気配がする……（' + s.mon.name + '）'); } });
   };
   QS.onEnterMap = function (m) {
     MONS().forEach(function (q) { if (q.map === m.id) { delete QS.away[q.id]; delete QS.declined[q.id]; delete QS.near[m.id + '@' + q.id]; } });

@@ -128,7 +128,7 @@
     opts = opts || {};
     var Quiz = root.Quiz, State = root.State; var m = Quiz && Quiz.monster(mid); var d = State && State.data;
     if (!m || !d || !Win) return Promise.resolve({ error: 'bad' });
-    var rec = Quiz.rec(d, mid); if (rec.defeated) return Promise.resolve({ error: 'defeated' });
+    var rec = Quiz.rec(d, mid); if (rec.defeated) return Promise.resolve({ error: 'defeated' }); rec.seen = true;
     var S = { calm: calm() };
     return new Promise(function (resolve) {
       var node, closeFn, stage = 'intro', pend = null, qq = null, order = [], sel = -1, removed = -1, answered = false, result = null, goldBefore = 0, closed = false;
@@ -370,6 +370,36 @@
         state: function () { return { stage: stage, qid: qq && qq.id, sel: sel, answered: answered, order: order.map(function (o) { return o.orig; }), removed: removed, result: result, token: pend && pend.token }; },
         correctIndex: function () { return order.findIndex(function (o) { return qq && o.orig === qq.answer; }); } };
     });
+  };
+
+  /* ---------- クイズモンスター図鑑（討伐・挑戦の記録・称号・分野ごとの正答率） ---------- */
+  QB.artURL = function (mid) { try { var c = root.QuizMonArt && root.QuizMonArt.image(mid, 2, 0); return c && c.toDataURL ? c.toDataURL() : (c && c.src) || ''; } catch (e) { return ''; } };
+  QB.bestiary = async function () {
+    var Quiz = root.Quiz, d = root.State.data; if (!Quiz) return; var q = Quiz.ensure(d); var L = root.QUIZ_MONSTERS || [];
+    while (true) {
+      var items = L.map(function (m) { var r = q.mon[m.id]; var known = r.seen || r.attempts > 0 || r.defeated; return { label: (known ? m.name : '？？？') + '　' + stars(m.stars), right: r.defeated ? '討伐済み' : r.attempts ? '挑戦中' : known ? '発見' : '未発見', sub: m.genre + (known ? '｜' + m.place : '') }; });
+      items.push({ label: '分野ごとの正答率・称号', right: '' });
+      var i = await Win.list(items, { title: 'クイズモンスター図鑑（討伐 ' + L.filter(function (m) { return q.mon[m.id].defeated; }).length + '/' + L.length + '）' });
+      if (i < 0) return;
+      if (i === L.length) { await QB.masteryPanel(); continue; }
+      var m = L[i], r = q.mon[m.id]; var known = r.seen || r.attempts > 0 || r.defeated;
+      var img = known ? QB.artURL(m.id) : '';
+      var html = '<div class="rw-title">' + (known ? esc(m.name) : '？？？') + '　<span class="qb-stars">' + stars(m.stars) + '</span></div><div class="qbz">' +
+        (img ? '<img class="qbz-img" src="' + img + '" alt="">' : '<div class="qbz-img qbz-unk">？</div>') + '<div class="qbz-tx">' +
+        '<div>分野：' + esc(m.genre) + '</div>' + (known ? '<div>出現：' + esc(m.place) + '</div>' : '<div class="muted small">まだ出会っていない。</div>') +
+        '<div>状態：' + (r.defeated ? '<b class="gold-text">討伐済み</b>' : r.attempts ? '挑戦中（同じ場所に現れる）' : '未挑戦') + '</div>' +
+        '<div>挑戦 ' + r.attempts + '回／正解 ' + r.correct + '／不正解 ' + r.wrong + '／奪われたゴールド 累計 ' + fmtG(r.stolen) + '</div>' +
+        '<div class="muted small">間違えたとき：所持金の' + pct(m.steal.rate) + '（上限' + fmtG(m.steal.cap) + '）</div>' +
+        (r.firstReward ? '<div>称号「' + esc(m.title) + '」／記念：' + esc(m.item.name) + '</div>' : '') + '</div></div>';
+      await Win.panel(html, { cls: 'qbz-panel' });
+    }
+  };
+  QB.masteryPanel = function () {
+    var Quiz = root.Quiz, d = root.State.data; var q = Quiz.ensure(d); var ms = Quiz.mastery(d); var keys = Object.keys(ms);
+    var rows = keys.length ? keys.map(function (k) { var o = ms[k]; var r = o.n ? Math.round(o.ok / o.n * 100) : 0; return '<tr><td>' + esc(o.name) + '</td><td>' + o.ok + '/' + o.n + '</td><td>' + r + '%</td></tr>'; }).join('') : '<tr><td colspan="3" class="muted">まだ記録がない</td></tr>';
+    var html = '<div class="rw-title">トレード知識の記録（クイズモンスター）</div><div>称号：' + (q.titles.length ? q.titles.map(function (t) { return '「' + esc(t) + '」'; }).join(' ') : '<span class="muted">なし</span>') + '</div>' +
+      '<table class="qb-tbl qbz-tbl"><tr><th>分野</th><th>正解/回答</th><th>正答率</th></tr>' + rows + '</table><div class="muted small">答えた問題の分野ごとの集計（同じ問題に何度答えても数える）。</div>';
+    return Win.panel(html);
   };
 
   root.QuizBattleUI = QB;

@@ -37,6 +37,17 @@
     master: { hair: { style: 'spiky', color: '#e8e8f0' }, body: { type: 'fur', color: '#2f4fb0', color2: '#d8c0a0', color3: '#1f3a66' }, legs: { color: '#1a1a2a' }, cape: '#2f4fb0', item: { type: 'none' } },
     sailor: { hair: { style: 'short', color: '#f0d08a' }, head: { type: 'bandana', color: '#2f4fb0' }, body: { type: 'stripes', color: '#f4f4ff', color2: '#2f4fb0' }, legs: { color: '#2f4fb0' }, item: { type: 'none' } },
     scholar: { hair: { style: 'short', color: '#5a3a8a' }, body: { type: 'robe', color: '#2a2d4a', color2: '#8fb8ff' }, legs: { color: '#1a1a2a' }, item: { type: 'book', color: '#8fb8ff', color2: '#f4f4ff' }, glasses: true },
+    // 10人のトレーダー師匠（js/data/ultimates.js の look に合わせた色。立ち絵は docs/tools/gen_master_portraits.py）
+    tm_galen: { hair: { style: 'long', color: '#d8d8d0' }, beard: '#e8e8e0', body: { type: 'robe', color: '#3a7a4a', color2: '#ffd24a' }, legs: { color: '#2a4a3a' }, scarf: '#ffd24a', item: { type: 'staff', color: '#8a5a2a', color2: '#6ac46a' } },
+    tm_seiran: { hair: { style: 'bun', color: '#2a3a6a' }, body: { type: 'tunic', color: '#2a6a8a', color2: '#9fe0ff' }, legs: { color: '#1a2a4a' }, item: { type: 'basket', color: '#c9d8e0', color2: '#ffb0a0' } },
+    tm_bard: { hair: { style: 'short', color: '#6a3a1a' }, beard: '#5a2a0a', body: { type: 'fur', color: '#7a4a2a', color2: '#d8c0a0', color3: '#ffb04a' }, legs: { color: '#3a2a1a' }, item: { type: 'axe', color: '#8a5a2a', color2: '#b8bcc8' } },
+    tm_mirea: { hair: { style: 'long', color: '#c9a0ff' }, head: { type: 'headband', color: '#fff6c8' }, body: { type: 'dress', color: '#5a3a8a', color2: '#fff6c8' }, legs: { color: '#3a2a5a' }, item: { type: 'scales', color: '#ffd24a' } },
+    tm_lione: { hair: { style: 'twin', color: '#ff7fd0' }, head: { type: 'goggles', color: '#3a2a1a', color2: '#9fe0ff' }, body: { type: 'robe', color: '#eef0f8', color2: '#4a2a5a' }, legs: { color: '#2a1a3a' }, item: { type: 'book', color: '#f4f4ff', color2: '#ff7fd0' } },
+    tm_chrono: { hair: { style: 'short', color: '#e8e8f0' }, head: { type: 'hood', color: '#1a2a5a', color2: '#14204a' }, body: { type: 'robe', color: '#1a2a5a', color2: '#5ab0ff' }, legs: { color: '#0a1a3a' }, cape: '#14204a', item: { type: 'hourglass', color: '#ffd24a', color2: '#d2ebff' }, eye: '#5ab0ff' },
+    tm_volte: { hair: { style: 'spiky', color: '#ffe24a' }, body: { type: 'tunic', color: '#3a3a1a', color2: '#ffe24a' }, legs: { color: '#1a1a1a' }, item: { type: 'staff', color: '#8a5a2a', color2: '#ffe24a', glow: true } },
+    tm_raizen: { hair: { style: 'short', color: '#3a4a5a' }, body: { type: 'armor', color: '#4a6a8a', color2: '#9aa8bc', color3: '#7fd0ff' }, legs: { color: '#2a3a4a' }, cape: '#2a4a6a', shield: '#4a6a8a', item: { type: 'sword', color: '#d8d8e8' } },
+    tm_arzen: { hair: { style: 'ponytail', color: '#2a5a2a' }, body: { type: 'robe', color: '#3a5a2a', color2: '#b8f07f' }, legs: { color: '#1a3a1a' }, glasses: true, item: { type: 'book', color: '#f4f0e0', color2: '#b8f07f' } },
+    tm_ordis: { hair: { style: 'long', color: '#fff6c8' }, beard: '#fffbe8', body: { type: 'robe', color: '#e8e0c0', color2: '#ffd24a' }, legs: { color: '#a89060' }, cape: '#8a7a50', item: { type: 'staff', color: '#8a5a2a', color2: '#ffd24a', glow: true } },
     // 人間系の敵（戦闘用：正面フレームを拡大して使う）
     bandit: { hair: { style: 'short', color: '#2a1a0a' }, head: { type: 'bandana', color: '#8a1a1a' }, body: { type: 'tunic', color: '#5a3a1a', color2: '#8a1a1a' }, legs: { color: '#2a2a2a' }, item: { type: 'dagger', color: '#9a9aaa' }, scar: true },
     bandit_archer: { hair: { style: 'short', color: '#4a2a0a' }, head: { type: 'bandana', color: '#3a5a2a' }, body: { type: 'tunic', color: '#6a4a1a', color2: '#3a5a2a' }, legs: { color: '#2a2a2a' }, item: { type: 'bow', color: '#c9a06a' }, scar: true },
@@ -105,6 +116,7 @@
       if (hs === 'spiky') { px(4, top - 1, hairC); px(7, top - 1, hairC); px(10, top - 1, hairC); px(6, top - 2, hairC); px(9, top - 2, hairC); }
       if (hs === 'long') { rect(3, top + 3, 2, 7, hairC); rect(11, top + 3, 2, 7, hairC); if (back) rect(4, top + 3, 8, 7, hairC); if (side) rect(flip ? 11 : 3, top + 3, 2, 7, hairC); }
       if (hs === 'ponytail') { if (!side) rect(back ? 7 : 11, top + 2, 2, 8, hairC); else rect(3, top + 2, 2, 8, hairC); }
+      if (hs === 'twin') { if (!side) { rect(2, top + 2, 2, 8, hairC); rect(12, top + 2, 2, 8, hairC); } else rect(3, top + 2, 2, 8, hairC); }
       if (hs === 'bun') { rect(6, top - 1, 4, 2, hairC); }
       if (back) rect(4, top + 3, 8, 5, hairC);
       rect(4, top, 8, 1, shade(hairC, 1.25));
@@ -131,6 +143,7 @@
       else if (hd.type === 'cap') { rect(3, top - 1, 10, 3, hc); rect(3, top + 2, 10, 1, hc2); if (!back) rect(3, top + 2, 11, 1, hc2); }
       else if (hd.type === 'bandana') { rect(3, top - 1, 10, 3, hc); rect(3, top + 2, 10, 1, shade(hc, 0.7)); if (!side && !back) px(12, top + 3, hc); if (back) { px(7, top + 3, hc); px(8, top + 4, hc); } }
       else if (hd.type === 'headband') { rect(4, top + 1, 8, 1, hc); }
+      else if (hd.type === 'goggles') { rect(4, top + 2, 8, 1, hc); if (!back) { if (side) { px(flip ? 6 : 9, top + 2, hc2); } else { px(6, top + 2, hc2); px(9, top + 2, hc2); } } }
     }
     // ---- 持ち物 ----
     var it = d.item || { type: 'none' }; var ic = it.color, ic2 = it.color2 || ic;
@@ -144,6 +157,8 @@
     else if (it.type === 'book') { if (!back) rect(side ? (flip ? 3 : 11) : 11, by + 2, 3, 3, ic); if (!back) rect(side ? (flip ? 4 : 12) : 12, by + 2, 1, 3, ic2); }
     else if (it.type === 'mug') { if (!back) { rect(side ? hx - 1 : 12, by + 2, 2, 3, ic); px(side ? hx - 1 : 12, by + 1, ic2); px(side ? hx : 13, by + 1, ic2); } }
     else if (it.type === 'basket') { if (!back) { rect(side ? hx - 1 : 11, by + 3, 3, 3, ic); px(side ? hx : 12, by + 2, ic2); } }
+    else if (it.type === 'scales') { if (!back) { var scx = side ? (flip ? 3 : 12) : 12; rect(scx, by - 1, 1, 6, ic); rect(scx - 2, by - 1, 5, 1, ic); px(scx - 2, by, ic); px(scx + 2, by, ic); } }
+    else if (it.type === 'hourglass') { if (!back) { var hgx = side ? (flip ? 2 : 11) : 11; rect(hgx, by + 1, 3, 1, ic); rect(hgx, by + 5, 3, 1, ic); px(hgx, by + 2, ic2); px(hgx + 2, by + 2, ic2); px(hgx + 1, by + 3, ic); px(hgx, by + 4, ic2); px(hgx + 2, by + 4, ic2); } }
     else if (it.type === 'bag') { if (back) rect(5, by, 6, 6, ic); else if (side) rect(flip ? 11 : 3, by, 2, 6, ic); }
     // 盾（左手）：正面と横で見える
     if (d.shield && !back) { var shx = side ? (flip ? 11 : 2) : 1; rect(shx, by + 1, 3, 4, d.shield); rect(shx + 1, by + 2, 1, 2, '#e8c15a'); }

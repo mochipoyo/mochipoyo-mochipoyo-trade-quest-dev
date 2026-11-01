@@ -4,7 +4,9 @@
        置く前に、そのマスが通れること・ほかの NPC／出入口／宝箱／イベントの近くでないこと・置いても行けなくなる場所が出ないことを確かめてある
        （docs/ultimates-50.md。実行時にもふさがっていたら近くの空きマスへずらす）
    ・動かない NPC（wander: 0）。話しかけると修行場（js/ui/dojo.js の TraderDojo.open）
-   ・歩く姿は既存の NPC の画像を使う（js/core/chars.js のパレットは増やさない）。既存の NPC・会話・クエストは変えない（マップの NPC の一覧に足すだけ。同じ ID がすでにあれば足さない）
+   ・歩く姿・立ち絵は師匠専用の画像（assets/characters/overworld/tm_*.png・assets/characters/npcs/tm_*.png。どちらもコードで作った仮の画像。読み込めないときは既存の NPC の画像と顔の絵）
+     既存の NPC・会話・クエストは変えない（マップの NPC の一覧に足すだけ。同じ ID がすでにあれば足さない）
+   ・マップ上の目印：師匠の頭の上に流派の色の札（印と「師」）。まだ会っていない師匠は「！」つき。近くでは名前も出す（MAP_DRAW_LAYERS）
    ・3D 版：師匠のいるマップは 3D 化していない（2D の表示）ので、3D のモデルは使わない
    ========================================================= */
 (function (root) {
@@ -13,10 +15,10 @@
   var TM = { installed: [], moved: [] };
   var SKIN_EYE = '#1b1b2a';
 
-  // 歩く姿：既存の NPC の歩行画像（assets/characters/overworld）を使う（ほかの NPC と同じ絵柄にそろえる。新しい画像ファイルは足さない）
-  //   師匠ごとの見た目の違いは、会話の顔の絵（TM.portrait。色・髪型・流派の印）で出す
-  var SPRITE = { galen: 'elder', seiran: 'sailor', bard: 'bartender', mirea: 'priest', lione: 'scholar', chrono: 'master', volte: 'villager_m', raizen: 'guard', arzen: 'scholar', ordis: 'elder' };
-  TM.spriteOf = function (mid) { return SPRITE[mid] || 'villager_m'; };
+  // 歩く姿：師匠専用の歩行シート（tm_<id>。docs/tools/walker.js で作った仮の画像）。マニフェストにない・読み込めないときは既存の NPC の画像
+  var FALLBACK = { galen: 'elder', seiran: 'sailor', bard: 'bartender', mirea: 'priest', lione: 'scholar', chrono: 'master', volte: 'villager_m', raizen: 'guard', arzen: 'scholar', ordis: 'elder' };
+  TM.spriteOf = function (mid) { var id = 'tm_' + mid; var A = root.Assets; if (A && A.entry('overworld', id) && !(A.failed && A.failed['overworld:' + id])) return id; return FALLBACK[mid] || 'villager_m'; };
+  TM.fallbackSprite = function (mid) { return FALLBACK[mid] || 'villager_m'; };
 
   // 置けるか（通れるマス・出入口やほかの NPC の近くでない）を、マップのデータ（rows・buildings・npcs・warps）から調べる
   function solidAt(def, x, y) {
@@ -54,7 +56,12 @@
   /* ---------- 会話の顔の絵（その場で描く。画像ファイルは使わない） ---------- */
   var PORTRAIT = {};
   var HAIR = { white_long: ['long'], blue_bun: ['bun'], short_beard: ['short', 'beard'], lilac_long: ['long'], pink_twin: ['twin'], silver_hood: ['hood'], spiky_gold: ['spiky'], short_gray: ['short'], green_braid: ['braid'], long_white_beard: ['long', 'beard'] };
+  // 立ち絵：師匠専用の立ち絵（assets/characters/npcs/tm_<id>.png）が読み込めていればそれ、なければ下の顔の絵
   TM.portrait = function (mid) {
+    var A = root.Assets; var im = A && A.image ? A.image('npcs', 'tm_' + mid) : null; if (im && im.src) return im.src;
+    return TM.face(mid);
+  };
+  TM.face = function (mid) {
     if (PORTRAIT[mid] !== undefined) return PORTRAIT[mid];
     var m = MASTERS[mid]; var url = null;
     try {
@@ -94,6 +101,37 @@
     } catch (e) { url = null; }
     PORTRAIT[mid] = url; return url;
   };
+
+  /* ---------- マップ上の目印（流派の色の札。会っていない師匠は「！」） ---------- */
+  function schoolColor(mid) { var m = MASTERS[mid]; var L = (m && m.look) || {}; return L.A || '#e8c15a'; }
+  TM.drawList = function (map, cam, x0, y0, x1, y1, TS) {
+    if (!map || !map.npcs) return []; var d = root.State && root.State.data; var U = d && d.ultimate; var p = root.World && root.World.player; var t = Date.now() / 1000;
+    return map.npcs.filter(function (n) { return n.traderMaster && !n.hidden && n.x >= x0 - 1 && n.x <= x1 + 1 && n.y >= y0 - 1 && n.y <= y1 + 2; }).map(function (n) {
+      var mid = n.traderMaster; var rec = U && U.masters && U.masters[mid]; var met = !!(rec && rec.met);
+      return { y: n.y * TS + 0.9, draw: function (ctx) {
+        var cx = n.x * TS + (n.ox_px || 0) - cam.x + TS / 2, top = n.y * TS + (n.oy_px || 0) - cam.y - TS * 0.62 + Math.round(Math.sin(t * 2.4 + n.x) * 1.5);
+        var col = schoolColor(mid); ctx.save();
+        // 足元の輪（流派の色）
+        ctx.globalAlpha = 0.5; ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath(); if (ctx.ellipse) ctx.ellipse(cx, n.y * TS + (n.oy_px || 0) - cam.y + TS - 3, TS * 0.42, TS * 0.15, 0, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1;
+        // 頭の上の札「師」
+        var w = 18, h = 14; ctx.fillStyle = 'rgba(10,14,32,0.88)'; ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(cx - w / 2, top - h, w, h, 3); else ctx.rect(cx - w / 2, top - h, w, h); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx - 3, top); ctx.lineTo(cx + 3, top); ctx.lineTo(cx, top + 4); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+        ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = col; ctx.fillText('師', cx, top - h / 2 + 0.5);
+        if (!met) { ctx.font = 'bold 12px sans-serif'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.8)'; ctx.fillStyle = '#ffd24a'; ctx.strokeText('！', cx + 12, top - h + 2); ctx.fillText('！', cx + 12, top - h + 2); }
+        // 近くでは名前
+        if (p && Math.abs(p.x - n.x) + Math.abs(p.y - n.y) <= 3) { var nm = (MASTERS[mid] || {}).name || ''; ctx.font = '10px sans-serif'; var tw = ctx.measureText(nm).width + 8; ctx.fillStyle = 'rgba(10,14,32,0.82)'; ctx.fillRect(cx - tw / 2, top - h - 15, tw, 13); ctx.fillStyle = '#fff'; ctx.fillText(nm, cx, top - h - 8.5); }
+        ctx.restore();
+      } };
+    });
+  };
+  (root.MAP_DRAW_LAYERS = root.MAP_DRAW_LAYERS || []).push(function (m, cam, x0, y0, x1, y1, TS) { return TM.drawList(m, cam, x0, y0, x1, y1, TS); });
+  // 画像が読み込めなかったときは、既存の NPC の歩行画像に戻す（読み込みの結果が出たあと）
+  TM.repairSprites = function () {
+    var MD = root.MAP_DEFS || {}; Object.keys(MASTERS).forEach(function (mid) { var def = MD[MASTERS[mid].map]; (def && def.npcs || []).forEach(function (n) { if (n.id === TM.npcId(mid)) n.sprite = TM.spriteOf(mid); }); });
+    var W = root.World; if (W && W.map && W.map.npcs) W.map.npcs.forEach(function (n) { if (n.traderMaster) n.sprite = TM.spriteOf(n.traderMaster); });
+  };
+
+  (root.MAP_ENTER_HOOKS = root.MAP_ENTER_HOOKS || []).push(function () { var A = root.Assets; if (A && A.failed && Object.keys(A.failed).some(function (k) { return /^overworld:tm_/.test(k); })) TM.repairSprites(); });
 
   TM.install();
   root.TraderMasterManager = TM;

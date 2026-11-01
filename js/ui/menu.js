@@ -376,8 +376,9 @@
 
   Menu.encyclopedia = async function () {
     while (true) {
-      var i = await Win.choice('図鑑', ['モンスター図鑑', 'アイテム図鑑', '職業一覧', '冒険の記録', 'オーパーツ（' + (root.Ooparts ? root.Ooparts.count() + '/' + root.Ooparts.total() : '0') + '）', 'カジノ・学院の記録', 'やめる']);
-      if (i < 0 || i === 6) return;
+      var i = await Win.choice('図鑑', ['モンスター図鑑', 'アイテム図鑑', '職業一覧', '冒険の記録', 'オーパーツ（' + (root.Ooparts ? root.Ooparts.count() + '/' + root.Ooparts.total() : '0') + '）', 'カジノ・学院の記録', 'クイズモンスター図鑑', 'やめる']);
+      if (i < 0 || i === 7) return;
+      if (i === 6) { if (root.QuizBattleUI) await root.QuizBattleUI.bestiary(); continue; }   // トレードクイズモンスター5体
       if (i === 4) { if (root.OopartsUI) await root.OopartsUI.list(); continue; }   // v6.1
       if (i === 5) { await Menu.studyRecord(); continue; }   // v6.1
       var d = State.data;

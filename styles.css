@@ -770,3 +770,7 @@ body.astra-flying #minimap-layer, body.astra-flying #place-label, body.astra-fly
   .quiz-battle.st-quiz .qb-scene, .quiz-battle.st-judge .qb-scene { height: 54px; min-height: 54px; } .quiz-battle.st-quiz .qb-say, .quiz-battle.st-judge .qb-say { left: 60px; font-size: 11px; padding: 2px 8px; } .quiz-battle .qb-hint { font-size: 11px; } }
 @media (max-height: 460px) { .quiz-battle .qb-scene { height: 34%; min-height: 110px; } .quiz-battle.st-quiz .qb-scene, .quiz-battle.st-judge .qb-scene { height: 54px; min-height: 54px; } .quiz-battle.st-quiz .qb-say, .quiz-battle.st-judge .qb-say { left: 62px; } .quiz-battle .qb-chartbox { height: 130px; } .quiz-battle .qb-chartbox.tall { height: 150px; } .quiz-battle .qb-btn { min-height: 40px; } }
 @media (prefers-reduced-motion: reduce) { .quiz-battle .qb-say.pop, .quiz-battle .qb-gaan { animation: none; } }
+
+.qbz { display: flex; gap: 10px; align-items: flex-start; } .qbz-img { width: 120px; height: 120px; image-rendering: pixelated; flex: 0 0 auto; background: radial-gradient(ellipse at 50% 90%, rgba(232,193,90,.18), transparent 70%); border-radius: 6px; } .qbz-unk { display: flex; align-items: center; justify-content: center; font-size: 48px; color: var(--muted); background: rgba(255,255,255,.05); } .qbz-tx { flex: 1; min-width: 0; font-size: 13px; line-height: 1.7; }
+.qbz-tbl { margin: 6px 0; width: 100%; } .qbz-tbl td:first-child, .qbz-tbl th:first-child { text-align: left; }
+@media (max-width: 520px) { .qbz { flex-direction: column; align-items: center; } .qbz-img { width: 96px; height: 96px; } }
