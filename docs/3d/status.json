@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-01T15:30:07.858Z",
+ "generated": "2026-11-01T22:38:22.991Z",
  "rows": [
   {
    "name": "マップ",
@@ -17,7 +17,7 @@
    "prov": 13,
    "d2": 0,
    "none": 0,
-   "note": "探索中の3Dモデルの内訳。戦闘では、ご指示により2D版のドット絵（パーティ欄と同じ立ち絵）を3Dの舞台に並べる（3D設定で3Dモデルにも切り替え可）。主人公の職業別の見た目（20職）は探索では1つのモデルを共用。hero→hero（専用）、lina→lina（専用）、kyle→kyle（自動生成）、mina→mina（自動生成）、seris→seris（自動生成）、gald→gald（自動生成）、lucia→lucia（自動生成）、elna→scholar（代用：2D版と同じ scholar の見た目）、nagi→sailor（代用：2D版と同じ sailor の見た目）、iris→villager_f（代用：2D版と同じ villager_f の見た目）、sophia→priest（代用：2D版と同じ priest の見た目）、io→child（代用：2D版と同じ child の見た目）、ganes→villager_m（代用：2D版と同じ villager_m の見た目）、aster→hero_sage（代用：2D版と同じ hero_sage の見た目）、ord→guard（代用：2D版と同じ guard の見た目）"
+   "note": "探索中の3Dモデルの内訳。戦闘では、ご指示により2D版のドット絵（パーティ欄と同じ立ち絵）を3Dの舞台に並べる（3Dモデルは開発の確認用に URL の ?party=model だけ）。主人公の職業別の見た目（20職）は探索では1つのモデルを共用。hero→hero（専用）、lina→lina（専用）、kyle→kyle（自動生成）、mina→mina（自動生成）、seris→seris（自動生成）、gald→gald（自動生成）、lucia→lucia（自動生成）、elna→scholar（代用：2D版と同じ scholar の見た目）、nagi→sailor（代用：2D版と同じ sailor の見た目）、iris→villager_f（代用：2D版と同じ villager_f の見た目）、sophia→priest（代用：2D版と同じ priest の見た目）、io→child（代用：2D版と同じ child の見た目）、ganes→villager_m（代用：2D版と同じ villager_m の見た目）、aster→hero_sage（代用：2D版と同じ hero_sage の見た目）、ord→guard（代用：2D版と同じ guard の見た目）"
   },
   {
    "name": "NPC",

@@ -32,7 +32,7 @@ const SPRITE_H = 1.42;   // 味方のドット絵の高さ（ワールド単位�
 // ドット絵の味方：前後2列で互い違い（参考画像の並び）。人数ごとに、隣と重なりにくい間隔（約1.1）で右に並べる
 const SPRITE_LAYOUT = { 1: [[2.0, 3.0]], 2: [[1.5, 3.2], [2.9, 2.5]], 3: [[1.2, 3.3], [2.45, 2.55], [3.65, 3.3]], 4: [[0.95, 3.4], [2.1, 2.6], [3.2, 3.4], [4.3, 2.6]] };
 const SPRITE_SLOTS = SPRITE_LAYOUT[4];
-// 味方の見た目：'sprite'＝2D版のドット絵のまま並べる（既定。ご指示の構図）／'model'＝3Dモデル（3D設定・localStorage 'mtq3d-battle-party'）
+// 味方の見た目：'sprite'＝2D版のドット絵のまま並べる（ご指示の構図）／'model'＝3Dモデル（開発の確認用。URL に ?party=model）
 // 立ち位置の横の広がり（スマホの縦画面でカメラを寄せるため。BattleStage3D.fitCamera）。enemyHome / partyHome と同じ表から
 export function layoutSpan(nEnemies, nParty, bossFirst) {
   const ex = []; for (let i = 0; i < nEnemies; i++) { if (nEnemies === 1 || (bossFirst && nEnemies <= 2 && i === 0)) ex.push(-2.6); else { const set = ENEMY_LAYOUT[nEnemies]; ex.push((set ? set[i] : ENEMY_SLOTS[i % ENEMY_SLOTS.length])[0]); } }
@@ -40,7 +40,7 @@ export function layoutSpan(nEnemies, nParty, bossFirst) {
   if (!ex.length || !px.length) return null;
   return { L: Math.min(...ex) - (bossFirst ? 2.2 : 1.7), R: Math.max(...px) + 0.8 };   // 敵・味方の絵の半分の幅ほどの余白
 }
-export function partyStyle() { try { return localStorage.getItem('mtq3d-battle-party') === 'model' ? 'model' : 'sprite'; } catch (e) { return 'sprite'; } }
+export function partyStyle() { try { return /[?&]party=model(&|$)/.test(location.search) ? 'model' : 'sprite'; } catch (e) { return 'sprite'; } }   // ご指示によりドット絵に固定。3Dモデルは開発の確認用（URL に ?party=model）。以前の3D設定の値（'mtq3d-battle-party'）は使わない
 // ドット絵の不透明な部分だけを切り出す（拡大はしない。ドットを保つ）
 function cropPixels(img, sx, sy, sw, sh) {
   const w = sw || img.naturalWidth || img.width, h = sh || img.naturalHeight || img.height;

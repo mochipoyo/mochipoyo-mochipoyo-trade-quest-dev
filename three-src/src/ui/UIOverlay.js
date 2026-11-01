@@ -63,7 +63,6 @@ export class UIOverlay {
       '<div class="row"><span class="lab">モーション</span><button data-m="Attack">攻撃</button><button data-m="Cast">呪文</button><button data-m="Hit">被弾</button><button data-m="Defend">防御</button><button data-m="Victory">勝利</button><button data-m="Defeat">倒れる</button></div>' +
       '<div class="row"><span class="lab">戦闘の3D</span><button data-b="on">3Dの舞台</button><button data-b="off">2Dの背景</button></div>' +
       '<div class="row"><span class="lab">戦闘のキャラ</span><button data-ba="on">左右に並ぶ3Dの戦闘</button><button data-ba="off">以前の表示（2Dの絵）</button></div>' +
-      '<div class="row"><span class="lab">戦闘の味方</span><button data-bp="sprite">ドット絵</button><button data-bp="model">3Dモデル（仮3D）</button></div>' +
       '<div class="row"><span class="lab">3Dの範囲</span><button data-sc="all">全マップ（汎用3D＝仮3D）</button><button data-sc="poyo">ポヨ村だけ（以前と同じ）</button></div>' +
       '<div class="row"><span class="lab">表示</span><span id="g3-fps">-- fps</span></div>' +
       '<div class="row"><span class="lab">状態</span><span id="g3-diag" style="max-width:300px;line-height:1.45;user-select:text;-webkit-user-select:text">--</span></div>' +
@@ -79,7 +78,6 @@ export class UIOverlay {
       if (b.dataset.m) app.emote(b.dataset.m);
       if (b.dataset.b && G3B()) G3B().setEnabled(b.dataset.b === 'on');   // v6.5 Phase D
       if (b.dataset.ba && G3B()) G3B().setActors(b.dataset.ba === 'on');   // Phase 2：次の戦闘から
-      if (b.dataset.bp) { try { localStorage.setItem('mtq3d-battle-party', b.dataset.bp); } catch (e) { /* なし */ } }   // 次の戦闘から
       if (b.dataset.sc) setScope3D(b.dataset.sc);                         // Phase 1：すぐ反映（今いるマップも）
       this.refresh();
     });
@@ -117,7 +115,6 @@ export class UIOverlay {
     this.tools.querySelectorAll('[data-t]').forEach((b) => b.classList.toggle('on', (+b.dataset.t < 0 && pv === null) || +b.dataset.t === pv));
     const bs = G3B(); const on = bs ? bs.isEnabled() : true; this.tools.querySelectorAll('[data-b]').forEach((b) => b.classList.toggle('on', (b.dataset.b === 'on') === on));
     let ba = true; try { ba = localStorage.getItem('mtq3d-battle-actors') !== 'off'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-ba]').forEach((b) => b.classList.toggle('on', (b.dataset.ba === 'on') === ba));
-    let bp = 'sprite'; try { bp = localStorage.getItem('mtq3d-battle-party') === 'model' ? 'model' : 'sprite'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-bp]').forEach((b) => b.classList.toggle('on', b.dataset.bp === bp));
     const sc = scope3D(); this.tools.querySelectorAll('[data-sc]').forEach((b) => b.classList.toggle('on', b.dataset.sc === sc));
   }
   // #game（2D）のちょうど内側に重ねる

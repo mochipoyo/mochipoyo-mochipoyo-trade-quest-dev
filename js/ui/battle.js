@@ -336,6 +336,9 @@
   /* ---------- 開始 ---------- */
   BattleUI.start = async function (enemyIds, opts) {
     opts = opts || {};
+    // 味方が全員倒れたまま戦闘が始まったとき（例：全滅の直後のセーブを読み込み直した）は、戦わずに全滅として扱う（呼び出し側が宿へ戻して回復する）
+    //   以前はこのまま戦闘を始め、敵の行動の計算で例外になって戦闘が止まっていた（combat.js は変えない）
+    if (!State.partyActors().some(function (a) { return !a.dead && a.hp > 0; })) return 'lost';
     if (root.BossArt) { try { var artWait = root.BossArt.prepare(enemyIds, opts); if (artWait) await artWait; } catch (err) { console.warn('BossArt', err); } }   // v6.3 間に合わなければ従来の画像で始める
     if (root.EnemyArt) { try { var eaWait = root.EnemyArt.prepare(enemyIds); if (eaWait) await eaWait; } catch (err) { console.warn('EnemyArt', err); } }   // 通常敵164体の新しい画像（間に合わなければ従来の絵で始め、読めたら切り替える）
     var d = State.data; var party = State.partyActors();
@@ -354,12 +357,18 @@
     if (opts.boss) { scene.screenShake = 600; if (root.Audio) root.Audio.sfx('crit'); await Win.sleep(1300 + (scene.cutin ? 600 : 0)); }   // v6.3 特殊戦闘のカットインがあるときだけ 0.6 秒長く
     await bmsg(uniq(names).join('、') + 'が現れた！', 700);
     var result = null;
-    while (b.state === 'command') {
-      var cmds = await collectCommands(b);
-      if (cmds === null) continue;
-      var ev = Combat.runTurn(b, cmds);
-      await playEvents(b, ev, scene);
-      renderParty(b);
+    try {
+      while (b.state === 'command') {
+        var cmds = await collectCommands(b);
+        if (cmds === null) continue;
+        var ev = Combat.runTurn(b, cmds);
+        await playEvents(b, ev, scene);
+        renderParty(b);
+      }
+    } catch (err) {   // 戦闘の途中の例外で、戦闘の画面が止まったままにならないように：戦闘を終える（味方が残っていれば逃げたのと同じ扱い、全員倒れていれば全滅）
+      if (root.console) console.error('battle error', err);
+      b.state = b.party.some(function (a) { return !a.dead && a.hp > 0; }) ? 'escaped' : 'lost';
+      if (Win.toast) Win.toast('戦闘の処理でエラーが起きたため、戦闘を終えました', 4000);
     }
     result = b.state;
     if (result === 'won') {
@@ -378,7 +387,7 @@
     pw.classList.remove('on'); mw.classList.remove('on'); BattleUI.autoButton(false);
     Engine.pop();
     if (root.Audio) root.Audio.playBgm(root.World.map ? (root.World.map.def.bgm || 'field') : 'field');
-    State.autosave();
+    if (result !== 'lost') State.autosave();   // 全滅のときは、宿で回復したあと（World.gameOver → enterMap）に保存する。ここで保存すると、全員倒れたままのセーブが残る
     return result;
   };
   function uniq(a) { return a.filter(function (x, i) { return a.indexOf(x) === i; }).map(function (x) { return x.replace(/[A-H]$/, ''); }).filter(function (x, i, arr) { return arr.indexOf(x) === i; }); }
