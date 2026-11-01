@@ -67,6 +67,14 @@
     return dmg;
   }
   function buffOf(a, k) { var b = a && a.buffs && a.buffs[k]; return b && b.turns > 0 ? b.value : 0; }
+  // v6.5 敵の弱体化（味方の能力を一時的に下げる）。いまの強化があれば打ち消し合う。下がるのは −50% まで
+  var DEBUFF_NAME = { atk: '攻撃力', def: '守備力', agi: '素早さ', mag: '魔力', mdef: '魔法防御' };
+  function debuffActor(t, sp, say) {
+    t.buffs = t.buffs || {};
+    Object.keys(sp.debuff).forEach(function (k) { var cur = t.buffs[k]; var v = (cur && cur.turns > 0 ? cur.value : 0) + sp.debuff[k]; t.buffs[k] = { value: Math.max(-0.5, v), turns: Math.max(cur && cur.turns > 0 ? cur.turns : 0, sp.turns || 3) }; });
+    var names = Object.keys(sp.debuff).map(function (k) { return DEBUFF_NAME[k] || k; }).join('・');
+    if (say) say(t.name + 'の' + names + 'が下がった');
+  }
   Combat.buffOf = buffOf;
   function cureBonus(t, ev) { var cb = fx(t, 'cureAtk'); if (cb && !t.dead) { t.buffs.atk = { value: cb.atk, turns: cb.turns }; ev.push({ type: 'msg', text: t.name + 'は反転の腕輪で攻撃力が上がった' }); } }
   function resistOf(e, element) { if (!element || element === 'none') return (e.resist && e.resist.none !== undefined) ? e.resist.none : 1; var r = e.resist ? e.resist[element] : undefined; return r === undefined ? 1 : r; }
@@ -141,7 +149,7 @@
     var acts = [];
     b.party.forEach(function (a) { a.defending = false; a.cover = false; a.counter = false; a.counterMult = 1; });
     commands.forEach(function (c) { var a = b.party.filter(function (x) { return x.id === c.actorId; })[0]; if (a && !a.dead) acts.push({ side: 'party', actor: a, cmd: c, agi: Actors.stats(a).agi }); });
-    aliveEnemies(b).forEach(function (e) { acts.push({ side: 'enemy', actor: e, agi: estats(e).agi }); });
+    aliveEnemies(b).forEach(function (e) { acts.push({ side: 'enemy', actor: e, agi: estats(e).agi }); var dd = ENEMIES[e.defId]; if (dd && dd.acts >= 2) acts.push({ side: 'enemy', actor: e, agi: estats(e).agi * 0.55, extra: true }); });   // v6.5 2回行動（2回目は素早さが低い扱い）
     acts.forEach(function (x) { x.order = x.agi * rnd(0.8, 1.2); if (x.side === 'party' && (x.cmd.type === 'defend' || x.cmd.type === 'escape' || (x.cmd.type === 'skill' && SKILLS[x.cmd.skillId] && (SKILLS[x.cmd.skillId].cover || SKILLS[x.cmd.skillId].counter)))) x.order += 1000; /* v6.4 反撃の構え（瞬間逆転）も先に */ });
     acts.sort(function (p, q) { return q.order - p.order; });
 
@@ -381,12 +389,15 @@
       if (sp.heal) { var hv = Math.max(1, Math.round(e.maxHp * sp.heal)); e.hp = Math.min(e.maxHp, e.hp + hv); ev.push({ type: 'heal', side: 'enemy', idx: e.idx, value: hv }); msg(e.name + 'のHPが' + hv + '回復した'); return; }
       if (sp.buff && sp.self) { Object.keys(sp.buff).forEach(function (k) { e.buffs[k] = { value: sp.buff[k], turns: sp.turns || 2 }; }); return; }
       if (sp.power) {
-        if (sp.all) { beginGroup('party'); living.forEach(function (t7) { if (!t7.dead) hitActor(b, e, t7, sp.power, {}, ev); }); endGroup(); return; }
+        // v6.5 攻撃のあとに状態異常・弱体化（毒の牙・しびれ針・絶望の波動など）：当たった相手だけ
+        var after = function (t8) { if (!t8 || t8.dead) return; if (sp.status && addStatus(t8, sp.status, undefined, true)) msg(t8.name + 'は' + STATUS_NAME[sp.status.id] + '状態になった'); if (sp.debuff) debuffActor(t8, sp, msg); };
+        if (sp.all) { beginGroup('party'); var hitList = []; living.forEach(function (t7) { if (!t7.dead && hitActor(b, e, t7, sp.power, {}, ev) > 0) hitList.push(t7); }); endGroup(); hitList.forEach(after); return; }
         var hits2 = sp.hits || 1;
-        for (var h2 = 0; h2 < hits2; h2++) { if (!aliveParty(b).length) break; var t5 = pickTarget(); if (!t5 || t5.dead) t5 = pickRandom(aliveParty(b)); var dm = hitActor(b, e, t5, sp.power, {}, ev); if (sp.drain && dm > 0) { e.hp = Math.min(e.maxHp, e.hp + Math.round(dm * 0.5)); msg(e.name + 'は体力を吸い取った'); } }
+        for (var h2 = 0; h2 < hits2; h2++) { if (!aliveParty(b).length) break; var t5 = pickTarget(); if (!t5 || t5.dead) t5 = pickRandom(aliveParty(b)); var dm = hitActor(b, e, t5, sp.power, {}, ev); if (sp.drain && dm > 0) { e.hp = Math.min(e.maxHp, e.hp + Math.round(dm * 0.5)); msg(e.name + 'は体力を吸い取った'); } if (dm > 0) after(t5); }
         return;
       }
       if (sp.status) { var tg4 = sp.target === 'allies' ? living : [pickTarget()]; tg4.forEach(function (t6) { if (addStatus(t6, sp.status, undefined, true)) msg(t6.name + 'は' + STATUS_NAME[sp.status.id] + '状態になった'); }); }
+      if (sp.debuff) { var tg5 = sp.target === 'allies' ? living : [pickTarget()]; tg5.forEach(function (t9) { if (t9 && !t9.dead) debuffActor(t9, sp, msg); }); }   // v6.5 時の重りなど
     }
   }
 

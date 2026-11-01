@@ -152,7 +152,7 @@
     if ((nx < 0 || ny < 0 || nx >= m.w || ny >= m.h) && root.EdgeExit && root.EdgeExit.tryLeave(m, p.x, p.y, dir)) return false;   // v6.5 村・町の開いている外周から外へ（登録した区間だけ）
     var vr = root.Vehicle ? root.Vehicle.resolveMove(m, nx, ny) : null;   // v5.0: 乗船・航行・下船
     if (vr) { if (!vr.ok) { var why = root.Vehicle.blockReason(m, nx, ny); if (why && !p._blockToastAt || (why && Date.now() - p._blockToastAt > 1500)) { p._blockToastAt = Date.now(); Win.toast(why); } return false; } p.vehicleAction = vr; }
-    else if (!m.passable(nx, ny, State.data)) { var bn = m.npcOn(nx, ny); if (bn) World.pushAgainst(bn); return false; }   // v5.7 歩き回る人は道をあける（v6.2：押し続けたときだけ。近づいた・向いただけでは動かない）
+    else if (!m.passable(nx, ny, State.data)) { if (root.BossSymbol && root.BossSymbol.bump(m, nx, ny, dir)) return false; var bn = m.npcOn(nx, ny); if (bn) World.pushAgainst(bn); return false; }   // v6.5 ボスのシンボルにぶつかる＝調べる   // v5.7 歩き回る人は道をあける（v6.2：押し続けたときだけ。近づいた・向いただけでは動かない）
     p.moving = true; p.tx = nx; p.ty = ny; p.progress = 0;
     return true;
   };
@@ -210,6 +210,7 @@
       World.updatePlaceLabel();
     }
     if (root.Minimap) root.Minimap.onStep(m, p);
+    if (root.BossSymbol) { root.BossSymbol.onStep(m, p); if (root.BossSymbol.stepOn(m, p)) return; }   // v6.5 ボスの気配・ふさがないシンボルは踏むと調べる
     if (m.kind === 'field') d.timeOfDay = (d.timeOfDay + 0.0025) % 1;
     var w = m.warpAt(p.x, p.y);
     if (w && (!w.needFlag || d.flags[w.needFlag])) { if (m.def.onStep) m.def.onStep(m, p, true); World.doWarp(w); return; }

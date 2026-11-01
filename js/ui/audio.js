@@ -82,7 +82,8 @@
     select: [[880, 0.04, 'square']], hit: [[200, 0.06, 'square'], [120, 0.1, 'sawtooth']], crit: [[300, 0.05, 'square'], [600, 0.05, 'square'], [150, 0.15, 'sawtooth']], hurt: [[150, 0.12, 'sawtooth']],
     magic: [[523, 0.06, 'sine'], [784, 0.06, 'sine'], [1046, 0.12, 'sine']], heal: [[659, 0.08, 'sine'], [880, 0.08, 'sine'], [1318, 0.16, 'sine']], die: [[220, 0.1, 'sawtooth'], [110, 0.25, 'sawtooth']],
     coin: [[1200, 0.05, 'square'], [1600, 0.08, 'square']], equip: [[600, 0.05, 'square'], [900, 0.08, 'square']], door: [[300, 0.08, 'triangle'], [200, 0.15, 'triangle']], step: [[400, 0.03, 'triangle']],
-    win: [[523, 0.08, 'square'], [659, 0.08, 'square'], [784, 0.16, 'square']], chest: [[784, 0.06, 'square'], [1046, 0.12, 'square']]
+    win: [[523, 0.08, 'square'], [659, 0.08, 'square'], [784, 0.16, 'square']], chest: [[784, 0.06, 'square'], [1046, 0.12, 'square']],
+    bossnear: [[98, 0.22, 'sawtooth'], [92, 0.3, 'sawtooth'], [73, 0.5, 'triangle']], bossroar: [[150, 0.07, 'sawtooth'], [118, 0.12, 'sawtooth'], [82, 0.42, 'sawtooth']]   // v6.5 ボスの気配・ボス戦の導入
   };
   Audio.sfx = function (key) {
     if (!Audio.ctx || !Audio.unlocked) return; var seq = SFX[key]; if (!seq) return; var t = Audio.ctx.currentTime;

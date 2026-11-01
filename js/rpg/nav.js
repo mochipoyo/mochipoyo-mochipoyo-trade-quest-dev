@@ -249,13 +249,17 @@
   Nav.compute = function (force) {
     var Wd = W(); var d = D(); if (!d || !Wd || !Wd.map || !Wd.player) return null;
     var busy = Wd.busy || (root.Engine && root.Engine.top && Wd.scene && root.Engine.top() !== Wd.scene);
-    var key = Wd.map.id + '|' + Wd.player.x + ',' + Wd.player.y + '|' + (d.aboard || '') + '|' + flagCount() + '|' + Object.keys(d.quests).length + '|' + Object.keys(d.quests).filter(function (k) { return d.quests[k].state === 'done'; }).length;
+    var key = Wd.map.id + '|' + Wd.player.x + ',' + Wd.player.y + '|' + (d.aboard || '') + '|' + (d.navTrack || '') + '|' + flagCount() + '|' + Object.keys(d.quests).length + '|' + Object.keys(d.quests).filter(function (k) { return d.quests[k].state === 'done'; }).length;
     var now = Date.now();
     if (!force && Nav._cache && (busy || (key === Nav._key && now - Nav._at < 1500))) return Nav._cache;   // 会話・イベントの最中は動かさない
     Nav._key = key; Nav._at = now; Nav._cache = Nav.build(); return Nav._cache;
   };
+  // v6.5 サブクエストの案内：クエスト画面で「案内する」を選んだクエスト（State.data.navTrack）を、メインより先に案内する
+  Nav.tracked = function () { var d = D(); var t = d && d.navTrack; if (!t) return null; if (!QS()[t] || questState(t) !== 'active' || !OBJ().some(function (e) { return e.q === t; })) { return null; } return t; };
+  Nav.canTrack = function (q) { return !!(QS()[q] && !QS()[q].main && questState(q) === 'active' && OBJ().some(function (e) { return e.q === q; })); };
+  Nav.track = function (q) { var d = D(); if (!d) return; d.navTrack = q || null; Nav._cache = null; Nav._key = ''; };
   Nav.build = function () {
-    var qs = questOrder(); if (!qs.length) { var all = mains().every(function (q) { return questState(q) === 'done'; }); return { none: true, cleared: all, text: all ? 'メインストーリーはすべて達成した。' : '' }; }
+    var qs = questOrder(); var tq = Nav.tracked(); if (tq) qs = [tq].concat(qs.filter(function (x) { return x !== tq; })); if (!qs.length) { var all = mains().every(function (q) { return questState(q) === 'done'; }); return { none: true, cleared: all, text: all ? 'メインストーリーはすべて達成した。' : '' }; }
     var q = qs[0]; var e = currentEntry(q); if (!e) return { none: true, text: '' };
     var tg = targetsOf(e); var t = tg.primary;
     var res = { q: q, chapter: chapterOf(q), title: (QS()[q] || {}).title || '', entry: e, text: tg.pre ? tg.pre.text : textOf(e), stepText: textOf(e), target: t, others: tg.others.slice(), pre: tg.pre };
@@ -331,9 +335,9 @@
     var c = Nav.compute(true); if (!c) return null; if (c.none) return { none: true, text: c.text || '今は、メインストーリーの目的地はない。' };
     var e = c.entry; var hs = (e.h || []).slice(0, 3);
     return {
-      header: '【第' + c.chapter + '章：' + c.title + '】', objective: c.text, step: c.stepText, place: e.area && !c.pre ? e.area : Nav.placeText(c.target, false), placeDetail: Nav.placeText(c.target, true),
+      header: c.chapter ? '【第' + c.chapter + '章：' + c.title + '】' : '【サブクエスト：' + c.title + '】', objective: c.text, step: c.stepText, place: e.area && !c.pre ? e.area : Nav.placeText(c.target, false), placeDetail: Nav.placeText(c.target, true),
       hints: hs, note: c.hop && c.hop.none ? c.hop.reason : (c.hop && c.hop.kind === 'blocker' ? 'この先へ進むには「' + c.hop.label + '」を開ける必要がある。' : (c.hop && c.hop.kind === 'vehicle' ? c.hop.label + '（ミニマップの赤丸）' : '')),
-      others: c.others.length, side: c.side.map(function (s) { return '第' + s.chapter + '章「' + s.title + '」：' + s.text; })
+      others: c.others.length, side: c.side.map(function (s) { return (s.chapter ? '第' + s.chapter + '章' : 'メイン') + '「' + s.title + '」：' + s.text; })
     };
   };
   // 閉ざされた場所の案内（ヒント設定が「詳細」のときは、開く条件になっているステップを示す）

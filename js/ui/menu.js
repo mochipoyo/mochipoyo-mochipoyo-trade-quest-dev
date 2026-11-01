@@ -245,7 +245,15 @@
     var d = State.data; var ids = Object.keys(d.quests);
     if (!ids.length) { await Win.message(['受注しているクエストはない。']); return; }
     ids.sort(function (a, b) { var sa = d.quests[a].state === 'done' ? 1 : 0, sb = d.quests[b].state === 'done' ? 1 : 0; return sa - sb; });
-    await Win.list(ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; var prog = root.Events.questProgress(id); var obj = st.state === 'active' ? root.Events.questObjective(id) : ''; return { label: (q.main ? '【メイン】' : q.master ? '【師匠】' : '【サブ】') + q.title, right: st.state === 'done' ? '達成' : (prog || '進行中'), sub: (obj ? obj + '　' : '') + q.desc, cls: st.state === 'done' ? 'done' : '' }; }), { title: 'クエスト' });
+    var N = root.Nav, init = 0;
+    while (true) {   // v6.5 サブクエストを選ぶと「次の目的地」で案内できる
+      var r = await Win.list(ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; var prog = root.Events.questProgress(id); var obj = st.state === 'active' ? root.Events.questObjective(id) : ''; var tr = d.navTrack === id && st.state === 'active'; return { label: (q.main ? '【メイン】' : q.master ? '【師匠】' : '【サブ】') + q.title + (tr ? '　［案内中］' : ''), right: st.state === 'done' ? '達成' : (prog || '進行中'), sub: (obj ? obj + '　' : '') + q.desc + (N && N.canTrack(id) && !tr ? '　（選ぶと「次の目的地」で案内できる）' : ''), cls: st.state === 'done' ? 'done' : '' }; }), { title: 'クエスト', initial: init });
+      if (typeof r !== 'number' || r < 0) return; init = r; var qid = ids[r];
+      if (!N || !N.canTrack(qid)) continue;
+      var on = d.navTrack === qid;
+      var c = await Win.choice('「' + QUESTS[qid].title + '」', [on ? '案内をやめる（メインの目的地に戻す）' : 'このクエストを「次の目的地」で案内する', 'もどる']);
+      if (c === 0) { N.track(on ? null : qid); Win.toast(on ? '案内をメインの目的地に戻した' : '「' + QUESTS[qid].title + '」を案内する'); if (World.updateHud) World.updateHud(); }
+    }
   };
 
   /* ---------- モンスター図鑑 ---------- */

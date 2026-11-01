@@ -61,7 +61,7 @@
       bank: function () { return root.Services.bank(); },
       dojo: function (where) { return root.Services.dojo(where); },
       trial: function (scenarios, opts) { return root.TradeUI.trial(scenarios, opts); },
-      battle: function (ids, opts) { return root.BattleUI.start(ids, opts); },
+      battle: async function (ids, opts) { if (opts && opts.boss && root.BossSymbol) await root.BossSymbol.introIfShown(ids); return root.BattleUI.start(ids, opts); },   // v6.5 シンボルが見えているボスは導入の演出から
       warp: function (map, x, y) { World.enterMap(map, x, y, 'down'); },
       heal: function () { State.partyActors().forEach(root.Actors.fullHeal); World.updateHud(); },
       party: function () { return State.partyActors(); },
@@ -125,6 +125,7 @@
           if (ev.intro) await Win.message(ev.intro);
           if (ev.optional) { var go = await Win.choice('強敵の気配がする。戦いますか？', ['戦う', 'やめておく']); if (go !== 0) { World.busy = false; World.updateHud(); return; } }
           var bopts = { boss: true };
+          if (root.BossSymbol) await root.BossSymbol.intro(ev);   // v6.5 ボス戦への導入（赤い光・揺れ・うなり声）
           if (root.Learning && root.Learning.hasAbility('dow_eye')) { bopts.exposeFirst = 3; await Win.message(['ダウの眼が魔物の波形を見抜いた！ 最初の3ターン、敵の防御が崩れる。']); }   // 学習能力とボス戦の連動
           var result = await root.BattleUI.start(ev.enemies || [ev.enemy], bopts);
           if (result === 'won') {

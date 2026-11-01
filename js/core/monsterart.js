@@ -165,6 +165,8 @@
     MonsterArt.cache[key] = c; return c;
   };
   MonsterArt.families = Object.keys(F);
+  // v6.5 新しい種族の形を足す（js/core/monsterart65.js）。同じ名前は上書きしない
+  MonsterArt.register = function (name, fn) { if (F[name]) throw new Error('MonsterArt: 種族が重複しています ' + name); F[name] = fn; MonsterArt.families = Object.keys(F); };
   MonsterArt.sizeOf = function (art) { return SIZES[(art && art.size) || 'normal'] || 32; };
 
   root.MonsterArt = MonsterArt;

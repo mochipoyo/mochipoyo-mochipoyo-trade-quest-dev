@@ -246,6 +246,7 @@
     e._vis = { img: imgCache[k], w: imgCache[k].width, h: imgCache[k].height, smooth: false, source: 'sprites' }; return e._vis;
   }
   function enemyImage(e) { return enemyVisual(e).img; }
+  BattleUI.enemyVisual = enemyVisual;   // v6.5 ボスのシンボル（js/rpg/bosssymbol.js）も同じ画像を使う
   function enemySilhouette(e) {
     if (e._sil) return e._sil; var v = enemyVisual(e);
     var c = document.createElement('canvas'); c.width = v.w; c.height = v.h; var x = c.getContext('2d'); x.imageSmoothingEnabled = !!v.smooth; x.drawImage(v.img, 0, 0, v.w, v.h); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); e._sil = c; return c;

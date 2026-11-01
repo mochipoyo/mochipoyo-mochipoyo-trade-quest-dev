@@ -58,6 +58,7 @@
     for (var ni = 0; ni < this.npcs.length; ni++) { var nn = this.npcs[ni]; if (!nn.hidden && nn.moving && nn.nx === x && nn.ny === y) return false; }   // v6.2 歩いて向かっている先のマスもふさがっている
     var ev = this.eventAt(x, y); if (ev && ev.solid && !(state && ev.doneFlag && state.flags[ev.doneFlag])) return false;
     if (root.Search && root.Search.solidAt(this, x, y)) return false;   // v6.1 壺など（光る場所は通れる）
+    if (root.BossSymbol && root.BossSymbol.blocks(this, x, y)) return false;   // v6.5 ボスのシンボル（ふさいでも行けなくなる場所がないマップだけ）
     return true;
   };
 
@@ -95,6 +96,7 @@
     var selfMap = this;
     lms.forEach(function (L) { var fbk = root.Landmarks.terrainOf(selfMap, L); ents.push({ y: L.y * TS + 0.5, draw: function () { root.Landmarks.draw(ctx, L, fbk, cam.x, cam.y); } }); });
     if (root.Search) root.Search.drawList(this, cam, x0, y0, x1, y1, TS).forEach(function (e) { ents.push({ y: e.y, draw: function () { e.draw(ctx); } }); });   // v6.1 光る場所・壺
+    if (root.BossSymbol) root.BossSymbol.drawList(this, cam, x0, y0, x1, y1, TS).forEach(function (e) { ents.push({ y: e.y, draw: function () { e.draw(ctx); } }); });   // v6.5 ボスのシンボル
     (extras || []).forEach(function (e) { ents.push({ y: e.y * TS, draw: function () { if (e.vehicle && root.VehicleArt) root.VehicleArt.draw(ctx, e.vehicle, 'down', e.x * TS - cam.x, e.y * TS - cam.y, false); } }); });
     if (player && player.followers) player.followers.forEach(function (f) { ents.push({ y: f.py - 0.01, draw: function () { if (f.alpha < 1) { ctx.save(); ctx.globalAlpha = f.alpha; } drawChar(ctx, f.sprite, f.dir, f.frame, f.px - cam.x, f.py - cam.y, f.phase); if (f.alpha < 1) ctx.restore(); } }); });   // v6.4 Phase F 隊列の仲間（同じ y なら主人公を手前に）
     if (player) ents.push({ y: player.py, draw: function () { if (player.vehicle && root.VehicleArt) root.VehicleArt.draw(ctx, player.vehicle, player.dir, player.px - cam.x, player.py - cam.y, player.moving); else drawChar(ctx, player.sprite, player.dir, player.frame, player.px - cam.x, player.py - cam.y, player.phase); } });
