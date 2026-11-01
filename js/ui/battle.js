@@ -147,7 +147,8 @@
     var v = enemyVisual(e); var w = v.w, h = v.h;
     var maxW = slot * 0.96, maxH = H * 0.5;
     var f = Math.min(1, maxW / w, maxH / h); w = Math.round(w * f); h = Math.round(h * f);
-    return { x: slot * (i + 1) - w / 2, y: H * 0.56 - h, w: w, h: h, size: w, slot: slot, smooth: v.smooth || f !== 1 };
+    var lift = Math.round((v.lift || 0) * f);   // 飛ぶ敵（新しい画像のデータの lift）
+    return { x: slot * (i + 1) - w / 2, y: H * 0.56 - h - lift, w: w, h: h, size: w, slot: slot, smooth: v.smooth || f !== 1, lift: lift };
   };
   // v6.5 Phase C 演出の位置：'e:番号'＝敵の絵の中心、'p:id'＝味方（画面下・欄の上）
   BattleScene.prototype.posOf = function (k, W, H) {
@@ -191,7 +192,7 @@
       var cx = x + size / 2, cy = y + hh + bob;
       ctx.translate(cx, cy); ctx.scale(breathe, dying && !e.fled ? Math.max(0.05, 1 - dying.t / dying.dur) * breathe : breathe); ctx.translate(-cx, -cy);
       // 影
-      ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(cx, y + hh + 2, size * 0.38, 6, 0, 0, Math.PI * 2); ctx.fill();
+      var lf = r.lift || 0; ctx.fillStyle = lf ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(cx, y + hh + 2 + lf, size * (lf ? 0.28 : 0.38), lf ? 4 : 6, 0, 0, Math.PI * 2); ctx.fill();
       ctx.imageSmoothingEnabled = !!r.smooth; if (r.smooth) ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, Math.round(x), Math.round(y + bob), size, hh);
       var hf = self.anims.filter(function (a) { return a.type === 'hitflash' && a.idx === i; })[0];
@@ -251,6 +252,12 @@
       var bv = BA.wants(e.defId) ? BA.visual(e.defId) : null; if (bv) { e._vis = bv; return bv; }
       var pv = BA.prevImage(e.defId); if (pv) { e._vis = pv; return pv; }
     }
+    var EA = root.EnemyArt; var waitNew = false;
+    if (EA && EA.adopted(e.defId)) { var nv = EA.visual(e.defId); if (nv) { if (e._visTmp) delete e._sil; e._vis = nv; delete e._visTmp; return nv; } waitNew = !EA.failed[e.defId]; if (waitNew && e._visTmp) return e._visTmp; }   // 既存の通常敵164体の新しい画像（js/core/enemyart.js）
+    var old = oldVisual(e); if (waitNew) { e._visTmp = old; delete e._vis; if (EA && !EA.isLoading(e.defId)) EA.load(e.defId); } return old;
+  }
+  function oldVisual(e) {
+    if (e._vis) return e._vis;
     var A = root.Assets; var img = A ? A.image('monsters', e.defId) : null;
     if (img) { var ent = A.entry('monsters', e.defId); var sc = (ent && ent.scale) || 1; e._vis = { img: img, w: Math.round(img.naturalWidth * sc), h: Math.round(img.naturalHeight * sc), smooth: sc !== 1, source: 'assets' }; return e._vis; }
     var c;
@@ -287,6 +294,7 @@
   BattleUI.start = async function (enemyIds, opts) {
     opts = opts || {};
     if (root.BossArt) { try { var artWait = root.BossArt.prepare(enemyIds, opts); if (artWait) await artWait; } catch (err) { console.warn('BossArt', err); } }   // v6.3 間に合わなければ従来の画像で始める
+    if (root.EnemyArt) { try { var eaWait = root.EnemyArt.prepare(enemyIds); if (eaWait) await eaWait; } catch (err) { console.warn('EnemyArt', err); } }   // 通常敵164体の新しい画像（間に合わなければ従来の絵で始め、読めたら切り替える）
     var d = State.data; var party = State.partyActors();
     var b = Combat.create(enemyIds, party, opts);
     if (opts.exposeFirst) b.enemies.forEach(function (e) { e.exposed = opts.exposeFirst; });

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>敵164体の差し替え確認 - もちぽよFXクエスト</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; padding: 16px; background: #1a1c2c; color: #eee; font-family: system-ui, "Noto Sans JP", sans-serif; }
+  h1 { font-size: 18px; margin: 0 0 6px; }
+  .sum { font-size: 13px; color: #ccc; margin: 4px 0 10px; line-height: 1.6; }
+  .sum b.ok { color: #7fe3a5; } .sum b.ng { color: #ff8a8a; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 12px; font-size: 13px; position: sticky; top: 0; background: #1a1c2c; padding: 6px 0; z-index: 2; border-bottom: 1px solid #333; }
+  .bar select, .bar input { background: #262a40; color: #eee; border: 1px solid #444; border-radius: 4px; padding: 4px 6px; font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
+  .card { background: #262a40; border-radius: 6px; padding: 8px; font-size: 12px; border: 2px solid #2f7a4a; min-width: 0; }
+  .card.held { border-color: #b05030; } .card.err { border-color: #ff3030; }
+  .hd { display: flex; justify-content: space-between; gap: 6px; align-items: baseline; }
+  .no { font-family: monospace; color: #ffd24a; font-weight: bold; } .id { font-family: monospace; color: #9fd4ff; overflow-wrap: anywhere; }
+  .badge { font-size: 11px; padding: 1px 6px; border-radius: 8px; background: #2f7a4a; color: #fff; white-space: nowrap; }
+  .held .badge { background: #b05030; } .err .badge { background: #ff3030; }
+  .names { margin: 4px 0; font-size: 13px; } .names .new { font-weight: bold; font-size: 14px; } .names .old { color: #aab; }
+  .stage { width: 100%; height: auto; display: block; border-radius: 4px; }
+  .row2 { display: flex; gap: 8px; align-items: flex-end; margin-top: 6px; }
+  .oldbox { width: 84px; height: 84px; flex: none; display: flex; align-items: flex-end; justify-content: center; background: #1f2236; border-radius: 4px; position: relative; }
+  .oldbox img, .oldbox canvas { max-width: 82px; max-height: 82px; image-rendering: pixelated; }
+  .oldbox span { position: absolute; top: 2px; left: 4px; font-size: 10px; color: #889; }
+  .meta { color: #99a; font-size: 10.5px; font-family: monospace; line-height: 1.5; overflow-wrap: anywhere; }
+  .reason { color: #ffb08a; margin-top: 4px; line-height: 1.5; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<h1>既存の通常敵164体：新しい表示名・戦闘画像の確認（開発用）</h1>
+<div class="sum">対応表（js/data/enemy-redesign.js）とゲームの敵データを照合し、戦闘と同じ加工（不透明部分で切り抜き→縦横比を保って基本サイズへ縮小）で表示します。
+緑＝採用（新しい名前・画像）／橙＝保留（旧名・旧画像のまま）。枠の中の横線が地面です。「切り抜き範囲の枠」をオンにすると、戦闘で描く範囲を点線で示します。<br>
+<span id="checks">照合中…</span></div>
+<div class="bar">
+  <label>表示 <select id="f"><option value="all">164体すべて</option><option value="adopted">採用のみ</option><option value="held">保留のみ</option><option value="lift">飛ぶ敵（浮かせる）</option><option value="big">大型</option><option value="small">小型</option></select></label>
+  <label>背景 <select id="bg"><option value="dark">暗い（夜・洞窟）</option><option value="field">草原</option><option value="light">明るい（白）</option><option value="check">市松（透過の確認）</option></select></label>
+  <label><input type="checkbox" id="box"> 切り抜き範囲の枠</label>
+  <input id="q" type="search" placeholder="番号・ID・名前で絞り込み">
+  <span id="cnt"></span>
+</div>
+<div class="grid" id="grid"></div>
+<script src="js/config.js"></script>
+<script src="js/indicators.js"></script>
+<script src="js/scenarios.js"></script>
+<script src="js/data/scenarios-extra.js"></script>
+<script src="js/data/scenario-seeds.js"></script>
+<script src="js/trading.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/sprites.js"></script>
+<script src="js/core/engine.js"></script>
+<script src="js/core/tiles.js"></script>
+<script src="js/core/chars.js"></script>
+<script src="js/core/monsterart.js"></script>
+<script src="js/core/monsterart65.js"></script>
+<script src="js/core/buildings.js"></script>
+<script src="js/core/map.js"></script>
+<script src="js/core/landmarks.js"></script>
+<script src="js/data/learning.js"></script>
+<script src="js/data/learning-events.js"></script>
+<script src="js/data/vehicles.js"></script>
+<script src="js/data/growth.js"></script>
+<script src="js/data/jobs.js"></script>
+<script src="js/data/skills.js"></script>
+<script src="js/data/skills64.js"></script>
+<script src="js/data/items.js"></script>
+<script src="js/data/food.js"></script>
+<script src="js/data/enemies.js"></script>
+<script src="js/data/story.js"></script>
+<script src="js/data/world.js"></script>
+<script src="js/data/world-grania.js"></script>
+<script src="js/data/world-kalion.js"></script>
+<script src="js/data/world-islands.js"></script>
+<script src="js/data/world-tempus.js"></script>
+<script src="js/data/world-machine.js"></script>
+<script src="js/data/world-magicka.js"></script>
+<script src="js/data/world-sky.js"></script>
+<script src="js/data/world-dark.js"></script>
+<script src="js/data/world-desert.js"></script>
+<script src="js/data/world-dragon.js"></script>
+<script src="js/data/world-snow.js"></script>
+<script src="js/data/towns.js"></script>
+<script src="js/data/dungeons.js"></script>
+<script src="js/data/grania.js"></script>
+<script src="js/data/kalion.js"></script>
+<script src="js/data/islands.js"></script>
+<script src="js/data/tempus.js"></script>
+<script src="js/data/magicka.js"></script>
+<script src="js/data/sky.js"></script>
+<script src="js/data/finale.js"></script>
+<script src="js/data/sidequests.js"></script>
+<script src="js/data/desert.js"></script>
+<script src="js/data/dragon.js"></script>
+<script src="js/data/snow.js"></script>
+<script src="js/data/hidden.js"></script>
+<script src="js/data/sidequests2.js"></script>
+<script src="js/data/luxbell.js"></script>
+<script src="js/data/academy.js"></script>
+<script src="js/data/search-points.js"></script>
+<script src="js/data/ooparts.js"></script>
+<script src="js/data/objectives.js"></script>
+<script src="js/data/designs.js"></script>
+<script src="js/data/gear64.js"></script>
+<script src="js/data/tradia.js"></script>
+<script src="js/data/expand-a.js"></script>
+<script src="js/data/expand-a2.js"></script>
+<script src="js/data/expand-a3.js"></script>
+<script src="js/data/expand-a4.js"></script>
+<script src="js/data/expand-a5.js"></script>
+<script src="js/data/expand-a6.js"></script>
+<script src="js/data/boss64.js"></script>
+<script src="js/data/escape65.js"></script>
+<script src="js/data/monsters65.js"></script>
+<script src="js/data/events65.js"></script>
+<script src="js/data/fx65.js"></script>
+<script src="js/data/astra65.js"></script>
+<script src="js/data/asset-manifest.js"></script>
+<script src="js/core/assets.js"></script>
+<script src="js/core/bossart.js"></script>
+<script src="js/data/enemy-redesign.js"></script>
+<script src="js/core/enemyart.js"></script>
+<script>
+(function () {
+  'use strict';
+  var R = window.ENEMY_REDESIGN, EA = window.EnemyArt, E = window.ENEMIES, MA = window.ASSET_MANIFEST || {};
+  var list = R.list.slice().sort(function (a, b) { return a.no < b.no ? -1 : 1; });
+  var grid = document.getElementById('grid'); var cards = [];
+  var SW = 300, SH = 230, GROUND = 205;
+  // ---- 照合 ----
+  var nos = {}, ids = {}, files = {}, prob = [];
+  list.forEach(function (r) {
+    if (nos[r.no]) prob.push('番号の重複 ' + r.no); nos[r.no] = 1;
+    if (ids[r.id]) prob.push('IDの重複 ' + r.id); ids[r.id] = 1;
+    if (r.file) { if (files[r.file]) prob.push('画像の重複 ' + r.file); files[r.file] = 1; if (r.file.indexOf(r.no + '_' + r.id + '.png') < 0) prob.push('画像名と番号・IDが合わない ' + r.no + ' ' + r.file); }
+    var e = E[r.id]; if (!e) prob.push('ゲームにない敵ID ' + r.id); else if (e.boss) prob.push('ボスが含まれている ' + r.id);
+    if (r.status === 'adopted' && e && e.name !== r.name) prob.push('表示名が反映されていない ' + r.id);
+    if (r.status === 'held' && e && e.name !== e.legacyName) prob.push('保留なのに名前が変わっている ' + r.id);
+  });
+  for (var n = 1; n <= 164; n++) { var k = ('00' + n).slice(-3); if (!nos[k]) prob.push('欠番 ' + k); }
+  var nAd = list.filter(function (r) { return r.status === 'adopted'; }).length;
+  var loaded = 0, failed = [];
+  function showChecks() {
+    document.getElementById('checks').innerHTML = '対応表 ' + list.length + '件／採用 ' + nAd + '・保留 ' + (list.length - nAd) + '　照合：' + (prob.length ? '<b class="ng">問題 ' + prob.length + '件：' + prob.join('、') + '</b>' : '<b class="ok">番号001〜164の欠番・重複なし、ID・画像の重複なし、全IDがゲームに存在（ボスなし）、表示名の反映OK</b>') +
+      '　画像の読み込み：' + loaded + '/' + nAd + (failed.length ? '　<b class="ng">失敗 ' + failed.join('、') + '</b>' : '');
+  }
+  showChecks();
+  // ---- 旧画像（戦闘で今まで使っていた絵） ----
+  function oldImage(id) {
+    var e = E[id]; var m = MA.monsters && MA.monsters[id];
+    if (m && m.path && m.use !== false) { var im = document.createElement('img'); im.src = m.path; im.alt = ''; return im; }
+    if (e.art && window.MonsterArt) return window.MonsterArt.image(e.art, 2, 0);
+    if (window.Sprites && window.Sprites.has(e.sprite)) { var c = document.createElement('canvas'); window.Sprites.draw(c, e.sprite, 3, false); return c; }
+    return null;
+  }
+  // ---- 戦闘と同じ描き方で舞台に置く ----
+  function paintBg(x, mode) {
+    if (mode === 'check') { for (var yy = 0; yy < SH; yy += 10) for (var xx = 0; xx < SW; xx += 10) { x.fillStyle = ((xx + yy) / 10) % 2 ? '#bbb' : '#fff'; x.fillRect(xx, yy, 10, 10); } return; }
+    var g = x.createLinearGradient(0, 0, 0, SH);
+    if (mode === 'light') { g.addColorStop(0, '#fff'); g.addColorStop(1, '#eee'); }
+    else if (mode === 'field') { g.addColorStop(0, '#8fc8ff'); g.addColorStop(0.88, '#cde8ff'); g.addColorStop(0.89, '#6fae4a'); g.addColorStop(1, '#4f8a36'); }
+    else { g.addColorStop(0, '#0d0f1c'); g.addColorStop(0.88, '#22263d'); g.addColorStop(0.89, '#2b2a33'); g.addColorStop(1, '#1b1a22'); }
+    x.fillStyle = g; x.fillRect(0, 0, SW, SH);
+  }
+  function drawStage(card) {
+    var r = card.r, cv = card.stage, x = cv.getContext('2d'), mode = document.getElementById('bg').value;
+    paintBg(x, mode);
+    x.strokeStyle = mode === 'light' || mode === 'check' ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.35)'; x.beginPath(); x.moveTo(0, GROUND + 0.5); x.lineTo(SW, GROUND + 0.5); x.stroke();
+    var v = card.v; if (!v) { x.fillStyle = mode === 'dark' ? '#ccc' : '#333'; x.font = '12px sans-serif'; x.textAlign = 'center'; x.fillText(r.status === 'held' ? '保留：戦闘は旧画像のまま' : (card.fail ? '読み込み失敗' : '読み込み中…'), SW / 2, SH / 2); return; }
+    var w = v.w, h = v.h, lift = v.lift || 0; var f = Math.min(1, (SW - 8) / w, (GROUND - 8 - lift) / h); w = Math.round(w * f); h = Math.round(h * f);
+    var ox = Math.round((SW - w) / 2), oy = GROUND - h - Math.round(lift * f);
+    x.fillStyle = lift ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.3)'; x.beginPath(); x.ellipse(SW / 2, GROUND + 2, w * (lift ? 0.28 : 0.38), lift ? 4 : 6, 0, 0, Math.PI * 2); x.fill();
+    x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high'; x.drawImage(v.img, ox, oy, w, h);
+    if (document.getElementById('box').checked) { x.setLineDash([3, 3]); x.strokeStyle = '#ff4a8a'; x.strokeRect(ox + 0.5, oy + 0.5, w - 1, h - 1); x.setLineDash([]); }
+    x.fillStyle = mode === 'dark' ? '#fff' : '#111'; x.font = '12px sans-serif'; x.textAlign = 'center'; x.fillText(E[r.id].name, SW / 2, Math.max(13, oy - 6));
+  }
+  list.forEach(function (r) {
+    var e = E[r.id] || {}; var card = { r: r, v: null };
+    var el = document.createElement('div'); el.className = 'card' + (r.status === 'held' ? ' held' : '');
+    el.setAttribute('data-q', (r.no + ' ' + r.id + ' ' + r.name + ' ' + (e.legacyName || '') + ' ' + (e.name || '')).toLowerCase());
+    el.innerHTML = '<div class="hd"><span><span class="no">No.' + r.no + '</span>　<span class="id">' + r.id + '</span></span><span class="badge">' + (r.status === 'held' ? '保留' : '採用') + '</span></div>' +
+      '<div class="names"><span class="old">' + (e.legacyName || '?') + '</span> → <span class="new">' + r.name + '</span>' + (r.status === 'held' ? '<br><span class="old">ゲーム内の表示：' + (e.name || '?') + '（旧名のまま）</span>' : '') + '</div>';
+    var cv = document.createElement('canvas'); cv.width = SW; cv.height = SH; cv.className = 'stage'; el.appendChild(cv); card.stage = cv;
+    var row = document.createElement('div'); row.className = 'row2';
+    var ob = document.createElement('div'); ob.className = 'oldbox'; ob.innerHTML = '<span>旧</span>'; var oi = oldImage(r.id); if (oi) ob.appendChild(oi); row.appendChild(ob);
+    var meta = document.createElement('div'); meta.className = 'meta';
+    meta.innerHTML = '画像：' + (r.file || '（同梱なし：保留）') + '<br>大きさ：' + r.size + '　戦闘の基本サイズ ' + r.draw[0] + '×' + r.draw[1] + (r.lift ? '　浮かせる ' + r.lift + 'px' : '') + '<br>不透明部分（512px中）：' + r.bbox.join(',') + '<br>素材の名前：' + r.name + '<br>敵の種族：' + (e.family || '') + '　' + (e.area || '');
+    row.appendChild(meta); el.appendChild(row);
+    if (r.reason) { var rs = document.createElement('div'); rs.className = 'reason'; rs.textContent = '保留の理由：' + r.reason; el.appendChild(rs); }
+    grid.appendChild(el); card.el = el; cards.push(card); drawStage(card);
+  });
+  // ---- 新しい画像の読み込み（同時に6枚まで） ----
+  var queue = cards.filter(function (c) { return c.r.status === 'adopted'; }); var active = 0;
+  function pump() {
+    while (active < 6 && queue.length) (function (c) { active++; EA.load(c.r.id).then(function (v) { active--; if (v) { c.v = v; loaded++; } else { c.fail = true; failed.push(c.r.no + ' ' + c.r.id); c.el.classList.add('err'); } drawStage(c); showChecks(); pump(); }); })(queue.shift());
+  }
+  EA.MAX = 400; pump();
+  // ---- 絞り込み ----
+  function apply() {
+    var f = document.getElementById('f').value, q = document.getElementById('q').value.trim().toLowerCase(), shown = 0;
+    cards.forEach(function (c) { var r = c.r; var ok = f === 'all' || (f === 'adopted' && r.status === 'adopted') || (f === 'held' && r.status === 'held') || (f === 'lift' && r.lift) || (f === r.size);
+      if (q && c.el.getAttribute('data-q').indexOf(q) < 0) ok = false; c.el.classList.toggle('hidden', !ok); if (ok) shown++; });
+    document.getElementById('cnt').textContent = shown + '体を表示';
+  }
+  ['f', 'q'].forEach(function (id) { document.getElementById(id).addEventListener('input', apply); });
+  ['bg', 'box'].forEach(function (id) { document.getElementById(id).addEventListener('change', function () { cards.forEach(drawStage); }); });
+  apply();
+  window.__preview = { cards: cards, prob: prob, get loaded() { return loaded; }, failed: failed };
+})();
+</script>
+</body>
+</html>

@@ -279,13 +279,24 @@
       else if (known && drops.length) detail += '<div class="bs-line muted">落とす：？？？（3体倒すか「スキャン」で判明）</div>';
       if (b.scanned || kills >= 1) detail += '<div class="bs-line muted">HP ' + e.hp + '　攻 ' + e.atk + '　防 ' + e.def + '　速 ' + e.agi + '　EXP ' + e.exp + '　' + e.gold + 'G</div>';
       if (known && e.desc) detail += '<div class="bs-desc">' + esc(e.desc) + '</div>';
-      return '<div class="bs-row' + (e.boss ? ' boss' : '') + '" data-id="' + id + '"><div class="bs-no">' + (n + 1) + '</div><div class="bs-img" data-id="' + id + '"></div><div class="bs-body"><div class="bs-name">' + esc(e.name) + (e.boss ? ' <span class="bs-tag">BOSS</span>' : '') + (e.rare ? ' <span class="bs-tag rare">レア</span>' : '') + '<span class="bs-kills">討伐 ' + kills + '</span></div><div class="bs-sub muted">' + esc(e.family) + '　' + esc(e.area) + '</div>' + detail + '</div></div>';
+      return '<div class="bs-row' + (e.boss ? ' boss' : '') + '" data-id="' + id + '"><div class="bs-no">' + (n + 1) + '</div><div class="bs-img" data-id="' + id + '"></div><div class="bs-body"><div class="bs-name">' + esc(e.name) + (e.boss ? ' <span class="bs-tag">BOSS</span>' : '') + (e.rare ? ' <span class="bs-tag rare">レア</span>' : '') + '<span class="bs-kills">討伐 ' + kills + '</span></div><div class="bs-sub muted">' + esc(e.family) + '　' + esc(e.area) + (e.legacyName && e.legacyName !== e.name ? '　（以前の名前：' + esc(e.legacyName) + '）' : '') + '</div>' + detail + '</div></div>';
     }).join('');
     var html = '<div class="rw-title">モンスター図鑑</div><div class="bs-head">発見 ' + seen.length + '/' + ids.length + '（' + pct + '%）　討伐済み ' + defeated.length + '種<div class="bar"><span style="width:' + pct + '%"></span></div></div><div class="bs-list">' + rows + '</div>';
+    var io = null;   // 図鑑の新しい画像：見えた欄から読む（閉じたら止める）
     await Win.panel(html, { cls: 'bestiary', setup: function (node) {
       var BA = root.BossArt; var bossQ = Promise.resolve();
+      // 通常敵164体の新しい画像（js/core/enemyart.js）：画面に見えた欄から読む（全部を一度に読まない）。読めなければ従来の絵
+      var EA = root.EnemyArt; var eaBox = [];
+      var showNew = function (box) { var id = box.getAttribute('data-id'); return EA.load(id).then(function (v) { if (!box.isConnected) return; if (!v) { drawOld(box, ENEMIES[id]); return; } var f = Math.min(104 / v.img.width, 104 / v.img.height, 1); var c3 = document.createElement('canvas'); c3.width = Math.max(1, Math.round(v.img.width * f)); c3.height = Math.max(1, Math.round(v.img.height * f)); var x3 = c3.getContext('2d'); x3.imageSmoothingEnabled = true; x3.imageSmoothingQuality = 'high'; x3.drawImage(v.img, 0, 0, c3.width, c3.height); c3.className = 'bs-canvas bs-new'; box.innerHTML = ''; box.appendChild(c3); }); };
+      io = (EA && typeof root.IntersectionObserver === 'function') ? new root.IntersectionObserver(function (ents) { ents.forEach(function (en) { if (en.isIntersecting) { io.unobserve(en.target); showNew(en.target); } }); }, { root: null, rootMargin: '200px' }) : null;
       node.querySelectorAll('.bs-img[data-id]').forEach(function (box) {
-        var e = ENEMIES[box.getAttribute('data-id')]; var img;
+        var e = ENEMIES[box.getAttribute('data-id')];
+        if (EA && EA.adopted(e.id)) { if (io) io.observe(box); else eaBox.push(box); return; }
+        drawOld(box, e);
+      });
+      eaBox.reduce(function (q, box) { return q.then(function () { return showNew(box); }); }, Promise.resolve());   // IntersectionObserver がない環境：上から順に1枚ずつ
+      function drawOld(box, e) {
+        var img;
         // v6.3 ボス画像パック：まず従来の絵を出し、新画像が読めたら差し替える（1枚ずつ順に読む。読めなければ従来の絵のまま）
         if (BA && BA.isBossId(e.id) && BA.wants(e.id)) bossQ = bossQ.then(function () { return BA.load(e.id); }).then(function (v) {
           if (!v || !box.isConnected) return; var f = Math.min(104 / v.img.width, 104 / v.img.height, 1); var c2 = document.createElement('canvas'); c2.width = Math.max(1, Math.round(v.img.width * f)); c2.height = Math.max(1, Math.round(v.img.height * f));
@@ -298,8 +309,9 @@
         if (e.art && root.MonsterArt) img = root.MonsterArt.image(e.art, 1, 0);
         else if (root.Sprites && root.Sprites.has(e.sprite)) { img = document.createElement('canvas'); root.Sprites.draw(img, e.sprite, 3, false); }
         if (!img) return; var c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); c.className = 'bs-canvas'; box.appendChild(c);
-      });
+      }
     } });
+    if (io) io.disconnect();
   };
 
   /* ---------- トレード修行（学習への入口をメニューに） ---------- */
