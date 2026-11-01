@@ -459,7 +459,8 @@
         { label: 'スマホの移動操作', right: st.pad === 'dpad' ? '十字キー' : 'スティック' },
         { label: '目的地ナビ（赤丸）', right: st.nav === 'off' ? 'OFF' : 'ON' }, { label: 'ヒント表示', right: st.navHint === 'detail' ? '詳細' : '控えめ' },
         { label: '仲間の隊列表示（後ろをついて歩く）', right: st.followers === 'off' ? '表示しない' : '表示する' },
-        { label: 'データ管理（書き出し・読み込み・初期化）' }, { label: 'タイトルに戻る' }
+        { label: 'データ管理（書き出し・読み込み・初期化）' }, { label: 'タイトルに戻る' },
+        { label: '戦闘背景の品質', right: ({ high: '高', normal: '標準', low: '軽量（動く粒なし）' })[st.battleBg] || '自動（スマホは標準）' }
       ], { title: '設定' });
       if (i < 0) return;
       if (i === 0) { st.mute = !st.mute; if (root.Audio) root.Audio.apply(); }
@@ -478,6 +479,7 @@
       if (i === 13) { st.followers = st.followers === 'off' ? 'on' : 'off'; Win.toast(st.followers === 'off' ? '仲間の隊列：表示しない' : '仲間の隊列：表示する'); }   // v6.4 Phase F
       if (i === 14) { await Menu.dataManagement(); }
       if (i === 15) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
+      if (i === 16) { st.battleBg = ({ auto: 'high', high: 'normal', normal: 'low', low: 'auto' })[st.battleBg || 'auto']; if (st.battleBg === 'auto') delete st.battleBg; }   // v6.5 Phase D
       State.autosave();
     }
   };

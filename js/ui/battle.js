@@ -115,6 +115,8 @@
     // v6.5 表示は「いま再生しているイベントの時点」の状態（Combat.snapshot）。gone＝消える演出を再生した敵、bar＝HPバーの表示中の値
     this.view = Combat.snapshot(b); this.gone = {}; this.bar = {}; this.acting = null;
     this.theme = themeFor(kind, opts.zone, root.World.map ? root.World.map.id : '');
+    // v6.5 Phase D 戦闘背景（14の場所×地域の色・時間帯・天気・ボス）。作れなければ従来の背景
+    this.bg65 = null; try { if (root.BattleBG65) this.bg65 = root.BattleBG65.infoFor(b, { zone: opts.zone, boss: !!b.boss }); } catch (e) { this.bg65 = null; }
     this.bg = null; this.entrance = b.boss ? { t: 0, dur: 1400 } : null;
     // v6.3 特殊戦闘のカットイン（マップと敵の組み合わせが一致し、画像が読み込めたときだけ）。終わったら消える
     this.cutin = null;
@@ -155,10 +157,14 @@
   };
   BattleScene.prototype.draw = function (ctx) {
     var W = ctx.canvas.width, H = ctx.canvas.height; var b = this.b; var self = this;
+    if (!this.bg && this.bg65) { try { this.bg = root.BattleBG65.render(this.bg65, W, H); } catch (e) { this.bg = null; this.bg65 = null; } if (!this.bg) this.bg65 = null; }
     if (!this.bg) this.bg = BattleBG.render(this.theme, W, H, root.State.data ? root.State.data.timeOfDay : undefined);
     ctx.save();
     if (this.screenShake > 0) ctx.translate(Math.round((Math.random() - 0.5) * 10), Math.round((Math.random() - 0.5) * 6));
-    ctx.drawImage(this.bg, 0, 0);
+    // v6.5 Phase D 3D版：3Dの戦闘の舞台（BattleStage3D。3D版のページだけにある）が描けたら、それを背景にする。描けなければ2Dの背景
+    var stage = null; if (this.bg65 && root.BattleStage3D && !this.no3d) { try { stage = root.BattleStage3D.frame(this, W, H); } catch (e) { stage = null; this.no3d = true; if (root.console) console.warn('3D battle stage', e); } }
+    if (stage) ctx.drawImage(stage, 0, 0, W, H); else ctx.drawImage(this.bg, 0, 0);
+    if (this.bg65 && !stage) { try { root.BattleBG65.drawAmbient(ctx, this, W, H); } catch (e) { this.bg65 = null; } }   // v6.5 動く粒・天気・ボスの光（品質「軽量」では描かない）
     // ボス登場：暗転からせり上がる
     var ent = this.entrance; var entP = ent ? Math.min(1, ent.t / ent.dur) : 1;
     if (ent) { ctx.fillStyle = 'rgba(0,0,0,' + (0.7 * (1 - entP)) + ')'; ctx.fillRect(0, 0, W, H); }

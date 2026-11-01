@@ -3,6 +3,7 @@
    ・読み込み表示／「調べる・話す」の案内／3D設定（カメラ角度・ズーム・画質・時間帯の表示確認・FPS）
    ・スマホ：画面の左側をなぞると動けるバーチャルスティック（既存の十字ボタンも使える）、2本指でズーム
    ========================================================= */
+const G3B = () => window.BattleStage3D;
 export class UIOverlay {
   constructor(app) {
     this.app = app; this.stick = { x: 0, z: 0, mag: 0, active: false };
@@ -35,6 +36,7 @@ export class UIOverlay {
       '<div class="row"><span class="lab">画質</span><button data-q="high">高（PC）</button><button data-q="low">軽量（スマホ）</button></div>' +
       '<div class="row"><span class="lab">時間帯の確認</span><button data-t="-1">ゲーム内</button><button data-t="0.3">朝</button><button data-t="0.5">昼</button><button data-t="0.74">夕</button><button data-t="0.95">夜</button></div>' +
       '<div class="row"><span class="lab">モーション</span><button data-m="Attack">攻撃</button><button data-m="Cast">呪文</button><button data-m="Hit">被弾</button><button data-m="Defend">防御</button><button data-m="Victory">勝利</button><button data-m="Defeat">倒れる</button></div>' +
+      '<div class="row"><span class="lab">戦闘の3D</span><button data-b="on">3Dの舞台</button><button data-b="off">2Dの背景</button></div>' +
       '<div class="row"><span class="lab">表示</span><span id="g3-fps">-- fps</span></div>' +
       '<div class="row muted small" style="max-width:240px;color:#aab">時間帯の確認は見た目だけで、ゲームの進行（State の時刻）は変えません。画質の変更は再読み込みで反映されます。</div></div>';
     this.stickEl = document.createElement('div'); this.stickEl.id = 'g3-stick'; this.stickEl.innerHTML = '<i></i>'; stage.appendChild(this.stickEl);
@@ -46,6 +48,7 @@ export class UIOverlay {
       if (b.dataset.q) app.changeQuality(b.dataset.q);
       if (b.dataset.t) { const v = +b.dataset.t; app.lighting.preview = v < 0 ? null : v; }
       if (b.dataset.m) app.emote(b.dataset.m);
+      if (b.dataset.b && G3B()) G3B().setEnabled(b.dataset.b === 'on');   // v6.5 Phase D
       this.refresh();
     });
     // ホイールでズーム
@@ -80,6 +83,7 @@ export class UIOverlay {
     this.tools.querySelectorAll('[data-q]').forEach((b) => b.classList.toggle('on', b.dataset.q === app.quality));
     const pv = app.lighting ? app.lighting.preview : null;
     this.tools.querySelectorAll('[data-t]').forEach((b) => b.classList.toggle('on', (+b.dataset.t < 0 && pv === null) || +b.dataset.t === pv));
+    const bs = G3B(); const on = bs ? bs.isEnabled() : true; this.tools.querySelectorAll('[data-b]').forEach((b) => b.classList.toggle('on', (b.dataset.b === 'on') === on));
   }
   // #game（2D）のちょうど内側に重ねる
   layout() {

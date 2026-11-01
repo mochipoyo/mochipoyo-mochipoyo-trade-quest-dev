@@ -90,6 +90,8 @@
     Object.keys(r).forEach(function (k) { if (r[k] < bv && AURA[k]) { bv = r[k]; best = k; } });   // いちばん強い（効きにくい）属性の色
     return best ? AURA[best] : '255,70,90';
   }
+  BossSymbol.auraColor = auraColor;   // v6.5 Phase D 3D版のシンボル（three-src の MapScene3D）でも同じ色を使う
+
   // 描画用：[{ y, draw(ctx) }]（GameMap.draw の y 順の並びに入れる）
   BossSymbol.drawList = function (m, cam, x0, y0, x1, y1, TS) {
     var L = BossSymbol.list(m); if (!L.length) return [];

@@ -155,7 +155,34 @@ export class MapScene3D {
     for (const a of this.animated) if (a.kind === 'flame') { const k = 0.85 + Math.sin(t * 13 + a.obj.id) * 0.08 + Math.sin(t * 23.7) * 0.06; a.obj.scale.set(1 * k, (a.obj.geometry.type === 'ConeGeometry' ? 1 : 1.8) * (2 - k), 1 * k); }
     if (this.motes) { this.motes.uniforms.uTime.value = t; this.motes.uniforms.uNight.value = this.app.lighting.night; this.motes.uniforms.uScale.value = this.app.renderer.pixelRatio * (this.app.renderer.size.h / 600); }
     if (this.terrain) { this.terrain.update(t, this.app.lighting.night < 0.5 ? 1 : 0); this.terrain.updateLod(player); }
+    this.updateBossSymbols(t);
   }
+  // v6.5 Phase D ボスのシンボル（3D）：2D版と同じ BossSymbol.list() を毎フレーム写す（倒したら消える・条件まで出ない）
+  // 姿は2D版と同じボスの絵を立て札（ビルボード）にして、待機の動き（呼吸・上下）・足もとの光の輪・ボスの色の光をつける。専用の3Dモデルはまだない
+  updateBossSymbols(t) {
+    const BS = window.BossSymbol; if (!BS || !BS.list) return; let L = [];
+    try { L = BS.list(this.map) || []; } catch (e) { return; }
+    if (!this.bossSyms) this.bossSyms = new Map(); const seen = new Set();
+    for (const s of L) {
+      if (s.kind === 'npc') continue; const key = s.enemy + '@' + s.x + ',' + s.y; seen.add(key); let o = this.bossSyms.get(key);
+      if (!o) {
+        const v = BS.visual(s.enemy); if (!v || !v.img) continue;
+        const tex = new THREE.CanvasTexture(v.img); tex.colorSpace = THREE.SRGBColorSpace; if (!v.smooth) { tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter; }
+        const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, alphaTest: 0.05 })); const H = 2.4, Wd = Math.min(3.4, H * v.w / Math.max(1, v.h)); sp.scale.set(Wd, Wd * v.h / Math.max(1, v.w), 1); sp.center.set(0.5, 0);
+        const col = new THREE.Color('rgb(' + ((BS.auraColor && BS.auraColor(s.enemy)) || '255,60,80') + ')');
+        const ring = new THREE.Mesh(new THREE.RingGeometry(0.55, 0.85, 40), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })); ring.rotation.x = -Math.PI / 2; ring.position.y = 0.04;
+        const light = new THREE.PointLight(col, 2.5, 5, 1.6); light.position.y = 1.2;
+        const g = new THREE.Group(); g.name = 'boss_symbol_' + s.enemy; g.add(sp); g.add(ring); g.add(light); this.root.add(g);
+        o = { g, sp, ring, light, base: sp.scale.clone(), ph: (s.x * 7 + s.y * 3) % 6, enemy: s.enemy }; this.bossSyms.set(key, o);
+      }
+      const x = s.x + 0.5, z = s.y + 0.5; o.g.position.set(x, this.heightAt ? (this.heightAt(x, z) || 0) : 0, z); o.g.visible = true;
+      const ph = Math.sin(t * 2.2 + o.ph), ph2 = Math.sin(t * 3.1 + o.ph);
+      o.sp.scale.set(o.base.x, o.base.y * (1 + ph2 * 0.025), 1); o.sp.position.y = ph * 0.04;
+      o.ring.scale.setScalar(1 + ph * 0.08); o.ring.material.opacity = 0.45 + 0.2 * ph; o.light.intensity = 2 + ph;
+    }
+    this.bossSyms.forEach((o, k) => { if (!seen.has(k)) o.g.visible = false; });
+  }
+  bossSymbolInfo() { const out = []; if (this.bossSyms) this.bossSyms.forEach((o, k) => out.push({ key: k, visible: o.g.visible, x: +o.g.position.x.toFixed(2), z: +o.g.position.z.toFixed(2) })); return out; }
 
   // 使わなくなった場面の解放（共有のモデル形状・マテリアルは残す）
   dispose() {

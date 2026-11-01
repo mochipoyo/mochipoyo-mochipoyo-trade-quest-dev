@@ -18,6 +18,7 @@ import { Character3D, DIR_YAW, yawToDir } from '../entities/Character3D.js';
 import { MAPS_3D, MODELS, characterModelFor } from '../assets/manifest.js';
 import { UIOverlay } from '../ui/UIOverlay.js';
 import { CUT } from '../engine/Cutout.js';
+import { BattleStage3D, FAMILY_TABLE } from '../battle/BattleStage3D.js';
 
 const G = window;
 const WALK = 2.7, RUN = 5.4, RADIUS = 0.28;
@@ -95,10 +96,28 @@ export class App3D {
     this.scene.add(this.hero.root);
     this.ui.progress(1, '3Dの村を組み立てています…');
     this.ready = true; this.ui.refresh();
+    this.installBattleStage();
     this.ui.canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); this.disabled = true; this.ui.show(false); console.warn('WebGL context lost → 2D'); });
     const loop = (now) => { try { this.frame(now); } catch (e) { console.error(e); this.failed[(G.World.map || {}).id] = true; } requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
     // 起動中に村へ入っていたら、その場で組み立てる
+  }
+
+  /* ---------- v6.5 Phase D 戦闘の3Dの舞台（最初の戦闘で作る。作れないときは2Dの背景のまま） ---------- */
+  installBattleStage() {
+    const app = this;
+    G.BattleStage3D = {
+      frame(scene, W, H) {
+        if (app.battleFailed) return null;
+        if (!app.battle) { try { app.battle = new BattleStage3D(app.quality); } catch (e) { console.warn('3D battle stage unavailable → 2D', e); app.battleFailed = true; return null; } }
+        try { return app.battle.frame(scene, W, H); } catch (e) { console.warn('3D battle stage failed → 2D', e); app.battleFailed = true; return null; }
+      },
+      families() { return Object.assign({}, FAMILY_TABLE); },
+      log() { return app.battle && app.battle.log ? app.battle.log.slice() : []; },
+      info() { const b = app.battle; return b ? Object.assign({ quality: b.quality, failed: b.failed || !!app.battleFailed, enabled: b.enabled() }, b.stats) : { created: false, failed: !!app.battleFailed }; },
+      setEnabled(on) { try { localStorage.setItem('mtq3d-battle', on ? 'on' : 'off'); } catch (e) { /* なし */ } },
+      isEnabled() { try { return localStorage.getItem('mtq3d-battle') !== 'off'; } catch (e) { return true; } }
+    };
   }
 
   /* ---------- マップの組み立て（キャッシュ） ---------- */
