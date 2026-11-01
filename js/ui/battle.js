@@ -241,9 +241,10 @@
       var bv = self.bar[i] !== undefined ? self.bar[i] : ve.hp; var ratio = Math.max(0, Math.min(1, bv / ve.maxHp));
       ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(x, y + hh + 6, size, 6); ctx.fillStyle = ve.hp / ve.maxHp > 0.3 ? '#4cc38a' : '#e5484d'; ctx.fillRect(x, y + hh + 6, size * ratio, 6);
       var st = ve.st.map(function (k) { return Combat.STATUS_NAME[k]; }).join('');
-      ctx.fillStyle = '#fff'; ctx.font = (e.boss ? 'bold 13px' : '12px') + ' sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.7)';
+      var fk = r.from3d && root.BattleStage3D && root.BattleStage3D.labelScale ? root.BattleStage3D.labelScale(W) : 1;   // 3D版 Phase 2：スマホの縦画面など、画面が縮んで名前が小さくなるときは大きく描く（2D版では 1）
+      ctx.fillStyle = '#fff'; ctx.font = (e.boss ? 'bold ' + Math.round(13 * fk) + 'px' : Math.round(12 * fk) + 'px') + ' sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3 * fk; ctx.strokeStyle = 'rgba(0,0,0,0.7)';
       var label = e.name + (ve.ex ? '（弱点露出）' : '') + (st ? '［' + st + '］' : ''); var ly = y - 6;
-      if (r.from3d) { var lw = ctx.measureText(label).width, lx = x + size / 2; self._lab = self._lab || []; for (var li = 0; li < 6 && self._lab.some(function (o) { return Math.abs(o.x - lx) < (o.w + lw) / 2 + 4 && Math.abs(o.y - ly) < 15; }); li++) ly -= 15; self._lab.push({ x: lx, y: ly, w: lw }); }   // 3D版 Phase 2：名前が重なるときは上へずらす
+      if (r.from3d) { var lw = ctx.measureText(label).width, lx = x + size / 2, lh = 15 * fk; self._lab = self._lab || []; for (var li = 0; li < 6 && self._lab.some(function (o) { return Math.abs(o.x - lx) < (o.w + lw) / 2 + 4 && Math.abs(o.y - ly) < lh; }); li++) ly -= lh; self._lab.push({ x: lx, y: ly, w: lw }); }   // 3D版 Phase 2：名前が重なるときは上へずらす
       ctx.strokeText(label, x + size / 2, ly); ctx.fillText(label, x + size / 2, ly);
       self.anims.filter(function (a) { return a.side === 'enemy' && a.idx === i && a.type === 'fx'; }).forEach(function (a) { drawFx(ctx, a, x + size / 2, y + hh / 2); });
       var ph = self.anims.filter(function (a) { return a.type === 'phase' && a.idx === i; })[0];

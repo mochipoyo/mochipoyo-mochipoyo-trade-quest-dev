@@ -128,6 +128,9 @@ export class App3D {
       rect(scene, i, W, H) { return app.battle && !app.battleFailed ? app.battle.rect(scene, i, W, H) : null; },
       drawn(scene, i) { return !!(app.battle && !app.battleFailed && app.battle.drawn(scene, i)); },
       partyPos(scene, id, W, H) { return app.battle && !app.battleFailed ? app.battle.partyPos(scene, id, W, H) : null; },
+      // 敵の名前の文字の倍率：画面（#game）に縮んで表示されたときに、約10px より小さくならないように（PC の画面では 1）
+      labelScale(W) { const g = document.getElementById('game'); const css = g ? g.clientWidth : 0; if (!css || !W) return 1; return Math.max(1, Math.min(1.8, 10 / (12 * css / W))); },
+      partyRect(scene, id, W, H) { return app.battle && !app.battleFailed ? app.battle.partyRect(scene, id, W, H) : null; },
       actorsOn(scene) { return !!(app.battle && !app.battleFailed && app.battle.actorMode && scene === app.battle.lastScene); },
       actorsInfo() { return app.battle && app.battle.actors ? app.battle.actors.info() : null; },
       setActors(on) { try { localStorage.setItem('mtq3d-battle-actors', on ? 'on' : 'off'); } catch (e) { /* なし */ } },
@@ -393,6 +396,34 @@ export class App3D {
     this.navRingMat.opacity = 0.45 + 0.35 * Math.sin(t * 2.4); this.navRing.visible = true;
   }
 
+  /* ---------- Phase 2（スマホ）：3Dの戦闘の画面部品の位置（styles は UIOverlay） ----------
+     ・メッセージ欄・パーティ欄をゲーム画面の幅にそろえる（横画面では左右の余白の操作ボタンと重なりにくい）
+     ・オートのボタンをメッセージ欄のすぐ下、コマンド欄をその下へ
+     ・3Dの戦闘に、敵・味方を入れる帯（コマンド欄の下〜パーティ欄の上）を伝える（BattleStage3D.applyBand） */
+  mobileBattleLayout(on) {
+    const mob = on && document.body.classList.contains('mobile'); const ids = ['battle-msg', 'battle-party'];
+    if (!mob) {
+      if (this._mbl) { this._mbl = false; this._cmdH = 0; ids.forEach((id) => { const el = document.getElementById(id); if (el) ['left', 'right', 'width', 'top', 'bottom'].forEach((k) => el.style.removeProperty(k)); }); document.documentElement.style.removeProperty('--g3-cmd-top'); if (this.battle) this.battle.band = null; }
+      return;
+    }
+    this._mbl = true; this._mblN = (this._mblN || 0) + 1; if (this._mblN % 3 !== 1) return;   // 3フレームに1回
+    const g = document.getElementById('game'), ui = document.getElementById('ui'); if (!g || !ui) return;
+    const gl = g.offsetLeft + g.clientLeft, gt = g.offsetTop + g.clientTop, gw = g.clientWidth, gh = g.clientHeight;
+    const msg = document.getElementById('battle-msg'), pan = document.getElementById('battle-party'), auto = document.getElementById('auto-battle');
+    const put = (el, k, v) => { if (el && el.style.getPropertyValue(k) !== v) el.style.setProperty(k, v, 'important'); };
+    for (const el of [msg, pan]) { put(el, 'left', (gl + 4) + 'px'); put(el, 'right', 'auto'); put(el, 'width', (gw - 8) + 'px'); }
+    put(msg, 'top', (gt + 4) + 'px'); put(msg, 'bottom', 'auto');
+    if (pan && pan.offsetHeight) { put(pan, 'top', (gt + gh - pan.offsetHeight - 4) + 'px'); put(pan, 'bottom', 'auto'); }
+    let below = gt + 4; if (msg && msg.offsetHeight) below = msg.offsetTop + msg.offsetHeight;
+    if (auto && auto.classList.contains('on') && auto.offsetWidth) { put(auto, 'top', (below + 3) + 'px'); put(auto, 'left', (gl + gw - auto.offsetWidth - 4) + 'px'); below += 3 + auto.offsetHeight; }
+    const gr = g.getBoundingClientRect(), ur = ui.getBoundingClientRect(); const cmdTop = Math.round(below + 4 - gt + (gr.top + g.clientTop - ur.top));
+    const v = cmdTop + 'px'; if (document.documentElement.style.getPropertyValue('--g3-cmd-top') !== v) document.documentElement.style.setProperty('--g3-cmd-top', v);
+    const cmd = document.querySelector('.rw-list.cmd-list'); if (cmd && cmd.offsetHeight) this._cmdH = Math.max(this._cmdH || 0, cmd.offsetHeight);
+    if (this.battle && gh > 0) {
+      const cmdBottom = (below + 4 - gt + (this._cmdH || Math.min(120, gh * 0.3))) / gh; const panelTop = pan && pan.offsetHeight ? (pan.offsetTop - gt) / gh : 0.88;
+      const b = this.battle.band; if (!b || Math.abs(b.cmdBottom - cmdBottom) > 0.002 || Math.abs(b.panelTop - panelTop) > 0.002) this.battle.band = { cmdBottom, panelTop };
+    }
+  }
   /* ---------- 毎フレーム：表示の切り替えと描画 ---------- */
   frame(now) {
     const dt = Math.min(0.05, (now - (this._last || now)) / 1000); this._last = now; const t = now / 1000;
@@ -402,6 +433,7 @@ export class App3D {
     const inBattle = !!(G.BattleUI && G.BattleUI.scene && E.scenes.indexOf(G.BattleUI.scene) >= 0);
     const actorsOn = inBattle && !!(this.battle && this.battle.actorMode && !this.battleFailed && this.battle.lastScene === G.BattleUI.scene);
     if (document.body.classList.contains('g3-actors') !== actorsOn) document.body.classList.toggle('g3-actors', actorsOn);
+    this.mobileBattleLayout(actorsOn);
     const want = this.mode3D();
     if (want && (!this.current || this.current.map !== W.map)) this.ensure(W.map);
     let i = E.scenes.length - 1; while (i > 0 && E.scenes[i].overlay) i--;

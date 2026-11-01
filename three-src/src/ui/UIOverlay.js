@@ -11,6 +11,28 @@ export class UIOverlay {
     const css = document.createElement('style'); css.textContent = `
       body.g3-actors .rw-list.cmd-list { left: auto !important; right: 12px !important; top: 52px !important; bottom: auto !important; max-height: 46% !important; overflow-y: auto; }
       @media (max-height: 520px) { body.g3-actors .rw-list.cmd-list { max-height: 40% !important; width: 190px !important; } }
+      /* Phase 2（スマホ）：3Dの戦闘では、メッセージ欄・コマンド欄・パーティ欄を小さくして、3Dの敵・味方が隠れないようにする（位置は GameBridge.mobileBattleLayout） */
+      body.mobile.g3-actors #battle-msg { box-sizing: border-box; padding: 3px 8px !important; font-size: 12px !important; line-height: 1.4; min-height: 0 !important; border-width: 2px !important; }
+      body.mobile.g3-actors #battle-party { box-sizing: border-box; padding: 2px 3px !important; gap: 3px !important; border-width: 2px !important; }
+      body.mobile.g3-actors #battle-party .bp { font-size: 10px !important; line-height: 1.25; padding: 1px 4px !important; }
+      body.mobile.g3-actors #battle-party .bp .bp-portrait { display: none !important; }
+      body.mobile.g3-actors #battle-party .bp .bp-body { padding-right: 0 !important; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 5px; }
+      body.mobile.g3-actors #battle-party .bp .bp-name { flex: 0 0 100%; }
+      body.mobile.g3-actors #battle-party .bp .bp-hp, body.mobile.g3-actors #battle-party .bp .bp-mp { flex: none; white-space: nowrap; }
+      body.mobile.g3-actors #battle-party .bp .bar.hp { flex: 0 0 100%; order: 5; height: 3px; margin: 1px 0 0; }
+      body.mobile.g3-actors #battle-party .bp.acting { transform: translateY(-3px); }
+      body.mobile.g3-actors #auto-battle { font-size: 11px !important; padding: 1px 9px !important; border-width: 1px !important; }
+      body.mobile.g3-actors .rw-list.cmd-list { box-sizing: border-box; left: auto !important; right: 4px !important; top: var(--g3-cmd-top, 60px) !important; bottom: auto !important; width: auto !important; max-width: 66%; min-height: 0 !important; max-height: calc(100% - var(--g3-cmd-top, 60px) - 48px) !important; padding: 3px 4px !important; border-width: 2px !important; }
+      body.mobile.g3-actors .rw-list.cmd-list .rw-title { display: none !important; }
+      body.mobile.g3-actors .rw-list.cmd-list .rw-items { display: grid; grid-template-rows: repeat(4, auto); grid-auto-flow: column; grid-auto-columns: auto; column-gap: 2px; }
+      body.mobile.g3-actors .rw-list.cmd-list .rw-item { min-height: 26px !important; padding: 2px 6px 2px 16px !important; font-size: 12px !important; white-space: nowrap; flex-wrap: nowrap; align-items: center; }
+      body.mobile.g3-actors .rw-list.cmd-list .rw-item.cur::before { left: 3px; font-size: 10px; }
+      body.mobile.g3-actors .rw-list.cmd-list .rw-item .s, body.mobile.g3-actors .rw-list.cmd-list .rw-item .r { display: none !important; }
+      body.mobile.g3-actors .rw-list.cmd-list .rw-close { display: none !important; }   /* 前の人に戻るのは、操作パネルの「戻る」 */
+      body.mobile.g3-actors #hud, body.mobile.g3-actors #place-label, body.mobile.g3-actors #minimap-layer { visibility: hidden !important; }   /* 探索の表示（小さくしたメッセージ欄の下からのぞくため） */
+      body.mobile.m-land:not(.m-wide).g3-actors .mp-stick { opacity: .38 !important; } body.mobile.m-land:not(.m-wide).g3-actors .mp-b { opacity: .55 !important; }   /* 横画面で余白が狭いとき、画面に重なる操作パネルを薄く（味方・敵が透けて見える） */
+      @media (min-width: 700px) and (min-height: 600px) { body.mobile.g3-actors #battle-party .bp { font-size: 12px !important; } body.mobile.g3-actors #battle-msg { font-size: 14px !important; } body.mobile.g3-actors .rw-list.cmd-list .rw-item { font-size: 14px !important; min-height: 32px !important; } body.mobile.g3-actors #auto-battle { font-size: 12px !important; } }   /* タブレット：画面が大きいので文字を少し大きく */
+      @media (max-width: 400px) { body.mobile.g3-actors .rw-list.cmd-list .rw-item { font-size: 11px !important; padding-left: 14px !important; padding-right: 4px !important; } }
       #game3d { position: absolute; display: none; touch-action: none; outline: none; }
       #g3-veil { position: absolute; display: none; background: #05070f; color: #e8c15a; align-items: center; justify-content: center; flex-direction: column; gap: 10px; font-size: 14px; pointer-events: none; }
       #g3-veil .bar { width: 46%; height: 8px; border: 1px solid #e8c15a; border-radius: 4px; overflow: hidden; } #g3-veil .bar i { display: block; height: 100%; width: 0; background: #e8c15a; transition: width .2s; }

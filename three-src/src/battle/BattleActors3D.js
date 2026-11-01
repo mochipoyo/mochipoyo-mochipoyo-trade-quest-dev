@@ -33,6 +33,13 @@ const SPRITE_H = 1.42;   // 味方のドット絵の高さ（ワールド単位�
 const SPRITE_LAYOUT = { 1: [[2.0, 3.0]], 2: [[1.5, 3.2], [2.9, 2.5]], 3: [[1.2, 3.3], [2.45, 2.55], [3.65, 3.3]], 4: [[0.95, 3.4], [2.1, 2.6], [3.2, 3.4], [4.3, 2.6]] };
 const SPRITE_SLOTS = SPRITE_LAYOUT[4];
 // 味方の見た目：'sprite'＝2D版のドット絵のまま並べる（既定。ご指示の構図）／'model'＝3Dモデル（3D設定・localStorage 'mtq3d-battle-party'）
+// 立ち位置の横の広がり（スマホの縦画面でカメラを寄せるため。BattleStage3D.fitCamera）。enemyHome / partyHome と同じ表から
+export function layoutSpan(nEnemies, nParty, bossFirst) {
+  const ex = []; for (let i = 0; i < nEnemies; i++) { if (nEnemies === 1 || (bossFirst && nEnemies <= 2 && i === 0)) ex.push(-2.6); else { const set = ENEMY_LAYOUT[nEnemies]; ex.push((set ? set[i] : ENEMY_SLOTS[i % ENEMY_SLOTS.length])[0]); } }
+  const L = partyStyle() === 'sprite' ? (SPRITE_LAYOUT[nParty] || SPRITE_SLOTS) : PARTY_SLOTS; const px = []; for (let j = 0; j < nParty; j++) px.push(L[j % L.length][0]);
+  if (!ex.length || !px.length) return null;
+  return { L: Math.min(...ex) - (bossFirst ? 2.2 : 1.7), R: Math.max(...px) + 0.8 };   // 敵・味方の絵の半分の幅ほどの余白
+}
 export function partyStyle() { try { return localStorage.getItem('mtq3d-battle-party') === 'model' ? 'model' : 'sprite'; } catch (e) { return 'sprite'; } }
 // ドット絵の不透明な部分だけを切り出す（拡大はしない。ドットを保つ）
 function cropPixels(img, sx, sy, sw, sh) {
@@ -252,6 +259,22 @@ export class BattleActors3D {
   }
   // 味方の胸の位置（2D の演出・数字の位置）
   partyPos(id, W, H, camera) { const ent = this.party.get(id); if (!ent || !(ent.ch || ent.group)) return null; const v = (ent.group ? ent.group.position : ent.ch.root.position).clone(); v.y += ent.art ? ent.art.size.h * 0.6 : 1.05; v.project(camera); return { x: (v.x * 0.5 + 0.5) * W, y: (-v.y * 0.5 + 0.5) * H }; }
+  // 立ち位置（動いていないとき）での、味方の頭の高さと、敵・味方の足もとの一番下（画面の y。applyBand 用）
+  homeBox(W, H, camera) {
+    const proj = (x, y, z) => { const v = new THREE.Vector3(x, y, z).project(camera); return (-v.y * 0.5 + 0.5) * H; };
+    let partyTop = Infinity, bottom = -Infinity, n = 0;
+    for (const ent of this.party.values()) { if (!ent.art) continue; const h = this.partyHome(ent.j); partyTop = Math.min(partyTop, proj(h.x, ent.art.size.h, h.z)); bottom = Math.max(bottom, proj(h.x, 0, h.z)); n++; }
+    for (const en of this.enemies) { if (!en || !en.art) continue; const h = this.enemyHome(en.i); bottom = Math.max(bottom, proj(h.x, 0, h.z)); }
+    return n ? { partyTop, bottom } : null;
+  }
+  // 味方のドット絵を画面に写した矩形（スマホの画面部品との重なりの確認用。3Dモデルの方式では null）
+  partyRect(id, W, H, camera) {
+    const ent = this.party.get(id); if (!ent || !ent.group || !ent.art) return null;
+    const p = ent.group.position; const s = ent.art.size; const half = s.w * 0.5;
+    const pts = [new THREE.Vector3(p.x - half, p.y, p.z), new THREE.Vector3(p.x + half, p.y, p.z), new THREE.Vector3(p.x - half, p.y + s.h, p.z), new THREE.Vector3(p.x + half, p.y + s.h, p.z)].map((v) => v.project(camera));
+    const xs = pts.map((v) => (v.x * 0.5 + 0.5) * W), ys = pts.map((v) => (-v.y * 0.5 + 0.5) * H);
+    return { x: Math.round(Math.min(...xs)), y: Math.round(Math.min(...ys)), w: Math.round(Math.max(...xs) - Math.min(...xs)), h: Math.round(Math.max(...ys) - Math.min(...ys)) };
+  }
   drawn(i) { const en = this.enemies[i]; return !!(en && en.ready && en.art); }
   allReady() { return this.want > 0 && this.ready >= this.want; }
   info() {

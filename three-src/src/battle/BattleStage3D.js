@@ -11,7 +11,7 @@
    ・失敗したとき（WebGL が使えない・作れない）は null を返し、2D版の背景のまま進む
    ========================================================= */
 import * as THREE from 'three';
-import { BattleActors3D } from './BattleActors3D.js';
+import { BattleActors3D, layoutSpan } from './BattleActors3D.js';
 import { CUT } from '../engine/Cutout.js';
 
 const G = typeof window !== 'undefined' ? window : globalThis;
@@ -95,9 +95,10 @@ export class BattleStage3D {
     if (scene !== this.lastScene) { this.build(scene, W, H); this.lastScene = scene; this.t0 = now; this.last = now; scene._stage3d = true; }
     if (!this.scene3) return null;
     this.cw = W; this.ch = H;
-    if (this.size !== W + 'x' + H) { this.size = W + 'x' + H; this.renderer.setSize(W, H, false); this.camera.aspect = W / H; this.camera.updateProjectionMatrix(); if (this.actorMode) this.fitCamera(W, H); }
+    if (this.size !== W + 'x' + H) { this.size = W + 'x' + H; this.renderer.setSize(W, H, false); this.camera.aspect = W / H; this.camera.updateProjectionMatrix(); if (this.actorMode) { this.fitCamera(W, H); if (this.backSize !== W + 'x' + H) this.backdrop(scene, W, H); } }
     const dt = Math.min(0.05, (now - this.last) / 1000); this.last = now; const t = (now - this.t0) / 1000;
     this.update(dt, t, scene, W, H);
+    if (this.actorMode) this.applyBand(W, H);
     const cutR = CUT.uCutRadius.value; CUT.uCutRadius.value = 0;   // 探索の「主人公の手前を抜く」処理は戦闘では使わない（共有のマテリアルのため一時的に止める）
     this.renderer.render(this.scene3, this.camera); this.stats.frames++;
     CUT.uCutRadius.value = cutR;
@@ -106,8 +107,43 @@ export class BattleStage3D {
   // Phase 2：左右の敵・味方（ワールドで横 ±6 ほど）が画面の幅に入るよう、カメラの距離を画面の縦横比から決める（スマホの縦画面でも全員が入る）
   fitCamera(W, H) {
     const fovH = THREE.MathUtils.degToRad(this.camera.fov / 2); const a = Math.max(0.4, W / Math.max(1, H));
-    const need = 6.0 / (Math.tan(fovH) * a); const z = Math.max(11.5, 1.6 + need); const k = Math.tan(Math.atan2(1.8, 11.5));
-    this.camBase.set(0, 1.2 + z * k, z); this.pitch = Math.atan2(z * k, z);
+    // 縦画面（スマホ）：横幅に合わせるとカメラがとても遠くなるので、実際の立ち位置の広がりに合わせて寄せる（敵が少ないほど大きく映る）
+    let half = 6.0, cx = 0; if (W < H && this.span) { half = Math.max(3.6, Math.min(6.4, (this.span.R - this.span.L) / 2)); cx = (this.span.L + this.span.R) / 2; }
+    const need = half / (Math.tan(fovH) * a); const z = Math.max(11.5, 1.6 + need); const k = Math.tan(Math.atan2(1.8, 11.5));
+    this.camBase.set(cx, 1.2 + z * k, z); this.pitch = Math.atan2(z * k, z); this.fitFog();
+  }
+  // 霧の距離をカメラの距離に合わせる（スマホの縦画面などでカメラを引くと、屋内の霧で全体が白くなるため。PC の画面の距離では変わらない）
+  fitFog() { const f = this.scene3 && this.scene3.fog; if (!f || !this.fogBase) return; const extra = Math.max(0, this.camBase.z - 12.5); f.near = this.fogBase[0] + extra; f.far = this.fogBase[1] + extra; }
+  // スマホ（Phase 2）：画面部品のあいだの帯（コマンド欄の下〜パーティ欄の上。UIOverlay が this.band に入れる）に敵・味方が入るよう、3Dの絵を下へずらす
+  //   ずらすのは描く範囲（setViewOffset）だけ。カメラの位置・向きと、HPバー・名前の位置合わせ（同じカメラで画面に写す）はそのまま合う
+  applyBand(W, H) {
+    const cam = this.camera, b = this.band, cur = this.viewDy || 0; let want = cur;
+    if (!b) want = 0;
+    else if (!this.entrance && this.actors && this.actors.allReady()) {
+      const box = this.actors.homeBox(W, H, cam);
+      if (box) {
+        const top = box.partyTop - cur, bottom = box.bottom - cur;   // ずらす前の位置
+        const dyMin = b.cmdBottom * H + H * 0.01 - top, dyMax = b.panelTop * H - H * 0.035 - bottom;   // 味方の頭がコマンド欄の下／足もと（敵のHPバー）がパーティ欄の上
+        want = dyMin <= dyMax ? (dyMin + dyMax) / 2 : dyMax; want = Math.max(0, Math.min(H * 0.3, want));
+      }
+    }
+    const nx = Math.abs(want - cur) < 0.5 ? want : cur + (want - cur) * 0.25;
+    if (nx === cur && (nx > 0.5) === !!(cam.view && cam.view.enabled)) return;
+    this.viewDy = nx; if (nx > 0.5) cam.setViewOffset(W, H, 0, -nx, W, H); else cam.clearViewOffset();
+  }
+  // 遠景：2D版の背景（同じ景色・同じ地平線）を奥の板に貼る。板の地平線（絵の上から 58%）を 3D の地平線に合わせ、画面の上の端まで覆う
+  //   画面の縦横比が変わったとき（スマホの向きを変えたとき）も、カメラに合わせて作り直す
+  backdrop(scene, W, H) {
+    const S = this.scene3, info = this.info, BG = G.BattleBG65; if (!S || !info || !BG) return;
+    if (this.backMesh) { S.remove(this.backMesh); this.backMesh.geometry.dispose(); this.backMesh.material.dispose(); this.backMesh = null; }
+    if (this.backTex) { this.backTex.dispose(); this.backTex = null; }
+    this.backSize = W + 'x' + H; const far = this.far, fovH = THREE.MathUtils.degToRad(this.camera.fov / 2);
+    const dist = far + this.camBase.z, hz3 = 0.7; const topY = this.camBase.y - dist * Math.tan(this.pitch) + dist * Math.tan(fovH) * (this.actorMode && document.body.classList.contains('mobile') ? 1.65 : 1) + 1.5 + 6.6 * dist / 71;   // スマホは絵を下へずらす（applyBand）ぶん、上を広く覆う
+    const hgt = (topY - hz3) / 0.58, wid = 2 * dist * Math.tan(fovH) * (W / H) * 1.18; const bw = Math.min(2048, Math.round(H * wid / hgt));
+    const bgc = BG.render(info, bw, H) || scene.bg;
+    if (bgc) { const tex = new THREE.CanvasTexture(bgc); tex.colorSpace = THREE.SRGBColorSpace; this.backTex = tex;
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(wid, hgt), new THREE.MeshBasicMaterial({ map: tex, fog: false, toneMapped: false, depthWrite: false }));
+      m.position.set(this.camBase.x, hz3 + hgt * 0.08, -far); m.renderOrder = -10; S.add(m); this.backMesh = m; }
   }
   /* ---------- 舞台を作る ---------- */
   build(scene, W, H) {
@@ -119,18 +155,13 @@ export class BattleStage3D {
     // カメラ：敵の足もと（画面の高さの 56%）が地面の z=0 の線に重なるように
     this.camBase = new THREE.Vector3(0, 1.1, 9); const fovH = THREE.MathUtils.degToRad(this.camera.fov / 2); this.camera.aspect = W / H; this.camera.updateProjectionMatrix();
     const thetaPoint = Math.atan2(this.camBase.y, this.camBase.z); this.pitch = thetaPoint - Math.atan(0.12 * Math.tan(fovH));
-    this.actorMode = this.actorsEnabled();
-    if (this.actorMode) this.fitCamera(W, H);   // Phase 2：左に敵・右に味方を、斜め前の少し上から見る
-    // 遠景：2D版の背景（同じ景色・同じ地平線）を奥の板に貼る。板の地平線（絵の上から 58%）を 3D の地平線に合わせ、画面の上の端まで覆う
-    const dist = far + this.camBase.z, hz3 = 0.7; const topY = this.camBase.y - dist * Math.tan(this.pitch) + dist * Math.tan(fovH) + 1.5 + 6.6 * dist / 71;
-    const hgt = (topY - hz3) / 0.58, wid = 2 * dist * Math.tan(fovH) * (W / H) * 1.18; const bw = Math.min(2048, Math.round(H * wid / hgt));
-    const bgc = BG.render(info, bw, H) || scene.bg;
-    if (bgc) { const tex = new THREE.CanvasTexture(bgc); tex.colorSpace = THREE.SRGBColorSpace; this.backTex = tex;
-      const m = new THREE.Mesh(new THREE.PlaneGeometry(wid, hgt), new THREE.MeshBasicMaterial({ map: tex, fog: false, toneMapped: false, depthWrite: false }));
-      m.position.set(0, hz3 + hgt * 0.08, -far); m.renderOrder = -10; S.add(m); }
+    this.actorMode = this.actorsEnabled(); this.viewDy = 0; this.camera.clearViewOffset();
+    if (this.actorMode) { const bb = scene.b; this.span = bb ? layoutSpan(bb.enemies.length, bb.party.length, !!(bb.enemies[0] && bb.enemies[0].boss)) : null; this.fitCamera(W, H); }   // Phase 2：左に敵・右に味方を、斜め前の少し上から見る
+    this.backdrop(scene, W, H);
     // 霧（遠くを背景の色に溶かす）
     const fogC = col(indoor ? (place === 'castle' ? P.far : '#140e12') : (P.sky ? P.sky[1] : '#c0d4e8')); if (night) fogC.multiplyScalar(0.45);
     S.fog = new THREE.Fog(fogC, indoor ? 8 : 18, far * (indoor ? 1.05 : 0.95)); S.background = fogC.clone();
+    this.fogBase = [S.fog.near, S.fog.far]; this.fitFog();
     // 光
     const hemiSky = col(indoor ? '#8a8098' : (P.sky ? P.sky[0] : '#bfe4ff')), hemiGround = col(P.ground ? P.ground[1] : '#2f7a2f');
     let hi = indoor ? 0.55 : 1.0, si = indoor ? 0.6 : 2.4; let sunC = col(place === 'volcano' || place === 'dark' ? '#ff7a4a' : place === 'desert' ? '#fff0c8' : '#fff6e8');
@@ -351,11 +382,13 @@ export class BattleStage3D {
   rect(scene, i, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.rect(i, W, H, this.camera); }
   drawn(scene, i) { return !!(this.actorMode && this.actors && scene === this.lastScene && this.actors.drawn(i)); }
   partyPos(scene, id, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.partyPos(id, W, H, this.camera); }
+  partyRect(scene, id, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.partyRect(id, W, H, this.camera); }
   dispose() {
     if (this.actors) this.actors.dispose();
     if (!this.scene3) return;
     this.scene3.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) [].concat(o.material).forEach((m) => { if (m.map && m.map !== this.backTex) m.map.dispose(); m.dispose(); }); });
     if (this.backTex) { this.backTex.dispose(); this.backTex = null; }
+    this.backMesh = null; this.backSize = null;
     this.scene3 = null;
   }
 }
