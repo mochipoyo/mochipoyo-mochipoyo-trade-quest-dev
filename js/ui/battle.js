@@ -359,6 +359,7 @@
     } else if (result === 'lost') { await bmsg('全滅してしまった……', 900); }
     else if (result === 'escaped') { await Win.sleep(300); }
     else if (result === 'fled') { await bmsg('魔物は逃げてしまった……', 700); }
+    if (root.PlayLog) root.PlayLog.add('battle', { result: result, boss: !!opts.boss, turns: b.turn || 0, enemies: (b.enemies || []).map(function (e) { return e.defId || e.id; }), party: (b.party || []).map(function (a) { var mh = 0; try { mh = Actors.stats(a).maxHp; } catch (e) { } return { id: a.id, lv: a.level, hp: mh ? Math.round(a.hp / mh * 100) : null, dead: !!a.dead }; }) });   // プレイ記録（バランス調整用）
     b.party.forEach(Actors.clearBattleState);
     pw.classList.remove('on'); mw.classList.remove('on'); BattleUI.autoButton(false);
     Engine.pop();

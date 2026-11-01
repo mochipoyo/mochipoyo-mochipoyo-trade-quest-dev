@@ -18,6 +18,10 @@
   var U = {};
   U.SAVE_VERSION = 1;
   U.PROFIT_CAP = 4.5;      // 利益のときの威力（主の一撃）の上限：通常攻撃の4.5倍
+  // 根拠どおりの判断（判断した瞬間に見えていた根拠がそろった向きに入った）への上乗せ。自動プレイの調整（docs/balance-autoplay.md）：
+  //   でたらめに入った場合との差が小さい技があったため、結果ではなく「判断の過程」に少し報いる（利益のとき ×1.15、損失のとき +0.10）
+  U.PROCESS_BONUS = 1.15; U.PROCESS_LOSS_BONUS = 0.10;
+  U.aligned = function (as, side) { var dir = dirOf(side); if (!as || !dir) return false; var bdir = dirOf(as.bias); return bdir !== 0 && as.clarity >= 0.25 && dir === bdir && !as.chase; };
   U.RECENT_MAX = 30;       // 最近使ったシナリオ（続けて同じものが出にくいように）
   U.STATUS_BLOCK = ['sleep', 'paralyze', 'confuse'];   // この状態のときは選べない（チャートを開いたあとに動けず、判断が無駄になるのを防ぐ）
 
@@ -145,11 +149,13 @@
       var t = clamp01((R.r - 0.15) / (1.8 - 0.15)); var base = lerp(def.profit[0], def.profit[1], t); var bm = 1;
       var cond = U.conditions(trade.assessment, R.side);
       (def.bonus || []).forEach(function (bn) { if (cond[bn.when]) { bm *= bn.mult; out.bonuses.push({ label: bn.label, mult: bn.mult }); } });
+      if (U.aligned(trade.assessment, R.side)) { bm *= U.PROCESS_BONUS; out.bonuses.push({ label: '根拠どおりの判断', mult: U.PROCESS_BONUS }); out.process = true; }
       out.base = r2(base); out.bonusMult = r2(bm); out.mult = r2(Math.min(U.PROFIT_CAP, base * bm));
       out.hits = def.fx.hits || 1; out.aoe = def.fx.aoe || 0;
       if (def.fx.extraOnTp && R.exit && R.exit.reason === 'tp') out.extra = { hits: def.fx.extraOnTp.hits, mult: def.fx.extraOnTp.mult };
     } else if (out.kind === 'loss') {
       var t2 = clamp01(Math.abs(R.r) / 1.0); var m = lerp(def.loss[1], def.loss[0], t2); if (def.fx.lossFloor) m = Math.max(m, def.fx.lossFloor);
+      if (U.aligned(trade && trade.assessment, R.side)) { m += U.PROCESS_LOSS_BONUS; out.process = true; }   // 根拠のある判断の損失：一撃が少しだけ重い
       out.mult = r2(m); out.base = out.mult;
     } else { out.kind = 'flat'; out.mult = def.flat; out.base = def.flat; }
     return out;
@@ -183,6 +189,7 @@
     a.mp -= cost;   // MP はここで1回だけ使う
     var d = root.State && root.State.data; if (d) U.recordUse(d, def.id);
     var res = U.resolve(def, trade); var R = trade.result; var maxMp = K.maxMp(a);
+    if (root.PlayLog) root.PlayLog.add('ult', { id: def.id, school: def.school, outcome: res.kind, mult: res.mult, process: !!res.process, side: trade.side || (R && R.side) || 'skip', auto: !!trade.auto, pips: R && typeof R.pips === 'number' ? R.pips : null, r: R && typeof R.r === 'number' ? R.r : null, appropriateSkip: !!res.appropriateSkip });   // プレイ記録
     msg(a.name + 'の必殺技「' + def.name + '」！');
     if (res.kind === 'skip') {
       a.defending = true; a._defTurn = b.turn;
@@ -203,6 +210,7 @@
     var label = res.kind === 'profit' ? (R.exit.reason === 'tp' ? '利確' : '時間切れで利益') : res.kind === 'loss' ? (R.exit.reason === 'sl' ? '損切り' : '時間切れで損失') : 'ほぼ同値で決済';
     msg(label + '（' + fmtPips(R.pips) + '）――威力 ×' + res.mult.toFixed(2));
     res.bonuses.forEach(function (bn) { msg('追加威力 ×' + bn.mult + '：' + bn.label); });
+    if (res.kind === 'loss' && res.process) msg('根拠のある判断だった。損失でも一撃が少し重い（+' + U.PROCESS_LOSS_BONUS.toFixed(2) + '）');
     var alive = K.aliveEnemies(b); if (!alive.length) return;
     var aoe = res.kind === 'profit' && res.aoe > 0;
     var first = b.enemies[cmd.target ? cmd.target.idx : -1]; if (!first || first.dead) first = alive[0];
@@ -256,6 +264,7 @@
       if (typeof R.pips === 'number' && isFinite(R.pips)) st.pips = Math.round((st.pips + R.pips) * 10) / 10;
       if (typeof R.r === 'number' && isFinite(R.r)) { st.sumR = r2(st.sumR + R.r); st.bestR = st.bestR === null ? R.r : Math.max(st.bestR, R.r); st.worstR = st.worstR === null ? R.r : Math.min(st.worstR, R.r); }
     }
+    if (root.PlayLog) root.PlayLog.add('trade', { mode: info.mode, ult: info.ultId || null, school: info.school || null, cat: info.cat || null, scenario: info.scenarioId || null, side: info.side, auto: !!info.auto, outcome: o, pips: typeof R.pips === 'number' ? R.pips : null, r: typeof R.r === 'number' ? R.r : null });   // プレイ記録
     if (info.scenarioId) { u.recent.push(info.scenarioId); if (u.recent.length > U.RECENT_MAX) u.recent = u.recent.slice(-U.RECENT_MAX); }
     u.last = { t: Date.now(), mode: info.mode, ult: info.ultId || null, scenario: info.scenarioId || null, seed: info.seed >>> 0, side: info.side, outcome: o, pips: R.pips || 0 };
   };
@@ -281,6 +290,7 @@
   };
   // 試験の結果を記録する。合格して、まだ覚えていなければ技を覚える（何度合格しても1回だけ）。返り値：新しく覚えた ID（なければ null）
   U.recordExam = function (d, mid, kind, result) {
+    if (root.PlayLog && result) root.PlayLog.add('exam', { mid: mid, kind: kind, avg: result.avg, pass: !!result.pass, entries: result.entries, opposite: result.opposite, reckless: result.reckless });   // プレイ記録
     var M = MASTERS[mid]; var m = U.master(d, mid); if (!M || !m) return null; var e = m[kind]; if (!e) return null;
     e.attempts++; e.last = result.avg; e.best = Math.max(e.best || 0, result.avg); e.lastAt = Date.now();
     var learned = null;
@@ -300,8 +310,9 @@
     opts = opts || {}; var as = dec.assessment || {}; var side = dec.side; var dir = dirOf(side); var notes = []; var process = 0; var flags = { opposite: false, chase: false, reckless: false };
     var bdir = dirOf(as.bias); var clear = bdir !== 0 && as.clarity >= 0.25; var c = U.conditions(as, side);
     if (!dir) {
-      if (!clear) { process = 60; notes.push('根拠がそろっていない場面での見送り。無理をしない良い判断'); }
-      else { process = 32; notes.push('判断した時点では' + (bdir > 0 ? '上' : '下') + '向きの根拠がそろっていた。見送りも間違いではないが、機会を逃したかもしれない'); }
+      // 見送りの点（自動プレイの調整：全部見送るだけで試験に合格できたため、見送りの点を下げた。根拠がそろわない場面の見送りは今も合格点を超える）
+      if (!clear) { process = 45; notes.push('根拠がそろっていない場面での見送り。無理をしない良い判断'); }
+      else { process = 20; notes.push('判断した時点では' + (bdir > 0 ? '上' : '下') + '向きの根拠がそろっていた。見送りも間違いではないが、機会を逃したかもしれない'); }
       if (dec.auto) { process = Math.max(0, process - 12); notes.push('時間切れの見送り（自分で決められるとさらに良い）'); }
     } else {
       var theme = (U.THEME[opts.school] || []).filter(function (k) { return c[k]; });
@@ -325,7 +336,7 @@
     var reason = 0;
     if (opts.advanced) { var okR = U.reasonMatch(dec.reason, as, side); reason = okR ? 15 : dec.reason ? 4 : 0; notes.push(okR ? '判断の理由が、その時点の相場の状態と合っていた' : dec.reason ? '選んだ理由は、その時点の相場の状態とは合っていなかった' : '理由を選ばなかった'); }
     var total = opts.advanced ? process + outcome + reason : Math.round((process + outcome) / 85 * 100);
-    return { score: Math.max(0, Math.min(100, Math.round(total))), process: process, outcome: outcome, reason: reason, flags: flags, notes: notes };
+    return { score: Math.max(0, Math.min(100, Math.round(total))), process: process, outcome: outcome, reason: reason, flags: flags, notes: notes, entered: !!dir };
   };
   U.reasonMatch = function (key, as, side) {
     if (!key || !as) return false; var dir = dirOf(side); var c = U.conditions(as, side);
@@ -343,8 +354,11 @@
   U.examResult = function (kind, scores) {
     var n = scores.length; var avg = n ? scores.reduce(function (s, x) { return s + x.score; }, 0) / n : 0;
     var opposite = scores.filter(function (x) { return x.flags.opposite; }).length, reckless = scores.filter(function (x) { return x.flags.reckless; }).length;
-    var pass = kind === 'advanced' ? (avg >= 65 && reckless <= 2) : (avg >= 60 && opposite <= 1);
-    return { avg: Math.round(avg), pass: pass, opposite: opposite, reckless: reckless, n: n, need: kind === 'advanced' ? '平均65点以上・無謀な判断（流れに逆らう・飛び乗り）2問まで' : '平均60点以上・流れに逆らう判断1問まで' };
+    // 見送りだけでは合格しない（自動プレイの調整：全部見送るだけで合格できたため。1問以上はエントリーする。
+    //   上級を2問以上にすると、根拠がそろう場面だけ入る慎重な判断でも3割ほど不合格になったため、初級・上級とも1問）
+    var entries = scores.filter(function (x) { return x.entered; }).length; var minEntry = 1;
+    var pass = (kind === 'advanced' ? (avg >= 65 && reckless <= 2) : (avg >= 60 && opposite <= 1)) && entries >= minEntry;
+    return { avg: Math.round(avg), pass: pass, opposite: opposite, reckless: reckless, entries: entries, minEntry: minEntry, n: n, need: kind === 'advanced' ? '平均65点以上・無謀な判断（流れに逆らう・飛び乗り）2問まで・1問以上はエントリー' : '平均60点以上・流れに逆らう判断1問まで・1問以上はエントリー' };
   };
 
   // 役割の名前（指示書）でも参照できるように

@@ -214,6 +214,7 @@
         result = Quiz.settle(d, { token: pend.token, mid: mid, qid: qq.id, orig: order[sel].orig, party: State.partyActors ? State.partyActors() : [], gainExp: Actors ? function (a, n) { return Actors.gainExp(a, n); } : null });
         if (result.error) { finish({ error: result.error }); return; }
         State.autosave();   // ゴールド・報酬・記録をまとめて保存（演出の前）
+        if (root.PlayLog) root.PlayLog.add('quiz', { mid: mid, qid: qq.id, cat: qq.cat, ok: !!result.ok, stolen: result.stolen || 0, goldBefore: goldBefore, hint: !!Quiz.help(d, qq).hint, removed: removed >= 0, attempt: Quiz.rec(d, mid).attempts });   // プレイ記録
         if (root.World && root.World.updateHud) try { root.World.updateHud(); } catch (e) { }
         QB.last = result;
         var right = order.findIndex(function (o) { return o.orig === qq.answer; });

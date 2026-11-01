@@ -105,7 +105,7 @@
     var learned = u.recordExam(d, mid, kind, er);
     var RN = {}; (root.ULT_REASONS || []).forEach(function (r) { RN[r.key] = r.label; });
     var html = '<div class="rw-title">' + esc(title) + 'の結果　' + (er.pass ? '<span class="up">合格</span>' : '<span class="down">不合格</span>') + '</div>' +
-      '<div class="ex-sum">平均 <b>' + er.avg + '点</b>　流れに逆らう判断 ' + er.opposite + '問・無謀な判断 ' + er.reckless + '問<br><span class="muted small">合格の条件：' + esc(er.need) + '</span></div>' +
+      '<div class="ex-sum">平均 <b>' + er.avg + '点</b>　流れに逆らう判断 ' + er.opposite + '問・無謀な判断 ' + er.reckless + '問・エントリー ' + er.entries + '問<br><span class="muted small">合格の条件：' + esc(er.need) + '</span></div>' +
       '<table class="ex-table"><tr><th>問</th><th>相場</th><th>判断</th><th>結果</th><th>点</th></tr>' + rows.map(function (r, i) { var df = root.Market.def(r.res.scenarioId); return '<tr><td>' + (i + 1) + '</td><td>' + esc(df ? df.catName : '') + '</td><td>' + sideName(r.res.side) + (r.res.auto ? '（時間切れ）' : '') + (adv && r.res.reason ? '<br><span class="muted small">' + esc(RN[r.res.reason] || '') + '</span>' : '') + '</td><td>' + esc(outName(r.res.result)) + '</td><td><b>' + r.sc.score + '</b></td></tr>'; }).join('') + '</table>' +
       '<div class="muted small">※ 架空のシミュレーション相場での練習です。結果は実際の取引の成績を示すものではありません。</div>';
     await Win.panel(html, { cls: 'exam-result' });
