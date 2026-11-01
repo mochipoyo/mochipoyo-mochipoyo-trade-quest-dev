@@ -147,6 +147,12 @@
     var f = Math.min(1, maxW / w, maxH / h); w = Math.round(w * f); h = Math.round(h * f);
     return { x: slot * (i + 1) - w / 2, y: H * 0.56 - h, w: w, h: h, size: w, slot: slot, smooth: v.smooth || f !== 1 };
   };
+  // v6.5 Phase C 演出の位置：'e:番号'＝敵の絵の中心、'p:id'＝味方（画面下・欄の上）
+  BattleScene.prototype.posOf = function (k, W, H) {
+    var b = this.b; if (!k) return null; var m = /^e:(\d+)$/.exec(k);
+    if (m) { var i = +m[1]; if (!b.enemies[i] || !this.view.e[i]) return null; var r = this.enemyRect(i, W, H); return { x: r.x + r.w / 2, y: r.y + r.h * 0.55 }; }
+    var pid = k.replace(/^p:/, ''); var pi = b.party.map(function (p) { return p.id; }).indexOf(pid); if (pi < 0) return null; return { x: (W / (b.party.length + 1)) * (pi + 1), y: H * 0.7 };   // 味方の欄（画面の下）に隠れない高さ
+  };
   BattleScene.prototype.draw = function (ctx) {
     var W = ctx.canvas.width, H = ctx.canvas.height; var b = this.b; var self = this;
     if (!this.bg) this.bg = BattleBG.render(this.theme, W, H, root.State.data ? root.State.data.timeOfDay : undefined);
@@ -203,6 +209,7 @@
     if (ent && entP > 0.3 && !this.hadCutin) { var bp = Math.min(1, (entP - 0.3) / 0.3); ctx.save(); ctx.globalAlpha = bp * (entP > 0.85 ? (1 - entP) / 0.15 : 1); ctx.fillStyle = 'rgba(120,0,20,0.75)'; ctx.fillRect(0, H * 0.42, W, 44); ctx.fillStyle = '#ffd24a'; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('— ' + (b.enemies[0] ? b.enemies[0].name : 'BOSS') + ' —', W / 2, H * 0.42 + 31); ctx.restore(); }
     // 味方側のエフェクト（画面下部）
     this.anims.filter(function (a) { return a.side === 'party' && a.type === 'fx'; }).forEach(function (a) { var i = Math.max(0, b.party.map(function (p) { return p.id; }).indexOf(a.id)); drawFx(ctx, a, (W / (b.party.length + 1)) * (i + 1), H * 0.8); });
+    if (root.FX2D) root.FX2D.draw(ctx, this);   // v6.5 Phase C 呪文・特技の演出（失敗しても戦闘は進む）
     if (this.flash > 0) { ctx.fillStyle = 'rgba(255,255,255,' + Math.min(0.6, this.flash / 200) + ')'; ctx.fillRect(0, 0, W, H); }
     // 勝利演出
     if (this.victory >= 0) { var vp = Math.min(1, this.victory / 600); ctx.save(); ctx.globalAlpha = 0.5 * vp; ctx.fillStyle = '#ffd24a'; for (var ray = 0; ray < 12; ray++) { var ang = ray * Math.PI / 6 + this.t / 3000; ctx.beginPath(); ctx.moveTo(W / 2, H * 0.3); ctx.lineTo(W / 2 + Math.cos(ang) * 900, H * 0.3 + Math.sin(ang) * 900); ctx.lineTo(W / 2 + Math.cos(ang + 0.08) * 900, H * 0.3 + Math.sin(ang + 0.08) * 900); ctx.closePath(); ctx.fill(); } ctx.restore(); this.particles.forEach(function (p) { ctx.fillStyle = p.c; ctx.fillRect(Math.round(p.x), Math.round(p.y), 4, 6); }); }
@@ -457,44 +464,73 @@
   function setView(scene, e, b) { if (e && e.snap) { scene.view = e.snap; renderParty(b, scene.view); } }
   function showHit(scene, b, e, shakeIds) {
     if (e.type === 'damage' && e.side === 'enemy') {
-      scene.shake[e.idx] = 240; scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim || 'hit', t: 0, dur: 420 }); if (e.value > 0) scene.anims.push({ type: 'hitflash', idx: e.idx, t: 0, dur: 160 });
+      scene.shake[e.idx] = 240; if (!scene.fxOn) scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim || 'hit', t: 0, dur: 420 }); if (e.value > 0) scene.anims.push({ type: 'hitflash', idx: e.idx, t: 0, dur: 160 });
       scene.pops.push({ side: 'enemy', idx: e.idx, text: e.value === 0 ? 'MISS' : String(e.value), color: e.crit ? '#ffd24a' : e.weak ? '#ff8a3a' : '#fff', crit: e.crit, t: 0 });
       if (root.Audio) root.Audio.sfx(e.crit ? 'crit' : 'hit');
     } else if (e.type === 'damage') {
       var idx = b.party.map(function (p) { return p.id; }).indexOf(e.id); scene.pops.push({ side: 'party', idx: idx, text: String(e.value), color: '#ffb0b0', t: 0 }); scene.flash = 120;
-      scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim || 'hit', t: 0, dur: 400 }); if (root.Audio) root.Audio.sfx('hurt'); shakeIds.push(e.id);
+      if (!scene.fxOn) scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim || 'hit', t: 0, dur: 400 }); if (root.Audio) root.Audio.sfx('hurt'); shakeIds.push(e.id);
     } else if (e.type === 'heal' && e.side === 'enemy') {
-      scene.pops.push({ side: 'enemy', idx: e.idx, text: '+' + e.value, color: '#7fe3a5', t: 0 }); scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal');
+      scene.pops.push({ side: 'enemy', idx: e.idx, text: '+' + e.value, color: '#7fe3a5', t: 0 }); if (!scene.fxOn) scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal');
     } else if (e.type === 'heal') {
-      var hi = b.party.map(function (p) { return p.id; }).indexOf(e.id); scene.pops.push({ side: 'party', idx: hi, text: '+' + e.value, color: '#7fe3a5', t: 0 }); scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal');
+      var hi = b.party.map(function (p) { return p.id; }).indexOf(e.id); scene.pops.push({ side: 'party', idx: hi, text: '+' + e.value, color: '#7fe3a5', t: 0 }); if (!scene.fxOn) scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal');
     }
   }
+  // v6.5 Phase C：行動ごとの演出を始める。演出のデータ（js/data/fx65.js）と時刻表で、2D の描画（js/ui/fx2d.js）と 3D の描画（Phase D）が同じ時刻に合わせる
+  function itemFx(id) { var it = root.ITEMS && root.ITEMS[id]; var ef = (it && it.effect) || {}; return ef.damage ? { fx: 'explosion', motion: 'throw', color: '#ff8a2a', color2: '#ffd24a', area: 'all' } : ef.revive ? { fx: 'revive_pillar', motion: 'throw', color: '#fff6c8', color2: '#ffd24a', area: 'single' } : (ef.hp || ef.mp || ef.all) ? { fx: 'heal_glow', motion: 'throw', color: '#7fe3a5', color2: '#ffe9a0', area: 'single' } : ef.cure ? { fx: 'purify', motion: 'throw', color: '#c8f4ff', color2: '#ffffff', area: 'single' } : { fx: 'aura', motion: 'throw', color: '#ffd24a', color2: '#ffffff', area: 'single' }; }
+  function startFx(b, ev, i, e, scene, fast) {
+    var F = root.FX65; if (!F) return null;
+    try {
+      var def = null, from = null;
+      if (e.side === 'party') { var a = b.party.filter(function (p) { return p.id === e.id; })[0]; from = 'p:' + e.id;
+        if (e.kind === 'skill' && e.skillId) def = F.DEFS[e.skillId]; else if (e.kind === 'attack') def = F.attack(a); else if (e.kind === 'item' && e.itemId) def = itemFx(e.itemId); }
+      else { def = F.enemy(b.enemies[e.idx], { skillId: e.skillId, special: e.special }); from = 'e:' + e.idx; }
+      if (!def) return null;
+      var tg = [], firstKey = null, hits = 0;
+      for (var j = i + 1; j < ev.length && ev[j].type !== 'act'; j++) { var x = ev[j]; var key = null;
+        if (x.type === 'damage' || x.type === 'heal') key = x.side === 'enemy' ? 'e:' + x.idx : 'p:' + x.id; else if (x.type === 'revive' && x.id) key = 'p:' + x.id; else if (x.type === 'anim' && x.side !== 'enemy' && x.id && x.anim !== 'lunge') key = 'p:' + x.id;
+        if (!key) continue; if (!firstKey) firstKey = key; if (key === firstKey && x.type === 'damage') hits++; if (tg.indexOf(key) < 0) tg.push(key); }
+      if (!tg.length) tg = [from];
+      var tl = F.timeline(def, { fast: fast, hits: Math.max(1, hits || def.hits || 1) });
+      if (root.FX2D) root.FX2D.start(scene, def, tl, from, tg);
+      F.emit('play', { def: def, tl: tl, from: from, to: tg, side: e.side });
+      return { tl: tl, start: Date.now(), k: 0, def: def };
+    } catch (err) { if (root.console) console.warn('FX', err); return null; }
+  }
+  function hitAhead(ev, i) { for (var j = i + 1; j < ev.length && ev[j].type !== 'act'; j++) if (ev[j].type === 'damage' || ev[j].type === 'heal') return true; return false; }
+  async function waitUntil(ms) { var dt = ms - Date.now(); if (dt > 0) await Win.sleep(dt); }
   async function playEvents(b, ev, scene) {
-    var fast = State.data.settings.battleSpeed === 'fast'; var played = {};
+    var fast = State.data.settings.battleSpeed === 'fast'; var played = {}; var fxs = null;
     if (BattleUI.timeline) BattleUI.timeline.length = 0;
     for (var i = 0; i < ev.length; i++) {
       if (played[i]) continue;
       var e = ev[i]; if (BattleUI.timeline) BattleUI.timeline.push({ type: e.type, i: i, t: Date.now() });
       if (e.type === 'act') {   // 行動の始まり：味方は欄が少し前へ出る、敵は次の攻撃の踏み込み（lunge）で動く
+        if (fxs) { await waitUntil(fxs.start + fxs.tl.total); fxs = null; scene.fxOn = false; }   // v6.5 前の行動の演出が終わってから
         setView(scene, e, b);
-        if (e.side === 'party') { actingCard(e.id); await Win.sleep(fast ? 70 : 150); } else actingCard(null);
+        if (e.side === 'party') actingCard(e.id); else actingCard(null);
+        fxs = startFx(b, ev, i, e, scene, fast); scene.fxOn = !!fxs;
+        if (fxs) { if (BattleUI.timeline) BattleUI.timeline.push({ type: 'fx', fx: fxs.def.fx, hitAt: fxs.tl.hitAt, impacts: fxs.tl.impacts.slice(), total: fxs.tl.total, t: fxs.start, to: (scene.fx65 && scene.fx65.length ? scene.fx65[scene.fx65.length - 1].to.length : 0) }); await waitUntil(fxs.start + fxs.tl.windup); }   // 構え（使う人の動き）
+        else if (e.side === 'party') await Win.sleep(fast ? 70 : 150);
         continue;
       }
-      if (e.type === 'msg') { setView(scene, e, b); await bmsg(e.text, 420); }
+      var preHit = fxs && fxs.k === 0 && hitAhead(ev, i);   // v6.5 この行動の命中（数字・HP）がまだ後にある：演出の時刻表で待つので、ここでは待たない
+      if (e.type === 'msg') { setView(scene, e, b); if (preHit) { var mw0 = document.getElementById('battle-msg'); if (mw0) mw0.textContent = e.text; } else await bmsg(e.text, 420); }
       else if (e.type === 'damage' || e.type === 'heal') {
         var group = [e];
         if (e.g) for (var j = i + 1; j < ev.length && ev[j].type !== 'act'; j++) if (!played[j] && ev[j].g === e.g && (ev[j].type === 'damage' || ev[j].type === 'heal')) { group.push(ev[j]); played[j] = true; }
+        if (fxs) { await waitUntil(fxs.start + fxs.tl.impacts[Math.min(fxs.k, fxs.tl.impacts.length - 1)]); fxs.k++; }   // v6.5 演出の命中の瞬間まで待つ（多段は1回ずつ）
         var shakeIds = [];
         group.forEach(function (g) { showHit(scene, b, g, shakeIds); });   // 命中の演出・数字を同時に出し、
         setView(scene, group[group.length - 1], b);                        // 同じ瞬間に HP（数字とバー）を当たった後の値へ
         shakeIds.forEach(function (id) { var el = document.querySelector('#battle-party .bp[data-id="' + id + '"]'); if (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); } });
         if (BattleUI.timeline) BattleUI.timeline.push({ type: 'hit', n: group.length, t: Date.now() });
-        await Win.sleep(fast ? 130 : 280);
+        await Win.sleep(fxs ? (fast ? 40 : 90) : (fast ? 130 : 280));   // v6.5 演出があるときの余韻は、演出の終わり（次の行動の前）で待つ
       }
-      else if (e.type === 'anim' && e.side === 'enemy' && e.anim === 'lunge') { setView(scene, e, b); scene.anims.push({ type: 'lunge', idx: e.idx, t: 0, dur: 260 }); await Win.sleep(fast ? 80 : 140); }
+      else if (e.type === 'anim' && e.side === 'enemy' && e.anim === 'lunge') { setView(scene, e, b); scene.anims.push({ type: 'lunge', idx: e.idx, t: 0, dur: 260 }); if (!preHit) await Win.sleep(fast ? 80 : 140); }
       else if (e.type === 'summon') { setView(scene, e, b); var se = b.enemies[e.idx]; if (se) State.data.bestiary[se.defId] = Object.assign(State.data.bestiary[se.defId] || {}, { seen: true }); scene.anims.push({ type: 'appear', idx: e.idx, t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('magic'); await Win.sleep(fast ? 200 : 500); }
       else if (e.type === 'phase') { setView(scene, e, b); scene.anims.push({ type: 'phase', idx: e.idx, t: 0, dur: 700 }); scene.screenShake = 350; if (root.Audio) root.Audio.sfx('crit'); await Win.sleep(fast ? 250 : 600); }
-      else if (e.type === 'anim') { setView(scene, e, b); if (e.side === 'enemy') scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim, t: 0, dur: 450 }); else if (e.target === 'self' || e.target === 'ally' || e.target === 'allies' || e.target === 'dead_ally') scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim, t: 0, dur: 450 }); if (root.Audio) root.Audio.sfx('magic'); await Win.sleep(fast ? 100 : 220); }
+      else if (e.type === 'anim') { setView(scene, e, b); if (!scene.fxOn) { if (e.side === 'enemy') scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim, t: 0, dur: 450 }); else if (e.target === 'self' || e.target === 'ally' || e.target === 'allies' || e.target === 'dead_ally') scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim, t: 0, dur: 450 }); } if (root.Audio) root.Audio.sfx('magic'); if (!preHit) await Win.sleep(fast ? 100 : 220); }
       else if (e.type === 'enemy_dead' || e.type === 'flee') {   // 倒れる演出を最後まで再生してから次へ
         setView(scene, e, b); scene.gone[e.idx] = true;
         var isBoss = b.enemies[e.idx] && b.enemies[e.idx].boss; var dur = e.type === 'flee' ? 400 : isBoss ? 1400 : 550; scene.anims.push({ type: 'die', idx: e.idx, t: 0, dur: fast ? Math.round(dur * 0.5) : dur });
@@ -514,6 +550,7 @@
       else if (e.type === 'end') { setView(scene, e, b); await Win.sleep(200); }
       else setView(scene, e, b);
     }
+    if (fxs) { await waitUntil(fxs.start + fxs.tl.total); scene.fxOn = false; }   // v6.5 最後の演出が終わるまで
     actingCard(null);
     scene.view = Combat.snapshot(b); renderParty(b, scene.view);   // 再生し終えたら計算上の最終状態と一致させる
   }

@@ -354,7 +354,7 @@
 
   function execEnemy(b, e, ev) {
     function msg(t) { ev.push({ type: 'msg', text: t }); }
-    ev.push({ type: 'act', side: 'enemy', idx: e.idx });   // v6.5 行動の始まり
+    var actEv = { type: 'act', side: 'enemy', idx: e.idx }; ev.push(actEv);   // v6.5 行動の始まり（何をするかは選んだあとに書き込む：演出の種類に使う）
     var es = estats(e);
     if (e.status.confuse && Math.random() < 0.5) { var other = pickRandom(aliveEnemies(b)); msg(e.name + 'は混乱している！'); if (other) { var d0 = physDamage(es.atk, estats(other).def, 1.0); other.hp = Math.max(0, other.hp - d0); ev.push({ type: 'damage', side: 'enemy', idx: other.idx, value: d0, anim: 'hit' }); msg(other.name + 'に' + d0 + 'のダメージ'); if (other.hp <= 0) killEnemy(b, other, ev); } return; }
     // 行動選択（重み付き）
@@ -369,6 +369,7 @@
     if (chosen.type === 'skill' && e.status.silence && SKILLS[chosen.id] && SKILLS[chosen.id].mp > 0) { msg(e.name + 'は沈黙していて呪文が使えない！'); chosen = { type: 'attack' }; }
     if (chosen.type === 'special' && chosen.id === 'trial' && b.trialCount >= 2) chosen = { type: 'attack' };
     if (chosen.type === 'special' && chosen.id === 'flee' && b.boss) chosen = { type: 'attack' };
+    actEv.kind = chosen.type; if (chosen.type === 'skill') actEv.skillId = chosen.id; if (chosen.type === 'special') actEv.special = chosen.id;   // v6.5 Phase C
     var living = aliveParty(b);
     function pickTarget() { var cov = living.filter(function (a) { return a.cover; })[0]; if (cov) return cov; var kn = living.filter(function (a) { return a.job === 'knight' && Math.random() < 0.35; })[0]; return kn || pickRandom(living); }
     if (chosen.type === 'attack') { var t = pickTarget(); msg(e.name + 'の攻撃！'); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: 'lunge' }); hitActor(b, e, t, 1.0, {}, ev); return; }
