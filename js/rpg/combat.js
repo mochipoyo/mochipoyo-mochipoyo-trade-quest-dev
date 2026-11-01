@@ -150,7 +150,7 @@
     b.party.forEach(function (a) { a.defending = false; a.cover = false; a.counter = false; a.counterMult = 1; });
     commands.forEach(function (c) { var a = b.party.filter(function (x) { return x.id === c.actorId; })[0]; if (a && !a.dead) acts.push({ side: 'party', actor: a, cmd: c, agi: Actors.stats(a).agi }); });
     aliveEnemies(b).forEach(function (e) { acts.push({ side: 'enemy', actor: e, agi: estats(e).agi }); var dd = ENEMIES[e.defId]; if (dd && dd.acts >= 2) acts.push({ side: 'enemy', actor: e, agi: estats(e).agi * 0.55, extra: true }); });   // v6.5 2回行動（2回目は素早さが低い扱い）
-    acts.forEach(function (x) { x.order = x.agi * rnd(0.8, 1.2); if (x.side === 'party' && (x.cmd.type === 'defend' || x.cmd.type === 'escape' || (x.cmd.type === 'skill' && SKILLS[x.cmd.skillId] && (SKILLS[x.cmd.skillId].cover || SKILLS[x.cmd.skillId].counter)))) x.order += 1000; /* v6.4 反撃の構え（瞬間逆転）も先に */ });
+    acts.forEach(function (x) { x.order = x.agi * rnd(0.8, 1.2); if (x.side === 'party' && (x.cmd.type === 'defend' || x.cmd.type === 'escape' || (x.cmd.type === 'skill' && SKILLS[x.cmd.skillId] && (SKILLS[x.cmd.skillId].cover || SKILLS[x.cmd.skillId].counter)))) x.order += 1000; /* v6.4 反撃の構え（瞬間逆転）も先に */ if (x.side === 'party' && x.cmd.type === 'ultimate') x.order += 1500; /* 必殺技：チャートで決済まで済ませた一撃（見送りの防御も）は、そのターンの最初に出る */ });
     acts.sort(function (p, q) { return q.order - p.order; });
 
     // 逃走は最優先で判定
@@ -182,7 +182,9 @@
   function execParty(b, x, ev) {
     var a = x.actor, cmd = x.cmd; var s = pstats(a);
     function msg(t) { ev.push({ type: 'msg', text: t }); }
-    ev.push({ type: 'act', side: 'party', id: a.id, kind: cmd.type, skillId: cmd.type === 'skill' ? cmd.skillId : null, itemId: cmd.type === 'item' ? cmd.itemId : null });   // v6.5 行動の始まり
+    var isUlt = cmd.type === 'ultimate' && !!root.Ultimates;
+    ev.push({ type: 'act', side: 'party', id: a.id, kind: cmd.type, skillId: cmd.type === 'skill' ? cmd.skillId : isUlt ? root.Ultimates.fxKey(cmd) : null, itemId: cmd.type === 'item' ? cmd.itemId : null, ultId: isUlt ? cmd.ultId : undefined, ultOutcome: isUlt && cmd.trade && cmd.trade.result ? cmd.trade.result.outcome : undefined });   // v6.5 行動の始まり
+    if (cmd.type === 'ultimate') { if (isUlt) root.Ultimates.execute(b, a, cmd, ev, ULT_K); else msg('しかし何も起こらなかった'); return; }   // 必殺技（js/rpg/ultimates.js）：判断はコマンド入力で済んでいるので、混乱などで行動が変わらないようにここで先に実行
     // 混乱：ランダム行動
     if (a.status.confuse && Math.random() < 0.6) {
       var all = aliveParty(b).concat(aliveEnemies(b)); var t = pickRandom(all); msg(a.name + 'は混乱している！');
@@ -422,6 +424,10 @@
     return dmg;
   }
 
+  // 必殺技（js/rpg/ultimates.js）から使う内部の関数
+  var ULT_K = { attackEnemy: function (b, a, t, p, o, ev) { return attackEnemy(b, a, t, p, o, ev); }, addStatus: function (t, st) { return addStatus(t, st, st.chance, false); }, aliveEnemies: aliveEnemies, aliveParty: aliveParty,
+    beginGroup: beginGroup, endGroup: endGroup, maxMp: function (a) { return Actors.stats(a).maxMp; }, maxHp: function (a) { return Actors.stats(a).maxHp; }, atkOf: function (a) { return pstats(a).atk; }, defOf: function (e) { return estats(e).def; }, statusName: function (id) { return STATUS_NAME[id] || id; } };
+  Combat._ultK = ULT_K;
   function killEnemy(b, e, ev) { e.dead = true; ev.push({ type: 'enemy_dead', idx: e.idx }); ev.push({ type: 'msg', text: e.name + 'を倒した！' }); }
   function killActor(t, ev) { t.dead = true; t.status = {}; t.buffs = {}; ev.push({ type: 'actor_dead', id: t.id }); ev.push({ type: 'msg', text: t.name + 'は倒れた……' }); }
 
@@ -499,6 +505,8 @@
       return { actor: a, dead: a.dead, gained: gained, before: before, after: after, levelUp: a.level > before.level, levels: ups,
         newSkills: a.skills.filter(function (k) { return before.skills.indexOf(k) < 0; }), toNext: Actors.expForLevel(a.level) - a.exp };
     });
+    // 必殺技：レベルで覚える技（主人公だけ）。リザルト画面で知らせる
+    if (root.Ultimates && root.State.data) { var nu = root.Ultimates.sync(root.State.data); if (nu.length) members.forEach(function (m) { if (m.actor.id === 'hero') m.newUlts = nu; }); }
     var goldBase = r.goldBase !== undefined ? r.goldBase : r.gold;
     root.State.data.gold += r.gold;
     var dropCounts = {};

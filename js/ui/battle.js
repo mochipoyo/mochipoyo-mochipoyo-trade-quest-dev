@@ -7,6 +7,7 @@
 
   var Engine = root.Engine, Win = root.Win, State = root.State, Combat = root.Combat, SKILLS = root.SKILLS, ITEMS = root.ITEMS, Actors = root.Actors, Sprites = root.Sprites, JOBS = root.JOBS, ENEMIES = root.ENEMIES;
   var esc = Win.esc;
+  var U = root.Ultimates || null;   // 必殺技（js/rpg/ultimates.js。なければ必殺技のコマンドを出さない）
 
   var BattleUI = { battle: null, scene: null };
 
@@ -183,6 +184,8 @@
     var pid = k.replace(/^p:/, ''); var pi = b.party.map(function (p) { return p.id; }).indexOf(pid); if (pi < 0) return null; return { x: (W / (b.party.length + 1)) * (pi + 1), y: H * 0.7 };   // 味方の欄（画面の下）に隠れない高さ
   };
   BattleScene.prototype.draw = function (ctx) {
+    // 必殺技のチャートが戦闘画面を覆っている間は、下の戦闘画面（3D 版の舞台も）を1秒に1回だけ描く（チャートの動きを軽くする）
+    var CBU = root.ChartBattleUI; if (CBU && CBU.isOpen) { var tn = Date.now(); if (this._cbDrawn && tn - this._cbDrawn < 1000) return; this._cbDrawn = tn; } else this._cbDrawn = 0;
     var W = ctx.canvas.width, H = ctx.canvas.height; var b = this.b; var self = this;
     if (!this.bg && this.bg65) { try { this.bg = root.BattleBG65.render(this.bg65, W, H); } catch (e) { this.bg = null; this.bg65 = null; } if (!this.bg) this.bg65 = null; }
     if (!this.bg) this.bg = BattleBG.render(this.theme, W, H, root.State.data ? root.State.data.timeOfDay : undefined);
@@ -375,6 +378,7 @@
       var stat = '';
       if (m.levelUp) { var bs = m.before.stats, as = m.after.stats; var d = [['HP', as.maxHp - bs.maxHp], ['MP', as.maxMp - bs.maxMp], ['攻', as.atk - bs.atk], ['防', as.def - bs.def], ['速', as.agi - bs.agi], ['魔', as.mag - bs.mag]].filter(function (x) { return x[1] > 0; }).map(function (x) { return x[0] + '+' + x[1]; }).join('　'); stat = '<div class="rs-stat">' + stat + esc(d) + '</div>'; }
       var skills = m.newSkills.length ? '<div class="rs-skill">✦ ' + m.newSkills.map(function (k) { return esc(SKILLS[k].name); }).join('・') + ' を覚えた！</div>' : '';
+      if (m.newUlts && m.newUlts.length && U) skills += '<div class="rs-skill rs-ult">✦ 必殺技「' + m.newUlts.map(function (k) { return esc(U.get(k).name); }).join('」「') + '」を覚えた！（戦闘の「必殺技」から）</div>';
       return '<div class="rs-member ' + (m.levelUp ? 'up' : '') + (m.dead ? ' dead' : '') + '" data-i="' + i + '">' +
         '<div class="rs-head"><span class="rs-name">' + esc(a.name) + '</span><span class="rs-lv">Lv.' + m.before.level + (m.levelUp ? ' → <b>Lv.' + m.after.level + '</b>' : '') + '</span>' + (m.levelUp ? '<span class="rs-levelup">LEVEL UP!</span>' : '') + '</div>' +
         '<div class="rs-exp">' + (m.dead ? '戦闘不能（経験値なし）' : '+' + m.gained + ' EXP') + '<span class="muted small">　次のレベルまで ' + m.toNext + ' EXP</span></div>' +
@@ -445,7 +449,11 @@
       var c = BattleUI.isAuto() ? 'auto' : await commandFor(b, a);
       if (c === 'back' && BattleUI.isAuto()) c = 'auto';   // 入力中にオートへ切り替えた
       if (c === 'auto') { if (!BattleUI.isAuto()) BattleUI.setAuto(true); await Win.sleep(State.data.settings.battleSpeed === 'fast' ? 60 : 140); cmds.push(Combat.autoCommand(b, a)); continue; }
-      if (c === 'back') { if (i > 0) { i -= 2; cmds.pop(); continue; } else { i = -1; cmds = []; continue; } }
+      if (c === 'back') {
+        // 必殺技のチャートで決めた行動は取り消せない（同じターンにチャートを引き直せないように）。その人より前には戻らない
+        var prev = cmds[cmds.length - 1]; if (prev && prev.type === 'ultimate') { if (Win.toast) Win.toast('必殺技の判断は取り消せない'); i -= 1; continue; }
+        if (i > 0) { i -= 2; cmds.pop(); continue; } else { i = -1; cmds = []; continue; }
+      }
       cmds.push(c);
     }
     highlight(null);
@@ -458,8 +466,13 @@
       if (BattleUI.isAuto()) return 'auto';
       var skills = Actors.allSkills(a).filter(function (s) { return SKILLS[s]; });
       var opts = [{ label: 'たたかう' }, { label: 'じゅもん・とくぎ', disabled: !skills.length }, { label: 'どうぐ' }, { label: 'ぼうぎょ' }, { label: 'にげる', disabled: !b.canEscape }, { label: 'オート戦闘', right: '自動' }];
+      // 必殺技（主人公だけ）：「じゅもん・とくぎ」の次に出す。番号で振り分けている既存の項目は、選んだ番号を元の番号に戻してから処理する
+      var ultN = (U && U.isHero(a)) ? U.count(State.data) : -1;
+      if (ultN >= 0) opts.splice(2, 0, { label: '必殺技', right: ultN ? 'チャート' : '', disabled: !ultN, sub: ultN ? null : 'レベル2で最初の必殺技を覚える', cls: 'ult-cmd' });
       var sel = await Win.list(opts, { title: a.name + 'の行動', cancel: true, cls: 'cmd-list' });
       if (BattleUI.isAuto()) return 'auto';
+      if (ultN >= 0 && sel === 2) { var uc = await ultCommand(b, a); if (uc) return uc; continue; }
+      if (ultN >= 0 && sel > 2) sel -= 1;
       if (sel === 5) return 'auto';
       if (sel < 0) return 'back';
       if (sel === 0) { var t = await pickEnemy(b); if (t < 0) continue; return { actorId: a.id, type: 'attack', target: { side: 'enemy', idx: t } }; }
@@ -484,6 +497,33 @@
       if (sel === 4) return { actorId: a.id, type: 'escape' };
     }
   }
+  /* ---------- 必殺技（js/rpg/ultimates.js・js/ui/chartbattle.js） ----------
+     技を選ぶ → 対象を選ぶ（敵全体の技は選ばない）→ 初めて使う技は説明 → チャートを開いて判断・決済 → 結果をコマンドに入れて返す
+     ・チャートを開いたら取り消せない（見送り＝防御になる）。MP は実行のとき（Combat.runTurn）に1回だけ使う。待ち時間（クールダウン）はここで決まる
+     ・オート戦闘では使わない（判断はプレイヤー自身がする） */
+  async function ultCommand(b, a) {
+    var d = State.data; U.sync(d);
+    while (true) {
+      var ids = U.learnedList(d); if (!ids.length) return null;
+      var items = ids.map(function (id) { var x = U.get(id); var ok = U.usable(b, a, id); var sch = U.school(x.school); return { label: x.name, right: 'MP' + x.mp + (ok.cd ? '／あと' + ok.cd + 'T' : '／待' + x.cd + 'T'), sub: (sch ? sch.name + '｜' : '') + x.desc + (ok.ok ? '' : '（' + ok.why + '）'), disabled: !ok.ok, cls: (d.ultimate.notice.indexOf(id) >= 0 ? 'ult-new' : '') }; });
+      var si = await Win.list(items, { title: '必殺技（チャートで判断する）', cls: 'ult-list', info: function (i) { var x = U.get(ids[i]); if (!x) return ''; return '<div class="ult-info"><b>' + esc(x.name) + '</b>　判断の難しさ ' + '★★★★★'.slice(0, x.difficulty) + '<br>学習テーマ：' + esc(x.theme) + '<br>表示：' + x.ind.map(function (k) { return esc((root.ChartBattleUI && root.ChartBattleUI.IND_NAME[k]) || k); }).join('・') + '　時間足：' + esc(root.ChartBattleUI ? root.ChartBattleUI.tfName(x.tf) : x.tf + '分') + '<br>利益：通常攻撃の' + x.profit[0] + '〜' + x.profit[1] + '倍　損失：' + x.loss[0] + '〜' + x.loss[1] + '倍　ほぼ同値：' + x.flat + '倍　見送り：防御</div>'; } });
+      if (si < 0) return null;
+      var def = U.get(ids[si]); var chk = U.usable(b, a, def.id); if (!chk.ok) { await Win.message([chk.why]); continue; }
+      var target = null;
+      if (!def.fx.aoe) { var te = await pickEnemy(b); if (te < 0) continue; target = { side: 'enemy', idx: te }; }
+      if (U.markSeen(d, def.id)) await Win.message(['必殺技「' + def.name + '」', def.intro, 'チャートが動き出したら、ロング（買い）・ショート（売り）・見送りのどれかを選ぶ。' + Math.round(root.ChartBattleUI.settings().decideMs / 1000) + '秒たつと見送りになる。', '※ 架空のシミュレーション相場。利益が出れば大ダメージ、損失なら小ダメージ、見送りは防御になる。'], { name: '必殺技の説明' });
+      U.clearNotice(d, def.id);
+      var scn = U.scenarioForUlt(d, def); var sch2 = U.school(def.school);
+      var res = await root.ChartBattleUI.open({ mode: 'battle', ult: def, title: def.name, sub: (sch2 ? sch2.name : '') + '｜' + def.theme, ind: def.ind, tf: def.tf, scenario: scn, color: def.color,
+        preview: function (out) { var rv = U.resolve(def, out); if (rv.kind === 'skip') return '<div class="cb-pre">→ 戦闘では「見送り＝防御」' + (rv.appropriateSkip ? '（見送りが適切：MPが一部戻る）' : '') + '</div>'; return '<div class="cb-pre">→ 威力 <b>×' + rv.mult.toFixed(2) + '</b>' + (rv.bonuses.length ? '（基本 ×' + rv.base.toFixed(2) + '・追加：' + rv.bonuses.map(function (q) { return esc(q.label) + ' ×' + q.mult; }).join('、') + '）' : '') + (rv.extra ? '・追撃' + rv.extra.hits + '回' : '') + '</div>'; } });
+      if (!res || res.quit) return null;   // 戦闘のチャートは中断できない（念のため）
+      U.lock(b, def.id);
+      U.recordTrade(d, { mode: 'battle', ultId: def.id, school: def.school, scenarioId: res.scenarioId, cat: res.cat, seed: res.seed, side: res.side, auto: res.auto, result: res.result });
+      var trade = { side: res.side, auto: res.auto, result: res.result, assessment: res.assessment, scenarioId: res.scenarioId, seed: res.seed };
+      return { actorId: a.id, type: 'ultimate', ultId: def.id, target: target, trade: trade, locked: true };
+    }
+  }
+  BattleUI.ultCommand = ultCommand;
   async function pickEnemy(b) {
     var alive = b.enemies.filter(function (e) { return !e.dead; });
     if (alive.length === 1) return alive[0].idx;
@@ -523,7 +563,7 @@
     try {
       var def = null, from = null;
       if (e.side === 'party') { var a = b.party.filter(function (p) { return p.id === e.id; })[0]; from = 'p:' + e.id;
-        if (e.kind === 'skill' && e.skillId) def = F.DEFS[e.skillId]; else if (e.kind === 'attack') def = F.attack(a); else if (e.kind === 'item' && e.itemId) def = itemFx(e.itemId); }
+        if ((e.kind === 'skill' || e.kind === 'ultimate') && e.skillId) def = F.DEFS[e.skillId]; else if (e.kind === 'attack') def = F.attack(a); else if (e.kind === 'item' && e.itemId) def = itemFx(e.itemId); }
       else { def = F.enemy(b.enemies[e.idx], { skillId: e.skillId, special: e.special }); from = 'e:' + e.idx; }
       if (!def) return null;
       var tg = [], firstKey = null, hits = 0;
@@ -549,6 +589,7 @@
         if (fxs) { await waitUntil(fxs.start + fxs.tl.total); fxs = null; scene.fxOn = false; }   // v6.5 前の行動の演出が終わってから
         setView(scene, e, b);
         if (e.side === 'party') actingCard(e.id); else actingCard(null);
+        if (e.side === 'party' && e.kind === 'ultimate' && root.ChartBattleUI && U) { try { await root.ChartBattleUI.cutin(U.get(e.ultId), e.ultOutcome); } catch (err) { /* 演出だけ */ } }   // 必殺技の名前の帯
         fxs = startFx(b, ev, i, e, scene, fast); scene.fxOn = !!fxs;
         if (fxs) { if (BattleUI.timeline) BattleUI.timeline.push({ type: 'fx', fx: fxs.def.fx, hitAt: fxs.tl.hitAt, impacts: fxs.tl.impacts.slice(), total: fxs.tl.total, t: fxs.start, to: (scene.fx65 && scene.fx65.length ? scene.fx65[scene.fx65.length - 1].to.length : 0) }); await waitUntil(fxs.start + fxs.tl.windup); }   // 構え（使う人の動き）
         else if (e.side === 'party') await Win.sleep(fast ? 70 : 150);

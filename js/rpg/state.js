@@ -24,13 +24,15 @@
       gold: 0, bank: 0, inventory: {}, flags: {}, counters: {}, quests: {}, chests: {},
       pos: { map: 'poyo_village', x: 24, y: 32, dir: 'up' }, lastInn: { map: 'poyo_village', x: 24, y: 32 }, visited: { poyo_village: true },
       steps: 0, timeOfDay: 0.3, bestiary: {}, trade: { stats: TradeEval.emptyStats(), capital: CONFIG.risk.capital, lectures: {}, topics: {}, tutorialDone: false, abilities: {}, learnFails: {}, learnSeen: {}, rankBest: 0, achievements: {}, mistakes: {}, reviewLog: [], wasWeak: {} },
-      settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', walkSpeed: 'fast', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true, minimap: 'on', minimapSize: 'normal', pad: 'stick', nav: 'on', navHint: 'low', followers: 'on' },   // v6.2 目的地ナビ（on/off）・ヒント表示（low＝控えめ / detail＝詳細）
+      settings: { bgm: 0.5, se: 0.5, mute: true, textSpeed: 'normal', battleSpeed: 'normal', walkSpeed: 'fast', riskPercent: CONFIG.risk.defaultRiskPercent, showZigzag: true, minimap: 'on', minimapSize: 'normal', pad: 'stick', nav: 'on', navHint: 'low', followers: 'on', ultTime: 12, ultChart: 'normal', ultFx: 'normal' },   // v6.2 目的地ナビ（on/off）・ヒント表示（low＝控えめ / detail＝詳細）
       mapDiscovery: {},   // ミニマップの探索状況（マップID → 行ごとのビット列）。visited とは別
       vehicles: {}, aboard: null,   // v5.0: 乗り物（js/rpg/vehicle.js）
       // v6.1 追加（旧セーブは State.migrate がこの初期値で補う）：探索ポイントの取得記録、ファストトラベル、オーパーツ、カジノ、学院
       searched: {}, travel: {}, ooparts: { found: {}, rewards: {} }, casino: { coins: 0, history: { slot: [], roulette: [], card: [] }, stats: {}, lab: {} }, academy: {},
       tradia: { wins: {}, losses: {}, draws: {}, best: {}, titles: [], log: [], lev: null },   // v6.4 Phase D 相場都市トレディア（トレードバトルの記録・レバレッジ取引の口座。lev は最初に取引所を使ったときに作る）
-      legacyImported: null
+      legacyImported: null,
+      // 必殺技・トレーダー師匠（js/rpg/ultimates.js の Ultimates.defaults と同じ形。旧セーブは State.migrate がこの初期値で補い、Ultimates.ensure が壊れた値を直す）
+      ultimate: { v: 1, learned: {}, uses: {}, seen: {}, masters: {}, stats: { trades: 0, wins: 0, losses: 0, flats: 0, skips: 0, autoSkips: 0, tp: 0, sl: 0, timeExit: 0, pips: 0, sumR: 0, bestR: null, worstR: null, byMode: {}, byCat: {}, bySchool: {} }, recent: [], notice: [] }
     };
     State.data = d;
     return d;
@@ -93,6 +95,7 @@
     // v6.5 帰還の術：すでに習得レベルを超えている僧侶・賢者などは、この呪文だけを覚える（ほかの技は変えない）
     if (root.DUNGEON_RETURN_LEARN) [d.hero].concat(Object.keys(d.companions).map(function (k) { return d.companions[k]; })).forEach(function (a) { var lv = root.DUNGEON_RETURN_LEARN[a.job]; if (lv && a.level >= lv && a.skills && a.skills.indexOf('dungeon_return') < 0) a.skills.push('dungeon_return'); });
     if (root.Nav && root.Nav.repairFlags) root.Nav.repairFlags(d);   // v6.2 到着フラグ（zeromea_arrived・sky_arrived）の補正
+    if (root.Ultimates) { root.Ultimates.ensure(d); root.Ultimates.sync(d); }   // 必殺技：壊れた値を直し、いまのレベルまでに覚える技をそろえる（主人公だけ。ほかの項目は変えない）
     d.version = SAVE_VERSION;
     return d;
   };

@@ -15,12 +15,14 @@
         var d = State.data;
         var MENU = ['ステータス', 'どうぐ', 'そうび', 'じゅもん・とくぎ', 'なかま', 'クエスト', '次の目的地', '図鑑', 'トレード修行', 'ファストトラベル', 'セーブ', '設定'];   // v6.2「次の目的地」を追加（項目名で振り分け）
         if (root.Astra && root.Astra.owned()) MENU.splice(MENU.indexOf('ファストトラベル') + 1, 0, 'アストラ号');   // v6.5 Phase E
+        if (root.Ultimates && root.TraderDojo && (root.Ultimates.count(d) > 0 || Object.keys((d.ultimate && d.ultimate.masters) || {}).length)) MENU.splice(MENU.indexOf('じゅもん・とくぎ') + 1, 0, '必殺技');   // 必殺技（覚えた技・流派と師匠・成績）
         var i = await Win.list(MENU.map(function (l) { return { label: l }; }), { title: 'メニュー　' + d.gold + 'G　' + World.map.name, cls: 'main-menu' });
         if (i < 0) break; var lb = MENU[i];
         if (lb === 'ステータス') await Menu.status();
         else if (lb === 'どうぐ') { if (await Menu.items() === 'warp') break; }   // v6.5 帰還の翼・脱出の羽で移動したらメニューを閉じる
         else if (lb === 'そうび') await Menu.equip();
         else if (lb === 'じゅもん・とくぎ') { if (await Menu.skills() === 'warp') break; }   // v6.5 帰還の術で移動したらメニューを閉じる
+        else if (lb === '必殺技') await root.TraderDojo.menu();
         else if (lb === 'なかま') await Menu.party();
         else if (lb === 'クエスト') await Menu.quests();
         else if (lb === '次の目的地') { if (await Menu.objective() === 'map') { openMap = true; break; } }
@@ -474,7 +476,8 @@
         { label: '目的地ナビ（赤丸）', right: st.nav === 'off' ? 'OFF' : 'ON' }, { label: 'ヒント表示', right: st.navHint === 'detail' ? '詳細' : '控えめ' },
         { label: '仲間の隊列表示（後ろをついて歩く）', right: st.followers === 'off' ? '表示しない' : '表示する' },
         { label: 'データ管理（書き出し・読み込み・初期化）' }, { label: 'タイトルに戻る' },
-        { label: '戦闘背景の品質', right: ({ high: '高', normal: '標準', low: '軽量（動く粒なし）' })[st.battleBg] || '自動（スマホは標準）' }
+        { label: '戦闘背景の品質', right: ({ high: '高', normal: '標準', low: '軽量（動く粒なし）' })[st.battleBg] || '自動（スマホは標準）' },
+        { label: '必殺技の判断時間', right: (st.ultTime || 12) + '秒' }, { label: '必殺技のチャートの更新', right: st.ultChart === 'light' ? '軽量（描画を減らす）' : '標準' }, { label: '必殺技の演出', right: st.ultFx === 'calm' ? '控えめ' : 'ふつう' }
       ], { title: '設定' });
       if (i < 0) return;
       if (i === 0) { st.mute = !st.mute; if (root.Audio) root.Audio.apply(); }
@@ -494,6 +497,9 @@
       if (i === 14) { await Menu.dataManagement(); }
       if (i === 15) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
       if (i === 16) { st.battleBg = ({ auto: 'high', high: 'normal', normal: 'low', low: 'auto' })[st.battleBg || 'auto']; if (st.battleBg === 'auto') delete st.battleBg; }   // v6.5 Phase D
+      if (i === 17) { var to = (root.ChartBattleUI && root.ChartBattleUI.TIME_OPTIONS) || [8, 12, 16, 20, 30]; var ti = to.indexOf(st.ultTime || 12); st.ultTime = to[(ti + 1) % to.length]; Win.toast('必殺技の判断時間：' + st.ultTime + '秒'); }   // 必殺技
+      if (i === 18) { st.ultChart = st.ultChart === 'light' ? 'normal' : 'light'; }
+      if (i === 19) { st.ultFx = st.ultFx === 'calm' ? 'normal' : 'calm'; }
       State.autosave();
     }
   };
