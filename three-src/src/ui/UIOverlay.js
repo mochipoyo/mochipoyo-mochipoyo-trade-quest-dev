@@ -10,6 +10,7 @@ export class UIOverlay {
     this.app = app; this.stick = { x: 0, z: 0, mag: 0, active: false };
     const css = document.createElement('style'); css.textContent = `
       body.g3-actors .rw-list.cmd-list { left: auto !important; right: 12px !important; top: 52px !important; bottom: auto !important; max-height: 46% !important; overflow-y: auto; }
+      @media (max-height: 520px) { body.g3-actors .rw-list.cmd-list { max-height: 40% !important; width: 190px !important; } }
       #game3d { position: absolute; display: none; touch-action: none; outline: none; }
       #g3-veil { position: absolute; display: none; background: #05070f; color: #e8c15a; align-items: center; justify-content: center; flex-direction: column; gap: 10px; font-size: 14px; pointer-events: none; }
       #g3-veil .bar { width: 46%; height: 8px; border: 1px solid #e8c15a; border-radius: 4px; overflow: hidden; } #g3-veil .bar i { display: block; height: 100%; width: 0; background: #e8c15a; transition: width .2s; }
