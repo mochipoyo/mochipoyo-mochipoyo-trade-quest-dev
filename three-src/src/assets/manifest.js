@@ -7,6 +7,11 @@ export const ANIMS = ['Idle', 'Walk', 'Run', 'Attack', 'Cast', 'Hit', 'Defend', 
 
 const C = (id, extra) => Object.assign({ modelId: id, modelPath: 'models/char_' + id + '.glb', kind: 'character', scale: 1.0, rotationOffset: 0, footAnchor: 0, animationNames: ANIMS, lod: null, fallback: 'villager_m', status: 'done' }, extra || {});
 const P = (id, file, extra) => Object.assign({ modelId: id, modelPath: 'models/' + file + '.glb', kind: 'prop', scale: 1.0, rotationOffset: 0, footAnchor: 0, animationNames: [], lod: null, fallback: null, status: 'done' }, extra || {});
+// 汎用3Dワールド（Phase 1〜2）で足したモデル：起動時には読まず、使うときに読む（lazy）。状態は provisional（仮3D）＝完成扱いにしない
+export const ANIMS6 = ['Idle', 'Walk', 'Attack', 'Cast', 'Hit', 'Defeat'];
+const LP = (id, file, extra) => P(id, file, Object.assign({ lazy: true, status: 'provisional' }, extra || {}));
+const LC = (id, extra) => C(id, Object.assign({ lazy: true, status: 'provisional' }, extra || {}));
+const MON = (arch, anims) => ({ modelId: 'mon_' + arch, modelPath: 'models/mon_' + arch + '.glb', kind: 'creature', scale: 1.0, rotationOffset: 0, footAnchor: 0, animationNames: anims || ANIMS6, lod: null, fallback: null, status: 'provisional', lazy: true, archetype: arch });
 
 export const MODELS = {
   // キャラクター（Blender で生成：アーマチュア17ボーン＋スキニング＋アニメーション9種）
@@ -40,14 +45,60 @@ export const MODELS = {
   tree_oak_a: P('tree_oak_a', 'tree_oak_a', { lod: 'tree_oak_a_lod1' }), tree_oak_b: P('tree_oak_b', 'tree_oak_b', { lod: 'tree_oak_b_lod1' }), tree_oak_c: P('tree_oak_c', 'tree_oak_c', { lod: 'tree_oak_c_lod1' }),
   tree_pine_a_lod1: P('tree_pine_a_lod1', 'tree_pine_a_lod1'), tree_pine_b_lod1: P('tree_pine_b_lod1', 'tree_pine_b_lod1'), tree_pine_c_lod1: P('tree_pine_c_lod1', 'tree_pine_c_lod1'),
   tree_oak_a_lod1: P('tree_oak_a_lod1', 'tree_oak_a_lod1'), tree_oak_b_lod1: P('tree_oak_b_lod1', 'tree_oak_b_lod1'), tree_oak_c_lod1: P('tree_oak_c_lod1', 'tree_oak_c_lod1'),
-  bush_a: P('bush_a', 'bush_a'), rock_a: P('rock_a', 'rock_a'), rock_b: P('rock_b', 'rock_b')
+  bush_a: P('bush_a', 'bush_a'), rock_a: P('rock_a', 'rock_a'), rock_b: P('rock_b', 'rock_b'),
+  // ---- ここから Phase 1〜2 で追加（tools/blender/build_world.py・build_creatures.py・build_party.py。登録表 assets/registry.json）
+  // 地域テーマの木
+  tree_palm: LP('tree_palm', 'tree_palm', { lod: 'tree_palm_lod1' }), tree_palm_lod1: LP('tree_palm_lod1', 'tree_palm_lod1'),
+  tree_dead: LP('tree_dead', 'tree_dead', { lod: 'tree_dead_lod1' }), tree_dead_lod1: LP('tree_dead_lod1', 'tree_dead_lod1'),
+  tree_snowpine: LP('tree_snowpine', 'tree_snowpine', { lod: 'tree_snowpine_lod1' }), tree_snowpine_lod1: LP('tree_snowpine_lod1', 'tree_snowpine_lod1'),
+  cactus: LP('cactus', 'prop_cactus'),
+  // タイルの小物
+  torch: LP('torch', 'prop_torch'), fountain: LP('fountain', 'prop_fountain'), stall: LP('stall', 'prop_stall'), stalagmite: LP('stalagmite', 'prop_stalagmite'),
+  ore: LP('ore', 'prop_ore'), log: LP('log', 'prop_log'), root: LP('root', 'prop_root'), lever: LP('lever', 'prop_lever'), gate: LP('gate', 'prop_gate'),
+  stairs_down: LP('stairs_down', 'prop_stairs_down'), stairs_up: LP('stairs_up', 'prop_stairs_up'), learn_rune: LP('learn_rune', 'prop_learn_rune'),
+  boss_mark: LP('boss_mark', 'prop_boss_mark'), door_locked: LP('door_locked', 'prop_door_locked'), warp: LP('warp', 'prop_warp'), mushroom: LP('mushroom', 'prop_mushroom'),
+  // ワールドマップの目印
+  lm_village: LP('lm_village', 'lm_village', { kind: 'landmark' }), lm_castle: LP('lm_castle', 'lm_castle', { kind: 'landmark' }),
+  lm_cave: LP('lm_cave', 'lm_cave', { kind: 'landmark' }), lm_tower: LP('lm_tower', 'lm_tower', { kind: 'landmark' }),
+  // 乗り物（2D版 js/data/vehicles.js の id と同じ）
+  veh_sailboat: LP('veh_sailboat', 'veh_sailboat', { kind: 'vehicle' }), veh_galleon: LP('veh_galleon', 'veh_galleon', { kind: 'vehicle' }), veh_airship: LP('veh_airship', 'veh_airship', { kind: 'vehicle' }),
+  // 仲間・NPC（2D版の配色から自動生成。体の作り・アニメーションは主人公と同じ）
+  kyle: LC('kyle'), mina: LC('mina'), seris: LC('seris'), gald: LC('gald'), lucia: LC('lucia'),
+  guard: LC('guard'), king: LC('king'), scholar: LC('scholar'), sailor: LC('sailor'), bartender: LC('bartender'), shadow: LC('shadow'), hero_sage: LC('hero_sage'),
+  // モンスターの型（14）。色と大きさは敵ごとに変える
+  mon_slime: MON('slime'), mon_beast: MON('beast'), mon_reptile: MON('reptile'), mon_bird: MON('bird'), mon_insect: MON('insect'), mon_plant: MON('plant'),
+  mon_fish: MON('fish'), mon_spirit: MON('spirit'), mon_knight: MON('knight', ANIMS), mon_undead: MON('undead', ANIMS), mon_demon: MON('demon', ANIMS),
+  mon_humanoid: MON('humanoid', ANIMS), mon_golem: MON('golem', ANIMS), mon_machine: MON('machine', ANIMS)
 };
 
 // 2D版のスプライトID → 3Dモデル（未制作は近いモデルで代用）
 export function characterModelFor(sprite) {
   if (MODELS[sprite] && MODELS[sprite].kind === 'character') return sprite;
-  const map = { bartender: 'innkeeper', guard: 'villager_m', king: 'elder', sailor: 'villager_m', scholar: 'elder', shadow: 'priest' };
-  return map[sprite] || 'villager_m';
+  if (/^hero_/.test(sprite || '')) return 'hero';   // 主人公の職業別の配色（2D版）→ 主人公のモデル
+  return 'villager_m';
+}
+// そのスプライトに専用（または自動生成）のモデルがあるか：'done'＝手作業で調整 / 'provisional'＝自動生成・型から / 'fallback'＝別のモデルで代用
+export function characterStatus(sprite) {
+  const m = MODELS[sprite]; if (m && m.kind === 'character') return m.status === 'done' ? 'done' : 'provisional';
+  return 'fallback';
+}
+
+/* ---------- モンスター：2D版の敵データ（art.family・art.size・art.c）→ 型・色・大きさ ---------- */
+const FAMILY_ARCH = {
+  slime: 'slime', jelly: 'slime', beast: 'beast', fox: 'beast', cat: 'beast', ram: 'beast', bird: 'bird', owl: 'bird',
+  reptile: 'reptile', salamander: 'reptile', hydra: 'reptile', frog: 'reptile', turtle: 'reptile', insect: 'insect', spider: 'insect', swarm: 'insect',
+  plant: 'plant', cactus: 'plant', aquatic: 'fish', shark: 'fish', ray: 'fish', maw: 'fish', spirit: 'spirit', magical: 'spirit', market: 'spirit',
+  mirror: 'spirit', tome: 'spirit', bell: 'spirit', golem: 'golem', crystal: 'golem', snowman: 'golem', machine: 'machine', turret: 'machine', cart: 'machine',
+  knight: 'knight', undead: 'undead', demon: 'demon'
+};
+export const CREATURE_FAMILY_ARCH = FAMILY_ARCH;
+export function creatureFor(def) {
+  def = def || {}; const art = def.art || {}; const fam = art.family || null;
+  const arch = (fam && FAMILY_ARCH[fam]) || 'humanoid';   // art の無い敵（盗賊・兵士・海賊など）は人型
+  const c = art.c || {}; const base = c.base || c.body || '#9a9a9a';
+  const size = def.boss ? 'boss' : (art.size || 'mid');
+  const scale = { small: 0.78, mid: 1.0, big: 1.4, boss: 1.85 }[size] || 1.0;
+  return { model: 'mon_' + arch, archetype: arch, family: fam, color: base, accent: c.accent || c.belly || null, scale, size, status: 'provisional', exactFamily: !!(fam && FAMILY_ARCH[fam]) };
 }
 
 // 3D化したマップ（Phase 1：ポヨ村と屋内6か所）。それ以外は既存の2D表示

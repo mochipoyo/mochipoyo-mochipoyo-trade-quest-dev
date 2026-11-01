@@ -32,8 +32,8 @@ function stats(obj) { let tris = 0, bones = 0, mats = new Set(); obj.traverse((o
 
 async function show(id, anim) {
   clear(); sel.value = id; const def = MODELS[id];
-  if (def.kind === 'character') {
-    const c = await Character3D.create(models, id); scene.add(c.root); active.push(c);
+  if (def.kind === 'character' || def.kind === 'creature') {
+    const c = await Character3D.create(models, id, { color: q.get('color') ? '#' + q.get('color') : '#8a9ab8' }); scene.add(c.root); active.push(c);
     ANIMS.forEach((a) => { const b = document.createElement('button'); b.textContent = a; b.dataset.a = a; b.disabled = !c.has(a); b.onclick = () => { c.play(a, 0.2, { back: 'Idle' }); mark(a); }; animsEl.appendChild(b); });
     const mark = (a) => animsEl.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b.dataset.a === a));
     const s = stats(c.model); const box = new THREE.Box3().setFromObject(c.model);
@@ -48,8 +48,16 @@ async function show(id, anim) {
   }
   history.replaceState(null, '', '?model=' + id + (anim ? '&anim=' + anim : ''));
 }
+// ?lineup=creatures … モンスターの型（14）を、それぞれ見本の色で並べる。?lineup=creatures&anim=Attack など
+const CREATURE_SAMPLE = { mon_slime: '#5ab0ff', mon_beast: '#8a6a4a', mon_reptile: '#4a8a5a', mon_bird: '#c8a040', mon_insect: '#7a5ac8', mon_plant: '#5aa04a', mon_fish: '#3a7ac8', mon_spirit: '#a8b8e8', mon_knight: '#8a92a8', mon_undead: '#9a8a7a', mon_demon: '#a83a4a', mon_humanoid: '#6a5a8a', mon_golem: '#8a8478', mon_machine: '#7a8a98' };
+async function lineupCreatures(anim) {
+  clear(); const ids = Object.keys(MODELS).filter((id) => MODELS[id].kind === 'creature'); let x = 0; const gap = 1.25;
+  for (const id of ids) { const c = await Character3D.create(models, id, { color: CREATURE_SAMPLE[id] }); c.root.position.x = x; scene.add(c.root); c.play(c.has(anim) ? anim : 'Idle', 0); active.push(c); x += gap; }
+  const mid = (ids.length - 1) * gap / 2; ctl.target.set(mid, 0.6, 0); cam.position.set(mid, +(q.get('cy') || 4.2), +(q.get('cz') || 21)); info.textContent = ids.length + '型（' + anim + '）';
+}
 async function lineup(kind) {
-  clear(); const ids = Object.keys(MODELS).filter((id) => kind === 'characters' ? MODELS[id].kind === 'character' : MODELS[id].kind !== 'character');
+  if (kind === 'creatures') return lineupCreatures(q.get('anim') || 'Idle');
+  clear(); const ids = Object.keys(MODELS).filter((id) => kind === 'characters' ? MODELS[id].kind === 'character' : MODELS[id].kind !== 'character' && MODELS[id].kind !== 'creature');
   const anim = q.get('anim') || 'Idle';
   let x = 0; const gap = kind === 'characters' ? 0.9 : 1.6;
   for (const id of ids) {

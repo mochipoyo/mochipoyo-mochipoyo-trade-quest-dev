@@ -8,7 +8,10 @@
 import * as THREE from 'three';
 import { TerrainBuilder3D, rngFrom } from './TerrainBuilder3D.js';
 import { BuildingBuilder3D } from './BuildingBuilder3D.js';
-import { InteriorBuilder3D } from './InteriorBuilder3D.js';
+import { InteriorBuilder3D, INTERIOR_KINDS } from './InteriorBuilder3D.js';
+import { WorldBuilder3D } from './WorldBuilder3D.js';
+import { themeFor } from './themes.js';
+import { mapCoverage } from './coverage.js';
 import { Character3D, DIR_YAW } from '../entities/Character3D.js';
 import { characterModelFor } from '../assets/manifest.js';
 import { Batch, box, M4, softTexture } from '../engine/Materials.js';
@@ -20,7 +23,31 @@ export class MapScene3D {
     const app = this.app; this.map = map; this.interior = map.kind === 'interior';
     this.root.name = 'map3d_' + map.id;
     const t0 = performance.now();
-    if (this.interior) {
+    this.coverage = mapCoverage(map);   // 'done'（専用に作り込んだ3D）／'generic'（汎用の3D＝仮3D）
+    if (this.coverage === 'generic') {
+      // ---- Phase 1 汎用3Dワールド：町・フィールド・ダンジョン・ポヨ村以外の屋内
+      const theme = themeFor(map); this.theme = theme;
+      const wb = new WorldBuilder3D(app.mats, app.models, app.quality); this.world = wb;
+      const r = await wb.build(map, theme);
+      this.root.add(r.group); this.heightAt = r.heightAt; this.lampSpots = r.lampSpots.slice();
+      this.dark = this.interior || (map.kind === 'dungeon' && !(theme.placeDef && theme.placeDef.outdoor)); this.ambient = (theme.placeDef && theme.placeDef.light) || null;
+      if (map.buildings.length) {
+        const bb = new BuildingBuilder3D(app.mats, app.models); const rnd = rngFrom(5150);
+        const shared = new Batch(); const bgroup = new THREE.Group(); bgroup.name = 'buildings'; this.root.add(bgroup);
+        const design = (window.LocationDesign && window.LocationDesign.forMap) ? window.LocationDesign.forMap(map.id) : null; this.design = design;
+        for (const b of map.buildings) {
+          const o = await bb.build(b, rnd, { batch: shared, design, theme }); bgroup.add(o.group);
+          o.lights.forEach((l) => this.lampSpots.push(l)); o.smokes.forEach((s) => this.addSmoke(s));
+          o.props.forEach((p) => { const v = new THREE.Vector3().setFromMatrixPosition(p.m); wb.put(p.id, p.m, v.x, v.z); });
+          o.group.traverse((x) => { if (x.userData && x.userData.sway) this.sway.push({ obj: x, base: x.rotation.clone(), ph: Math.random() * 6 }); });
+        }
+        shared.build(bgroup);
+      }
+      await r.finalize();
+      for (const c of map.chests) this.addChest(c);
+      if (map.kind === 'town' || map.kind === 'field') this.addMotes(map);
+      this.bounds = (this.interior && map.w <= 16 && map.h <= 14) ? { x0: 1, z0: 1, x1: map.w - 1, z1: map.h - 1 } : null;   // 小さな部屋だけ部屋全体を見る
+    } else if (this.interior) {
       const ib = new InteriorBuilder3D(app.mats, app.models);
       const r = await ib.build(map);
       this.root.add(r.group); this.lampSpots = r.lights; this.animated = r.animated; this.bounds = r.bounds;
@@ -155,6 +182,7 @@ export class MapScene3D {
     for (const a of this.animated) if (a.kind === 'flame') { const k = 0.85 + Math.sin(t * 13 + a.obj.id) * 0.08 + Math.sin(t * 23.7) * 0.06; a.obj.scale.set(1 * k, (a.obj.geometry.type === 'ConeGeometry' ? 1 : 1.8) * (2 - k), 1 * k); }
     if (this.motes) { this.motes.uniforms.uTime.value = t; this.motes.uniforms.uNight.value = this.app.lighting.night; this.motes.uniforms.uScale.value = this.app.renderer.pixelRatio * (this.app.renderer.size.h / 600); }
     if (this.terrain) { this.terrain.update(t, this.app.lighting.night < 0.5 ? 1 : 0); this.terrain.updateLod(player); }
+    if (this.world) { this.world.update(t); this.world.updateLod(player); }
     this.updateBossSymbols(t);
   }
   // v6.5 Phase D ボスのシンボル（3D）：2D版と同じ BossSymbol.list() を毎フレーム写す（倒したら消える・条件まで出ない）
@@ -201,6 +229,8 @@ export class MapScene3D {
     const t = m.tiles[y][x]; if (window.Tiles.isSolid(t)) return true;
     const ev = m.eventAt(x, y); const d = window.State.data; if (ev && ev.solid && !(d && ev.doneFlag && d.flags[ev.doneFlag])) return true;
     if (window.Search && window.Search.solidAt(m, x, y)) return true;   // v6.1 壺など（2D版の passable と同じ）
+    if (window.BossSymbol && window.BossSymbol.blocks && window.BossSymbol.blocks(m, x, y)) return true;   // ボスのシンボル（2D版の passable と同じ）
+    if (window.QuizSymbol && window.QuizSymbol.blocks && window.QuizSymbol.blocks(m, x, y)) return true;   // クイズモンスターのシンボル
     return false;
   }
   // 円（中心 x,z 半径 r）をタイル・NPC から押し出す

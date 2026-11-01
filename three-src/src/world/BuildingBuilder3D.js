@@ -30,7 +30,9 @@ export class BuildingBuilder3D {
     const h2 = two ? 2.0 : 0; const jet = two ? 0.16 : 0;
     const top = base + h1 + h2;
     const doorX = b.doorAbs.x + 0.5;
-    const plaster = M.get('plaster'), timber = M.get('timber'), stone = M.get('stonewall');
+    const theme = opts && opts.theme;   // Phase 1 地域テーマ（壁の色・家の屋根の色）。ポヨ村では渡さない（従来どおり）
+    if (type === 'castle' && theme) return this.castle(b, out, batch, theme);
+    const plaster = theme && theme.plaster ? M.tinted('plaster', theme.plaster) : M.get('plaster'), timber = M.get('timber'), stone = M.get('stonewall');
 
     // ---- 土台
     batch.add(stone, box(W + 0.16, base, D + 0.16, 1.6), M4(cx, base / 2, cz));
@@ -127,7 +129,7 @@ export class BuildingBuilder3D {
     const half = ez / 2 + ovZ; const rise = (ez / 2) * Math.tan(pitch); const slope = half / Math.cos(pitch);
     // v6.2 場所のデザイン（materials.roof3d・thatch3d）。茅葺き：わら色・厚い段・色むらを小さく
     const des = opts && opts.design; const r3 = des && des.materials && des.materials.roof3d; const thatch = !!(des && des.materials && des.materials.thatch3d && type !== 'church' && type !== 'dojo');
-    const roofMat = M.roof((r3 && (r3[type] || r3.default)) || ROOF[type] || '#a8483a'); roofMat.vertexColors = true;
+    const roofMat = M.roof((r3 && (r3[type] || r3.default)) || (theme && theme.roof && type === 'house' ? theme.roof : null) || ROOF[type] || '#a8483a'); roofMat.vertexColors = true;
     const rowLen = thatch ? 0.22 : 0.27; const rows = Math.ceil(slope / (rowLen * 0.92));
     const roofColRng = thatch ? () => 0.9 + rng() * 0.14 : () => 0.82 + rng() * 0.3;
     const rowThick = thatch ? 0.1 : 0.055;
@@ -210,6 +212,30 @@ export class BuildingBuilder3D {
     return out;
   }
 
+  // Phase 1 城（type 'castle'）：石の外壁・四隅の塔（円錐の屋根）・胸壁・門。足元・入口の位置は2D版と同じ。形は仮（仮3D）
+  castle(b, out, batch, theme) {
+    const M = this.mats; const stone = M.tinted('stonewall', theme.region === 'dark' ? '#6a6070' : theme.region === 'desert' ? '#d8b88a' : '#c8c2b8');
+    const roof = M.roof(theme.roof || '#3f4f8a'); const dark = M.tinted('planks', '#4a3020');
+    const x0 = b.x + 0.15, x1 = b.x + b.w - 0.15, z0 = b.y + 0.15, z1 = b.y + b.h - 0.55; const W = x1 - x0, D = z1 - z0, cx = (x0 + x1) / 2, cz = (z0 + z1) / 2;
+    const h = 4.2;
+    batch.add(stone, box(W, h, D, 2), M4(cx, h / 2, cz));
+    for (let x = x0 + 0.3; x < x1 - 0.2; x += 0.9) for (const z of [z0 + 0.15, z1 - 0.15]) batch.add(stone, box(0.45, 0.45, 0.3, 1), M4(x, h + 0.22, z));
+    for (let z = z0 + 0.3; z < z1 - 0.2; z += 0.9) for (const x of [x0 + 0.15, x1 - 0.15]) batch.add(stone, box(0.3, 0.45, 0.45, 1), M4(x, h + 0.22, z));
+    // 中央の館（一段高い）
+    const kw = W * 0.5, kd = D * 0.55; batch.add(stone, box(kw, 2.4, kd, 2), M4(cx, h + 1.2, cz - D * 0.1));
+    batch.add(roof, new THREE.ConeGeometry(Math.max(kw, kd) * 0.62, 2.2, 4), M4(cx, h + 2.4 + 1.1, cz - D * 0.1, Math.PI / 4, 0, 0, 1, 1, kd / kw));
+    // 四隅の塔
+    for (const [tx, tz] of [[x0, z0], [x1, z0], [x0, z1], [x1, z1]]) {
+      batch.add(stone, new THREE.CylinderGeometry(0.85, 0.95, h + 1.6, 14), M4(tx, (h + 1.6) / 2, tz));
+      batch.add(roof, new THREE.ConeGeometry(1.1, 2.0, 14), M4(tx, h + 1.6 + 1.0, tz));
+    }
+    // 門（入口の位置）と窓
+    const dx = b.doorAbs.x + 0.5; batch.add(dark, box(1.4, 2.2, 0.2, 1), M4(dx, 1.1, z1 + 0.02));
+    const glass = M.get('glass'); for (let x = x0 + 1.5; x < x1 - 1; x += 2.2) { if (Math.abs(x - dx) < 1.2) continue; batch.add(glass, box(0.4, 0.8, 0.06, 1), M4(x, 2.8, z1 + 0.02)); }
+    out.lights.push({ pos: new THREE.Vector3(dx, 2.4, z1 + 0.6), color: 0xffb05a, power: 1.0, dist: 8 });
+    for (const sx of [-1, 1]) out.props.push({ id: 'wall_lantern', m: M4(dx + sx * 1.0, 2.2, z1 + 0.05, Math.PI) });
+    return out;
+  }
   async churchTower(b, batch, out, o) {
     const M = this.mats; const { cx, zf, base, plaster, timber, stone } = o;
     const tw = 2.0, tz = zf - tw / 2 - 0.01; const h = 6.4;   // zf＝扉の面。塔の正面は扉のすぐ後ろ

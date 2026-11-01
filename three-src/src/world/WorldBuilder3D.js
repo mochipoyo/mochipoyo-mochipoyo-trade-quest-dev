@@ -1,0 +1,435 @@
+/* =========================================================
+   WorldBuilder3D（Phase 1）：ポヨ村以外の屋外・ダンジョン（field／town／dungeon）を、2D版のタイルから汎用的に3D化する
+   ・座標は TerrainBuilder3D と同じ（タイル x → X、タイル y → Z、1タイル＝1単位、中心は +0.5）
+   ・地面：区画（チャンク）ごとの格子。高さはタイルの種類から（水は低く、丘・山は高く）。heightAt() に一本化
+   ・塗り分け：タイル → 2枚のデータテクスチャ（splat：石畳／土／岩／平滑、tint：色）＋地域テーマ（themes.js）
+   ・水・溶岩・雲海：それぞれ1枚の面（揺らぎのシェーダー）。壁・崖・洞窟の壁：タイルごとに立ち上げて材質ごとに結合
+   ・山：手続き型の山の形を GPU インスタンスで。木：区画ごとのインスタンス（近い区画は精細・遠い区画は簡略の2段階 LOD）
+   ・小物：タイルの種類 → Blender のモデル（manifest.js）。ワールドマップの村・城・洞窟・塔は目印のモデル
+   ・当たり判定・出入り・イベントは2D版のまま（MapScene3D.resolve と World.onStep）。ここは見た目だけ
+   ========================================================= */
+import * as THREE from 'three';
+import { Batch, box, M4 } from '../engine/Materials.js';
+import { MODELS } from '../assets/manifest.js';
+import { rngFrom } from './TerrainBuilder3D.js';
+import { addCutout } from '../engine/Cutout.js';
+
+function hash2(x, y) { let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
+function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y); const xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf); const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; }
+function fbm(x, y) { let s = 0, a = 0.5, f = 1, n = 0; for (let i = 0; i < 4; i++) { s += a * vnoise(x * f, y * f); n += a; f *= 2.03; a *= 0.5; } return s / n; }
+
+// タイル → 地面の高さ（歩ける所はほぼ 0）
+const HEIGHT = { water: -0.55, deep: -0.8, shallow: -0.3, lava: -0.32, cloud: -1.7, puddle: -0.04, hill: 0.42, mountain: 0.85, cliff: 0.2, forest: 0.06, tree: 0.04, slag: 0.1 };
+const WATERY = { water: 1, deep: 1, shallow: 1 };
+const PAVED = { road: 1, stone: 1, path_stone: 1, floor_stone: 1, bld_door: 1, bridge: 1, dock: 1, stairs_down: 1, stairs_up: 1 };
+const WALL_TILES = { wall: 1, castle_wall: 1, wall_wood: 1, cave_wall: 1, bld_block: 1, window: 1, roof_blue: 1, roof_red: 1, roof_green: 1 };
+const TREE_SOLID = { tree: 1, forest: 1 };
+const LANDMARK = { village: 'lm_village', castle_icon: 'lm_castle', cave_icon: 'lm_cave', tower_icon: 'lm_tower' };
+// タイル → 小物のモデル（manifest の id）
+const PROP = {
+  barrel: 'barrel', crate: 'crate', bench: 'bench', well: 'well', flowerbed: 'flowerbed', crops: 'crops', sign: 'sign', fence: 'fence', bush: 'bush_a',
+  lamp: 'lamppost', torch: 'torch', fountain: 'fountain', stall: 'stall', stalactite: 'stalagmite', ore: 'ore', log: 'log', root: 'root', lever: 'lever',
+  gate: 'gate', stairs_down: 'stairs_down', stairs_up: 'stairs_up', learn_rune: 'learn_rune', boss_mark: 'boss_mark', door_locked: 'door_locked', warp: 'warp',
+  bookshelf: 'furn_bookshelf', table: 'furn_table', counter: 'furn_counter', bed: 'furn_bed', pillar: 'furn_pillar', crystal: 'furn_crystal'
+};
+
+export class WorldBuilder3D {
+  constructor(mats, models, quality) { this.mats = mats; this.models = models; this.quality = quality || 'high'; this.time = { value: 0 }; this.stats = {}; }
+
+  async build(map, theme) {
+    const t0 = performance.now(); const hi = this.quality === 'high';
+    const W = map.w, H = map.h, kind = map.kind; const dungeon = kind === 'dungeon' || kind === 'interior'; const field = kind === 'field';
+    const P = theme.placeDef || {}; this.theme = theme;
+    const outdoorD = kind === 'dungeon' && !!P.outdoor;   // 森・草原・天空などの屋外のダンジョン：外側も地形が続く
+    const voidOut = dungeon && !outdoorD;
+    const OUT = voidOut ? 3 : field ? 16 : outdoorD ? 10 : 14; this.OUT = OUT;
+    const group = new THREE.Group(); group.name = 'world3d_' + map.id;
+    const rnd = rngFrom(4321 + W * 17 + H * 3);
+    const clampT = (x, y) => map.tile(Math.max(0, Math.min(W - 1, x)), Math.max(0, Math.min(H - 1, y)));
+    const T = (x, y) => (x < 0 || y < 0 || x >= W || y >= H) ? (voidOut ? '_void' : clampT(x, y)) : map.tile(x, y);
+    const inside = (x, y) => x >= 0 && y >= 0 && x < W && y < H;
+    this.T = T;
+    // 水の上の橋・桟橋（下は水として扱う）
+    const wet = new Set(); for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { const t = map.tile(x, z); if ((t === 'bridge' || t === 'dock') && [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dz]) => WATERY[T(x + dx, z + dz)])) wet.add(x + ',' + z); }
+    const Tg = (x, z) => (wet.has(x + ',' + z) ? 'water' : T(x, z));   // 地面・水面用
+
+    // ---------------- 高さ
+    const baseH = (t) => (t === '_void' ? 0 : (HEIGHT[t] !== undefined ? HEIGHT[t] : 0));
+    const noiseAmp = (t) => (t === 'hill' ? 0.32 : t === 'mountain' ? 0.5 : (t === 'grass' || t === 'grass2' || t === 'sand' || t === 'snow' || t === 'ash' || t === 'darkland') ? 0.1 : t === 'cliff' ? 0.15 : 0);
+    // 頂点（タイルの角・辺・中心）：周りのタイルの重みつき平均（陸を重く＝岸がえぐれすぎない）
+    const vertexH = (x, z) => {
+      const fx = Math.floor(x), fz = Math.floor(z); const ex = Math.abs(x - fx) < 1e-6, ez = Math.abs(z - fz) < 1e-6;
+      const xs = ex ? [fx - 1, fx] : [fx], zs = ez ? [fz - 1, fz] : [fz];
+      let s = 0, n = 0, amp = 0;
+      for (const tz of zs) for (const tx of xs) { const t = Tg(tx, tz); const w = WATERY[t] || t === 'cloud' || t === 'lava' ? 1 : 2; s += baseH(t) * w; n += w; amp = Math.max(amp, noiseAmp(t)); }
+      return s / n + (amp ? (fbm(x * 0.33 + 7, z * 0.33 + 3) - 0.5) * amp * 2 : 0);
+    };
+    // ---------------- 地面（区画ごと）
+    const S = hi ? 2 : 1; const CH = field ? 32 : 24;
+    const gx0 = -OUT, gz0 = -OUT, gx1 = W + OUT, gz1 = H + OUT;
+    const NX = (gx1 - gx0) * S + 1, NZ = (gz1 - gz0) * S + 1;
+    const hgrid = new Float32Array(NX * NZ);
+    for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) hgrid[j * NX + i] = vertexH(gx0 + i / S, gz0 + j / S);
+    const heightAt = (x, z) => {
+      const fx = (x - gx0) * S, fz = (z - gz0) * S; const i = Math.max(0, Math.min(NX - 2, Math.floor(fx))), j = Math.max(0, Math.min(NZ - 2, Math.floor(fz)));
+      const u = Math.max(0, Math.min(1, fx - i)), v = Math.max(0, Math.min(1, fz - j));
+      const a = hgrid[j * NX + i], b = hgrid[j * NX + i + 1], c = hgrid[(j + 1) * NX + i], d = hgrid[(j + 1) * NX + i + 1];
+      return (a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + d * u) * v;
+    };
+    const heightAtRaw = heightAt;
+    const heightAtWalk = (x, z) => (wet.has(Math.floor(x) + ',' + Math.floor(z)) ? 0.05 : heightAtRaw(x, z));
+    this.heightAt = heightAtWalk;
+
+    // ---------------- 塗り分けのテクスチャ（2テクセル／タイル）
+    const SP = 2, SW = (gx1 - gx0) * SP, SH = (gz1 - gz0) * SP;
+    const sp = new Float32Array(SW * SH * 4), tn = new Float32Array(SW * SH * 3);
+    const col = new THREE.Color(); const grassC = new THREE.Color(theme.grass);
+    const G = theme.ground || {};
+    const tileLook = (t) => {
+      // [R 石畳, G 土, B 岩, A 平滑], 色
+      if (t === '_void') return [[0, 0, 1, 0], '#0a0806'];
+      if (PAVED[t]) return [[1, 0, 0, 0], G[t] || '#c8c0b0'];
+      if (t === 'road') return [[field ? 0 : 1, field ? 1 : 0, 0, 0], G.road];
+      if (t === 'sand') return [[0, 0.2, 0, 1], G.sand];
+      if (t === 'snow') return [[0, 0, 0, 1], G.snow];
+      if (t === 'ash') return [[0, 0.3, 0.3, 0.7], G.ash];
+      if (t === 'darkland') return [[0, 0.5, 0.2, 0.4], G.darkland];
+      if (t === 'slag') return [[0, 0, 1, 0], G.slag];
+      if (t === 'cave_floor' || t === 'moss' || t === 'puddle') return [[0, 0.4, 0.6, 0], t === 'moss' ? G.moss : P.floor || G.cave_floor];
+      if (t === 'floor_wood' || t === 'carpet' || t === 'door') return [[0, 1, 0, 0], '#8a6a4a'];
+      if (t === 'crops') return [[0, 1, 0, 0], G.crops];
+      if (WATERY[t] || t === 'lava') return [[0, 0.3, 0.7, 0.3], '#8a8070'];
+      if (t === 'cloud') return [[0, 0, 0, 1], '#ffffff'];
+      if (t === 'mountain' || t === 'cliff') return [[0, 0.2, 0.8, 0], theme.rock];
+      if (WALL_TILES[t]) return [[0, 0.3, 0.7, 0], P.floor || '#8a8070'];
+      if (t === 'hill') return [[0, 0.12, 0, 0], null];
+      if (TREE_SOLID[t]) return [[0, 0.45, 0, 0], null];
+      return [[0, 0, 0, 0], null];   // 草（地域の色）
+    };
+    const lookCache = {};
+    for (let j = 0; j < SH; j++) for (let i = 0; i < SW; i++) {
+      const tx = Math.floor(gx0 + (i + 0.5) / SP), tz = Math.floor(gz0 + (j + 0.5) / SP); const t = Tg(tx, tz);
+      const L = lookCache[t] || (lookCache[t] = tileLook(t)); const o = (j * SW + i);
+      sp[o * 4] = L[0][0]; sp[o * 4 + 1] = L[0][1]; sp[o * 4 + 2] = L[0][2]; sp[o * 4 + 3] = L[0][3];
+      if (L[1]) col.set(L[1]); else col.copy(grassC); if (dungeon && !L[1] && P.floor) col.set(P.floor);
+      tn[o * 3] = col.r; tn[o * 3 + 1] = col.g; tn[o * 3 + 2] = col.b;
+    }
+    const blur = (arr, ch, rad) => { const tmp = new Float32Array(arr.length); for (const [dx, dy] of [[1, 0], [0, 1]]) { const src = dx ? arr : tmp, dst = dx ? tmp : arr; for (let j = 0; j < SH; j++) for (let i = 0; i < SW; i++) for (let c = 0; c < ch; c++) { let s = 0, n = 0; for (let k = -rad; k <= rad; k++) { const ii = Math.min(SW - 1, Math.max(0, i + k * dx)), jj = Math.min(SH - 1, Math.max(0, j + k * dy)); s += src[(jj * SW + ii) * ch + c]; n++; } dst[(j * SW + i) * ch + c] = s / n; } } };
+    blur(sp, 4, 1); blur(tn, 3, 1);
+    const toTex = (arr, ch) => { const n = SW * SH; const d = new Uint8Array(n * 4); for (let k = 0; k < n; k++) { for (let c = 0; c < 4; c++) d[k * 4 + c] = c < ch ? Math.round(Math.max(0, Math.min(1, ch === 3 ? Math.pow(arr[k * 3 + c], 1 / 2.2) : arr[k * ch + c])) * 255) : 255; } const t = new THREE.DataTexture(d, SW, SH, THREE.RGBAFormat); t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearFilter; t.needsUpdate = true; return t; };
+    const splat = toTex(sp, 4), tint = toTex(tn, 3);
+    const groundMat = this.groundMaterial(splat, tint, gx0, gz0, gx1 - gx0, gz1 - gz0, theme);
+    // 区画ごとのメッシュ
+    const chunkRanges = (a0, a1) => { const out = []; for (let a = a0; a < a1; a += CH) out.push([a, Math.min(a1, a + CH)]); return out; };
+    let groundTris = 0;
+    for (const [cz0, cz1] of chunkRanges(gz0, gz1)) for (const [cx0, cx1] of chunkRanges(gx0, gx1)) {
+      if (voidOut) { let any = false; for (let z = cz0; z < cz1 && !any; z++) for (let x = cx0; x < cx1 && !any; x++) if (inside(x, z)) any = true; if (!any) continue; }
+      const nx = (cx1 - cx0) * S + 1, nz = (cz1 - cz0) * S + 1;
+      const pos = new Float32Array(nx * nz * 3), uv = new Float32Array(nx * nz * 2);
+      for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) {
+        const gi = (cx0 - gx0) * S + i, gj = (cz0 - gz0) * S + j; const x = gx0 + gi / S, z = gz0 + gj / S; const k = j * nx + i;
+        pos[k * 3] = x; pos[k * 3 + 1] = hgrid[gj * NX + gi]; pos[k * 3 + 2] = z; uv[k * 2] = x / 4; uv[k * 2 + 1] = z / 4;
+      }
+      const idx = new Uint32Array((nx - 1) * (nz - 1) * 6); let q = 0;
+      for (let j = 0; j < nz - 1; j++) for (let i = 0; i < nx - 1; i++) { const a = j * nx + i, b = a + 1, c = a + nx, d = c + 1; idx[q++] = a; idx[q++] = c; idx[q++] = b; idx[q++] = b; idx[q++] = c; idx[q++] = d; }
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); geo.setIndex(new THREE.BufferAttribute(idx, 1));
+      geo.computeVertexNormals(); geo.computeBoundingSphere(); geo.userData.own = true; groundTris += idx.length / 3;
+      const mesh = new THREE.Mesh(geo, groundMat); mesh.receiveShadow = true; mesh.name = 'ground_' + cx0 + '_' + cz0; group.add(mesh);
+    }
+    if (voidOut) { const under = new THREE.Mesh(new THREE.PlaneGeometry(W + 80, H + 80), new THREE.MeshBasicMaterial({ color: 0x050403 })); under.rotation.x = -Math.PI / 2; under.position.set(W / 2, -2.2, H / 2); group.add(under); }
+    this.stats.groundTris = groundTris;
+
+    // ---------------- 水・溶岩・雲海
+    this.surfaces = [];
+    const surf = (test, y, mat, name, margin) => {
+      const qs = [];
+      for (let z = gz0; z < gz1; z++) for (let x = gx0; x < gx1; x++) { if (!margin && !inside(x, z)) continue; if (test(Tg(x, z))) qs.push([x, z]); }
+      if (!qs.length) return null;
+      const pos = new Float32Array(qs.length * 12), uv = new Float32Array(qs.length * 8), colA = new Float32Array(qs.length * 12), idx = new Uint32Array(qs.length * 6);
+      const c = new THREE.Color();
+      qs.forEach(([x, z], k) => {
+        const t = Tg(x, z); c.set(t === 'deep' ? theme.deep : t === 'shallow' ? '#6ab8c8' : t === 'lava' ? '#ff6a1a' : t === 'cloud' ? '#ffffff' : theme.water);
+        const corners = [[x, z], [x + 1, z], [x, z + 1], [x + 1, z + 1]];
+        corners.forEach(([cx, cz], m) => { pos.set([cx, y, cz], k * 12 + m * 3); uv.set([cx / 8, cz / 8], k * 8 + m * 2); colA.set([c.r, c.g, c.b], k * 12 + m * 3); });
+        idx.set([k * 4, k * 4 + 2, k * 4 + 1, k * 4 + 1, k * 4 + 2, k * 4 + 3], k * 6);
+      });
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); g.setAttribute('color', new THREE.BufferAttribute(colA, 3)); g.setIndex(new THREE.BufferAttribute(idx, 1)); g.computeVertexNormals(); g.computeBoundingSphere(); g.userData.own = true;
+      const m = new THREE.Mesh(g, mat); m.name = name; m.receiveShadow = true; m.renderOrder = 2; group.add(m); this.surfaces.push(m); return m;
+    };
+    surf((t) => !!WATERY[t], -0.2, this.waterMaterial(), 'water', !dungeon);
+    surf((t) => t === 'lava', -0.16, this.lavaMaterial(), 'lava', !dungeon);
+    surf((t) => t === 'cloud', -0.95, this.cloudMaterial(), 'cloudsea', !dungeon);
+
+    // ---------------- 壁・崖・洞窟の壁（材質ごとに結合）
+    const M = this.mats; const wb = new Batch();
+    const wallMat = (t) => {
+      if (t === 'cave_wall' || (t === 'wall' && P.wall === 'rock')) return M.tinted('stonewall', P.wallTint || '#8a7a6a');
+      if (t === 'wall_wood' || (t === 'wall' && P.wall === 'wood')) return M.get('planks');
+      if (t === 'castle_wall') return M.tinted('stonewall', theme.region === 'dark' ? '#6a6070' : P.wall === 'stone' ? (P.wallTint || '#c8c0b4') : '#c8c0b4');
+      if (t === 'bld_block') return M.tinted('plaster', theme.plaster || '#fff6e6');
+      if (t === 'window') return M.get('glassCold');
+      if (/^roof_/.test(t)) return M.roof(t === 'roof_blue' ? '#3f5f9f' : t === 'roof_red' ? '#a8483a' : '#3f8a5a');
+      return P.wall === 'metal' ? M.tinted('stonewall', '#8a9098') : M.tinted('stonewall', P.wallTint || '#b8b0a4');
+    };
+    const wallH = (t) => (t === 'castle_wall' ? (dungeon ? 2.2 : 2.6) : t === 'cave_wall' ? 2.0 : t === 'wall_wood' ? 2.0 : /^roof_/.test(t) ? 2.8 : 2.2);
+    const covered = new Set(); for (const b of map.buildings) for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) covered.add(x + ',' + y);
+    const rockSpots = [];
+    let walls = 0;
+    for (let z = (dungeon ? -1 : 0); z < (dungeon ? H + 1 : H); z++) for (let x = (dungeon ? -1 : 0); x < (dungeon ? W + 1 : W); x++) {
+      const t = T(x, z);
+      const open = (dx, dz) => { const n = T(x + dx, z + dz); return !(WALL_TILES[n] || n === '_void' || n === 'mountain' || n === 'cliff'); };
+      if (t === '_void') { if (open(1, 0) || open(-1, 0) || open(0, 1) || open(0, -1)) { const hv = open(0, -1) && !open(0, 1) ? 0.7 : 2.0; wb.add(wallMat(P.wall === 'rock' ? 'cave_wall' : 'castle_wall'), box(1, hv, 1, 1.5), M4(x + 0.5, hv / 2, z + 0.5)); walls++; } continue; }
+      if (!WALL_TILES[t]) {
+        if (t === 'cliff') { const h = 1.25 + vnoise(x * 0.7, z * 0.7) * 0.6; wb.add(M.tinted('stonewall', theme.rock), box(1.02, h, 1.02, 1.6), M4(x + 0.5, h / 2 + 0.05, z + 0.5)); walls++; if (rnd() < 0.3) rockSpots.push([x + 0.5, z + 0.5, h + 0.05]); }
+        continue;
+      }
+      if (t === 'bld_block' && covered.has(x + ',' + z)) continue;   // 建物は BuildingBuilder3D が作る
+      // 四方とも壁に囲まれた内側は省く（見えない）
+      if (!dungeon || open(1, 0) || open(-1, 0) || open(0, 1) || open(0, -1)) {
+        // 部屋の手前（南）の壁は低く：北側が床で南側が壁・外のとき（ジオラマ式。中が見える）
+        const front = dungeon && open(0, -1) && !open(0, 1);
+        const h = front ? 0.7 : wallH(t); wb.add(wallMat(t), box(1, h, 1, 1.5), M4(x + 0.5, h / 2, z + 0.5)); walls++;
+        if (t === 'castle_wall' && !dungeon && ((x + z) & 1) === 0) wb.add(wallMat(t), box(0.45, 0.35, 0.45, 1), M4(x + 0.5, h + 0.17, z + 0.5));   // 胸壁
+        if (/^roof_/.test(t)) wb.add(M.roof('#3f5f9f'), box(1.1, 0.2, 1.1, 1), M4(x + 0.5, h + 0.1, z + 0.5));
+        if (t === 'cave_wall' && rnd() < 0.5) rockSpots.push([x + 0.5, z + 0.5, h - 0.2]);
+      }
+    }
+    // 床板・じゅうたん（ダンジョン・町の中）
+    for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
+      const t = T(x, z);
+      if (t === 'floor_wood' || t === 'door') wb.add(M.get('planks'), box(1, 0.06, 1, 1.5), M4(x + 0.5, 0.03, z + 0.5));
+      else if (t === 'carpet') wb.add(M.get('carpet'), box(1, 0.07, 1, 3), M4(x + 0.5, 0.035, z + 0.5));
+      else if (t === 'bridge' || t === 'dock') { const w = wet.has(x + ',' + z); wb.add(M.tinted('planks', '#a07a52'), box(1.0, 0.1, 0.96, 1), M4(x + 0.5, w ? 0.0 : 0.03, z + 0.5)); if (w) for (const sx of [-0.42, 0.42]) wb.add(M.get('timber'), box(0.12, 1.0, 0.12, 1), M4(x + 0.5 + sx, -0.5, z + 0.5 + sx * 0.0)); }
+      if (t === 'door') for (const sx of [-0.5, 0.5]) wb.add(M.get('timber'), box(0.14, 2.0, 0.3, 1), M4(x + 0.5 + sx, 1.0, z + 0.5));
+      if (t === 'slot_machine') { wb.add(M.tinted('planks', '#7a1a3a'), box(0.82, 1.45, 0.62, 1), M4(x + 0.5, 0.725, z + 0.5)); wb.add(M.get('gold'), box(0.86, 0.12, 0.66, 1), M4(x + 0.5, 1.5, z + 0.5)); }
+      if (t === 'hole') { const d = new THREE.Mesh(new THREE.CircleGeometry(0.42, 18), new THREE.MeshBasicMaterial({ color: 0x050302 })); d.rotation.x = -Math.PI / 2; d.position.set(x + 0.5, 0.03, z + 0.5); group.add(d); }
+    }
+    wb.build(group);
+    this.stats.walls = walls;
+
+    // ---------------- 区画（チャンク）へ置く小物・木・山
+    const PCH = field ? 32 : 24;
+    const buckets = new Map();
+    const put = (id, m, x, z, color) => { const k = Math.floor(x / PCH) + ',' + Math.floor(z / PCH); if (!buckets.has(k)) buckets.set(k, { cx: (Math.floor(x / PCH) + 0.5) * PCH, cz: (Math.floor(z / PCH) + 0.5) * PCH, ids: {} }); const b = buckets.get(k); const e = b.ids[id] || (b.ids[id] = { m: [], c: [] }); e.m.push(m); e.c.push(color || null); };
+    this.put = put; this.buckets = buckets;
+    // 木（地域テーマ）
+    const treeSet = theme.tree || ['pine', 'oak'];
+    const treeIds = { pine: ['tree_pine_a', 'tree_pine_b', 'tree_pine_c'], oak: ['tree_oak_a', 'tree_oak_b', 'tree_oak_c'], palm: ['tree_palm'], dead: ['tree_dead'], snowpine: ['tree_snowpine'] };
+    const pickTree = () => { const kindT = treeSet[Math.floor(rnd() * treeSet.length)]; const list = treeIds[kindT] || treeIds.pine; return list[Math.floor(rnd() * list.length)]; };
+    const tc = new THREE.Color();
+    const TSC = field ? 0.78 : outdoorD ? 0.7 : 1.0;   // フィールド・屋外ダンジョンの木は小さめ（道が隠れない）
+    this.trees = [];   // 木は1つの BatchedMesh（1回の描画）に入れ、主人公の近くだけ精細なモデルにする（木ごとの LOD）
+    const tree = (x, z, s) => { s *= TSC; const id = pickTree(); tc.setHSL(0, 0, 0.82 + rnd() * 0.25); if (theme.dim) tc.multiplyScalar(0.75 + theme.dim * 0.25); this.trees.push({ id, m: M4(x, heightAt(x, z) - 0.05, z, rnd() * 6.28, (rnd() - 0.5) * 0.06, (rnd() - 0.5) * 0.06, s), x, z, c: tc.clone() }); };
+    let trees = 0;
+    for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
+      const t = T(x, z);
+      if (t === 'forest') { const n = (hi && field) ? 2 : 1; for (let k = 0; k < n; k++) { tree(x + (n > 1 ? 0.2 + rnd() * 0.6 : 0.4 + rnd() * 0.2), z + (n > 1 ? 0.2 + rnd() * 0.6 : 0.4 + rnd() * 0.2), 0.8 + rnd() * 0.45); trees++; } }
+      else if (t === 'tree') { tree(x + 0.5 + (rnd() - 0.5) * 0.3, z + 0.5 + (rnd() - 0.5) * 0.3, 0.8 + rnd() * 0.35); trees++; }
+      else if (t === 'tree_small') { put('tree_oak_c', M4(x + 0.5, heightAt(x + 0.5, z + 0.5), z + 0.5, rnd() * 6.28, 0, 0, 0.45), x, z); }
+    }
+    // 町の外周：草地なら森（出口の道の延長は空ける）
+    if (kind === 'town' || outdoorD) {
+      for (let z = -OUT; z < H + OUT; z++) for (let x = -OUT; x < W + OUT; x++) {
+        if (inside(x, z)) continue; const d = Math.max(-x, x - W + 1, -z, z - H + 1); if (d < 2) continue;
+        const t = T(x, z); if (PAVED[t] || t === 'road' || WATERY[t] || t === 'sand' || t === 'cloud' || t === 'lava') continue;
+        if (rnd() > (d < 4 ? 0.35 : 0.6)) continue; tree(x + rnd(), z + rnd(), 0.9 + rnd() * 0.5); trees++;
+      }
+    }
+    this.stats.trees = trees;
+    // 山（手続き型の形をインスタンス化）
+    const mountains = []; const snowCap = !!theme.snowCap;
+    for (let z = -OUT; z < H + OUT; z++) for (let x = -OUT; x < W + OUT; x++) {
+      if (T(x, z) !== 'mountain') continue; if (!inside(x, z) && rnd() < 0.5) continue;
+      const s = 0.85 + rnd() * 0.5; const h = 1.6 + rnd() * 1.8;
+      mountains.push(M4(x + 0.5 + (rnd() - 0.5) * 0.3, heightAt(x + 0.5, z + 0.5) - 0.2, z + 0.5 + (rnd() - 0.5) * 0.3, rnd() * 6.28, 0, 0, s, h, s));
+    }
+    if (mountains.length) { const mm = new THREE.InstancedMesh(this.mountainGeometry(snowCap, theme), this.mountainMaterial(), mountains.length); mountains.forEach((m, i) => mm.setMatrixAt(i, m)); mm.castShadow = true; mm.receiveShadow = true; mm.computeBoundingSphere(); mm.name = 'mountains'; group.add(mm); }
+    this.stats.mountains = mountains.length;
+    // 崖の上の岩・洞窟の壁の岩
+    for (const [x, z, y] of rockSpots) put(rnd() < 0.5 ? 'rock_a' : 'rock_b', M4(x + (rnd() - 0.5) * 0.3, y, z + (rnd() - 0.5) * 0.3, rnd() * 6.28, 0, 0, 0.6 + rnd() * 0.6), x, z, new THREE.Color(theme.rock));
+    // タイルの小物
+    const lampSpots = []; const lights = [];
+    const yawFor = (x, z) => { for (const [dx, dz] of [[0, 1], [1, 0], [-1, 0], [0, -1]]) { const n = T(x + dx, z + dz); if (PAVED[n] || n === 'road' || n === 'floor_wood' || n === 'grass' || n === 'cave_floor') return Math.atan2(dx, dz); } return 0; };
+    let props = 0;
+    for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
+      const t = T(x, z); const cx = x + 0.5, cz = z + 0.5; const y = heightAt(cx, cz);
+      const id = PROP[t];
+      if (id) {
+        let m;
+        if (t === 'fence') { let hx = 0, hz = 0; for (const k of [-1, 1]) { if (T(x + k, z) === 'fence') hx++; if (T(x, z + k) === 'fence') hz++; } m = M4(cx, y, cz, hz > hx ? Math.PI / 2 : 0); }
+        else if (t === 'barrel' || t === 'bush' || t === 'ore' || t === 'stalactite' || t === 'root') m = M4(cx, y, cz, rnd() * 6.28, 0, 0, t === 'bush' ? 0.9 + rnd() * 0.3 : 1);
+        else if (t === 'well') m = M4(cx, y, cz, 0, 0, 0, 0.62);
+        else if (t === 'table' || t === 'bed') m = M4(cx, y, cz, 0, 0, 0, 0.62, 0.92, 0.85);
+        else m = M4(cx, y, cz, yawFor(x, z));
+        put(id, m, cx, cz); props++;
+        if (t === 'lamp') lampSpots.push({ pos: new THREE.Vector3(cx, 2.0, cz), color: 0xffb05a, power: 1.0, dist: 9 });
+        if (t === 'torch') lampSpots.push({ pos: new THREE.Vector3(cx, 1.6, cz), color: 0xff9a4a, power: 1.2, dist: 8 });
+        if (t === 'crystal') lampSpots.push({ pos: new THREE.Vector3(cx, 1.3, cz), color: 0x7fc8ff, power: 0.9, dist: 6 });
+        if (t === 'learn_rune' || t === 'warp') lampSpots.push({ pos: new THREE.Vector3(cx, 1.0, cz), color: t === 'warp' ? 0xa080ff : 0x6ad0ff, power: 0.7, dist: 5 });
+        if (t === 'boss_mark') lampSpots.push({ pos: new THREE.Vector3(cx, 0.8, cz), color: 0xff3040, power: 0.8, dist: 5 });
+      }
+      if (t === 'lava') lampSpots.push({ pos: new THREE.Vector3(cx, 0.6, cz), color: 0xff6a20, power: 0.5, dist: 4 });
+      const lm = LANDMARK[t];
+      if (lm) { put(lm, M4(cx, y, cz, 0, 0, 0, t === 'castle_icon' ? 3.4 : t === 'tower_icon' ? 2.6 : 3.0), cx, cz); props++; }
+      if (t === 'ship') { put('veh_sailboat', M4(cx, -0.1, cz, 0, 0, 0, 0.9), cx, cz); props++; }
+      // ダンジョン・洞窟の飾り
+      if (dungeon && (t === 'cave_floor' || t === 'moss') && rnd() < 0.03) put('mushroom', M4(cx + (rnd() - 0.5) * 0.6, y, cz + (rnd() - 0.5) * 0.6, rnd() * 6.28, 0, 0, 0.8 + rnd() * 0.6), cx, cz);
+      if (field && t === 'sand' && theme.region === 'desert' && rnd() < 0.012) put('cactus', M4(cx, y, cz, rnd() * 6.28, 0, 0, 0.8 + rnd() * 0.5), cx, cz);
+    }
+    // ダンジョン：壁ぎわのたいまつ（明かりの少ない場所の目安。2D版にない飾り）
+    if (dungeon && P.torch) {
+      let n = 0; for (let z = 1; z < H - 1; z++) for (let x = 1; x < W - 1; x++) {
+        const t = T(x, z); if (Tiles().isSolid(t) || WALL_TILES[t]) continue; if (!(WALL_TILES[T(x, z - 1)] || T(x, z - 1) === '_void')) continue;
+        if (hash2(x * 3, z * 7) > 0.14 || n > 40) continue;
+        put('wall_lantern', M4(x + 0.5, 1.7, z + 0.08, Math.PI), x, z); lampSpots.push({ pos: new THREE.Vector3(x + 0.5, 1.5, z + 0.5), color: 0xffa050, power: 0.9, dist: 7 }); n++;
+      }
+    }
+    // 屋内・暗いダンジョン：天井の明かり（点光源の候補。見た目の器具は置かない）
+    if (voidOut) for (let z = 2; z < H - 1; z += 5) for (let x = 3; x < W - 1; x += 6) { const t = T(x, z); if (Tiles().isSolid(t) || WALL_TILES[t]) continue; lampSpots.push({ pos: new THREE.Vector3(x + 0.5, 2.6, z + 0.5), color: kind === 'interior' ? 0xffd8a0 : 0xffb070, power: kind === 'interior' ? 0.9 : 0.5, dist: 9 }); }
+    this.stats.props = props;
+    this.lampSpots = lampSpots;
+    this.stats.buildMs = Math.round(performance.now() - t0);
+    return { group, heightAt: heightAtWalk, lampSpots, finalize: () => this.finalize(group) };
+  }
+
+  // 置き場所が全部決まってから（建物の小物も put したあと）インスタンス化する。木は区画ごとに精細・簡略の2つを作って距離で切り替える
+  async finalize(group) {
+    const jobs = []; this.lodChunks = [];
+    const need = new Set(); for (const b of this.buckets.values()) for (const id of Object.keys(b.ids)) { need.add(id); if (MODELS[id] && MODELS[id].lod) need.add(MODELS[id].lod); }
+    await Promise.all([...need].filter((id) => MODELS[id]).map((id) => this.models.partsOf(id)));
+    for (const [key, b] of this.buckets) {
+      const near = new THREE.Group(), far = new THREE.Group(); near.name = 'chunk_' + key; far.name = 'chunk_far_' + key; let hasFar = false;
+      for (const id of Object.keys(b.ids)) {
+        if (!MODELS[id]) continue; const e = b.ids[id]; const colors = e.c.some((c) => c) ? e.c.map((c) => c || new THREE.Color(1, 1, 1)) : null;
+        const cast = !/^rock_|^bush_|mushroom/.test(id);
+        jobs.push(this.models.instanced(id, e.m, { castShadow: cast, colors }).then((g) => near.add(g)));
+        const lod = MODELS[id].lod;
+        if (lod && MODELS[lod]) { hasFar = true; jobs.push(this.models.instanced(lod, e.m, { castShadow: cast, colors }).then((g) => far.add(g))); }
+      }
+      group.add(near); if (hasFar) { group.add(far); far.visible = false; }
+      this.lodChunks.push({ cx: b.cx, cz: b.cz, near, far: hasFar ? far : null, lod: 0 });
+    }
+    await Promise.all(jobs);
+    await this.buildTrees(group);
+    this.lodAt = null;
+  }
+  async buildTrees(group) {
+    const list = this.trees || []; if (!list.length) return;
+    const ids = [...new Set(list.map((t) => t.id))]; const geos = {}; let verts = 0, idxN = 0; let mat = null;
+    for (const id of ids) {
+      if (!MODELS[id]) continue; const lodId = MODELS[id].lod;
+      const p0 = await this.models.partsOf(id); const p1 = lodId && MODELS[lodId] ? await this.models.partsOf(lodId) : null;
+      if (!p0.length) continue; mat = mat || p0[0].material;
+      if (p0.length > 1 || p0[0].material !== mat) { console.warn('tree with several materials → instanced', id); continue; }
+      const g0 = p0[0].geometry, g1 = p1 && p1[0] ? p1[0].geometry : g0; geos[id] = { g0, g1 };
+      const cnt = (g) => (g.index ? g.index.count : g.attributes.position.count);
+      verts += g0.attributes.position.count + g1.attributes.position.count; idxN += cnt(g0) + cnt(g1);
+    }
+    const use = list.filter((t) => geos[t.id]); if (!use.length || !mat) return;
+    const bm = new THREE.BatchedMesh(use.length, verts, idxN * 2, mat); bm.name = 'trees'; bm.castShadow = true; bm.receiveShadow = true; bm.sortObjects = false;
+    const gid = {}; for (const id of Object.keys(geos)) gid[id] = { l0: bm.addGeometry(geos[id].g0), l1: bm.addGeometry(geos[id].g1) };
+    this.treeInst = [];
+    for (const t of use) { const g = gid[t.id]; const iid = bm.addInstance(g.l1); bm.setMatrixAt(iid, t.m); bm.setColorAt(iid, t.c); this.treeInst.push({ iid, x: t.x, z: t.z, g, lod: 1 }); }
+    bm.computeBoundingSphere(); bm.computeBoundingBox(); group.add(bm); this.treeBatch = bm; this.stats.treeBatch = use.length;
+  }
+  // 主人公から遠い区画は簡略の木にする（区画単位の LOD）
+  updateLod(focus) {
+    if (!this.lodChunks || !focus) return;
+    if (this.treeInst && !(this.treeAt && Math.abs(this.treeAt.x - focus.x) + Math.abs(this.treeAt.z - focus.z) < 1.5)) {
+      this.treeAt = { x: focus.x, z: focus.z }; const R = this.quality === 'high' ? 16 : 11; const R2 = R * R;
+      for (const t of this.treeInst) { const dx = t.x - focus.x, dz = t.z - focus.z; const want = dx * dx + dz * dz < R2 ? 0 : 1; if (want !== t.lod) { this.treeBatch.setGeometryIdAt(t.iid, want ? t.g.l1 : t.g.l0); t.lod = want; } }
+    } if (this.lodAt && Math.abs(this.lodAt.x - focus.x) + Math.abs(this.lodAt.z - focus.z) < 2) return; this.lodAt = { x: focus.x, z: focus.z };
+    const R = this.quality === 'high' ? 30 : 20;
+    for (const c of this.lodChunks) {
+      if (!c.far) continue; const d = Math.hypot(c.cx - focus.x, c.cz - focus.z); const want = d > R ? 1 : 0;
+      if (want !== c.lod) { c.lod = want; c.near.visible = !want; c.far.visible = !!want; }
+    }
+  }
+  update(t) { this.time.value = t; }
+
+  /* ---------- マテリアル ---------- */
+  groundMaterial(splat, tint, ox, oz, sw, sh, theme) {
+    const tx = this.mats.tex;
+    const mat = new THREE.MeshStandardMaterial({ map: tx.grass_albedo || null, roughness: 0.95, metalness: 0 });
+    const U = { uSplat: { value: splat }, uTint: { value: tint }, uOrigin: { value: new THREE.Vector2(ox, oz) }, uSize: { value: new THREE.Vector2(sw, sh) },
+      uDirt: { value: tx.dirt_albedo || null }, uCobble: { value: tx.cobble_albedo || null }, uRock: { value: tx.stonewall_albedo || null }, uRockTint: { value: new THREE.Color(theme.rock || '#9a948a') }, uSnow: { value: theme.region === 'snow' ? 1 : 0 } };
+    mat.onBeforeCompile = (sh) => {
+      Object.assign(sh.uniforms, U);
+      sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying float vSlope; varying float vH;').replace('#include <begin_vertex>', '#include <begin_vertex>\nvSlope = objectNormal.y; vH = position.y;');
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying float vSlope; varying float vH; uniform sampler2D uSplat, uTint, uDirt, uCobble, uRock; uniform vec2 uOrigin, uSize; uniform vec3 uRockTint; uniform float uSnow;')
+        .replace('#include <map_fragment>', `
+          vec2 wp = vMapUv * 4.0; vec2 st = (wp - uOrigin) / uSize;
+          vec4 sp = texture2D(uSplat, st); vec3 tn = texture2D(uTint, st).rgb;
+          vec3 g1 = texture2D(map, wp / 3.1).rgb, g2 = texture2D(map, wp / 7.3 + vec2(0.37, 0.11)).rgb; vec3 grass = mix(g1, g2, 0.42);
+          vec3 dirt = texture2D(uDirt, wp / 2.7).rgb; vec3 cob = texture2D(uCobble, wp / 2.0).rgb; vec3 rock = texture2D(uRock, wp / 3.0).rgb;
+          float lum = dot(dirt, vec3(0.333)); vec3 smoothc = vec3(0.82 + lum * 0.36);
+          vec3 c = grass * 1.15;
+          c = mix(c, dirt * 1.1, smoothstep(0.25, 0.7, sp.g));
+          c = mix(c, rock * 1.2, smoothstep(0.3, 0.75, sp.b));
+          c = mix(c, smoothc, smoothstep(0.3, 0.7, sp.a));
+          c = mix(c, cob, smoothstep(0.35, 0.65, sp.r));
+          c *= tn;
+          float steep = smoothstep(0.82, 0.55, vSlope); c = mix(c, rock * uRockTint * 1.1, steep * 0.85);
+          c = mix(c, vec3(0.92, 0.95, 0.99), uSnow * smoothstep(0.6, 1.6, vH) * 0.6);
+          diffuseColor *= vec4(c, 1.0);
+        `);
+    };
+    mat.customProgramCacheKey = () => 'world-ground-v1';
+    addCutout(mat); return mat;
+  }
+  // 水・溶岩・雲の面：テクスチャを使わないので、自前の UV（vWuv）を渡す
+  static withUv(sh) {
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec2 vWuv;').replace('#include <uv_vertex>', '#include <uv_vertex>\nvWuv = uv;');
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec2 vWuv;');
+  }
+  waterMaterial() {
+    const time = this.time;
+    const m = new THREE.MeshStandardMaterial({ vertexColors: true, transparent: true, opacity: 0.86, roughness: 0.12, metalness: 0.15, depthWrite: false });
+    m.onBeforeCompile = (sh) => {
+      sh.uniforms.uTime = time; WorldBuilder3D.withUv(sh);
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uTime;')
+        .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+          { vec2 p = vWuv * 8.0; float a = sin(p.x * 3.1 + uTime * 1.3) * 0.5 + sin(p.y * 2.7 - uTime * 1.1) * 0.5 + sin((p.x + p.y) * 5.3 + uTime * 2.1) * 0.25;
+            float b = cos(p.y * 3.3 + uTime * 1.2) * 0.5 + cos(p.x * 2.3 - uTime * 0.9) * 0.5;
+            normal = normalize(normal + vec3(a, 0.0, b) * 0.07); }`)
+        .replace('#include <color_fragment>', '#include <color_fragment>\n{ vec2 p = vWuv * 8.0; float f = smoothstep(0.92, 1.0, sin(p.x * 4.0 + uTime * 0.8) * sin(p.y * 4.4 - uTime * 0.7)); diffuseColor.rgb += f * 0.08; }');
+      sh.vertexShader = sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\ntransformed.y += sin(position.x * 0.9 + uTime * 1.2) * 0.025 + cos(position.z * 0.8 + uTime) * 0.025;').replace('#include <common>', '#include <common>\nuniform float uTime;');
+    };
+    m.customProgramCacheKey = () => 'world-water-v1'; return m;
+  }
+  lavaMaterial() {
+    const time = this.time;
+    const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.6, emissive: 0xff5a10, emissiveIntensity: 1.6 });
+    m.onBeforeCompile = (sh) => {
+      sh.uniforms.uTime = time; WorldBuilder3D.withUv(sh);
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uTime;')
+        .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n{ vec2 p = vWuv * 8.0; float n = sin(p.x * 2.1 + uTime * 0.6) * sin(p.y * 1.7 - uTime * 0.4) * 0.5 + 0.5; totalEmissiveRadiance *= 0.55 + n * 0.8; diffuseColor.rgb *= 0.4 + n * 0.6; }');
+    };
+    m.customProgramCacheKey = () => 'world-lava-v1'; return m;
+  }
+  cloudMaterial() {
+    const time = this.time;
+    const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, transparent: true, opacity: 0.94, depthWrite: false, emissive: 0xbcd0e8, emissiveIntensity: 0.25 });
+    m.onBeforeCompile = (sh) => {
+      sh.uniforms.uTime = time; WorldBuilder3D.withUv(sh);
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uTime;')
+        .replace('#include <color_fragment>', '#include <color_fragment>\n{ vec2 p = vWuv * 6.0 + vec2(uTime * 0.03, uTime * 0.012); float n = sin(p.x * 2.3) * sin(p.y * 1.9) * 0.5 + sin(p.x * 5.1 + p.y * 3.7) * 0.25; diffuseColor.rgb *= 0.86 + n * 0.14; }');
+    };
+    m.customProgramCacheKey = () => 'world-cloud-v1'; return m;
+  }
+  mountainMaterial() { if (!this._mtnMat) { this._mtnMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95, flatShading: true }); addCutout(this._mtnMat); } return this._mtnMat; }
+  // 山：雪の帽子つき（地域による）のでこぼこな円錐。高さ1・半径0.95 を基準に、インスタンスの拡大率で変える
+  mountainGeometry(snowCap, theme) {
+    const key = (snowCap ? 's' : 'n') + theme.rock; this._mtnGeo = this._mtnGeo || {}; if (this._mtnGeo[key]) return this._mtnGeo[key];
+    const g = new THREE.ConeGeometry(0.95, 1, 9, 4, false); const p = g.attributes.position; const c = new Float32Array(p.count * 3);
+    const rock = new THREE.Color(theme.rock), dark = rock.clone().multiplyScalar(0.7), snow = new THREE.Color('#f4f8fc'), grassy = new THREE.Color(theme.grass).multiplyScalar(0.6);
+    for (let i = 0; i < p.count; i++) {
+      const x = p.getX(i), y = p.getY(i) + 0.5, z = p.getZ(i); const r = Math.hypot(x, z);
+      if (r > 0.01 && y < 0.98) { const n = (hash2(Math.round(x * 50), Math.round(z * 50 + y * 30)) - 0.5) * 0.25; p.setX(i, x * (1 + n)); p.setZ(i, z * (1 + n)); p.setY(i, p.getY(i) + n * 0.15); }
+      const k = y; const cc = snowCap && k > 0.62 ? snow : k < 0.2 ? grassy : (hash2(i, 3) > 0.5 ? rock : dark);
+      c[i * 3] = cc.r; c[i * 3 + 1] = cc.g; c[i * 3 + 2] = cc.b;
+    }
+    g.translate(0, 0.5, 0); g.setAttribute('color', new THREE.BufferAttribute(c, 3)); g.computeVertexNormals(); g.userData.own = false; this._mtnGeo[key] = g; return g;
+  }
+}
+function Tiles() { return window.Tiles; }

@@ -11,6 +11,7 @@ import { Batch, box, M4, textTexture } from '../engine/Materials.js';
 import { rngFrom } from './TerrainBuilder3D.js';
 
 const KIND = { poyo_church: 'church', poyo_dojo: 'dojo', poyo_item_shop: 'shop', poyo_inn: 'inn', poyo_elder_house: 'elder', poyo_house: 'house' };
+export const INTERIOR_KINDS = KIND;   // 専用に作り込んだ屋内（それ以外の屋内は WorldBuilder3D の汎用表示）
 
 export function chartTexture(title) {
   const c = document.createElement('canvas'); c.width = 1024; c.height = 576; const g = c.getContext('2d');

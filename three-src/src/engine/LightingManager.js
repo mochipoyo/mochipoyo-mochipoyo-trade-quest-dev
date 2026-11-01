@@ -60,7 +60,9 @@ export class LightingManager {
     });
   }
   setLampSpots(spots) { this.lampSpots = spots; }
-  setInterior(on) { this.interior = on; }
+  // 地域テーマ（themes.js）：霧・地平の色を地域の色へ寄せ、暗い地域は日差しを弱める
+  setTheme(theme) { this.theme = theme || null; this._fogC = theme && theme.fog ? new THREE.Color(theme.fog) : null; }
+  setInterior(on, ambient) { this.interior = on; this.ambient = ambient || null; }
   update(t, focus) {
     const tt = this.preview !== null ? this.preview : (t === undefined ? 0.35 : t);
     const k = lerpKey(((tt % 1) + 1) % 1);
@@ -71,10 +73,16 @@ export class LightingManager {
     const f = focus || new THREE.Vector3();
     this.sun.position.copy(f).addScaledVector(dir, 50); this.sun.target.position.copy(f);
     this.sun.color.setHex(k.sun); this.sun.intensity = this.interior ? k.si * 0.25 : k.si;
-    this.hemi.color.setHex(k.hemi); this.hemi.groundColor.setHex(0x4a4a3a); this.hemi.intensity = this.interior ? Math.max(0.55, k.hi * 0.8) : k.hi;
+    this.hemi.color.setHex(k.hemi); this.hemi.groundColor.setHex(0x4a4a3a); this.hemi.intensity = this.interior ? Math.max(0.55, k.hi * 0.8) * (this.ambient ? 0.7 + this.ambient * 0.8 : 1) : k.hi;
     this.fog.color.setHex(this.interior ? 0x1a140e : k.fog); this.fog.density = this.interior ? 0.0 : (0.010 + this.night * 0.01);
+    const th = this.theme; let skyHor = null;
+    if (th && !this.interior) {
+      if (this._fogC) { this.fog.color.lerp(this._fogC, 0.55 * (1 - this.night * 0.6)); skyHor = this._fogC; }
+      if (th.dim) { this.sun.intensity *= th.dim; this.hemi.intensity *= 0.6 + th.dim * 0.4; }
+    }
     this.sky.visible = !this.interior;
-    this.sky.material.uniforms.top.value.setHex(k.top); this.sky.material.uniforms.hor.value.setHex(k.hor); this.sky.material.uniforms.sunDir.value.copy(dir); this.sky.material.uniforms.sunCol.value.setHex(k.sun);
+    this.sky.material.uniforms.top.value.setHex(k.top); this.sky.material.uniforms.hor.value.setHex(k.hor);
+    if (skyHor) { this.sky.material.uniforms.hor.value.lerp(skyHor, 0.5); if (th.dim) this.sky.material.uniforms.top.value.lerp(skyHor, 0.35).multiplyScalar(0.6 + th.dim * 0.4); } this.sky.material.uniforms.sunDir.value.copy(dir); this.sky.material.uniforms.sunCol.value.setHex(k.sun);
     this.sky.position.copy(f);
     this.scene.background = null;
     this.renderer.renderer.toneMappingExposure = k.exp;

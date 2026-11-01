@@ -15,13 +15,15 @@ import { ModelManager } from '../engine/ModelManager.js';
 import { Materials } from '../engine/Materials.js';
 import { MapScene3D } from '../world/MapScene3D.js';
 import { Character3D, DIR_YAW, yawToDir } from '../entities/Character3D.js';
-import { MAPS_3D, MODELS, characterModelFor } from '../assets/manifest.js';
+import { MODELS, characterModelFor } from '../assets/manifest.js';
+import { mapCoverage, MAPS_DONE } from '../world/coverage.js';
 import { UIOverlay } from '../ui/UIOverlay.js';
 import { CUT } from '../engine/Cutout.js';
 import { BattleStage3D, FAMILY_TABLE } from '../battle/BattleStage3D.js';
 
 const G = window;
 const WALK = 2.7, RUN = 5.4, RADIUS = 0.28;
+const CACHE_GENERIC = 3;   // 汎用3Dのマップは直近の3枚だけ残す（ポヨ村と屋内は常に残す）
 
 export class App3D {
   constructor(opts) {
@@ -71,11 +73,20 @@ export class App3D {
   attach(scene) {
     if (!scene || scene._mtq3d) return; scene._mtq3d = true;
     const app = this, oH = scene.handleInput, oU = scene.update, oD = scene.draw;
-    scene.handleInput = function () { if (app.mode3D()) return app.handleInput(); return oH.call(this); };
-    scene.update = function (dt) { if (app.mode3D()) { const p = G.World.player; p.moving = false; } oU.call(this, dt); if (app.mode3D()) app.updateLogic(dt / 1000); };
+    // 乗り物に乗っているあいだ（と乗り降りの1歩）は、2D版と同じマス単位の移動（gridMode）。3D側は位置を写して描くだけ
+    scene.handleInput = function () { if (app.mode3D()) { if (app.gridMode()) { app.feedStick(); return oH.call(this); } return app.handleInput(); } return oH.call(this); };
+    scene.update = function (dt) { if (app.mode3D() && !app.gridMode()) { const p = G.World.player; p.moving = false; } oU.call(this, dt); if (app.mode3D()) app.updateLogic(dt / 1000); };
     scene.draw = function (ctx) { if (app.mode3D() && app.current && app.current.map === G.World.map) return; return oD.call(this, ctx); };
   }
-  mode3D() { const W = G.World; return this.ready && !this.disabled && W.map && MAPS_3D.indexOf(W.map.id) >= 0 && !this.failed[W.map.id]; }
+  mode3D() { const W = G.World; return this.ready && !this.disabled && !!W.map && mapCoverage(W.map) !== '2d' && !this.failed[W.map.id]; }
+  gridMode() { const d = G.State.data; return !!(d && d.aboard) || !!this.stepping; }
+  // 仮想スティック → 2D版の方向キー（gridMode のときだけ）
+  feedStick() {
+    const st = this.ui.stick, K = G.Engine.Input.keys; const want = { up: false, down: false, left: false, right: false };
+    if (st && st.mag > 0.3) { if (Math.abs(st.x) > Math.abs(st.z)) want[st.x > 0 ? 'right' : 'left'] = true; else want[st.z > 0 ? 'down' : 'up'] = true; }
+    if (!this._stickKeys) this._stickKeys = {};
+    for (const k of Object.keys(want)) { if (want[k]) { K[k] = true; this._stickKeys[k] = true; } else if (this._stickKeys[k]) { K[k] = false; this._stickKeys[k] = false; } }
+  }
 
   /* ---------- 初期化 ---------- */
   async init() {
@@ -90,7 +101,7 @@ export class App3D {
     this.mats = new Materials(this.base, this.renderer.renderer); this.models = new ModelManager(this.base);
     this.ui.progress(0.05, '3Dの素材を読み込んでいます…');
     await this.mats.preload(); this.ui.progress(0.25);
-    const ids = Object.keys(MODELS);
+    const ids = Object.keys(MODELS).filter((id) => !MODELS[id].lazy);   // Phase 1〜2 で足したモデル（lazy）は使うときに読む
     await this.models.preload(ids, (n, all) => this.ui.progress(0.25 + 0.65 * n / all));
     this.hero = await Character3D.create(this.models, 'hero', { xray: true });
     this.scene.add(this.hero.root);
@@ -128,16 +139,23 @@ export class App3D {
     this.building = map; const t0 = performance.now();
     const ms = new MapScene3D(this);
     ms.build(map).then(() => {
-      this.cache.set(map.id, ms); this.stats['build_' + map.id] = Math.round(performance.now() - t0);
+      this.cache.set(map.id, ms); this.stats['build_' + map.id] = Math.round(performance.now() - t0); ms.usedAt = performance.now();
+      if (ms.world) this.stats['world_' + map.id] = Object.assign({}, ms.world.stats);
       if (this.building === map) this.building = null;
+      this.trimCache(map.id);
       if (G.World.map === map) this.activate(ms);
       this.prebuild();
     }).catch((e) => { console.error('3D build failed', map.id, e); this.failed[map.id] = true; this.building = null; });
   }
+  // 汎用3Dのマップは直近のものだけ残す（メモリ）
+  trimCache(keepId) {
+    const gen = [...this.cache.entries()].filter(([id, ms]) => ms.coverage === 'generic' && id !== keepId && ms !== this.current).sort((a, b) => (a[1].usedAt || 0) - (b[1].usedAt || 0));
+    while (gen.length > CACHE_GENERIC - 1) { const [id, ms] = gen.shift(); try { ms.dispose(); } catch (e) { console.warn(e); } this.cache.delete(id); }
+  }
   // 村の中の屋内は先に作っておく（出入りを待たせない）
   prebuild() {
     if (this._pre || this.building) return; const W = G.World;
-    const next = MAPS_3D.find((id) => { const c = this.cache.get(id); return !this.failed[id] && !(c && W.maps[id] && c.map === W.maps[id]); });
+    const next = MAPS_DONE.find((id) => { const c = this.cache.get(id); return !this.failed[id] && !(c && W.maps[id] && c.map === W.maps[id]); });
     if (!next) return;
     let m; try { m = W.getMap(next); } catch (e) { this.failed[next] = true; return; }
     this._pre = true; const ms = new MapScene3D(this); const t0 = performance.now();
@@ -147,9 +165,11 @@ export class App3D {
   activate(ms) {
     if (this.current === ms) return;
     if (this.current) this.scene.remove(this.current.root);
-    this.scene.add(ms.root); this.current = ms;
-    this.lighting.setLampSpots(ms.lampSpots); this.lighting.setInterior(ms.interior);
-    this.camera.setInterior(ms.interior); if (!ms.interior) this.camera.setPitch(this.userPitch);
+    this.scene.add(ms.root); this.current = ms; ms.usedAt = performance.now();
+    this.lighting.setLampSpots(ms.lampSpots); this.lighting.setInterior(ms.interior || !!ms.dark, ms.ambient);
+    if (this.lighting.setTheme) this.lighting.setTheme(ms.theme || null);
+    const closeCam = ms.interior || (ms.map.kind === 'dungeon');
+    this.camera.setInterior(closeCam); if (!closeCam) { this.camera.setPitch(this.userPitch); if (ms.map.kind === 'field') this.camera.wantDist = Math.max(this.camera.wantDist, 24); }
     this.snap();
   }
   snap() {
@@ -178,6 +198,14 @@ export class App3D {
   updateLogic(dt) {
     const W = G.World, E = G.Engine, p = W.player; const ms = this.current;
     if (!ms || ms.map !== W.map || !p) return;
+    if (this.gridMode()) {   // 乗り物：2D版がマス単位で動かす。3D はその位置を写す
+      const TS = E.TS; this.pos.x = p.px / TS + 0.5; this.pos.z = p.py / TS + 0.5; this.pos.y = ms.heightAt(this.pos.x, this.pos.z);
+      this.yaw = DIR_YAW[p.dir] || 0; this.speed = p.moving ? WALK : 0; this.running = false;
+      if (G.Follow) G.Follow.update(W.map, this.pos.x, this.pos.z, p.dir);
+      this.lastTile = [p.x, p.y]; this.lastMap = W.map;
+      if (this.stepping && !p.moving) this.stepping = false;
+      return;
+    }
     if (this.lastMap !== W.map || !this.lastTile || p.x !== this.lastTile[0] || p.y !== this.lastTile[1]) this.snap();   // 2D 側で位置が変わった（ワープ・全滅・デバッグ移動など）
     if (E.top() !== W.scene || W.busy) { this.speed = 0; return; }
     const keys = E.Input.keys; const st = this.ui.stick;
@@ -190,8 +218,9 @@ export class App3D {
     const sp = (run ? RUN : WALK) * (0.75 + 0.25 * mul);
     this.speed = sp; this.running = run; this.yaw = Math.atan2(ix, iz);
     // 移動（大きく動くときは分割）＋押し出し
-    let dist = sp * Math.min(dt, 0.05); const steps = Math.ceil(dist / 0.2);
+    let dist = sp * Math.min(dt, 0.05); const steps = Math.ceil(dist / 0.2); const x0 = this.pos.x, z0 = this.pos.z;
     for (let i = 0; i < steps; i++) { const d = dist / steps; const r = ms.resolve(this.pos.x + ix * d, this.pos.z + iz * d, RADIUS); this.pos.x = r.x; this.pos.z = r.z; }
+    if (Math.hypot(this.pos.x - x0, this.pos.z - z0) < dist * 0.35 && this.bump(ix, iz)) { this.speed = 0; return; }
     // v5.7 歩き回る人にぶつかって進めないときは、2D版と同じく横へよけてもらう
     const now = performance.now();
     // v6.2 押し続けたときだけ道をあけてもらう（2D版と同じ World.pushAgainst。話しかけるために近づいただけでは動かない）
@@ -211,6 +240,45 @@ export class App3D {
       this.lastTile = [p.x, p.y];
     }
   }
+
+  // 進めない方向へ押し続けたとき：2D版の World.tryMove に任せる（外周からの退出・乗り物に乗る・アストラ号・ボス／クイズのシンボル・NPC に道をあけてもらう）
+  // 戻り値 true＝2D版が1歩の移動を始めた（乗船など）→ その1歩は gridMode で2D版が動かす
+  bump(ix, iz) {
+    const W = G.World, E = G.Engine, p = W.player, m = W.map; const now = performance.now();
+    if (this._bumpAt && now - this._bumpAt < 280) return false;
+    const dir = yawToDir(Math.atan2(ix, iz)); const d = W.delta(dir); const nx = p.x + d[0], ny = p.y + d[1];
+    const along = (this.pos.x - (p.x + 0.5)) * d[0] + (this.pos.z - (p.y + 0.5)) * d[1]; if (along < 0.1) return false;   // そのマスの端まで来ている
+    const oob = nx < 0 || ny < 0 || nx >= m.w || ny >= m.h;
+    const veh = !oob && G.Vehicle && G.Vehicle.at && G.Vehicle.at(m.id, nx, ny);
+    if (!oob && !veh && m.passable(nx, ny, G.State.data)) return false;
+    this._bumpAt = now; p.dir = dir;
+    const started = W.tryMove(dir);
+    if (started) { this.stepping = true; p.px = p.x * E.TS; p.py = p.y * E.TS; this.bumpLog = (this.bumpLog || 0) + 1; return true; }
+    return false;
+  }
+  // 乗り物（帆船・大型船・飛空艇）とアストラ号の3D表示。乗っている乗り物は主人公の位置に、止めてある乗り物はそのマスに（モデルは仮3D）
+  updateVehicles(dt, t) {
+    const V = G.Vehicle, A = G.Astra, W = G.World; if (!this.current || !W.map) return;
+    const list = []; try { if (V && V.onMap) V.onMap(W.map.id).forEach((v) => list.push({ key: v.id, model: 'veh_' + v.id, x: v.x, y: v.y, aboard: v.aboard, flies: V.flies && V.flies(v.id) })); } catch (e) { /* なし */ }
+    try { const ap = A && A.parkedOn && A.parkedOn(W.map.id); if (ap) list.push({ key: 'astra', model: 'veh_airship', x: ap.x, y: ap.y, astra: true }); } catch (e) { /* なし */ }
+    if (!this.vehObjs) this.vehObjs = new Map(); const seen = new Set();
+    for (const v of list) {
+      seen.add(v.key); let o = this.vehObjs.get(v.key);
+      if (!o) {
+        o = { g: new THREE.Group(), ready: false }; o.g.name = 'vehicle_' + v.key; this.vehObjs.set(v.key, o); this.scene.add(o.g);
+        this.models.instanced(v.model, [new THREE.Matrix4()], { colors: v.astra ? [new THREE.Color(1.0, 0.86, 0.5)] : null }).then((g) => { o.g.add(g); o.ready = true; }).catch(() => { o.failed = true; });
+      }
+      o.g.visible = true; const aboard = v.aboard;
+      const x = aboard ? this.pos.x : v.x + 0.5, z = aboard ? this.pos.z : v.y + 0.5; const fly = (aboard && v.flies) ? 2.6 : 0;
+      const wy = (v.model === 'veh_airship') ? (this.current.heightAt(x, z) || 0) + fly : -0.22;
+      o.g.position.set(x, wy + Math.sin(t * 1.6 + (v.x || 0)) * 0.04, z);
+      if (aboard) { let dd = this.yaw - (o.yaw || 0); while (dd > Math.PI) dd -= Math.PI * 2; while (dd < -Math.PI) dd += Math.PI * 2; o.yaw = (o.yaw || 0) + dd * Math.min(1, dt * 6); o.g.rotation.y = o.yaw; }
+      o.g.scale.setScalar(v.model === 'veh_galleon' ? 1.1 : 1.0);
+    }
+    this.vehObjs.forEach((o, k) => { if (!seen.has(k)) o.g.visible = false; });
+    this.aboardNow = list.some((v) => v.aboard);
+  }
+  vehicleInfo() { const out = []; if (this.vehObjs) this.vehObjs.forEach((o, k) => out.push({ key: k, visible: o.g.visible, ready: o.ready, x: +o.g.position.x.toFixed(2), y: +o.g.position.y.toFixed(2), z: +o.g.position.z.toFixed(2) })); return out; }
 
   // v6.4 Phase F 隊列の仲間（3Dモデル）。位置は js/rpg/follow.js（2D版と共通）が決める。モデルは仲間ごとに1回だけ作る
   // ・専用モデルのない仲間は manifest の characterModelFor（村人などの代用）で表示する
@@ -322,12 +390,13 @@ export class App3D {
     if (!show || !built) { this.ui.setPrompt(null); return; }
     if (!W.busy) this.talkNpc = null;
     // 主人公
-    const h = this.hero; h.root.position.copy(this.pos); h.faceTo(this.yaw);
+    this.updateVehicles(dt, t);
+    const h = this.hero; h.root.position.copy(this.pos); h.faceTo(this.yaw); h.root.visible = !this.aboardNow;
     if (this.speed > 0.1) { this._emote = null; h.play(this.running ? 'Run' : 'Walk', 0.15); h.setSpeed(this.running ? this.speed / RUN : this.speed / WALK); }
     else if (this._emote && t < this._emote.until) h.play(this._emote.name, 0.2);
     else if (!h.onceName) { this._emote = null; h.play('Idle', 0.25); }
     h.update(dt);
-    this.updateFollowers(dt);
+    if (!this.aboardNow) this.updateFollowers(dt); else if (this.followers) this.followers.forEach((ent) => { if (ent.ch) ent.ch.root.visible = false; });
     this.current.update(dt, t, this.pos);
     if (this.current.interior && this.current.bounds) {   // 屋内：部屋全体が入るよう、部屋の中心寄りに見る
       const b = this.current.bounds; const cx = (b.x0 + b.x1) / 2, cz = (b.z0 + b.z1) / 2 - 0.4;

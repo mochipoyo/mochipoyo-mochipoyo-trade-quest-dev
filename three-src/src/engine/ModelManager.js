@@ -30,6 +30,24 @@ export class ModelManager {
     root.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
     return { root, animations: g.animations };
   }
+  // モンスターの型（mon_*）：マテリアル tint_body・tint_accent を敵の色に置き換えてから結合する（色ごとに雛形を1つ作って使い回す）
+  async creature(id, color, accent) {
+    const g = await this.load(id); if (!g) return null;
+    const key = id + '|' + (color || '') + '|' + (accent || '');
+    if (!this.templates.has(key)) {
+      const base = SkeletonUtils.clone(g.scene); const c0 = new THREE.Color(color || '#9a9a9a');
+      const c1 = accent ? new THREE.Color(accent) : c0.clone().lerp(new THREE.Color(1, 1, 1), 0.45);
+      base.traverse((o) => {
+        if (!o.isMesh) return; const ms = Array.isArray(o.material) ? o.material : [o.material];
+        const nm = ms.map((m) => { if (/^tint_body/.test(m.name)) { const x = m.clone(); x.color.copy(c0); return x; } if (/^tint_accent/.test(m.name)) { const x = m.clone(); x.color.copy(c1); return x; } return m; });
+        o.material = Array.isArray(o.material) ? nm : nm[0];
+      });
+      this.templates.set(key, flattenCharacter(base));
+    }
+    const root = SkeletonUtils.clone(this.templates.get(key));
+    root.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
+    return { root, animations: g.animations };
+  }
   // 静的モデルの複製（確認用ページなど）
   async clone(id) { const parts = await this.partsOf(id); const g = new THREE.Group(); g.name = id; parts.forEach((p) => { const m = new THREE.Mesh(p.geometry, p.material); m.castShadow = true; m.receiveShadow = true; g.add(m); }); return g; }
   // まとめた部品：[{ geometry, material }]（モデル原点基準）

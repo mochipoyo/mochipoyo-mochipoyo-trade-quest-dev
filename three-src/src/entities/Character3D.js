@@ -9,13 +9,14 @@ import { MODELS } from '../assets/manifest.js';
 import { softTexture } from '../engine/Materials.js';
 
 const ONCE = { Attack: 1, Cast: 1, Hit: 1, Defend: 0, Victory: 0, Defeat: 1 };
+export const ONCE_ANIMS = ONCE;
 let blobTex = null;
 
 export class Character3D {
   static async create(models, modelId, opts) {
     opts = opts || {};
     const def = MODELS[modelId] || MODELS[MODELS[modelId] ? modelId : 'villager_m'];
-    let c = await models.character(def.modelId);
+    let c = def.kind === 'creature' ? await models.creature(def.modelId, opts.color, opts.accent) : await models.character(def.modelId);
     if (!c && def.fallback) c = await models.character(def.fallback);
     if (!c) return null;
     return new Character3D(c, def, opts);
