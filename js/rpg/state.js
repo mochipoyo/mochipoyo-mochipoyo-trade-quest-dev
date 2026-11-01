@@ -36,6 +36,7 @@
       // トレードクイズモンスター（js/rpg/quiz.js の Quiz.defaults と同じ形。旧セーブは State.migrate がこの初期値で補い、Quiz.ensure が5体分の記録をそろえる）
       quizMon: { v: 1, mon: {}, asked: {}, history: {}, titles: [], tokens: [], log: [], pending: {} }
     };
+    if (root.Quiz) root.Quiz.ensure(d);   // 5体分の記録（新しいゲームでも、読み込んだセーブと同じ形にする）
     State.data = d;
     return d;
   };
