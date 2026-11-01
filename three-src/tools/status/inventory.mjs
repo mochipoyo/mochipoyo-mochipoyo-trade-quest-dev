@@ -35,7 +35,7 @@ detail.maps = { total: maps.length, byKind: mk, done: MAPS_DONE, failed: [...fai
 const COMP = w.COMPANIONS || {}; const party = [{ id: 'hero', sprite: 'hero' }].concat(Object.keys(COMP).map((id) => ({ id, sprite: COMP[id].sprite })));
 let pDone = 0, pProv = 0; const pList = [];
 for (const c of party) { const model = c.id === 'hero' ? 'hero' : characterModelFor(c.sprite); const st = c.id === 'hero' ? 'done' : (MODELS[c.id] ? (MODELS[c.id].status === 'done' ? 'done' : 'provisional') : 'substitute'); if (st === 'done') pDone++; else pProv++; pList.push(c.id + '→' + model + '（' + (st === 'done' ? '専用' : st === 'provisional' ? '自動生成' : '代用：2D版と同じ ' + c.sprite + ' の見た目') + '）'); }
-rows.push(row('主人公・仲間', party.length, pDone, pProv, 0, 0, '主人公の職業別の見た目（20職）は1つのモデルを共用。' + pList.join('、')));
+rows.push(row('主人公・仲間', party.length, pDone, pProv, 0, 0, '探索中の3Dモデルの内訳。戦闘では、ご指示により2D版のドット絵（パーティ欄と同じ立ち絵）を3Dの舞台に並べる（3D設定で3Dモデルにも切り替え可）。主人公の職業別の見た目（20職）は探索では1つのモデルを共用。' + pList.join('、')));
 // ---- NPC（話す人。配置の定義の数）
 let nTotal = 0; const nBy = { done: 0, provisional: 0, fallback: 0 }; const spriteCount = {};
 for (const id of maps) { const m = w.World.getMap(id); for (const n of m.npcs) { nTotal++; spriteCount[n.sprite] = (spriteCount[n.sprite] || 0) + 1; nBy[characterStatus(n.sprite)]++; } }

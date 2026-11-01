@@ -1,13 +1,13 @@
 # 3D化の集計表（tools/status/inventory.mjs が実データから自動生成）
 
-生成日時：2026-11-01T15:08:11.756Z
+生成日時：2026-11-01T15:17:05.444Z
 
 区分：3D完成＝専用に作り込んだ3D／仮3D＝自動生成・共通の型・代用・元の絵からの立体化（完成扱いにしない）／2D代替＝2D版の画面・絵のまま／未対応＝表示できない
 
 | 区分 | 総数 | 3D完成 | 仮3D | 2D代替 | 未対応 | 補足 |
 |---|---|---|---|---|---|---|
 | マップ | 330 | 7 | 323 | 0 | 0 | 種類：field 12・town 25・interior 167・dungeon 126。3D完成＝ポヨ村と屋内6（専用の場面）。仮3D＝WorldBuilder3D がタイルから自動生成。全マップ組み立てテスト：330/330 成功 |
-| 主人公・仲間 | 15 | 2 | 13 | 0 | 0 | 主人公の職業別の見た目（20職）は1つのモデルを共用。hero→hero（専用）、lina→lina（専用）、kyle→kyle（自動生成）、mina→mina（自動生成）、seris→seris（自動生成）、gald→gald（自動生成）、lucia→lucia（自動生成）、elna→scholar（代用：2D版と同じ scholar の見た目）、nagi→sailor（代用：2D版と同じ sailor の見た目）、iris→villager_f（代用：2D版と同じ villager_f の見た目）、sophia→priest（代用：2D版と同じ priest の見た目）、io→child（代用：2D版と同じ child の見た目）、ganes→villager_m（代用：2D版と同じ villager_m の見た目）、aster→hero_sage（代用：2D版と同じ hero_sage の見た目）、ord→guard（代用：2D版と同じ guard の見た目） |
+| 主人公・仲間 | 15 | 2 | 13 | 0 | 0 | 探索中の3Dモデルの内訳。戦闘では、ご指示により2D版のドット絵（パーティ欄と同じ立ち絵）を3Dの舞台に並べる（3D設定で3Dモデルにも切り替え可）。主人公の職業別の見た目（20職）は探索では1つのモデルを共用。hero→hero（専用）、lina→lina（専用）、kyle→kyle（自動生成）、mina→mina（自動生成）、seris→seris（自動生成）、gald→gald（自動生成）、lucia→lucia（自動生成）、elna→scholar（代用：2D版と同じ scholar の見た目）、nagi→sailor（代用：2D版と同じ sailor の見た目）、iris→villager_f（代用：2D版と同じ villager_f の見た目）、sophia→priest（代用：2D版と同じ priest の見た目）、io→child（代用：2D版と同じ child の見た目）、ganes→villager_m（代用：2D版と同じ villager_m の見た目）、aster→hero_sage（代用：2D版と同じ hero_sage の見た目）、ord→guard（代用：2D版と同じ guard の見た目） |
 | NPC | 473 | 323 | 150 | 0 | 0 | 見た目の種類 56。手作業のモデル 323人／自動生成のモデル 102人／別のモデルで代用 48人（村人の男性で代用） |
 | 通常モンスター | 204 | 0 | 204 | 0 | 0 | 戦闘：2D版の絵（新しい画像・従来の絵）をそのまま使い、絵から厚みのある立体（2.5D）を自動で作る（ArtVolume）。元のデザインを保つ方式。専用の3Dモデルはない |
 | ボス | 44 | 0 | 44 | 0 | 0 | 戦闘：ボス画像（BossArt）から同じく2.5D。探索中のボスのシンボルも同じ絵から2.5D（作れないときは従来の立て札） |

@@ -302,7 +302,7 @@ export class BattleStage3D {
   }
   /* ---------- 演出（2D版と同じ時刻表） ---------- */
   posKey(key) {   // 2D版の画面上の位置 → 3D（敵は z=0 の面、味方は手前 z=3.4 の面）
-    if (this.actorMode && this.actors) { const a = this.actors.actorOf(key); if (a && a.ch) { const v = a.ch.root.position.clone(); v.y += /^p:/.test(key) ? 1.0 : Math.max(0.5, (a.size ? a.size.h : 1.2) * 0.5); return v; } }   // Phase 2：3Dのキャラクターの位置
+    if (this.actorMode && this.actors) { const a = this.actors.actorOf(key); const o = a && (a.group || (a.ch && a.ch.root)); if (o) { const v = o.position.clone(); v.y += a.art ? Math.max(0.5, a.art.size.h * 0.55) + (a.lift || 0) : (/^p:/.test(key) ? 1.0 : 1.2); return v; } }   // Phase 2：3Dのキャラクター（絵の立体・ドット絵・3Dモデル）の位置
     const sc = this.lastScene; if (!sc || !sc.posOf) return null; const W = this.cw || 640, H = this.ch || 416; const p = sc.posOf(key, W, H); if (!p) return null;
     const ndc = new THREE.Vector2(p.x / W * 2 - 1, -(p.y / H * 2 - 1)); const rc = this._rc || (this._rc = new THREE.Raycaster()); rc.setFromCamera(ndc, this.camera);
     const z = /^p:/.test(key) ? 3.4 : 0; const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -z); const out = new THREE.Vector3(); if (!rc.ray.intersectPlane(plane, out)) return null; out.y = Math.max(0.3, out.y); return out;
