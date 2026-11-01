@@ -7,4 +7,4 @@
    空のままなら、クラウドセーブは「未設定」になり、ゲームは今までどおり端末のセーブだけで遊べる
    設定の手順：docs/cloud/README.md
    ========================================================= */
-window.MTQ_CLOUD = window.MTQ_CLOUD || { url: '', publishableKey: '' };
+window.MTQ_CLOUD = window.MTQ_CLOUD || { url: 'https://telvknsnsoeoyieapwzn.supabase.co', publishableKey: 'sb_publishable_Tg93SDigVqnCEcJHmKUNYA_OwUya6Qa' };
