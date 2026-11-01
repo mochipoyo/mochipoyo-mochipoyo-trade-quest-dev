@@ -630,8 +630,10 @@ body.astra-flying #minimap-layer, body.astra-flying #place-label, body.astra-fly
 .chart-battle .cb-sec { min-width: 6.5em; text-align: right; font-variant-numeric: tabular-nums; }
 .chart-battle .cb-chartbox { position: relative; flex: 1 1 auto; min-height: 120px; border-radius: 4px; overflow: hidden; background: #0b1226; }
 .chart-battle .cb-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
-.chart-battle .cb-zoom { position: absolute; right: 62px; top: 4px; display: flex; gap: 3px; }
-.chart-battle .cb-zoom button { min-width: 30px; height: 26px; background: rgba(22,34,74,.85); color: #fff; border: 1px solid #5b6ea8; border-radius: 4px; font-size: 14px; cursor: pointer; font-family: inherit; padding: 0 6px; }
+.chart-battle .cb-row { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; min-width: 0; }
+.chart-battle .cb-row .cb-info { flex: 1 1 auto; min-width: 0; }
+.chart-battle .cb-zoom { display: flex; gap: 3px; flex: 0 0 auto; }
+.chart-battle .cb-zoom button { min-width: 32px; height: 28px; background: rgba(22,34,74,.85); color: #fff; border: 1px solid #5b6ea8; border-radius: 4px; font-size: 14px; cursor: pointer; font-family: inherit; padding: 0 6px; }
 .chart-battle .cb-zoom .cb-latest { font-size: 11px; }
 .chart-battle .cb-flash { position: absolute; inset: 0; pointer-events: none; opacity: 0; }
 .chart-battle .cb-flash.on { animation: cbFlash .45s ease-out; }
@@ -654,19 +656,21 @@ body.astra-flying #minimap-layer, body.astra-flying #place-label, body.astra-fly
 .chart-battle.decided .cb-cmds { opacity: .4; pointer-events: none; }
 .chart-battle.result .cb-cmds, .chart-battle.result .cb-timer, .chart-battle.result .cb-prompt { display: none; }
 .chart-battle .cb-reasons { display: flex; flex-wrap: wrap; gap: 4px; flex: 0 0 auto; }
-.chart-battle .cb-reasons.hidden, .chart-battle .cb-result.hidden { display: none; }
+.chart-battle .cb-reasons.hidden, .chart-battle .cb-result.hidden, .chart-battle .cb-nextbox.hidden { display: none; }
+.chart-battle .cb-nextbox { flex: 0 0 auto; }
+.chart-battle.result .cb-chartbox { min-height: 90px; }
 .chart-battle .cb-rq { width: 100%; font-size: 12px; color: var(--gold); }
 .chart-battle .cb-rs { background: #16224a; color: #fff; border: 1px solid #5b6ea8; border-radius: 4px; padding: 5px 8px; font-size: 12px; cursor: pointer; font-family: inherit; min-height: 34px; }
 .chart-battle .cb-rs.on { background: var(--gold); color: #1a1407; border-color: #fff0b0; font-weight: bold; }
-.chart-battle .cb-result { flex: 0 0 auto; max-height: 46%; overflow-y: auto; font-size: 12px; line-height: 1.55; }
+.chart-battle .cb-result { flex: 0 1 auto; min-height: 3em; max-height: 46%; overflow-y: auto; font-size: 12px; line-height: 1.55; }
 .chart-battle .cb-res { font-size: 13px; padding: 4px 6px; border-radius: 4px; background: rgba(255,255,255,.05); }
 .chart-battle .cb-res.profit b { color: #6fe0a6; } .chart-battle .cb-res.loss b { color: #ff8a8e; } .chart-battle .cb-res.skip b, .chart-battle .cb-res.flat b { color: #9fd0ff; }
 .chart-battle .cb-pre { margin-top: 3px; color: #ffe9a0; }
 .chart-battle .cb-score { margin-top: 3px; padding: 4px 6px; border-left: 3px solid var(--gold); background: rgba(232,193,90,.08); }
 .chart-battle .cb-view { margin-top: 3px; color: #b8c4e0; font-size: 11px; }
-.chart-battle .cb-next { display: block; width: 100%; margin-top: 6px; min-height: 42px; background: linear-gradient(180deg, #e8c15a, #b8902e); color: #1a1407; border: 2px solid #fff0b0; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; font-family: inherit; }
+.chart-battle .cb-next { display: block; width: 100%; margin-top: 2px; min-height: 42px; background: linear-gradient(180deg, #e8c15a, #b8902e); color: #1a1407; border: 2px solid #fff0b0; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; font-family: inherit; }
 .chart-battle.calm .cb-flash { display: none; }
-@media (max-width: 720px) { .rw-panel.chart-battle { width: 99%; height: 98%; max-height: 98%; padding: 4px 5px; font-size: 12px; } .chart-battle .cb-title b { font-size: 14px; } .chart-battle .cb-btn { min-height: 52px; font-size: 14px; } .chart-battle .cb-sim { font-size: 10px; } .chart-battle .cb-zoom { right: 50px; } }
+@media (max-width: 720px) { .rw-panel.chart-battle { width: 99%; height: 98%; max-height: 98%; padding: 4px 5px; font-size: 12px; } .chart-battle .cb-title b { font-size: 14px; } .chart-battle .cb-btn { min-height: 52px; font-size: 14px; } .chart-battle .cb-sim { font-size: 10px; } }
 @media (max-height: 460px) { .chart-battle .cb-prompt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; } .chart-battle .cb-btn { min-height: 40px; } .chart-battle .cb-btn small { display: none; } .chart-battle .cb-sub { display: none; } .chart-battle .cb-result { max-height: 52%; } .chart-battle .cb-chartbox { min-height: 90px; } }
 @media (prefers-reduced-motion: reduce) { .chart-battle .cb-flash { display: none; } .chart-battle .cb-banner.on { animation: cbBannerCalm 1.6s linear forwards; } .ult-cutin { animation: none !important; } }
 .ult-cutin { position: absolute; left: 50%; top: 30%; transform: translate(-50%, -50%); z-index: 30; pointer-events: none; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 26px; background: linear-gradient(90deg, rgba(8,12,30,0), rgba(8,12,30,.92) 20%, rgba(8,12,30,.92) 80%, rgba(8,12,30,0)); border-top: 2px solid rgba(255,255,255,.7); border-bottom: 2px solid rgba(255,255,255,.7); animation: ultCut 1s ease-out forwards; white-space: nowrap; }
@@ -683,3 +687,4 @@ body.astra-flying #minimap-layer, body.astra-flying #place-label, body.astra-fly
 .rw-panel .up { color: #6fe0a6; } .rw-panel .down { color: #ff8a8e; }
 .ult-detail { line-height: 1.7; font-size: 13px; } .ult-detail .ult-intro { margin-top: 6px; padding: 4px 8px; background: rgba(255,255,255,.05); border-radius: 4px; }
 .rs-skill.rs-ult { color: #ffe9a0; }
+@media (max-width: 480px) { .chart-battle .cb-btn { font-size: 13px; white-space: nowrap; letter-spacing: -.02em; } .chart-battle .cb-cmds { grid-template-columns: 1fr .7fr 1fr; gap: 4px; } .chart-battle .cb-zoom button { min-width: 28px; padding: 0 4px; } }

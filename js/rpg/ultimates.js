@@ -286,7 +286,11 @@
   /* ---------- 採点（正解は一つではない。判断の過程・結果・理由を分ける） ----------
      dec: { side, auto, result, assessment, reason }。過程 0〜60（判断した時点に見えていた根拠と合っているか）、結果 0〜25（負けても過程が良ければ合格できる）、
      理由 0〜15（上級試験だけ。選んだ理由が、判断した時点の相場の状態と合っているか）。初級は過程＋結果の85点満点を100点に換算 */
-  var REASON_NAME = { fade: '行き過ぎ・抜けかけの逆', divergence: '逆行', rangeEdge: 'レンジの端', rciTurn: 'RCI の反転' };
+  var REASON_NAME = { fade: '行き過ぎ・抜けかけの逆', divergence: '逆行', rangeEdge: 'レンジの端', rciTurn: 'RCI の反転', trend: 'トレンドの向き', emaAlign: 'EMA の並び', dow: '高値・安値の並び', pullback: '押し目・戻り', breakout: '高値・安値の突破', mtf: '上位足の向き', mtfAll: '上位足と下位足の一致', structureBreak: '波形の転換', multi: '3つ以上の根拠', strongTrend: '強いトレンド' };
+  // 流派ごとの「テーマの根拠」：見立て全体とは逆向きでも、その流派が学ぶ根拠に沿った判断なら、過程の点を高くする（テーマどおりの判断が減点されないように）
+  //   どちらの向きにも当てはまりやすい根拠（抜けかけの逆・飛び乗りでない など）はテーマに入れない（どちらに入っても高い点になってしまうため）
+  U.THEME = { trend: ['trend', 'emaAlign', 'strongTrend'], pullback: ['pullback', 'trend'], breakout: ['breakout'], range: ['rangeEdge'], divergence: ['divergence', 'rciTurn', 'structureBreak'],
+    mtf: ['mtf', 'mtfAll'], volatility: [], risk: ['multi'], structure: ['dow', 'structureBreak'], apex: ['multi'] };
   U.score = function (dec, opts) {
     opts = opts || {}; var as = dec.assessment || {}; var side = dec.side; var dir = dirOf(side); var notes = []; var process = 0; var flags = { opposite: false, chase: false, reckless: false };
     var bdir = dirOf(as.bias); var clear = bdir !== 0 && as.clarity >= 0.25; var c = U.conditions(as, side);
@@ -295,12 +299,15 @@
       else { process = 32; notes.push('判断した時点では' + (bdir > 0 ? '上' : '下') + '向きの根拠がそろっていた。見送りも間違いではないが、機会を逃したかもしれない'); }
       if (dec.auto) { process = Math.max(0, process - 12); notes.push('時間切れの見送り（自分で決められるとさらに良い）'); }
     } else {
+      var theme = (U.THEME[opts.school] || []).filter(function (k) { return c[k]; });
       if (clear && dir === bdir) { process = 60; notes.push('判断した時点の根拠と同じ向きに入った'); }
       else if (clear && dir === -bdir) {
         var why = ['fade', 'divergence', 'rangeEdge', 'rciTurn'].filter(function (k) { return c[k]; });
-        if (why.length) { process = 30; notes.push('根拠のそろった向きとは逆だが、逆張りの根拠（' + why.map(function (k) { return REASON_NAME[k]; }).join('・') + '）はあった'); }
+        if (theme.length) { process = 50; notes.push('全体の流れとは逆だが、この流派の根拠（' + theme.map(function (k) { return REASON_NAME[k] || k; }).join('・') + '）に沿った判断'); }
+        else if (why.length) { process = 30; notes.push('根拠のそろった向きとは逆だが、逆張りの根拠（' + why.map(function (k) { return REASON_NAME[k]; }).join('・') + '）はあった'); }
         else { process = 5; flags.opposite = true; notes.push('根拠のそろった向きと逆に入った（流れに逆らう判断）'); }
-      } else { process = c.agree >= 2 ? 34 : 22; notes.push('根拠がそろっていない場面でのエントリー' + (c.agree >= 2 ? '（いくつかの根拠はあった）' : '（見送りも有力だった）')); }
+      } else if (theme.length) { process = 48; notes.push('全体の根拠ははっきりしないが、この流派の根拠（' + theme.map(function (k) { return REASON_NAME[k] || k; }).join('・') + '）に沿った判断'); }
+      else { process = c.agree >= 2 ? 34 : 22; notes.push('根拠がそろっていない場面でのエントリー' + (c.agree >= 2 ? '（いくつかの根拠はあった）' : '（見送りも有力だった）')); }
       if (c.chaseDir === dir) { process -= 20; flags.chase = true; notes.push('価格が EMA から大きく離れた所での飛び乗り'); }
       if (as.volRatio >= 2.2) { process -= 10; notes.push('急変動の最中のエントリー（値幅が普段の' + as.volRatio.toFixed(1) + '倍）'); }
       process = Math.max(0, process);

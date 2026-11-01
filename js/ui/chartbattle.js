@@ -62,6 +62,10 @@
     var lo = Infinity, hi = -Infinity, i, k;
     for (i = start; i <= end; i++) { if (bars[i].l < lo) lo = bars[i].l; if (bars[i].h > hi) hi = bars[i].h; if (show.ema) for (k = 0; k < 3; k++) { var ev0 = ind.ema[k][i]; if (ev0 !== null && ev0 !== undefined) { lo = Math.min(lo, ev0); hi = Math.max(hi, ev0); } } }
     if (v.entry) { [v.entry.sl, v.entry.tp, v.entry.price].forEach(function (p) { lo = Math.min(lo, p); hi = Math.max(hi, p); }); }
+    // レンジの帯（直近60本）・直近の高値安値（直近40本）は、いまの時点の確定した足から。表示の範囲に入れる（線が画面の外に出ないように）
+    var rh = -Infinity, rl = Infinity, lh = -Infinity, ll = Infinity;
+    if (show.range) { for (i = Math.max(Market.WARM, N - 61); i < N - 1; i++) { rh = Math.max(rh, bars[i].h); rl = Math.min(rl, bars[i].l); } if (isFinite(rh) && v.off === 0) { lo = Math.min(lo, rl); hi = Math.max(hi, rh); } }
+    if (show.levels) { for (i = Math.max(Market.WARM, N - 41); i < N - 1; i++) { lh = Math.max(lh, bars[i].h); ll = Math.min(ll, bars[i].l); } if (isFinite(lh) && v.off === 0) { lo = Math.min(lo, ll); hi = Math.max(hi, lh); } }
     var cur = bars[N - 1].c; var A = v.atr || ((hi - lo) / 10);
     if (show.rr && !v.entry) { lo = Math.min(lo, cur - 1.85 * A); hi = Math.max(hi, cur + 1.85 * A); }
     var pad = (hi - lo) * 0.06 || 0.01; lo -= pad; hi += pad;
@@ -72,13 +76,11 @@
     for (k = 0; k <= 4; k++) { var gp = lo + (hi - lo) * k / 4; var gy = yP(gp); ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(W - padR, gy); ctx.stroke(); ctx.fillText(fmtPx(gp), W - padR + 4, gy); }
     // レンジの帯（直近60本の高値・安値。上下20%を濃く）
     if (show.range) {
-      var rh = -Infinity, rl = Infinity; for (i = Math.max(Market.WARM, N - 61); i < N - 1; i++) { rh = Math.max(rh, bars[i].h); rl = Math.min(rl, bars[i].l); }
       if (isFinite(rh)) { var y1 = yP(rh), y2 = yP(rl), z = (y2 - y1) * 0.2; ctx.fillStyle = COL.band; ctx.fillRect(padL, y1, plotW, y2 - y1); ctx.fillStyle = COL.bandEdge; ctx.fillRect(padL, y1, plotW, z); ctx.fillRect(padL, y2 - z, plotW, z);
         ctx.fillStyle = '#c9a0ff'; ctx.textAlign = 'left'; ctx.fillText('上限', padL + 3, y1 + 8); ctx.fillText('下限', padL + 3, y2 - 8); }
     }
     // 直近の高値・安値（確定した足の直近40本）
     if (show.levels) {
-      var lh = -Infinity, ll = Infinity; for (i = Math.max(Market.WARM, N - 41); i < N - 1; i++) { lh = Math.max(lh, bars[i].h); ll = Math.min(ll, bars[i].l); }
       if (isFinite(lh)) { ctx.setLineDash([5, 4]); ctx.strokeStyle = COL.level; ctx.lineWidth = 1.2; [[lh, '直近の高値'], [ll, '直近の安値']].forEach(function (q) { var yy = yP(q[0]); ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(W - padR, yy); ctx.stroke(); ctx.fillStyle = COL.level; ctx.textAlign = 'right'; ctx.fillText(q[1], W - padR - 4, yy + (q[1] === '直近の高値' ? -7 : 7)); }); ctx.setLineDash([]); }
     }
     // ローソク足
@@ -112,7 +114,7 @@
       var en = v.entry; var x0 = xOf(Math.max(start, en.bar)); var xe = v.exit ? xOf(Math.min(end, v.exit.bar)) : W - padR;
       if (en.bar <= end) {
         ctx.fillStyle = en.side === 'long' ? 'rgba(76,195,138,0.08)' : 'rgba(229,72,77,0.08)'; ctx.fillRect(x0, padT, Math.max(2, xe - x0), mainH);
-        [[en.tp, COL.tp, '利確 '], [en.sl, COL.sl, '損切り ']].forEach(function (q) { var yy = yP(q[0]); ctx.setLineDash([6, 4]); ctx.strokeStyle = q[1]; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x0, yy); ctx.lineTo(W - padR, yy); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = q[1]; ctx.textAlign = 'left'; ctx.fillText(q[2] + fmtPx(q[0]), x0 + 3, yy + (q[0] > en.price ? -7 : 7)); });
+        [[en.tp, COL.tp, '利確 '], [en.sl, COL.sl, '損切り ']].forEach(function (q) { var yy = yP(q[0]); ctx.setLineDash([6, 4]); ctx.strokeStyle = q[1]; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x0, yy); ctx.lineTo(W - padR, yy); ctx.stroke(); ctx.setLineDash([]); var tx = q[2] + fmtPx(q[0]); var tw = ctx.measureText(tx).width || 60; ctx.fillStyle = q[1]; ctx.textAlign = 'left'; ctx.fillText(tx, Math.max(padL + 2, Math.min(x0 + 3, W - padR - tw - 4)), yy + (q[0] > en.price ? -7 : 7)); });
         var ye = yP(en.price); ctx.strokeStyle = COL.entry; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x0, ye); ctx.lineTo(W - padR, ye); ctx.stroke();
         ctx.fillStyle = en.side === 'long' ? COL.up : COL.down; ctx.beginPath(); if (en.side === 'long') { ctx.moveTo(x0, ye + 2); ctx.lineTo(x0 - 6, ye + 11); ctx.lineTo(x0 + 6, ye + 11); } else { ctx.moveTo(x0, ye - 2); ctx.lineTo(x0 - 6, ye - 11); ctx.lineTo(x0 + 6, ye - 11); } ctx.fill();
         if (v.exit && v.exit.bar <= end) { var xx2 = xOf(v.exit.bar), yy2 = yP(v.exit.price); ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(xx2, yy2, 5, 0, Math.PI * 2); ctx.stroke(); }
@@ -175,13 +177,13 @@
       '<div class="cb-sim">シミュレーション相場｜架空ペア POYO/MOCHI・' + esc(tfName(tf)) + (opts.quitable ? '<button type="button" class="cb-quit">中断</button>' : '') + '</div></div>' +
       (opts.prompt ? '<div class="cb-prompt">' + esc(opts.prompt) + '</div>' : '') +
       '<div class="cb-timer"><span class="cb-tbar"><i></i></span><b class="cb-sec"></b></div>' +
-      '<div class="cb-chartbox"><canvas class="cb-canvas"></canvas><div class="cb-zoom"><button type="button" data-z="-1" aria-label="縮小">－</button><button type="button" data-z="1" aria-label="拡大">＋</button><button type="button" class="cb-latest" data-latest="1">▶最新</button></div><div class="cb-flash"></div><div class="cb-banner"></div></div>' +
-      '<div class="cb-info"></div>' +
+      '<div class="cb-chartbox"><canvas class="cb-canvas"></canvas><div class="cb-flash"></div><div class="cb-banner"></div></div>' +
+      '<div class="cb-row"><div class="cb-info"></div><div class="cb-zoom"><button type="button" data-z="-1" aria-label="縮小">－</button><button type="button" data-z="1" aria-label="拡大">＋</button><button type="button" class="cb-latest" data-latest="1" aria-label="最新の足へ">▶最新</button></div></div>' +
       '<div class="cb-cmds"><button type="button" class="cb-btn long" data-act="long">ロング（買い）<small>↑ / L</small></button><button type="button" class="cb-btn skip" data-act="skip">見送り<small>X / K</small></button><button type="button" class="cb-btn short" data-act="short">ショート（売り）<small>↓ / S</small></button></div>' +
       (opts.askReason ? '<div class="cb-reasons hidden"><div class="cb-rq">判断の理由は？（数字キーでも選べる）</div>' + reasons.map(function (r, i) { return '<button type="button" class="cb-rs" data-reason="' + esc(r.key) + '">' + (i + 1) + '. ' + esc(r.label) + '</button>'; }).join('') + '</div>' : '') +
-      '<div class="cb-result hidden"></div>';
+      '<div class="cb-result hidden"></div><div class="cb-nextbox hidden"><button type="button" class="cb-next">次へ（Enter）</button></div>';
     return new Promise(function (resolve) {
-      var node = null, canvas = null, ctx = null, closeFn = null, closed = false, raf = null, timer = null;
+      var node = null, canvas = null, ctx = null, closeFn = null, closed = false, raf = null, timer = null, ro = null;
       var view = { zoom: 48, off: 0 }; var dirty = true, lastDraw = 0, lastKey = '';
       var decided = false, reason = null, resultShown = false, skipPlay = null, out = null;
       var cache = { key: '', bars: null, ind: null, upper: null };
@@ -251,13 +253,12 @@
         if (opts.preview) { try { html += opts.preview(out) || ''; } catch (e) { } }
         if (opts.feedback) { try { html += opts.feedback(out) || ''; } catch (e) { } }
         var as = sim.assessment; if (as && opts.showView !== false) html += '<div class="cb-view"><b>判断した瞬間に見えていた状態（簡易的な見立て。正解ではありません）</b>：' + (as.bias === 'long' ? '上向きの根拠が多め' : as.bias === 'short' ? '下向きの根拠が多め' : 'はっきりしない') + '<br>' + as.reasons.slice(0, 4).map(esc).join('／') + '</div>';
-        html += '<button type="button" class="cb-next">次へ（Enter）</button>';
         var el = node.querySelector('.cb-result'); el.innerHTML = html; el.classList.remove('hidden'); node.classList.add('result');
-        var nx = el.querySelector('.cb-next'); if (nx) nx.addEventListener('click', function (e) { e.stopPropagation(); finish(); });
+        var nb = node.querySelector('.cb-nextbox'); nb.classList.remove('hidden'); var nx = nb.querySelector('.cb-next'); if (nx && !nx._on) { nx._on = true; nx.addEventListener('click', function (e) { e.stopPropagation(); finish(); }); }
         info(); dirty = true;
       }
       function finish(quit) {
-        if (closed) return; closed = true; CB.isOpen = false; if (raf && root.cancelAnimationFrame) root.cancelAnimationFrame(raf); if (timer) clearInterval(timer);
+        if (closed) return; closed = true; CB.isOpen = false; if (raf && root.cancelAnimationFrame) root.cancelAnimationFrame(raf); if (timer) clearInterval(timer); if (ro) { try { ro.disconnect(); } catch (e) { } }
         document.removeEventListener('keydown', onKeyDoc, true); document.removeEventListener('visibilitychange', onVis); root.removeEventListener('resize', resize); root.removeEventListener('mousemove', move); root.removeEventListener('mouseup', up);
         var st = document.getElementById('stage'); if (st) st.classList.remove('ult-open');
         var r = quit ? { quit: true, mode: mode, scenarioId: s.id } : out; CB.last = r; if (closeFn) closeFn(r); resolve(r);
@@ -316,7 +317,7 @@
           canvas.addEventListener('touchstart', down, { passive: true }); canvas.addEventListener('touchmove', move, { passive: false }); canvas.addEventListener('touchend', up);
           document.addEventListener('keydown', onKeyDoc, true); document.addEventListener('visibilitychange', onVis); root.addEventListener('resize', resize);
           resize(); sim.start(now()); render(); info(); timerUi(now());
-          if (root.ResizeObserver) { try { new root.ResizeObserver(function () { if (!closed) resize(); }).observe(canvas); } catch (e) { } }
+          if (root.ResizeObserver) { try { ro = new root.ResizeObserver(function () { if (!closed) resize(); }); ro.observe(canvas); } catch (e) { ro = null; } }
           timer = setInterval(function () { if (!closed && (document.hidden || !root.requestAnimationFrame)) tick(); }, 250);   // 描画が止まる環境でも時計と判定だけは進める
           loop();
         } });

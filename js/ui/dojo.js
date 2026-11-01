@@ -29,7 +29,11 @@
   async function run(mid) {
     var m = M(mid); var u = U(); var d = State.data; if (!m || !u || !d) return; u.sync(d);
     var rec = u.master(d, mid); var sch = u.school(m.school); var say = sayAs(mid);
-    if (!rec.met) { rec.met = Date.now(); await say(m.first); await say(m.intro); }
+    if (!rec.met) {
+      rec.met = Date.now(); await say(m.first); await say(m.intro);
+      var nx = u.schools().filter(function (q) { return q.no === sch.no + 1; })[0]; var nm = nx ? M(nx.master) : null;
+      await say(['この世界には、10の流派の師匠がいる。必殺技は、レベルを上げて覚えるものと、師匠の試験に合格して覚えるものがある。'].concat(nm ? ['次の流派の師匠は「' + nm.place + '」にいる' + nm.name + 'だと聞く。いずれ訪ねるとよい。'] : ['わしで最後じゃ。九つの流派を修めた者だけが、ここへたどり着く。']));
+    }
     else await say([greet(m, rec)]);
     while (true) {
       var rb = u.examReq(d, mid, 'beginner'), ra = u.examReq(d, mid, 'advanced');
@@ -71,7 +75,7 @@
     while (true) {
       var s = u.newScenario({ cats: sch.cats, diff: diff, avoid: d.ultimate.recent });
       var res = await CB().open({ mode: 'practice', title: sch.name + '　修行', sub: '難易度：' + (u.DIFF_NAME[s.def.diff] || s.def.diff), prompt: '観点：' + prompts[q % prompts.length], ind: ind, tf: tf, scenario: s, quitable: true, color: sch.color,
-        feedback: function (out) { return scoreHtml(u.score(out, {}), false); } });
+        feedback: function (out) { return scoreHtml(u.score(out, { school: sch.id }), false); } });
       q++;
       if (!res || res.quit) { await say(['修行はここまでにしよう。']); return; }
       rec.practice++; u.recordTrade(d, { mode: 'practice', school: sch.id, scenarioId: res.scenarioId, cat: res.cat, seed: res.seed, side: res.side, auto: res.auto, result: res.result });
@@ -91,9 +95,9 @@
     for (var q = 0; q < n; q++) {
       var s = u.newScenario({ cats: sch.cats, diff: u.examDiff(sch, kind), avoid: (d.ultimate.recent || []).concat(used) }); used.push(s.id);
       var res = await CB().open({ mode: 'exam', title: title + '　第' + (q + 1) + '問／' + n, sub: sch.name + '｜「' + tdef.name + '」', prompt: '観点：' + prompts[q % prompts.length], ind: tdef.ind, tf: tdef.tf, scenario: s, askReason: adv, quitable: true, color: sch.color,
-        feedback: function (out) { return scoreHtml(u.score(out, { advanced: adv }), adv); } });
+        feedback: function (out) { return scoreHtml(u.score(out, { advanced: adv, school: sch.id }), adv); } });
       if (!res || res.quit) { await say(['……今日はここまでにしておくか。（試験は中断。記録は残らない）']); return; }
-      rows.push({ res: res, sc: u.score(res, { advanced: adv }) });
+      rows.push({ res: res, sc: u.score(res, { advanced: adv, school: sch.id }) });
     }
     var er = u.examResult(kind, rows.map(function (r) { return r.sc; }));
     // ここで初めて記録する（全問を終えたときだけ）

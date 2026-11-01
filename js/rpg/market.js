@@ -26,7 +26,7 @@
   Market.PIP = (CONFIG && CONFIG.market && CONFIG.market.pip) || 0.01;
   Market.PAIR = '架空ペア POYO/MOCHI（シミュレーション相場）';
   // 取引の条件（指示書の初期仕様）：損切り＝ATR×1.0、利確＝ATR×1.8、最大保有＝エントリー後12本。スプレッド・スリッページは pips
-  Market.RULES = { slAtr: 1.0, tpAtr: 1.8, maxBars: 12, spreadPips: 0.6, stopSlipPips: 0.3, entrySlipMaxPips: 0.2, flatAtr: 0.15, atrPeriod: 14 };
+  Market.RULES = { slAtr: 1.0, tpAtr: 1.8, maxBars: 12, spreadPips: 0.6, stopSlipPips: 0.3, entrySlipMaxPips: 0.2, flatAtr: 0.15, atrPeriod: 14, gapAtr: 1.0 };
 
   /* ---------- 乱数（シード付き） ---------- */
   function mulberry32(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -349,7 +349,9 @@
   /* ---------- 損益の判定（TradeSettlementEngine） ----------
      entry: { bar, tick, side:'long'|'short' }（その足のそのティックで約定。tick は 0〜7）
      判定の順序：エントリーしたティックの「次のティック」から時刻順に1つずつ見る。
-       1) 損切り：ロングは売値（bid）が損切り以下、ショートは買値（ask）が損切り以上 → その時点で決済（価格が損切りを飛び越えていたら、そのティックの価格。そうでなければ損切り価格からスリッページ分不利に）
+       1) 損切り：ロングは売値（bid）が損切り以下、ショートは買値（ask）が損切り以上 → その時点で決済
+          ティックの間も価格は連続して動くとみなし、損切り価格からスリッページ（stopSlipPips）分だけ不利に約定。
+          ただし1ティックで ATR×gapAtr（1.0）より大きく飛んだ急変（窓・急騰急落）で損切りを飛び越えたときは、そのティックの価格で約定（損切り価格より不利）
        2) 利確：ロングは売値が利確以上、ショートは買値が利確以下 → 利確価格で決済（指値なのでスリッページなし）
        1つのティックの価格は1つなので、同じティックで両方に届くことはない（ティックの道筋があるため）。
        ティックがなく OHLC しかないとき（Market.settleOHLC）は、同じ足で両方に届いたら「損切りが先」とみなす（保守的）
@@ -363,11 +365,12 @@
     var entryPx = mid0 + sg * (half + slip);
     var sl = entryPx - sg * rules.slAtr * atr, tp = entryPx + sg * rules.tpAtr * atr;
     var lastBar = Math.min(bars.length - 1, entry.bar + rules.maxBars);
-    var exit = null;
+    var exit = null; var pm = mid0;
     for (var b = entry.bar; b <= lastBar && !exit; b++) {
       for (var k = (b === entry.bar ? entry.tick + 1 : 0); k < SUB; k++) {
         var m = ticks[b][k]; var px = m - sg * half;   // 決済に使う側の価格（ロング＝bid、ショート＝ask）
-        if (sg * (px - sl) <= 0) { var gap = sg * (sl - px) > rules.stopSlipPips * P; exit = { bar: b, tick: k, reason: 'sl', price: gap ? px : sl - sg * rules.stopSlipPips * P }; break; }
+        var jump = Math.abs(m - pm) > (rules.gapAtr || 1.0) * atr; pm = m;
+        if (sg * (px - sl) <= 0) { var gap = jump && sg * (sl - px) > rules.stopSlipPips * P; exit = { bar: b, tick: k, reason: 'sl', price: gap ? px : sl - sg * rules.stopSlipPips * P, gap: gap }; break; }
         if (sg * (px - tp) >= 0) { exit = { bar: b, tick: k, reason: 'tp', price: tp }; break; }
       }
     }

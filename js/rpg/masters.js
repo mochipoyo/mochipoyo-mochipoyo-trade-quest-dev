@@ -4,7 +4,7 @@
        置く前に、そのマスが通れること・ほかの NPC／出入口／宝箱／イベントの近くでないこと・置いても行けなくなる場所が出ないことを確かめてある
        （docs/ultimates-50.md。実行時にもふさがっていたら近くの空きマスへずらす）
    ・動かない NPC（wander: 0）。話しかけると修行場（js/ui/dojo.js の TraderDojo.open）
-   ・既存の NPC・会話・クエストは変えない（マップの NPC の一覧に足すだけ。同じ ID がすでにあれば足さない）
+   ・歩く姿は既存の NPC の画像を使う（js/core/chars.js のパレットは増やさない）。既存の NPC・会話・クエストは変えない（マップの NPC の一覧に足すだけ。同じ ID がすでにあれば足さない）
    ・3D 版：師匠のいるマップは 3D 化していない（2D の表示）ので、3D のモデルは使わない
    ========================================================= */
 (function (root) {
@@ -13,12 +13,10 @@
   var TM = { installed: [], moved: [] };
   var SKIN_EYE = '#1b1b2a';
 
-  // 歩く姿の色（js/core/chars.js のパレット。帽子・フードは M）
-  TM.paletteKey = function (mid) { return 'tm_' + mid; };
-  TM.installPalettes = function () {
-    var C = root.Chars; if (!C || !C.PALS) return;
-    Object.keys(MASTERS).forEach(function (mid) { var L = MASTERS[mid].look || {}; var p = { H: L.H || '#4a2e1a', F: L.skin || '#f3c9a0', E: SKIN_EYE, B: L.B || '#2b5fb3', A: L.A || '#e8c15a', S: L.skin || '#f3c9a0', L: L.L || '#2a2d4a', T: L.T || '#2a1a0a' }; if (L.M) p.M = L.M; C.PALS[TM.paletteKey(mid)] = p; });
-  };
+  // 歩く姿：既存の NPC の歩行画像（assets/characters/overworld）を使う（ほかの NPC と同じ絵柄にそろえる。新しい画像ファイルは足さない）
+  //   師匠ごとの見た目の違いは、会話の顔の絵（TM.portrait。色・髪型・流派の印）で出す
+  var SPRITE = { galen: 'elder', seiran: 'sailor', bard: 'bartender', mirea: 'priest', lione: 'scholar', chrono: 'master', volte: 'villager_m', raizen: 'guard', arzen: 'scholar', ordis: 'elder' };
+  TM.spriteOf = function (mid) { return SPRITE[mid] || 'villager_m'; };
 
   // 置けるか（通れるマス・出入口やほかの NPC の近くでない）を、マップのデータ（rows・buildings・npcs・warps）から調べる
   function solidAt(def, x, y) {
@@ -41,13 +39,12 @@
   TM.npcId = function (mid) { return 'tmaster_' + mid; };
   TM.install = function () {
     var MD = root.MAP_DEFS; if (!MD) return;
-    TM.installPalettes();
     Object.keys(MASTERS).forEach(function (mid) {
       var m = MASTERS[mid]; var def = MD[m.map]; if (!def) return; def.npcs = def.npcs || [];
       if (def.npcs.some(function (n) { return n.id === TM.npcId(mid); })) return;
       var spot = TM.spotFor(def, m.x, m.y); if (!spot) { if (root.console) console.warn('trader master: no spot', mid); return; }
       if (spot.moved) TM.moved.push(mid);
-      def.npcs.push({ id: TM.npcId(mid), x: spot.x, y: spot.y, sprite: TM.paletteKey(mid), dir: m.dir || 'down', wander: 0, name: m.name, traderMaster: mid,
+      def.npcs.push({ id: TM.npcId(mid), x: spot.x, y: spot.y, sprite: TM.spriteOf(mid), dir: m.dir || 'down', wander: 0, name: m.name, traderMaster: mid,
         talk: function (c) { return root.TraderDojo ? root.TraderDojo.open(mid, c) : c.say(m.name, ['……修行の準備がまだ整っていないようだ。']); } });
       TM.installed.push(mid);
     });
@@ -78,9 +75,9 @@
       if (st.indexOf('braid') >= 0) { ell(88, 84, 7, 9, H); ell(90, 98, 6, 8, H); }
       if (st.indexOf('spiky') >= 0) { g.fillStyle = H; g.beginPath(); for (var k = 0; k < 6; k++) { var x0 = 38 + k * 10; g.moveTo(x0, 40); g.lineTo(x0 + 5, 18 + (k % 2) * 6); g.lineTo(x0 + 10, 40); } g.fill(); }
       ell(54, 66, 3, 4, SKIN_EYE); ell(74, 66, 3, 4, SKIN_EYE);                                 // 目
-      g.strokeStyle = '#7a3a2a'; g.lineWidth = 2; g.beginPath(); g.moveTo(58, 80); g.lineTo(70, 80); g.stroke();   // 口
-      if (st.indexOf('beard') >= 0) { g.fillStyle = H; g.beginPath(); g.moveTo(42, 72); g.lineTo(86, 72); g.lineTo(76, 100); g.lineTo(64, 106); g.lineTo(52, 100); g.closePath(); g.fill(); ell(54, 66, 3, 4, SKIN_EYE); ell(74, 66, 3, 4, SKIN_EYE); }
-      if (L.mark === 'goggles') { g.strokeStyle = A; g.lineWidth = 3; g.beginPath(); g.arc(54, 48, 7, 0, Math.PI * 2); g.moveTo(81, 48); g.arc(74, 48, 7, 0, Math.PI * 2); g.stroke(); }
+      if (st.indexOf('beard') >= 0) { g.fillStyle = H; g.beginPath(); g.moveTo(44, 74); g.quadraticCurveTo(64, 86, 84, 74); g.lineTo(78, 100); g.lineTo(64, 108); g.lineTo(50, 100); g.closePath(); g.fill(); }
+      g.strokeStyle = st.indexOf('beard') >= 0 ? '#5a4a3a' : '#7a3a2a'; g.lineWidth = 2; g.beginPath(); g.moveTo(58, 80); g.lineTo(70, 80); g.stroke();   // 口
+      if (L.mark === 'goggles') { g.strokeStyle = '#3a2a1a'; g.lineWidth = 4; g.beginPath(); g.moveTo(36, 46); g.lineTo(92, 46); g.stroke(); ell(54, 46, 9, 8, '#3a2a1a'); ell(74, 46, 9, 8, '#3a2a1a'); ell(54, 46, 6, 5, '#9fe0ff'); ell(74, 46, 6, 5, '#9fe0ff'); }
       if (L.mark === 'scarf') { rect(46, 94, 36, 9, A); rect(70, 100, 8, 18, A); }
       // 右下の印（流派の印）
       g.fillStyle = 'rgba(0,0,0,0.35)'; g.fillRect(96, 96, 28, 28); g.fillStyle = A; g.strokeStyle = A; g.lineWidth = 3;
