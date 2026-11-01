@@ -120,10 +120,17 @@ export class App3D {
     G.BattleStage3D = {
       frame(scene, W, H) {
         if (app.battleFailed) return null;
-        if (!app.battle) { try { app.battle = new BattleStage3D(app.quality); } catch (e) { console.warn('3D battle stage unavailable → 2D', e); app.battleFailed = true; return null; } }
+        if (!app.battle) { try { app.battle = new BattleStage3D(app.quality, { models: app.models }); } catch (e) { console.warn('3D battle stage unavailable → 2D', e); app.battleFailed = true; return null; } }
         try { return app.battle.frame(scene, W, H); } catch (e) { console.warn('3D battle stage failed → 2D', e); app.battleFailed = true; return null; }
       },
       families() { return Object.assign({}, FAMILY_TABLE); },
+      // Phase 2：3Dのキャラクター同士の戦闘（battle.js が HP バー・名前・数字の位置に使う）
+      rect(scene, i, W, H) { return app.battle && !app.battleFailed ? app.battle.rect(scene, i, W, H) : null; },
+      drawn(scene, i) { return !!(app.battle && !app.battleFailed && app.battle.drawn(scene, i)); },
+      partyPos(scene, id, W, H) { return app.battle && !app.battleFailed ? app.battle.partyPos(scene, id, W, H) : null; },
+      actorsOn(scene) { return !!(app.battle && !app.battleFailed && app.battle.actorMode && scene === app.battle.lastScene); },
+      actorsInfo() { return app.battle && app.battle.actors ? app.battle.actors.info() : null; },
+      setActors(on) { try { localStorage.setItem('mtq3d-battle-actors', on ? 'on' : 'off'); } catch (e) { /* なし */ } },
       log() { return app.battle && app.battle.log ? app.battle.log.slice() : []; },
       info() { const b = app.battle; return b ? Object.assign({ quality: b.quality, failed: b.failed || !!app.battleFailed, enabled: b.enabled() }, b.stats) : { created: false, failed: !!app.battleFailed }; },
       setEnabled(on) { try { localStorage.setItem('mtq3d-battle', on ? 'on' : 'off'); } catch (e) { /* なし */ } },
@@ -166,6 +173,7 @@ export class App3D {
     if (this.current === ms) return;
     if (this.current) this.scene.remove(this.current.root);
     this.scene.add(ms.root); this.current = ms; ms.usedAt = performance.now();
+    this.ui.setBadge(ms.coverage === 'generic' ? '3D版 開発中：汎用3D（仮3D・自動生成）' : '3D版：専用3D（ポヨ村）');
     this.lighting.setLampSpots(ms.lampSpots); this.lighting.setInterior(ms.interior || !!ms.dark, ms.ambient);
     if (this.lighting.setTheme) this.lighting.setTheme(ms.theme || null);
     const closeCam = ms.interior || (ms.map.kind === 'dungeon');
@@ -186,6 +194,17 @@ export class App3D {
     if (!Win || !G.World.scene) { location.reload(); return; }
     const c = await Win.choice('画質の変更はページの再読み込みで反映される。今すぐ再読み込みする？（オートセーブから再開できる）', ['再読み込み', 'あとで']);
     if (c === 0) { try { G.State.autosave(); } catch (e) { /* なし */ } location.reload(); }
+  }
+
+  // 自動テスト用：マップを1枚、表示せずに組み立てて結果を返す（組み立てた場面はすぐ捨てる）
+  async testBuild(id) {
+    const W = G.World; let m; try { m = W.getMap(id); } catch (e) { return { id, ok: false, error: 'getMap: ' + (e && e.message) }; }
+    const ms = new MapScene3D(this); const t0 = performance.now();
+    try {
+      await ms.build(m); let tris = 0; ms.root.traverse((o) => { if (o.isMesh && o.geometry && o.geometry.index) tris += o.geometry.index.count / 3 * (o.isInstancedMesh ? o.count : 1); else if (o.isMesh && o.geometry && o.geometry.attributes.position) tris += o.geometry.attributes.position.count / 3 * (o.isInstancedMesh ? o.count : 1); });
+      const r = { id, ok: true, kind: m.kind, size: m.w + 'x' + m.h, coverage: ms.coverage, theme: ms.theme ? ms.theme.region + '/' + ms.theme.place : null, ms: Math.round(performance.now() - t0), world: ms.world ? Object.assign({}, ms.world.stats) : null, npcs: ms.npcs.length, chests: ms.chests.length, lamps: ms.lampSpots.length, trisApprox: Math.round(tris) };
+      ms.dispose(); return r;
+    } catch (e) { try { ms.dispose(); } catch (e2) { /* なし */ } return { id, ok: false, kind: m.kind, error: String((e && e.stack) || e).slice(0, 400) }; }
   }
 
   /* ---------- 入力・移動（探索シーンの update から呼ばれる） ---------- */
@@ -379,6 +398,10 @@ export class App3D {
     const dt = Math.min(0.05, (now - (this._last || now)) / 1000); this._last = now; const t = now / 1000;
     this._fc++; if (now - this._ft > 1000) { this.fps = Math.round(this._fc * 1000 / (now - this._ft)); this._fc = 0; this._ft = now; }
     const W = G.World, E = G.Engine;
+    // Phase 2：3Dのキャラクターの戦闘のあいだは、コマンド欄を右上へ（左の敵に重ならないように。styles は UIOverlay）
+    const inBattle = !!(G.BattleUI && G.BattleUI.scene && E.scenes.indexOf(G.BattleUI.scene) >= 0);
+    const actorsOn = inBattle && !!(this.battle && this.battle.actorMode && !this.battleFailed && this.battle.lastScene === G.BattleUI.scene);
+    if (document.body.classList.contains('g3-actors') !== actorsOn) document.body.classList.toggle('g3-actors', actorsOn);
     const want = this.mode3D();
     if (want && (!this.current || this.current.map !== W.map)) this.ensure(W.map);
     let i = E.scenes.length - 1; while (i > 0 && E.scenes[i].overlay) i--;

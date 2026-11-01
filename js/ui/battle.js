@@ -165,6 +165,7 @@
   };
   // 敵の表示矩形：新画像（assets/）はマニフェストの倍率、従来描画は従来サイズ。足元中央を基準に配置し、混雑時は縮小して重ならないようにする
   BattleScene.prototype.enemyRect = function (i, W, H) {
+    var S3 = root.BattleStage3D; if (this._stage3d && S3 && S3.rect) { var r3 = S3.rect(this, i, W, H); if (r3) return r3; }   // 3D版 Phase 2：3Dの敵を画面に写した矩形（HPバー・名前・数字の位置を3Dに合わせる）。2D版では使わない
     var b = this.b; var n = Math.max(1, (this.view && this.view.e.length) || b.enemies.length); var slot = W / (n + 1); var e = b.enemies[i];
     var v = enemyVisual(e); var w = v.w, h = v.h;
     var maxW = slot * 0.96, maxH = H * 0.5;
@@ -181,7 +182,9 @@
   BattleScene.prototype.posOf = function (k, W, H) {
     var b = this.b; if (!k) return null; var m = /^e:(\d+)$/.exec(k);
     if (m) { var i = +m[1]; if (!b.enemies[i] || !this.view.e[i]) return null; var r = this.enemyRect(i, W, H); return { x: r.x + r.w / 2, y: r.y + r.h * 0.55 }; }
-    var pid = k.replace(/^p:/, ''); var pi = b.party.map(function (p) { return p.id; }).indexOf(pid); if (pi < 0) return null; return { x: (W / (b.party.length + 1)) * (pi + 1), y: H * 0.7 };   // 味方の欄（画面の下）に隠れない高さ
+    var pid = k.replace(/^p:/, ''); var pi = b.party.map(function (p) { return p.id; }).indexOf(pid); if (pi < 0) return null;
+    var S3p = root.BattleStage3D; if (this._stage3d && S3p && S3p.partyPos) { var pp3 = S3p.partyPos(this, pid, W, H); if (pp3) return pp3; }   // 3D版 Phase 2：3Dの味方の位置
+    return { x: (W / (b.party.length + 1)) * (pi + 1), y: H * 0.7 };   // 味方の欄（画面の下）に隠れない高さ
   };
   BattleScene.prototype.draw = function (ctx) {
     // 必殺技のチャートが戦闘画面を覆っている間は、下の戦闘画面（3D 版の舞台も）を1秒に1回だけ描く（チャートの動きを軽くする）
@@ -210,7 +213,9 @@
       var appear = self.anims.filter(function (a) { return a.type === 'appear' && a.idx === i; })[0];
       var bob = Math.sin(self.t / 500 + i) * 2; var breathe = 1 + Math.sin(self.t / 600 + i) * 0.015;
       if (ent) { var ease = 1 - Math.pow(1 - entP, 3); y += (1 - ease) * 120; breathe = 1 + (1 - ease) * 0.6; }
-      var img = enemyImage(e);
+      var by3d = !!(self._stage3d && root.BattleStage3D && root.BattleStage3D.drawn && root.BattleStage3D.drawn(self, i));   // 3D版 Phase 2：3Dのモデルで描いている敵は、2Dの絵・影を描かない（HPバー・名前・演出は描く）
+      if (by3d && dying) return;
+      var img = by3d ? null : enemyImage(e);
       ctx.save();
       var alpha = 1;
       if (dying) { var dp = dying.t / dying.dur; alpha = 1 - dp; if (e.fled) { x += dp * 80; } else { y += dp * 20; } }
@@ -221,11 +226,13 @@
       var cx = x + size / 2, cy = y + hh + bob;
       ctx.translate(cx, cy); ctx.scale(breathe, dying && !e.fled ? Math.max(0.05, 1 - dying.t / dying.dur) * breathe : breathe); ctx.translate(-cx, -cy);
       // 影
-      var lf = r.lift || 0; ctx.fillStyle = lf ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(cx, y + hh + 2 + lf, size * (lf ? 0.28 : 0.38), lf ? 4 : 6, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.imageSmoothingEnabled = !!r.smooth; if (r.smooth) ctx.imageSmoothingQuality = 'high';
-      ctx.drawImage(img, Math.round(x), Math.round(y + bob), size, hh);
-      var hf = self.anims.filter(function (a) { return a.type === 'hitflash' && a.idx === i; })[0];
-      if (hf) { ctx.globalAlpha = alpha * (1 - hf.t / hf.dur) * 0.9; ctx.drawImage(enemySilhouette(e), Math.round(x), Math.round(y + bob), size, hh); }
+      if (!by3d) {
+        var lf = r.lift || 0; ctx.fillStyle = lf ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(cx, y + hh + 2 + lf, size * (lf ? 0.28 : 0.38), lf ? 4 : 6, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.imageSmoothingEnabled = !!r.smooth; if (r.smooth) ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img, Math.round(x), Math.round(y + bob), size, hh);
+        var hf = self.anims.filter(function (a) { return a.type === 'hitflash' && a.idx === i; })[0];
+        if (hf) { ctx.globalAlpha = alpha * (1 - hf.t / hf.dur) * 0.9; ctx.drawImage(enemySilhouette(e), Math.round(x), Math.round(y + bob), size, hh); }
+      }
       ctx.imageSmoothingEnabled = false;
       ctx.restore();
       if (dying) return;
@@ -250,7 +257,10 @@
     // 勝利演出
     if (this.victory >= 0) { var vp = Math.min(1, this.victory / 600); ctx.save(); ctx.globalAlpha = 0.5 * vp; ctx.fillStyle = '#ffd24a'; for (var ray = 0; ray < 12; ray++) { var ang = ray * Math.PI / 6 + this.t / 3000; ctx.beginPath(); ctx.moveTo(W / 2, H * 0.3); ctx.lineTo(W / 2 + Math.cos(ang) * 900, H * 0.3 + Math.sin(ang) * 900); ctx.lineTo(W / 2 + Math.cos(ang + 0.08) * 900, H * 0.3 + Math.sin(ang + 0.08) * 900); ctx.closePath(); ctx.fill(); } ctx.restore(); this.particles.forEach(function (p) { ctx.fillStyle = p.c; ctx.fillRect(Math.round(p.x), Math.round(p.y), 4, 6); }); }
     // ダメージ数値
-    this.pops.forEach(function (p) { var i = p.idx; var ne = Math.max(1, self.view.e.length); var x = p.side === 'enemy' ? self.enemyRect(Math.min(i, ne - 1), W, H).x + self.enemyRect(Math.min(i, ne - 1), W, H).size / 2 : (W / (b.party.length + 1)) * (i + 1); var y = p.side === 'enemy' ? H * 0.3 : H * 0.75; y -= p.t / 12; ctx.font = 'bold ' + (p.crit ? 26 : 20) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#000'; ctx.strokeText(p.text, x, y); ctx.fillStyle = p.color; ctx.fillText(p.text, x, y); });
+    this.pops.forEach(function (p) { var i = p.idx; var ne = Math.max(1, self.view.e.length); var x = p.side === 'enemy' ? self.enemyRect(Math.min(i, ne - 1), W, H).x + self.enemyRect(Math.min(i, ne - 1), W, H).size / 2 : (W / (b.party.length + 1)) * (i + 1); var y = p.side === 'enemy' ? H * 0.3 : H * 0.75;
+      if (self._stage3d && root.BattleStage3D && root.BattleStage3D.actorsOn && root.BattleStage3D.actorsOn(self)) {   // 3D版 Phase 2：数字を3Dのキャラクターの位置に
+        if (p.side === 'enemy') { var rr3 = self.enemyRect(Math.min(i, ne - 1), W, H); y = rr3.y + rr3.h * 0.35; } else if (b.party[i]) { var pq3 = self.posOf('p:' + b.party[i].id, W, H); if (pq3) { x = pq3.x; y = pq3.y - 12; } } }
+      y -= p.t / 12; ctx.font = 'bold ' + (p.crit ? 26 : 20) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#000'; ctx.strokeText(p.text, x, y); ctx.fillStyle = p.color; ctx.fillText(p.text, x, y); });
     ctx.restore();
   };
   var imgCache = {};

@@ -11,6 +11,7 @@
    ・失敗したとき（WebGL が使えない・作れない）は null を返し、2D版の背景のまま進む
    ========================================================= */
 import * as THREE from 'three';
+import { BattleActors3D } from './BattleActors3D.js';
 
 const G = typeof window !== 'undefined' ? window : globalThis;
 const TAU = Math.PI * 2;
@@ -66,7 +67,8 @@ class Particles {
 }
 
 export class BattleStage3D {
-  constructor(quality) {
+  constructor(quality, opts) {
+    opts = opts || {}; this.models = opts.models || null;   // Phase 2：3Dのキャラクター（味方・敵）。モデルの管理は探索と共通
     this.quality = quality === 'low' ? 'low' : 'high'; this.failed = false; this.scene3 = null; this.lastScene = null; this.fxq = []; this.flashes = []; this.meshFx = []; this.shake = 0; this.stats = { builds: 0, frames: 0, fx: 0, lastBuildMs: 0 };
     this.canvas = document.createElement('canvas'); this.canvas.width = 640; this.canvas.height = 416;
     const r = this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: this.quality === 'high', alpha: false, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
@@ -77,6 +79,8 @@ export class BattleStage3D {
     this.canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); this.failed = true; });
     if (G.FX65 && G.FX65.on) G.FX65.on((type, data) => { try { if (type === 'play') this.onFx(data); } catch (e) { console.warn('3D FX', e); } });
   }
+  // Phase 2：3Dのキャラクター同士の戦闘（設定 mtq3d-battle-actors：'off' で以前の「3Dの舞台＋2Dの敵の絵」）
+  actorsEnabled() { if (!this.models) return false; try { return localStorage.getItem('mtq3d-battle-actors') !== 'off'; } catch (e) { return true; } }
   enabled() {
     if (this.failed) return false;
     try { if (localStorage.getItem('mtq3d-battle') === 'off') return false; } catch (e) { /* なし */ }
@@ -106,6 +110,8 @@ export class BattleStage3D {
     // カメラ：敵の足もと（画面の高さの 56%）が地面の z=0 の線に重なるように
     this.camBase = new THREE.Vector3(0, 1.1, 9); const fovH = THREE.MathUtils.degToRad(this.camera.fov / 2); this.camera.aspect = W / H; this.camera.updateProjectionMatrix();
     const thetaPoint = Math.atan2(this.camBase.y, this.camBase.z); this.pitch = thetaPoint - Math.atan(0.12 * Math.tan(fovH));
+    this.actorMode = this.actorsEnabled();
+    if (this.actorMode) { this.camBase.set(0.0, 3.0, 11.5); this.pitch = Math.atan2(3.0 - 1.2, 11.5); }   // Phase 2：左に敵・右に味方を、斜め前の少し上から見る
     // 遠景：2D版の背景（同じ景色・同じ地平線）を奥の板に貼る。板の地平線（絵の上から 58%）を 3D の地平線に合わせ、画面の上の端まで覆う
     const dist = far + this.camBase.z, hz3 = 0.7; const topY = this.camBase.y - dist * Math.tan(this.pitch) + dist * Math.tan(fovH) + 1.5 + 6.6 * dist / 71;
     const hgt = (topY - hz3) / 0.58, wid = 2 * dist * Math.tan(fovH) * (W / H) * 1.18; const bw = Math.min(2048, Math.round(H * wid / hgt));
@@ -145,6 +151,7 @@ export class BattleStage3D {
       const bl = new THREE.PointLight(bc, 6, 12, 1.3); bl.position.set(0, 2.5, -1.5); S.add(bl); this.anim.push((dt, t) => { bl.intensity = 4 + 3 * Math.sin(t * 2.4); });
     }
     this.entrance = scene.entrance ? { dur: (scene.entrance.dur || 1400) / 1000, delay: (scene.entrance.delay || 0) / 1000 } : null;
+    if (this.actorMode) { if (!this.actors) this.actors = new BattleActors3D(this, this.models); this.actors.setup(scene, S); }
     this.stats.builds++; this.stats.lastBuildMs = Math.round(performance.now() - t0); this.stats.place = place;
   }
   buildGround(S, place, P, far, night) {
@@ -210,7 +217,7 @@ export class BattleStage3D {
     const rocks = (c, n, minX, zMin, big) => this.scatter(S, new THREE.DodecahedronGeometry(0.5, 0), std(c), n, (i) => { const p = this.side(i + 50, minX, 18, zMin, 5); const s = (big || 1) * (0.4 + h1(i * 3.9) * 0.9); return { x: p.x, z: p.z, y: s * 0.2, s, sy: s * 0.7, ry: i, rx: i * 0.3 }; }, true);
     const spikes = (c, n, minX, zMin, hgt) => this.scatter(S, new THREE.ConeGeometry(0.4, 1, 6).translate(0, 0.5, 0), std(c), n, (i) => { const p = this.side(i + 90, minX, 16, zMin, 4); return { x: p.x, z: p.z, s: 0.6 + h1(i) * 0.8, sy: (hgt || 2) * (0.5 + h1(i * 1.9)), rz: (h1(i * 4.4) - 0.5) * 0.3 }; }, true);
     const crystals = (c, n, minX, zMin, withLight) => { const m = glow(c, 1.2); m.transparent = true; m.opacity = 0.9; this.scatter(S, new THREE.OctahedronGeometry(0.35, 0), m, n, (i) => { const p = this.side(i + 130, minX, 12, zMin, 3); return { x: p.x, z: p.z, y: 0.4, s: 0.7 + h1(i) * 0.9, sy: 1.6 + h1(i * 2) * 1.6, ry: i }; }, false); if (withLight) { this.light(S, c, -5, 1.2, -3, 3, 7, true); this.light(S, c, 5.5, 1.2, -4, 3, 7, true); } };
-    const pillars = (c, n, x, zStep, hgt, z0) => { const m = std(c, { roughness: 0.7 }); this.scatter(S, new THREE.CylinderGeometry(0.42, 0.48, 1, 12).translate(0, 0.5, 0), m, n * 2, (i) => ({ x: (i % 2 ? 1 : -1) * x, z: (z0 || 2) - Math.floor(i / 2) * zStep, sy: hgt }), true); this.scatter(S, new THREE.BoxGeometry(1.3, 0.35, 1.3).translate(0, 0.17, 0), m, n * 2, (i) => ({ x: (i % 2 ? 1 : -1) * x, z: (z0 || 2) - Math.floor(i / 2) * zStep, y: hgt - 0.1 }), true); };
+    const pillars = (c, n, x, zStep, hgt, z0) => { if (this.actorMode) { x *= 1.6; z0 = (z0 || 2) - 3; } const m = std(c, { roughness: 0.7 }); this.scatter(S, new THREE.CylinderGeometry(0.42, 0.48, 1, 12).translate(0, 0.5, 0), m, n * 2, (i) => ({ x: (i % 2 ? 1 : -1) * x, z: (z0 || 2) - Math.floor(i / 2) * zStep, sy: hgt }), true); this.scatter(S, new THREE.BoxGeometry(1.3, 0.35, 1.3).translate(0, 0.17, 0), m, n * 2, (i) => ({ x: (i % 2 ? 1 : -1) * x, z: (z0 || 2) - Math.floor(i / 2) * zStep, y: hgt - 0.1 }), true); };
     const torch = (x, z, c) => { const m = std('#5a3a22'); const s = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 1.4, 6), m); s.position.set(x, 0.7, z); s.castShadow = true; S.add(s); const f = new THREE.Mesh(new THREE.SphereGeometry(0.14, 8, 6), glow(c || '#ffb24a', 3)); f.position.set(x, 1.5, z); S.add(f); this.light(S, c || '#ffa040', x, 1.7, z, hi ? 5 : 3, 8, true); };
     switch (place) {
       case 'grassland': tree(P.mid, hi ? 34 : 16, 7, -30); rocks('#8a8a7a', 14, 6, -26); this.scatter(S, new THREE.ConeGeometry(0.05, 0.22, 4).translate(0, 0.11, 0), std(P.ground[0], { roughness: 1 }), hi ? 260 : 100, (i) => ({ x: (h1(i * 1.1) - 0.5) * 30, z: 1.5 - h1(i * 2.7) * 24, ry: i }), false); break;
@@ -224,13 +231,13 @@ export class BattleStage3D {
         { const carpet = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 22), std('#8a1a2a', { roughness: 1 })); carpet.rotation.x = -Math.PI / 2; carpet.position.set(0, 0.015, -5); carpet.receiveShadow = true; S.add(carpet);
           const ban = std('#a02a3a', { side: THREE.DoubleSide }); for (let i = 0; i < 3; i++) [-1, 1].forEach((sg) => { const b = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 2.2), ban); b.position.set(sg * 4.6, 3.0, 1 - i * 4.2); b.rotation.y = -sg * Math.PI / 2; S.add(b); });
           [[-3.6, -0.5], [3.6, -0.5], [-3.6, -6], [3.6, -6]].forEach(([x, z]) => torch(x, z, '#ffb24a')); } break;
-      case 'harbor': { const wood = std('#7a5a3a'); const pier = new THREE.Mesh(new THREE.BoxGeometry(9, 0.3, 14), wood); pier.position.set(0, 0.12, -1); pier.receiveShadow = true; pier.castShadow = true; S.add(pier);
+      case 'harbor': { const wood = std('#7a5a3a'); const pier = new THREE.Mesh(new THREE.BoxGeometry(this.actorMode ? 17 : 9, 0.3, this.actorMode ? 12 : 14), wood); pier.position.set(0, 0.12, this.actorMode ? 0 : -1); pier.receiveShadow = true; pier.castShadow = true; S.add(pier);
           this.scatter(S, new THREE.CylinderGeometry(0.16, 0.16, 2.4, 8).translate(0, -0.4, 0), wood, 12, (i) => ({ x: (i % 2 ? 1 : -1) * 4.4, z: 5 - Math.floor(i / 2) * 2.6 }), true);
           this.scatter(S, new THREE.BoxGeometry(0.9, 0.9, 0.9).translate(0, 0.45, 0), std('#9a7a4a'), 5, (i) => ({ x: -3.4 + (i % 2) * 0.95, z: 3 - i * 0.7, y: 0.27, ry: i * 0.4 }), true);
           const hull = new THREE.Mesh(new THREE.BoxGeometry(5, 1.4, 1.8), std('#6a4a2a')); hull.position.set(9, 0.5, -10); hull.castShadow = true; S.add(hull); const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 6), std('#5a3a22')); mast.position.set(9, 3.8, -10); S.add(mast);
           const sail = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 3.4), std('#f0eee0', { side: THREE.DoubleSide })); sail.position.set(9.2, 4.2, -10); S.add(sail); this.anim.push((dt, t) => { hull.position.y = 0.5 + Math.sin(t * 1.1) * 0.08; hull.rotation.z = Math.sin(t * 0.9) * 0.03; }); } break;
-      case 'sea': { const deck = new THREE.Mesh(new THREE.BoxGeometry(14, 0.4, 5), std('#7a5a3a')); deck.position.set(0, 0.1, 5.4); deck.receiveShadow = true; S.add(deck); const rail = std('#5a3a22'); const r = new THREE.Mesh(new THREE.BoxGeometry(14, 0.15, 0.15), rail); r.position.set(0, 0.9, 3.0); S.add(r);
-          this.scatter(S, new THREE.BoxGeometry(0.12, 0.8, 0.12).translate(0, 0.4, 0), rail, 14, (i) => ({ x: -6.5 + i, z: 3.0, y: 0.25 }), true); this.anim.push((dt, t) => { this.rollY = Math.sin(t * 0.8) * 0.06; }); } break;
+      case 'sea': { const deck = new THREE.Mesh(new THREE.BoxGeometry(this.actorMode ? 18 : 14, 0.4, this.actorMode ? 9 : 5), std('#7a5a3a')); deck.position.set(0, 0.1, this.actorMode ? 0.4 : 5.4); deck.receiveShadow = true; S.add(deck); const rail = std('#5a3a22'); const r = new THREE.Mesh(new THREE.BoxGeometry(14, 0.15, 0.15), rail); r.position.set(0, 0.9, this.actorMode ? 4.8 : 3.0); S.add(r);
+          this.scatter(S, new THREE.BoxGeometry(0.12, 0.8, 0.12).translate(0, 0.4, 0), rail, 14, (i) => ({ x: -6.5 + i, z: this.actorMode ? 4.8 : 3.0, y: 0.25 }), true); this.anim.push((dt, t) => { this.rollY = Math.sin(t * 0.8) * 0.06; }); } break;
       case 'desert': rocks('#a07a4a', 12, 5, -24, 1.4); { const cm = std('#4a8a4a'); this.scatter(S, new THREE.CylinderGeometry(0.22, 0.26, 1.8, 8).translate(0, 0.9, 0), cm, 8, (i) => { const p = this.side(i + 300, 6, 18, -22, 3); return { x: p.x, z: p.z, s: 0.8 + h1(i) * 0.6 }; }, true); this.scatter(S, new THREE.CylinderGeometry(0.14, 0.16, 0.8, 8).translate(0, 0.4, 0), cm, 8, (i) => { const p = this.side(i + 300, 6, 18, -22, 3); const s = 0.8 + h1(i) * 0.6; return { x: p.x + 0.35 * s, z: p.z, y: 0.9 * s, s, rz: -0.6 }; }, true); } break;
       case 'snow': tree('#2e5048', hi ? 30 : 14, 6, -30, true); rocks('#c8d6ea', 12, 6, -24); crystals('#a8dcff', 8, 5, -18, false); break;
       case 'volcano': rocks('#2a1a16', 22, 4.5, -26, 1.6); spikes('#1a0e0c', 14, 6, -26, 3);
@@ -258,6 +265,7 @@ export class BattleStage3D {
     this.camera.rotation.set(-this.pitch - ey * 0.04, Math.sin(t * 0.21) * 0.012, (this.rollY || 0) * 0.15, 'YXZ');
     this.camera.updateMatrixWorld();
     this.ambient(dt, t);
+    if (this.actorMode && this.actors) { try { this.actors.update(dt, t, scene); } catch (e) { console.warn('3D actors', e); this.actorMode = false; } }
     // 演出の予定
     const now = performance.now();
     this.fxq = this.fxq.filter((q) => { if (now < q.at) return true; try { q.fn(); } catch (e) { console.warn('3D FX', e); } return false; });
@@ -285,12 +293,14 @@ export class BattleStage3D {
   }
   /* ---------- 演出（2D版と同じ時刻表） ---------- */
   posKey(key) {   // 2D版の画面上の位置 → 3D（敵は z=0 の面、味方は手前 z=3.4 の面）
+    if (this.actorMode && this.actors) { const a = this.actors.actorOf(key); if (a && a.ch) { const v = a.ch.root.position.clone(); v.y += /^p:/.test(key) ? 1.0 : Math.max(0.5, (a.size ? a.size.h : 1.2) * 0.5); return v; } }   // Phase 2：3Dのキャラクターの位置
     const sc = this.lastScene; if (!sc || !sc.posOf) return null; const W = this.cw || 640, H = this.ch || 416; const p = sc.posOf(key, W, H); if (!p) return null;
     const ndc = new THREE.Vector2(p.x / W * 2 - 1, -(p.y / H * 2 - 1)); const rc = this._rc || (this._rc = new THREE.Raycaster()); rc.setFromCamera(ndc, this.camera);
     const z = /^p:/.test(key) ? 3.4 : 0; const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -z); const out = new THREE.Vector3(); if (!rc.ray.intersectPlane(plane, out)) return null; out.y = Math.max(0.3, out.y); return out;
   }
   onFx(d) {
     if (!this.scene3 || !this.lastScene || this.lastScene !== (G.BattleUI && G.BattleUI.scene)) return;
+    if (this.actorMode && this.actors) { try { this.actors.onFx(d, familyOf); } catch (e) { console.warn('3D actors fx', e); } }
     const def = d.def || {}, tl = d.tl || {}; const fam = familyOf(def.fx); const c1 = col(def.color || '#ffffff'), c2 = col(def.color2 || def.color || '#ffd24a');
     const from = this.posKey(d.from); const tos = (d.to || []).map((k) => this.posKey(k)).filter(Boolean); if (!tos.length) return;
     const now = performance.now(); const big = !!def.big || ['meteor', 'time_stop', 'trend_break', 'explosion', 'aurora'].indexOf(def.fx) >= 0; const area = def.area === 'all' || tos.length > 1;
@@ -328,7 +338,12 @@ export class BattleStage3D {
       default: this.burst(p, c1, n, 3.2, { up: 0.6, s: 0.15 }); this.burst(p, c2, n / 2 | 0, 1.8, { s: 0.22, life: 0.8 }); if (big) this.shock(p, c1, 4); break;
     }
   }
+  // battle.js から（Phase 2）
+  rect(scene, i, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.rect(i, W, H, this.camera); }
+  drawn(scene, i) { return !!(this.actorMode && this.actors && scene === this.lastScene && this.actors.drawn(i)); }
+  partyPos(scene, id, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.partyPos(id, W, H, this.camera); }
   dispose() {
+    if (this.actors) this.actors.dispose();
     if (!this.scene3) return;
     this.scene3.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) [].concat(o.material).forEach((m) => { if (m.map && m.map !== this.backTex) m.map.dispose(); m.dispose(); }); });
     if (this.backTex) { this.backTex.dispose(); this.backTex = null; }

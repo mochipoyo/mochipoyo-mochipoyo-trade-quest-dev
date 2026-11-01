@@ -92,13 +92,25 @@ const FAMILY_ARCH = {
   knight: 'knight', undead: 'undead', demon: 'demon'
 };
 export const CREATURE_FAMILY_ARCH = FAMILY_ARCH;
+// 表示名からの推定（推測）：通常敵164体は画像と名前が新しくなった（js/data/enemy-redesign.js）が、art.family は以前の絵のまま。
+// 名前に姿を表す字があれば、それを優先する（例：朱陽の伸柱蟲 → 虫）。当てはまらなければ art.family、それもなければ人型
+const NAME_ARCH = [
+  [/スライム|雫|粘液/, 'slime'], [/騎士|番兵|兵|衛|近衛|槍/, 'knight'], [/鳥|鷲|鷹|梟|烏|鴎|翼獣|羽奏/, 'bird'],
+  [/狼|熊|獣|猫|狐|猪|豹|羊|兎|鬣|ウルフ|ベア/, 'beast'], [/蟲|蛾|蜂|蜘蛛|蟻|蝶|甲虫|虫/, 'insect'], [/竜|龍|蛇|蜥|鰐|蛙|亀|ドラゴン|サーペント|ヒドラ/, 'reptile'],
+  [/魚|鮫|鯨|貝|蛸|海月|クラゲ|鰭/, 'fish'], [/骨|屍|ゾンビ|スケルトン|リッチ/, 'undead'], [/ゴーレム|岩|石|巨像|雪だるま|結晶/, 'golem'],
+  [/機|ドローン|砲|炉|歯車|装甲|ロボ/, 'machine'], [/花|草|樹|茸|蔦|サボテン|苗|葉の/, 'plant'], [/魔王|悪魔|魔人|デーモン|鬼/, 'demon'],
+  [/霊|影|幽|残響|幻|ゴースト|精/, 'spirit'], [/賊|盗|徴収|大臣|術師|修験|商人/, 'humanoid']
+];
 export function creatureFor(def) {
-  def = def || {}; const art = def.art || {}; const fam = art.family || null;
-  const arch = (fam && FAMILY_ARCH[fam]) || 'humanoid';   // art の無い敵（盗賊・兵士・海賊など）は人型
+  def = def || {}; const art = def.art || {}; const fam = art.family || null; const name = def.name || '';
+  let arch = null, by = 'default';
+  for (const [re, a] of NAME_ARCH) if (re.test(name)) { arch = a; by = 'name'; break; }
+  if (!arch && fam && FAMILY_ARCH[fam]) { arch = FAMILY_ARCH[fam]; by = 'family'; }
+  if (!arch) arch = 'humanoid';   // art の無い敵（盗賊・兵士・海賊など）は人型
   const c = art.c || {}; const base = c.base || c.body || '#9a9a9a';
   const size = def.boss ? 'boss' : (art.size || 'mid');
   const scale = { small: 0.78, mid: 1.0, big: 1.4, boss: 1.85 }[size] || 1.0;
-  return { model: 'mon_' + arch, archetype: arch, family: fam, color: base, accent: c.accent || c.belly || null, scale, size, status: 'provisional', exactFamily: !!(fam && FAMILY_ARCH[fam]) };
+  return { model: 'mon_' + arch, archetype: arch, family: fam, color: base, accent: c.accent || c.belly || null, scale, size, status: 'provisional', by, exactFamily: by !== 'default' };
 }
 
 // 3D化したマップ（Phase 1：ポヨ村と屋内6か所）。それ以外は既存の2D表示

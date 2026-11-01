@@ -3,11 +3,13 @@
    ・読み込み表示／「調べる・話す」の案内／3D設定（カメラ角度・ズーム・画質・時間帯の表示確認・FPS）
    ・スマホ：画面の左側をなぞると動けるバーチャルスティック（既存の十字ボタンも使える）、2本指でズーム
    ========================================================= */
+import { scope3D, setScope3D } from '../world/coverage.js';
 const G3B = () => window.BattleStage3D;
 export class UIOverlay {
   constructor(app) {
     this.app = app; this.stick = { x: 0, z: 0, mag: 0, active: false };
     const css = document.createElement('style'); css.textContent = `
+      body.g3-actors .rw-list.cmd-list { left: auto !important; right: 12px !important; top: 52px !important; bottom: auto !important; max-height: 46% !important; overflow-y: auto; }
       #game3d { position: absolute; display: none; touch-action: none; outline: none; }
       #g3-veil { position: absolute; display: none; background: #05070f; color: #e8c15a; align-items: center; justify-content: center; flex-direction: column; gap: 10px; font-size: 14px; pointer-events: none; }
       #g3-veil .bar { width: 46%; height: 8px; border: 1px solid #e8c15a; border-radius: 4px; overflow: hidden; } #g3-veil .bar i { display: block; height: 100%; width: 0; background: #e8c15a; transition: width .2s; }
@@ -27,7 +29,7 @@ export class UIOverlay {
     const stage = document.getElementById('stage'); const game = document.getElementById('game');
     this.canvas = document.createElement('canvas'); this.canvas.id = 'game3d'; this.canvas.tabIndex = -1; game.insertAdjacentElement('afterend', this.canvas);
     const mk = (id, html) => { const d = document.createElement('div'); d.id = id; if (html) d.innerHTML = html; this.canvas.insertAdjacentElement('afterend', d); return d; };
-    this.veil = mk('g3-veil', '<div class="txt">3Dの村を準備しています…</div><div class="bar"><i></i></div>');
+    this.veil = mk('g3-veil', '<div class="txt">3Dのマップを組み立てています…</div><div class="bar"><i></i></div>');
     this.prompt = mk('g3-prompt');
     this.badge = mk('g3-badge', '3D版 Phase 1（技術プロトタイプ）');
     this.tools = document.createElement('div'); this.tools.id = 'g3-tools'; stage.appendChild(this.tools);
@@ -37,6 +39,8 @@ export class UIOverlay {
       '<div class="row"><span class="lab">時間帯の確認</span><button data-t="-1">ゲーム内</button><button data-t="0.3">朝</button><button data-t="0.5">昼</button><button data-t="0.74">夕</button><button data-t="0.95">夜</button></div>' +
       '<div class="row"><span class="lab">モーション</span><button data-m="Attack">攻撃</button><button data-m="Cast">呪文</button><button data-m="Hit">被弾</button><button data-m="Defend">防御</button><button data-m="Victory">勝利</button><button data-m="Defeat">倒れる</button></div>' +
       '<div class="row"><span class="lab">戦闘の3D</span><button data-b="on">3Dの舞台</button><button data-b="off">2Dの背景</button></div>' +
+      '<div class="row"><span class="lab">戦闘のキャラ</span><button data-ba="on">3Dのキャラ（仮3D）</button><button data-ba="off">2Dの絵</button></div>' +
+      '<div class="row"><span class="lab">3Dの範囲</span><button data-sc="all">全マップ（汎用3D＝仮3D）</button><button data-sc="poyo">ポヨ村だけ（以前と同じ）</button></div>' +
       '<div class="row"><span class="lab">表示</span><span id="g3-fps">-- fps</span></div>' +
       '<div class="row muted small" style="max-width:240px;color:#aab">時間帯の確認は見た目だけで、ゲームの進行（State の時刻）は変えません。画質の変更は再読み込みで反映されます。</div></div>';
     this.stickEl = document.createElement('div'); this.stickEl.id = 'g3-stick'; this.stickEl.innerHTML = '<i></i>'; stage.appendChild(this.stickEl);
@@ -49,6 +53,8 @@ export class UIOverlay {
       if (b.dataset.t) { const v = +b.dataset.t; app.lighting.preview = v < 0 ? null : v; }
       if (b.dataset.m) app.emote(b.dataset.m);
       if (b.dataset.b && G3B()) G3B().setEnabled(b.dataset.b === 'on');   // v6.5 Phase D
+      if (b.dataset.ba && G3B()) G3B().setActors(b.dataset.ba === 'on');   // Phase 2：次の戦闘から
+      if (b.dataset.sc) setScope3D(b.dataset.sc);                         // Phase 1：すぐ反映（今いるマップも）
       this.refresh();
     });
     // ホイールでズーム
@@ -84,6 +90,8 @@ export class UIOverlay {
     const pv = app.lighting ? app.lighting.preview : null;
     this.tools.querySelectorAll('[data-t]').forEach((b) => b.classList.toggle('on', (+b.dataset.t < 0 && pv === null) || +b.dataset.t === pv));
     const bs = G3B(); const on = bs ? bs.isEnabled() : true; this.tools.querySelectorAll('[data-b]').forEach((b) => b.classList.toggle('on', (b.dataset.b === 'on') === on));
+    let ba = true; try { ba = localStorage.getItem('mtq3d-battle-actors') !== 'off'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-ba]').forEach((b) => b.classList.toggle('on', (b.dataset.ba === 'on') === ba));
+    const sc = scope3D(); this.tools.querySelectorAll('[data-sc]').forEach((b) => b.classList.toggle('on', b.dataset.sc === sc));
   }
   // #game（2D）のちょうど内側に重ねる
   layout() {
@@ -101,6 +109,7 @@ export class UIOverlay {
     this.veil.style.display = on && loading ? 'flex' : 'none';
     if (!on) { this.prompt.style.display = 'none'; this.stickEl.style.display = 'none'; }
   }
+  setBadge(text) { if (this.badge.textContent !== text) this.badge.textContent = text; }
   progress(k, text) { this.veil.querySelector('i').style.width = Math.round(k * 100) + '%'; if (text) this.veil.querySelector('.txt').textContent = text; }
   setPrompt(text, sx, sy) {
     if (!text) { this.prompt.style.display = 'none'; return; }
