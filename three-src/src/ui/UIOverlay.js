@@ -66,12 +66,13 @@ export class UIOverlay {
       '<div class="row"><span class="lab">戦闘の味方</span><button data-bp="sprite">ドット絵</button><button data-bp="model">3Dモデル（仮3D）</button></div>' +
       '<div class="row"><span class="lab">3Dの範囲</span><button data-sc="all">全マップ（汎用3D＝仮3D）</button><button data-sc="poyo">ポヨ村だけ（以前と同じ）</button></div>' +
       '<div class="row"><span class="lab">表示</span><span id="g3-fps">-- fps</span></div>' +
+      '<div class="row"><span class="lab">状態</span><span id="g3-diag" style="max-width:300px;line-height:1.45;user-select:text;-webkit-user-select:text">--</span></div>' +
       '<div class="row muted small" style="max-width:240px;color:#aab">時間帯の確認は見た目だけで、ゲームの進行（State の時刻）は変えません。画質の変更は再読み込みで反映されます。</div></div>';
     this.stickEl = document.createElement('div'); this.stickEl.id = 'g3-stick'; this.stickEl.innerHTML = '<i></i>'; stage.appendChild(this.stickEl);
     this.tools.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return; e.stopPropagation();
       if (b.dataset.a === 'zin') app.camera.zoom(0.85); if (b.dataset.a === 'zout') app.camera.zoom(1.18);
-      if (b.dataset.a === 'panel') document.getElementById('g3-panel').classList.toggle('show');
+      if (b.dataset.a === 'panel') { const pn = document.getElementById('g3-panel'); pn.classList.toggle('show'); if (pn.classList.contains('show')) try { this.setDiag(this.app.diagText()); } catch (e) { /* なし */ } }
       if (b.dataset.cam) { app.setPitch(+b.dataset.cam); }
       if (b.dataset.q) app.changeQuality(b.dataset.q);
       if (b.dataset.t) { const v = +b.dataset.t; app.lighting.preview = v < 0 ? null : v; }
@@ -142,4 +143,5 @@ export class UIOverlay {
     this.prompt.innerHTML = text; this.prompt.style.display = 'block'; this.prompt.style.left = sx + 'px'; this.prompt.style.top = sy + 'px';
   }
   setFps(f, extra) { const el = document.getElementById('g3-fps'); if (el) el.textContent = f + ' fps' + (extra ? '　' + extra : ''); }
+  setDiag(text) { const el = document.getElementById('g3-diag'); if (el && el.textContent !== text) el.textContent = text; }   // 3D設定の「状態」（GameBridge.diagText）
 }

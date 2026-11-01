@@ -25,8 +25,12 @@ function legacy2D() {
   };
 }
 
+// ビルドの日時（日本時間）。3D設定の「状態」に出す（テストプレイで、古い版が表示されていないかを確かめるため）
+const BUILD_STAMP = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 16).replace('T', ' ') + ' JST';
+
 export default defineConfig({
   base: './',
+  define: { __MTQ3D_BUILD__: JSON.stringify(BUILD_STAMP) },
   plugins: [legacy2D()],
   build: {
     outDir: resolve(__dirname, '../3d'),

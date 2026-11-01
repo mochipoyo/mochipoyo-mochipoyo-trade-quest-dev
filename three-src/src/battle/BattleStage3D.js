@@ -77,11 +77,20 @@ export class BattleStage3D {
     r.shadowMap.enabled = this.quality === 'high'; r.shadowMap.type = THREE.PCFSoftShadowMap;
     this.pr = Math.min(G.devicePixelRatio || 1, this.quality === 'high' ? 1.5 : 1); r.setPixelRatio(this.pr);
     this.camera = new THREE.PerspectiveCamera(40, 640 / 416, 0.1, 400);
-    this.canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); this.failed = true; });
-    if (G.FX65 && G.FX65.on) G.FX65.on((type, data) => { try { if (type === 'play') this.onFx(data); } catch (e) { console.warn('3D FX', e); } });
+    this.canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); this.failed = true; this.failReason = 'WebGL の文脈が失われた（端末のメモリ不足など）'; });
+    if (G.FX65 && G.FX65.on) G.FX65.on((type, data) => { if (this.dead) return; try { if (type === 'play') this.onFx(data); } catch (e) { console.warn('3D FX', e); } });
   }
   // Phase 2：3Dのキャラクター同士の戦闘（設定 mtq3d-battle-actors：'off' で以前の「3Dの舞台＋2Dの敵の絵」）
   actorsEnabled() { if (!this.models) return false; try { return localStorage.getItem('mtq3d-battle-actors') !== 'off'; } catch (e) { return true; } }
+  // 2Dの表示になる理由（設定でオフ＝'setting'。使えるときは null）
+  whyOff() {
+    if (this.failed) return this.failReason || 'WebGL の文脈が失われた';
+    try { if (localStorage.getItem('mtq3d-battle') === 'off') return 'setting'; } catch (e) { /* なし */ }
+    const BG = G.BattleBG65; if (BG && BG.quality && BG.quality() === 'low') return 'setting';
+    return null;
+  }
+  // 作り直す前の片付け（WebGL の文脈も手放す）
+  destroy() { this.dead = true; try { this.dispose(); } catch (e) { /* なし */ } try { this.renderer.dispose(); this.renderer.forceContextLoss(); } catch (e) { /* なし */ } }
   enabled() {
     if (this.failed) return false;
     try { if (localStorage.getItem('mtq3d-battle') === 'off') return false; } catch (e) { /* なし */ }
@@ -90,6 +99,7 @@ export class BattleStage3D {
   }
   /* ---------- 2D版の battle.js から毎フレーム呼ばれる。描けたら canvas、だめなら null ---------- */
   frame(scene, W, H) {
+    if (!this.failed) { try { if (this.renderer.getContext().isContextLost()) { this.failed = true; this.failReason = 'WebGL の文脈が失われた（端末のメモリ不足など）'; } } catch (e) { /* なし */ } }   // 知らせ（イベント）より先に気づくため
     if (!this.enabled() || !scene || !scene.bg65) return null;
     const now = performance.now();
     if (scene !== this.lastScene) { this.build(scene, W, H); this.lastScene = scene; this.t0 = now; this.last = now; scene._stage3d = true; }

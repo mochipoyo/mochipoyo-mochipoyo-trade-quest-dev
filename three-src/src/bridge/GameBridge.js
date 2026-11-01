@@ -25,6 +25,13 @@ const G = window;
 const WALK = 2.7, RUN = 5.4, RADIUS = 0.28;
 const CACHE_GENERIC = 3;   // 汎用3Dのマップは直近の3枚だけ残す（ポヨ村と屋内は常に残す）
 
+function errText(e) { return String((e && (e.message || e)) || '不明').slice(0, 80); }
+// 2Dの表示に切り替えたことを知らせる（2D版のトースト。起動直後でまだ無いときは少し待つ）
+export function notice2D(text) {
+  console.warn(text); let n = 0;
+  const go = () => { const W = window.Win; if (W && W.toast && document.getElementById('toast')) W.toast(text, 6000); else if (n++ < 40) setTimeout(go, 250); };
+  go();
+}
 export class App3D {
   constructor(opts) {
     opts = opts || {};
@@ -93,12 +100,18 @@ export class App3D {
     this.camera = new CameraController3D(640 / 416); this.camera.setPitch(this.userPitch);
     this.ui = new UIOverlay(this);
     try { this.renderer = new Renderer3D(this.ui.canvas, this.quality); }
-    catch (e) { console.warn('WebGL を使えないため2D表示で続けます', e); this.disabled = true; return; }
+    catch (e) { console.warn('WebGL を使えないため2D表示で続けます', e); this.disabled = true; this.why = 'WebGL を作れない（' + errText(e) + '）'; notice2D('この端末では3D表示を使えないため、2Dで表示しています（' + this.why + '）'); return; }
     const gl = this.renderer.renderer.getContext(); this.webgl2 = (typeof WebGL2RenderingContext !== 'undefined') && gl instanceof WebGL2RenderingContext;
     this.scene = new THREE.Scene();
     this.lighting = new LightingManager(this.scene, this.renderer, this.quality);
     this.renderer.setScene(this.scene, this.camera.camera);
     this.mats = new Materials(this.base, this.renderer.renderer); this.models = new ModelManager(this.base);
+    // 戦闘の3D（敵＝絵の立体・味方＝ドット絵）は3Dの素材（GLB）を使わないので、素材の読み込みを待たずに使えるようにする
+    //   （以前は読み込みが終わるまで戦闘が2Dのままだった。スマホの回線では数十秒かかることがある）
+    this.installBattleStage();
+    this.ui.canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); this.disabled = true; this.why = 'WebGL の文脈が失われた（端末のメモリ不足など）'; this.ui.show(false); console.warn('WebGL context lost → 2D'); });
+    const loop = (now) => { try { this.frame(now); } catch (e) { console.error(e); this.failed[(G.World.map || {}).id] = true; } requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
     this.ui.progress(0.05, '3Dの素材を読み込んでいます…');
     await this.mats.preload(); this.ui.progress(0.25);
     const ids = Object.keys(MODELS).filter((id) => !MODELS[id].lazy);   // Phase 1〜2 で足したモデル（lazy）は使うときに読む
@@ -107,22 +120,47 @@ export class App3D {
     this.scene.add(this.hero.root);
     this.ui.progress(1, '3Dの村を組み立てています…');
     this.ready = true; this.ui.refresh();
-    this.installBattleStage();
-    this.ui.canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); this.disabled = true; this.ui.show(false); console.warn('WebGL context lost → 2D'); });
-    const loop = (now) => { try { this.frame(now); } catch (e) { console.error(e); this.failed[(G.World.map || {}).id] = true; } requestAnimationFrame(loop); };
-    requestAnimationFrame(loop);
     // 起動中に村へ入っていたら、その場で組み立てる
   }
 
   /* ---------- v6.5 Phase D 戦闘の3Dの舞台（最初の戦闘で作る。作れないときは2Dの背景のまま） ---------- */
+  // 3D版で戦闘が2Dの表示になった理由（設定でオフにしたときは 'setting'）
+  battleWhyNow() {
+    if (this.battleWhy) return this.battleWhy;
+    if (this.battle && this.battle.whyOff) return this.battle.whyOff();
+    return null;
+  }
+  // 戦闘が2Dの表示になったことを、理由とともに1回だけ知らせる（設定でオフにしたときは知らせない）
+  note2D(scene) {
+    if (!scene || scene === this._noted2D) return; this._noted2D = scene;
+    const why = this.battleWhyNow(); if (!why || why === 'setting') return;
+    this.lastBattleWhy = why; notice2D('3Dの戦闘を表示できないため、2Dで表示しています（' + why + '）');
+  }
+  // 3D設定の「状態」：テストプレイで不具合を知らせてもらうための情報
+  diagText() {
+    let gpu = '-', ver = '-';
+    try { const gl = this.renderer && this.renderer.renderer.getContext(); if (gl) { ver = this.webgl2 ? 'WebGL2' : 'WebGL1'; const ext = gl.getExtension('WEBGL_debug_renderer_info'); gpu = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER); } } catch (e) { /* なし */ }
+    const st3d = this.disabled ? '停止（' + (this.why || '不明') + '）' : this.ready ? '準備完了' : '読み込み中';
+    const bw = this.battleWhyNow(); const stB = this.battle && !bw && !this.battleFailed ? (this.battle.actorMode ? '3D（左右に並ぶ）' : '3Dの舞台') : bw === 'setting' ? '2D（設定）' : bw ? '2D（' + bw + '）' : this.lastBattleWhy ? '前回は2D（' + this.lastBattleWhy + '）' : 'まだ戦闘なし';
+    const miss = this.models && this.models.failed && this.models.failed.length ? '／読めなかったモデル ' + this.models.failed.length : '';
+    return '3D：' + st3d + '／戦闘：' + stB + '／' + ver + '・' + gpu + '・画質 ' + this.quality + miss + '／版 ' + (G.MTQ3D_BUILD || '-');
+  }
   installBattleStage() {
     const app = this;
     G.BattleStage3D = {
       frame(scene, W, H) {
-        if (app.battleFailed) return null;
-        if (!app.battle) { try { app.battle = new BattleStage3D(app.quality, { models: app.models }); } catch (e) { console.warn('3D battle stage unavailable → 2D', e); app.battleFailed = true; return null; } }
-        try { return app.battle.frame(scene, W, H); } catch (e) { console.warn('3D battle stage failed → 2D', e); app.battleFailed = true; return null; }
+        // 失敗したとき：次の戦闘で作り直す（1回の起動で3回まで）。WebGL の文脈が失われたときも同じ
+        const broken = app.battleFailed || (app.battle && app.battle.failed);
+        if (broken && scene !== app.battleFailScene) {
+          if ((app.battleRetries || 0) < 3) { app.battleRetries = (app.battleRetries || 0) + 1; try { if (app.battle) app.battle.destroy(); } catch (e) { /* なし */ } app.battle = null; app.battleFailed = false; app.battleWhy = null; }
+          else app.battleFailScene = scene;
+        }
+        if (app.battleFailed) { app.note2D(scene); return null; }
+        if (!app.battle) { try { app.battle = new BattleStage3D(app.quality, { models: app.models }); } catch (e) { console.warn('3D battle stage unavailable → 2D', e); app.battleFailed = true; app.battleFailScene = scene; app.battleWhy = '3Dの戦闘を作れない（' + errText(e) + '）'; app.note2D(scene); return null; } }
+        try { const c = app.battle.frame(scene, W, H); if (!c) { if (app.battle.failed) app.battleFailScene = scene; app.note2D(scene); } return c; }   // 文脈が失われた戦闘は2Dのまま、次の戦闘で作り直す
+        catch (e) { console.warn('3D battle stage failed → 2D', e); app.battleFailed = true; app.battleFailScene = scene; app.battleWhy = '3Dの戦闘の表示に失敗（' + errText(e) + '）'; app.note2D(scene); return null; }
       },
+      why() { return app.battleWhyNow(); },
       families() { return Object.assign({}, FAMILY_TABLE); },
       // Phase 2：3Dのキャラクター同士の戦闘（battle.js が HP バー・名前・数字の位置に使う）
       rect(scene, i, W, H) { return app.battle && !app.battleFailed ? app.battle.rect(scene, i, W, H) : null; },
@@ -431,9 +469,10 @@ export class App3D {
     const W = G.World, E = G.Engine;
     // Phase 2：3Dのキャラクターの戦闘のあいだは、コマンド欄を右上へ（左の敵に重ならないように。styles は UIOverlay）
     const inBattle = !!(G.BattleUI && G.BattleUI.scene && E.scenes.indexOf(G.BattleUI.scene) >= 0);
-    const actorsOn = inBattle && !!(this.battle && this.battle.actorMode && !this.battleFailed && this.battle.lastScene === G.BattleUI.scene);
+    const actorsOn = inBattle && !!(this.battle && this.battle.actorMode && !this.battleFailed && !this.battle.failed && this.battle.lastScene === G.BattleUI.scene);
     if (document.body.classList.contains('g3-actors') !== actorsOn) document.body.classList.toggle('g3-actors', actorsOn);
     this.mobileBattleLayout(actorsOn);
+    if (!this.ready) return;   // 3Dの素材の読み込み中：戦闘の画面部品の切り替えだけ
     const want = this.mode3D();
     if (want && (!this.current || this.current.map !== W.map)) this.ensure(W.map);
     let i = E.scenes.length - 1; while (i > 0 && E.scenes[i].overlay) i--;
@@ -473,5 +512,6 @@ export class App3D {
       this.ui.setPrompt('<b>Z</b> ' + label, sx, sy);
     } else this.ui.setPrompt(null);
     if (this._fc % 20 === 0) { const info = this.renderer.renderer.info.render; this.ui.setFps(this.fps, (info.calls) + ' draw / ' + Math.round(info.triangles / 1000) + 'k tri'); }
+    if (this._fc % 30 === 0) { const pn = document.getElementById('g3-panel'); if (pn && pn.classList.contains('show')) this.ui.setDiag(this.diagText()); }
   }
 }
