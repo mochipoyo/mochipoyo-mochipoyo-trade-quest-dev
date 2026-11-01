@@ -8,6 +8,8 @@
    ・読み込み失敗・時間切れ・画像の破損・ピクセルを読めない環境 → 旧画像（prev）→ MonsterArt → Sprites の順にフォールバック。戦闘は止めない
    ・切替：URL に ?bossart=new（新画像を優先）/ ?bossart=old（新画像を使わない）/ ?bossart=auto（既定）。
      localStorage 'mtq-bossart' に 'new' / 'old' を入れても同じ。セーブデータには保存しない
+   ・2026-11 ボス44体の新しい画像（js/data/boss-redesign.js・assets/bosses_v2）：マニフェストの項目の画像を差し替え、v6.3 の画像の情報は v63 に残す。
+     ?bossart=v63（または localStorage 'mtq-bossart'='v63'）で v6.3 の画像（そのときの採用・保留のとおり）。浮いているボスは lift だけ浮かせる
    ========================================================= */
 (function (root) {
   'use strict';
@@ -17,20 +19,23 @@
 
   /* ---------- 切替フラグ ---------- */
   BossArt.mode = function () {
-    try { var q = /[?&]bossart=(new|old|auto)\b/.exec(root.location ? root.location.search : ''); if (q) return q[1]; } catch (e) { }
-    try { var v = root.localStorage && root.localStorage.getItem(BossArt.LS_KEY); if (v === 'new' || v === 'old') return v; } catch (e) { }
+    try { var q = /[?&]bossart=(new|old|auto|v63)\b/.exec(root.location ? root.location.search : ''); if (q) return q[1]; } catch (e) { }
+    try { var v = root.localStorage && root.localStorage.getItem(BossArt.LS_KEY); if (v === 'new' || v === 'old' || v === 'v63') return v; } catch (e) { }
     return 'auto';
   };
-  BossArt.setMode = function (m) { try { if (m === 'new' || m === 'old') root.localStorage.setItem(BossArt.LS_KEY, m); else root.localStorage.removeItem(BossArt.LS_KEY); } catch (e) { } BossArt.clearVis(); };
+  BossArt.setMode = function (m) { try { if (m === 'new' || m === 'old' || m === 'v63') root.localStorage.setItem(BossArt.LS_KEY, m); else root.localStorage.removeItem(BossArt.LS_KEY); } catch (e) { } BossArt.clearVis(); };
 
   /* ---------- どの画像を使うか ---------- */
   // 敵IDごとの「このパックの画像」の項目（採用：monsters[id] / 既存優先：monsters[id].candidate）
   function packEntry(id) {
     var g = M().monsters; var e = g && g[id]; if (!e) return null;
-    if (e.pack === 'boss49') return e;
+    if (e.pack === 'boss49') { if (e.v63 && BossArt.mode() === 'v63') return v63Entry(e); return e; }
     if (e.candidate && e.candidate.pack === 'boss49') return e.candidate;
     return null;
   }
+  // ?bossart=v63：v6.3 の画像の項目（新画像の項目に v63 として残したもの）
+  function v63Entry(e) { var k = e.v63; return { pack: 'boss49', path: k.path, w: 512, h: 512, clean: k.clean, bbox: k.bbox, scale: k.scale, fit: k.fit, status: k.status, use: k.use, lazy: true, v63: true }; }
+  function bk() { return BossArt.mode() === 'v63' ? 'boss63' : 'boss'; }   // 読み込み済みの画像の置き場（v63 の画像と混ざらないように）
   BossArt.packEntry = packEntry;
   // 戦闘・図鑑でこのパックの画像を使うか（読み込み前でも判定できる）
   BossArt.wants = function (id) {
@@ -38,7 +43,7 @@
     var mode = BossArt.mode();
     if (mode === 'old') return false;
     if (mode === 'new') return true;
-    return p.use !== false && p.status === 'replaced';
+    return p.use !== false && p.status === 'replaced';   // auto と v63（v63 は v6.3 のときの採用・保留のとおり）
   };
   // 新画像を使わない・使えないときの旧画像（monsters[id] が採用済みのとき prev に元の画像の情報を残している）
   BossArt.prevEntry = function (id) {
@@ -74,9 +79,9 @@
     BossArt.pending[k] = p; return p;
   }
   function withTimeout(p, ms) { return Promise.race([p, new Promise(function (r) { setTimeout(function () { r(null); }, ms); })]); }
-  BossArt.load = function (id) { return BossArt.wants(id) ? load('boss', id, packEntry(id)) : Promise.resolve(null); };
+  BossArt.load = function (id) { return BossArt.wants(id) ? load(bk(), id, packEntry(id)) : Promise.resolve(null); };
   BossArt.loadEncounter = function (id) { var e = BossArt.encounter(id); return e && e.use !== false && BossArt.mode() !== 'old' ? load('enc', id, e) : Promise.resolve(null); };
-  BossArt.get = function (id) { return BossArt.wants(id) ? BossArt.ready[key('boss', id)] || null : null; };
+  BossArt.get = function (id) { return BossArt.wants(id) ? BossArt.ready[key(bk(), id)] || null : null; };
   BossArt.getEncounter = function (id) { return BossArt.ready[key('enc', id)] || null; };
   BossArt.isBossId = function (id) { return !!packEntry(id); };
 
@@ -84,7 +89,7 @@
   BossArt.prepare = function (enemyIds, opts, mapId) {
     var jobs = [];
     (enemyIds || []).forEach(function (id) {
-      if (BossArt.wants(id) && !BossArt.ready[key('boss', id)] && !BossArt.failed[key('boss', id)]) jobs.push(BossArt.load(id));
+      if (BossArt.wants(id) && !BossArt.ready[key(bk(), id)] && !BossArt.failed[key(bk(), id)]) jobs.push(BossArt.load(id));
       var pe = M().monsters && M().monsters[id]; if (pe && pe.pack === 'boss49' && pe.prev && !BossArt.ready[key('prev', id)] && !BossArt.failed[key('prev', id)]) jobs.push(loadPrev(id));   // 採用前の画像（フォールバック用）
     });
     var enc = BossArt.matchEncounter(enemyIds, opts, mapId);
@@ -252,12 +257,12 @@
     var sc = ent.scale || (isEnc ? 1 : 0.36); var fit = ent.fit || (isEnc ? [600, 300] : [250, 180]);
     var w = sw * sc, h = sh * sc; var f = Math.min(1, fit[0] / w, fit[1] / h); w = Math.round(w * f); h = Math.round(h * f);
     stat.crop = [sx, sy, sw, sh]; stat.draw = [w, h];
-    return { img: out, w: w, h: h, smooth: true, source: 'bossart', stat: stat };
+    return { img: out, w: w, h: h, lift: ent.lift || 0, smooth: true, source: 'bossart', stat: stat };
   }
 
   /* ---------- 戦闘の敵の見た目 ---------- */
   // battle.js の enemyVisual から呼ぶ：新画像が読み込み済みならそれ、なければ null（呼び出し側が旧画像 → MonsterArt → Sprites）
-  BossArt.visual = function (id) { var v = BossArt.get(id); return v ? { img: v.img, w: v.w, h: v.h, smooth: true, source: 'bossart' } : null; };
+  BossArt.visual = function (id) { var v = BossArt.get(id); return v ? { img: v.img, w: v.w, h: v.h, lift: v.lift || 0, smooth: true, source: 'bossart' } : null; };
   // 新画像を使わないとき・使えないときの旧画像（採用したIDの元の assets/monsters 画像）。読み込み済みのときだけ返す
   function loadPrev(id) {
     var e = M().monsters && M().monsters[id]; if (!e || e.pack !== 'boss49' || !e.prev || !e.prev.path || typeof root.Image === 'undefined') return Promise.resolve(null);

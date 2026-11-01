@@ -141,13 +141,39 @@
     if (this.victory >= 0) { this.victory += dt; if (Math.random() < 0.5) this.particles.push({ x: Math.random() * 640, y: -10, vx: (Math.random() - 0.5) * 40, vy: 60 + Math.random() * 80, c: ['#ffd24a', '#ff8ab0', '#7fe3a5', '#9fd4ff', '#fff'][Math.floor(Math.random() * 5)], t: 0 }); }
     this.particles = this.particles.filter(function (p) { p.t += dt; p.x += p.vx * dt / 1000; p.y += p.vy * dt / 1000; return p.t < 4000; });
   };
+  // 戦闘画面の上に重なる表示の位置（キャンバスの座標）：メッセージ欄・パーティのHP（#hud とその中身）・オートボタン。画面の向き・大きさが変わるので 0.5秒ごとに測り直す
+  //   ・表示されていないもの・画面の下半分にあるものは数えない。ページの要素を測れない環境（jsdom など）では空（縮めない）
+  BattleScene.prototype.overlays = function (W, H) {
+    var now = Date.now(); var o = this._ov; if (o && now - o.t < 500 && o.W === W && o.H === H) return o.list;
+    var list = [];
+    try {
+      var c = document.getElementById('game'); var cr = c && c.getBoundingClientRect();
+      if (cr && cr.width > 0 && cr.height > 0) {
+        var kx = W / cr.width, ky = H / cr.height; var els = [];
+        ['battle-msg', 'auto-battle'].forEach(function (id) { var el = document.getElementById(id); if (el) els.push(el); });
+        var hud = document.getElementById('hud'); if (hud) { els.push(hud); Array.prototype.forEach.call(hud.querySelectorAll('*'), function (el) { els.push(el); }); }
+        els.forEach(function (el) {
+          var q = el.getBoundingClientRect(); if (!(q.width > 0 && q.height > 0)) return;
+          var st = root.getComputedStyle ? root.getComputedStyle(el) : null; if (st && (st.visibility === 'hidden' || st.display === 'none' || +st.opacity === 0)) return;
+          var top = (q.top - cr.top) * ky, bot = (q.bottom - cr.top) * ky; if (bot <= 0 || top >= H * 0.5) return;
+          list.push({ x0: (q.left - cr.left) * kx, x1: (q.right - cr.left) * kx, bottom: bot });
+        });
+      }
+    } catch (err) { list = []; }
+    this._ov = { t: now, W: W, H: H, list: list }; return list;
+  };
   // 敵の表示矩形：新画像（assets/）はマニフェストの倍率、従来描画は従来サイズ。足元中央を基準に配置し、混雑時は縮小して重ならないようにする
   BattleScene.prototype.enemyRect = function (i, W, H) {
     var b = this.b; var n = Math.max(1, (this.view && this.view.e.length) || b.enemies.length); var slot = W / (n + 1); var e = b.enemies[i];
     var v = enemyVisual(e); var w = v.w, h = v.h;
     var maxW = slot * 0.96, maxH = H * 0.5;
-    var f = Math.min(1, maxW / w, maxH / h); w = Math.round(w * f); h = Math.round(h * f);
-    var lift = Math.round((v.lift || 0) * f);   // 飛ぶ敵（新しい画像のデータの lift）
+    var f = Math.min(1, maxW / w, maxH / h);
+    // 敵の名前（絵の上 約22px）が、戦闘画面の上に重なる表示（メッセージ欄・パーティのHP・オートボタン）に隠れないように、必要なときだけ縮める（足元の位置はそのまま）
+    var cx = slot * (i + 1), top = 0, lift0 = v.lift || 0;
+    this.overlays(W, H).forEach(function (o) { if (o.x1 > cx - slot / 2 && o.x0 < cx + slot / 2) top = Math.max(top, o.bottom); });
+    if (top > 0) { var avail = H * 0.56 - top - 22; if (avail > 40) f = Math.min(f, avail / (h + lift0)); }
+    w = Math.round(w * f); h = Math.round(h * f);
+    var lift = Math.round(lift0 * f);   // 飛ぶ敵（新しい画像のデータの lift）
     return { x: slot * (i + 1) - w / 2, y: H * 0.56 - h - lift, w: w, h: h, size: w, slot: slot, smooth: v.smooth || f !== 1, lift: lift };
   };
   // v6.5 Phase C 演出の位置：'e:番号'＝敵の絵の中心、'p:id'＝味方（画面下・欄の上）

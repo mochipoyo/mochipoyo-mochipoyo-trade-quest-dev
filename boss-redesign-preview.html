@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ボス44体の画像の確認 - もちぽよFXクエスト</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; padding: 16px; background: #1a1c2c; color: #eee; font-family: system-ui, "Noto Sans JP", sans-serif; }
+  h1 { font-size: 18px; margin: 0 0 6px; }
+  .sum { font-size: 13px; color: #ccc; margin: 4px 0 10px; line-height: 1.6; } .sum b.ok { color: #7fe3a5; } .sum b.ng { color: #ff8a8a; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 12px; font-size: 13px; position: sticky; top: 0; background: #1a1c2c; padding: 6px 0; z-index: 2; border-bottom: 1px solid #333; }
+  .bar select, .bar input { background: #262a40; color: #eee; border: 1px solid #444; border-radius: 4px; padding: 4px 6px; font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; }
+  .card { background: #262a40; border-radius: 6px; padding: 8px; font-size: 12px; border: 2px solid #2f7a4a; min-width: 0; } .card.err { border-color: #ff3030; }
+  .hd { display: flex; justify-content: space-between; gap: 6px; align-items: baseline; }
+  .no { font-family: monospace; color: #ffd24a; font-weight: bold; } .id { font-family: monospace; color: #9fd4ff; overflow-wrap: anywhere; }
+  .badge { font-size: 11px; padding: 1px 6px; border-radius: 8px; background: #2f7a4a; color: #fff; white-space: nowrap; margin-left: 4px; } .badge.un { background: #7a5a20; } .badge.fl { background: #2a5a8a; } .badge.fin { background: #8a2a4a; }
+  .name { font-weight: bold; font-size: 14px; margin: 4px 0; }
+  .stage { width: 100%; height: auto; display: block; border-radius: 4px; }
+  .row2 { display: flex; gap: 8px; align-items: flex-end; margin-top: 6px; }
+  .mini { width: 84px; height: 84px; flex: none; display: flex; align-items: flex-end; justify-content: center; background: #1f2236; border-radius: 4px; position: relative; overflow: hidden; }
+  .mini img, .mini canvas { max-width: 82px; max-height: 82px; }
+  .mini span { position: absolute; top: 2px; left: 4px; font-size: 10px; color: #aab; background: rgba(0,0,0,.4); padding: 0 3px; border-radius: 3px; }
+  .meta { color: #99a; font-size: 10.5px; font-family: monospace; line-height: 1.5; overflow-wrap: anywhere; margin-top: 4px; }
+  .note { color: #ffd28a; margin-top: 4px; line-height: 1.5; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<h1>ボス44体：新しい戦闘画像の確認（開発用）</h1>
+<div class="sum">素材パック（trade_quest_bosses_44_redesign）の 512px 画像を、戦闘と同じ処理（js/core/bossart.js：不透明部分で切り抜き→縦横比を保って収める）で表示します。
+枠の中の横線が地面、青い帯は浮いているボス（lift）、桃色は魔王（少し大きく）、茶色は「配置未確認」（イベントからの参照が見つからない定義。出現は追加していない）。
+小さい枠は、左から v6.3 の画像（加工前の素材）と、それより前の画像（新画像が読めないときの予備）。<br><span id="checks">照合中…</span></div>
+<div class="bar">
+  <label>表示 <select id="f"><option value="all">44体すべて</option><option value="placed">配置あり</option><option value="un">配置未確認</option><option value="fl">浮いている</option><option value="fin">魔王</option></select></label>
+  <label>背景 <select id="bg"><option value="dark">暗い</option><option value="field">草原</option><option value="light">明るい（白）</option><option value="check">市松（透過の確認）</option></select></label>
+  <label><input type="checkbox" id="box"> 描く範囲の枠</label>
+  <input id="q" type="search" placeholder="番号・ID・名前で絞り込み"> <span id="cnt"></span>
+</div>
+<div class="grid" id="grid"></div>
+<script src="js/config.js"></script>
+<script src="js/indicators.js"></script>
+<script src="js/scenarios.js"></script>
+<script src="js/data/scenarios-extra.js"></script>
+<script src="js/data/scenario-seeds.js"></script>
+<script src="js/trading.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/sprites.js"></script>
+<script src="js/core/engine.js"></script>
+<script src="js/core/tiles.js"></script>
+<script src="js/core/chars.js"></script>
+<script src="js/core/monsterart.js"></script>
+<script src="js/core/monsterart65.js"></script>
+<script src="js/core/buildings.js"></script>
+<script src="js/core/map.js"></script>
+<script src="js/core/landmarks.js"></script>
+<script src="js/data/learning.js"></script>
+<script src="js/data/learning-events.js"></script>
+<script src="js/data/vehicles.js"></script>
+<script src="js/data/growth.js"></script>
+<script src="js/data/jobs.js"></script>
+<script src="js/data/skills.js"></script>
+<script src="js/data/skills64.js"></script>
+<script src="js/data/items.js"></script>
+<script src="js/data/food.js"></script>
+<script src="js/data/enemies.js"></script>
+<script src="js/data/story.js"></script>
+<script src="js/data/world.js"></script>
+<script src="js/data/world-grania.js"></script>
+<script src="js/data/world-kalion.js"></script>
+<script src="js/data/world-islands.js"></script>
+<script src="js/data/world-tempus.js"></script>
+<script src="js/data/world-machine.js"></script>
+<script src="js/data/world-magicka.js"></script>
+<script src="js/data/world-sky.js"></script>
+<script src="js/data/world-dark.js"></script>
+<script src="js/data/world-desert.js"></script>
+<script src="js/data/world-dragon.js"></script>
+<script src="js/data/world-snow.js"></script>
+<script src="js/data/towns.js"></script>
+<script src="js/data/dungeons.js"></script>
+<script src="js/data/grania.js"></script>
+<script src="js/data/kalion.js"></script>
+<script src="js/data/islands.js"></script>
+<script src="js/data/tempus.js"></script>
+<script src="js/data/magicka.js"></script>
+<script src="js/data/sky.js"></script>
+<script src="js/data/finale.js"></script>
+<script src="js/data/sidequests.js"></script>
+<script src="js/data/desert.js"></script>
+<script src="js/data/dragon.js"></script>
+<script src="js/data/snow.js"></script>
+<script src="js/data/hidden.js"></script>
+<script src="js/data/sidequests2.js"></script>
+<script src="js/data/luxbell.js"></script>
+<script src="js/data/academy.js"></script>
+<script src="js/data/search-points.js"></script>
+<script src="js/data/ooparts.js"></script>
+<script src="js/data/objectives.js"></script>
+<script src="js/data/designs.js"></script>
+<script src="js/data/gear64.js"></script>
+<script src="js/data/tradia.js"></script>
+<script src="js/data/expand-a.js"></script>
+<script src="js/data/expand-a2.js"></script>
+<script src="js/data/expand-a3.js"></script>
+<script src="js/data/expand-a4.js"></script>
+<script src="js/data/expand-a5.js"></script>
+<script src="js/data/expand-a6.js"></script>
+<script src="js/data/boss64.js"></script>
+<script src="js/data/escape65.js"></script>
+<script src="js/data/monsters65.js"></script>
+<script src="js/data/events65.js"></script>
+<script src="js/data/fx65.js"></script>
+<script src="js/data/astra65.js"></script>
+<script src="js/data/asset-manifest.js"></script>
+<script src="js/data/boss-redesign.js"></script>
+<script src="js/core/assets.js"></script>
+<script src="js/core/bossart.js"></script>
+<script>
+(function () {
+  'use strict';
+  var R = window.BOSS_REDESIGN, BA = window.BossArt, E = window.ENEMIES, MON = window.ASSET_MANIFEST.monsters;
+  var PL = {"boss_lost_trend": {"placed": true, "refs": 1, "region": "迷いの森"}, "boss_greed_golem": {"placed": true, "refs": 1, "region": "忘却の洞窟"}, "boss_bandit_chief": {"placed": true, "refs": 1, "region": "エマール山脈"}, "boss_greed_demon": {"placed": false, "refs": 0, "region": "王家の地下通路"}, "wolf_king": {"placed": true, "refs": 1, "region": "迷いの森（隠しボス）"}, "crystal_golem": {"placed": true, "refs": 1, "region": "忘却の洞窟（隠しボス）"}, "boss_tide_serpent": {"placed": true, "refs": 1, "region": "港町マリナ"}, "boss_overseer": {"placed": true, "refs": 1, "region": "鉄鎖鉱山（最深部）"}, "boss_grote": {"placed": false, "refs": 0, "region": "鉄冠将軍の砦"}, "boss_ledger_guardian": {"placed": true, "refs": 1, "region": "地下記録庫（最深部）"}, "boss_valen": {"placed": true, "refs": 1, "region": "王都セントラ"}, "boss_royal_captain": {"placed": true, "refs": 1, "region": "王宮"}, "boss_ledger_core": {"placed": true, "refs": 1, "region": "王宮・帳簿中枢"}, "boss_ruin_memory": {"placed": true, "refs": 1, "region": "廃墟の街（時計塔）"}, "boss_library_guardian": {"placed": true, "refs": 1, "region": "記憶の図書館・封印区画"}, "boss_time_guardian": {"placed": true, "refs": 1, "region": "時の神殿・最深部"}, "boss_drone_swarm": {"placed": true, "refs": 1, "region": "旧都市・最深部"}, "boss_core_defense": {"placed": true, "refs": 1, "region": "オラクル中枢・第3層"}, "boss_minister": {"placed": true, "refs": 1, "region": "禁書庫・最深部"}, "boss_sky_guardian": {"placed": true, "refs": 1, "region": "天空神殿"}, "boss_zarg_remnant": {"placed": true, "refs": 1, "region": "虚無の荒野"}, "boss_sevran_shadow": {"placed": true, "refs": 1, "region": "虚無の荒野・深部"}, "boss_grote_2": {"placed": true, "refs": 1, "region": "魔王城の門"}, "boss_demon_fear": {"placed": true, "refs": 1, "region": "魔王城・玉座"}, "boss_demon_greed": {"placed": true, "refs": 1, "region": "魔王城・玉座"}, "boss_demon_fixed": {"placed": true, "refs": 1, "region": "魔王城・玉座"}, "sphinx": {"placed": false, "refs": 0, "region": "リシア砂漠"}, "kraken": {"placed": false, "refs": 0, "region": "波形の海洋群島"}, "dragon_red": {"placed": false, "refs": 0, "region": "暗黒大陸"}, "demon_lord": {"placed": false, "refs": 0, "region": "魔王城"}, "boss_storm_chief": {"placed": true, "refs": 1, "region": "砂嵐の回廊・出口"}, "boss_mirage_lord": {"placed": true, "refs": 1, "region": "蜃気楼神殿・最奥"}, "boss_magma_wyrm": {"placed": true, "refs": 1, "region": "竜脈洞窟・奥"}, "boss_primal_flame": {"placed": true, "refs": 1, "region": "竜脈の最深部"}, "boss_frost_spirit": {"placed": true, "refs": 1, "region": "精霊の森・奥"}, "boss_memory_keeper": {"placed": true, "refs": 1, "region": "記憶庫"}, "boss_clock_warden": {"placed": true, "refs": 1, "region": "凍結時計塔・最上階"}, "boss_ash_lord": {"placed": true, "refs": 1, "region": "灰の洞窟・奥"}, "boss_ghost_captain": {"placed": true, "refs": 1, "region": "沈没船・船長室"}, "boss_old_core": {"placed": true, "refs": 1, "region": "旧都市 深層・演算核"}, "boss_gull_admiral": {"placed": true, "refs": 1, "region": "海賊カモメの巣"}, "observer_echo": {"placed": true, "refs": 1, "region": "学院の地下実験施設"}, "soul_warden": {"placed": true, "refs": 1, "region": "学院の地下実験施設"}, "zero_echo": {"placed": true, "refs": 1, "region": "学院の地下実験施設 最深部"}};
+  var list = R.list.slice(); var grid = document.getElementById('grid'); var cards = [];
+  var SW = 320, SH = 250, GROUND = 228;
+  var prob = [], ids = {}, nos = {};
+  var bossIds = Object.keys(E).filter(function (id) { return E[id].boss; });
+  list.forEach(function (r) {
+    if (ids[r.id]) prob.push('IDの重複 ' + r.id); ids[r.id] = 1; if (nos[r.no]) prob.push('番号の重複 ' + r.no); nos[r.no] = 1;
+    if (!E[r.id]) prob.push('ゲームにないID ' + r.id); else if (!E[r.id].boss) prob.push('ボスではない ' + r.id); else if (E[r.id].name !== r.name) prob.push('名前が違う ' + r.id);
+    var e = MON[r.id]; if (!e || e.path !== r.file || BA.packEntry(r.id) !== e || !BA.wants(r.id)) prob.push('新画像が選ばれていない ' + r.id);
+    if (e && e.clean) prob.push('旧素材用の加工が残っている ' + r.id);
+  });
+  bossIds.forEach(function (id) { if (!ids[id]) prob.push('対応表にないボス ' + id); });
+  var loaded = 0, failed = [];
+  function showChecks() { document.getElementById('checks').innerHTML = '対応表 ' + list.length + '件（ゲームのボス ' + bossIds.length + '体）　照合：' + (prob.length ? '<b class="ng">問題 ' + prob.length + '件：' + prob.join('、') + '</b>' : '<b class="ok">B001〜B044・ID・名前がゲームのボスと一致、44体とも新画像が選ばれる（旧素材用の加工なし）</b>') + '　画像の読み込み：' + loaded + '/' + list.length + (failed.length ? '　<b class="ng">失敗 ' + failed.join('、') + '</b>' : ''); }
+  showChecks();
+  function paintBg(x, mode) {
+    if (mode === 'check') { for (var yy = 0; yy < SH; yy += 10) for (var xx = 0; xx < SW; xx += 10) { x.fillStyle = ((xx + yy) / 10) % 2 ? '#bbb' : '#fff'; x.fillRect(xx, yy, 10, 10); } return; }
+    var g = x.createLinearGradient(0, 0, 0, SH);
+    if (mode === 'light') { g.addColorStop(0, '#fff'); g.addColorStop(1, '#eee'); }
+    else if (mode === 'field') { g.addColorStop(0, '#8fc8ff'); g.addColorStop(0.9, '#cde8ff'); g.addColorStop(0.91, '#6fae4a'); g.addColorStop(1, '#4f8a36'); }
+    else { g.addColorStop(0, '#0d0f1c'); g.addColorStop(0.9, '#22263d'); g.addColorStop(0.91, '#2b2a33'); g.addColorStop(1, '#1b1a22'); }
+    x.fillStyle = g; x.fillRect(0, 0, SW, SH);
+  }
+  function drawStage(c) {
+    var x = c.stage.getContext('2d'), mode = document.getElementById('bg').value; paintBg(x, mode);
+    x.strokeStyle = mode === 'light' || mode === 'check' ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.35)'; x.beginPath(); x.moveTo(0, GROUND + 0.5); x.lineTo(SW, GROUND + 0.5); x.stroke();
+    var v = c.v; if (!v) { x.fillStyle = mode === 'dark' ? '#ccc' : '#333'; x.font = '12px sans-serif'; x.textAlign = 'center'; x.fillText(c.fail ? '読み込み失敗' : '読み込み中…', SW / 2, SH / 2); return; }
+    var f = Math.min(1, (SW - 8) / v.w, (GROUND - 16 - (v.lift || 0)) / v.h); var w = Math.round(v.w * f), h = Math.round(v.h * f), lift = Math.round((v.lift || 0) * f);
+    var ox = Math.round((SW - w) / 2), oy = GROUND - h - lift;
+    x.fillStyle = lift ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.3)'; x.beginPath(); x.ellipse(SW / 2, GROUND + 2, w * (lift ? 0.28 : 0.38), lift ? 4 : 6, 0, 0, Math.PI * 2); x.fill();
+    x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high'; x.drawImage(v.img, ox, oy, w, h);
+    if (document.getElementById('box').checked) { x.setLineDash([3, 3]); x.strokeStyle = '#ff4a8a'; x.strokeRect(ox + 0.5, oy + 0.5, w - 1, h - 1); x.setLineDash([]); }
+    x.fillStyle = mode === 'dark' ? '#fff' : '#111'; x.font = 'bold 13px sans-serif'; x.textAlign = 'center'; x.fillText(E[c.r.id].name, SW / 2, Math.max(14, oy - 6));
+  }
+  function mini(label, el) { var d = document.createElement('div'); d.className = 'mini'; d.innerHTML = '<span>' + label + '</span>'; if (el) d.appendChild(el); else d.innerHTML += '<small style="color:#667;margin:auto">なし</small>'; return d; }
+  list.forEach(function (r) {
+    var e = MON[r.id], pl = PL[r.id] || {}; var c = { r: r, v: null };
+    var el = document.createElement('div'); el.className = 'card'; el.setAttribute('data-q', (r.no + ' ' + r.id + ' ' + r.name).toLowerCase());
+    el.innerHTML = '<div class="hd"><span><span class="no">' + r.no + '</span>　<span class="id">' + r.id + '</span></span><span>' + (pl.placed ? '<span class="badge">配置あり</span>' : '<span class="badge un">配置未確認</span>') + (r.float ? '<span class="badge fl">浮く</span>' : '') + (r.final ? '<span class="badge fin">魔王</span>' : '') + '</span></div><div class="name">' + E[r.id].name + '</div>';
+    var cv = document.createElement('canvas'); cv.width = SW; cv.height = SH; cv.className = 'stage'; el.appendChild(cv); c.stage = cv;
+    var row = document.createElement('div'); row.className = 'row2';
+    var i63 = null; if (e.v63 && e.v63.path) { i63 = document.createElement('img'); i63.src = e.v63.path; i63.alt = ''; }
+    row.appendChild(mini('v6.3（' + (e.v63 && e.v63.status === 'replaced' ? '採用' : '保留') + '）', i63));
+    var po = null; if (e.prev && e.prev.path) { po = document.createElement('img'); po.src = e.prev.path; po.alt = ''; po.style.imageRendering = 'pixelated'; } else if (E[r.id].art && window.MonsterArt) { po = window.MonsterArt.image(E[r.id].art, 1, 0); }
+    row.appendChild(mini('予備', po));
+    el.appendChild(row);
+    var meta = document.createElement('div'); meta.className = 'meta'; meta.innerHTML = '画像：' + r.file + '<br>不透明部分（512px中）：' + r.bbox.join(',') + '　収める枠：' + r.fit.join('×') + '　1体のときの大きさ：' + r.draw.join('×') + (r.lift ? '　浮かせる：' + r.lift + 'px' : '') + '<br>地域：' + (E[r.id].area || '') + '　イベントからの参照：' + (pl.refs || 0); el.appendChild(meta);
+    if (r.note) { var n = document.createElement('div'); n.className = 'note'; n.textContent = '注記：' + r.note; el.appendChild(n); }
+    grid.appendChild(el); c.el = el; c.pl = pl; cards.push(c); drawStage(c);
+  });
+  var queue = cards.slice(), active = 0;
+  function pump() { while (active < 4 && queue.length) (function (c) { active++; BA.load(c.r.id).then(function (v) { active--; if (v) { c.v = v; loaded++; } else { c.fail = true; failed.push(c.r.no + ' ' + c.r.id); c.el.classList.add('err'); } drawStage(c); showChecks(); pump(); }); })(queue.shift()); }
+  pump();
+  function apply() {
+    var f = document.getElementById('f').value, q = document.getElementById('q').value.trim().toLowerCase(), shown = 0;
+    cards.forEach(function (c) { var ok = f === 'all' || (f === 'placed' && c.pl.placed) || (f === 'un' && !c.pl.placed) || (f === 'fl' && c.r.float) || (f === 'fin' && c.r.final); if (q && c.el.getAttribute('data-q').indexOf(q) < 0) ok = false; c.el.classList.toggle('hidden', !ok); if (ok) shown++; });
+    document.getElementById('cnt').textContent = shown + '体を表示';
+  }
+  ['f', 'q'].forEach(function (id) { document.getElementById(id).addEventListener('input', apply); });
+  ['bg', 'box'].forEach(function (id) { document.getElementById(id).addEventListener('change', function () { cards.forEach(drawStage); }); });
+  apply();
+  window.__preview = { cards: cards, prob: prob, get loaded() { return loaded; }, failed: failed };
+})();
+</script>
+</body>
+</html>
