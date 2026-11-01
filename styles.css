@@ -710,6 +710,8 @@ body.astra-flying #minimap-layer, body.astra-flying #place-label, body.astra-fly
 .quiz-battle .qb-say.pop { animation: qbPop .25s ease-out; }
 .quiz-battle.st-quiz .qb-say, .quiz-battle.st-judge .qb-say { left: 84px; top: 50%; transform: translateY(-50%); font-size: 12px; }
 .quiz-battle.st-quiz .qb-say.pop, .quiz-battle.st-judge .qb-say.pop { animation: none; }
+.quiz-battle.wide.st-intro .qb-say, .quiz-battle.wide.st-out .qb-say { left: 40%; right: 6px; top: 50%; transform: translateY(-50%); }
+.quiz-battle.wide.st-intro .qb-say.pop, .quiz-battle.wide.st-out .qb-say.pop { animation: none; }
 @keyframes qbPop { 0% { transform: scale(.94); opacity: .3; } 100% { transform: scale(1); opacity: 1; } }
 .quiz-battle .qb-banner { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(.8); padding: 6px 18px; border-radius: 8px; font-weight: bold; font-size: 24px; color: #fff; background: rgba(8,12,30,.85); border: 2px solid #fff; opacity: 0; pointer-events: none; white-space: nowrap; z-index: 2; }
 .quiz-battle .qb-banner.on { animation: cbBanner 1.6s ease-out forwards; }

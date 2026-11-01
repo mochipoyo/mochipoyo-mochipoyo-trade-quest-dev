@@ -263,10 +263,12 @@
       function fit() {
         if (!cv) return; var r = cv.getBoundingClientRect(); var dpr = Math.min(2, root.devicePixelRatio || 1);
         var w = Math.max(60, Math.round(r.width)), h = Math.max(40, Math.round(r.height)); if (cv._w === w && cv._h === h) return; cv._w = w; cv._h = h; cv.width = w * dpr; cv.height = h * dpr; if (cx2) cx2.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (node && stage !== 'quiz' && stage !== 'judge') node.classList.toggle('wide', w > h * 3.2);   // 横長（スマホの横向き）：吹き出しを右に、モンスターを左に
       }
       function artBox() {
         var w = cv._w || 200, h = cv._h || 120;
         if (stage === 'quiz' || stage === 'judge') { var s0 = Math.max(30, Math.min(h - 4, 72)); return { s: s0, x: 4, y: h - s0 - 2 }; }   // 問題の間は左に小さく
+        if (node && node.classList.contains('wide')) { var sw = Math.max(40, Math.min(h - 6, w * 0.36)); return { s: sw, x: w * 0.2 - sw / 2, y: h - sw - 2 }; }
         var say = node && node.querySelector('.qb-say'); var top = say && say.offsetHeight ? say.offsetTop + say.offsetHeight + 2 : 4;   // 吹き出しの下に収める
         var s = Math.max(40, Math.min(h - top - 2, w * 0.62, 260)); return { s: s, x: w / 2 - s / 2, y: h - s - 2 };
       }
