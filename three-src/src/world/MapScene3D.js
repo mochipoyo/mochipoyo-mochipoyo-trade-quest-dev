@@ -12,6 +12,7 @@ import { InteriorBuilder3D, INTERIOR_KINDS } from './InteriorBuilder3D.js';
 import { WorldBuilder3D } from './WorldBuilder3D.js';
 import { themeFor } from './themes.js';
 import { mapCoverage } from './coverage.js';
+import { buildArtVolume } from '../battle/ArtVolume.js';
 import { Character3D, DIR_YAW } from '../entities/Character3D.js';
 import { characterModelFor } from '../assets/manifest.js';
 import { Batch, box, M4, softTexture } from '../engine/Materials.js';
@@ -196,21 +197,24 @@ export class MapScene3D {
       if (!o) {
         const v = BS.visual(s.enemy); if (!v || !v.img) continue;
         const tex = new THREE.CanvasTexture(v.img); tex.colorSpace = THREE.SRGBColorSpace; if (!v.smooth) { tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter; }
-        const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, alphaTest: 0.05 })); const H = 2.4, Wd = Math.min(3.4, H * v.w / Math.max(1, v.h)); sp.scale.set(Wd, Wd * v.h / Math.max(1, v.w), 1); sp.center.set(0.5, 0);
+        let sp = null, vol = null; const H = 2.4, Wd = Math.min(3.4, H * v.w / Math.max(1, v.h));
+        // Phase 2：戦闘と同じく、ボスの絵から厚みのある立体（2.5D）にする（元のデザインのまま）。作れないときは従来の立て札
+        try { const ok = v.img instanceof HTMLCanvasElement || (v.img.complete && v.img.naturalWidth > 0); if (ok) { vol = buildArtVolume(v.img, { height: Wd * v.h / Math.max(1, v.w), aspect: v.w / Math.max(1, v.h), smooth: v.smooth !== false, depth: 0.14, grid: 44 }); sp = vol.mesh; } } catch (e) { vol = null; }
+        if (!sp) { sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, alphaTest: 0.05 })); sp.scale.set(Wd, Wd * v.h / Math.max(1, v.w), 1); sp.center.set(0.5, 0); }
         const col = new THREE.Color('rgb(' + ((BS.auraColor && BS.auraColor(s.enemy)) || '255,60,80') + ')');
         const ring = new THREE.Mesh(new THREE.RingGeometry(0.55, 0.85, 40), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })); ring.rotation.x = -Math.PI / 2; ring.position.y = 0.04;
         const light = new THREE.PointLight(col, 2.5, 5, 1.6); light.position.y = 1.2;
         const g = new THREE.Group(); g.name = 'boss_symbol_' + s.enemy; g.add(sp); g.add(ring); g.add(light); this.root.add(g);
-        o = { g, sp, ring, light, base: sp.scale.clone(), ph: (s.x * 7 + s.y * 3) % 6, enemy: s.enemy }; this.bossSyms.set(key, o);
+        o = { g, sp, vol, ring, light, base: sp.scale.clone(), ph: (s.x * 7 + s.y * 3) % 6, enemy: s.enemy }; this.bossSyms.set(key, o);
       }
       const x = s.x + 0.5, z = s.y + 0.5; o.g.position.set(x, this.heightAt ? (this.heightAt(x, z) || 0) : 0, z); o.g.visible = true;
       const ph = Math.sin(t * 2.2 + o.ph), ph2 = Math.sin(t * 3.1 + o.ph);
-      o.sp.scale.set(o.base.x, o.base.y * (1 + ph2 * 0.025), 1); o.sp.position.y = ph * 0.04;
+      o.sp.scale.set(o.base.x, o.base.y * (1 + ph2 * 0.025), o.base.z); o.sp.position.y = ph * 0.04; if (o.vol) o.vol.uniforms.uTime.value = t;
       o.ring.scale.setScalar(1 + ph * 0.08); o.ring.material.opacity = 0.45 + 0.2 * ph; o.light.intensity = 2 + ph;
     }
     this.bossSyms.forEach((o, k) => { if (!seen.has(k)) o.g.visible = false; });
   }
-  bossSymbolInfo() { const out = []; if (this.bossSyms) this.bossSyms.forEach((o, k) => out.push({ key: k, visible: o.g.visible, x: +o.g.position.x.toFixed(2), z: +o.g.position.z.toFixed(2) })); return out; }
+  bossSymbolInfo() { const out = []; if (this.bossSyms) this.bossSyms.forEach((o, k) => out.push({ key: k, visible: o.g.visible, vol: !!o.vol, x: +o.g.position.x.toFixed(2), z: +o.g.position.z.toFixed(2) })); return out; }
 
   // 使わなくなった場面の解放（共有のモデル形状・マテリアルは残す）
   dispose() {

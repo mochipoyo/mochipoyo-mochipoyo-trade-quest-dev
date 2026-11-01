@@ -44,7 +44,7 @@ detail.npcSprites = Object.fromEntries(Object.entries(spriteCount).map(([s, n]) 
 // ---- 敵
 const E = w.ENEMIES; const ids = Object.keys(E); const normal = ids.filter((k) => !E[k].boss), boss = ids.filter((k) => E[k].boss);
 rows.push(row('通常モンスター', normal.length, 0, normal.length, 0, 0, '戦闘：2D版の絵（新しい画像・従来の絵）をそのまま使い、絵から厚みのある立体（2.5D）を自動で作る（ArtVolume）。元のデザインを保つ方式。専用の3Dモデルはない'));
-rows.push(row('ボス', boss.length, 0, boss.length, 0, 0, '戦闘：ボス画像（BossArt）から同じく2.5D。探索中のボスのシンボルは2D版の絵の立て札（ビルボード）'));
+rows.push(row('ボス', boss.length, 0, boss.length, 0, 0, '戦闘：ボス画像（BossArt）から同じく2.5D。探索中のボスのシンボルも同じ絵から2.5D（作れないときは従来の立て札）'));
 // ---- 乗り物
 const V = w.VEHICLES || {}; const vids = Object.keys(V);
 rows.push(row('乗り物', vids.length + 1, 0, vids.length + 1, 0, 0, `帆船・大型船・飛空艇＝Blender の仮モデル（build_world.py）。アストラ号＝止めてある姿は飛空艇の仮モデルの色違い、空を飛ぶ場面は2D版の画面（${vids.join('・')}・astra）`));

@@ -50,7 +50,7 @@ export function buildArtVolume(img, opts) {
     idx.push(a2, b2, c2, b2, d2, c2);
   }
   const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.setIndex(idx);
-  geo.computeVertexNormals(); geo.computeBoundingBox(); geo.computeBoundingSphere();
+  geo.computeVertexNormals(); geo.computeBoundingBox(); geo.computeBoundingSphere(); geo.userData.own = true;
   // ---- 絵のテクスチャとマテリアル
   const tex = img instanceof HTMLCanvasElement ? new THREE.CanvasTexture(img) : new THREE.Texture(img); tex.needsUpdate = true; tex.colorSpace = THREE.SRGBColorSpace;
   if (opts.smooth === false) { tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter; tex.generateMipmaps = false; } else tex.anisotropy = 4;
