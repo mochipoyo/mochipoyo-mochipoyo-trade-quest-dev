@@ -653,9 +653,9 @@ body.astra-flying #minimap-layer, body.astra-flying #place-label, body.astra-fly
 .chart-battle .cb-btn.long { background: linear-gradient(180deg, #2e9a66, #1f6b45); border-color: #8fe3b4; }
 .chart-battle .cb-btn.short { background: linear-gradient(180deg, #c04a4e, #8a2a2d); border-color: #ffb0b0; }
 .chart-battle .cb-btn.skip { background: linear-gradient(180deg, #3a4a7a, #243463); border-color: #9fb4ff; }
-.chart-battle.decided .cb-cmds { opacity: .4; pointer-events: none; }
+.chart-battle.decided .cb-cmds, .chart-battle.decided .cb-timer, .chart-battle.decided .cb-prompt { display: none; }
 .chart-battle.result .cb-cmds, .chart-battle.result .cb-timer, .chart-battle.result .cb-prompt { display: none; }
-.chart-battle .cb-reasons { display: flex; flex-wrap: wrap; gap: 4px; flex: 0 0 auto; }
+.chart-battle .cb-reasons { display: flex; flex-wrap: wrap; gap: 4px; flex: 0 1 auto; max-height: 42%; overflow-y: auto; min-height: 0; }
 .chart-battle .cb-reasons.hidden, .chart-battle .cb-result.hidden, .chart-battle .cb-nextbox.hidden { display: none; }
 .chart-battle .cb-nextbox { flex: 0 0 auto; }
 .chart-battle.result .cb-chartbox { min-height: 90px; }
@@ -688,3 +688,6 @@ body.astra-flying #minimap-layer, body.astra-flying #place-label, body.astra-fly
 .ult-detail { line-height: 1.7; font-size: 13px; } .ult-detail .ult-intro { margin-top: 6px; padding: 4px 8px; background: rgba(255,255,255,.05); border-radius: 4px; }
 .rs-skill.rs-ult { color: #ffe9a0; }
 @media (max-width: 480px) { .chart-battle .cb-btn { font-size: 13px; white-space: nowrap; letter-spacing: -.02em; } .chart-battle .cb-cmds { grid-template-columns: 1fr .7fr 1fr; gap: 4px; } .chart-battle .cb-zoom button { min-width: 28px; padding: 0 4px; } }
+@media (max-width: 600px) { .chart-battle .cb-reasons { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; } .chart-battle .cb-rq { grid-column: 1 / -1; } .chart-battle .cb-rs { font-size: 11px; line-height: 1.25; padding: 3px 5px; min-height: 34px; text-align: left; } .chart-battle .cb-rs:last-child { grid-column: 1 / -1; } }
+.chart-battle.result .cb-rs:not(.on), .chart-battle.result .cb-rq { display: none; }
+.chart-battle.result .cb-rs.on::before { content: '選んだ理由：'; font-weight: normal; }
