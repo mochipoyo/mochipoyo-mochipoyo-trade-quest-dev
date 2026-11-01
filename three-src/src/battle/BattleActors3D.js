@@ -25,11 +25,13 @@ const PARTY_FACE = -Math.PI / 2 + 0.42;   // 左（敵）を向き、少しカ�
 
 // 立ち位置（添付の構図：敵は左の手前と奥、味方は右に2列）
 const ENEMY_SLOTS = [[-2.2, 2.2], [-3.9, 0.6], [-0.9, 0.3], [-4.0, 3.0], [-2.6, -0.9], [-5.0, -0.5], [-1.2, 3.3], [-5.4, 1.6]];
-const ENEMY_LAYOUT = { 2: [[-1.4, 2.0], [-3.9, 0.4]], 3: [[-0.9, 2.3], [-2.9, -0.3], [-4.0, 2.5]], 4: [[-0.9, 2.4], [-2.5, -0.5], [-3.6, 2.6], [-4.6, -0.3]] };
+const ENEMY_LAYOUT = { 2: [[-1.1, 2.2], [-4.1, 0.0]], 3: [[-0.7, 2.4], [-3.2, -0.6], [-4.0, 2.5]], 4: [[-0.8, 2.5], [-2.8, -0.8], [-3.4, 2.6], [-5.6, -0.6]] };   // 遠近で手前と奥が画面上で同じ位置に重ならないよう、画面の横位置が手前・奥で交互になる値
 const PARTY_SLOTS = [[1.7, 3.1], [2.7, 2.1], [3.3, 3.2], [4.2, 2.2], [4.7, 3.3], [5.2, 2.3]];
 const PARTY_SCALE = 1.0;
-const SPRITE_H = 1.6;
-const SPRITE_SLOTS = [[1.4, 3.2], [2.5, 1.8], [3.2, 3.3], [4.2, 1.9], [4.7, 3.3], [5.3, 1.8]];   // ドット絵の味方：前後2列で互い違い（参考画像の並び）   // 味方のドット絵の高さ（ワールド単位）
+const SPRITE_H = 1.42;   // 味方のドット絵の高さ（ワールド単位）
+// ドット絵の味方：前後2列で互い違い（参考画像の並び）。人数ごとに、隣と重なりにくい間隔（約1.1）で右に並べる
+const SPRITE_LAYOUT = { 1: [[2.0, 3.0]], 2: [[1.5, 3.2], [2.9, 2.5]], 3: [[1.2, 3.3], [2.45, 2.55], [3.65, 3.3]], 4: [[0.95, 3.4], [2.1, 2.6], [3.2, 3.4], [4.3, 2.6]] };
+const SPRITE_SLOTS = SPRITE_LAYOUT[4];
 // 味方の見た目：'sprite'＝2D版のドット絵のまま並べる（既定。ご指示の構図）／'model'＝3Dモデル（3D設定・localStorage 'mtq3d-battle-party'）
 export function partyStyle() { try { return localStorage.getItem('mtq3d-battle-party') === 'model' ? 'model' : 'sprite'; } catch (e) { return 'sprite'; } }
 // ドット絵の不透明な部分だけを切り出す（拡大はしない。ドットを保つ）
@@ -43,7 +45,7 @@ function cropPixels(img, sx, sy, sw, sh) {
 // 味方のドット絵：2D版の戦闘のパーティ欄と同じ立ち絵（主人公＝職業、仲間＝本人、ほか＝見た目のID）→ なければ歩行のドット絵（左向き）→ なければ2D版の簡易ドット
 function partyPixelArt(a) {
   const A = G.Assets; let img = null, kind = 'portrait';
-  try { img = A && A.portrait ? A.portrait(a) : null; } catch (e) { img = null; }
+  try { img = A && A.portrait ? A.portrait(a) : null; if (!img && A && A.portraitBySprite) img = A.portraitBySprite(a.sprite); } catch (e) { img = null; }   // パーティ欄と同じ順（本人 → 見た目のIDの立ち絵）
   if (img) { const c = cropPixels(img); if (c) return { canvas: c, kind }; }
   try { const f = A && A.walkFrame ? A.walkFrame(a.sprite, 'left', 1) : null; if (f) { const c = cropPixels(f.img, f.sx, f.sy, f.w, f.h); if (c) return { canvas: c, kind: 'walk' }; } } catch (e) { /* なし */ }
   try { if (G.Chars && G.Chars.frame) { const c = cropPixels(G.Chars.frame(a.sprite, 'left', 0)); if (c) return { canvas: c, kind: 'chars' }; } } catch (e) { /* なし */ }
@@ -109,7 +111,7 @@ export class BattleActors3D {
     const set = ENEMY_LAYOUT[n]; const s = set ? set[i] : ENEMY_SLOTS[i % ENEMY_SLOTS.length];   // 数ごとの並び（名前・HPバーが重なりにくいよう、手前と奥で左右をずらす）
     return new THREE.Vector3(s[0], 0, s[1]);
   }
-  partyHome(j) { const L = this.style === 'sprite' ? SPRITE_SLOTS : PARTY_SLOTS; const s = L[j % L.length]; return new THREE.Vector3(s[0], 0, s[1]); }
+  partyHome(j) { const n = this.scene && this.scene.b ? this.scene.b.party.length : 4; const L = this.style === 'sprite' ? (SPRITE_LAYOUT[n] || SPRITE_SLOTS) : PARTY_SLOTS; const s = L[j % L.length]; return new THREE.Vector3(s[0], 0, s[1]); }
 
   /* ---------- 2D版の演出の開始（FX65 'play'）：行動する人の動きを、命中の時刻に合わせて始める ---------- */
   onFx(d, familyOf) {

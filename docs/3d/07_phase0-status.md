@@ -19,9 +19,10 @@
 - `three-src`（node_modules を除く）と `docs/3d` を tar.gz（5.8MB）にまとめ、お渡し済み。
 - 保存先として非公開リポジトリの作成をお願いしました（このセッションの権限ではリポジトリを作成できませんでした。403）。
 - 2026-11-02 の確認で `mochipoyo/mochipoyo-mochipoyo-trade-quest-dev`（名前の「mochipoyo-」が重なっている）が見つかりました。
-- ただし、このリポジトリの公開範囲は **public（公開）** と表示されたため、**押し上げていません**。お約束は「非公開」でした。
-- 非公開に変更していただくか、公開のままでよいかをご確認いただいたうえで押し上げます。
+- このリポジトリの公開範囲は **public（公開）** と表示されたため、いったん押し上げを止めてご確認しました。
+- 2026-11-02 に「公開のままでOKです。」とご回答いただき、全ブランチ（`feature/3d-full`・`feature/3d-remaster`・`feature/graphics-v3`・`master`）を押し上げました。
 - 開発用のソースに秘密の鍵は入っていません。`sb_secret_` / `service_role` を全ブランチで検索し、説明文の中の言及だけでした。
+- 公開用リポジトリ（`mochipoyo/mochipoyo-trade-quest` の main）には何も送っていません。
 
 ### 1-2. セーブデータの扱い（変更なし）
 - 2D版：`mtq-rpg-v2-slot-*`。3D版：`mtq-3d-slot-*`（3D版は2D版のセーブを読むだけ。コピーして3D版の枠へ保存）。
@@ -62,5 +63,4 @@ Playwright の Chromium（SwiftShader＝GPU を使わない描画）で計測し
 - `three-src` を作業環境の外へ保存するまでは、作業環境が消えると3Dのソースを失う可能性があります。
 
 ## 3. 追加確認が必要な点
-- 作成していただいたリポジトリ（`mochipoyo/mochipoyo-mochipoyo-trade-quest-dev`）の公開範囲。非公開にしていただければ、全ブランチを押し上げます。
 - GPU のある実機（PC・iPhone・Android）での fps。
