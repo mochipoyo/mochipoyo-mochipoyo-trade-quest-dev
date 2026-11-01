@@ -120,6 +120,8 @@
         if (v.exit && v.exit.bar <= end) { var xx2 = xOf(v.exit.bar), yy2 = yP(v.exit.price); ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(xx2, yy2, 5, 0, Math.PI * 2); ctx.stroke(); }
       }
     }
+    // 印（振り返り：判断した時点など）
+    (v.marks || []).forEach(function (mk) { if (mk.bar < start || mk.bar > end) return; var xm = xOf(mk.bar); ctx.setLineDash([4, 3]); ctx.strokeStyle = mk.color || '#ffd24a'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(xm, padT); ctx.lineTo(xm, mainH); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = mk.color || '#ffd24a'; ctx.textAlign = xm > W * 0.6 ? 'right' : 'left'; ctx.fillText(mk.label, xm + (xm > W * 0.6 ? -4 : 4), padT + 9 + (mk.row || 0) * 12); });
     // いまの価格
     if (v.off === 0) { var yc0 = yP(cur); ctx.setLineDash([2, 3]); ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(padL, yc0); ctx.lineTo(W - padR, yc0); ctx.stroke(); ctx.setLineDash([]); }
     var ycl = Math.max(padT + 7, Math.min(mainH - 4, yP(cur))); ctx.fillStyle = '#e8c15a'; ctx.fillRect(W - padR + 1, ycl - 7, padR - 2, 14); ctx.fillStyle = '#1a1407'; ctx.textAlign = 'left'; ctx.fillText(fmtPx(cur), W - padR + 4, ycl);
@@ -181,11 +183,11 @@
       '<div class="cb-row"><div class="cb-info"></div><div class="cb-zoom"><button type="button" data-z="-1" aria-label="縮小">－</button><button type="button" data-z="1" aria-label="拡大">＋</button><button type="button" class="cb-latest" data-latest="1" aria-label="最新の足へ">▶最新</button></div></div>' +
       '<div class="cb-cmds"><button type="button" class="cb-btn long" data-act="long">ロング（買い）<small>↑ / L</small></button><button type="button" class="cb-btn skip" data-act="skip">見送り<small>X / K</small></button><button type="button" class="cb-btn short" data-act="short">ショート（売り）<small>↓ / S</small></button></div>' +
       (opts.askReason ? '<div class="cb-reasons hidden"><div class="cb-rq">判断の理由は？（数字キーでも選べる）</div>' + reasons.map(function (r, i) { return '<button type="button" class="cb-rs" data-reason="' + esc(r.key) + '">' + (i + 1) + '. ' + esc(r.label) + '</button>'; }).join('') + '</div>' : '') +
-      '<div class="cb-result hidden"></div><div class="cb-nextbox hidden"><button type="button" class="cb-next">次へ（Enter）</button></div>';
+      '<div class="cb-result hidden"></div><div class="cb-nextbox hidden"><button type="button" class="cb-review">振り返り（R）</button><button type="button" class="cb-next">次へ（Enter）</button></div>';
     return new Promise(function (resolve) {
       var node = null, canvas = null, ctx = null, closeFn = null, closed = false, raf = null, timer = null, ro = null;
       var view = { zoom: 48, off: 0 }; var dirty = true, lastDraw = 0, lastKey = '';
-      var decided = false, reason = null, resultShown = false, skipPlay = null, out = null;
+      var decided = false, reason = null, resultShown = false, skipPlay = null, out = null, review = null;
       var cache = { key: '', bars: null, ind: null, upper: null };
       function setDecided() { decided = true; node.classList.add('decided'); }
       function curBars() {
@@ -254,11 +256,15 @@
         if (opts.feedback) { try { html += opts.feedback(out) || ''; } catch (e) { } }
         var as = sim.assessment; if (as && opts.showView !== false) html += '<div class="cb-view"><b>判断した瞬間に見えていた状態（簡易的な見立て。正解ではありません）</b>：' + (as.bias === 'long' ? '上向きの根拠が多め' : as.bias === 'short' ? '下向きの根拠が多め' : 'はっきりしない') + '<br>' + as.reasons.slice(0, 4).map(esc).join('／') + '</div>';
         var el = node.querySelector('.cb-result'); el.innerHTML = html; el.classList.remove('hidden'); node.classList.add('result');
+        review = CB.reviewRecord(s, sim, { mode: mode, title: opts.title, tf: tf, ind: Object.keys(ind), reason: reason, skipEnd: skipPlay ? skipPlay.pos : null });
         var nb = node.querySelector('.cb-nextbox'); nb.classList.remove('hidden'); var nx = nb.querySelector('.cb-next'); if (nx && !nx._on) { nx._on = true; nx.addEventListener('click', function (e) { e.stopPropagation(); finish(); }); }
+        var rv = nb.querySelector('.cb-review'); if (rv && !rv._on) { rv._on = true; rv.addEventListener('click', function (e) { e.stopPropagation(); openReview(); }); }
         info(); dirty = true;
       }
+      function openReview() { if (!review || closed || CB._reviewOpen) return; CB._reviewOpen = true; CB.review(review, s).then(function () { CB._reviewOpen = false; }); }
       function finish(quit) {
-        if (closed) return; closed = true; CB.isOpen = false; if (raf && root.cancelAnimationFrame) root.cancelAnimationFrame(raf); if (timer) clearInterval(timer); if (ro) { try { ro.disconnect(); } catch (e) { } }
+        if (closed) return; if (!quit && review && root.Ultimates && root.State && root.State.data) { try { root.Ultimates.addReview(root.State.data, review); } catch (e) { } }   // 振り返りの記録（最近10回。メニュー「必殺技」から見られる）
+        closed = true; CB.isOpen = false; if (raf && root.cancelAnimationFrame) root.cancelAnimationFrame(raf); if (timer) clearInterval(timer); if (ro) { try { ro.disconnect(); } catch (e) { } }
         document.removeEventListener('keydown', onKeyDoc, true); document.removeEventListener('visibilitychange', onVis); root.removeEventListener('resize', resize); root.removeEventListener('mousemove', move); root.removeEventListener('mouseup', up);
         var st = document.getElementById('stage'); if (st) st.classList.remove('ult-open');
         var r = quit ? { quit: true, mode: mode, scenarioId: s.id } : out; CB.last = r; if (closeFn) closeFn(r); resolve(r);
@@ -285,7 +291,7 @@
         if (closed) return; var t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
         if (Win.layer && Win.layer.lastElementChild !== node) return;   // 上に別の窓（中断の確認など）があるときは何もしない
         var k = e.key; var used = true;
-        if (k === 'l' || k === 'L') decide('long'); else if (k === 'k' || k === 'K') decide('skip');
+        if (k === 'l' || k === 'L') decide('long'); else if (k === 'k' || k === 'K') decide('skip'); else if ((k === 'r' || k === 'R') && resultShown) openReview();
         else if (k === '+' || k === '=' || k === ';') zoom(1); else if (k === '-' || k === '_') zoom(-1);
         else if (/^[1-9]$/.test(k) && opts.askReason && decided && !reason) { var rr = reasons[+k - 1]; if (rr) pickReason(rr.key); }
         else used = false;
@@ -322,8 +328,63 @@
           loop();
         } });
       // テスト・自動操作用（画面のボタンと同じ処理）
-      CB.ctl = { decide: decide, reason: pickReason, next: function () { if (resultShown) finish(); }, sim: sim, state: function () { return { sim: sim.state, decided: decided, result: resultShown, reason: reason, zoom: view.zoom, off: view.off }; }, quit: function () { finish(true); } };
+      CB.ctl = { decide: decide, reason: pickReason, next: function () { if (resultShown) finish(); }, review: function () { openReview(); }, reviewRecord: function () { return review; }, sim: sim, state: function () { return { sim: sim.state, decided: decided, result: resultShown, reason: reason, zoom: view.zoom, off: view.off }; }, quit: function () { finish(true); } };
     });
+  };
+
+  /* ---------- 振り返り：エントリーした時点に見えていたチャートと、実際の値動き（決済まで）を並べる ---------- */
+  // 記録：シナリオの ID・シード（Market.generate で同じ値動きを作り直せる）・判断した位置・結果の要点。チャートのデータそのものは保存しない
+  CB.reviewRecord = function (s, sim, o) {
+    var dec = sim.decision; if (!dec || !dec.pos) return null; var R = sim.result && sim.result.entry ? sim.result : null; var as = sim.assessment;
+    var rec = { t: Date.now(), mode: o.mode, title: o.title || '', id: s.id, seed: s.seed >>> 0, tf: o.tf, ind: o.ind || ['ema'], eb: dec.pos.bar, et: dec.pos.tick, side: dec.side, auto: !!dec.auto, reason: o.reason || null,
+      chk: Math.round(s.ticks[dec.pos.bar][dec.pos.tick] * 1e5), view: as ? { bias: as.bias, reasons: (as.reasons || []).slice(0, 4) } : null };
+    if (R) rec.R = { side: R.side, entry: { bar: R.entry.bar, tick: R.entry.tick, price: R.entry.price }, sl: R.sl, tp: R.tp, exit: { bar: R.exit.bar, tick: R.exit.tick, price: R.exit.price, reason: R.exit.reason }, pips: R.pips, r: R.r, bars: R.bars, outcome: R.outcome };
+    else rec.R = { outcome: 'skip' };
+    if (o.skipEnd) rec.se = { bar: o.skipEnd.bar, tick: o.skipEnd.tick };
+    return rec;
+  };
+  // 最大の含み益・含み損（スプレッドを除いた中値での目安。エントリーから決済まで）
+  CB.excursion = function (s, rec) {
+    var R = rec.R; if (!R || !R.entry) return null; var sg = R.side === 'long' ? 1 : -1; var best = 0, worst = 0;
+    for (var b = R.entry.bar; b <= R.exit.bar; b++) { var t0 = b === R.entry.bar ? R.entry.tick : 0, t1 = b === R.exit.bar ? R.exit.tick : SUB - 1; for (var k = t0; k <= t1; k++) { var v = sg * (s.ticks[b][k] - R.entry.price) / s.pip; if (v > best) best = v; if (v < worst) worst = v; } }
+    return { best: Math.round(best * 10) / 10, worst: Math.round(worst * 10) / 10 };
+  };
+  // 記録からシナリオを作り直す（同じ値動きか、判断した位置の価格で確かめる）
+  CB.rebuild = function (rec) {
+    try { var def = Market.def(rec.id); if (!def) return null; var s = Market.generate(def, rec.seed >>> 0); if (!s.ticks[rec.eb] || Math.round(s.ticks[rec.eb][rec.et] * 1e5) !== rec.chk) return null; return s; } catch (e) { return null; }
+  };
+  CB.review = function (rec, s) {
+    s = s || CB.rebuild(rec);
+    if (!s) return Win.panel('<div class="rw-title">振り返り</div><div>この記録の値動きを作り直せませんでした（シナリオのデータが変わった可能性があります）。</div>');
+    var R = rec.R || { outcome: 'skip' }; var show = {}; (rec.ind || ['ema']).forEach(function (k) { show[k] = true; }); show.ema = true; delete show.mtf; delete show.rr;
+    var ex = CB.excursion(s, rec); var tf = rec.tf || s.tf || 15;
+    var sum;
+    if (R.entry) { var lab = R.outcome === 'profit' ? (R.exit.reason === 'tp' ? '利確' : '時間切れ決済（利益）') : R.outcome === 'loss' ? (R.exit.reason === 'sl' ? '損切り' : '時間切れ決済（損失）') : 'ほぼ同値で決済';
+      sum = '<b class="' + (R.side === 'long' ? 'up' : 'down') + '">' + (R.side === 'long' ? 'ロング' : 'ショート') + '</b> ' + fmtPx(R.entry.price) + ' → ' + fmtPx(R.exit.price) + '　<b class="' + (R.pips >= 0 ? 'up' : 'down') + '">' + fmtPips(R.pips) + '</b>（' + lab + '・' + R.bars + '本）' +
+        (ex ? '<br>保有中の最大の含み益 <b class="up">' + fmtPips(ex.best) + '</b>／最大の含み損 <b class="down">' + fmtPips(ex.worst) + '</b><span class="muted small">（中値での目安。スプレッドを除く）</span>' : ''); }
+    else { var p0 = s.ticks[rec.eb][rec.et]; var se = rec.se || { bar: Math.min(s.bars.length - 1, rec.eb + 12), tick: SUB - 1 }; var mv = (s.ticks[se.bar][se.tick] - p0) / s.pip; sum = '<b>' + (rec.auto ? '時間切れ：見送り' : '見送り') + '</b>　その後の値動き ' + fmtPips(mv) + '（参考）'; }
+    var view = rec.view ? '<div class="rv-note"><b>判断した瞬間に見えていた状態</b>（簡易的な見立て。正解ではありません）：' + (rec.view.bias === 'long' ? '上向きの根拠が多め' : rec.view.bias === 'short' ? '下向きの根拠が多め' : 'はっきりしない') + (rec.view.reasons && rec.view.reasons.length ? '<br>' + rec.view.reasons.map(esc).join('／') : '') + '</div>' : '';
+    var rs = rec.reason && root.ULT_REASONS ? (root.ULT_REASONS.filter(function (x) { return x.key === rec.reason; })[0] || {}).label : null;
+    var html = '<div class="rw-title">振り返り' + (rec.title ? '：' + esc(rec.title) : '') + '</div>' +
+      '<div class="rv-sum">' + sum + (rs ? '<br><span class="muted small">選んだ理由：' + esc(rs) + '</span>' : '') + '</div>' +
+      '<div class="rv-grid"><figure class="rv-fig"><figcaption>① 判断した時点で見えていたチャート</figcaption><div class="rv-box"><canvas class="rv-c0"></canvas></div></figure>' +
+      '<figure class="rv-fig"><figcaption>② 実際の値動き（' + (R.entry ? '決済まで' : 'その後12本') + '）</figcaption><div class="rv-box"><canvas class="rv-c1"></canvas></div></figure></div>' + view +
+      '<div class="rv-note muted small">シミュレーション相場（架空ペア・' + esc(tfName(tf)) + '）。結果には運の要素があります。根拠のある判断でも負けることがあり、根拠の弱い判断でも勝つことがあります。①の根拠と、②のエントリー後の値動き（含み益・含み損・決済の理由）を比べてみましょう。</div>';
+    function paint(node) {
+      var c0 = node.querySelector('.rv-c0'), c1 = node.querySelector('.rv-c1'); if (!c0 || !c1) return;
+      var b0 = barsAt(s, rec.eb, rec.et); var i0 = Market.indicators(b0);
+      var endBar = R.entry ? R.exit.bar : (rec.se ? rec.se.bar : Math.min(s.bars.length - 1, rec.eb + 12)); var endTick = R.entry ? R.exit.tick : (rec.se ? rec.se.tick : SUB - 1);
+      var b1 = barsAt(s, endBar, endTick); var i1 = Market.indicators(b1);
+      var en = R.entry ? { bar: R.entry.bar, price: R.entry.price, sl: R.sl, tp: R.tp, side: R.side } : null;
+      var span = Math.max(36, endBar - rec.eb + 30);
+      [[c0, { bars: b0, ind: i0, show: show, zoom: 36, off: 0, tf: tf, atr: i0.atr[b0.length - 2], entry: en, exit: null, marks: [] }],
+       [c1, { bars: b1, ind: i1, show: show, zoom: Math.min(span, 80), off: 0, tf: tf, atr: i1.atr[b1.length - 2], entry: en, exit: R.entry ? { bar: R.exit.bar, price: R.exit.price, reason: R.exit.reason } : null,
+         marks: [{ bar: rec.eb, label: '判断した時点', color: '#ffd24a' }].concat(R.entry ? [{ bar: R.exit.bar, label: R.exit.reason === 'tp' ? '利確' : R.exit.reason === 'sl' ? '損切り' : '時間切れ', color: R.exit.reason === 'tp' ? COL.tp : R.exit.reason === 'sl' ? COL.sl : '#9fb4ff', row: 1 }] : []) }]].forEach(function (q) {
+        var cv = q[0], v = q[1]; var r = cv.getBoundingClientRect(); var dpr = Math.min(2, root.devicePixelRatio || 1); var w = Math.max(200, Math.round(r.width || 300)), h = Math.max(120, Math.round(r.height || 200));
+        cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); var g = null; try { g = cv.getContext('2d'); } catch (e) { } if (!g) return; g.setTransform(dpr, 0, 0, dpr, 0, 0); try { draw(g, w, h, v); } catch (e) { if (root.console) console.warn('review', e); }
+      });
+    }
+    return Win.panel(html, { cls: 'rv-panel', setup: function (n) { paint(n); var t = null; var onR = function () { clearTimeout(t); t = setTimeout(function () { if (n.parentNode) paint(n); }, 120); }; root.addEventListener('resize', onR); var mo = setInterval(function () { if (!n.parentNode) { root.removeEventListener('resize', onR); clearInterval(mo); } }, 1000); } });
   };
 
   /* ---------- UltimateBattleEffects：戦闘で必殺技を出す瞬間の名前の帯 ---------- */

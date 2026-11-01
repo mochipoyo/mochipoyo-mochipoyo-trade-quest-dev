@@ -32,7 +32,7 @@
       tradia: { wins: {}, losses: {}, draws: {}, best: {}, titles: [], log: [], lev: null },   // v6.4 Phase D 相場都市トレディア（トレードバトルの記録・レバレッジ取引の口座。lev は最初に取引所を使ったときに作る）
       legacyImported: null,
       // 必殺技・トレーダー師匠（js/rpg/ultimates.js の Ultimates.defaults と同じ形。旧セーブは State.migrate がこの初期値で補い、Ultimates.ensure が壊れた値を直す）
-      ultimate: { v: 1, learned: {}, uses: {}, seen: {}, masters: {}, stats: { trades: 0, wins: 0, losses: 0, flats: 0, skips: 0, autoSkips: 0, tp: 0, sl: 0, timeExit: 0, pips: 0, sumR: 0, bestR: null, worstR: null, byMode: {}, byCat: {}, bySchool: {} }, recent: [], notice: [] },
+      ultimate: { v: 1, learned: {}, uses: {}, seen: {}, masters: {}, stats: { trades: 0, wins: 0, losses: 0, flats: 0, skips: 0, autoSkips: 0, tp: 0, sl: 0, timeExit: 0, pips: 0, sumR: 0, bestR: null, worstR: null, byMode: {}, byCat: {}, bySchool: {} }, recent: [], notice: [], reviews: [] },
       // トレードクイズモンスター（js/rpg/quiz.js の Quiz.defaults と同じ形。旧セーブは State.migrate がこの初期値で補い、Quiz.ensure が5体分の記録をそろえる）
       quizMon: { v: 1, mon: {}, asked: {}, history: {}, titles: [], tokens: [], log: [], pending: {} }
     };

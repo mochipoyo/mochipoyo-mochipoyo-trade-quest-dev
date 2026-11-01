@@ -44,7 +44,8 @@
   /* ---------- セーブの名前空間（UltimateSaveMigration） ---------- */
   function emptyMode() { return { n: 0, wins: 0, losses: 0, flats: 0, skips: 0 }; }
   U.emptyStats = function () { return { trades: 0, wins: 0, losses: 0, flats: 0, skips: 0, autoSkips: 0, tp: 0, sl: 0, timeExit: 0, pips: 0, sumR: 0, bestR: null, worstR: null, byMode: {}, byCat: {}, bySchool: {} }; };
-  U.defaults = function () { return { v: U.SAVE_VERSION, learned: {}, uses: {}, seen: {}, masters: {}, stats: U.emptyStats(), recent: [], notice: [] }; };
+  U.defaults = function () { return { v: U.SAVE_VERSION, learned: {}, uses: {}, seen: {}, masters: {}, stats: U.emptyStats(), recent: [], notice: [], reviews: [] }; };
+  U.REVIEW_MAX = 10;
   // 足りない項目を補い、型の違う値（壊れた値）を初期値に戻す。知らない ID の記録は消さずに残す（新しい版で増えた技を古い版で読み込んでも失わない）
   U.ensure = function (d) {
     if (!d || typeof d !== 'object') return null;
@@ -58,6 +59,7 @@
     Object.keys(u.uses).forEach(function (id) { if (typeof u.uses[id] !== 'number' || !(u.uses[id] >= 0)) u.uses[id] = 0; });
     u.recent = u.recent.filter(function (x) { return typeof x === 'string'; }).slice(-U.RECENT_MAX);
     u.notice = u.notice.filter(function (x) { return typeof x === 'string' && REG[x]; });
+    u.reviews = u.reviews.filter(function (x) { return x && typeof x === 'object' && typeof x.id === 'string' && typeof x.seed === 'number' && typeof x.eb === 'number'; }).slice(-U.REVIEW_MAX);
     Object.keys(u.masters).forEach(function (mid) { if (!u.masters[mid] || typeof u.masters[mid] !== 'object' || Array.isArray(u.masters[mid])) delete u.masters[mid]; });
     if (!(u.v >= 1)) u.v = U.SAVE_VERSION;
     return u;
@@ -257,6 +259,9 @@
     if (info.scenarioId) { u.recent.push(info.scenarioId); if (u.recent.length > U.RECENT_MAX) u.recent = u.recent.slice(-U.RECENT_MAX); }
     u.last = { t: Date.now(), mode: info.mode, ult: info.ultId || null, scenario: info.scenarioId || null, seed: info.seed >>> 0, side: info.side, outcome: o, pips: R.pips || 0 };
   };
+
+  // 振り返りの記録（最近10回）：シナリオの ID とシード（同じ値動きを作り直せる）・判断した位置・結果の要点。チャートそのものは保存しない
+  U.addReview = function (d, rec) { var u = U.ensure(d); if (!u || !rec || typeof rec.id !== 'string') return; u.reviews.push(rec); if (u.reviews.length > U.REVIEW_MAX) u.reviews = u.reviews.slice(-U.REVIEW_MAX); };
 
   /* ---------- 師匠の記録・試験（TraderMasterManager の記録の部分） ---------- */
   function emptyExam() { return { passed: false, best: 0, last: null, attempts: 0 }; }
