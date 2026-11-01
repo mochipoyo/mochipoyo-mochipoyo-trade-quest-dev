@@ -32,7 +32,9 @@
       tradia: { wins: {}, losses: {}, draws: {}, best: {}, titles: [], log: [], lev: null },   // v6.4 Phase D 相場都市トレディア（トレードバトルの記録・レバレッジ取引の口座。lev は最初に取引所を使ったときに作る）
       legacyImported: null,
       // 必殺技・トレーダー師匠（js/rpg/ultimates.js の Ultimates.defaults と同じ形。旧セーブは State.migrate がこの初期値で補い、Ultimates.ensure が壊れた値を直す）
-      ultimate: { v: 1, learned: {}, uses: {}, seen: {}, masters: {}, stats: { trades: 0, wins: 0, losses: 0, flats: 0, skips: 0, autoSkips: 0, tp: 0, sl: 0, timeExit: 0, pips: 0, sumR: 0, bestR: null, worstR: null, byMode: {}, byCat: {}, bySchool: {} }, recent: [], notice: [] }
+      ultimate: { v: 1, learned: {}, uses: {}, seen: {}, masters: {}, stats: { trades: 0, wins: 0, losses: 0, flats: 0, skips: 0, autoSkips: 0, tp: 0, sl: 0, timeExit: 0, pips: 0, sumR: 0, bestR: null, worstR: null, byMode: {}, byCat: {}, bySchool: {} }, recent: [], notice: [] },
+      // トレードクイズモンスター（js/rpg/quiz.js の Quiz.defaults と同じ形。旧セーブは State.migrate がこの初期値で補い、Quiz.ensure が5体分の記録をそろえる）
+      quizMon: { v: 1, mon: {}, asked: {}, history: {}, titles: [], tokens: [], log: [], pending: {} }
     };
     State.data = d;
     return d;
@@ -95,6 +97,7 @@
     // v6.5 帰還の術：すでに習得レベルを超えている僧侶・賢者などは、この呪文だけを覚える（ほかの技は変えない）
     if (root.DUNGEON_RETURN_LEARN) [d.hero].concat(Object.keys(d.companions).map(function (k) { return d.companions[k]; })).forEach(function (a) { var lv = root.DUNGEON_RETURN_LEARN[a.job]; if (lv && a.level >= lv && a.skills && a.skills.indexOf('dungeon_return') < 0) a.skills.push('dungeon_return'); });
     if (root.Nav && root.Nav.repairFlags) root.Nav.repairFlags(d);   // v6.2 到着フラグ（zeromea_arrived・sky_arrived）の補正
+    if (root.Quiz) root.Quiz.ensure(d);   // トレードクイズモンスター：5体分の記録をそろえ、壊れた値を直す（ほかの項目は変えない）
     if (root.Ultimates) { root.Ultimates.ensure(d); root.Ultimates.sync(d); }   // 必殺技：壊れた値を直し、いまのレベルまでに覚える技をそろえる（主人公だけ。ほかの項目は変えない）
     d.version = SAVE_VERSION;
     return d;
