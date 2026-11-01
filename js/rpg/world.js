@@ -149,6 +149,7 @@
     var p = World.player, m = World.map; p.dir = dir; var d = delta(dir);
     var nx = p.x + d[0], ny = p.y + d[1];
     p.vehicleAction = null;
+    if ((nx < 0 || ny < 0 || nx >= m.w || ny >= m.h) && root.EdgeExit && root.EdgeExit.tryLeave(m, p.x, p.y, dir)) return false;   // v6.5 村・町の開いている外周から外へ（登録した区間だけ）
     var vr = root.Vehicle ? root.Vehicle.resolveMove(m, nx, ny) : null;   // v5.0: 乗船・航行・下船
     if (vr) { if (!vr.ok) { var why = root.Vehicle.blockReason(m, nx, ny); if (why && !p._blockToastAt || (why && Date.now() - p._blockToastAt > 1500)) { p._blockToastAt = Date.now(); Win.toast(why); } return false; } p.vehicleAction = vr; }
     else if (!m.passable(nx, ny, State.data)) { var bn = m.npcOn(nx, ny); if (bn) World.pushAgainst(bn); return false; }   // v5.7 歩き回る人は道をあける（v6.2：押し続けたときだけ。近づいた・向いただけでは動かない）
@@ -246,7 +247,7 @@
     var fade = document.getElementById('fade'); if (fade) fade.classList.add('on');
     setTimeout(function () {
       var dir = World.player.dir;
-      World.enterMap(w.to, w.tx, w.ty, (root.MAP_DEFS[w.to] && root.MAP_DEFS[w.to].region) ? (State.data.aboard ? dir : 'down') : dir);
+      World.enterMap(w.to, w.tx, w.ty, w.face || ((root.MAP_DEFS[w.to] && root.MAP_DEFS[w.to].region) ? (State.data.aboard ? dir : 'down') : dir));   // v6.5 face：外周から出たときは出た向きのまま
       setTimeout(function () { if (fade) fade.classList.remove('on'); World.busy = false; if (root.Audio) root.Audio.sfx('step'); }, 150);
     }, 180);
   };

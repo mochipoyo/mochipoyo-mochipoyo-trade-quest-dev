@@ -90,6 +90,8 @@
       ['pos', 'lastInn'].forEach(function (key) { var pz = d[key]; if (!pz) return; var k = root.MAP_ENLARGE[pz.map]; if (k) { pz.x *= k; pz.y *= k; } });
       d.stepsSinceBattle = 0;
     }
+    // v6.5 帰還の術：すでに習得レベルを超えている僧侶・賢者などは、この呪文だけを覚える（ほかの技は変えない）
+    if (root.DUNGEON_RETURN_LEARN) [d.hero].concat(Object.keys(d.companions).map(function (k) { return d.companions[k]; })).forEach(function (a) { var lv = root.DUNGEON_RETURN_LEARN[a.job]; if (lv && a.level >= lv && a.skills && a.skills.indexOf('dungeon_return') < 0) a.skills.push('dungeon_return'); });
     if (root.Nav && root.Nav.repairFlags) root.Nav.repairFlags(d);   // v6.2 到着フラグ（zeromea_arrived・sky_arrived）の補正
     d.version = SAVE_VERSION;
     return d;

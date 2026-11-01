@@ -506,7 +506,7 @@
   Combat.autoCommand = function (b, a) {
     var s = Actors.stats(a);
     var known = Actors.allSkills(a).filter(function (id) { return SKILLS[id]; });
-    var usable = known.filter(function (id) { var sk = SKILLS[id]; return !sk.gold && !sk.escape && !sk.scan && a.mp >= skillCost(a, sk); });
+    var usable = known.filter(function (id) { var sk = SKILLS[id]; return !sk.gold && !sk.escape && !sk.scan && !sk.field && a.mp >= skillCost(a, sk); });
     var allies = b.party.filter(function (x) { return !x.dead; }), dead = b.party.filter(function (x) { return x.dead; });
     var foes = aliveEnemies(b).filter(function (e) { return !e.fled; });
     if (!foes.length) return { actorId: a.id, type: 'defend' };

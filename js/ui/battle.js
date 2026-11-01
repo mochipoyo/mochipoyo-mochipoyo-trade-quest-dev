@@ -416,7 +416,7 @@
       if (sel < 0) return 'back';
       if (sel === 0) { var t = await pickEnemy(b); if (t < 0) continue; return { actorId: a.id, type: 'attack', target: { side: 'enemy', idx: t } }; }
       if (sel === 1) {
-        var items = skills.map(function (s) { var sk = SKILLS[s]; var cost = a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp; return { label: sk.name, right: 'MP' + cost + (sk.gold ? '/' + sk.gold + 'G' : ''), sub: sk.desc, disabled: a.mp < cost }; });
+        var items = skills.map(function (s) { var sk = SKILLS[s]; var cost = a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp; return { label: sk.name, right: 'MP' + cost + (sk.gold ? '/' + sk.gold + 'G' : ''), sub: sk.field ? '戦闘中は使えない（フィールドのメニューで唱える）' : sk.desc, disabled: a.mp < cost || !!sk.field }; });   // v6.5 帰還の術など、フィールド専用の呪文は選べない
         var si = await Win.list(items, { title: 'じゅもん・とくぎ' }); if (si < 0) continue;
         var sk = SKILLS[skills[si]]; var target = null;
         if (sk.target === 'enemy') { var te = await pickEnemy(b); if (te < 0) continue; target = { side: 'enemy', idx: te }; }

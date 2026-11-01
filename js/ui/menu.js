@@ -17,9 +17,9 @@
         var i = await Win.list(MENU.map(function (l) { return { label: l }; }), { title: 'メニュー　' + d.gold + 'G　' + World.map.name, cls: 'main-menu' });
         if (i < 0) break; var lb = MENU[i];
         if (lb === 'ステータス') await Menu.status();
-        else if (lb === 'どうぐ') await Menu.items();
+        else if (lb === 'どうぐ') { if (await Menu.items() === 'warp') break; }   // v6.5 帰還の翼・脱出の羽で移動したらメニューを閉じる
         else if (lb === 'そうび') await Menu.equip();
-        else if (lb === 'じゅもん・とくぎ') await Menu.skills();
+        else if (lb === 'じゅもん・とくぎ') { if (await Menu.skills() === 'warp') break; }   // v6.5 帰還の術で移動したらメニューを閉じる
         else if (lb === 'なかま') await Menu.party();
         else if (lb === 'クエスト') await Menu.quests();
         else if (lb === '次の目的地') { if (await Menu.objective() === 'map') { openMap = true; break; } }
@@ -51,9 +51,9 @@
   /* ---------- どうぐ（v6.4 ジャンル別・並び替え・使えるものだけ・詳細と装備比較） ---------- */
   var ITEM_SORTS = [{ id: 'kind', name: '種類順' }, { id: 'name', name: '名前順' }, { id: 'count', name: '所持数順' }];
   var TARGET_NAME = { ally: '味方1人', dead_ally: '戦闘不能の味方1人', party: '味方全員', self: '自分', enemies: '敵全体' };
-  function itemTarget(it) { if (it.target) return TARGET_NAME[it.target] || ''; var e = it.effect || {}; return e.damage ? '敵全体' : e.revive ? '戦闘不能の味方1人' : e.all ? '味方全員' : e.warpTown ? '全員（移動）' : '味方1人'; }
+  function itemTarget(it) { if (it.target) return TARGET_NAME[it.target] || ''; var e = it.effect || {}; return e.damage ? '敵全体' : e.revive ? '戦闘不能の味方1人' : e.all ? '味方全員' : e.warpTown ? '全員（移動）' : e.dungeonExit ? '全員（ダンジョンの入口の外へ）' : '味方1人'; }
   function inTown() { return World.map && (World.map.kind === 'town' || World.map.kind === 'interior'); }
-  function canUseNow(id) { var it = ITEMS[id]; if (!it || it.cat !== 'consumable' || it.battleOnly) return false; if (it.fieldOnly && inTown() && !it.effect.warpTown) return false; return true; }
+  function canUseNow(id) { var it = ITEMS[id]; if (!it || it.cat !== 'consumable' || it.battleOnly) return false; if (it.effect && it.effect.dungeonExit) return !!(root.DungeonExit && root.DungeonExit.check(World.map).ok); if (it.fieldOnly && inTown() && !it.effect.warpTown) return false; return true; }
   Menu.itemDetail = function (id) {
     var it = ITEMS[id]; if (!it) return ''; var IC = root.ItemCat; var S = root.Services; var d = State.data;
     var g = IC ? IC.GENRES.filter(function (x) { return x.id === IC.of(id); })[0] : null;
@@ -86,7 +86,7 @@
       if (r === -1) return;
       if (r && typeof r === 'object') { if (r.tab !== undefined) { tab = r.tab; initial = 0; } else if (r.tool === 'sort') sort = (sort + 1) % ITEM_SORTS.length; else if (r.tool === 'usable') usableOnly = !usableOnly; continue; }
       if (!ids.length) continue; initial = r;
-      if (await Menu.useItem(ids[r]) === 'warp') return;
+      if (await Menu.useItem(ids[r]) === 'warp') return 'warp';
     }
   };
   Menu.useItem = async function (id) {
@@ -95,6 +95,7 @@
       if (it.battleOnly) { await Win.message(['戦闘中にしか使えない。']); return; }
       var ef = it.effect;
       if (ef.warpTown) { var a0 = await Win.choice(it.name + 'を使って最後に泊まった町へ戻る？', ['使う', 'やめる']); if (a0 === 0) { State.addItem(it.id, -1); var li = d.lastInn; await Win.message(['翼が光り、体がふわりと浮いた……']); World.enterMap(li.map, li.x, li.y, 'down'); return 'warp'; } return; }
+      if (ef.dungeonExit) return await Menu.dungeonExit(it.name, function () { State.addItem(it.id, -1); }, ['羽がふわりと舞い上がり、光の道が入口へ伸びた……']);   // v6.5 脱出の羽
       if (it.fieldOnly && inTown()) { await Win.message(['ここでは使えない（フィールドやダンジョンで使う）。']); return; }
       if (ef.all) { State.addItem(it.id, -1); State.partyActors().forEach(function (a) { if (!a.dead) { var s = Actors.stats(a); a.hp = s.maxHp; a.mp = s.maxMp; } }); await Win.message(['テントを張って休んだ。全員のHPとMPが回復した！']); return; }
       if (ef.partyHeal) { State.addItem(it.id, -1); var hl = []; State.partyActors().forEach(function (a) { if (a.dead) return; var s = Actors.stats(a); var h0 = a.hp, m0 = a.mp; a.hp = Math.min(s.maxHp, a.hp + Math.round(s.maxHp * ef.partyHeal)); a.mp = Math.min(s.maxMp, a.mp + Math.round(s.maxMp * ef.partyHeal)); hl.push(a.name + '：HP+' + (a.hp - h0) + '　MP+' + (a.mp - m0)); }); if (root.Audio) root.Audio.sfx('heal'); await Win.message(['宿営セットを広げて一息ついた。'].concat(hl)); World.updateHud(); return; }   // v6.4 携帯宿営セット
@@ -154,7 +155,25 @@
       var r = await Win.list(rows, { title: a.name + 'の特技', tabs: SKILL_GROUPS.map(function (g, i) { return { label: g.name, count: counts[i] }; }), tab: tab });
       if (r === -1) return;
       if (r && typeof r === 'object' && r.tab !== undefined) { tab = r.tab; continue; }
+      var fsk = typeof r === 'number' && ids[r] && SKILLS[ids[r]];   // v6.5 フィールドで使う呪文（帰還の術）
+      if (fsk && fsk.field === 'dungeon_exit') { var res = await Menu.castField(a, fsk); if (res === 'warp') return 'warp'; }
     }
+  };
+  // v6.5 フィールドで唱える呪文：今は「帰還の術」（ダンジョンの入口の外へ）。賢者は消費MPが8割（戦闘と同じ）
+  Menu.castField = async function (a, sk) {
+    var cost = a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp;
+    if (a.dead) { await Win.message([a.name + 'は戦闘不能で、呪文を唱えられない。']); return; }
+    if (a.mp < cost) { await Win.message(['MPが足りない。（' + sk.name + '：MP' + cost + '　' + a.name + '：MP' + a.mp + '）']); return; }
+    return await Menu.dungeonExit(a.name + 'の' + sk.name, function () { a.mp -= cost; World.updateHud(); }, [a.name + 'は' + sk.name + 'を唱えた！', '光の道が入口へ伸びた……']);
+  };
+  // v6.5 脱出の羽・帰還の術の共通：使えるか確かめ → 行き先を見せて確認 → 消費 → 入口の外へ
+  Menu.dungeonExit = async function (what, consume, lines) {
+    var DX = root.DungeonExit; if (!DX) return;
+    var ck = DX.check(World.map);
+    if (!ck.ok) { await Win.message([ck.reason]); return; }
+    var c = await Win.choice(what + 'で「' + ck.dest.label + '」へ戻る？', ['使う', 'やめる']); if (c !== 0) return;
+    consume(); await Win.message(lines);
+    DX.go(ck.dest); return 'warp';
   };
 
   /* ---------- なかま（v6.4 Phase F：立ち絵・ステータス・装備・呪文と特技・紹介・隊列の変更） ----------
