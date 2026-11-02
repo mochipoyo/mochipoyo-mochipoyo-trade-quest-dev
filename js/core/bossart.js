@@ -64,17 +64,23 @@
     if (BossArt.pending[k]) return BossArt.pending[k];
     if (!ent || !ent.path || typeof root.Image === 'undefined') { BossArt.failed[k] = 'no_entry'; return Promise.resolve(null); }
     var p = new Promise(function (resolve) {
-      var img = new root.Image(); var t0 = Date.now();
-      img.onload = function () {
-        try {
-          if (!(img.naturalWidth > 0 && img.naturalHeight > 0)) throw new Error('broken image');
-          var v = process(img, ent, kind === 'enc');
-          v.loadMs = Date.now() - t0; BossArt.ready[k] = v; BossArt.stats[k] = v.stat; resolve(v);
-        } catch (err) { BossArt.failed[k] = 'process:' + (err && err.message); resolve(null); }
-        delete BossArt.pending[k];
-      };
-      img.onerror = function () { BossArt.failed[k] = 'load_error'; delete BossArt.pending[k]; resolve(null); };
-      img.src = base() + ent.path;
+      var t0 = Date.now();
+      // v6.7 まず CORS（crossOrigin）で読む：別のサイト扱いの配信（テストプレイの githack など）でも、ピクセルを読めるキャンバスになり、
+      //   3D版の戦闘でも新しい絵を使える（以前は「汚れた」キャンバスになり、3D版が以前の簡易の絵に戻していた）。CORS で読めなければ従来どおりに読み直す
+      function attempt(cors) {
+        var img = new root.Image(); if (cors) img.crossOrigin = 'anonymous';
+        img.onload = function () {
+          try {
+            if (!(img.naturalWidth > 0 && img.naturalHeight > 0)) throw new Error('broken image');
+            var v = process(img, ent, kind === 'enc');
+            v.loadMs = Date.now() - t0; v.cors = !!cors; BossArt.ready[k] = v; BossArt.stats[k] = v.stat; resolve(v);
+          } catch (err) { BossArt.failed[k] = 'process:' + (err && err.message); resolve(null); }
+          delete BossArt.pending[k];
+        };
+        img.onerror = function () { if (cors) { attempt(false); return; } BossArt.failed[k] = 'load_error'; delete BossArt.pending[k]; resolve(null); };
+        img.src = base() + ent.path;
+      }
+      attempt(true);
     });
     BossArt.pending[k] = p; return p;
   }
@@ -262,6 +268,23 @@
 
   /* ---------- 戦闘の敵の見た目 ---------- */
   // battle.js の enemyVisual から呼ぶ：新画像が読み込み済みならそれ、なければ null（呼び出し側が旧画像 → MonsterArt → Sprites）
+  // v6.7 3D版の戦闘・マップのシンボル用：ピクセルを読める（WebGL で使える）新しい絵。読み込み済みの絵が読めればそれ、
+  //   「汚れた」キャンバスなら、同じ画像を CORS つきの別の URL（?cors=1。CORS なしで読んだキャッシュを使わないため）で読み直して同じ加工をする。読めなければ null
+  BossArt.cleanJobs = {};
+  BossArt.cleanVisual = function (id) {
+    var v = BossArt.get(id); if (v && v.stat && !v.stat.tainted) return Promise.resolve({ img: v.img, w: v.w, h: v.h, lift: v.lift || 0, smooth: true, source: 'bossart' });
+    if (BossArt.cleanJobs[id]) return BossArt.cleanJobs[id];
+    var ent = packEntry(id); var url = BossArt.url(id); if (!ent || !url || typeof root.Image === 'undefined') return Promise.resolve(null);
+    var job = new Promise(function (resolve) {
+      var done = false; var fin = function (r) { if (!done) { done = true; resolve(r); } };
+      var img = new root.Image(); img.crossOrigin = 'anonymous';
+      img.onload = function () { try { var c = process(img, ent, false); fin(c.stat && c.stat.tainted ? null : { img: c.img, w: c.w, h: c.h, lift: c.lift || 0, smooth: true, source: 'bossart', cors: true }); } catch (e) { fin(null); } };
+      img.onerror = function () { fin(null); };
+      img.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'cors=1';
+      setTimeout(function () { fin(null); }, 8000);
+    });
+    BossArt.cleanJobs[id] = job; return job;
+  };
   BossArt.visual = function (id) { var v = BossArt.get(id); return v ? { img: v.img, w: v.w, h: v.h, lift: v.lift || 0, smooth: true, source: 'bossart' } : null; };
   // 新画像を使わないとき・使えないときの旧画像（採用したIDの元の assets/monsters 画像）。読み込み済みのときだけ返す
   function loadPrev(id) {

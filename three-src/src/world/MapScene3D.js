@@ -201,7 +201,14 @@ export class MapScene3D {
         const v = BS.visual(s.enemy); if (!v || !v.img) continue;
         const ok = v.img instanceof HTMLCanvasElement || (v.img.complete && v.img.naturalWidth > 0); if (!ok) continue;   // 読み込み中：次のフレームでもう一度
         // 別のサイト扱いの画像（iPhone の Safari のテストプレイで発生）は WebGL に渡すと例外になり、マップ全体が2Dに戻っていた → 読めるように読み直す。読めなければ光の輪だけ
-        const rd = readable(v.img); if (rd.state === 'loading') continue; const src = rd.state === 'ok' ? rd.img : null;
+        const rd = readable(v.img); if (rd.state === 'loading') continue; let src = rd.state === 'ok' ? rd.img : null;
+        // v6.7 新しいボスの絵（BossArt のキャンバス）が読めないとき：CORS つきで読み直した同じ絵を使う（読み直し中は次のフレームでもう一度。だめなら光の輪だけ）
+        if (!src && window.BossArt && window.BossArt.cleanVisual && window.BossArt.isBossId && window.BossArt.isBossId(s.enemy)) {
+          const cj = this.bossClean || (this.bossClean = new Map()); let st = cj.get(s.enemy);
+          if (!st) { st = { done: false, v: null }; cj.set(s.enemy, st); window.BossArt.cleanVisual(s.enemy).then((cv) => { st.v = cv && cv.img && readable(cv.img).state === 'ok' ? cv : null; st.done = true; }, () => { st.done = true; }); }
+          if (!st.done) continue;
+          if (st.v) src = st.v.img;
+        }
         let sp = null, vol = null; const H = 2.4, Wd = Math.min(3.4, H * v.w / Math.max(1, v.h));
         // Phase 2：戦闘と同じく、ボスの絵から厚みのある立体（2.5D）にする（元のデザインのまま）。作れないときは従来の立て札
         if (src) { try { vol = buildArtVolume(src, { height: Wd * v.h / Math.max(1, v.w), aspect: v.w / Math.max(1, v.h), smooth: v.smooth !== false, depth: 0.14, grid: 44 }); sp = vol.mesh; } catch (e) { vol = null; } }

@@ -36,6 +36,7 @@ const SPRITE_SLOTS = SPRITE_LAYOUT[4];
 // 戦闘の並び：'front'＝前後（味方が手前に後ろ姿で並び、奥に敵。ご要望で試作）／'side'＝左右（左に敵・右に味方）。3D設定・localStorage 'mtq3d-battle-layout'
 // v6.6 「前後」の並びの背景：'photo'＝戦闘背景の画像を画面いっぱいに（2D版と同じ絵。3Dの地面・景色は隠す）／'3d'＝以前の3Dの景色。3D設定・localStorage 'mtq3d-battle-bg'・URL ?bg=photo|3d
 // v6.6 敵の簡易の絵（コードで描く絵。画像ファイルを使わないので、3Dで必ず読める）。新しい画像を3Dで使えないときの代わり
+// v6.7 未使用：絵を3Dで使えないときの簡易の絵（旧デザインに見えるため、使うのをやめた。buildArt を参照）
 function altVisual(e) {
   try {
     if (e && e.art && G.MonsterArt && G.MonsterArt.image) { const c = G.MonsterArt.image(e.art, 3, 0); if (c && c.width && isClean(c)) return { img: c, w: c.width, h: c.height, smooth: false }; }
@@ -121,21 +122,25 @@ export class BattleActors3D {
     if (!v || !v.img) { ent.failed = true; return; }
     const img = v.img; const ok = img instanceof HTMLCanvasElement || (img.complete && (img.naturalWidth || 0) > 0);
     if (!ok) { ent.waitImg = img; return; }   // 読み込み中：次のフレームでもう一度
+    // v6.7 2D版の絵が新しい絵に切り替わったのに、3Dでまだ使えない（読み直し中・使えない）ときは、前の絵の立体を消す（2D版が新しい絵を3Dの立ち位置に描く）。
+    //   以前は前の絵（ボスの新しい画像が間に合わなかったときの以前のデザイン）の立体が残り続けることがあった
+    const stale = !!(ent.art && ent.visImg && ent.visImg !== img); const drop = () => { if (stale) this.dropArt(ent); };
     const rd = readable(img); ent.waitClean = rd.state === 'loading';   // 別のサイト扱いの画像は CORS で読み直す（読み直し中は次のフレームでもう一度）
-    if (rd.state === 'loading') { if (!ent.cleanT) ent.cleanT = performance.now(); if (performance.now() - ent.cleanT < 4000) return; }   // v6.6 読み直しが 4 秒で終わらなければ、下の簡易の絵へ
+    // v6.7 読み直し中は、2D版が新しい絵を3Dの立ち位置（estRect）に描く。時間がかかっても、以前の簡易の絵（旧デザイン）には切り替えない
+    if (rd.state === 'loading') { if (!ent.cleanT) ent.cleanT = performance.now(); drop(); return; }
     let src = rd.img, av = v;
-    // v6.6 敵の新しい絵（EnemyArt のキャンバス）が3Dで使えない → 同じ絵を CORS つきで読み直す（読み直し中は 2D 版が3Dの立ち位置に描く）
-    if (rd.state !== 'ok' && img instanceof HTMLCanvasElement && v.source === 'enemyart' && G.EnemyArt && G.EnemyArt.cleanVisual && !ent.cleanTried) {
-      if (!ent.cleanJob) { ent.cleanJob = G.EnemyArt.cleanVisual(ent.e.defId).then((cv) => { ent.cleanVis = cv && cv.img && isClean(cv.img) ? cv : null; ent.cleanTried = true; }, () => { ent.cleanTried = true; }); }
-      ent.waitClean = true; return;
+    // v6.6/v6.7 新しい絵（EnemyArt・BossArt のキャンバス）が3Dで使えない → 同じ絵を CORS つきで読み直す（読み直し中は 2D 版が3Dの立ち位置に描く）
+    if (stale) { ent.cleanTried = false; ent.cleanJob = null; ent.cleanVis = null; ent.cleanT = 0; ent.failed = false; }
+    const cleaner = v.source === 'enemyart' && G.EnemyArt && G.EnemyArt.cleanVisual ? G.EnemyArt : v.source === 'bossart' && G.BossArt && G.BossArt.cleanVisual ? G.BossArt : null;
+    if (rd.state !== 'ok' && img instanceof HTMLCanvasElement && cleaner && !ent.cleanTried) {
+      if (!ent.cleanJob) { ent.cleanJob = cleaner.cleanVisual(ent.e.defId).then((cv) => { ent.cleanVis = cv && cv.img && isClean(cv.img) ? cv : null; ent.cleanTried = true; }, () => { ent.cleanTried = true; }); }
+      if (!ent.cleanT) ent.cleanT = performance.now(); ent.waitClean = true; drop(); return;
     }
     if (rd.state !== 'ok' && ent.cleanVis) { src = ent.cleanVis.img; av = ent.cleanVis; ent.cors = true; }
     else if (rd.state !== 'ok') {
-      // v6.6 絵を3Dで使えない（iPhone の Safari で別のサイト扱い・読み直しの失敗など）→ その敵の簡易の絵（コードで描く絵＝必ず読める）で3Dに立たせる
-      //   以前は 2D の絵を 2D の位置（画面の中ほど）に描いていたため、前後の並びでは味方の手前に重なった
-      const alt = altVisual(ent.e);
-      if (!alt) { ent.failed = true; ent.visImg = img; this.failedArt++; this.why = this.why || '敵の絵を読めない（別のサイト扱いの画像）'; return; }   // 簡易の絵も作れないときは2D版の絵のまま（battle.js が描く）
-      src = alt.img; av = alt; ent.alt = true; ent.waitClean = false; this.altArt = (this.altArt || 0) + 1; this.why = this.why || '敵の絵を3Dで読めない → 簡易の絵で表示';
+      // v6.7 絵を3Dで使えない（読み直しも失敗）→ 3Dの立体は作らず、2D版が同じ新しい絵を3Dの立ち位置（estRect）に描く。
+      //   v6.6 では、ここで「その敵の簡易の絵（コードで描く絵）」に替えていたため、ボスなどが以前のデザインに戻って見えた（v6.7 でやめた）
+      drop(); ent.failed = true; ent.visImg = img; ent.waitClean = false; this.failedArt++; this.why = this.why || '敵の絵を3Dで読めない → 2Dの絵を3Dの立ち位置に表示'; return;
     }
     const old = ent.art, oldGroup = ent.group;
     try {
@@ -153,6 +158,8 @@ export class BattleActors3D {
     } catch (err) { console.warn('battle art volume', err); ent.failed = true; this.failedArt++; }
   }
 
+  // v6.7 敵の立体を消す（2D版がその敵を3Dの立ち位置に描くようになる）
+  dropArt(ent) { try { if (ent.group && ent.group.parent) ent.group.parent.remove(ent.group); if (ent.art) ent.art.dispose(); } catch (err) { /* なし */ } ent.art = null; ent.group = null; ent.shadow = null; ent.uniforms = null; }
   // 味方：ドット絵を、ごく薄い板（光と影がつく）にして立てる。ドットはぼかさない
   buildSprite(ent) {
     const front = this.layout === 'front'; let art = null; try { art = front ? partyPixelBack(ent.a) : partyPixelArt(ent.a); } catch (err) { console.warn('battle party sprite', err); art = null; }
@@ -349,9 +356,9 @@ export class BattleActors3D {
     return { x: Math.round(Math.min(...xs)), y: Math.round(Math.min(...ys)), w: Math.round(Math.max(...xs) - Math.min(...xs)), h: Math.round(Math.max(...ys) - Math.min(...ys)) };
   }
   drawn(i) { const en = this.enemies[i]; return !!(en && en.ready && en.art); }
-  allReady() { let f = 0; for (const e of this.party.values()) if (e.failed && !e.ready) f++; for (const e of this.enemies) if (e && e.failed && !e.ready) f++; return this.want > 0 && this.ready + f >= this.want; }   // 読めずに2Dのままの敵・味方も「準備できた」に数える
+  allReady() { let f = 0; for (const e of this.party.values()) if (e.failed && !e.ready) f++; for (const e of this.enemies) if (e && !e.ready && (e.failed || (e.waitClean && e.cleanT && performance.now() - e.cleanT > 4000))) f++; return this.want > 0 && this.ready + f >= this.want; }   // 読めずに2Dのままの敵・味方も「準備できた」に数える
   info() {
-    return { want: this.want, ready: this.ready, failedArt: this.failedArt, altArt: this.altArt || 0,
+    return { want: this.want, ready: this.ready, failedArt: this.failedArt, altArt: this.altArt || 0, cors: this.enemies.filter((e) => e && e.cors).length, waiting: this.enemies.filter((e) => e && e.waitClean && !e.art).length,
       enemies: this.enemies.filter(Boolean).map((e) => ({ i: e.i, id: e.e.defId, source: e.source, ready: e.ready, vis: !!e.vis, size: e.art ? { w: +e.art.size.w.toFixed(2), h: +e.art.size.h.toFixed(2) } : null, tris: e.art ? e.art.stats.tris : 0, plan: e.plan ? e.plan.anim : null, dissolve: e.uniforms ? +e.uniforms.uDissolve.value.toFixed(2) : 0 })),
       style: this.style, party: [...this.party.values()].map((p) => ({ id: p.id, model: this.style === 'sprite' ? 'pixel:' + (p.kind || 'pending') : p.model, ready: p.ready, anim: p.ch ? p.ch.currentName : (p.plan ? p.plan.anim : p.dead ? 'Defeat' : 'Idle'), dead: p.dead, status: this.style === 'sprite' ? '2D' : (MODELS[p.model] ? MODELS[p.model].status : 'fallback') })),
       log: this.log.slice(-20), sync: this.sync.slice(-40) };
