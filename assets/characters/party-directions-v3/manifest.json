@@ -1,0 +1,2490 @@
+{
+  "schemaVersion": 1,
+  "packVersion": "3.0",
+  "date": "2026-11-02",
+  "canvas": [
+    320,
+    320
+  ],
+  "pivot": [
+    160,
+    304
+  ],
+  "directions": {
+    "front": "顔が手前",
+    "back": "背中が手前・顔は奥",
+    "left": "画面左を向く",
+    "right": "画面右を向く"
+  },
+  "source": {
+    "repository": "mochipoyo/mochipoyo-mochipoyo-trade-quest-dev",
+    "branch": "feature/3d-full",
+    "head_commit": "e007fd635ca9d6364b5bc85403018b8aa165d066",
+    "retrieved_date": "2026-11-02",
+    "files": [
+      {
+        "path": "js/data/story.js",
+        "blob_sha": "fb2fb71007cf9e9766e94ae9560f52f397fc458e",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/js/data/story.js"
+      },
+      {
+        "path": "js/data/jobs.js",
+        "blob_sha": "db6625553f609922aee576b3544c05044df53872",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/js/data/jobs.js"
+      },
+      {
+        "path": "js/rpg/actors.js",
+        "blob_sha": "1fde6d2ff0b1b3b9f358526cc983a0bc43564405",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/js/rpg/actors.js"
+      },
+      {
+        "path": "js/data/asset-manifest.js",
+        "blob_sha": "bc655f5727197454a51f960c9bb3699cad19cc77",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/js/data/asset-manifest.js"
+      },
+      {
+        "path": "three-src/src/battle/BattleActors3D.js",
+        "blob_sha": "3e41d739a194f7b9c96390aa5b2752866dbd2610",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/three-src/src/battle/BattleActors3D.js"
+      },
+      {
+        "path": "three-src/src/battle/ArtVolume.js",
+        "blob_sha": "5c1b65e501c7abb4df67a83d914b95e7b697fe74",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/three-src/src/battle/ArtVolume.js"
+      }
+    ],
+    "images": [
+      {
+        "id": "hero",
+        "blob_sha": "d03091f9dac6f1a504ce91d2cab872e48e1946dc",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/jobs/warrior.png"
+      },
+      {
+        "id": "lina",
+        "blob_sha": "5b9056706eb0aa4adb5c7dd88f7dc59815415fe5",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/lina.png"
+      },
+      {
+        "id": "kyle",
+        "blob_sha": "f3e95d2244d7e86b1e9214906925c68ecc5f2803",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/kyle.png"
+      },
+      {
+        "id": "mina",
+        "blob_sha": "ba325bb8e1ba5d53ec0d7e6787a2b99b5c5ed1c3",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/mina.png"
+      },
+      {
+        "id": "seris",
+        "blob_sha": "03a590d2f3889c20d6a91e3d304cd8f6dc81a27d",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/seris.png"
+      },
+      {
+        "id": "gald",
+        "blob_sha": "1e213b745b5d7aaf8b60ee9181bcbce9b3ef177f",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/gald.png"
+      },
+      {
+        "id": "lucia",
+        "blob_sha": "adb178d0160441a92079a7207787ce2cc3b9b650",
+        "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/lucia.png"
+      }
+    ]
+  },
+  "identityPolicy": "actor.id -> explicit actor/job override when provided -> same actor base; never switch to a different character by job or sprite",
+  "jobCostumesIncluded": false,
+  "actors": {
+    "hero": {
+      "id": "hero",
+      "name": "主人公",
+      "defaultJob": "warrior",
+      "legacySprite": "hero_warrior",
+      "existingUniqueFront": true,
+      "appearanceBasis": "existing PNG visually matched",
+      "sourceSheet": "source_sheets/hero.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            626,
+            621
+          ],
+          "contentCrop": [
+            120,
+            33,
+            404,
+            552
+          ],
+          "visibleBounds": [
+            128,
+            41,
+            516,
+            577
+          ],
+          "pivotInCrop": [
+            199.88,
+            543
+          ]
+        },
+        "back": {
+          "region": [
+            626,
+            0,
+            628,
+            621
+          ],
+          "contentCrop": [
+            737,
+            37,
+            400,
+            548
+          ],
+          "visibleBounds": [
+            119,
+            45,
+            503,
+            577
+          ],
+          "pivotInCrop": [
+            190.31,
+            539
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            621,
+            626,
+            633
+          ],
+          "contentCrop": [
+            90,
+            658,
+            483,
+            560
+          ],
+          "visibleBounds": [
+            98,
+            45,
+            565,
+            589
+          ],
+          "pivotInCrop": [
+            217.09,
+            552
+          ]
+        },
+        "right": {
+          "region": [
+            626,
+            621,
+            628,
+            633
+          ],
+          "contentCrop": [
+            683,
+            658,
+            483,
+            560
+          ],
+          "visibleBounds": [
+            65,
+            45,
+            532,
+            589
+          ],
+          "pivotInCrop": [
+            242.51,
+            552
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/hero/front.png",
+          "source": "preserved_original",
+          "sha256": "67103f3a187877d5c60dd5aed4db8c10fee6b20adac96c256ed381df6c2a377d",
+          "opaqueBounds": [
+            95,
+            106,
+            223,
+            302
+          ]
+        },
+        "back": {
+          "path": "sprites/hero/back.png",
+          "source": "generated",
+          "sha256": "d12d883c98f4006e6fce9c7fe3e2baae99a9ffa208bff50f013239c0951fd70d",
+          "opaqueBounds": [
+            91,
+            103,
+            236,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/hero/left.png",
+          "source": "generated",
+          "sha256": "72136b68dd15775d0a917e8f2d2d8dbcee9c9850fd83eb400767fe6877522e1c",
+          "opaqueBounds": [
+            81,
+            98,
+            258,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/hero/right.png",
+          "source": "generated",
+          "sha256": "7999130cbc982447eb4574944ce208b74f8ad36e3b821e9121bac23f2b64ccd1",
+          "opaqueBounds": [
+            71,
+            98,
+            248,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1,
+      "originalFrontMaxChannelDifference": 0,
+      "referencePixelHeight": 206
+    },
+    "lina": {
+      "id": "lina",
+      "name": "リーナ",
+      "defaultJob": "priest",
+      "legacySprite": "lina",
+      "existingUniqueFront": true,
+      "appearanceBasis": "existing PNG visually matched",
+      "sourceSheet": "source_sheets/lina.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            633,
+            611
+          ],
+          "contentCrop": [
+            110,
+            4,
+            451,
+            594
+          ],
+          "visibleBounds": [
+            118,
+            12,
+            553,
+            590
+          ],
+          "pivotInCrop": [
+            224.93,
+            585
+          ]
+        },
+        "back": {
+          "region": [
+            633,
+            0,
+            621,
+            611
+          ],
+          "contentCrop": [
+            699,
+            4,
+            467,
+            590
+          ],
+          "visibleBounds": [
+            74,
+            12,
+            525,
+            586
+          ],
+          "pivotInCrop": [
+            230.23,
+            582
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            611,
+            633,
+            643
+          ],
+          "contentCrop": [
+            121,
+            629,
+            466,
+            606
+          ],
+          "visibleBounds": [
+            129,
+            26,
+            579,
+            616
+          ],
+          "pivotInCrop": [
+            193.28,
+            597
+          ]
+        },
+        "right": {
+          "region": [
+            633,
+            611,
+            621,
+            643
+          ],
+          "contentCrop": [
+            685,
+            626,
+            470,
+            606
+          ],
+          "visibleBounds": [
+            60,
+            23,
+            514,
+            613
+          ],
+          "pivotInCrop": [
+            261.41,
+            598
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/lina/front.png",
+          "source": "preserved_original",
+          "sha256": "14f7e2e438b1b435fec0d16646e2a3f1123ef5003933f94d404e699a64f51ccb",
+          "opaqueBounds": [
+            63,
+            32,
+            258,
+            302
+          ]
+        },
+        "back": {
+          "path": "sprites/lina/back.png",
+          "source": "generated",
+          "sha256": "4c0e723e6f10f464d91b4d15d8418bdf183c853d0a64b2f2c256ae1a69f99649",
+          "opaqueBounds": [
+            56,
+            34,
+            268,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/lina/left.png",
+          "source": "generated",
+          "sha256": "ff46a75aa4c9e6ddb3566cdcbd8b0b7d04208e7f3ddc0795034ed04f943f03ee",
+          "opaqueBounds": [
+            73,
+            26,
+            285,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/lina/right.png",
+          "source": "generated",
+          "sha256": "635c82541ff4d7b4d1edfc3f3b992a2f10766cff18029d8f1b1006357e5ca16c",
+          "opaqueBounds": [
+            41,
+            26,
+            255,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1,
+      "originalFrontMaxChannelDifference": 0,
+      "referencePixelHeight": 278
+    },
+    "kyle": {
+      "id": "kyle",
+      "name": "カイル",
+      "defaultJob": "knight",
+      "legacySprite": "kyle",
+      "existingUniqueFront": true,
+      "appearanceBasis": "existing PNG visually matched",
+      "sourceSheet": "source_sheets/kyle.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            650,
+            633
+          ],
+          "contentCrop": [
+            73,
+            26,
+            534,
+            607
+          ],
+          "visibleBounds": [
+            81,
+            34,
+            599,
+            627
+          ],
+          "pivotInCrop": [
+            272.71,
+            601
+          ]
+        },
+        "back": {
+          "region": [
+            650,
+            0,
+            604,
+            633
+          ],
+          "contentCrop": [
+            682,
+            26,
+            552,
+            607
+          ],
+          "visibleBounds": [
+            40,
+            34,
+            576,
+            627
+          ],
+          "pivotInCrop": [
+            265.97,
+            601
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            633,
+            650,
+            621
+          ],
+          "contentCrop": [
+            31,
+            636,
+            593,
+            580
+          ],
+          "visibleBounds": [
+            39,
+            11,
+            616,
+            575
+          ],
+          "pivotInCrop": [
+            317.88,
+            571
+          ]
+        },
+        "right": {
+          "region": [
+            650,
+            633,
+            604,
+            621
+          ],
+          "contentCrop": [
+            677,
+            633,
+            532,
+            583
+          ],
+          "visibleBounds": [
+            35,
+            7,
+            551,
+            575
+          ],
+          "pivotInCrop": [
+            262.07,
+            574
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/kyle/front.png",
+          "source": "preserved_original",
+          "sha256": "f19981c129e6633f96d114f890b256183edbee2130d89f6fa04639dbd182c98d",
+          "opaqueBounds": [
+            51,
+            41,
+            269,
+            302
+          ]
+        },
+        "back": {
+          "path": "sprites/kyle/back.png",
+          "source": "generated",
+          "sha256": "7f42942fcf1501d530ce13af15172ebe614217dfd7f78c2cb03507ec5f165246",
+          "opaqueBounds": [
+            43,
+            34,
+            287,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/kyle/left.png",
+          "source": "generated",
+          "sha256": "13868793c9646314c40a82d404216dbb7ae6cd3fb385df055e3a2d215b069ed5",
+          "opaqueBounds": [
+            19,
+            47,
+            282,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/kyle/right.png",
+          "source": "generated",
+          "sha256": "0b985e2a2b89c7e5c97990f65fd225c6f69dc05c3ad288b119c679716f5771ee",
+          "opaqueBounds": [
+            44,
+            45,
+            279,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1.04,
+      "originalFrontMaxChannelDifference": 0,
+      "referencePixelHeight": 270
+    },
+    "mina": {
+      "id": "mina",
+      "name": "ミナ",
+      "defaultJob": "thief",
+      "legacySprite": "mina",
+      "existingUniqueFront": true,
+      "appearanceBasis": "existing PNG visually matched",
+      "sourceSheet": "source_sheets/mina.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            628,
+            633
+          ],
+          "contentCrop": [
+            75,
+            13,
+            523,
+            619
+          ],
+          "visibleBounds": [
+            83,
+            21,
+            590,
+            624
+          ],
+          "pivotInCrop": [
+            225.45,
+            610
+          ]
+        },
+        "back": {
+          "region": [
+            628,
+            0,
+            626,
+            633
+          ],
+          "contentCrop": [
+            659,
+            21,
+            520,
+            608
+          ],
+          "visibleBounds": [
+            39,
+            29,
+            543,
+            621
+          ],
+          "pivotInCrop": [
+            313.09,
+            599
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            633,
+            628,
+            621
+          ],
+          "contentCrop": [
+            72,
+            636,
+            518,
+            605
+          ],
+          "visibleBounds": [
+            80,
+            11,
+            582,
+            600
+          ],
+          "pivotInCrop": [
+            177.53,
+            596
+          ]
+        },
+        "right": {
+          "region": [
+            628,
+            633,
+            626,
+            621
+          ],
+          "contentCrop": [
+            667,
+            636,
+            527,
+            602
+          ],
+          "visibleBounds": [
+            47,
+            11,
+            558,
+            597
+          ],
+          "pivotInCrop": [
+            353.05,
+            593
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/mina/front.png",
+          "source": "preserved_original",
+          "sha256": "df0287d372217761353635436ea32bc59b851df80eb31ba64dada975267161ea",
+          "opaqueBounds": [
+            63,
+            38,
+            256,
+            302
+          ]
+        },
+        "back": {
+          "path": "sprites/mina/back.png",
+          "source": "generated",
+          "sha256": "a2574b1ab4ab412cf94b9a85f46d22385f51c3429f857212a4d318bea8cc2f7a",
+          "opaqueBounds": [
+            23,
+            37,
+            250,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/mina/left.png",
+          "source": "generated",
+          "sha256": "0611e4fa5110b805500a563896c46f5730afff8d087c1c4fe28003bbacfa8890",
+          "opaqueBounds": [
+            82,
+            38,
+            308,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/mina/right.png",
+          "source": "generated",
+          "sha256": "76b84c926ac3a49af0e0a12b4c51f308b60be861cd2070e24712dc09b2b5b234",
+          "opaqueBounds": [
+            12,
+            40,
+            242,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 0.97,
+      "originalFrontMaxChannelDifference": 0,
+      "referencePixelHeight": 267
+    },
+    "seris": {
+      "id": "seris",
+      "name": "セリス",
+      "defaultJob": "mage",
+      "legacySprite": "seris",
+      "existingUniqueFront": true,
+      "appearanceBasis": "existing PNG visually matched",
+      "sourceSheet": "source_sheets/seris.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            620,
+            627
+          ],
+          "contentCrop": [
+            72,
+            18,
+            489,
+            597
+          ],
+          "visibleBounds": [
+            80,
+            26,
+            553,
+            607
+          ],
+          "pivotInCrop": [
+            247.13,
+            588
+          ]
+        },
+        "back": {
+          "region": [
+            620,
+            0,
+            634,
+            627
+          ],
+          "contentCrop": [
+            698,
+            24,
+            498,
+            591
+          ],
+          "visibleBounds": [
+            86,
+            32,
+            568,
+            607
+          ],
+          "pivotInCrop": [
+            240.31,
+            582
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            627,
+            620,
+            627
+          ],
+          "contentCrop": [
+            75,
+            640,
+            469,
+            589
+          ],
+          "visibleBounds": [
+            83,
+            21,
+            536,
+            594
+          ],
+          "pivotInCrop": [
+            210.2,
+            581
+          ]
+        },
+        "right": {
+          "region": [
+            620,
+            627,
+            634,
+            627
+          ],
+          "contentCrop": [
+            715,
+            641,
+            483,
+            588
+          ],
+          "visibleBounds": [
+            103,
+            22,
+            570,
+            594
+          ],
+          "pivotInCrop": [
+            267.29,
+            580
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/seris/front.png",
+          "source": "preserved_original",
+          "sha256": "47e54e88f814f2c458bdf36cf61e31976407ee3e53d70215ad631ae144e6232e",
+          "opaqueBounds": [
+            56,
+            26,
+            266,
+            302
+          ]
+        },
+        "back": {
+          "path": "sprites/seris/back.png",
+          "source": "generated",
+          "sha256": "2e567034bcba473c106782ab51a1b5db8f56efa3ed7b59893641f50811dce3dd",
+          "opaqueBounds": [
+            48,
+            26,
+            281,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/seris/left.png",
+          "source": "generated",
+          "sha256": "a46bf70a4120e661c7c5ebf19833b68f3c1ff7e349f3b1e58aa285f7a8bc1673",
+          "opaqueBounds": [
+            62,
+            26,
+            282,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/seris/right.png",
+          "source": "generated",
+          "sha256": "34e73395cce86e4575aedf873bd96b5150d3011fcdb4013f11b9e978d88dd263",
+          "opaqueBounds": [
+            34,
+            26,
+            261,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1,
+      "originalFrontMaxChannelDifference": 0,
+      "referencePixelHeight": 278
+    },
+    "gald": {
+      "id": "gald",
+      "name": "ガルド",
+      "defaultJob": "warrior",
+      "legacySprite": "gald",
+      "existingUniqueFront": true,
+      "appearanceBasis": "existing PNG visually matched",
+      "sourceSheet": "source_sheets/gald.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            641,
+            601
+          ],
+          "contentCrop": [
+            114,
+            12,
+            510,
+            580
+          ],
+          "visibleBounds": [
+            122,
+            20,
+            616,
+            584
+          ],
+          "pivotInCrop": [
+            260.4,
+            572
+          ]
+        },
+        "back": {
+          "region": [
+            641,
+            0,
+            613,
+            601
+          ],
+          "contentCrop": [
+            659,
+            13,
+            482,
+            579
+          ],
+          "visibleBounds": [
+            26,
+            21,
+            492,
+            584
+          ],
+          "pivotInCrop": [
+            226.41,
+            571
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            601,
+            641,
+            653
+          ],
+          "contentCrop": [
+            139,
+            611,
+            473,
+            611
+          ],
+          "visibleBounds": [
+            147,
+            18,
+            604,
+            613
+          ],
+          "pivotInCrop": [
+            244.03,
+            602
+          ]
+        },
+        "right": {
+          "region": [
+            641,
+            601,
+            613,
+            653
+          ],
+          "contentCrop": [
+            679,
+            611,
+            444,
+            610
+          ],
+          "visibleBounds": [
+            46,
+            18,
+            474,
+            612
+          ],
+          "pivotInCrop": [
+            210.33,
+            602
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/gald/front.png",
+          "source": "preserved_original",
+          "sha256": "c44835cac4cbc209e5c5ae1f04ff88207dff3a1299e8f21e5da9218b2033cf9c",
+          "opaqueBounds": [
+            35,
+            29,
+            286,
+            302
+          ]
+        },
+        "back": {
+          "path": "sprites/gald/back.png",
+          "source": "generated",
+          "sha256": "1a71d9673134802ec739b681a5b4e894ac837d8866dc9a1d703808f7d328bbfd",
+          "opaqueBounds": [
+            57,
+            38,
+            277,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/gald/left.png",
+          "source": "generated",
+          "sha256": "6083f83d9b5ec09fe56e05c1c5d198aa679402bed0b9fddd6876f671ad9c7b83",
+          "opaqueBounds": [
+            50,
+            26,
+            263,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/gald/right.png",
+          "source": "generated",
+          "sha256": "48fefb9f2dbc0af18209a7cebb0f544a8d46d88870a5482ff2f3526b309f140a",
+          "opaqueBounds": [
+            65,
+            26,
+            265,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1.08,
+      "originalFrontMaxChannelDifference": 0,
+      "referencePixelHeight": 278
+    },
+    "lucia": {
+      "id": "lucia",
+      "name": "ルシア",
+      "defaultJob": "waveblade",
+      "legacySprite": "lucia",
+      "existingUniqueFront": true,
+      "appearanceBasis": "existing PNG visually matched",
+      "sourceSheet": "source_sheets/lucia.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            629,
+            608
+          ],
+          "contentCrop": [
+            54,
+            20,
+            560,
+            568
+          ],
+          "visibleBounds": [
+            62,
+            28,
+            606,
+            580
+          ],
+          "pivotInCrop": [
+            287.7,
+            560
+          ]
+        },
+        "back": {
+          "region": [
+            629,
+            0,
+            625,
+            608
+          ],
+          "contentCrop": [
+            656,
+            24,
+            549,
+            564
+          ],
+          "visibleBounds": [
+            35,
+            32,
+            568,
+            580
+          ],
+          "pivotInCrop": [
+            271.65,
+            556
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            608,
+            629,
+            646
+          ],
+          "contentCrop": [
+            51,
+            635,
+            560,
+            572
+          ],
+          "visibleBounds": [
+            59,
+            35,
+            603,
+            591
+          ],
+          "pivotInCrop": [
+            293.83,
+            563
+          ]
+        },
+        "right": {
+          "region": [
+            629,
+            608,
+            625,
+            646
+          ],
+          "contentCrop": [
+            645,
+            630,
+            560,
+            577
+          ],
+          "visibleBounds": [
+            24,
+            30,
+            568,
+            591
+          ],
+          "pivotInCrop": [
+            287.67,
+            568
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/lucia/front.png",
+          "source": "preserved_original",
+          "sha256": "904999981e0557da9e37eba8d3b7a33c64ba29394c66bbb34a08409ab79d1a08",
+          "opaqueBounds": [
+            38,
+            45,
+            285,
+            302
+          ]
+        },
+        "back": {
+          "path": "sprites/lucia/back.png",
+          "source": "generated",
+          "sha256": "b724a787adb23d87f929390a91769b1cea5122016cd42e9a184074a6b4a6ebdf",
+          "opaqueBounds": [
+            35,
+            45,
+            287,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/lucia/left.png",
+          "source": "generated",
+          "sha256": "7b54b6277ed23cb44e19bebc6e4330bc941fecc3b516b4cf161d530002d37cb0",
+          "opaqueBounds": [
+            25,
+            41,
+            282,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/lucia/right.png",
+          "source": "generated",
+          "sha256": "1106b9b5f11e7b87218c29db8b66ad9733336e7b05dbdbadbf34919a8407a143",
+          "opaqueBounds": [
+            28,
+            39,
+            285,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1,
+      "originalFrontMaxChannelDifference": 0,
+      "referencePixelHeight": 265
+    },
+    "elna": {
+      "id": "elna",
+      "name": "エルナ",
+      "defaultJob": "auditor",
+      "legacySprite": "scholar",
+      "existingUniqueFront": false,
+      "appearanceBasis": "new design based on role and biography",
+      "sourceSheet": "source_sheets/elna.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            616,
+            626
+          ],
+          "contentCrop": [
+            153,
+            16,
+            399,
+            608
+          ],
+          "visibleBounds": [
+            161,
+            24,
+            544,
+            616
+          ],
+          "pivotInCrop": [
+            224.28,
+            599
+          ]
+        },
+        "back": {
+          "region": [
+            616,
+            0,
+            638,
+            626
+          ],
+          "contentCrop": [
+            727,
+            16,
+            374,
+            606
+          ],
+          "visibleBounds": [
+            119,
+            24,
+            477,
+            614
+          ],
+          "pivotInCrop": [
+            157.32,
+            597
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            626,
+            616,
+            628
+          ],
+          "contentCrop": [
+            164,
+            629,
+            366,
+            619
+          ],
+          "visibleBounds": [
+            172,
+            11,
+            522,
+            614
+          ],
+          "pivotInCrop": [
+            191.1,
+            610
+          ]
+        },
+        "right": {
+          "region": [
+            616,
+            626,
+            638,
+            628
+          ],
+          "contentCrop": [
+            757,
+            629,
+            336,
+            610
+          ],
+          "visibleBounds": [
+            149,
+            11,
+            469,
+            605
+          ],
+          "pivotInCrop": [
+            168.19,
+            601
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/elna/front.png",
+          "source": "generated",
+          "sha256": "86855f4bf847450aa016fd27124fe0d13fce6484d17916c31502f0c138dc1e71",
+          "opaqueBounds": [
+            61,
+            31,
+            237,
+            304
+          ]
+        },
+        "back": {
+          "path": "sprites/elna/back.png",
+          "source": "generated",
+          "sha256": "e87383a6185acf921bb4ef8976c38f42acd5922fd5b1f14b77ece90880f9e066",
+          "opaqueBounds": [
+            91,
+            32,
+            256,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/elna/left.png",
+          "source": "generated",
+          "sha256": "189605718808ccd70202442581308bb01545c8be353cdce920e19f7e6bfec15d",
+          "opaqueBounds": [
+            76,
+            26,
+            237,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/elna/right.png",
+          "source": "generated",
+          "sha256": "0cb94068eec799c162b3721d565dd5f9615c8c1c0ebaf7887c6b45cd8678bf81",
+          "opaqueBounds": [
+            86,
+            30,
+            233,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1,
+      "referencePixelHeight": 278
+    },
+    "nagi": {
+      "id": "nagi",
+      "name": "ナギ",
+      "defaultJob": "navigator",
+      "legacySprite": "sailor",
+      "existingUniqueFront": false,
+      "appearanceBasis": "new design based on role and biography",
+      "sourceSheet": "source_sheets/nagi.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            610,
+            624
+          ],
+          "contentCrop": [
+            140,
+            8,
+            384,
+            611
+          ],
+          "visibleBounds": [
+            148,
+            16,
+            516,
+            611
+          ],
+          "pivotInCrop": [
+            200.55,
+            603
+          ]
+        },
+        "back": {
+          "region": [
+            610,
+            0,
+            644,
+            624
+          ],
+          "contentCrop": [
+            758,
+            8,
+            397,
+            611
+          ],
+          "visibleBounds": [
+            156,
+            16,
+            537,
+            611
+          ],
+          "pivotInCrop": [
+            190.17,
+            603
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            624,
+            610,
+            630
+          ],
+          "contentCrop": [
+            129,
+            631,
+            399,
+            615
+          ],
+          "visibleBounds": [
+            137,
+            15,
+            520,
+            614
+          ],
+          "pivotInCrop": [
+            196.7,
+            606
+          ]
+        },
+        "right": {
+          "region": [
+            610,
+            624,
+            644,
+            630
+          ],
+          "contentCrop": [
+            787,
+            631,
+            348,
+            604
+          ],
+          "visibleBounds": [
+            185,
+            15,
+            517,
+            603
+          ],
+          "pivotInCrop": [
+            161.98,
+            595
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/nagi/front.png",
+          "source": "generated",
+          "sha256": "82b76b475174f5285a4aa39847f1158ddafb5784fb943c1169ad422a81c87341",
+          "opaqueBounds": [
+            74,
+            37,
+            239,
+            304
+          ]
+        },
+        "back": {
+          "path": "sprites/nagi/back.png",
+          "source": "generated",
+          "sha256": "12f2c0c4a6627e073e354bdac53c209a9ffce4c84f93173ea70a22a47d41e117",
+          "opaqueBounds": [
+            78,
+            37,
+            249,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/nagi/left.png",
+          "source": "generated",
+          "sha256": "00d1edf204674119036e910197e11b9bfccc9b4c4324330e8db0d496773181b7",
+          "opaqueBounds": [
+            75,
+            35,
+            247,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/nagi/right.png",
+          "source": "generated",
+          "sha256": "ac9d5707605e8f9a8ff8ccd17a216ff431995f68a431224f2f2475284accbc9f",
+          "opaqueBounds": [
+            91,
+            40,
+            240,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 0.98,
+      "referencePixelHeight": 269
+    },
+    "iris": {
+      "id": "iris",
+      "name": "イーリス",
+      "defaultJob": "surveyor",
+      "legacySprite": "villager_f",
+      "existingUniqueFront": false,
+      "appearanceBasis": "new design based on role and biography",
+      "sourceSheet": "source_sheets/iris.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            624,
+            631
+          ],
+          "contentCrop": [
+            130,
+            37,
+            438,
+            583
+          ],
+          "visibleBounds": [
+            138,
+            45,
+            560,
+            612
+          ],
+          "pivotInCrop": [
+            207.83,
+            574
+          ]
+        },
+        "back": {
+          "region": [
+            624,
+            0,
+            630,
+            631
+          ],
+          "contentCrop": [
+            736,
+            39,
+            417,
+            581
+          ],
+          "visibleBounds": [
+            120,
+            47,
+            521,
+            612
+          ],
+          "pivotInCrop": [
+            199.35,
+            572
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            631,
+            624,
+            623
+          ],
+          "contentCrop": [
+            140,
+            645,
+            417,
+            581
+          ],
+          "visibleBounds": [
+            148,
+            22,
+            549,
+            587
+          ],
+          "pivotInCrop": [
+            192.36,
+            572
+          ]
+        },
+        "right": {
+          "region": [
+            624,
+            631,
+            630,
+            623
+          ],
+          "contentCrop": [
+            713,
+            643,
+            427,
+            580
+          ],
+          "visibleBounds": [
+            97,
+            20,
+            508,
+            584
+          ],
+          "pivotInCrop": [
+            230.42,
+            571
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/iris/front.png",
+          "source": "generated",
+          "sha256": "41eb75e90e02443b448f974a7f98637131d2e93371b705c02a94ed979375d5c2",
+          "opaqueBounds": [
+            71,
+            50,
+            260,
+            304
+          ]
+        },
+        "back": {
+          "path": "sprites/iris/back.png",
+          "source": "generated",
+          "sha256": "36a23bf2c66b3eb81be6d673339655c30451aef8fb1120e635647ae767e7974a",
+          "opaqueBounds": [
+            75,
+            51,
+            254,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/iris/left.png",
+          "source": "generated",
+          "sha256": "1994501847daf05f6d190ddfb2e0d5f6c6f3aca1f949dfc36140bbc5d83b5a84",
+          "opaqueBounds": [
+            78,
+            51,
+            257,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/iris/right.png",
+          "source": "generated",
+          "sha256": "ec79e5387e60f5eff3873ecf341673ec11eb1ac5de3ea3a223c1adac66b9868e",
+          "opaqueBounds": [
+            60,
+            51,
+            244,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 0.95,
+      "referencePixelHeight": 254
+    },
+    "sophia": {
+      "id": "sophia",
+      "name": "ソフィア",
+      "defaultJob": "chronomancer",
+      "legacySprite": "priest",
+      "existingUniqueFront": false,
+      "appearanceBasis": "new design based on role and biography",
+      "sourceSheet": "source_sheets/sophia.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            626,
+            632
+          ],
+          "contentCrop": [
+            107,
+            9,
+            462,
+            618
+          ],
+          "visibleBounds": [
+            115,
+            17,
+            561,
+            619
+          ],
+          "pivotInCrop": [
+            250.11,
+            609
+          ]
+        },
+        "back": {
+          "region": [
+            626,
+            0,
+            628,
+            632
+          ],
+          "contentCrop": [
+            685,
+            9,
+            465,
+            616
+          ],
+          "visibleBounds": [
+            67,
+            17,
+            516,
+            617
+          ],
+          "pivotInCrop": [
+            224.35,
+            607
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            632,
+            626,
+            622
+          ],
+          "contentCrop": [
+            128,
+            640,
+            453,
+            589
+          ],
+          "visibleBounds": [
+            136,
+            16,
+            573,
+            589
+          ],
+          "pivotInCrop": [
+            253.68,
+            581
+          ]
+        },
+        "right": {
+          "region": [
+            626,
+            632,
+            628,
+            622
+          ],
+          "contentCrop": [
+            672,
+            638,
+            454,
+            592
+          ],
+          "visibleBounds": [
+            54,
+            14,
+            492,
+            590
+          ],
+          "pivotInCrop": [
+            202.95,
+            583
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/sophia/front.png",
+          "source": "generated",
+          "sha256": "05dec11a3831060d421180bdfdcf026b40011dd3837032f053d764f51ac85ab9",
+          "opaqueBounds": [
+            48,
+            26,
+            254,
+            304
+          ]
+        },
+        "back": {
+          "path": "sprites/sophia/back.png",
+          "source": "generated",
+          "sha256": "8c10e754f51dcedf2a2ad278c6698ba2bfed1972526ae34de8a474f1a0056da6",
+          "opaqueBounds": [
+            60,
+            26,
+            268,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/sophia/left.png",
+          "source": "generated",
+          "sha256": "e2a1ec0d128251a08f4c179f9e9280c612ff0e5b75059c6e082d72133c525707",
+          "opaqueBounds": [
+            44,
+            34,
+            250,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/sophia/right.png",
+          "source": "generated",
+          "sha256": "4adfccda38162e6c48ebf1907055feb253536c5a3387646e70b9d8b4c6f89af2",
+          "opaqueBounds": [
+            68,
+            32,
+            275,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1,
+      "referencePixelHeight": 278
+    },
+    "io": {
+      "id": "io",
+      "name": "イオ",
+      "defaultJob": "mechanist",
+      "legacySprite": "child",
+      "existingUniqueFront": false,
+      "appearanceBasis": "new design based on role and biography",
+      "sourceSheet": "source_sheets/io.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            610,
+            636
+          ],
+          "contentCrop": [
+            143,
+            28,
+            388,
+            593
+          ],
+          "visibleBounds": [
+            151,
+            36,
+            523,
+            613
+          ],
+          "pivotInCrop": [
+            190.38,
+            585
+          ]
+        },
+        "back": {
+          "region": [
+            610,
+            0,
+            644,
+            636
+          ],
+          "contentCrop": [
+            718,
+            33,
+            396,
+            588
+          ],
+          "visibleBounds": [
+            116,
+            41,
+            496,
+            613
+          ],
+          "pivotInCrop": [
+            204.92,
+            580
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            636,
+            610,
+            618
+          ],
+          "contentCrop": [
+            181,
+            653,
+            289,
+            577
+          ],
+          "visibleBounds": [
+            189,
+            25,
+            462,
+            586
+          ],
+          "pivotInCrop": [
+            160.99,
+            569
+          ]
+        },
+        "right": {
+          "region": [
+            610,
+            636,
+            644,
+            618
+          ],
+          "contentCrop": [
+            800,
+            652,
+            314,
+            579
+          ],
+          "visibleBounds": [
+            198,
+            24,
+            496,
+            587
+          ],
+          "pivotInCrop": [
+            135.94,
+            571
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/io/front.png",
+          "source": "generated",
+          "sha256": "ddaf8303e5b6fdf2ac472ffe13c355934a267446d21e9dc0c28de7b40afd5e59",
+          "opaqueBounds": [
+            84,
+            66,
+            238,
+            304
+          ]
+        },
+        "back": {
+          "path": "sprites/io/back.png",
+          "source": "generated",
+          "sha256": "7f6691fc0d936e1a1e5ce32b9edcea02cb209825286496150a04411c9168ed9e",
+          "opaqueBounds": [
+            79,
+            68,
+            236,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/io/left.png",
+          "source": "generated",
+          "sha256": "1340550991b0f3134f5a41952546f5a6fdba2248d140e601b1d3a0b52bdd4a24",
+          "opaqueBounds": [
+            97,
+            73,
+            210,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/io/right.png",
+          "source": "generated",
+          "sha256": "8a7dd29025422740cb93c8962df5233edbc389aa5238fa25e5b0aaa6bde95ef0",
+          "opaqueBounds": [
+            107,
+            72,
+            230,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 0.84,
+      "referencePixelHeight": 238
+    },
+    "ganes": {
+      "id": "ganes",
+      "name": "ガネス",
+      "defaultJob": "artisan",
+      "legacySprite": "villager_m",
+      "existingUniqueFront": false,
+      "appearanceBasis": "new design based on role and biography",
+      "sourceSheet": "source_sheets/ganes.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            637,
+            626
+          ],
+          "contentCrop": [
+            33,
+            12,
+            561,
+            613
+          ],
+          "visibleBounds": [
+            41,
+            20,
+            586,
+            617
+          ],
+          "pivotInCrop": [
+            291.62,
+            604
+          ]
+        },
+        "back": {
+          "region": [
+            637,
+            0,
+            617,
+            626
+          ],
+          "contentCrop": [
+            704,
+            11,
+            523,
+            612
+          ],
+          "visibleBounds": [
+            75,
+            19,
+            582,
+            615
+          ],
+          "pivotInCrop": [
+            224.03,
+            604
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            626,
+            637,
+            628
+          ],
+          "contentCrop": [
+            63,
+            628,
+            423,
+            615
+          ],
+          "visibleBounds": [
+            71,
+            10,
+            478,
+            609
+          ],
+          "pivotInCrop": [
+            263.38,
+            606
+          ]
+        },
+        "right": {
+          "region": [
+            637,
+            626,
+            617,
+            628
+          ],
+          "contentCrop": [
+            769,
+            628,
+            429,
+            615
+          ],
+          "visibleBounds": [
+            140,
+            10,
+            553,
+            609
+          ],
+          "pivotInCrop": [
+            163.48,
+            606
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/ganes/front.png",
+          "source": "generated",
+          "sha256": "0780ee2290eb708ff58bcd46d60d0a2d74f1fba846a1589012f60c6be17abfc5",
+          "opaqueBounds": [
+            28,
+            26,
+            282,
+            304
+          ]
+        },
+        "back": {
+          "path": "sprites/ganes/back.png",
+          "source": "generated",
+          "sha256": "b093635a28bdb02a8201254eba72b5f6d06569cdb7c2bb1028f8e356d2cff635",
+          "opaqueBounds": [
+            59,
+            26,
+            295,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/ganes/left.png",
+          "source": "generated",
+          "sha256": "e67feea176efe67f21363a01ad2a18b4be7b738aa42398ff51ebefb04b302805",
+          "opaqueBounds": [
+            41,
+            26,
+            230,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/ganes/right.png",
+          "source": "generated",
+          "sha256": "10a1f86855137366e8936374b4c9825c1ba965b89489ef11d3e061407204cc6f",
+          "opaqueBounds": [
+            88,
+            26,
+            280,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1.07,
+      "referencePixelHeight": 278
+    },
+    "aster": {
+      "id": "aster",
+      "name": "アステル",
+      "defaultJob": "spirit_warden",
+      "legacySprite": "hero_sage",
+      "existingUniqueFront": false,
+      "appearanceBasis": "new design based on role and biography",
+      "sourceSheet": "source_sheets/aster.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            624,
+            632
+          ],
+          "contentCrop": [
+            112,
+            23,
+            447,
+            592
+          ],
+          "visibleBounds": [
+            120,
+            31,
+            551,
+            607
+          ],
+          "pivotInCrop": [
+            227.06,
+            583
+          ]
+        },
+        "back": {
+          "region": [
+            624,
+            0,
+            630,
+            632
+          ],
+          "contentCrop": [
+            711,
+            49,
+            438,
+            566
+          ],
+          "visibleBounds": [
+            95,
+            57,
+            517,
+            607
+          ],
+          "pivotInCrop": [
+            213.74,
+            557
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            632,
+            624,
+            622
+          ],
+          "contentCrop": [
+            130,
+            667,
+            438,
+            553
+          ],
+          "visibleBounds": [
+            138,
+            43,
+            560,
+            580
+          ],
+          "pivotInCrop": [
+            222.89,
+            544
+          ]
+        },
+        "right": {
+          "region": [
+            624,
+            632,
+            630,
+            622
+          ],
+          "contentCrop": [
+            711,
+            650,
+            439,
+            567
+          ],
+          "visibleBounds": [
+            95,
+            26,
+            518,
+            577
+          ],
+          "pivotInCrop": [
+            188.42,
+            559
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/aster/front.png",
+          "source": "generated",
+          "sha256": "3c6a91305f191bff1c9fba8854aeae0098bae80bcb59eaae404a452e7680a748",
+          "opaqueBounds": [
+            54,
+            26,
+            262,
+            304
+          ]
+        },
+        "back": {
+          "path": "sprites/aster/back.png",
+          "source": "generated",
+          "sha256": "7001fb400b62ca1fc270012d72f93541feecf4650cf31a4ba872f1173e4f812d",
+          "opaqueBounds": [
+            59,
+            33,
+            267,
+            304
+          ]
+        },
+        "left": {
+          "path": "sprites/aster/left.png",
+          "source": "generated",
+          "sha256": "64911a1732496710a516b898e5c99056abe5631bb77dc351b2e261968685d64b",
+          "opaqueBounds": [
+            54,
+            39,
+            262,
+            304
+          ]
+        },
+        "right": {
+          "path": "sprites/aster/right.png",
+          "source": "generated",
+          "sha256": "952db294e18d661b4f09d7506b206ee584e6c5a7eb5f604db357d87ac3bd8ebb",
+          "opaqueBounds": [
+            71,
+            32,
+            280,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1.03,
+      "referencePixelHeight": 278
+    },
+    "ord": {
+      "id": "ord",
+      "name": "オルド",
+      "defaultJob": "oath_knight",
+      "legacySprite": "guard",
+      "existingUniqueFront": false,
+      "appearanceBasis": "new design based on role and biography",
+      "sourceSheet": "source_sheets/ord.png",
+      "sourceCellRegions": {
+        "front": {
+          "region": [
+            0,
+            0,
+            628,
+            632
+          ],
+          "contentCrop": [
+            108,
+            42,
+            469,
+            556
+          ],
+          "visibleBounds": [
+            116,
+            50,
+            569,
+            590
+          ],
+          "pivotInCrop": [
+            239.29,
+            547
+          ]
+        },
+        "back": {
+          "region": [
+            628,
+            0,
+            626,
+            632
+          ],
+          "contentCrop": [
+            736,
+            44,
+            409,
+            551
+          ],
+          "visibleBounds": [
+            116,
+            52,
+            509,
+            587
+          ],
+          "pivotInCrop": [
+            187.47,
+            542
+          ]
+        },
+        "left": {
+          "region": [
+            0,
+            632,
+            628,
+            622
+          ],
+          "contentCrop": [
+            158,
+            667,
+            419,
+            545
+          ],
+          "visibleBounds": [
+            166,
+            43,
+            569,
+            572
+          ],
+          "pivotInCrop": [
+            187.44,
+            536
+          ]
+        },
+        "right": {
+          "region": [
+            628,
+            632,
+            626,
+            622
+          ],
+          "contentCrop": [
+            713,
+            667,
+            359,
+            547
+          ],
+          "visibleBounds": [
+            93,
+            43,
+            436,
+            574
+          ],
+          "pivotInCrop": [
+            213.23,
+            539
+          ]
+        }
+      },
+      "pivot": [
+        160,
+        304
+      ],
+      "directions": {
+        "front": {
+          "path": "sprites/ord/front.png",
+          "source": "generated",
+          "sha256": "8d4018c1274a3dcc7debcf9586337dfee63f923bbf4283ad8aeea68f8ec9eb17",
+          "opaqueBounds": [
+            41,
+            27,
+            274,
+            305
+          ]
+        },
+        "back": {
+          "path": "sprites/ord/back.png",
+          "source": "generated",
+          "sha256": "d8b52dd831e292be041108828707ade8ce3d5c6e246b6f1c027ebe9558b4f460",
+          "opaqueBounds": [
+            67,
+            27,
+            271,
+            305
+          ]
+        },
+        "left": {
+          "path": "sprites/ord/left.png",
+          "source": "generated",
+          "sha256": "a390cdadc6a03b5e50d923e4e049edf6c3c518bb61e4feebf862ed10c50c5528",
+          "opaqueBounds": [
+            66,
+            30,
+            276,
+            305
+          ]
+        },
+        "right": {
+          "path": "sprites/ord/right.png",
+          "source": "generated",
+          "sha256": "cc8f143fcbbb1c924192975968e1bc9042d808fac5b8a4878e3f616a945b7ed0",
+          "opaqueBounds": [
+            53,
+            28,
+            232,
+            304
+          ]
+        }
+      },
+      "worldHeightRatio": 1.08,
+      "referencePixelHeight": 278
+    }
+  }
+}

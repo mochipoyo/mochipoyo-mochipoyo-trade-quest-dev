@@ -1,0 +1,75 @@
+{
+  "repository": "mochipoyo/mochipoyo-mochipoyo-trade-quest-dev",
+  "branch": "feature/3d-full",
+  "head_commit": "e007fd635ca9d6364b5bc85403018b8aa165d066",
+  "retrieved_date": "2026-11-02",
+  "files": [
+    {
+      "path": "js/data/story.js",
+      "blob_sha": "fb2fb71007cf9e9766e94ae9560f52f397fc458e",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/js/data/story.js"
+    },
+    {
+      "path": "js/data/jobs.js",
+      "blob_sha": "db6625553f609922aee576b3544c05044df53872",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/js/data/jobs.js"
+    },
+    {
+      "path": "js/rpg/actors.js",
+      "blob_sha": "1fde6d2ff0b1b3b9f358526cc983a0bc43564405",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/js/rpg/actors.js"
+    },
+    {
+      "path": "js/data/asset-manifest.js",
+      "blob_sha": "bc655f5727197454a51f960c9bb3699cad19cc77",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/js/data/asset-manifest.js"
+    },
+    {
+      "path": "three-src/src/battle/BattleActors3D.js",
+      "blob_sha": "3e41d739a194f7b9c96390aa5b2752866dbd2610",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/three-src/src/battle/BattleActors3D.js"
+    },
+    {
+      "path": "three-src/src/battle/ArtVolume.js",
+      "blob_sha": "5c1b65e501c7abb4df67a83d914b95e7b697fe74",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/three-src/src/battle/ArtVolume.js"
+    }
+  ],
+  "images": [
+    {
+      "id": "hero",
+      "blob_sha": "d03091f9dac6f1a504ce91d2cab872e48e1946dc",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/jobs/warrior.png"
+    },
+    {
+      "id": "lina",
+      "blob_sha": "5b9056706eb0aa4adb5c7dd88f7dc59815415fe5",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/lina.png"
+    },
+    {
+      "id": "kyle",
+      "blob_sha": "f3e95d2244d7e86b1e9214906925c68ecc5f2803",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/kyle.png"
+    },
+    {
+      "id": "mina",
+      "blob_sha": "ba325bb8e1ba5d53ec0d7e6787a2b99b5c5ed1c3",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/mina.png"
+    },
+    {
+      "id": "seris",
+      "blob_sha": "03a590d2f3889c20d6a91e3d304cd8f6dc81a27d",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/seris.png"
+    },
+    {
+      "id": "gald",
+      "blob_sha": "1e213b745b5d7aaf8b60ee9181bcbce9b3ef177f",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/gald.png"
+    },
+    {
+      "id": "lucia",
+      "blob_sha": "adb178d0160441a92079a7207787ce2cc3b9b650",
+      "url": "https://github.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/blob/feature/3d-full/assets/characters/companions/lucia.png"
+    }
+  ]
+}

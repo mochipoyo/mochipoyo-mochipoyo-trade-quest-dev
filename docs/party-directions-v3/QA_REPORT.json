@@ -1,0 +1,28 @@
+{
+  "count": 60,
+  "size": [
+    320,
+    320
+  ],
+  "transparent_pngs": 60,
+  "edge_check_failures": [],
+  "sprite_total_bytes": 5568461,
+  "visual_review": "全15人の生成原寸と実装用4方向一覧を目視確認。人物の髪型・服装・武器、方向の存在、目立つ欠けを確認。ゲーム実装と実機検証は未実施。",
+  "original_front_pixel_check": {
+    "hero": 0,
+    "lina": 0,
+    "kyle": 0,
+    "mina": 0,
+    "seris": 0,
+    "gald": 0,
+    "lucia": 0
+  },
+  "resolver_checks": [
+    "転職済み主人公（job=mage/sprite=hero_mage）がhero/backを参照",
+    "転職済みエルナがelna/leftを参照",
+    "guard流用のオルドがord/rightを参照",
+    "未登録人物IDはnull",
+    "不正方向は例外",
+    "60ファイルの存在"
+  ]
+}

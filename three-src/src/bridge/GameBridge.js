@@ -21,6 +21,8 @@ import { UIOverlay } from '../ui/UIOverlay.js';
 import { CUT } from '../engine/Cutout.js';
 import { readableStats } from '../battle/readable.js';
 import { BattleStage3D, FAMILY_TABLE } from '../battle/BattleStage3D.js';
+import { battleLayout, partyStyle } from '../battle/BattleActors3D.js';
+import * as PartyDir from '../battle/PartyDirections.js';
 
 const G = window;
 const WALK = 2.7, RUN = 5.4, RADIUS = 0.28;
@@ -482,6 +484,15 @@ export class App3D {
     }
   }
   /* ---------- 毎フレーム：表示の切り替えと描画 ---------- */
+  // v6.8 いまの編成（人物ID）と戦闘の並びで使う向き（前後＝back・左右＝left）と、勝利の正面（front）の絵を先読みする。変わったときだけ
+  preloadPartyDirs() {
+    try {
+      if (this.disabled || partyStyle() !== 'sprite') return; const d = G.State && G.State.data; if (!d || !Array.isArray(d.party) || !d.party.length) return;
+      const dir = battleLayout() === 'side' ? 'left' : 'back'; const sig = d.party.join(',') + '|' + dir + '|' + d.party.map((id) => { const a = G.State.actor(id); return a ? a.job : ''; }).join(',');
+      if (sig === this._pdSig) return; this._pdSig = sig;
+      PartyDir.preload(d.party, [dir, 'front']);
+    } catch (e) { /* 先読みの失敗は戦闘の始まりでもう一度 */ }
+  }
   frame(now) {
     const dt = Math.min(0.05, (now - (this._last || now)) / 1000); this._last = now; const t = now / 1000;
     this._fc++; if (now - this._ft > 1000) { this.fps = Math.round(this._fc * 1000 / (now - this._ft)); this._fc = 0; this._ft = now; }
@@ -492,6 +503,7 @@ export class App3D {
     if (document.body.classList.contains('g3-actors') !== actorsOn) document.body.classList.toggle('g3-actors', actorsOn);
     const frontOn = actorsOn && this.battle.layout === 'front'; if (document.body.classList.contains('g3-front') !== frontOn) document.body.classList.toggle('g3-front', frontOn);   // 前後の並び（画面部品の位置。UIOverlay）
     this.mobileBattleLayout(actorsOn);
+    if (now - (this._pdT || 0) > 1000) { this._pdT = now; this.preloadPartyDirs(); }   // v6.8 編成・戦闘の並びが変わったら、味方の4方向の絵を先読み
     if (!this.ready) return;   // 3Dの素材の読み込み中：戦闘の画面部品の切り替えだけ
     const want = this.mode3D();
     if (want && (!this.current || this.current.map !== W.map)) this.ensure(W.map);
