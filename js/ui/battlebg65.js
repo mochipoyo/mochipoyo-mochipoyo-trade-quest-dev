@@ -103,7 +103,7 @@
     var done = function (ok) { if (photos[key] !== e) return; e.state = ok && img.naturalWidth > 0 ? 'ok' : 'error'; e.t = nowMs(); e.ms = Math.round(e.t - t); if (e.state === 'error' && root.console) console.warn('戦闘背景の画像を読めません（従来の背景で表示）:', url); };
     img.onload = function () { if (img.decode) img.decode().then(function () { done(true); }, function () { done(true); }); else done(true); };
     img.onerror = function () { done(false); };
-    try { img.decoding = 'async'; } catch (err) { }
+    try { img.decoding = 'async'; img.crossOrigin = 'anonymous'; } catch (err) { }   // 3D版で絵として使う（WebGL へ渡す）ため。同じサイトなら影響なし。iPhone の Safari が別のサイト扱いにしても、許可があれば読める
     img.src = url;
     keep = keep.filter(function (k) { return k !== key; }); keep.push(key);
     while (keep.length > MAXKEEP) { var old = keep.shift(); if (photos[old] && photos[old].state !== 'loading') delete photos[old]; }

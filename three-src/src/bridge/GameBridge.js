@@ -148,7 +148,7 @@ export class App3D {
     try { const gl = this.renderer && this.renderer.renderer.getContext(); if (gl) { ver = this.webgl2 ? 'WebGL2' : 'WebGL1'; const ext = gl.getExtension('WEBGL_debug_renderer_info'); gpu = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER); } } catch (e) { /* なし */ }
     const W0 = G.World; const mid = W0 && W0.map && W0.map.id; const mw = this.mapWhy && mid && this.mapWhy[mid];
     const st3d = (this.disabled ? '停止（' + (this.why || '不明') + '）' : this.ready ? '準備完了' : '読み込み中') + (mw ? '・このマップは2D（' + mw + '）' : (W0 && W0.map && !this.mode3D() && this.ready && !this.disabled ? '・このマップは2D（3Dの範囲の設定など）' : ''));
-    const bw = this.battleWhyNow(); const stB = this.battle && !bw && !this.battleFailed ? (this.battle.actorMode ? '3D（左右に並ぶ）' : '3Dの舞台') : bw === 'setting' ? '2D（設定）' : bw ? '2D（' + bw + '）' : this.lastBattleWhy ? '前回は2D（' + this.lastBattleWhy + '）' : 'まだ戦闘なし';
+    const bw = this.battleWhyNow(); const stB = this.battle && !bw && !this.battleFailed ? (this.battle.actorMode ? '3D（' + (this.battle.layout === 'front' ? '前後' : '左右') + (this.battle.photoSrc ? '・背景は画像' : this.battle.photoWhy ? '・' + this.battle.photoWhy : '') + '）' : '3Dの舞台') : bw === 'setting' ? '2D（設定）' : bw ? '2D（' + bw + '）' : this.lastBattleWhy ? '前回は2D（' + this.lastBattleWhy + '）' : 'まだ戦闘なし';
     const miss = this.models && this.models.failed && this.models.failed.length ? '／読めなかったモデル ' + this.models.failed.length : '';
     const ac = this.battle && this.battle.actors; const part = ac && ac.why ? '／一部2D（' + ac.why + '）' : ''; const bk = this.battle && this.battle.backWhy ? '／' + this.battle.backWhy : '';
     const rs = readableStats(); const rd = rs.loading + rs.tainted + rs.error + rs.ok ? '／画像の読み直し ' + rs.ok + '件成功・' + (rs.tainted + rs.error) + '件失敗' : '';
@@ -183,7 +183,7 @@ export class App3D {
       actorsInfo() { return app.battle && app.battle.actors ? app.battle.actors.info() : null; },
       setActors(on) { try { localStorage.setItem('mtq3d-battle-actors', on ? 'on' : 'off'); } catch (e) { /* なし */ } },
       log() { return app.battle && app.battle.log ? app.battle.log.slice() : []; },
-      info() { const b = app.battle; return b ? Object.assign({ quality: b.quality, failed: b.failed || !!app.battleFailed, enabled: b.enabled() }, b.stats) : { created: false, failed: !!app.battleFailed }; },
+      info() { const b = app.battle; return b ? Object.assign({ quality: b.quality, failed: b.failed || !!app.battleFailed, enabled: b.enabled(), layout: b.layout, photoOn: !!b.photoSrc, backKind: b.backKind, photoWhy: b.photoWhy || null }, b.stats) : { created: false, failed: !!app.battleFailed }; },
       setEnabled(on) { try { localStorage.setItem('mtq3d-battle', on ? 'on' : 'off'); } catch (e) { /* なし */ } },
       isEnabled() { try { return localStorage.getItem('mtq3d-battle') !== 'off'; } catch (e) { return true; } }
     };

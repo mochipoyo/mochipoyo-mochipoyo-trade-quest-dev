@@ -81,6 +81,7 @@ export class UIOverlay {
       '<div class="row"><span class="lab">戦闘の3D</span><button data-b="on">3Dの舞台</button><button data-b="off">2Dの背景</button></div>' +
       '<div class="row"><span class="lab">戦闘のキャラ</span><button data-ba="on">3Dの戦闘</button><button data-ba="off">以前の表示（2Dの絵）</button></div>' +
       '<div class="row"><span class="lab">戦闘の並び</span><button data-bl="front">前後（味方が手前）</button><button data-bl="side">左右（敵が左・味方が右）</button></div>' +
+      '<div class="row"><span class="lab">前後の背景</span><button data-bb="photo">背景の画像</button><button data-bb="3d">3Dの景色（以前）</button></div>' +
       '<div class="row"><span class="lab">3Dの範囲</span><button data-sc="all">全マップ（汎用3D＝仮3D）</button><button data-sc="poyo">ポヨ村だけ（以前と同じ）</button></div>' +
       '<div class="row"><span class="lab">表示</span><span id="g3-fps">-- fps</span></div>' +
       '<div class="row"><span class="lab">状態</span><span id="g3-diag" style="max-width:300px;line-height:1.45;user-select:text;-webkit-user-select:text">--</span></div>' +
@@ -97,6 +98,7 @@ export class UIOverlay {
       if (b.dataset.b && G3B()) G3B().setEnabled(b.dataset.b === 'on');   // v6.5 Phase D
       if (b.dataset.ba && G3B()) G3B().setActors(b.dataset.ba === 'on');   // Phase 2：次の戦闘から
       if (b.dataset.bl) { try { localStorage.setItem('mtq3d-battle-layout', b.dataset.bl); } catch (e) { /* なし */ } }   // 戦闘の並び：次の戦闘から
+      if (b.dataset.bb) { try { localStorage.setItem('mtq3d-battle-bg', b.dataset.bb); } catch (e) { /* なし */ } }   // v6.6 前後の並びの背景：すぐ反映（戦闘中でも）
       if (b.dataset.sc) setScope3D(b.dataset.sc);                         // Phase 1：すぐ反映（今いるマップも）
       this.refresh();
     });
@@ -134,6 +136,7 @@ export class UIOverlay {
     this.tools.querySelectorAll('[data-t]').forEach((b) => b.classList.toggle('on', (+b.dataset.t < 0 && pv === null) || +b.dataset.t === pv));
     const bs = G3B(); const on = bs ? bs.isEnabled() : true; this.tools.querySelectorAll('[data-b]').forEach((b) => b.classList.toggle('on', (b.dataset.b === 'on') === on));
     let bl = 'front'; try { bl = localStorage.getItem('mtq3d-battle-layout') === 'side' ? 'side' : 'front'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-bl]').forEach((b) => b.classList.toggle('on', b.dataset.bl === bl));
+    let bbg = 'photo'; try { bbg = localStorage.getItem('mtq3d-battle-bg') === '3d' ? '3d' : 'photo'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-bb]').forEach((b) => b.classList.toggle('on', b.dataset.bb === bbg));
     let ba = true; try { ba = localStorage.getItem('mtq3d-battle-actors') !== 'off'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-ba]').forEach((b) => b.classList.toggle('on', (b.dataset.ba === 'on') === ba));
     const sc = scope3D(); this.tools.querySelectorAll('[data-sc]').forEach((b) => b.classList.toggle('on', b.dataset.sc === sc));
   }

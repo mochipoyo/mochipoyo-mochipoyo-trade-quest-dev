@@ -34,6 +34,8 @@ const SPRITE_H = 1.42;   // 味方のドット絵の高さ（ワールド単位�
 const SPRITE_LAYOUT = { 1: [[2.0, 3.0]], 2: [[1.5, 3.2], [2.9, 2.5]], 3: [[1.2, 3.3], [2.45, 2.55], [3.65, 3.3]], 4: [[0.95, 3.4], [2.1, 2.6], [3.2, 3.4], [4.3, 2.6]] };
 const SPRITE_SLOTS = SPRITE_LAYOUT[4];
 // 戦闘の並び：'front'＝前後（味方が手前に後ろ姿で並び、奥に敵。ご要望で試作）／'side'＝左右（左に敵・右に味方）。3D設定・localStorage 'mtq3d-battle-layout'
+// v6.6 「前後」の並びの背景：'photo'＝戦闘背景の画像を画面いっぱいに（2D版と同じ絵。3Dの地面・景色は隠す）／'3d'＝以前の3Dの景色。3D設定・localStorage 'mtq3d-battle-bg'・URL ?bg=photo|3d
+export function battleBgPref() { try { const q = /[?&]bg=(photo|3d)(&|$)/.exec(location.search); if (q) return q[1]; return localStorage.getItem('mtq3d-battle-bg') === '3d' ? '3d' : 'photo'; } catch (e) { return 'photo'; } }
 export function battleLayout() { try { const q = /[?&]layout=(front|side)(&|$)/.exec(location.search); if (q) return q[1]; return localStorage.getItem('mtq3d-battle-layout') === 'side' ? 'side' : 'front'; } catch (e) { return 'front'; } }
 // 前後の並び：敵は奥（z が小さい）に横一列（端ほど少し奥）、味方は手前（z≈4.6）に横一列
 const FRONT_ENEMY = { 1: [[0, -0.6]], 2: [[-1.5, -0.7], [1.5, -0.7]], 3: [[-2.7, -0.9], [0, -0.4], [2.7, -0.9]], 4: [[-3.5, -1.2], [-1.2, -0.5], [1.2, -0.5], [3.5, -1.2]] };

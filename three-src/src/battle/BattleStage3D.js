@@ -11,7 +11,7 @@
    ・失敗したとき（WebGL が使えない・作れない）は null を返し、2D版の背景のまま進む
    ========================================================= */
 import * as THREE from 'three';
-import { BattleActors3D, layoutSpan, battleLayout } from './BattleActors3D.js';
+import { BattleActors3D, layoutSpan, battleLayout, battleBgPref } from './BattleActors3D.js';
 import { CUT } from '../engine/Cutout.js';
 import { isClean } from './readable.js';
 
@@ -108,6 +108,7 @@ export class BattleStage3D {
     this.cw = W; this.ch = H;
     if (this.size !== W + 'x' + H) { this.size = W + 'x' + H; this.renderer.setSize(W, H, false); this.camera.aspect = W / H; this.camera.updateProjectionMatrix(); if (this.actorMode) { this.fitCamera(W, H); if (this.backSize !== W + 'x' + H) this.backdrop(scene, W, H); } }
     if (this.backKind === 'proc' && this.info && G.BattleBG65 && G.BattleBG65.hasPhoto && G.BattleBG65.hasPhoto(this.info)) this.backdrop(scene, W, H);   // v6.6 戦闘背景の画像があとから読み込めた
+    this.syncPhoto(scene);
     const dt = Math.min(0.05, (now - this.last) / 1000); this.last = now; const t = (now - this.t0) / 1000;
     this.step = '動き'; this.update(dt, t, scene, W, H);
     if (this.actorMode) this.applyBand(W, H);
@@ -163,7 +164,7 @@ export class BattleStage3D {
     if (bgc && !isClean(bgc)) { console.warn('battle backdrop: 読めない背景（別のサイト扱い）→ 板なし'); this.backWhy = '遠景の絵を読めない'; bgc = null; }   // 汚れたキャンバスを WebGL に渡すと例外になる
     if (bgc) { const tex = new THREE.CanvasTexture(bgc); tex.colorSpace = THREE.SRGBColorSpace; this.backTex = tex;
       const m = new THREE.Mesh(new THREE.PlaneGeometry(wid, hgt), new THREE.MeshBasicMaterial({ map: tex, fog: false, toneMapped: false, depthWrite: false }));
-      m.position.set(this.camBase.x, hz3 + hgt * 0.08, -far); m.renderOrder = -10; S.add(m); this.backMesh = m; }
+      m.position.set(this.camBase.x, hz3 + hgt * 0.08, -far); m.renderOrder = -10; m.visible = !this.photoSrc; S.add(m); this.backMesh = m; }
   }
   // 前後の並び（スマホ）：敵・味方（頭の名前から足もとのHPバーまで）を、画面部品のあいだの四角に入れる。入らなければ小さく（最大 1.8 分の 1）、余れば中央へ
   //   setViewOffset で描く範囲を広げてずらすだけなので、HPバー・名前・数字の位置合わせ（同じカメラで画面に写す）はそのまま合う
@@ -202,7 +203,7 @@ export class BattleStage3D {
     // 霧（遠くを背景の色に溶かす）
     const fogC = col(indoor ? (place === 'castle' ? P.far : '#140e12') : (P.sky ? P.sky[1] : '#c0d4e8')); if (night) fogC.multiplyScalar(0.45);
     S.fog = new THREE.Fog(fogC, indoor ? 8 : 18, far * (indoor ? 1.05 : 0.95)); S.background = fogC.clone();
-    this.fogBase = [S.fog.near, S.fog.far]; this.fitFog();
+    this.fogBase = [S.fog.near, S.fog.far]; this.fitFog(); this.fogObj = S.fog; this.bgColor = S.background; this.photoSrc = null; this.photoTex = null;
     // 光
     const hemiSky = col(indoor ? '#8a8098' : (P.sky ? P.sky[0] : '#bfe4ff')), hemiGround = col(P.ground ? P.ground[1] : '#2f7a2f');
     let hi = indoor ? 0.55 : 1.0, si = indoor ? 0.6 : 2.4; let sunC = col(place === 'volcano' || place === 'dark' ? '#ff7a4a' : place === 'desert' ? '#fff0c8' : '#fff6e8');
@@ -212,9 +213,11 @@ export class BattleStage3D {
     const sun = new THREE.DirectionalLight(sunC, si); sun.position.set(-8, 14, 6); sun.target.position.set(0, 0, -2);
     if (this.quality === 'high') { sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024); const sc = sun.shadow.camera; sc.left = -16; sc.right = 16; sc.top = 14; sc.bottom = -10; sc.near = 1; sc.far = 60; sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.02; }
     S.add(sun); S.add(sun.target); this.sun = sun;
-    // 地面・地形・飾り
+    // 地面・地形・飾り（v6.6 前後の並びで戦闘背景の画像を使うときは隠す＝envObjs）
+    const envStart = S.children.length;
     this.buildGround(S, place, P, far, night);
     this.buildProps(S, place, P, night);
+    this.envObjs = S.children.slice(envStart).filter((o) => !o.isLight);
     // 粒（場所の粒＋演出の粒）
     const scale = (this.quality === 'high' ? 300 : 260) * this.pr;
     this.amb = new Particles(this.quality === 'high' ? 360 : 140, scale); S.add(this.amb.points);
@@ -424,7 +427,21 @@ export class BattleStage3D {
   drawn(scene, i) { return !!(this.actorMode && this.actors && scene === this.lastScene && this.actors.drawn(i)); }
   partyPos(scene, id, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.partyPos(id, W, H, this.camera); }
   partyRect(scene, id, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.partyRect(id, W, H, this.camera); }
+  // v6.6 「前後」の並び：戦闘背景の画像（2D版の背景の絵＝画面の大きさで作った cover の絵・夜・地域の色・ボスの色つき）を画面いっぱいの背景にし、
+  //   3Dの地面・景色・遠景の板・霧を隠す（敵・味方・影・技の光・粒・ボスの紋章は3Dのまま）。画像がまだ・失敗・「軽量」・3D設定で「3Dの景色」のときは以前の3Dの景色
+  syncPhoto(scene) {
+    const S = this.scene3; if (!S) return;
+    let want = (this.layout === 'front' && battleBgPref() === 'photo' && scene && scene.bg && scene.bg._photo) ? scene.bg : null;
+    if (want === this.photoSrc) return;
+    if (want && !isClean(want)) { this.photoWhy = '背景の画像を読めない（別のサイト扱い）→ 3Dの景色'; want = null; if (want === this.photoSrc) return; }
+    if (this.photoTex) { this.photoTex.dispose(); this.photoTex = null; }
+    this.photoSrc = want;
+    if (want) { const t = new THREE.CanvasTexture(want); t.colorSpace = THREE.SRGBColorSpace; this.photoTex = t; S.background = t; S.fog = null; this.stats.photo = (this.stats.photo || 0) + 1; }
+    else { S.background = this.bgColor || null; S.fog = this.fogObj || null; }
+    (this.envObjs || []).forEach((o) => { o.visible = !want; }); if (this.backMesh) this.backMesh.visible = !want;
+  }
   dispose() {
+    if (this.photoTex) { this.photoTex.dispose(); this.photoTex = null; } this.photoSrc = null;
     if (this.actors) this.actors.dispose();
     if (!this.scene3) return;
     this.scene3.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) [].concat(o.material).forEach((m) => { if (m.map && m.map !== this.backTex) m.map.dispose(); m.dispose(); }); });
