@@ -52,7 +52,7 @@
 
   World.enterHooks = root.MAP_ENTER_HOOKS = root.MAP_ENTER_HOOKS || [];   // データ側（snow.js など）が先に読み込まれて登録する
   World.enterMap = function (id, x, y, dir) {
-    World.map = World.getMap(id);
+    World.map = World.getMap(id); World._lmAt = null; World._lmGrace = 2;   // v6.6 触れたら入る範囲：着いてから2歩は反応しない（入口のマスに乗ったときは従来どおり入る）。出口の先へ歩き続けて、すぐ入り直さないように
     World.enterHooks.forEach(function (fn) { try { fn(World.map); } catch (e) { console.error(e); } });   // v5.6 マップに入るときの処理（凍結時計塔の時限など）
     World.applyState(World.map);
     var p = World.player || World.makePlayer();
@@ -195,10 +195,10 @@
 
   // 1歩進んだとき：ワープ・落とし穴・エンカウント・時間経過
   World.onStep = function () {
-    var p = World.player, m = World.map, d = State.data;
+    var p = World.player, m = World.map, d = State.data; var landed = false;
     d.steps++; World.syncPos();
     if (root.Vehicle) {   // v5.0: 乗り物
-      var va = p.vehicleAction; p.vehicleAction = null;
+      var va = p.vehicleAction; p.vehicleAction = null; landed = !!(va && va.disembark);
       if (va && va.board) { root.Vehicle.board(va.board, m, p.x, p.y); Win.toast(root.VEHICLES[va.board].name + 'に乗った'); if (root.Audio) root.Audio.sfx('step'); }
       else if (va && va.disembark) { root.Vehicle.disembark(); Win.toast('上陸した：' + (root.Harbors ? root.Harbors.areaName(m, p.x, p.y) : m.name)); }   // v6.2 上陸したときに地名
       if (d.aboard) {
@@ -216,6 +216,16 @@
     if (root.QuizSymbol) { root.QuizSymbol.onStep(m, p); if (root.QuizSymbol.stepOn(m, p)) return; }   // クイズモンスターの気配・ふさがないシンボルは踏むと触れる
     if (m.kind === 'field') d.timeOfDay = (d.timeOfDay + 0.0025) % 1;
     var w = m.warpAt(p.x, p.y);
+    // v6.6 フィールドの町・城・洞窟・塔：入口のまわり（絵・3Dモデルが重なるマス）に外から触れたら、入口に乗ったのと同じ扱い
+    var lmHere = (!w && !d.aboard && m.kind === 'field') ? World.landmarkTouch(m, p.x, p.y) : null; var lmPrev = World._lmAt;
+    World._lmAt = { m: m, x: p.x, y: p.y, w: lmHere };
+    var lmGrace = World._lmGrace > 0; if (lmGrace) World._lmGrace--;
+    if (lmHere && !landed && !lmGrace) {   // 上陸した1歩・別の地図から着いた直後の2歩では入らない
+      var lmWas;
+      if (lmPrev && lmPrev.m === m && Math.max(Math.abs(lmPrev.x - p.x), Math.abs(lmPrev.y - p.y)) <= 1) lmWas = lmPrev.w;
+      else { var lmd = delta(p.dir) || [0, 0]; lmWas = World.landmarkTouch(m, p.x - lmd[0], p.y - lmd[1]); }   // 出てきた直後など：来た方向の1マス手前で判断
+      if (lmWas !== lmHere) w = lmHere;   // 範囲の中を歩いているだけ（出てきた所が範囲の中など）のときは入らない
+    }
     if (w && (!w.needFlag || d.flags[w.needFlag])) { if (m.def.onStep) m.def.onStep(m, p, true); World.doWarp(w); return; }
     if (w && w.needFlag && !d.flags[w.needFlag] && !w.hidden) { World.lockedWarp(w); return; }   // v6.2 閉ざされた場所：理由を表示（フラグは変えない）
     if (m.def.onStep && m.def.onStep(m, p)) return;   // v5.6 マップごとの歩数処理（凍結時計塔の時限扉など）。true なら以降の処理をしない
@@ -239,6 +249,76 @@
       }
     }
     World.updateHud();
+  };
+  // v6.6 町・城・洞窟・塔の「触れたら入る」範囲：入口のまわり（地図の絵・3Dの建物が重なるマス。歩けるマスだけ）。マップごとに一度だけ計算して覚える
+  //   ・形：横5×奥行き4（四隅を除く。塔は横3×奥行き4）。出てくる側（＝近づく側）へ1マス、反対側へ2マス
+  //   ・ほかの出入口・イベント・宝箱のマスは含めない
+  //   ・道をふさぐ場合（範囲を通れないものとすると、まわりの歩けるマス同士がつながらなくなる）は、ふさがないマスだけ（なければ入口だけ＝従来どおり）
+  //   ・隠し場所（hidden）で未解放のものは反応しない
+  World.LM_TOUCH = { village: 1, castle_icon: 1, cave_icon: 1, tower_icon: 1 };
+  // 出てくる側（その場所から出たときに立つマスの向き）＝正面。[dx,dy] の単位ベクトル。わからなければ南
+  World.landmarkFace = function (m, w) {
+    if (!w) return [0, 1]; if (w._lmFace) return w._lmFace;
+    var defs = root.MAP_DEFS || {}; var dst = defs[w.to]; var cnt = {};
+    ((dst && dst.warps) || []).forEach(function (b) {
+      if (b.to !== m.id || b.tx === undefined) return; var dx = b.tx - w.x, dy = b.ty - w.y; if (Math.abs(dx) + Math.abs(dy) > 4 || (!dx && !dy)) return;
+      var k = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'E' : 'W') : (dy > 0 ? 'S' : 'N'); cnt[k] = (cnt[k] || 0) + 1;
+    });
+    var best = 'S', n = 0; ['S', 'N', 'E', 'W'].forEach(function (k) { if ((cnt[k] || 0) > n) { n = cnt[k]; best = k; } });
+    w._lmFace = { S: [0, 1], N: [0, -1], E: [1, 0], W: [-1, 0] }[best]; return w._lmFace;
+  };
+  World.landmarkFoot = function (m) {
+    if (!m || m.kind !== 'field' || !m.warps || !m.tiles) return null;
+    if (m._lmFoot) return m._lmFoot;
+    var foot = {}, stats = { full: 0, part: 0, none: 0 }, W = m.w, H = m.h;
+    var walk = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H && !Tiles.isSolid(m.tiles[y][x]); };
+    // 窓（入口から半径 R）の中で、block を通らずにつながる成分の番号
+    var R = 12;
+    var label = function (w, block) {   // lab：マス→成分の番号、info：成分ごとの広さ・窓の端に届くか・中に出入口などがあるか
+      var lab = {}, info = {}, id = 0;
+      for (var y0 = w.y - R; y0 <= w.y + R; y0++) for (var x0 = w.x - R; x0 <= w.x + R; x0++) {
+        var k0 = x0 + ',' + y0; if (lab[k0] !== undefined || !walk(x0, y0) || block[k0]) continue;
+        id++; lab[k0] = id; var q = [[x0, y0]]; var inf = info[id] = { n: 0, open: false, thing: false };
+        while (q.length) { var c = q.pop(); var nb = [[1, 0], [-1, 0], [0, 1], [0, -1]]; inf.n++;
+          if (Math.abs(c[0] - w.x) >= R || Math.abs(c[1] - w.y) >= R) inf.open = true;
+          if (m.warpAt(c[0], c[1]) || m.eventAt(c[0], c[1]) || (m.chestAt && m.chestAt(c[0], c[1]))) inf.thing = true;
+          for (var i = 0; i < 4; i++) { var nx = c[0] + nb[i][0], ny = c[1] + nb[i][1]; if (Math.abs(nx - w.x) > R || Math.abs(ny - w.y) > R) continue; var k = nx + ',' + ny; if (lab[k] !== undefined || !walk(nx, ny) || block[k]) continue; lab[k] = id; q.push([nx, ny]); } }
+      }
+      return { lab: lab, info: info };
+    };
+    var cuts = function (w, cand) {   // true＝道をふさぐ（行き止まりの小さなすき間（10マス以下・何もない）が切り離されるだけなら気にしない）
+      var b0 = {}; b0[w.x + ',' + w.y] = 1; var b1 = { }; b1[w.x + ',' + w.y] = 1; cand.forEach(function (c) { b1[c[0] + ',' + c[1]] = 1; });
+      var L0 = label(w, b0), L1 = label(w, b1), l0 = L0.lab, l1 = L1.lab; var edge = [];
+      var minor = function (k) { var f = L1.info[l1[k]]; return f && !f.open && !f.thing && f.n <= 10; };
+      for (var y = w.y - 3; y <= w.y + 3; y++) for (var x = w.x - 3; x <= w.x + 3; x++) { var k = x + ',' + y; if (b1[k] || !walk(x, y)) continue; var near = b1[(x + 1) + ',' + y] || b1[(x - 1) + ',' + y] || b1[x + ',' + (y + 1)] || b1[x + ',' + (y - 1)]; if (near && !minor(k)) edge.push(k); }
+      for (var i = 0; i < edge.length; i++) for (var j = i + 1; j < edge.length; j++) if (l0[edge[i]] === l0[edge[j]] && l1[edge[i]] !== l1[edge[j]]) return true;
+      return false;
+    };
+    m.warps.forEach(function (w) {
+      if (!World.LM_TOUCH[m.tile(w.x, w.y)]) return;
+      var cand = []; var f = World.landmarkFace(m, w); var half = m.tile(w.x, w.y) === 'tower_icon' ? 1 : 2;
+      for (var v = -2; v <= 1; v++) for (var u = -half; u <= half; u++) {   // u：横、v：正面方向（+1＝出てくる側）
+        if (!u && !v) continue; if (half === 2 && Math.abs(u) === 2 && (v === -2 || v === 1)) continue;
+        var dx = f[0] * v - f[1] * u, dy = f[1] * v + f[0] * u; var x = w.x + dx, y = w.y + dy;
+        if (!walk(x, y) || m.warpAt(x, y) || m.eventAt(x, y) || (m.chestAt && m.chestAt(x, y)) || foot[x + ',' + y]) continue;
+        cand.push([x, y]);
+      }
+      var use = cand, kind = 'full';
+      if (cuts(w, use)) {   // 1マスずつ、道をふさがないものだけ足す（入口の正面 → 横 → 奥の順）
+        use = []; kind = 'part';
+        var rank = function (c) { var vv = (c[0] - w.x) * f[0] + (c[1] - w.y) * f[1], uu = Math.abs((c[0] - w.x) * f[1] - (c[1] - w.y) * f[0]); return vv === 1 && !uu ? 0 : vv === 0 ? uu : vv === 1 ? 2 + uu : 4 + uu - vv; };
+        cand.slice().sort(function (a, b) { return rank(a) - rank(b); })
+          .forEach(function (c) { if (!cuts(w, use.concat([c]))) use.push(c); });
+        if (!use.length) kind = 'none';
+      }
+      stats[kind]++; w._lmFootKind = kind; use.forEach(function (c) { foot[c[0] + ',' + c[1]] = w; });
+    });
+    m._lmFoot = foot; m._lmFootStats = stats; return foot;
+  };
+  World.landmarkTouch = function (m, x, y) {
+    var f = World.landmarkFoot(m); var w = f && f[x + ',' + y]; if (!w) return null;
+    var d = State.data; if (w.hidden && w.needFlag && !(d && d.flags && d.flags[w.needFlag])) return null;
+    return w;
   };
   // v6.2 needFlag で閉ざされた場所に乗ったとき：理由（lockedText）と、ヒント設定が「詳細」なら次にすること
   World.lockedWarp = function (w) {

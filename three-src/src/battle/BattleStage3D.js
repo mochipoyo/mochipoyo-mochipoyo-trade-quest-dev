@@ -107,6 +107,7 @@ export class BattleStage3D {
     if (!this.scene3) return null;
     this.cw = W; this.ch = H;
     if (this.size !== W + 'x' + H) { this.size = W + 'x' + H; this.renderer.setSize(W, H, false); this.camera.aspect = W / H; this.camera.updateProjectionMatrix(); if (this.actorMode) { this.fitCamera(W, H); if (this.backSize !== W + 'x' + H) this.backdrop(scene, W, H); } }
+    if (this.backKind === 'proc' && this.info && G.BattleBG65 && G.BattleBG65.hasPhoto && G.BattleBG65.hasPhoto(this.info)) this.backdrop(scene, W, H);   // v6.6 戦闘背景の画像があとから読み込めた
     const dt = Math.min(0.05, (now - this.last) / 1000); this.last = now; const t = (now - this.t0) / 1000;
     this.step = '動き'; this.update(dt, t, scene, W, H);
     if (this.actorMode) this.applyBand(W, H);
@@ -157,7 +158,8 @@ export class BattleStage3D {
     this.backSize = W + 'x' + H; const far = this.far, fovH = THREE.MathUtils.degToRad(this.camera.fov / 2);
     const dist = far + this.camBase.z, hz3 = 0.7; const mob = this.actorMode && document.body.classList.contains('mobile'); const topY = this.camBase.y - dist * Math.tan(this.pitch) + dist * Math.tan(fovH) * (mob ? 2.2 : 1) + 1.5 + 6.6 * dist / 71;   // スマホは絵を下へずらす（applyBand）ぶん、上を広く覆う
     const hgt = (topY - hz3) / 0.58, wid = 2 * dist * Math.tan(fovH) * (W / H) * (mob ? 2.1 : 1.18); const bw = Math.min(2048, Math.round(H * wid / hgt));   // スマホは描く範囲を広げる（applyFit）ぶん、広く覆う
-    let bgc = BG.render(info, bw, H) || scene.bg;
+    this.backKind = BG.hasPhoto && BG.hasPhoto(info) ? 'photo' : 'proc';   // v6.6 戦闘背景の画像：読み込めたら遠景の板を作り直す（frame で比べる）
+    let bgc = BG.render(info, bw, H, { far: true }) || scene.bg;   // 画像のときは、画像の地平線を板の地平線（3Dの地面の果て）に合わせる。画像の地面は3Dの地面に隠れる
     if (bgc && !isClean(bgc)) { console.warn('battle backdrop: 読めない背景（別のサイト扱い）→ 板なし'); this.backWhy = '遠景の絵を読めない'; bgc = null; }   // 汚れたキャンバスを WebGL に渡すと例外になる
     if (bgc) { const tex = new THREE.CanvasTexture(bgc); tex.colorSpace = THREE.SRGBColorSpace; this.backTex = tex;
       const m = new THREE.Mesh(new THREE.PlaneGeometry(wid, hgt), new THREE.MeshBasicMaterial({ map: tex, fog: false, toneMapped: false, depthWrite: false }));

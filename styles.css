@@ -25,7 +25,7 @@ h3 { margin: 10px 0 4px; color: var(--gold); font-size: 1rem; }
 
 /* ---------- JRPG風ウィンドウ ---------- */
 .rw-msg, .rw-choice, .rw-list, .rw-panel, #battle-party, #battle-msg {
-  background: linear-gradient(180deg, rgba(18,26,56,.97), rgba(8,12,30,.97)); border: 3px solid #f0f0f8; border-radius: 6px; box-shadow: 0 0 0 2px #1a1a3a, 0 6px 18px rgba(0,0,0,.6); color: #fff; }
+  background: linear-gradient(180deg, rgba(18,26,56,.87), rgba(8,12,30,.87));   /* ご指示により、ゲーム画面の上に出す窓（メニュー・会話・戦闘の欄）を約10%透かす（以前は .97） */ border: 3px solid #f0f0f8; border-radius: 6px; box-shadow: 0 0 0 2px #1a1a3a, 0 6px 18px rgba(0,0,0,.6); color: #fff; }
 .rw-msg { position: absolute; left: 10px; right: 10px; bottom: 10px; min-height: 84px; padding: 8px 14px; cursor: pointer; font-size: 15px; line-height: 1.6; }
 .rw-name { color: var(--gold); font-weight: bold; font-size: 13px; } .rw-name.hidden { display: none; }
 .rw-text { white-space: pre-wrap; min-height: 44px; }

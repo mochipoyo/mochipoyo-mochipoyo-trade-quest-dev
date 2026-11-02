@@ -69,7 +69,7 @@ export class UIOverlay {
     const stage = document.getElementById('stage'); const game = document.getElementById('game');
     this.canvas = document.createElement('canvas'); this.canvas.id = 'game3d'; this.canvas.tabIndex = -1; game.insertAdjacentElement('afterend', this.canvas);
     const mk = (id, html) => { const d = document.createElement('div'); d.id = id; if (html) d.innerHTML = html; this.canvas.insertAdjacentElement('afterend', d); return d; };
-    this.veil = mk('g3-veil', '<div class="txt">3Dのマップを組み立てています…</div><div class="bar"><i></i></div>');
+    this.veil = mk('g3-veil', '<div class="txt">元気にロード中...</div><div class="bar"><i></i></div>');
     this.prompt = mk('g3-prompt');
     this.badge = mk('g3-badge', '3D版 Phase 1（技術プロトタイプ）');
     this.tools = document.createElement('div'); this.tools.id = 'g3-tools'; stage.appendChild(this.tools);

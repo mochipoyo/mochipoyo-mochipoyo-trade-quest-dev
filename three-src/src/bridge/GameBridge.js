@@ -113,13 +113,13 @@ export class App3D {
     this.ui.canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); this.disabled = true; this.why = 'WebGL の文脈が失われた（端末のメモリ不足など）'; this.ui.show(false); console.warn('WebGL context lost → 2D'); });
     const loop = (now) => { try { this.frame(now); } catch (e) { console.error(e); this.mapFailed((G.World.map || {}).id, e); } requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
-    this.ui.progress(0.05, '3Dの素材を読み込んでいます…');
+    this.ui.progress(0.05, '元気にロード中...');
     await this.mats.preload(); this.ui.progress(0.25);
     const ids = Object.keys(MODELS).filter((id) => !MODELS[id].lazy);   // Phase 1〜2 で足したモデル（lazy）は使うときに読む
     await this.models.preload(ids, (n, all) => this.ui.progress(0.25 + 0.65 * n / all));
     this.hero = await Character3D.create(this.models, 'hero', { xray: true });
     this.scene.add(this.hero.root);
-    this.ui.progress(1, '3Dの村を組み立てています…');
+    this.ui.progress(1, '元気にロード中...');   // ご指示により表記を変更（建物に入ったときなど、3Dのマップの組み立て中に出る）
     this.ready = true; this.ui.refresh();
     // 起動中に村へ入っていたら、その場で組み立てる
   }

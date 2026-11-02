@@ -39,3 +39,10 @@
 | p2_2dcheck.js | 2D版の戦闘画面が変わっていないこと |
 | p3_save.js | セーブの互換（3D版の枠・2D版のキー） |
 | viewer_shots.js | モデルの確認画面の撮影 |
+| p2_battlebg.js | v6.6 戦闘背景の画像：場所ごとに戦闘を始めて撮る（PAGE=2d／3d、VIEW=pc／port／land、QUERY='?layout=side'、BLOCK=1 で画像を 404、SLOW=ミリ秒で遅延・EARLY=ミリ秒で読み込み前も撮る） |
+| p2_landmarks.js | v6.6 フィールドの町・城・洞窟・塔（57か所）の昼・夜の画面（LOC=場所のID で1か所だけ、PORT=以前の版と比べるとき） |
+| touch2d.cjs | v6.6 触れたら入る（2D版の処理を jsdom で）：入口の横・上・下から触れる・範囲の中を歩くだけ・閉ざされた場所・隠し場所 |
+| p2_touch.js | v6.6 触れたら入る（3D版）：建物に向かって歩き、どこで入るか・閉ざされた場所・町から出た直後に入り直さないか |
+| p2_hpbar.js | v6.6 敵のHPバー：初期値は表示しない・「表示する」で出る（2D版の戦闘の画面の緑の画素を数える）・設定の項目があるか |
+| p2_lampflicker.js | v6.6 夜の町の街灯のチラつき：歩きながら街灯ごとの明かりの急な変化を数える（PORT で以前の版と比べる） |
+| （ルート）tools/check-battle-backgrounds.js | 戦闘背景の画像：対応表＝BattleBG65.PLACES、ファイル・WebP・寸法（`node tools/check-battle-backgrounds.js`） |

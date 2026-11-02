@@ -32,6 +32,7 @@ export class MapScene3D {
       const wb = new WorldBuilder3D(app.mats, app.models, app.quality); this.world = wb;
       const r = await wb.build(map, theme);
       this.root.add(r.group); this.heightAt = r.heightAt; this.lampSpots = r.lampSpots.slice();
+      (r.smokes || []).forEach((sm) => this.addSmoke(sm));   // v6.6 目印の煙突・噴気孔
       this.dark = this.interior || (map.kind === 'dungeon' && !(theme.placeDef && theme.placeDef.outdoor)); this.ambient = (theme.placeDef && theme.placeDef.light) || null;
       if (map.buildings.length) {
         const bb = new BuildingBuilder3D(app.mats, app.models); const rnd = rngFrom(5150);

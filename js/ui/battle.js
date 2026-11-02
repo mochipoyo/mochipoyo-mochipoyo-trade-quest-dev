@@ -118,6 +118,7 @@
     this.theme = themeFor(kind, opts.zone, root.World.map ? root.World.map.id : '');
     // v6.5 Phase D 戦闘背景（14の場所×地域の色・時間帯・天気・ボス）。作れなければ従来の背景
     this.bg65 = null; try { if (root.BattleBG65) this.bg65 = root.BattleBG65.infoFor(b, { zone: opts.zone, boss: !!b.boss }); } catch (e) { this.bg65 = null; }
+    try { if (this.bg65 && root.BattleBG65.prefetch) root.BattleBG65.prefetch(this.bg65); } catch (e) { }   // v6.6 戦闘背景の画像（読み込み中は従来の背景。読めたら差し替える）
     this.bg = null; this.entrance = b.boss ? { t: 0, dur: 1400 } : null;
     // v6.3 特殊戦闘のカットイン（マップと敵の組み合わせが一致し、画像が読み込めたときだけ）。終わったら消える
     this.cutin = null;
@@ -190,13 +191,15 @@
     // 必殺技のチャートが戦闘画面を覆っている間は、下の戦闘画面（3D 版の舞台も）を1秒に1回だけ描く（チャートの動きを軽くする）
     var CBU = root.ChartBattleUI; if (CBU && CBU.isOpen) { var tn = Date.now(); if (this._cbDrawn && tn - this._cbDrawn < 1000) return; this._cbDrawn = tn; } else this._cbDrawn = 0;
     var W = ctx.canvas.width, H = ctx.canvas.height; var b = this.b; var self = this;
+    // v6.6 戦闘背景の画像：あとから読み込めたら、背景の絵を作り直して 0.35 秒で切り替える（画面の大きさが変わったときも作り直す）
+    if (this.bg && this.bg65 && root.BattleBG65.hasPhoto) { try { if ((!this.bg._photo && root.BattleBG65.hasPhoto(this.bg65)) || this.bg.width !== W || this.bg.height !== H) { if (this.bg.width === W && this.bg.height === H) this.bgFade = { from: this.bg, t: Date.now() }; this.bg = null; } } catch (e) { } }
     if (!this.bg && this.bg65) { try { this.bg = root.BattleBG65.render(this.bg65, W, H); } catch (e) { this.bg = null; this.bg65 = null; } if (!this.bg) this.bg65 = null; }
     if (!this.bg) this.bg = BattleBG.render(this.theme, W, H, root.State.data ? root.State.data.timeOfDay : undefined);
     ctx.save();
     if (this.screenShake > 0) ctx.translate(Math.round((Math.random() - 0.5) * 10), Math.round((Math.random() - 0.5) * 6));
     // v6.5 Phase D 3D版：3Dの戦闘の舞台（BattleStage3D。3D版のページだけにある）が描けたら、それを背景にする。描けなければ2Dの背景
     var stage = null; if (this.bg65 && root.BattleStage3D && !this.no3d) { try { stage = root.BattleStage3D.frame(this, W, H); } catch (e) { stage = null; this.no3d = true; if (root.console) console.warn('3D battle stage', e); } }
-    if (stage) ctx.drawImage(stage, 0, 0, W, H); else ctx.drawImage(this.bg, 0, 0);
+    if (stage) ctx.drawImage(stage, 0, 0, W, H); else { ctx.drawImage(this.bg, 0, 0); var bf = this.bgFade; if (bf) { var fa = 1 - (Date.now() - bf.t) / 350; if (fa > 0) { ctx.globalAlpha = fa; ctx.drawImage(bf.from, 0, 0); ctx.globalAlpha = 1; } else this.bgFade = null; } }
     if (this.bg65 && !stage) { try { root.BattleBG65.drawAmbient(ctx, this, W, H); } catch (e) { this.bg65 = null; } }   // v6.5 動く粒・天気・ボスの光（品質「軽量」では描かない）
     // ボス登場：暗転からせり上がる
     var ent = this.entrance; var entP = ent ? Math.min(1, ent.t / ent.dur) : 1;
@@ -239,7 +242,7 @@
       if (dying) return;
       // HPバー・名前
       var bv = self.bar[i] !== undefined ? self.bar[i] : ve.hp; var ratio = Math.max(0, Math.min(1, bv / ve.maxHp));
-      ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(x, y + hh + 6, size, 6); ctx.fillStyle = ve.hp / ve.maxHp > 0.3 ? '#4cc38a' : '#e5484d'; ctx.fillRect(x, y + hh + 6, size * ratio, 6);
+      if (State.data && State.data.settings && State.data.settings.enemyHpBar === 'on') { ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(x, y + hh + 6, size, 6); ctx.fillStyle = ve.hp / ve.maxHp > 0.3 ? '#4cc38a' : '#e5484d'; ctx.fillRect(x, y + hh + 6, size * ratio, 6); }   // 敵のHPバー：設定で「表示する」のときだけ（初期値は表示しない）
       var st = ve.st.map(function (k) { return Combat.STATUS_NAME[k]; }).join('');
       var fk = r.from3d && root.BattleStage3D && root.BattleStage3D.labelScale ? root.BattleStage3D.labelScale(W) : 1;   // 3D版 Phase 2：スマホの縦画面など、画面が縮んで名前が小さくなるときは大きく描く（2D版では 1）
       ctx.fillStyle = '#fff'; ctx.font = (e.boss ? 'bold ' + Math.round(13 * fk) + 'px' : Math.round(12 * fk) + 'px') + ' sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3 * fk; ctx.strokeStyle = 'rgba(0,0,0,0.7)';

@@ -478,7 +478,8 @@
         { label: '仲間の隊列表示（後ろをついて歩く）', right: st.followers === 'off' ? '表示しない' : '表示する' },
         { label: 'データ管理（書き出し・読み込み・初期化）' }, { label: 'タイトルに戻る' },
         { label: '戦闘背景の品質', right: ({ high: '高', normal: '標準', low: '軽量（動く粒なし）' })[st.battleBg] || '自動（スマホは標準）' },
-        { label: '必殺技の判断時間', right: (st.ultTime || 12) + '秒' }, { label: '必殺技のチャートの更新', right: st.ultChart === 'light' ? '軽量（描画を減らす）' : '標準' }, { label: '必殺技の演出', right: st.ultFx === 'calm' ? '控えめ' : 'ふつう' }
+        { label: '必殺技の判断時間', right: (st.ultTime || 12) + '秒' }, { label: '必殺技のチャートの更新', right: st.ultChart === 'light' ? '軽量（描画を減らす）' : '標準' }, { label: '必殺技の演出', right: st.ultFx === 'calm' ? '控えめ' : 'ふつう' },
+        { label: '敵のHPバー', right: st.enemyHpBar === 'on' ? '表示する' : '表示しない' }   // 初期値は表示しない（未設定＝表示しない）
       ], { title: '設定' });
       if (i < 0) return;
       if (i === 0) { st.mute = !st.mute; if (root.Audio) root.Audio.apply(); }
@@ -501,6 +502,7 @@
       if (i === 17) { var to = (root.ChartBattleUI && root.ChartBattleUI.TIME_OPTIONS) || [8, 12, 16, 20, 30]; var ti = to.indexOf(st.ultTime || 12); st.ultTime = to[(ti + 1) % to.length]; Win.toast('必殺技の判断時間：' + st.ultTime + '秒'); }   // 必殺技
       if (i === 18) { st.ultChart = st.ultChart === 'light' ? 'normal' : 'light'; }
       if (i === 19) { st.ultFx = st.ultFx === 'calm' ? 'normal' : 'calm'; }
+      if (i === 20) { st.enemyHpBar = st.enemyHpBar === 'on' ? 'off' : 'on'; Win.toast(st.enemyHpBar === 'on' ? '敵のHPバー：表示する' : '敵のHPバー：表示しない'); }
       State.autosave();
     }
   };

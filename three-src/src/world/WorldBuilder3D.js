@@ -13,6 +13,7 @@ import { Batch, box, M4 } from '../engine/Materials.js';
 import { MODELS } from '../assets/manifest.js';
 import { rngFrom } from './TerrainBuilder3D.js';
 import { addCutout } from '../engine/Cutout.js';
+import { LandmarkBuilder3D } from './LandmarkBuilder3D.js';
 
 function hash2(x, y) { let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
 function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y); const xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf); const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; }
@@ -212,6 +213,10 @@ export class WorldBuilder3D {
     const buckets = new Map();
     const put = (id, m, x, z, color) => { const k = Math.floor(x / PCH) + ',' + Math.floor(z / PCH); if (!buckets.has(k)) buckets.set(k, { cx: (Math.floor(x / PCH) + 0.5) * PCH, cz: (Math.floor(z / PCH) + 0.5) * PCH, ids: {} }); const b = buckets.get(k); const e = b.ids[id] || (b.ids[id] = { m: [], c: [] }); e.m.push(m); e.c.push(color || null); };
     this.put = put; this.buckets = buckets;
+    // v6.6 目印（町・城・洞窟・塔）の建物が立つ範囲：木・小物を置かない（LandmarkBuilder3D と同じ中心＝入口から正面の反対へ 0.5 マス）
+    const LW = window.World; const lmZones = [];
+    if (field && map.def && map.def.locations && window.LocationDesign) for (const L of map.def.locations) { const wp = map.warpAt(L.x, L.y); const f = (LW && LW.landmarkFace && wp) ? LW.landmarkFace(map, wp) : [0, 1]; lmZones.push({ x: L.x + 0.5 - f[0] * 0.5, z: L.y + 0.5 - f[1] * 0.5, r: L.icon === 'tower_icon' ? 1.85 : 2.85 }); }
+    const nearLm = (x, z, k) => lmZones.length > 0 && lmZones.some((q) => (x - q.x) * (x - q.x) + (z - q.z) * (z - q.z) < q.r * q.r * (k || 1) * (k || 1));
     // 木（地域テーマ）
     const treeSet = theme.tree || ['pine', 'oak'];
     const treeIds = { pine: ['tree_pine_a', 'tree_pine_b', 'tree_pine_c'], oak: ['tree_oak_a', 'tree_oak_b', 'tree_oak_c'], palm: ['tree_palm'], dead: ['tree_dead'], snowpine: ['tree_snowpine'] };
@@ -219,7 +224,7 @@ export class WorldBuilder3D {
     const tc = new THREE.Color();
     const TSC = field ? 0.78 : outdoorD ? 0.7 : 1.0;   // フィールド・屋外ダンジョンの木は小さめ（道が隠れない）
     this.trees = [];   // 木は1つの BatchedMesh（1回の描画）に入れ、主人公の近くだけ精細なモデルにする（木ごとの LOD）
-    const tree = (x, z, s) => { s *= TSC; const id = pickTree(); tc.setHSL(0, 0, 0.82 + rnd() * 0.25); if (theme.dim) tc.multiplyScalar(0.75 + theme.dim * 0.25); this.trees.push({ id, m: M4(x, heightAt(x, z) - 0.05, z, rnd() * 6.28, (rnd() - 0.5) * 0.06, (rnd() - 0.5) * 0.06, s), x, z, c: tc.clone() }); };
+    const tree = (x, z, s) => { if (nearLm(x, z)) return; s *= TSC; const id = pickTree(); tc.setHSL(0, 0, 0.82 + rnd() * 0.25); if (theme.dim) tc.multiplyScalar(0.75 + theme.dim * 0.25); this.trees.push({ id, m: M4(x, heightAt(x, z) - 0.05, z, rnd() * 6.28, (rnd() - 0.5) * 0.06, (rnd() - 0.5) * 0.06, s), x, z, c: tc.clone() }); };
     let trees = 0;
     for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
       const t = T(x, z);
@@ -244,6 +249,7 @@ export class WorldBuilder3D {
     const mountains = []; const snowCap = !!theme.snowCap;
     for (let z = -OUT; z < H + OUT; z++) for (let x = -OUT; x < W + OUT; x++) {
       if (T(x, z) !== 'mountain') continue; if (!inside(x, z) && rnd() < 0.5) continue;
+      if (nearLm(x + 0.5, z + 0.5, 0.8)) continue;   // v6.6 町・城・洞窟の建物に山が重ならないように（地面の高さはそのまま）
       const s = 0.85 + rnd() * 0.5; const h = 1.6 + rnd() * 1.8;
       mountains.push(M4(x + 0.5 + (rnd() - 0.5) * 0.3, heightAt(x + 0.5, z + 0.5) - 0.2, z + 0.5 + (rnd() - 0.5) * 0.3, rnd() * 6.28, 0, 0, s, h, s));
     }
@@ -253,12 +259,16 @@ export class WorldBuilder3D {
     for (const [x, z, y] of rockSpots) put(rnd() < 0.5 ? 'rock_a' : 'rock_b', M4(x + (rnd() - 0.5) * 0.3, y, z + (rnd() - 0.5) * 0.3, rnd() * 6.28, 0, 0, 0.6 + rnd() * 0.6), x, z, new THREE.Color(theme.rock));
     // タイルの小物
     const lampSpots = []; const lights = [];
+    // v6.6 フィールドの町・城・洞窟・塔（LandmarkBuilder3D）：マップ内の全目印を材質ごとにまとめて結合
+    const LD = window.LocationDesign; const flags = (window.State && window.State.data && window.State.data.flags) || {};
+    const locs = (field && map.def && map.def.locations) || []; const locAt = (x, z) => locs.find((L) => L.x === x && L.y === z) || null;
+    const lmb = new LandmarkBuilder3D(this.mats); const smokes = []; const lmIds = [];
     const yawFor = (x, z) => { for (const [dx, dz] of [[0, 1], [1, 0], [-1, 0], [0, -1]]) { const n = T(x + dx, z + dz); if (PAVED[n] || n === 'road' || n === 'floor_wood' || n === 'grass' || n === 'cave_floor') return Math.atan2(dx, dz); } return 0; };
     let props = 0;
     for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
       const t = T(x, z); const cx = x + 0.5, cz = z + 0.5; const y = heightAt(cx, cz);
       const id = PROP[t];
-      if (id) {
+      if (id && !nearLm(cx, cz)) {
         let m;
         if (t === 'fence') { let hx = 0, hz = 0; for (const k of [-1, 1]) { if (T(x + k, z) === 'fence') hx++; if (T(x, z + k) === 'fence') hz++; } m = M4(cx, y, cz, hz > hx ? Math.PI / 2 : 0); }
         else if (t === 'barrel' || t === 'bush' || t === 'ore' || t === 'stalactite' || t === 'root') m = M4(cx, y, cz, rnd() * 6.28, 0, 0, t === 'bush' ? 0.9 + rnd() * 0.3 : 1);
@@ -274,7 +284,22 @@ export class WorldBuilder3D {
       }
       if (t === 'lava') lampSpots.push({ pos: new THREE.Vector3(cx, 0.6, cz), color: 0xff6a20, power: 0.5, dist: 4 });
       const lm = LANDMARK[t];
-      if (lm) { put(lm, M4(cx, y, cz, 0, 0, 0, t === 'castle_icon' ? 3.4 : t === 'tower_icon' ? 2.6 : 3.0), cx, cz); props++; }
+      if (lm) {
+        // v6.6 場所ごとの固有デザイン（LOCATION_DESIGNS）から組み立てる。デザインがない・失敗したときは従来の目印モデル
+        let done = null; const Lc = locAt(x, z);
+        if (Lc && LD) {
+          try {
+            const r0 = LD.resolve(Lc.id, flags); const wp = map.warpAt(x, z); const face = (LW && LW.landmarkFace && wp) ? LW.landmarkFace(map, wp) : [0, 1];
+            const lb = new Batch();
+            if (r0 && r0.design) done = lmb.build(r0.design, new THREE.Vector3(cx, y, cz), lb, { put, heightAt, water: (wx, wz) => !!WATERY[T(Math.floor(wx), Math.floor(wz))] }, face);
+            // 目印ごとに1つのまとまり（画面の外の目印は描かない＝視錐台で省ける）。窓・光・布・暗い穴などの小さな部品は影を落とさない（影の描画回数を減らす）
+            if (done) { const lg = new THREE.Group(); lg.name = 'landmark_' + Lc.id; lb.build(lg); lg.traverse((o) => { if (o.isMesh && /^lm_(win|glow|cloth)/.test(o.material.name || '')) o.castShadow = false; }); group.add(lg); }
+          } catch (e) { lmb.stats.failed.push(Lc.id + ': ' + (e && e.message)); }
+        }
+        if (done) { done.lights.forEach((l) => lampSpots.push(l)); done.smokes.forEach((sm) => smokes.push(sm)); done.sprites.forEach((sp) => group.add(sp)); lmIds.push(Lc.id); }
+        else put(lm, M4(cx, y, cz, 0, 0, 0, t === 'castle_icon' ? 3.4 : t === 'tower_icon' ? 2.6 : 3.0), cx, cz);
+        props++;
+      }
       if (t === 'ship') { put('veh_sailboat', M4(cx, -0.1, cz, 0, 0, 0, 0.9), cx, cz); props++; }
       // ダンジョン・洞窟の飾り
       if (dungeon && (t === 'cave_floor' || t === 'moss') && rnd() < 0.03) put('mushroom', M4(cx + (rnd() - 0.5) * 0.6, y, cz + (rnd() - 0.5) * 0.6, rnd() * 6.28, 0, 0, 0.8 + rnd() * 0.6), cx, cz);
@@ -290,10 +315,11 @@ export class WorldBuilder3D {
     }
     // 屋内・暗いダンジョン：天井の明かり（点光源の候補。見た目の器具は置かない）
     if (voidOut) for (let z = 2; z < H - 1; z += 5) for (let x = 3; x < W - 1; x += 6) { const t = T(x, z); if (Tiles().isSolid(t) || WALL_TILES[t]) continue; lampSpots.push({ pos: new THREE.Vector3(x + 0.5, 2.6, z + 0.5), color: kind === 'interior' ? 0xffd8a0 : 0xffb070, power: kind === 'interior' ? 0.9 : 0.5, dist: 9 }); }
+    this.stats.landmarks3d = lmIds.length; if (lmb.stats.failed.length) this.stats.landmarkFailed = lmb.stats.failed.slice(0, 8);
     this.stats.props = props;
     this.lampSpots = lampSpots;
     this.stats.buildMs = Math.round(performance.now() - t0);
-    return { group, heightAt: heightAtWalk, lampSpots, finalize: () => this.finalize(group) };
+    return { group, heightAt: heightAtWalk, lampSpots, smokes, finalize: () => this.finalize(group) };
   }
 
   // 置き場所が全部決まってから（建物の小物も put したあと）インスタンス化する。木は区画ごとに精細・簡略の2つを作って距離で切り替える

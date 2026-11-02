@@ -75,8 +75,67 @@
   };
   BG.quality = function () { var d = root.State && root.State.data; var q = d && d.settings && d.settings.battleBg; return q === 'low' || q === 'normal' ? q : (root.matchMedia && root.matchMedia('(max-width: 720px)').matches && q !== 'high' ? 'normal' : 'high'); };
 
+  /* ---------- v6.6 戦闘背景の画像（14種＋山岳の差分）。対応の正本は docs/battle-backgrounds-manifest.json（tools/check-battle-backgrounds.js で一致を確認） ----------
+     ・必要になった場所の画像だけを1回読み込んで覚える（最大4枚。古いものから手放す）。読み込み中・失敗・品質「軽量」は、従来の手描き（下の BG.render の続き）
+     ・画像は画面いっぱいに縦横比を保って拡大（cover）。地域の色・夜・ボスの色は薄く重ねる。動く粒・天気・ボスの脈動は drawAmbient（従来どおり）
+     ・パスは index.html と同じ場所を基準（Assets.base）。3d/index.html からも、GitHub Pages のサブパスでも同じ画像を指す */
+  var PHOTO_DIR = 'assets/battle-backgrounds/';
+  var PHOTO = { grassland: '01_battle_grassland.webp', forest: '02_battle_forest.webp', cave: '03_battle_cave.webp', castle: '04_battle_castle.webp', mine: '05_battle_mine.webp', harbor: '06_battle_harbor.webp', sea: '07_battle_sea.webp', desert: '08_battle_desert.webp', snow: '09_battle_snow.webp', volcano: '10_battle_volcano.webp', magic_city: '11_battle_magic_city.webp', machine_city: '12_battle_machine_city.webp', sky: '13_battle_sky.webp', dark: '14_battle_dark.webp' };
+  var PHOTO_VARIANT = { grassland_mountain: '15_battle_grassland_mountain.webp' };
+  // 画像の中の地平線（遠景と地面の境）の高さ（画像の高さに対する割合）。3D版の遠景の板では、ここを3Dの地平線に合わせ、絵の地面は3Dの地面の下に隠す（地面が二重にならない）
+  var PHOTO_HORIZON = { grassland: 0.40, forest: 0.40, cave: 0.40, castle: 0.44, mine: 0.40, harbor: 0.40, sea: 0.34, desert: 0.40, snow: 0.40, volcano: 0.40, magic_city: 0.42, machine_city: 0.42, sky: 0.42, dark: 0.40, grassland_mountain: 0.40 };
+  // 地域の色を薄く重ねる（画像の景色と地域が合わない組み合わせだけ。例：灰の地方の草原は灰色がかる）
+  var REGION_TINT = { grania: ['#8a8070', 0.30], kalion: ['#c8b48a', 0.12], tempus: ['#b8a0d0', 0.14], islands: ['#9ae0e8', 0.08] };
+  var TINT_PLACES = { grassland: 1, forest: 1, cave: 1, castle: 1, harbor: 1, mine: 1, grassland_mountain: 1 };
+  BG.PHOTO = PHOTO; BG.PHOTO_VARIANT = PHOTO_VARIANT; BG.PHOTO_SIZE = [1672, 941]; BG.PHOTO_DIR = PHOTO_DIR;
+  var photos = {}, keep = [], MAXKEEP = 4;
+  function base() { return (root.Assets && root.Assets.base) || ''; }
+  function nowMs() { return root.performance && root.performance.now ? root.performance.now() : Date.now(); }
+  BG.photoKey = function (info) { if (!info) return null; if (info.variant && PHOTO_VARIANT[info.variant]) return info.variant; return PHOTO[info.place] ? info.place : null; };
+  BG.photoUrl = function (key) { var f = PHOTO[key] || PHOTO_VARIANT[key]; return f ? base() + PHOTO_DIR + f : null; };
+  // 読み込み済みなら Image、まだなら読み込みを始めて null（失敗したら 30 秒は再挑戦しない）
+  BG.photo = function (key) {
+    var url = key && BG.photoUrl(key); if (!url || typeof root.Image === 'undefined') return null;
+    var e = photos[key], t = nowMs();
+    if (e && e.state === 'ok') return e.img;
+    if (e && (e.state === 'loading' || (e.state === 'error' && t - e.t < 30000))) return null;
+    var img = new root.Image(); e = photos[key] = { img: img, state: 'loading', t: t, url: url };
+    var done = function (ok) { if (photos[key] !== e) return; e.state = ok && img.naturalWidth > 0 ? 'ok' : 'error'; e.t = nowMs(); e.ms = Math.round(e.t - t); if (e.state === 'error' && root.console) console.warn('戦闘背景の画像を読めません（従来の背景で表示）:', url); };
+    img.onload = function () { if (img.decode) img.decode().then(function () { done(true); }, function () { done(true); }); else done(true); };
+    img.onerror = function () { done(false); };
+    try { img.decoding = 'async'; } catch (err) { }
+    img.src = url;
+    keep = keep.filter(function (k) { return k !== key; }); keep.push(key);
+    while (keep.length > MAXKEEP) { var old = keep.shift(); if (photos[old] && photos[old].state !== 'loading') delete photos[old]; }
+    return null;
+  };
+  BG.photoState = function (key) { var e = photos[key]; return e ? { state: e.state, ms: e.ms, url: e.url, w: e.img && e.img.naturalWidth, h: e.img && e.img.naturalHeight } : null; };
+  BG.usePhoto = function () { return BG.quality() !== 'low'; };
+  BG.hasPhoto = function (info) { var k = BG.usePhoto() && BG.photoKey(info); var e = k && photos[k]; return !!(e && e.state === 'ok'); };
+  BG.prefetch = function (info) { if (BG.usePhoto()) BG.photo(BG.photoKey(info)); };
+  // 画像で描く。opts.far：3D版の遠景の板（画像の地平線を高さの 58% に合わせ、横は幅いっぱい）
+  function renderPhoto(info, img, W, H, opts) {
+    var c = document.createElement('canvas'); c.width = W; c.height = H; var ctx = c.getContext('2d');
+    var key = BG.photoKey(info), iw = img.naturalWidth || BG.PHOTO_SIZE[0], ih = img.naturalHeight || BG.PHOTO_SIZE[1];
+    var s, dx, dy;
+    if (opts && opts.far) { var yh = PHOTO_HORIZON[key] || 0.4; s = Math.max(W / iw, (H * 0.58) / (ih * yh)); dx = (W - iw * s) / 2; dy = H * 0.58 - ih * yh * s; }
+    else { s = Math.max(W / iw, H / ih); dx = (W - iw * s) / 2; dy = (H - ih * s) * 0.45; }   // cover：中央を優先（縦に余るときは少し上寄り＝地平線と地面を残す）
+    ctx.imageSmoothingEnabled = true; try { ctx.imageSmoothingQuality = 'high'; } catch (err) { }
+    ctx.drawImage(img, Math.round(dx), Math.round(dy), Math.ceil(iw * s), Math.ceil(ih * s));
+    if (opts && opts.far && dy + ih * s < H) { ctx.fillStyle = '#2a2a2a'; ctx.fillRect(0, Math.floor(dy + ih * s), W, H); }
+    var tint = TINT_PLACES[key] && REGION_TINT[info.region];
+    if (tint) { ctx.save(); ctx.globalAlpha = tint[1]; ctx.globalCompositeOperation = 'color'; ctx.fillStyle = tint[0]; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+    if (info.night) {   // 夜：青く暗く（明るさは半分ほど。敵が見えなくならない程度）＋月明かり
+      ctx.save(); ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = '#7484c0'; ctx.fillRect(0, 0, W, H); ctx.restore();
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; var mg = ctx.createRadialGradient(W * 0.8, H * 0.12, 4, W * 0.8, H * 0.12, W * 0.35); mg.addColorStop(0, 'rgba(200,215,255,0.22)'); mg.addColorStop(1, 'rgba(200,215,255,0)'); ctx.fillStyle = mg; ctx.fillRect(0, 0, W, H); ctx.restore();
+    }
+    if (info.boss) { var col = info.bossColor || '255,60,80'; var g2 = ctx.createRadialGradient(W / 2, H * 0.42, 20, W / 2, H * 0.42, W * 0.7); g2.addColorStop(0, 'rgba(' + col + ',0.0)'); g2.addColorStop(1, 'rgba(' + col + ',0.2)'); ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H); var vg = ctx.createRadialGradient(W / 2, H * 0.45, H * 0.3, W / 2, H * 0.45, W * 0.75); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.4)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H); }
+    c._photo = key; return c;
+  }
+
   /* ---------- 静止画（戦闘の始めに1回） ---------- */
-  BG.render = function (info, W, H) {
+  BG.render = function (info, W, H, opts) {
+    if (info && BG.usePhoto()) { var pk = BG.photoKey(info); var pimg = pk ? BG.photo(pk) : null; if (pimg) { try { return renderPhoto(info, pimg, W, H, opts); } catch (err) { if (root.console) console.warn('戦闘背景の画像を描けません（従来の背景で表示）', err); } } }
     var c = document.createElement('canvas'); c.width = W; c.height = H; var ctx = c.getContext('2d');
     var place = info.place, P = PAL[info.region] || PAL.arcadia; var night = info.night; var hz = H * 0.58;
     var dark = night ? 0.45 : 1;
@@ -174,9 +233,16 @@
       Object.keys(res).forEach(function (k) { if (res[k] < bv && AU[k]) { bv = res[k]; best = k; } });
       var acc = bd.art && bd.art.c && bd.art.c.accent; bossColor = best ? AU[best] : (acc && /^#[0-9a-f]{6}$/i.test(acc) ? hex(acc).join(',') : '255,60,80');
     }
-    return { place: place, region: region, night: !!night, weather: weather, boss: boss, bossColor: bossColor };
+    // v6.6 山岳の差分画像：山道・峠・山脈のダンジョン（マップの名前・ID で確実にわかるものだけ。島・草原のフィールドなどは従来の草原）
+    var variant = null; var def0 = (root.MAP_DEFS && root.MAP_DEFS[mapId]) || {};
+    if (place === 'grassland' && kind === 'dungeon' && /山道|峠|山脈/.test(def0.name || '') && /pass|mountain/.test(mapId)) variant = 'grassland_mountain';
+    return { place: place, region: region, night: !!night, weather: weather, boss: boss, bossColor: bossColor, variant: variant };
   };
   BG.PAL = PAL;
   BG.PLACES = ['grassland', 'forest', 'cave', 'castle', 'mine', 'harbor', 'sea', 'desert', 'snow', 'volcano', 'magic_city', 'machine_city', 'sky', 'dark'];
+  // v6.6 画像の対応と場所の一覧がずれていないか（ずれていても動く：画像のない場所は従来の背景）
+  (function () { var miss = BG.PLACES.filter(function (k) { return !PHOTO[k]; }), extra = Object.keys(PHOTO).filter(function (k) { return BG.PLACES.indexOf(k) < 0; }); if ((miss.length || extra.length) && root.console) console.warn('戦闘背景の画像の対応がずれています', miss, extra); })();
+  // 地図に入ったら、その場所の戦闘背景を先に読み込んでおく（戦闘の始めに間に合うように。読み込み中は従来の背景）
+  if (root.World && root.World.enterHooks) root.World.enterHooks.push(function (m) { try { var d = root.State && root.State.data; BG.prefetch({ place: BG.placeOf(m.id, m.kind, null, d && d.aboard), region: BG.regionOf(m.id) }); } catch (err) { } });
   root.BattleBG65 = BG;
 })(typeof window !== 'undefined' ? window : globalThis);
