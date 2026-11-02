@@ -35,6 +35,14 @@ const SPRITE_LAYOUT = { 1: [[2.0, 3.0]], 2: [[1.5, 3.2], [2.9, 2.5]], 3: [[1.2, 
 const SPRITE_SLOTS = SPRITE_LAYOUT[4];
 // 戦闘の並び：'front'＝前後（味方が手前に後ろ姿で並び、奥に敵。ご要望で試作）／'side'＝左右（左に敵・右に味方）。3D設定・localStorage 'mtq3d-battle-layout'
 // v6.6 「前後」の並びの背景：'photo'＝戦闘背景の画像を画面いっぱいに（2D版と同じ絵。3Dの地面・景色は隠す）／'3d'＝以前の3Dの景色。3D設定・localStorage 'mtq3d-battle-bg'・URL ?bg=photo|3d
+// v6.6 敵の簡易の絵（コードで描く絵。画像ファイルを使わないので、3Dで必ず読める）。新しい画像を3Dで使えないときの代わり
+function altVisual(e) {
+  try {
+    if (e && e.art && G.MonsterArt && G.MonsterArt.image) { const c = G.MonsterArt.image(e.art, 3, 0); if (c && c.width && isClean(c)) return { img: c, w: c.width, h: c.height, smooth: false }; }
+    if (e && e.sprite && G.Sprites && G.Sprites.draw) { const c = document.createElement('canvas'); G.Sprites.draw(c, e.sprite, e.boss ? 9 : 6, false); if (c.width && isClean(c)) return { img: c, w: c.width, h: c.height, smooth: false }; }
+  } catch (err) { /* なし */ }
+  return null;
+}
 export function battleBgPref() { try { const q = /[?&]bg=(photo|3d)(&|$)/.exec(location.search); if (q) return q[1]; return localStorage.getItem('mtq3d-battle-bg') === '3d' ? '3d' : 'photo'; } catch (e) { return 'photo'; } }
 export function battleLayout() { try { const q = /[?&]layout=(front|side)(&|$)/.exec(location.search); if (q) return q[1]; return localStorage.getItem('mtq3d-battle-layout') === 'side' ? 'side' : 'front'; } catch (e) { return 'front'; } }
 // 前後の並び：敵は奥（z が小さい）に横一列（端ほど少し奥）、味方は手前（z≈4.6）に横一列
@@ -97,19 +105,43 @@ export class BattleActors3D {
     const ent = { i, e, art: null, ready: false, deadT: -1, vis: false }; this.enemies[i] = ent; this.want++;
     this.buildArt(ent); return ent;
   }
+  // v6.6 前後の並び：3Dの敵がまだ（絵の読み込み中など）のとき、2D版が代わりに描く位置。3Dの立ち位置（奥）に写す（以前は2D版の位置＝画面の中ほどで、味方の手前に重なった）
+  estRect(i, W, H, camera) {
+    const en = this.enemies[i]; let v = null; try { v = G.BattleUI && G.BattleUI.enemyVisual ? G.BattleUI.enemyVisual(en.e) : null; } catch (err) { v = null; } if (!v) return null;
+    const boss = !!en.e.boss; const crowd = this.scene && this.scene.b.enemies.length >= 4 ? 0.82 : 1;
+    const hgt = Math.max(0.9, Math.min(boss ? 6.2 : 3.8, v.h * PX2W * (boss ? 1.25 : 1.0) * crowd)); const wid = hgt * v.w / Math.max(1, v.h);
+    const p = this.enemyHome(i); const half = wid / 2;
+    const pts = [new THREE.Vector3(p.x - half, 0, p.z), new THREE.Vector3(p.x + half, 0, p.z), new THREE.Vector3(p.x - half, hgt, p.z), new THREE.Vector3(p.x + half, hgt, p.z)];
+    const sp = pts.map((q) => q.project(camera)); const xs = sp.map((q) => (q.x * 0.5 + 0.5) * W), ys = sp.map((q) => (-q.y * 0.5 + 0.5) * H);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys); const n = Math.max(1, this.enemies.length);
+    return { x: Math.round(x0), y: Math.round(y0), w: Math.max(24, Math.round(x1 - x0)), h: Math.max(24, Math.round(y1 - y0)), size: Math.max(24, Math.round(x1 - x0)), slot: W / (n + 1), smooth: v.smooth !== false, lift: 0, from3d: true, est: true };
+  }
   buildArt(ent) {
     const BU = G.BattleUI; let v = null; try { v = BU && BU.enemyVisual ? BU.enemyVisual(ent.e) : null; } catch (err) { v = null; }
     if (!v || !v.img) { ent.failed = true; return; }
     const img = v.img; const ok = img instanceof HTMLCanvasElement || (img.complete && (img.naturalWidth || 0) > 0);
     if (!ok) { ent.waitImg = img; return; }   // 読み込み中：次のフレームでもう一度
     const rd = readable(img); ent.waitClean = rd.state === 'loading';   // 別のサイト扱いの画像は CORS で読み直す（読み直し中は次のフレームでもう一度）
-    if (rd.state === 'loading') return;
-    if (rd.state !== 'ok') { ent.failed = true; ent.visImg = img; this.failedArt++; this.why = this.why || '敵の絵を読めない（別のサイト扱いの画像）'; return; }   // この敵は2D版の絵のまま（battle.js が描く）
+    if (rd.state === 'loading') { if (!ent.cleanT) ent.cleanT = performance.now(); if (performance.now() - ent.cleanT < 4000) return; }   // v6.6 読み直しが 4 秒で終わらなければ、下の簡易の絵へ
+    let src = rd.img, av = v;
+    // v6.6 敵の新しい絵（EnemyArt のキャンバス）が3Dで使えない → 同じ絵を CORS つきで読み直す（読み直し中は 2D 版が3Dの立ち位置に描く）
+    if (rd.state !== 'ok' && img instanceof HTMLCanvasElement && v.source === 'enemyart' && G.EnemyArt && G.EnemyArt.cleanVisual && !ent.cleanTried) {
+      if (!ent.cleanJob) { ent.cleanJob = G.EnemyArt.cleanVisual(ent.e.defId).then((cv) => { ent.cleanVis = cv && cv.img && isClean(cv.img) ? cv : null; ent.cleanTried = true; }, () => { ent.cleanTried = true; }); }
+      ent.waitClean = true; return;
+    }
+    if (rd.state !== 'ok' && ent.cleanVis) { src = ent.cleanVis.img; av = ent.cleanVis; ent.cors = true; }
+    else if (rd.state !== 'ok') {
+      // v6.6 絵を3Dで使えない（iPhone の Safari で別のサイト扱い・読み直しの失敗など）→ その敵の簡易の絵（コードで描く絵＝必ず読める）で3Dに立たせる
+      //   以前は 2D の絵を 2D の位置（画面の中ほど）に描いていたため、前後の並びでは味方の手前に重なった
+      const alt = altVisual(ent.e);
+      if (!alt) { ent.failed = true; ent.visImg = img; this.failedArt++; this.why = this.why || '敵の絵を読めない（別のサイト扱いの画像）'; return; }   // 簡易の絵も作れないときは2D版の絵のまま（battle.js が描く）
+      src = alt.img; av = alt; ent.alt = true; ent.waitClean = false; this.altArt = (this.altArt || 0) + 1; this.why = this.why || '敵の絵を3Dで読めない → 簡易の絵で表示';
+    }
     const old = ent.art, oldGroup = ent.group;
     try {
       const boss = !!ent.e.boss; const crowd = this.scene && this.scene.b.enemies.length >= 4 ? 0.82 : 1;
       const hgt = Math.max(0.9, Math.min(boss ? 6.2 : 3.8, v.h * PX2W * (boss ? 1.25 : 1.0) * crowd));
-      ent.art = buildArtVolume(rd.img, { height: hgt, aspect: v.w / Math.max(1, v.h), smooth: v.smooth !== false, depth: 0.15 });
+      ent.art = buildArtVolume(src, { height: hgt, aspect: av.w / Math.max(1, av.h), smooth: av.smooth !== false, depth: 0.15 });
       ent.lift = (v.lift || 0) * PX2W; ent.visImg = img; ent.source = v.source || null; ent.waitImg = null;
       const g = new THREE.Group(); g.name = 'enemy_' + ent.i; g.add(ent.art.mesh); ent.group = g; ent.art.mesh.position.y = ent.lift;
       const shadow = new THREE.Mesh(new THREE.CircleGeometry(1, 28), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.32, depthWrite: false })); shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.02;
@@ -282,7 +314,8 @@ export class BattleActors3D {
   }
   /* ---------- battle.js から：敵を画面へ写した矩形（HP バー・名前・数字・2D の演出の位置） ---------- */
   rect(i, W, H, camera) {
-    const en = this.enemies[i]; if (!en || !en.art || !en.ready) return null;
+    const en = this.enemies[i]; if (!en) return null;
+    if (!en.art || !en.ready) return this.layout === 'front' ? this.estRect(i, W, H, camera) : null;
     const p = en.group.position; const s = en.art.size; const half = s.w * 0.5; const y0 = Math.max(0, p.y) + (en.lift || 0);
     const pts = [new THREE.Vector3(p.x - half, y0, p.z), new THREE.Vector3(p.x + half, y0, p.z), new THREE.Vector3(p.x - half, y0 + s.h, p.z), new THREE.Vector3(p.x + half, y0 + s.h, p.z)];
     const sp = pts.map((v) => v.project(camera)); const xs = sp.map((v) => (v.x * 0.5 + 0.5) * W), ys = sp.map((v) => (-v.y * 0.5 + 0.5) * H);
@@ -318,7 +351,7 @@ export class BattleActors3D {
   drawn(i) { const en = this.enemies[i]; return !!(en && en.ready && en.art); }
   allReady() { let f = 0; for (const e of this.party.values()) if (e.failed && !e.ready) f++; for (const e of this.enemies) if (e && e.failed && !e.ready) f++; return this.want > 0 && this.ready + f >= this.want; }   // 読めずに2Dのままの敵・味方も「準備できた」に数える
   info() {
-    return { want: this.want, ready: this.ready, failedArt: this.failedArt,
+    return { want: this.want, ready: this.ready, failedArt: this.failedArt, altArt: this.altArt || 0,
       enemies: this.enemies.filter(Boolean).map((e) => ({ i: e.i, id: e.e.defId, source: e.source, ready: e.ready, vis: !!e.vis, size: e.art ? { w: +e.art.size.w.toFixed(2), h: +e.art.size.h.toFixed(2) } : null, tris: e.art ? e.art.stats.tris : 0, plan: e.plan ? e.plan.anim : null, dissolve: e.uniforms ? +e.uniforms.uDissolve.value.toFixed(2) : 0 })),
       style: this.style, party: [...this.party.values()].map((p) => ({ id: p.id, model: this.style === 'sprite' ? 'pixel:' + (p.kind || 'pending') : p.model, ready: p.ready, anim: p.ch ? p.ch.currentName : (p.plan ? p.plan.anim : p.dead ? 'Defeat' : 'Idle'), dead: p.dead, status: this.style === 'sprite' ? '2D' : (MODELS[p.model] ? MODELS[p.model].status : 'fallback') })),
       log: this.log.slice(-20), sync: this.sync.slice(-40) };

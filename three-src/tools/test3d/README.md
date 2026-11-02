@@ -44,6 +44,7 @@
 | touch2d.cjs | v6.6 触れたら入る（2D版の処理を jsdom で）：入口の横・上・下から触れる・範囲の中を歩くだけ・閉ざされた場所・隠し場所 |
 | p2_touch.js | v6.6 触れたら入る（3D版）：建物に向かって歩き、どこで入るか・閉ざされた場所・町から出た直後に入り直さないか |
 | p2_hpbar.js | v6.6 敵のHPバー：初期値は表示しない・「表示する」で出る（2D版の戦闘の画面の緑の画素を数える）・設定の項目があるか |
+| p2_frontorder.js | v6.6 前後の並び（スマホ）：味方が敵より手前に見えるか（足もとの画面の位置）。ORIGIN=CORS なしのサーバーで敵の絵を3Dで使えない状態（iPhone の Safari）を再現、CLEAN=fail／hang、DEV=端末名、AUTO=1、PORT=以前の版 |
 | p2_update.js | v6.6 更新のお知らせ：JS がすべて ?v= つきで読まれるか・版が違えば「新しい版があります」・戦闘中は読み込み直さない・探索中は自動セーブして読み込み直す（PAGE=2d／3d） |
 | p2_lampflicker.js | v6.6 夜の町の街灯のチラつき：歩きながら街灯ごとの明かりの急な変化を数える（PORT で以前の版と比べる） |
 | （ルート）tools/check-battle-backgrounds.js | 戦闘背景の画像：対応表＝BattleBG65.PLACES、ファイル・WebP・寸法（`node tools/check-battle-backgrounds.js`） |

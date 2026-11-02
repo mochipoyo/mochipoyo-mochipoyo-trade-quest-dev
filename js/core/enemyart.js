@@ -76,6 +76,22 @@
     });
     EA.pending[id] = p; return p;
   };
+  // v6.6 3D版用：同じ絵を CORS つき（crossOrigin）で読み直して作った「3Dで使える」版。iPhone の Safari で画像が別のサイト扱いになり、
+  //   ふつうに読んだ絵（キャンバス）を3D（WebGL）で使えないときだけ使う。2D版の表示は変えない。読めなければ null（3D側が簡易の絵にする）
+  EA.cleanVisual = function (id) {
+    var C = EA._clean || (EA._clean = {}); if (C[id]) return C[id];
+    if (!EA.adopted(id) || typeof root.Image === 'undefined' || !root.document) return Promise.resolve(null);
+    var r = BY[id];
+    C[id] = new Promise(function (resolve) {
+      var img = new root.Image(); img.crossOrigin = 'anonymous';
+      var done = false; var fin = function (v) { if (!done) { done = true; resolve(v); } };
+      img.onload = function () { try { fin(img.naturalWidth > 0 ? processImg(img, r) : null); } catch (err) { fin(null); } };
+      img.onerror = function () { fin(null); };
+      if (root.setTimeout) root.setTimeout(function () { fin(null); }, 8000);
+      img.src = base() + r.file + (r.file.indexOf('?') >= 0 ? '&' : '?') + 'cors=1';   // ふつうに読んだときの（CORS なしの）キャッシュを使わないように
+    });
+    return C[id];
+  };
   EA.visual = function (id) { if (!EA.adopted(id)) return null; var v = EA.ready[id]; if (v) touch(id); return v || null; };
   EA.isLoading = function (id) { return !!EA.pending[id]; };
   // その敵が呼ぶ仲間（特殊行動の summon）も一緒に
