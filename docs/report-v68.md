@@ -155,3 +155,13 @@ PC（1280×720）・iPhone 13 の縦（390×664）・横（664×390）の大き�
 - **3D版のテスト（Playwright）**：`p68_party.js`（18人×4方向・前後／左右・転職・旧セーブ・失敗と復帰・死亡と再戦・別のサイト）と、`p68b_newcomp.js`（追加の3人・ポン太）が成功
 - **3D版のビルド**：`three-src` で `vite build`（`3d/assets/main-7Kg3QpJ5.js`）。古いビルドのファイルは残している
 - **版の番号**：`tools/stamp-version.js` で付け直し、`--check` で確認
+
+## 9. 船に乗っているときの戦闘背景（2026-11-03 07:45 のご依頼）
+
+- 船（小型帆船・遠洋航海船）に乗っているときの戦闘は、ご提供の船の甲板の画像にした（`assets/battle-backgrounds/16_battle_ship_deck.webp`。PNG を WebP にしただけで、描き直しなし）
+- 変えたのはこの場面だけ：海の中・沈没船・礁のダンジョン（同じ「海」の場所）は従来の海の画像のまま。船を降りたあとは従来どおり。空を飛ぶ乗り物（飛空艇）は戦闘がないが、念のため対象外
+- 2D版：画像を画面いっぱいに描く。3D版：前後の並びは画像を画面いっぱいに（甲板の上に味方が後ろ姿で並ぶ）、左右の並びは遠景の板に画像（空・海・島）＋これまでの3Dの甲板
+- 船に乗った時点で画像を先に読み込む（`js/rpg/vehicle.js`）
+- 変えたファイル：`js/ui/battlebg65.js`・`js/rpg/vehicle.js`・`docs/battle-backgrounds-manifest.json`
+- 確かめたこと（作業環境）：jsdom（`docs/tools/v68/bg68test.js`・10項目。帆船・遠洋航海船は甲板／飛空艇・陸・海の中のダンジョンは従来）、関係する2D版のテスト（戦闘背景・港・航海・素材の一覧など）、3D版と2D版で戦闘を始めて画像が使われることを確認（`three-src/tools/test3d/p68c_shipbg.js`。画面：`docs/images/v68/shipdeck_battle.jpg`）
+- 確かめていないこと：実機と githack での表示

@@ -1,122 +1,127 @@
 {
-  "schemaVersion": 1,
-  "origin": "GitHub mochipoyo/mochipoyo-trade-quest main / js/ui/battlebg65.js BG.PLACES",
-  "assetsBase": "assets/battle-backgrounds/",
-  "imageSize": {
-    "width": 1672,
-    "height": 941,
-    "approximateAspectRatio": "16:9"
+ "schemaVersion": 1,
+ "origin": "GitHub mochipoyo/mochipoyo-trade-quest main / js/ui/battlebg65.js BG.PLACES",
+ "assetsBase": "assets/battle-backgrounds/",
+ "imageSize": {
+  "width": 1672,
+  "height": 941,
+  "approximateAspectRatio": "16:9"
+ },
+ "entries": {
+  "grassland": {
+   "path": "assets/battle-backgrounds/01_battle_grassland.webp",
+   "nameJa": "草原",
+   "source": "original",
+   "sourceDescription": "幻想牧歌の戦場と遠景の城都",
+   "layout": "background-only; enemies and UI are not baked in"
   },
-  "entries": {
-    "grassland": {
-      "path": "assets/battle-backgrounds/01_battle_grassland.webp",
-      "nameJa": "草原",
-      "source": "original",
-      "sourceDescription": "幻想牧歌の戦場と遠景の城都",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "forest": {
-      "path": "assets/battle-backgrounds/02_battle_forest.webp",
-      "nameJa": "森林",
-      "source": "original",
-      "sourceDescription": "陽光差す森の戦場と滝渓谷",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "cave": {
-      "path": "assets/battle-backgrounds/03_battle_cave.webp",
-      "nameJa": "洞窟",
-      "source": "original",
-      "sourceDescription": "幻想水晶洞窟の戦場",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "castle": {
-      "path": "assets/battle-backgrounds/04_battle_castle.webp",
-      "nameJa": "城内",
-      "source": "original",
-      "sourceDescription": "漆黒の玉座と炎の大聖堂",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "mine": {
-      "path": "assets/battle-backgrounds/05_battle_mine.webp",
-      "nameJa": "鉱山・坑道",
-      "source": "derived",
-      "sourceDescription": "洞窟画像から加工",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "harbor": {
-      "path": "assets/battle-backgrounds/06_battle_harbor.webp",
-      "nameJa": "港・海岸",
-      "source": "original",
-      "sourceDescription": "海を望む花咲く海岸バトルフィールド",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "sea": {
-      "path": "assets/battle-backgrounds/07_battle_sea.webp",
-      "nameJa": "海上・船上",
-      "source": "derived",
-      "sourceDescription": "生成された背景一覧画像の海辺部分を切り出して拡大",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "desert": {
-      "path": "assets/battle-backgrounds/08_battle_desert.webp",
-      "nameJa": "砂漠",
-      "source": "original",
-      "sourceDescription": "砂漠遺跡の古代戦場",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "snow": {
-      "path": "assets/battle-backgrounds/09_battle_snow.webp",
-      "nameJa": "雪原",
-      "source": "original",
-      "sourceDescription": "雪原遺跡と遠き城塞の絶景",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "volcano": {
-      "path": "assets/battle-backgrounds/10_battle_volcano.webp",
-      "nameJa": "火山",
-      "source": "original",
-      "sourceDescription": "灼熱火山荒野の戦場",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "magic_city": {
-      "path": "assets/battle-backgrounds/11_battle_magic_city.webp",
-      "nameJa": "魔導都市",
-      "source": "original",
-      "sourceDescription": "天空の魔法学院と星見の広場",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "machine_city": {
-      "path": "assets/battle-backgrounds/12_battle_machine_city.webp",
-      "nameJa": "機械都市",
-      "source": "derived",
-      "sourceDescription": "魔導都市画像を加工・回路演出追加",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "sky": {
-      "path": "assets/battle-backgrounds/13_battle_sky.webp",
-      "nameJa": "天空・浮遊島",
-      "source": "derived",
-      "sourceDescription": "生成された背景一覧画像の天空部分を切り出して拡大",
-      "layout": "background-only; enemies and UI are not baked in"
-    },
-    "dark": {
-      "path": "assets/battle-backgrounds/14_battle_dark.webp",
-      "nameJa": "暗黒大陸",
-      "source": "derived",
-      "sourceDescription": "火山画像を暗黒化・日食演出追加",
-      "layout": "background-only; enemies and UI are not baked in"
-    }
+  "forest": {
+   "path": "assets/battle-backgrounds/02_battle_forest.webp",
+   "nameJa": "森林",
+   "source": "original",
+   "sourceDescription": "陽光差す森の戦場と滝渓谷",
+   "layout": "background-only; enemies and UI are not baked in"
   },
-  "optionalVariants": {
-    "grassland_mountain": {
-      "path": "assets/battle-backgrounds/15_battle_grassland_mountain.webp",
-      "usage": "apply only when reliably identified mountain/pass/highland biome; do not change existing placeOf mapping based on guesses"
-    }
+  "cave": {
+   "path": "assets/battle-backgrounds/03_battle_cave.webp",
+   "nameJa": "洞窟",
+   "source": "original",
+   "sourceDescription": "幻想水晶洞窟の戦場",
+   "layout": "background-only; enemies and UI are not baked in"
   },
-  "warnings": [
-    "Source-original is 1672x941; not 1920x1080. All output WebP files are 1672x941.",
-    "mine/machine_city/dark are transformed from original assets. Sea and sky are enlarged from concept-sheet crops and have lower native detail.",
-    "Static image replaces 2D BattleBG65 background, but 3D BattleStage3D.frame currently takes precedence when available.",
-    "Keep existing procedural backgrounds and effects as a fallback, do not rename existing game map IDs."
-  ]
+  "castle": {
+   "path": "assets/battle-backgrounds/04_battle_castle.webp",
+   "nameJa": "城内",
+   "source": "original",
+   "sourceDescription": "漆黒の玉座と炎の大聖堂",
+   "layout": "background-only; enemies and UI are not baked in"
+  },
+  "mine": {
+   "path": "assets/battle-backgrounds/05_battle_mine.webp",
+   "nameJa": "鉱山・坑道",
+   "source": "derived",
+   "sourceDescription": "洞窟画像から加工",
+   "layout": "background-only; enemies and UI are not baked in"
+  },
+  "harbor": {
+   "path": "assets/battle-backgrounds/06_battle_harbor.webp",
+   "nameJa": "港・海岸",
+   "source": "original",
+   "sourceDescription": "海を望む花咲く海岸バトルフィールド",
+   "layout": "background-only; enemies and UI are not baked in"
+  },
+  "sea": {
+   "path": "assets/battle-backgrounds/07_battle_sea.webp",
+   "nameJa": "海上・船上",
+   "source": "derived",
+   "sourceDescription": "生成された背景一覧画像の海辺部分を切り出して拡大",
+   "layout": "background-only; enemies and UI are not baked in"
+  },
+  "desert": {
+   "path": "assets/battle-backgrounds/08_battle_desert.webp",
+   "nameJa": "砂漠",
+   "source": "original",
+   "sourceDescription": "砂漠遺跡の古代戦場",
+   "layout": "background-only; enemies and UI are not baked in"
+  },
+  "snow": {
+   "path": "assets/battle-backgrounds/09_battle_snow.webp",
+   "nameJa": "雪原",
+   "source": "original",
+   "sourceDescription": "雪原遺跡と遠き城塞の絶景",
+   "layout": "background-only; enemies and UI are not baked in"
+  },
+  "volcano": {
+   "path": "assets/battle-backgrounds/10_battle_volcano.webp",
+   "nameJa": "火山",
+   "source": "original",
+   "sourceDescription": "灼熱火山荒野の戦場",
+   "layout": "background-only; enemies and UI are not baked in"
+  },
+  "magic_city": {
+   "path": "assets/battle-backgrounds/11_battle_magic_city.webp",
+   "nameJa": "魔導都市",
+   "source": "original",
+   "sourceDescription": "天空の魔法学院と星見の広場",
+   "layout": "background-only; enemies and UI are not baked in"
+  },
+  "machine_city": {
+   "path": "assets/battle-backgrounds/12_battle_machine_city.webp",
+   "nameJa": "機械都市",
+   "source": "derived",
+   "sourceDescription": "魔導都市画像を加工・回路演出追加",
+   "layout": "background-only; enemies and UI are not baked in"
+  },
+  "sky": {
+   "path": "assets/battle-backgrounds/13_battle_sky.webp",
+   "nameJa": "天空・浮遊島",
+   "source": "derived",
+   "sourceDescription": "生成された背景一覧画像の天空部分を切り出して拡大",
+   "layout": "background-only; enemies and UI are not baked in"
+  },
+  "dark": {
+   "path": "assets/battle-backgrounds/14_battle_dark.webp",
+   "nameJa": "暗黒大陸",
+   "source": "derived",
+   "sourceDescription": "火山画像を暗黒化・日食演出追加",
+   "layout": "background-only; enemies and UI are not baked in"
+  }
+ },
+ "optionalVariants": {
+  "grassland_mountain": {
+   "path": "assets/battle-backgrounds/15_battle_grassland_mountain.webp",
+   "usage": "apply only when reliably identified mountain/pass/highland biome; do not change existing placeOf mapping based on guesses"
+  },
+  "ship_deck": {
+   "path": "assets/battle-backgrounds/16_battle_ship_deck.webp",
+   "usage": "v6.8（2026-11-03 のご依頼・ご提供の画像）：船（小型帆船・遠洋航海船）に乗っているときの戦闘だけ。海底・沈没船・礁のダンジョンは従来の sea の画像のまま",
+   "source": "ご提供の PNG（1672×941）を WebP（品質86）にしただけ。描き直しなし"
+  }
+ },
+ "warnings": [
+  "Source-original is 1672x941; not 1920x1080. All output WebP files are 1672x941.",
+  "mine/machine_city/dark are transformed from original assets. Sea and sky are enlarged from concept-sheet crops and have lower native detail.",
+  "Static image replaces 2D BattleBG65 background, but 3D BattleStage3D.frame currently takes precedence when available.",
+  "Keep existing procedural backgrounds and effects as a fallback, do not rename existing game map IDs."
+ ]
 }

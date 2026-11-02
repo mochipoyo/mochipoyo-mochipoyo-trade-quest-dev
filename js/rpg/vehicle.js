@@ -62,7 +62,9 @@
     var vid = Vehicle.at(map.id, nx, ny); if (vid) return { ok: true, board: vid };
     return null;   // 乗り物とは無関係（通常の判定へ）
   };
-  Vehicle.board = function (id, map, x, y) { var d = D(); d.aboard = id; var s = V()[id]; s.map = map.id; s.x = x; s.y = y; s.port = { map: map.id, x: x, y: y }; };
+  Vehicle.board = function (id, map, x, y) { var d = D(); d.aboard = id; var s = V()[id]; s.map = map.id; s.x = x; s.y = y; s.port = { map: map.id, x: x, y: y };
+    try { var BG = root.BattleBG65; if (BG && BG.onShip && BG.onShip(id)) BG.prefetch({ place: 'sea', variant: 'ship_deck' }); } catch (e) { }   // v6.8 船の甲板の戦闘背景を先に読み込む
+  };
   Vehicle.disembark = function () { var d = D(); d.aboard = null; };
   // 乗船中に1歩進んだあと：乗り物の位置を更新
   Vehicle.syncToPlayer = function (map, x, y) { var d = D(); if (!d.aboard) return; var s = V()[d.aboard]; s.map = map.id; s.x = x; s.y = y; };

@@ -29,6 +29,8 @@
   };
   // 場所の種類（14）。マップの名前・出現地帯の名前・地域で決める（建物の中で外の景色を出さない）
   var REGION_PLACE = { machine: 'machine_city', magicka: 'magic_city', sky: 'sky', dark: 'dark', desert: 'desert', dragon: 'volcano', snow: 'snow' };
+  // v6.8 乗り物が「船」か（水の上を進み、空を飛ばないもの＝小型帆船・遠洋航海船）
+  BG.onShip = function (vid) { var V = root.VEHICLES && root.VEHICLES[vid]; if (!V) return true; var t = V.terrain || []; return t.indexOf('water') >= 0 && t.indexOf('*') < 0; };
   BG.placeOf = function (mapId, kind, zone, aboard) {
     var def = (root.MAP_DEFS && root.MAP_DEFS[mapId]) || {}; var r = BG.regionOf(mapId);
     var s = (def.name || '') + ' ' + (zone || '') + ' ' + (mapId || '');
@@ -81,9 +83,9 @@
      ・パスは index.html と同じ場所を基準（Assets.base）。3d/index.html からも、GitHub Pages のサブパスでも同じ画像を指す */
   var PHOTO_DIR = 'assets/battle-backgrounds/';
   var PHOTO = { grassland: '01_battle_grassland.webp', forest: '02_battle_forest.webp', cave: '03_battle_cave.webp', castle: '04_battle_castle.webp', mine: '05_battle_mine.webp', harbor: '06_battle_harbor.webp', sea: '07_battle_sea.webp', desert: '08_battle_desert.webp', snow: '09_battle_snow.webp', volcano: '10_battle_volcano.webp', magic_city: '11_battle_magic_city.webp', machine_city: '12_battle_machine_city.webp', sky: '13_battle_sky.webp', dark: '14_battle_dark.webp' };
-  var PHOTO_VARIANT = { grassland_mountain: '15_battle_grassland_mountain.webp' };
+  var PHOTO_VARIANT = { grassland_mountain: '15_battle_grassland_mountain.webp', ship_deck: '16_battle_ship_deck.webp' };   // v6.8 船の甲板（船に乗っているときの戦闘）
   // 画像の中の地平線（遠景と地面の境）の高さ（画像の高さに対する割合）。3D版の遠景の板では、ここを3Dの地平線に合わせ、絵の地面は3Dの地面の下に隠す（地面が二重にならない）
-  var PHOTO_HORIZON = { grassland: 0.40, forest: 0.40, cave: 0.40, castle: 0.44, mine: 0.40, harbor: 0.40, sea: 0.34, desert: 0.40, snow: 0.40, volcano: 0.40, magic_city: 0.42, machine_city: 0.42, sky: 0.42, dark: 0.40, grassland_mountain: 0.40 };
+  var PHOTO_HORIZON = { grassland: 0.40, forest: 0.40, cave: 0.40, castle: 0.44, mine: 0.40, harbor: 0.40, sea: 0.34, desert: 0.40, snow: 0.40, volcano: 0.40, magic_city: 0.42, machine_city: 0.42, sky: 0.42, dark: 0.40, grassland_mountain: 0.40, ship_deck: 0.35 };
   // 地域の色を薄く重ねる（画像の景色と地域が合わない組み合わせだけ。例：灰の地方の草原は灰色がかる）
   var REGION_TINT = { grania: ['#8a8070', 0.30], kalion: ['#c8b48a', 0.12], tempus: ['#b8a0d0', 0.14], islands: ['#9ae0e8', 0.08] };
   var TINT_PLACES = { grassland: 1, forest: 1, cave: 1, castle: 1, harbor: 1, mine: 1, grassland_mountain: 1 };
@@ -238,6 +240,8 @@
     if (place === 'grassland' && kind === 'dungeon' && /山道|峠|山脈/.test(def0.name || '') && /pass|mountain/.test(mapId)) variant = 'grassland_mountain';
     // v6.7 フィールドの出現地帯の名前が「荒野・荒地・山脈・山地」のとき（地帯の名前はデータで決まっていて確実）は、岩場と山の差分画像
     if (place === 'grassland' && kind === 'field' && /荒野|荒地|山脈|山地/.test((opts && opts.zone) || '')) variant = 'grassland_mountain';
+    // v6.8 船に乗っているときの戦闘（海の上）は船の甲板の画像。海底・沈没船・礁のダンジョン（同じ「sea」）は従来の海の画像のまま。空を飛ぶ乗り物（飛空艇など）は対象外
+    if (place === 'sea' && d && d.aboard && BG.onShip(d.aboard)) variant = 'ship_deck';
     return { place: place, region: region, night: !!night, weather: weather, boss: boss, bossColor: bossColor, variant: variant };
   };
   BG.PAL = PAL;
@@ -245,6 +249,6 @@
   // v6.6 画像の対応と場所の一覧がずれていないか（ずれていても動く：画像のない場所は従来の背景）
   (function () { var miss = BG.PLACES.filter(function (k) { return !PHOTO[k]; }), extra = Object.keys(PHOTO).filter(function (k) { return BG.PLACES.indexOf(k) < 0; }); if ((miss.length || extra.length) && root.console) console.warn('戦闘背景の画像の対応がずれています', miss, extra); })();
   // 地図に入ったら、その場所の戦闘背景を先に読み込んでおく（戦闘の始めに間に合うように。読み込み中は従来の背景）
-  if (root.World && root.World.enterHooks) root.World.enterHooks.push(function (m) { try { var d = root.State && root.State.data; BG.prefetch({ place: BG.placeOf(m.id, m.kind, null, d && d.aboard), region: BG.regionOf(m.id) }); } catch (err) { } });
+  if (root.World && root.World.enterHooks) root.World.enterHooks.push(function (m) { try { var d = root.State && root.State.data; var pl = BG.placeOf(m.id, m.kind, null, d && d.aboard); BG.prefetch({ place: pl, region: BG.regionOf(m.id), variant: pl === 'sea' && d && d.aboard && BG.onShip(d.aboard) ? 'ship_deck' : null }); } catch (err) { } });
   root.BattleBG65 = BG;
 })(typeof window !== 'undefined' ? window : globalThis);
