@@ -33,6 +33,13 @@ const SPRITE_H = 1.42;   // 味方のドット絵の高さ（ワールド単位�
 // ドット絵の味方：前後2列で互い違い（参考画像の並び）。人数ごとに、隣と重なりにくい間隔（約1.1）で右に並べる
 const SPRITE_LAYOUT = { 1: [[2.0, 3.0]], 2: [[1.5, 3.2], [2.9, 2.5]], 3: [[1.2, 3.3], [2.45, 2.55], [3.65, 3.3]], 4: [[0.95, 3.4], [2.1, 2.6], [3.2, 3.4], [4.3, 2.6]] };
 const SPRITE_SLOTS = SPRITE_LAYOUT[4];
+// 戦闘の並び：'front'＝前後（味方が手前に後ろ姿で並び、奥に敵。ご要望で試作）／'side'＝左右（左に敵・右に味方）。3D設定・localStorage 'mtq3d-battle-layout'
+export function battleLayout() { try { const q = /[?&]layout=(front|side)(&|$)/.exec(location.search); if (q) return q[1]; return localStorage.getItem('mtq3d-battle-layout') === 'side' ? 'side' : 'front'; } catch (e) { return 'front'; } }
+// 前後の並び：敵は奥（z が小さい）に横一列（端ほど少し奥）、味方は手前（z≈4.6）に横一列
+const FRONT_ENEMY = { 1: [[0, -0.6]], 2: [[-1.5, -0.7], [1.5, -0.7]], 3: [[-2.7, -0.9], [0, -0.4], [2.7, -0.9]], 4: [[-3.5, -1.2], [-1.2, -0.5], [1.2, -0.5], [3.5, -1.2]] };
+const FRONT_ENEMY_SLOTS = [[-3.5, -1.2], [-1.2, -0.5], [1.2, -0.5], [3.5, -1.2], [-2.4, -2.6], [2.4, -2.6], [0, -2.9], [-4.6, -2.4]];
+const FRONT_PARTY = { 1: [[0, 4.6]], 2: [[-0.5, 4.6], [0.5, 4.6]], 3: [[-0.95, 4.6], [0, 4.7], [0.95, 4.6]], 4: [[-1.42, 4.6], [-0.47, 4.7], [0.47, 4.7], [1.42, 4.6]] };
+const FRONT_SPRITE_H = 0.95;   // 手前の味方（後ろ姿のドット絵。元の絵は 16×24 ドット）の高さ
 // 味方の見た目：'sprite'＝2D版のドット絵のまま並べる（ご指示の構図）／'model'＝3Dモデル（開発の確認用。URL に ?party=model）
 // 立ち位置の横の広がり（スマホの縦画面でカメラを寄せるため。BattleStage3D.fitCamera）。enemyHome / partyHome と同じ表から
 export function layoutSpan(nEnemies, nParty, bossFirst) {
@@ -61,13 +68,22 @@ function partyPixelArt(a) {
   return wait ? { wait: true } : null;
 }
 
+// 前後の並びの味方：歩行のドット絵の後ろ姿（上向き）→ なければ2D版の簡易ドットの後ろ姿 → なければ立ち絵（正面）
+function partyPixelBack(a) {
+  const A = G.Assets; let wait = false;
+  try { const f = A && A.walkFrame ? A.walkFrame(a.sprite, 'up', 1) : null; if (f) { const r = readable(f.img); if (r.state === 'ok') { const c = cropPixels(r.img, f.sx, f.sy, f.w, f.h); if (c) return { canvas: c, kind: 'back' }; } else if (r.state === 'loading') wait = true; } } catch (e) { /* なし */ }
+  try { if (G.Chars && G.Chars.frame) { const fr = G.Chars.frame(a.sprite, 'up', 0); if (fr && isClean(fr)) { const c = cropPixels(fr); if (c) return { canvas: c, kind: 'back', wait }; } } } catch (e) { /* なし */ }
+  if (wait) return { wait: true };
+  return partyPixelArt(a);
+}
+
 export class BattleActors3D {
   constructor(stage, models) { this.stage = stage; this.models = models; this.party = new Map(); this.enemies = []; this.seenPops = new WeakSet(); this.seenAnims = new WeakSet(); this.log = []; this.sync = []; }
 
   setup(scene, S) {
     this.dispose(); this.scene = scene; this.S = S; const b = scene.b; this.ready = 0; this.want = 0; this.failedArt = 0;
     b.enemies.forEach((e, i) => this.addEnemy(e, i));
-    this.style = partyStyle();
+    this.style = partyStyle(); this.layout = this.stage && this.stage.layout === 'side' ? 'side' : 'front';
     b.party.forEach((a, j) => {
       const model = a.id === 'hero' ? 'hero' : characterModelFor(a.sprite); const ent = { id: a.id, j, a, model, ch: null, ready: false, dead: false, victory: false, tries: 0 }; this.party.set(a.id, ent); this.want++;
       if (this.style === 'sprite') { this.buildSprite(ent); return; }
@@ -105,12 +121,12 @@ export class BattleActors3D {
 
   // 味方：ドット絵を、ごく薄い板（光と影がつく）にして立てる。ドットはぼかさない
   buildSprite(ent) {
-    let art = null; try { art = partyPixelArt(ent.a); } catch (err) { console.warn('battle party sprite', err); art = null; }
+    const front = this.layout === 'front'; let art = null; try { art = front ? partyPixelBack(ent.a) : partyPixelArt(ent.a); } catch (err) { console.warn('battle party sprite', err); art = null; }
     const now = performance.now(); if (!ent.t0) ent.t0 = now; const waited = now - ent.t0;
     if (!art || (art.wait && !art.canvas)) { ent.tries++; if (!art && waited > 6000) { ent.failed = true; this.why = this.why || '味方のドット絵を読めない'; } return false; }   // 画像がまだ読めていない：次のフレームでもう一度
-    if (art.kind !== 'portrait' && waited < 4000) { ent.tries++; return false; }   // 立ち絵を少し待ってから（最大4秒）、歩行のドット絵で代用
+    if (art.kind !== 'portrait' && art.kind !== 'back' && waited < 4000) { ent.tries++; return false; }   // 立ち絵を少し待ってから（最大4秒）、歩行のドット絵で代用
     try {
-      const c = art.canvas; const h = art.kind === 'portrait' ? SPRITE_H : SPRITE_H * 0.85;
+      const c = art.canvas; const h = front ? FRONT_SPRITE_H : art.kind === 'portrait' ? SPRITE_H : SPRITE_H * 0.85;
       ent.art = buildArtVolume(c, { height: h, aspect: c.width / c.height, smooth: false, depth: 0.05, grid: Math.min(64, Math.max(24, c.width)) });
       ent.art.uniforms.uSway.value = 0.0; ent.art.uniforms.uSelf.value = 0.6; ent.art.mat.color.setScalar(0.62); ent.uniforms = ent.art.uniforms; ent.kind = art.kind;
       const g = new THREE.Group(); g.name = 'party_' + ent.id; g.add(ent.art.mesh); ent.group = g;
@@ -120,11 +136,15 @@ export class BattleActors3D {
   }
   enemyHome(i) {
     const n = this.enemies.length; const ent = this.enemies[i];
+    if (this.layout === 'front') {   // 前後の並び：奥に横一列（ボス1体は中央の少し奥）
+      if (n === 1 || (ent && ent.e.boss && n <= 2 && i === 0)) return new THREE.Vector3(n === 2 && i === 0 ? -1.0 : 0, 0, ent && ent.e.boss ? -1.4 : -0.6);
+      const fs = FRONT_ENEMY[n]; const f = fs ? fs[i] : FRONT_ENEMY_SLOTS[i % FRONT_ENEMY_SLOTS.length]; return new THREE.Vector3(f[0], 0, f[1]);
+    }
     if (n === 1 || (ent && ent.e.boss && n <= 2 && i === 0)) return new THREE.Vector3(-2.6, 0, 1.2);
     const set = ENEMY_LAYOUT[n]; const s = set ? set[i] : ENEMY_SLOTS[i % ENEMY_SLOTS.length];   // 数ごとの並び（名前・HPバーが重なりにくいよう、手前と奥で左右をずらす）
     return new THREE.Vector3(s[0], 0, s[1]);
   }
-  partyHome(j) { const n = this.scene && this.scene.b ? this.scene.b.party.length : 4; const L = this.style === 'sprite' ? (SPRITE_LAYOUT[n] || SPRITE_SLOTS) : PARTY_SLOTS; const s = L[j % L.length]; return new THREE.Vector3(s[0], 0, s[1]); }
+  partyHome(j) { const n = this.scene && this.scene.b ? this.scene.b.party.length : 4; const L = this.layout === 'front' ? (FRONT_PARTY[n] || FRONT_PARTY[4]) : this.style === 'sprite' ? (SPRITE_LAYOUT[n] || SPRITE_SLOTS) : PARTY_SLOTS; const s = L[j % L.length]; return new THREE.Vector3(s[0], 0, s[1]); }
 
   /* ---------- 2D版の演出の開始（FX65 'play'）：行動する人の動きを、命中の時刻に合わせて始める ---------- */
   onFx(d, familyOf) {
@@ -181,20 +201,22 @@ export class BattleActors3D {
       if (en.plan && now >= en.plan.at) {
         const p = en.plan; if (!p.started) { p.started = true; p.startedAt = now; }
         const k = (now - p.startedAt) * (p.ts || 1);
-        if (p.phys) { const f = k < ENEMY_STRIKE ? k / ENEMY_STRIKE : Math.max(0, 1 - (k - ENEMY_STRIKE) / 0.35); const tx = p.target ? p.target.x - 1.4 : home.x + 2; x += (tx - home.x) * 0.45 * f; z += ((p.target ? p.target.z : home.z) - home.z) * 0.3 * f; sx *= 1 + 0.06 * f; }
+        if (p.phys) { const f = k < ENEMY_STRIKE ? k / ENEMY_STRIKE : Math.max(0, 1 - (k - ENEMY_STRIKE) / 0.35);
+          if (this.layout === 'front') { const tz = p.target ? p.target.z - 1.8 : home.z + 2; z += (tz - home.z) * 0.4 * f; x += ((p.target ? p.target.x : home.x) - home.x) * 0.2 * f; sx *= 1 + 0.06 * f; sy *= 1 + 0.04 * f; }   // 前後：手前（味方の方）へ踏み込む
+          else { const tx = p.target ? p.target.x - 1.4 : home.x + 2; x += (tx - home.x) * 0.45 * f; z += ((p.target ? p.target.z : home.z) - home.z) * 0.3 * f; sx *= 1 + 0.06 * f; } }
         else { const f = Math.max(0, Math.sin(Math.min(1, k / 0.6) * Math.PI)); U.uGlow.value.setRGB(0.35 * f, 0.25 * f, 0.6 * f); sy *= 1 + 0.04 * f; }
         if (now > p.end) { en.plan = null; U.uGlow.value.setRGB(0, 0, 0); }
       }
       // 被弾：白く光って後ろ（左）へ
-      if (en.hitT) { const k = (now - en.hitT) / 0.32; if (k >= 1) { en.hitT = 0; U.uFlash.value = 0; } else { U.uFlash.value = 0.85 * (1 - k); x -= Math.sin(k * Math.PI) * 0.35; } }
+      if (en.hitT) { const k = (now - en.hitT) / 0.32; if (k >= 1) { en.hitT = 0; U.uFlash.value = 0; } else { U.uFlash.value = 0.85 * (1 - k); if (this.layout === 'front') z -= Math.sin(k * Math.PI) * 0.4; else x -= Math.sin(k * Math.PI) * 0.35; } }   // 前後：奥へ
       // 形態変化（phase）：赤く脈打つ
       if (en.phaseT) { const k = (now - en.phaseT) / 0.7; if (k >= 1) { en.phaseT = 0; U.uGlow.value.setRGB(0, 0, 0); } else U.uGlow.value.setRGB(0.7 * (1 - k), 0.08, 0.08); }
       // 倒れる：溶けるように消える／逃げる：左へ去る
-      if (en.deadT >= 0) { const k = (now - en.deadT) / en.deadDur; if (en.fled) { x -= k * 7; } else U.uDissolve.value = Math.min(1.05, k * 1.1); if (k > 1.05) vis = false; }
+      if (en.deadT >= 0) { const k = (now - en.deadT) / en.deadDur; if (en.fled) { if (this.layout === 'front') z -= k * 9; else x -= k * 7; } else U.uDissolve.value = Math.min(1.05, k * 1.1); if (k > 1.05) vis = false; }
       // 呼ばれて現れる：逆に溶け出てくる
       if (en.appearT) { const k = (now - en.appearT) / 0.5; if (k >= 1) { en.appearT = 0; U.uDissolve.value = 0; } else U.uDissolve.value = 1 - k; }
       if (ent0) y -= (1 - (1 - Math.pow(1 - entP, 3))) * (en.art.size.h + 0.5);   // ボスの登場：地面からせり上がる
-      g.position.set(x, y, z); g.rotation.y = 0.28; en.art.mesh.position.y = en.lift + bob; en.art.mesh.scale.set(sx, sy, 1);
+      g.position.set(x, y, z); g.rotation.y = this.layout === 'front' ? 0 : 0.28; en.art.mesh.position.y = en.lift + bob; en.art.mesh.scale.set(sx, sy, 1);   // 前後：正面（カメラ）を向く
       if (en.shadow) en.shadow.material.opacity = 0.32 * (1 - Math.min(1, U.uDissolve.value));
       g.visible = vis; en.vis = vis;
     });
@@ -234,25 +256,26 @@ export class BattleActors3D {
       const dead = !!(pv && (pv.dead || pv.hp <= 0));
       if (dead && !ent.dead) { ent.dead = true; ent.plan = null; ent.deadT = now; }
       if (!dead && ent.dead) { ent.dead = false; ent.reviveT = now; }
-      let x = home.x, y = 0, z = home.z, rz = 0, sx = 1, sy = 1 + Math.sin(t * 1.8 + ent.j) * 0.012;
+      const front = this.layout === 'front'; let x = home.x, y = 0, z = home.z, rz = 0, rx = 0, sx = 1, sy = 1 + Math.sin(t * 1.8 + ent.j) * 0.012;
       if (ent.plan && !dead) {
         const p = ent.plan; if (now >= p.at && !p.started) { p.started = true; p.startedAt = now; }
         const lead = p.lead / (p.ts || 1);
         if (p.phys && p.target && !p.self) {   // 打撃：相手の手前まで跳んで、斬って、戻る
           const k = Math.max(0, Math.min(1, (now - (p.at - 0.25)) / 0.3)), back = Math.max(0, Math.min(1, (now - ((p.startedAt || now) + lead + 0.2)) / 0.35)); const f = k * (1 - back);
-          x += (p.target.x + 1.7 - home.x) * f; z += (p.target.z + 0.3 - home.z) * f; y += Math.sin(f * Math.PI) * 0.25;
-          const sw = p.started ? Math.max(0, 1 - Math.abs((now - p.startedAt) - lead) / 0.18) : 0; rz = 0.08 * f + 0.22 * sw;   // 命中の瞬間に前へ傾く
+          if (front) { x += (p.target.x - home.x) * 0.85 * f; z += (p.target.z + 1.5 - home.z) * f; } else { x += (p.target.x + 1.7 - home.x) * f; z += (p.target.z + 0.3 - home.z) * f; }   // 前後：敵の手前まで（奥へ）跳ぶ
+          y += Math.sin(f * Math.PI) * 0.25;
+          const sw = p.started ? Math.max(0, 1 - Math.abs((now - p.startedAt) - lead) / 0.18) : 0; if (front) rx = -(0.08 * f + 0.3 * sw); else rz = 0.08 * f + 0.22 * sw;   // 命中の瞬間に前へ傾く
         } else if (p.started) {   // 呪文・道具：光って少し伸びる
           const f = Math.max(0, Math.sin(Math.min(1, (now - p.startedAt) / 0.7) * Math.PI)); U.uGlow.value.setRGB(0.25 * f, 0.35 * f, 0.6 * f); sy *= 1 + 0.05 * f;
         }
         if (now > p.end) { ent.plan = null; U.uGlow.value.setRGB(0, 0, 0); }
       }
-      if (ent.hitT) { const k = (now - ent.hitT) / 0.32; if (k >= 1) { ent.hitT = 0; U.uFlash.value = 0; } else { U.uFlash.value = 0.8 * (1 - k); x += Math.sin(k * Math.PI) * 0.3; rz -= 0.1 * Math.sin(k * Math.PI); } }
+      if (ent.hitT) { const k = (now - ent.hitT) / 0.32; if (k >= 1) { ent.hitT = 0; U.uFlash.value = 0; } else { U.uFlash.value = 0.8 * (1 - k); if (front) { z += Math.sin(k * Math.PI) * 0.3; rx += 0.12 * Math.sin(k * Math.PI); } else { x += Math.sin(k * Math.PI) * 0.3; rz -= 0.1 * Math.sin(k * Math.PI); } } }
       if (ent.dead) { const k = Math.min(1, (now - ent.deadT) / 0.4); rz = -1.35 * k; y = 0.05; ent.art.mat.color.setScalar(0.62 - 0.3 * k); }
       else if (ent.reviveT) { const k = Math.min(1, (now - ent.reviveT) / 0.4); ent.art.mat.color.setScalar(0.32 + 0.3 * k); if (k >= 1) ent.reviveT = 0; }
       if (scene.victory >= 0 && !ent.dead) { if (!ent.victory) { ent.victory = true; ent.vicT = now; } const k = now - ent.vicT; if (k < 1.6) y += Math.abs(Math.sin(k * 7)) * 0.3 * (1 - k / 1.6); }
       const defending = b.party.find((a) => a.id === ent.id && a.defending); if (defending && !ent.plan && !ent.dead) sy *= 0.96;
-      g.position.set(x, y, z); g.rotation.y = Math.atan2(cam.x - x, cam.z - z); m.rotation.z = rz; m.scale.set(sx, sy, 1);
+      g.position.set(x, y, z); g.rotation.y = Math.atan2(cam.x - x, cam.z - z); m.rotation.z = rz; m.rotation.x = rx; m.scale.set(sx, sy, 1);
     }
   }
   /* ---------- battle.js から：敵を画面へ写した矩形（HP バー・名前・数字・2D の演出の位置） ---------- */
@@ -271,8 +294,16 @@ export class BattleActors3D {
     const proj = (x, y, z) => { const v = new THREE.Vector3(x, y, z).project(camera); return (-v.y * 0.5 + 0.5) * H; };
     let partyTop = Infinity, bottom = -Infinity, n = 0;
     for (const ent of this.party.values()) { if (!ent.art) continue; const h = this.partyHome(ent.j); partyTop = Math.min(partyTop, proj(h.x, ent.art.size.h, h.z)); bottom = Math.max(bottom, proj(h.x, 0, h.z)); n++; }
-    for (const en of this.enemies) { if (!en || !en.art) continue; const h = this.enemyHome(en.i); bottom = Math.max(bottom, proj(h.x, 0, h.z)); }
-    return n ? { partyTop, bottom } : null;
+    let enemyTop = Infinity; for (const en of this.enemies) { if (!en || !en.art) continue; const h = this.enemyHome(en.i); bottom = Math.max(bottom, proj(h.x, 0, h.z)); enemyTop = Math.min(enemyTop, proj(h.x, en.art.size.h + (en.lift || 0), h.z)); }
+    return n ? { partyTop, enemyTop, bottom, front: this.layout === 'front' } : null;
+  }
+  // 立ち位置での、敵・味方全体の画面の範囲（applyFit 用）：敵の名前（頭の上）から、足もとの HP バー・味方の足もとまで
+  contentBox(W, H, camera) {
+    const P = (x, y, z) => { const v = new THREE.Vector3(x, y, z).project(camera); return [(v.x * 0.5 + 0.5) * W, (-v.y * 0.5 + 0.5) * H]; };
+    let l = Infinity, r = -Infinity, t = Infinity, b = -Infinity, n = 0; const add = (x, y) => { l = Math.min(l, x); r = Math.max(r, x); t = Math.min(t, y); b = Math.max(b, y); };
+    for (const ent of this.party.values()) { if (!ent.art) continue; const h = this.partyHome(ent.j), w = ent.art.size.w / 2; const a = P(h.x - w, ent.art.size.h, h.z), c = P(h.x + w, 0, h.z); add(a[0], a[1]); add(c[0], c[1]); n++; }
+    for (const en of this.enemies) { if (!en || !en.art) continue; const h = this.enemyHome(en.i), w = en.art.size.w / 2, lift = en.lift || 0; const a = P(h.x - w, en.art.size.h + lift, h.z), c = P(h.x + w, 0, h.z); add(a[0], a[1] - H * 0.06); add(c[0], c[1] + H * 0.03); n++; }   // 名前・HPバーのぶん
+    return n ? { l, r, t, b } : null;
   }
   // 味方のドット絵を画面に写した矩形（スマホの画面部品との重なりの確認用。3Dモデルの方式では null）
   partyRect(id, W, H, camera) {

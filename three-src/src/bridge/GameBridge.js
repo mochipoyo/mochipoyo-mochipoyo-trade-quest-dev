@@ -451,7 +451,7 @@ export class App3D {
   mobileBattleLayout(on) {
     const mob = on && document.body.classList.contains('mobile'); const ids = ['battle-msg', 'battle-party'];
     if (!mob) {
-      if (this._mbl) { this._mbl = false; this._cmdH = 0; ids.forEach((id) => { const el = document.getElementById(id); if (el) ['left', 'right', 'width', 'top', 'bottom'].forEach((k) => el.style.removeProperty(k)); }); document.documentElement.style.removeProperty('--g3-cmd-top'); if (this.battle) this.battle.band = null; }
+      if (this._mbl) { this._mbl = false; this._cmdH = 0; this._cmdW = 0; ids.forEach((id) => { const el = document.getElementById(id); if (el) ['left', 'right', 'width', 'top', 'bottom'].forEach((k) => el.style.removeProperty(k)); }); document.documentElement.style.removeProperty('--g3-cmd-top'); document.documentElement.style.removeProperty('--g3-cmd-bottom'); if (this.battle) this.battle.band = null; }
       return;
     }
     this._mbl = true; this._mblN = (this._mblN || 0) + 1; if (this._mblN % 3 !== 1) return;   // 3フレームに1回
@@ -466,10 +466,19 @@ export class App3D {
     if (auto && auto.classList.contains('on') && auto.offsetWidth) { put(auto, 'top', (below + 3) + 'px'); put(auto, 'left', (gl + gw - auto.offsetWidth - 4) + 'px'); below += 3 + auto.offsetHeight; }
     const gr = g.getBoundingClientRect(), ur = ui.getBoundingClientRect(); const cmdTop = Math.round(below + 4 - gt + (gr.top + g.clientTop - ur.top));
     const v = cmdTop + 'px'; if (document.documentElement.style.getPropertyValue('--g3-cmd-top') !== v) document.documentElement.style.setProperty('--g3-cmd-top', v);
-    const cmd = document.querySelector('.rw-list.cmd-list'); if (cmd && cmd.offsetHeight) this._cmdH = Math.max(this._cmdH || 0, cmd.offsetHeight);
+    const cmd = document.querySelector('.rw-list.cmd-list'); if (cmd && cmd.offsetHeight) { this._cmdH = Math.max(this._cmdH || 0, cmd.offsetHeight); this._cmdW = Math.max(this._cmdW || 0, cmd.offsetWidth); }
+    const front = !!(this.battle && this.battle.layout === 'front'); const land = document.body.classList.contains('m-land');
+    if (front && pan && pan.offsetHeight) {   // 前後の並び：コマンド欄は縦画面ならパーティ欄のすぐ上（横に並べる）、横画面なら左の列
+      const v2 = Math.round(ur.bottom - pan.getBoundingClientRect().top + 4) + 'px'; if (document.documentElement.style.getPropertyValue('--g3-cmd-bottom') !== v2) document.documentElement.style.setProperty('--g3-cmd-bottom', v2);
+    }
     if (this.battle && gh > 0) {
-      const cmdBottom = (below + 4 - gt + (this._cmdH || Math.min(120, gh * 0.3))) / gh; const panelTop = pan && pan.offsetHeight ? (pan.offsetTop - gt) / gh : 0.88;
-      const b = this.battle.band; if (!b || Math.abs(b.cmdBottom - cmdBottom) > 0.002 || Math.abs(b.panelTop - panelTop) > 0.002) this.battle.band = { cmdBottom, panelTop };
+      const panelTop = pan && pan.offsetHeight ? (pan.offsetTop - gt) / gh : 0.88; let nb;
+      if (front) {   // 敵・味方を入れる四角（ゲーム画面に対する割合）：上＝メッセージ欄・オートの下、下＝コマンド欄の上（縦）／パーティ欄の上（横）、左＝コマンド欄の右（横）
+        const t = (below + 2 - gt) / gh;
+        nb = land ? { front: true, l: ((this._cmdW || 124) + 8) / gw, r: 1, t, b: panelTop } : { front: true, l: 0, r: 1, t, b: panelTop - ((this._cmdH || 90) + 8) / gh };
+      } else nb = { cmdBottom: (below + 4 - gt + (this._cmdH || Math.min(120, gh * 0.3))) / gh, panelTop };
+      const b = this.battle.band; const same = b && Object.keys(nb).every((k) => typeof nb[k] !== 'number' ? b[k] === nb[k] : Math.abs((b[k] || 0) - nb[k]) < 0.002);
+      if (!same) this.battle.band = nb;
     }
   }
   /* ---------- 毎フレーム：表示の切り替えと描画 ---------- */
@@ -481,6 +490,7 @@ export class App3D {
     const inBattle = !!(G.BattleUI && G.BattleUI.scene && E.scenes.indexOf(G.BattleUI.scene) >= 0);
     const actorsOn = inBattle && !!(this.battle && this.battle.actorMode && !this.battleFailed && !this.battle.failed && this.battle.lastScene === G.BattleUI.scene);
     if (document.body.classList.contains('g3-actors') !== actorsOn) document.body.classList.toggle('g3-actors', actorsOn);
+    const frontOn = actorsOn && this.battle.layout === 'front'; if (document.body.classList.contains('g3-front') !== frontOn) document.body.classList.toggle('g3-front', frontOn);   // 前後の並び（画面部品の位置。UIOverlay）
     this.mobileBattleLayout(actorsOn);
     if (!this.ready) return;   // 3Dの素材の読み込み中：戦闘の画面部品の切り替えだけ
     const want = this.mode3D();

@@ -11,6 +11,18 @@ export class UIOverlay {
     const css = document.createElement('style'); css.textContent = `
       body.g3-actors .rw-list.cmd-list { left: auto !important; right: 12px !important; top: 52px !important; bottom: auto !important; max-height: 46% !important; overflow-y: auto; }
       @media (max-height: 520px) { body.g3-actors .rw-list.cmd-list { max-height: 40% !important; width: 190px !important; } }
+      /* 前後の並び（PC）：手前に並ぶ味方の後ろ姿にかからないよう、コマンド欄は左下、パーティ欄は右下に縦に並べる */
+      body.g3-front:not(.mobile) .rw-list.cmd-list { left: 10px !important; right: auto !important; top: auto !important; bottom: 10px !important; width: 152px !important; max-height: 50% !important; padding: 6px 6px !important; }
+      body.g3-front:not(.mobile) .rw-list.cmd-list .rw-item { font-size: 13px; padding: 3px 6px 3px 20px; }
+      body.g3-front:not(.mobile) .rw-list.cmd-list .rw-item .s { display: none; }   /* 説明の小さい文字は出さない（押せない項目は薄いまま） */
+      body.g3-front:not(.mobile) .rw-list.cmd-list .rw-title { font-size: 13px; padding-bottom: 2px; margin-bottom: 2px; }
+      body.g3-front:not(.mobile) #battle-party { left: auto !important; right: 10px !important; bottom: 10px !important; width: 168px; flex-direction: column; gap: 3px !important; padding: 4px 6px !important; box-sizing: border-box; }
+      body.g3-front:not(.mobile) #battle-party .bp { flex: none; font-size: 12px; line-height: 1.25; padding: 2px 6px; }
+      body.g3-front:not(.mobile) #battle-party .bp .bp-portrait { display: none !important; }
+      body.g3-front:not(.mobile) #battle-party .bp .bp-body { padding-right: 0 !important; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; }
+      body.g3-front:not(.mobile) #battle-party .bp .bp-name { flex: 0 0 100%; }
+      body.g3-front:not(.mobile) #battle-party .bp .bar.hp { flex: 0 0 100%; order: 5; height: 4px; margin: 1px 0 0; }
+      body.g3-front:not(.mobile) #battle-party .bp.acting { transform: translateX(-6px); }
       /* Phase 2（スマホ）：3Dの戦闘では、メッセージ欄・コマンド欄・パーティ欄を小さくして、3Dの敵・味方が隠れないようにする（位置は GameBridge.mobileBattleLayout） */
       body.mobile.g3-actors #battle-msg { box-sizing: border-box; padding: 3px 8px !important; font-size: 12px !important; line-height: 1.4; min-height: 0 !important; border-width: 2px !important; }
       body.mobile.g3-actors #battle-party { box-sizing: border-box; padding: 2px 3px !important; gap: 3px !important; border-width: 2px !important; }
@@ -31,6 +43,11 @@ export class UIOverlay {
       body.mobile.g3-actors .rw-list.cmd-list .rw-close { display: none !important; }   /* 前の人に戻るのは、操作パネルの「戻る」 */
       body.mobile.g3-actors #hud, body.mobile.g3-actors #place-label, body.mobile.g3-actors #minimap-layer { visibility: hidden !important; }   /* 探索の表示（小さくしたメッセージ欄の下からのぞくため） */
       body.mobile.m-land:not(.m-wide).g3-actors .mp-stick { opacity: .38 !important; } body.mobile.m-land:not(.m-wide).g3-actors .mp-b { opacity: .55 !important; }   /* 横画面で余白が狭いとき、画面に重なる操作パネルを薄く（味方・敵が透けて見える） */
+      /* 前後の並び（スマホ）：縦画面はパーティ欄のすぐ上に横へ並べる（3行）、横画面は左の列（GameBridge.mobileBattleLayout が位置の変数を入れる） */
+      body.mobile.g3-front.m-port .rw-list.cmd-list { top: auto !important; bottom: var(--g3-cmd-bottom, 64px) !important; left: 4px !important; right: 4px !important; width: auto !important; max-width: none !important; max-height: 40% !important; }
+      body.mobile.g3-front.m-port .rw-list.cmd-list .rw-items { grid-template-rows: repeat(3, auto) !important; grid-auto-columns: 1fr !important; }
+      body.mobile.g3-front.m-land .rw-list.cmd-list { top: var(--g3-cmd-top, 56px) !important; bottom: var(--g3-cmd-bottom, 50px) !important; left: 4px !important; right: auto !important; width: auto !important; max-height: none !important; }
+      body.mobile.g3-front.m-land .rw-list.cmd-list .rw-items { display: block !important; overflow-y: auto; }
       @media (min-width: 700px) and (min-height: 600px) { body.mobile.g3-actors #battle-party .bp { font-size: 12px !important; } body.mobile.g3-actors #battle-msg { font-size: 14px !important; } body.mobile.g3-actors .rw-list.cmd-list .rw-item { font-size: 14px !important; min-height: 32px !important; } body.mobile.g3-actors #auto-battle { font-size: 12px !important; } }   /* タブレット：画面が大きいので文字を少し大きく */
       @media (max-width: 400px) { body.mobile.g3-actors .rw-list.cmd-list .rw-item { font-size: 11px !important; padding-left: 14px !important; padding-right: 4px !important; } }
       #game3d { position: absolute; display: none; touch-action: none; outline: none; }
@@ -62,7 +79,8 @@ export class UIOverlay {
       '<div class="row"><span class="lab">時間帯の確認</span><button data-t="-1">ゲーム内</button><button data-t="0.3">朝</button><button data-t="0.5">昼</button><button data-t="0.74">夕</button><button data-t="0.95">夜</button></div>' +
       '<div class="row"><span class="lab">モーション</span><button data-m="Attack">攻撃</button><button data-m="Cast">呪文</button><button data-m="Hit">被弾</button><button data-m="Defend">防御</button><button data-m="Victory">勝利</button><button data-m="Defeat">倒れる</button></div>' +
       '<div class="row"><span class="lab">戦闘の3D</span><button data-b="on">3Dの舞台</button><button data-b="off">2Dの背景</button></div>' +
-      '<div class="row"><span class="lab">戦闘のキャラ</span><button data-ba="on">左右に並ぶ3Dの戦闘</button><button data-ba="off">以前の表示（2Dの絵）</button></div>' +
+      '<div class="row"><span class="lab">戦闘のキャラ</span><button data-ba="on">3Dの戦闘</button><button data-ba="off">以前の表示（2Dの絵）</button></div>' +
+      '<div class="row"><span class="lab">戦闘の並び</span><button data-bl="front">前後（味方が手前）</button><button data-bl="side">左右（敵が左・味方が右）</button></div>' +
       '<div class="row"><span class="lab">3Dの範囲</span><button data-sc="all">全マップ（汎用3D＝仮3D）</button><button data-sc="poyo">ポヨ村だけ（以前と同じ）</button></div>' +
       '<div class="row"><span class="lab">表示</span><span id="g3-fps">-- fps</span></div>' +
       '<div class="row"><span class="lab">状態</span><span id="g3-diag" style="max-width:300px;line-height:1.45;user-select:text;-webkit-user-select:text">--</span></div>' +
@@ -78,6 +96,7 @@ export class UIOverlay {
       if (b.dataset.m) app.emote(b.dataset.m);
       if (b.dataset.b && G3B()) G3B().setEnabled(b.dataset.b === 'on');   // v6.5 Phase D
       if (b.dataset.ba && G3B()) G3B().setActors(b.dataset.ba === 'on');   // Phase 2：次の戦闘から
+      if (b.dataset.bl) { try { localStorage.setItem('mtq3d-battle-layout', b.dataset.bl); } catch (e) { /* なし */ } }   // 戦闘の並び：次の戦闘から
       if (b.dataset.sc) setScope3D(b.dataset.sc);                         // Phase 1：すぐ反映（今いるマップも）
       this.refresh();
     });
@@ -114,6 +133,7 @@ export class UIOverlay {
     const pv = app.lighting ? app.lighting.preview : null;
     this.tools.querySelectorAll('[data-t]').forEach((b) => b.classList.toggle('on', (+b.dataset.t < 0 && pv === null) || +b.dataset.t === pv));
     const bs = G3B(); const on = bs ? bs.isEnabled() : true; this.tools.querySelectorAll('[data-b]').forEach((b) => b.classList.toggle('on', (b.dataset.b === 'on') === on));
+    let bl = 'front'; try { bl = localStorage.getItem('mtq3d-battle-layout') === 'side' ? 'side' : 'front'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-bl]').forEach((b) => b.classList.toggle('on', b.dataset.bl === bl));
     let ba = true; try { ba = localStorage.getItem('mtq3d-battle-actors') !== 'off'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-ba]').forEach((b) => b.classList.toggle('on', (b.dataset.ba === 'on') === ba));
     const sc = scope3D(); this.tools.querySelectorAll('[data-sc]').forEach((b) => b.classList.toggle('on', b.dataset.sc === sc));
   }

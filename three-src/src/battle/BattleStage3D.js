@@ -11,7 +11,7 @@
    ・失敗したとき（WebGL が使えない・作れない）は null を返し、2D版の背景のまま進む
    ========================================================= */
 import * as THREE from 'three';
-import { BattleActors3D, layoutSpan } from './BattleActors3D.js';
+import { BattleActors3D, layoutSpan, battleLayout } from './BattleActors3D.js';
 import { CUT } from '../engine/Cutout.js';
 import { isClean } from './readable.js';
 
@@ -119,22 +119,27 @@ export class BattleStage3D {
   // Phase 2：左右の敵・味方（ワールドで横 ±6 ほど）が画面の幅に入るよう、カメラの距離を画面の縦横比から決める（スマホの縦画面でも全員が入る）
   fitCamera(W, H) {
     const fovH = THREE.MathUtils.degToRad(this.camera.fov / 2); const a = Math.max(0.4, W / Math.max(1, H));
+    if (this.layout === 'front') {   // 前後の並び：味方の後ろの少し上から、奥の敵を見る。手前の味方（横±2.4）と奥の敵（横±4.2）が画面の幅に入る距離
+      const tw = Math.tan(fovH) * a; const D = Math.max(10.5, 4.6 + 2.5 / tw, 4.2 / tw - 0.9);
+      const y = 0.6 + D * 0.28; this.camBase.set(0, y, D); this.pitch = Math.atan2(y - 0.8, D - 1.5); this.fitFog(); return;
+    }
     // 縦画面（スマホ）：横幅に合わせるとカメラがとても遠くなるので、実際の立ち位置の広がりに合わせて寄せる（敵が少ないほど大きく映る）
     let half = 6.0, cx = 0; if (W < H && this.span) { half = Math.max(3.6, Math.min(6.4, (this.span.R - this.span.L) / 2)); cx = (this.span.L + this.span.R) / 2; }
     const need = half / (Math.tan(fovH) * a); const z = Math.max(11.5, 1.6 + need); const k = Math.tan(Math.atan2(1.8, 11.5));
     this.camBase.set(cx, 1.2 + z * k, z); this.pitch = Math.atan2(z * k, z); this.fitFog();
   }
   // 霧の距離をカメラの距離に合わせる（スマホの縦画面などでカメラを引くと、屋内の霧で全体が白くなるため。PC の画面の距離では変わらない）
-  fitFog() { const f = this.scene3 && this.scene3.fog; if (!f || !this.fogBase) return; const extra = Math.max(0, this.camBase.z - 12.5); f.near = this.fogBase[0] + extra; f.far = this.fogBase[1] + extra; }
+  fitFog() { const f = this.scene3 && this.scene3.fog; if (!f || !this.fogBase) return; const extra = Math.max(0, this.camBase.z - (this.layout === 'front' ? 11 : 12.5)); f.near = this.fogBase[0] + extra; f.far = this.fogBase[1] + extra; }   // 前後の並びは敵が奥にいるぶん早めに
   // スマホ（Phase 2）：画面部品のあいだの帯（コマンド欄の下〜パーティ欄の上。UIOverlay が this.band に入れる）に敵・味方が入るよう、3Dの絵を下へずらす
   //   ずらすのは描く範囲（setViewOffset）だけ。カメラの位置・向きと、HPバー・名前の位置合わせ（同じカメラで画面に写す）はそのまま合う
   applyBand(W, H) {
+    if ((this.band && this.band.front) || this.viewK) { this.applyFit(W, H); return; }
     const cam = this.camera, b = this.band, cur = this.viewDy || 0; let want = cur;
     if (!b) want = 0;
     else if (!this.entrance && this.actors && this.actors.allReady()) {
       const box = this.actors.homeBox(W, H, cam);
       if (box) {
-        const top = box.partyTop - cur, bottom = box.bottom - cur;   // ずらす前の位置
+        const top = (box.front ? Math.min(box.partyTop, box.enemyTop) : box.partyTop) - cur, bottom = box.bottom - cur;   // ずらす前の位置（前後の並びは、奥の敵の頭も含める）
         const dyMin = b.cmdBottom * H + H * 0.01 - top, dyMax = b.panelTop * H - H * 0.035 - bottom;   // 味方の頭がコマンド欄の下／足もと（敵のHPバー）がパーティ欄の上
         want = dyMin <= dyMax ? (dyMin + dyMax) / 2 : dyMax; want = Math.max(0, Math.min(H * 0.3, want));
       }
@@ -150,13 +155,34 @@ export class BattleStage3D {
     if (this.backMesh) { S.remove(this.backMesh); this.backMesh.geometry.dispose(); this.backMesh.material.dispose(); this.backMesh = null; }
     if (this.backTex) { this.backTex.dispose(); this.backTex = null; }
     this.backSize = W + 'x' + H; const far = this.far, fovH = THREE.MathUtils.degToRad(this.camera.fov / 2);
-    const dist = far + this.camBase.z, hz3 = 0.7; const topY = this.camBase.y - dist * Math.tan(this.pitch) + dist * Math.tan(fovH) * (this.actorMode && document.body.classList.contains('mobile') ? 1.65 : 1) + 1.5 + 6.6 * dist / 71;   // スマホは絵を下へずらす（applyBand）ぶん、上を広く覆う
-    const hgt = (topY - hz3) / 0.58, wid = 2 * dist * Math.tan(fovH) * (W / H) * 1.18; const bw = Math.min(2048, Math.round(H * wid / hgt));
+    const dist = far + this.camBase.z, hz3 = 0.7; const mob = this.actorMode && document.body.classList.contains('mobile'); const topY = this.camBase.y - dist * Math.tan(this.pitch) + dist * Math.tan(fovH) * (mob ? 2.2 : 1) + 1.5 + 6.6 * dist / 71;   // スマホは絵を下へずらす（applyBand）ぶん、上を広く覆う
+    const hgt = (topY - hz3) / 0.58, wid = 2 * dist * Math.tan(fovH) * (W / H) * (mob ? 2.1 : 1.18); const bw = Math.min(2048, Math.round(H * wid / hgt));   // スマホは描く範囲を広げる（applyFit）ぶん、広く覆う
     let bgc = BG.render(info, bw, H) || scene.bg;
     if (bgc && !isClean(bgc)) { console.warn('battle backdrop: 読めない背景（別のサイト扱い）→ 板なし'); this.backWhy = '遠景の絵を読めない'; bgc = null; }   // 汚れたキャンバスを WebGL に渡すと例外になる
     if (bgc) { const tex = new THREE.CanvasTexture(bgc); tex.colorSpace = THREE.SRGBColorSpace; this.backTex = tex;
       const m = new THREE.Mesh(new THREE.PlaneGeometry(wid, hgt), new THREE.MeshBasicMaterial({ map: tex, fog: false, toneMapped: false, depthWrite: false }));
       m.position.set(this.camBase.x, hz3 + hgt * 0.08, -far); m.renderOrder = -10; S.add(m); this.backMesh = m; }
+  }
+  // 前後の並び（スマホ）：敵・味方（頭の名前から足もとのHPバーまで）を、画面部品のあいだの四角に入れる。入らなければ小さく（最大 1.8 分の 1）、余れば中央へ
+  //   setViewOffset で描く範囲を広げてずらすだけなので、HPバー・名前・数字の位置合わせ（同じカメラで画面に写す）はそのまま合う
+  applyFit(W, H) {
+    const cam = this.camera, b = this.band && this.band.front ? this.band : null; const k0 = this.viewK || 1, ox0 = this.viewOx || 0, oy0 = this.viewOy || 0;
+    let tk = k0, tox = ox0, toy = oy0;
+    if (!b) { tk = 1; tox = 0; toy = 0; }
+    else if (!this.entrance && this.actors && this.actors.allReady()) {
+      const box = this.actors.contentBox(W, H, cam);
+      if (box) {
+        const L = box.l * k0 + ox0, R = box.r * k0 + ox0, T = box.t * k0 + oy0, B = box.b * k0 + oy0;   // 広げる前の座標
+        const bl = b.l * W + 4, br = b.r * W - 4, bt = b.t * H + 2, bb = b.b * H - 2; const aw = Math.max(40, br - bl), ah = Math.max(40, bb - bt);
+        tk = Math.max(1, Math.min(1.8, Math.max((R - L) / aw, (B - T) / ah)));
+        tox = (L + R) / 2 - ((bl + br) / 2) * tk; toy = (T + B) / 2 - ((bt + bb) / 2) * tk;
+      }
+    }
+    const lerp = (a, c) => (Math.abs(c - a) < 0.3 ? c : a + (c - a) * 0.25);
+    const k = Math.abs(tk - k0) < 0.002 ? tk : k0 + (tk - k0) * 0.25, ox = lerp(ox0, tox), oy = lerp(oy0, toy);
+    if (k === k0 && ox === ox0 && oy === oy0 && !!(cam.view && cam.view.enabled) === !(k === 1 && ox === 0 && oy === 0)) return;
+    this.viewK = k === 1 && ox === 0 && oy === 0 ? 0 : k; this.viewOx = ox; this.viewOy = oy;
+    if (!this.viewK) cam.clearViewOffset(); else cam.setViewOffset(W, H, ox, oy, W * k, H * k);
   }
   /* ---------- 舞台を作る ---------- */
   build(scene, W, H) {
@@ -168,7 +194,7 @@ export class BattleStage3D {
     // カメラ：敵の足もと（画面の高さの 56%）が地面の z=0 の線に重なるように
     this.camBase = new THREE.Vector3(0, 1.1, 9); const fovH = THREE.MathUtils.degToRad(this.camera.fov / 2); this.camera.aspect = W / H; this.camera.updateProjectionMatrix();
     const thetaPoint = Math.atan2(this.camBase.y, this.camBase.z); this.pitch = thetaPoint - Math.atan(0.12 * Math.tan(fovH));
-    this.actorMode = this.actorsEnabled(); this.viewDy = 0; this.camera.clearViewOffset();
+    this.actorMode = this.actorsEnabled(); this.viewDy = 0; this.viewK = 0; this.viewOx = 0; this.viewOy = 0; this.camera.clearViewOffset(); this.layout = this.actorMode ? battleLayout() : 'side';
     if (this.actorMode) { const bb = scene.b; this.span = bb ? layoutSpan(bb.enemies.length, bb.party.length, !!(bb.enemies[0] && bb.enemies[0].boss)) : null; this.fitCamera(W, H); }   // Phase 2：左に敵・右に味方を、斜め前の少し上から見る
     this.backdrop(scene, W, H);
     // 霧（遠くを背景の色に溶かす）
@@ -289,8 +315,8 @@ export class BattleStage3D {
           this.scatter(S, new THREE.BoxGeometry(0.9, 0.9, 0.9).translate(0, 0.45, 0), std('#9a7a4a'), 5, (i) => ({ x: (this.actorMode ? -7.6 : -3.4) + (i % 2) * 0.95, z: (this.actorMode ? -1.5 : 3) - i * 0.7, y: 0.27, ry: i * 0.4 }), true);
           const hull = new THREE.Mesh(new THREE.BoxGeometry(5, 1.4, 1.8), std('#6a4a2a')); hull.position.set(9, 0.5, -10); hull.castShadow = true; S.add(hull); const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 6), std('#5a3a22')); mast.position.set(9, 3.8, -10); S.add(mast);
           const sail = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 3.4), std('#f0eee0', { side: THREE.DoubleSide })); sail.position.set(9.2, 4.2, -10); S.add(sail); this.anim.push((dt, t) => { hull.position.y = 0.5 + Math.sin(t * 1.1) * 0.08; hull.rotation.z = Math.sin(t * 0.9) * 0.03; }); } break;
-      case 'sea': { const deck = new THREE.Mesh(new THREE.BoxGeometry(this.actorMode ? 18 : 14, 0.4, this.actorMode ? 9 : 5), std('#7a5a3a')); deck.position.set(0, 0.1, this.actorMode ? 0.4 : 5.4); deck.receiveShadow = true; S.add(deck); const rail = std('#5a3a22'); const r = new THREE.Mesh(new THREE.BoxGeometry(14, 0.15, 0.15), rail); r.position.set(0, 0.9, this.actorMode ? 4.8 : 3.0); S.add(r);
-          this.scatter(S, new THREE.BoxGeometry(0.12, 0.8, 0.12).translate(0, 0.4, 0), rail, 14, (i) => ({ x: -6.5 + i, z: this.actorMode ? 4.8 : 3.0, y: 0.25 }), true); this.anim.push((dt, t) => { this.rollY = Math.sin(t * 0.8) * 0.06; }); } break;
+      case 'sea': { const fr = this.actorMode && this.layout === 'front'; const railZ = fr ? -3.2 : this.actorMode ? 4.8 : 3.0; const deck = new THREE.Mesh(new THREE.BoxGeometry(this.actorMode ? 18 : 14, 0.4, fr ? 14 : this.actorMode ? 9 : 5), std('#7a5a3a')); deck.position.set(0, 0.1, fr ? 3.6 : this.actorMode ? 0.4 : 5.4); deck.receiveShadow = true; S.add(deck); const rail = std('#5a3a22'); const r = new THREE.Mesh(new THREE.BoxGeometry(14, 0.15, 0.15), rail); r.position.set(0, 0.9, railZ); S.add(r);   // 前後の並び：手すりは敵の奥
+          this.scatter(S, new THREE.BoxGeometry(0.12, 0.8, 0.12).translate(0, 0.4, 0), rail, 14, (i) => ({ x: -6.5 + i, z: railZ, y: 0.25 }), true); this.anim.push((dt, t) => { this.rollY = Math.sin(t * 0.8) * 0.06; }); } break;
       case 'desert': rocks('#a07a4a', 12, 5, -24, 1.4); { const cm = std('#4a8a4a'); this.scatter(S, new THREE.CylinderGeometry(0.22, 0.26, 1.8, 8).translate(0, 0.9, 0), cm, 8, (i) => { const p = this.side(i + 300, 6, 18, -22, 3); return { x: p.x, z: p.z, s: 0.8 + h1(i) * 0.6 }; }, true); this.scatter(S, new THREE.CylinderGeometry(0.14, 0.16, 0.8, 8).translate(0, 0.4, 0), cm, 8, (i) => { const p = this.side(i + 300, 6, 18, -22, 3); const s = 0.8 + h1(i) * 0.6; return { x: p.x + 0.35 * s, z: p.z, y: 0.9 * s, s, rz: -0.6 }; }, true); } break;
       case 'snow': tree('#2e5048', hi ? 30 : 14, 6, -30, true); rocks('#c8d6ea', 12, 6, -24); crystals('#a8dcff', 8, 5, -18, false); break;
       case 'volcano': rocks('#2a1a16', 22, 4.5, -26, 1.6); spikes('#1a0e0c', 14, 6, -26, 3);
