@@ -48,6 +48,9 @@
     tm_raizen: { hair: { style: 'short', color: '#3a4a5a' }, body: { type: 'armor', color: '#4a6a8a', color2: '#9aa8bc', color3: '#7fd0ff' }, legs: { color: '#2a3a4a' }, cape: '#2a4a6a', shield: '#4a6a8a', item: { type: 'sword', color: '#d8d8e8' } },
     tm_arzen: { hair: { style: 'ponytail', color: '#2a5a2a' }, body: { type: 'robe', color: '#3a5a2a', color2: '#b8f07f' }, legs: { color: '#1a3a1a' }, glasses: true, item: { type: 'book', color: '#f4f0e0', color2: '#b8f07f' } },
     tm_ordis: { hair: { style: 'long', color: '#fff6c8' }, beard: '#fffbe8', body: { type: 'robe', color: '#e8e0c0', color2: '#ffd24a' }, legs: { color: '#a89060' }, cape: '#8a7a50', item: { type: 'staff', color: '#8a5a2a', color2: '#ffd24a', glow: true } },
+    // v6.8 追加の仲間（戦闘の絵は assets/characters/party-directions-add68/。フィールドの歩行はこの色で描く）
+    kazuto: { hair: { style: 'spiky', color: '#e4e6ee' }, body: { type: 'armor', color: '#b8bcc8', color2: '#c9a24a', color3: '#a8282a' }, legs: { color: '#4a4a5a' }, cape: '#a8282a', shield: '#a8282a', item: { type: 'sword', color: '#d8d8e8' } },
+    mochipoyo: { hair: { style: 'short', color: '#e8b84a' }, body: { type: 'robe', color: '#1f2440', color2: '#c9a24a' }, legs: { color: '#2a2a3a' }, scarf: '#2f7a5a', item: { type: 'staff', color: '#5a3a1a', color2: '#3fd0c8' } },
     // 人間系の敵（戦闘用：正面フレームを拡大して使う）
     bandit: { hair: { style: 'short', color: '#2a1a0a' }, head: { type: 'bandana', color: '#8a1a1a' }, body: { type: 'tunic', color: '#5a3a1a', color2: '#8a1a1a' }, legs: { color: '#2a2a2a' }, item: { type: 'dagger', color: '#9a9aaa' }, scar: true },
     bandit_archer: { hair: { style: 'short', color: '#4a2a0a' }, head: { type: 'bandana', color: '#3a5a2a' }, body: { type: 'tunic', color: '#6a4a1a', color2: '#3a5a2a' }, legs: { color: '#2a2a2a' }, item: { type: 'bow', color: '#c9a06a' }, scar: true },

@@ -1,0 +1,198 @@
+{
+ "schemaVersion": 1,
+ "packVersion": "add68-1",
+ "date": "2026-11-02",
+ "canvas": [
+  320,
+  320
+ ],
+ "pivot": [
+  160,
+  304
+ ],
+ "directions": {
+  "front": "顔が手前",
+  "back": "背中が手前・顔は奥",
+  "left": "画面左を向く",
+  "right": "画面右を向く"
+ },
+ "note": "ご提供の画像（2026-11-02）から docs/tools/v68/cut_party68.py で切り出し（背景の除去・余白・縮小のみ。描き直しなし）",
+ "identityPolicy": "actor.id -> same actor base（v3 と同じ）",
+ "jobCostumesIncluded": false,
+ "actors": {
+  "kazuto": {
+   "id": "kazuto",
+   "name": "カズト",
+   "pivot": [
+    160,
+    304
+   ],
+   "worldHeightRatio": 1.04,
+   "scaleFromSource": 1.0,
+   "source": "kazuto_src",
+   "directions": {
+    "front": {
+     "path": "sprites/kazuto/front.png",
+     "source": "user_provided",
+     "sha256": "02eb6948d18c445e3f9f449b774cf9d83a64b304b63e8a5fb941a7a709466b02",
+     "opaqueBounds": [
+      40,
+      46,
+      289,
+      304
+     ]
+    },
+    "left": {
+     "path": "sprites/kazuto/left.png",
+     "source": "user_provided",
+     "sha256": "9f69f64ca7fbe0cac128ac24de6aed57b691ab58101a67ce732203da8c5a246e",
+     "opaqueBounds": [
+      53,
+      47,
+      314,
+      304
+     ]
+    },
+    "right": {
+     "path": "sprites/kazuto/right.png",
+     "source": "user_provided",
+     "sha256": "2b49ed45e445638f3502a63e33bb50016c018e508f7c5b00cd7a1cc9a3afeda6",
+     "opaqueBounds": [
+      49,
+      46,
+      308,
+      304
+     ]
+    },
+    "back": {
+     "path": "sprites/kazuto/back.png",
+     "source": "user_provided",
+     "sha256": "f71160e7c02c52ea5b0a69f842ff033c05eb1c2c1ce7285a5daf3bc228055c30",
+     "opaqueBounds": [
+      68,
+      47,
+      301,
+      304
+     ]
+    }
+   },
+   "referencePixelHeight": 258
+  },
+  "mochipoyo": {
+   "id": "mochipoyo",
+   "name": "もちぽよ",
+   "pivot": [
+    160,
+    304
+   ],
+   "worldHeightRatio": 1.0,
+   "scaleFromSource": 0.4894,
+   "source": "mochipoyo_src",
+   "directions": {
+    "front": {
+     "path": "sprites/mochipoyo/front.png",
+     "source": "user_provided",
+     "sha256": "250edfef752822cbeabea528405348399128f256c8e8409bc60bf6c8cfee14b5",
+     "opaqueBounds": [
+      22,
+      26,
+      294,
+      304
+     ]
+    },
+    "left": {
+     "path": "sprites/mochipoyo/left.png",
+     "source": "user_provided",
+     "sha256": "514ad77793d18991723248e73ea7dbae9159783452704a2837f91bfc29cf8f09",
+     "opaqueBounds": [
+      43,
+      27,
+      303,
+      304
+     ]
+    },
+    "right": {
+     "path": "sprites/mochipoyo/right.png",
+     "source": "user_provided",
+     "sha256": "38166c240374cb85ebcc351a6fc0d4f3e131e5d6e876031fc5ac08492c5b0d50",
+     "opaqueBounds": [
+      45,
+      29,
+      309,
+      304
+     ]
+    },
+    "back": {
+     "path": "sprites/mochipoyo/back.png",
+     "source": "user_provided",
+     "sha256": "62a8fffa6e0fc4310d923ff52e3e1e488ee124d49474bf0d69cb5211c6a32154",
+     "opaqueBounds": [
+      48,
+      28,
+      309,
+      304
+     ]
+    }
+   },
+   "referencePixelHeight": 278
+  },
+  "ponta": {
+   "id": "ponta",
+   "name": "神聖犬ポン太",
+   "pivot": [
+    160,
+    304
+   ],
+   "worldHeightRatio": 0.7,
+   "scaleFromSource": 1.0,
+   "source": "ponta_src",
+   "directions": {
+    "front": {
+     "path": "sprites/ponta/front.png",
+     "source": "user_provided",
+     "sha256": "8b339d0dcfcfc5fd76cf726414ddc8a928e00c87575e699aaa6cbf31aa7e9316",
+     "opaqueBounds": [
+      50,
+      103,
+      271,
+      304
+     ]
+    },
+    "left": {
+     "path": "sprites/ponta/left.png",
+     "source": "user_provided",
+     "sha256": "3ad3ecd1204fa2046fd4920eb31e28ea3f63e2f9b8b894fb4fb185155ddbd20e",
+     "opaqueBounds": [
+      42,
+      112,
+      259,
+      304
+     ]
+    },
+    "right": {
+     "path": "sprites/ponta/right.png",
+     "source": "user_provided",
+     "sha256": "3db4ea0ae5b9c4addd569f9fe31372096a50e44e686b6c46ccc94712cb38c0bb",
+     "opaqueBounds": [
+      62,
+      112,
+      281,
+      304
+     ]
+    },
+    "back": {
+     "path": "sprites/ponta/back.png",
+     "source": "user_provided",
+     "sha256": "31dc15f2474bc0bc708a3ee58d143c3773acc18f1e024f4e9a153ae07132fe5f",
+     "opaqueBounds": [
+      43,
+      105,
+      275,
+      304
+     ]
+    }
+   },
+   "referencePixelHeight": 201
+  }
+ }
+}

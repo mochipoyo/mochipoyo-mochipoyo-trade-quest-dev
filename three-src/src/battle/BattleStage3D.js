@@ -198,7 +198,7 @@ export class BattleStage3D {
     this.camBase = new THREE.Vector3(0, 1.1, 9); const fovH = THREE.MathUtils.degToRad(this.camera.fov / 2); this.camera.aspect = W / H; this.camera.updateProjectionMatrix();
     const thetaPoint = Math.atan2(this.camBase.y, this.camBase.z); this.pitch = thetaPoint - Math.atan(0.12 * Math.tan(fovH));
     this.actorMode = this.actorsEnabled(); this.viewDy = 0; this.viewK = 0; this.viewOx = 0; this.viewOy = 0; this.camera.clearViewOffset(); this.layout = this.actorMode ? battleLayout() : 'side';
-    if (this.actorMode) { const bb = scene.b; this.span = bb ? layoutSpan(bb.enemies.length, bb.party.length, !!(bb.enemies[0] && bb.enemies[0].boss)) : null; this.fitCamera(W, H); }   // Phase 2：左に敵・右に味方を、斜め前の少し上から見る
+    if (this.actorMode) { const bb = scene.b; this.span = bb ? layoutSpan(bb.enemies.length, bb.party.length, !!(bb.enemies[0] && bb.enemies[0].boss), !!bb.pet) : null; this.fitCamera(W, H); }   // Phase 2：左に敵・右に味方を、斜め前の少し上から見る
     this.backdrop(scene, W, H);
     // 霧（遠くを背景の色に溶かす）
     const fogC = col(indoor ? (place === 'castle' ? P.far : '#140e12') : (P.sky ? P.sky[1] : '#c0d4e8')); if (night) fogC.multiplyScalar(0.45);
@@ -426,6 +426,7 @@ export class BattleStage3D {
   rect(scene, i, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.rect(i, W, H, this.camera); }
   drawn(scene, i) { return !!(this.actorMode && this.actors && scene === this.lastScene && this.actors.drawn(i)); }
   partyPos(scene, id, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.partyPos(id, W, H, this.camera); }
+  petDrawn(scene) { return !!(this.actorMode && this.actors && scene === this.lastScene && this.actors.petDrawn()); }
   partyRect(scene, id, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.partyRect(id, W, H, this.camera); }
   // v6.6 「前後」の並び：戦闘背景の画像（2D版の背景の絵＝画面の大きさで作った cover の絵・夜・地域の色・ボスの色つき）を画面いっぱいの背景にし、
   //   3Dの地面・景色・遠景の板・霧を隠す（敵・味方・影・技の光・粒・ボスの紋章は3Dのまま）。画像がまだ・失敗・「軽量」・3D設定で「3Dの景色」のときは以前の3Dの景色

@@ -59,13 +59,16 @@ const FRONT_SPRITE_H = 0.95;   // 手前の味方（後ろ姿のドット絵。�
 const DIR_H_SIDE = SPRITE_H;
 const DIR_H_FRONT = 1.2;
 const DIR_WAIT = 2500;   // 新しい絵の読み込みを待つ最長（ミリ秒）。過ぎたら以前の絵で始め、読めたら差し替える
+// v6.8 神聖犬ポン太（4人とは別枠）の立ち位置：前後の並び＝味方の列の右・少し手前／左右の並び＝先頭の味方の前（敵の側）・カメラ寄り
+const PET_FRONT_DX = 0.95, PET_FRONT_Z = 5.0, PET_SIDE_DX = -0.85, PET_SIDE_Z = 0.6;   // 左右の並び：先頭の味方の手前（敵の側・カメラ寄り）
 // 開発の確認用：URL の ?partydir=front|back|left|right で、味方の向きを固定する（勝利の振り向きもしない）
 export function devPartyDir() { try { const q = /[?&]partydir=(front|back|left|right)(&|$)/.exec(location.search); return q ? q[1] : null; } catch (e) { return null; } }
 // 味方の見た目：'sprite'＝2D版のドット絵のまま並べる（ご指示の構図）／'model'＝3Dモデル（開発の確認用。URL に ?party=model）
 // 立ち位置の横の広がり（スマホの縦画面でカメラを寄せるため。BattleStage3D.fitCamera）。enemyHome / partyHome と同じ表から
-export function layoutSpan(nEnemies, nParty, bossFirst) {
+export function layoutSpan(nEnemies, nParty, bossFirst, hasPet) {
   const ex = []; for (let i = 0; i < nEnemies; i++) { if (nEnemies === 1 || (bossFirst && nEnemies <= 2 && i === 0)) ex.push(-2.6); else { const set = ENEMY_LAYOUT[nEnemies]; ex.push((set ? set[i] : ENEMY_SLOTS[i % ENEMY_SLOTS.length])[0]); } }
   const L = partyStyle() === 'sprite' ? (SPRITE_LAYOUT[nParty] || SPRITE_SLOTS) : PARTY_SLOTS; const px = []; for (let j = 0; j < nParty; j++) px.push(L[j % L.length][0]);
+  if (hasPet && px.length) px.push(px[0] + PET_SIDE_DX);   // v6.8 神聖犬ポン太（先頭の味方の前）
   if (!ex.length || !px.length) return null;
   return { L: Math.min(...ex) - (bossFirst ? 2.2 : 1.7), R: Math.max(...px) + 0.8 };   // 敵・味方の絵の半分の幅ほどの余白
 }
@@ -108,6 +111,8 @@ export class BattleActors3D {
     // v6.8 味方の向き：前後の並び＝背中（back）。左右の並び＝敵のいる側を向く（敵が左なら left、右なら right）。正面（front）は勝利のときだけ
     this.partyDir = devPartyDir() || this.sideDir(b);
     if (this.style === 'sprite') b.party.forEach((a) => { PD.retryFailed(a, [this.partyDir, 'front'], 1500); PD.load(a, this.partyDir); PD.load(a, 'front'); });   // 先読み（地図にいるあいだに読み込み済みならすぐ使える）
+    // v6.8 神聖犬ポン太：味方の板と同じしくみで、味方の右に立てる（id は 'ponta'。j = -1 で立ち位置は petHome）
+    if (b.pet && this.style === 'sprite') { const pa = { id: b.pet.id, sprite: b.pet.id, job: null, pet: true }; PD.retryFailed(pa, [this.partyDir, 'front'], 1500); PD.load(pa, this.partyDir); PD.load(pa, 'front'); const ent = { id: b.pet.id, j: -1, a: pa, pet: true, model: null, ch: null, ready: false, dead: false, victory: false, tries: 0 }; this.party.set(b.pet.id, ent); this.want++; this.buildSprite(ent); }
     b.party.forEach((a, j) => {
       const model = a.id === 'hero' ? 'hero' : characterModelFor(a.sprite); const ent = { id: a.id, j, a, model, ch: null, ready: false, dead: false, victory: false, tries: 0 }; this.party.set(a.id, ent); this.want++;
       if (this.style === 'sprite') { this.buildSprite(ent); return; }
@@ -237,7 +242,9 @@ export class BattleActors3D {
     const set = ENEMY_LAYOUT[n]; const s = set ? set[i] : ENEMY_SLOTS[i % ENEMY_SLOTS.length];   // 数ごとの並び（名前・HPバーが重なりにくいよう、手前と奥で左右をずらす）
     return new THREE.Vector3(s[0], 0, s[1]);
   }
-  partyHome(j) { const n = this.scene && this.scene.b ? this.scene.b.party.length : 4; const L = this.layout === 'front' ? (FRONT_PARTY[n] || FRONT_PARTY[4]) : this.style === 'sprite' ? (SPRITE_LAYOUT[n] || SPRITE_SLOTS) : PARTY_SLOTS; const s = L[j % L.length]; return new THREE.Vector3(s[0], 0, s[1]); }
+  petHome() { const n = this.scene && this.scene.b ? this.scene.b.party.length : 4; if (this.layout === 'front') { const last = this.partyHome(Math.max(0, n - 1)); return new THREE.Vector3(last.x + PET_FRONT_DX, 0, PET_FRONT_Z); } const first = this.partyHome(0); let zmax = first.z; for (let j = 1; j < n; j++) zmax = Math.max(zmax, this.partyHome(j).z); return new THREE.Vector3(first.x + PET_SIDE_DX, 0, zmax + PET_SIDE_Z); }
+  petDrawn() { for (const e of this.party.values()) if (e.pet) return !!(e.art && e.ready); return false; }
+  partyHome(j) { if (j < 0) return this.petHome(); const n = this.scene && this.scene.b ? this.scene.b.party.length : 4; const L = this.layout === 'front' ? (FRONT_PARTY[n] || FRONT_PARTY[4]) : this.style === 'sprite' ? (SPRITE_LAYOUT[n] || SPRITE_SLOTS) : PARTY_SLOTS; const s = L[j % L.length]; return new THREE.Vector3(s[0], 0, s[1]); }
 
   /* ---------- 2D版の演出の開始（FX65 'play'）：行動する人の動きを、命中の時刻に合わせて始める ---------- */
   onFx(d, familyOf) {
@@ -258,7 +265,7 @@ export class BattleActors3D {
     for (const a of all) { const p = a.plan; if (!p || !p.started || !p.targets || p.targets.indexOf(targetKey) < 0 || p.checked) continue; p.checked = true;
       const err = Math.round(((now - p.startedAt) * (p.ts || 1) - (p.lead || ATTACK_HIT)) * 1000 / (p.ts || 1)); this.sync.push({ who: p.key, target: targetKey, anim: p.anim, errMs: err }); if (this.sync.length > 200) this.sync.shift(); }
   }
-  actorOf(key) { if (!key) return null; const m = /^e:(\d+)$/.exec(key); if (m) return this.enemies[+m[1]] || null; return this.party.get(key.replace(/^p:/, '')) || null; }
+  actorOf(key) { if (!key) return null; const m = /^e:(\d+)$/.exec(key); if (m) return this.enemies[+m[1]] || null; return this.party.get(key.replace(/^(p|pet):/, '')) || null; }
   worldOf(key) { const a = this.actorOf(key); if (!a) return null; if (a.group) return a.group.position.clone(); if (a.ch) return a.ch.root.position.clone(); return a.i !== undefined ? this.enemyHome(a.i) : this.partyHome(a.j); }
 
   /* ---------- 毎フレーム ---------- */

@@ -8,7 +8,10 @@
 const { chromium, devices } = require('playwright'); const fs = require('fs'); const path = require('path');
 const PORT = process.env.PORT || 8770; const SHOT = process.env.SHOTDIR || '/home/claude/work/p3d/shots/v68/'; fs.mkdirSync(SHOT, { recursive: true });
 const TAG = process.env.TAG || 'pc'; const ONLY = process.argv.slice(2); const want = (k) => !ONLY.length || ONLY.includes(k);
-const REPO = process.env.REPO || '/home/claude/mochipoyo-trade-quest'; const MAN = JSON.parse(fs.readFileSync(path.join(REPO, 'assets/characters/party-directions-v3/manifest.json'), 'utf8'));   // ほかの p6x と同じく、作業用のフォルダ（CommonJS）にコピーして実行する
+const REPO = process.env.REPO || '/home/claude/mochipoyo-trade-quest'; const MAN = JSON.parse(fs.readFileSync(path.join(REPO, 'assets/characters/party-directions-v3/manifest.json'), 'utf8'));
+const MAN2 = JSON.parse(fs.readFileSync(path.join(REPO, 'assets/characters/party-directions-add68/manifest.json'), 'utf8'));   // v6.8 追加の仲間3人
+const PACK = (id) => (MAN.actors[id] ? ['party-directions-v3', MAN.actors[id]] : ['party-directions-add68', MAN2.actors[id]]);
+const NALL = (Object.keys(MAN.actors).length + Object.keys(MAN2.actors).length) * 4;   // ほかの p6x と同じく、作業用のフォルダ（CommonJS）にコピーして実行する
 const GROUPS = [['hero', 'lina', 'kyle', 'mina'], ['seris', 'gald', 'lucia', 'elna'], ['nagi', 'iris', 'sophia', 'io'], ['ganes', 'aster', 'ord', 'hero']];
 const DEVDIR = (/[?&]partydir=(front|back|left|right)/.exec(process.env.QUERY || '') || [])[1] || null;   // 開発の確認用 ?partydir=（向きの固定）で撮るとき
 const fails = []; const ok = (c, msg) => { if (!c) fails.push(msg); console.log((c ? 'OK  ' : 'NG  ') + msg); };
@@ -68,12 +71,12 @@ const fails = []; const ok = (c, msg) => { if (!c) fails.push(msg); console.log(
     fs.writeFileSync(SHOT + TAG + '_A_sheet.png', Buffer.from(r.png.split(',')[1], 'base64'));
     let bad = 0;
     for (const row of r.rows) {
-      const m = MAN.actors[row.id].directions[row.dir];
-      const urlOk = row.url && row.url.indexOf('/assets/characters/party-directions-v3/sprites/' + row.id + '/' + row.dir + '.png?v=' + m.sha256.slice(0, 10)) >= 0;
+      const [pk, ma] = PACK(row.id); const m = ma.directions[row.dir];
+      const urlOk = row.url && row.url.indexOf('/assets/characters/' + pk + '/sprites/' + row.id + '/' + row.dir + '.png?v=' + m.sha256.slice(0, 10)) >= 0;
       const bOk = row.bounds && row.bounds.join() === m.opaqueBounds.join();
       if (!(row.state === 'ok' && urlOk && bOk)) { bad++; console.log('NG  A', JSON.stringify(row), m.opaqueBounds); }
     }
-    ok(r.rows.length === 60 && bad === 0, 'A：15人×4方向の60枚を、人物ID・向きどおりの URL で読み込み、切り出し範囲が manifest と一致（' + (60 - bad) + '/60）。パックの場所 ' + r.root);
+    ok(r.rows.length === NALL && bad === 0, 'A：' + NALL / 4 + '人×4方向の' + NALL + '枚（v3 の15人＋v6.8 の3人）を、人物ID・向きどおりの URL で読み込み、切り出し範囲が manifest と一致（' + (NALL - bad) + '/' + NALL + '）。パックの場所 ' + r.root);
     out.A = { root: r.root, n: r.rows.length, bad };
   }
 

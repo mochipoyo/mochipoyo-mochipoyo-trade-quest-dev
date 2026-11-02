@@ -15,7 +15,12 @@
      3d/index.html からでも同じ（Assets.base はリポジトリの一番上）。画像の URL には ?v=（画像のハッシュの先頭）を付ける（古い画像のキャッシュ対策）
    ・セーブ・転職の処理・2D版は変えない（読むだけ）
    ========================================================= */
-import { canvas as PACK_CANVAS, pivot as PACK_PIVOT, packVersion, actors as PACK_ACTORS } from '../../../assets/characters/party-directions-v3/manifest.json';
+import { canvas as PACK_CANVAS, pivot as PACK_PIVOT, packVersion, actors as V3_ACTORS } from '../../../assets/characters/party-directions-v3/manifest.json';
+import { actors as ADD68_ACTORS } from '../../../assets/characters/party-directions-add68/manifest.json';
+// v6.8 追加の仲間（カズト・もちぽよ・神聖犬ポン太）のパック。パックの場所が違うので、人物ごとに dir（パックのフォルダ）を持たせる
+const PACKS = [['assets/characters/party-directions-v3/', V3_ACTORS], ['assets/characters/party-directions-add68/', ADD68_ACTORS]];
+const PACK_ACTORS = {}; const PACK_OF = {};
+for (const [dir, list] of PACKS) for (const id of Object.keys(list)) if (!PACK_ACTORS[id]) { PACK_ACTORS[id] = list[id]; PACK_OF[id] = dir; }
 
 const G = typeof window !== 'undefined' ? window : globalThis;
 export const PACK_DIR = 'assets/characters/party-directions-v3/';
@@ -33,6 +38,7 @@ function packRoot() {
   if (base && !/\/$/.test(base)) base += '/';
   return base + PACK_DIR;
 }
+function actorRoot(id) { const r = packRoot(); return PACK_OF[id] && PACK_OF[id] !== PACK_DIR ? r.slice(0, r.length - PACK_DIR.length) + PACK_OF[id] : r; }
 export function hasActor(id) { return typeof id === 'string' && Object.prototype.hasOwnProperty.call(PACK_ACTORS, id); }
 export function actorIds() { return Object.keys(PACK_ACTORS); }
 
@@ -44,7 +50,7 @@ export function resolve(actor, direction) {
   const jobs = ent.jobOutfits || null; const outfit = jobs && actor.job && Object.prototype.hasOwnProperty.call(jobs, actor.job) ? jobs[actor.job] : null;   // 同じ人物の職業別の絵（今はない）
   const rec = (outfit && outfit.directions && outfit.directions[dir]) || ent.directions[dir]; if (!rec || !rec.path) return null;
   const v = rec.sha256 ? '?v=' + String(rec.sha256).slice(0, 10) : '?v=' + packVersion;
-  return { actorId: actor.id, dir, url: packRoot() + rec.path + v, path: rec.path, canvas: PACK_CANVAS, pivot: (outfit && outfit.pivot) || ent.pivot || PACK_PIVOT,
+  return { actorId: actor.id, dir, url: actorRoot(actor.id) + rec.path + v, path: rec.path, canvas: PACK_CANVAS, pivot: (outfit && outfit.pivot) || ent.pivot || PACK_PIVOT,
     refH: (outfit && outfit.referencePixelHeight) || ent.referencePixelHeight || 278, ratio: ent.worldHeightRatio || 1, source: rec.source, appearance: outfit ? 'same_actor_job_outfit' : 'same_actor_base' };
 }
 

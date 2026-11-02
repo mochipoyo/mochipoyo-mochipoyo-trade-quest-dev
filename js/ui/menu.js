@@ -153,7 +153,7 @@
     var tab = 0;
     while (true) {
       var ids = list.filter(function (s) { return SKILL_GROUPS[tab].id === 'all' || skillGroup(SKILLS[s]) === SKILL_GROUPS[tab].id; });
-      var rows = ids.map(function (s) { var sk = SKILLS[s]; return { label: sk.name, right: 'MP' + (a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp), sub: (SK_TARGET[sk.target] || '') + (sk.element && EL_NAME[sk.element] ? '・' + EL_NAME[sk.element] : '') + '　' + sk.desc }; });
+      var rows = ids.map(function (s) { var sk = SKILLS[s]; return { label: sk.name, right: 'MP' + (root.Combat && root.Combat.skillCost ? root.Combat.skillCost(a, sk) : a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp), sub: (SK_TARGET[sk.target] || '') + (sk.element && EL_NAME[sk.element] ? '・' + EL_NAME[sk.element] : '') + '　' + sk.desc }; });
       if (!rows.length) rows = [{ label: '（この分類の特技はない）', disabled: true }];
       var counts = SKILL_GROUPS.map(function (g) { return g.id === 'all' ? list.length : list.filter(function (s) { return skillGroup(SKILLS[s]) === g.id; }).length; });
       var r = await Win.list(rows, { title: a.name + 'の特技', tabs: SKILL_GROUPS.map(function (g, i) { return { label: g.name, count: counts[i] }; }), tab: tab });
@@ -165,7 +165,7 @@
   };
   // v6.5 フィールドで唱える呪文：今は「帰還の術」（ダンジョンの入口の外へ）。賢者は消費MPが8割（戦闘と同じ）
   Menu.castField = async function (a, sk) {
-    var cost = a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp;
+    var cost = root.Combat && root.Combat.skillCost ? root.Combat.skillCost(a, sk) : a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp;
     if (a.dead) { await Win.message([a.name + 'は戦闘不能で、呪文を唱えられない。']); return; }
     if (a.mp < cost) { await Win.message(['MPが足りない。（' + sk.name + '：MP' + cost + '　' + a.name + '：MP' + a.mp + '）']); return; }
     return await Menu.dungeonExit(a.name + 'の' + sk.name, function () { a.mp -= cost; World.updateHud(); }, [a.name + 'は' + sk.name + 'を唱えた！', '光の道が入口へ伸びた……']);

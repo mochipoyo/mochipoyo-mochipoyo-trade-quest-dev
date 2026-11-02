@@ -39,7 +39,8 @@
       return e;
     });
     party.forEach(function (a) { a.buffs = {}; a.cover = false; a.counter = false; a.defending = false; a._gutsUsed = false; a._atkTurn = -9; a._defTurn = -9; a._supTurn = -9; a._firstHit = false; a._turn = 0; a.counterMult = 1; });
-    return { enemies: enemies, party: party, turn: 0, state: 'command', scale: (opts.scale && !opts.boss) ? opts.scale : null, boss: !!opts.boss, canEscape: opts.canEscape !== false && !opts.boss, log: [], trialCount: 0, result: null, maxEnemies: opts.maxEnemies || MAX_ENEMIES };
+    var pet = opts.pet === false ? null : Combat.petFor(party);   // v6.8 神聖犬ポン太（4人とは別枠）
+    return { pet: pet, enemies: enemies, party: party, turn: 0, state: 'command', scale: (opts.scale && !opts.boss) ? opts.scale : null, boss: !!opts.boss, canEscape: opts.canEscape !== false && !opts.boss, log: [], trialCount: 0, result: null, maxEnemies: opts.maxEnemies || MAX_ENEMIES };
   };
 
   /* ---------- 計算 ---------- */
@@ -160,6 +161,7 @@
     b.party.forEach(function (a) { a.defending = false; a.cover = false; a.counter = false; a.counterMult = 1; });
     commands.forEach(function (c) { var a = b.party.filter(function (x) { return x.id === c.actorId; })[0]; if (a && !a.dead) acts.push({ side: 'party', actor: a, cmd: c, agi: Actors.stats(a).agi }); });
     aliveEnemies(b).forEach(function (e) { acts.push({ side: 'enemy', actor: e, agi: estats(e).agi }); var dd = ENEMIES[e.defId]; if (dd && dd.acts >= 2) acts.push({ side: 'enemy', actor: e, agi: estats(e).agi * 0.55, extra: true }); });   // v6.5 2回行動（2回目は素早さが低い扱い）
+    if (b.pet && Math.random() < Combat.PET.rate) acts.push({ side: 'pet', actor: b.pet, agi: b.pet.agi });   // v6.8 ポン太はときどき行動する
     acts.forEach(function (x) { x.order = x.agi * rnd(0.8, 1.2); if (x.side === 'party' && (x.cmd.type === 'defend' || x.cmd.type === 'escape' || (x.cmd.type === 'skill' && SKILLS[x.cmd.skillId] && (SKILLS[x.cmd.skillId].cover || SKILLS[x.cmd.skillId].counter)))) x.order += 1000; /* v6.4 反撃の構え（瞬間逆転）も先に */ if (x.side === 'party' && x.cmd.type === 'ultimate') x.order += 1500; /* 必殺技：チャートで決済まで済ませた一撃（見送りの防御も）は、そのターンの最初に出る */ });
     acts.sort(function (p, q) { return q.order - p.order; });
 
@@ -181,13 +183,44 @@
       // 状態異常による行動制限
       if (a.status.sleep) { if (Math.random() < 0.4) { delete a.status.sleep; msg(a.name + 'は目を覚ました！'); } else { msg(a.name + 'は眠っている……'); continue; } }
       if (a.status.paralyze && Math.random() < 0.5) { msg(a.name + 'は体がしびれて動けない！'); continue; }
-      if (x.side === 'party') execParty(b, x, ev); else execEnemy(b, a, ev);
+      if (x.side === 'party') execParty(b, x, ev); else if (x.side === 'pet') execPet(b, a, ev); else execEnemy(b, a, ev);
       checkEnd(b, ev);
       if (b.state !== 'command') break;
     }
     if (b.state === 'command') endOfTurn(b, ev);
     return ev;
   };
+
+  /* ---------- v6.8 神聖犬ポン太：パーティの4人とは別枠で戦闘に加わる ----------
+     ・加入：d.flags.ponta_joined（js/data/companions68.js）。HP・MP はなく、敵に狙われない。経験値・お金・装備・転職はない
+     ・毎ターン rate の確率で行動：ふだんは敵1体に聖なる体当たり（光属性の物理）。仲間のHPが heal.below 以下なら、heal.chance の確率で回復
+     ・強さはパーティの平均レベルに合わせる（序盤に強すぎない・終盤に弱すぎない） */
+  Combat.PET = { id: 'ponta', name: '神聖犬ポン太', flag: 'ponta_joined', rate: 0.4, heal: { below: 0.3, chance: 0.6 } };
+  Combat.petFor = function (party) {
+    var d = root.State && root.State.data; if (!d || !d.flags || !d.flags[Combat.PET.flag]) return null;
+    var lv = party && party.length ? party.reduce(function (s, a) { return s + (a.level || 1); }, 0) / party.length : 1; lv = Math.max(1, Math.round(lv));
+    return { id: Combat.PET.id, name: Combat.PET.name, pet: true, level: lv, atk: Math.round(10 + lv * 2.6), mag: Math.round(8 + lv * 2.2), agi: Math.round(10 + lv * 1.8), status: {}, buffs: {}, dead: false };
+  };
+  function execPet(b, p, ev) {
+    function msg(t) { ev.push({ type: 'msg', text: t }); }
+    var hurt = aliveParty(b).filter(function (a) { return a.hp <= Actors.stats(a).maxHp * Combat.PET.heal.below; });
+    if (hurt.length && Math.random() < Combat.PET.heal.chance) {
+      hurt.sort(function (x, y) { return x.hp / Actors.stats(x).maxHp - y.hp / Actors.stats(y).maxHp; }); var t = hurt[0]; var st = Actors.stats(t);
+      ev.push({ type: 'act', side: 'pet', id: p.id, kind: 'skill', skillId: 'ponta_heal' }); msg(p.name + 'は聖なる光で' + t.name + 'を包んだ！');
+      var before = t.hp; t.hp = Math.min(st.maxHp, t.hp + Math.max(1, Math.round(st.maxHp * 0.25 + p.mag * 0.5)));
+      ev.push({ type: 'heal', side: 'party', id: t.id, value: t.hp - before, anim: 'heal' }); msg(t.name + 'のHPが' + (t.hp - before) + '回復した'); return;
+    }
+    var target = pickRandom(aliveEnemies(b)); if (!target) return;
+    ev.push({ type: 'act', side: 'pet', id: p.id, kind: 'skill', skillId: 'ponta_tackle' }); msg(p.name + 'の聖なる体当たり！');
+    var es = estats(target); var mult = resistOf(target, 'light'); if (target.family === 'アンデッド系') mult *= 1.5;
+    var dmg = mult === 0 ? 0 : physDamage(p.atk, es.def, 1.0, { mult: mult });
+    target.hp = Math.max(0, target.hp - dmg);
+    ev.push({ type: 'damage', side: 'enemy', idx: target.idx, value: dmg, anim: 'light', weak: mult > 1, resist: mult < 1 });
+    msg(target.name + 'に' + dmg + 'のダメージ' + (mult > 1 ? '（効果は抜群だ）' : mult === 0 ? '（効かない）' : mult < 1 ? '（効果はいまひとつ）' : ''));
+    if (target.status.sleep && dmg > 0 && Math.random() < 0.7) { delete target.status.sleep; msg(target.name + 'は目を覚ました'); }
+    if (target.hp <= 0) killEnemy(b, target, ev);
+  }
+  Combat.execPet = execPet;
 
   function execParty(b, x, ev) {
     var a = x.actor, cmd = x.cmd; var s = pstats(a);
@@ -219,7 +252,7 @@
     if (cmd.type === 'skill') {
       var sk = SKILLS[cmd.skillId]; if (!sk) return;
       if (a.status.silence && sk.mp > 0) { msg(a.name + 'は沈黙していて' + sk.name + 'が使えない！'); return; }
-      var mpCost = sk.mp; if (a.job === 'sage') mpCost = Math.ceil(mpCost * 0.8);
+      var mpCost = skillCost(a, sk);   // v6.8 賢者 -20%・トレード呪文の軽減（Combat.skillCost）
       if (a.mp < mpCost) { msg(a.name + 'はMPが足りない！'); return; }
       if (sk.gold) { if (root.State.data.gold < sk.gold) { msg('ゴールドが足りない！'); return; } root.State.data.gold -= sk.gold; }
       a.mp -= mpCost;
@@ -532,7 +565,13 @@
      優先順位：倒れた仲間の蘇生 → HPが減った仲間の回復 → 状態異常の治療 → 攻撃（効きそうな特技・呪文、MPに余裕がなければ通常攻撃）
      ・道具は使わない（消耗品を勝手に減らさない）。逃げない。ゴールドを使う特技・逃走用の特技は使わない
      ・回復役（回復の呪文を持つ人）は MP を半分残すように攻撃呪文を控える */
-  function skillCost(a, sk) { return a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp; }
+  // 消費MP：賢者は -20%。v6.8 トレード呪文（sk.trade）は職業（JOBS[job].tradeMpCut）と本人（COMPANIONS[id].tradeMpCut）の大きいほうだけ軽くする
+  function skillCost(a, sk) {
+    var c = a && a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp;
+    if (sk && sk.trade && a) { var J = root.JOBS && root.JOBS[a.job], P = root.COMPANIONS && root.COMPANIONS[a.id]; var cut = Math.max((J && J.tradeMpCut) || 0, (P && P.tradeMpCut) || 0); if (cut > 0) c = Math.max(1, Math.ceil(c * (1 - cut))); }
+    return c;
+  }
+  Combat.skillCost = skillCost;
   Combat.autoCommand = function (b, a) {
     var s = Actors.stats(a);
     var known = Actors.allSkills(a).filter(function (id) { return SKILLS[id]; });

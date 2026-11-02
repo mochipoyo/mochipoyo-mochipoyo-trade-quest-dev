@@ -1,0 +1,10 @@
+--- assettest.js.bak68	2026-11-02 21:00:53.844088613 +0900
++++ assettest.js	2026-11-02 22:08:05.489269859 +0900
+@@ -13,6 +13,7 @@
+ const listed=new Set(); Object.keys(M).forEach(k=>{ if(typeof M[k]==='object') Object.values(M[k]).forEach(e=>{ if(e.path) listed.add(path.join(ROOT,e.path)); if(e.prev&&e.prev.path) listed.add(path.join(ROOT,e.prev.path)); if(e.candidate&&e.candidate.path) listed.add(path.join(ROOT,e.candidate.path)); if(e.v63&&e.v63.path) listed.add(path.join(ROOT,e.v63.path)); /* b44：v6.3 のボス画像（?bossart=v63 で使う） */ }); });   // v6.3 採用前の画像（prev）・候補（candidate）も参照あり
+ ((w.ENEMY_REDESIGN&&w.ENEMY_REDESIGN.list)||[]).forEach(r=>{ if(r.file) listed.add(path.join(ROOT,r.file)); });   // r164 既存の通常敵の新しい画像（js/data/enemy-redesign.js に登録）
+ if(w.BattleBG65&&w.BattleBG65.PHOTO){ const B=w.BattleBG65; Object.values(B.PHOTO).concat(Object.values(B.PHOTO_VARIANT||{})).forEach(f=>listed.add(path.join(ROOT,B.PHOTO_DIR+f))); }   // v6.6 戦闘背景の画像（js/ui/battlebg65.js と docs/battle-backgrounds-manifest.json に登録）
++[['party-directions-v3',60],['party-directions-add68',12]].forEach(([dirName,want])=>{ const pd=path.join(ROOT,'assets/characters/'+dirName+'/'), pm=path.join(pd,'manifest.json'); if(fs.existsSync(pm)){ listed.add(pm); const PM=JSON.parse(fs.readFileSync(pm,'utf8')); let n=0; Object.values(PM.actors).forEach(a=>Object.values(a.directions).forEach(r=>{ const f=path.join(pd,r.path); ok(fs.existsSync(f),'party dir missing '+r.path); if(fs.existsSync(f)){ listed.add(f); n++; const d=png(f); ok(d.w===320&&d.h===320&&d.colorType===6,'party dir size/alpha '+r.path); } })); ok(n===want,'party dir count '+dirName+' '+n); } });   // v6.8 味方の4方向の絵（パックの manifest.json に登録。3D版の PartyDirections が使う）
+ walk(path.join(ROOT,'assets')).forEach(f=>ok(listed.has(f),'unlisted asset file '+f));
+ // 透明背景（四隅が透明）とキャラが端で切れていないか（端の不透明率が小さい）
+ const {PNG}=require('pngjs');

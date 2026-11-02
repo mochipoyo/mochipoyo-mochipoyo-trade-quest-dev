@@ -16,6 +16,35 @@ import { buildArtVolume } from '../battle/ArtVolume.js';
 import { readable } from '../battle/readable.js';
 import { Character3D, DIR_YAW } from '../entities/Character3D.js';
 import { characterModelFor } from '../assets/manifest.js';
+import * as PD from '../battle/PartyDirections.js';
+
+// v6.8 絵の NPC（追加の仲間：カズト・もちぽよ・神聖犬ポン太）：3Dモデルの代わりに、4方向の絵（PartyDirections）を板にして立てる
+//   板はいつもカメラの方を向き、NPC の向きとカメラの位置の関係で絵（正面・背面・左・右）を選ぶ。足もとの基準点（pivot）を立ち位置に合わせる
+//   Character3D と同じ呼び出し（root・mixer・faceTo・play・setSpeed・update）に答える
+const NPC_ART_H = 1.1;   // 人の基準の高さ（ワールド単位。いちばん高い向きの絵の高さ × 体格の比）
+const npcTex = new Map();
+function npcTexture(url) { let t = npcTex.get(url); if (!t) { t = new THREE.TextureLoader().load(url); t.colorSpace = THREE.SRGBColorSpace; t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.generateMipmaps = false; npcTex.set(url, t); } return t; }
+class BillboardNpc {
+  constructor(n, app) {
+    this.npc = n; this.app = app; this.root = new THREE.Group(); this.root.name = 'npc_art_' + n.id; this.mixer = { stopAllAction() {} }; this.yaw = this.wantYaw = 0; this.dir = null; this.t = Math.random() * 6;
+    this.mat = new THREE.SpriteMaterial({ transparent: true, alphaTest: 0.45, depthWrite: true }); this.sprite = new THREE.Sprite(this.mat); this.root.add(this.sprite);
+    const info = PD.resolve({ id: n.id }, 'front'); const cv = (info && info.canvas) || [320, 320]; const pv = (info && info.pivot) || [160, 304];
+    this.h = cv[1] / Math.max(1, (info && info.refH) || 278) * NPC_ART_H * ((info && info.ratio) || 1);
+    this.sprite.scale.set(this.h * cv[0] / cv[1], this.h, 1); this.sprite.center.set(pv[0] / cv[0], (cv[1] - pv[1]) / cv[1]);
+    this.setDir('front');
+  }
+  setDir(d) { if (d === this.dir) return; const info = PD.resolve({ id: this.npc.id }, d); if (!info) return; this.dir = d; this.mat.map = npcTexture(info.url); this.mat.needsUpdate = true; }
+  faceTo(yaw) { this.wantYaw = yaw; }
+  play() { /* 絵なので動きはない */ }
+  setSpeed() { }
+  has() { return false; }
+  update(dt) {
+    this.t += dt; this.yaw = this.wantYaw; const cam = this.app && this.app.camera && this.app.camera.camera; const p = this.root.position;
+    const toCam = cam ? Math.atan2(cam.position.x - p.x, cam.position.z - p.z) : 0; let rel = this.yaw - toCam; while (rel > Math.PI) rel -= Math.PI * 2; while (rel < -Math.PI) rel += Math.PI * 2;
+    this.setDir(Math.abs(rel) <= Math.PI / 4 ? 'front' : Math.abs(rel) >= Math.PI * 3 / 4 ? 'back' : rel < 0 ? 'left' : 'right');
+    this.sprite.position.y = Math.abs(Math.sin(this.t * 2.2)) * 0.02;   // ほんの少し上下（立っている感じ）
+  }
+}
 import { Batch, box, M4, softTexture } from '../engine/Materials.js';
 
 export class MapScene3D {
@@ -84,7 +113,7 @@ export class MapScene3D {
     this.addSearchPoints(map);
     // NPC
     for (const n of map.npcs) {
-      const ch = await Character3D.create(app.models, characterModelFor(n.sprite), { scale: n.sprite === 'child' ? 1.0 : 1.0 });
+      const ch = n.art3d && PD.hasActor(n.id) ? new BillboardNpc(n, app) : await Character3D.create(app.models, characterModelFor(n.sprite), { scale: n.sprite === 'child' ? 1.0 : 1.0 });   // v6.8 絵の NPC
       if (!ch) continue; ch.npc = n; this.root.add(ch.root); this.npcs.push(ch);
       ch.yaw = ch.wantYaw = DIR_YAW[n.dir] || 0;
       this.placeNpc(ch, 0, true);

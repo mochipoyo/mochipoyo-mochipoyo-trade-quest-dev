@@ -183,9 +183,22 @@
   BattleScene.prototype.posOf = function (k, W, H) {
     var b = this.b; if (!k) return null; var m = /^e:(\d+)$/.exec(k);
     if (m) { var i = +m[1]; if (!b.enemies[i] || !this.view.e[i]) return null; var r = this.enemyRect(i, W, H); return { x: r.x + r.w / 2, y: r.y + r.h * 0.55 }; }
+    if (/^pet:/.test(k)) { var S3q = root.BattleStage3D; if (this._stage3d && S3q && S3q.partyPos) { var pq = S3q.partyPos(this, k.slice(4), W, H); if (pq) return pq; } var pr = this.petRect(W, H); return pr ? { x: pr.x + pr.w / 2, y: pr.y + pr.h * 0.55 } : null; }   // v6.8 神聖犬ポン太
     var pid = k.replace(/^p:/, ''); var pi = b.party.map(function (p) { return p.id; }).indexOf(pid); if (pi < 0) return null;
     var S3p = root.BattleStage3D; if (this._stage3d && S3p && S3p.partyPos) { var pp3 = S3p.partyPos(this, pid, W, H); if (pp3) return pp3; }   // 3D版 Phase 2：3Dの味方の位置
     return { x: (W / (b.party.length + 1)) * (pi + 1), y: H * 0.7 };   // 味方の欄（画面の下）に隠れない高さ
+  };
+  // v6.8 神聖犬ポン太（4人とは別枠）：2D版では画面の右下（味方の欄の上）に小さく立つ。3D版で3Dの舞台に描いているときは描かない
+  BattleScene.prototype.petRect = function (W, H) {
+    if (!this.b || !this.b.pet) return null; var img = root.Assets && root.Assets.image ? root.Assets.image('companions', this.b.pet.id) : null;
+    var h = Math.round(Math.max(56, Math.min(110, H * 0.17))), w = img ? Math.round(h * img.naturalWidth / Math.max(1, img.naturalHeight)) : h;
+    return { x: Math.round(W * 0.9 - w / 2), y: Math.round(H * 0.66 - h), w: w, h: h, img: img };
+  };
+  BattleScene.prototype.drawPet = function (ctx, W, H) {
+    var b = this.b; if (!b || !b.pet) return; var S3 = root.BattleStage3D; if (this._stage3d && S3 && S3.petDrawn && S3.petDrawn(this)) return;
+    var r = this.petRect(W, H); if (!r || !r.img) return; var t = Date.now(); var k = this.petActT ? (t - this.petActT) / 600 : 1; var hop = k < 1 ? Math.sin(k * Math.PI) * 14 : 0; var bob = Math.sin(this.t / 420) * 2;
+    ctx.save(); ctx.fillStyle = 'rgba(0,0,0,0.28)'; ctx.beginPath(); ctx.ellipse(r.x + r.w / 2, r.y + r.h + 2, r.w * 0.32, 5, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(r.img, r.x, Math.round(r.y - hop + bob), r.w, r.h); ctx.restore();
   };
   BattleScene.prototype.draw = function (ctx) {
     // 必殺技のチャートが戦闘画面を覆っている間は、下の戦闘画面（3D 版の舞台も）を1秒に1回だけ描く（チャートの動きを軽くする）
@@ -257,6 +270,7 @@
     if (this.cutin) drawCutin(ctx, this.cutin, W, H);
     // ボス登場バナー（カットインのある戦闘ではカットインの見出しが代わり）
     if (ent && entP > 0.3 && !this.hadCutin) { var bp = Math.min(1, (entP - 0.3) / 0.3); ctx.save(); ctx.globalAlpha = bp * (entP > 0.85 ? (1 - entP) / 0.15 : 1); ctx.fillStyle = 'rgba(120,0,20,0.75)'; ctx.fillRect(0, H * 0.42, W, 44); ctx.fillStyle = '#ffd24a'; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('— ' + (b.enemies[0] ? b.enemies[0].name : 'BOSS') + ' —', W / 2, H * 0.42 + 31); ctx.restore(); }
+    this.drawPet(ctx, W, H);   // v6.8 神聖犬ポン太
     // 味方側のエフェクト（画面下部）
     this.anims.filter(function (a) { return a.side === 'party' && a.type === 'fx'; }).forEach(function (a) { var i = Math.max(0, b.party.map(function (p) { return p.id; }).indexOf(a.id)); drawFx(ctx, a, (W / (b.party.length + 1)) * (i + 1), H * 0.8); });
     if (root.FX2D) root.FX2D.draw(ctx, this);   // v6.5 Phase C 呪文・特技の演出（失敗しても戦闘は進む）
@@ -504,7 +518,7 @@
       if (sel < 0) return 'back';
       if (sel === 0) { var t = await pickEnemy(b); if (t < 0) continue; return { actorId: a.id, type: 'attack', target: { side: 'enemy', idx: t } }; }
       if (sel === 1) {
-        var items = skills.map(function (s) { var sk = SKILLS[s]; var cost = a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp; return { label: sk.name, right: 'MP' + cost + (sk.gold ? '/' + sk.gold + 'G' : ''), sub: sk.field ? '戦闘中は使えない（フィールドのメニューで唱える）' : sk.desc, disabled: a.mp < cost || !!sk.field }; });   // v6.5 帰還の術など、フィールド専用の呪文は選べない
+        var items = skills.map(function (s) { var sk = SKILLS[s]; var cost = Combat.skillCost ? Combat.skillCost(a, sk) : a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp; return { label: sk.name, right: 'MP' + cost + (sk.gold ? '/' + sk.gold + 'G' : ''), sub: sk.field ? '戦闘中は使えない（フィールドのメニューで唱える）' : sk.desc, disabled: a.mp < cost || !!sk.field }; });   // v6.5 帰還の術など、フィールド専用の呪文は選べない
         var si = await Win.list(items, { title: 'じゅもん・とくぎ' }); if (si < 0) continue;
         var sk = SKILLS[skills[si]]; var target = null;
         if (sk.target === 'enemy') { var te = await pickEnemy(b); if (te < 0) continue; target = { side: 'enemy', idx: te }; }
@@ -591,6 +605,7 @@
       var def = null, from = null;
       if (e.side === 'party') { var a = b.party.filter(function (p) { return p.id === e.id; })[0]; from = 'p:' + e.id;
         if ((e.kind === 'skill' || e.kind === 'ultimate') && e.skillId) def = F.DEFS[e.skillId]; else if (e.kind === 'attack') def = F.attack(a); else if (e.kind === 'item' && e.itemId) def = itemFx(e.itemId); }
+      else if (e.side === 'pet') { def = e.skillId ? F.DEFS[e.skillId] : null; from = 'pet:' + e.id; }   // v6.8 神聖犬ポン太
       else { def = F.enemy(b.enemies[e.idx], { skillId: e.skillId, special: e.special }); from = 'e:' + e.idx; }
       if (!def) return null;
       var tg = [], firstKey = null, hits = 0;
@@ -616,6 +631,7 @@
         if (fxs) { await waitUntil(fxs.start + fxs.tl.total); fxs = null; scene.fxOn = false; }   // v6.5 前の行動の演出が終わってから
         setView(scene, e, b);
         if (e.side === 'party') actingCard(e.id); else actingCard(null);
+        if (e.side === 'pet') scene.petActT = Date.now();   // v6.8 ポン太が跳ねる（2D）
         if (e.side === 'party' && e.kind === 'ultimate' && root.ChartBattleUI && U) { try { await root.ChartBattleUI.cutin(U.get(e.ultId), e.ultOutcome); } catch (err) { /* 演出だけ */ } }   // 必殺技の名前の帯
         fxs = startFx(b, ev, i, e, scene, fast); scene.fxOn = !!fxs;
         if (fxs) { if (BattleUI.timeline) BattleUI.timeline.push({ type: 'fx', fx: fxs.def.fx, hitAt: fxs.tl.hitAt, impacts: fxs.tl.impacts.slice(), total: fxs.tl.total, t: fxs.start, to: (scene.fx65 && scene.fx65.length ? scene.fx65[scene.fx65.length - 1].to.length : 0) }); await waitUntil(fxs.start + fxs.tl.windup); }   // 構え（使う人の動き）
