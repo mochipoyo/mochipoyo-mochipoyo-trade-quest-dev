@@ -31,7 +31,7 @@
     var u = location.href.replace(/#.*$/, '').replace(/([?&])_v=[^&]*&?/, '$1').replace(/[?&]$/, '');
     location.replace(u + (u.indexOf('?') >= 0 ? '&' : '?') + '_v=' + encodeURIComponent(U.latest || Date.now()));
   };
-  if (root.setTimeout && root.document) {
+  if (root.setTimeout && root.document && typeof root.fetch === 'function' && !/jsdom/i.test((root.navigator && root.navigator.userAgent) || '')) {   // 確認用の jsdom では動かさない（タイマーが残ってテストが終わらないため）
     root.setTimeout(function () { U.check(true); }, 15000);
     root.setInterval(function () { U.check(); }, 10 * 60000);
     document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') U.check(); });
