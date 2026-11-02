@@ -340,8 +340,9 @@
     var m = World.map, p = World.player; var enc = encDef || m.encounters; if (!enc) return;
     var zone = enc.zones.filter(function (z) { return z.test(p.x, p.y, m); })[0]; if (!zone) return;
     var group = zone.groups[Math.floor(Math.random() * zone.groups.length)];
-    if (zone.rare && Math.random() < (zone.rareRate || 0.02)) group = zone.rare[Math.floor(Math.random() * zone.rare.length)];
+    var rare = false; if (zone.rare && Math.random() < (zone.rareRate || 0.02)) { group = zone.rare[Math.floor(Math.random() * zone.rare.length)]; rare = true; }
     var bopts = { zone: zone.name };
+    if (!rare && root.EnemyScale) { try { var ks = root.EnemyScale.factors(m.id, zone); if (ks) bopts.scale = ks; } catch (e) { /* 倍率なしで続ける */ } }   // v6.7 地域の強さ（js/data/enemy-scale67.js）
     if (World.isSolo()) { group = World.soloCap(group); bopts.maxEnemies = World.SOLO_MAX; }   // v5.8 仲間がいないときは1〜2体まで
     World.startBattle(group, bopts);
   };
@@ -408,14 +409,14 @@
     World.busy = true;
     Promise.resolve(root.Search.inspect(sp)).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World.updateHud(); });
   };
-  World.talk = function (npc) {
+  World.talk = function (npc) {   // v6.7 町の人（モブ）は、いつもの会話のあとに3種類の別の会話をする（js/rpg/chatter.js）
     if (World.busy || !npc) return;   // v6.2 二重起動しない
     World.busy = true; World._push = null;
     // v6.2 歩いている途中なら、近い方のマスで止まる（半分以上進んでいれば行き先のマス）
     if (npc.moving) { if (npc.prog >= 0.5) { npc.x = npc.nx; npc.y = npc.ny; } npc.moving = false; npc.prog = 0; npc.frame = 0; npc.phase = 0; }
     npc.moveT = Math.max(npc.moveT || 0, 1200);
     var p = World.player; npc.dir = { up: 'down', down: 'up', left: 'right', right: 'left' }[p.dir]; npc.moving = false; npc.ox_px = 0; npc.oy_px = 0;
-    Promise.resolve(npc.talk(root.Events.ctx(npc))).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World._talkEnd = Date.now(); World._talkEndNpc = npc; npc.moveT = Math.max(npc.moveT || 0, 900); World.applyState(World.map); if (root.Vehicle) root.Vehicle.unlockIfReady(); World.updateHud(); State.autosave(); });
+    Promise.resolve((function () { var c = root.Events.ctx(npc); var r = null; try { r = root.Chatter ? root.Chatter.talk(npc, c, World.map) : null; } catch (e) { r = null; } return r || npc.talk(c); })()).catch(function (e) { Engine.onError(e); }).then(function () { World.busy = false; World._talkEnd = Date.now(); World._talkEndNpc = npc; npc.moveT = Math.max(npc.moveT || 0, 900); World.applyState(World.map); if (root.Vehicle) root.Vehicle.unlockIfReady(); World.updateHud(); State.autosave(); });
   };
   World.openChest = function (chest) {
     var m = World.map, d = State.data; var key = m.id + ':' + chest.id;

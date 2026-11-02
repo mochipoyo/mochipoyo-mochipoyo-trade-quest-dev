@@ -20,16 +20,26 @@
     return e;
   }
   Combat.makeEnemy = makeEnemy;
+  // v6.7 地域の強さ：ランダムエンカウントの通常敵だけ、出現地帯ごとの倍率で HP・攻撃・守備・魔力を上げる（js/data/enemy-scale67.js。ボス・イベントの戦闘・レアの群れには使わない）
+  //   経験値・ゴールド・素早さ・行動は変えない。仲間を呼んで出てきた敵にも同じ倍率を掛ける
+  Combat.applyScale = function (e, k) {
+    if (!e || !k || e.scaled) return e;
+    if (k.hp) { e.maxHp = Math.max(1, Math.round(e.maxHp * k.hp)); e.hp = e.maxHp; }
+    if (k.atk) e.atk = Math.max(1, Math.round(e.atk * k.atk));
+    if (k.def) e.def = Math.max(0, Math.round(e.def * k.def));
+    if (k.mag && e.mag) e.mag = Math.max(1, Math.round(e.mag * k.mag));
+    e.scaled = k; return e;
+  };
   Combat.create = function (enemyIds, party, opts) {
     opts = opts || {};
     var enemies = enemyIds.map(function (id, i) {
-      var e = makeEnemy(id, i);
+      var e = makeEnemy(id, i); if (opts.scale && !opts.boss) Combat.applyScale(e, opts.scale);
       // 同名の敵にA/Bをつける
       var same = enemyIds.filter(function (x) { return x === id; }).length; if (same > 1) { var n = enemyIds.slice(0, i).filter(function (x) { return x === id; }).length; e.name += String.fromCharCode(65 + n); }
       return e;
     });
     party.forEach(function (a) { a.buffs = {}; a.cover = false; a.counter = false; a.defending = false; a._gutsUsed = false; a._atkTurn = -9; a._defTurn = -9; a._supTurn = -9; a._firstHit = false; a._turn = 0; a.counterMult = 1; });
-    return { enemies: enemies, party: party, turn: 0, state: 'command', boss: !!opts.boss, canEscape: opts.canEscape !== false && !opts.boss, log: [], trialCount: 0, result: null, maxEnemies: opts.maxEnemies || MAX_ENEMIES };
+    return { enemies: enemies, party: party, turn: 0, state: 'command', scale: (opts.scale && !opts.boss) ? opts.scale : null, boss: !!opts.boss, canEscape: opts.canEscape !== false && !opts.boss, log: [], trialCount: 0, result: null, maxEnemies: opts.maxEnemies || MAX_ENEMIES };
   };
 
   /* ---------- 計算 ---------- */
@@ -388,7 +398,7 @@
       msg(e.name + sp.msg); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: sp.power ? 'lunge' : 'buff' });
       if (sp.flee) { e.dead = true; e.fled = true; ev.push({ type: 'flee', idx: e.idx }); return; }
       if (sp.trial) { b.trialCount++; ev.push({ type: 'trial', idx: e.idx }); return; }
-      if (sp.call) { var sid = chosen.summon || e.defId; if (!ENEMIES[sid] || b.enemies.length >= 8 || aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) { msg('しかし誰も来なかった'); return; } var ne = makeEnemy(sid, b.enemies.length); var cnt = b.enemies.filter(function (x) { return x.defId === sid; }).length; if (cnt > 0) ne.name += String.fromCharCode(65 + cnt); ne.summoned = true; b.enemies.push(ne); ev.push({ type: 'summon', idx: ne.idx }); msg(ne.name + 'が現れた！'); return; }
+      if (sp.call) { var sid = chosen.summon || e.defId; if (!ENEMIES[sid] || b.enemies.length >= 8 || aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) { msg('しかし誰も来なかった'); return; } var ne = makeEnemy(sid, b.enemies.length); if (b.scale) Combat.applyScale(ne, b.scale); var cnt = b.enemies.filter(function (x) { return x.defId === sid; }).length; if (cnt > 0) ne.name += String.fromCharCode(65 + cnt); ne.summoned = true; b.enemies.push(ne); ev.push({ type: 'summon', idx: ne.idx }); msg(ne.name + 'が現れた！'); return; }
       if (sp.heal) { var hv = Math.max(1, Math.round(e.maxHp * sp.heal)); e.hp = Math.min(e.maxHp, e.hp + hv); ev.push({ type: 'heal', side: 'enemy', idx: e.idx, value: hv }); msg(e.name + 'のHPが' + hv + '回復した'); return; }
       if (sp.buff && sp.self) { Object.keys(sp.buff).forEach(function (k) { e.buffs[k] = { value: sp.buff[k], turns: sp.turns || 2 }; }); return; }
       if (sp.power) {

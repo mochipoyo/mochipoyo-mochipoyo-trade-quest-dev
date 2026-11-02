@@ -21,6 +21,8 @@
   Quiz.monster = function (id) { var L = MONS(); for (var i = 0; i < L.length; i++) if (L[i].id === id) return L[i]; return null; };
   Quiz.question = function (qid) { return QS()[qid] || null; };
   Quiz.questionsFor = function (mid) { return ((root.QUIZ_BY_MONSTER || {})[mid] || []).slice(); };
+  // v6.7 その問題がそのモンスターの出題範囲か（最初の5体は専用の20問。追加の50体は分野で選んだ問題を共有する：js/data/quiz-monsters2.js）
+  Quiz.belongs = function (qq, mid) { if (!qq || !mid) return false; if (qq.mon === mid) return true; var L = (root.QUIZ_BY_MONSTER || {})[mid]; return !!(L && L.indexOf(qq.id) >= 0); };
 
   /* ---------- セーブ ---------- */
   function emptyMon() { return { defeated: false, defeatedAt: 0, attempts: 0, correct: 0, wrong: 0, stolen: 0, firstReward: false, fled: false, lastAt: 0, seen: false }; }
@@ -31,7 +33,7 @@
     var def = Quiz.defaults(); Object.keys(def).forEach(function (k) { var a = q[k], b = def[k]; if (a === undefined || a === null || typeof a !== typeof b || Array.isArray(a) !== Array.isArray(b)) q[k] = b; });
     MONS().forEach(function (m) { var r = q.mon[m.id]; if (!r || typeof r !== 'object' || Array.isArray(r)) r = q.mon[m.id] = emptyMon(); var e = emptyMon(); Object.keys(e).forEach(function (k) { if (typeof r[k] !== typeof e[k] || (typeof r[k] === 'number' && !isFinite(r[k]))) r[k] = e[k]; }); });
     Object.keys(q.history).forEach(function (k) { if (!Array.isArray(q.history[k])) q.history[k] = []; });
-    Object.keys(q.pending).forEach(function (k) { var p = q.pending[k], qq = p && Quiz.question(p.qid); if (!p || typeof p !== 'object' || !qq || qq.mon !== k || typeof p.token !== 'string' || !(p.seed > 0)) delete q.pending[k]; });
+    Object.keys(q.pending).forEach(function (k) { var p = q.pending[k], qq = p && Quiz.question(p.qid); if (!p || typeof p !== 'object' || !qq || !Quiz.belongs(qq, k) || typeof p.token !== 'string' || !(p.seed > 0)) delete q.pending[k]; });
     q.titles = q.titles.filter(function (t) { return typeof t === 'string'; }); q.tokens = q.tokens.filter(function (t) { return typeof t === 'string'; }).slice(-50); q.log = q.log.slice(-50);
     return q;
   };
@@ -58,7 +60,7 @@
   Quiz.begin = function (d, mid, rnd) {
     var q = Quiz.ensure(d); var r = q && q.mon[mid]; if (!r || r.defeated) return null;
     var p = q.pending[mid]; var qq = p && Quiz.question(p.qid);
-    if (p && qq && qq.mon === mid && q.tokens.indexOf(p.token) < 0) return p;
+    if (p && qq && Quiz.belongs(qq, mid) && q.tokens.indexOf(p.token) < 0) return p;
     rnd = rnd || Math.random; var qid = Quiz.pick(d, mid, rnd); if (!qid) return null;
     p = q.pending[mid] = { qid: qid, token: Quiz.newToken(), seed: 1 + Math.floor(rnd() * 2147483646), t: Date.now() };
     return p;
@@ -93,7 +95,7 @@
   // ctx: { token, mid, qid, orig, party: [actor], gainExp(actor, n)→[levels] }。返り値：結果（同じ token なら前の結果を返し、何も変えない）
   Quiz.settle = function (d, ctx) {
     var q = Quiz.ensure(d); var m = Quiz.monster(ctx.mid); var qq = Quiz.question(ctx.qid);
-    if (!q || !m || !qq || qq.mon !== m.id) return { error: 'bad' };
+    if (!q || !m || !qq || !Quiz.belongs(qq, m.id)) return { error: 'bad' };
     var done = q.log.filter(function (x) { return x.token === ctx.token; })[0]; if (done || q.tokens.indexOf(ctx.token) >= 0) return Object.assign({ repeated: true }, done || {});
     var r = q.mon[m.id]; if (r.defeated) return { error: 'defeated' };
     var ok = Quiz.isCorrect(qq, ctx.orig); var res = { token: ctx.token, mid: m.id, qid: qq.id, ok: ok, t: Date.now(), stolen: 0, exp: 0, gold: 0, first: false, title: null, item: null, ups: [] };

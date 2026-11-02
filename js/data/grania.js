@@ -24,6 +24,14 @@
       if (c.flag('verum_overseer_defeated')) { await c.say('浜の番人ロウ', ['監督官が倒れたと聞いた。だが町には食い物がない。', '物流を戻すには、商人の注文書が要る。抵抗組織のハルトなら書けるはずだ。']); return; }
       await c.say('浜の番人ロウ', ['ここはグラニア鉱業地方の西岸だ。東の道を行けば灰鉱町ヴェルム。……行くなら覚悟しろ。', '町は魔物の監督官に支配されてる。働いても賃金は「魔災税」で消え、逃げれば鎖の猟犬に追われる。', '昔は船が来て、物が動いてた。今は誰も来ない。物が動かなきゃ、人は生きられねえ。']);
       if (!c.flag('verum_arrived')) { c.setFlag('verum_arrived', true); await c.remark('gald', ['……煙だ。町が煙の下にある。おれが出て行った時と同じだ。', '変わってねえ。いや、もっと悪くなってる。'], 'gald_remark_arrive'); }
+    } },
+    // v6.7 ガルドの加入場所：港町マリナの酒場 → グラニアの灰の浜の番小屋（アルカディアで仲間になるのはカイルまで）
+    { id: 'gald', x: 9, y: 3, sprite: 'gald', dir: 'left', wander: 0, talk: async function (c) {
+      if (c.hasCompanion('gald')) return;
+      await c.say('ガルド', ['……おれはガルド。傭兵だ。', '昔、この浜の先の町から出ていった。戻ってはきたが、ひとりじゃ足が前に出ねえ。', 'あんたたち、ヴェルムへ行くんだろう。報酬は要らねえ。魔物と戦えるなら、それでいい。仲間に入れてくれ。']);
+      var a = await c.choice('ガルドを仲間にしますか？', ['はい', 'いいえ']);
+      if (a === 0) { c.join('gald'); await c.msg(['ガルドが仲間になった！']); }
+      else await c.say('ガルド', ['そうか。……気が変わったら、ここにいる。']);
     } }] });
 
   /* ---------- 灰鉱町ヴェルム（48×36） ---------- */
@@ -179,7 +187,15 @@
     events: [{ x: 5, y: 1, type: 'inspect', solid: false, text: ['砕かれた鉱石が山になっている。淡く赤い光を放つ。', '「均衡のクリスタルへ送る分」と札が付いている。'] }],
     npcs: [
       { id: 'fc_foreman', x: 5, y: 4, sprite: 'villager_m', dir: 'down', wander: 0, talk: async function (c) { if (c.flag('verum_liberated')) await c.say('元・工場長', ['工場は止めた。鉱石を砦に送るのはもう終わりだ。', 'これからは道具を作る。鍬と、鍋と、学び舎の机だ。']); else if (c.flag('verum_overseer_defeated')) await c.say('工場長', ['監督官が倒れた……。帳簿の切れ端なら事務室の箱だ。おれが隠した。', 'あれを公開されたら、おれも裁かれる。……それでも、持っていってくれ。']); else await c.say('工場長', ['鉱石を砕き、砦へ送る。それだけの場所だ。質問は受け付けない。', '……働け。数字が足りないと、おれも責められる。']); } },
-      { id: 'fc_worker', x: 2, y: 6, sprite: 'villager_f', dir: 'down', wander: 1, talk: async function (c) { await c.remark('seris', ['この鉱石……魔力の脈動が、忘却の洞窟の欠片と同じ。', '「均衡のクリスタルへ送る」——魔物が結晶に何かを流し込んでいる。研究者として、見過ごせない。'], 'seris_remark_verum'); if (c.flag('verum_liberated')) await c.say('女工', ['機械を止めた日、はじめて自分の手を見た。傷だらけだった。', '今はこの手で、自分のために働く。']); else await c.say('女工', ['十二時間、鉱石を砕く。手が動かなくなったら配給が減る。', '逃げた妹は……猟犬に。もう、何も考えないようにしてる。']); } }
+      { id: 'fc_worker', x: 2, y: 6, sprite: 'villager_f', dir: 'down', wander: 1, talk: async function (c) { await c.remark('seris', ['この鉱石……魔力の脈動が、忘却の洞窟の欠片と同じ。', '「均衡のクリスタルへ送る」——魔物が結晶に何かを流し込んでいる。研究者として、見過ごせない。'], 'seris_remark_verum'); if (c.flag('verum_liberated')) await c.say('女工', ['機械を止めた日、はじめて自分の手を見た。傷だらけだった。', '今はこの手で、自分のために働く。']); else await c.say('女工', ['十二時間、鉱石を砕く。手が動かなくなったら配給が減る。', '逃げた妹は……猟犬に。もう、何も考えないようにしてる。']); } },
+      // v6.7 セリスの加入場所：リヴェルの酒場 → グラニアの鉱石工場
+      { id: 'seris', x: 8, y: 6, sprite: 'seris', dir: 'left', wander: 0, talk: async function (c) {
+        if (c.hasCompanion('seris')) return;
+        await c.say('セリス', ['私はセリス。マクディア魔導王国の魔法使いよ。クリスタルの研究をしているの。', 'この工場の鉱石が、どこへ運ばれているのかを調べに来たの。', '欲望のゴーレムを倒したのは、あなたたちね。リヴェルで噂を聞いたわ。あなたたちとなら、クリスタルの欠片の謎を解けるかもしれない。同行させて。']);
+        var a = await c.choice('セリスを仲間にしますか？', ['はい', 'いいえ']);
+        if (a === 0) { c.join('seris'); await c.msg(['セリスが仲間になった！']); }
+        else await c.say('セリス', ['そう。……しばらくはここで鉱石を調べているわ。']);
+      } }
     ] });
 
   /* ---------- 配給所（解放前：印章がないと配給なし／解放後：店） ---------- */

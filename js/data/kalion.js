@@ -222,7 +222,15 @@
   ], warps: [{ x: 5, y: 8, to: 'kalion_city', tx: 23, ty: 19 }],
     npcs: [
       { id: 'kv_bartender', x: 2, y: 2, sprite: 'bartender', dir: 'down', wander: 0, talk: async function (c) { await c.tavern(); } },
-      { id: 'kv_drunk', x: 8, y: 4, sprite: 'villager_m', dir: 'down', wander: 0, talk: async function (c) { await c.say('酔った男', ['復興事業ってのはな、どこにもねえんだよ。俺は運送屋だ。鉱石を「砦」へ運んだ。帰りは空だ。', '王都の塔？ ありゃ大宰相の私邸だ。……おっと、聞かなかったことにしてくれ。']); } }
+      { id: 'kv_drunk', x: 8, y: 4, sprite: 'villager_m', dir: 'down', wander: 0, talk: async function (c) { await c.say('酔った男', ['復興事業ってのはな、どこにもねえんだよ。俺は運送屋だ。鉱石を「砦」へ運んだ。帰りは空だ。', '王都の塔？ ありゃ大宰相の私邸だ。……おっと、聞かなかったことにしてくれ。']); } },
+      // v6.7 ミナの加入場所：ダウの村 → カリオンの裏通りの酒場
+      { id: 'mina', x: 8, y: 6, sprite: 'mina', dir: 'left', wander: 0, talk: async function (c) {
+        if (c.hasCompanion('mina')) return;
+        await c.say('ミナ', ['あたしはミナ。ダウの村から来た宝探しよ。', 'この街じゃ、拾った宝まで税で持っていかれるの。……取り返す機会をうかがってたところ。', 'あんたたち、徴収官に目をつけられてるんでしょ？ 面白そうじゃない。宝箱を開けるのと逃げ足には自信があるの。仲間にしてよ！']);
+        var a = await c.choice('ミナを仲間にしますか？', ['はい', 'いいえ']);
+        if (a === 0) { c.join('mina'); await c.msg(['ミナが仲間になった！']); }
+        else await c.say('ミナ', ['ふーん。気が変わったら、この酒場にいるから。']);
+      } }
     ] });
 
   /* ---------- 地図から消えた村（サブ） ---------- */
@@ -395,6 +403,15 @@
         await c.say('元兵士', ['証言……。ああ、する。俺が没収した家は三十二軒。全部覚えてる。', '帳簿には「納付遅延」とあった。だが現場で納付書を見せられたことが何度もある。俺は「記録が優先だ」と言った。……言わされたんじゃない。俺が言ったんだ。']);
         c.setFlag('testimony_3', true); await c.msg(['元兵士の証言を記録した。（証言 ' + ['testimony_1', 'testimony_2', 'testimony_3'].filter(function (f) { return root.State.data.flags[f]; }).length + '/3）']);
         await c.remark('kyle', ['「言わされたんじゃない、俺が言った」……。', 'それを言えるようになるまで、俺は何年かかった。'], 'kyle_remark_tavern');
+      } },
+      // v6.7 ルシアの加入場所：ダウの村の修行場 → 王都セントラの酒場
+      { id: 'lucia', x: 8, y: 6, sprite: 'lucia', dir: 'left', wander: 0, talk: async function (c) {
+        if (c.hasCompanion('lucia')) return;
+        if (!c.flag('learned_dow') || !c.flag('learned_ema')) { await c.say('ルシア', ['私はルシア。師匠ハケイの一番弟子……のつもり。', '波形と移動平均の教えを修めた人となら、一緒に旅をしてもいい。']); return; }
+        await c.say('ルシア', ['私はルシア。師匠ハケイの一番弟子……のつもり。', '師匠に言われて、山を越えたこの国の「波」を見に来たの。', 'あなた、師匠の教えを二つも修めたのね。私は「波を読む力」をもっと高めたい。一緒に行かせて。']);
+        var a = await c.choice('ルシアを仲間にしますか？', ['はい', 'いいえ']);
+        if (a === 0) { c.join('lucia'); await c.msg(['ルシアが仲間になった！']); }
+        else await c.say('ルシア', ['そう。……私はしばらく、この街の波を見ている。']);
       } }
     ] });
   K.innInterior('sentra_inn', '王都の宿', 'sentra_capital', 6, 24, 60);

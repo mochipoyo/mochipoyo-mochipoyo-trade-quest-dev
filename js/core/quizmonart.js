@@ -158,6 +158,9 @@
     try { fn(painter(ctx, scale, N), N, phase); } catch (e) { if (root.console) console.warn('QuizMonArt', id, e); }
     ART.cache[key] = c; return c;
   };
+  // v6.7 追加の50体（js/core/quizmonart2.js）が、同じ描き方の道具で絵を足す
+  ART.register = function (id, fn) { if (id && typeof fn === 'function' && !DRAW[id]) DRAW[id] = fn; };
+  ART.bob = bob;
   ART.has = function (id) { return !!DRAW[id]; };
   ART.ids = function () { return Object.keys(DRAW); };
   root.QuizMonArt = ART;

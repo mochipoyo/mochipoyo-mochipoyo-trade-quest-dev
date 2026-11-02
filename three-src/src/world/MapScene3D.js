@@ -187,6 +187,7 @@ export class MapScene3D {
     if (this.terrain) { this.terrain.update(t, this.app.lighting.night < 0.5 ? 1 : 0); this.terrain.updateLod(player); }
     if (this.world) { this.world.update(t); this.world.updateLod(player); }
     this.updateBossSymbols(t);
+    this.updateQuizSymbols(t);
   }
   // v6.5 Phase D ボスのシンボル（3D）：2D版と同じ BossSymbol.list() を毎フレーム写す（倒したら消える・条件まで出ない）
   // 姿は2D版と同じボスの絵を立て札（ビルボード）にして、待機の動き（呼吸・上下）・足もとの光の輪・ボスの色の光をつける。専用の3Dモデルはまだない
@@ -219,10 +220,38 @@ export class MapScene3D {
     }
     this.bossSyms.forEach((o, k) => { if (!seen.has(k)) o.g.visible = false; });
   }
+  // v6.7 トレードクイズモンスターのシンボル（3D）：2D版と同じ QuizSymbol.list() を毎フレーム写す（倒したら消える・逃げたら入り直すまで消える）
+  // 姿は2D版と同じドット絵（QuizMonArt。その場で描く絵なので、別のサイト扱いにならない）を立て札にして、待機の動き（4こま）・足もとの光の輪・立ちのぼる「？」をつける
+  updateQuizSymbols(t) {
+    const QS = window.QuizSymbol, ART = window.QuizMonArt; if (!QS || !QS.list || !ART) return; let L = [];
+    try { L = QS.list(this.map) || []; } catch (e) { return; }
+    if (!this.quizSyms) this.quizSyms = new Map(); const seen = new Set();
+    for (const s of L) {
+      const key = s.mon.id + '@' + s.x + ',' + s.y; seen.add(key); let o = this.quizSyms.get(key);
+      if (!o) {
+        const texs = []; for (let f = 0; f < 4; f++) { const c = ART.image(s.mon.id, 2, f); if (!c) break; const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; tx.magFilter = THREE.NearestFilter; tx.minFilter = THREE.NearestFilter; texs.push(tx); }
+        if (!texs.length) continue;
+        const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: texs[0], transparent: true, alphaTest: 0.05 })); sp.scale.set(1.9, 1.9, 1); sp.center.set(0.5, 0.06);
+        const col = new THREE.Color('rgb(' + (s.mon.aura || '255,255,255') + ')');
+        const ring = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.78, 32), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })); ring.rotation.x = -Math.PI / 2; ring.position.y = 0.04;
+        const qc = document.createElement('canvas'); qc.width = 32; qc.height = 32; const qx = qc.getContext('2d'); if (qx) { qx.font = 'bold 26px sans-serif'; qx.textAlign = 'center'; qx.textBaseline = 'middle'; qx.fillStyle = '#ffffff'; qx.fillText('？', 16, 17); }
+        const qtex = new THREE.CanvasTexture(qc); const qs = []; for (let i = 0; i < 3; i++) { const q = new THREE.Sprite(new THREE.SpriteMaterial({ map: qtex, color: col, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); q.scale.set(0.34, 0.34, 1); qs.push(q); }
+        const g = new THREE.Group(); g.name = 'quiz_symbol_' + s.mon.id; g.add(sp); g.add(ring); qs.forEach((q) => g.add(q)); this.root.add(g);
+        o = { g, sp, ring, qs, texs, qtex, f: -1, ph: (s.x * 5 + s.y * 3) % 7 }; this.quizSyms.set(key, o);
+      }
+      const x = s.x + 0.5, z = s.y + 0.5; o.g.position.set(x, this.heightAt ? (this.heightAt(x, z) || 0) : 0, z); o.g.visible = true;
+      const f = Math.floor(t * 2.5) % o.texs.length; if (f !== o.f) { o.f = f; o.sp.material.map = o.texs[f]; o.sp.material.needsUpdate = true; }
+      const ph = Math.sin(t * 2.2 + o.ph); o.sp.position.y = ph * 0.04; o.ring.scale.setScalar(1 + ph * 0.08); o.ring.material.opacity = 0.4 + 0.18 * ph;
+      o.qs.forEach((q, i) => { const k = (t * 0.45 + i / 3) % 1; q.position.set(Math.sin(i * 2.3 + t) * 0.5, 0.4 + k * 1.9, 0); q.material.opacity = 0.85 * (1 - k); });
+    }
+    this.quizSyms.forEach((o, k) => { if (!seen.has(k)) o.g.visible = false; });
+  }
+  quizSymbolInfo() { const out = []; if (this.quizSyms) this.quizSyms.forEach((o, k) => out.push({ key: k, visible: o.g.visible, x: +o.g.position.x.toFixed(2), z: +o.g.position.z.toFixed(2) })); return out; }
   bossSymbolInfo() { const out = []; if (this.bossSyms) this.bossSyms.forEach((o, k) => out.push({ key: k, visible: o.g.visible, vol: !!o.vol, x: +o.g.position.x.toFixed(2), z: +o.g.position.z.toFixed(2) })); return out; }
 
   // 使わなくなった場面の解放（共有のモデル形状・マテリアルは残す）
   dispose() {
+    if (this.quizSyms) this.quizSyms.forEach((o) => { o.texs.forEach((tx) => tx.dispose()); o.qtex.dispose(); o.ring.geometry.dispose(); o.ring.material.dispose(); });
     this.root.traverse((o) => {
       if (o.isInstancedMesh || o.isBatchedMesh) { try { o.dispose(); } catch (e) { /* なし */ } }
       if (o.geometry && o.geometry.userData && o.geometry.userData.own) o.geometry.dispose();

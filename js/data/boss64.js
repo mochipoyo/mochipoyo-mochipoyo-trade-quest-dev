@@ -11,9 +11,9 @@
   var E = root.ENEMIES; if (!E) return;
   var T = {
     boss_lost_trend: { ch: 2, hp: [480, 480], atk: [19, 54], mag: [8, 23] },   // トレンド迷子
-    boss_greed_golem: { ch: 3, hp: [880, 1360], atk: [29, 74], mag: [6, 15] },   // 欲望のゴーレム
-    boss_bandit_chief: { ch: 3, hp: [640, 1280], atk: [26, 90] },   // 山賊の頭目ガロン
-    boss_tide_serpent: { ch: 4, hp: [760, 1750], atk: [27, 65], mag: [8, 19] },   // 潮の大蛇ウルガ
+    boss_greed_golem: { ch: 3, hp: [880, 952], atk: [29, 63], mag: [6, 13] },   // 欲望のゴーレム（v6.7 アルカディアの仲間をカイルまでにしたので、3人で同じ目標に合わせ直し：1360→952・74→63・15→13）
+    boss_bandit_chief: { ch: 3, hp: [640, 1088], atk: [26, 86] },   // 山賊の頭目ガロン（v6.7 3人で合わせ直し：1280→1088・90→86）
+    boss_tide_serpent: { ch: 4, hp: [760, 1050], atk: [27, 65], mag: [8, 19] },   // 潮の大蛇ウルガ（v6.7 3人で合わせ直し：HP 1750→1050）
     boss_overseer: { ch: 5, hp: [1300, 4030], atk: [34, 87], mag: [10, 26] },   // 監督官ザルグ
     boss_ledger_guardian: { ch: 6, hp: [1500, 4130], atk: [38, 118], mag: [12, 37] },   // 帳簿の守護者
     boss_valen: { ch: 7, hp: [1400, 4270], atk: [42, 155], mag: [14, 52] },   // 騎士団長ヴァレン

@@ -7,9 +7,9 @@
   var COMPANIONS = {
     lina: { name: 'リーナ', job: 'priest', sprite: 'lina', joinLevel: 2, personality: '優しく芯が強い', background: '巡礼の旅の途中で魔物に襲われ、ポヨ村に身を寄せた僧侶。', bio: '回復魔法が得意。仲間の無茶を止める役。' },
     kyle: { name: 'カイル', job: 'knight', sprite: 'kyle', joinLevel: 4, personality: '不器用で義理堅い', background: '元リヴェル騎士団。迷いの森で部下を失い、酒場で燻っていた。', bio: '高い防御力で前線を支える騎士。' },
-    mina: { name: 'ミナ', job: 'thief', sprite: 'mina', joinLevel: 5, personality: '明るく抜け目がない', background: 'ダウの村を拠点にする宝探し。宝箱と逃げ足に自信がある。', bio: '素早い盗賊。宝箱で追加アイテムを見つけることがある。' },
+    mina: { name: 'ミナ', job: 'thief', sprite: 'mina', joinLevel: 5, personality: '明るく抜け目がない', background: 'ダウの村出身の宝探し。カリオンで宝を税に取られ、取り返す機会をうかがっていた。宝箱と逃げ足に自信がある。', bio: '素早い盗賊。宝箱で追加アイテムを見つけることがある。' },
     seris: { name: 'セリス', job: 'mage', sprite: 'seris', joinLevel: 8, personality: '冷静で知識欲が強い', background: 'マクディア魔導王国の魔法使い。クリスタルの研究のため大陸を旅している。', bio: '強力な攻撃魔法の使い手。' },
-    gald: { name: 'ガルド', job: 'warrior', sprite: 'gald', joinLevel: 6, personality: '豪快で面倒見がいい', background: '港町で船を待つ傭兵。戦えるならそれでいい、と言う。', bio: '高いHPと攻撃力の戦士。' },
+    gald: { name: 'ガルド', job: 'warrior', sprite: 'gald', joinLevel: 6, personality: '豪快で面倒見がいい', background: 'グラニアの灰の浜で、故郷の町へ戻る踏ん切りがつかずにいた傭兵。戦えるならそれでいい、と言う。', bio: '高いHPと攻撃力の戦士。' },
     lucia: { name: 'ルシア', job: 'waveblade', sprite: 'lucia', joinLevel: 9, personality: '静かで負けず嫌い', background: '師匠ハケイの一番弟子。波を読む力をさらに高めたいと願う。', bio: '波形を読む剣技の使い手。' },
     // v5.1 新しい仲間（第6〜7章）
     elna: { name: 'エルナ', job: 'auditor', sprite: 'scholar', joinLevel: 14, personality: '冷静で正確、しかし情に厚い', background: 'カリオン徴収政府の元財務官。帳簿の不正を見つけ、証拠を隠したことで追われている。', bio: '監査官。敵の弱点と強化を見抜く支援役。' },

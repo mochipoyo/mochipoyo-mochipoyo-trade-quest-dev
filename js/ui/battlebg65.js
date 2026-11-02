@@ -36,7 +36,7 @@
     if (kind === 'field') {
       if (REGION_PLACE[r]) return REGION_PLACE[r];
       if (/森林|森/.test(zone || '')) return 'forest';
-      if (/荒野/.test(zone || '')) return 'desert';
+      // v6.7 「荒野」は砂漠ではない（アルカディア南の荒野は草地・岩・砂浜のまじった土地）。砂漠の絵はリシア砂漠の地域だけ。荒野・山脈は草原（岩場の差分画像）にする
       return 'grassland';
     }
     if (r === 'dark') return 'dark';                                   // 虚無の荒野・魔王城
@@ -236,6 +236,8 @@
     // v6.6 山岳の差分画像：山道・峠・山脈のダンジョン（マップの名前・ID で確実にわかるものだけ。島・草原のフィールドなどは従来の草原）
     var variant = null; var def0 = (root.MAP_DEFS && root.MAP_DEFS[mapId]) || {};
     if (place === 'grassland' && kind === 'dungeon' && /山道|峠|山脈/.test(def0.name || '') && /pass|mountain/.test(mapId)) variant = 'grassland_mountain';
+    // v6.7 フィールドの出現地帯の名前が「荒野・荒地・山脈・山地」のとき（地帯の名前はデータで決まっていて確実）は、岩場と山の差分画像
+    if (place === 'grassland' && kind === 'field' && /荒野|荒地|山脈|山地/.test((opts && opts.zone) || '')) variant = 'grassland_mountain';
     return { place: place, region: region, night: !!night, weather: weather, boss: boss, bossColor: bossColor, variant: variant };
   };
   BG.PAL = PAL;
