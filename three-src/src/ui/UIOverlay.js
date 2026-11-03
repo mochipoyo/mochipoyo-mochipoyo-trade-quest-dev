@@ -4,6 +4,7 @@
    ・スマホ：画面の左側をなぞると動けるバーチャルスティック（既存の十字ボタンも使える）、2本指でズーム
    ========================================================= */
 import { scope3D, setScope3D } from '../world/coverage.js';
+import { roundSetting, setRoundSetting } from '../world/Organic.js';
 const G3B = () => window.BattleStage3D;
 export class UIOverlay {
   constructor(app) {
@@ -60,6 +61,7 @@ export class UIOverlay {
       #g3-tools button { font: inherit; font-size: 11px; background: rgba(11,18,38,.85); color: #fff; border: 1px solid rgba(232,193,90,.7); border-radius: 4px; padding: 2px 7px; cursor: pointer; }
       #g3-tools button.on { background: #e8c15a; color: #1a1a2a; }
       #g3-panel { display: none; background: rgba(11,18,38,.93); border: 2px solid #e8c15a; border-radius: 6px; padding: 6px 8px; font-size: 11px; color: #fff; min-width: 200px; }
+      #g3-panel { max-height: calc(100vh - 80px); overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }   /* v6.8 スマホの横向きなど背の低い画面：設定が画面の上にはみ出さず、中をスクロールできるように */
       #g3-panel.show { display: block; } #g3-panel .row { display: flex; align-items: center; gap: 4px; margin: 3px 0; flex-wrap: wrap; } #g3-panel .lab { min-width: 64px; color: #cfe3ff; }
       #g3-badge { position: absolute; display: none; font-size: 10px; color: rgba(255,255,255,.8); background: rgba(0,0,0,.45); padding: 1px 6px; border-radius: 3px; pointer-events: none; }
       @media (max-width: 560px) { #g3-badge { display: none !important; } #g3-tools button { font-size: 10px; padding: 1px 5px; } }
@@ -83,6 +85,7 @@ export class UIOverlay {
       '<div class="row"><span class="lab">戦闘の並び</span><button data-bl="front">前後（味方が手前）</button><button data-bl="side">左右（敵が左・味方が右）</button></div>' +
       '<div class="row"><span class="lab">前後の背景</span><button data-bb="photo">背景の画像</button><button data-bb="3d">3Dの景色（以前）</button></div>' +
       '<div class="row"><span class="lab">3Dの範囲</span><button data-sc="all">全マップ（汎用3D＝仮3D）</button><button data-sc="poyo">ポヨ村だけ（以前と同じ）</button></div>' +
+      '<div class="row"><span class="lab">道・壁の丸み</span><button data-rd="region">アルカディアだけ（試験）</button><button data-rd="all">全地域（確認用）</button><button data-rd="off">使わない（以前の四角）</button></div>' +
       '<div class="row"><span class="lab">表示</span><span id="g3-fps">-- fps</span></div>' +
       '<div class="row"><span class="lab">状態</span><span id="g3-diag" style="max-width:300px;line-height:1.45;user-select:text;-webkit-user-select:text">--</span></div>' +
       '<div class="row muted small" style="max-width:240px;color:#aab">時間帯の確認は見た目だけで、ゲームの進行（State の時刻）は変えません。画質の変更は再読み込みで反映されます。</div></div>';
@@ -100,6 +103,7 @@ export class UIOverlay {
       if (b.dataset.bl) { try { localStorage.setItem('mtq3d-battle-layout', b.dataset.bl); } catch (e) { /* なし */ } }   // 戦闘の並び：次の戦闘から
       if (b.dataset.bb) { try { localStorage.setItem('mtq3d-battle-bg', b.dataset.bb); } catch (e) { /* なし */ } }   // v6.6 前後の並びの背景：すぐ反映（戦闘中でも）
       if (b.dataset.sc) setScope3D(b.dataset.sc);                         // Phase 1：すぐ反映（今いるマップも）
+      if (b.dataset.rd && b.dataset.rd !== roundSetting()) { setRoundSetting(b.dataset.rd); app.rebuildGeneric(); }   // v6.8 丸み：汎用3Dのマップを作り直す
       this.refresh();
     });
     // ホイールでズーム
@@ -139,6 +143,7 @@ export class UIOverlay {
     let bbg = 'photo'; try { bbg = localStorage.getItem('mtq3d-battle-bg') === '3d' ? '3d' : 'photo'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-bb]').forEach((b) => b.classList.toggle('on', b.dataset.bb === bbg));
     let ba = true; try { ba = localStorage.getItem('mtq3d-battle-actors') !== 'off'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-ba]').forEach((b) => b.classList.toggle('on', (b.dataset.ba === 'on') === ba));
     const sc = scope3D(); this.tools.querySelectorAll('[data-sc]').forEach((b) => b.classList.toggle('on', b.dataset.sc === sc));
+    const rd = roundSetting(); this.tools.querySelectorAll('[data-rd]').forEach((b) => b.classList.toggle('on', b.dataset.rd === rd));
   }
   // #game（2D）のちょうど内側に重ねる
   layout() {

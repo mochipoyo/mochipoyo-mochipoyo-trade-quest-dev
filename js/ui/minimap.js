@@ -22,6 +22,11 @@
     village: '#ffb04a', castle_icon: '#ffd24a', cave_icon: '#c0c0d0', tower_icon: '#ffd24a', ship: '#8a5a30'
   };
   function colorOf(name) { if (C[name]) return C[name]; return Tiles.isSolid(name) ? '#3a3a4a' : '#9a9aa8'; }
+  // v6.8 ミニマップ・全体マップに宝箱の場所は出さない（ご要望。地面の色で塗る）。測量士（職業の能力「ダンジョンの宝箱の位置がミニマップに見える」）がパーティにいるときだけ出す
+  function showChests() { return !!(root.Vehicle && root.Vehicle.hasJob && root.Vehicle.hasJob('surveyor')); }
+  Minimap.showChests = showChests;
+  function isChestTile(t) { return t === 'chest' || t === 'chest_open'; }
+  function groundNear(map, x, y) { var dd = [[1, 0], [-1, 0], [0, 1], [0, -1]]; for (var i = 0; i < 4; i++) { var r = map.tiles[y + dd[i][1]]; var t = r && r[x + dd[i][0]]; if (t && !isChestTile(t) && !Tiles.isSolid(t)) return t; } return 'floor_stone'; }
   var SYMBOL = { stairs_down: 'stairs', stairs_up: 'stairs', warp: 'warp', chest: 'chest', chest_open: 'chest_open', door_locked: 'lock', gate: 'gate', hole: 'hole', village: 'town', castle_icon: 'castle', cave_icon: 'cave', tower_icon: 'castle', ship: 'ship', boss_mark: 'boss' };
 
   /* ---------- 探索状況（ビット列） ---------- */
@@ -51,7 +56,7 @@
   function renderTerrain(map, cell) {
     var c = document.createElement('canvas'); c.width = map.w * cell; c.height = map.h * cell; var ctx = c.getContext('2d');
     for (var y = 0; y < map.h; y++) for (var x = 0; x < map.w; x++) {
-      var t = map.tiles[y][x]; ctx.fillStyle = colorOf(t); ctx.fillRect(x * cell, y * cell, cell, cell);
+      var t = map.tiles[y][x]; if (isChestTile(t) && !showChests()) t = groundNear(map, x, y); ctx.fillStyle = colorOf(t); ctx.fillRect(x * cell, y * cell, cell, cell);
       if (cell >= 4 && (t === 'tree' || t === 'forest')) { ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.fillRect(x * cell + 1, y * cell + 1, cell - 2, cell - 2); }
       if (cell >= 4 && t === 'mountain') { ctx.fillStyle = '#a89a8a'; ctx.beginPath(); ctx.moveTo(x * cell, y * cell + cell); ctx.lineTo(x * cell + cell / 2, y * cell + 1); ctx.lineTo(x * cell + cell, y * cell + cell); ctx.fill(); }
       if (cell >= 4 && (t === 'water' || t === 'shallow') && ((x + y) % 3 === 0)) { ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(x * cell, y * cell + (cell >> 1), cell >> 1, 1); }
@@ -62,7 +67,8 @@
     map.buildings.forEach(function (b) { ctx.strokeStyle = 'rgba(0,0,0,0.45)'; ctx.lineWidth = 1; ctx.strokeRect(b.x * cell + 0.5, b.y * cell + 0.5, b.w * cell - 1, b.h * cell - 1); });
     // 記号（階段・出入口・宝箱・扉・落とし穴・ボスの印・ワールドのアイコン）。霧は後から上に重ねるので未探索分は見えない
     var r = Math.max(2, cell * 0.45);
-    for (var sy = 0; sy < map.h; sy++) for (var sx = 0; sx < map.w; sx++) { var sym = SYMBOL[map.tiles[sy][sx]]; if (sym && !isHiddenAt(hid, sx, sy)) drawSymbol(ctx, sym, sx * cell + cell / 2, sy * cell + cell / 2, r); }
+    var chestsOn = showChests();
+    for (var sy = 0; sy < map.h; sy++) for (var sx = 0; sx < map.w; sx++) { var sym = SYMBOL[map.tiles[sy][sx]]; if ((sym === 'chest' || sym === 'chest_open') && !chestsOn) continue; if (sym && !isHiddenAt(hid, sx, sy)) drawSymbol(ctx, sym, sx * cell + cell / 2, sy * cell + cell / 2, r); }
     if (!isRegion(map)) map.warps.forEach(function (w) { var tn = map.tiles[w.y] && map.tiles[w.y][w.x]; if (SYMBOL[tn] || tn === 'bld_door') return; drawSymbol(ctx, 'warp', w.x * cell + cell / 2, w.y * cell + cell / 2, r); });
     return c;
   }
@@ -71,7 +77,7 @@
   Minimap.hiddenLocs = hiddenLocs;
   function getTerrain(map, big) {
     var store = big ? Minimap.bigCache : Minimap.cache; var e = store[map.id]; var cell = cellFor(map, big);
-    var hk = hiddenLocs(map).map(function (L) { return L.id; }).join(',');   // 隠し地点が見つかったら描き直す
+    var hk = hiddenLocs(map).map(function (L) { return L.id; }).join(',') + (showChests() ? '|c' : '');   // 隠し地点が見つかったら描き直す（v6.8 測量士の有無で宝箱の表示が変わるときも）
     if (!e || e.rev !== (Minimap._dirty[map.id] || 0) || e.hk !== hk) { e = { canvas: renderTerrain(map, cell), cell: cell, rev: Minimap._dirty[map.id] || 0, hk: hk }; store[map.id] = e; }
     return e;
   }
@@ -416,7 +422,7 @@
       // 出入口の名前（建物ドア以外）
       m.warps.forEach(function (w) { if (hasFog(m) && !isDiscovered(m, w.x, w.y)) return; var tn = m.tiles[w.y][w.x]; if (tn === 'bld_door') return; var s = toScreen(w.x, w.y); var to = root.MAP_DEFS[w.to] || (w.to === 'world' ? root.WORLD_DEF : null); hot.push({ x: s.x, y: s.y, text: (tn === 'stairs_down' || tn === 'stairs_up' ? '階段：' : '出入口：') + (to ? to.name : w.to) }); });
       // 宝箱（発見済み）
-      m.chests.forEach(function (c) { if (hasFog(m) && !isDiscovered(m, c.x, c.y)) return; var s = toScreen(c.x, c.y); hot.push({ x: s.x, y: s.y, text: d.chests[m.id + ':' + c.id] ? '宝箱（開封済み）' : '宝箱' }); });
+      if (showChests()) m.chests.forEach(function (c) { if (hasFog(m) && !isDiscovered(m, c.x, c.y)) return; var s = toScreen(c.x, c.y); hot.push({ x: s.x, y: s.y, text: d.chests[m.id + ':' + c.id] ? '宝箱（開封済み）' : '宝箱' }); });
       // v6.2 航路・桟橋・次の目的地
       try { hot = hot.concat(drawNav(ctx, m, cell, function (x, y) { return toScreen(x, y); }, Math.max(2.5, cell * z * 0.9))); } catch (e) { console.error('nav', e); }
       // 自分
@@ -426,7 +432,7 @@
       var fl = document.getElementById('bm-floors');
       var html = floors.length > 1 ? floors.map(function (id) { var vis = !!d.visited[id]; var nm = root.MAP_DEFS[id].name; return '<button data-floor="' + id + '" class="' + (id === m.id ? 'on' : '') + '" ' + (vis ? '' : 'disabled') + '>' + root.Win.esc(vis ? nm : '？？？') + '</button>'; }).join('') : '';
       if (fl.getAttribute('data-html') !== html) { fl.innerHTML = html; fl.setAttribute('data-html', html); fl.querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { Minimap._floor = b.getAttribute('data-floor'); Minimap.clearTip(); Minimap.home(); }); }); }
-      Minimap.renderLegend(m.kind === 'dungeon' ? [['nav', '次の目的地'], ['arrow', '現在地'], ['floor', '通路（探索済み）'], ['wall', '壁'], ['fog', '未探索'], ['stairs', '階段・出入口'], ['chest', '宝箱'], ['lock', '鍵の扉'], ['gate', '試練の扉'], ['boss', '強敵の気配']] :
+      Minimap.renderLegend(m.kind === 'dungeon' ? [['nav', '次の目的地'], ['arrow', '現在地'], ['floor', '通路（探索済み）'], ['wall', '壁'], ['fog', '未探索'], ['stairs', '階段・出入口']].concat(showChests() ? [['chest', '宝箱（測量士）']] : []).concat([['lock', '鍵の扉'], ['gate', '試練の扉'], ['boss', '強敵の気配']]) :
         m.kind === 'field' ? [['nav', '次の目的地'], ['anchor', '桟橋'], ['arrow', '現在地'], ['grass', '草原'], ['forest', '森'], ['mtn', '山'], ['road', '道'], ['water', '海・川'], ['town', '町・ダンジョン']] :
         [['nav', '次の目的地'], ['arrow', '現在地'], ['weapon', '武器屋'], ['armor', '防具屋'], ['item', '道具屋'], ['inn', '宿屋'], ['church', '教会'], ['tavern', '酒場'], ['bank', '銀行'], ['guild', 'ギルド'], ['dojo', '修行場'], ['house', '民家'], ['warp', '出入口']]);
     }

@@ -11,7 +11,7 @@ function where(id) { return Object.entries(w.MAP_DEFS).filter(([mid, def]) => (d
   ok(/2035年/.test(C.mochipoyo.background) && /タイムループ/.test(C.mochipoyo.background), 'もちぽよの設定：2035年からのタイムループ');
   const TS = J.loop_trader.skills.map(s => s.id); ok(TS.length === 7 && TS.every(id => SK[id] && SK[id].trade && F.DEFS[id] && F.KINDS[F.DEFS[id].fx]), 'トレード呪文7種と演出 ' + TS.join(','));
   ok(w.JOB_LIST.includes('loop_trader') && J.loop_trader.unlock.flag === 'mochipoyo_joined', '職業の一覧に「時渡りのトレーダー」（もちぽよ加入後に転職できる）');
-  ok(IT.porkbits_don && IT.porkbits_don.effect.hp === 80 && w.SHOP_EXTRAS.tradia_item.includes('porkbits_don') && w.FOOD_STANDS.tradia_tavern.includes('porkbits_don'), 'ポークビッツ丼：トレディアの道具屋・損切り亭で買える');
+  { const P = IT.porkbits_don; ok(P && P.name === '伝説のポークビッツ丼' && P.price === 20000 && P.effect.fullHp && P.effect.fullMp && P.effect.buff.atk === 1 && P.effect.turns === 3 && w.FOOD_STANDS.tradia_tavern.includes('porkbits_don') && !Object.values(w.SHOP_EXTRAS).some(l => l.includes('porkbits_don')) && !Object.keys(w.FOOD_STANDS).some(k => k !== 'tradia_tavern' && w.FOOD_STANDS[k].includes('porkbits_don')), '伝説のポークビッツ丼：20000G・HP/MP全回復・攻撃力2倍3ターン。トレディアの損切り亭（酒場）だけで買える'); }
   ok(F.DEFS.ponta_tackle && F.DEFS.ponta_heal && !SK.ponta_tackle, 'ポン太の行動の演出（スキルの一覧には入れない）');
   // ---- 置き場所（1か所だけ・歩ける場所・ほかの NPC と重ならない）
   for (const [id, map] of [['kazuto', 'magicka_tavern'], ['mochipoyo', 'tradia_tavern'], ['ponta', 'star_camp']]) {
@@ -29,12 +29,14 @@ function where(id) { return Object.entries(w.MAP_DEFS).filter(([mid, def]) => (d
   const k = d.companions.kazuto; const ks = Actors.stats(k); const base = Actors.baseStat('warrior', 'mp', k.level);
   ok(k.job === 'warrior' && ks.maxMp >= base + 60, 'カズト：戦士で最大MPが高い（Lv' + k.level + ' 最大MP ' + ks.maxMp + '／ふつうの戦士 ' + base + '）');
   const hs = Actors.stats(Object.assign({}, k, { id: 'hero' })); ok(hs.maxMp === ks.maxMp - Math.round(12 + 1.9 * (k.level - 1)), 'MPの上乗せはカズト本人だけ（同じ能力の主人公は上乗せなし）');
-  // ---- もちぽよ：トレードバトルに勝つ ＋ ポークビッツ丼3つ
+  // ---- もちぽよ：闘技場の12人中7人にそれぞれ1勝 ＋ 伝説のポークビッツ丼3つ（v6.8）
   State.newGame('t', 'warrior'); d = State.data; d.hero.level = 20; World.enterMap('tradia_tavern', 6, 8, 'up');
   await talk('mochipoyo'); ok(!d.companions.mochipoyo && d.flags.mochipoyo_met, 'もちぽよ：トレードバトルに勝つ前は仲間にならない');
-  d.tradia.wins = { ren: 1 }; State.addItem('porkbits_don', 2); await talk('mochipoyo'); ok(!d.companions.mochipoyo && d.inventory.porkbits_don === 2, 'もちぽよ：ポークビッツ丼が2つでは仲間にならない（丼は減らない）');
-  State.addItem('porkbits_don', 2); await talk('mochipoyo'); ok(!!d.companions.mochipoyo && d.flags.mochipoyo_joined && d.inventory.porkbits_don === 1, 'もちぽよ：勝利＋丼3つで仲間になる（丼が3つ減る）');
-  const m = d.companions.mochipoyo; ok(m.level >= 19 && ['trend_ray', 'rci_storm', 'dow_thunder', 'stoploss_aegis', 'macd_cross_burst'].every(s => m.skills.includes(s)), 'もちぽよ：加入のレベル（' + m.level + '）までのトレード呪文を覚えている');
+  const TID = w.TRADER_IDS; ok(Array.isArray(TID) && TID.length === 12 && w.COMPANIONS68.needWins === 7, '闘技場のトレーダーは12人・必要な勝利は7人');
+  d.tradia.wins = {}; TID.slice(0, 6).forEach(k => d.tradia.wins[k] = 3); State.addItem('porkbits_don', 3); await talk('mochipoyo'); ok(!d.companions.mochipoyo && d.inventory.porkbits_don === 3 && w.COMPANIONS68.tradiaWins() === 6, 'もちぽよ：6人に勝っただけ（同じ相手に何回勝っても）では仲間にならない（丼は減らない）');
+  d.tradia.wins[TID[6]] = 1; d.inventory.porkbits_don = 2; await talk('mochipoyo'); ok(!d.companions.mochipoyo && d.inventory.porkbits_don === 2, 'もちぽよ：7人に勝っても、伝説のポークビッツ丼が2つでは仲間にならない（丼は減らない）');
+  State.addItem('porkbits_don', 2); await talk('mochipoyo'); ok(!!d.companions.mochipoyo && d.flags.mochipoyo_joined && d.inventory.porkbits_don === 1, 'もちぽよ：7人に勝利＋丼3つで仲間になる（丼が3つ減る）');
+  const m = d.companions.mochipoyo; ok(m.level >= 28 && ['trend_ray', 'rci_storm', 'dow_thunder', 'stoploss_aegis', 'macd_cross_burst'].every(s => m.skills.includes(s)), 'もちぽよ：加入のレベル（' + m.level + '）までのトレード呪文を覚えている');
   ok(Combat.skillCost(m, SK.trend_ray) === 3 && Combat.skillCost(m, SK.time_loop_wave) === 18, 'もちぽよ：トレード呪文の消費MP -40%（トレンドレイ 5→3・時渡りの波形砲 30→18）');
   ok(Combat.skillCost(Object.assign({}, m, { id: 'hero' }), SK.trend_ray) === 4 && Combat.skillCost(m, SK.heal || { mp: 3 }) === (SK.heal ? SK.heal.mp : 3), 'ほかの人が時渡りのトレーダーなら -20%。トレード呪文でない呪文は変わらない');
   const ms = Actors.stats(m); ok(ms.maxMp > Actors.stats(Object.assign({}, m, { job: 'mage' })).maxMp, 'もちぽよ：最大MPは魔法使いより多い（' + ms.maxMp + '）');

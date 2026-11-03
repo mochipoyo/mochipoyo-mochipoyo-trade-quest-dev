@@ -1,11 +1,12 @@
 /* =========================================================
-   Data / Tradia（v6.4 Phase D）：相場都市トレディア（寄り道の都市。第6章のカリオン徴収連邦から行ける）
+   Data / Tradia（v6.4 Phase D）：相場都市トレディア（寄り道の都市。v6.8 でマクディア魔導王国の地方へ移した。以前は第6章のカリオン徴収連邦から行けた）
    ・世界のトレーダー・投資家・研究者・商人・投機家が集まる経済都市。町の中心に証券市場、まわりに闘技場・取引所・研究所・銀行・ギルド
    ・施設14：トレード闘技場／レバレッジ取引所／投資家ギルド／相場研究所／証券市場／銀行／トレーダーの酒場／高級武器店／防具店／道具屋／宿屋／住宅街／富豪の屋敷／破産者の集まる裏通り
    ・ラックスベル（カジノ＝確率と期待値）・ボラティリティア学院（講義）とは役割を分ける：ここは「チャートで判断を比べる」「証拠金とロスカットを体験する」町
    ・トレーダー12人とのトレードバトル（js/rpg/tradebattle.js）、レバレッジ取引ゲーム（js/rpg/leverage.js）。画面は js/ui/tradia.js
    ・レバレッジ取引ゲームの資金はゲーム専用の「トレディアG」。ゴールド・現実のお金・暗号資産・ポイントとの交換はできない
-   ・ワールドの入口：world_kalion (36,88)。徴収都市カリオンから西への道（js/data/world-kalion.js）
+   ・ワールドの入口：world_magicka (60,80)。魔導都マクディアの南西の平原（js/data/world-magicka.js）。v6.8 以前は world_kalion (36,88)
+   ・古いセーブ（マクディア地方にまだ着いていないのにトレディアにいる・ファストトラベルで来た）は、町の外へ出るとカリオン徴収連邦の以前の入口の前に出る（js/data/tweaks68.js の redirectWarp）
    ========================================================= */
 (function (root) {
   'use strict';
@@ -24,7 +25,7 @@
   /* ---------- 地域マップの絵（js/data/designs.js と同じ形式。列柱の証券市場と取引所の塔） ---------- */
   if (root.LOCATION_DESIGNS && !root.LOCATION_DESIGNS.tradia) root.LOCATION_DESIGNS.tradia = { id: 'tradia', architectureStyle: '列柱の証券市場と、相場の板を掲げた取引所の塔が並ぶ経済都市', silhouette: 'admin_city', roofStyle: 'flat',
     materials: { wall: '#e8e4d8', wallD: '#b8b2a0', mortar: '#cfc8b4', roof: '#2a6a52', roofD: '#174a38', accent: '#ffd24a', banner: '#4cc38a' }, decoration: ['banners'], environment: ['road'],
-    entrance: { map: 'world_kalion', x: 36, y: 88, face: 'south', to: 'tradia' } };
+    entrance: { map: 'world_magicka', x: 60, y: 80, face: 'south', to: 'tradia' } };   // v6.8 マクディア地方へ移した
 
   /* ---------- トレーダー12人の見た目（歩行キャラの色） ---------- */
   var CH = root.Chars && root.Chars.PALS; var SK = '#f0c8a0', EY = '#2a2d4a';
@@ -174,7 +175,7 @@
       { id: 'td_inn', type: 'inn', name: '宿屋「満期の宿」', x: 38, y: 30, w: 8, h: 5, doorX: 3, interior: 'tradia_inn', entry: { x: 5, y: 7 } },
       { id: 'td_house3', type: 'house', name: '住宅街の家', x: 14, y: 30, w: 5, h: 4, doorX: 2 }
     ],
-    warps: [22, 23, 24, 25].map(function (x) { return { x: x, y: 39, to: 'world_kalion', tx: 36, ty: 89, name: '町の外へ' }; }),
+    warps: [22, 23, 24, 25].map(function (x) { return { x: x, y: 39, to: 'world_magicka', tx: 60, ty: 81, name: '町の外へ' }; }),   // v6.8 マクディア地方へ（古いセーブの例外は tweaks68.js）
     chests: [{ id: 'td1', x: 45, y: 38, item: 'hi_ether', qty: 2 }, { id: 'td2', x: 2, y: 37, item: 'revive_lantern', qty: 1 }],
     events: [
       { x: 25, y: 37, type: 'inspect', solid: false, text: ['案内板：「相場都市トレディア——北：証券市場・富豪の屋敷　西：トレード闘技場・投資家ギルド・銀行・酒場　東：相場研究所・レバレッジ取引所・武器と防具の店　南東：道具屋・宿屋　南西：裏通り」', '小さな字で：「この町のトレディアGは取引所の中だけで使う仮想資金です。ゴールドとは交換できません」'] },
@@ -189,7 +190,7 @@
       { id: 'td_crier', x: 24, y: 12, sprite: 'merchant', dir: 'down', wander: 1, talk: async function (c) { await c.say('相場の呼び込み', ['証券市場の大きな板を見ていかないか？　入口の前の板に、今日の値動きが映っている！', '……今日の値動き？　研究所の連中が作った「学習用の値動き」さ。本物の相場じゃないから、安心して眺めていきな。']); } },
       { id: 'td_investor', x: 30, y: 18, sprite: 'villager_f', dir: 'down', wander: 1, talk: async function (c) { await c.say('若い投資家', ['この町では「いくら儲けたか」より「どう判断したか」で人を見るの。', '闘技場の勝ち負けも、損益だけじゃ決まらないのよ。資金の5%を一度に賭ける人は、大きく勝っても褒められない。']); } },
       { id: 'td_child', x: 18, y: 25, sprite: 'child', dir: 'down', wander: 1, talk: async function (c) { await c.say('町の子ども', ['お父さんはね、毎日「今日はやめておこう」って言う日があるんだって。', 'それも仕事なんだって。変なの。']); } },
-      { id: 'td_merchant', x: 32, y: 27, sprite: 'merchant', dir: 'down', wander: 1, talk: async function (c) { await c.say('旅の商人', ['カリオンの税が落ち着いてから、この町に人が戻ってきた。', '高級武器店の品ぞろえは大陸でも指折りだ。闘技場の勝者だけがもらえる装備もあるらしいぞ。']); } },
+      { id: 'td_merchant', x: 32, y: 27, sprite: 'merchant', dir: 'down', wander: 1, talk: async function (c) { await c.say('旅の商人', ['魔導王国の研究者まで、相場を学びにこの町へ来るようになった。', '高級武器店の品ぞろえは大陸でも指折りだ。闘技場の勝者だけがもらえる装備もあるらしいぞ。']); } },
       { id: 'td_galva', x: 6, y: 33, sprite: 'td_galva', dir: 'down', wander: 0, talk: challenge('galva') },
       { id: 'td_bankrupt1', x: 4, y: 31, sprite: 'villager_m', dir: 'right', wander: 0, talk: async function (c) { await c.say('裏通りの男', ['……レバレッジを上げれば、早く取り返せると思ったんだ。', '取引所の画面に「ロスカットまで 8pips」って出てたのに、見ないふりをした。8pipsなんて、15分で動く。']); } },
       { id: 'td_bankrupt2', x: 8, y: 35, sprite: 'villager_f', dir: 'up', wander: 0, talk: async function (c) { await c.say('裏通りの女', ['損切りの注文は入れてたのよ。でも重要な発表で値段が飛んで、損切りの値段より、ずっと悪いところで決済された。', '損切りは「その値段で必ず止まる」約束じゃないの。だから、1回に賭ける額を小さくするしかないのよ。']); } },

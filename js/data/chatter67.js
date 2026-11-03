@@ -318,7 +318,7 @@
     ['poyo_village', 'マーサおばさん', 24, 20, 'arcadia', 1], ['rivel_town', 'ハンナおばさん', 32, 34, 'arcadia', 1], ['dow_village', 'ベティおばさん', 21, 18, 'arcadia', 1],
     ['harbor_town', 'ローザおばさん', 25, 20, 'arcadia', 1], ['rivel_artisan', 'グレタおばさん', 22, 17, 'arcadia', 1], ['verum_town', 'ドーラおばさん', 24, 18, 'grania', 1],
     ['kalion_city', 'エマおばさん', 30, 18, 'kalion', 1], ['erased_village', 'フローラおばさん', 13, 10, 'kalion', 0], ['sentra_capital', 'ミルダおばさん', 24, 16, 'kalion', 1],
-    ['tradia', 'オルガおばさん', 24, 20, 'kalion', 1], ['luxbell', 'ペトラおばさん', 20, 16, 'kalion', 1], ['aruna_village', 'サラおばさん', 15, 11, 'islands', 1],
+    ['tradia', 'オルガおばさん', 24, 20, 'magicka', 1], ['luxbell', 'ペトラおばさん', 20, 16, 'kalion', 1], ['aruna_village', 'サラおばさん', 15, 11, 'islands', 1],
     ['tempus_city', 'テレサおばさん', 20, 15, 'tempus', 1], ['volatilia', 'ヨハンナおばさん', 22, 20, 'tempus', 1], ['node_city', 'カミラおばさん', 20, 11, 'machine', 1],
     ['scheduled_district', 'リタおばさん', 16, 16, 'machine', 1], ['magicka_city', 'ノーラおばさん', 22, 17, 'magicka', 1], ['star_camp', 'イレーネおばさん', 10, 3, 'sky', 1],
     ['dark_camp', 'ヘルガおばさん', 14, 8, 'dark', 1], ['sahar_city', 'マルタおばさん', 20, 19, 'desert', 1], ['mirror_market', 'アデルおばさん', 18, 11, 'desert', 1],

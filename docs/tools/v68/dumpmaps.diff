@@ -1,16 +1,18 @@
 --- dumpmaps.js.bak68b	2026-11-02 22:39:47.114392959 +0900
-+++ dumpmaps.js	2026-11-02 22:39:47.127850091 +0900
-@@ -1,12 +1,13 @@
++++ dumpmaps.js	2026-11-03 09:29:35.082622728 +0900
+@@ -1,12 +1,14 @@
  // マップ定義（行・ワープ・宝箱・NPC・イベントの座標）を JSON で出す。RPG_DIR で読み込む版を選ぶ
  // v6.5：Phase B のイベントA〜Eで足した人（ev65_〜）と調べる場所（v65）は除く。必殺技のトレーダー師匠（tmaster_〜。ult/dojo_test.js・ult/masterpos.js で確かめる）も除く（それぞれ events65test.js で確かめる。v6.4 の段階ごとのテストが比べる対象は v6.4 の変更のまま）
 +// v6.8：追加の仲間3人（カズト・もちぽよ・ポン太。companion68test.js で確かめる）も除く
++// v6.8（11/03）：トレディアをマクディア地方へ移した。町の出口の行き先は以前の値（カリオン徴収連邦 36,89）に読み替えて比べる（新しい行き先は tradiatest.js・tweak68test.js で確かめる）。world_kalion・world_magicka のトレディアへのワープも比べない（v68tradia.js）
  // v6.7：生活・健康の豆知識おばさん（aunt67_〜）と、加入場所を移した仲間4人（ミナ・セリス・ガルド・ルシア）も除く（chatter67test.js で確かめる）
  const load = require('./rpgload.js'); const { w } = load();
  const out = {};
  for (const [id, d] of Object.entries(w.MAP_DEFS)) {
    const rows = typeof d.rows === 'function' ? null : d.rows;
-   out[id] = { rows, warps: (d.warps || []).map(x => ({ x: x.x, y: x.y, to: x.to, tx: x.tx, ty: x.ty, needFlag: x.needFlag || null })), chests: (d.chests || []).map(c => ({ id: c.id, x: c.x, y: c.y, item: c.item || null, gold: c.gold || null })),
+-  out[id] = { rows, warps: (d.warps || []).map(x => ({ x: x.x, y: x.y, to: x.to, tx: x.tx, ty: x.ty, needFlag: x.needFlag || null })), chests: (d.chests || []).map(c => ({ id: c.id, x: c.x, y: c.y, item: c.item || null, gold: c.gold || null })),
 -    npcs: (d.npcs || []).filter(n => !/^ev65/.test(n.id) && !/^tmaster_/.test(n.id) && !/^aunt67_/.test(n.id) && !['mina', 'seris', 'gald', 'lucia'].includes(n.id)).map(n => ({ id: n.id, x: n.x, y: n.y })), events: (d.events || []).filter(e => !e.v65).map(e => ({ x: e.x, y: e.y, type: e.type, doneFlag: e.doneFlag || null })), buildings: (d.buildings || []).map(b => ({ id: b.id, x: b.x, y: b.y, w: b.w, h: b.h, doorX: b.doorX, interior: b.interior || null })) };
++  out[id] = { rows, warps: require('./v68tradia.js').stripWarps(id, d.warps).map(x => (id === 'tradia' && x.to === 'world_magicka' ? Object.assign({}, x, { to: 'world_kalion', tx: 36, ty: 89 }) : x)).map(x => ({ x: x.x, y: x.y, to: x.to, tx: x.tx, ty: x.ty, needFlag: x.needFlag || null })), chests: (d.chests || []).map(c => ({ id: c.id, x: c.x, y: c.y, item: c.item || null, gold: c.gold || null })),
 +    npcs: (d.npcs || []).filter(n => !/^ev65/.test(n.id) && !/^tmaster_/.test(n.id) && !/^aunt67_/.test(n.id) && !['mina', 'seris', 'gald', 'lucia', 'kazuto', 'mochipoyo', 'ponta'].includes(n.id)).map(n => ({ id: n.id, x: n.x, y: n.y })), events: (d.events || []).filter(e => !e.v65).map(e => ({ x: e.x, y: e.y, type: e.type, doneFlag: e.doneFlag || null })), buildings: (d.buildings || []).map(b => ({ id: b.id, x: b.x, y: b.y, w: b.w, h: b.h, doorX: b.doorX, interior: b.interior || null })) };
  }
  const sp = (w.SEARCH_POINTS || []).map(p => ({ id: p.id, map: p.map, x: p.x, y: p.y }));

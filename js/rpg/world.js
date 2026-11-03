@@ -327,6 +327,7 @@
     World.busy = true; Win.message(lines, { name: w.name }).then(function () { World.busy = false; World.updateHud(); });
   };
   World.doWarp = function (w) {
+    if (typeof root.redirectWarp === 'function') { try { var w2 = root.redirectWarp(w, World.map, State.data); if (w2) w = w2; } catch (e) { } }   // v6.8 古いセーブのための行き先の読み替え（js/data/tweaks68.js）
     World.busy = true;
     var fade = document.getElementById('fade'); if (fade) fade.classList.add('on');
     setTimeout(function () {
@@ -369,8 +370,10 @@
   };
   World.gameOver = function () {
     World.busy = true;
-    return Win.message(['全滅してしまった……', '所持金の半分を失い、最後に泊まった宿で目を覚ました。']).then(function () {
-      var d = State.data; d.gold = Math.floor(d.gold / 2);
+    // v6.8 全滅で失うお金：所持金の半分 → 3分の1（ご要望で軽く）
+    var d0 = State.data; var lose = Math.floor((d0.gold || 0) / 3);
+    return Win.message(['全滅してしまった……', '所持金の3分の1（' + lose + 'G）を失い、最後に泊まった宿で目を覚ました。']).then(function () {
+      var d = State.data; d.gold = Math.max(0, d.gold - lose);
       if (root.Vehicle) root.Vehicle.onGameOver();
       State.partyActors().forEach(function (a) { root.Actors.fullHeal(a); });
       World.busy = false;

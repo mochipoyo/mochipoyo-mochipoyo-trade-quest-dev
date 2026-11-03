@@ -40,9 +40,10 @@
   var LOCATIONS = [
     { id: 'magicka_city', name: '魔導都マクディア', icon: 'castle_icon', x: 80, y: 58, to: 'magicka_city', tx: 21, ty: 30 },
     { id: 'forbidden_archive', name: '禁書庫', icon: 'tower_icon', x: 80, y: 30, to: 'forbidden_archive_1', tx: 10, ty: 13, needFlag: 'archive_permit', lockedText: ['禁書庫の扉には、王立学院の封印がかかっている。', '入館許可証がなければ入れない。'] },
+    { id: 'tradia', name: '相場都市トレディア', icon: 'castle_icon', x: 60, y: 80, to: 'tradia', tx: 23, ty: 38 },   // v6.8 カリオン徴収連邦から移した（js/data/tradia.js）。魔導都の南西の平原
     { id: 'origin_lab', name: '起源の実験室', icon: 'cave_icon', x: 124, y: 56, to: 'origin_lab_1', tx: 1, ty: 12, needFlag: 'minister_defeated', lockedText: ['実験室の扉は、内側から魔法で封じられている。', '……封じた者がいる限り、開きそうにない。'] }
   ];
-  var ROADS = [[[26, 58], [80, 58]], [[80, 58], [80, 30]], [[80, 58], [124, 56]]];
+  var ROADS = [[[26, 58], [80, 58]], [[80, 58], [80, 30]], [[80, 58], [124, 56]], [[60, 58], [60, 80]]];   // v6.8 海岸から魔導都への道の途中から南へ、トレディアまで
   var def = root.makeWorldRegion({
     id: 'world_magicka', name: 'マクディア魔導王国', MACRO: MACRO, W: 160, H: 120, SEED: 20261213, LOCATIONS: LOCATIONS, ROADS: ROADS, bgm: 'field',
     chests: [{ id: 'mg1', x: 44, y: 40, item: 'elixir', qty: 1 }, { id: 'mg2', x: 100, y: 90, gold: 3000 }, { id: 'mg3', x: 40, y: 72, item: 'hi_ether', qty: 3 }, { id: 'mg4', x: 104, y: 40, item: 'phoenix_feather', qty: 2 }],

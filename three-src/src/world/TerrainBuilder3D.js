@@ -29,6 +29,9 @@ function noiseTexture() {
   }
   const t = new THREE.DataTexture(data, N, N, THREE.RGBAFormat); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearMipmapLinearFilter; t.generateMipmaps = true; t.needsUpdate = true; return t;
 }
+// v6.8 汎用3Dワールド（WorldBuilder3D）の地面の境界を揺らすのにも使う（1枚を使い回す）
+let sharedNoise = null;
+export function sharedNoiseTexture() { if (!sharedNoise) sharedNoise = noiseTexture(); return sharedNoise; }
 // 草の葉（アルファつき）
 function bladeTexture() {
   const c = document.createElement('canvas'); c.width = 128; c.height = 128; const g = c.getContext('2d');

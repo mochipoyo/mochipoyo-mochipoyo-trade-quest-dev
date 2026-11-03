@@ -111,6 +111,9 @@
       else if (target.dead) { await Win.message(['倒れている仲間には効果がない。']); return; }
       if (ef.hp) { var bh = target.hp; target.hp = Math.min(s.maxHp, target.hp + ef.hp); lines.push(target.name + 'のHPが' + (target.hp - bh) + '回復した'); }
       if (ef.mp) { var bm = target.mp; target.mp = Math.min(s.maxMp, target.mp + ef.mp); lines.push(target.name + 'のMPが' + (target.mp - bm) + '回復した'); }
+      if (ef.fullHp) { target.hp = s.maxHp; lines.push(target.name + 'のHPが全回復した'); }   // v6.8 伝説のポークビッツ丼
+      if (ef.fullMp) { target.mp = s.maxMp; lines.push(target.name + 'のMPが全回復した'); }
+      if (ef.buff) lines.push('（攻撃力などが上がる効果は、戦闘中に使ったときだけ）');
       if (ef.cure) { var cured = []; ef.cure.forEach(function (c) { if (target.status[c]) { delete target.status[c]; cured.push(Combat.STATUS_NAME[c]); } }); lines.push(cured.length ? target.name + 'の' + cured.join('・') + 'が治った' : '状態異常はなかった'); }
       State.addItem(it.id, -1); if (root.Audio) root.Audio.sfx('heal');
       await Win.message(lines); World.updateHud();

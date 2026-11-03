@@ -2,12 +2,12 @@
    Data / v6.8 追加の仲間：カズト・もちぽよ・神聖犬ポン太
    ・カズト（戦士・MP高め）：マクディア魔導王国の「魔導士の酒場」。王立学院の学院長から禁書庫の入館許可をもらったあとに話しかけると加入
        職業は戦士のまま。本人だけの上乗せ（COMPANIONS.kazuto.statBonus）で最大MPが高い（Actors.stats）
-   ・もちぽよ（強力なトレード呪文を多用できる）：相場都市トレディアの酒場「損切り亭」。トレード闘技場でトレードバトルに1回以上勝ち、
-       ポークビッツ丼を3つ渡すと加入。2035年という過去の時代からタイムループしてきたトレーダー
+   ・もちぽよ（強力なトレード呪文を多用できる）：相場都市トレディア（v6.8 でマクディア地方へ移した）の酒場「損切り亭」。トレード闘技場の12人のうち
+       7人にそれぞれ1回以上勝ち、伝説のポークビッツ丼を3つ渡すと加入。2035年という過去の時代からタイムループしてきたトレーダー
        専用の職業「時渡りのトレーダー」（loop_trader）：トレード呪文7種。トレード呪文の消費MPは本人が -40%（Combat.skillCost）
    ・神聖犬ポン太：天空群島の「星見塔の野営地」。トレーダーランクが A 以上のときに話しかけると、戦闘の手助けをしてくれる
        4人のパーティとは別枠（d.party には入らない。記録は d.flags.ponta_joined だけ）。戦闘の処理は js/rpg/combat.js（Combat.PET）
-   ・新しいアイテム：ポークビッツ丼（トレディアの道具屋・損切り亭で買える）
+   ・新しいアイテム：伝説のポークビッツ丼（HP・MPを全回復し、戦闘中なら攻撃力が3ターン2倍。トレディアの酒場「損切り亭」でだけ 20000G で買える）
    ・町の配置を変えないよう、NPC は町の飾り・建物の配置が決まったあとで足す（companions67.js と同じ考え方）
    ・絵：戦闘の4方向は assets/characters/party-directions-add68/（3D版の PartyDirections）。立ち絵は assets/characters/companions/、
        フィールドの歩行は assets/characters/overworld/（カズト・もちぽよ＝ docs/tools/walker.js、ポン太＝4方向の絵を縮めたもの）
@@ -22,8 +22,8 @@
   CP.kazuto = { name: 'カズト', job: 'warrior', sprite: 'kazuto', joinLevel: 28, personality: '実直で、仲間の盾になりたがる',
     background: 'マクディア魔導王国で剣と魔法の両方を学ぶ戦士。「仲間を守るための魔力」を求め、王立学院の禁書庫に入る機会を待っていた。', bio: '戦士。MPが多く、戦士の特技を何度も使える。',
     statBonus: { mp: [12, 1.9] } };   // 最大MP ＋（12 ＋ 1.9×(Lv−1)）。戦士の最大MP（4 ＋ 0.8×(Lv−1)）に上乗せ。転職しても本人の上乗せは残る
-  CP.mochipoyo = { name: 'もちぽよ', job: 'loop_trader', sprite: 'mochipoyo', joinLevel: 16, personality: 'のんびりしているが、相場の話になると目つきが変わる',
-    background: '2035年という過去の時代から、タイムループしてこの世界へ来たトレーダー。相場の波形を読む技を、呪文として使える。好物はポークビッツ丼。', bio: '時渡りのトレーダー。強力なトレード呪文を、少ないMPで何度も使える。',
+  CP.mochipoyo = { name: 'もちぽよ', job: 'loop_trader', sprite: 'mochipoyo', joinLevel: 28, personality: 'のんびりしているが、相場の話になると目つきが変わる',
+    background: '2035年という過去の時代から、タイムループしてこの世界へ来たトレーダー。相場の波形を読む技を、呪文として使える。好物は伝説のポークビッツ丼。', bio: '時渡りのトレーダー。強力なトレード呪文を、少ないMPで何度も使える。',
     tradeMpCut: 0.4 };   // トレード呪文（trade: true）の消費MP −40%（本人。職業を変えても残る）
 
   /* ---------- 職業：時渡りのトレーダー ---------- */
@@ -56,12 +56,13 @@
     F.DEFS.ponta_heal = { id: 'ponta_heal', fx: F.KINDS.heal_glow ? 'heal_glow' : 'slash', motion: 'pray', color: '#fff6c8', color2: '#ffd24a', area: 'single', hits: 1, unique: true };
   }
 
-  /* ---------- アイテム：ポークビッツ丼 ---------- */
+  /* ---------- アイテム：伝説のポークビッツ丼（ID は porkbits_don のまま。持っているセーブもそのまま使える） ----------
+     ・HP・MPを全回復。戦闘中に食べると、攻撃力が3ターンのあいだ2倍（＋100%）。フィールドではHP・MPの全回復だけ
+     ・トレディアの酒場「損切り亭」でだけ 20000G で買える（道具屋では売らない） */
   if (!ITEMS.porkbits_don) {
-    ITEMS.porkbits_don = { id: 'porkbits_don', name: 'ポークビッツ丼', cat: 'consumable', price: 60, effect: { hp: 80 }, desc: 'HPを80回復。小さなウインナーをたっぷりのせた丼。もちぽよの好物', food: 'food' };
+    ITEMS.porkbits_don = { id: 'porkbits_don', name: '伝説のポークビッツ丼', cat: 'consumable', price: 20000, effect: { fullHp: true, fullMp: true, buff: { atk: 1.0 }, turns: 3 }, desc: 'HP・MPを全回復。戦闘中に食べると攻撃力が3ターン2倍。もちぽよの大好物（損切り亭でだけ買える）', food: 'food' };
     if (root.ITEM_LIST && root.ITEM_LIST.indexOf('porkbits_don') < 0) root.ITEM_LIST.push('porkbits_don');
   }
-  var SX = root.SHOP_EXTRAS = root.SHOP_EXTRAS || {}; SX.tradia_item = (SX.tradia_item || []).concat(['porkbits_don']);
   var FS = root.FOOD_STANDS = root.FOOD_STANDS || {}; FS.tradia_tavern = (FS.tradia_tavern || ['onigiri', 'yakitori', 'ramen', 'curry_rice', 'green_tea', 'coffee', 'fruit_juice']).concat(['porkbits_don']);
 
   /* ---------- 画像の登録（2D版：立ち絵・フィールドの歩行） ---------- */
@@ -97,22 +98,25 @@
     else await c.say('カズト', ['そうか……。気が変わったら、この酒場にいる。']);
   } });
 
-  // もちぽよ：相場都市トレディアの酒場「損切り亭」。条件：トレードバトルに1回以上勝つ ＋ ポークビッツ丼を3つ渡す
-  function tradiaWins() { var d = D(); var w = (d && d.tradia && d.tradia.wins) || {}; return Object.keys(w).filter(function (k) { return (w[k] || 0) > 0; }).length; }
+  // もちぽよ：相場都市トレディアの酒場「損切り亭」。条件：トレード闘技場の12人のうち7人にそれぞれ1回以上勝つ ＋ 伝説のポークビッツ丼を3つ渡す
+  var NEED_WINS = 7;
+  function tradiaWins() { var d = D(); var w = (d && d.tradia && d.tradia.wins) || {}; var ids = root.TRADER_IDS || Object.keys(w); return ids.filter(function (k) { return (w[k] || 0) > 0; }).length; }
   npc('tradia_tavern', { id: 'mochipoyo', x: 11, y: 7, sprite: 'mochipoyo', dir: 'left', wander: 0, art3d: { dir: PD3 + 'mochipoyo/', ratio: 1.0 }, noChatter: true, talk: async function (c) {
     var d = D(); if (c.hasCompanion('mochipoyo')) return;
     if (!d.flags.mochipoyo_met) {
       d.flags.mochipoyo_met = true;
       await c.say('もちぽよ', ['……ん？ ああ、ごめん。チャートを見てた。', 'ぼくはもちぽよ。信じてもらえないと思うけど、2035年って時代から来たんだ。', 'あっちで相場を見ていたら、気づいたら同じ日を何度もくり返していて……タイムループを抜けたら、この世界だった。', '過去の時代の相場の知識なら、少しは役に立つと思う。']);
     }
-    if (tradiaWins() < 1) {
-      await c.say('もちぽよ', ['ただ、一緒に旅をするなら、相場の判断を見せてほしいな。', '町の北西のトレード闘技場で、だれか一人にトレードバトルで勝ってきて。勝ったら、また話そう。']);
+    var nw = tradiaWins();
+    if (nw < NEED_WINS) {
+      await c.say('もちぽよ', ['ただ、一緒に旅をするなら、相場の判断を見せてほしいな。', '町の北西のトレード闘技場には、12人のトレーダーがいる。そのうち7人に、それぞれ1回ずつ勝ってきて。', '7人に勝てたら、また話そう。']);
+      await c.msg(['（トレード闘技場で勝ったトレーダー：' + nw + '人／' + NEED_WINS + '人）']);
       return;
     }
     var n = (d.inventory && d.inventory.porkbits_don) || 0;
-    await c.say('もちぽよ', ['闘技場で勝ったんだってね。見送りと損切りの判断、ちゃんとできてた。', 'それと……実は、お腹がすいてて。', 'ポークビッツ丼を3つ持ってきてくれたら、ついていくよ。道具屋か、この店で買えるはず。']);
-    if (n < 3) { await c.msg(['（ポークビッツ丼：' + n + '／3）']); return; }
-    var a = await c.choice('ポークビッツ丼を3つ渡して、もちぽよを仲間にしますか？', ['渡す', 'やめる']);
+    await c.say('もちぽよ', ['闘技場で7人に勝ったんだってね。見送りと損切りの判断、ちゃんとできてた。', 'それと……実は、お腹がすいてて。', '伝説のポークビッツ丼を3つ持ってきてくれたら、ついていくよ。この店でしか食べられない、特別な丼なんだ。']);
+    if (n < 3) { await c.msg(['（伝説のポークビッツ丼：' + n + '／3。この酒場で 20000G）']); return; }
+    var a = await c.choice('伝説のポークビッツ丼を3つ渡して、もちぽよを仲間にしますか？', ['渡す', 'やめる']);
     if (a !== 0) { await c.say('もちぽよ', ['うん、いつでもいいよ。ここで待ってる。']); return; }
     c.take('porkbits_don', 3);
     await c.say('もちぽよ', ['……おいしい！ この丼のためなら、どの時代でもがんばれる。', 'よろしくね。トレード呪文なら、まかせて。']);
@@ -134,5 +138,5 @@
     await c.msg(['神聖犬ポン太が仲間になった！', '（パーティの4人とは別枠で戦闘に加わり、ときどき攻撃してくれる。仲間が危ないときは、聖なる光で回復することもある）']);
   } });
 
-  root.COMPANIONS68 = { ids: ['kazuto', 'mochipoyo'], pet: 'ponta', tradiaWins: tradiaWins };
+  root.COMPANIONS68 = { ids: ['kazuto', 'mochipoyo'], pet: 'ponta', tradiaWins: tradiaWins, needWins: NEED_WINS };
 })(typeof window !== 'undefined' ? window : globalThis);

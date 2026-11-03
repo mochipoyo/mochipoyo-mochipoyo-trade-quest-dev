@@ -11,7 +11,8 @@
 import * as THREE from 'three';
 import { Batch, box, M4 } from '../engine/Materials.js';
 import { MODELS } from '../assets/manifest.js';
-import { rngFrom } from './TerrainBuilder3D.js';
+import { rngFrom, sharedNoiseTexture } from './TerrainBuilder3D.js';
+import { roundFor, roundedPillar, cornerFillet } from './Organic.js';
 import { addCutout } from '../engine/Cutout.js';
 import { LandmarkBuilder3D } from './LandmarkBuilder3D.js';
 
@@ -44,6 +45,7 @@ export class WorldBuilder3D {
     const outdoorD = kind === 'dungeon' && !!P.outdoor;   // 森・草原・天空などの屋外のダンジョン：外側も地形が続く
     const voidOut = dungeon && !outdoorD;
     const OUT = voidOut ? 3 : field ? 16 : outdoorD ? 10 : 14; this.OUT = OUT;
+    const round = roundFor(map, theme); this.round = round; this.stats.round = round; this.stats.region = theme.region;   // v6.8 道・壁・境界線の丸み（Organic.js。まずアルカディアだけ）
     const group = new THREE.Group(); group.name = 'world3d_' + map.id;
     const rnd = rngFrom(4321 + W * 17 + H * 3);
     const clampT = (x, y) => map.tile(Math.max(0, Math.min(W - 1, x)), Math.max(0, Math.min(H - 1, y)));
@@ -63,14 +65,17 @@ export class WorldBuilder3D {
       const xs = ex ? [fx - 1, fx] : [fx], zs = ez ? [fz - 1, fz] : [fz];
       let s = 0, n = 0, amp = 0;
       for (const tz of zs) for (const tx of xs) { const t = Tg(tx, tz); const w = WATERY[t] || t === 'cloud' || t === 'lava' ? 1 : 2; s += baseH(t) * w; n += w; amp = Math.max(amp, noiseAmp(t)); }
-      return s / n + (amp ? (fbm(x * 0.33 + 7, z * 0.33 + 3) - 0.5) * amp * 2 : 0);
+      let shore = 0; if (round && n > 0) { let wv = 0, ld = 0; for (const tz of zs) for (const tx of xs) { if (WATERY[Tg(tx, tz)]) wv++; else ld++; } if (wv && ld) shore = (fbm(x * 0.9 + 31, z * 0.9 + 17) - 0.5) * 0.8; }   // v6.8 岸の高さを揺らす（岸の線がまっすぐにならない）
+      return s / n + shore + (amp ? (fbm(x * 0.33 + 7, z * 0.33 + 3) - 0.5) * amp * 2 : 0);
     };
     // ---------------- 地面（区画ごと）
     const S = hi ? 2 : 1; const CH = field ? 32 : 24;
     const gx0 = -OUT, gz0 = -OUT, gx1 = W + OUT, gz1 = H + OUT;
     const NX = (gx1 - gx0) * S + 1, NZ = (gz1 - gz0) * S + 1;
     const hgrid = new Float32Array(NX * NZ);
+    const tHgt = performance.now();
     for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) hgrid[j * NX + i] = vertexH(gx0 + i / S, gz0 + j / S);
+    this.stats.heightMs = Math.round(performance.now() - tHgt);
     const heightAt = (x, z) => {
       const fx = (x - gx0) * S, fz = (z - gz0) * S; const i = Math.max(0, Math.min(NX - 2, Math.floor(fx))), j = Math.max(0, Math.min(NZ - 2, Math.floor(fz)));
       const u = Math.max(0, Math.min(1, fx - i)), v = Math.max(0, Math.min(1, fz - j));
@@ -82,7 +87,8 @@ export class WorldBuilder3D {
     this.heightAt = heightAtWalk;
 
     // ---------------- 塗り分けのテクスチャ（2テクセル／タイル）
-    const SP = 2, SW = (gx1 - gx0) * SP, SH = (gz1 - gz0) * SP;
+    const tSplat = performance.now();
+    const SP = round ? 4 : 2, SW = (gx1 - gx0) * SP, SH = (gz1 - gz0) * SP;   // v6.8 丸みを使うマップは細かく（4テクセル／タイル）して広くぼかす
     const sp = new Float32Array(SW * SH * 4), tn = new Float32Array(SW * SH * 3);
     const col = new THREE.Color(); const grassC = new THREE.Color(theme.grass);
     const G = theme.ground || {};
@@ -108,7 +114,14 @@ export class WorldBuilder3D {
       return [[0, 0, 0, 0], null];   // 草（地域の色）
     };
     const lookCache = {};
-    for (let j = 0; j < SH; j++) for (let i = 0; i < SW; i++) {
+    if (round) {   // v6.8 丸み：テクセルが4倍なので、タイルごとに1回だけ調べて SP×SP テクセルへ書く（結果は下のループと同じ）
+      const colCache = {}; const TW = gx1 - gx0, TH = gz1 - gz0;
+      for (let tz = 0; tz < TH; tz++) for (let tx = 0; tx < TW; tx++) {
+        const t = Tg(gx0 + tx, gz0 + tz); const L = lookCache[t] || (lookCache[t] = tileLook(t));
+        let cc = colCache[t]; if (!cc) { if (L[1]) col.set(L[1]); else col.copy(grassC); if (dungeon && !L[1] && P.floor) col.set(P.floor); cc = colCache[t] = [col.r, col.g, col.b]; }
+        for (let jj = 0; jj < SP; jj++) { let o = (tz * SP + jj) * SW + tx * SP; for (let ii = 0; ii < SP; ii++, o++) { sp[o * 4] = L[0][0]; sp[o * 4 + 1] = L[0][1]; sp[o * 4 + 2] = L[0][2]; sp[o * 4 + 3] = L[0][3]; tn[o * 3] = cc[0]; tn[o * 3 + 1] = cc[1]; tn[o * 3 + 2] = cc[2]; } }
+      }
+    } else for (let j = 0; j < SH; j++) for (let i = 0; i < SW; i++) {
       const tx = Math.floor(gx0 + (i + 0.5) / SP), tz = Math.floor(gz0 + (j + 0.5) / SP); const t = Tg(tx, tz);
       const L = lookCache[t] || (lookCache[t] = tileLook(t)); const o = (j * SW + i);
       sp[o * 4] = L[0][0]; sp[o * 4 + 1] = L[0][1]; sp[o * 4 + 2] = L[0][2]; sp[o * 4 + 3] = L[0][3];
@@ -116,10 +129,17 @@ export class WorldBuilder3D {
       tn[o * 3] = col.r; tn[o * 3 + 1] = col.g; tn[o * 3 + 2] = col.b;
     }
     const blur = (arr, ch, rad) => { const tmp = new Float32Array(arr.length); for (const [dx, dy] of [[1, 0], [0, 1]]) { const src = dx ? arr : tmp, dst = dx ? tmp : arr; for (let j = 0; j < SH; j++) for (let i = 0; i < SW; i++) for (let c = 0; c < ch; c++) { let s = 0, n = 0; for (let k = -rad; k <= rad; k++) { const ii = Math.min(SW - 1, Math.max(0, i + k * dx)), jj = Math.min(SH - 1, Math.max(0, j + k * dy)); s += src[(jj * SW + ii) * ch + c]; n++; } dst[(j * SW + i) * ch + c] = s / n; } } };
-    blur(sp, 4, 1); blur(tn, 3, 1);
+    // v6.8 丸み：テクセルが4倍になるので、ぼかしは移動和（1テクセルあたり定数回）で計算する（結果は上の blur と同じ箱フィルタ）
+    const blurFast = (arr, ch, rad) => {
+      const tmp = new Float32Array(arr.length); const inv = 1 / (2 * rad + 1);
+      for (let j = 0; j < SH; j++) { const row = j * SW; for (let c = 0; c < ch; c++) { let s = 0; for (let k = -rad; k <= rad; k++) s += arr[(row + Math.min(SW - 1, Math.max(0, k))) * ch + c]; for (let i = 0; i < SW; i++) { tmp[(row + i) * ch + c] = s * inv; s += arr[(row + Math.min(SW - 1, i + rad + 1)) * ch + c] - arr[(row + Math.max(0, i - rad)) * ch + c]; } } }
+      for (let i = 0; i < SW; i++) for (let c = 0; c < ch; c++) { let s = 0; for (let k = -rad; k <= rad; k++) s += tmp[(Math.min(SH - 1, Math.max(0, k)) * SW + i) * ch + c]; for (let j = 0; j < SH; j++) { arr[(j * SW + i) * ch + c] = s * inv; s += tmp[(Math.min(SH - 1, j + rad + 1) * SW + i) * ch + c] - tmp[(Math.max(0, j - rad) * SW + i) * ch + c]; } }
+    };
+    if (round) { blurFast(sp, 4, 2); blurFast(sp, 4, 1); blurFast(tn, 3, 2); blurFast(tn, 3, 1); } else { blur(sp, 4, 1); blur(tn, 3, 1); }
     const toTex = (arr, ch) => { const n = SW * SH; const d = new Uint8Array(n * 4); for (let k = 0; k < n; k++) { for (let c = 0; c < 4; c++) d[k * 4 + c] = c < ch ? Math.round(Math.max(0, Math.min(1, ch === 3 ? Math.pow(arr[k * 3 + c], 1 / 2.2) : arr[k * ch + c])) * 255) : 255; } const t = new THREE.DataTexture(d, SW, SH, THREE.RGBAFormat); t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearFilter; t.needsUpdate = true; return t; };
     const splat = toTex(sp, 4), tint = toTex(tn, 3);
-    const groundMat = this.groundMaterial(splat, tint, gx0, gz0, gx1 - gx0, gz1 - gz0, theme);
+    this.stats.splatMs = Math.round(performance.now() - tSplat);
+    const groundMat = this.groundMaterial(splat, tint, gx0, gz0, gx1 - gx0, gz1 - gz0, theme, round);
     // 区画ごとのメッシュ
     const chunkRanges = (a0, a1) => { const out = []; for (let a = a0; a < a1; a += CH) out.push([a, Math.min(a1, a + CH)]); return out; };
     let groundTris = 0;
@@ -144,20 +164,25 @@ export class WorldBuilder3D {
     this.surfaces = [];
     const surf = (test, y, mat, name, margin) => {
       const qs = [];
-      for (let z = gz0; z < gz1; z++) for (let x = gx0; x < gx1; x++) { if (!margin && !inside(x, z)) continue; if (test(Tg(x, z))) qs.push([x, z]); }
+      for (let z = gz0; z < gz1; z++) for (let x = gx0; x < gx1; x++) { if (!margin && !inside(x, z)) continue; if (test(Tg(x, z), x, z)) qs.push([x, z]); }
       if (!qs.length) return null;
       const pos = new Float32Array(qs.length * 12), uv = new Float32Array(qs.length * 8), colA = new Float32Array(qs.length * 12), idx = new Uint32Array(qs.length * 6);
       const c = new THREE.Color();
+      const colOf = (t) => (t === 'deep' ? theme.deep : t === 'shallow' ? '#6ab8c8' : t === 'lava' ? '#ff6a1a' : t === 'cloud' ? '#ffffff' : theme.water);
+      // v6.8 丸み：角の色＝その角を囲む4マスの水の色の平均（浅瀬と深みの境がタイルの直線にならない）
+      const cc = new THREE.Color(); const cornerCol = (cx, cz, own) => { let r = 0, g = 0, b = 0, n = 0; for (const [dx, dz] of [[-1, -1], [0, -1], [-1, 0], [0, 0]]) { const t = Tg(cx + dx, cz + dz); if (!WATERY[t]) continue; cc.set(colOf(t)); r += cc.r; g += cc.g; b += cc.b; n++; } return n ? [r / n, g / n, b / n] : own; };
       qs.forEach(([x, z], k) => {
-        const t = Tg(x, z); c.set(t === 'deep' ? theme.deep : t === 'shallow' ? '#6ab8c8' : t === 'lava' ? '#ff6a1a' : t === 'cloud' ? '#ffffff' : theme.water);
+        let t = Tg(x, z); if (round && !WATERY[t] && t !== 'lava' && t !== 'cloud') t = 'water'; c.set(colOf(t));
         const corners = [[x, z], [x + 1, z], [x, z + 1], [x + 1, z + 1]];
-        corners.forEach(([cx, cz], m) => { pos.set([cx, y, cz], k * 12 + m * 3); uv.set([cx / 8, cz / 8], k * 8 + m * 2); colA.set([c.r, c.g, c.b], k * 12 + m * 3); });
+        corners.forEach(([cx, cz], m) => { pos.set([cx, y, cz], k * 12 + m * 3); uv.set([cx / 8, cz / 8], k * 8 + m * 2); colA.set(round && (WATERY[t] || t === 'water') ? cornerCol(cx, cz, [c.r, c.g, c.b]) : [c.r, c.g, c.b], k * 12 + m * 3); });
         idx.set([k * 4, k * 4 + 2, k * 4 + 1, k * 4 + 1, k * 4 + 2, k * 4 + 3], k * 6);
       });
       const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); g.setAttribute('color', new THREE.BufferAttribute(colA, 3)); g.setIndex(new THREE.BufferAttribute(idx, 1)); g.computeVertexNormals(); g.computeBoundingSphere(); g.userData.own = true;
       const m = new THREE.Mesh(g, mat); m.name = name; m.receiveShadow = true; m.renderOrder = 2; group.add(m); this.surfaces.push(m); return m;
     };
-    surf((t) => !!WATERY[t], -0.2, this.waterMaterial(), 'water', !dungeon);
+    // v6.8 丸み：水面を岸のとなりのマスまで広げる（岸の線は地面の高さで決まる＝タイルの四角い縁が出ない）
+    const nearWater = (x, z) => { for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) if (WATERY[Tg(x + dx, z + dz)]) return true; return false; };
+    surf((t, x, z) => !!WATERY[t] || (round && t !== 'lava' && t !== 'cloud' && !WALL_TILES[t] && t !== '_void' && nearWater(x, z)), -0.2, this.waterMaterial(), 'water', !dungeon);
     surf((t) => t === 'lava', -0.16, this.lavaMaterial(), 'lava', !dungeon);
     surf((t) => t === 'cloud', -0.95, this.cloudMaterial(), 'cloudsea', !dungeon);
 
@@ -174,14 +199,39 @@ export class WorldBuilder3D {
     };
     const wallH = (t) => (t === 'castle_wall' ? (dungeon ? 2.2 : 2.6) : t === 'cave_wall' ? 2.0 : t === 'wall_wood' ? 2.0 : /^roof_/.test(t) ? 2.8 : 2.2);
     const covered = new Set(); for (const b of map.buildings) for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) covered.add(x + ',' + y);
-    const rockSpots = [];
+    const rockSpots = []; const tWall = performance.now();
     let walls = 0;
+    // v6.8 丸み（Organic.js）：岩壁・石壁・城壁・崖・ダンジョンの外周は、外に出た角を丸くした柱にし、内側の角に丸い隅を足す
+    const NB4 = [[0, -1], [1, 0], [0, 1], [-1, 0]];
+    const solidT = (n) => !!(WALL_TILES[n] || n === '_void' || n === 'mountain' || n === 'cliff');
+    const openAt = (x, z) => !solidT(T(x, z));
+    const any4 = (x, z) => openAt(x + 1, z) || openAt(x - 1, z) || openAt(x, z + 1) || openAt(x, z - 1);
+    const inRange = (x, z) => (dungeon ? x >= -1 && z >= -1 && x <= W && z <= H : inside(x, z));
+    const cliffH = (x, z) => 1.25 + vnoise(x * 0.7, z * 0.7) * 0.6;
+    const cellH = (x, z) => {   // そのマスに立てる壁の高さ（立てないマスは 0）。下のループと同じ決め方
+      if (!inRange(x, z)) return 0; const t = T(x, z);
+      if (t === '_void') return any4(x, z) ? (openAt(x, z - 1) && !openAt(x, z + 1) ? 0.7 : 2.0) : 0;
+      if (t === 'cliff') return cliffH(x, z) + 0.05;
+      if (!WALL_TILES[t] || (t === 'bld_block' && covered.has(x + ',' + z)) || (dungeon && !any4(x, z))) return 0;
+      return dungeon && openAt(x, z - 1) && !openAt(x, z + 1) ? 0.7 : wallH(t);
+    };
+    const ROUNDABLE = { cave_wall: 1, wall: 1, castle_wall: 1, cliff: 1, _void: 1 };
+    const rockish = (t) => t === 'cave_wall' || t === 'cliff' || ((t === 'wall' || t === '_void') && P.wall === 'rock' && kind !== 'town');
+    const roundMat = (t) => (t === '_void' ? wallMat(P.wall === 'rock' ? 'cave_wall' : 'castle_wall') : t === 'cliff' ? M.tinted('stonewall', theme.rock) : wallMat(t));
+    const topAmpOf = (t, h) => (rockish(t) ? Math.min(0.18, h * 0.12) : 0);
+    const pillar = (t, x, z, h) => {
+      const rk = rockish(t);
+      wb.add(roundMat(t), roundedPillar({ x, z, h, y0: t === 'cliff' ? -0.25 : -0.12, r: rk ? 0.42 : 0.3, open: (dx, dz) => openAt(x + dx, z + dz), hN: (dx, dz) => cellH(x + dx, z + dz), overlap: 0.25,
+        solidRound: (dx, dz) => { const n = T(x + dx, z + dz); return !!ROUNDABLE[n] && rockish(n) === rk && cellH(x + dx, z + dz) > 0; },
+        wave: rk ? 0.12 : 0, topAmp: topAmpOf(t, h), uvS: t === 'cliff' ? 1.6 : 1.5 }), null);
+    };
+    let fillets = 0;
     for (let z = (dungeon ? -1 : 0); z < (dungeon ? H + 1 : H); z++) for (let x = (dungeon ? -1 : 0); x < (dungeon ? W + 1 : W); x++) {
       const t = T(x, z);
       const open = (dx, dz) => { const n = T(x + dx, z + dz); return !(WALL_TILES[n] || n === '_void' || n === 'mountain' || n === 'cliff'); };
-      if (t === '_void') { if (open(1, 0) || open(-1, 0) || open(0, 1) || open(0, -1)) { const hv = open(0, -1) && !open(0, 1) ? 0.7 : 2.0; wb.add(wallMat(P.wall === 'rock' ? 'cave_wall' : 'castle_wall'), box(1, hv, 1, 1.5), M4(x + 0.5, hv / 2, z + 0.5)); walls++; } continue; }
+      if (t === '_void') { if (open(1, 0) || open(-1, 0) || open(0, 1) || open(0, -1)) { const hv = open(0, -1) && !open(0, 1) ? 0.7 : 2.0; if (round) pillar(t, x, z, hv); else wb.add(wallMat(P.wall === 'rock' ? 'cave_wall' : 'castle_wall'), box(1, hv, 1, 1.5), M4(x + 0.5, hv / 2, z + 0.5)); walls++; } continue; }
       if (!WALL_TILES[t]) {
-        if (t === 'cliff') { const h = 1.25 + vnoise(x * 0.7, z * 0.7) * 0.6; wb.add(M.tinted('stonewall', theme.rock), box(1.02, h, 1.02, 1.6), M4(x + 0.5, h / 2 + 0.05, z + 0.5)); walls++; if (rnd() < 0.3) rockSpots.push([x + 0.5, z + 0.5, h + 0.05]); }
+        if (t === 'cliff') { const h = cliffH(x, z); if (round) pillar(t, x, z, h + 0.05); else wb.add(M.tinted('stonewall', theme.rock), box(1.02, h, 1.02, 1.6), M4(x + 0.5, h / 2 + 0.05, z + 0.5)); walls++; if (rnd() < 0.3) rockSpots.push([x + 0.5, z + 0.5, h + 0.05]); }
         continue;
       }
       if (t === 'bld_block' && covered.has(x + ',' + z)) continue;   // 建物は BuildingBuilder3D が作る
@@ -189,12 +239,28 @@ export class WorldBuilder3D {
       if (!dungeon || open(1, 0) || open(-1, 0) || open(0, 1) || open(0, -1)) {
         // 部屋の手前（南）の壁は低く：北側が床で南側が壁・外のとき（ジオラマ式。中が見える）
         const front = dungeon && open(0, -1) && !open(0, 1);
-        const h = front ? 0.7 : wallH(t); wb.add(wallMat(t), box(1, h, 1, 1.5), M4(x + 0.5, h / 2, z + 0.5)); walls++;
+        const h = front ? 0.7 : wallH(t); if (round && ROUNDABLE[t]) pillar(t, x, z, h); else wb.add(wallMat(t), box(1, h, 1, 1.5), M4(x + 0.5, h / 2, z + 0.5)); walls++;
         if (t === 'castle_wall' && !dungeon && ((x + z) & 1) === 0) wb.add(wallMat(t), box(0.45, 0.35, 0.45, 1), M4(x + 0.5, h + 0.17, z + 0.5));   // 胸壁
         if (/^roof_/.test(t)) wb.add(M.roof('#3f5f9f'), box(1.1, 0.2, 1.1, 1), M4(x + 0.5, h + 0.1, z + 0.5));
         if (t === 'cave_wall' && rnd() < 0.5) rockSpots.push([x + 0.5, z + 0.5, h - 0.2]);
       }
     }
+    // v6.8 丸み：内側の角（床のマスの角を2方向の壁が囲む）に丸い隅を足す
+    if (round) {
+      const FIL_SKIP = { door: 1, bld_door: 1, gate: 1, stairs_down: 1, stairs_up: 1, bridge: 1, dock: 1 };
+      for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
+        const t = T(x, z); if (!openAt(x, z) || WATERY[t] || t === 'lava' || t === 'cloud' || FIL_SKIP[t]) continue;
+        for (let k = 0; k < 4; k++) {
+          const e1 = NB4[(k + 3) % 4], e2 = NB4[k]; const ax = x + e1[0], az = z + e1[1], bx = x + e2[0], bz = z + e2[1];
+          const ta = T(ax, az), tb = T(bx, bz); if (!ROUNDABLE[ta] || !ROUNDABLE[tb] || openAt(x + e1[0] + e2[0], z + e1[1] + e2[1])) continue;
+          const ha = cellH(ax, az), hb = cellH(bx, bz); if (!ha || !hb) continue;
+          const rk = rockish(ta) && rockish(tb); const hf = Math.min(ha, hb);
+          wb.add(roundMat(ta), cornerFillet(x, z, k, hf, rk ? 0.42 : 0.3, { y0: -0.12, uvS: 1.5, topAmp: rk ? topAmpOf(ta, hf) : 0 }), null); fillets++;
+        }
+      }
+    }
+    this.stats.fillets = fillets;
+    this.stats.wallMs = Math.round(performance.now() - tWall);
     // 床板・じゅうたん（ダンジョン・町の中）
     for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
       const t = T(x, z);
@@ -378,18 +444,23 @@ export class WorldBuilder3D {
   update(t) { this.time.value = t; }
 
   /* ---------- マテリアル ---------- */
-  groundMaterial(splat, tint, ox, oz, sw, sh, theme) {
+  groundMaterial(splat, tint, ox, oz, sw, sh, theme, round) {
     const tx = this.mats.tex;
     const mat = new THREE.MeshStandardMaterial({ map: tx.grass_albedo || null, roughness: 0.95, metalness: 0 });
     const U = { uSplat: { value: splat }, uTint: { value: tint }, uOrigin: { value: new THREE.Vector2(ox, oz) }, uSize: { value: new THREE.Vector2(sw, sh) },
-      uDirt: { value: tx.dirt_albedo || null }, uCobble: { value: tx.cobble_albedo || null }, uRock: { value: tx.stonewall_albedo || null }, uRockTint: { value: new THREE.Color(theme.rock || '#9a948a') }, uSnow: { value: theme.region === 'snow' ? 1 : 0 } };
+      uDirt: { value: tx.dirt_albedo || null }, uCobble: { value: tx.cobble_albedo || null }, uRock: { value: tx.stonewall_albedo || null }, uRockTint: { value: new THREE.Color(theme.rock || '#9a948a') }, uSnow: { value: theme.region === 'snow' ? 1 : 0 },
+      uNoise: { value: sharedNoiseTexture() }, uRound: { value: round ? 1 : 0 } };   // v6.8 丸み：境界をノイズでゆがめる（uRound=0 のときは以前と同じ）
     mat.onBeforeCompile = (sh) => {
       Object.assign(sh.uniforms, U);
       sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying float vSlope; varying float vH;').replace('#include <begin_vertex>', '#include <begin_vertex>\nvSlope = objectNormal.y; vH = position.y;');
-      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying float vSlope; varying float vH; uniform sampler2D uSplat, uTint, uDirt, uCobble, uRock; uniform vec2 uOrigin, uSize; uniform vec3 uRockTint; uniform float uSnow;')
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying float vSlope; varying float vH; uniform sampler2D uSplat, uTint, uDirt, uCobble, uRock, uNoise; uniform vec2 uOrigin, uSize; uniform vec3 uRockTint; uniform float uSnow, uRound;')
         .replace('#include <map_fragment>', `
           vec2 wp = vMapUv * 4.0; vec2 st = (wp - uOrigin) / uSize;
+          // v6.8 丸み：塗り分けを読む位置をノイズで少しずらし（境界が波打つ）、重みにも細かい揺らぎを足す
+          float wx = texture2D(uNoise, wp * 0.043).r, wz = texture2D(uNoise, wp * 0.043 + vec2(0.53, 0.29)).r; vec4 nf = texture2D(uNoise, wp * 0.21 + vec2(0.13, 0.57));
+          st += uRound * (vec2(wx, wz) - 0.5) * 0.9 / uSize;
           vec4 sp = texture2D(uSplat, st); vec3 tn = texture2D(uTint, st).rgb;
+          sp += uRound * vec4((nf.r - 0.5) * 0.42, (nf.g - 0.5) * 0.38, (nf.r - 0.5) * 0.3, (nf.g - 0.5) * 0.3);
           vec3 g1 = texture2D(map, wp / 3.1).rgb, g2 = texture2D(map, wp / 7.3 + vec2(0.37, 0.11)).rgb; vec3 grass = mix(g1, g2, 0.42);
           vec3 dirt = texture2D(uDirt, wp / 2.7).rgb; vec3 cob = texture2D(uCobble, wp / 2.0).rgb; vec3 rock = texture2D(uRock, wp / 3.0).rgb;
           float lum = dot(dirt, vec3(0.333)); vec3 smoothc = vec3(0.82 + lum * 0.36);
@@ -404,7 +475,7 @@ export class WorldBuilder3D {
           diffuseColor *= vec4(c, 1.0);
         `);
     };
-    mat.customProgramCacheKey = () => 'world-ground-v1';
+    mat.customProgramCacheKey = () => 'world-ground-v2';
     addCutout(mat); return mat;
   }
   // 水・溶岩・雲の面：テクスチャを使わないので、自前の UV（vWuv）を渡す

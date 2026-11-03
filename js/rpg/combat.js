@@ -394,6 +394,11 @@
     var s = Actors.stats(t);
     if (ef.hp) { var bh = t.hp; t.hp = Math.min(s.maxHp, t.hp + ef.hp); ev.push({ type: 'heal', side: 'party', id: t.id, value: t.hp - bh }); msg(t.name + 'のHPが' + (t.hp - bh) + '回復した'); }
     if (ef.mp) { var bm = t.mp; t.mp = Math.min(s.maxMp, t.mp + ef.mp); msg(t.name + 'のMPが' + (t.mp - bm) + '回復した'); }
+    // v6.8 全回復（伝説のポークビッツ丼）・能力の上げ下げ（安いワイン：攻撃+8%・守備-5%など。turns ターンのあいだ）
+    if (ef.fullHp) { var bh2 = t.hp; t.hp = s.maxHp; ev.push({ type: 'heal', side: 'party', id: t.id, value: t.hp - bh2 }); msg(t.name + 'のHPが全回復した'); }
+    if (ef.fullMp) { t.mp = s.maxMp; msg(t.name + 'のMPが全回復した'); }
+    if (ef.buff) { t.buffs = t.buffs || {}; var up = [], down = []; Object.keys(ef.buff).forEach(function (k) { var v = ef.buff[k]; t.buffs[k] = { value: v, turns: ef.turns || 2 }; (v >= 0 ? up : down).push((DEBUFF_NAME[k] || k) + (v >= 1 ? 'が' + (1 + v) + '倍' : (v >= 0 ? '+' : '') + Math.round(v * 100) + '%')); });
+      ev.push({ type: 'anim', side: 'party', id: t.id, anim: 'buff' }); msg(t.name + 'は' + up.concat(down).join('・') + '（' + (ef.turns || 2) + 'ターン）'); }
     if (ef.cure) { var cured = []; ef.cure.forEach(function (c) { if (t.status[c]) { delete t.status[c]; cured.push(STATUS_NAME[c]); } }); if (cured.length) { msg(t.name + 'の' + cured.join('・') + 'が治った'); cureBonus(t, ev); } }
   }
 
