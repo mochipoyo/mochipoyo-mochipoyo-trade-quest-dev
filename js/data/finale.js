@@ -288,11 +288,16 @@
     var ce = Object.keys(EP).filter(function (id) { return d.companions[id]; }).map(function (id) { return EP[id]; });
     if (ce.length) await c.msg(['——仲間たちの、それから——'].concat(ce));
     await c.msg(['すべての問題がなくなったわけではない。', 'それでも、人々は未来を選べるようになった。']);
+    // v6.9 アサナ村の帰郷（A・B どちらでも）：復興した村 → 両親の墓 → 仲間 → ポヨ村（js/data/story3121.js）
+    if (root.Story3121 && root.Story3121.homecoming) await root.Story3121.homecoming(c, ending);
     // ポヨ村へ帰る
     root.World.enterMap('poyo_elder_house', 5, 5, 'up');
+    if (root.Story3121 && root.Story3121.afterHomecoming) await root.Story3121.afterHomecoming();
     await c.say('村長モチゾウ', ['……おお、帰ったか。ずいぶん遠くまで行っておったようじゃな。', '世界を、救ったのか？']);
     await c.say(d.hero.name, ['いいえ。', 'みんなが、自分の世界を守れるようになっただけです。']);
-    await c.say('村長モチゾウ', ['……そうか。それが一番、難しいことじゃよ。', 'さあ、修行場へ顔を出してやれ。ハケイが待っておる。']);
+    await c.say('村長モチゾウ', ['……そうか。それが一番、難しいことじゃよ。', 'よく頑張ったな。', '……おかえり。']);
+    await c.say(d.hero.name, ['ただいま。']);
+    await c.say('村長モチゾウ', ['さあ、修行場へ顔を出してやれ。ハケイが待っておる。']);
     f.game_cleared = true; d.clearedAt = Date.now();
     await c.questComplete('main_16');
     await c.msg(['〜 もちぽよFXクエスト　波形の勇者と相場の魔王　おしまい 〜', 'クリアデータを記録しました。このまま冒険を続けられます（行っていない町、石碑、サブクエスト、トレード修行）。', 'このゲームのチャートはすべて学習用の人工データです。ゲームで学んだ判断の型は、実際の相場で勝つことを保証するものではありません。損切りと資金管理を忘れずに。']);
