@@ -1,13 +1,30 @@
 # 3Dアセット検証レポート（tools/validate_assets.mjs が自動生成）
 
-生成日時：2026-11-01T15:05:01.435Z
+生成日時：2026-11-03T06:32:04.121Z
 
-- モデル 103件（検証OK 103・NG 0）／ 状態：done（作り込み済み）47・provisional（仮3D）56
+- モデル 120件（検証OK 120・NG 0）／ 状態：done（作り込み済み）64・provisional（仮3D）56
 - manifest に載っていない GLB：なし
 - 注意（目安超え）：well: 三角形数 6320 > 6000
 
 | id | 種類 | 状態 | 三角形 | 目安 | 骨 | アニメ | 読込 | 結果 | 補足 |
 |---|---|---|---|---|---|---|---|---|---|
+| field_lina | character | done | 11872 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_kyle | character | done | 10556 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_mina | character | done | 7902 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_seris | character | done | 11296 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_gald | character | done | 12422 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_lucia | character | done | 9548 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_elna | character | done | 10160 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_nagi | character | done | 8466 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_iris | character | done | 10184 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_sophia | character | done | 13128 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_io | character | done | 11766 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_ganes | character | done | 9308 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_aster | character | done | 17552 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_ord | character | done | 9392 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_kazuto | character | done | 9848 | 20000 | 17 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_mochipoyo | character | done | 16288 | 20000 | 20 | 3 | 必要時 | OK | .blend（ソース）がない |
+| field_ponta | character | done | 15588 | 20000 | 13 | 3 | 必要時 | OK | .blend（ソース）がない |
 | hero | character | done | 8328 | 20000 | 17 | 9 | 起動時 | OK |  |
 | villager_m | character | done | 6030 | 20000 | 17 | 9 | 起動時 | OK |  |
 | villager_f | character | done | 6832 | 20000 | 17 | 9 | 起動時 | OK |  |

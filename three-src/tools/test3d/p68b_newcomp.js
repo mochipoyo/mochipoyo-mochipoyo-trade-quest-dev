@@ -45,14 +45,14 @@ const endBattle = (p) => p.evaluate(() => { try { const sc = BattleUI.scene; if 
       ok(vic && i1.filter((x) => !x.dead).every((x) => x.model === 'pixel:dir:front'), '3D ' + layout + '：勝利で全員（ポン太も）正面へ振り向く ' + JSON.stringify(i1.map((x) => x.id + ':' + x.model.replace('pixel:dir:', ''))));
       out.b3d.push({ layout, start: i0, petAct, victory: vic, end: i1 }); await endBattle(p); await p.waitForTimeout(400);
     }
-    // 3D版の町：絵の NPC（加入前に戻して表示）
+    // 3D版の町：加入前の立体モデル（加入前に戻して表示）
     await p.evaluate(() => { const d = State.data; delete d.companions.kazuto; delete d.companions.mochipoyo; d.party = ['hero', 'lina']; d.flags.ponta_joined = false; });
     out.npc = [];
     for (const [map, x, y, id] of [['magicka_tavern', 8, 7, 'kazuto'], ['tradia_tavern', 10, 8, 'mochipoyo'], ['star_camp', 6, 12, 'ponta']]) {
       await p.evaluate(({ map, x, y }) => { World.busy = false; World.enterMap(map, x, y, 'up'); }, { map, x, y }); await p.waitForTimeout(3500);
-      const r = await p.evaluate((id) => { const sc = MTQ3D.current; const list = sc && sc.npcs ? sc.npcs : []; const ch = list.find((c) => c.npc && c.npc.id === id); return ch ? { art: ch.root.name, visible: ch.root.visible, dir: ch.dir || null, h: ch.h ? +ch.h.toFixed(2) : null, tex: !!(ch.mat && ch.mat.map && ch.mat.map.image) } : null; }, id);
+      const r = await p.evaluate((id) => { const sc = MTQ3D.current; const list = sc && sc.npcs ? sc.npcs : []; const ch = list.find((c) => c.npc && c.npc.id === id); if (!ch) return null; let skin = false, sprite = false; ch.model.traverse(o => { skin ||= !!o.isSkinnedMesh; sprite ||= !!o.isSprite; }); return { model: ch.root.name, visible: ch.root.visible, skin, sprite }; }, id);
       await p.screenshot({ path: SHOT + TAG + '_map_' + id + '.jpg', type: 'jpeg', quality: 74, timeout: 120000 });
-      ok(r && r.art === 'npc_art_' + id && r.visible && r.tex, '3D の町：' + id + ' を4方向の絵で表示（' + map + '・' + JSON.stringify(r) + '）'); out.npc.push({ id, map, r });
+      ok(r && r.model === 'char_field_' + id && r.visible && r.skin && !r.sprite, '3D の町：' + id + ' を移動用GLBで表示（' + map + '・' + JSON.stringify(r) + '）'); out.npc.push({ id, map, r });
     }
     ok(errs.length === 0, '3D版：ページのエラーなし ' + JSON.stringify(errs.slice(0, 4))); out.errs3d = errs; }
   /* ---------- 2D版の戦闘：ポン太を画面の右下に描く ---------- */

@@ -19,7 +19,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 320,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_bartender": {
    "id": "char_bartender",
@@ -73,7 +73,7 @@
    "note": "酒場の主人（bartender）。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 6030,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_child": {
    "id": "char_child",
@@ -118,7 +118,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 6110,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_elder": {
    "id": "char_elder",
@@ -165,7 +165,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 6304,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_gald": {
    "id": "char_gald",
@@ -222,7 +222,7 @@
    "note": "ガルド（戦士）。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 6754,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_guard": {
    "id": "char_guard",
@@ -284,7 +284,7 @@
    "note": "衛兵（guard）。仲間オルドの2D版の見た目。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 6862,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_hero": {
    "id": "char_hero",
@@ -336,7 +336,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 8328,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_hero_sage": {
    "id": "char_hero_sage",
@@ -394,7 +394,7 @@
    "note": "賢者の主人公の配色（hero_sage）。仲間アステルの2D版の見た目。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 7192,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_innkeeper": {
    "id": "char_innkeeper",
@@ -438,7 +438,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 6284,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_king": {
    "id": "char_king",
@@ -496,7 +496,7 @@
    "note": "王（king）。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 6844,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_kyle": {
    "id": "char_kyle",
@@ -556,7 +556,7 @@
    "note": "カイル（騎士）。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 6410,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_lina": {
    "id": "char_lina",
@@ -605,7 +605,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 7256,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_lucia": {
    "id": "char_lucia",
@@ -662,7 +662,7 @@
    "note": "ルシア（波刃士）。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 6558,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_master": {
    "id": "char_master",
@@ -708,7 +708,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 7108,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_merchant": {
    "id": "char_merchant",
@@ -756,7 +756,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 7086,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_mina": {
    "id": "char_mina",
@@ -812,7 +812,7 @@
    "note": "ミナ（盗賊）。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 6394,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_priest": {
    "id": "char_priest",
@@ -860,7 +860,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 7340,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_sailor": {
    "id": "char_sailor",
@@ -916,7 +916,7 @@
    "note": "船乗り（sailor）。仲間ナギの2D版の見た目。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 6482,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_scholar": {
    "id": "char_scholar",
@@ -969,7 +969,7 @@
    "note": "学者（scholar）。仲間エルナの2D版の見た目。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 6572,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_seris": {
    "id": "char_seris",
@@ -1028,7 +1028,7 @@
    "note": "セリス（魔法使い）。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 7244,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_shadow": {
    "id": "char_shadow",
@@ -1083,7 +1083,7 @@
    "note": "影（shadow）。2D版の配色から自動生成",
    "built": "2026-11-01",
    "tris": 6384,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_villager_f": {
    "id": "char_villager_f",
@@ -1132,7 +1132,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 6832,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "char_villager_m": {
    "id": "char_villager_m",
@@ -1177,7 +1177,262 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 6030,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
+  },
+  "field_aster": {
+   "id": "field_aster",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_aster.glb",
+   "glbBytes": 591904,
+   "tris": 17552,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_elna": {
+   "id": "field_elna",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_elna.glb",
+   "glbBytes": 376308,
+   "tris": 10160,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_gald": {
+   "id": "field_gald",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_gald.glb",
+   "glbBytes": 441572,
+   "tris": 12422,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_ganes": {
+   "id": "field_ganes",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_ganes.glb",
+   "glbBytes": 351188,
+   "tris": 9308,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_io": {
+   "id": "field_io",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_io.glb",
+   "glbBytes": 422600,
+   "tris": 11766,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_iris": {
+   "id": "field_iris",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_iris.glb",
+   "glbBytes": 380524,
+   "tris": 10184,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_kazuto": {
+   "id": "field_kazuto",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_kazuto.glb",
+   "glbBytes": 376432,
+   "tris": 9848,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_kyle": {
+   "id": "field_kyle",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_kyle.glb",
+   "glbBytes": 396772,
+   "tris": 10556,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_lina": {
+   "id": "field_lina",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_lina.glb",
+   "glbBytes": 428616,
+   "tris": 11872,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_lucia": {
+   "id": "field_lucia",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_lucia.glb",
+   "glbBytes": 360432,
+   "tris": 9548,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_mina": {
+   "id": "field_mina",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_mina.glb",
+   "glbBytes": 309880,
+   "tris": 7902,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_mochipoyo": {
+   "id": "field_mochipoyo",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_mochipoyo.glb",
+   "glbBytes": 573416,
+   "tris": 16288,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_nagi": {
+   "id": "field_nagi",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_nagi.glb",
+   "glbBytes": 328400,
+   "tris": 8466,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_ord": {
+   "id": "field_ord",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_ord.glb",
+   "glbBytes": 363420,
+   "tris": 9392,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_ponta": {
+   "id": "field_ponta",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_ponta.glb",
+   "glbBytes": 478560,
+   "tris": 15588,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_seris": {
+   "id": "field_seris",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_seris.glb",
+   "glbBytes": 414820,
+   "tris": 11296,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
+  },
+  "field_sophia": {
+   "id": "field_sophia",
+   "kind": "character",
+   "status": "done",
+   "glb": "public/models/field_sophia.glb",
+   "glbBytes": 463036,
+   "tris": 13128,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "note": "町・フィールド専用。編集元はスキン付きGLB。",
+   "validated": "2026-11-03"
   },
   "furn_bed": {
    "id": "furn_bed",
@@ -1200,7 +1455,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 636,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "furn_bookshelf": {
    "id": "furn_bookshelf",
@@ -1244,7 +1499,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 644,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "furn_counter": {
    "id": "furn_counter",
@@ -1266,7 +1521,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 112,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "furn_crystal": {
    "id": "furn_crystal",
@@ -1287,7 +1542,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 68,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "furn_pillar": {
    "id": "furn_pillar",
@@ -1307,7 +1562,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 280,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "furn_table": {
    "id": "furn_table",
@@ -1331,7 +1586,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 440,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "icon_bed": {
    "id": "icon_bed",
@@ -1353,7 +1608,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 48,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "icon_bell": {
    "id": "icon_bell",
@@ -1373,7 +1628,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 144,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "icon_chart": {
    "id": "icon_chart",
@@ -1395,7 +1650,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 72,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "icon_potion": {
    "id": "icon_potion",
@@ -1416,7 +1671,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 200,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "icon_scroll": {
    "id": "icon_scroll",
@@ -1437,7 +1692,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 92,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "icon_sword": {
    "id": "icon_sword",
@@ -1459,7 +1714,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 56,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "lm_castle": {
    "id": "lm_castle",
@@ -1480,7 +1735,7 @@
    "anims": [],
    "note": "ワールドマップの城の目印（castle_icon タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "lm_cave": {
    "id": "lm_cave",
@@ -1499,7 +1754,7 @@
    "anims": [],
    "note": "ワールドマップの洞窟の目印（cave_icon タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "lm_tower": {
    "id": "lm_tower",
@@ -1519,7 +1774,7 @@
    "anims": [],
    "note": "ワールドマップの塔の目印（tower_icon タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "lm_village": {
    "id": "lm_village",
@@ -1541,7 +1796,7 @@
    "anims": [],
    "note": "ワールドマップの村・町の目印（village タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_beast": {
    "id": "mon_beast",
@@ -1582,7 +1837,7 @@
    "note": "獣型（beast・fox・cat・ram）。四足",
    "built": "2026-11-01",
    "tris": 2376,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_bird": {
    "id": "mon_bird",
@@ -1622,7 +1877,7 @@
    "note": "鳥型（bird・owl）。地面から少し浮いて羽ばたく",
    "built": "2026-11-01",
    "tris": 1608,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_demon": {
    "id": "mon_demon",
@@ -1657,7 +1912,7 @@
    "note": "悪魔型（demon）。角・翼・尾つきの人型",
    "built": "2026-11-01",
    "tris": 1564,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_fish": {
    "id": "mon_fish",
@@ -1697,7 +1952,7 @@
    "note": "魚型（aquatic・shark・ray・maw）。地面から浮いて泳ぐ",
    "built": "2026-11-01",
    "tris": 1060,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_golem": {
    "id": "mon_golem",
@@ -1731,7 +1986,7 @@
    "note": "ゴーレム型（golem・crystal・snowman）。岩の大きな人型",
    "built": "2026-11-01",
    "tris": 1468,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_humanoid": {
    "id": "mon_humanoid",
@@ -1768,7 +2023,7 @@
    "note": "人の敵（盗賊・兵士・海賊など art の無い敵）。フードの人型",
    "built": "2026-11-01",
    "tris": 1720,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_insect": {
    "id": "mon_insect",
@@ -1808,7 +2063,7 @@
    "note": "虫型（insect・spider・swarm）",
    "built": "2026-11-01",
    "tris": 1592,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_knight": {
    "id": "mon_knight",
@@ -1844,7 +2099,7 @@
    "note": "騎士型（knight）。主人公と同じ17ボーンの人型",
    "built": "2026-11-01",
    "tris": 1648,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_machine": {
    "id": "mon_machine",
@@ -1880,7 +2135,7 @@
    "note": "機械型（machine・turret・cart）。箱形の人型",
    "built": "2026-11-01",
    "tris": 3352,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_plant": {
    "id": "mon_plant",
@@ -1922,7 +2177,7 @@
    "note": "植物型（plant・cactus）",
    "built": "2026-11-01",
    "tris": 2072,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_reptile": {
    "id": "mon_reptile",
@@ -1963,7 +2218,7 @@
    "note": "爬虫類型（reptile・salamander・hydra・frog・turtle）。低い四足と長い尾",
    "built": "2026-11-01",
    "tris": 2444,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_slime": {
    "id": "mon_slime",
@@ -2003,7 +2258,7 @@
    "note": "スライム型（slime・jelly）",
    "built": "2026-11-01",
    "tris": 1716,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_spirit": {
    "id": "mon_spirit",
@@ -2043,7 +2298,7 @@
    "note": "霊型（spirit・magical・market・mirror・tome・bell）。浮いて漂う",
    "built": "2026-11-01",
    "tris": 920,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "mon_undead": {
    "id": "mon_undead",
@@ -2080,7 +2335,7 @@
    "note": "不死型（undead）。骨の人型",
    "built": "2026-11-01",
    "tris": 1504,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_barrel": {
    "id": "prop_barrel",
@@ -2101,7 +2356,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 252,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_bench": {
    "id": "prop_bench",
@@ -2122,7 +2377,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 268,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_boss_mark": {
    "id": "prop_boss_mark",
@@ -2141,7 +2396,7 @@
    "anims": [],
    "note": "ボスの印（boss_mark タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_cactus": {
    "id": "prop_cactus",
@@ -2159,7 +2414,7 @@
    "anims": [],
    "note": "サボテン（砂漠）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_crate": {
    "id": "prop_crate",
@@ -2180,7 +2435,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 152,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_crops": {
    "id": "prop_crops",
@@ -2201,7 +2456,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 588,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_door_locked": {
    "id": "prop_door_locked",
@@ -2221,7 +2476,7 @@
    "anims": [],
    "note": "鍵のかかった扉（door_locked タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_fence": {
    "id": "prop_fence",
@@ -2241,7 +2496,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 148,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_flowerbed": {
    "id": "prop_flowerbed",
@@ -2268,7 +2523,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 1120,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_fountain": {
    "id": "prop_fountain",
@@ -2287,7 +2542,7 @@
    "anims": [],
    "note": "噴水（fountain タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_gate": {
    "id": "prop_gate",
@@ -2306,7 +2561,7 @@
    "anims": [],
    "note": "鉄格子の門（gate タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_lamppost": {
    "id": "prop_lamppost",
@@ -2329,7 +2584,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 248,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_learn_rune": {
    "id": "prop_learn_rune",
@@ -2348,7 +2603,7 @@
    "anims": [],
    "note": "学びのルーン（learn_rune タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_lever": {
    "id": "prop_lever",
@@ -2368,7 +2623,7 @@
    "anims": [],
    "note": "レバー（lever タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_log": {
    "id": "prop_log",
@@ -2387,7 +2642,7 @@
    "anims": [],
    "note": "倒木（log タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_mushroom": {
    "id": "prop_mushroom",
@@ -2406,7 +2661,7 @@
    "anims": [],
    "note": "茸（森・洞窟の飾り）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_ore": {
    "id": "prop_ore",
@@ -2425,7 +2680,7 @@
    "anims": [],
    "note": "鉱石（ore タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_root": {
    "id": "prop_root",
@@ -2443,7 +2698,7 @@
    "anims": [],
    "note": "木の根（root タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_sign": {
    "id": "prop_sign",
@@ -2465,7 +2720,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 168,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_stairs_down": {
    "id": "prop_stairs_down",
@@ -2485,7 +2740,7 @@
    "anims": [],
    "note": "階段（stairs_down タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_stairs_up": {
    "id": "prop_stairs_up",
@@ -2503,7 +2758,7 @@
    "anims": [],
    "note": "階段（stairs_up タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_stalagmite": {
    "id": "prop_stalagmite",
@@ -2521,7 +2776,7 @@
    "anims": [],
    "note": "石筍（stalactite タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_stall": {
    "id": "prop_stall",
@@ -2543,7 +2798,7 @@
    "anims": [],
    "note": "露店（stall タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_torch": {
    "id": "prop_torch",
@@ -2563,7 +2818,7 @@
    "anims": [],
    "note": "たいまつ（torch タイル・ダンジョンの明かり）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_wall_lantern": {
    "id": "prop_wall_lantern",
@@ -2584,7 +2839,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 52,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_warp": {
    "id": "prop_warp",
@@ -2602,7 +2857,7 @@
    "anims": [],
    "note": "ワープの魔法陣（warp タイル）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "prop_well": {
    "id": "prop_well",
@@ -2627,7 +2882,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 6320,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "rock_a": {
    "id": "rock_a",
@@ -2647,7 +2902,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 80,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "rock_b": {
    "id": "rock_b",
@@ -2667,7 +2922,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 80,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_dead": {
    "id": "tree_dead",
@@ -2685,7 +2940,7 @@
    "anims": [],
    "note": "枯れ木（暗黒大陸・竜炎火山）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_dead_lod1": {
    "id": "tree_dead_lod1",
@@ -2703,7 +2958,7 @@
    "anims": [],
    "note": "枯れ木（暗黒大陸・竜炎火山）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_oak_a": {
    "id": "tree_oak_a",
@@ -2724,7 +2979,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 2112,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_oak_a_lod1": {
    "id": "tree_oak_a_lod1",
@@ -2745,7 +3000,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 216,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_oak_b": {
    "id": "tree_oak_b",
@@ -2766,7 +3021,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 2112,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_oak_b_lod1": {
    "id": "tree_oak_b_lod1",
@@ -2787,7 +3042,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 216,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_oak_c": {
    "id": "tree_oak_c",
@@ -2808,7 +3063,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 2112,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_oak_c_lod1": {
    "id": "tree_oak_c_lod1",
@@ -2829,7 +3084,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 216,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_palm": {
    "id": "tree_palm",
@@ -2849,7 +3104,7 @@
    "anims": [],
    "note": "ヤシ（島・砂漠の地域テーマ）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_palm_lod1": {
    "id": "tree_palm_lod1",
@@ -2868,7 +3123,7 @@
    "anims": [],
    "note": "ヤシ（島・砂漠の地域テーマ）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_pine_a": {
    "id": "tree_pine_a",
@@ -2889,7 +3144,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 320,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_pine_a_lod1": {
    "id": "tree_pine_a_lod1",
@@ -2910,7 +3165,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 84,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_pine_b": {
    "id": "tree_pine_b",
@@ -2931,7 +3186,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 320,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_pine_b_lod1": {
    "id": "tree_pine_b_lod1",
@@ -2952,7 +3207,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 84,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_pine_c": {
    "id": "tree_pine_c",
@@ -2973,7 +3228,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 320,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_pine_c_lod1": {
    "id": "tree_pine_c_lod1",
@@ -2994,7 +3249,7 @@
    "built": null,
    "imported": "2026-11-01",
    "tris": 84,
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_snowpine": {
    "id": "tree_snowpine",
@@ -3013,7 +3268,7 @@
    "anims": [],
    "note": "雪の針葉樹（忘却の雪原）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "tree_snowpine_lod1": {
    "id": "tree_snowpine_lod1",
@@ -3032,7 +3287,7 @@
    "anims": [],
    "note": "雪の針葉樹（忘却の雪原）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "veh_airship": {
    "id": "veh_airship",
@@ -3056,7 +3311,7 @@
    "anims": [],
    "note": "飛空艇（airship）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "veh_galleon": {
    "id": "veh_galleon",
@@ -3078,7 +3333,7 @@
    "anims": [],
    "note": "大型船（galleon）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   },
   "veh_sailboat": {
    "id": "veh_sailboat",
@@ -3099,7 +3354,7 @@
    "anims": [],
    "note": "帆船（sailboat）",
    "built": "2026-11-01",
-   "validated": "2026-11-01"
+   "validated": "2026-11-03"
   }
  }
 }

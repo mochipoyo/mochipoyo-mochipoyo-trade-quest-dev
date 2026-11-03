@@ -1,9 +1,9 @@
 {
- "date": "2026-11-01T15:05:01.434Z",
+ "date": "2026-11-03T06:32:04.120Z",
  "summary": {
-  "models": 103,
-  "ok": 103,
-  "done": 47,
+  "models": 120,
+  "ok": 120,
+  "done": 64,
   "provisional": 56,
   "orphanGlb": [],
   "problems": [],
@@ -12,6 +12,397 @@
   ]
  },
  "rows": [
+  {
+   "id": "field_lina",
+   "file": "field_lina",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 11872,
+   "bytes": 428616,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 30,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_kyle",
+   "file": "field_kyle",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 10556,
+   "bytes": 396772,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 33,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_mina",
+   "file": "field_mina",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 7902,
+   "bytes": 309880,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 26,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_seris",
+   "file": "field_seris",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 11296,
+   "bytes": 414820,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 32,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_gald",
+   "file": "field_gald",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 12422,
+   "bytes": 441572,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 27,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_lucia",
+   "file": "field_lucia",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 9548,
+   "bytes": 360432,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 27,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_elna",
+   "file": "field_elna",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 10160,
+   "bytes": 376308,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 29,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_nagi",
+   "file": "field_nagi",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 8466,
+   "bytes": 328400,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 27,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_iris",
+   "file": "field_iris",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 10184,
+   "bytes": 380524,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 32,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_sophia",
+   "file": "field_sophia",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 13128,
+   "bytes": 463036,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 29,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_io",
+   "file": "field_io",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 11766,
+   "bytes": 422600,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 29,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_ganes",
+   "file": "field_ganes",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 9308,
+   "bytes": 351188,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 28,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_aster",
+   "file": "field_aster",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 17552,
+   "bytes": 591904,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 32,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_ord",
+   "file": "field_ord",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 9392,
+   "bytes": 363420,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 34,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_kazuto",
+   "file": "field_kazuto",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 9848,
+   "bytes": 376432,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 17,
+   "materials": 33,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_mochipoyo",
+   "file": "field_mochipoyo",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 16288,
+   "bytes": 573416,
+   "anims": [
+    "Idle",
+    "Run",
+    "Walk"
+   ],
+   "skins": 1,
+   "joints": 20,
+   "materials": 44,
+   "budget": 20000,
+   "regStatus": "done"
+  },
+  {
+   "id": "field_ponta",
+   "file": "field_ponta",
+   "kind": "character",
+   "status": "done",
+   "lazy": true,
+   "ok": true,
+   "notes": [
+    ".blend（ソース）がない"
+   ],
+   "tris": 15588,
+   "bytes": 478560,
+   "anims": [
+    "Idle",
+    "Walk",
+    "Run"
+   ],
+   "skins": 1,
+   "joints": 13,
+   "materials": 16,
+   "budget": 20000,
+   "regStatus": "done"
+  },
   {
    "id": "hero",
    "file": "char_hero",

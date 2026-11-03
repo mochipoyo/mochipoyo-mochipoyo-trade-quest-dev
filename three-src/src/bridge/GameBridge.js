@@ -13,9 +13,9 @@ import { LightingManager } from '../engine/LightingManager.js';
 import { CameraController3D } from '../engine/CameraController3D.js';
 import { ModelManager } from '../engine/ModelManager.js';
 import { Materials } from '../engine/Materials.js';
-import { MapScene3D, BillboardNpc } from '../world/MapScene3D.js';
+import { MapScene3D } from '../world/MapScene3D.js';
 import { Character3D, DIR_YAW, yawToDir } from '../entities/Character3D.js';
-import { MODELS, characterModelFor } from '../assets/manifest.js';
+import { MODELS, characterModelFor, fieldModelFor } from '../assets/manifest.js';
 import { mapCoverage, MAPS_DONE } from '../world/coverage.js';
 import { UIOverlay } from '../ui/UIOverlay.js';
 import { CUT } from '../engine/Cutout.js';
@@ -367,21 +367,37 @@ export class App3D {
     if (!this.followers) this.followers = new Map();
     const seen = new Set();
     for (const f of list) {
-      seen.add(f.id); let ent = this.followers.get(f.id);
-      if (ent && !ent.art && ent.sprite !== f.sprite && ent.ch) { this.scene.remove(ent.ch.root); this.followers.delete(f.id); ent = null; }   // v6.8 絵の仲間は見た目のIDが変わっても（転職）作り直さない
-      if (!ent && PartyDir.hasActor(f.id)) {   // v6.8 仲間は4方向の絵（キャラクターデザインのまま）。見た目のID（sprite）・職業に関係なく本人の絵
-        ent = { sprite: f.sprite, ch: new BillboardNpc({ id: f.id, dir: 'down' }, this, f.id), model: 'art:' + f.id, alpha: 1, art: true }; this.followers.set(f.id, ent); ent.ch.root.visible = false; this.scene.add(ent.ch.root);
+      seen.add(f.id);
+      const model = fieldModelFor(f.id) || characterModelFor(f.sprite);
+      let ent = this.followers.get(f.id);
+      if (ent && ent.model !== model) {
+        if (ent.ch) {
+          this.scene.remove(ent.ch.root);
+          ent.ch.mixer.stopAllAction();
+          ent.ch.root.traverse((o) => { if (o.isMesh) [].concat(o.material).forEach((m) => m.dispose()); });
+        }
+        this.followers.delete(f.id);
+        ent = null;
       }
       if (!ent) {
-        ent = { sprite: f.sprite, ch: null, model: characterModelFor(f.sprite), alpha: 1 }; this.followers.set(f.id, ent);
-        Character3D.create(this.models, ent.model, {}).then((ch) => { if (!ch) return; ch.root.traverse((o) => { if (o.isMesh && o.material) o.material = Array.isArray(o.material) ? o.material.map((m) => m.clone()) : o.material.clone(); }); ch.root.visible = false; ent.ch = ch; this.scene.add(ch.root); }).catch((e) => console.warn('follower model', f.id, e));
+        ent = { model, ch: null, alpha: 1 };
+        this.followers.set(f.id, ent);
+        Character3D.create(this.models, model).then((ch) => {
+          if (!ch || this.followers.get(f.id) !== ent) return;
+          ch.root.traverse((o) => {
+            if (o.isMesh) { o.material = Array.isArray(o.material) ? o.material.map((m) => m.clone()) : o.material.clone(); o.renderOrder = 3; }   // v6.8 主人公の透けて見えるシルエット（renderOrder 1）より後に描く：後ろから見たとき、仲間の上に主人公の青い影が出ないように
+          });
+          ch.root.visible = false;
+          ent.ch = ch;
+          this.scene.add(ch.root);
+        }).catch((e) => console.warn('follower model', f.id, e));
         continue;
       }
       const ch = ent.ch; if (!ch) continue;
       ch.root.visible = true; ch.root.position.set(f.x, this.current.heightAt(f.x, f.y), f.y);
       if (f.vx || f.vy) ch.faceTo(Math.atan2(f.vx, f.vy));
       if (this.speed > 0.1) { ch.play(this.running ? 'Run' : 'Walk', 0.15); ch.setSpeed(this.running ? this.speed / RUN : this.speed / WALK); } else ch.play('Idle', 0.25);
-      const al = f.dead ? 0.45 : 1; if (ent.art) { ch.setAlpha(al); ent.alpha = al; } else if (al !== ent.alpha) { ent.alpha = al; ch.root.traverse((o) => { if (o.isMesh && o.material) [].concat(o.material).forEach((m) => { m.transparent = al < 1; m.opacity = al; m.needsUpdate = true; }); }); }
+      const al = f.dead ? 0.45 : 1; if (al !== ent.alpha) { ent.alpha = al; ch.model.traverse((o) => { if (o.isMesh && o.material) [].concat(o.material).forEach((m) => { m.transparent = al < 1; m.opacity = al; m.needsUpdate = true; }); }); }
       ch.update(dt);
     }
     this.followers.forEach((ent, id) => { if (!seen.has(id) && ent.ch) ent.ch.root.visible = false; });

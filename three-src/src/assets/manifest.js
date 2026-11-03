@@ -13,7 +13,37 @@ const LP = (id, file, extra) => P(id, file, Object.assign({ lazy: true, status: 
 const LC = (id, extra) => C(id, Object.assign({ lazy: true, status: 'provisional' }, extra || {}));
 const MON = (arch, anims) => ({ modelId: 'mon_' + arch, modelPath: 'models/mon_' + arch + '.glb', kind: 'creature', scale: 1.0, rotationOffset: 0, footAnchor: 0, animationNames: anims || ANIMS6, lod: null, fallback: null, status: 'provisional', lazy: true, archetype: arch });
 
+// Exploration-only actors. The field key is stable across job and sprite changes.
+const FIELD_SCALES = {
+  lina: 1,
+  kyle: 1.04,
+  mina: 0.97,
+  seris: 1,
+  gald: 1.08,
+  lucia: 1,
+  elna: 1,
+  nagi: 0.98,
+  iris: 0.95,
+  sophia: 1,
+  io: 0.84,
+  ganes: 1.07,
+  aster: 1.03,
+  ord: 1.08,
+  kazuto: 1.04,
+  mochipoyo: 1.0,
+  ponta: 0.94,
+};
+export function fieldModelFor(actorId) {
+  return actorId && Object.prototype.hasOwnProperty.call(FIELD_SCALES, actorId) ? 'field_' + actorId : null;   // Object.hasOwn は古い iOS Safari（15.3 以前）にないため
+}
+const fieldModels = Object.fromEntries(Object.entries(FIELD_SCALES).map(([actorId, scale]) => {
+  const id = fieldModelFor(actorId);
+  return [id, C(id, { modelPath: 'models/' + id + '.glb', scale, lazy: true,
+    animationNames: ['Idle', 'Walk', 'Run'], fallback: null })];
+}));
+
 export const MODELS = {
+  ...fieldModels,
   // キャラクター（Blender で生成：アーマチュア17ボーン＋スキニング＋アニメーション9種）
   hero: C('hero', { fallback: null }),
   villager_m: C('villager_m', { fallback: null }),

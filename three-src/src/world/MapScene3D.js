@@ -15,42 +15,7 @@ import { mapCoverage } from './coverage.js';
 import { buildArtVolume } from '../battle/ArtVolume.js';
 import { readable } from '../battle/readable.js';
 import { Character3D, DIR_YAW } from '../entities/Character3D.js';
-import { characterModelFor } from '../assets/manifest.js';
-import * as PD from '../battle/PartyDirections.js';
-
-// v6.8 絵の NPC（追加の仲間：カズト・もちぽよ・神聖犬ポン太）：3Dモデルの代わりに、4方向の絵（PartyDirections）を板にして立てる
-//   板はいつもカメラの方を向き、NPC の向きとカメラの位置の関係で絵（正面・背面・左・右）を選ぶ。足もとの基準点（pivot）を立ち位置に合わせる
-//   Character3D と同じ呼び出し（root・mixer・faceTo・play・setSpeed・update）に答える
-const NPC_ART_H = 1.1;   // 人の基準の高さ（ワールド単位。いちばん高い向きの絵の高さ × 体格の比）
-const npcTex = new Map();
-function npcTexture(url) { let t = npcTex.get(url); if (!t) { t = new THREE.TextureLoader().load(url); t.colorSpace = THREE.SRGBColorSpace; t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.generateMipmaps = false; npcTex.set(url, t); } return t; }
-// v6.8 ついて歩く仲間（GameBridge.updateFollowers）と、仲間になる前の仲間の NPC にも使う（actorId：絵の人物ID。NPC の ID と違うときに渡す）
-let shadowGeo = null, shadowMat = null;
-export class BillboardNpc {
-  constructor(n, app, actorId) {
-    this.npc = n; this.app = app; this.aid = actorId || n.id; this.root = new THREE.Group(); this.root.name = 'npc_art_' + this.aid; this.mixer = { stopAllAction() {} }; this.yaw = this.wantYaw = 0; this.dir = null; this.t = Math.random() * 6; this.walk = 0; this.alpha = 1;
-    this.mat = new THREE.SpriteMaterial({ transparent: true, alphaTest: 0.45, depthWrite: true }); this.sprite = new THREE.Sprite(this.mat); this.root.add(this.sprite);
-    const info = PD.resolve({ id: this.aid }, 'front'); const cv = (info && info.canvas) || [320, 320]; const pv = (info && info.pivot) || [160, 304];
-    this.h = cv[1] / Math.max(1, (info && info.refH) || 278) * NPC_ART_H * ((info && info.ratio) || 1);
-    this.sprite.scale.set(this.h * cv[0] / cv[1], this.h, 1); this.sprite.center.set(pv[0] / cv[0], (cv[1] - pv[1]) / cv[1]);
-    // 足もとの丸い影（絵の板は影を落とさないので、地面に立って見えるように）
-    if (!shadowGeo) { shadowGeo = new THREE.CircleGeometry(1, 20); shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.28, depthWrite: false }); }
-    this.shadow = new THREE.Mesh(shadowGeo, shadowMat); this.shadow.rotation.x = -Math.PI / 2; this.shadow.position.y = 0.03; const r = 0.26 * ((info && info.ratio) || 1); this.shadow.scale.set(r, r * 0.7, 1); this.root.add(this.shadow);
-    this.setDir('front');
-  }
-  setDir(d) { if (d === this.dir) return; const info = PD.resolve({ id: this.aid }, d); if (!info) return; this.dir = d; this.mat.map = npcTexture(info.url); this.mat.needsUpdate = true; }
-  faceTo(yaw) { this.wantYaw = yaw; }
-  play(name) { this.walk = name === 'Run' ? 2 : name === 'Walk' ? 1 : 0; }   // 絵なので動きのコマはない。歩く・走るときは弾むように上下する
-  setSpeed() { }
-  has() { return false; }
-  setAlpha(a) { if (a === this.alpha) return; this.alpha = a; this.mat.opacity = a; this.mat.needsUpdate = true; }   // 戦闘不能の仲間は半透明
-  update(dt) {
-    this.t += dt; this.yaw = this.wantYaw; const cam = this.app && this.app.camera && this.app.camera.camera; const p = this.root.position;
-    const toCam = cam ? Math.atan2(cam.position.x - p.x, cam.position.z - p.z) : 0; let rel = this.yaw - toCam; while (rel > Math.PI) rel -= Math.PI * 2; while (rel < -Math.PI) rel += Math.PI * 2;
-    this.setDir(Math.abs(rel) <= Math.PI / 4 ? 'front' : Math.abs(rel) >= Math.PI * 3 / 4 ? 'back' : rel < 0 ? 'left' : 'right');
-    this.sprite.position.y = this.walk ? Math.abs(Math.sin(this.t * (this.walk === 2 ? 11 : 8))) * 0.05 : Math.abs(Math.sin(this.t * 2.2)) * 0.02;
-  }
-}
+import { characterModelFor, fieldModelFor } from '../assets/manifest.js';
 import { Batch, box, M4, softTexture } from '../engine/Materials.js';
 
 export class MapScene3D {
@@ -119,8 +84,8 @@ export class MapScene3D {
     this.addSearchPoints(map);
     // NPC
     for (const n of map.npcs) {
-      const aid = n.art3d && PD.hasActor(n.id) ? n.id : n.actorArt && PD.hasActor(n.actorArt) ? n.actorArt : null;   // v6.8 仲間になる前の仲間（js/data/tweaks68.js が actorArt を付ける）も4方向の絵
-      const ch = aid ? new BillboardNpc(n, app, aid) : await Character3D.create(app.models, characterModelFor(n.sprite), { scale: n.sprite === 'child' ? 1.0 : 1.0 });   // v6.8 絵の NPC
+      const model = fieldModelFor(n.actorArt) || fieldModelFor(n.id) || characterModelFor(n.sprite);
+      const ch = await Character3D.create(app.models, model);
       if (!ch) continue; ch.npc = n; this.root.add(ch.root); this.npcs.push(ch);
       ch.yaw = ch.wantYaw = DIR_YAW[n.dir] || 0;
       this.placeNpc(ch, 0, true);
