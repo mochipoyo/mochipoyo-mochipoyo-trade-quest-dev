@@ -30,7 +30,7 @@
   BossSymbol.list = function (m) {
     if (!m) return []; var f = flags(), out = [];
     (m.events || []).forEach(function (ev) {
-      if (ev.type !== 'boss' || ev.noSymbol) return;
+      if (ev.type !== 'boss' || ev.noSymbol || ev.dup71) return;   // v7.1 作り直したダンジョンで4マスに置いたボスは、姿を1つだけ
       if (ev.doneFlag && f[ev.doneFlag]) return;
       if (ev.requireFlag && !f[ev.requireFlag]) return;
       var en = (ev.enemies && ev.enemies[0]) || ev.enemy; if (!en || !EN()[en]) return;

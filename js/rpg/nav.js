@@ -39,6 +39,7 @@
   Nav.entryDone = entryDone;
 
   /* ---------- 参照 → 座標 ---------- */
+  function RX(id, x, y) { return root.MapRemake ? root.MapRemake.pos(id, x, y) : { x: x, y: y }; }   // v7.1 旧座標 → 作り直したダンジョンの新しい座標
   Nav.resolve = function (ref) {
     if (!ref) return null; var p = ref.split(':'); var kind = p[0], defs = DEFS();
     if (kind === 'loc') { var rd = defs[p[1]]; var L = rd && (rd.locations || []).filter(function (l) { return l.id === p[2]; })[0]; return L ? { ref: ref, kind: 'loc', map: p[1], x: L.x, y: L.y, label: L.name, loc: L } : null; }
@@ -56,7 +57,8 @@
       var d = D(); var hidden = (n.showIf && !d.flags[n.showIf]) || (n.hideIf && d.flags[n.hideIf]);
       return { ref: ref, kind: 'npc', map: p[1], x: ln ? ln.x : n.x, y: ln ? ln.y : n.y, id: n.id, hidden: !!hidden, npc: ln || n };
     }
-    if (kind === 'ev') { var xy = p[2].split(','); var ex = +xy[0], ey = +xy[1]; var e = (def.events || []).filter(function (o) { return o.x === ex && o.y === ey; })[0]; return e ? { ref: ref, kind: 'ev', map: p[1], x: ex, y: ey, ev: e } : null; }
+    if (kind === 'ev') { var xy = p[2].split(','); var exy = RX(p[1], +xy[0], +xy[1]); var ex = exy.x, ey = exy.y;   // v7.1 参照は旧座標で書く（作り直したダンジョンは新しい座標へ）
+      var e = (def.events || []).filter(function (o) { return o.x === ex && o.y === ey; })[0]; return e ? { ref: ref, kind: 'ev', map: p[1], x: ex, y: ey, ev: e } : null; }
     if (kind === 'chest') { var c = (def.chests || []).filter(function (o) { return o.id === p[2]; })[0]; return c ? { ref: ref, kind: 'chest', map: p[1], x: c.x, y: c.y, id: c.id } : null; }
     return null;
   };
@@ -68,9 +70,9 @@
     function add(from, e) { e.from = from; (GRAPH[from] = GRAPH[from] || []).push(e); }
     Object.keys(defs).forEach(function (id) {
       var def = defs[id];
-      (def.warps || []).forEach(function (w) { if (w.to && defs[w.to]) add(id, { kind: 'warp', x: w.x, y: w.y, to: w.to, tx: w.tx, ty: w.ty, need: w.needFlag, hidden: w.hidden, name: w.name }); });
+      (def.warps || []).forEach(function (w) { if (w.to && defs[w.to]) add(id, { kind: 'warp', x: w.x, y: w.y, to: w.to, tx: RX(w.to, w.tx, w.ty).x, ty: RX(w.to, w.tx, w.ty).y, need: w.needFlag, hidden: w.hidden, name: w.name }); });
       (def.buildings || []).forEach(function (b) { if (!b.interior || !defs[b.interior]) return; var dx = b.doorX === undefined ? 2 : b.doorX, h = b.h || 3; add(id, { kind: 'door', x: b.x + dx, y: b.y + h - 1, to: b.interior, show: b.showIf, name: b.name }); });
-      (def.events || []).forEach(function (e) { if ((e.type === 'dive' || e.type === 'hole') && e.to && defs[e.to]) add(id, { kind: e.type, x: e.x, y: e.y, to: e.to, tx: e.tx, ty: e.ty, need: e.needFlag }); });
+      (def.events || []).forEach(function (e) { if ((e.type === 'dive' || e.type === 'hole') && e.to && defs[e.to]) add(id, { kind: e.type, x: e.x, y: e.y, to: e.to, tx: RX(e.to, e.tx, e.ty).x, ty: RX(e.to, e.tx, e.ty).y, need: e.needFlag }); });
     });
     (root.SEA_ROUTES || []).forEach(function (r) { if (defs[r.from.map] && defs[r.to.map]) add(r.from.map, { kind: 'sea', route: r, to: r.to.map, edge: r.from.edge, need: r.needFlag }); });
     return GRAPH;

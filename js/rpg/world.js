@@ -51,7 +51,8 @@
   World.syncPos = function () { var p = World.player; State.data.pos = { map: World.map.id, x: p.x, y: p.y, dir: p.dir }; };
 
   World.enterHooks = root.MAP_ENTER_HOOKS = root.MAP_ENTER_HOOKS || [];   // データ側（snow.js など）が先に読み込まれて登録する
-  World.enterMap = function (id, x, y, dir) {
+  World.enterMap = function (id, x, y, dir, opt) {
+    if (root.MapRemake && !(opt && opt.raw)) { var rp = root.MapRemake.pos(id, x, y, dir); x = rp.x; y = rp.y; }   // v7.1 作り直したダンジョン：旧座標 → 新しい座標（js/rpg/mapremake.js）
     World.map = World.getMap(id); World._lmAt = null; World._lmGrace = 2;   // v6.6 触れたら入る範囲：着いてから2歩は反応しない（入口のマスに乗ったときは従来どおり入る）。出口の先へ歩き続けて、すぐ入り直さないように
     World.enterHooks.forEach(function (fn) { try { fn(World.map); } catch (e) { console.error(e); } });   // v5.6 マップに入るときの処理（凍結時計塔の時限など）
     World.applyState(World.map);
@@ -472,7 +473,8 @@
     World.makePlayer();
     World.scene = new ExploreScene();
     Engine.replace(World.scene);
-    World.enterMap(d.pos.map, d.pos.x, d.pos.y, d.pos.dir);
+    if (root.MapRemake) root.MapRemake.migrate(d);   // v7.1 作り直したダンジョンにいる古いセーブ：いる場所・探索済みを新しい座標へ
+    World.enterMap(d.pos.map, d.pos.x, d.pos.y, d.pos.dir, { raw: true });
   };
 
   root.World = World;

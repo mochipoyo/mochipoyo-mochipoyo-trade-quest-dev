@@ -11,6 +11,9 @@
   'use strict';
   var MAPS = root.MAP_DEFS; if (!MAPS || !MAPS.poyo_village) return;
   var V = MAPS.poyo_village; if (V._v71) return;
+  // 作り直す前の中身（テスト・調べもの用。ゲームでは使わない）
+  var pre71 = function (d) { var cl = function (L) { return (L || []).map(function (o) { return o && typeof o === 'object' ? Object.assign({}, o) : o; }); }; return { rows: d.rows.slice(), warps: cl(d.warps), events: cl(d.events), chests: cl(d.chests), npcs: cl(d.npcs), buildings: cl(d.buildings) }; };
+  V._pre71 = pre71(V);
   var OLD_W = V.rows[0].length, H = V.rows.length, ADD = 28, W = OLD_W + ADD;
   var g = V.rows.map(function (r) { return (r + new Array(ADD + 1).join('.')).split(''); });
   function set(x, y, ch) { if (x >= 0 && y >= 0 && x < W && y < H) g[y][x] = ch; }
@@ -149,7 +152,7 @@
     events: [{ x: 5, y: 3, type: 'inspect', solid: true, text: ['村の鐘だ。朝と夕方に一度ずつ鳴らすのだという。', '鐘のふちに「時を告げる者は、時を急がせない」と彫られている。'] }] });
   // 既存の屋内へ上り階段を1マスずつ（空いている床）
   function stairs(id, x, y, to, tx, ty, name) {
-    var d = MAPS[id]; if (!d || d._v71stairs) return; var r = d.rows[y].split(''); if (r[x] !== '_') return; r[x] = '<'; d.rows[y] = r.join('');
+    var d = MAPS[id]; if (!d || d._v71stairs) return; var r = d.rows[y].split(''); if (r[x] !== '_') return; d._pre71 = pre71(d); r[x] = '<'; d.rows[y] = r.join('');
     d.warps.push({ x: x, y: y, to: to, tx: tx, ty: ty, name: name, v71: true }); d._v71stairs = true;
   }
   stairs('poyo_elder_house', 10, 1, 'poyo_elder_house_2f', 10, 2, '2階へ');

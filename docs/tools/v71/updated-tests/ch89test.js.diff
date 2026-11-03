@@ -1,0 +1,20 @@
+--- ch89test.js.bak71	2026-11-04 06:52:40.237765306 +0900
++++ ch89test.js	2026-11-04 06:58:48.652447048 +0900
+@@ -12,7 +12,7 @@
+     if(top.classList.contains('rw-panel')){ const okb=top.querySelector('#o-ok'); if(okb){ okb.click(); continue; } Input.press('ok'); continue; } }
+   return guard>=6000?'TIMEOUT':result; }
+ const talk=(id,script)=>drive((async()=>{ const n=World.map.npcs.find(x=>x.id===id); if(!n) throw new Error('npc '+id+' not on '+World.map.id); World.talk(n); await frames(2); while(World.busy) await frames(2); })(), script);
+-const interactAt=(x,y,dir,script)=>drive((async()=>{ World.player.x=x; World.player.y=y; World.player.px=x*32; World.player.py=y*32; World.player.dir=dir; World.interact(); await frames(2); while(World.busy) await frames(2); })(), script);
++const interactAt=(x,y,dir,script,raw71)=>drive((async()=>{ if(!raw71){ const q71=w.MapRemake?w.MapRemake.pos(World.map.id,x,y,dir):{x,y}; x=q71.x; y=q71.y; }   /* v7.1 作り直したダンジョン：旧座標 → 新しい座標（向きの先に面したマス） */ World.player.x=x; World.player.y=y; World.player.px=x*32; World.player.py=y*32; World.player.dir=dir; World.interact(); await frames(2); while(World.busy) await frames(2); })(), script);
+ async function walk(dir, n){ for(let i=0;i<n;i++){ Input.keys[dir]=true; let g=0; while(!World.player.moving && g++<10) await frames(1); Input.keys[dir]=false; g=0; while((World.player.moving||World.busy) && g++<200) await frames(1); } }
+ function openChest(id){ const c=World.map.chests.find(c=>c.id===id); World.openChest(c); return drive((async()=>{ while(World.busy) await frames(2); })(), []); }
+ (async()=>{ try {
+@@ -105,7 +105,7 @@
+   r=await interactAt(2,3,'up',[]); r=await interactAt(18,3,'up',[]); r=await interactAt(2,9,'up',[]); ok(d.flags.library_1&&d.flags.library_2&&d.flags.library_3,'3 sections read');
+   await talk('ml_librarian'); ok(State.hasItem('seal_key'),'seal key');
+   r=await interactAt(10,3,'up',[]); ok(d.flags.seal_opened,'seal opened');
+-  World.player.x=10; World.player.y=2; World.player.px=320; World.player.py=64; await walk('up',1); await drive((async()=>{ let g=0; while((World.busy||World.map.id==='memory_library') && g++<60) await frames(3); })(),[]); ok(World.map.id==='memory_library_seal','entered seal section got '+World.map.id);
++  { const q71=w.MapRemake?w.MapRemake.pos(World.map.id,10,2):{x:10,y:2}; World.player.x=q71.x; World.player.y=q71.y; World.player.px=q71.x*32; World.player.py=q71.y*32; } await walk('up',(w.MapRemake&&w.MapRemake.isRemade(World.map.id))?2:1);   // v7.1 作り直したダンジョン：旧座標 → 新しい座標・2倍の地図では2歩 await drive((async()=>{ let g=0; while((World.busy||World.map.id==='memory_library') && g++<60) await frames(3); })(),[]); ok(World.map.id==='memory_library_seal','entered seal section got '+World.map.id);
+   r=await interactAt(6,3,'up',[]); ok(!d.flags.mina_father_record,'record guarded');
+   healAll(); r=await interactAt(6,7,'up',[]); log('guardian fight', r); ok(d.flags.library_guardian_defeated,'guardian defeated');
+   const g2=d.gold; r=await interactAt(6,3,'up',[1]); ok(d.flags.mina_father_record && d.flags.memory_choice===1,'record read, memory left');

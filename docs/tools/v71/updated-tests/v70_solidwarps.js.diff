@@ -1,0 +1,10 @@
+--- v70/solidwarps.js.bak71	2026-11-04 07:33:30.532399905 +0900
++++ v70/solidwarps.js	2026-11-04 07:33:47.019389254 +0900
+@@ -5,6 +5,7 @@
+ for (const [id, def] of Object.entries(w.MAP_DEFS)) {
+   let m; try { m = new w.GameMap(def); } catch (e) { continue; }
+   for (const wp of m.warps) {
++    if (wp.dup71) continue;   // v7.1 作り直したダンジョンの隠し通路は4マスに同じ出入口を置く（写しは1つと数える）
+     if (wp.x < 0 || wp.y < 0 || wp.x >= m.w || wp.y >= m.h) continue;
+     const t = m.tiles[wp.y][wp.x]; if (!w.Tiles.isSolid(t)) continue;
+     // 隣に通れるマスがあるか

@@ -1,0 +1,11 @@
+--- v65/bosssymboltest.js.bak71	2026-11-04 07:07:00.092283564 +0900
++++ v65/bosssymboltest.js	2026-11-04 07:07:00.116514536 +0900
+@@ -7,7 +7,7 @@
+ (async () => {
+   await frames(5); clearUi(); State.newGame('t', 'warrior'); const d = State.data; d.settings.textSpeed = 'instant'; World.start(); await frames(3); clearUi();
+   console.log('--- 1. どのボスにシンボルが出るか ---');
+-  const bossEvents = []; Object.values(D).forEach(def => (def.events || []).forEach(ev => { if (ev.type === 'boss') bossEvents.push({ map: def.id, ev }); }));
++  const bossEvents = []; Object.values(D).forEach(def => (def.events || []).forEach(ev => { if (ev.type === 'boss' && !ev.dup71) bossEvents.push({ map: def.id, ev }); }));   // v7.1 作り直したダンジョンで4マスに置いたボスの写し（dup71）は1つと数える
+   const listFor = (map) => BS.list(World.getMap(map));
+   // 物語の条件をすべて満たし、まだ誰も倒していない状態
+   const save = d.flags; const allReq = {}; bossEvents.forEach(b => { if (b.ev.requireFlag) allReq[b.ev.requireFlag] = true; });

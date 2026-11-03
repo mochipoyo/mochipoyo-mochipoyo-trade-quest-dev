@@ -1,0 +1,61 @@
+--- expandA6test.js.bak71	2026-11-04 07:05:26.554076936 +0900
++++ expandA6test.js	2026-11-04 07:05:45.394163833 +0900
+@@ -18,7 +18,8 @@
+ (async () => {
+   await sleep(60); clean(); State.newGame('テスト', 'warrior'); const d = State.data; d.settings.textSpeed = 'instant'; World.start(); await sleep(60); clean();
+   const M = w.MAP_DEFS; const S6 = w.EXPAND_A.stage6; const A6 = w.ExpandA6; const S4 = w.EXPAND_A.stage4;
+-  const reach = (id, start, flags) => { const keep = d.flags; d.flags = Object.assign({}, keep, flags || {}); State.data.flags = d.flags; delete World.maps[id]; const m = World.getMap(id); w.World.applyState(m); const s = bfs(m, start, d.flags); d.flags = keep; State.data.flags = keep; delete World.maps[id]; return s; };
++  const P71 = (id, xy, dir) => { const q = w.MapRemake ? w.MapRemake.pos(id, xy[0], xy[1], dir) : { x: xy[0], y: xy[1] }; return [q.x, q.y]; };   // v7.1 作り直したダンジョン：旧座標 → 新しい座標
++  const reach = (id, start, flags) => { start = P71(id, start); const keep = d.flags; d.flags = Object.assign({}, keep, flags || {}); State.data.flags = d.flags; delete World.maps[id]; const m = World.getMap(id); w.World.applyState(m); const s = bfs(m, start, d.flags); d.flags = keep; State.data.flags = keep; delete World.maps[id]; return s; };
+   // ---- 数と形 ----
+   const g6 = S6.areas.map(a => a.gimmick), g4 = S4.areas.map(a => a.gimmick);
+   ok(S6.maps.length === 29 && S6.patched.length === 29 && new Set(g6).size === 29 && !g6.some(g => g4.includes(g)), '第6段階：隠し区画29（29のダンジョンに1つずつ）、仕掛けは29種類すべて別で、第4段階の10種とも重ならない：' + g6.join(','));
+@@ -36,16 +37,16 @@
+   // ---- 入口 ----
+   const arrivals = id => { const a = []; Object.keys(M).forEach(oid => (M[oid].warps || []).forEach(wp => { if (wp.to === id && !S6.maps.includes(oid)) a.push([wp.tx, wp.ty]); })); Object.keys(M).forEach(oid => (M[oid].buildings || []).forEach(b => { if (b.interior === id && b.entry) a.push([b.entry.x, b.entry.y]); })); return a; };
+   let er = [];
+-  for (const a of S6.areas) { const st = arrivals(a.host); let s = new Set(); st.forEach(p => reach(a.host, p).forEach(k => s.add(k))); const hm = World.getMap(a.host); const wp = hm.warpAt(a.wall[0], a.wall[1]); const wallCh = M[a.host].rows[a.wall[1]][a.wall[0]];
+-    if (!st.length || !s.has(a.dead.join(',')) || s.has(a.wall.join(',')) || !wp || wp.needFlag !== a.found || wp.to !== a.id || !Tiles.isSolid(Tiles.byChar[wallCh])) er.push(a.host); }
++  for (const a of S6.areas) { const st = arrivals(a.host); let s = new Set(); st.forEach(p => reach(a.host, p).forEach(k => s.add(k))); const hm = World.getMap(a.host); const wp = hm.warpAt(...P71(a.host, a.wall)); const wallCh = M[a.host].remake71 ? M[a.host].remake71.oldRows[a.wall[1]][a.wall[0]] : M[a.host].rows[a.wall[1]][a.wall[0]];
++    if (!st.length || !s.has(P71(a.host, a.dead).join(',')) || s.has(P71(a.host, a.wall).join(',')) || !wp || wp.needFlag !== a.found || wp.to !== a.id || !Tiles.isSolid(Tiles.byChar[wallCh])) er.push(a.host); }
+   ok(!er.length, '29の入口：既存の入口から入口の前のマスへ歩いて行け、入口は見つける前は通れない壁（出入口は needFlag つき）' + er.join(','));
+   const log = []; const origMsg = Win.message, origChoice = Win.choice; let answers = []; let lastOpts = null;
+   Win.message = async (l) => { log.push([].concat(l).join(' / ')); }; Win.choice = async (p, opts) => { lastOpts = opts; const a = answers.length ? answers.shift() : 0; return typeof a === 'function' ? a(opts) : a; };
+-  { const a = S6.areas[0]; World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); answers = [1]; await Events.run(World.map.eventAt(a.wall[0], a.wall[1])); ok(World.map.id === a.host && !d.flags[a.found], '入口（' + a.host + '）：「やめる」なら壁のまま'); }
++  { const a = S6.areas[0]; World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); answers = [1]; await Events.run(World.map.eventAt(...P71(a.host, a.wall))); ok(World.map.id === a.host && !d.flags[a.found], '入口（' + a.host + '）：「やめる」なら壁のまま'); }
+   let entered = [];
+-  for (const a of S6.areas) { World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); answers = [0]; log.length = 0; await Events.run(World.map.eventAt(a.wall[0], a.wall[1])); const inside = World.map.id === a.id && log.length >= 1; World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); const passable = World.map.passable(a.wall[0], a.wall[1], d); entered.push(inside && passable && d.flags[a.found] ? 'ok' : a.key); }
++  for (const a of S6.areas) { World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); answers = [0]; log.length = 0; await Events.run(World.map.eventAt(...P71(a.host, a.wall))); const inside = World.map.id === a.id && log.length >= 1; World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); const passable = World.map.passable(...P71(a.host, a.wall), d); entered.push(inside && passable && d.flags[a.found] ? 'ok' : a.key); }
+   ok(entered.every(x => x === 'ok'), '29の入口：手がかりが出て「進む」で隠し区画へ入り、その後は壁が通路になる ' + entered.filter(x => x !== 'ok').join(','));
+-  ok(S6.areas.every(a => M[a.id].encounters === (M[a.host].encounters || null)), '隠し区画の魔物は入口のダンジョンと同じ（エンカウントの設定をそのまま使う。もともと出ない所は出ない）');
++  ok(S6.areas.every(a => M[a.id].encounters === (M[a.host].encounters || null) || (M[a.host].remake71 && M[a.id].encounters && M[a.id].encounters.zones === M[a.host].encounters.zones && M[a.id].encounters.rate === M[a.host].encounters.rate * 2)),   /* v7.1 作り直したダンジョンは出る確率だけ半分 */ '隠し区画の魔物は入口のダンジョンと同じ（エンカウントの設定をそのまま使う。もともと出ない所は出ない）');
+   ok(S6.areas.every(a => { const m = World.getMap(a.id); const back = m.warps[0]; return m.chests.length === 2 && m.chests.every(c => c.gold || w.ITEMS[c.item]) && back.to === a.host && back.tx === a.dead[0] && back.ty === a.dead[1]; }), '隠し区画の宝箱はどれも2つ（中身はある品物かお金）。戻り口は入口の前のマスへ');
+   // ---- 仕掛けを解く前は宝箱へ届かず、解いた後は届く。仕掛けへは着いた所から行ける ----
+   const OPEN = { mt: { a6_mt_open: true, a6_mt_door0: true }, ap: { a6_ap_open: true } };
+@@ -84,9 +85,9 @@
+     answers = [0]; await A6.fgGuard({ battle: async (ids) => 'won' }); ok(f0 && called && called.join() === 'chain_warden,chain_warden,mine_imp' && d.flags.a6_fg_open && World.map.passable(9, 5, d) && World.map.passable(9, 3, d), '鉄冠将軍の砦：番兵と戦う（鎖の看守2・鉱山の小鬼）。逃げると開かず、勝つと番兵が崩れて扉が開く'); }
+   // ⑤ 鍵
+   { at('a6_gp_shelter', 8, 8); await A6.gpChest(); at('grania_pass', 10, 4); await A6.gpDig(); const k0 = !d.flags.a6_gp_key && !d.flags.a6_gp_open;
+-    at('a6_gp_shelter', 8, 8); await Events.run(World.map.eventAt(12, 8)); at('grania_pass', 10, 4); const dig = World.map.eventAt(10, 4); await Events.run(dig); at('a6_gp_shelter', 8, 8); await A6.gpChest();
++    at('a6_gp_shelter', 8, 8); await Events.run(World.map.eventAt(12, 8)); at('grania_pass', 10, 4); const dig = World.map.eventAt(...P71('grania_pass', [10, 4])); await Events.run(dig); at('a6_gp_shelter', 8, 8); await A6.gpChest();
+     const s = new Set(); arrivals('grania_pass').forEach(p => reach('grania_pass', p).forEach(k => s.add(k)));
+-    ok(k0 && d.flags.a6_gp_key && d.flags.a6_gp_open && s.has('10,4') && dig && !dig.solid, '灰の峠：書き置きを読む前は掘っても出ない。読んだあと、峠の北の広場の東の端 (10,4) を掘ると鍵が出て、避難小屋の格子が開く（そのマスは通れる・歩いて行ける）'); }
++    ok(k0 && d.flags.a6_gp_key && d.flags.a6_gp_open && s.has(P71('grania_pass', [10, 4]).join(',')) && dig && !dig.solid, '灰の峠：書き置きを読む前は掘っても出ない。読んだあと、峠の北の広場の東の端 (10,4) を掘ると鍵が出て、避難小屋の格子が開く（そのマスは通れる・歩いて行ける）'); }
+   // ⑥ 帳簿
+   at('a6_ka_ledger', 9, 10); answers = [0]; await A6.kaLock(); const ka0 = !d.flags.a6_ka_open; answers = [2]; await A6.kaLock(); ok(ka0 && d.flags.a6_ka_open, '地下記録庫：＋300−450＋700−手数料50＝＋500G で開く（手数料を忘れた ＋550 などでは開かない）');
+   // ⑦ 天秤
+@@ -177,12 +178,12 @@
+   ok(!badSteps.length, '歩いて確かめた所（潮の流れ・雲の道・熱の通り道・薄氷）は、どれも隣の通れるマスへの1歩ずつ ' + badSteps.join(' / '));
+   // ---- 宝箱を開けて、戻り口から入口の前へ戻る ----
+   { const a = S6.areas.find(x => x.key === 'ka'); at(a.id, 9, 2); const m = World.map; const before = d.gold; for (const c of m.chests) { P.x = c.x; P.y = c.y + 1; P.dir = 'up'; World.interact(); await sleep(20); clean(); World.busy = false; }
+-    const opened = m.chests.every(c => d.chests[a.id + ':' + c.id]); World.doWarp(m.warps[0]); await sleep(30); await sleep(400); ok(opened && d.gold === before + 2000 && World.map.id === a.host && World.player.x === a.dead[0] && World.player.y === a.dead[1], '[' + [opened, d.gold - before, World.map.id, World.player.x, World.player.y].join(',') + '] ' + '地下記録庫の隠し区画：宝箱2つを開け（2000G を含む）、戻り口から入口の前のマスへ戻る'); }
++    const opened = m.chests.every(c => d.chests[a.id + ':' + c.id]); World.doWarp(m.warps[0]); await sleep(30); await sleep(400); ok(opened && d.gold === before + 2000 && World.map.id === a.host && (M[a.host].remake71 ? Math.floor(World.player.x / 2) === a.dead[0] && Math.floor(World.player.y / 2) === a.dead[1] : World.player.x === a.dead[0] && World.player.y === a.dead[1]),   /* v7.1 作り直したダンジョンは旧座標の 2×2 のどれか */ '[' + [opened, d.gold - before, World.map.id, World.player.x, World.player.y].join(',') + '] ' + '地下記録庫の隠し区画：宝箱2つを開け（2000G を含む）、戻り口から入口の前のマスへ戻る'); }
+   // ---- セーブと読み込み ----
+   { const saved = JSON.stringify(State.data); const s2 = State.migrate(JSON.parse(saved)); ok(S6.areas.every(a => s2.flags[a.open] && s2.flags[a.found]) && s2.flags.a6_vh_x === 12, 'セーブ：入口を見つけた・仕掛けを解いた状態（木箱の位置も）は、書き出して読み込んでも残る'); }
+   // ---- 旧セーブ（第5段階の版で、いまは入口になった壁の前に立っていたセーブ）----
+   { const keep = State.data; const s = State.migrate(JSON.parse(JSON.stringify(oldSave.save))); State.data = s; World.start(); await sleep(30); clean(); const p = World.player;
+-    ok(oldSave.errors.length === 0 && World.map.id === 'emal_pass' && p.x === 26 && p.y === 8 && s.gold === 777 && s.flags.forest_boss && !S6.areas.some(a => s.flags[a.found] || s.flags[a.open]) && !World.map.passable(25, 8, s), '旧セーブ：第5段階の版のセーブ（エマール山道の入口の前）はそのまま読み込め、位置・お金・フラグは同じ。隠し区画はどれも見つける前の状態'); State.data = keep; }
++    ok(oldSave.errors.length === 0 && World.map.id === 'emal_pass' && p.x === P71('emal_pass', [26, 8])[0] && p.y === P71('emal_pass', [26, 8])[1] && s.gold === 777 && s.flags.forest_boss && !S6.areas.some(a => s.flags[a.found] || s.flags[a.open]) && !World.map.passable(...P71('emal_pass', [25, 8]), s), '旧セーブ：第5段階の版のセーブ（エマール山道の入口の前）はそのまま読み込め、位置・お金・フラグは同じ。隠し区画はどれも見つける前の状態'); State.data = keep; }
+   Win.message = origMsg; Win.choice = origChoice;
+   ok(errors.length === 0, 'エラーなし ' + JSON.stringify(errors).slice(0, 300));
+   console.log('結果: ' + pass + ' OK / ' + fail + ' NG'); process.exit(fail ? 1 : 0);

@@ -9,6 +9,8 @@
   'use strict';
   var MAPS = root.MAP_DEFS; if (!MAPS || !MAPS.tradia) return;
   var T = MAPS.tradia; if (T._v71) return;
+  // 足す前の中身（テスト・調べもの用。ゲームでは使わない）
+  T._pre71 = (function (d) { var cl = function (L) { return (L || []).map(function (o) { return o && typeof o === 'object' ? Object.assign({}, o) : o; }); }; return { rows: d.rows.slice(), warps: cl(d.warps), events: cl(d.events), chests: cl(d.chests), npcs: cl(d.npcs), buildings: cl(d.buildings) }; })(T);
 
   /* ---------- 乗り物の演出（2D・3D 共通の入口） ---------- */
   var Ride = root.Ride = root.Ride || {};

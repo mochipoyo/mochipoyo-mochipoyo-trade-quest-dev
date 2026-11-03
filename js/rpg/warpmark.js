@@ -46,8 +46,8 @@
     if (isField(w.to)) return 'exit';
     var tm = gm(w.to);
     if (tm) {   // 行き先にある「ここへ戻る出入口」が上り階段なら、ここからは下りる（逆も同じ）
-      var best = null, bd = 1e9;
-      tm.warps.forEach(function (r) { if (r.to !== m.id) return; var dd = Math.abs(r.x - w.tx) + Math.abs(r.y - w.ty); if (dd < bd) { bd = dd; best = r; } });
+      var best = null, bd = 1e9; var tp = root.MapRemake ? root.MapRemake.pos(w.to, w.tx, w.ty) : { x: w.tx, y: w.ty };   // v7.1 行き先が作り直したダンジョンなら新しい座標で比べる
+      tm.warps.forEach(function (r) { if (r.to !== m.id) return; var dd = Math.abs(r.x - tp.x) + Math.abs(r.y - tp.y); if (dd < bd) { bd = dd; best = r; } });
       if (best && bd <= 3) { var rt = tm.tiles[best.y] && tm.tiles[best.y][best.x]; if (rt === 'stairs_up') return 'down'; if (rt === 'stairs_down') return 'up'; }
     }
     var tk = kindOf(w.to); if (tk === 'town' || tk === 'village' || tk === 'castle') return 'exit';

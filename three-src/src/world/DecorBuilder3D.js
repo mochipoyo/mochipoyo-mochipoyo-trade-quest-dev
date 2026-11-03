@@ -106,8 +106,129 @@ export class DecorBuilder3D {
         this.stats.clouds = n;
       }
     }
+    // v7.1 がっつり飾る（壁ぎわの小物・床の散らばり・洞窟の支え木・森の光の筋・町の家の前の小物）
+    try { this.dense(map, walk, busy, hAt); } catch (e) { console.warn('decor71 dense', e); }
     const g = new THREE.Group(); g.name = 'decor70_' + key; b.build(g, { castShadow: false }); o.group.add(g); this.group = g;
     return out;
+  }
+
+  /* ---------- v7.1 がっつり飾る（見た目だけ。当たり判定は 2D 版のタイルのまま）
+     ・ダンジョン・屋内：床に面した壁の根もと（北・東・西・南の壁ぎわ）に、テーマの小物（石筍・きのこ・水晶・本の山・配管・樽・壺・燭台など）を3〜4マスに1つ
+       ＋ 広い床に小さな散らばり（小石・苔・水たまり・紙・格子・溶岩のひび・光の粒）
+       ＋ 洞窟・鉱山：幅2〜3マスの通路に、7マスおきに支え木（両側の壁の上の柱と梁）
+       ＋ 森：木漏れ日の光の筋・ホタル
+     ・町：家（建物）の前の、入口でないマスに樽・木箱・花の鉢・ベンチ・鉢植えなど／草地に花
+     ・フィールド：足もとの飾りを v7.0 の約3倍
+     ・出入口・宝箱・人・出来事のマスとそのとなりには置かない（目印や宝箱が隠れないように） */
+  dense(map, walk, busy, hAt) {
+    const A = this.A, A2 = this.A2, k = this.key; const W = map.w, H = map.h; const kind = map.kind;
+    // 大きさ：小物は置き場所（x, y, z）を中心に sc 倍にする（がっつり見えるように）
+    let pre = null; const add = (m, g, mx) => this.add(m, g, pre ? pre.clone().multiply(mx) : mx);
+    const at = (x, y, z, sc) => { pre = new THREE.Matrix4().makeTranslation(x, y, z).multiply(new THREE.Matrix4().makeScale(sc, sc, sc)).multiply(new THREE.Matrix4().makeTranslation(-x, -y, -z)); };
+    const T = (x, z) => map.tile(x, z);
+    const isWall = (x, z) => x < 0 || z < 0 || x >= W || z >= H || WALLS[T(x, z)] || /forest|tree|cliff|mountain|bookshelf/.test(T(x, z));
+    const near = (x, z, r) => { for (let dz = -r; dz <= r; dz++) for (let dx = -r; dx <= r; dx++) if (busy(x + dx, z + dz) || map.warpAt(x + dx, z + dz)) return true; return false; };
+    const FAM = /^(cave|mine|forge)$/.test(k) ? 'rock' : /^(forest|pastoral)$/.test(k) ? 'forest' : /^(library|bureau|academy)$/.test(k) ? 'book' : /^(machine|tech)$/.test(k) ? 'mech' : 'misc';
+    const st = this.stats; st.base = 0; st.scatter = 0; st.arch = 0; st.shaft = 0; st.town = 0;
+    // 小物の部品
+    const rockM = mat('#6e665c', { rough: 0.95 }), rockD = mat('#4a443c', { rough: 1 }), woodM = mat('#6a4a2c', { rough: 0.9 }), woodD = mat('#4a3420', { rough: 0.95 });
+    const leaf = mat('#3f7a34', { rough: 0.9 }), leaf2 = mat('#5a9a44', { rough: 0.9 }), cap = mat('#c8483a', { rough: 0.6 }), stem = mat('#efe6d0', { rough: 0.8 });
+    const glowA = mat(A, { glow: 2.0, rough: 0.3 }), glowA2 = mat(A2, { glow: 1.8, rough: 0.3 });
+    const P = {
+      stalagmite: (x, y, z, r) => { for (let i = 0; i < 3; i++) { const h = 0.35 + hash(i, r * 99) * 0.6; add(i ? rockM : rockD, new THREE.ConeGeometry(0.09 + h * 0.12, h, 6), M4(x + (i - 1) * 0.16, y + h / 2, z + (hash(r * 50, i) - 0.5) * 0.18)); } },
+      rubble: (x, y, z, r) => { for (let i = 0; i < 4; i++) add(i % 2 ? rockM : rockD, new THREE.DodecahedronGeometry(0.06 + hash(i, r * 77) * 0.08), M4(x + (hash(i, 3, r * 9) - 0.5) * 0.5, y + 0.05, z + (hash(i, 5, r * 9) - 0.5) * 0.3, i)); },
+      glowshroom: (x, y, z, r) => { for (let i = 0; i < 3; i++) { const h = 0.12 + hash(i, r * 31) * 0.16; add(stem, new THREE.CylinderGeometry(0.02, 0.025, h, 5), M4(x + (i - 1) * 0.12, y + h / 2, z + (hash(i, r) - 0.5) * 0.15)); add(i === 1 ? glowA2 : glowA, new THREE.SphereGeometry(0.07, 8, 4, 0, Math.PI * 2, 0, Math.PI / 2), M4(x + (i - 1) * 0.12, y + h, z + (hash(i, r) - 0.5) * 0.15)); } },
+      crystal: (x, y, z, r) => { for (let i = 0; i < 3; i++) add(i === 1 ? glowA2 : glowA, new THREE.OctahedronGeometry(0.08 + i * 0.03), M4(x - 0.14 + i * 0.14, y + 0.14 + i * 0.05, z, i * 0.7, 0, (i - 1) * 0.35, 0.7, 2.2, 0.7)); },
+      lantern: (x, y, z) => { add(woodD, box(0.06, 0.9, 0.06), M4(x, y + 0.45, z)); add(woodD, box(0.26, 0.04, 0.04), M4(x + 0.1, y + 0.88, z)); add(mat('#ffcf70', { glow: 2.6 }), box(0.1, 0.14, 0.1), M4(x + 0.2, y + 0.76, z)); },
+      ember: (x, y, z, r) => { for (let i = 0; i < 3; i++) add(mat('#ff6a20', { glow: 3.0 }), box(0.5 + hash(i, r) * 0.4, 0.015, 0.04), M4(x, y + 0.02, z + (i - 1) * 0.1, r * 4 + i * 0.5)); },
+      fern: (x, y, z, r) => { for (let i = 0; i < 5; i++) { const a = i * 1.26 + r; add(i % 2 ? leaf : leaf2, box(0.06, 0.02, 0.42), M4(x + Math.cos(a) * 0.14, y + 0.12, z + Math.sin(a) * 0.14, -a + Math.PI / 2, 0.5, 0)); } },
+      mushroom: (x, y, z, r) => { for (let i = 0; i < 2; i++) { const h = 0.14 + i * 0.08; add(stem, new THREE.CylinderGeometry(0.025, 0.03, h, 6), M4(x + i * 0.14, y + h / 2, z)); add(cap, new THREE.SphereGeometry(0.08 + i * 0.03, 8, 4, 0, Math.PI * 2, 0, Math.PI / 2), M4(x + i * 0.14, y + h, z)); } },
+      flowers: (x, y, z, r) => { const cols = ['#ffd24a', '#ff8ab0', '#ffffff', '#9fd4ff', '#c08aff']; for (let i = 0; i < 6; i++) { const fx = x + (hash(i, r * 13) - 0.5) * 0.5, fz = z + (hash(i, r * 17) - 0.5) * 0.4; add(leaf2, new THREE.CylinderGeometry(0.01, 0.01, 0.16, 4), M4(fx, y + 0.08, fz)); add(mat(cols[(i + Math.floor(r * 5)) % 5], { rough: 0.7 }), new THREE.SphereGeometry(0.045, 6, 4), M4(fx, y + 0.17, fz)); } },
+      log: (x, y, z, r) => { add(woodM, new THREE.CylinderGeometry(0.11, 0.12, 0.8, 8), M4(x, y + 0.11, z, r * 2, 0, Math.PI / 2)); add(leaf, new THREE.SphereGeometry(0.09, 6, 4), M4(x + 0.2, y + 0.2, z, 0, 0, 0, 1.4, 0.6, 1)); },
+      books: (x, y, z, r) => { const cols = ['#7a2a2a', '#2a4a7a', '#3a6a3a', '#8a6a2a', '#5a3a6a']; for (let i = 0; i < 5; i++) add(mat(cols[(i + Math.floor(r * 5)) % 5], { rough: 0.8 }), box(0.28, 0.07, 0.2), M4(x, y + 0.035 + i * 0.07, z, (hash(i, r * 7) - 0.5) * 0.6)); },
+      candle: (x, y, z, r) => { for (let i = 0; i < 3; i++) { const h = 0.1 + hash(i, r * 3) * 0.18; add(stem, new THREE.CylinderGeometry(0.025, 0.025, h, 6), M4(x + (i - 1) * 0.1, y + h / 2, z + (i % 2) * 0.06)); add(mat('#ffcf70', { glow: 3.0 }), new THREE.ConeGeometry(0.018, 0.05, 5), M4(x + (i - 1) * 0.1, y + h + 0.03, z + (i % 2) * 0.06)); } },
+      scroll: (x, y, z, r) => { add(mat('#e8dcc0', { rough: 0.9 }), new THREE.CylinderGeometry(0.04, 0.04, 0.34, 8), M4(x, y + 0.04, z, r * 3, 0, Math.PI / 2)); add(mat('#e8dcc0', { rough: 0.9 }), new THREE.CylinderGeometry(0.04, 0.04, 0.3, 8), M4(x + 0.06, y + 0.11, z + 0.04, r * 3 + 0.4, 0, Math.PI / 2)); },
+      pipe: (x, y, z, r, ax) => { const pm = mat('#6a7078', { rough: 0.4, metal: 0.7 }); add(pm, new THREE.CylinderGeometry(0.07, 0.07, 1.0, 8), M4(x, y + 0.12, z, ax ? Math.PI / 2 : 0, 0, Math.PI / 2)); add(glowA, box(0.06, 0.06, 0.06), M4(x, y + 0.24, z)); },
+      crate: (x, y, z, r) => { add(woodM, box(0.36, 0.36, 0.36), M4(x, y + 0.18, z, r)); add(woodD, box(0.38, 0.04, 0.38), M4(x, y + 0.36, z, r)); if (r > 0.5) add(woodM, box(0.26, 0.26, 0.26), M4(x + 0.05, y + 0.5, z, r + 0.5)); },
+      techbox: (x, y, z, r) => { add(mat('#2a2e36', { metal: 0.6, rough: 0.4 }), box(0.34, 0.5, 0.3), M4(x, y + 0.25, z)); for (let i = 0; i < 3; i++) add(i % 2 ? glowA2 : glowA, box(0.2, 0.03, 0.02), M4(x, y + 0.15 + i * 0.12, z + 0.16)); },
+      barrel: (x, y, z) => { add(woodM, new THREE.CylinderGeometry(0.17, 0.15, 0.42, 10), M4(x, y + 0.21, z)); add(mat('#3a3a3a', { metal: 0.6 }), new THREE.TorusGeometry(0.165, 0.015, 4, 12), M4(x, y + 0.3, z, 0, Math.PI / 2)); },
+      pot: (x, y, z, r) => { add(mat(r > 0.5 ? '#b0683a' : '#8a7a6a', { rough: 0.8 }), new THREE.SphereGeometry(0.15, 10, 8), M4(x, y + 0.15, z, 0, 0, 0, 1, 1.15, 1)); add(mat('#3a2a1a'), new THREE.CylinderGeometry(0.07, 0.09, 0.06, 10), M4(x, y + 0.32, z)); },
+      plant: (x, y, z, r) => { add(mat('#b0683a', { rough: 0.8 }), new THREE.CylinderGeometry(0.12, 0.09, 0.22, 10), M4(x, y + 0.11, z)); add(r > 0.5 ? leaf : leaf2, new THREE.SphereGeometry(0.2, 8, 6), M4(x, y + 0.36, z, 0, 0, 0, 1, 0.9, 1)); },
+      bench: (x, y, z, r, ax) => { add(woodM, box(ax ? 0.3 : 0.8, 0.06, ax ? 0.8 : 0.3), M4(x, y + 0.3, z)); for (const s of [-0.3, 0.3]) add(woodD, box(0.06, 0.3, 0.06), M4(x + (ax ? 0 : s), y + 0.15, z + (ax ? s : 0))); },
+      bones: (x, y, z, r) => { add(stem, new THREE.SphereGeometry(0.09, 8, 6), M4(x, y + 0.09, z)); for (let i = 0; i < 2; i++) add(stem, new THREE.CylinderGeometry(0.02, 0.02, 0.36, 5), M4(x + 0.18, y + 0.03, z + (i - 0.5) * 0.12, r + i, 0, Math.PI / 2)); },
+      shell: (x, y, z, r) => { add(mat('#ff8aa8', { rough: 0.7 }), new THREE.ConeGeometry(0.05, 0.4, 6), M4(x, y + 0.2, z)); add(mat('#ffb07a', { rough: 0.7 }), new THREE.ConeGeometry(0.04, 0.3, 6), M4(x + 0.12, y + 0.15, z + 0.05)); add(mat('#f4e8d8'), new THREE.SphereGeometry(0.08, 8, 5, 0, Math.PI * 2, 0, Math.PI / 2), M4(x - 0.12, y, z + 0.08)); },
+      icicle: (x, y, z, r) => { for (let i = 0; i < 3; i++) add(mat(A, { glow: 0.5, rough: 0.1, opacity: 0.85 }), new THREE.ConeGeometry(0.07, 0.3 + hash(i, r) * 0.3, 6), M4(x + (i - 1) * 0.14, y + 0.2, z)); },
+      urn: (x, y, z, r) => { add(mat('#b8b0a4', { rough: 0.8 }), new THREE.CylinderGeometry(0.12, 0.16, 0.36, 10), M4(x, y + 0.18, z)); add(glowA, new THREE.ConeGeometry(0.06, 0.14, 6), M4(x, y + 0.43, z)); }
+    };
+    const BASE = { rock: ['stalagmite', 'rubble', 'glowshroom', 'crystal', 'stalagmite', 'rubble'], forest: ['fern', 'mushroom', 'flowers', 'log', 'fern', 'flowers'], book: ['books', 'candle', 'scroll', 'books'], mech: ['pipe', 'techbox', 'crate', 'pipe'],
+      misc: { royal: ['urn', 'pot', 'plant', 'candle'], temple: ['candle', 'urn', 'pot'], clock: ['crate', 'candle', 'pot'], ruins: ['rubble', 'fern', 'pot', 'bones'], dark: ['bones', 'crystal', 'rubble'], arcane: ['crystal', 'candle', 'books'], sky: ['crystal', 'plant', 'urn'], sea: ['shell', 'rubble', 'shell'], frost: ['icicle', 'rubble', 'crystal'], desert: ['pot', 'rubble', 'pot'], harbor: ['barrel', 'crate', 'barrel'], casino: ['plant', 'techbox', 'urn'] } };
+    if (k === 'mine') BASE.rock = ['rubble', 'lantern', 'crate', 'stalagmite', 'barrel', 'crystal'];
+    if (k === 'forge') BASE.rock = ['rubble', 'stalagmite', 'ember', 'crystal'];
+    const baseList = FAM === 'misc' ? (BASE.misc[k] || ['pot', 'crate', 'plant']) : BASE[FAM];
+    const scat = (x, y, z, r) => {
+      if (FAM === 'rock') { if (k === 'forge' && r < 0.5) P.ember(x, y, z, r); else { for (let i = 0; i < 3; i++) add(i ? rockM : rockD, new THREE.DodecahedronGeometry(0.03 + hash(i, r * 9) * 0.04), M4(x + (hash(i, r) - 0.5) * 0.6, y + 0.02, z + (hash(r, i) - 0.5) * 0.6, i)); if (k === 'cave' && r > 0.6) add(mat('#4a8a5a', { rough: 1, opacity: 0.8 }), new THREE.CircleGeometry(0.28, 10), M4(x, y + 0.02, z, r * 3, -Math.PI / 2)); } }
+      else if (FAM === 'forest') { for (let i = 0; i < 4; i++) add(i % 2 ? leaf : leaf2, new THREE.ConeGeometry(0.05, 0.18, 4), M4(x + (hash(i, r) - 0.5) * 0.6, y + 0.08, z + (hash(r, i) - 0.5) * 0.6)); if (r > 0.55) add(mat('#e8ff9a', { glow: 3.0 }), new THREE.SphereGeometry(0.035, 6, 4), M4(x, y + 0.6 + r * 0.7, z)); }
+      else if (FAM === 'book') add(mat('#efe4c8', { rough: 0.9 }), box(0.22, 0.01, 0.28), M4(x, y + 0.01, z, r * 4));
+      else if (FAM === 'mech') { add(mat('#2a2e36', { metal: 0.6, rough: 0.5 }), box(0.6, 0.02, 0.6), M4(x, y + 0.01, z)); add(glowA, box(0.6, 0.025, 0.03), M4(x, y + 0.015, z)); }
+      else add(mat(A, { glow: 1.4 }), new THREE.SphereGeometry(0.03, 5, 4), M4(x + (r - 0.5) * 0.5, y + 0.05, z));
+    };
+    const dungeonish = kind === 'dungeon' || kind === 'interior';
+    if (dungeonish) {
+      const lim = kind === 'interior' ? 70 : 600, slim = kind === 'interior' ? 40 : 360; let n = 0, s = 0;
+      for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
+        if (!walk(x, z) || near(x, z, 1)) continue; const r = hash(x, z, 71);
+        const sides = [[0, -1], [-1, 0], [1, 0], [0, 1]].filter(([dx, dz]) => isWall(x + dx, z + dz));
+        if (sides.length && n < lim && r < (kind === 'interior' ? 0.2 : 0.42)) {
+          const [dx, dz] = sides[Math.floor(hash(x, z, 73) * sides.length)]; const px = x + 0.5 + dx * 0.4, pz = z + 0.5 + dz * 0.4;
+          at(px, hAt(px, pz), pz, kind === 'interior' ? 1.3 : 1.6 + hash(x, z, 74) * 0.5); P[baseList[Math.floor(hash(x, z, 75) * baseList.length)]](px, hAt(px, pz), pz, hash(x, z, 77), dx !== 0); pre = null; n++;
+        } else if (!sides.length && s < slim && r > 0.8) { const px = x + 0.5, pz = z + 0.5; at(px, hAt(px, pz), pz, 1.4); scat(px, hAt(px, pz), pz, hash(x, z, 79)); pre = null; s++; }
+      }
+      st.base = n; st.scatter = s;
+      // 洞窟・鉱山：通路の支え木（両側の壁の上に柱、上に梁）
+      if (kind === 'dungeon' && (k === 'cave' || k === 'mine')) {
+        const beam = woodM, post = woodD; let a = 0; const used = {};
+        for (let z = 1; z < H - 1 && a < 40; z++) for (let x = 1; x < W - 3 && a < 40; x++) {
+          for (const wdt of [2, 3]) {
+            if (!(isWall(x - 1, z) && isWall(x + wdt, z))) continue; let ok = true; for (let i = 0; i < wdt; i++) ok = ok && walk(x + i, z) && !busy(x + i, z); if (!ok || (z * 7 + x) % 7 !== 0 || used[(z >> 2) + ',' + (x >> 2)]) continue;
+            used[(z >> 2) + ',' + (x >> 2)] = 1; const y = hAt(x + 0.5, z + 0.5); const x0 = x - 0.12, x1 = x + wdt + 0.12;
+            add(post, box(0.18, 2.1, 0.18), M4(x0, y + 1.05, z + 0.5)); add(post, box(0.18, 2.1, 0.18), M4(x1, y + 1.05, z + 0.5)); add(beam, box(x1 - x0 + 0.3, 0.2, 0.22), M4((x0 + x1) / 2, y + 2.1, z + 0.5));
+            if (a % 2 === 0) add(mat('#ffcf70', { glow: 2.6 }), box(0.1, 0.14, 0.1), M4((x0 + x1) / 2, y + 1.9, z + 0.62));
+            a++;
+          }
+        }
+        st.arch = a;
+      }
+    }
+    // 森（ダンジョン・フィールドの森）：木漏れ日の光の筋
+    if (k === 'forest' && kind !== 'interior') {
+      const shaft = mat('#fff4c0', { glow: 0.6, opacity: 0.16, rough: 1 }); let n = 0;
+      for (let z = 2; z < H - 2 && n < 10; z += 3) for (let x = 2; x < W - 2 && n < 10; x += 3) { if (!walk(x, z) || hash(x, z, 81) > 0.06) continue; add(shaft, new THREE.CylinderGeometry(0.35, 0.9, 6, 10, 1, true), M4(x + 0.5, hAt(x + 0.5, z + 0.5) + 3, z + 0.5, 0, 0.25, 0.15)); n++; }
+      st.shaft = n;
+    }
+    // 町：家の前の小物・草地の花
+    if (kind === 'town') {
+      let n = 0; const LIM = 160; const TOWN = { tech: ['techbox', 'plant'], machine: ['crate', 'barrel', 'techbox'], harbor: ['barrel', 'crate', 'barrel', 'pot'], desert: ['pot', 'pot', 'crate'], frost: ['barrel', 'crate', 'icicle'], royal: ['plant', 'urn', 'bench'], mine: ['crate', 'barrel', 'rubble'], forge: ['barrel', 'crate', 'rubble'] };
+      const list = TOWN[k] || ['barrel', 'crate', 'plant', 'pot', 'bench'];
+      for (let z = 1; z < H - 1 && n < LIM; z++) for (let x = 1; x < W - 1 && n < LIM; x++) {
+        if (!walk(x, z) || near(x, z, 1) || /road|path|bridge|dock|stairs|door/.test(T(x, z))) continue;
+        const front = T(x, z - 1) === 'bld_block'; const side = T(x - 1, z) === 'bld_block' || T(x + 1, z) === 'bld_block';
+        const r = hash(x, z, 91);
+        if ((front && r < 0.45) || (side && r < 0.3)) { const px = x + 0.5, pz = z + (front ? 0.25 : 0.5); at(px, hAt(px, pz), pz, 1.35); P[list[Math.floor(hash(x, z, 93) * list.length)]](px, hAt(px, pz), pz, hash(x, z, 95), side); pre = null; n++; }
+        else if (/grass/.test(T(x, z)) && r > 0.9) { const px = x + 0.5, pz = z + 0.5; at(px, hAt(px, pz), pz, 1.5); P.flowers(px, hAt(px, pz), pz, hash(x, z, 97)); pre = null; n++; }
+      }
+      st.town = n;
+    }
+    // フィールド：v7.0 の飾りに加えて、草花・小石をもっと
+    if (kind === 'field') {
+      let n = 0; const LIM = 320;
+      for (let z = 2; z < H - 2 && n < LIM; z++) for (let x = 2; x < W - 2 && n < LIM; x++) {
+        if (hash(x, z, 101) > 0.05) continue; const t = T(x, z); if (!walk(x, z) || near(x, z, 2) || /road|path|bridge|dock|stone|sand|snow|water/.test(t)) continue;
+        const px = x + 0.5 + (hash(x, z, 103) - 0.5) * 0.5, pz = z + 0.5 + (hash(x, z, 105) - 0.5) * 0.5; const r = hash(x, z, 107);
+        at(px, hAt(px, pz), pz, 1.8); if (/grass/.test(t)) (r < 0.5 ? P.flowers : r < 0.75 ? P.fern : P.rubble)(px, hAt(px, pz), pz, r); else P.rubble(px, hAt(px, pz), pz, r); pre = null;
+        n++;
+      }
+      st.scatter = n;
+    }
   }
 
   /* ---------- 壁の飾り（中心 x・床の高さ y・壁の面 z（南向き）・壁の高さ wh） ---------- */

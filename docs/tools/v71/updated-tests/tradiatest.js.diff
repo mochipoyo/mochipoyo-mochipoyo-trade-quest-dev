@@ -1,0 +1,11 @@
+--- tradiatest.js.bak71	2026-11-04 06:58:48.655908764 +0900
++++ tradiatest.js	2026-11-04 06:58:48.656190832 +0900
+@@ -21,7 +21,7 @@
+   { const gm = new w.GameMap(wk); const k = wk.locations.find(L => L.id === 'magicka_city'); const seen = new Set([k.x + ',' + k.y]); const qq = [[k.x, k.y]]; let found = false;
+     while (qq.length) { const [x, y] = qq.shift(); if (x === 60 && y === 80) { found = true; break; } for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = x + dx, ny = y + dy; const key = nx + ',' + ny; if (seen.has(key) || nx < 0 || ny < 0 || nx >= gm.w || ny >= gm.h) continue; if (!(nx === 60 && ny === 80) && !gm.passable(nx, ny, d)) continue; seen.add(key); qq.push([nx, ny]); } }
+     ok(found, '魔導都マクディアからトレディアの入口まで歩いて行ける（幅優先探索）'); }
+-  ok(town.warps.every(x => x.to === 'world_magicka' && x.tx === 60 && x.ty === 81), '町の外へ出るとワールド（マクディア地方）の入口の下に出る');
++  ok(town.warps.filter(x => x.to !== 'tradia_sky').every(x => x.to === 'world_magicka' && x.tx === 60 && x.ty === 81), '町の外へ出るとワールド（マクディア地方）の入口の下に出る（v7.1 空の区画へのエレベーターは除く）');
+   // ② トレーダー12人
+   ok(IDS.length === 12 && IDS.every(id => TR[id] && TR[id].name && TR[id].bio && TR[id].past && TR[id].strategy && TR[id].lines.length && TR[id].win.length && TR[id].lose.length && TR[id].reward && TR[id].reward.title && TR[id].tier >= 1 && TR[id].pool.length >= 5), 'トレーダー12人：名前・経歴・戦略・会話・勝ち負けの台詞・★・報酬・場面5つ以上');
+   ok(new Set(IDS.map(id => TR[id].sprite)).size === 12 && IDS.every(id => w.Chars.has(TR[id].sprite)), '全員が別の見た目（専用の色の歩行キャラ12種）');

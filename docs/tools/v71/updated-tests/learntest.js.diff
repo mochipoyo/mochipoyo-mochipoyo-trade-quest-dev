@@ -1,0 +1,11 @@
+--- learntest.js.bak71	2026-11-04 06:35:29.607725126 +0900
++++ learntest.js	2026-11-04 06:35:29.608433965 +0900
+@@ -41,7 +41,7 @@
+   ok(L.hasAbility('dow_eye'),'dow_eye unlocked'); ok(State.data.hero.skills.indexOf('dow_eye')>=0,'hero has dow_eye skill');
+   w.Actors.changeJob(State.data.hero,'mage'); ok(State.data.hero.skills.indexOf('dow_eye')>=0,'ability survives job change');
+   // 3) 任意の石碑（練習）：初回報酬のみ
+-  World.enterMap('lost_forest',19,6,'down'); await frames(3); ok(World.map.tile(19,6)==='learn_rune','rune tile');
++  World.enterMap('lost_forest',19,6,'down'); await frames(3); { const q71=w.MapRemake?w.MapRemake.pos('lost_forest',19,6):{x:19,y:6}; ok(World.map.tile(q71.x,q71.y)==='learn_rune','rune tile'); }   // v7.1 作り直した迷いの森：旧座標 → 新しい座標
+   const g2=State.data.gold; r=await drive((async()=>{ World.interact(); while(World.busy) await frames(2); })(), [0]); ok(State.data.gold-g2===40,'practice reward 40 got '+(State.data.gold-g2));
+   const g3=State.data.gold; r=await drive((async()=>{ World.interact(); while(World.busy) await frames(2); })(), [0]); ok(State.data.gold===g3,'practice no double reward');
+   // 4) 山道の必修石碑（learn_ema）とボス連動（ダウの眼 → 最初の3ターン弱点露出）

@@ -1,0 +1,32 @@
+--- expandA4test.js.bak71	2026-11-04 07:05:02.910166678 +0900
++++ expandA4test.js	2026-11-04 07:05:02.924132324 +0900
+@@ -16,7 +16,8 @@
+   await sleep(60); clean(); State.newGame('テスト', 'warrior'); const d = State.data; d.settings.textSpeed = 'instant'; World.start(); await sleep(60); clean();
+   const M = w.MAP_DEFS; const S4 = w.EXPAND_A.stage4; const A4 = w.ExpandA4;
+   // 地図の状態をフラグに合わせて作り直して、そこから歩ける範囲
+-  const reach = (id, start, flags) => { const keep = d.flags; d.flags = Object.assign({}, keep, flags || {}); State.data.flags = d.flags; delete World.maps[id]; const m = World.getMap(id); const s = bfs(m, start, d.flags); d.flags = keep; State.data.flags = keep; delete World.maps[id]; return s; };
++  const P71 = (id, xy, dir) => { const q = w.MapRemake ? w.MapRemake.pos(id, xy[0], xy[1], dir) : { x: xy[0], y: xy[1] }; return [q.x, q.y]; };   // v7.1 作り直したダンジョン：旧座標 → 新しい座標
++  const reach = (id, start, flags) => { start = P71(id, start); const keep = d.flags; d.flags = Object.assign({}, keep, flags || {}); State.data.flags = d.flags; delete World.maps[id]; const m = World.getMap(id); const s = bfs(m, start, d.flags); d.flags = keep; State.data.flags = keep; delete World.maps[id]; return s; };
+   ok(S4.maps.length === 10 && S4.patched.length === 10 && new Set(S4.areas.map(a => a.gimmick)).size === 10, '第4段階：隠し区画10（10のダンジョンに1つずつ）、仕掛けは10種類すべて別：' + S4.areas.map(a => a.gimmick).join(','));
+   for (const id of S4.maps) { const rows = M[id].rows; const bad = []; rows.forEach((r, y) => { if (r.length !== rows[0].length) bad.push('幅' + y); for (const ch of r) if (!Tiles.byChar[ch]) bad.push(ch); }); if (bad.length) ok(false, id + ' ' + bad.join(',')); }
+   ok(true, '隠し区画10枚：行の幅がそろい、知らない文字がない');
+@@ -32,15 +33,15 @@
+   // 入口：行き止まりへ歩いて行け、壁は見つける前は通れない
+   let er = [];
+   for (const a of S4.areas) { const arr = []; Object.keys(M).forEach(oid => (M[oid].warps || []).forEach(wp => { if (wp.to === a.host && oid !== a.id) arr.push([wp.tx, wp.ty]); })); let s = new Set(); arr.forEach(st => reach(a.host, st).forEach(k => s.add(k)));
+-    const hm = World.getMap(a.host); const wp = hm.warpAt(a.wall[0], a.wall[1]); if (!s.has(a.dead.join(',')) || s.has(a.wall.join(',')) || !wp || wp.needFlag !== a.found || wp.to !== a.id) er.push(a.host); }
++    const hm = World.getMap(a.host); const wp = hm.warpAt(...P71(a.host, a.wall)); if (!s.has(P71(a.host, a.dead).join(',')) || s.has(P71(a.host, a.wall).join(',')) || !wp || wp.needFlag !== a.found || wp.to !== a.id) er.push(a.host); }
+   ok(!er.length, '10の入口：既存の入口から行き止まりへ歩いて行け、奥の壁は見つける前は通れない（出入口は needFlag つき）' + er.join(','));
+   // 入口の調べる所：「やめる」なら何も変わらない、「進む」で壁が通路になり隠し区画へ
+   const log = []; const origMsg = Win.message, origChoice = Win.choice; let answers = []; Win.message = async (l) => { log.push([].concat(l).join(' / ')); }; Win.choice = async () => (answers.length ? answers.shift() : 0);
+-  { const a = S4.areas[0]; World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); answers = [1]; await Events.run(World.map.eventAt(a.wall[0], a.wall[1])); ok(World.map.id === a.host && !d.flags[a.found], '入口（' + a.host + '）：「やめる」なら壁のまま'); }
++  { const a = S4.areas[0]; World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); answers = [1]; await Events.run(World.map.eventAt(...P71(a.host, a.wall))); ok(World.map.id === a.host && !d.flags[a.found], '入口（' + a.host + '）：「やめる」なら壁のまま'); }
+   let entered = [];
+-  for (const a of S4.areas) { World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); answers = [0]; await Events.run(World.map.eventAt(a.wall[0], a.wall[1])); const inside = World.map.id === a.id; World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); const passable = World.map.passable(a.wall[0], a.wall[1], d); entered.push(inside && d.flags[a.found] && passable ? 'ok' : a.key); }
++  for (const a of S4.areas) { World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); answers = [0]; await Events.run(World.map.eventAt(...P71(a.host, a.wall))); const inside = World.map.id === a.id; World.enterMap(a.host, a.dead[0], a.dead[1], 'down'); const passable = World.map.passable(...P71(a.host, a.wall), d); entered.push(inside && d.flags[a.found] && passable ? 'ok' : a.key); }
+   ok(entered.every(x => x === 'ok'), '10の入口：「進む」で隠し区画へ入り、その後は壁が通路になって歩いて入れる ' + entered.filter(x => x !== 'ok').join(','));
+-  ok(S4.areas.every(a => M[a.id].encounters === M[a.host].encounters), '隠し区画の魔物は入口のダンジョンと同じ群れ・同じ強さ（エンカウントの設定をそのまま使う）');
++  ok(S4.areas.every(a => M[a.id].encounters === M[a.host].encounters || (M[a.host].remake71 && M[a.id].encounters && M[a.id].encounters.zones === M[a.host].encounters.zones && M[a.id].encounters.rate === M[a.host].encounters.rate * 2)),   /* v7.1 作り直したダンジョンは歩く距離が2倍なので出る確率だけ半分（群れ・強さは同じ） */ '隠し区画の魔物は入口のダンジョンと同じ群れ・同じ強さ（エンカウントの設定をそのまま使う）');
+   ok(S4.areas.every(a => { const m = World.getMap(a.id); return m.chests.length === 2 && m.chests.every(c => c.gold || w.ITEMS[c.item]); }), '隠し区画の宝箱はどれも2つ（中身はある品物かお金）');
+   // 仕掛けを解く前は宝箱へ届かず、解いた後は届く
+   const OPEN = { lf: { a4_lf_open: true }, im: { a4_im_b_free: true }, au: { a4_au_lit: true }, tt: { a4_tt_done: true }, fa: { a4_fa_open: true }, dv: { a4_dv_v1: true, a4_dv_v2: true }, sf: { a4_sf_open: true }, ac: { a4_ac_open: true }, sc: { a4_sc_key_gate: true }, ml: { a4_ml_open: true } };

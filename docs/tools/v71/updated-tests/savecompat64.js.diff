@@ -1,0 +1,12 @@
+--- savecompat64.js.bak71	2026-11-04 07:07:00.096336287 +0900
++++ savecompat64.js	2026-11-04 07:07:00.118086411 +0900
+@@ -34,7 +34,8 @@
+     ok(d.tradia && d.tradia.lev === null && Object.keys(d.tradia.wins).length === 0 && d.settings.followers === 'on', name + '：トレディアの記録は空で始まり、隊列表示は「表示する」');
+     ok(Object.keys(old.settings).every(k => JSON.stringify(old.settings[k]) === JSON.stringify(d.settings[k])), name + '：もとの設定（文字の速さなど）は変わらない');
+     S.data = d; World.start(); await sleep(40); clean();
+-    ok(World.map.id === old.pos.map && World.player.x === old.pos.x && World.player.y === old.pos.y, name + '：読み込むと元の場所（' + old.pos.map + ' ' + old.pos.x + ',' + old.pos.y + '）');
++    const op71 = w.MapRemake ? w.MapRemake.pos(old.pos.map, old.pos.x, old.pos.y) : old.pos;   // v7.1 作り直したダンジョンにいる古いセーブは、新しい座標（2倍）に立つ
++    ok(World.map.id === old.pos.map && World.player.x === op71.x && World.player.y === op71.y, name + '：読み込むと元の場所（' + old.pos.map + ' ' + old.pos.x + ',' + old.pos.y + '）');
+     S.save(2); const re = S.load(2); ok(re && JSON.stringify(re.flags) === JSON.stringify(d.flags) && re.gold === d.gold && re.hero.level === d.hero.level && JSON.stringify(re.tradia) === JSON.stringify(d.tradia), name + '：保存して読み直しても同じ');
+   }
+   { const old = made.out['僧侶Lv20']; const d = S.migrate(JSON.parse(JSON.stringify(old))); w.Actors.refreshSkills(d.hero); const want = ['revive', 'heal_all'];

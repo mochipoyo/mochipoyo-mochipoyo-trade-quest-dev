@@ -1,0 +1,29 @@
+--- v57test.js.bak71	2026-11-04 06:52:40.238628558 +0900
++++ v57test.js	2026-11-04 07:26:11.914729027 +0900
+@@ -12,7 +12,7 @@
+     if(top.classList.contains('rw-panel')){ const okb=top.querySelector('#o-ok'); if(okb){ okb.click(); continue; } Input.press('ok'); continue; } }
+   return guard>=6000?'TIMEOUT':result; }
+ const talk=(id,script)=>drive((async()=>{ const n=World.map.npcs.find(x=>x.id===id); if(!n) throw new Error('npc '+id+' not on '+World.map.id); World.talk(n); await frames(2); while(World.busy) await frames(2); })(), script);
+-const interactAt=(x,y,dir,script)=>drive((async()=>{ World.player.x=x; World.player.y=y; World.player.px=x*32; World.player.py=y*32; World.player.dir=dir; World.interact(); await frames(2); while(World.busy) await frames(2); })(), script);
++const interactAt=(x,y,dir,script,raw71)=>drive((async()=>{ if(!raw71){ const q71=w.MapRemake?w.MapRemake.pos(World.map.id,x,y,dir):{x,y}; x=q71.x; y=q71.y; }   /* v7.1 作り直したダンジョン：旧座標 → 新しい座標（向きの先に面したマス） */ World.player.x=x; World.player.y=y; World.player.px=x*32; World.player.py=y*32; World.player.dir=dir; World.interact(); await frames(2); while(World.busy) await frames(2); })(), script);
+ async function walk(dir, n){ for(let i=0;i<n;i++){ Input.keys[dir]=true; let g=0; while(!World.player.moving && g++<10) await frames(1); Input.keys[dir]=false; g=0; while((World.player.moving||World.busy) && g++<200) await frames(1); } }
+ function openChest(id){ const c=World.map.chests.find(c=>c.id===id); World.openChest(c); return drive((async()=>{ while(World.busy) await frames(2); })(), []); }
+ (async()=>{ try {
+@@ -25,13 +25,14 @@
+   World.enterMap('lost_forest', 1, 12, 'right'); await frames(3);
+   log('scene', E.top() && E.top().constructor.name, World.scene && World.scene.constructor.name, E.top() && E.top().b ? 'battle' : '');
+   log('state', World.busy, doc.getElementById('ui').children.length, E.top() === World.scene, E.scenes.length, (doc.getElementById('ui').lastElementChild||{}).className);
+-  const m = World.map; ok(!m.npcAt(6, 11), 'old blocker tile free'); const lf = m.npcs.find(n => n.id === 'lf_lost'); ok(lf.x === 9 && lf.y === 11, 'traveler moved to alcove');
+-  const goal = [15, 15]; const prev = new Map(); const q = [[1, 12]]; prev.set('1,12', null);
++  const m = World.map; const L71 = (x, y) => { const q71 = w.MapRemake ? w.MapRemake.pos(m.id, x, y) : { x, y }; return [q71.x, q71.y]; };   // v7.1 作り直した迷いの森：旧座標 → 新しい座標
++  ok(!m.npcAt(...L71(6, 11)), 'old blocker tile free'); const lf = m.npcs.find(n => n.id === 'lf_lost'); ok(lf.x === L71(9, 11)[0] && lf.y === L71(9, 11)[1], 'traveler moved to alcove');
++  const goal = L71(15, 15); const st71 = [World.player.x, World.player.y]; const prev = new Map(); const q = [st71]; prev.set(st71.join(','), null);
+   while (q.length) { const [x, y] = q.shift(); if (x === goal[0] && y === goal[1]) break; for (const [dx, dy, dn] of [[1, 0, 'right'], [-1, 0, 'left'], [0, 1, 'down'], [0, -1, 'up']]) { const nx = x + dx, ny = y + dy, k = nx + ',' + ny; if (prev.has(k) || !m.passable(nx, ny, State.data) || m.warpAt(nx, ny)) continue; prev.set(k, [x, y, dn]); q.push([nx, ny]); } }
+   ok(prev.has(goal.join(',')), 'path exists to shrine gate');
+   const path = []; let k = goal.join(','); while (prev.get(k)) { const [px, py, dn] = prev.get(k); path.unshift(dn); k = px + ',' + py; }
+   for (const dn of path) await walk(dn, 1);
+-  log('walked', path.length, 'steps to', World.player.x, World.player.y); ok(World.player.x === 15 && World.player.y === 15, 'reached shrine gate front');
++  log('walked', path.length, 'steps to', World.player.x, World.player.y); ok(World.player.x === goal[0] && World.player.y === goal[1], 'reached shrine gate front');
+   // ---- B) 歩き回る村人は道をあける
+   World.enterMap('poyo_village', 24, 32, 'up'); await frames(3);
+   const vm = World.map; const wn = vm.npcs.find(n => n.wander > 0 && !n.hidden); wn.moving = false;

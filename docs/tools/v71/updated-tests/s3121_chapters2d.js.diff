@@ -1,0 +1,11 @@
+--- s3121/chapters2d.js.bak71	2026-11-04 07:34:03.511161713 +0900
++++ s3121/chapters2d.js	2026-11-04 07:34:03.527977744 +0900
+@@ -8,7 +8,7 @@
+ w.Story3121.timeScale = 0.01; World.encounter = function () { };
+ const wait = async () => { for (let k = 0; k < 3; k++) { for (let i = 0; i < 4000 && World.busy; i++) await new Promise((r) => setTimeout(r, 3)); await new Promise((r) => setTimeout(r, 8)); } };
+ async function talk(id) { const n = World.map.npcs.find((x) => x.id === id && !x.hidden); if (!n) { LOG.push('[NPCなし]' + id); return false; } World.busy = false; World.talk(n); await wait(); return true; }
+-async function evAt(x, y) { const e = World.map.eventAt(x, y); if (!e) { LOG.push('[イベントなし]' + x + ',' + y); return false; } World.busy = false; w.Events.run(e); await wait(); return true; }
++async function evAt(x, y) { if (w.MapRemake && w.MapRemake.isRemade(World.map.id)) { const q71 = w.MapRemake.pos(World.map.id, x, y); x = q71.x; y = q71.y; }   /* v7.1 作り直したダンジョン：旧座標 → 新しい座標 */ const e = World.map.eventAt(x, y); if (!e) { LOG.push('[イベントなし]' + x + ',' + y); return false; } World.busy = false; w.Events.run(e); await wait(); return true; }
+ const has = (s) => LOG.some((l) => l.indexOf(s) >= 0);
+ function fresh(n) { State.newGame(n || 't', 'warrior'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; w.Story3121.giveFamilyItems(); World.start(); return d; }
+ (async () => {

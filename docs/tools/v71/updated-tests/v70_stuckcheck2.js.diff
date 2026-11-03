@@ -1,0 +1,23 @@
+--- v70/stuckcheck2.js.bak71	2026-11-04 07:33:30.530458768 +0900
++++ v70/stuckcheck2.js	2026-11-04 07:33:34.922440269 +0900
+@@ -1,5 +1,7 @@
+ // v7.0 入ると出られない場所がないか（マップをまたいで）：各マップの「入ってくる位置」から歩いて（出入口をたどって）フィールドへ戻れるかを全マップで調べる
+-const load = require('../rpgload.js'); const { w } = load(); w.State.newGame('t', 'warrior');
++// v7.1 作り直したダンジョン：ワープの行き先（旧座標）を新しい座標に直す（js/rpg/mapremake.js）
++const RX71 = (id, x, y) => (globalThis.__w71 && globalThis.__w71.MapRemake ? globalThis.__w71.MapRemake.pos(id, x, y) : { x, y });
++const load = require('../rpgload.js'); const { w } = load(); globalThis.__w71 = w; w.State.newGame('t', 'warrior');
+ const MD = Object.assign({}, w.MAP_DEFS); if (!MD.world && w.WORLD_DEF) MD.world = w.WORLD_DEF; const maps = {};
+ const gm = (id) => { if (maps[id] !== undefined) return maps[id]; try { maps[id] = new w.GameMap(MD[id]); } catch (e) { maps[id] = null; } return maps[id]; };
+ const walk = (m, x, y) => { if (!(x >= 0 && y >= 0 && x < m.w && y < m.h)) return false; const ev = m.eventAt(x, y); if (ev && ev.doneFlag) return true; return !w.Tiles.isSolid(m.tiles[y][x]) && !(w.Search && w.Search.solidAt(m, x, y)); };
+@@ -14,9 +16,9 @@
+ function canField(id, x, y) {
+   const start = id + ':' + x + ',' + y; const seen = new Set([start]); const q = [[id, x, y]];
+   while (q.length) { const [mid, cx, cy] = q.shift(); if (MD[mid].region || /^world/.test(mid)) return true; const r = reach(mid, cx, cy); if (!r) continue; if (r.ee) return true;
+-    for (const wp of r.out) { const k = wp.to + ':' + wp.tx + ',' + wp.ty; if (seen.has(k)) continue; seen.add(k); q.push([wp.to, wp.tx, wp.ty]); } }
++    for (const wp of r.out) { const tq = RX71(wp.to, wp.tx, wp.ty); const k = wp.to + ':' + tq.x + ',' + tq.y; if (seen.has(k)) continue; seen.add(k); q.push([wp.to, tq.x, tq.y]); } }
+   return false;
+ }
+ const bad = [];
+-for (const [id, def] of Object.entries(MD)) { const m = gm(id); if (!m) continue; for (const wp of m.warps) { const t = MD[wp.to]; if (!t || t.region || /^world/.test(wp.to)) continue; if (!canField(wp.to, wp.tx, wp.ty)) bad.push(wp.to + ' (' + wp.tx + ',' + wp.ty + ')［' + id + ' から入る］→ フィールドへ戻れない'); } }
++for (const [id, def] of Object.entries(MD)) { const m = gm(id); if (!m) continue; for (const wp of m.warps) { const t = MD[wp.to]; if (!t || t.region || /^world/.test(wp.to)) continue; if (!canField(wp.to, RX71(wp.to, wp.tx, wp.ty).x, RX71(wp.to, wp.tx, wp.ty).y)) bad.push(wp.to + ' (' + wp.tx + ',' + wp.ty + ')［' + id + ' から入る］→ フィールドへ戻れない'); } }
+ console.log([...new Set(bad)].join('\n') || 'なし'); console.log('件数', new Set(bad).size);

@@ -1,0 +1,38 @@
+--- ch18test.js.bak71	2026-11-04 06:52:40.236783700 +0900
++++ ch18test.js	2026-11-04 07:26:59.021199453 +0900
+@@ -12,11 +12,15 @@
+     if(top.classList.contains('rw-panel')){ const okb=top.querySelector('#o-ok'); if(okb){ okb.click(); continue; } Input.press('ok'); continue; } }
+   return guard>=6000?'TIMEOUT':result; }
+ const talk=(id,script)=>drive((async()=>{ const n=World.map.npcs.find(x=>x.id===id); if(!n) throw new Error('npc '+id+' not on '+World.map.id); World.talk(n); await frames(2); while(World.busy) await frames(2); })(), script);
+-const interactAt=(x,y,dir,script)=>drive((async()=>{ World.player.x=x; World.player.y=y; World.player.px=x*32; World.player.py=y*32; World.player.dir=dir; World.interact(); await frames(2); while(World.busy) await frames(2); })(), script);
++const interactAt=(x,y,dir,script,raw71)=>drive((async()=>{ if(!raw71){ const q71=w.MapRemake?w.MapRemake.pos(World.map.id,x,y,dir):{x,y}; x=q71.x; y=q71.y; }   /* v7.1 作り直したダンジョン：旧座標 → 新しい座標（向きの先に面したマス） */ World.player.x=x; World.player.y=y; World.player.px=x*32; World.player.py=y*32; World.player.dir=dir; World.interact(); await frames(2); while(World.busy) await frames(2); })(), script);
+ async function walk(dir, n){ for(let i=0;i<n;i++){ Input.keys[dir]=true; let g=0; while(!World.player.moving && g++<10) await frames(1); Input.keys[dir]=false; g=0; while((World.player.moving||World.busy) && g++<200) await frames(1); } }
+ function openChest(id){ const c=World.map.chests.find(c=>c.id===id); World.openChest(c); return drive((async()=>{ while(World.busy) await frames(2); })(), []); }
+ // v5.6 Phase 7-2：忘却の雪原（記憶を売る町・精霊の森・凍結時計塔の時限扉）、隠しダンジョン1・2・4、海の小島、残りのサブクエスト、仲間の個別クエスト、師匠の特別クエストA/S
+-function poke(x,y,script){ const m=World.map; for(const [dx,dy,dir] of [[0,1,'up'],[0,-1,'down'],[1,0,'left'],[-1,0,'right']]){ const px=x+dx, py=y+dy; if(px<0||py<0||px>=m.w||py>=m.h) continue; if(m.passable(px,py,State.data)&&!m.warpAt(px,py)) return interactAt(px,py,dir,script); } throw new Error('no free side for '+x+','+y+' on '+m.id); }
++function poke(x,y,script){ const m=World.map;
++  if(w.MapRemake&&w.MapRemake.isRemade(m.id)){ /* v7.1 作り直したダンジョン：旧座標の2×2のうち、出来事・人・宝箱のあるマスの、歩けるとなりから向き合う */
++    const T=[]; for(let dy=0;dy<2;dy++) for(let dx=0;dx<2;dx++){ const X=x*2+dx, Y=y*2+dy; if(m.eventAt(X,Y)||m.npcAt(X,Y)||m.chestAt(X,Y)) T.push([X,Y]); }
++    for(const [X,Y] of T) for(const [dx,dy,dir] of [[0,1,'up'],[0,-1,'down'],[1,0,'left'],[-1,0,'right']]){ const px=X+dx, py=Y+dy; if(px<0||py<0||px>=m.w||py>=m.h) continue; if(m.passable(px,py,State.data)&&!m.warpAt(px,py)&&!T.some(t=>t[0]===px&&t[1]===py)) return interactAt(px,py,dir,script,true); }
++  } for(const [dx,dy,dir] of [[0,1,'up'],[0,-1,'down'],[1,0,'left'],[-1,0,'right']]){ const px=x+dx, py=y+dy; if(px<0||py<0||px>=m.w||py>=m.h) continue; if(m.passable(px,py,State.data)&&!m.warpAt(px,py)) return interactAt(px,py,dir,script); } throw new Error('no free side for '+x+','+y+' on '+m.id); }
+ function footReach(m, sx, sy){ const seen=new Set([sx+','+sy]); const q=[[sx,sy]]; while(q.length){ const [x,y]=q.shift(); for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){ const nx=x+dx,ny=y+dy,k=nx+','+ny; if(seen.has(k)||nx<0||ny<0||nx>=m.w||ny>=m.h) continue; if(!m.passable(nx,ny,State.data)) continue; seen.add(k); q.push([nx,ny]); } } return seen; }
+ const near=(seen,x,y)=>[[x,y],[x+1,y],[x-1,y],[x,y+1],[x,y-1]].some(p=>seen.has(p[0]+','+p[1]));
+ // BFS で1歩ずつ歩く（実際の歩数として数える）。目的地がワープなら踏んだところで終わる
+@@ -83,7 +87,7 @@
+   { const tw=World.map.id; World.enterMap('frozen_tower_1',2,13,'up'); await frames(1); ok(!d.ftTimer,'no stale timer on re-entry'); }
+   // ===== B. 隠しダンジョン1・2・4、海の小島 =====
+   World.enterMap('ash_cave_1',1,12,'right'); await frames(1); d.trade.rankBest=0; await poke(16,12,[]); ok(!d.flags.ash_cave_open,'ash cave door closed at F'); d.trade.rankBest=3; await poke(16,12,[]); ok(d.flags.ash_cave_open,'ash cave door opens at C');
+-  World.player.x=16; World.player.y=11; World.player.px=16*32; World.player.py=11*32; await walk('down',1); await drive((async()=>{ let g=0; while((World.busy||World.map.id==='ash_cave_1')&&g++<60) await frames(3); })(),[]); ok(World.map.id==='ash_cave_2','ash cave 2 got '+World.map.id);
++  { const q71=w.MapRemake?w.MapRemake.pos(World.map.id,16,11,'down'):{x:16,y:11}; World.player.x=q71.x; World.player.y=q71.y; World.player.px=q71.x*32; World.player.py=q71.y*32; } await walk('down',1);   // v7.1 作り直したダンジョン：旧座標 → 新しい座標（下向きなら2×2の下のマス＝1歩で同じ所へ） await drive((async()=>{ let g=0; while((World.busy||World.map.id==='ash_cave_1')&&g++<60) await frames(3); })(),[]); ok(World.map.id==='ash_cave_2','ash cave 2 got '+World.map.id);
+   healAll(); await poke(9,4,[0]); ok(d.flags.ash_lord_defeated&&done('hidden_grania_cave')&&State.hasItem('ash_hammer'),'ash lord + quest');
+   { World.enterMap('world_grania',56,60,'down'); await frames(1); const seen=footReach(World.map,56,60); ok(near(seen,44,38),'ash cave reachable on foot'); ok(!near(seen,134,96)&&!near(seen,20,100)&&!near(seen,128,20),'sea spots need ship'); }
+   World.enterMap('ash_shore_hut',5,5,'up'); await frames(1); d.flags.verum_arrived=false; d.flags.verum_liberated=false; await talk('shore_keeper'); ok(d.flags.verum_arrived&&!act('grania_sea_pirates'),'shore keeper main lines first'); d.flags.verum_liberated=true; await talk('shore_keeper'); ok(act('grania_sea_pirates')&&act('grania_lighthouse_rock'),'shore keeper quests');
+@@ -96,7 +100,7 @@
+   World.enterMap('sunken_reef_2',7,9,'up'); await frames(1); await poke(7,2,[]); ok(!d.flags.nagi_log_found,'log after captain');
+   healAll(); await poke(7,4,[0]); ok(d.flags.ghost_captain_defeated&&done('hidden_sea_reef'),'ghost captain'); await poke(7,2,[]); ok(d.flags.nagi_log_found&&done('nagi_chart')&&State.hasItem('navigator_compass'),'nagi chart done');
+   World.enterMap('old_city_2',15,1,'right'); await frames(1); d.trade.rankBest=4; await poke(16,1,[]); ok(!d.flags.old_city_deep_open,'old city deep closed at B'); d.trade.rankBest=5; await poke(16,1,[]); ok(d.flags.old_city_deep_open,'old city deep opens at A');
+-  World.player.x=15; World.player.y=1; World.player.px=15*32; World.player.py=32; await walk('right',1); await drive((async()=>{ let g=0; while((World.busy||World.map.id==='old_city_2')&&g++<60) await frames(3); })(),[]); ok(World.map.id==='old_city_deep_1','old city deep got '+World.map.id);
++  { const q71=w.MapRemake?w.MapRemake.pos(World.map.id,15,1,'right'):{x:15,y:1}; World.player.x=q71.x; World.player.y=q71.y; World.player.px=q71.x*32; World.player.py=q71.y*32; } await walk('right',1);   // v7.1 作り直したダンジョン：旧座標 → 新しい座標（右向きなら2×2の右のマス＝1歩で同じ所へ） await drive((async()=>{ let g=0; while((World.busy||World.map.id==='old_city_2')&&g++<60) await frames(3); })(),[]); ok(World.map.id==='old_city_deep_1','old city deep got '+World.map.id);
+   World.enterMap('old_city_deep_2',8,11,'up'); await frames(1); lastBattle=null; await poke(8,6,[1]); ok(lastBattle===null,'old core optional');
+   healAll(); await poke(8,6,[0]); ok(d.flags.old_core_defeated&&done('hidden_old_city')&&State.hasItem('zero_bow'),'old core defeated + quest + bow');
+   // ===== C. グラニア・カリオン・王都のサブクエスト =====
