@@ -53,6 +53,8 @@ export function battleLayout() { try { const q = /[?&]layout=(front|side)(&|$)/.
 const FRONT_ENEMY = { 1: [[0, -0.6]], 2: [[-1.5, -0.7], [1.5, -0.7]], 3: [[-2.7, -0.9], [0, -0.4], [2.7, -0.9]], 4: [[-3.5, -1.2], [-1.2, -0.5], [1.2, -0.5], [3.5, -1.2]] };
 const FRONT_ENEMY_SLOTS = [[-3.5, -1.2], [-1.2, -0.5], [1.2, -0.5], [3.5, -1.2], [-2.4, -2.6], [2.4, -2.6], [0, -2.9], [-4.6, -2.4]];
 const FRONT_PARTY = { 1: [[0, 4.6]], 2: [[-0.5, 4.6], [0.5, 4.6]], 3: [[-0.95, 4.6], [0, 4.7], [0.95, 4.6]], 4: [[-1.42, 4.6], [-0.47, 4.7], [0.47, 4.7], [1.42, 4.6]] };
+const FRONT_NEAR_DZ = 2.2, FRONT_NEAR_DZ_MANY = 0.6, FRONT_NEAR_SX = 0.66;   // v6.8 スマホ縦画面の前後の並び：敵を手前へ出す量（1・2体／5体以上）と、5体以上の横の間隔（ご要望：モンスターが奥へ行きすぎ）
+const FRONT_ENEMY_PORT = { 3: [[-1.9, -1.2], [0, 0.6], [1.9, -1.2]], 4: [[-2.25, -1.6], [-0.78, 0.5], [0.78, 0.5], [2.25, -1.6]] };   // v6.8 スマホ縦画面（左にコマンド欄）の3・4体の立ち位置
 const FRONT_SPRITE_H = 0.95;   // 手前の味方（後ろ姿のドット絵。元の絵は 16×24 ドット）の高さ
 // v6.8 味方の4方向の絵（PartyDirections）：人物の基準の高さ（ワールド単位。その人物の4方向でいちばん高い絵＝武器・杖を含む高さ × 体格の比）
 //   左右の並びは以前の立ち絵と同じ 1.42（既存の正面の絵がある7人は、以前と同じ大きさになる）。前後の並びは画面の手前なので少し小さく
@@ -235,8 +237,10 @@ export class BattleActors3D {
   enemyHome(i) {
     const n = this.enemies.length; const ent = this.enemies[i];
     if (this.layout === 'front') {   // 前後の並び：奥に横一列（ボス1体は中央の少し奥）
-      if (n === 1 || (ent && ent.e.boss && n <= 2 && i === 0)) return new THREE.Vector3(n === 2 && i === 0 ? -1.0 : 0, 0, ent && ent.e.boss ? -1.4 : -0.6);
-      const fs = FRONT_ENEMY[n]; const f = fs ? fs[i] : FRONT_ENEMY_SLOTS[i % FRONT_ENEMY_SLOTS.length]; return new THREE.Vector3(f[0], 0, f[1]);
+      const dz = this.stage && this.stage.nearFront ? (n <= 2 ? FRONT_NEAR_DZ : FRONT_NEAR_DZ_MANY) : 0;   // v6.8 スマホ縦画面：敵を手前（味方の側）へ。3体以上は横に広がるので控えめに
+      if (n === 1 || (ent && ent.e.boss && n <= 2 && i === 0)) return new THREE.Vector3(n === 2 && i === 0 ? -1.0 : 0, 0, (ent && ent.e.boss ? -1.4 : -0.6) + dz);
+      if (dz && FRONT_ENEMY_PORT[n]) { const q = FRONT_ENEMY_PORT[n][i]; return new THREE.Vector3(q[0], 0, q[1]); }   // v6.8 スマホ縦画面の3・4体：横をつめ、手前と奥を交互に（名前・HPバーが重ならないように）
+      const fs = FRONT_ENEMY[n]; const f = fs ? fs[i] : FRONT_ENEMY_SLOTS[i % FRONT_ENEMY_SLOTS.length]; const sx = dz ? FRONT_NEAR_SX : 1; return new THREE.Vector3(f[0] * sx, 0, f[1] + dz);   // v6.8 スマホ縦画面の5体以上：横の間隔をつめる（左のコマンド欄の右に収める）
     }
     if (n === 1 || (ent && ent.e.boss && n <= 2 && i === 0)) return new THREE.Vector3(-2.6, 0, 1.2);
     const set = ENEMY_LAYOUT[n]; const s = set ? set[i] : ENEMY_SLOTS[i % ENEMY_SLOTS.length];   // 数ごとの並び（名前・HPバーが重なりにくいよう、手前と奥で左右をずらす）
@@ -244,7 +248,7 @@ export class BattleActors3D {
   }
   petHome() { const n = this.scene && this.scene.b ? this.scene.b.party.length : 4; if (this.layout === 'front') { const last = this.partyHome(Math.max(0, n - 1)); return new THREE.Vector3(last.x + PET_FRONT_DX, 0, PET_FRONT_Z); } const first = this.partyHome(0); let zmax = first.z; for (let j = 1; j < n; j++) zmax = Math.max(zmax, this.partyHome(j).z); return new THREE.Vector3(first.x + PET_SIDE_DX, 0, zmax + PET_SIDE_Z); }
   petDrawn() { for (const e of this.party.values()) if (e.pet) return !!(e.art && e.ready); return false; }
-  partyHome(j) { if (j < 0) return this.petHome(); const n = this.scene && this.scene.b ? this.scene.b.party.length : 4; const L = this.layout === 'front' ? (FRONT_PARTY[n] || FRONT_PARTY[4]) : this.style === 'sprite' ? (SPRITE_LAYOUT[n] || SPRITE_SLOTS) : PARTY_SLOTS; const s = L[j % L.length]; return new THREE.Vector3(s[0], 0, s[1]); }
+  partyHome(j) { if (j < 0) return this.petHome(); const n = this.scene && this.scene.b ? this.scene.b.party.length : 4; const L = this.layout === 'front' ? (FRONT_PARTY[n] || FRONT_PARTY[4]) : this.style === 'sprite' ? (SPRITE_LAYOUT[n] || SPRITE_SLOTS) : PARTY_SLOTS; const s = L[j % L.length]; const dx = this.layout === 'front' && this.stage ? this.stage.partyDx || 0 : 0; return new THREE.Vector3(s[0] + dx, 0, s[1]); }   // v6.8 partyDx：スマホ縦画面で、味方の列だけを左のコマンド欄の右へずらす
 
   /* ---------- 2D版の演出の開始（FX65 'play'）：行動する人の動きを、命中の時刻に合わせて始める ---------- */
   onFx(d, familyOf) {
@@ -408,8 +412,11 @@ export class BattleActors3D {
   contentBox(W, H, camera) {
     const P = (x, y, z) => { const v = new THREE.Vector3(x, y, z).project(camera); return [(v.x * 0.5 + 0.5) * W, (-v.y * 0.5 + 0.5) * H]; };
     let l = Infinity, r = -Infinity, t = Infinity, b = -Infinity, n = 0; const add = (x, y) => { l = Math.min(l, x); r = Math.max(r, x); t = Math.min(t, y); b = Math.max(b, y); };
-    for (const ent of this.party.values()) { if (!ent.art) continue; const h = this.partyHome(ent.j), bx = this.pbox(ent), w = bx.w / 2, cx = h.x + (bx.dx || 0); const a = P(cx - w, bx.h, h.z), c = P(cx + w, 0, h.z); add(a[0], a[1]); add(c[0], c[1]); n++; }
-    for (const en of this.enemies) { if (!en || !en.art) continue; const h = this.enemyHome(en.i), w = en.art.size.w / 2, lift = en.lift || 0; const a = P(h.x - w, en.art.size.h + lift, h.z), c = P(h.x + w, 0, h.z); add(a[0], a[1] - H * 0.06); add(c[0], c[1] + H * 0.03); n++; }   // 名前・HPバーのぶん
+    const pb = { l: Infinity, r: -Infinity, t: Infinity, b: -Infinity }, eb = { l: Infinity, r: -Infinity, t: Infinity, b: -Infinity }; let np = 0, ne = 0;   // v6.8 味方・敵それぞれの範囲も（スマホ縦画面の applyFit）
+    const addTo = (q, x, y) => { q.l = Math.min(q.l, x); q.r = Math.max(q.r, x); q.t = Math.min(q.t, y); q.b = Math.max(q.b, y); };
+    for (const ent of this.party.values()) { if (!ent.art) continue; const h = this.partyHome(ent.j), bx = this.pbox(ent), w = bx.w / 2, cx = h.x + (bx.dx || 0); const a = P(cx - w, bx.h, h.z), c = P(cx + w, 0, h.z); add(a[0], a[1]); add(c[0], c[1]); addTo(pb, a[0], a[1]); addTo(pb, c[0], c[1]); n++; np++; }
+    for (const en of this.enemies) { if (!en || !en.art) continue; const h = this.enemyHome(en.i), w = en.art.size.w / 2, lift = en.lift || 0; const a = P(h.x - w, en.art.size.h + lift, h.z), c = P(h.x + w, 0, h.z); add(a[0], a[1] - H * 0.06); add(c[0], c[1] + H * 0.03); addTo(eb, a[0], a[1] - H * 0.06); addTo(eb, c[0], c[1] + H * 0.03); n++; ne++; }   // 名前・HPバーのぶん
+    if (n) { const z = this.partyHome(0).z; const u0 = P(0, 0, z), u1 = P(1, 0, z); this._split = { party: np ? pb : null, enemy: ne ? eb : null, pxu: u1[0] - u0[0] }; } else this._split = null;   // 名前・HPバーのぶん
     return n ? { l, r, t, b } : null;
   }
   // 味方のドット絵を画面に写した矩形（スマホの画面部品との重なりの確認用。3Dモデルの方式では null）

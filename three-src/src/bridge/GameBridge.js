@@ -478,16 +478,18 @@ export class App3D {
     if (auto && auto.classList.contains('on') && auto.offsetWidth) { put(auto, 'top', (below + 3) + 'px'); put(auto, 'left', (gl + gw - auto.offsetWidth - 4) + 'px'); below += 3 + auto.offsetHeight; }
     const gr = g.getBoundingClientRect(), ur = ui.getBoundingClientRect(); const cmdTop = Math.round(below + 4 - gt + (gr.top + g.clientTop - ur.top));
     const v = cmdTop + 'px'; if (document.documentElement.style.getPropertyValue('--g3-cmd-top') !== v) document.documentElement.style.setProperty('--g3-cmd-top', v);
+    { const land0 = document.body.classList.contains('m-land'); if (this._mblLand !== land0) { this._mblLand = land0; this._cmdH = 0; this._cmdW = 0; } }   // v6.8 向きが変わったら、コマンド欄の大きさを測り直す（縦と横で形が違う）
     const cmd = document.querySelector('.rw-list.cmd-list'); if (cmd && cmd.offsetHeight) { this._cmdH = Math.max(this._cmdH || 0, cmd.offsetHeight); this._cmdW = Math.max(this._cmdW || 0, cmd.offsetWidth); }
     const front = !!(this.battle && this.battle.layout === 'front'); const land = document.body.classList.contains('m-land');
-    if (front && pan && pan.offsetHeight) {   // 前後の並び：コマンド欄は縦画面ならパーティ欄のすぐ上（横に並べる）、横画面なら左の列
+    if (front && pan && pan.offsetHeight) {   // 前後の並び：コマンド欄は左の列（縦画面＝パーティ欄のすぐ上から上へ・横画面＝メッセージ欄の下からパーティ欄の上まで）。v6.8 縦画面も左へ（以前は下に横並び）
       const v2 = Math.round(ur.bottom - pan.getBoundingClientRect().top + 4) + 'px'; if (document.documentElement.style.getPropertyValue('--g3-cmd-bottom') !== v2) document.documentElement.style.setProperty('--g3-cmd-bottom', v2);
+      const v3 = Math.max(80, Math.round(pan.getBoundingClientRect().top - (below + (gr.top + g.clientTop - gt) ) - 10)) + 'px'; if (document.documentElement.style.getPropertyValue('--g3-cmd-maxh') !== v3) document.documentElement.style.setProperty('--g3-cmd-maxh', v3);
     }
     if (this.battle && gh > 0) {
       const panelTop = pan && pan.offsetHeight ? (pan.offsetTop - gt) / gh : 0.88; let nb;
       if (front) {   // 敵・味方を入れる四角（ゲーム画面に対する割合）：上＝メッセージ欄・オートの下、下＝コマンド欄の上（縦）／パーティ欄の上（横）、左＝コマンド欄の右（横）
         const t = (below + 2 - gt) / gh;
-        nb = land ? { front: true, l: ((this._cmdW || 124) + 8) / gw, r: 1, t, b: panelTop } : { front: true, l: 0, r: 1, t, b: panelTop - ((this._cmdH || 90) + 8) / gh };
+        nb = land ? { front: true, l: ((this._cmdW || 124) + 8) / gw, r: 1, t, b: panelTop } : { front: true, l: ((this._cmdW || 112) + 8) / gw, r: 1 - 14 / gw, t, b: panelTop, mt: panelTop - ((this._cmdH || 192) + 8) / gh, align: 'bottom', zoomIn: 0.85 };   // v6.8 縦画面：コマンド欄の右の四角に、下（パーティ欄の上）へそろえて入れる
       } else nb = { cmdBottom: (below + 4 - gt + (this._cmdH || Math.min(120, gh * 0.3))) / gh, panelTop };
       const b = this.battle.band; const same = b && Object.keys(nb).every((k) => typeof nb[k] !== 'number' ? b[k] === nb[k] : Math.abs((b[k] || 0) - nb[k]) < 0.002);
       if (!same) this.battle.band = nb;

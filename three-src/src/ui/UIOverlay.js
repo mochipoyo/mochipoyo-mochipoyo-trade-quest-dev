@@ -45,8 +45,9 @@ export class UIOverlay {
       body.mobile.g3-actors #hud, body.mobile.g3-actors #place-label, body.mobile.g3-actors #minimap-layer { visibility: hidden !important; }   /* 探索の表示（小さくしたメッセージ欄の下からのぞくため） */
       body.mobile.m-land:not(.m-wide).g3-actors .mp-stick { opacity: .38 !important; } body.mobile.m-land:not(.m-wide).g3-actors .mp-b { opacity: .55 !important; }   /* 横画面で余白が狭いとき、画面に重なる操作パネルを薄く（味方・敵が透けて見える） */
       /* 前後の並び（スマホ）：縦画面はパーティ欄のすぐ上に横へ並べる（3行）、横画面は左の列（GameBridge.mobileBattleLayout が位置の変数を入れる） */
-      body.mobile.g3-front.m-port .rw-list.cmd-list { top: auto !important; bottom: var(--g3-cmd-bottom, 64px) !important; left: 4px !important; right: 4px !important; width: auto !important; max-width: none !important; max-height: 40% !important; }
-      body.mobile.g3-front.m-port .rw-list.cmd-list .rw-items { grid-template-rows: repeat(3, auto) !important; grid-auto-columns: 1fr !important; }
+      /* v6.8 縦画面の前後の並び：コマンド欄は左の列（パーティ欄のすぐ上から上へ）。以前は下に横並びで、味方・敵が上へ押し上げられていた */
+      body.mobile.g3-front.m-port .rw-list.cmd-list { top: auto !important; bottom: var(--g3-cmd-bottom, 64px) !important; left: 4px !important; right: auto !important; width: auto !important; max-width: 38% !important; max-height: var(--g3-cmd-maxh, 50%) !important; overflow-y: auto; }
+      body.mobile.g3-front.m-port .rw-list.cmd-list .rw-items { display: block !important; }
       body.mobile.g3-front.m-land .rw-list.cmd-list { top: var(--g3-cmd-top, 56px) !important; bottom: var(--g3-cmd-bottom, 50px) !important; left: 4px !important; right: auto !important; width: auto !important; max-height: none !important; }
       body.mobile.g3-front.m-land .rw-list.cmd-list .rw-items { display: block !important; overflow-y: auto; }
       @media (min-width: 700px) and (min-height: 600px) { body.mobile.g3-actors #battle-party .bp { font-size: 12px !important; } body.mobile.g3-actors #battle-msg { font-size: 14px !important; } body.mobile.g3-actors .rw-list.cmd-list .rw-item { font-size: 14px !important; min-height: 32px !important; } body.mobile.g3-actors #auto-battle { font-size: 12px !important; } }   /* タブレット：画面が大きいので文字を少し大きく */

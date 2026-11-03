@@ -110,6 +110,8 @@ export class BattleStage3D {
     if (this.backKind === 'proc' && this.info && G.BattleBG65 && G.BattleBG65.hasPhoto && G.BattleBG65.hasPhoto(this.info)) this.backdrop(scene, W, H);   // v6.6 戦闘背景の画像があとから読み込めた
     this.syncPhoto(scene);
     const dt = Math.min(0.05, (now - this.last) / 1000); this.last = now; const t = (now - this.t0) / 1000;
+    // v6.8 スマホ縦画面の前後の並び：敵を少し手前（味方の側）へ出す（BattleActors3D.enemyHome が読む）
+    this.nearFront = !!(this.actorMode && this.layout === 'front' && this.band && this.band.front && this.band.align === 'bottom');
     this.step = '動き'; this.update(dt, t, scene, W, H);
     if (this.actorMode) this.applyBand(W, H);
     this.step = '描画';
@@ -171,14 +173,18 @@ export class BattleStage3D {
   applyFit(W, H) {
     const cam = this.camera, b = this.band && this.band.front ? this.band : null; const k0 = this.viewK || 1, ox0 = this.viewOx || 0, oy0 = this.viewOy || 0;
     let tk = k0, tox = ox0, toy = oy0;
-    if (!b) { tk = 1; tox = 0; toy = 0; }
+    if (!b) { tk = 1; tox = 0; toy = 0; this.partyDx = 0; }
+    else if (b.align === 'bottom' && !this.entrance && this.actors && this.actors.allReady()) {   // v6.8 スマホ縦画面
+      const r = this.fitPortrait(W, H, b, k0, ox0, oy0); if (r) { tk = r.k; tox = r.ox; toy = r.oy; }
+    }
     else if (!this.entrance && this.actors && this.actors.allReady()) {
+      if (this.partyDx) this.partyDx = 0;
       const box = this.actors.contentBox(W, H, cam);
       if (box) {
         const L = box.l * k0 + ox0, R = box.r * k0 + ox0, T = box.t * k0 + oy0, B = box.b * k0 + oy0;   // 広げる前の座標
         const bl = b.l * W + 4, br = b.r * W - 4, bt = b.t * H + 2, bb = b.b * H - 2; const aw = Math.max(40, br - bl), ah = Math.max(40, bb - bt);
-        tk = Math.max(1, Math.min(1.8, Math.max((R - L) / aw, (B - T) / ah)));
-        tox = (L + R) / 2 - ((bl + br) / 2) * tk; toy = (T + B) / 2 - ((bt + bb) / 2) * tk;
+        tk = Math.max(b.zoomIn || 1, Math.min(1.8, Math.max((R - L) / aw, (B - T) / ah)));   // v6.8 スマホ縦画面は少しだけ大きくしてよい（zoomIn：0.85＝最大 1.18 倍）
+        tox = (L + R) / 2 - ((bl + br) / 2) * tk; toy = b.align === 'bottom' ? B - bb * tk : (T + B) / 2 - ((bt + bb) / 2) * tk;   // v6.8 下そろえ：味方の足もとをパーティ欄のすぐ上に（手前に見える）
       }
     }
     const lerp = (a, c) => (Math.abs(c - a) < 0.3 ? c : a + (c - a) * 0.25);
@@ -186,6 +192,23 @@ export class BattleStage3D {
     if (k === k0 && ox === ox0 && oy === oy0 && !!(cam.view && cam.view.enabled) === !(k === 1 && ox === 0 && oy === 0)) return;
     this.viewK = k === 1 && ox === 0 && oy === 0 ? 0 : k; this.viewOx = ox; this.viewOy = oy;
     if (!this.viewK) cam.clearViewOffset(); else cam.setViewOffset(W, H, ox, oy, W * k, H * k);
+  }
+  // v6.8 スマホ縦画面の前後の並び（ご要望：コマンド欄を左に・味方と敵を手前に）
+  //   ・コマンド欄は左下の列（パーティ欄のすぐ上）。味方の列は、その右の四角の中央に（味方の列だけを横へずらす＝partyDx）
+  //   ・敵は、コマンド欄より上に収まるなら画面の幅いっぱいの中央、重なるならコマンド欄の右の四角の中央
+  //   ・味方の足もとをパーティ欄のすぐ上にそろえる（下そろえ）。入らなければ小さく（最大 1.8 分の 1）、余れば少し大きく（最大 1/zoomIn 倍）
+  fitPortrait(W, H, b, k0, ox0, oy0) {
+    const A = this.actors; if (!A.contentBox(W, H, this.camera) || !A._split || !A._split.party) return null; const sp = A._split;
+    const F = (q) => (q ? { l: q.l * k0 + ox0, r: q.r * k0 + ox0, t: q.t * k0 + oy0, b: q.b * k0 + oy0 } : null);   // 広げる前の座標
+    const P = F(sp.party), E = F(sp.enemy); const pxu = sp.pxu * k0;
+    const zl = b.l * W + 4, fl = 4, br = b.r * W - 4, bt = b.t * H + 2, bb = b.b * H - 2, mt = (b.mt || b.b) * H;
+    const B = Math.max(P.b, E ? E.b : -Infinity), T = Math.min(P.t, E ? E.t : Infinity);
+    let k = Math.max(b.zoomIn || 1, (P.r - P.l) / Math.max(40, br - zl), (B - T) / Math.max(40, bb - bt)); let el = fl;
+    if (E) { k = Math.max(k, (E.r - E.l) / Math.max(40, br - fl)); if ((E.b - B) / k + bb > mt - 2) { el = zl; k = Math.max(k, (E.r - E.l) / Math.max(40, br - zl)); } }
+    k = Math.min(1.8, k); const oy = B - bb * k;
+    const ox = E ? (E.l + E.r) / 2 - ((el + br) / 2) * k : (P.l + P.r) / 2 - ((zl + br) / 2) * k;
+    if (pxu > 1) { const need = (((zl + br) / 2) * k + ox) - (P.l + P.r) / 2; const want = (this.partyDx || 0) + need / pxu; this.partyDx = Math.abs(want - (this.partyDx || 0)) < 0.004 ? want : (this.partyDx || 0) + (want - (this.partyDx || 0)) * 0.25; }
+    return { k, ox, oy };
   }
   /* ---------- 舞台を作る ---------- */
   build(scene, W, H) {
@@ -197,7 +220,7 @@ export class BattleStage3D {
     // カメラ：敵の足もと（画面の高さの 56%）が地面の z=0 の線に重なるように
     this.camBase = new THREE.Vector3(0, 1.1, 9); const fovH = THREE.MathUtils.degToRad(this.camera.fov / 2); this.camera.aspect = W / H; this.camera.updateProjectionMatrix();
     const thetaPoint = Math.atan2(this.camBase.y, this.camBase.z); this.pitch = thetaPoint - Math.atan(0.12 * Math.tan(fovH));
-    this.actorMode = this.actorsEnabled(); this.viewDy = 0; this.viewK = 0; this.viewOx = 0; this.viewOy = 0; this.camera.clearViewOffset(); this.layout = this.actorMode ? battleLayout() : 'side';
+    this.actorMode = this.actorsEnabled(); this.viewDy = 0; this.viewK = 0; this.viewOx = 0; this.viewOy = 0; this.partyDx = 0; this.camera.clearViewOffset(); this.layout = this.actorMode ? battleLayout() : 'side';
     if (this.actorMode) { const bb = scene.b; this.span = bb ? layoutSpan(bb.enemies.length, bb.party.length, !!(bb.enemies[0] && bb.enemies[0].boss), !!bb.pet) : null; this.fitCamera(W, H); }   // Phase 2：左に敵・右に味方を、斜め前の少し上から見る
     this.backdrop(scene, W, H);
     // 霧（遠くを背景の色に溶かす）
