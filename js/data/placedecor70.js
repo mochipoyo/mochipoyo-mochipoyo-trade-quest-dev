@@ -39,7 +39,7 @@
     dow_village: 'forest', harbor_town: 'harbor', verum_town: 'mine', kalion_city: 'bureau', sentra_capital: 'bureau', erased_village: 'ruins',
     aruna_village: 'harbor', aruna_ruins: 'ruins', tempus_city: 'clock', node_city: 'machine', scheduled_district: 'machine', magicka_city: 'arcane',
     star_camp: 'sky', dark_camp: 'dark', sahar_city: 'desert', mirror_market: 'desert', ignas_town: 'forge', ciel_port: 'harbor', frost_town: 'frost',
-    luxbell: 'casino', volatilia: 'academy', tradia: 'tech',
+    luxbell: 'casino', volatilia: 'academy', tradia: 'tech', tradia_sky: 'tech',   // v7.1 空の区画
     // 施設（屋内）：町と違うテーマにするもの
     kalion_finance: 'bureau', kalion_tax: 'bureau', sentra_office: 'bureau', time_bank: 'clock', tempus_bell: 'clock', magicka_academy: 'arcane', magicka_palace: 'arcane', magicka_palace_2f: 'arcane', magicka_palace_b1: 'arcane',
     luxbell_casino: 'casino', luxbell_labs: 'machine', vol_library: 'library', vol_observatory: 'sky', vol_quantum: 'machine', vol_mind: 'machine', vol_under_gate: 'machine',

@@ -425,6 +425,31 @@ export class App3D {
     const x = o.x + 0.5, z = o.y + 0.5; let h = 0; try { h = this.current && this.current.heightAt ? this.current.heightAt(x, z) || 0 : 0; } catch (e) { h = 0; }
     this.camera.setCine({ x, z, y: h, dist: o.dist || 12, pitch: o.pitch || 40 });
   }
+  // v7.1 エレベーター（js/data/remake71-tradia.js の Ride）：主人公をガラスのかごごと上（下）へ動かし、カメラもついていく
+  //   phase 'go'＝出発（0 → ±14 マス）、'arrive'＝到着（∓8 → 0）。描画が止まっていても時間が来たら終わる
+  ride(dir, phase) {
+    const up = dir !== 'down', go = phase !== 'arrive';
+    const from = go ? 0 : (up ? -8 : 8), to = go ? (up ? 14 : -14) : 0, dur = go ? 2200 : 1300;
+    if (!this.rideCab) {
+      const g = new THREE.Group(); g.name = 'ride_cab';
+      const glass = new THREE.MeshStandardMaterial({ color: 0xbff4ff, transparent: true, opacity: 0.28, roughness: 0.05, metalness: 0.2, depthWrite: false, side: THREE.DoubleSide });
+      const frame = new THREE.MeshStandardMaterial({ color: 0x3a4048, metalness: 0.7, roughness: 0.35 }); const neon = new THREE.MeshStandardMaterial({ color: 0x46e0ff, emissive: 0x46e0ff, emissiveIntensity: 2.2 });
+      g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 2.3, 24, 1, true), glass)); g.children[0].position.y = 1.15;
+      const floor = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.12, 24), frame); floor.position.y = -0.04; g.add(floor);
+      const roof = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.12, 24), frame); roof.position.y = 2.32; g.add(roof);
+      for (const y of [0.05, 2.25]) { const r = new THREE.Mesh(new THREE.TorusGeometry(0.8, 0.03, 6, 32), neon); r.rotation.x = Math.PI / 2; r.position.y = y; g.add(r); }
+      g.visible = false; this.scene.add(g); this.rideCab = g;
+    }
+    return new Promise((resolve) => {
+      let done = false; const fin = () => { if (done) return; done = true; this._ride = null; if (!go) { this.rideY = 0; this.rideCab.visible = false; } resolve(); };
+      this.rideCab.visible = true; this.rideY = from; this._ride = { from, to, t0: performance.now(), dur, fin };
+      setTimeout(fin, dur + 600);
+    });
+  }
+  updateRide() {
+    const r = this._ride; if (r) { const k = Math.min(1, (performance.now() - r.t0) / r.dur); const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; this.rideY = r.from + (r.to - r.from) * e; if (k >= 1) r.fin(); }
+    if (this.rideCab && this.rideCab.visible) this.rideCab.position.set(this.pos.x, this.pos.y + (this.rideY || 0), this.pos.z);
+  }
   emote(name) { if (!this.hero || !this.hero.has(name)) return; this._emote = { name, until: performance.now() / 1000 + 2.6 }; this.hero.play(name, 0.15, { back: 'Idle' }); }
 
   /* ---------- 調べる・話す ---------- */
@@ -558,7 +583,8 @@ export class App3D {
     if (!W.busy) this.talkNpc = null;
     // 主人公
     this.updateVehicles(dt, t);
-    const h = this.hero; h.root.position.copy(this.pos); h.faceTo(this.yaw); h.root.visible = !this.aboardNow;
+    this.updateRide();   // v7.1 エレベーター
+    const h = this.hero; h.root.position.copy(this.pos); if (this.rideY) h.root.position.y += this.rideY; h.faceTo(this.yaw); h.root.visible = !this.aboardNow;
     if (this.speed > 0.1) { this._emote = null; h.play(this.running ? 'Run' : 'Walk', 0.15); h.setSpeed(this.running ? this.speed / RUN : this.speed / WALK); }
     else if (this._emote && t < this._emote.until) h.play(this._emote.name, 0.2);
     else if (!h.onceName) { this._emote = null; h.play('Idle', 0.25); }
@@ -569,7 +595,8 @@ export class App3D {
       const b = this.current.bounds; const cx = (b.x0 + b.x1) / 2, cz = (b.z0 + b.z1) / 2 - 0.4;
       this._focus = this._focus || new THREE.Vector3(); this._focus.set(cx + (this.pos.x - cx) * 0.35, 0, cz + (this.pos.z - cz) * 0.35);
       this.camera.follow(this._focus, dt);
-    } else this.camera.follow(this.pos, dt);
+    } else if (this.rideY) { this._rideF = this._rideF || new THREE.Vector3(); this._rideF.copy(this.pos); this._rideF.y += this.rideY; this.camera.follow(this._rideF, dt); }   // v7.1 エレベーター：カメラもついていく
+    else this.camera.follow(this.pos, dt);
     this.lighting.update(G.State.data ? G.State.data.timeOfDay : 0.35, this.pos);
     this.updateCutout();
     if (L) this.renderer.resize(L.w, L.h);

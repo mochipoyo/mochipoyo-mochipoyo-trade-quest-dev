@@ -51,6 +51,7 @@ export function themeFor(map) {
   let region = 'arcadia', place = 'grassland';
   try { if (BG && BG.regionOf) region = BG.regionOf(id) || 'arcadia'; } catch (e) { /* 既定値 */ }
   try { if (BG && BG.placeOf) place = BG.placeOf(id, map.kind) || 'grassland'; } catch (e) { /* 既定値 */ }
+  const ov = map.def && map.def.theme3d; if (ov) { if (ov.region) region = ov.region; if (ov.place) place = ov.place; }   // v7.1 マップごとの指定（空の区画＝天空の空・機械の町の材質）
   const r = REGION[region] || REGION.arcadia; const p = PLACE[place] || PLACE.grassland;
   return Object.assign({ region, place, known: !!REGION[region] && !!PLACE[place] }, r, { placeDef: p, ground: GROUND });
 }

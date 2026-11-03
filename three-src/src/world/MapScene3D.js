@@ -10,7 +10,7 @@ import { TerrainBuilder3D, rngFrom } from './TerrainBuilder3D.js';
 import { BuildingBuilder3D } from './BuildingBuilder3D.js';
 import { InteriorBuilder3D, INTERIOR_KINDS } from './InteriorBuilder3D.js';
 import { WorldBuilder3D } from './WorldBuilder3D.js';
-import { DecorBuilder3D, modernStyle, buildModernBuilding } from './DecorBuilder3D.js';
+import { DecorBuilder3D, modernStyle, buildModernBuilding, buildVillageDecor, buildElevatorTower } from './DecorBuilder3D.js';
 import { themeFor } from './themes.js';
 import { mapCoverage } from './coverage.js';
 import { buildArtVolume } from '../battle/ArtVolume.js';
@@ -42,7 +42,8 @@ export class MapScene3D {
         const design = (window.LocationDesign && window.LocationDesign.forMap) ? window.LocationDesign.forMap(map.id) : null; this.design = design;
         const modern = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null);   // v7.0 近未来・機械・娯楽の町は、ガラスと金属の建物
         for (const b of map.buildings) {
-          let o = null; if (modern) { try { o = buildModernBuilding(b, modern, textTexture); } catch (e) { o = null; console.warn('modern building', e); } }
+          let o = null; if (b.type === 'elevator') { try { o = buildElevatorTower(b, map, textTexture); } catch (e) { o = null; console.warn('elevator', e); } }   // v7.1 空の区画へのエレベーター
+          if (!o && modern) { try { o = buildModernBuilding(b, modern, textTexture); } catch (e) { o = null; console.warn('modern building', e); } }
           if (!o) o = await bb.build(b, rnd, { batch: shared, design, theme }); bgroup.add(o.group);
           o.lights.forEach((l) => this.lampSpots.push(l)); o.smokes.forEach((s) => this.addSmoke(s));
           o.props.forEach((p) => { const v = new THREE.Vector3().setFromMatrixPosition(p.m); wb.put(p.id, p.m, v.x, v.z); });
@@ -73,6 +74,7 @@ export class MapScene3D {
       // v6.2 場所ごとの固有デザイン（2D の地図の建物絵と同じ LOCATION_DESIGNS）：屋根の色・茅葺きなど
       const design = (window.LocationDesign && window.LocationDesign.forMap) ? window.LocationDesign.forMap(map.id) : null; this.design = design;
       for (const b of map.buildings) {
+        if (b.type === 'windmill' || b.type === 'watchtower') continue;   // v7.1 風車・見張り台は buildVillageDecor が作る
         const o = await bb.build(b, rnd, { batch: shared, design }); bgroup.add(o.group);
         o.lights.forEach((l) => this.lampSpots.push(l));
         o.smokes.forEach((s) => this.addSmoke(s));
@@ -80,6 +82,8 @@ export class MapScene3D {
         o.group.traverse((x) => { if (x.userData && x.userData.sway) this.sway.push({ obj: x, base: x.rotation.clone(), ph: Math.random() * 6 }); });
       }
       shared.build(bgroup);
+      // v7.1 村の作り込み（鉢植え・道ばたの花・風車・アヒル・吊り提灯・案山子）。失敗しても村は表示する
+      try { const vd = buildVillageDecor(map, { put: (id, m, x, z) => tb.put(id, m, x, z), heightAt: r.heightAt, group: r.group, mats: app.mats }); vd.animated.forEach((a) => this.animated.push(a)); vd.lamps.forEach((l) => this.lampSpots.push(l)); this.decor = { key: 'village', stats: vd.stats }; } catch (e) { this.decor = { key: null, error: String(e && e.message || e) }; console.warn('village decor', e); }
       await r.finalize();
       r.group.traverse((o) => { if (o.name && (o.name.startsWith('grass_') || o.name === 'flowers')) o.renderOrder = 3; });
       // 宝箱
@@ -208,6 +212,11 @@ export class MapScene3D {
       const sc = 0.35 + l * 1.3; p.s.scale.set(sc, sc, sc); p.s.material.opacity = Math.sin(l * Math.PI) * 0.32;
     }
     for (const w of this.sway) { w.obj.rotation.z = w.base.z + Math.sin(t * 1.4 + w.ph) * 0.06; w.obj.rotation.x = w.base.x + Math.sin(t * 1.1 + w.ph) * 0.04; }
+    for (const a of this.animated) if (a.kind === 'swing') a.obj.rotation.z = Math.sin(t * 1.3) * 0.12;   // v7.1 鐘楼の鐘
+    for (const a of this.animated) {   // v7.1 風車の羽根・池のアヒル
+      if (a.kind === 'spin') a.obj.rotation.z = -t * (a.speed || 0.6);
+      else if (a.kind === 'duck') { const ang = t * 0.25 + a.ph; a.obj.position.x = a.cx + Math.cos(ang) * a.r; a.obj.position.z = a.cz + Math.sin(ang) * a.r; a.obj.position.y = -0.14 + Math.sin(t * 2 + a.ph) * 0.015; a.obj.rotation.y = -ang; }
+    }
     for (const a of this.animated) if (a.kind === 'flame') { const k = 0.85 + Math.sin(t * 13 + a.obj.id) * 0.08 + Math.sin(t * 23.7) * 0.06; a.obj.scale.set(1 * k, (a.obj.geometry.type === 'ConeGeometry' ? 1 : 1.8) * (2 - k), 1 * k); }
     if (this.motes) { this.motes.uniforms.uTime.value = t; this.motes.uniforms.uNight.value = this.app.lighting.night; this.motes.uniforms.uScale.value = this.app.renderer.pixelRatio * (this.app.renderer.size.h / 600); }
     if (this.terrain) { this.terrain.update(t, this.app.lighting.night < 0.5 ? 1 : 0); this.terrain.updateLod(player); }

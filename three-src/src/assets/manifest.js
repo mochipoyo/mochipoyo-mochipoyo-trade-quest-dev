@@ -144,6 +144,8 @@ export function creatureFor(def) {
 }
 
 // 3D化したマップ（Phase 1：ポヨ村と屋内6か所）。それ以外は既存の2D表示
-export const MAPS_3D = ['poyo_village', 'poyo_elder_house', 'poyo_item_shop', 'poyo_inn', 'poyo_church', 'poyo_dojo', 'poyo_house'];
+export const MAPS_3D = ['poyo_village', 'poyo_elder_house', 'poyo_item_shop', 'poyo_inn', 'poyo_church', 'poyo_dojo', 'poyo_house',
+  // v7.1 ポヨ村の新しい部屋・上の階（InteriorBuilder3D の作り込んだ屋内）
+  'poyo_mill', 'poyo_watch', 'poyo_watch_2f', 'poyo_watch_3f', 'poyo_barn', 'poyo_barn_2f', 'poyo_hall', 'poyo_hall_2f', 'poyo_elder_house_2f', 'poyo_inn_2f', 'poyo_church_2f', 'poyo_church_3f'];
 
 export const TEXTURES = ['grass', 'dirt', 'cobble', 'plaster', 'timber', 'planks', 'shingles', 'stonewall', 'carpet'];

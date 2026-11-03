@@ -10,7 +10,10 @@ import * as THREE from 'three';
 import { Batch, box, M4, textTexture } from '../engine/Materials.js';
 import { rngFrom } from './TerrainBuilder3D.js';
 
-const KIND = { poyo_church: 'church', poyo_dojo: 'dojo', poyo_item_shop: 'shop', poyo_inn: 'inn', poyo_elder_house: 'elder', poyo_house: 'house' };
+const KIND = { poyo_church: 'church', poyo_dojo: 'dojo', poyo_item_shop: 'shop', poyo_inn: 'inn', poyo_elder_house: 'elder', poyo_house: 'house',
+  // v7.1 ポヨ村の新しい部屋・上の階（同じ作りの屋内）
+  poyo_mill: 'mill', poyo_watch: 'watch', poyo_watch_2f: 'watch', poyo_watch_3f: 'watch', poyo_barn: 'barn', poyo_barn_2f: 'barn', poyo_hall: 'hall', poyo_hall_2f: 'hall',
+  poyo_elder_house_2f: 'elder2', poyo_inn_2f: 'inn2', poyo_church_2f: 'church', poyo_church_3f: 'belfry' };
 export const INTERIOR_KINDS = KIND;   // 専用に作り込んだ屋内（それ以外の屋内は WorldBuilder3D の汎用表示）
 
 export function chartTexture(title) {
@@ -49,7 +52,7 @@ export class InteriorBuilder3D {
     const props = []; const lights = []; const animated = [];
     const T = (x, y) => map.tile(x, y);
     const plaster = M.get('plaster'), timber = M.get('timber'), planks = M.get('planks'), stone = M.get('stonewall');
-    const floorMat = kind === 'church' ? M.tinted('stonewall', '#d8d2c8') : planks;
+    const floorMat = (kind === 'church' || kind === 'belfry') ? M.tinted('stonewall', '#d8d2c8') : kind === 'barn' ? M.tinted('planks', '#b89060') : planks;
     const wallH = 3.3, lowH = 0.6;
     // ---- 床
     b.add(floorMat, box(W - 2, 0.12, H - 2, kind === 'church' ? 1.6 : 2.2), M4(W / 2, -0.06, (H - 1) / 2 + 0.5));
@@ -114,17 +117,22 @@ export class InteriorBuilder3D {
           if (kind === 'church') this.pew(b, cx, cz);
           else if (kind === 'dojo') { props.push({ id: 'furn_table', m: M4(cx, 0, cz, Math.PI / 2, 0, 0, 0.62, 0.85, 0.62) }); props.push({ id: 'icon_chart', m: M4(cx, 0.88, cz, 0, -0.5, 0, 1.0) }); }
           else props.push({ id: 'furn_table', m: M4(cx, 0, cz, 0, 0, 0, 0.62, 0.92, 0.85) });
+          if (kind === 'watch' && map.id === 'poyo_watch_3f' && T(x - 1, y) !== 'table') { b.add(M.get('iron'), new THREE.CylinderGeometry(0.07, 0.1, 0.9, 12), M4(cx + 0.5, 1.25, cz, 0, -0.5)); b.add(M.get('gold'), new THREE.CylinderGeometry(0.11, 0.11, 0.1, 12), M4(cx + 0.5, 1.47, cz - 0.38, 0, -0.5)); }   // v7.1 見張り台の望遠鏡
           break;
         case 'counter': props.push({ id: 'furn_counter', m: M4(cx, 0, cz, 0, 0, 0, 0.98, 1, 1) }); if (kind === 'shop' && rnd() < 0.6) props.push({ id: 'icon_potion', m: M4(cx + (rnd() - 0.5) * 0.4, 1.06, cz + (rnd() - 0.5) * 0.2, rnd() * 6, 0, 0, 0.7) }); break;
         case 'barrel': props.push({ id: 'barrel', m: M4(cx, 0, cz, rnd() * 6) }); break;
-        case 'crate': props.push({ id: 'crate', m: M4(cx, 0, cz, rnd() * 0.5) }); break;
-        case 'pillar': props.push({ id: 'furn_pillar', m: M4(cx, 0, cz) }); break;
+        case 'crate': if (kind === 'barn') { const hay = M.tinted('plaster', '#d8b860'); b.add(hay, box(0.9, 0.55, 0.62, 1), M4(cx, 0.28, cz, rnd() * 0.3)); if (rnd() < 0.6) b.add(hay, box(0.8, 0.5, 0.58, 1), M4(cx + 0.03, 0.8, cz, rnd() * 0.4)); break; } props.push({ id: 'crate', m: M4(cx, 0, cz, rnd() * 0.5) }); break;   // v7.1 納屋は干し草の束
+        case 'pillar':
+          if (kind === 'mill') { if (T(x - 1, y) !== 'pillar') { const mx = cx + (T(x + 1, y) === 'pillar' ? 0.5 : 0); b.add(stone, new THREE.CylinderGeometry(0.85, 0.9, 0.35, 20), M4(mx, 0.18, cz)); b.add(M.tinted('stonewall', '#a8a29a'), new THREE.CylinderGeometry(0.8, 0.8, 0.28, 20), M4(mx, 0.5, cz)); b.add(timber, box(0.12, 2.6, 0.12, 1), M4(mx, 1.6, cz)); b.add(timber, box(1.6, 0.1, 0.1, 1), M4(mx, 0.72, cz, 0.6)); } break; }   // v7.1 水車小屋の石臼と軸
+          props.push({ id: 'furn_pillar', m: M4(cx, 0, cz) }); break;
         case 'slot_machine': {   // v6.1 カジノのスロット台
           b.add(M.tinted('planks', '#7a1a3a'), box(0.82, 1.45, 0.62, 1), M4(cx, 0.725, cz)); b.add(M.get('gold'), box(0.86, 0.12, 0.66, 1), M4(cx, 1.5, cz));
           b.add(M.get('glass'), box(0.62, 0.36, 0.04, 1), M4(cx, 1.05, cz + 0.32)); b.add(M.get('iron'), box(0.05, 0.45, 0.05, 1), M4(cx + 0.46, 0.95, cz));
           lights.push({ pos: new THREE.Vector3(cx, 1.6, cz + 0.6), color: 0xffb04a, power: 0.35, dist: 2.5 }); break;
         }
+        case 'stairs_up': case 'stairs_down': this.stairs(b, group, map, x, y, t === 'stairs_up'); break;   // v7.1 階段（上り＝壁へ上がる段・下り＝床の口へ下りる段）
         case 'crystal': {
+          if (kind === 'belfry') { if (T(x - 1, y) !== 'crystal') this.bell(b, group, cx + (T(x + 1, y) === 'crystal' ? 0.5 : 0), cz, animated); break; }   // v7.1 鐘楼の鐘
           b.add(stone, box(0.9, 0.5, 0.8, 1), M4(cx, 0.25, cz)); props.push({ id: 'furn_crystal', m: M4(cx, 0.5, cz, rnd() * 3, 0, 0, 0.8) });
           lights.push({ pos: new THREE.Vector3(cx, 1.5, cz + 0.4), color: 0x7fc8ff, power: 0.8, dist: 5 }); break;
         }
@@ -159,6 +167,17 @@ export class InteriorBuilder3D {
     if (kind === 'shop') {
       for (let x = 0; x < W; x++) if (T(x, 1) === 'bookshelf') for (let k = 0; k < 3; k++) props.push({ id: 'icon_potion', m: M4(x + 0.25 + k * 0.25, 1.0 + (k % 2) * 0.55, 1.3, 0, 0, 0, 0.55) });
     }
+    // v7.1 壁の飾り（床をふさがない壁掛けの物だけ）：奥の壁の棚と瓶・左右の壁の額・梁から下がる干した薬草・壁ぎわの花瓶の棚
+    {
+      const jarC = ['#3a7a5a', '#8a3a3a', '#3a5a8a', '#c8a050', '#6a4a8a'].map((c) => M.tinted('glass', c));
+      const shelfXs = []; for (let x = 2; x < W - 2; x++) { if ((T(x, 1) === 'floor_wood' || T(x, 1) === 'carpet' || T(x, 1) === 'floor_stone') && !winXs.slice(0, 3).some((w) => Math.abs(w - x) < 2) && !shelfXs.some((w) => Math.abs(w - x) < 3)) shelfXs.push(x); }
+      for (const x of shelfXs.slice(0, 2)) { const cx = x + 0.5; b.add(timber, box(1.2, 0.06, 0.24, 1), M4(cx, 1.55, 1.14)); b.add(timber, box(1.2, 0.06, 0.24, 1), M4(cx, 2.05, 1.14)); for (let i = 0; i < 4; i++) { const jm = jarC[(i + x) % jarC.length]; b.add(jm, new THREE.CylinderGeometry(0.07, 0.08, 0.2 + (i % 2) * 0.08, 8), M4(cx - 0.42 + i * 0.28, 1.68 + (i % 2) * 0.04, 1.15)); } for (let i = 0; i < 3; i++) b.add(M.tinted('planks', ['#8a2a2a', '#2a4a7a', '#3a6a3a'][i]), box(0.12, 0.28, 0.18, 1), M4(cx - 0.3 + i * 0.16, 2.22, 1.15)); }
+      // 額（左右の壁）
+      const frameMat = M.tinted('planks', '#6a4a2a'); const pics = [M.tinted('plaster', '#7ab0d8'), M.tinted('plaster', '#d8b070'), M.tinted('plaster', '#8ac08a')];
+      for (const [wx, ry] of [[1.04, Math.PI / 2], [W - 1.04, -Math.PI / 2]]) { const pz = Math.round(H * 0.4) + 0.5; if (kind === 'church' || kind === 'belfry') continue; b.add(frameMat, box(0.9, 0.7, 0.05, 1), M4(wx, 2.0, pz, ry)); b.add(pics[(W + Math.round(wx)) % 3], box(0.76, 0.56, 0.02, 1), M4(wx + (ry > 0 ? 0.03 : -0.03), 2.0, pz, ry)); }
+      // 梁から下がる干した薬草（民家・宿・水車小屋・納屋）
+      if (/^(house|inn|inn2|mill|barn|elder|elder2)$/.test(kind)) for (let i = 0; i < 5; i++) { const hx = 2 + i * ((W - 4) / 4), hz = 1.5 + (i % 2) * 0.3; b.add(M.tinted('plaster', '#3a2a1a'), box(0.02, 0.4, 0.02, 1), M4(hx, wallH - 0.62, hz)); b.add(M.tinted('carpet', ['#6a8a3a', '#8a7a3a', '#5a7a4a'][i % 3]), new THREE.ConeGeometry(0.1, 0.36, 6), M4(hx, wallH - 0.95, hz, 0, Math.PI)); }
+    }
     // 吊りランプ（部屋の中央付近に2つ）
     for (const lx of [W * 0.33, W * 0.67]) {
       const lz = H * 0.48;
@@ -177,6 +196,31 @@ export class InteriorBuilder3D {
     return { group, lights, animated, bounds: { x0: 1, z0: 1, x1: W - 1, z1: H - 1 } };
   }
 
+  // v7.1 階段：いちばん近い壁の方へ上がる（上り）／床の口から下りる（下り）
+  stairs(b, group, map, x, y, up) {
+    const M = this.mats; const W = map.w, H = map.h; const wood = M.get('planks'), timber = M.get('timber');
+    const d = y <= 1 ? [0, -1] : x <= 1 ? [-1, 0] : x >= W - 2 ? [1, 0] : [0, 1];   // 上がっていく向き（壁の方）
+    const cx = x + 0.5, cz = y + 0.5; const along = d[0] !== 0;
+    if (up) {
+      for (let i = 0; i < 5; i++) { const t = -0.4 + i * 0.2; const h = 0.18 * (i + 1); b.add(wood, box(along ? 0.2 : 0.9, h, along ? 0.9 : 0.2, 1), M4(cx + d[0] * t, h / 2, cz + d[1] * t)); }
+      for (const s of [-0.48, 0.48]) b.add(timber, box(along ? 1.0 : 0.06, 0.06, along ? 0.06 : 1.0, 1), M4(cx + (along ? 0 : s), 0.95, cz + (along ? s : 0), 0, along ? 0 : 0.7 * -d[1], along ? 0.7 * d[0] : 0));
+      const hole = new THREE.Mesh(new THREE.PlaneGeometry(0.95, 1.3), new THREE.MeshBasicMaterial({ color: 0x0c0806 })); hole.position.set(cx + d[0] * 0.5, 1.55, cz + d[1] * 0.5); hole.rotation.y = d[0] ? -d[0] * Math.PI / 2 : (d[1] < 0 ? 0 : Math.PI); group.add(hole);
+    } else {
+      const pit = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.9), new THREE.MeshBasicMaterial({ color: 0x060404 })); pit.rotation.x = -Math.PI / 2; pit.position.set(cx, 0.012, cz); group.add(pit);
+      for (let i = 0; i < 3; i++) { const t = 0.3 - i * 0.25; b.add(wood, box(along ? 0.24 : 0.82, 0.04, along ? 0.82 : 0.24, 1), M4(cx + d[0] * t, 0.02 - i * 0.002, cz + d[1] * t)); }
+      for (const s of [-0.48, 0.48]) b.add(timber, box(along ? 0.96 : 0.08, 0.1, along ? 0.08 : 0.96, 1), M4(cx + (along ? 0 : s), 0.05, cz + (along ? s : 0)));
+    }
+  }
+  // v7.1 鐘楼の鐘（ゆっくり揺れる）
+  bell(b, group, x, z, animated) {
+    const M = this.mats; const timber = M.get('timber');
+    b.add(timber, box(2.2, 0.18, 0.18, 1), M4(x, 2.6, z)); for (const s of [-1.0, 1.0]) b.add(timber, box(0.18, 2.6, 0.18, 1), M4(x + s, 1.3, z));
+    const g = new THREE.Group(); g.position.set(x, 2.5, z); g.name = 'bell';
+    const pts = []; for (let i = 0; i <= 10; i++) { const t = i / 10; pts.push(new THREE.Vector2(0.12 + Math.pow(t, 1.6) * 0.55, -t * 0.95)); }
+    const bell = new THREE.Mesh(new THREE.LatheGeometry(pts, 24), new THREE.MeshStandardMaterial({ color: 0xc89a4a, metalness: 0.8, roughness: 0.35, side: THREE.DoubleSide })); g.add(bell);
+    const clap = new THREE.Mesh(new THREE.SphereGeometry(0.1, 10, 8), new THREE.MeshStandardMaterial({ color: 0x6a5a3a, metalness: 0.6 })); clap.position.y = -0.8; g.add(clap);
+    group.add(g); animated.push({ kind: 'swing', obj: g });
+  }
   pew(b, cx, cz) {
     const M = this.mats; const wood = M.tinted('planks', '#9a6a44');
     b.add(wood, box(0.92, 0.08, 0.42, 1), M4(cx, 0.45, cz + 0.05));

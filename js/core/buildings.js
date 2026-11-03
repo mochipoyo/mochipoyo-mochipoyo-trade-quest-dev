@@ -59,6 +59,32 @@
 
 
   /* ---------- 船 ---------- */
+  // v7.1 エレベーター：金属の台座・ガラスの筒（光の帯）・自動扉
+  function paintElevator(g, W, H, doorX) {
+    g.fill('rgba(0,0,0,0)'); var cx = Math.round(W / 2);
+    g.rect(cx - 10, 0, 20, H - 6, '#9fe8ff'); g.rect(cx - 10, 0, 2, H - 6, '#6ac0e0'); g.rect(cx + 8, 0, 2, H - 6, '#d8f8ff');
+    for (var y = 3; y < H - 8; y += 5) g.hline(cx - 10, y, 20, '#46e0ff');
+    g.rect(cx - 4, 4, 8, 6, '#2a3a4a'); g.rect(cx - 3, 5, 6, 4, '#ffd890');
+    g.rect(2, H - 7, W - 4, 6, '#3a4048'); g.hline(2, H - 7, W - 4, '#46e0ff');
+    var dx = (doorX || 1) * 16 + 3; g.rect(dx, H - 12, 10, 11, '#dff8ff'); g.vline(dx + 5, H - 12, 11, '#6a8a9a'); g.rect(0, H - 1, W, 1, 'rgba(0,0,0,0.3)');
+  }
+  // v7.1 見張り台：石積みの塔（窓が3段）・木の見張り台と屋根・入口
+  function paintWatchtower(g, W, H, doorX) {
+    g.fill('rgba(0,0,0,0)'); var x0 = 16, x1 = W - 16;
+    g.rect(x0, 18, x1 - x0, H - 19, '#9a948a'); for (var y = 20; y < H - 1; y += 5) { g.hline(x0, y, x1 - x0, '#7a746a'); for (var x = x0 + ((y / 5) % 2 ? 3 : 0); x < x1; x += 7) g.px(x, y + 2, '#7a746a'); }
+    g.rect(x0 - 4, 12, x1 - x0 + 8, 6, '#7a5a3a'); g.hline(x0 - 4, 12, x1 - x0 + 8, '#a07a4a'); for (var px = x0 - 3; px < x1 + 4; px += 4) g.rect(px, 9, 1, 3, '#5a3a1a');
+    g.tri(x0 - 6, 10, x1 + 6, 10, Math.round(W / 2), 0, '#7a3a2a');
+    for (var k = 0; k < 3; k++) { var wy = 24 + k * Math.round((H - 34) / 3); g.rect(Math.round(W / 2) - 3, wy, 6, 6, '#2a3a5a'); g.rect(Math.round(W / 2) - 3, wy, 6, 1, '#5a5a6a'); }
+    var dx = (doorX || 2) * 16 + 4; g.rect(dx, H - 12, 8, 11, '#5a3a1a'); g.rect(dx, H - 12, 8, 1, '#3a2210'); g.rect(0, H - 1, W, 1, 'rgba(0,0,0,0.3)');
+  }
+  // v7.1 風車：白い塔・とんがり屋根・4枚の羽根
+  function paintWindmill(g, W, H) {
+    g.fill('rgba(0,0,0,0)'); var cx = Math.round(W / 2);
+    g.rect(cx - 9, 14, 18, H - 15, '#e8e0cc'); g.rect(cx - 9, 14, 2, H - 15, '#c8bea8'); g.rect(cx + 7, 14, 2, H - 15, '#f8f2e4'); g.rect(cx - 10, H - 2, 20, 2, 'rgba(0,0,0,0.3)');
+    g.tri(cx - 12, 15, cx + 12, 15, cx, 3, '#a8483a'); g.rect(cx - 3, H - 10, 6, 8, '#6a4a2a'); g.rect(cx - 2, 20, 4, 4, '#3a5a8a');
+    var sx = cx, sy = 14; for (var i = 0; i < 4; i++) { var a = i * Math.PI / 2 + 0.6; for (var k = 2; k < 22; k++) { var x = Math.round(sx + Math.cos(a) * k), y = Math.round(sy + Math.sin(a) * k * 0.9); g.px(x, y, '#6a4a2a'); if (k > 6) { g.px(x + Math.round(-Math.sin(a) * 2), y + Math.round(Math.cos(a) * 2), '#f4ecd8'); g.px(x + Math.round(-Math.sin(a) * 3), y + Math.round(Math.cos(a) * 3), '#f4ecd8'); } } }
+    g.rect(sx - 1, sy - 1, 3, 3, '#3a2a1a');
+  }
   function paintShip(g, W, H) {
     g.fill('rgba(0,0,0,0)');
     g.rect(2, H - 7, W - 4, 6, '#7a4e26'); g.rect(2, H - 7, W - 4, 1, '#c9a06a'); g.rect(1, H - 3, W - 2, 2, '#5a3a1a'); g.rect(0, H - 2, W, 1, 'rgba(0,0,0,0.3)');
@@ -113,6 +139,9 @@
     var g = root.Tiles.painter(ctx, (b.w * 131 + b.h * 17 + (b.variant || 0)) >>> 0);
     var T = TYPES[b.type] || TYPES.house, ST = STYLES[b.style] || STYLES.wood;
     if (b.type === 'ship') { paintShip(g, W, H); Buildings.cache[key] = c; return c; }
+    if (b.type === 'windmill') { paintWindmill(g, W, H); Buildings.cache[key] = c; return c; }   // v7.1 ポヨ村の風車（入れない）
+    if (b.type === 'watchtower') { paintWatchtower(g, W, H, b.doorX); Buildings.cache[key] = c; return c; }   // v7.1 見張り台（石の塔・3階）
+    if (b.type === 'elevator') { paintElevator(g, W, H, b.doorX); Buildings.cache[key] = c; return c; }   // v7.1 空の区画へのエレベーター（ガラスの塔）
     if (b.type === 'castle') { paintCastle(g, ctx, W, H, b, S); Buildings.cache[key] = c; return c; }
     var roofH = Math.max(5, Math.round(H * (T.tower ? 0.42 : 0.45)));
     var wallY = roofH, wallH = H - roofH;

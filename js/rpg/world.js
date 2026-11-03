@@ -333,12 +333,19 @@
   World.doWarp = function (w) {
     if (typeof root.redirectWarp === 'function') { try { var w2 = root.redirectWarp(w, World.map, State.data); if (w2) w = w2; } catch (e) { } }   // v6.8 古いセーブのための行き先の読み替え（js/data/tweaks68.js）
     World.busy = true;
-    var fade = document.getElementById('fade'); if (fade) fade.classList.add('on');
-    setTimeout(function () {
-      var dir = World.player.dir;
-      World.enterMap(w.to, w.tx, w.ty, w.face || ((root.MAP_DEFS[w.to] && root.MAP_DEFS[w.to].region) ? (State.data.aboard ? dir : 'down') : dir));   // v6.5 face：外周から出たときは出た向きのまま
-      setTimeout(function () { if (fade) fade.classList.remove('on'); World.busy = false; if (root.Audio) root.Audio.sfx('step'); }, 150);
-    }, 180);
+    var ride = (w.ride && root.Ride && root.Ride.play) ? root.Ride : null;   // v7.1 エレベーターなどの乗り物（js/data/remake71-tradia.js）：乗る演出 → 移動 → 着く演出
+    var go = function () {
+      var fade = document.getElementById('fade'); if (fade) fade.classList.add('on');
+      setTimeout(function () {
+        var dir = World.player.dir;
+        World.enterMap(w.to, w.tx, w.ty, w.face || ((root.MAP_DEFS[w.to] && root.MAP_DEFS[w.to].region) ? (State.data.aboard ? dir : 'down') : dir));   // v6.5 face：外周から出たときは出た向きのまま
+        if (ride) { if (fade) fade.classList.remove('on'); var fin = function () { World.busy = false; }; ride.arrive(w).then(fin, fin); return; }
+        setTimeout(function () { if (fade) fade.classList.remove('on'); World.busy = false; if (root.Audio) root.Audio.sfx('step'); }, 150);
+      }, 180);
+    };
+    if (!ride) { go(); return; }
+    var ask = w.ask && Win.choice ? Win.choice(w.ask, ['乗る', 'やめる']) : Promise.resolve(0);
+    Promise.resolve(ask).then(function (a) { if (a !== 0) { World.busy = false; return; } ride.play(w).then(go, go); }, function () { World.busy = false; });
   };
 
   World.encounter = function (encDef) {

@@ -92,6 +92,20 @@ export class DecorBuilder3D {
       }
       this.stats.field = n;
     }
+    // v7.1 雲の上の町（空の区画など）：雲のマスの上に、ふわふわの雲のかたまり（浮島のまわり・遠く）
+    if (kind === 'town') {
+      let nCloud = 0; for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) if (map.tile(x, z) === 'cloud') nCloud++;
+      if (nCloud > 40) {
+        const puff = mat('#ffffff', { rough: 1, opacity: 0.92 }), puff2 = mat('#e8f0fa', { rough: 1, opacity: 0.85 }); let n = 0;
+        for (let z = -10; z < H + 10; z += 3) for (let x = -10; x < W + 10; x += 3) {
+          const inside = x >= 0 && z >= 0 && x < W && z < H; if (inside && map.tile(x, z) !== 'cloud') continue; if (hash(x, z, 71) > 0.42) continue;
+          const nearIsland = inside && [[2, 0], [-2, 0], [0, 2], [0, -2]].some(([dx, dz]) => { const t = map.tile(Math.max(0, Math.min(W - 1, x + dx)), Math.max(0, Math.min(H - 1, z + dz))); return t !== 'cloud'; });
+          if (nearIsland) continue; const y = -0.85 + hash(x, z, 5) * 0.25; const k = 0.8 + hash(x, z, 9) * 1.4;   // 雲の海の面（-0.95）の上に浮かべる
+          for (let i = 0; i < 4; i++) add(i % 2 ? puff2 : puff, new THREE.SphereGeometry(0.9 * k, 10, 8), M4(x + 0.5 + (hash(i, x, z) - 0.5) * 2.2 * k, y + hash(z, i) * 0.5 * k, z + 0.5 + (hash(x, i, 3) - 0.5) * 2.2 * k, 0, 0, 0, 1.3, 0.55, 1.1)); n++;
+        }
+        this.stats.clouds = n;
+      }
+    }
     const g = new THREE.Group(); g.name = 'decor70_' + key; b.build(g, { castShadow: false }); o.group.add(g); this.group = g;
     return out;
   }
@@ -247,7 +261,7 @@ export class DecorBuilder3D {
         for (let yy = 1.5; yy < h - 0.5; yy += 1.4) add(mat(hash(i, yy * 10) > 0.5 ? A : '#bfe8ff', { glow: 1.6 }), box(w + 0.02, 0.12, w + 0.02), M4(x, y + yy, z));
         add(mat('#8a9098', { metal: 0.8 }), new THREE.CylinderGeometry(0.06, 0.06, 2.2, 6), M4(x, y + h + 1.1, z)); add(mat('#ff3a3a', { glow: 3.0 }), new THREE.SphereGeometry(0.16, 8, 6), M4(x, y + h + 2.3, z));
         if (r > 0.6) add(mat('#ffffff', { glow: 1.6, map: chartTex(i % 6) }), new THREE.PlaneGeometry(w * 0.9, w * 0.55), M4(x, y + h * 0.6, z + w / 2 + 0.03));
-        if (i === 4) { add(mat('#c8e8ff', { glow: 0.6, rough: 0.1, opacity: 0.5 }), new THREE.CylinderGeometry(0.8, 0.8, h + 8, 12, 1, true), M4(x + w + 1.5, y + (h + 8) / 2, z)); add(mat('#2a3a4a', { metal: 0.6 }), new THREE.CylinderGeometry(4, 4, 0.6, 20), M4(x + w + 1.5, y + h + 8, z)); add(mat(A, { glow: 2.0 }), new THREE.TorusGeometry(4, 0.12, 6, 32), M4(x + w + 1.5, y + h + 8.2, z, 0, Math.PI / 2)); }   // 空の上の区画へのエレベーター（見た目だけ）
+        // v7.1 空の区画へのエレベーターは町の中の本物（buildElevatorTower）になったので、遠景の見た目だけの塔はなくした
         break;
       }
       case 'machine': { const h = 7 + r * 7; add(mat('#5a5e66', { metal: 0.5 }), new THREE.CylinderGeometry(0.7, 0.9, h, 12), M4(x, y + h / 2, z)); add(mat('#c84a3a'), new THREE.CylinderGeometry(0.72, 0.72, 0.5, 12), M4(x, y + h - 1, z)); add(mat('#4a4e56', { metal: 0.4 }), box(3, 3 + r * 2, 2.5), M4(x + 1.6, y + 1.5 + r, z + 0.5)); out.smokes.push(new THREE.Vector3(x, y + h + 0.2, z)); break; }
@@ -301,7 +315,7 @@ export function buildModernBuilding(b, key, textTexture) {
   const S = MODERN[key]; const out = { group: new THREE.Group(), lights: [], smokes: [], props: [] }; out.group.name = 'building_modern_' + (b.id || b.name);
   const bt = new Batch(); const add = (m, g, mx) => bt.add(m, g, mx);
   const xl = b.x + 0.12, xr = b.x + b.w - 0.12, zb = b.y + 0.15, zf = b.y + b.h - 0.62; const W = xr - xl, D = zf - zb, cx = (xl + xr) / 2, cz = (zb + zf) / 2;
-  const floors = b.w >= 9 || b.h >= 6 ? 3 : 2; const sh = 1.3;   // 3階まで（木組みの家と同じくらいの高さ。道や人を隠しすぎない） const H = 0.25 + floors * sh;
+  const floors = b.w >= 9 || b.h >= 6 ? 3 : 2; const sh = 1.3; const H = 0.25 + floors * sh;   // 3階まで（木組みの家と同じくらいの高さ。道や人を隠しすぎない）
   const body = mat(S.body, { metal: S.metal, rough: S.rough });
   add(body, box(W, H, D), M4(cx, H / 2, cz));
   // 窓の帯（夜に灯る：userData.window）
@@ -330,5 +344,114 @@ export function buildModernBuilding(b, key, textTexture) {
   // 名札（扉の上・暗い地に明るい文字）
   if (textTexture) { const nameTex = textTexture(b.name || '', S.sign); const plate = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 0.48), new THREE.MeshStandardMaterial({ map: nameTex, emissive: new THREE.Color('#ffffff'), emissiveMap: nameTex, emissiveIntensity: 0.6, roughness: 0.6 })); plate.material.userData.keepGlow = true; plate.position.set(doorX, 0.25 + 1.95, zf + 0.62); plate.castShadow = false; out.group.add(plate); }
   out.lights.push({ pos: new THREE.Vector3(doorX, 1.9, zf + 0.6), color: new THREE.Color(S.trim).getHex(), power: 1.0 });
+  return out;
+}
+
+/* ---------- v7.1 村の作り込み（ポヨ村の専用3D：TerrainBuilder3D の上に足す）
+   ・建物の前：扉の両わきの鉢植え・角の樽と木箱・玄関マット
+   ・道ばた：小さな花の群れ・道の縁石（踏んでも通れる低い物だけ）
+   ・風車（buildings の type 'windmill'：白い塔・とんがり屋根・回る羽根）
+   ・池のアヒル（ゆっくり泳ぐ）・市場の吊り提灯（夜に灯る）・橋のたもとの灯り・畑の案山子 */
+export function buildVillageDecor(map, ctx) {
+  const put = ctx.put, hAt = ctx.heightAt || (() => 0), M = ctx.mats; const b = new Batch(); const add = (m, g, mx) => b.add(m, g, mx);
+  const W = map.w, H = map.h; const T = (x, y) => (x < 0 || y < 0 || x >= W || y >= H) ? '_out' : map.tile(x, y);
+  const walk = (x, y) => x >= 0 && y >= 0 && x < W && y < H && !window.Tiles.isSolid(map.tile(x, y));
+  const out = { animated: [], lamps: [], stats: { planters: 0, flowers: 0, ducks: 0, lanterns: 0 } };
+  const pot = mat('#9a5a3a', { rough: 0.9 }), soil = mat('#4a3020', { rough: 1 }), leaf = mat('#4a8a3a', { rough: 0.9 });
+  const petals = ['#ff8ab0', '#ffd24a', '#ffffff', '#c08aff', '#ff6a5a', '#8ac8ff'].map((c) => mat(c, { rough: 0.8 }));
+  const flowerTuft = (x, z, n, seed) => { const y = hAt(x, z); for (let i = 0; i < n; i++) { const a = hash(i, seed, 3) * 6.28, r = 0.08 + hash(i, seed, 5) * 0.22; const px = x + Math.cos(a) * r, pz = z + Math.sin(a) * r; add(leaf, new THREE.ConeGeometry(0.035, 0.16, 4), M4(px, y + 0.08, pz)); add(petals[Math.floor(hash(i, seed, 7) * petals.length)], new THREE.SphereGeometry(0.045, 6, 4), M4(px, y + 0.18, pz)); } };
+  // 建物の前
+  for (const bd of map.buildings) {
+    if (bd.type === 'windmill') continue;
+    const zf = bd.y + bd.h - 0.62; const dx = bd.doorAbs.x + 0.5;
+    if (bd.type === 'watchtower') { buildWatchtower(bd, add, ctx, out); continue; }
+    for (const sx of [-0.85, 0.85]) { const px = dx + sx, pz = zf + 0.24; add(pot, new THREE.CylinderGeometry(0.17, 0.12, 0.3, 10), M4(px, 0.15, pz)); add(soil, new THREE.CylinderGeometry(0.15, 0.15, 0.03, 10), M4(px, 0.3, pz)); flowerTuft(px, pz - 0.0, 5, Math.round(px * 7 + pz)); out.stats.planters++; }
+    put('barrel', M4(bd.x + 0.4, 0, zf + 0.22, hash(bd.x, bd.y) * 6), bd.x + 0.4, zf); put('crate', M4(bd.x + bd.w - 0.45, 0, zf + 0.22, hash(bd.y, bd.x) * 0.6, 0, 0, 0.8), bd.x + bd.w - 0.45, zf);
+    add(mat('#8a4a3a', { rough: 1 }), box(0.9, 0.02, 0.5), M4(dx, 0.012, bd.doorAbs.y + 1.2));   // 玄関マット（扉の前の1マス）
+  }
+  // 道ばたの花・縁石
+  for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) {
+    const t = T(x, y); if (t !== 'grass' && t !== 'grass2') continue; if (!walk(x, y) || map.warpAt(x, y) || map.eventAt(x, y) || map.npcAt(x, y)) continue;
+    const nearRoad = [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([ddx, ddy]) => /road|path_stone/.test(T(x + ddx, y + ddy)));
+    if (nearRoad && hash(x, y, 41) < 0.32) { flowerTuft(x + 0.5 + (hash(x, y, 2) - 0.5) * 0.5, y + 0.5 + (hash(x, y, 4) - 0.5) * 0.5, 6, x * 31 + y); out.stats.flowers++; }
+    else if (hash(x, y, 43) < 0.05) { flowerTuft(x + hash(x, y, 6), y + hash(x, y, 8), 4, x * 17 + y * 3); out.stats.flowers++; }
+    if (nearRoad && hash(x, y, 47) < 0.12) add(mat('#a8a49a', { rough: 0.95 }), new THREE.DodecahedronGeometry(0.09), M4(x + 0.5 + (hash(x, y, 9) - 0.5) * 0.7, hAt(x + 0.5, y + 0.5) + 0.03, y + 0.5 + (hash(x, y, 10) - 0.5) * 0.7, hash(x, y, 11) * 6, 0, 0, 1.4, 0.6, 1.1));
+  }
+  // 風車
+  for (const bd of map.buildings) {
+    if (bd.type !== 'windmill') continue;
+    const cx = bd.x + bd.w / 2, cz = bd.y + bd.h / 2 - 0.2; const hgt = 4.6;
+    add(mat('#efe6d2', { rough: 0.85 }), new THREE.CylinderGeometry(bd.w * 0.3, bd.w * 0.42, hgt, 16), M4(cx, hgt / 2, cz));
+    add(mat('#a8483a', { rough: 0.8 }), new THREE.ConeGeometry(bd.w * 0.36, 1.6, 16), M4(cx, hgt + 0.8, cz));
+    add(mat('#6a4a2a', { rough: 0.9 }), box(0.7, 1.2, 0.1), M4(cx, 0.6, cz + bd.w * 0.41)); add(mat('#3a5a8a', { glow: 0.3, glowHex: '#ffd890' }), box(0.4, 0.5, 0.06), M4(cx, 2.7, cz + bd.w * 0.36));
+    add(mat('#e8e0cc', { rough: 0.85 }), box(bd.w * 0.9, 0.12, bd.w * 0.9), M4(cx, 0.06, cz));
+    const hub = new THREE.Group(); hub.position.set(cx, hgt - 0.3, cz + bd.w * 0.42 + 0.15); hub.name = 'windmill_sails';
+    const hb = new Batch(); const wood = mat('#6a4a2a', { rough: 0.9 }), cloth = mat('#f4ecd8', { rough: 0.95 });
+    hb.add(wood, new THREE.CylinderGeometry(0.16, 0.16, 0.3, 10), M4(0, 0, 0, 0, Math.PI / 2));
+    for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2; hb.add(wood, box(0.1, 2.6, 0.08), M4(Math.sin(a) * 1.3, Math.cos(a) * 1.3, 0, 0, 0, -a)); hb.add(cloth, box(0.55, 2.0, 0.03), M4(Math.sin(a) * 1.45 + Math.cos(a) * 0.3, Math.cos(a) * 1.45 - Math.sin(a) * 0.3, 0.02, 0, 0, -a)); }
+    hb.build(hub); ctx.group.add(hub); out.animated.push({ kind: 'spin', obj: hub, speed: 0.6 });
+  }
+  // 池のアヒル（水のマスが6つ以上かたまっている所）
+  const ponds = []; const seen = {};
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { if (T(x, y) !== 'water' || seen[x + ',' + y]) continue; const q = [[x, y]]; seen[x + ',' + y] = 1; const cells = []; while (q.length) { const [a, c] = q.pop(); cells.push([a, c]); for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const k = (a + dx) + ',' + (c + dy); if (!seen[k] && T(a + dx, c + dy) === 'water') { seen[k] = 1; q.push([a + dx, c + dy]); } } } ponds.push(cells); }
+  ponds.forEach((cells, pi) => { if (cells.length < 6) return; const n = Math.min(3, Math.floor(cells.length / 8) + 1); for (let i = 0; i < n; i++) { const c = cells[Math.floor(hash(pi, i, 3) * cells.length)]; const d = new THREE.Group(); d.name = 'duck'; const db = new Batch(); db.add(mat('#ffffff', { rough: 0.8 }), new THREE.SphereGeometry(0.14, 10, 8), M4(0, 0, 0, 0, 0, 0, 1, 0.7, 1.4)); db.add(mat(i % 2 ? '#2a6a3a' : '#ffffff', { rough: 0.8 }), new THREE.SphereGeometry(0.08, 8, 6), M4(0, 0.13, 0.15)); db.add(mat('#ffa020', { rough: 0.6 }), new THREE.ConeGeometry(0.03, 0.09, 6), M4(0, 0.12, 0.25, 0, Math.PI / 2)); db.build(d); d.position.set(c[0] + 0.5, -0.14, c[1] + 0.5); ctx.group.add(d); out.animated.push({ kind: 'duck', obj: d, cx: c[0] + 0.5, cz: c[1] + 0.5, r: 0.35 + hash(i, pi) * 0.5, ph: hash(pi, i, 9) * 6, cells }); out.stats.ducks++; } });
+  // 市場の吊り提灯：舗装（path_stone）の上の街灯どうしを糸でつなぐ（同じ行・3〜9マス）
+  const lamps = []; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (T(x, y) === 'lamp' && [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => T(x + dx, y + dy) === 'path_stone')) lamps.push([x, y]);
+  const lantern = mat('#ffb050', { glow: 1.6 }), cord = mat('#3a2a1a');
+  for (const [x, y] of lamps) { const o = lamps.find(([x2, y2]) => y2 === y && x2 > x + 2 && x2 - x <= 9); if (!o) continue; const x0 = x + 0.5, x1 = o[0] + 0.5, z = y + 0.5, n = Math.round((x1 - x0) * 2); for (let i = 0; i <= n; i++) { const t = i / n; const px = x0 + (x1 - x0) * t, py = 2.3 - Math.sin(t * Math.PI) * 0.45; add(cord, box(0.5, 0.012, 0.012), M4(px, py, z)); if (i > 0 && i < n) { add(i % 3 === 0 ? mat('#ff6a6a', { glow: 1.6 }) : lantern, new THREE.SphereGeometry(0.07, 8, 6), M4(px, py - 0.1, z, 0, 0, 0, 1, 1.3, 1)); out.stats.lanterns++; } } out.lamps.push({ pos: new THREE.Vector3((x0 + x1) / 2, 2.0, z), color: 0xffb060, power: 0.8, dist: 6 }); }
+  // 橋のたもとの灯り
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { if (T(x, y) !== 'bridge') continue; for (const dx of [-1, 1]) { if (T(x + dx, y) === 'bridge' || !/road|path/.test(T(x + dx, y))) continue; if (T(x, y - 1) === 'bridge' && T(x, y + 1) !== 'bridge') { const px = x + 0.5 + dx * 0.45, pz = y + 0.95; add(mat('#3a2a1a', { metal: 0.3 }), new THREE.CylinderGeometry(0.04, 0.05, 1.3, 6), M4(px, 0.65, pz)); add(mat('#ffd890', { glow: 1.8 }), box(0.16, 0.2, 0.16), M4(px, 1.35, pz)); out.lamps.push({ pos: new THREE.Vector3(px, 1.4, pz), color: 0xffc070, power: 0.7, dist: 5 }); } } }
+  // 畑の案山子：作物（crops）に囲まれた立て札
+  for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) { if (T(x, y) !== 'sign' || ![[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => T(x + dx, y + dy) === 'crops')) continue; const cx = x + 0.5, cz = y + 0.5; const wood = mat('#6a4a2a'); add(wood, box(0.08, 1.6, 0.08), M4(cx, 0.8, cz)); add(wood, box(1.1, 0.07, 0.07), M4(cx, 1.25, cz)); add(mat('#c8584a', { rough: 1 }), box(0.5, 0.55, 0.22), M4(cx, 1.15, cz)); add(mat('#e8d8a0', { rough: 1 }), new THREE.SphereGeometry(0.17, 10, 8), M4(cx, 1.62, cz)); add(mat('#c8a050', { rough: 1 }), new THREE.ConeGeometry(0.3, 0.22, 12), M4(cx, 1.78, cz)); }
+  const g = new THREE.Group(); g.name = 'village_decor71'; b.build(g, { castShadow: true }); ctx.group.add(g);
+  return out;
+}
+
+// v7.1 見張り台（石の塔・3段の窓・木の見張り台と屋根・旗・入口と名札）。足元は 2D 版の建物のマス
+function buildWatchtower(bd, add, ctx, out) {
+  const cx = bd.x + bd.w / 2, zf = bd.y + bd.h - 0.62, zb = bd.y + 0.3; const cz = (zf + zb) / 2; const tw = Math.min(bd.w - 1.2, 4.2), td = Math.min(zf - zb, 4.2);
+  const stone = mat('#a8a296', { rough: 0.95 }), dark = mat('#7a746a', { rough: 0.95 }), wood = mat('#6a4a2a', { rough: 0.9 }), roof = mat('#7a3a2a', { rough: 0.8 });
+  const H1 = 6.2; add(stone, box(tw, H1, td), M4(cx, H1 / 2, zf - td / 2));
+  for (let y = 0.6; y < H1; y += 0.55) add(dark, box(tw + 0.04, 0.05, td + 0.04), M4(cx, y, zf - td / 2));
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) add(dark, box(0.35, H1 + 0.1, 0.35), M4(cx + sx * tw / 2, H1 / 2, zf - td / 2 + sz * td / 2));
+  for (let k = 0; k < 3; k++) { const y = 1.9 + k * 1.6; const win = mat('#2a3a5a', { glow: 0.5, glowHex: '#ffd890' }); win.userData.keepGlow = false; win.userData.window = true; add(win, box(0.5, 0.7, 0.06), M4(cx + (k === 0 ? 1.0 : 0), y, zf + 0.01)); add(wood, box(0.62, 0.08, 0.12), M4(cx + (k === 0 ? 1.0 : 0), y - 0.39, zf + 0.04)); }
+  const dx = bd.doorAbs.x + 0.5; add(wood, box(0.9, 1.5, 0.1), M4(dx, 0.75, zf + 0.02)); add(dark, box(1.15, 0.2, 0.2), M4(dx, 1.6, zf + 0.06)); add(mat('#ffd890', { glow: 1.6 }), box(0.14, 0.2, 0.14), M4(dx + 0.7, 1.9, zf + 0.12));
+  out.lamps.push({ pos: new THREE.Vector3(dx + 0.7, 1.9, zf + 0.5), color: 0xffc070, power: 0.8, dist: 5 });
+  const py = H1; add(wood, box(tw + 1.0, 0.18, td + 1.0), M4(cx, py + 0.09, zf - td / 2));
+  for (const s of [-1, 1]) { add(wood, box(tw + 1.0, 0.08, 0.08), M4(cx, py + 0.85, zf - td / 2 + s * (td / 2 + 0.5))); add(wood, box(0.08, 0.08, td + 1.0), M4(cx + s * (tw / 2 + 0.5), py + 0.85, zf - td / 2)); }
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) add(wood, box(0.14, 2.1, 0.14), M4(cx + sx * (tw / 2 + 0.42), py + 1.05, zf - td / 2 + sz * (td / 2 + 0.42)));
+  add(roof, new THREE.ConeGeometry(Math.max(tw, td) * 0.95, 1.7, 4), M4(cx, py + 2.95, zf - td / 2, Math.PI / 4));
+  add(wood, new THREE.CylinderGeometry(0.04, 0.04, 1.6, 6), M4(cx, py + 4.4, zf - td / 2)); add(mat('#c8584a', { rough: 1 }), box(0.7, 0.42, 0.03), M4(cx + 0.36, py + 4.9, zf - td / 2));
+  add(mat('#ffd890', { glow: 1.4 }), new THREE.SphereGeometry(0.16, 10, 8), M4(cx, py + 1.6, zf - td / 2));
+  out.lamps.push({ pos: new THREE.Vector3(cx, py + 1.6, zf - td / 2), color: 0xffc070, power: 1.0, dist: 9 });
+  // 名札
+  try { const c = document.createElement('canvas'); c.width = 512; c.height = 128; const gx = c.getContext('2d'); if (gx) { gx.fillStyle = '#3a2210'; gx.fillRect(0, 0, 512, 128); gx.fillStyle = '#f0e2c0'; gx.fillRect(10, 10, 492, 108); gx.fillStyle = '#2a1a0a'; gx.font = 'bold 58px sans-serif'; gx.textAlign = 'center'; gx.textBaseline = 'middle'; gx.fillText(bd.name || '', 256, 66); }
+    const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; const plate = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 0.48), new THREE.MeshStandardMaterial({ map: tx, roughness: 0.8 })); plate.position.set(dx, 2.3, zf + 0.08); ctx.group.add(plate); } catch (e) { /* 名札なし */ }
+}
+
+/* ---------- v7.1 エレベーターの塔（トレディア：地上から空の区画へ。空の区画：地上へ）
+   ・地上：金属の台座・高いガラスの筒（光の帯）・てっぺんの空の区画の底（浮島の裏側と光の輪）
+   ・空の区画：台座と短い筒（下へ続く）・扉の上の名札 */
+export function buildElevatorTower(b, map, textTexture) {
+  const out = { group: new THREE.Group(), lights: [], smokes: [], props: [] }; out.group.name = 'elevator_' + b.id;
+  const bt = new Batch(); const add = (m, g, mx) => bt.add(m, g, mx);
+  const x0 = b.x + 0.1, x1 = b.x + b.w - 0.1, z0 = b.y + 0.15, z1 = b.y + b.h - 0.62; const cx = (x0 + x1) / 2, cz = (z0 + z1) / 2; const sky = map.kind === 'town' && /sky/.test(map.id);
+  const metal = mat('#3a4048', { metal: 0.7, rough: 0.35 }), neon = mat('#46e0ff', { glow: 2.4 }), glass = mat('#bff4ff', { glow: 0.25, glowHex: '#9fe8ff', rough: 0.05, opacity: 0.35 });
+  add(metal, box(x1 - x0, 0.5, z1 - z0), M4(cx, 0.25, cz)); add(neon, box(x1 - x0 + 0.04, 0.05, z1 - z0 + 0.04), M4(cx, 0.48, cz));
+  const R = Math.min(x1 - x0, z1 - z0) * 0.48 + 0.2; const tall = sky ? 4.5 : 30;
+  add(glass, new THREE.CylinderGeometry(R, R, tall, 28, 1, true), M4(cx, 0.5 + tall / 2, cz));
+  for (let y = 1.5; y < tall; y += sky ? 1.2 : 2.4) add(neon, new THREE.TorusGeometry(R + 0.02, 0.03, 6, 32), M4(cx, 0.5 + y, cz, 0, Math.PI / 2));
+  for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2 + Math.PI / 4; add(metal, box(0.12, tall, 0.12), M4(cx + Math.cos(a) * (R + 0.05), 0.5 + tall / 2, cz + Math.sin(a) * (R + 0.05))); }
+  if (!sky) {   // てっぺん：空の区画の底（浮島の裏側）
+    const top = 0.5 + tall; add(mat('#8a8070', { rough: 1 }), new THREE.ConeGeometry(9, 6, 10), M4(cx, top - 1.5, cz, 0, Math.PI)); add(mat('#d8dce0', { metal: 0.3, rough: 0.6 }), new THREE.CylinderGeometry(9.5, 9.2, 1.2, 24), M4(cx, top + 1.0, cz));
+    add(neon, new THREE.TorusGeometry(9.5, 0.12, 6, 48), M4(cx, top + 0.45, cz, 0, Math.PI / 2));
+    for (let i = 0; i < 5; i++) { const a = i * 1.26, r = 5.5; const hgt = 2 + (i % 3) * 1.5; add(mat('#22303e', { metal: 0.6, rough: 0.25 }), box(2, hgt, 2), M4(cx + Math.cos(a) * r, top + 1.6 + hgt / 2, cz + Math.sin(a) * r)); add(mat('#9fe8ff', { glow: 1.4 }), box(2.02, 0.1, 2.02), M4(cx + Math.cos(a) * r, top + 2.2, cz + Math.sin(a) * r)); }
+  } else {      // 空の区画：下へ続く筒（雲の下へ）
+    add(glass, new THREE.CylinderGeometry(R, R, 14, 28, 1, true), M4(cx, -7, cz));
+  }
+  const dx = b.doorAbs ? b.doorAbs.x + 0.5 : cx; add(mat('#dff8ff', { glow: 1.0, glowHex: '#9fe8ff', opacity: 0.85 }), new THREE.PlaneGeometry(0.95, 1.4), M4(dx, 1.2, z1 + 0.04));
+  bt.build(out.group);
+  if (textTexture) { const tx = textTexture(b.name || 'エレベーター', { bg: '#06121c', panel: '#0c2234', fg: '#bff4ff' }); const plate = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 0.5), new THREE.MeshStandardMaterial({ map: tx, emissive: new THREE.Color('#ffffff'), emissiveMap: tx, emissiveIntensity: 0.6 })); plate.material.userData.keepGlow = true; plate.position.set(dx, 2.3, z1 + 0.3); out.group.add(plate); }
+  out.lights.push({ pos: new THREE.Vector3(dx, 1.8, z1 + 0.6), color: 0x46e0ff, power: 1.0 });
   return out;
 }

@@ -51,7 +51,8 @@ function flowerTexture() {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 
-const ROADLIKE = { road: 1, stone: 1, bld_door: 1, floor_stone: 1, bridge: 1 };
+const ROADLIKE = { road: 1, stone: 1, bld_door: 1, floor_stone: 1, bridge: 1, path_stone: 1, dock: 1 };   // v7.1 path_stone（市場の舗装）・dock（桟橋）も道あつかい
+const WATER = { water: 1, shallow: 1, deep: 1 };   // v7.1 村の中の川・池（ポヨ村の東の地区）
 const TREE_TILES = { tree: 1, forest: 1 };
 
 export class TerrainBuilder3D {
@@ -82,8 +83,15 @@ export class TerrainBuilder3D {
     // ---- 高さ
     const cx0 = 2, cz0 = 2, cx1 = W - 2, cz1 = H - 2;
     const outside = (x, z) => { const dx = Math.max(cx0 - x, 0, x - cx1), dz = Math.max(cz0 - z, 0, z - cz1); return Math.hypot(dx, dz); };
+    // v7.1 村の中の水（川・池）：水のマス（橋・桟橋の下も）は地面を下げる。境目はなだらかに
+    const wetT = (tx, tz) => { const t = T(tx, tz); if (WATER[t]) return 1; if ((t === 'bridge' || t === 'dock') && [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dz]) => WATER[T(tx + dx, tz + dz)])) return 1; return 0; };
+    let anyWet = false; for (let y = 0; y < H && !anyWet; y++) for (let x = 0; x < W; x++) if (wetT(x, y)) { anyWet = true; break; }
+    const wetAt = (x, z) => { const fx = x - 0.5, fz = z - 0.5; const x0 = Math.floor(fx), z0 = Math.floor(fz); const ax = fx - x0, az = fz - z0;
+      const v = (i, j) => (i < 0 || j < 0 || i >= W || j >= H) ? 0 : wetT(i, j);
+      return (v(x0, z0) * (1 - ax) + v(x0 + 1, z0) * ax) * (1 - az) + (v(x0, z0 + 1) * (1 - ax) + v(x0 + 1, z0 + 1) * ax) * az; };
+    this.wetT = wetT;
     const heightAt = (x, z) => {
-      const d = outside(x, z); if (d <= 0.001) return 0;
+      const d = outside(x, z); if (d <= 0.001) { if (!anyWet) return 0; const wv = wetAt(x, z); return wv > 0 ? -0.62 * smooth(0.05, 0.85, wv) : 0; }
       const cf = smooth(0.8, 4.5, corrDist(x, z));
       const k = smooth(0.4, 7.5, d);
       const hills = ((fbm(x * 0.06 + 3.1, z * 0.06 + 1.7) - 0.42) * 3.4 + d * 0.16);
@@ -121,6 +129,7 @@ export class TerrainBuilder3D {
       else if (TREE_TILES[t]) { g = 0.55 + fbm(x * 0.3, z * 0.3) * 0.4; }
       else if (t === 'grass2' || t === 'flowerbed') a = 1;
       else if (t === 'well') { r = 0.9; }
+      else if (WATER[t] || t === 'bridge' || t === 'dock') { g = 1; }   // v7.1 川底・池の底（水の下）は土
       // 道や建物のまわりは踏み固められた土
       if (t !== '_out' && !ROADLIKE[t] && t !== 'bld_block') {
         let near = 0; for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const n = T(tx + dx, tz + dz); if (ROADLIKE[n]) near = Math.max(near, 0.42); if (n === 'bld_block' || n === 'bld_door') near = Math.max(near, 0.6); }
@@ -237,6 +246,9 @@ export class TerrainBuilder3D {
         case 'bush': put('bush_a', M4(cx, 0, cz, rnd() * 6.28, 0, 0, 0.95 + rnd() * 0.35), cx, cz); break;
         case 'tree_small': put(rnd() < 0.5 ? 'tree_oak_c' : 'tree_oak_b', M4(cx, 0, cz, rnd() * 6.28, 0, 0, 0.42 + rnd() * 0.1), cx, cz); break;
         case 'chest': case 'chest_open': chests.push({ x, y }); break;
+        case 'stall': { const d = roadDir(x, y); put('stall', M4(cx, 0, cz, yawToward(d)), cx, cz); break; }   // v7.1 市場の屋台
+        case 'fountain': put('fountain', M4(cx, 0, cz), cx, cz); break;
+        case 'log': if (![[1, 0], [-1, 0]].some(([dx]) => WATER[T(x + dx, y)])) put('log', M4(cx, 0, cz, rnd() * 6.28), cx, cz); break;   // 水ぎわの丸太は水車（下の waterwheel）
         default: break;
       }
     }
@@ -248,7 +260,10 @@ export class TerrainBuilder3D {
       put(id, M4(px, heightAt(px, pz) - 0.05, pz, rnd() * 6.28, 0, 0, 0.6 + rnd() * 0.8), px, pz);
     }
     this.buckets = buckets; this.put = put;
-    return { group, heightAt, lampSpots, chests, corridors, splat, finalize: () => this.finalize(group, map) };
+    // v7.1 水の面・橋・桟橋・水車（村の中に水があるときだけ）
+    if (anyWet) this.buildWater(group, map, T, wetT);
+    const heightAtWalk = (x, z) => { const t = T(Math.floor(x), Math.floor(z)); if ((t === 'bridge' || t === 'dock') && wetT(Math.floor(x), Math.floor(z))) return 0.1; return heightAt(x, z); };
+    return { group, heightAt: heightAtWalk, heightAtGround: heightAt, lampSpots, chests, corridors, splat, finalize: () => this.finalize(group, map) };
   }
 
   // 置き場所が全部決まってから（建物・門のぶんも put したあと）インスタンス化する
@@ -323,7 +338,7 @@ export class TerrainBuilder3D {
       const t = map.tile(x, y); if (t !== 'grass' && t !== 'grass2') continue;
       const n = Math.floor(per * (t === 'grass2' ? 1.2 : 1) + rnd());
       for (let i = 0; i < n; i++) {
-        const px = x + rnd(), pz = y + rnd(); const s = this.splatAt(px, pz); if (s[0] > 0.25 || s[1] > 0.5) continue;
+        const px = x + rnd(), pz = y + rnd(); const s = this.splatAt(px, pz); if (s[0] > 0.25 || s[1] > 0.5) continue; if (this.heightAt && this.heightAt(px, pz) < -0.04) continue;   // v7.1 川・池の岸の下り坂には生やさない
         col.setHSL(0.2 + rnd() * 0.06, 0.25 + rnd() * 0.2, 0.62 + rnd() * 0.2);
         add(px, pz, 0.7 + rnd() * 0.65, col.clone());
       }
@@ -381,7 +396,57 @@ export class TerrainBuilder3D {
     return [{ pos: new THREE.Vector3(x, 2.6, z + 0.6), color: 0xffb05a, power: 1.1, dist: 9 }];
   }
 
-  update(t, day) { this.time.value = t; this.day.value = day; }
+  update(t, day) { this.time.value = t; this.day.value = day; if (this.wheels) for (const w of this.wheels) w.rotation.x = -t * 0.9; }
+  // v7.1 村の中の水：水面（ゆれる・光る）・橋（板と手すり）・桟橋（板と杭）・水車（回る）
+  buildWater(group, map, T, wetT) {
+    const W = map.w, H = map.h; const time = this.time; const M = this.mats;
+    const pos = [], col = [], uv = [], idx = []; let n = 0; const c1 = new THREE.Color('#2f78a8'), c2 = new THREE.Color('#1c4f78');
+    for (let y = -1; y <= H; y++) for (let x = -1; x <= W; x++) {
+      const wet = (x >= 0 && y >= 0 && x < W && y < H) ? wetT(x, y) : 0; if (!wet) continue;
+      const deep = [[1, 0], [-1, 0], [0, 1], [0, -1]].every(([dx, dz]) => wetT(x + dx, y + dz)) ? 1 : 0; const c = deep ? c2 : c1;
+      [[x, y], [x + 1, y], [x, y + 1], [x + 1, y + 1]].forEach(([px, pz]) => { pos.push(px, -0.2, pz); col.push(c.r, c.g, c.b); uv.push(px / 8, pz / 8); });
+      idx.push(n, n + 2, n + 1, n + 1, n + 2, n + 3); n += 4;
+    }
+    if (n) {
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.setIndex(idx); geo.computeVertexNormals(); geo.userData.own = true;
+      const m = new THREE.MeshStandardMaterial({ vertexColors: true, transparent: true, opacity: 0.88, roughness: 0.1, metalness: 0.2, depthWrite: false });
+      m.onBeforeCompile = (sh) => {
+        sh.uniforms.uTime = time;
+        sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec2 vWuv; uniform float uTime;').replace('#include <uv_vertex>', '#include <uv_vertex>\nvWuv = uv;').replace('#include <begin_vertex>', '#include <begin_vertex>\ntransformed.y += sin(position.x * 1.3 + uTime * 1.4) * 0.02 + cos(position.z * 1.1 + uTime * 1.1) * 0.02;');
+        sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec2 vWuv; uniform float uTime;')
+          .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>\n{ vec2 p = vWuv * 8.0; float a = sin(p.x * 3.1 + uTime * 1.3) * 0.5 + sin(p.y * 2.7 - uTime * 1.1) * 0.5 + sin((p.x + p.y) * 5.3 + uTime * 2.1) * 0.25; float b = cos(p.y * 3.3 + uTime * 1.2) * 0.5 + cos(p.x * 2.3 - uTime * 0.9) * 0.5; normal = normalize(normal + vec3(a, 0.0, b) * 0.08); }')
+          .replace('#include <color_fragment>', '#include <color_fragment>\n{ vec2 p = vWuv * 8.0; float f = smoothstep(0.9, 1.0, sin(p.x * 4.0 + uTime * 0.8) * sin(p.y * 4.4 - uTime * 0.7)); diffuseColor.rgb += f * 0.18; float s = smoothstep(0.985, 1.0, sin(p.x * 23.0 + uTime * 2.0) * sin(p.y * 19.0 - uTime * 1.7)); diffuseColor.rgb += s * 0.6; }');
+      };
+      m.customProgramCacheKey = () => 'village-water-v1';
+      const mesh = new THREE.Mesh(geo, m); mesh.name = 'village_water'; mesh.renderOrder = 2; group.add(mesh);
+    }
+    // 橋・桟橋（板と手すり・杭）
+    const b = new Batch(); const planks = M.get('planks'), timber = M.get('timber');
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const t = T(x, y); if ((t !== 'bridge' && t !== 'dock') || !wetT(x, y)) continue; const cx = x + 0.5, cz = y + 0.5;
+      b.add(planks, box(1.02, 0.1, 1.02, 1.2), M4(cx, 0.04, cz));
+      for (const [dx, dz] of [[0, -1], [0, 1], [-1, 0], [1, 0]]) {
+        if (!WATER[T(x + dx, y + dz)]) continue;
+        if (t === 'bridge') { const ex = cx + dx * 0.47, ez = cz + dz * 0.47; const along = dz !== 0; b.add(timber, box(along ? 1.02 : 0.08, 0.08, along ? 0.08 : 1.02, 1), M4(ex, 0.62, ez)); for (const s of [-0.45, 0.45]) b.add(timber, box(0.1, 0.62, 0.1, 1), M4(ex + (along ? s : 0), 0.32, ez + (along ? 0 : s))); }
+        else { b.add(timber, new THREE.CylinderGeometry(0.07, 0.07, 1.0, 6), M4(cx + dx * 0.44, -0.2, cz + dz * 0.44)); }
+      }
+    }
+    // 水車：水ぎわの丸太（log）の並びの中央に1つ。軸は東西、回る
+    this.wheels = []; const seen = {};
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      if (T(x, y) !== 'log' || seen[x + ',' + y]) continue; const side = WATER[T(x + 1, y)] ? 1 : WATER[T(x - 1, y)] ? -1 : 0; if (!side) continue;
+      let y1 = y; while (T(x, y1 + 1) === 'log') { y1++; seen[x + ',' + y1] = 1; } seen[x + ',' + y] = 1;
+      const cz = (y + y1 + 1) / 2, cx = x + 0.5 + side * 0.65; const R = Math.min(1.35, (y1 - y + 1) * 0.45 + 0.2);
+      b.add(timber, box(0.9, 0.18, 0.18, 1), M4(x + 0.5 + side * 0.2, 0.75, cz));   // 軸受け
+      const wheel = new THREE.Group(); wheel.position.set(cx, 0.75, cz); wheel.name = 'waterwheel';
+      const wb = new Batch(); const wood = M.get('timber');
+      wb.add(wood, new THREE.TorusGeometry(R, 0.06, 6, 24), M4(0, 0, 0, Math.PI / 2)); wb.add(wood, new THREE.TorusGeometry(R * 0.55, 0.05, 6, 18), M4(0, 0, 0, Math.PI / 2));
+      for (let i = 0; i < 10; i++) { const a = i * Math.PI / 5; wb.add(wood, box(0.36, 0.05, R * 2, 1), M4(0, 0, 0, 0, a)); wb.add(planks, box(0.42, 0.34, 0.06, 1), M4(0, Math.sin(a) * R, Math.cos(a) * R, 0, a)); }
+      wb.add(timber, new THREE.CylinderGeometry(0.12, 0.12, 0.5, 8), M4(0, 0, 0, 0, 0, Math.PI / 2));
+      wb.build(wheel); group.add(wheel); this.wheels.push(wheel);
+    }
+    const bg = new THREE.Group(); bg.name = 'bridges_docks'; b.build(bg); group.add(bg);
+  }
 }
 
 // 位置・法線・UV だけの単純な結合（BufferGeometryUtils を使わない軽量版）
