@@ -33,6 +33,7 @@
       if (bb.interior) self.warps.push({ x: bb.doorAbs.x, y: bb.doorAbs.y, to: bb.interior, tx: bb.entry ? bb.entry.x : 5, ty: bb.entry ? bb.entry.y : 7, name: bb.name });
       self.buildings.push(bb);
     });
+    if (root.MapWiden) { try { root.MapWiden.apply(this); } catch (e) { /* 広げられなくても元の地図のまま */ } }   // v7.0 ダンジョンの広い道（js/rpg/mapwiden.js）
   }
   GameMap.buildingKey = function (def, flags) { return (def.buildings || []).filter(function (b) { return b.showIf; }).map(function (b) { return b.showIf + '=' + (flags[b.showIf] ? 1 : 0); }).join(','); };
   // 建物の足元タイル（描画は建物画像が担当）

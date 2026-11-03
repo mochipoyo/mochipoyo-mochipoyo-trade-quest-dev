@@ -1,0 +1,13 @@
+--- savecompat64.js.bak70	2026-11-03 23:20:24.391723482 +0900
++++ savecompat64.js	2026-11-03 23:20:24.713978124 +0900
+@@ -23,7 +23,9 @@
+   await sleep(50);
+   for (const name of Object.keys(made.out)) {
+     const old = made.out[name]; const d = S.migrate(JSON.parse(JSON.stringify(old)));
+-    const same = KEEP.filter(k => old[k] !== undefined).every(k => { const a = JSON.stringify(old[k]), b = JSON.stringify(d[k]); if (k === 'hero' || k === 'companions') return true; return a === b; });
++    // v7.0：旧セーブで、すでに先のステップへ進んでいるときは Nav.repairFlags が到着フラグ（kalion_arrived・sentra_arrived。目的の表示だけに使う）を足す。足されたこの2つだけは比べない（v70/kalionnav.js で確かめる）
++    const ARR70 = ['kalion_arrived', 'sentra_arrived']; const fl = (o, k) => (k === 'flags' ? Object.fromEntries(Object.entries(o[k]).filter(([f]) => !(ARR70.includes(f) && !(f in old.flags)))) : o[k]);
++    const same = KEEP.filter(k => old[k] !== undefined).every(k => { const a = JSON.stringify(old[k]), b = JSON.stringify(fl(d, k)); if (k === 'hero' || k === 'companions') return true; return a === b; });
+     ok(same, name + '：所持金・預金・持ち物・フラグ・クエスト・宝箱・位置・隊列・仲間の顔ぶれがそのまま');
+     const actors = [['hero', old.hero, d.hero]].concat(Object.keys(old.companions).map(k => [k, old.companions[k], d.companions[k]]));
+     ok(actors.every(([id, a, b]) => b && a.level === b.level && a.exp === b.exp && a.hp === b.hp && a.mp === b.mp && a.job === b.job && JSON.stringify(a.equip) === JSON.stringify(b.equip) && JSON.stringify(a.skills) === JSON.stringify(b.skills.filter(k => !(k === 'dungeon_return' && a.skills.indexOf(k) < 0))) && b.skills.filter(k => a.skills.indexOf(k) < 0).every(k => k === 'dungeon_return' && w.DUNGEON_RETURN_LEARN[b.job] && b.level >= w.DUNGEON_RETURN_LEARN[b.job])), name + '：主人公と仲間 ' + actors.length + '人のレベル・経験値・HP・MP・職業・装備・覚えた技がそのまま（v6.5：習得レベルを超えた僧侶・賢者などに「帰還の術」だけが加わる）');

@@ -10,13 +10,14 @@ import { TerrainBuilder3D, rngFrom } from './TerrainBuilder3D.js';
 import { BuildingBuilder3D } from './BuildingBuilder3D.js';
 import { InteriorBuilder3D, INTERIOR_KINDS } from './InteriorBuilder3D.js';
 import { WorldBuilder3D } from './WorldBuilder3D.js';
+import { DecorBuilder3D, modernStyle, buildModernBuilding } from './DecorBuilder3D.js';
 import { themeFor } from './themes.js';
 import { mapCoverage } from './coverage.js';
 import { buildArtVolume } from '../battle/ArtVolume.js';
 import { readable } from '../battle/readable.js';
 import { Character3D, DIR_YAW } from '../entities/Character3D.js';
 import { characterModelFor, fieldModelFor } from '../assets/manifest.js';
-import { Batch, box, M4, softTexture } from '../engine/Materials.js';
+import { Batch, box, M4, softTexture, textTexture } from '../engine/Materials.js';
 
 export class MapScene3D {
   constructor(app) { this.app = app; this.root = new THREE.Group(); this.npcs = []; this.chests = []; this.smokes = []; this.sway = []; this.animated = []; this.lampSpots = []; }
@@ -29,6 +30,7 @@ export class MapScene3D {
     if (this.coverage === 'generic') {
       // ---- Phase 1 汎用3Dワールド：町・フィールド・ダンジョン・ポヨ村以外の屋内
       const theme = themeFor(map); this.theme = theme;
+      theme.modern = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null);   // v7.0 近未来・機械・娯楽の町（舗装・建物）
       const wb = new WorldBuilder3D(app.mats, app.models, app.quality); this.world = wb;
       const r = await wb.build(map, theme);
       this.root.add(r.group); this.heightAt = r.heightAt; this.lampSpots = r.lampSpots.slice();
@@ -38,8 +40,10 @@ export class MapScene3D {
         const bb = new BuildingBuilder3D(app.mats, app.models); const rnd = rngFrom(5150);
         const shared = new Batch(); const bgroup = new THREE.Group(); bgroup.name = 'buildings'; this.root.add(bgroup);
         const design = (window.LocationDesign && window.LocationDesign.forMap) ? window.LocationDesign.forMap(map.id) : null; this.design = design;
+        const modern = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null);   // v7.0 近未来・機械・娯楽の町は、ガラスと金属の建物
         for (const b of map.buildings) {
-          const o = await bb.build(b, rnd, { batch: shared, design, theme }); bgroup.add(o.group);
+          let o = null; if (modern) { try { o = buildModernBuilding(b, modern, textTexture); } catch (e) { o = null; console.warn('modern building', e); } }
+          if (!o) o = await bb.build(b, rnd, { batch: shared, design, theme }); bgroup.add(o.group);
           o.lights.forEach((l) => this.lampSpots.push(l)); o.smokes.forEach((s) => this.addSmoke(s));
           o.props.forEach((p) => { const v = new THREE.Vector3().setFromMatrixPosition(p.m); wb.put(p.id, p.m, v.x, v.z); });
           o.group.traverse((x) => { if (x.userData && x.userData.sway) this.sway.push({ obj: x, base: x.rotation.clone(), ph: Math.random() * 6 }); });
@@ -47,6 +51,8 @@ export class MapScene3D {
         shared.build(bgroup);
       }
       await r.finalize();
+      // v7.0 場所ごとの個性の飾り（壁の飾り・町の外の遠景・床の小物。js/data/placedecor70.js のテーマ）。失敗しても地図は表示する
+      try { const db = new DecorBuilder3D(); const dr = db.build(map, { T: wb.T, OUT: wb.OUT, heightAt: r.heightAt, group: r.group }); this.decor = { key: dr.key, stats: db.stats }; (dr.smokes || []).forEach((sm) => this.addSmoke(sm)); } catch (e) { this.decor = { key: null, error: String(e && e.message || e) }; console.warn('decor70', e); }
       for (const c of map.chests) this.addChest(c);
       if (map.kind === 'town' || map.kind === 'field') this.addMotes(map);
       this.bounds = (this.interior && map.w <= 16 && map.h <= 14) ? { x0: 1, z0: 1, x1: map.w - 1, z1: map.h - 1 } : null;   // 小さな部屋だけ部屋全体を見る
@@ -208,7 +214,90 @@ export class MapScene3D {
     if (this.world) { this.world.update(t); this.world.updateLod(player); }
     this.updateBossSymbols(t);
     this.updateQuizSymbols(t);
+    this.updateWarpMarks(t, player);
+    this.updateSeaTreasure(t);
   }
+  // v7.0 海の底の拾い物（js/rpg/seatreasure.js）：水の下の光・水面のきらめき・上る泡。拾ったら消える（船で近くを通ると 2D 側が拾う）
+  updateSeaTreasure(t) {
+    const ST = window.SeaTreasure; if (!ST || !ST.LIST || !this.map || this.map.kind !== 'field') return;
+    if (!this.seaObjs) {
+      this.seaObjs = [];
+      const glowTex = MapScene3D.seaTex || (MapScene3D.seaTex = softTexture('rgba(255,255,255,1)', 64));
+      for (const tr of ST.LIST.filter((x) => x.map === this.map.id)) {
+        const g = new THREE.Group(); g.name = 'sea_treasure_' + tr.id; g.position.set(tr.x + 0.5, 0, tr.y + 0.5);
+        const deep = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 1.6), new THREE.MeshBasicMaterial({ map: glowTex, color: 0x8fe8ff, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false }));
+        deep.geometry.userData.own = true; deep.rotation.x = -Math.PI / 2; deep.position.y = -0.3; deep.renderOrder = 3; g.add(deep);
+        const spark = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffffff, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false })); spark.position.y = -0.05; spark.renderOrder = 7; g.add(spark);
+        const bubbles = []; for (let i = 0; i < 4; i++) { const b = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xd8f8ff, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false })); b.scale.setScalar(0.12); b.renderOrder = 7; g.add(b); bubbles.push(b); }
+        this.root.add(g); this.seaObjs.push({ tr, g, deep, spark, bubbles, ph: (tr.x * 3 + tr.y) % 6 });
+      }
+    }
+    for (const o of this.seaObjs) {
+      const show = !ST.taken(o.tr); o.g.visible = show; if (!show) continue;
+      const k = 0.5 + 0.5 * Math.sin(t * 2.6 + o.ph); o.deep.material.opacity = 0.45 + 0.35 * k; const sc = 0.35 + 0.45 * k; o.spark.scale.set(sc, sc, 1); o.spark.material.opacity = 0.5 + 0.5 * k;
+      o.bubbles.forEach((b, i) => { const q = (t * 0.5 + i / 4 + o.ph * 0.1) % 1; b.position.set(Math.sin(i * 2.1 + t) * 0.25, -0.3 + q * 0.42, Math.cos(i * 1.7 + t) * 0.25); b.material.opacity = 0.8 * Math.sin(q * Math.PI); });
+    }
+  }
+  seaTreasureInfo() { return (this.seaObjs || []).map((o) => ({ id: o.tr.id, visible: o.g.visible, x: o.g.position.x, z: o.g.position.z })); }
+  // v7.0 階段（下り・上り）とダンジョンの出入口の目印：2D版と同じ WarpMark.list()（js/rpg/warpmark.js）を写す
+  //   色つきの床の光・光の柱（壁より高く、離れていても見える）・上下に動く矢印（下り＝下向き・上り＝上向き）・近くでは文字（壁に隠れない）
+  //   閉ざされた出入口は灰色で柱なし。隠し部屋はフラグが立つまで出さない（0.5秒ごとに一覧を作り直し、変わったときだけ作り直す）
+  updateWarpMarks(t, player) {
+    const WM = window.WarpMark; if (!WM || !WM.list) return;
+    if (!this.warpMarks || t - (this._wmAt || 0) > 0.5 || t < (this._wmAt || 0)) {
+      this._wmAt = t; let L = []; try { L = WM.list(this.map) || []; } catch (e) { L = []; }
+      const key = WM.key(L);
+      if (!this.warpMarks || key !== this.warpMarkKey) { this.clearWarpMarks(); this.warpMarkKey = key; this.warpMarks = L.map((o, i) => this.makeWarpMark(o, i)); }
+    }
+    for (const m of this.warpMarks) {
+      const ph = Math.sin(t * 2.4 + m.ph);
+      m.arrow.position.y = m.ay + ph * 0.09; m.arrow.rotation.y = t * 1.6;
+      m.disc.material.opacity = (m.o.locked ? 0.35 : 0.7) + 0.2 * ph;
+      if (m.beam) m.beam.material.opacity = 0.32 + 0.1 * ph;
+      if (m.label) { const d = player ? Math.hypot(player.x - m.g.position.x, player.z - m.g.position.z) : 0; const a = Math.max(0, Math.min(1, (10 - d) / 2.5)); m.label.material.opacity = a; m.label.visible = a > 0.01; }
+    }
+  }
+  makeWarpMark(o, i) {
+    const tex = MapScene3D.warpTex || (MapScene3D.warpTex = { glow: softTexture('rgba(255,255,255,1)', 64), beam: (() => { const c = document.createElement('canvas'); c.width = 4; c.height = 64; const g = c.getContext('2d'); const gr = g.createLinearGradient(0, 0, 0, 64); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(0.55, 'rgba(255,255,255,0.35)'); gr.addColorStop(1, 'rgba(255,255,255,1)'); g.fillStyle = gr; g.fillRect(0, 0, 4, 64); const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; return tx; })() });
+    const col = new THREE.Color(o.color); const xs = o.tiles.map((p) => p[0]), zs = o.tiles.map((p) => p[1]);
+    const sx = Math.max(...xs) - Math.min(...xs) + 1, sz = Math.max(...zs) - Math.min(...zs) + 1;
+    const g = new THREE.Group(); g.name = 'warp_mark_' + o.kind + (o.stairs ? '_stairs' : '');
+    const x = o.x + 0.5, z = o.y + 0.5; g.position.set(x, this.heightAt ? (this.heightAt(x, z) || 0) : 0, z);
+    const own = (geo) => { geo.userData.own = true; return geo; };
+    const disc = new THREE.Mesh(own(new THREE.PlaneGeometry(sx + 0.6, sz + 0.6)), new THREE.MeshBasicMaterial({ map: tex.glow, color: col, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false }));
+    disc.rotation.x = -Math.PI / 2; disc.position.y = 0.06; disc.renderOrder = 4; g.add(disc);
+    let beam = null; const bh = this.dark ? 3.8 : 3.0;
+    if (!o.locked) {
+      const r = 0.3 + 0.18 * Math.max(sx, sz);
+      beam = new THREE.Mesh(own(new THREE.CylinderGeometry(r * 0.8, r, bh, 24, 1, true)), new THREE.MeshBasicMaterial({ map: tex.beam, color: col, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+      beam.position.y = bh / 2; beam.renderOrder = 6; g.add(beam);
+    }
+    const arrow = new THREE.Group(); const cone = new THREE.Mesh(own(new THREE.ConeGeometry(0.22, 0.4, 4)), new THREE.MeshBasicMaterial({ color: col })); const stem = new THREE.Mesh(own(new THREE.BoxGeometry(0.1, 0.26, 0.1)), cone.material);
+    if (o.kind === 'up') { cone.position.y = 0.13; stem.position.y = -0.18; } else { cone.rotation.x = Math.PI; cone.position.y = -0.13; stem.position.y = 0.18; }
+    arrow.add(cone); arrow.add(stem); const ay = 1.7; arrow.position.y = ay; g.add(arrow);
+    // 文字（近くにいるときだけ。壁に隠れない）
+    const c = document.createElement('canvas'); const fs = 44; const cx = c.getContext('2d'); let label = null, ltex = null;
+    if (cx) {
+      cx.font = 'bold ' + fs + 'px sans-serif'; const w = Math.ceil(cx.measureText(o.label).width) + 28; c.width = w; c.height = fs + 22;
+      cx.font = 'bold ' + fs + 'px sans-serif'; cx.textAlign = 'center'; cx.textBaseline = 'middle';
+      cx.fillStyle = 'rgba(8,10,20,0.62)'; const rr = 14; cx.beginPath(); cx.moveTo(rr, 0); cx.arcTo(w, 0, w, c.height, rr); cx.arcTo(w, c.height, 0, c.height, rr); cx.arcTo(0, c.height, 0, 0, rr); cx.arcTo(0, 0, w, 0, rr); cx.closePath(); cx.fill();
+      cx.strokeStyle = o.color; cx.lineWidth = 4; cx.stroke();
+      cx.lineWidth = 6; cx.strokeStyle = 'rgba(0,0,0,0.85)'; cx.strokeText(o.label, w / 2, c.height / 2 + 2); cx.fillStyle = '#ffffff'; cx.fillText(o.label, w / 2, c.height / 2 + 2);
+      ltex = new THREE.CanvasTexture(c); ltex.colorSpace = THREE.SRGBColorSpace;
+      label = new THREE.Sprite(new THREE.SpriteMaterial({ map: ltex, transparent: true, depthTest: false, depthWrite: false })); const lh = 0.42; label.scale.set(lh * c.width / c.height, lh, 1); label.position.y = 2.25; label.renderOrder = 30; g.add(label);
+    }
+    this.root.add(g);
+    return { o, g, disc, beam, arrow, label, ltex, ay, ph: (i * 1.7) % 6.2 };
+  }
+  clearWarpMarks() {
+    if (!this.warpMarks) return;
+    for (const m of this.warpMarks) {
+      m.g.traverse((x) => { if (x.geometry && x.geometry.userData && x.geometry.userData.own) x.geometry.dispose(); if (x.material && x.material.dispose) x.material.dispose(); });
+      if (m.ltex) m.ltex.dispose(); if (m.g.parent) m.g.parent.remove(m.g);
+    }
+    this.warpMarks = null;
+  }
+  warpMarkInfo() { return (this.warpMarks || []).map((m) => ({ kind: m.o.kind, stairs: m.o.stairs, locked: m.o.locked, label: m.o.label, x: +m.g.position.x.toFixed(2), z: +m.g.position.z.toFixed(2), beam: !!m.beam, labelVisible: !!(m.label && m.label.visible) })); }
   // v6.5 Phase D ボスのシンボル（3D）：2D版と同じ BossSymbol.list() を毎フレーム写す（倒したら消える・条件まで出ない）
   // 姿は2D版と同じボスの絵を立て札（ビルボード）にして、待機の動き（呼吸・上下）・足もとの光の輪・ボスの色の光をつける。専用の3Dモデルはまだない
   updateBossSymbols(t) {
@@ -278,6 +367,7 @@ export class MapScene3D {
 
   // 使わなくなった場面の解放（共有のモデル形状・マテリアルは残す）
   dispose() {
+    this.clearWarpMarks();   // v7.0 出入口の目印（文字の絵・形）
     if (this.quizSyms) this.quizSyms.forEach((o) => { o.texs.forEach((tx) => tx.dispose()); o.qtex.dispose(); o.ring.geometry.dispose(); o.ring.material.dispose(); });
     this.root.traverse((o) => {
       if (o.isInstancedMesh || o.isBatchedMesh) { try { o.dispose(); } catch (e) { /* なし */ } }

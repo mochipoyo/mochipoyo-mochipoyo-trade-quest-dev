@@ -318,13 +318,14 @@
     'C==BBBBBBrr===rr===BBBBBB======C',
     'C========rr===rr===============C',
     'C=============rr===============C',
-    'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
+    'CCCCCCCCCCCCCCrrCCCCCCCCCCCCCCCC'
   ],
   buildings: [
     { id: 'h1', type: 'house', name: '居住ユニット 7-1', x: 3, y: 3, w: 6, h: 4, doorX: 2, interior: 'district_house', entry: { x: 4, y: 5 } },
     { id: 'h2', type: 'inn', name: '休息ユニット', x: 11, y: 3, w: 6, h: 4, doorX: 2, interior: 'district_inn', entry: { x: 5, y: 7 } },
     { id: 'h3', type: 'item', name: '配給ユニット', x: 19, y: 3, w: 6, h: 4, doorX: 2, interior: 'district_ration', entry: { x: 5, y: 7 } }
   ],
+  // v7.0 修正：出口（14,23）（15,23）が壁のマスの上にあり、歩いて外へ出られなかった → 一番下の行のその2マスを道にした
   warps: [14, 15].map(function (x) { return { x: x, y: 23, to: 'world_machine', tx: 42, ty: 84, name: '居住区の外へ' }; }),
   chests: [{ id: 'sd1', x: 27, y: 21, item: 'hi_ether', qty: 2 }],
   events: [{ x: 12, y: 18, type: 'inspect', solid: false, text: ['広場の掲示：「明日の予定」', '6:00 起床 ／ 6:30 配給 ／ 7:00 移動（第3工区）／ 12:00 配給 ／ 18:00 帰還 ／ 22:00 消灯', '「変更：なし。明日も、明後日も」'] }],

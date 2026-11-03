@@ -70,7 +70,7 @@
     'f~rrrrrrrrrrrrrrrrrrrrrrrrrrrr.f',
     'f~~...q...y..rr.....y..........f',
     'f~~..........rr................f',
-    'ffffffffffffffffffffffffffffffff'
+    'fffffffffffffrrfffffffffffffffff'
   ],
   buildings: [
     { id: 'inn', type: 'inn', name: '灯りの宿', x: 4, y: 3, w: 8, h: 5, doorX: 3, interior: 'aruna_inn', entry: { x: 5, y: 7 } },
@@ -78,6 +78,7 @@
     { id: 'yorn', type: 'house', name: 'ヨルンの家', x: 4, y: 11, w: 8, h: 5, doorX: 3, interior: 'aruna_house_yorn', entry: { x: 5, y: 7 } },
     { id: 'iris', type: 'elder', name: '測量士の家', x: 18, y: 12, w: 8, h: 5, doorX: 3, interior: 'aruna_house_iris', entry: { x: 5, y: 7 } }
   ],
+  // v7.0 修正：出口（13,23）（14,23）が木のマスの上にあり、歩いて村を出られなかった → 一番下の行のその2マスを道にした
   warps: [{ x: 13, y: 23, to: 'world_islands', tx: 46, ty: 64, name: '島へ' }, { x: 14, y: 23, to: 'world_islands', tx: 46, ty: 64, name: '島へ' }],
   chests: [{ id: 'av1', x: 27, y: 21, item: 'hi_potion', qty: 2 }],
   events: [{ x: 3, y: 12, type: 'inspect', solid: false, text: ['古い桟橋。ランタンが一つ、柱に掛かっている。', '油は毎晩足されている。誰も来ない港のために。'] }],
@@ -173,13 +174,14 @@
     'c======___zW======rrrr========Wz____W==c',
     'c=====WWW==W======rrrr========W==WWW==Zc',
     'c=Z===============rrrr======q==========c',
-    'cccccccccccccccccccccccccccccccccccccccc'
+    'ccccccccccccccccccrrrrcccccccccccccccccc'
   ],
   buildings: [
     { id: 'post', type: 'house', name: '郵便局跡', x: 12, y: 15, w: 8, h: 5, doorX: 3, interior: 'ruins_post', entry: { x: 5, y: 7 } },
     { id: 'store', type: 'house', name: '倉庫跡', x: 26, y: 8, w: 8, h: 5, doorX: 3, interior: 'ruins_store', entry: { x: 5, y: 7 } },
     { id: 'clock', type: 'castle', name: '時計塔', x: 14, y: 2, w: 10, h: 6, doorX: 4, interior: 'aruna_ruins_1', entry: { x: 2, y: 10 } }
   ],
+  // v7.0 修正：出口（18〜21,29）が崖のマスの上にあり、歩いて外へ出られなかった → 一番下の行のその4マスを道にした
   warps: [{ x: 18, y: 29, to: 'world_islands', tx: 86, ty: 64, name: '島へ' }, { x: 19, y: 29, to: 'world_islands', tx: 86, ty: 64, name: '島へ' }, { x: 20, y: 29, to: 'world_islands', tx: 86, ty: 64, name: '島へ' }, { x: 21, y: 29, to: 'world_islands', tx: 86, ty: 64, name: '島へ' },
     { x: 36, y: 2, to: 'aruna_underground_1', tx: 1, ty: 1, needFlag: 'iris_joined', name: '崩れた祠（地下施設）' }],
   chests: [{ id: 'ar1', x: 4, y: 27, item: 'hi_ether', qty: 2 }, { id: 'ar2', x: 34, y: 27, gold: 900 }],

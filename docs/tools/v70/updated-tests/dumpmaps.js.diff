@@ -1,0 +1,21 @@
+--- dumpmaps.js.bak70	2026-11-03 23:20:24.386652893 +0900
++++ dumpmaps.js	2026-11-03 23:20:24.435016098 +0900
+@@ -3,13 +3,17 @@
+ // v6.8：追加の仲間3人（カズト・もちぽよ・ポン太。companion68test.js で確かめる）も除く
+ // v6.8（11/03）：トレディアをマクディア地方へ移した。町の出口の行き先は以前の値（カリオン徴収連邦 36,89）に読み替えて比べる（新しい行き先は tradiatest.js・tweak68test.js で確かめる）。world_kalion・world_magicka のトレディアへのワープも比べない（v68tradia.js）
+ // v6.9：西暦3121年の物語で足したもの（印 s3121：新しいマップ・人・調べる所・建物、カリオン地方の「アサナ村跡」）も除く（s3121/prologue2d.js・chapters2d.js・maptest.js で確かめる）
++// v7.0：出口のマスを道にした3マップ（アルナの村・廃墟の街・第7居住区）は、以前の文字に戻して比べる
+ // v6.7：生活・健康の豆知識おばさん（aunt67_〜）と、加入場所を移した仲間4人（ミナ・セリス・ガルド・ルシア）も除く（chatter67test.js で確かめる）
+ const load = require('./rpgload.js'); const { w } = load();
+ const out = {};
+ const S69 = (id) => !!(w.MAP_DEFS[id] && w.MAP_DEFS[id].s3121);
+ for (const [id, d] of Object.entries(w.MAP_DEFS)) {
+   if (d.s3121) continue;
+-  const rows = typeof d.rows === 'function' ? null : d.rows;
++  // v7.0：出口のマス（木・崖・壁の上にあって歩いて出られなかった）を道にした3マップは、以前の文字に戻して比べる（v70/stuckcheck2.js・solidwarps.js で確かめる）
++  const R70 = { aruna_village: [23, [13, 14], 'f'], aruna_ruins: [29, [18, 19, 20, 21], 'c'], scheduled_district: [23, [14, 15], 'C'] };
++  let rows = typeof d.rows === 'function' ? null : d.rows;
++  if (rows && R70[id]) { const [ry, xs, ch] = R70[id]; rows = rows.slice(); const r = rows[ry].split(''); xs.forEach((x) => { if (r[x] === 'r') r[x] = ch; }); rows[ry] = r.join(''); }
+   out[id] = { rows, warps: require('./v68tradia.js').stripWarps(id, d.warps).filter(x => !S69(x.to)).map(x => (id === 'tradia' && x.to === 'world_magicka' ? Object.assign({}, x, { to: 'world_kalion', tx: 36, ty: 89 }) : x)).map(x => ({ x: x.x, y: x.y, to: x.to, tx: x.tx, ty: x.ty, needFlag: x.needFlag || null })), chests: (d.chests || []).map(c => ({ id: c.id, x: c.x, y: c.y, item: c.item || null, gold: c.gold || null })),
+     npcs: (d.npcs || []).filter(n => !n.s3121 && !/^ev65/.test(n.id) && !/^tmaster_/.test(n.id) && !/^aunt67_/.test(n.id) && !['mina', 'seris', 'gald', 'lucia', 'kazuto', 'mochipoyo', 'ponta'].includes(n.id)).map(n => ({ id: n.id, x: n.x, y: n.y })), events: (d.events || []).filter(e => !e.v65 && !e.s3121).map(e => ({ x: e.x, y: e.y, type: e.type, doneFlag: e.doneFlag || null })), buildings: (d.buildings || []).filter(b => !b.s3121).map(b => ({ id: b.id, x: b.x, y: b.y, w: b.w, h: b.h, doorX: b.doorX, interior: b.interior || null })) };
+ }

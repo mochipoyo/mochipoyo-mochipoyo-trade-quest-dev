@@ -57,7 +57,8 @@ export class LightingManager {
     root.traverse((o) => {
       if (!o.material) return;
       (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => {
-        if (m.userData && m.userData.nightGlow !== undefined) { this.nightMats.add(m); return; }   // v6.6 町明かりのにじみ（夜だけ）
+        if (m.userData && m.userData.nightGlow !== undefined) { this.nightMats.add(m); return; }
+        if (m.userData && m.userData.keepGlow) return;   // v7.0 場所の飾りの光る部分（画面・水晶など）：昼も夜も同じ明るさ   // v6.6 町明かりのにじみ（夜だけ）
         if (m.userData && m.userData.window) this.windowMats.add(m);
         else if (m.emissive && (m.emissive.r + m.emissive.g + m.emissive.b) > 0.05 && m.emissiveIntensity > 0) { if (m.userData.baseEmissive === undefined) m.userData.baseEmissive = m.emissiveIntensity; this.glowMats.add(m); }
       });

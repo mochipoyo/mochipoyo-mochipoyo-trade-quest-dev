@@ -122,6 +122,8 @@
     var extras = root.Vehicle ? root.Vehicle.onMap(m.id).filter(function (v) { return !v.aboard; }).map(function (v) { return { x: v.x, y: v.y, vehicle: v.id }; }) : [];
     if (root.Astra) extras = extras.concat(root.Astra.extras(m.id));   // v6.5 Phase E 止めてあるアストラ号
     m.draw(ctx, cam, p, World.tint(), extras);
+    if (root.WarpMark) { try { root.WarpMark.draw2D(ctx, m, cam, p, TS); } catch (e) { /* 目印が描けなくても探索は続ける */ } }   // v7.0 階段（下り・上り）とダンジョンの出入口の目印
+    if (root.SeaTreasure) { try { root.SeaTreasure.draw2D(ctx, m, cam, TS); } catch (e) { /* 描けなくても探索は続ける */ } }   // v7.0 海の底の拾い物のきらめき
     // v6.2 次の目的地：画面の中にあれば、控えめな赤い輪（地図の上の文字や人を隠さない細い線）
     if (root.Nav && root.Nav.enabled()) { try { var TSz = Engine.TS; root.Nav.markers(m.id).forEach(function (mk) { var sx = mk.x * TSz - cam.x + TSz / 2, sy = mk.y * TSz - cam.y + TSz / 2; if (sx < -TSz || sy < -TSz || sx > ctx.canvas.width + TSz || sy > ctx.canvas.height + TSz) return; var a = 0.4 + 0.35 * Math.sin(Date.now() / 420); ctx.save(); ctx.lineWidth = mk.primary ? 3 : 2; ctx.strokeStyle = 'rgba(0,0,0,' + (a * 0.5) + ')'; ctx.beginPath(); ctx.arc(sx, sy, TSz * 0.66 + 1.5, 0, Math.PI * 2); ctx.stroke(); ctx.strokeStyle = 'rgba(255,58,58,' + a + ')'; if (!mk.primary && ctx.setLineDash) ctx.setLineDash([6, 5]); ctx.beginPath(); ctx.arc(sx, sy, TSz * 0.66, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }); } catch (e) { if (!World._navErr) { World._navErr = true; console.error('nav', e); } } }
     // v5.5 視界制限（砂嵐の回廊など）：map.def.vision タイル。上位足の眼鏡（sight）で広がる
@@ -209,6 +211,7 @@
         if (root.Vehicle.flies()) { World.updatePlaceLabel(); if (root.Minimap) root.Minimap.onStep(m, p); return; }   // v5.4: 飛行中は町・洞窟・イベント・エンカウントなし
         var drift = root.Vehicle.drift(m, p.x, p.y);   // v5.2: 外海の海流・嵐
         if (drift) { p.x = drift.x; p.y = drift.y; p.px = p.x * 32; p.py = p.y * 32; root.Vehicle.syncToPlayer(m, p.x, p.y); Win.toast(drift.text); if (!d.flags.drift_seen) { d.flags.drift_seen = true; World.busy = true; Win.message(['外海の海流に船が流された。', '外海では海流に流されることがある。嵐に遭うと大きく流される。航海士がいれば海流を読んで避けやすい。']).then(function () { World.busy = false; }); return; } }
+        if (!World.busy && root.SeaTreasure && root.SeaTreasure.afterStep(m, p)) return;   // v7.0 海の底の拾い物（船で近くを通ったとき）
       }
       World.updatePlaceLabel();
     }

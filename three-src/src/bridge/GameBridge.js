@@ -416,6 +416,7 @@ export class App3D {
     const b = v.clone().addScaledVector(right, 2.6).project(cam);
     CUT.uCutCenter.value = [(a.x * 0.5 + 0.5) * size.x, (a.y * 0.5 + 0.5) * size.y];
     CUT.uCutRadius.value = Math.abs(b.x - a.x) * 0.5 * size.x; CUT.uCutDepth.value = depth - 0.7;
+    { const e = cam.matrixWorld.elements; CUT.uCutYRow.value = [e[1], e[5], e[9], e[13]]; CUT.uCutMinY.value = this.pos.y + 0.3; }   // v7.0 地面・床（足もと＋0.3 より低い面）は抜かない
   }
   // 確認用：主人公にモーションを再生させる（3D設定の「モーション」）
   // v6.9 イベント用のカメラ（js/data/story3121.js の Story3121.cine から呼ぶ）。2D のマス座標 { x, y, dist, pitch }。null で解除

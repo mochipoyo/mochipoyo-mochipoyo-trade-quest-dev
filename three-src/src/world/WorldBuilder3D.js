@@ -449,11 +449,11 @@ export class WorldBuilder3D {
     const mat = new THREE.MeshStandardMaterial({ map: tx.grass_albedo || null, roughness: 0.95, metalness: 0 });
     const U = { uSplat: { value: splat }, uTint: { value: tint }, uOrigin: { value: new THREE.Vector2(ox, oz) }, uSize: { value: new THREE.Vector2(sw, sh) },
       uDirt: { value: tx.dirt_albedo || null }, uCobble: { value: tx.cobble_albedo || null }, uRock: { value: tx.stonewall_albedo || null }, uRockTint: { value: new THREE.Color(theme.rock || '#9a948a') }, uSnow: { value: theme.region === 'snow' ? 1 : 0 },
-      uNoise: { value: sharedNoiseTexture() }, uRound: { value: round ? 1 : 0 } };   // v6.8 丸み：境界をノイズでゆがめる（uRound=0 のときは以前と同じ）
+      uNoise: { value: sharedNoiseTexture() }, uRound: { value: round ? 1 : 0 }, uModern: { value: theme && theme.modern ? 1 : 0 } };   // v7.0 uModern：近未来・機械・娯楽の町の舗装（石畳の代わりに平らな板石の目地）   // v6.8 丸み：境界をノイズでゆがめる（uRound=0 のときは以前と同じ）
     mat.onBeforeCompile = (sh) => {
       Object.assign(sh.uniforms, U);
       sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying float vSlope; varying float vH;').replace('#include <begin_vertex>', '#include <begin_vertex>\nvSlope = objectNormal.y; vH = position.y;');
-      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying float vSlope; varying float vH; uniform sampler2D uSplat, uTint, uDirt, uCobble, uRock, uNoise; uniform vec2 uOrigin, uSize; uniform vec3 uRockTint; uniform float uSnow, uRound;')
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying float vSlope; varying float vH; uniform sampler2D uSplat, uTint, uDirt, uCobble, uRock, uNoise; uniform vec2 uOrigin, uSize; uniform vec3 uRockTint; uniform float uSnow, uRound, uModern;')
         .replace('#include <map_fragment>', `
           vec2 wp = vMapUv * 4.0; vec2 st = (wp - uOrigin) / uSize;
           // v6.8 丸み：塗り分けを読む位置をノイズで少しずらし（境界が波打つ）、重みにも細かい揺らぎを足す
@@ -463,6 +463,7 @@ export class WorldBuilder3D {
           sp += uRound * vec4((nf.r - 0.5) * 0.42, (nf.g - 0.5) * 0.38, (nf.r - 0.5) * 0.3, (nf.g - 0.5) * 0.3);
           vec3 g1 = texture2D(map, wp / 3.1).rgb, g2 = texture2D(map, wp / 7.3 + vec2(0.37, 0.11)).rgb; vec3 grass = mix(g1, g2, 0.42);
           vec3 dirt = texture2D(uDirt, wp / 2.7).rgb; vec3 cob = texture2D(uCobble, wp / 2.0).rgb; vec3 rock = texture2D(uRock, wp / 3.0).rgb;
+          if (uModern > 0.5) { vec2 gp = fract(wp * 0.5); float ln = step(0.955, max(gp.x, gp.y)); cob = mix(vec3(0.56, 0.6, 0.64), vec3(0.32, 0.35, 0.4), ln) * (0.9 + 0.1 * texture2D(uNoise, wp * 0.13).r); }
           float lum = dot(dirt, vec3(0.333)); vec3 smoothc = vec3(0.82 + lum * 0.36);
           vec3 c = grass * 1.15;
           c = mix(c, dirt * 1.1, smoothstep(0.25, 0.7, sp.g));
@@ -472,10 +473,12 @@ export class WorldBuilder3D {
           c *= tn;
           float steep = smoothstep(0.82, 0.55, vSlope); c = mix(c, rock * uRockTint * 1.1, steep * 0.85);
           c = mix(c, vec3(0.92, 0.95, 0.99), uSnow * smoothstep(0.6, 1.6, vH) * 0.6);
+          // v7.0 海・湖の底（水面より下の地面）：石の壁や石畳の模様（タイル）が水の下に透けて見えないよう、模様のない深い青緑にする
+          { float sea = smoothstep(-0.16, -0.4, vH); if (sea > 0.0) { float nb = texture2D(uNoise, wp * 0.031).r; vec3 bed = mix(vec3(0.06, 0.15, 0.22), vec3(0.11, 0.21, 0.25), nb); c = mix(c, bed, sea); } }
           diffuseColor *= vec4(c, 1.0);
         `);
     };
-    mat.customProgramCacheKey = () => 'world-ground-v2';
+    mat.customProgramCacheKey = () => 'world-ground-v3';
     addCutout(mat); return mat;
   }
   // 水・溶岩・雲の面：テクスチャを使わないので、自前の UV（vWuv）を渡す

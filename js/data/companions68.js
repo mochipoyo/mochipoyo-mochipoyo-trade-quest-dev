@@ -22,7 +22,8 @@
   CP.kazuto = { name: 'カズト', job: 'warrior', sprite: 'kazuto', joinLevel: 28, personality: '実直で、仲間の盾になりたがる',
     background: 'マクディア魔導王国で剣と魔法の両方を学ぶ戦士。「仲間を守るための魔力」を求め、王立学院の禁書庫に入る機会を待っていた。', bio: '戦士。MPが多く、戦士の特技を何度も使える。',
     statBonus: { mp: [12, 1.9] } };   // 最大MP ＋（12 ＋ 1.9×(Lv−1)）。戦士の最大MP（4 ＋ 0.8×(Lv−1)）に上乗せ。転職しても本人の上乗せは残る
-  CP.mochipoyo = { name: 'もちぽよ', job: 'loop_trader', sprite: 'mochipoyo', joinLevel: 28, personality: 'のんびりしているが、相場の話になると目つきが変わる',
+  // v7.0 表示名を「もちぽよ」から「謎のタイムトラベラーM」へ（ID mochipoyo・画像・フラグはそのまま。旧セーブの名前は State.migrate が置きかえる）
+  CP.mochipoyo = { name: '謎のタイムトラベラーM', job: 'loop_trader', sprite: 'mochipoyo', joinLevel: 28, personality: 'のんびりしているが、相場の話になると目つきが変わる',
     background: '2035年という過去の時代から、タイムループしてこの世界へ来たトレーダー。相場の波形を読む技を、呪文として使える。好物は伝説のポークビッツ丼。', bio: '時渡りのトレーダー。強力なトレード呪文を、少ないMPで何度も使える。',
     tradeMpCut: 0.4 };   // トレード呪文（trade: true）の消費MP −40%（本人。職業を変えても残る）
 
@@ -31,7 +32,7 @@
     stats: { hp: 26, mp: 22, atk: 5, def: 6, agi: 8, mag: 12 }, growth: { hp: 5.4, mp: 4.2, atk: 1.2, def: 1.4, agi: 1.6, mag: 2.9 },
     weapons: ['staff', 'dagger', 'club'], armors: ['robe', 'light', 'hat', 'acc'],
     skills: [{ lv: 1, id: 'trend_ray' }, { lv: 5, id: 'rci_storm' }, { lv: 10, id: 'dow_thunder' }, { lv: 14, id: 'stoploss_aegis' }, { lv: 18, id: 'macd_cross_burst' }, { lv: 22, id: 'loop_foresight' }, { lv: 28, id: 'time_loop_wave' }],
-    trait: 'トレード呪文の消費MP-20%（もちぽよ本人は-40%）', tradeMpCut: 0.2, unlock: { level: 15, flag: 'mochipoyo_joined' } };
+    trait: 'トレード呪文の消費MP-20%（謎のタイムトラベラーM本人は-40%）', tradeMpCut: 0.2, unlock: { level: 15, flag: 'mochipoyo_joined' } };
   if (root.JOB_LIST && root.JOB_LIST.indexOf('loop_trader') < 0) root.JOB_LIST.push('loop_trader');
 
   /* ---------- トレード呪文（trade: true・school: 'spell'） ---------- */
@@ -60,7 +61,7 @@
      ・HP・MPを全回復。戦闘中に食べると、攻撃力が3ターンのあいだ2倍（＋100%）。フィールドではHP・MPの全回復だけ
      ・トレディアの酒場「損切り亭」でだけ 20000G で買える（道具屋では売らない） */
   if (!ITEMS.porkbits_don) {
-    ITEMS.porkbits_don = { id: 'porkbits_don', name: '伝説のポークビッツ丼', cat: 'consumable', price: 20000, effect: { fullHp: true, fullMp: true, buff: { atk: 1.0 }, turns: 3 }, desc: 'HP・MPを全回復。戦闘中に食べると攻撃力が3ターン2倍。もちぽよの大好物（損切り亭でだけ買える）', food: 'food' };
+    ITEMS.porkbits_don = { id: 'porkbits_don', name: '伝説のポークビッツ丼', cat: 'consumable', price: 20000, effect: { fullHp: true, fullMp: true, buff: { atk: 1.0 }, turns: 3 }, desc: 'HP・MPを全回復。戦闘中に食べると攻撃力が3ターン2倍。謎のタイムトラベラーMの大好物（損切り亭でだけ買える）', food: 'food' };
     if (root.ITEM_LIST && root.ITEM_LIST.indexOf('porkbits_don') < 0) root.ITEM_LIST.push('porkbits_don');
   }
   var FS = root.FOOD_STANDS = root.FOOD_STANDS || {}; FS.tradia_tavern = (FS.tradia_tavern || ['onigiri', 'yakitori', 'ramen', 'curry_rice', 'green_tea', 'coffee', 'fruit_juice']).concat(['porkbits_don']);
@@ -68,8 +69,8 @@
   /* ---------- 画像の登録（2D版：立ち絵・フィールドの歩行） ---------- */
   function portrait(id, name, w, h) { AM.companions = AM.companions || {}; AM.companions[id] = { name: name, kind: 'portrait', spriteId: id, anchor: 'bottom-center', w: w, h: h, path: 'assets/characters/companions/' + id + '.png', status: 'replaced', use: true, fallback: 'chars', note: 'v6.8 ご提供の画像（正面）から切り出し' }; }
   function walk(id, name, fw, fh, note) { AM.overworld = AM.overworld || {}; AM.overworld[id] = { name: name, kind: 'walk', spriteId: id, anchor: 'bottom-center', frameW: fw, frameH: fh, cols: 3, rows: 4, dirOrder: ['down', 'left', 'right', 'up'], frames: ['idle', 'left_foot', 'right_foot'], scale: 2, path: 'assets/characters/overworld/' + id + '.png', w: fw * 3, h: fh * 4, status: 'replaced', use: true, fallback: 'chars', style: 'procedural', note: note }; }
-  portrait('kazuto', 'カズト', 249, 258); portrait('mochipoyo', 'もちぽよ', 272, 278); portrait('ponta', '神聖犬ポン太', 221, 201);
-  walk('kazuto', 'カズト', 16, 24, 'ドット絵生成器（docs/tools/walker.js の kazuto）で作成'); walk('mochipoyo', 'もちぽよ', 16, 24, 'ドット絵生成器（docs/tools/walker.js の mochipoyo）で作成');
+  portrait('kazuto', 'カズト', 249, 258); portrait('mochipoyo', '謎のタイムトラベラーM', 272, 278); portrait('ponta', '神聖犬ポン太', 221, 201);
+  walk('kazuto', 'カズト', 16, 24, 'ドット絵生成器（docs/tools/walker.js の kazuto）で作成'); walk('mochipoyo', '謎のタイムトラベラーM', 16, 24, 'ドット絵生成器（docs/tools/walker.js の mochipoyo）で作成');
   walk('ponta', '神聖犬ポン太', 22, 20, 'ご提供の4方向の絵を縮めて作成（仮の歩行。足踏みのコマはなく、1ドット上下するだけ）');
   // 時渡りのトレーダーの職業の立ち絵・主人公の歩行の絵はまだない → ほかの職業と同じく「missing」として登録し、コード描画で表示する（asset-manifest.js の v5.1 と同じ形）
   AM.jobs = AM.jobs || {}; if (!AM.jobs.loop_trader) AM.jobs.loop_trader = { name: '時渡りのトレーダー', kind: 'portrait', spriteId: 'hero_loop_trader', anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v6.8 追加。画像未作成のためコード描画' };
@@ -100,28 +101,29 @@
 
   // もちぽよ：相場都市トレディアの酒場「損切り亭」。条件：トレード闘技場の12人のうち7人にそれぞれ1回以上勝つ ＋ 伝説のポークビッツ丼を3つ渡す
   var NEED_WINS = 7;
+  root.COMPANION_RENAMES = Object.assign(root.COMPANION_RENAMES || {}, { mochipoyo: ['もちぽよ'] });   // v7.0 旧セーブに残っている古い表示名（State.migrate が今の名前に置きかえる）
   function tradiaWins() { var d = D(); var w = (d && d.tradia && d.tradia.wins) || {}; var ids = root.TRADER_IDS || Object.keys(w); return ids.filter(function (k) { return (w[k] || 0) > 0; }).length; }
   npc('tradia_tavern', { id: 'mochipoyo', x: 11, y: 7, sprite: 'mochipoyo', dir: 'left', wander: 0, art3d: { dir: PD3 + 'mochipoyo/', ratio: 1.0 }, noChatter: true, talk: async function (c) {
     var d = D(); if (c.hasCompanion('mochipoyo')) return;
     if (!d.flags.mochipoyo_met) {
       d.flags.mochipoyo_met = true;
-      await c.say('もちぽよ', ['……ん？ ああ、ごめん。チャートを見てた。', 'ぼくはもちぽよ。信じてもらえないと思うけど、2035年って時代から来たんだ。', 'あっちで相場を見ていたら、気づいたら同じ日を何度もくり返していて……タイムループを抜けたら、この世界だった。', '過去の時代の相場の知識なら、少しは役に立つと思う。']);
+      await c.say('謎のタイムトラベラーM', ['……ん？ ああ、ごめん。チャートを見てた。', 'ぼくのことは「M」とでも呼んで。信じてもらえないと思うけど、2035年って時代から来たんだ。', 'あっちで相場を見ていたら、気づいたら同じ日を何度もくり返していて……タイムループを抜けたら、この世界だった。', '過去の時代の相場の知識なら、少しは役に立つと思う。']);
     }
     var nw = tradiaWins();
     if (nw < NEED_WINS) {
-      await c.say('もちぽよ', ['ただ、一緒に旅をするなら、相場の判断を見せてほしいな。', '町の北西のトレード闘技場には、12人のトレーダーがいる。そのうち7人に、それぞれ1回ずつ勝ってきて。', '7人に勝てたら、また話そう。']);
+      await c.say('謎のタイムトラベラーM', ['ただ、一緒に旅をするなら、相場の判断を見せてほしいな。', '町の北西のトレード闘技場には、12人のトレーダーがいる。そのうち7人に、それぞれ1回ずつ勝ってきて。', '7人に勝てたら、また話そう。']);
       await c.msg(['（トレード闘技場で勝ったトレーダー：' + nw + '人／' + NEED_WINS + '人）']);
       return;
     }
     var n = (d.inventory && d.inventory.porkbits_don) || 0;
-    await c.say('もちぽよ', ['闘技場で7人に勝ったんだってね。見送りと損切りの判断、ちゃんとできてた。', 'それと……実は、お腹がすいてて。', '伝説のポークビッツ丼を3つ持ってきてくれたら、ついていくよ。この店でしか食べられない、特別な丼なんだ。']);
+    await c.say('謎のタイムトラベラーM', ['闘技場で7人に勝ったんだってね。見送りと損切りの判断、ちゃんとできてた。', 'それと……実は、お腹がすいてて。', '伝説のポークビッツ丼を3つ持ってきてくれたら、ついていくよ。この店でしか食べられない、特別な丼なんだ。']);
     if (n < 3) { await c.msg(['（伝説のポークビッツ丼：' + n + '／3。この酒場で 20000G）']); return; }
-    var a = await c.choice('伝説のポークビッツ丼を3つ渡して、もちぽよを仲間にしますか？', ['渡す', 'やめる']);
-    if (a !== 0) { await c.say('もちぽよ', ['うん、いつでもいいよ。ここで待ってる。']); return; }
+    var a = await c.choice('伝説のポークビッツ丼を3つ渡して、謎のタイムトラベラーMを仲間にしますか？', ['渡す', 'やめる']);
+    if (a !== 0) { await c.say('謎のタイムトラベラーM', ['うん、いつでもいいよ。ここで待ってる。']); return; }
     c.take('porkbits_don', 3);
-    await c.say('もちぽよ', ['……おいしい！ この丼のためなら、どの時代でもがんばれる。', 'よろしくね。トレード呪文なら、まかせて。']);
+    await c.say('謎のタイムトラベラーM', ['……おいしい！ この丼のためなら、どの時代でもがんばれる。', 'よろしくね。トレード呪文なら、まかせて。']);
     c.join('mochipoyo'); c.setFlag('mochipoyo_joined', true);
-    await c.msg(['もちぽよが仲間になった！（時渡りのトレーダー）', '転職の条件：もちぽよ加入後、Lv15以上で「時渡りのトレーダー」に転職できる']);
+    await c.msg(['謎のタイムトラベラーMが仲間になった！（時渡りのトレーダー）', '転職の条件：謎のタイムトラベラーMの加入後、Lv15以上で「時渡りのトレーダー」に転職できる']);
   } });
 
   // 神聖犬ポン太：天空群島「星見塔の野営地」。条件：トレーダーランク A 以上で話しかける。加入すると4人とは別枠で戦闘を手助けする

@@ -356,7 +356,8 @@
 
   /* ---------- 到着フラグ（v6.2 修正：ステップのフラグがどこでも立たず、クエストの「目的」が先へ進まなかった） ---------- */
   // zeromea_arrived（第11章）・sky_arrived（第14章）：その地域に入ったときに立てる
-  var ARRIVE = { world_machine: ['main_11', 'zeromea_arrived'], world_sky: ['main_14', 'sky_arrived'] };
+  // v7.0：kalion_arrived（第6章）・sentra_arrived（第7章）も町に入った時点で立てる（入口の兵に話しかけないと目的が「カリオンへ」のまま止まっていた）
+  var ARRIVE = { world_machine: ['main_11', 'zeromea_arrived'], world_sky: ['main_14', 'sky_arrived'], kalion_city: ['main_6', 'kalion_arrived'], sentra_capital: ['main_7', 'sentra_arrived'] };
   Nav.onEnter = function (map) { var d = D(); if (!d || !map) return; var a = ARRIVE[map.id]; if (a && questState(a[0]) && !d.flags[a[1]]) d.flags[a[1]] = true; };
   // 古いセーブ：すでに先のステップへ進んでいる・達成済みなら、到着フラグも立てる（ほかの判定には使われていないフラグ）
   Nav.repairFlags = function (d) {

@@ -1,0 +1,11 @@
+--- s3121/chapters2d.js.bak70	2026-11-03 23:25:01.918754009 +0900
++++ s3121/chapters2d.js	2026-11-03 23:25:01.924417724 +0900
+@@ -79,7 +79,7 @@
+   // ---- 第14章：焚き火（加入済みだけ）・古い地球の地図
+   ['lina', 'ganes', 'kazuto'].forEach((id) => State.joinCompanion(id)); d.flags.ponta_joined = true; d.party = ['hero', 'lina', 'mochipoyo', 'kazuto'];
+   World.enterMap('star_camp', 9, 7, 'up'); LOG.length = 0; await evAt(9, 6);
+-  ok(has('カズト「仲間を守るための魔力が欲しかった') && has('ガネス「弟の名前を') && has('もちぽよ「2035年から') && has('神聖犬ポン太が、焚き火のそばで') && !has('アステル「') && has('どれほど強くなっても、誰かに助けを求めてよいのじゃよ。') && has('最初から一人じゃなかったよ。'), '第14章：焚き火（加入済みの仲間だけ・ハケイの手紙）');
++  ok(has('カズト「仲間を守るための魔力が欲しかった') && has('ガネス「弟の名前を') && has('謎のタイムトラベラーM「2035年から')   /* v7.0 仲間の表示名を変更 */  && has('神聖犬ポン太が、焚き火のそばで') && !has('アステル「') && has('どれほど強くなっても、誰かに助けを求めてよいのじゃよ。') && has('最初から一人じゃなかったよ。'), '第14章：焚き火（加入済みの仲間だけ・ハケイの手紙）');
+   World.enterMap('star_tower_2', 5, 7, 'up'); await evAt(5, 6); ok(d.flags.s3121_old_earth_map, '第14章：古い地球の地図');
+   // ---- 第15章
+   World.enterMap('dark_camp', 14, 11, 'up'); await evAt(14, 10); ok(d.flags.s3121_c15_stele, '第15章：繰り返しの碑（2052 3024 3121）');

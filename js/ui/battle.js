@@ -260,7 +260,11 @@
       var fk = r.from3d && root.BattleStage3D && root.BattleStage3D.labelScale ? root.BattleStage3D.labelScale(W) : 1;   // 3D版 Phase 2：スマホの縦画面など、画面が縮んで名前が小さくなるときは大きく描く（2D版では 1）
       ctx.fillStyle = '#fff'; ctx.font = (e.boss ? 'bold ' + Math.round(13 * fk) + 'px' : Math.round(12 * fk) + 'px') + ' sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3 * fk; ctx.strokeStyle = 'rgba(0,0,0,0.7)';
       var label = e.name + (ve.ex ? '（弱点露出）' : '') + (st ? '［' + st + '］' : ''); var ly = y - 6;
-      if (r.from3d) { var lw = ctx.measureText(label).width, lx = x + size / 2, lh = 15 * fk; self._lab = self._lab || []; for (var li = 0; li < 6 && self._lab.some(function (o) { return Math.abs(o.x - lx) < (o.w + lw) / 2 + 4 && Math.abs(o.y - ly) < lh; }); li++) ly -= lh; self._lab.push({ x: lx, y: ly, w: lw }); }   // 3D版 Phase 2：名前が重なるときは上へずらす
+      // v7.0 名前が戦闘メッセージ欄（とオートボタン・HP表示など、画面の上に重なる表示）に隠れないように、その下より上には描かない（大きなボスで名前が欄に隠れていた）
+      var lx = x + size / 2, lw = ctx.measureText(label).width, fpx = Math.round((e.boss ? 13 : 12) * fk), minLy = fpx + 2;
+      self.overlays(W, H).forEach(function (o) { if (o.x1 > lx - lw / 2 - 2 && o.x0 < lx + lw / 2 + 2) minLy = Math.max(minLy, o.bottom + 3 + fpx); });
+      if (ly < minLy) ly = minLy;
+      if (r.from3d) { var lh = 15 * fk; self._lab = self._lab || []; for (var li = 0; li < 6 && self._lab.some(function (o) { return Math.abs(o.x - lx) < (o.w + lw) / 2 + 4 && Math.abs(o.y - ly) < lh; }); li++) ly = ly - lh >= minLy ? ly - lh : ly + lh; self._lab.push({ x: lx, y: ly, w: lw }); }   // 3D版 Phase 2：名前が重なるときは上へずらす（v7.0 上に場所がなければ下へ）
       ctx.strokeText(label, x + size / 2, ly); ctx.fillText(label, x + size / 2, ly);
       self.anims.filter(function (a) { return a.side === 'enemy' && a.idx === i && a.type === 'fx'; }).forEach(function (a) { drawFx(ctx, a, x + size / 2, y + hh / 2); });
       var ph = self.anims.filter(function (a) { return a.type === 'phase' && a.idx === i; })[0];

@@ -100,6 +100,8 @@
     if (root.Nav && root.Nav.repairFlags) root.Nav.repairFlags(d);   // v6.2 到着フラグ（zeromea_arrived・sky_arrived）の補正
     if (root.Quiz) root.Quiz.ensure(d);   // トレードクイズモンスター：5体分の記録をそろえ、壊れた値を直す（ほかの項目は変えない）
     if (root.Ultimates) { root.Ultimates.ensure(d); root.Ultimates.sync(d); }   // 必殺技：壊れた値を直し、いまのレベルまでに覚える技をそろえる（主人公だけ。ほかの項目は変えない）
+    // v7.0 仲間の表示名の変更（もちぽよ → 謎のタイムトラベラーM）：旧セーブに残っている古い名前だけを今の名前に置きかえる（ID・ほかの項目は変えない。名前を変えていた場合はそのまま）
+    var RN = root.COMPANION_RENAMES || {}; Object.keys(RN).forEach(function (id) { var a = d.companions && d.companions[id]; var cp = root.COMPANIONS && root.COMPANIONS[id]; if (a && cp && RN[id].indexOf(a.name) >= 0) a.name = cp.name; });
     d.version = SAVE_VERSION;
     return d;
   };
