@@ -59,7 +59,7 @@ const fails = []; const ok = (c, m) => { if (!c) fails.push(m); console.log((c ?
   await p.evaluate(async () => { await __step(5, 21); });
   ok(await p.evaluate(() => State.data.flags.s3121_hakei_night && __has('負けたあとにどうするかが大切なんじゃよ')), '夜のハケイ');
   // 夜のハケイの場面の画像（台本のあとの状態から、場面だけ作り直して撮る）
-  await p.evaluate(() => { State.data.timeOfDay = 0.02; World.enterMap('poyo_village', 5, 21, 'left'); const n = World.map.npcs.find((x) => x.id === 'poyo_hakei_night'); n.hidden = false; n.x = n.ox = 6; n.y = n.oy = 23; n.dir = 'up'; World.player.x = 6; World.player.y = 21; World.player.dir = 'down'; Story3121.cine({ x: 6, y: 22, dist: 12, pitch: 50 }); });
+  await p.evaluate(() => { State.data.timeOfDay = 0.02; World.enterMap('poyo_village', 5, 21, 'left'); const n = World.map.npcs.find((x) => x.id === 'poyo_hakei_night'); n.hidden = false; n.x = n.ox = 4; n.y = n.oy = 21; n.dir = 'right'; World.player.x = 6; World.player.y = 21; World.player.dir = 'left'; Story3121.cine({ x: 5, y: 21, dist: 11, pitch: 48 }); });
   await built('poyo_village'); await shot('07_poyo_hakei_night', 4000);
   await p.evaluate(() => { Story3121.cine(null); State.data.timeOfDay = 0.3; World.enterMap('poyo_elder_house', 6, 2, 'down'); });
   await built('poyo_elder_house');

@@ -1,0 +1,11 @@
+--- /home/claude/work/v65/edgeexittest.js.bak3121	2026-11-03 20:30:28.530119024 +0900
++++ /home/claude/work/v65/edgeexittest.js	2026-11-03 20:30:28.635000204 +0900
+@@ -26,7 +26,7 @@
+   const uncovered = [];
+   towns.forEach(def => { const m = World.getMap(def.id); EX.openEdges(m, d).forEach(t => { const dir = { top: 'up', bottom: 'down', left: 'left', right: 'right' }[t.side]; if (!EX.find(m, t.x, t.y, dir)) uncovered.push(def.id + '@' + t.x + ',' + t.y + '(' + t.side + ')'); }); });
+   ok(uncovered.length === 0, '25の町・村：外周の開いたマスはすべて「今のワープ」か「外周の出口」（残り ' + uncovered.length + '）' + (uncovered.length ? ' ' + uncovered.slice(0, 10).join(' ') : ''));
+-  const closedEdge = towns.filter(def => !EX.DEFS[def.id] && !def.edgeExits).length;
++  const closedEdge = towns.filter(def => !EX.DEFS[def.id] && !def.edgeExits && !def.s3121).length;   // v6.9 アサナ村の4枚（印 s3121）は数に入れない（外周の開いたマスは上の確認で見る）
+   ok(closedEdge === 23, 'ほかの23の町・村は外周が壁・木・建物・水で閉じている（全周を出口にはしていない）');
+ 
+   console.log('--- 3. 行き先：出た向きの側・通れる・ワープや宝箱やイベントでない・いつもの出口から歩いて行ける ---');

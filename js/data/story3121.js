@@ -191,7 +191,7 @@
     // 道：南北の大通り（x=13,14）・東西の通り（y=11,12）・村長の家へ（y=6, x=21）・家から通りへ（x=6）
     box(g, 13, 6, 2, 15, 'r'); box(g, 3, 11, 22, 2, 'r'); box(g, 13, 6, 9, 1, 'r'); put(g, 21, 5, 'r'); put(g, 6, 10, 'r');
     // 南の門（平和・廃墟・復興は柵の門。襲撃の夜は開いている）
-    put(g, 13, AH - 1, state === 'raid' ? 'r' : 'x'); put(g, 14, AH - 1, state === 'raid' ? 'r' : 'x');
+    put(g, 13, AH - 1, 'x'); put(g, 14, AH - 1, 'x');   // 外周は柵（脱出の場面は門の手前 y=20 で始まる）
     // 広場（東）と灯り
     box(g, 17, 14, 8, 5, '.'); [[17, 14], [24, 14], [17, 18], [24, 18]].forEach(function (p) { put(g, p[0], p[1], state === 'raid' ? 'i' : (state === 'ruins' ? '.' : 'y')); });
     if (state !== 'ruins') { put(g, 19, 14, 'e'); put(g, 22, 14, 'e'); }
@@ -227,7 +227,7 @@
   function inPh() { var a = arguments; return function () { var p = ph(); for (var i = 0; i < a.length; i++) if (a[i] === p) return true; return false; }; }
 
   /* ---------- 平和なアサナ村 ---------- */
-  add({ id: 'asana_village', name: 'アサナ村', kind: 'town', bgm: 'town', fallback: 'grass', style: 'wood', rows: asanaBase('peace'),
+  add({ id: 'asana_village', s3121: true, name: 'アサナ村', kind: 'town', bgm: 'town', fallback: 'grass', style: 'wood', rows: asanaBase('peace'),
     scriptEntry: [6, 10, '新規ゲームのプロローグ（家の中から出る）'],
     buildings: [BLD.home({ interior: 'asana_home', entry: { x: 5, y: 7 } }), BLD.chief(), BLD.neighbor(), BLD.store()],
     warps: [],
@@ -256,7 +256,7 @@
     chests: [] });
 
   /* ---------- 家の中 ---------- */
-  add({ id: 'asana_home', name: 'アサナ村・家', kind: 'interior', bgm: 'town', rows: [
+  add({ id: 'asana_home', s3121: true, name: 'アサナ村・家', kind: 'interior', bgm: 'town', rows: [
     '############',
     '#E__K__q__E#',
     '#__________#',
@@ -277,7 +277,7 @@
 
   /* ---------- 襲撃の夜 ---------- */
   var FIRE = [[6, 8, 1.4, 2.3], [4, 7, 1, 2.0], [21, 3, 1.4, 2.3], [19, 2, 1, 2.0], [5, 15, 1.2, 2.0], [10, 14, 1, 1.6], [18, 8, 0.9, 0.7], [4, 3, 0.8, 0.2], [8, 3, 0.8, 0.2], [20, 19, 0.7, 0.2], [2, 10, 0.6, 0.1], [16, 10, 0.6, 0.1]];   // [x, y, 大きさ, 高さ]：家の炎は屋根の上
-  add({ id: 'asana_raid', name: 'アサナ村（襲撃の夜）', kind: 'town', bgm: 'boss_area', fallback: 'grass', style: 'wood', rows: asanaBase('raid'),
+  add({ id: 'asana_raid', s3121: true, name: 'アサナ村（襲撃の夜）', kind: 'town', bgm: 'boss_area', fallback: 'grass', style: 'wood', rows: asanaBase('raid'),
     scriptEntry: [6, 10, '新規ゲームのプロローグ（夜の襲撃）'],
     tint: 'rgba(120,30,10,0.32)',   // 2D版：炎に照らされた夜（js/rpg/world.js の World.tint）
     mood3d: { sun: 0xff6a30, si: 0.5, hemi: 0x8a4a5a, hi: 0.42, fog: 0x3a1610, top: 0x12060c, hor: 0x9a3010, win: 2.8, exp: 1.02, fogD: 0.022 },   // 3D版：赤い夜空と煙の霧（engine/LightingManager.js の setMood）
@@ -306,7 +306,7 @@
   /* ---------- 廃墟（第6章の記録で場所が分かる）と復興（エンディングのあと） ---------- */
   function ruinsDef(rebuilt) {
     var id = rebuilt ? 'asana_rebuilt' : 'asana_ruins';
-    var def = { id: id, name: rebuilt ? 'アサナ村（復興）' : 'アサナ村跡', kind: 'town', bgm: rebuilt ? 'town' : 'church', fallback: 'grass', style: 'wood', rows: asanaBase(rebuilt ? 'rebuilt' : 'ruins'),
+    var def = { id: id, s3121: true, name: rebuilt ? 'アサナ村（復興）' : 'アサナ村跡', kind: 'town', bgm: rebuilt ? 'town' : 'church', fallback: 'grass', style: 'wood', rows: asanaBase(rebuilt ? 'rebuilt' : 'ruins'),
       warps: [13, 14].map(function (x) { return { x: x, y: AH - 2, to: 'world_kalion', tx: 24, ty: 67, name: '村の外へ' }; }),
       buildings: rebuilt ? [BLD.home({ name: '建て直した家' }), BLD.chief({ name: '新しい集会所' }), BLD.neighbor({ name: '建て直した家' }), BLD.store({ name: '共同の倉' })] : [],
       npcs: [], events: [], chests: [] };
@@ -610,8 +610,8 @@
   S.hakeiNight = async function (c) {
     var f = F(); if (f.s3121_hakei_night || ph() !== 'poyo_night') return;
     f.s3121_hakei_night = true;
-    S.show('poyo_hakei_night', true, 6, 23, 'up'); refresh();
-    S.cine({ x: 6, y: 22, dist: 12, pitch: 50 });
+    S.show('poyo_hakei_night', true, 4, 21, 'right'); refresh(); faceHero('left');
+    S.cine({ x: 5, y: 21, dist: 11, pitch: 48 });
     await c.msg(['柵のそばで、ひとり膝を抱えていた。涙が止まらない。', '……足音がして、一人の老人が現れた。']);
     await c.say('老人', ['お前さん、何をそんなに悲しんでおる？']);
     await c.say(hero(), ['全部奪われた……家も、家族も、お金も……。', '何も残っていない。']);
@@ -655,14 +655,14 @@
   /* ---------- ポヨ村への追加（夜のハケイ・門の見送り・ベッドの回想） ---------- */
   (function () {
     var pv = MD.poyo_village; if (!pv) return; pv.npcs = pv.npcs || [];
-    pv.npcs.push({ id: 'poyo_hakei_night', x: 6, y: 23, sprite: 'master', dir: 'up', wander: 0, noChatter: true, s3121: true, showWhen: function () { return S.phase() === 'poyo_night' && !!F().s3121_hakei_night; }, talk: async function (c) { await S.hakeiNight(c); } });
+    pv.npcs.push({ id: 'poyo_hakei_night', x: 4, y: 21, sprite: 'master', dir: 'right', wander: 0, noChatter: true, s3121: true, showWhen: function () { return S.phase() === 'poyo_night' && !!F().s3121_hakei_night; }, talk: async function (c) { await S.hakeiNight(c); } });
     pv.npcs.push({ id: 'poyo_hakei_gate', x: 20, y: 35, sprite: 'master', dir: 'down', wander: 0, noChatter: true, s3121: true, showWhen: function () { return false; }, talk: async function (c) { await c.say('師匠ハケイ', ['行ってきなさい。']); } });
     onStepTriggers('poyo_village', [
       { x0: 2, x1: 7, y0: 21, y1: 23, when: function () { return S.phase() === 'poyo_night' && !F().s3121_hakei_night; }, run: S.hakeiNight },
       { x0: 18, x1: 25, y0: 34, y1: 37, when: function () { var f = F(); return !!(f.s3121_new_prologue && f.met_elder && !f.s3121_hakei_farewell && S.phase() === 'poyo_day'); }, run: S.hakeiFarewell }
     ]);
-    pv.events = pv.events || []; pv.events.push({ x: 3, y: 21, type: 'script', solid: false, run: async function (c) { if (S.phase() === 'poyo_night') await S.hakeiNight(c); else await c.msg(['村の西のはずれ。柵の向こうに、夜の草原が広がっている。']); } });
-    var eh = MD.poyo_elder_house; if (eh) { eh.events = eh.events || []; eh.events.push({ x: 6, y: 1, type: 'script', solid: true, run: async function (c) { await S.bedEvent(c); } }); }
+    pv.events = pv.events || []; pv.events.push({ x: 3, y: 21, type: 'script', solid: false, s3121: true, run: async function (c) { if (S.phase() === 'poyo_night') await S.hakeiNight(c); else await c.msg(['村の西のはずれ。柵の向こうに、夜の草原が広がっている。']); } });
+    var eh = MD.poyo_elder_house; if (eh) { eh.events = eh.events || []; eh.events.push({ x: 6, y: 1, type: 'script', solid: true, s3121: true, run: async function (c) { await S.bedEvent(c); } }); }
   })();
   // 夜のポヨ村で村長の家などに入った場合も、物語が止まらないようにする（村長の家に戻ると、柵のそばへ行くよう促す）
   onStepTriggers('asana_village', [

@@ -1,0 +1,11 @@
+--- /home/claude/work/expandA5test.js.bak3121	2026-11-03 20:32:55.994265838 +0900
++++ /home/claude/work/expandA5test.js	2026-11-03 20:32:56.040210084 +0900
+@@ -31,7 +31,7 @@
+   ok(landLoss === stat.farm + S5.ruins.length, '飛空艇の着陸できるマスが減ったのは畑と遺跡の中心のマスだけ（' + landLoss + 'マス＝畑 ' + stat.farm + '＋遺跡 ' + S5.ruins.length + '。道・まわりの石畳は着陸できる）');
+   // 既存のイベント・ワープ・宝箱・人はそのまま、増えたのは遺跡の調べる所だけ
+   { const changed = []; S5.fields.forEach(id => { const o = oldDump.maps[id]; const def = w.MAP_DEFS[id] || w.WORLD_DEF; if (!o) return; const ev = (def.events || []).filter(e => !e.a5ruin).map(e => ({ x: e.x, y: e.y, type: e.type, doneFlag: e.doneFlag || null }));
+-      if (JSON.stringify(o.events) !== JSON.stringify(ev) || JSON.stringify(o.warps) !== JSON.stringify(require('./v68tradia.js').stripWarps(id, def.warps).map(x => ({ x: x.x, y: x.y, to: x.to, tx: x.tx, ty: x.ty, needFlag: x.needFlag || null }))) || o.chests.length !== (def.chests || []).length) changed.push(id); });
++      if (JSON.stringify(o.events) !== JSON.stringify(ev) || JSON.stringify(o.warps) !== JSON.stringify(require('./v68tradia.js').stripWarps(id, def.warps).filter(x => !(w.MAP_DEFS[x.to] && w.MAP_DEFS[x.to].s3121)).map(x => ({ x: x.x, y: x.y, to: x.to, tx: x.tx, ty: x.ty, needFlag: x.needFlag || null })))   /* v6.9 アサナ村跡の入口（印 s3121）は除く */ || o.chests.length !== (def.chests || []).length) changed.push(id); });
+     ok(!changed.length && S5.ruins.every(r => { const def = w.MAP_DEFS[r.map] || w.WORLD_DEF; const e = def.events.find(e => e.x === r.x && e.y === r.y); return e && e.type === 'inspect' && e.solid === false && e.a5ruin; }), '既存のイベント・ワープ・宝箱は前の版と同じで、増えたのは遺跡の調べる所（通れる）だけ ' + changed.join(',')); }
+   // 遺跡を調べる（地域の話が出る）
+   { const log = []; const om = Win.message; Win.message = async (l) => { log.push([].concat(l).join(' / ')); }; const r = S5.ruins[0]; World.enterMap(r.map, r.x, r.y, 'down'); await sleep(20); const ev = World.map.eventAt(r.x, r.y); await Events.run(ev); Win.message = om;

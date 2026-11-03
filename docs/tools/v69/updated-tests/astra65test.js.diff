@@ -1,0 +1,14 @@
+--- /home/claude/work/v65/astra65test.js.bak3121	2026-11-03 20:33:29.827345900 +0900
++++ /home/claude/work/v65/astra65test.js	2026-11-03 20:34:06.412761481 +0900
+@@ -113,7 +113,10 @@
+   const base = (() => { const prev = process.env.RPG_DIR; process.env.RPG_DIR = process.env.BASE_DIR || '/home/claude/baseline-phaseA/'; delete require.cache[require.resolve('../rpgload.js')]; const r = require('../rpgload.js')(); process.env.RPG_DIR = prev || ''; return r.w; })();
+   ok(JSON.stringify(Object.keys(base.VEHICLES)) === JSON.stringify(Object.keys(w.VEHICLES)) && JSON.stringify(base.SEA_ROUTES) === JSON.stringify(w.SEA_ROUTES), '既存の船・遠洋航海船・飛空艇と海路・空路はそのまま（アストラ号は別の仕組み）');
+   base.State.newGame('t', 'warrior'); S.newGame('t', 'warrior');
+-  const sameTiles = A.ids().every(id => { const a = base.World.getMap(id), b = w.World.getMap(id); const V68 = require('../v68tradia.js'); return V68.tilesOk(id, a.tiles, b.tiles) && JSON.stringify(V68.stripWarps(id, D[id].warps)) === JSON.stringify(V68.stripWarps(id, base.MAP_DEFS[id].warps)); });   // v6.8 トレディアの移動の分だけは違ってよい（v68tradia.js）
++  const sameTiles = A.ids().every(id => { const a = base.World.getMap(id), b = w.World.getMap(id); const V68 = require('../v68tradia.js'); const ok69 = (x, y) => id === 'world_kalion' && Math.abs(x - 24) <= 6 && Math.abs(y - 66) <= 6 && ['village', 'crops'].includes(b.tiles[y][x]);   /* v6.9 アサナ村跡（カリオン地方 (24,66)）の入口のマスと、村のまわりに第5段階の作り方で生まれる畑（村の近くに畑を置く既存の仕組み） */
++    const tilesOk = a.tiles.length === b.tiles.length && a.tiles.every((row, y) => row.length === b.tiles[y].length && row.every((t, x) => t === b.tiles[y][x] || V68.allowedCell(id, x, y, t, b.tiles[y][x]) || ok69(x, y)));
++    const w69 = (ws) => (ws || []).filter((x) => !(w.MAP_DEFS[x.to] && w.MAP_DEFS[x.to].s3121));   /* v6.9 アサナ村跡への入口（印 s3121）は除く */
++    return tilesOk && JSON.stringify(w69(V68.stripWarps(id, D[id].warps))) === JSON.stringify(V68.stripWarps(id, base.MAP_DEFS[id].warps)); });   // v6.8 トレディアの移動の分だけは違ってよい（v68tradia.js）
+   ok(sameTiles, '12の地域の地形・出入口（ワープ）は Phase A の公開版と同じ（世界座標は表示と飛ぶための計算だけ）');
+   ok(errors.length === 0, 'スクリプトのエラーなし' + (errors.length ? ' ' + errors.slice(0, 3) : ''));
+   console.log('\n結果: ' + pass + ' OK / ' + fail + ' NG'); process.exit(fail ? 1 : 0);

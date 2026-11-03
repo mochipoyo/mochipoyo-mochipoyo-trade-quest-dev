@@ -40,7 +40,7 @@ function fresh(n) { State.newGame(n || 't', 'warrior'); const d = State.data; d.
   d.flags.verum_liberated = true; World.enterMap('verum_town', 24, 17, 'up'); LOG.length = 0; await talk('s3121_verum_girl');
   ok(d.flags.s3121_c5_girl && has('明日はお家に帰ってくるんだよね') && has('誰かの家族は帰ってこられる'), '第5章：解放のあとの少女（復讐から救済へ）');
   // ---- 第6章：抹消記録 → アサナ村跡
-  World.enterMap('kalion_archive_2', 15, 9, 'up'); LOG.length = 0; await evAt(15, 8);
+  World.enterMap('kalion_archive_2', 13, 4, 'up'); LOG.length = 0; await evAt(13, 3);
   ok(d.flags.s3121_asana_located && d.flags.s3121_c6_erasure && has('アサナ村　均衡暦97年　魔物被害により全滅'), '第6章：アサナ村の抹消記録（場所が分かる）');
   const wk = new w.GameMap(w.MAP_DEFS.world_kalion); const loc = wk.warps.find((x) => x.to === 'asana_ruins'); ok(loc && loc.x === 24 && loc.y === 66 && loc.needFlag === 's3121_asana_located' && !w.Tiles.isSolid(wk.tile(24, 67)), 'カリオン地方の地図に「アサナ村跡」（(24,66)、出口の先 (24,67) は歩ける）');
   World.enterMap('kalion_city', 27, 20, 'up'); await talk('s3121_kc_foundation'); ok(d.flags.s3121_c6_foundation, '第6章：財団のカリオン出張所の監査員');
@@ -51,7 +51,7 @@ function fresh(n) { State.newGame(n || 't', 'warrior'); const d = State.data; d.
   ok(d.flags.kalion_reformed && d.flags.s3121_mio_letter && State.hasItem('s3121_letter') && has('それから、たまには自分のためにも使うのよ。'), '第7章：リーヴの財産返還 → 帳簿の最後のページ → 母の手紙');
   // ---- 第8〜9章
   World.enterMap('aruna_underground_2', 10, 5, 'up'); await evAt(10, 4); ok(d.flags.s3121_rec_strata && d.quests.s3121_earth_record, '第8章：3024年の層の下の古い街（消えた地球の記録が始まる）');
-  d.flags.library_1 = true; d.flags.mina_father_record = true; State.joinCompanion('mina'); d.party = ['hero', 'mina']; World.enterMap('memory_library', 10, 8, 'up'); LOG.length = 0; await evAt(10, 7);
+  d.flags.library_1 = true; d.flags.mina_father_record = true; State.joinCompanion('mina'); d.party = ['hero', 'mina']; World.enterMap('memory_library', 8, 8, 'up'); LOG.length = 0; await evAt(8, 7);
   ok(d.flags.s3121_old_earth_discovered && d.flags.s3121_rec_2052 && has('西暦2052年') && d.flags.s3121_mina_support, '第9章：2052年の最後の記録・ミナを支える');
   // ---- 第10章：選ばれなかった未来
   World.enterMap('temple_of_time_3', 7, 11, 'up'); LOG.length = 0; await evAt(7, 10);
@@ -61,7 +61,7 @@ function fresh(n) { State.newGame(n || 't', 'warrior'); const d = State.data; d.
   World.enterMap('old_city_2', 8, 9, 'up'); await evAt(8, 8); ok(d.flags.s3121_rec_shelter, '第11章：地下居住区の末裔の記録');
   World.enterMap('node_city', 19, 15, 'up'); await talk('s3121_nc_robot'); ok(d.flags.s3121_c11_robot, '第11章：契約で働く配達ロボット');
   World.enterMap('oracle_core_2', 8, 9, 'up'); LOG.length = 0; await evAt(8, 8); ok(d.flags.s3121_rec_oracle && has('2052年の戦争の記憶はない'), '第12章：旧文明のAIとオラクルは別');
-  World.enterMap('memory_library', 10, 8, 'up'); await evAt(10, 7); ok(d.quests.s3121_earth_record.state === 'done', '任意：消えた地球の記録（4つの記録を照らし合わせて達成）');
+  World.enterMap('memory_library', 8, 8, 'up'); await evAt(8, 7); ok(d.quests.s3121_earth_record.state === 'done', '任意：消えた地球の記録（4つの記録を照らし合わせて達成）');
   // ---- 第13章・財団本部
   d.flags.archive_permit = true; World.enterMap('forbidden_archive_1', 10, 6, 'up'); await evAt(10, 5); ok(d.flags.s3121_frag_3, '第13章：禁書庫の年代記（断片その三）');
   World.enterMap('tradia_foundation', 7, 9, 'up'); State.joinCompanion('mochipoyo'); d.party = ['hero', 'mochipoyo']; LOG.length = 0; await evAt(7, 2);
@@ -69,7 +69,7 @@ function fresh(n) { State.newGame(n || 't', 'warrior'); const d = State.data; d.
   await talk('fd_librarian'); ok(d.flags.s3121_frag_2, '財団文庫：断片その二');
   ANS.push(0); await talk('fd_director'); ok(d.quests.s3121_foundation_audit && d.quests.s3121_foundation_audit.state === 'active', '本部長ベルナ：財団の古い帳簿（任意）');
   await evAt(1, 8); ok(d.flags.s3121_audit_1, '監査：財団の帳簿');
-  World.enterMap('verum_hideout', 9, 5, 'up'); await evAt(9, 4); World.enterMap('kalion_archive_2', 15, 9, 'up'); await evAt(15, 8);
+  World.enterMap('verum_hideout', 9, 5, 'up'); await evAt(9, 4); World.enterMap('kalion_archive_2', 13, 4, 'up'); await evAt(13, 3);
   ok(d.flags.s3121_audit_2 && d.flags.s3121_audit_3, '監査：ヴェルム・カリオンの記録');
   World.enterMap('tradia_foundation', 7, 9, 'up'); ANS.push(0); await talk('fd_director'); ok(d.quests.s3121_foundation_audit.state === 'done' && d.flags.s3121_audit_choice === 0, '任意：財団の古い帳簿（公表を選ぶ）');
   World.enterMap('rivel_wave_temple', 7, 9, 'up'); await talk('wt_abbess'); ok(d.quests.s3121_origin_fragments.state === 'done', '任意：千年の断片（3つの写本）');

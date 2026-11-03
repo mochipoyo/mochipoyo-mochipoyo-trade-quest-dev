@@ -16,7 +16,7 @@
   function F() { return D().flags; }
   function hero() { return D().hero.name; }
   function inParty(id) { var d = D(); return !!(d.companions[id] && d.party.indexOf(id) >= 0); }
-  function ev(mapId, e) { var m = MD[mapId]; if (!m) return; m.events = m.events || []; if (m.events.some(function (x) { return x.x === e.x && x.y === e.y; })) return; m.events.push(e); }
+  function ev(mapId, e) { var m = MD[mapId]; if (!m) return; m.events = m.events || []; e.s3121 = true; if (m.events.some(function (x) { return x.x === e.x && x.y === e.y; })) return; m.events.push(e); }
   function npc(mapId, n) { var m = MD[mapId]; if (!m) return; m.npcs = m.npcs || []; if (m.npcs.some(function (x) { return x.id === n.id; })) return; n.noChatter = true; n.s3121 = true; m.npcs.push(n); }
   function once(flag) { var f = F(); if (f[flag]) return false; f[flag] = true; return true; }
   async function chronicle(c, flag, note) {
@@ -75,9 +75,9 @@
   function K(id, name, desc, read) { if (ITEMS[id]) return; ITEMS[id] = { id: id, name: name, cat: 'key', price: 0, desc: desc, read: read }; }
   (function () {
     var t = MD.tradia; if (!t) return; t.buildings = t.buildings || [];
-    if (!t.buildings.some(function (b) { return b.interior === 'tradia_foundation'; })) t.buildings.push({ id: 'td_foundation', type: 'academy', name: 'トレード財団 本部', x: 37, y: 36, w: 7, h: 2, doorX: 3, interior: 'tradia_foundation', entry: { x: 7, y: 9 } });
+    if (!t.buildings.some(function (b) { return b.interior === 'tradia_foundation'; })) t.buildings.push({ id: 'td_foundation', s3121: true, type: 'academy', name: 'トレード財団 本部', x: 37, y: 36, w: 7, h: 2, doorX: 3, interior: 'tradia_foundation', entry: { x: 7, y: 9 } });
   })();
-  add({ id: 'tradia_foundation', name: 'トレード財団 本部', kind: 'interior', bgm: 'town', rows: [
+  add({ id: 'tradia_foundation', s3121: true, name: 'トレード財団 本部', kind: 'interior', bgm: 'town', rows: [
     '################',
     '#KKKK_I__I_KKKK#',
     '#______XX______#',
@@ -165,9 +165,9 @@
      ========================================================= */
   (function () {
     var t = MD.rivel_town; if (!t) return; t.buildings = t.buildings || [];
-    if (!t.buildings.some(function (b) { return b.interior === 'rivel_wave_temple'; })) t.buildings.push({ id: 'rv_wave_temple', type: 'church', name: '波形聖堂', x: 50, y: 4, w: 8, h: 4, doorX: 4, interior: 'rivel_wave_temple', entry: { x: 7, y: 9 } });
+    if (!t.buildings.some(function (b) { return b.interior === 'rivel_wave_temple'; })) t.buildings.push({ id: 'rv_wave_temple', s3121: true, type: 'church', name: '波形聖堂', x: 50, y: 4, w: 8, h: 4, doorX: 4, interior: 'rivel_wave_temple', entry: { x: 7, y: 9 } });
   })();
-  add({ id: 'rivel_wave_temple', name: '波形聖堂', kind: 'interior', bgm: 'church', rows: [
+  add({ id: 'rivel_wave_temple', s3121: true, name: '波形聖堂', kind: 'interior', bgm: 'church', rows: [
     '################',
     '#I_____XX_____I#',
     '#______pp______#',
@@ -281,7 +281,7 @@
     }
   } });
   // 第6章：カリオンの地下記録庫（アサナ村の抹消記録）と、財団の出張監査員
-  ev('kalion_archive_2', { x: 15, y: 8, type: 'script', solid: false, run: async function (c) {
+  ev('kalion_archive_2', { x: 13, y: 3, type: 'script', solid: false, run: async function (c) {
     var f = F();
     await c.msg(['棚の最下段に、「抹消台帳」と書かれた薄い綴りがある。', '「魔物被害により全滅。以後、徴税台帳より抹消」——同じ文句の行が、十一並んでいる。']);
     await c.msg(['……そのうちの一行。', '「アサナ村　均衡暦97年　魔物被害により全滅。以後、徴税台帳より抹消」', '承認印は財務局。同じ年に、同じ額の「第三復興事業」の支出。']);
@@ -333,7 +333,7 @@
     };
   })();
   // 第9章：記憶の図書館の最奥（2052年の最後の記録）。ミナを支える側へ
-  ev('memory_library', { x: 10, y: 7, type: 'script', solid: false, run: async function (c) {
+  ev('memory_library', { x: 8, y: 7, type: 'script', solid: false, run: async function (c) {
     var f = F(); if (!f.library_1) { await c.msg(['床に、薄い円盤が埋めこまれている。まだ読み方が分からない。（図書館の区画を読んでから）']); return; }
     await c.msg(['床に埋めこまれた、薄い円盤。結晶の記録とは違う、もっと古い記録媒体だ。', '触れると、ひび割れた映像と音声が浮かび上がった。']);
     await c.msg(['「……北の観測所、磁場の値が振り切れています」', '「衛星網との回線、途絶」「停戦の交渉は」「防衛AIどうしが、互いを敵と判断して——」', '「……記録を残せ。誰かが、読めるように」', '——日付：西暦2052年。']);
@@ -455,7 +455,7 @@
     steps: [['s3121_mw_1', '魔導都マクディアの路地の来訪者'], ['s3121_mw_2', '天空群島・星見塔の野営地の来訪者'], ['_s3121_report4', '王立学院の多元宇宙研究者ルドに報告する']] };
   // 消えた地球の記録：記憶の図書館の円盤の前で4つの記録がそろったら照らし合わせて達成
   (function () {
-    var m = MD.memory_library; if (!m) return; var e = m.events.filter(function (x) { return x.x === 10 && x.y === 7; })[0]; if (!e) return; var orig = e.run;
+    var m = MD.memory_library; if (!m) return; var e = m.events.filter(function (x) { return x.x === 8 && x.y === 7 && x.s3121; })[0]; if (!e) return; var orig = e.run;
     e.run = async function (c, evd) {
       await orig(c, evd); var f = F();
       if (c.questActive('s3121_earth_record') && f.s3121_rec_strata && f.s3121_rec_2052 && f.s3121_rec_shelter && f.s3121_rec_oracle) {
@@ -476,13 +476,13 @@
   E('s3121_origin_fragments', '_s3121_report1', 'npc:rivel_wave_temple:wt_abbess', ['アルカディア相場大陸。', 'リヴェル城下町の波形聖堂。', '聖堂長イサナに報告しよう。']);
   E('s3121_foundation_audit', 's3121_audit_1', 'ev:tradia_foundation:1,8', ['相場都市トレディア。', '財団本部の書棚。', '本部の左奥の書棚を調べよう。']);
   E('s3121_foundation_audit', 's3121_audit_2', 'ev:verum_hideout:9,4', ['グラニア鉱業地方。', '灰鉱町ヴェルムの地下の集会所。', '集会所の壁の銘板を調べよう。']);
-  E('s3121_foundation_audit', 's3121_audit_3', 'ev:kalion_archive_2:15,8', ['カリオン徴収連邦。', '地下記録庫2階。', '棚の最下段の抹消台帳を調べよう。']);
+  E('s3121_foundation_audit', 's3121_audit_3', 'ev:kalion_archive_2:13,3', ['カリオン徴収連邦。', '地下記録庫2階。', '書架の下の段の抹消台帳を調べよう。']);
   E('s3121_foundation_audit', '_s3121_report2', 'npc:tradia_foundation:fd_director', ['相場都市トレディア。', 'トレード財団本部。', '本部長ベルナに報告しよう。']);
   E('s3121_earth_record', 's3121_rec_strata', 'ev:aruna_underground_2:10,4', ['断裂群島。', '灰灯島アルナの地下施設の最深部。', '観測室の床の割れ目を調べよう。']);
-  E('s3121_earth_record', 's3121_rec_2052', 'ev:memory_library:10,7', ['海底都市エルミナ。', '記憶の図書館。', '図書館の中央の床の円盤を調べよう。']);
+  E('s3121_earth_record', 's3121_rec_2052', 'ev:memory_library:8,7', ['海底都市エルミナ。', '記憶の図書館。', '図書館の中央の床の円盤を調べよう。']);
   E('s3121_earth_record', 's3121_rec_shelter', 'ev:old_city_2:8,8', ['ゼロメア。', '廃棄された旧都市の記録庫（深層）。', '記録庫の隅の古い端末を調べよう。']);
   E('s3121_earth_record', 's3121_rec_oracle', 'ev:oracle_core_2:8,8', ['ゼロメア。', 'オラクル中枢・第2層。', '記録層の柱を調べよう。']);
-  E('s3121_earth_record', '_s3121_report3', 'ev:memory_library:10,7', ['海底都市エルミナ。', '記憶の図書館。', '円盤の前で、四つの記録を照らし合わせよう。']);
+  E('s3121_earth_record', '_s3121_report3', 'ev:memory_library:8,7', ['海底都市エルミナ。', '記憶の図書館。', '円盤の前で、四つの記録を照らし合わせよう。']);
   E('s3121_many_worlds', 's3121_mw_1', 'npc:magicka_city:s3121_mc_visitor', ['マクディア魔導王国。', '魔導都マクディアの路地。', '背の高い影のような来訪者に話しかけよう。']);
   E('s3121_many_worlds', 's3121_mw_2', 'npc:star_camp:s3121_sc_visitor', ['天空群島。', '星見塔の野営地。', '来訪者に話しかけよう。']);
   E('s3121_many_worlds', '_s3121_report4', 'npc:magicka_academy:s3121_ma_worlds', ['マクディア魔導王国。', '王立学院。', '多元宇宙研究者ルドに報告しよう。']);

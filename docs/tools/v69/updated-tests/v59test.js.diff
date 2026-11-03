@@ -1,0 +1,13 @@
+--- /home/claude/work/v59test.js.bak3121	2026-11-03 20:30:28.569138576 +0900
++++ /home/claude/work/v59test.js	2026-11-03 20:30:28.644885046 +0900
+@@ -76,8 +76,8 @@
+   w.WorldMap.select('world_magicka'); w.WorldMap.openTerrain(w.WorldMap.sel); MM.drawBig();
+   ok(MM.mode==='world' && MM.viewRegionId()==='world_magicka', '「世界」タブで地域を選んで「地形を見る」→ その地域の地形へ');
+   // 隠された場所は条件を満たすまで地図に出さない
+-  const km=World.getMap('world_kalion'); ok(MM.hiddenLocs(km).map(L=>L.id).join()==='erased_village', '隠し地点（地図から消えた村）は条件前は地図に出さない');
+-  State.data.flags.erased_hint=true; ok(MM.hiddenLocs(km).length===0, '条件を満たすと地図に出る');
++  const km=World.getMap('world_kalion'); ok(MM.hiddenLocs(km).map(L=>L.id).filter(i=>i!=='asana_ruins').join()==='erased_village', '隠し地点（地図から消えた村）は条件前は地図に出さない');
++  State.data.flags.erased_hint=true; ok(MM.hiddenLocs(km).filter(L=>L.id!=='asana_ruins').length===0, '条件を満たすと地図に出る');   // v6.9 アサナ村跡（第6章の記録で出る）は chapters2d.js で確かめる
+   MM.close(); await frames(2);
+   ok(!World.busy, '地図を閉じると歩ける');
+   console.log('errors:', errors.length? errors : 'なし');

@@ -1,0 +1,11 @@
+--- /home/claude/work/maptest.js.bak3121	2026-11-03 18:45:59.476152657 +0900
++++ /home/claude/work/maptest.js	2026-11-03 18:45:59.497946930 +0900
+@@ -15,7 +15,7 @@
+   const entries=[]; for (const oid of Object.keys(MAPS)) { const om=new GameMap(MAPS[oid]); om.warps.forEach(wp=>{ if(wp.to===id) entries.push([wp.tx,wp.ty,oid]); }); }
+   (MAPS[id].events||[]).forEach(e=>{ if(e.type==='hole') {} });
+   // v5.5: イベントの c.warp でだけ入るマップ（蜃気楼神殿の最奥：3階の正しい扉から）
+-  const SCRIPT_ENTRIES={ mirage_temple_4:[7,10,'(script: mirage_temple_3 正しい扉)'] }; if(SCRIPT_ENTRIES[id]) entries.push(SCRIPT_ENTRIES[id]);
++  const SCRIPT_ENTRIES={ mirage_temple_4:[7,10,'(script: mirage_temple_3 正しい扉)'] }; if(SCRIPT_ENTRIES[id]) entries.push(SCRIPT_ENTRIES[id]); if(MAPS[id].scriptEntry) entries.push(MAPS[id].scriptEntry);   /* v6.9 イベントの c.warp / 新規ゲームの台本でだけ入るマップ（マップ定義の scriptEntry）*/
+   if(!entries.length){ const cond=Object.keys(MAPS).some(oid=>(MAPS[oid].buildings||[]).some(b=>b.interior===id&&b.showIf)); if(cond){ console.log('conditional entry (showIf):', id); const b=Object.keys(MAPS).map(oid=>(MAPS[oid].buildings||[]).find(b=>b.interior===id)).find(Boolean); entries.push([b.entry.x,b.entry.y,'(showIf)']); } else if(!(MAPS[id].region)){ console.log('NO ENTRY', id); fail++; continue; } }
+   // 入口からの到達性（扉系イベントは開いた扱いで2回目チェック）
+   const start=entries[0]||[28,59];
