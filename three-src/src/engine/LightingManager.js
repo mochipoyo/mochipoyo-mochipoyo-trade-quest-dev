@@ -67,9 +67,12 @@ export class LightingManager {
   // 地域テーマ（themes.js）：霧・地平の色を地域の色へ寄せ、暗い地域は日差しを弱める
   setTheme(theme) { this.theme = theme || null; this._fogC = theme && theme.fog ? new THREE.Color(theme.fog) : null; }
   setInterior(on, ambient) { this.interior = on; this.ambient = ambient || null; }
+  // v6.9 マップ固有の空気（2D のマップ定義 def.mood3d）：襲撃の夜のアサナ村など。時間帯の色の代わりに使う（屋外だけ）
+  setMood(m) { this.mood = m || null; }
   update(t, focus) {
     const tt = this.preview !== null ? this.preview : (t === undefined ? 0.35 : t);
     const k = lerpKey(((tt % 1) + 1) % 1);
+    if (this.mood && !this.interior) Object.assign(k, this.mood);
     this.night = Math.max(0, Math.min(1, (k.win - 0.3) / 2.2));
     // 太陽の向き：朝は東、夕は西、夜は月（青白い弱い光）
     const ang = (tt - 0.25) * Math.PI * 2; const el = Math.max(0.35, Math.sin((tt - 0.25) * Math.PI * 2 + Math.PI / 2) * 0.9 + 0.2);
@@ -83,7 +86,7 @@ export class LightingManager {
     this.sun.position.copy(vT).addScaledVector(dir, 50); this.sun.target.position.copy(vT);
     this.sun.color.setHex(k.sun); this.sun.intensity = this.interior ? k.si * 0.25 : k.si;
     this.hemi.color.setHex(k.hemi); this.hemi.groundColor.setHex(0x4a4a3a); this.hemi.intensity = this.interior ? Math.max(0.55, k.hi * 0.8) * (this.ambient ? 0.7 + this.ambient * 0.8 : 1) : k.hi;
-    this.fog.color.setHex(this.interior ? 0x1a140e : k.fog); this.fog.density = this.interior ? 0.0 : (0.010 + this.night * 0.004);   // v6.6 夜の霧を薄く（以前は +0.01）
+    this.fog.color.setHex(this.interior ? 0x1a140e : k.fog); this.fog.density = this.interior ? 0.0 : (this.mood && this.mood.fogD ? this.mood.fogD : (0.010 + this.night * 0.004));   // v6.6 夜の霧を薄く（以前は +0.01）
     const th = this.theme; let skyHor = null;
     if (th && !this.interior) {
       if (this._fogC) { this.fog.color.lerp(this._fogC, 0.55 * (1 - this.night * 0.6)); skyHor = this._fogC; }

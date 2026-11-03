@@ -34,7 +34,7 @@
       if (e.tile && root.Tiles && root.Tiles.has(e.tile)) m.setTile(e.x, e.y, (e.doneTile && d.flags[e.tileFlag || e.doneFlag]) ? e.doneTile : e.tile);   // v5.6 調べる物の見た目（灯籠・レバー・記憶の核など）
       if (e.type === 'boss' && e.optional) m.setTile(e.x, e.y, (e.doneFlag && d.flags[e.doneFlag]) ? ({ cave_floor: 'cave_floor', ash: 'ash', snow: 'snow', sand: 'sand', grass: 'grass', darkland: 'darkland', floor_wood: 'floor_wood' }[m.def.fallback] || 'floor_stone') : 'boss_mark');
     });
-    m.npcs.forEach(function (n) { if (n.showIf) n.hidden = !d.flags[n.showIf]; if (n.hideIf && d.flags[n.hideIf]) n.hidden = true; if (root.COMPANIONS && root.COMPANIONS[n.id] && d.companions[n.id]) n.hidden = true; });
+    m.npcs.forEach(function (n) { if (n.showIf) n.hidden = !d.flags[n.showIf]; if (n.hideIf && d.flags[n.hideIf]) n.hidden = true; if (n.showWhen) { try { n.hidden = !n.showWhen(d); } catch (e) { n.hidden = true; } } if (root.COMPANIONS && root.COMPANIONS[n.id] && d.companions[n.id]) n.hidden = true; });   // v6.9 showWhen：物語の段階で出し入れする人（js/data/story3121.js）
   };
 
   /* ---------- プレイヤー ---------- */
@@ -137,6 +137,7 @@
   };
   // 昼夜（フィールドのみ）: timeOfDay 0..1
   World.tint = function () {
+    if (World.map.def && World.map.def.tint) return World.map.def.tint;   // v6.9 マップ固有の色（襲撃の夜のアサナ村：炎に照らされた赤）
     if (World.map.kind !== 'field' && World.map.kind !== 'town') return null;
     var t = State.data.timeOfDay; // 0=深夜 0.25=朝 0.5=昼 0.75=夕
     var night = Math.max(0, Math.cos(t * Math.PI * 2)); // 0付近で1

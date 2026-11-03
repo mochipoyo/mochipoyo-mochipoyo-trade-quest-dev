@@ -59,6 +59,9 @@
     State.newGame(name, jobs[ji]);
     var legacy = State.legacyInfo();
     if (legacy) { var li = await Win.choice('旧バージョンのデータが見つかった。トレード学習の成績と修了した講義を引き継ぐ？（旧データは消えない）', ['引き継ぐ', '引き継がない']); if (li === 0) { var r = State.importLegacy(); await Win.message(['引き継いだ：' + r.migrated.join('／'), '引き継げない：' + r.skipped.join('／')]); } }
+    // v6.9 西暦3121年の新しいプロローグ（アサナ村）。選ばなかった場合・Story3121 がない場合は、これまでの序章のままポヨ村から
+    var s31 = root.Story3121 && root.Story3121.beginNewGame ? await root.Story3121.beginNewGame() : null;
+    if (s31) { World.start(); if (s31.after) await s31.after(); return true; }
     await Win.message(['——プロローグ：失われた天秤——', '数百年前、世界を豊かにするため、魔導士たちは「均衡のクリスタル」を完成させた。人々の約束と資源の分配を記録し、争いを減らすための結晶だった。', 'だが大災害が起こり、世界の一部は海に沈み、多くの記録が失われた。災害の最後に、一人の魔導士が結晶へ願いを封じ込めた。', '「もう二度と、誰にも大切なものを失わせないでほしい」', 'その願いが、やがて世界を変える。']);
     await Win.message(['……冷たい風が頬を撫でる。', '遠くで誰かが呼んでいる。「波を読む者よ、目を覚ませ」', 'ここは——アルカディア相場大陸。']);
     World.start();

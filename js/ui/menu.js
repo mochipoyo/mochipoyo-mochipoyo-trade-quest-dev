@@ -122,7 +122,8 @@
       if (!cands.length) { await Win.message(['誰も装備できない。（装備できる職業：' + ((root.Services.equipJobs && root.Services.equipJobs(it).join('・')) || 'なし') + '）']); return; }
       var ci = await Win.choice(it.name + 'を誰が装備する？', cands.map(function (x) { return x.name; }).concat(['やめる'])); if (ci < 0 || ci >= cands.length) return;
       root.Services.equipItem(cands[ci], it.id); await Win.message([cands[ci].name + 'は' + it.name + 'を装備した。']);
-    } else await Win.message([it.desc, it.subcategory === 'material' ? '（素材。使ったり売ったりはできない）' : '（重要アイテム。使ったり売ったりはできない）']);
+    } else if (typeof it.read === 'function') { await it.read(); }   // v6.9 読める重要アイテム（母の帳簿・母の手紙・千年の記録帳など）。売れない・なくならない
+    else await Win.message([it.desc, it.subcategory === 'material' ? '（素材。使ったり売ったりはできない）' : '（重要アイテム。使ったり売ったりはできない）']);
   };
 
   Menu.equip = async function () {

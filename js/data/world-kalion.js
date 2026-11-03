@@ -43,7 +43,8 @@
     { id: 'grania_pass_n', name: '灰の峠（北口）', icon: 'cave_icon', x: 60, y: 104, to: 'grania_pass', tx: 7, ty: 1 },
     { id: 'erased_village', name: '地図から消えた村', icon: 'village', x: 42, y: 44, to: 'erased_village', tx: 12, ty: 17, needFlag: 'erased_hint', hidden: true },
     { id: 'secret_lab', name: '秘密研究所', icon: 'cave_icon', x: 92, y: 52, to: 'kalion_lab', tx: 5, ty: 9, needFlag: 'lab_known', lockedText: ['岩肌に、扉のような継ぎ目がある。', '……どこを押しても開かない。この場所のことを知る者に聞かなければ。'] },
-    { id: 'luxbell', name: '娯楽都市ラックスベル', icon: 'castle_icon', x: 96, y: 80, to: 'luxbell', tx: 20, ty: 28 }   // v6.1 カジノの町（js/data/luxbell.js）
+    { id: 'luxbell', name: '娯楽都市ラックスベル', icon: 'castle_icon', x: 96, y: 80, to: 'luxbell', tx: 20, ty: 28 },   // v6.1 カジノの町（js/data/luxbell.js）
+    { id: 'asana_ruins', name: 'アサナ村跡', icon: 'village', x: 24, y: 66, to: 'asana_ruins', tx: 13, ty: 19, needFlag: 's3121_asana_located', hidden: true }   // v6.9 主人公の故郷の跡（第6章の地下記録庫の抹消台帳で場所が分かる。js/data/story3121.js）
     // v6.8 相場都市トレディアはマクディア地方へ移した（js/data/world-magicka.js）。以前の入口 (36,88) はなくした（道は残す：下の ROADS）
   ];
   var ROADS = [[[60, 104], [60, 76]], [[60, 76], [64, 26]], [[60, 76], [92, 52]], [[60, 76], [96, 80]], [[60, 76], [36, 88]]];   // v6.4 カリオン → トレディア（西へ、それから南へ）。v6.8 トレディアはマクディア地方へ移したが、道は残す（道ぞいの遺跡の位置を変えない・古いセーブでトレディアから出たときに、この道の先 (36,89) に出てカリオンへ戻れる）

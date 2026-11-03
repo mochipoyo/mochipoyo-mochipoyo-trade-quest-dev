@@ -236,6 +236,7 @@ export class App3D {
     this.ui.setBadge(ms.coverage === 'generic' ? '3D版 開発中：汎用3D（仮3D・自動生成）' : '3D版：専用3D（ポヨ村）');
     this.lighting.setLampSpots(ms.lampSpots); this.lighting.setInterior(ms.interior || !!ms.dark, ms.ambient);
     if (this.lighting.setTheme) this.lighting.setTheme(ms.theme || null);
+    if (this.lighting.setMood) this.lighting.setMood((ms.map && ms.map.def && ms.map.def.mood3d) || null);   // v6.9 マップ固有の空気
     const closeCam = ms.interior || (ms.map.kind === 'dungeon');
     this.camera.setInterior(closeCam); if (!closeCam) { this.camera.setPitch(this.userPitch); if (ms.map.kind === 'field') this.camera.wantDist = Math.max(this.camera.wantDist, 24); }
     this.snap();
@@ -417,6 +418,12 @@ export class App3D {
     CUT.uCutRadius.value = Math.abs(b.x - a.x) * 0.5 * size.x; CUT.uCutDepth.value = depth - 0.7;
   }
   // 確認用：主人公にモーションを再生させる（3D設定の「モーション」）
+  // v6.9 イベント用のカメラ（js/data/story3121.js の Story3121.cine から呼ぶ）。2D のマス座標 { x, y, dist, pitch }。null で解除
+  cine(o) {
+    if (!o) { this.camera.setCine(null); return; }
+    const x = o.x + 0.5, z = o.y + 0.5; let h = 0; try { h = this.current && this.current.heightAt ? this.current.heightAt(x, z) || 0 : 0; } catch (e) { h = 0; }
+    this.camera.setCine({ x, z, y: h, dist: o.dist || 12, pitch: o.pitch || 40 });
+  }
   emote(name) { if (!this.hero || !this.hero.has(name)) return; this._emote = { name, until: performance.now() / 1000 + 2.6 }; this.hero.play(name, 0.15, { back: 'Idle' }); }
 
   /* ---------- 調べる・話す ---------- */

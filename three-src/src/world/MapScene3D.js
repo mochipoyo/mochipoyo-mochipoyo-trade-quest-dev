@@ -85,16 +85,35 @@ export class MapScene3D {
     // NPC
     for (const n of map.npcs) {
       const model = fieldModelFor(n.actorArt) || fieldModelFor(n.id) || characterModelFor(n.sprite);
-      const ch = await Character3D.create(app.models, model);
+      const cr = n.creature3d;   // v6.9 魔物の姿の NPC（襲撃の夜の黒い影など）：モンスターの型＋色
+      const ch = cr ? (await Character3D.create(app.models, cr.model, { color: cr.color, accent: cr.accent, scale: cr.scale }) || await Character3D.create(app.models, model)) : await Character3D.create(app.models, model);
       if (!ch) continue; ch.npc = n; this.root.add(ch.root); this.npcs.push(ch);
       ch.yaw = ch.wantYaw = DIR_YAW[n.dir] || 0;
       this.placeNpc(ch, 0, true);
     }
+    this.addFx(map);   // v6.9 マップの炎・煙（2D のマップ定義 def.fx3d：襲撃の夜のアサナ村）
     app.lighting.registerScene(this.root);
     this.buildMs = Math.round(performance.now() - t0);
     return this;
   }
 
+  // v6.9 炎（揺れる円錐＋光の玉＋橙の点光源）と煙。点光源は重いので大きい炎の上位4つだけ
+  addFx(map) {
+    const list = (map.def && map.def.fx3d) || []; if (!list.length) return;
+    if (!this._fireTex) this._fireTex = softTexture('rgba(255,110,30,1)', 64);
+    const fires = list.filter((f) => f.kind === 'fire'); const lit = fires.slice().sort((a, b) => (b.s || 1) - (a.s || 1)).slice(0, 4);
+    for (const f of fires) {
+      const s = f.s || 1; const x = f.x + 0.5, z = f.y + 0.5; const y = this.heightAt(x, z) || 0;
+      const g = new THREE.Group(); g.position.set(x, y + (f.h || 0.9), z); g.name = 'fx_fire';
+      const outer = new THREE.Mesh(new THREE.ConeGeometry(0.42 * s, 1.3 * s, 10), new THREE.MeshBasicMaterial({ color: 0xe8400c, transparent: true, opacity: 0.82, depthWrite: false, toneMapped: false })); outer.position.y = 0.55 * s; g.add(outer);
+      const inner = new THREE.Mesh(new THREE.ConeGeometry(0.24 * s, 0.9 * s, 8), new THREE.MeshBasicMaterial({ color: 0xffa020, transparent: true, opacity: 0.9, depthWrite: false, toneMapped: false })); inner.position.y = 0.4 * s; g.add(inner);
+      const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: this._fireTex, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false })); glow.scale.set(2.2 * s, 2.2 * s, 1); glow.position.y = 0.5 * s; glow.renderOrder = 5; g.add(glow);
+      if (lit.indexOf(f) >= 0) { const l = new THREE.PointLight(0xff8a3a, 2.2 * s, 9 * s, 2); l.position.y = 0.8 * s; g.add(l); }
+      this.root.add(g); this.animated.push({ kind: 'flame', obj: outer }); this.animated.push({ kind: 'flame', obj: inner });
+      this.fxFires = (this.fxFires || 0) + 1;
+    }
+    for (const f of list.filter((q) => q.kind === 'smoke')) { const x = f.x + 0.5, z = f.y + 0.5; this.addSmoke(new THREE.Vector3(x, (this.heightAt(x, z) || 0) + 1.6, z)); }
+  }
   addSmoke(pos) {
     if (!this._smokeTex) this._smokeTex = softTexture('rgba(220,220,225,0.9)', 64);
     const list = [];

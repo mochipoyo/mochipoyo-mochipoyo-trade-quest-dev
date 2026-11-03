@@ -21,12 +21,18 @@ export class CameraController3D {
     this.wantDist = Math.min(this.maxDist, Math.max(this.minDist, this.wantDist)); if (on) this.setPitch(55); this.first = true;
   }
   zoom(f) { this.wantDist = THREE.MathUtils.clamp(this.wantDist * f, this.minDist, this.maxDist); }
+  // v6.9 イベント用のカメラ：{ x, y, z, dist, pitch } の場所へゆっくり寄る（null で解除。ふだんの追従へゆっくり戻る）。北が上の向きは変えない
+  setCine(c) { this.cine = c || null; }
   follow(p, dt, snap) {
     if (this.debug) { this.camera.position.set(this.debug.pos[0], this.debug.pos[1], this.debug.pos[2]); this.camera.lookAt(this.debug.target[0], this.debug.target[1], this.debug.target[2]); return; }
-    const k = snap || this.first ? 1 : 1 - Math.pow(0.0015, dt);
-    this.target.lerp(new THREE.Vector3(p.x, p.y + 0.8, p.z), k);
-    this.dist += (this.wantDist - this.dist) * (snap || this.first ? 1 : 1 - Math.pow(0.002, dt));
-    const off = new THREE.Vector3(0, Math.sin(this.pitch) * this.dist, Math.cos(this.pitch) * this.dist);
+    const c = this.cine; const jump = snap || this.first;
+    const k = jump ? 1 : 1 - Math.pow(c || this._cineBack ? 0.08 : 0.0015, dt);
+    this.target.lerp(c ? new THREE.Vector3(c.x, (c.y || 0) + 0.8, c.z) : new THREE.Vector3(p.x, p.y + 0.8, p.z), k);
+    const wantD = c && c.dist ? c.dist : this.wantDist; const wantP = c && c.pitch ? THREE.MathUtils.degToRad(c.pitch) : this.pitch;
+    if (this.pitchNow === undefined || jump) this.pitchNow = wantP; else this.pitchNow += (wantP - this.pitchNow) * (1 - Math.pow(0.05, dt));
+    this._cineBack = !c && Math.abs(this.pitchNow - this.pitch) > 0.01;
+    this.dist += (wantD - this.dist) * (jump ? 1 : 1 - Math.pow(c ? 0.05 : 0.002, dt));
+    const off = new THREE.Vector3(0, Math.sin(this.pitchNow) * this.dist, Math.cos(this.pitchNow) * this.dist);
     this.camera.position.copy(this.target).add(off);
     this.camera.lookAt(this.target); this.first = false;
   }

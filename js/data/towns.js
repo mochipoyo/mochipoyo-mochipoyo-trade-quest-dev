@@ -99,7 +99,8 @@
   ], warps: [{ x: 5, y: 8, to: 'poyo_village', tx: 5, ty: 4 }],
     npcs: [{ id: 'elder_mochizo', x: 5, y: 3, sprite: 'elder', dir: 'down', wander: 0, talk: async function (c) {
       if (!c.flag('met_elder')) {
-        await c.say('村長モチゾウ', ['おお……目を覚ましたか。お前さんは三日前、村はずれの草原で倒れておったんじゃ。', 'ここはアルカディア相場大陸、ポヨ村。世界を支えておった「均衡のクリスタル」が砕けてから、人の欲望や恐怖が魔物の姿をとって彷徨っておる。', 'お前さんの胸に光る痣……それは「波を読む者」の印じゃ。古い伝承にある。', 'まずは北のリヴェル城下町へ行き、王に会うがよい。路銀として、これを持っていきなさい。']);
+        var s31first = root.Story3121 && root.Story3121.elderIntroFirstLine ? root.Story3121.elderIntroFirstLine() : null;   // v6.9 新しいプロローグで目を覚ましたあと：最初の一言だけ変える（報酬などは同じ）
+        await c.say('村長モチゾウ', [s31first || 'おお……目を覚ましたか。お前さんは三日前、村はずれの草原で倒れておったんじゃ。', 'ここはアルカディア相場大陸、ポヨ村。世界を支えておった「均衡のクリスタル」が砕けてから、人の欲望や恐怖が魔物の姿をとって彷徨っておる。', 'お前さんの胸に光る痣……それは「波を読む者」の印じゃ。古い伝承にある。', 'まずは北のリヴェル城下町へ行き、王に会うがよい。路銀として、これを持っていきなさい。']);
         // v5.8 武器は職業に合うものを渡し、その場で装備する（以前は誰にでも木の剣で、魔法使いなどは装備できなかった）
         var hero = root.State.data.hero; var wid = (root.STARTER_WEAPON && root.STARTER_WEAPON[hero.job]) || 'wooden_sword';
         c.addGold(100); c.give('herb', 3); c.give(wid, 1);
@@ -134,6 +135,7 @@
         if (c.hasCompanion('lina')) return;
         if (!c.flag('met_elder')) { await c.say('リーナ', ['あなたも村長さんに拾われた旅の人？ まずは村長さんの話を聞いてきて。']); return; }
         await c.say('リーナ', ['私はリーナ。巡礼の途中で魔物に襲われて、この村に逃げ込んだの。', '村長さんから聞いたわ。リヴェルの王様に会いに行くのね。回復魔法なら任せて。一緒に行ってもいい？']);
+        if (root.Story3121 && root.Story3121.linaQuestion) await root.Story3121.linaQuestion(c);   // v6.9 新しいプロローグのセーブだけ「復讐が終わったら、どうするの？」（一度だけ）
         var a = await c.choice('リーナを仲間にしますか？', ['はい', 'いいえ']);
         if (a === 0) { c.join('lina'); await c.msg(['リーナが仲間になった！', 'メニューの「なかま」で編成を確認できる。']); }
         else await c.say('リーナ', ['そう……気が変わったら、また声をかけてね。']);
