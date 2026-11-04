@@ -16,7 +16,7 @@
 import * as THREE from 'three';
 import { kit, mat, plain, worldUV, rng } from '../EnvKit3D.js';
 import { Batch } from '../../engine/Materials.js';
-import { canvasTex, shade, texMat, wbox, rbox, cyl, frameOf, floorQuads, namePlate, drawSetts } from './geo.js';
+import { canvasTex, shade, texMat, wbox, rbox, cyl, frameOf, floorQuads, namePlate, drawSetts, settsHeight } from './geo.js';
 
 const IVORY = '#f2e9d8', COPPER = '#4f7d6a', COPPER_D = '#3d6656', BRASS = '#c9a24a', IRON = '#2f4a40', PLUM = '#7a6a8e';
 const PLATE = { bg: '#2f4a40', panel: '#f4ecdc', fg: '#2f3a34' };
@@ -46,12 +46,12 @@ export const recipe = {
     const boards = (map.def && map.def.events || []).filter((e) => e.type === 'script' && e.solid && e.y === ex.y + ex.h);   // 証券市場の前の「大きな板」（左右）
     if (boards.length !== 2) throw new Error('証券市場の前の板（イベント）が2つでない：' + boards.length);
     const K = {
-      ivory: texMat('tr_ashlar', canvasTex('tr_ashlar', 256, 256, drawSetts('#f3ebdb', '#c9bca4', 128, 64, 0.07)), { roughness: 0.8 }),
-      ivoryD: texMat('tr_ashlarD', canvasTex('tr_ashlarD', 256, 256, drawSetts('#e2d5bc', '#b4a68c', 128, 64, 0.08)), { roughness: 0.85 }),
+      ivory: texMat('tr_ashlar', canvasTex('tr_ashlar', 256, 256, drawSetts('#f3ebdb', '#c9bca4', 128, 64, 0.07)), { roughness: 0.8 }, { height: settsHeight(128, 64, 11), depth: 3 }),
+      ivoryD: texMat('tr_ashlarD', canvasTex('tr_ashlarD', 256, 256, drawSetts('#e2d5bc', '#b4a68c', 128, 64, 0.08)), { roughness: 0.85 }, { height: settsHeight(128, 64, 12), depth: 3 }),
       slab: await mat(ctx, 'stone_courtyard', { repeat: 3, color: '#fff4e2', bright: 1.28, roughness: 0.85 }),
-      setts: texMat('tr_setts', canvasTex('tr_setts', 256, 256, drawSetts('#eee4d0', '#a99c86', 64, 32, 0.08)), { roughness: 0.85 }),
-      settsS: texMat('tr_settsS', canvasTex('tr_settsS', 256, 256, drawSetts('#e9e1d2', '#a8a090', 32, 32, 0.1)), { roughness: 0.85 }),
-      cobW: texMat('tr_cobW', canvasTex('tr_cobW', 256, 256, drawSetts('#c9a888', '#7e6a58', 32, 32, 0.18)), { roughness: 0.9 }),
+      setts: texMat('tr_setts', canvasTex('tr_setts', 256, 256, drawSetts('#eee4d0', '#a99c86', 64, 32, 0.08)), { roughness: 0.85 }, { height: settsHeight(64, 32, 13), depth: 3 }),
+      settsS: texMat('tr_settsS', canvasTex('tr_settsS', 256, 256, drawSetts('#e9e1d2', '#a8a090', 32, 32, 0.1)), { roughness: 0.85 }, { height: settsHeight(32, 32, 14), depth: 3 }),
+      cobW: texMat('tr_cobW', canvasTex('tr_cobW', 256, 256, drawSetts('#c9a888', '#7e6a58', 32, 32, 0.18)), { roughness: 0.9 }, { height: settsHeight(32, 32, 15), depth: 4 }),
       radial: texMat('tr_radial', canvasTex('tr_radial', 1024, 1024, drawRadial), { roughness: 0.75 }),
       board: texMat('tr_board', canvasTex('tr_board', 256, 230, drawBoard), { roughness: 0.7 }),
       copper: plain(COPPER, { std: { roughness: 0.6 } }), copperD: plain(COPPER_D, { std: { roughness: 0.65 } }),
@@ -64,7 +64,7 @@ export const recipe = {
       plum: plain(PLUM, { std: { roughness: 0.9, side: THREE.DoubleSide } }), red: plain('#a8543a', { std: { roughness: 0.8 } }),
       bulb: plain('#fff0d0', { emissive: '#ffd9a0', ei: 1.6, keepGlow: true })
     };
-    K.slabW = texMat('tr_slabs', canvasTex('tr_slabs', 512, 512, drawSetts('#efe7d6', '#b3a68e', 256, 128, 0.07)), { roughness: 0.8, vertexColors: true });
+    K.slabW = texMat('tr_slabs', canvasTex('tr_slabs', 512, 512, drawSetts('#efe7d6', '#b3a68e', 256, 128, 0.07)), { roughness: 0.8, vertexColors: true }, { height: settsHeight(256, 128, 16), depth: 3, aoRadius: 4 });
     const gateX = (() => { for (let x = 1; x < map.w - 1; x++) if (map.tile(x, map.h - 1) === 'road') return x + 2; return map.w / 2; })();
     const hooks = { skipProp: (t) => t === 'fence' || t === 'lamp', skipOutTree: (x, z) => z >= map.h - 1 && Math.abs(x - gateX) < 12 };   // 南の門の前（カメラの側）には町の外の木を置かない
     const building = async (b, o) => {

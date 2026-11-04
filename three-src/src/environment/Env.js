@@ -44,7 +44,7 @@ export const Env = {
   // 確認用：歩けるマスの「体の高さ」（0.15〜1.8）に形があるマスを調べる（下向きの光線。床・水・草・人・宝箱・煙は除く）。テスト（p76_walk.js）が env=off と v1 で比べる
   probeWalk(ms) {
     const map = ms && ms.map; if (!map) return null; ms.root.updateMatrixWorld(true);
-    const skip = /^(ground_|water|grass_|flowers|lavasea|cloudsea|motes|smoke|npc|hero|chest|follow)/i; const targets = [];
+    const skip = /^(ground_|water|grass_|flowers|lavasea|cloudsea|motes|smoke|npc|hero|chest|follow|lightshaft)/i; const targets = [];
     const walk = (o, bad) => { bad = bad || skip.test(o.name || '') || o.isSprite || o.isPoints || (o.userData && (o.userData.npc || o.userData.chest)); if (!bad && (o.isMesh || o.isInstancedMesh) && o.visible !== false) targets.push(o); for (const c of o.children) walk(c, bad); };
     walk(ms.root, false);
     const rc = new THREE.Raycaster(); rc.far = 1.65; const down = new THREE.Vector3(0, -1, 0); const out = [];

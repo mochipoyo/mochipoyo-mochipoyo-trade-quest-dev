@@ -11,6 +11,8 @@ import { worldUV } from '../EnvKit3D.js';
 import { addCutout } from '../../engine/Cutout.js';
 import { textTexture } from '../../engine/Materials.js';
 import { rng } from '../EnvKit3D.js';
+import { pbrMaps, applyPBR, settsHeight } from '../ProcPBR.js';
+export { settsHeight };
 
 const TX = {};
 export function canvasTex(key, w, h, draw) {
@@ -20,7 +22,12 @@ export function canvasTex(key, w, h, draw) {
 }
 export function shade(hex, k) { const c = new THREE.Color(hex).multiplyScalar(k); return '#' + c.getHexString(); }
 const MAT = {};
-export function texMat(key, tex, o) { if (MAT[key]) return MAT[key]; const m = new THREE.MeshStandardMaterial(Object.assign({ map: tex, roughness: 0.6, metalness: 0 }, o || {})); addCutout(m); m.userData.envShared = true; m.name = 'env_tex_' + key; MAT[key] = m; return m; }
+// pbr：{ height（模様の高さの関数。ProcPBR.js）, depth, ao, rough0, rough1, normalScale } があれば、高画質のときだけ法線・AO・粗さの画像を付ける
+export function texMat(key, tex, o, pbr) {
+  if (MAT[key]) return MAT[key]; const m = new THREE.MeshStandardMaterial(Object.assign({ map: tex, roughness: 0.6, metalness: 0 }, o || {}));
+  if (pbr && pbr.height && tex && tex.image) applyPBR(m, pbrMaps(key, tex.image.width, tex.image.height, pbr.height, pbr), pbr);
+  addCutout(m); m.userData.envShared = true; m.name = 'env_tex_' + key; MAT[key] = m; return m;
+}
 export function wbox(w, h, d, x, y, z, s) { const g = new THREE.BoxGeometry(w, h, d); g.translate(x, y, z); return worldUV(g, s || 2); }
 export function rbox(w, h, d, x, y, z, ry, rx) { const g = new THREE.BoxGeometry(w, h, d); if (rx) g.rotateX(rx); if (ry) g.rotateY(ry); g.translate(x, y, z); return g; }
 export function cyl(r0, r1, h, seg, x, y, z) { const g = new THREE.CylinderGeometry(r0, r1, h, seg); g.translate(x, y, z); return g; }

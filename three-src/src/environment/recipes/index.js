@@ -11,6 +11,9 @@ import { recipe as nodeCity, scheduledRecipe } from './node_city.js';
 import { recipe as tradia } from './tradia.js';
 import { townKit } from './town_kit.js';
 import { roomKit, ROOM_STYLE } from './room_kit.js';
+import { recipe as poyoInterior } from './poyo_interior.js';
+import { fieldKit } from './field_kit.js';
+import { outdoorKit } from './outdoor_kit.js';
 import { mapCoverage } from '../../world/coverage.js';
 import { themeFor } from '../../world/themes.js';
 
@@ -29,10 +32,14 @@ const generic = {};
 export function genericRecipe(map) {
   if (!map) return null;
   const PD = window.PLACE_DECOR; const key = PD && PD.forMap ? PD.forMap(map.id) : null;
-  if (mapCoverage(map) !== 'generic') return null;   // 専用に作り込んだ3D（ポヨ村の屋内など）は対象外
+  if (mapCoverage(map) === 'done' && map.kind === 'interior') return poyoInterior;   // ポヨ村の作り込んだ屋内：用途ごとの奥の壁の飾り
+  if (mapCoverage(map) !== 'generic') return null;
   if (map.kind === 'town' && !MODERN[key]) return generic['town:' + map.id] || (generic['town:' + map.id] = townKit(map.id));
+  if (map.kind === 'town' && (key === 'casino' || key === 'tech')) return generic['town:' + map.id] || (generic['town:' + map.id] = townKit(map.id, { style: key === 'casino' ? 'casino' : 'skyterrace' }));   // 近未来・娯楽の町（建物はそのまま）
+  if (map.kind === 'field') return generic['field:' + map.id] || (generic['field:' + map.id] = fieldKit(map.id));
   if (map.kind === 'dungeon' || map.kind === 'interior') {
-    const th = themeFor(map); const P = th.placeDef || {}; if (P.outdoor || P.wall === 'trees') return null;   // 屋外のダンジョン・森は対象外
+    const th = themeFor(map); const P = th.placeDef || {};
+    if (P.outdoor || P.wall === 'trees') { const k = P.wall === 'trees' || th.place === 'forest' ? 'forest' : th.place === 'sky' ? 'sky' : null; if (!k) return null; return generic['out:' + map.id] || (generic['out:' + map.id] = outdoorKit(k)); }   // 屋外のダンジョン（森・空）
     const prof = (window.MTQ3D_ENV && window.MTQ3D_ENV.profileSync && window.MTQ3D_ENV.profileSync(map.id)) || null;
     let st = prof && ROOM_STYLE[prof.archetype];
     if (st === null) return null;

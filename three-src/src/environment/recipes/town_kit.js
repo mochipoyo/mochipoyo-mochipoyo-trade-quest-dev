@@ -10,7 +10,7 @@
 import * as THREE from 'three';
 import { plain, rng } from '../EnvKit3D.js';
 import { Batch } from '../../engine/Materials.js';
-import { canvasTex, texMat, wbox, cyl, drawSetts, floorQuadsH } from './geo.js';
+import { canvasTex, texMat, wbox, cyl, drawSetts, floorQuadsH, settsHeight } from './geo.js';
 import { buildLandmark } from './landmarks.js';
 
 // 地域ごとの作り方。road/walk：[石の色, 目地, 幅, 高さ, ばらつき]（キャンバスは 256×256。幅・高さは 256 を割り切る値）
@@ -26,6 +26,8 @@ export const REGION_STYLE = {
   desert: { plaster: ['#efd8b0', '#e8cfa2', '#f2dcb8'], frame: false, flat: true, roofs: ['#b07a4a'], pitch: 0.5, road: ['#e2c89a', '#b09060', 64, 32, 0.1], walk: ['#ead6ae', '#b89c70', 64, 64, 0.08], lamp: 'brass', light: 0xffc880, fence: 'mud' },
   dragon: { plaster: ['#b8a898', '#a89888'], wall: 'stone', frame: false, roofs: ['#5a2418', '#4a2a20'], pitch: 0.6, road: ['#5a524c', '#2e2824', 64, 32, 0.18], walk: ['#7a6e64', '#3e3630', 64, 32, 0.15], lamp: 'brazier', light: 0xff8a40, fence: 'stone' },
   snow: { plaster: ['#f4f2ee', '#ece8e2'], frame: true, roofs: ['#4a5a7a', '#3a4a68', '#5a3a32'], pitch: 0.95, road: ['#a8b0b8', '#6a727a', 64, 32, 0.1], walk: ['#d8dee4', '#98a0a8', 32, 32, 0.08], lamp: 'lantern', light: 0xffc890, fence: 'stone' },
+  casino: { plaster: ['#3a1a34'], frame: false, roofs: ['#2a1028'], pitch: 0.5, road: ['#2a2230', '#c9a24a', 128, 128, 0.05], walk: ['#3a3040', '#8a7040', 64, 64, 0.06], lamp: 'brass', light: 0xffd890, fence: 'railing', modern: true },
+  skyterrace: { plaster: ['#ffffff'], frame: false, roofs: ['#4a7ab8'], pitch: 0.5, road: ['#f4f6f8', '#c8d0d8', 128, 64, 0.03], walk: ['#fafbfc', '#d0d8e0', 64, 64, 0.03], lamp: 'iron', light: 0xf0f6ff, fence: 'balustrade', modern: true },
   machine: { plaster: ['#d8dce0'], frame: false, roofs: ['#4a5a6a'], pitch: 0.5, road: ['#8a929a', '#4e555c', 128, 64, 0.06], walk: ['#b8bec4', '#80868c', 64, 64, 0.05], lamp: 'iron', light: 0xe0f0ff, fence: 'railing' }
 };
 const hash = (x, y, k) => { let h = (x * 374761393 + y * 668265263 + k * 2147483647) >>> 0; h = (h ^ (h >>> 13)) * 1274126177 >>> 0; return (h ^ (h >>> 16)) / 4294967296; };
@@ -50,17 +52,19 @@ export function townStyle(b, R) {
   return h1 < 0.5 ? gx({}) : Object.assign(st, { roof: 'hip' });
 }
 
-export function townKit(mapId) {
+export function townKit(mapId, opt) {
+  opt = opt || {};
   return {
-    id: 'town_kit.v1',
+    id: 'town_kit.v1' + (opt.style ? ':' + opt.style : ''),
     async prepare(ctx) {
-      const map = ctx.map; const prof = ctx.profile || {}; const region = REGION_STYLE[prof.region] ? prof.region : 'arcadia'; const R = REGION_STYLE[region];
-      const tex = (key, a) => texMat('tk_' + key, canvasTex('tk_' + key, 256, 256, drawSetts(a[0], a[1], a[2], a[3], a[4])), { roughness: 0.88 });
+      const map = ctx.map; const prof = ctx.profile || {}; const region = opt.style || (REGION_STYLE[prof.region] ? prof.region : 'arcadia'); const R = REGION_STYLE[region];
+      const tex = (key, a) => texMat('tk_' + key, canvasTex('tk_' + key, 256, 256, drawSetts(a[0], a[1], a[2], a[3], a[4])), { roughness: 0.88 }, { height: settsHeight(a[2], a[3], a[2] * 7 + a[3]), depth: 3 });   // 高画質：石の形から法線・AO（ProcPBR.js）
       const K = { R, region, road: tex(region + '_road', R.road), walk: tex(region + '_walk', R.walk) };
       const LM = map.envLayout && map.envLayout.landmark; const inLM = (x, z) => !!LM && x >= LM.x && x < LM.x + LM.w && z >= LM.y && z < LM.y + LM.h;   // 町ごとの目印のマス（js/rpg/envlayout.js）
       const hooks = { skipProp: (t, x, z) => t === 'lamp' || (t === 'fence' && !!R.fence) || inLM(x, z), skipTree: (x, z) => inLM(x, z) };
       K.inLM = inLM; K.LM = LM;
-      const building = async (b, o) => { const st = townStyle(b, R); if (!st) return null; return o.bb.build(b, o.rnd, { batch: o.batch, design: o.design, theme: o.theme, style: st }); };
+      // 近未来・娯楽の町（R.modern）：建物はガラスと金属の汎用のまま（舗装・街灯・柵・目印だけ）
+      const building = async (b, o) => { if (R.modern) return null; const st = townStyle(b, R); if (!st) return null; return o.bb.build(b, o.rnd, { batch: o.batch, design: o.design, theme: o.theme, style: st }); };
       ctx.stats.region = region;
       return { hooks, building, build: (bb) => build(ctx, K, bb) };
     }

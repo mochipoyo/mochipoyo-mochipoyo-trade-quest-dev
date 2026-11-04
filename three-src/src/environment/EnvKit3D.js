@@ -34,7 +34,8 @@ export async function mat(ctx, name, o) {
   if (matCache.has(key)) return matCache.get(key);
   let base = null; try { base = await ctx.catalog.material(name); } catch (e) { base = null; ctx.stats.matErrors.push(name + '：' + (e && e.message)); }
   const m = base ? base.clone() : new THREE.MeshStandardMaterial({ color: 0x9a948a, roughness: 0.9 });
-  if (base && base.map && o.repeat) { m.map = base.map.clone(); m.map.needsUpdate = true; m.map.repeat.set(1 / o.repeat, 1 / o.repeat); m.map.wrapS = m.map.wrapT = THREE.RepeatWrapping; }
+  if (base && base.map && o.repeat) { m.map = base.map.clone(); m.map.needsUpdate = true; m.map.repeat.set(1 / o.repeat, 1 / o.repeat); m.map.wrapS = m.map.wrapT = THREE.RepeatWrapping;
+    for (const k of ['normalMap', 'aoMap', 'roughnessMap']) if (base[k]) { m[k] = base[k].clone(); m[k].needsUpdate = true; m[k].repeat.copy(m.map.repeat); m[k].wrapS = m[k].wrapT = THREE.RepeatWrapping; } }   // 法線・AO の画像（materials.json にあるとき）も同じ繰り返し
   if (o.color) m.color = new THREE.Color(o.color);
   if (o.bright) m.color.multiplyScalar(o.bright);
   if (o.vertexColors) m.vertexColors = true;   // 形の頂点色で明るさを変える（床の擦り減りなど）   // 暗い画像を明るい色の面に使う（色の値は1を超えてよい）

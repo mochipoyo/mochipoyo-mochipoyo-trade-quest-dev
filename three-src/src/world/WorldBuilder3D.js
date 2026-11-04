@@ -302,7 +302,7 @@ export class WorldBuilder3D {
         // 屋外ダンジョンの道ぞいの森：背の低い木と茂みにして、道が隠れないようにする
         put(rnd() < 0.5 ? 'bush_a' : 'tree_oak_c', M4(x + 0.5 + (rnd() - 0.5) * 0.3, heightAt(x + 0.5, z + 0.5), z + 0.5 + (rnd() - 0.5) * 0.3, rnd() * 6.28, 0, 0, 0.55 + rnd() * 0.2), x, z); trees++; continue;
       }
-      if (t === 'forest') { const n = (hi && field) ? 2 : 1; for (let k = 0; k < n; k++) { tree(x + (n > 1 ? 0.2 + rnd() * 0.6 : 0.4 + rnd() * 0.2), z + (n > 1 ? 0.2 + rnd() * 0.6 : 0.4 + rnd() * 0.2), 0.8 + rnd() * 0.45); trees++; } }
+      if (t === 'forest') { const n0 = this.trees.length; const n = (hi && field) ? 2 : 1; for (let k = 0; k < n; k++) { tree(x + (n > 1 ? 0.2 + rnd() * 0.6 : 0.4 + rnd() * 0.2), z + (n > 1 ? 0.2 + rnd() * 0.6 : 0.4 + rnd() * 0.2), 0.8 + rnd() * 0.45); trees++; } if (env && env.skipTree && env.skipTree(x, z)) this.trees.length = n0; }
       else if (t === 'tree') { const n0 = this.trees.length; tree(x + 0.5 + (rnd() - 0.5) * 0.3, z + 0.5 + (rnd() - 0.5) * 0.3, 0.8 + rnd() * 0.35); trees++; if (env && env.skipTree && env.skipTree(x, z)) this.trees.length = n0; }   // v7.6 レシピの木のマス（大樹など）は置いてから外す（乱数の順を変えない）
       else if (t === 'tree_small') { put('tree_oak_c', M4(x + 0.5, heightAt(x + 0.5, z + 0.5), z + 0.5, rnd() * 6.28, 0, 0, 0.45), x, z); }
     }

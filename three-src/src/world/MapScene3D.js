@@ -22,6 +22,7 @@ import { characterModelFor, fieldModelFor } from '../assets/manifest.js';
 import { Batch, box, M4, softTexture, textTexture } from '../engine/Materials.js';
 import { Env } from '../environment/Env.js';
 import { ctxStats } from '../environment/EnvKit3D.js';
+import { setPBRQuality } from '../environment/ProcPBR.js';
 
 export class MapScene3D {
   constructor(app) { this.app = app; this.root = new THREE.Group(); this.npcs = []; this.chests = []; this.smokes = []; this.sway = []; this.animated = []; this.lampSpots = []; }
@@ -36,6 +37,7 @@ export class MapScene3D {
     if (Env.enabled() && !Env.errors[map.id]) { try { await Env.catalog(app.renderer && app.renderer.renderer); } catch (e) { /* 読めないときはレシピの選び方が地域・場所だけになる */ } }   // プロファイル（種類）でレシピを選ぶので、先に一覧を読む
     const recipe = Env.recipeFor(map); let rx = null; this.envRecipe = null;
     if (recipe) {
+      setPBRQuality(app.quality);   // 高画質だけ：コードで描く模様に法線・AO・粗さ（ProcPBR.js）
       const ctx = { map, app, scene: this, stats: ctxStats(), quality: app.quality };
       try { ctx.catalog = await Env.catalog(app.renderer && app.renderer.renderer); ctx.profile = await Env.profile(map.id); rx = await recipe.prepare(ctx); rx.ctx = ctx; this.envRecipe = { id: recipe.id, stats: ctx.stats }; }
       catch (e) { const err = new Error('環境レシピの準備に失敗 ' + map.id + '：' + (e && e.message)); err.envRecipe = true; err.cause = e; throw err; }
@@ -79,6 +81,7 @@ export class MapScene3D {
       const r = await ib.build(map);
       this.root.add(r.group); this.lampSpots = r.lights; this.animated = r.animated; this.bounds = r.bounds;
       this.heightAt = () => 0;
+      await runRecipe({ group: r.group, interior: true });   // v7.6 レシピ（ポヨ村の屋内の飾り）
     } else {
       const tb = new TerrainBuilder3D(app.mats, app.models, app.quality); this.terrain = tb;
       const r = await tb.build(map, rx && rx.hooks);

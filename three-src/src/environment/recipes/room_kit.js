@@ -10,7 +10,7 @@
    ========================================================= */
 import * as THREE from 'three';
 import { plain, rng, worldUV, mat4, Merge } from '../EnvKit3D.js';
-import { canvasTex, texMat, wbox, drawSetts, floorQuadsH, shade } from './geo.js';
+import { canvasTex, texMat, wbox, cyl, drawSetts, floorQuadsH, shade, settsHeight } from './geo.js';
 
 // 種類 → 作り方。fam：rock（岩塊）／ashlar（切石）／panel（金属）／plank（板）／plaster（しっくいと腰板）
 export const ROOM_STYLE = {
@@ -46,20 +46,72 @@ export function roomKit(style) {
   };
 }
 
+// 地域の色（屋内の壁・木・石）。用途の作り方と混ぜる（地域×用途）
+export const REGION_PAL = {
+  arcadia: { plaster: '#f2e6cc', wood: '#7a5a3e', stone: '#e6dfd2' }, grania: { plaster: '#d8cdbb', wood: '#5a4434', stone: '#b8b0a2' }, kalion: { plaster: '#f8f2e6', wood: '#6a3a2a', stone: '#ece6da' },
+  islands: { plaster: '#fbf8f0', wood: '#9a8a70', stone: '#e8e2d4' }, tempus: { plaster: '#ece8f0', wood: '#5e4a42', stone: '#d9d6e2' }, magicka: { plaster: '#ebe4f2', wood: '#3e3048', stone: '#d0c6e0' },
+  sky: { plaster: '#ffffff', wood: '#b8a890', stone: '#eef2f8' }, dark: { plaster: '#8e8494', wood: '#3a2e34', stone: '#6a6070' }, desert: { plaster: '#ecd4a8', wood: '#8a6a44', stone: '#e2c79a' },
+  dragon: { plaster: '#c8b4a4', wood: '#4a2e24', stone: '#a89484' }, snow: { plaster: '#f2f2f0', wood: '#6e5a46', stone: '#dfe2e6' }, machine: { plaster: '#dfe3e6', wood: '#5e646a', stone: '#c8ced4' }
+};
+const mixHex = (a, b, t) => '#' + new THREE.Color(a).lerp(new THREE.Color(b), t).getHexString();
+// 城の部屋の種類（名前から）：玉座・回廊・庭・地下・宝物庫・武器庫・書斎・塔・広間
+export function castleRoom(name) {
+  const n = name || '';
+  if (/玉座|謁見/.test(n)) return 'throne'; if (/回廊|廊下|通路/.test(n)) return 'corridor'; if (/庭|園/.test(n)) return 'garden'; if (/地下|牢|獄|地底/.test(n)) return 'cellar';
+  if (/宝物|宝庫|金庫/.test(n)) return 'treasury'; if (/武器|兵舎|練兵/.test(n)) return 'armory'; if (/書|図書|執務|記録/.test(n)) return 'study'; if (/塔|屋上|[0-9]+階|上階/.test(n)) return 'tower';
+  return 'hall';
+}
 function vnoise(x, y, z) { const s = Math.sin(x * 12.9898 + y * 78.233 + z * 37.719) * 43758.5453; return s - Math.floor(s); }
 function smooth(x, y, z) { const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z), xf = x - xi, yf = y - yi, zf = z - zi; const f = (t) => t * t * (3 - 2 * t); let v = 0; for (let a = 0; a < 2; a++) for (let b = 0; b < 2; b++) for (let c = 0; c < 2; c++) v += (a ? f(xf) : 1 - f(xf)) * (b ? f(yf) : 1 - f(yf)) * (c ? f(zf) : 1 - f(zf)) * vnoise(xi + a, yi + b, zi + c); return v; }
 
-async function build(ctx, S, b) {
+async function build(ctx, S0, b) {
+  let S = S0;
   const map = ctx.map, W = map.w, H = map.h, hi = ctx.quality !== 'low'; const hAt = b.heightAt || (() => 0);
   const g = new THREE.Group(); g.name = 'env_room_kit'; b.root.add(g); const mg = new Merge(); const add = (m, gg) => mg.add(m, gg);
   const T = (x, z) => (x < 0 || z < 0 || x >= W || z >= H ? '_void' : map.tile(x, z));
   const walkish = (x, z) => x >= 0 && z >= 0 && x < W && z < H && !WALLS[T(x, z)];   // 壁でないマス（小物の置かれたマスも、壁の面を見せる側）
   const r = rng(W * 7919 + H * 104729);
   let walls = 0, pil = 0;
+  // ---- 地域×用途：地域の色を、用途の作り方に混ぜる（プロファイルの region。屋内は親の町の地域）
+  const RP = REGION_PAL[(ctx.profile && ctx.profile.region) || ''] || null;
+  if (RP) { S = Object.assign({}, S); if (S.fam === 'plaster') { S.plaster = mixHex(S.plaster, RP.plaster, 0.65); S.wood = mixHex(S.wood, RP.wood, 0.6); } if (S.fam === 'plank') S.wood = mixHex(S.wood, RP.wood, 0.5); if (S.fam === 'ashlar') S.stone = [mixHex(S.stone[0], RP.stone, 0.35), mixHex(S.stone[1], RP.stone, 0.2)]; }
+  const castleLike = S.fam === 'ashlar' && (/castle|void|dark/.test(S.archetype || '') || /城|宮/.test(map.name || ''));
+  const room = castleLike ? castleRoom(map.name) : null; ctx.stats.room = room; ctx.stats.use = S.archetype || null;
+  const D = {   // 壁の飾りの材質
+    frame: plain('#5a4030', { std: { roughness: 0.8 } }), canvas: [plain('#8aa4c8', { std: { roughness: 0.9 } }), plain('#c8a070', { std: { roughness: 0.9 } }), plain('#7a9a6a', { std: { roughness: 0.9 } })],
+    cloth: plain(room === 'throne' ? '#8a2a3a' : '#2e4a7a', { std: { roughness: 0.95, side: THREE.DoubleSide } }), gold: plain('#c9a24a', { std: { roughness: 0.35, metalness: 0.6 } }),
+    glow: plain('#ffe0a8', { emissive: '#ffc070', ei: 1.4, keepGlow: true }), glass: plain('#a8c8f0', { emissive: '#8ab8ff', ei: 0.7, window: true }), iron: plain('#3a3e44', { std: { roughness: 0.55 } }),
+    pipe: plain('#8a949c', { std: { roughness: 0.45, metalness: 0.3 } }), green: plain('#4e7a3a', { std: { roughness: 0.95, side: THREE.DoubleSide } }), night: plain('#1e2a4a', { emissive: '#3a5aa0', ei: 0.4 }),
+    bottle: [plain('#c84a4a', { std: { roughness: 0.3 } }), plain('#4a8ac8', { std: { roughness: 0.3 } }), plain('#5ab86a', { std: { roughness: 0.3 } })]
+  };
+  const TALL = { bookshelf: 1, cupboard: 1, stove: 1, counter: 1, bed: 1 };
+  let decor = 0;
+  // 奥の壁（南向きの面）の飾り：用途・城の部屋の種類ごと。前のマスに背の高い家具があるときは置かない
+  const decorFace = (cx, fz, x, z, h) => {
+    if (h < 1.5 || TALL[T(x, z + 1)]) return; const u = S.archetype || 'house'; const k = (x * 7 + z * 3) % 3; const y = 2.0;
+    const zf = fz + 0.02;
+    if (room === 'throne' || room === 'hall') { if (x % (room === 'throne' ? 2 : 4)) return; const cl = new THREE.PlaneGeometry(0.62, 1.5); cl.translate(cx, y + 0.1, zf + 0.01); add(D.cloth, cl); add(D.gold, wbox(0.72, 0.06, 0.05, cx, y + 0.88, zf + 0.02)); if (room === 'throne') add(D.gold, wbox(0.08, 0.08, 0.04, cx, y - 0.2, zf + 0.03)); decor++; return; }
+    if (room === 'corridor') { if (x % 2) return; add(trim, wbox(0.26, h, 0.1, cx - 0.5, h / 2, zf + 0.04)); const ar = new THREE.TorusGeometry(0.5, 0.06, 6, 14, Math.PI); ar.translate(cx, h - 0.75, zf + 0.05); add(trim, ar); if (x % 4 === 0) { add(D.iron, wbox(0.1, 0.24, 0.12, cx, 1.8, zf + 0.06)); add(D.glow, wbox(0.08, 0.12, 0.08, cx, 1.98, zf + 0.12)); } decor++; return; }
+    if (room === 'garden') { const iv = new THREE.PlaneGeometry(0.9, 0.6 + k * 0.4); iv.translate(cx, h - 0.4 - k * 0.2, zf + 0.01); add(D.green, iv); decor++; return; }
+    if (room === 'cellar') { if (x % 3) return; for (let i = -2; i <= 2; i++) add(D.iron, wbox(0.04, 1.0, 0.04, cx + i * 0.14, 1.4, zf + 0.04)); add(D.iron, wbox(0.7, 0.05, 0.05, cx, 1.9, zf + 0.04)); decor++; return; }
+    if (room === 'treasury') { add(D.gold, wbox(1.0, 0.07, 0.04, cx, h - 0.35, zf + 0.02)); if (x % 3 === 0) { add(D.gold, new THREE.CircleGeometry(0.22, 16).translate(cx, 1.9, zf + 0.03)); } decor++; return; }
+    if (room === 'armory') { if (x % 3) return; add(D.frame, wbox(0.9, 0.08, 0.1, cx, 1.2, zf + 0.06)); add(D.frame, wbox(0.9, 0.08, 0.1, cx, 2.2, zf + 0.06)); for (let i = 0; i < 4; i++) add(D.iron, wbox(0.04, 1.3, 0.04, cx - 0.33 + i * 0.22, 1.75, zf + 0.08)); decor++; return; }
+    if (room === 'study') { if (x % 3) return; add(D.frame, wbox(0.9, 1.2, 0.08, cx, 1.9, zf + 0.04)); for (let i = 0; i < 3; i++) add(D.canvas[i], wbox(0.24, 0.3, 0.06, cx - 0.28 + i * 0.28, 1.6 + (i % 2) * 0.5, zf + 0.09)); decor++; return; }
+    if (room === 'tower') { if (x % 2) return; add(D.glass, wbox(0.12, 0.8, 0.04, cx, 2.0, zf + 0.02)); decor++; return; }
+    if (x % 3) return;
+    if (u === 'house' || u === 'inn') { add(D.frame, wbox(0.62, 0.48, 0.05, cx, y, zf + 0.025)); add(D.canvas[k], wbox(0.52, 0.38, 0.03, cx, y, zf + 0.05)); if (u === 'inn') { add(D.iron, wbox(0.08, 0.22, 0.1, cx + 0.7, 1.75, zf + 0.05)); add(D.glow, wbox(0.1, 0.12, 0.1, cx + 0.7, 1.92, zf + 0.12)); } decor++; return; }
+    if (u === 'tavern' || u === 'camp') { add(D.iron, wbox(0.08, 0.24, 0.12, cx, 1.85, zf + 0.06)); add(D.glow, wbox(0.12, 0.16, 0.12, cx, 2.04, zf + 0.14)); add(D.frame, wbox(0.5, 0.7, 0.04, cx + 0.6, 1.9, zf + 0.02)); decor++; return; }
+    if (u === 'shop') { add(D.frame, wbox(0.9, 0.06, 0.25, cx, 1.7, zf + 0.12)); for (let i = 0; i < 4; i++) add(D.bottle[(i + k) % 3], cyl(0.05, 0.05, 0.2, 6, cx - 0.33 + i * 0.22, 1.83, zf + 0.12)); decor++; return; }
+    if (u === 'church') { add(D.glass, wbox(0.5, 1.4, 0.03, cx, 2.0, zf + 0.015)); const top = new THREE.CircleGeometry(0.25, 12, 0, Math.PI); top.translate(cx, 2.7, zf + 0.016); add(D.glass, top); ctx.scene.lampSpots.push({ pos: new THREE.Vector3(cx, 2.0, fz + 1.0), color: 0xbcd4ff, power: 0.5, dist: 5 }); decor++; return; }
+    if (u === 'lab' || u === 'factory' || u === 'cyber') { const pp = new THREE.CylinderGeometry(0.06, 0.06, 1.0, 8); pp.rotateZ(Math.PI / 2); pp.translate(cx, 2.3, zf + 0.08); add(D.pipe, pp); add(D.iron, new THREE.CylinderGeometry(0.14, 0.14, 0.04, 14).rotateX(Math.PI / 2).translate(cx + 0.25, 1.8, zf + 0.03)); decor++; return; }
+    if (u === 'archive' || u === 'time') { add(D.frame, wbox(0.8, 0.6, 0.04, cx, y, zf + 0.02)); add(D.canvas[1], wbox(0.7, 0.5, 0.03, cx, y, zf + 0.045)); decor++; return; }
+    if (u === 'observatory') { add(D.night, new THREE.CircleGeometry(0.42, 20).translate(cx, y, zf + 0.02)); decor++; return; }
+  };
   // ---- 壁
   const rockM = S.fam === 'rock' ? plain('#ffffff', { std: { roughness: 0.95, vertexColors: true } }) : null;
-  const tex = (key, a) => texMat('rk_' + key, canvasTex('rk_' + key, 256, 256, drawSetts(a[0], a[1], a[2], a[3], a[4])), { roughness: 0.85 });
+  const tex = (key, a) => texMat('rk_' + key, canvasTex('rk_' + key, 256, 256, drawSetts(a[0], a[1], a[2], a[3], a[4])), { roughness: 0.85 }, { height: settsHeight(a[2], a[3], a[2] * 7 + a[3]), depth: a[3] >= 128 ? 2 : 3 });   // 高画質：石・板の形から法線・AO（ProcPBR.js）
   let body = null, trim = null, low = null;
+  if (room === 'cellar') S = Object.assign({}, S, { stone: [shade(S.stone[0], 0.5), shade(S.stone[1], 0.45)], moss: true });
   if (S.fam === 'ashlar') { body = tex('ash_' + S.stone[0], [S.stone[0], S.stone[1], 128, 64, 0.08]); trim = plain(shade(S.stone[0], 0.82), { std: { roughness: 0.85 } }); }
   if (S.fam === 'panel') { body = tex('pan_' + S.panel, [S.panel, shade(S.panel, 0.7), 128, 128, 0.04]); trim = plain(shade(S.panel, 0.6), { std: { roughness: 0.5, metalness: 0.2 } }); low = plain('#48c9d6', { emissive: '#48c9d6', ei: 1.2, keepGlow: true }); }
   if (S.fam === 'plank') { body = tex('plk_' + S.wood, [S.wood, shade(S.wood, 0.6), 32, 256, 0.18]); trim = plain(shade(S.wood, 0.7), { std: { roughness: 0.9 } }); }
@@ -94,7 +146,8 @@ async function build(ctx, S, b) {
       const strip = (hh, yy, dd, m) => add(m, wbox(along ? 1.0 : dd, hh, along ? dd : 1.0, fx + dx * dd / 2, yy, fz + dz * dd / 2));
       if (S.fam === 'plaster') { strip(Math.min(0.9, h - 0.05), Math.min(0.9, h - 0.05) / 2, 0.04, low); strip(0.12, 0.06, 0.06, trim); if (h > 1) strip(0.08, Math.min(0.9, h - 0.05) + 0.04, 0.06, trim); if (h > 1.5) strip(0.12, h - 0.06, 0.07, trim); }
       else { strip(0.3, 0.15, 0.06, trim); if (h > 1.5) strip(0.12, h - 0.06, 0.08, trim); if (S.fam === 'panel' && h > 1.5) strip(0.03, 1.1, 0.065, low); }
-      if (h > 1.5 && dz > 0 && x % 3 === 0 && S.fam !== 'plaster') { add(trim, wbox(0.32, h, 0.07, cx, h / 2, fz + 0.035)); pil++; }   // 付け柱（奥の壁の正面）
+      if (h > 1.5 && dz > 0 && x % 3 === 0 && S.fam !== 'plaster' && !room) { add(trim, wbox(0.32, h, 0.07, cx, h / 2, fz + 0.035)); pil++; }   // 付け柱（奥の壁の正面）
+      if (dz > 0 && S.fam !== 'rock') decorFace(cx, fz, x, z, h);   // 奥の壁の飾り（地域×用途・城の部屋の種類）
       if (moss && h > 1.5 && r() < 0.18) add(moss, wbox(along ? 0.5 + r() * 0.4 : 0.03, 0.25 + r() * 0.5, along ? 0.03 : 0.5 + r() * 0.4, fx + dx * 0.015, 0.2 + r() * 1.2, fz + dz * 0.015));
     }
     walls++;
@@ -110,11 +163,11 @@ async function build(ctx, S, b) {
     if (sc.kind === 'entry') { ctx.scene.lampSpots.push({ pos: new THREE.Vector3(x, y + 2.4, z), color: 0xe8f0ff, power: 0.9, dist: 8 }); lit++; }
     if (sc.kind === 'main') { ctx.scene.lampSpots.push({ pos: new THREE.Vector3(x, y + 2.8, z), color: 0xffc070, power: 1.3, dist: 11 }); lit++;
       if (S.fam !== 'rock') { const ring = new THREE.RingGeometry(1.6, 1.85, 32); ring.rotateX(-Math.PI / 2); ring.translate(x, y + 0.03, z); add(trim, ring); } }
-    if (sc.kind === 'climax') { ctx.scene.lampSpots.push({ pos: new THREE.Vector3(x, y + 2.6, z), color: ACC[S.fam] || 0xffd890, power: 1.5, dist: 10 }); lit++;
+    if (sc.kind === 'climax') { ctx.scene.lampSpots.push({ pos: new THREE.Vector3(x, y + 2.6, z), color: ACC[S.fam] || 0xffd890, power: S.fam === 'ashlar' || S.fam === 'plaster' ? 0.9 : 1.3, dist: 9 }); lit++;
       if (S.fam === 'rock') { const cm = plain('#9ad8ff', { emissive: '#6ac0ff', ei: 1.2, keepGlow: true, std: { roughness: 0.2 } }); for (let k = 0; k < 6; k++) { const a = k * 1.05 + 0.3, rr = 2.2 + (k % 2) * 0.6; const px = x + Math.cos(a) * rr, pz = z + Math.sin(a) * rr; if (walkish(Math.floor(px), Math.floor(pz))) continue; add(cm, new THREE.OctahedronGeometry(0.16 + (k % 3) * 0.05, 0).scale(1, 2.2, 1).translate(px, y + 0.3, pz)); } }
       else { const ring = new THREE.RingGeometry(1.1, 1.3, 32); ring.rotateX(-Math.PI / 2); ring.translate(x, y + 0.03, z); add(low || trim, ring); } }
   }
   mg.build(g);
-  Object.assign(ctx.stats, { walls, pilasters: pil, floors, sectionsLit: lit });
+  Object.assign(ctx.stats, { walls, pilasters: pil, floors, sectionsLit: lit, decor });
   return g;
 }

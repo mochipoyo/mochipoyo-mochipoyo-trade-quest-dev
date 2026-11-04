@@ -19,6 +19,7 @@ import * as THREE from 'three';
 import { kit, mat, plain, worldUV, rng } from '../EnvKit3D.js';
 import { textTexture, Batch } from '../../engine/Materials.js';
 import { canvasTex, shade, texMat, wbox, rbox, cyl, chamferPrism, hexPrism, frameOf } from './geo.js';
+import { hexHeight, ceramicHeight } from '../ProcPBR.js';
 
 // ---------------- 画像（キャンバスで作る。アプリに1つ）
 // 白いセラミックの外板（1枚＝1マス。目地と留め具）
@@ -72,10 +73,10 @@ async function makeK(ctx) {
     reformed,
     ind: await mat(ctx, 'metal_industrial', { repeat: 2, color: '#c3ced6', bright: 1.9, roughness: 0.6, metalness: 0.1 }),
     road: await mat(ctx, 'metal_industrial', { repeat: 2, color: '#9aa7b1', bright: 1.15, roughness: 0.75, metalness: 0.08 }),
-    ceramic: texMat('ceramic', canvasTex('ceramic', 256, 256, drawCeramic), { roughness: 0.5 }),
-    hexL: texMat('hexL', canvasTex('hexL', 512, 296, drawHex('#dde3e7', '#8f99a1', 0.06)), { roughness: 0.62 }),
-    hexD: texMat('hexD', canvasTex('hexD', 512, 296, drawHex('#b9c4cc', '#6f7c86', 0.08)), { roughness: 0.55 }),
-    hexP: texMat('hexP', canvasTex('hexP', 512, 296, drawHex('#eef1f2', '#a6b0b8', 0.04)), { roughness: 0.45 }),
+    ceramic: texMat('ceramic', canvasTex('ceramic', 256, 256, drawCeramic), { roughness: 0.5 }, { height: ceramicHeight(), depth: 2, rough0: 0.8, rough1: 1.0 }),
+    hexL: texMat('hexL', canvasTex('hexL', 512, 296, drawHex('#dde3e7', '#8f99a1', 0.06)), { roughness: 0.62 }, { height: hexHeight(HEX_R), depth: 2.5 }),
+    hexD: texMat('hexD', canvasTex('hexD', 512, 296, drawHex('#b9c4cc', '#6f7c86', 0.08)), { roughness: 0.55 }, { height: hexHeight(HEX_R), depth: 2.5 }),
+    hexP: texMat('hexP', canvasTex('hexP', 512, 296, drawHex('#eef1f2', '#a6b0b8', 0.04)), { roughness: 0.45 }, { height: hexHeight(HEX_R), depth: 2 }),
     metal: plain('#93a2ad', { std: { roughness: 0.5, metalness: 0.18 } }),
     metalD: plain('#5f6d78', { std: { roughness: 0.55, metalness: 0.15 } }),
     roof: plain('#d3dade', { std: { roughness: 0.85 } }), roofD: plain('#aeb8bf', { std: { roughness: 0.8 } }),

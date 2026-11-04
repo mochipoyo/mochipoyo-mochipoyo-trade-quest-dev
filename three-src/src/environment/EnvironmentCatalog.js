@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {createKitMaterials} from './EnvironmentKit.js';
+import {pbrOn} from './ProcPBR.js';
 
 // baseUrl must point at the deployed environment-v1/ folder, with data/ and assets/ inside.
 // Own this catalog at application lifetime, not one catalog per map.
@@ -23,7 +24,9 @@ export class EnvironmentCatalog {
  async material(name){
   if(this.disposed)throw new Error('Catalog disposed');if(this.materials.has(name))return this.materials.get(name);
   const job=(async()=>{const d=this.materialDefs.textures[name];let mat;
-   if(d){const tex=await this.textureLoader.loadAsync(new URL(d.file,this.base).href);tex.colorSpace=THREE.SRGBColorSpace;tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.anisotropy=Math.min(8,this.renderer?.capabilities.getMaxAnisotropy()||4);mat=new THREE.MeshStandardMaterial({map:tex,color:0xffffff,roughness:d.roughness,metalness:d.metalness});}
+   if(d){const tex=await this.textureLoader.loadAsync(new URL(d.file,this.base).href);tex.colorSpace=THREE.SRGBColorSpace;tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.anisotropy=Math.min(8,this.renderer?.capabilities.getMaxAnisotropy()||4);mat=new THREE.MeshStandardMaterial({map:tex,color:0xffffff,roughness:d.roughness,metalness:d.metalness});
+    // 法線・AO・粗さの画像：materials.json の normalMap・aoMap・roughnessMap にファイルがあり、高画質のときだけ読む（今は 6 枚とも null＝未制作。docs/environment/PBR_SPEC.md）
+    if(pbrOn())for(const [k,f] of [['normalMap',d.normalMap],['aoMap',d.aoMap],['roughnessMap',d.roughnessMap]]){if(!f)continue;try{const t=await this.textureLoader.loadAsync(new URL(f,this.base).href);t.colorSpace=THREE.NoColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=tex.anisotropy;mat[k]=t;}catch(e){/* 読めなければ色の画像だけ */}}}
    else{if(!this.fallback[name])throw new Error('Unknown material '+name);mat=this.fallback[name].clone();}
    mat.name=name;if(this.decorateMaterial)this.decorateMaterial(mat);return mat;
   })();this.materials.set(name,job);try{return await job;}catch(e){this.materials.delete(name);throw e;}
