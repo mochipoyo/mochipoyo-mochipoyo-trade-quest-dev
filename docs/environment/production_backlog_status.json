@@ -355,8 +355,8 @@
    "mapId": "a3_star_tent",
    "name": "観測者の天幕",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -367,23 +367,21 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": true
   },
   {
    "mapId": "a3_star_tent_x72_2f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": false
   },
   {
    "mapId": "a3_tempus_clock",
@@ -567,8 +565,8 @@
    "mapId": "a4_lf_glade",
    "name": "迷いの森・獣道の奥",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -579,9 +577,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:forest",
+   "inPack": true
   },
   {
    "mapId": "a4_ml_closed",
@@ -625,8 +622,8 @@
    "mapId": "a4_sf_spring",
    "name": "精霊の森・精霊の泉",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -637,9 +634,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:forest",
+   "inPack": true
   },
   {
    "mapId": "a4_tt_sand",
@@ -759,9 +755,9 @@
    "mapId": "a6_dc_statues",
    "name": "魔王城・像の回廊",
    "priority": 2,
-   "status": "integrated",
+   "status": "visual_checked",
    "integration": true,
-   "visualChecked": false,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -816,8 +812,8 @@
    "mapId": "a6_em_hut",
    "name": "エマール山道・道標の谷",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -828,9 +824,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:pass",
+   "inPack": true
   },
   {
    "mapId": "a6_fg_armory",
@@ -874,8 +869,8 @@
    "mapId": "a6_gp_shelter",
    "name": "灰の峠・坑夫の避難小屋",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -886,9 +881,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:pass",
+   "inPack": true
   },
   {
    "mapId": "a6_ka_ledger",
@@ -932,8 +926,8 @@
    "mapId": "a6_mi_spring",
    "name": "霧の島・湧き水の洞",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -944,9 +938,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:pass",
+   "inPack": true
   },
   {
    "mapId": "a6_mt_mirage",
@@ -1085,8 +1078,8 @@
    "mapId": "a6_sk_clouds",
    "name": "天空神殿・雲の回廊",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -1097,9 +1090,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": true
   },
   {
    "mapId": "a6_sr_hold",
@@ -1124,8 +1116,8 @@
    "mapId": "a6_st_rings",
    "name": "星見塔・星の輪の間",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -1136,9 +1128,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": true
   },
   {
    "mapId": "a6_tb_exchange",
@@ -1303,9 +1294,9 @@
    "mapId": "aruna_item",
    "name": "島の道具店",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -1315,16 +1306,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "room_kit.v1:plaster",
+   "inPack": true
   },
   {
    "mapId": "aruna_lighthouse",
    "name": "灰灯島の灯台",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -1335,9 +1325,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "room_kit.v1:plaster",
+   "inPack": true
   },
   {
    "mapId": "aruna_lighthouse_top",
@@ -2708,8 +2697,8 @@
    "mapId": "dow_weapon_shop",
    "name": "森の武器屋",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -2720,9 +2709,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:forest",
+   "inPack": true
   },
   {
    "mapId": "dragon_vein_1",
@@ -2823,9 +2811,9 @@
    "mapId": "emal_pass",
    "name": "エマール山道",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -2835,9 +2823,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:pass",
+   "inPack": true
   },
   {
    "mapId": "erased_elder",
@@ -3374,9 +3361,9 @@
    "mapId": "grania_pass",
    "name": "灰の峠",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -3386,9 +3373,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:pass",
+   "inPack": true
   },
   {
    "mapId": "harbor_house",
@@ -3496,9 +3482,9 @@
    "mapId": "harbor_town",
    "name": "港町マリナ",
    "priority": 1,
-   "status": "integrated",
+   "status": "visual_checked",
    "integration": true,
-   "visualChecked": false,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -3669,9 +3655,9 @@
    "mapId": "ignas_house_1",
    "name": "鍛冶職人の家",
    "priority": 3,
-   "status": "integrated",
+   "status": "visual_checked",
    "integration": true,
-   "visualChecked": false,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -4367,9 +4353,9 @@
    "mapId": "lost_forest",
    "name": "迷いの森",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -4379,16 +4365,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:forest",
+   "inPack": true
   },
   {
    "mapId": "lost_forest_shrine",
    "name": "森の祠",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -4399,9 +4384,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:forest",
+   "inPack": true
   },
   {
    "mapId": "lost_forest_treasure",
@@ -4426,9 +4410,9 @@
    "mapId": "luxbell",
    "name": "娯楽都市ラックスベル",
    "priority": 1,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -4438,9 +4422,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "近未来・機械・娯楽の町：ガラスと金属の汎用の建物のまま"
+   "recipe": "town_kit.v1:casino",
+   "inPack": true
   },
   {
    "mapId": "luxbell_casino",
@@ -4902,9 +4885,9 @@
    "mapId": "magicka_palace",
    "name": "魔導王宮",
    "priority": 3,
-   "status": "integrated",
+   "status": "visual_checked",
    "integration": true,
-   "visualChecked": false,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -5259,9 +5242,9 @@
    "mapId": "mist_isle",
    "name": "霧の島",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -5271,9 +5254,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:pass",
+   "inPack": true
   },
   {
    "mapId": "no_failure_school",
@@ -5828,35 +5810,33 @@
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_barn_2f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_church",
    "name": "ポヨ村の教会",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -5867,44 +5847,41 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": true
   },
   {
    "mapId": "poyo_church_2f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_church_3f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_dojo",
    "name": "トレード修行場",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -5915,16 +5892,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": true
   },
   {
    "mapId": "poyo_elder_house",
    "name": "村長の家",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -5935,58 +5911,54 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": true
   },
   {
    "mapId": "poyo_elder_house_2f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_hall",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_hall_2f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_house",
    "name": "農夫の家",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -5997,17 +5969,16 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": true
   },
   {
    "mapId": "poyo_inn",
    "name": "ポヨ村の宿屋",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -6017,31 +5988,29 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": true
   },
   {
    "mapId": "poyo_inn_2f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_item_shop",
    "name": "道具屋",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -6051,23 +6020,21 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": true
   },
   {
    "mapId": "poyo_mill",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_village",
@@ -6093,42 +6060,39 @@
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_watch_2f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "poyo_watch_3f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "poyo_interior.v1",
+   "inPack": false
   },
   {
    "mapId": "rivel_armor_shop",
@@ -6448,9 +6412,9 @@
    "mapId": "rivel_castle_b1",
    "name": "リヴェル城 地下",
    "priority": 3,
-   "status": "integrated",
+   "status": "visual_checked",
    "integration": true,
-   "visualChecked": false,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -6468,9 +6432,9 @@
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "integrated",
+   "status": "visual_checked",
    "integration": true,
-   "visualChecked": false,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "recipe": "room_kit.v1:ashlar",
@@ -7623,9 +7587,9 @@
    "mapId": "sentra_palace_2",
    "name": "帳簿中枢・玉座の間",
    "priority": 1,
-   "status": "integrated",
+   "status": "visual_checked",
    "integration": true,
-   "visualChecked": false,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -7725,9 +7689,9 @@
    "mapId": "sky_temple_1",
    "name": "天空神殿",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -7737,16 +7701,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": true
   },
   {
    "mapId": "sky_temple_2",
    "name": "天空神殿 制御装置の間",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -7757,16 +7720,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": true
   },
   {
    "mapId": "spirit_forest_1",
    "name": "精霊の森",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -7777,16 +7739,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:forest",
+   "inPack": true
   },
   {
    "mapId": "spirit_forest_2",
    "name": "精霊の森 奥",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -7797,9 +7758,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:forest",
+   "inPack": true
   },
   {
    "mapId": "star_camp",
@@ -7825,77 +7785,72 @@
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": false
   },
   {
    "mapId": "star_camp_x72_house_2f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": false
   },
   {
    "mapId": "star_camp_x72_tower",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": false
   },
   {
    "mapId": "star_camp_x72_tower_2f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": false
   },
   {
    "mapId": "star_camp_x72_tower_3f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": false
   },
   {
    "mapId": "star_tower_1",
    "name": "星見塔",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -7906,16 +7861,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": true
   },
   {
    "mapId": "star_tower_2",
    "name": "星見塔 最上階",
    "priority": 2,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -7926,9 +7880,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": true
   },
   {
    "mapId": "sunken_reef_1",
@@ -8604,70 +8557,65 @@
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "近未来・機械・娯楽の町：ガラスと金属の汎用の建物のまま"
+   "recipe": "town_kit.v1:skyterrace",
+   "inPack": false
   },
   {
    "mapId": "tradia_sky_boutique",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": false
   },
   {
    "mapId": "tradia_sky_exchange",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": false
   },
   {
    "mapId": "tradia_sky_lounge",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": false
   },
   {
    "mapId": "tradia_sky_lounge_2f",
    "name": null,
    "priority": null,
    "requiredWork": [],
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
-   "recipe": null,
-   "inPack": false,
-   "note": "屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外"
+   "recipe": "outdoor_kit.v1:sky",
+   "inPack": false
   },
   {
    "mapId": "tradia_tavern",
@@ -9571,9 +9519,9 @@
    "mapId": "world",
    "name": "アルカディア相場大陸",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -9583,16 +9531,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_dark",
    "name": "暗黒大陸",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -9603,16 +9550,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_desert",
    "name": "リシア砂漠",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -9623,16 +9569,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_dragon",
    "name": "竜炎火山群島",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -9643,17 +9588,16 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_grania",
    "name": "グラニア鉱業地方",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -9663,17 +9607,16 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_islands",
    "name": "断裂群島",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -9683,16 +9626,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_kalion",
    "name": "カリオン徴収連邦",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -9703,17 +9645,16 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_machine",
    "name": "ゼロメア",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -9723,17 +9664,16 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_magicka",
    "name": "マクディア魔導王国",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -9743,16 +9683,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_sky",
    "name": "天空群島",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -9763,16 +9702,15 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_snow",
    "name": "忘却の雪原",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
+   "status": "integrated",
+   "integration": true,
    "visualChecked": false,
    "gameplayChecked": false,
    "performanceChecked": false,
@@ -9783,17 +9721,16 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   },
   {
    "mapId": "world_tempus",
    "name": "時の神殿領",
    "priority": 3,
-   "status": "design_only",
-   "integration": false,
-   "visualChecked": false,
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
    "gameplayChecked": false,
    "performanceChecked": false,
    "requiredWork": [
@@ -9803,9 +9740,8 @@
     "collision/height/camera",
     "regression and performance"
    ],
-   "recipe": null,
-   "inPack": true,
-   "note": "フィールド：未着手"
+   "recipe": "field_kit.v1",
+   "inPack": true
   }
  ],
  "additionalHeroAssets": [

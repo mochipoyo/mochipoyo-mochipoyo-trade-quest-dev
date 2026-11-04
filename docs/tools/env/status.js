@@ -13,11 +13,16 @@ const VISUAL = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tra
   'oblivion_cave_1', 'iron_mine_2', 'sentra_palace_1', 'forbidden_archive_1', 'demon_castle_1', 'auto_factory_1', 'rivel_inn', 'kalion_church', 'scheduled_district',
   // 追加作業（2026-11-04）：町の目印・フィールド・近未来と娯楽の町・屋外のダンジョン・城の部屋・ポヨ村の屋内・PBR の撮り比べ
   'harbor_town', 'world', 'world_grania', 'world_islands', 'world_tempus', 'world_machine', 'world_magicka', 'luxbell', 'tradia_sky', 'lost_forest', 'sky_temple_1',
-  'a6_dc_statues', 'ignas_house_1', 'magicka_palace', 'poyo_inn', 'poyo_item_shop', 'rivel_castle_b1', 'sentra_palace_2', 'rivel_castle_library'];
+  'a6_dc_statues', 'ignas_house_1', 'magicka_palace', 'poyo_inn', 'poyo_item_shop', 'rivel_castle_b1', 'sentra_palace_2', 'rivel_castle_library', 'emal_pass', 'grania_pass', 'mist_isle', 'aruna_item'];
 // 前後（env=off と v1）を同じ場所で比べ、レシピ・建物の形が歩けるマスに入っていないことを確かめたマップ（p76_walk.js）
 const WALK_COMPARED = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tradia', 'rivel_town', 'sahar_city', 'frost_town', 'dark_camp', 'kalion_city', 'harbor_town', 'tempus_city', 'magicka_city', 'ignas_town', 'aruna_village', 'verum_town',
   'oblivion_cave_1', 'iron_mine_2', 'sentra_palace_1', 'auto_factory_1', 'rivel_inn', 'kalion_church', 'demon_castle_1', 'forbidden_archive_1', 'mirage_temple_1', 'sunken_reef_1',
-  'aruna_ruins', 'scheduled_district', 'erased_village', 'dow_village', 'ciel_port', 'sentra_capital', 'star_camp', 'volatilia', 'mirror_market', 'rivel_artisan', 'asana_village', 'asana_ruins'];
+  'aruna_ruins', 'scheduled_district', 'erased_village', 'dow_village', 'ciel_port', 'sentra_capital', 'star_camp', 'volatilia', 'mirror_market', 'rivel_artisan', 'asana_village', 'asana_ruins',
+  // 追加作業（2026-11-04〜05）
+  'world', 'world_grania', 'world_islands', 'world_tempus', 'world_machine', 'world_magicka', 'world_sky', 'world_dark', 'world_desert', 'world_dragon', 'world_snow', 'world_kalion',
+  'luxbell', 'tradia_sky', 'lost_forest', 'sky_temple_1', 'rivel_castle_b1', 'rivel_castle_library', 'magicka_palace', 'sentra_palace_2',
+  'poyo_church', 'poyo_dojo', 'poyo_item_shop', 'poyo_inn', 'poyo_elder_house', 'poyo_house', 'poyo_mill', 'poyo_watch', 'poyo_watch_2f', 'poyo_watch_3f', 'poyo_barn', 'poyo_barn_2f', 'poyo_hall', 'poyo_hall_2f', 'poyo_elder_house_2f', 'poyo_inn_2f', 'poyo_church_2f', 'poyo_church_3f',
+  'emal_pass', 'grania_pass', 'mist_isle', 'a6_em_hut', 'a6_gp_shelter', 'a6_mi_spring', 'aruna_item', 'aruna_lighthouse'];
 const FLAGSHIP = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tradia'];
 const rows = []; const count = {};
 for (const id of Object.keys(plan).sort()) {
@@ -26,7 +31,7 @@ for (const id of Object.keys(plan).sort()) {
     if (r && r.ok) st = 'integrated'; else { st = 'design_only'; note = r ? '自動の確認で NG：' + JSON.stringify(r).slice(0, 160) : '組み立ての確認をしていない'; }
     if (st === 'integrated' && VISUAL.includes(id)) st = 'visual_checked';
     if (st === 'visual_checked' && FLAGSHIP.includes(id) && WALK_COMPARED.includes(id)) st = 'gameplay_checked';
-  } else note = p.kind === 'field' ? 'フィールド：未着手' : p.kind === 'town' ? '近未来・機械・娯楽の町：ガラスと金属の汎用の建物のまま' : '屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外';
+  } else note = 'レシピなし（従来の表示）';
   rows.push({ id, kind: p.kind, recipe: p.recipe || '-', status: st, walkCompared: WALK_COMPARED.includes(id), note, layout: layNote(id) });
   count[st] = (count[st] || 0) + 1;
 }
