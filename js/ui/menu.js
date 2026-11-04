@@ -484,7 +484,8 @@
         { label: 'データ管理（書き出し・読み込み・初期化）' }, { label: 'タイトルに戻る' },
         { label: '戦闘背景の品質', right: ({ high: '高', normal: '標準', low: '軽量（動く粒なし）' })[st.battleBg] || '自動（スマホは標準）' },
         { label: '必殺技の判断時間', right: (st.ultTime || 12) + '秒' }, { label: '必殺技のチャートの更新', right: st.ultChart === 'light' ? '軽量（描画を減らす）' : '標準' }, { label: '必殺技の演出', right: st.ultFx === 'calm' ? '控えめ' : 'ふつう' },
-        { label: '敵のHPバー', right: st.enemyHpBar === 'on' ? '表示する' : '表示しない' }   // 初期値は表示しない（未設定＝表示しない）
+        { label: '敵のHPバー', right: st.enemyHpBar === 'on' ? '表示する' : '表示しない' },   // 初期値は表示しない（未設定＝表示しない）
+        { label: 'マップの間取り（v7.6）', right: root.EnvLayout ? (root.EnvLayout.enabled ? '新しい間取り' : '元の間取り') : '-' }   // 町の通り・ダンジョンの広間の作り直し（js/rpg/envlayout.js）。端末ごと
       ], { title: '設定' });
       if (i < 0) return;
       if (i === 0) { st.mute = !st.mute; if (root.Audio) root.Audio.apply(); }
@@ -508,6 +509,10 @@
       if (i === 18) { st.ultChart = st.ultChart === 'light' ? 'normal' : 'light'; }
       if (i === 19) { st.ultFx = st.ultFx === 'calm' ? 'normal' : 'calm'; }
       if (i === 20) { st.enemyHpBar = st.enemyHpBar === 'on' ? 'off' : 'on'; Win.toast(st.enemyHpBar === 'on' ? '敵のHPバー：表示する' : '敵のHPバー：表示しない'); }
+      if (i === 21 && root.EnvLayout) {   // v7.6 間取りの切り替え：2D版・3D版の両方。マップを作り直すので、再読み込みで反映する
+        var lon = !root.EnvLayout.enabled; var lc = await Win.choice((lon ? '新しい間取り（町の通り・広場、ダンジョンの広間）' : '元の間取り') + 'に切り替える？ 2D版・3D版の両方に効く。ページの再読み込みで反映する（オートセーブから再開できる。立ち位置が塞がっていれば近くの通れる所へ移る）', ['切り替えて再読み込み', 'やめる']);
+        if (lc === 0) { root.EnvLayout.setEnabled(lon); State.autosave(); try { root.location.reload(); } catch (e) { /* 再読み込みできない環境 */ } }
+      }
       State.autosave();
     }
   };

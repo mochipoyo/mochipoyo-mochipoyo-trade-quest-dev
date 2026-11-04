@@ -4,11 +4,16 @@
 //         → visual_checked（画面を撮って目で見た）→ gameplay_checked（前後の比較で歩けるマスに形が入らない・論理を変えたマップは行ける所が減らない・3Dの回帰一式）
 //         → verified（実機・GPU・速さまで。この作業環境ではしていない＝0）
 const fs = require('fs'); const path = require('path');
-const [allPath, repo] = process.argv.slice(2);
+const [allPath, repo, layoutPath] = process.argv.slice(2);   // layoutPath（任意）：layout_check.js の結果＝論理の間取りの作り直し
+const LAY = layoutPath ? JSON.parse(fs.readFileSync(layoutPath, 'utf8')) : {};
+const layNote = (id) => { const v = LAY[id]; if (!v) return '-'; if (v.skip) return '対象外（' + v.skip + '）'; if (!v.changed) return '変更なし'; const lm = v.landmark ? '・目印 ' + v.landmark.kind : ''; const sec = Array.isArray(v.sections) ? '・' + v.sections.join(' ') : ''; return v.changed + 'マス' + lm + sec; };
 const { plan, res } = JSON.parse(fs.readFileSync(allPath, 'utf8'));
 const VISUAL = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tradia',
   'rivel_town', 'sahar_city', 'frost_town', 'verum_town', 'kalion_city', 'aruna_village', 'magicka_city', 'ignas_town', 'dark_camp', 'tempus_city',
-  'oblivion_cave_1', 'iron_mine_2', 'sentra_palace_1', 'forbidden_archive_1', 'demon_castle_1', 'auto_factory_1', 'rivel_inn', 'kalion_church', 'scheduled_district'];
+  'oblivion_cave_1', 'iron_mine_2', 'sentra_palace_1', 'forbidden_archive_1', 'demon_castle_1', 'auto_factory_1', 'rivel_inn', 'kalion_church', 'scheduled_district',
+  // 追加作業（2026-11-04）：町の目印・フィールド・近未来と娯楽の町・屋外のダンジョン・城の部屋・ポヨ村の屋内・PBR の撮り比べ
+  'harbor_town', 'world', 'world_grania', 'world_islands', 'world_tempus', 'world_machine', 'world_magicka', 'luxbell', 'tradia_sky', 'lost_forest', 'sky_temple_1',
+  'a6_dc_statues', 'ignas_house_1', 'magicka_palace', 'poyo_inn', 'poyo_item_shop', 'rivel_castle_b1', 'sentra_palace_2', 'rivel_castle_library'];
 // 前後（env=off と v1）を同じ場所で比べ、レシピ・建物の形が歩けるマスに入っていないことを確かめたマップ（p76_walk.js）
 const WALK_COMPARED = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tradia', 'rivel_town', 'sahar_city', 'frost_town', 'dark_camp', 'kalion_city', 'harbor_town', 'tempus_city', 'magicka_city', 'ignas_town', 'aruna_village', 'verum_town',
   'oblivion_cave_1', 'iron_mine_2', 'sentra_palace_1', 'auto_factory_1', 'rivel_inn', 'kalion_church', 'demon_castle_1', 'forbidden_archive_1', 'mirage_temple_1', 'sunken_reef_1',
@@ -22,7 +27,7 @@ for (const id of Object.keys(plan).sort()) {
     if (st === 'integrated' && VISUAL.includes(id)) st = 'visual_checked';
     if (st === 'visual_checked' && FLAGSHIP.includes(id) && WALK_COMPARED.includes(id)) st = 'gameplay_checked';
   } else note = p.kind === 'field' ? 'フィールド：未着手' : p.kind === 'town' ? '近未来・機械・娯楽の町：ガラスと金属の汎用の建物のまま' : '屋外のダンジョン・森・専用に作り込んだ3D（ポヨ村の屋内）などで対象外';
-  rows.push({ id, kind: p.kind, recipe: p.recipe || '-', status: st, walkCompared: WALK_COMPARED.includes(id), note });
+  rows.push({ id, kind: p.kind, recipe: p.recipe || '-', status: st, walkCompared: WALK_COMPARED.includes(id), note, layout: layNote(id) });
   count[st] = (count[st] || 0) + 1;
 }
 const byKind = {}; rows.forEach((r) => { const k = r.kind; byKind[k] = byKind[k] || {}; byKind[k][r.status] = (byKind[k][r.status] || 0) + 1; });
@@ -31,8 +36,8 @@ const md = ['# 環境リデザイン：マップごとの状態（自動生成�
   '## 数', '', '| 種類 | ' + ['design_only', 'integrated', 'visual_checked', 'gameplay_checked', 'verified'].join(' | ') + ' |', '|---|---|---|---|---|---|',
   ...Object.keys(byKind).sort().map((k) => '| ' + k + ' | ' + ['design_only', 'integrated', 'visual_checked', 'gameplay_checked', 'verified'].map((s) => byKind[k][s] || 0).join(' | ') + ' |'),
   '| 合計 | ' + ['design_only', 'integrated', 'visual_checked', 'gameplay_checked', 'verified'].map((s) => count[s] || 0).join(' | ') + ' |', '',
-  '## マップごと', '', '| マップID | 種類 | レシピ | 状態 | 前後の比較 | メモ |', '|---|---|---|---|---|---|',
-  ...rows.map((r) => `| ${r.id} | ${r.kind} | ${r.recipe} | ${r.status} | ${r.walkCompared ? '済' : '-'} | ${r.note} |`)];
+  '## マップごと', '', '| マップID | 種類 | レシピ | 状態 | 前後の比較 | 論理の間取り（envlayout） | メモ |', '|---|---|---|---|---|---|---|',
+  ...rows.map((r) => `| ${r.id} | ${r.kind} | ${r.recipe} | ${r.status} | ${r.walkCompared ? '済' : '-'} | ${r.layout} | ${r.note} |`)];
 fs.writeFileSync(path.join(repo, 'docs/environment/STATUS.md'), md.join('\n') + '\n');
 // production_backlog（パックの形）を実績で更新した版。パックにないマップ（v7.2〜v7.5 で増えたもの）も足す
 const pack = JSON.parse(fs.readFileSync(path.join(repo, 'docs/environment/pack/data/production_backlog.json'), 'utf8'));

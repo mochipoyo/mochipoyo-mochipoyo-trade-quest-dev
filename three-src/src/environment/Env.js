@@ -6,6 +6,7 @@
    ・レシピ：マップごとの作り直し（recipes/）。レシピのあるマップだけ、builder にレシピを渡す。失敗したら従来の表示で続ける（Env.errors に記録）
    ========================================================= */
 import * as THREE from 'three';
+import { pbrOn, PBR_STATS } from './ProcPBR.js';
 import { EnvironmentCatalog } from './EnvironmentCatalog.js';
 import { addCutout } from '../engine/Cutout.js';
 import { RECIPES, genericRecipe } from './recipes/index.js';
@@ -57,5 +58,5 @@ export const Env = {
     }
     return out;
   },
-  info() { return { mode: Env.mode(), recipes: Object.keys(RECIPES), built: Object.assign({}, Env.built), errors: Object.assign({}, Env.errors), missing: Object.keys(Env.missing), loadError: Env.loadError }; }
+  info() { return { mode: Env.mode(), recipes: Object.keys(RECIPES), built: Object.assign({}, Env.built), errors: Object.assign({}, Env.errors), missing: Object.keys(Env.missing), loadError: Env.loadError, pbr: { on: pbrOn(), made: PBR_STATS.made.length, ms: Math.round(PBR_STATS.ms) } }; }   // pbr：手続き的なPBR（ProcPBR.js）を作った画像の組の数と時間
 };
