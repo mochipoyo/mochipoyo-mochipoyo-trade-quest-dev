@@ -117,6 +117,12 @@
   // 歩行キャラの描画優先順位：1) assets/characters/overworld のシート（4方向×3フレーム） 2) Chars.frame（従来） 3) Sprites（旧）
   // phase: 歩行サイクル 0..3（待機0 → 左足1 → 待機0 → 右足2）。省略時は frame(0/1) から推定
   function drawChar(ctx, sprite, dir, frame, px, py, phase) {
+    // v7.3 町の動物（犬・猫・家畜。js/core/animals73.js）
+    if (root.AnimalArt && root.AnimalArt.has(sprite)) {
+      var big = root.AnimalArt.isBig(sprite);
+      ctx.fillStyle = 'rgba(0,0,0,0.22)'; ctx.beginPath(); ctx.ellipse(px + Engine.TS / 2, py + Engine.TS - 2, Engine.TS * (big ? 0.42 : 0.26), Engine.TS * 0.1, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.imageSmoothingEnabled = false; ctx.drawImage(root.AnimalArt.frame(sprite, dir, phase === undefined ? frame : (phase & 1)), px, py - (big ? 4 : 0)); return;
+    }
     // 足元の影
     ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(px + Engine.TS / 2, py + Engine.TS - 2, Engine.TS * 0.3, Engine.TS * 0.12, 0, 0, Math.PI * 2); ctx.fill();
     var wf = root.Assets ? root.Assets.walkFrame(sprite, dir, phase === undefined ? (frame ? 1 : 0) : [0, 1, 0, 2][phase & 3]) : null;

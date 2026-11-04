@@ -115,6 +115,8 @@
     Chars.cache[k] = c; return c;
   };
   Chars.has = function (key) { return !!PALS[key]; };
+  // v7.3 データから色の組を足す（js/data/townlife73.js の個性的な町の人。すでにある名前は上書きしない）
+  Chars.addPalette = function (key, pal) { if (!key || PALS[key]) return false; PALS[key] = Object.assign({ F: SKIN, E: EYE, S: SKIN }, pal); return true; };
 
   root.Chars = Chars;
 })(typeof window !== 'undefined' ? window : globalThis);

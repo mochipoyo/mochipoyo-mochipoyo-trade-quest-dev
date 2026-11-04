@@ -111,7 +111,7 @@ export class InteriorBuilder3D {
     for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
       const t = T(x, y); const cx = x + 0.5, cz = y + 0.5; const againstBack = y === 1;
       switch (t) {
-        case 'bookshelf': props.push({ id: 'furn_bookshelf', m: M4(cx, 0, againstBack ? 1.25 : cz, 0) }); break;
+        case 'bookshelf': break;   // v7.3 本が並ぶ本棚は Furniture73 で作る
         case 'bed': props.push({ id: 'furn_bed', m: M4(cx, 0, againstBack ? 1.0 + 0.56 : cz, 0, 0, 0, 0.8, 0.9, 0.6) }); break;
         case 'table':
           if (kind === 'church') this.pew(b, cx, cz);

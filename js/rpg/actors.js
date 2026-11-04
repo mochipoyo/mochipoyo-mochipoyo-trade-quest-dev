@@ -48,6 +48,7 @@
     // v6.8 その人物だけの上乗せ（js/data/companions68.js の COMPANIONS[id].statBonus：{ 能力: [Lv1の値, 1レベルあたり] }。カズトの最大MPなど。職業を変えても残る）
     var CPx = root.COMPANIONS && a.id && root.COMPANIONS[a.id]; var SB = CPx && CPx.statBonus;
     if (SB) Object.keys(SB).forEach(function (k) { var v = SB[k]; var key = k === 'hp' ? 'maxHp' : k === 'mp' ? 'maxMp' : k; if (s[key] !== undefined) s[key] += Math.round(v[0] + v[1] * (lv - 1)); });
+    if (a.grow) Object.keys(a.grow).forEach(function (k) { if (s[k] !== undefined && a.grow[k] > 0) s[k] += a.grow[k]; });   // v7.3 能力の最大値を上げる道具（js/data/items73.js）
     Object.keys(a.equip).forEach(function (slot) {
       var it = a.equip[slot] ? ITEMS[a.equip[slot]] : null; if (!it) return;
       if (it.atk) s.atk += it.atk; if (it.def) s.def += it.def; if (it.agi) s.agi += it.agi; if (it.mag) s.mag += it.mag; if (it.mdef) s.mdef += it.mdef;

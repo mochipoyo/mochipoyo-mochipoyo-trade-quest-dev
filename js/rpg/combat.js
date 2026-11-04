@@ -30,6 +30,21 @@
     if (k.mag && e.mag) e.mag = Math.max(1, Math.round(e.mag * k.mag));
     e.scaled = k; return e;
   };
+  // v7.3 ボスの戦闘で、ボスといっしょに出る敵・ボスが呼ぶ敵を、ボスに合わせて強くする（弱すぎてすぐ倒れるのを直す）
+  //   目安：HP はボスの最大HPの 6%、攻撃・魔力はボスの 45%、守備はボスの 50% まで（元より弱くはしない。HP は最大3.5倍・攻撃は最大1.8倍・守備は最大1.6倍。boss64test の勝率の範囲に入るように決めた）
+  //   ボスとして扱うのは、その戦闘でいちばん最大HPの多い敵。相手の3分の1以下の HP の敵だけを上げる（同じくらいの強さの敵どうしの戦闘は変えない）
+  //   経験値・ゴールド・素早さ・行動は変えない
+  Combat.MINION = { hp: 0.06, atk: 0.45, def: 0.5, maxHp: 3.5, maxAtk: 1.8, maxDef: 1.6 };
+  Combat.minionScale = function (boss, m) {
+    if (!boss || !m || m === boss || !(boss.maxHp >= 3 * m.maxHp)) return null; var C = Combat.MINION;
+    var kh = Math.max(1, Math.min(C.maxHp, boss.maxHp * C.hp / Math.max(1, m.maxHp)));
+    var ka = Math.max(1, Math.min(C.maxAtk, (boss.atk || 1) * C.atk / Math.max(1, m.atk || 1)));
+    var kd = Math.max(1, Math.min(C.maxDef, (boss.def || 0) * C.def / Math.max(1, m.def || 1)));
+    var q = boss.minionK === undefined ? 1 : boss.minionK; kh = 1 + (kh - 1) * q; ka = 1 + (ka - 1) * q; kd = 1 + (kd - 1) * q;   // 何度も呼ぶボスは控えめに（ENEMIES[id].minionK。js/data/tune73.js）
+    if (kh < 1.05 && ka < 1.05 && kd < 1.05) return null;
+    return { hp: kh, atk: ka, def: kd, mag: ka, minion: true };
+  };
+  Combat.bossOf = function (list) { var best = null; (list || []).forEach(function (x) { if (x && (!best || x.maxHp > best.maxHp)) best = x; }); return best; };
   Combat.create = function (enemyIds, party, opts) {
     opts = opts || {};
     var enemies = enemyIds.map(function (id, i) {
@@ -38,6 +53,7 @@
       var same = enemyIds.filter(function (x) { return x === id; }).length; if (same > 1) { var n = enemyIds.slice(0, i).filter(function (x) { return x === id; }).length; e.name += String.fromCharCode(65 + n); }
       return e;
     });
+    if (opts.boss && enemies.length > 1) { var bz = Combat.bossOf(enemies); enemies.forEach(function (m) { var k = Combat.minionScale(bz, m); if (k) Combat.applyScale(m, k); }); }   // v7.3 ボスの供の敵
     party.forEach(function (a) { a.buffs = {}; a.cover = false; a.counter = false; a.defending = false; a._gutsUsed = false; a._atkTurn = -9; a._defTurn = -9; a._supTurn = -9; a._firstHit = false; a._turn = 0; a.counterMult = 1; });
     var pet = opts.pet === false ? null : Combat.petFor(party);   // v6.8 神聖犬ポン太（4人とは別枠）
     return { pet: pet, enemies: enemies, party: party, turn: 0, state: 'command', scale: (opts.scale && !opts.boss) ? opts.scale : null, boss: !!opts.boss, canEscape: opts.canEscape !== false && !opts.boss, log: [], trialCount: 0, result: null, maxEnemies: opts.maxEnemies || MAX_ENEMIES };
@@ -436,7 +452,7 @@
       msg(e.name + sp.msg); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: sp.power ? 'lunge' : 'buff' });
       if (sp.flee) { e.dead = true; e.fled = true; ev.push({ type: 'flee', idx: e.idx }); return; }
       if (sp.trial) { b.trialCount++; ev.push({ type: 'trial', idx: e.idx }); return; }
-      if (sp.call) { var sid = chosen.summon || e.defId; if (!ENEMIES[sid] || b.enemies.length >= 8 || aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) { msg('しかし誰も来なかった'); return; } var ne = makeEnemy(sid, b.enemies.length); if (b.scale) Combat.applyScale(ne, b.scale); var cnt = b.enemies.filter(function (x) { return x.defId === sid; }).length; if (cnt > 0) ne.name += String.fromCharCode(65 + cnt); ne.summoned = true; b.enemies.push(ne); ev.push({ type: 'summon', idx: ne.idx }); msg(ne.name + 'が現れた！'); return; }
+      if (sp.call) { var sid = chosen.summon || e.defId; if (!ENEMIES[sid] || b.enemies.length >= 8 || aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) { msg('しかし誰も来なかった'); return; } var ne = makeEnemy(sid, b.enemies.length); if (b.scale) Combat.applyScale(ne, b.scale); else if (b.boss) { var kb = Combat.minionScale(e.maxHp >= 3 * ne.maxHp ? e : Combat.bossOf(b.enemies), ne); if (kb) Combat.applyScale(ne, kb); }   /* v7.3 ボスが呼ぶ敵もボスに合わせる */ var cnt = b.enemies.filter(function (x) { return x.defId === sid; }).length; if (cnt > 0) ne.name += String.fromCharCode(65 + cnt); ne.summoned = true; b.enemies.push(ne); ev.push({ type: 'summon', idx: ne.idx }); msg(ne.name + 'が現れた！'); return; }
       if (sp.heal) { var hv = Math.max(1, Math.round(e.maxHp * sp.heal)); e.hp = Math.min(e.maxHp, e.hp + hv); ev.push({ type: 'heal', side: 'enemy', idx: e.idx, value: hv }); msg(e.name + 'のHPが' + hv + '回復した'); return; }
       if (sp.buff && sp.self) { Object.keys(sp.buff).forEach(function (k) { e.buffs[k] = { value: sp.buff[k], turns: sp.turns || 2 }; }); return; }
       if (sp.power) {

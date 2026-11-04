@@ -1,0 +1,2 @@
+const path='/home/claude/mochipoyo-trade-quest/js/'; global.window=undefined; const CONFIG=require(path+'config.js'); const Indicators=require(path+'indicators.js'); global.CONFIG=CONFIG; global.Indicators=Indicators; const S=require(path+'scenarios.js'); global.Scenarios=S; require(path+'data/scenarios-extra.js');
+const id=process.env.ID; const N=+process.env.N||10; const a=[]; for(let o=0;o<N;o++){ const b=S.build(id,o); if(!b.valid) throw new Error('invalid '+id+':'+o); a.push(b.seed); } process.stdout.write(JSON.stringify(a));

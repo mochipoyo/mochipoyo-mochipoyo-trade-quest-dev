@@ -1,0 +1,11 @@
+--- v72/towns72.js.bak72	2026-11-04 10:27:40.233003133 +0900
++++ v72/towns72.js	2026-11-04 10:27:40.245658921 +0900
+@@ -55,7 +55,7 @@
+ // ④ 既存の屋内に足した階段（50）：部屋の中で行ける所が減らない・階段へ行ける
+ const badS = [];
+ X.stairs.forEach((s) => {
+-  const b = B[s.from]; const c = M[s.from]; let df = 0; for (let y = 0; y < b.rows.length; y++) for (let x = 0; x < b.rows[0].length; x++) if (b.rows[y][x] !== c.rows[y][x]) df++;
++  const b = B[s.from]; const c = M[s.from]; let df = 0; const hm = ((w.HOMES73 || {}).homes || []).find((h) => h.id === s.from); for (let y = 0; y < b.rows.length; y++) for (let x = 0; x < b.rows[0].length; x++) if (b.rows[y][x] !== c.rows[y][x] && !(hm && x === hm.oldW - 1 && (y === hm.open || y === hm.open + 1))) df++;   // v7.3 家の台所とトイレ（東の壁の2マスを通り口にした所）は数えない
+   if (df !== 1 || c.rows[s.y][s.x] !== '<') badS.push(s.from + ' 変えたマス ' + df);
+   const m0 = new w.GameMap(Object.assign({}, c, { rows: b.rows, warps: c.warps.filter((q) => !q.v72) })); const m1 = new w.GameMap(c);
+   const e0 = m0.warps[0]; const st = [[e0.x, e0.y - 1], [e0.x, e0.y + 1]].find(([x, y]) => walkable(m0, x, y, d)); if (!st) { badS.push(s.from + ' 入口'); return; }

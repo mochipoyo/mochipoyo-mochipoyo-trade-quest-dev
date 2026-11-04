@@ -531,7 +531,7 @@
         return { actorId: a.id, type: 'skill', skillId: sk.id, target: target };
       }
       if (sel === 2) {
-        var inv = State.data.inventory; var ids = Object.keys(inv).filter(function (id) { return ITEMS[id] && ITEMS[id].cat === 'consumable' && !ITEMS[id].fieldOnly; });
+        var inv = State.data.inventory; var ids = Object.keys(inv).filter(function (id) { return ITEMS[id] && ITEMS[id].cat === 'consumable' && !ITEMS[id].fieldOnly && !ITEMS[id].growItem; });
         if (!ids.length) { await Win.message(['使える道具がない。']); continue; }
         var ii = await Win.list(ids.map(function (id) { return { label: ITEMS[id].name, right: '×' + inv[id], sub: ITEMS[id].desc }; }), { title: 'どうぐ' }); if (ii < 0) continue;
         var it = ITEMS[ids[ii]]; var tg = null;
@@ -671,7 +671,9 @@
         var enemy = b.enemies[e.idx];
         await bmsg(enemy.name + 'の相場の試練！ チャートを読み、正しい行動を選べ！', 700);
         var scs = enemy.trialScenarios || ['clear_up', 'clear_down', 'range', 'up_pullback', 'down_rally'];
-        var res = await root.TradeUI.trial(scs, { title: enemy.name + 'の相場の試練', noQuit: true });   // v5.8 戦闘中の試練は中断できない
+        // v7.3 場面（シナリオ × シード）を、検証済みのシード（js/data/scenario-seeds.js。1つのシナリオに10）から選ぶ。最近出た場面（12）は避ける
+        var pk = root.TradeUI.pickTrial ? root.TradeUI.pickTrial(scs) : null;
+        var res = await root.TradeUI.trial(pk ? [pk.id] : scs, pk ? { title: enemy.name + 'の相場の試練', noQuit: true, scenarioId: pk.id, seedOffset: pk.offset } : { title: enemy.name + 'の相場の試練', noQuit: true });   // v5.8 戦闘中の試練は中断できない
         var ev2 = Combat.applyTrialResult(b, e.idx, res ? res.score : 0);
         await playEvents(b, ev2, scene);
       }

@@ -97,6 +97,198 @@
     add(up); X.stairs.push({ from: id, to: up.id, x: s.x, y: s.y }); return s;
   }
 
+  /* ---------- v7.3 新しい地区の型（町ごとに道・広場・建物の並びを変える） ----------
+     どの型も、地区の座標（c＝新しい地区の列 0〜A-1、y＝行）で道・広場・水などを描き、建物の候補の場所と人の立つ所を返す
+     ・建物は候補を順に試して、置けた所に建てる（塔は置けなければ地区のどこかへ。どの町にも3階の塔がある）
+     ・扉の前から近くの道までは小道を自動で引く（建物と水はよける）。元の町からの道（2行）も地区の道までつなぐ */
+  var STYLE_OF = {
+    rivel_town: 'grand', rivel_artisan: 'market', dow_village: 'glade', harbor_town: 'pier', verum_town: 'quarry', kalion_city: 'grid', erased_village: 'ruins',
+    sentra_capital: 'grand', aruna_village: 'pier', aruna_ruins: 'ruins', tempus_city: 'ring', node_city: 'grid', scheduled_district: 'blocks', magicka_city: 'canalring',
+    tradia: 'canal', luxbell: 'boulevard', volatilia: 'campus', star_camp: 'camp', dark_camp: 'camp', sahar_city: 'bazaar', mirror_market: 'bazaar', ignas_town: 'forge',
+    ciel_port: 'market', frost_town: 'snow'
+  };
+  // 同じ型の2つ目の町は、左右を反対にする（道・広場・建物の並びが鏡うつしになる）
+  var MIRROR = { sentra_capital: 1, aruna_village: 1, node_city: 1, aruna_ruins: 1, mirror_market: 1, ciel_port: 1 };
+  var STYLE_NAME = { grand: '十字の大通りと像の広場', market: '東西の市場通り', glade: '森の小道と池', pier: '桟橋と波止場', quarry: '岩場と鉱石の山', grid: '碁盤の目の街区', ruins: '崩れた壁の焼け跡', ring: '時計の広場を囲む環状の道', blocks: '細かい街区と配管', canalring: '水路に囲まれた水晶の島', canal: '運河と橋', boulevard: '街灯の並ぶ歓楽大通り', campus: '芝生の中庭', camp: '柵で囲んだ野営地', bazaar: '井戸のある中庭の市場', forge: '溶岩の水路と石橋', snow: '雪原と凍った池' };
+  var STYLE_ADD = { grand: 24, market: 22, glade: 22, pier: 22, quarry: 22, grid: 24, ruins: 20, ring: 24, blocks: 22, canalring: 24, canal: 24, boulevard: 24, campus: 24, camp: 18, bazaar: 24, forge: 22, snow: 22 };
+  // 広場の真ん中の飾り（c, y は飾りの左上）
+  var CENTER_OF = { royal: 'statue', forest: 'tree', harbor: 'well', mine: 'ore', bureau: 'obelisk', ruins: 'broken', clock: 'clock', machine: 'crates', arcane: 'crystal', sky: 'crystal', dark: 'torch', desert: 'well', forge: 'torch', frost: 'fountain', casino: 'fountain4', academy: 'statue', tech: 'fountain' };
+  var CENTER = {
+    statue: function (C, c, y) { C.set(c, y, 'I'); C.set(c + 1, y, 'I'); C.set(c - 1, y, 'a'); C.set(c + 2, y, 'a'); },
+    obelisk: function (C, c, y) { C.set(c, y, 'I'); C.set(c + 1, y, 'I'); C.set(c - 2, y - 1, 'y'); C.set(c + 3, y - 1, 'y'); C.set(c - 2, y + 1, 'y'); C.set(c + 3, y + 1, 'y'); },
+    tree: function (C, c, y) { C.set(c, y, 'f'); C.set(c + 1, y, 'f'); C.set(c - 1, y + 1, 'e'); C.set(c + 2, y + 1, 'e'); },
+    well: function (C, c, y) { C.set(c, y, 'j'); C.set(c + 1, y, 'a'); C.set(c - 1, y, 'q'); },
+    ore: function (C, c, y) { C.set(c, y, 'k'); C.set(c + 1, y, 'k'); C.set(c - 1, y, 'z'); C.set(c + 2, y, 'q'); },
+    broken: function (C, c, y) { C.set(c, y, 'Q'); C.set(c + 1, y, '#'); C.set(c - 1, y + 1, 'u'); C.set(c + 2, y + 1, 'u'); C.set(c, y - 1, 'u'); },
+    clock: function (C, c, y) { C.set(c, y, 'I'); C.set(c + 1, y, 'I'); C.set(c - 2, y, 'e'); C.set(c + 3, y, 'e'); C.set(c, y - 2, 'a'); C.set(c + 1, y + 2, 'a'); },
+    crates: function (C, c, y) { C.set(c, y, 'z'); C.set(c + 1, y, 'q'); C.set(c + 2, y, 'z'); C.set(c - 1, y, 'y'); },
+    crystal: function (C, c, y) { C.set(c, y, 'X'); C.set(c + 1, y, 'X'); C.set(c - 1, y - 1, 'y'); C.set(c + 2, y + 1, 'y'); },
+    torch: function (C, c, y) { C.set(c - 1, y - 1, 'i'); C.set(c + 2, y - 1, 'i'); C.set(c - 1, y + 1, 'i'); C.set(c + 2, y + 1, 'i'); C.set(c, y, 'k'); },
+    fountain: function (C, c, y) { C.set(c, y, 'Q'); C.set(c + 1, y, 'Q'); },
+    fountain4: function (C, c, y) { C.fill(c, y, c + 1, y + 1, 'Q'); C.set(c - 2, y, 'y'); C.set(c + 3, y + 1, 'y'); }
+  };
+  var lamps = function (C, c0, c1, y, step) { for (var c = c0; c <= c1; c += step) C.put(c, y, 'y'); };
+  var STYLES = {
+    // 十字の大通り＋像の広場（リヴェル・王都）
+    grand: function (C) {
+      var A = C.A, H = C.H, yc = C.yc;
+      C.road(11, 2, 12, H - 3); C.road(0, yc, A - 2, yc + 1);
+      C.fill(7, yc - 3, 16, yc + 4, 'P'); C.center(11, yc - 2);
+      [[7, yc - 3], [16, yc - 3], [7, yc + 4], [16, yc + 4]].forEach(function (p) { C.set(p[0], p[1], 'a'); });
+      return { lane: 'P', lots: { tower: [[16, yc + 6], [17, 2]], house: [[1, 2], [1, 9]], hall: [[15, 2], [1, yc + 6], [1, 9]], ex: [[1, 9], [15, 9], [1, yc + 6], [1, yc + 13], [15, yc + 13], [1, yc + 20], [15, yc + 20]] },
+        spots: { kid: [9, yc + 2], vendor: [14, yc - 2], elder: [14, yc + 3], sign: [8, yc - 1] },
+        decor: function () { for (var y = 3; y < H - 3; y += 5) { C.put(10, y, 'y'); C.put(13, y + 2, 'y'); } lamps(C, 2, A - 3, yc - 1, 5); lamps(C, 4, A - 3, yc + 2, 5); [[6, yc - 4], [17, yc - 4], [6, yc + 5], [17, yc + 5]].forEach(function (p) { C.put(p[0], p[1], 'y'); }); } };
+    },
+    // 東西の市場通り（露店が並ぶ）
+    market: function (C) {
+      var A = C.A, H = C.H, yc = C.yc;
+      C.fill(0, yc - 1, A - 2, yc + 1, 'P'); C.road(9, 2, 10, yc - 2); C.road(13, yc + 2, 14, H - 3);
+      return { lane: 'P', lots: { tower: [[A - 8, yc + 4], [15, 2]], house: [[1, 2], [1, yc + 4]], hall: [[12, 2], [1, yc + 4]], ex: [[1, yc + 4], [1, 9], [12, 9], [1, yc + 10], [15, yc + 10]] },
+        spots: { kid: [6, yc], vendor: [11, yc - 1], elder: [16, yc + 1], sign: [3, yc] },
+        decor: function () { for (var c = 2; c <= A - 4; c += 3) { C.put(c, yc - 2, 'A'); C.put(c + 1, yc + 2, 'A'); } for (c = 3; c <= A - 4; c += 3) { C.put(c, yc - 2, (c % 2) ? 'q' : 'z'); } C.set(11, yc, 'j'); lamps(C, 4, A - 3, yc - 3, 6); } };
+    },
+    // 森の小道と池（ダウの村）
+    glade: function (C) {
+      var A = C.A, H = C.H, yc = C.yc; var pc = 11, pr = yc;
+      for (var y = pr - 4; y <= pr + 4; y++) for (var c = pc - 6; c <= pc + 6; c++) { var e = ((c - pc) * (c - pc)) / 30 + ((y - pr) * (y - pr)) / 13; if (e <= 0.55) C.set(c, y, '~'); else if (e <= 1.15) C.set(c, y, 'P'); }
+      C.road(pc, 2, pc, pr - 4, 'P'); C.road(pc + 1, pr + 4, pc + 1, H - 3, 'P');
+      C.set(pc - 1, pr, 'b'); C.set(pc, pr, 'b');   // 池の中の飛び石
+      return { lane: 'P', trees: 1.6, lots: { tower: [[1, yc + 5], [15, 2]], house: [[14, 2], [1, 2]], hall: [[1, 2], [13, yc + 6]], ex: [[13, yc + 6], [14, yc + 12], [2, 9], [15, 9], [1, yc + 12]] },
+        spots: { kid: [pc - 5, pr - 2], vendor: [pc + 5, pr - 2], elder: [pc + 4, pr + 3], sign: [pc - 4, pr + 3] },
+        decor: function () { [[pc - 7, pr], [pc + 7, pr], [pc - 3, pr - 5], [pc + 4, pr + 5]].forEach(function (p) { C.put(p[0], p[1], 'e'); }); for (var y = 2; y < H - 2; y += 3) { C.put(1, y, 'Z'); C.put(A - 2, y + 1, 'Z'); } } };
+    },
+    // 桟橋と波止場（港）
+    pier: function (C) {
+      var A = C.A, H = C.H; var wt = H - 4, qr = H - 7;   // 水（wt〜）・波止場の道（qr, qr+1）
+      C.fill(1, wt, A - 2, H - 2, '~'); C.road(0, qr, A - 2, qr + 1, '='); C.road(9, 2, 10, qr - 1);
+      [4, 14].forEach(function (c) { C.road(c, qr + 2, c + 1, H - 2, 'd'); });
+      return { lane: '=', lots: { tower: [[15, qr - 6], [15, 2]], house: [[13, 2], [1, 2]], hall: [[1, 2], [1, qr - 6]], ex: [[1, 9], [12, 9]] },
+        spots: { kid: [7, qr], vendor: [12, qr + 1], elder: [17, qr], sign: [3, qr] },
+        decor: function () { for (var c = 2; c <= A - 3; c += 3) C.put(c, qr - 1, (c % 2) ? 'q' : 'z'); lamps(C, 3, A - 3, qr + 2, 6); C.put(5, H - 2, 'q'); C.put(15, H - 2, 'z'); } };
+    },
+    // 岩場と鉱石の山（ヴェルム）
+    quarry: function (C) {
+      var A = C.A, H = C.H, yc = C.yc;
+      C.road(0, yc, 10, yc + 1); C.road(9, 3, 10, H - 4); C.road(9, H - 5, A - 4, H - 4); C.road(A - 5, yc - 2, A - 4, H - 4);
+      C.fill(12, yc - 3, A - 7, yc + 3, 'g'); C.center(13, yc, 'ore');
+      return { lane: ROADF, trees: 0.5, lots: { tower: [[1, H - 11], [A - 7, 2]], house: [[1, 2], [A - 8, 2]], hall: [[11, 2], [1, 9]], ex: [[1, 9], [1, yc + 2]] },
+        spots: { kid: [12, yc - 4], vendor: [14, yc + 3], elder: [A - 7, yc], sign: [11, yc + 2] },
+        decor: function () { for (var y = 2; y < H - 2; y += 4) { C.put(A - 2, y, 'k'); C.put(8, y + 2, 'h'); } [[16, yc - 2], [12, yc + 3], [A - 8, yc - 3]].forEach(function (p) { C.put(p[0], p[1], 'k'); }); } };
+    },
+    // 碁盤の目（カリオン・ノード）
+    grid: function (C) {
+      var A = C.A, H = C.H, yc = C.yc; var x1 = 9, x2 = 18; var r3 = H >= 30 ? H - 9 : 0;
+      C.road(x1, 2, x1, H - 3); C.road(x2, 2, x2, H - 3); C.road(1, yc, A - 2, yc); C.road(1, 8, A - 2, 8); if (r3) C.road(1, r3, A - 2, r3);
+      C.fill(x1 + 1, yc - 2, x2 - 1, yc + 2, 'P'); C.center(13, yc - 1); C.set(x1 + 1, yc + 2, 'a'); C.set(x2 - 1, yc + 2, 'a');
+      return { lane: ROADF, lots: { tower: [[x1 + 2, yc + 3], [x1 + 1, 2]], house: [[1, 2], [x1 + 1, 2]], hall: [[x1 + 1, 2], [1, yc + 2], [1, 9]], ex: [[1, 9], [x1 + 1, 9], [1, yc + 2], [1, r3 + 1], [x1 + 1, r3 + 1]] },
+        spots: { kid: [x1 + 2, yc + 1], vendor: [x2 - 2, yc - 2], elder: [x2 - 2, yc + 1], sign: [x1 + 2, yc - 2] },
+        decor: function () { for (var y = 3; y < H - 3; y += 4) { C.put(x1 - 1, y, 'y'); C.put(x2 + 1, y + 1, 'y'); C.put(x2 + 2, y + 2, (y % 2) ? 'q' : 'z'); } } };
+    },
+    // 細かい街区と配管（第7居住区）
+    blocks: function (C) {
+      var A = C.A, H = C.H, yc = C.yc; var x1 = 9, x2 = 18;
+      C.road(x1, 2, x1, H - 3); C.road(x2, 2, x2, H - 3); C.road(1, yc, A - 2, yc);
+      C.center(19, yc + 3, 'crates');
+      return { lane: ROADF, trees: 0.3, lots: { tower: [[1, yc + 2], [x1 + 1, 2]], house: [[x1 + 1, 2], [1, 2]], hall: [[x1 + 1, yc + 2], [1, 2]], ex: [[1, 2], [1, yc + 8]] },
+        spots: { kid: [4, yc + 1], vendor: [12, yc - 1], elder: [16, yc + 1], sign: [2, yc - 1] },
+        decor: function () { for (var y = 2; y < H - 2; y += 2) { C.put(x1 - 1, y, (y % 4) ? 'q' : 'z'); C.put(x2 + 1, y + 1, (y % 4) ? 'z' : 'q'); } for (var c = 2; c < A - 2; c += 4) C.put(c, yc - 1, 'y'); } };
+    },
+    // 時計の広場を囲む環状の道（テンプス）
+    ring: function (C) {
+      var A = C.A, H = C.H, yc = C.yc; var t = yc - 5, b = yc + 5, l = 5, r = 18;
+      C.road(l, t, r, t); C.road(l, b, r, b); C.road(l, t, l, b); C.road(r, t, r, b); C.road(11, 2, 12, t); C.road(11, b, 12, H - 3); C.road(0, yc, l, yc + 1);
+      C.fill(l + 2, t + 2, r - 2, b - 2, 'P'); C.center(11, yc, 'clock');
+      return { lane: ROADF, lots: { tower: [[2, b + 1], [13, 2]], house: [[13, 2], [3, 2]], hall: [[3, 2], [13, b + 1]], ex: [[13, b + 1], [3, b + 7], [13, b + 7]] },
+        spots: { kid: [9, yc + 2], vendor: [14, yc - 2], elder: [14, yc + 2], sign: [8, yc - 2] },
+        decor: function () { [[l, t], [r, t], [l, b], [r, b]].forEach(function (p) { C.put(p[0] - 1, p[1] - 1, 'y'); }); for (var c = l + 2; c <= r - 2; c += 4) { C.put(c, t + 1, 'a'); C.put(c, b - 1, 'a'); } } };
+    },
+    // 水路に囲まれた水晶の島（マクディア）
+    canalring: function (C) {
+      var A = C.A, H = C.H, yc = C.yc; var t = yc - 5, b = yc + 5, l = 4, r = 19;
+      C.fill(l, t, r, b, '~'); C.fill(l + 1, t + 1, r - 1, b - 1, ROADF); C.fill(l + 2, t + 2, r - 2, b - 2, 'P'); C.center(11, yc, 'crystal');
+      C.road(l - 1, t - 1, r + 1, t - 1); C.road(l - 1, b + 1, r + 1, b + 1); C.road(l - 1, t - 1, l - 1, b + 1); C.road(r + 1, t - 1, r + 1, b + 1);
+      C.set(11, t, 'b'); C.set(12, t, 'b'); C.set(11, b, 'b'); C.set(12, b, 'b'); C.set(l, yc, 'b'); C.set(r, yc, 'b'); C.road(0, yc, l - 1, yc + 1); C.road(11, 2, 12, t - 1);
+      return { lane: ROADF, lots: { tower: [[3, 2], [14, 2]], house: [[14, 2], [3, 2]], hall: [[13, b + 2], [2, b + 2]], ex: [[2, b + 2], [2, b + 8], [13, b + 8]] },
+        spots: { kid: [8, yc + 2], vendor: [15, yc - 2], elder: [15, yc + 2], sign: [8, yc - 2] },
+        decor: function () { for (var c = l; c <= r; c += 5) { C.put(c, t - 2, 'y'); C.put(c + 2, b + 2, 'y'); } } };
+    },
+    // 運河と橋（トレディア）
+    canal: function (C) {
+      var A = C.A, H = C.H, yc = C.yc; var k = 9;
+      C.fill(k, 1, k + 1, H - 2, '~'); C.road(k - 1, 2, k - 1, H - 3, 'P'); C.road(k + 2, 2, k + 2, H - 3, 'P');
+      [yc - 9, yc, yc + 1, yc + 9].forEach(function (y) { if (y > 2 && y < H - 3) { C.set(k, y, 'b'); C.set(k + 1, y, 'b'); } });
+      C.fill(k + 3, yc - 2, k + 9, yc + 3, 'P'); C.center(k + 5, yc); C.road(0, yc, k - 1, yc + 1);
+      return { lane: 'P', lots: { tower: [[k + 6, yc + 5], [k + 3, 2]], house: [[1, 2], [1, 9]], hall: [[k + 3, 2], [1, yc + 3]], ex: [[1, 9], [k + 6, 9], [1, yc + 3], [1, yc + 9], [k + 6, yc + 12], [1, yc + 15]] },
+        spots: { kid: [k + 4, yc + 2], vendor: [k + 8, yc - 1], elder: [k + 8, yc + 2], sign: [k + 4, yc - 2] },
+        decor: function () { for (var y = 3; y < H - 3; y += 4) { C.put(k - 2, y, 'y'); C.put(k + 3, y + 2, 'y'); } } };
+    },
+    // 街灯の並ぶ歓楽大通り（ラックスベル）
+    boulevard: function (C) {
+      var A = C.A, H = C.H, yc = C.yc;
+      C.fill(0, yc - 2, A - 2, yc + 1, 'P'); C.road(11, 2, 12, yc - 3); C.road(11, yc + 2, 12, H - 3);
+      C.center(5, yc - 1, 'fountain4'); C.center(16, yc - 1, 'fountain4');
+      return { lane: 'P', lots: { tower: [[A - 8, yc + 3], [15, 2]], house: [[2, 2], [15, 2]], hall: [[14, 2], [2, yc + 3]], ex: [[2, yc + 3], [2, 9], [15, 9], [2, yc + 9], [14, yc + 9]] },
+        spots: { kid: [9, yc], vendor: [13, yc - 2], elder: [14, yc + 1], sign: [9, yc - 2] },
+        decor: function () { for (var c = 1; c <= A - 3; c += 2) { C.put(c, yc - 3, 'y'); C.put(c, yc + 2, 'a'); } } };
+    },
+    // 芝生の中庭（ボラティリティア学院）
+    campus: function (C) {
+      var A = C.A, H = C.H, yc = C.yc; var t = yc - 6, b = yc + 4, l = 4, r = 19;
+      C.road(l, t, r, t, 'P'); C.road(l, b, r, b, 'P'); C.road(l, t, l, b, 'P'); C.road(r, t, r, b, 'P'); C.road(l, yc - 1, r, yc - 1, 'P'); C.road(11, t, 12, b, 'P'); C.road(0, yc, l, yc + 1);
+      C.center(11, yc - 3, 'statue');
+      return { lane: 'P', lots: { tower: [[9, 2], [14, 2]], house: [[16, 2], [3, 2]], hall: [[1, 2], [2, b + 2]], ex: [[2, b + 2], [13, b + 2], [3, b + 8], [14, b + 8]] },
+        spots: { kid: [8, yc], vendor: [15, yc - 2], elder: [15, yc], sign: [8, yc - 2] },
+        decor: function () { for (var c = l + 1; c < r; c += 2) { if (c !== 11 && c !== 12) { C.put(c, t + 1, '6'); C.put(c, b - 1, '6'); } } } };
+    },
+    // 柵で囲んだ野営地（星見塔の野営地・前線基地）
+    camp: function (C) {
+      var A = C.A, H = C.H; var t = 1, b = H - 2, l = 1, r = A - 2; var yc = 9;   // 道は 8・9 行（塔の扉の前）
+      for (var c = l; c <= r; c++) { C.set(c, t, 'x'); C.set(c, b, 'x'); } for (var y = t; y <= b; y++) C.set(r, y, 'x');
+      C.road(0, yc - 1, r - 1, yc, ROADF); C.center(A - 6, H - 4, C.key === 'sky' ? 'crystal' : 'torch');
+      return { lane: ROADF, trees: 0.4, lots: { tower: [[2, 2], [10, 2]], house: [[9, 2], [2, 2]], hall: [[2, yc + 2], [9, yc + 2]], ex: [] },
+        spots: { kid: [6, yc + 1], vendor: [A - 8, yc + 1], elder: [A - 4, yc - 1], sign: [3, yc + 1] },
+        decor: function () { for (var c = 3; c < A - 8; c += 4) C.put(c, H - 3, (c % 2) ? 'z' : 'q'); } };
+    },
+    // 井戸のある中庭の市場（サハル・鏡の市場）
+    bazaar: function (C) {
+      var A = C.A, H = C.H, yc = C.yc; var t = yc - 4, b = yc + 3, l = 5, r = 18;
+      C.fill(l, t, r, b, 'P'); C.road(0, yc, l, yc + 1); C.road(11, 2, 12, t); C.road(11, b, 12, H - 3);
+      C.center(11, yc - 1, 'well');
+      return { lane: 'P', ground: 's', lots: { tower: [[A - 8, b + 1], [13, 2]], house: [[3, 2], [14, 2]], hall: [[14, 2], [2, b + 1]], ex: [[2, b + 1], [3, b + 7], [13, b + 8], [1, 9]] },
+        spots: { kid: [8, yc + 2], vendor: [15, yc - 3], elder: [16, yc + 2], sign: [7, yc - 3] },
+        decor: function () { for (var c = l + 1; c <= r - 1; c += 3) { if (c === 11 || c === 12) continue; C.set(c, t + 1, 'A'); C.set(c, b - 1, 'A'); } [[l, t], [r, t], [l, b], [r, b]].forEach(function (p) { C.set(p[0], p[1], '6'); }); } };
+    },
+    // 溶岩の水路と石橋（イグナス）
+    forge: function (C) {
+      var A = C.A, H = C.H, yc = C.yc;
+      C.fill(1, yc + 3, A - 2, yc + 4, 'l'); C.road(9, 2, 10, H - 3); C.set(9, yc + 3, 'b'); C.set(10, yc + 3, 'b'); C.set(9, yc + 4, 'b'); C.set(10, yc + 4, 'b'); C.road(0, yc, 9, yc + 1);
+      C.fill(12, yc - 3, 18, yc + 1, '='); C.center(14, yc - 1, 'torch');
+      return { lane: ROADF, ground: '8', trees: 0.2, lots: { tower: [[13, yc + 6], [13, 2]], house: [[1, 2], [12, yc + 6]], hall: [[13, 2], [1, yc + 6], [1, 9]], ex: [] },
+        spots: { kid: [7, yc - 1], vendor: [12, yc - 3], elder: [18, yc + 1], sign: [11, yc + 2] },
+        decor: function () { for (var y = 3; y < H - 3; y += 4) C.put(8, y, 'i'); } };
+    },
+    // 雪原と凍った池（フロスト）
+    snow: function (C) {
+      var A = C.A, H = C.H, yc = C.yc; var pc = 15, pr = yc + 6;
+      for (var y = pr - 3; y <= pr + 3; y++) for (var c = pc - 5; c <= pc + 5; c++) { var e = ((c - pc) * (c - pc)) / 25 + ((y - pr) * (y - pr)) / 9; if (e <= 0.8) C.set(c, y, 'w'); }
+      C.road(0, yc, 9, yc + 1, 'P'); C.road(9, 2, 10, H - 3, 'P'); C.road(11, yc - 2, A - 3, yc - 2, 'P');
+      C.fill(14, yc - 6, 19, yc - 3, 'P'); C.center(16, yc - 5, 'fountain');
+      return { lane: 'P', ground: 'n', trees: 1.2, lots: { tower: [[1, yc + 3], [13, 2]], house: [[13, 2], [1, 2]], hall: [[1, 2], [1, yc + 9]], ex: [[1, 9], [1, yc + 9], [12, yc + 10]] },
+        spots: { kid: [12, yc - 1], vendor: [18, yc - 2], elder: [14, yc - 3], sign: [11, yc + 1] },
+        decor: function () { [[pc - 6, pr], [pc + 6, pr]].forEach(function (p) { C.put(p[0], p[1], 'e'); }); } };
+    },
+    // 崩れた壁の焼け跡（消えた村・廃墟の街）
+    ruins: function (C) {
+      var A = C.A, H = C.H, yc = C.yc;
+      C.road(0, yc, 9, yc + 1, 'P'); C.road(9, 2, 9, H - 3, 'P'); C.road(10, yc - 3, A - 3, yc - 3, 'P');
+      C.fill(11, yc - 1, 16, yc + 3, 'P'); C.center(13, yc + 1, 'broken');
+      return { lane: 'P', ground: '8', trees: 0.6, tree: '6', lots: { tower: [[10, yc + 5], [12, 2]], house: [[12, 2], [1, 2]], hall: [[1, 2], [1, yc + 3]], ex: [[1, yc + 3], [1, yc + 9]] },
+        spots: { kid: [11, yc - 1], vendor: [16, yc - 1], elder: [15, yc + 3], sign: [10, yc + 2] },
+        decor: function () { for (var y = 2; y < H - 2; y += 3) for (var c = 2; c < A - 2; c += 5) { var h = (c * 7 + y * 11 + C.idx) % 9; if (h === 0) C.put(c, y, '#'); else if (h === 4) C.put(c + 1, y, 'u'); } } };
+    }
+  };
+  var ROADF = 'r';   // 型の中で「町の道」を使う所（expandTown の中で、その町の道の文字に置きかえる）
+
   /* ---------- 町の東に新しい地区を足す ---------- */
   function mostWalkable(def, rows, pref) {
     var cnt = {}; rows.forEach(function (r) { for (var i = 0; i < r.length; i++) { var c = r[i]; if (!solidCh(def, c) && '<>@DObdw'.indexOf(c) < 0) cnt[c] = (cnt[c] || 0) + 1; } });
@@ -105,7 +297,8 @@
   function expandTown(id, idx, opt) {
     var d = MAPS[id]; if (!d || typeof d.rows === 'function' || d.s3121) return null; opt = opt || {};
     var P = root.PLACE_DECOR; var key = (P && P.forMap(id)) || 'royal'; var th = TH[key] || TH.royal;
-    var rows = d.rows, H = rows.length, W = rows[0].length, ADD = 22, A0 = 10;   // 大通りは新しい地区の 10・11 列
+    var st = opt.style || STYLE_OF[id] || 'grand'; var S = STYLES[st] || STYLES.grand;   // v7.3 町ごとの型
+    var rows = d.rows, H = rows.length, W = rows[0].length, ADD = STYLE_ADD[st] || 22;
     var hEff = opt.hEff || H;
     pre(d);
     var G = mostWalkable(d, rows) || '.'; var ROAD = mostWalkable(d, rows, 'rP'.replace(G, '')) || (G === 'P' ? 'r' : 'P');
@@ -140,27 +333,53 @@
     }
     if (open === undefined || open === null) { X.skipped.push(id); return null; }
     [open, open + 1].forEach(function (r) { set(W - 1, r, ROAD); });
-    // 道：つなぐ道（元の町 → 大通り）・南北の大通り
-    [open, open + 1].forEach(function (r) { fill(L(0), r, L(opt.throughEast ? ADD - 1 : A0), r, ROAD); });
-    fill(L(A0), 2, L(A0 + 1), hEff - 3, ROAD);
-    // 広場と噴水
-    fill(L(A0 - 3), yc - PH, L(A0 + 4), yc + PH, 'P'); set(L(A0), yc, 'Q'); set(L(A0 + 1), yc, 'Q');
-    [[A0 - 3, yc - PH], [A0 + 4, yc - PH], [A0 - 3, yc + PH], [A0 + 4, yc + PH]].forEach(function (p) { set(L(p[0]), p[1], 'e'); });
-    [[A0 - 4, yc - PH - 1], [A0 + 5, yc - PH - 1], [A0 - 4, yc + PH + 1], [A0 + 5, yc + PH + 1]].forEach(function (p) { if (p[1] > 0 && p[1] < hEff - 1) set(L(p[0]), p[1], 'y'); });
-    // 区画（建物）。扉は下向き。扉の下から大通りまで小道
-    var lots = []; var nb = (d.buildings || []).length;
-    function lot(b, laneRow, laneTo) {
-      var ok = true; for (var yy = b.y; yy < b.y + b.h; yy++) for (var xx = b.x; xx < b.x + b.w; xx++) { if (g[yy][xx] !== G) ok = false; }
-      if (!ok || laneRow >= hEff - 1) return false;
-      var dx = b.x + b.doorX; for (var xx2 = Math.min(dx, laneTo); xx2 <= Math.max(dx, laneTo); xx2++) set(xx2, laneRow, ROAD);
-      for (var yy2 = b.y; yy2 < b.y + b.h; yy2++) for (var xx3 = b.x; xx3 < b.x + b.w; xx3++) g[yy2][xx3] = '_';   // 建物の下（描画は建物）
-      lots.push(b); return true;
+    // v7.3 地区の並びは町ごとに型を変える（STYLES。大通り＋広場の同じ型はやめた）
+    var Hh = hEff; var lotSet = {}; var lots = []; var nb = (d.buildings || []).length;
+    var MIR = !!MIRROR[id] && !opt.throughEast && !opt.openEast;
+    var mx = function (c) { return MIR ? Math.max(1, Math.min(ADD - 2, ADD - 1 - c)) : c; };   // 鏡うつしの列（外周は使わない）
+    var C = {
+      A: ADD, H: Hh, yc: yc, small: small, G: G, ROAD: ROAD, key: key, idx: idx, mirror: MIR,
+      get: function (c, y) { return g[y] && g[y][L(mx(c))]; }, isG: function (c, y) { return g[y] && g[y][L(mx(c))] === G; },
+      set: function (c, y, ch) { c = mx(c); if (c >= 0 && c < ADD && y > 0 && y < Hh - 1 && !lotSet[L(c) + ',' + y]) set(L(c), y, ch); },
+      fill: function (c0, y0, c1, y1, ch) { for (var yy = y0; yy <= y1; yy++) for (var cc = c0; cc <= c1; cc++) C.set(cc, yy, ch); },
+      road: function (c0, y0, c1, y1, ch) { C.fill(c0, y0, c1, y1, ch || ROAD); },
+      // G のマスだけに置く（道・建物・水は変えない）
+      put: function (c, y, ch) { c = mx(c); if (c > 0 && c < ADD - 1 && g[y] && g[y][L(c)] === G && !lotSet[L(c) + ',' + y]) set(L(c), y, ch); },
+      center: function (c, y, piece) { CENTER[piece || CENTER_OF[key] || 'fountain'](C, c, y); }
+    };
+    if (opt.throughEast) [open, open + 1].forEach(function (r) { fill(L(0), r, L(ADD - 1), r, ROAD); });
+    ROADF = ROAD; var LY = S(C) || {};
+    // 区画（建物）。扉は下向き。候補の場所を順に試し、置けた所に建てる
+    function lotOk(b) { if (b.y < 1 || b.y + b.h > Hh - 2 || b.x < L(1) || b.x + b.w > L(ADD - 1)) return false; for (var yy = b.y; yy < b.y + b.h; yy++) for (var xx = b.x; xx < b.x + b.w; xx++) if (g[yy][xx] !== G) return false; var fy = b.y + b.h, fx = b.x + b.doorX; return !solidCh(d, g[fy][fx]) || g[fy][fx] === G; }
+    function lot(b, cands) {
+      for (var i = 0; i < cands.length; i++) {
+        var q = cands[i]; var bb = Object.assign({}, b, { x: L(MIR && !q.raw ? ADD - q[0] - b.w : q[0]), y: q[1] }); if (!lotOk(bb)) continue;
+        for (var yy = bb.y; yy < bb.y + bb.h; yy++) for (var xx = bb.x; xx < bb.x + bb.w; xx++) { g[yy][xx] = '_'; lotSet[xx + ',' + yy] = 1; }   // 建物の下（描画は建物）
+        if (!lane(bb.x + bb.doorX, bb.y + bb.h)) { for (yy = bb.y; yy < bb.y + bb.h; yy++) for (xx = bb.x; xx < bb.x + bb.w; xx++) { g[yy][xx] = G; delete lotSet[xx + ',' + yy]; } continue; }
+        lots.push(bb); Object.assign(b, { x: bb.x, y: bb.y }); return true;
+      }
+      return false;
     }
+    // 扉の前から、いちばん近い道まで小道を引く（建物と水はよける）
+    var ROADS = {}; [ROAD, 'P', 'b', 'd', 'p', '='].forEach(function (c) { ROADS[c] = 1; }); delete ROADS[G];   // 地面と同じ文字は道に数えない
+    // net（道の集まり）を渡すと、その道に着くまで引く（元の町からの道）
+    function lane(sx, sy, laneCh, net) {
+      var isT = function (x, y) { return ROADS[g[y][x]] && (!net || net[x + ',' + y]); };
+      if (isT(sx, sy)) return true; var prev = {}; var k0 = sx + ',' + sy; prev[k0] = null; var q = [[sx, sy]], hit = null;
+      while (q.length && !hit) { var p = q.shift(); var dirs = [[1, 0], [0, 1], [0, -1], [-1, 0]]; for (var i = 0; i < 4 && !hit; i++) { var nx = p[0] + dirs[i][0], ny = p[1] + dirs[i][1], k = nx + ',' + ny; if (k in prev || nx < L(0) || nx >= NW || ny < 1 || ny > Hh - 2 || lotSet[k]) continue; var ch = g[ny][nx]; if (isT(nx, ny)) { prev[k] = p; hit = [nx, ny]; break; } if (ch !== G && solidCh(d, ch)) continue; prev[k] = p; q.push([nx, ny]); } }
+      if (!hit) return false; var cur = prev[hit[0] + ',' + hit[1]]; while (cur) { if (g[cur[1]][cur[0]] === G) g[cur[1]][cur[0]] = laneCh || LY.lane || ROAD; cur = prev[cur[0] + ',' + cur[1]]; } return true;
+    }
+    // 元の町とつなぐ道（2行）：東へ進んで地区の道まで
+    var NET = {}; for (y = 1; y < Hh - 1; y++) for (c = 1; c < ADD; c++) if (ROADS[g[y][L(c)]]) NET[L(c) + ',' + y] = 1;
+    [open, open + 1].forEach(function (r) { var c0 = L(0); if (g[r][c0] === G) g[r][c0] = ROAD; lane(c0, r, ROAD, NET); });
     var tid = id.replace(/[^a-z0-9]/g, '');
-    var tw = { id: 'x72_tower', type: 'watchtower', name: th.tower, x: L(14), y: 2, w: 6, h: 6, doorX: 2, interior: id + '_x72_tower', entry: { x: 5, y: 7 }, v72: true };
-    var hs = { id: 'x72_house', type: 'house', name: th.house, x: L(1), y: 2, w: 7, h: 5, doorX: 3, interior: id + '_x72_house', entry: { x: 5, y: 7 }, v72: true };
-    var hl = { id: 'x72_hall', type: th.hall[0], name: th.hall[1], x: L(1), y: yc + 4, w: 8, h: 5, doorX: 3, interior: id + '_x72_hall', entry: { x: 5, y: 7 }, v72: true };
-    var okT = lot(tw, 8, L(A0 + 1)), okH = lot(hs, 7, L(A0 - 1)), okL = (yc + 9 <= hEff - 2) && lot(hl, yc + 9, L(A0 - 1));
+    var LT = LY.lots || {};
+    var tw = { id: 'x72_tower', type: 'watchtower', name: th.tower, w: 6, h: 6, doorX: 2, interior: id + '_x72_tower', entry: { x: 5, y: 7 }, v72: true };
+    var hs = { id: 'x72_house', type: 'house', name: th.house, w: 7, h: 5, doorX: 3, interior: id + '_x72_house', entry: { x: 5, y: 7 }, v72: true };
+    var hl = { id: 'x72_hall', type: th.hall[0], name: th.hall[1], w: 8, h: 5, doorX: 3, interior: id + '_x72_hall', entry: { x: 5, y: 7 }, v72: true };
+    // 塔は必ず建てる：型の候補 → 地区のどこか（左上から）
+    var anyPos = function (w0, h0) { var out = []; for (var yy = 2; yy + h0 <= Hh - 3; yy++) for (var cc = 1; cc + w0 <= ADD - 1; cc++) { var q = [cc, yy]; q.raw = true; out.push(q); } return out; };
+    var okT = lot(tw, (LT.tower || []).concat(anyPos(6, 6))), okH = lot(hs, (LT.house || []).concat(anyPos(7, 5))), okL = lot(hl, LT.hall || []);
     // 大きな町は、さらに建物（空いている区画だけ）：花屋・仕立て屋・パン屋・古道具屋・画家のアトリエ・学者の家（2階つきもある）
     var EX = [
       { name: '花屋', sprite: 'villager_f', two: false, line: '花は、咲く時期を待つしかない。水をやりすぎても、早くは咲かないのよ。' },
@@ -170,23 +389,19 @@
       { name: '画家のアトリエ', sprite: 'scholar', two: true, line: '絵は、近くで描いて、遠くから見る。近くだけ見ていると、全体の形がゆがんでしまうんだ。' },
       { name: '学者の家', sprite: 'scholar', two: false, line: '同じ実験を何度もくり返して、同じ結果が出たときだけ、それを「分かった」と呼ぶのだよ。' }
     ];
-    var exLots = [[13, 10, 15], [1, 9, 14], [13, yc + 4, yc + 9], [1, yc + 12, yc + 17], [13, yc + 12, yc + 17], [1, yc + 20, yc + 25], [13, yc + 20, yc + 25]];
     var exOk = [];
-    if (hEff >= 30) exLots.forEach(function (q, i) {
-      if (exOk.length >= EX.length || q[2] > hEff - 2 || q[1] < 9) return; var ex = EX[(exOk.length + idx) % EX.length];
-      var bx = { id: 'x72_ex' + i, type: 'house', name: ex.name, x: L(q[0]), y: q[1], w: 7, h: 5, doorX: 3, interior: id + '_x72_ex' + i, entry: { x: 5, y: 7 }, v72: true };
-      if (lot(bx, q[2], q[0] < A0 ? L(A0 - 1) : L(A0 + 1))) exOk.push([bx, ex]);
+    if (Hh >= 30) (LT.ex || []).forEach(function (q) {
+      if (exOk.length >= EX.length) return; var k = exOk.length; var ex = EX[(k + idx) % EX.length];
+      var bx = { id: 'x72_ex' + k, type: 'house', name: ex.name, w: 7, h: 5, doorX: 3, interior: id + '_x72_ex' + k, entry: { x: 5, y: 7 }, v72: true };
+      if (lot(bx, [q])) exOk.push([bx, ex]);
     });
-    // 東南の庭（花壇・木・井戸・露店）
+    // 飾り（型ごと）→ 木と花（村・森は木、町なかは小さな木と花壇。道・建物のそばは避ける）
+    if (LY.decor) LY.decor();
     var RURAL = { forest: 1, ruins: 1, frost: 1, sky: 1, dark: 1, harbor: 1, mine: 1, desert: 1 };
-    for (y = yc + 4; y <= hEff - 3; y++) for (c = 13; c <= 20; c++) { if (g[y][L(c)] !== G) continue; var hh = ((c * 7 + y * 13) % 11); if (hh === 0) set(L(c), y, RURAL[key] ? 'f' : '6'); else if ((hh === 3 || hh === 6) && c > 13) set(L(c), y, 'a'); }
-    if (yc + 6 < hEff - 2 && g[yc + 6][L(16)] === G) { set(L(16), yc + 6, 'j'); }
-    // 大通り沿いの街灯・露店・樽・木箱
-    for (y = 3; y < hEff - 3; y += 6) { if (g[y][L(A0 - 1)] === G) set(L(A0 - 1), y, 'y'); if (g[y + 3] && g[y + 3][L(A0 + 2)] === G) set(L(A0 + 2), y + 3, 'y'); }
-    [[A0 - 2, yc - 4], [A0 - 2, yc + 4]].forEach(function (p) { if (g[p[1]] && g[p[1]][L(p[0])] === G) set(L(p[0]), p[1], 'A'); });
-    [[8, 2], [9, 2], [20, 9], [20, 10]].forEach(function (p) { if (g[p[1]] && g[p[1]][L(p[0])] === G) set(L(p[0]), p[1], (p[0] + p[1]) % 2 ? 'q' : 'z'); });
-    // 木（外周の内側。道・建物のそばは避ける）
-    for (y = 1; y < hEff - 1; y++) for (c = 1; c < ADD - 1; c++) { if (g[y][L(c)] !== G) continue; var near = false; for (var dy = -1; dy <= 1 && !near; dy++) for (var dx2 = -1; dx2 <= 1 && !near; dx2++) { var ch2 = g[y + dy] && g[y + dy][L(c) + dx2]; if (ch2 === ROAD || ch2 === 'P' || ch2 === '_') near = true; } if (near) continue; var hz = (c * 5 + y * 3) % 23; if (RURAL[key]) { if (hz % 3 === 0) set(L(c), y, 'f'); } else if (hz === 0) set(L(c), y, '6'); else if (hz === 7 || hz === 15) set(L(c), y, 'a'); }   // 町なかは小さな木と花壇、村・森は木
+    var dens = LY.trees === undefined ? 1 : LY.trees;
+    for (y = 1; y < Hh - 1; y++) for (c = 1; c < ADD - 1; c++) { if (g[y][L(c)] !== G) continue; var near = false; for (var dy = -1; dy <= 1 && !near; dy++) for (var dx2 = -1; dx2 <= 1 && !near; dx2++) { var ch2 = g[y + dy] && g[y + dy][L(c) + dx2]; if (ROADS[ch2] || ch2 === '_' || ch2 === 'D') near = true; } if (near) continue; var hz = (c * 5 + y * 3 + idx * 7) % 23; if (dens <= 0) continue; if (RURAL[key]) { if (hz % Math.max(2, Math.round(3 / dens)) === 0) set(L(c), y, LY.tree || 'f'); } else if (hz === 0 || (dens > 1 && hz === 11)) set(L(c), y, LY.tree || '6'); else if (hz === 7 || hz === 15) set(L(c), y, 'a'); }
+    if (LY.ground) { var gch = LY.ground; for (y = 1; y < Hh - 1; y++) for (c = 0; c < ADD - 1; c++) if (g[y][L(c)] === G && (gch !== '8' || (c * 3 + y * 5 + idx) % 4 < 2)) set(L(c), y, gch); }   // 地面の模様（砂・雪・灰。歩けるものだけ）
+    var SP = LY.spots || {}; var sp = function (k, dc, dy0) { var q = SP[k] || [Math.floor(ADD / 2) + dc, yc + dy0]; return { x: L(mx(q[0])), y: q[1] }; };
     d.rows = g.map(function (r) { return r.join(''); });
     // 出口（リヴェル：東の出口を新しい地区の東の端へ）
     if (opt.moveEastExits) {
@@ -198,12 +413,16 @@
     // 人
     var o = { town: d.name, dist: th.dist, tower: th.tower, sight: th.sight, house: th.house, craft: th.craft, stall: th.stall, hall: th.hall[1] };
     var np = [
-      { id: tid + '_x72_kid', x: L(A0 - 2), y: yc + 1, sprite: 'child', dir: 'right', wander: 1, talk: say('子ども', [fmt('{dist}の{tower}、てっぺんまで登ったことある？　{town}がぜんぶ見えるんだよ！', o), '下から見ると大きな建物も、上から見ると小さな四角なんだって。']) },
-      { id: tid + '_x72_vendor', x: L(A0 - 2), y: yc - 3, sprite: 'merchant', dir: 'down', wander: 0, talk: say('露店の主人', [fmt('{stall}はいかが。……と言いたいところだけど、今日は品出しの日でね。', o), '値段は毎日ちがう。きのうの値段だけ見て決めると、たいてい損をするのさ。']) },
-      { id: tid + '_x72_elder', x: L(A0 + 3), y: yc + 1, sprite: 'elder', dir: 'left', wander: 0, talk: say('町の古老', [fmt('この{dist}も、昔はただの空き地だった。少しずつ家が建って、今の形になった。', o), '町も相場も、一日では変わらん。けれど一年たてば、見ちがえるほど変わる。']) }
+      { id: tid + '_x72_kid', x: sp('kid', -3, 1).x, y: sp('kid', -3, 1).y, sprite: 'child', dir: 'right', wander: 1, talk: say('子ども', [fmt('{dist}の{tower}、てっぺんまで登ったことある？　{town}がぜんぶ見えるんだよ！', o), '下から見ると大きな建物も、上から見ると小さな四角なんだって。']) },
+      { id: tid + '_x72_vendor', x: sp('vendor', 3, -2).x, y: sp('vendor', 3, -2).y, sprite: 'merchant', dir: 'down', wander: 0, talk: say('露店の主人', [fmt('{stall}はいかが。……と言いたいところだけど、今日は品出しの日でね。', o), '値段は毎日ちがう。きのうの値段だけ見て決めると、たいてい損をするのさ。']) },
+      { id: tid + '_x72_elder', x: sp('elder', 3, 2).x, y: sp('elder', 3, 2).y, sprite: 'elder', dir: 'left', wander: 0, talk: say('町の古老', [fmt('この{dist}も、昔はただの空き地だった。少しずつ家が建って、今の形になった。', o), '町も相場も、一日では変わらん。けれど一年たてば、見ちがえるほど変わる。']) }
     ];
-    np.forEach(function (n) { n.v72 = true; }); d.npcs = (d.npcs || []).concat(np.filter(function (n) { return !solidCh(d, d.rows[n.y][n.x]); }));
-    d.events = (d.events || []).concat([{ x: L(A0 - 1), y: yc, type: 'inspect', solid: false, v72: true, text: [fmt('【{dist}】', o), fmt('{town}の東に新しくできた地区。噴水の広場を中心に、{tower}・{house}・{hall}がある。', o)] }]);
+    // 立つ所が歩けない・建物の下・ほかの人と同じなら、近くの歩ける所へずらす
+    var taken = {}; var freeAt = function (x, y) { return y > 0 && y < Hh - 1 && x >= L(0) && x < NW - 1 && !lotSet[x + ',' + y] && !taken[x + ',' + y] && !solidCh(d, d.rows[y][x]) && '<>@D'.indexOf(d.rows[y][x]) < 0; };
+    var nudge = function (n) { for (var r = 0; r <= 3; r++) for (var dy3 = -r; dy3 <= r; dy3++) for (var dx3 = -r; dx3 <= r; dx3++) { if (Math.max(Math.abs(dx3), Math.abs(dy3)) !== r) continue; if (freeAt(n.x + dx3, n.y + dy3)) { n.x += dx3; n.y += dy3; taken[n.x + ',' + n.y] = 1; return true; } } return false; };
+    np.forEach(function (n) { n.v72 = true; }); d.npcs = (d.npcs || []).concat(np.filter(nudge));
+    var sg = sp('sign', -2, -1); nudge(sg);
+    d.events = (d.events || []).concat([{ x: sg.x, y: sg.y, type: 'inspect', solid: false, v72: true, text: [fmt('【{dist}】', o), fmt('{town}の東に新しくできた地区。' + (STYLE_NAME[st] || '広場') + 'のまわりに、{tower}・{house}' + (okL ? '・{hall}' : '') + 'がある。', o)] }]);
     // 屋内
     var tr = tier(idx); var fl = th.fl;
     if (okT) {
@@ -235,7 +454,7 @@
       if (ex.two) add({ id: bx.interior + '_2f', name: ex.name + ' 2階', rows: room(fl, R.house2), kind: 'interior', bgm: 'town', warps: [{ x: 10, y: 1, to: bx.interior, tx: 9, ty: 1, name: '1階へ' }],
         events: [{ x: 8, y: 3, type: 'inspect', solid: true, text: [ex.name + 'の2階の本棚。', '仕事の記録が、日付の順にきちんと並んでいる。'] }] });
     });
-    X.towns[id] = { oldW: W, w: NW, open: open, carve: carve, extra: exOk.length, tower: okT, house: okH, hall: okL, theme: key };
+    X.towns[id] = { oldW: W, w: NW, open: open, carve: carve, extra: exOk.length, tower: okT, house: okH, hall: okL, theme: key, style: st, mirror: MIR };
     return X.towns[id];
   }
 

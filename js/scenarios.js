@@ -375,6 +375,7 @@
 
   /* ---------- シナリオ構築（検証つき） ---------- */
   var cache = {};
+  var recent = [], RECENT_MAX = 12;   // v7.3
 
   function statesFor(base, future, cfg) {
     var st = {};
@@ -423,6 +424,8 @@
       result = fallback;
     }
     cache[key] = result;
+    // v7.3: 別シード（offset 1 以上）は戦闘のチャートでも使うようになったので、覚えておく数に上限（1つ約 8MB。古い順に忘れる。同じシードなら作り直しても同じチャート）
+    if (seedOffset) { recent.push(key); while (recent.length > RECENT_MAX) { var old = recent.shift(); if (recent.indexOf(old) < 0) delete cache[old]; } }
     return result;
   }
 

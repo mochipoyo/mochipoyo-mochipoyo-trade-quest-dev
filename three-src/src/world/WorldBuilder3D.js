@@ -32,7 +32,7 @@ const PROP = {
   barrel: 'barrel', crate: 'crate', bench: 'bench', well: 'well', flowerbed: 'flowerbed', crops: 'crops', sign: 'sign', fence: 'fence', bush: 'bush_a',
   lamp: 'lamppost', torch: 'torch', fountain: 'fountain', stall: 'stall', stalactite: 'stalagmite', ore: 'ore', log: 'log', root: 'root', lever: 'lever',
   gate: 'gate', stairs_down: 'stairs_down', stairs_up: 'stairs_up', learn_rune: 'learn_rune', boss_mark: 'boss_mark', door_locked: 'door_locked', warp: 'warp',
-  bookshelf: 'furn_bookshelf', table: 'furn_table', counter: 'furn_counter', bed: 'furn_bed', pillar: 'furn_pillar', crystal: 'furn_crystal'
+  /* bookshelf：v7.3 から Furniture73（本が並ぶ形）で作る */ table: 'furn_table', counter: 'furn_counter', bed: 'furn_bed', pillar: 'furn_pillar', crystal: 'furn_crystal'
 };
 
 export class WorldBuilder3D {

@@ -16,6 +16,8 @@ import { mapCoverage } from './coverage.js';
 import { buildArtVolume } from '../battle/ArtVolume.js';
 import { readable } from '../battle/readable.js';
 import { Character3D, DIR_YAW } from '../entities/Character3D.js';
+import { Animal3D, isAnimalSprite } from '../entities/Animal3D.js';
+import { buildFurniture73 } from './Furniture73.js';
 import { characterModelFor, fieldModelFor } from '../assets/manifest.js';
 import { Batch, box, M4, softTexture, textTexture } from '../engine/Materials.js';
 
@@ -93,10 +95,16 @@ export class MapScene3D {
     }
     // v6.1 調べる共通システムの探索ポイント（光る場所・壺・机など）。データは2D版と同じ Search
     this.addSearchPoints(map);
+    // v7.3 本棚（本が並ぶ）・台所・トイレ（形から作る。js/core/tiles.js の stove / sink / cupboard / toilet）
+    try { const fg = buildFurniture73(map, this.heightAt); if (fg) { this.root.add(fg); this.furniture = fg.userData.stats; } } catch (e) { console.warn('furniture73', e); }
     // NPC
     for (const n of map.npcs) {
-      const model = fieldModelFor(n.actorArt) || fieldModelFor(n.id) || characterModelFor(n.sprite);
+      const model = fieldModelFor(n.actorArt) || fieldModelFor(n.id) || characterModelFor(n.model3d || n.sprite);   // v7.3 model3d：個性的な町の人（2D は専用の色・3D は共通のモデル）
       const cr = n.creature3d;   // v6.9 魔物の姿の NPC（襲撃の夜の黒い影など）：モンスターの型＋色
+      if (isAnimalSprite(n.sprite)) {   // v7.3 町の動物（形から作る立体。Animal3D）
+        const an = Animal3D.create(n.sprite); if (!an) continue; an.npc = n; this.root.add(an.root); this.npcs.push(an);
+        an.yaw = an.wantYaw = DIR_YAW[n.dir] || 0; this.placeNpc(an, 0, true); this.animals = (this.animals || 0) + 1; continue;
+      }
       const ch = cr ? (await Character3D.create(app.models, cr.model, { color: cr.color, accent: cr.accent, scale: cr.scale }) || await Character3D.create(app.models, model)) : await Character3D.create(app.models, model);
       if (!ch) continue; ch.npc = n; this.root.add(ch.root); this.npcs.push(ch);
       ch.yaw = ch.wantYaw = DIR_YAW[n.dir] || 0;

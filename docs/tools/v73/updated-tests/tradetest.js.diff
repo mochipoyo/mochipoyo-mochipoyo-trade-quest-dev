@@ -1,0 +1,13 @@
+--- tradetest.js.bak71	2026-11-04 09:57:07.076185595 +0900
++++ tradetest.js	2026-11-04 09:57:13.129203201 +0900
+@@ -24,8 +24,8 @@
+   // 解説文が実際の状態を含む
+   ok(ev.summary.indexOf('4時間足は')===0,'summary '+id);
+ });
+-// 練習用の別シード（0..5）でもすべての場面が check() を通る
+-let inv=0; Sc.ids().forEach(id=>{ for(let o=0;o<6;o++) if(!Sc.build(id,o).valid) inv++; }); ok(inv===0,'invalid builds across seed offsets: '+inv); console.log('scenarios', Sc.ids().length, 'basic', Sc.byLevel('basic').length, 'mid', Sc.byLevel('mid').length, 'adv', Sc.byLevel('adv').length, 'invalid', inv);
++// 練習用の別シード（v7.3 から 0..9。SCENARIO_SEEDS の数）でもすべての場面が check() を通る
++let inv=0, nb=0; Sc.ids().forEach(id=>{ const n=((w.SCENARIO_SEEDS||{})[id]||[]).length||6; for(let o=0;o<n;o++){ nb++; if(!Sc.build(id,o).valid) inv++; } }); console.log('seed builds', nb); ok(inv===0,'invalid builds across seed offsets: '+inv); console.log('scenarios', Sc.ids().length, 'basic', Sc.byLevel('basic').length, 'mid', Sc.byLevel('mid').length, 'adv', Sc.byLevel('adv').length, 'invalid', inv);
+ // 分野別記録と二重加算なし
+ const scn=Sc.build('clear_up',0); const t=TE.truth(scn); const sug=TE.suggestLevels(scn,'buy');
+ const d=State.data; const before=d.trade.stats.scoreCount;

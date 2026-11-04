@@ -124,7 +124,21 @@
   def('counter', { ch: 'T', solid: true, paint: function (g) { g.fill('#a8743f'); g.rect(0, 0, 16, 5, '#c9a06a'); g.hline(0, 5, 16, '#7a5027'); g.rect(0, 6, 16, 10, '#8a5a30'); g.rect(2, 8, 5, 6, '#7a4e26'); g.rect(9, 8, 5, 6, '#7a4e26'); g.px(4, 11, '#e8c15a'); g.px(11, 11, '#e8c15a'); } });
   def('table', { ch: 't', solid: true, paint: function (g) { g.fill('#a8743f'); g.rect(2, 3, 12, 6, '#c9a06a'); g.hline(2, 9, 12, '#7a5027'); g.rect(3, 10, 2, 5, '#7a4e26'); g.rect(11, 10, 2, 5, '#7a4e26'); g.rect(6, 4, 3, 3, '#f0f0f8'); g.px(7, 5, '#d8402a'); } });
   def('bed', { ch: 'E', solid: true, paint: function (g) { g.fill('#a8743f'); g.rect(1, 0, 14, 16, '#7a4e26'); g.rect(2, 1, 12, 4, '#f0f0f8'); g.rect(3, 2, 10, 2, '#ffffff'); g.rect(2, 5, 12, 10, '#c94a4a'); g.rect(2, 5, 12, 1, '#a83a3a'); g.hline(3, 9, 10, '#a83a3a'); g.hline(3, 12, 10, '#a83a3a'); } });
-  def('bookshelf', { ch: 'K', solid: true, paint: function (g) { g.fill('#6a4420'); g.rect(1, 1, 14, 14, '#8a5a30'); var cols = ['#c94a4a', '#3f6fc9', '#3f9a6a', '#e8c15a', '#8a5ad0', '#f0f0f8']; for (var r = 0; r < 3; r++) { g.hline(1, 1 + r * 5, 14, '#5a3a1a'); for (var i = 0; i < 6; i++) g.rect(2 + i * 2, 2 + r * 5, 2, 3, cols[(i + r) % 6]); } g.hline(1, 15, 14, '#3a2210'); } });
+  // v7.3 本棚：背表紙が見えるように（3段・色と高さのちがう本・ところどころ傾いた本）
+  def('bookshelf', { ch: 'K', solid: true, paint: function (g) {
+    g.fill('#4a2c14'); g.rect(0, 0, 16, 16, '#6a4420'); g.rect(1, 1, 14, 14, '#2a180a');
+    var cols = ['#c94a4a', '#3f6fc9', '#3f9a6a', '#e8c15a', '#8a5ad0', '#e8e4d8', '#d07a3a', '#2a8a9a'];
+    for (var r = 0; r < 3; r++) {
+      var top = 1 + r * 5; g.hline(1, top + 4, 14, '#8a5a30'); var x = 1;
+      for (var i = 0; x < 15; i++) { var w = (i + r) % 3 === 0 ? 2 : 1; var h = 2 + ((i * 7 + r * 3) % 3); var c = cols[(i * 3 + r * 5) % cols.length]; if (x + w > 15) w = 15 - x; g.rect(x, top + 4 - h, w, h, c); if (h >= 3) g.px(x, top + 4 - h + 1, '#f8f0d8'); x += w; if (i % 4 === 3) x++; }
+    }
+    g.hline(0, 15, 16, '#3a2210');
+  } });
+  // v7.3 台所とトイレ（家の中）
+  def('stove', { ch: '^', solid: true, paint: function (g) { g.fill('#a8743f'); g.rect(1, 2, 14, 13, '#3a3a40'); g.rect(1, 2, 14, 2, '#5a5a62'); g.rect(3, 7, 10, 6, '#1a1a1e'); g.rect(4, 9, 8, 3, '#e8602a'); g.px(6, 8, '#ffd040'); g.px(9, 8, '#ffd040'); g.rect(4, 0, 4, 3, '#8a8a92'); g.rect(9, 0, 4, 3, '#b0703a'); g.px(10, 0, '#e8e8f0'); } });
+  def('sink', { ch: ']', solid: true, paint: function (g) { g.fill('#a8743f'); g.rect(0, 3, 16, 12, '#d8d4c8'); g.rect(0, 3, 16, 2, '#f0ece0'); g.rect(3, 6, 10, 6, '#9ab0c0'); g.rect(4, 7, 8, 4, '#c8e0f0'); g.rect(7, 1, 2, 5, '#9a9aa8'); g.px(8, 6, '#6ab0f0'); g.rect(1, 13, 14, 2, '#8a8478'); } });
+  def('cupboard', { ch: '{', solid: true, paint: function (g) { g.fill('#a8743f'); g.rect(1, 0, 14, 16, '#8a5a30'); g.hline(1, 5, 14, '#5a3a1a'); g.hline(1, 10, 14, '#5a3a1a'); for (var i = 0; i < 4; i++) { g.rect(2 + i * 3, 2, 2, 3, '#f0f0f8'); g.rect(2 + i * 3, 7, 2, 3, i % 2 ? '#e8c15a' : '#c94a4a'); } g.rect(2, 11, 5, 4, '#6a4420'); g.rect(9, 11, 5, 4, '#6a4420'); g.px(6, 13, '#e8c15a'); g.px(10, 13, '#e8c15a'); } });
+  def('toilet', { ch: '[', solid: true, paint: function (g) { g.fill('#c8c8d0'); for (var y = 0; y < 16; y += 4) g.hline(0, y, 16, '#b0b0bc'); for (var x = 0; x < 16; x += 4) g.rect(x, 0, 1, 16, '#b0b0bc'); g.rect(4, 1, 8, 5, '#f4f4f8'); g.rect(5, 2, 6, 1, '#dcdce4'); g.rect(4, 6, 8, 2, '#e8e8f0'); g.rect(3, 8, 10, 6, '#f8f8fc'); g.rect(5, 9, 6, 4, '#c8e0f0'); g.px(11, 2, '#a0a0b0'); } });
   def('pillar', { ch: 'I', solid: true, paint: function (g) { g.fill('#8a8aa0'); g.rect(4, 0, 8, 16, '#c0c0d0'); g.vline(4, 0, 16, '#e0e0ec'); g.vline(10, 0, 16, '#8a8a9a'); g.rect(3, 0, 10, 2, '#d0d0e0'); g.rect(3, 14, 10, 2, '#a0a0b0'); } });
   def('fountain', { ch: 'Q', solid: true, anim: true, paint: function (g, v, f) { g.fill('#9a9aa8'); g.disc(8, 8, 7, '#b0b0c0'); g.disc(8, 8, 5, '#3f8ad8'); g.disc(8, 8, 2, '#9fd4ff'); g.px(8 - f, 6, '#d8f0ff'); g.px(9 + f, 9, '#d8f0ff'); g.px(6, 10 + f, '#d8f0ff'); g.rect(7, 2 + f, 2, 3, '#d8f0ff'); } });
   def('torch', { ch: 'i', solid: true, anim: true, paint: function (g, v, f) { g.fill('#3d3d4a'); g.speckle(8, ['#2e2e3a', '#4a4a58']); g.rect(7, 8, 2, 7, '#5a3a1a'); g.rect(6, 7, 4, 2, '#8a5a2a'); g.disc(8, 5 - f, 2, '#ff8a2a'); g.disc(8, 4 - f, 1, '#ffd24a'); g.px(8, 2 - f, '#ffe08a'); } });

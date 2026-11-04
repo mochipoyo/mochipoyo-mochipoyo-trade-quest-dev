@@ -24,11 +24,23 @@
   // scenarios: 出題候補のID配列。opts: {title, practice, minScore, tutorial, scenarioId}
   // 流れ：①チャートを見て5つの分析（上位足・波形・EMA・RCI・MACD）→ ②買い/売り/見送り → ③理由 → ④注文設定（トレード時）→ ⑤結果（判断過程ごとの採点）
   // 正解は回答前に一切表示しない。ヒントは段階式（考え方 → 場面のヒント → 数値表示）で、使うと記録に残る
+  // v7.3 検証済みのシードの数（js/data/scenario-seeds.js。v7.3 で 6 → 10）
+  function seedCount(id) { var a = root.SCENARIO_SEEDS && root.SCENARIO_SEEDS[id]; return a && a.length ? a.length : 6; }
+  TradeUI.seedCount = seedCount;
+  // v7.3 戦闘の「相場の試練」の場面を選ぶ：シナリオ × シード（オフセット）の組み合わせから、最近出た12の場面を避けて選ぶ（セーブの counters.trialRecent）
+  TradeUI.pickTrial = function (ids, rnd) {
+    rnd = rnd || Math.random; var d = root.State && root.State.data; var c = d ? (d.counters = d.counters || {}) : {}; var recent = Array.isArray(c.trialRecent) ? c.trialRecent : [];
+    var all = []; (ids || []).forEach(function (id) { for (var o = 0; o < seedCount(id); o++) all.push({ id: id, offset: o, key: id + ':' + o }); });
+    if (!all.length) return null; var cand = all.filter(function (x) { return recent.indexOf(x.key) < 0; }); if (!cand.length) cand = all;
+    var pk = cand[Math.floor(rnd() * cand.length)]; recent.push(pk.key); while (recent.length > 12) recent.shift(); c.trialRecent = recent; return pk;
+  };
   TradeUI.trial = function (scenarioIds, opts) {
     opts = opts || {};
     var d = State.data;
-    var id = opts.scenarioId || scenarioIds[Math.floor(Math.random() * scenarioIds.length)];
-    var seedOffset = opts.seedOffset !== undefined ? opts.seedOffset : (opts.practice ? Math.floor(Math.random() * 6) : 0);   // v5.3: 学習イベント側から別シードを指定できる
+    // v7.3 opts.vary（クエスト・マップの試練）：場面を選ぶときに、シナリオ × シードから最近出たものを避けて選ぶ（pickTrial）
+    var pk0 = (opts.vary && opts.seedOffset === undefined && !opts.scenarioId && !opts.tutorial) ? TradeUI.pickTrial(scenarioIds) : null;
+    var id = opts.scenarioId || (pk0 ? pk0.id : scenarioIds[Math.floor(Math.random() * scenarioIds.length)]);
+    var seedOffset = pk0 ? pk0.offset : opts.seedOffset !== undefined ? opts.seedOffset : (opts.practice ? Math.floor(Math.random() * seedCount(id)) : 0);   // v5.3: 学習イベント側から別シードを指定できる（v7.3 練習はシードの数（10）から選ぶ）
     var scn = Scenarios.build(id, seedOffset);
     var def = scn.def;
     var cur = { checkedHigherTF: false, hintLevel: 0, analysis: {}, reason: null, swing: { high: null, low: null }, pick: null };

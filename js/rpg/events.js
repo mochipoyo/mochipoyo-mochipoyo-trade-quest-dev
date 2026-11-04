@@ -60,7 +60,7 @@
       guild: function () { return root.Services.guild(); },
       bank: function () { return root.Services.bank(); },
       dojo: function (where) { return root.Services.dojo(where); },
-      trial: function (scenarios, opts) { return root.TradeUI.trial(scenarios, opts); },
+      trial: function (scenarios, opts) { return root.TradeUI.trial(scenarios, Object.assign({ vary: true }, opts || {})); },   // v7.3 クエストの試練も場面（シード）を変える
       battle: async function (ids, opts) { if (opts && opts.boss && root.BossSymbol) await root.BossSymbol.introIfShown(ids); return root.BattleUI.start(ids, opts); },   // v6.5 シンボルが見えているボスは導入の演出から
       warp: function (map, x, y) { World.enterMap(map, x, y, 'down'); },
       heal: function () { State.partyActors().forEach(root.Actors.fullHeal); World.updateHud(); },
@@ -111,7 +111,7 @@
           await Win.message(ev.text);
           var a = await Win.choice('試練に挑みますか？', ['挑む', 'やめておく']);
           if (a === 0) {
-            var res = await root.TradeUI.trial(ev.scenarios, { title: 'チャートの試練', minScore: ev.minScore || 60 });
+            var res = await root.TradeUI.trial(ev.scenarios, { title: 'チャートの試練', minScore: ev.minScore || 60, vary: true });   // v7.3 場面（シード）を変える
             if (!res) await Win.message(['試練を中断した。扉を調べれば、いつでも挑み直せる。']);   // v5.8
             else if (res.score >= (ev.minScore || 60)) { d.flags[ev.doneFlag] = true; World.applyState(World.map); if (root.Audio) root.Audio.sfx('door'); await Win.message(['扉がゆっくりと開いた！（評価 ' + res.score + '点）']); }
             else await Win.message(['扉は開かない……（評価 ' + (res ? res.score : 0) + '点。' + (ev.minScore || 60) + '点以上で開く）', 'ヒント：上位足を確認し、根拠が揃わない場面は見送ること。']);

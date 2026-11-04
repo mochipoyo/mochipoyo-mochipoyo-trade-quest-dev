@@ -441,6 +441,7 @@
     if (root.Audio) root.Audio.sfx('chest');
     var lines = [];
     if (chest.gold) { d.gold += chest.gold; lines.push(chest.gold + 'Gを手に入れた！'); }
+    if (root.Growth73) root.Growth73.bonusDrop(lines, 'chest');   // v7.3 ときどき能力の最大値を上げる道具も
     if (chest.item) { State.addItem(chest.item, chest.qty || 1); lines.push(ITEMS[chest.item].name + (chest.qty > 1 ? '×' + chest.qty : '') + 'を手に入れた！'); }
     // 盗賊がいると追加アイテム
     if (State.partyActors().some(function (a) { return a.job === 'thief' && !a.dead; }) && Math.random() < 0.35) { var extra = ['herb', 'potion', 'antidote', 'ether'][Math.floor(Math.random() * 4)]; State.addItem(extra, 1); lines.push('盗賊の目が宝箱の二重底を見抜いた！ ' + ITEMS[extra].name + 'を見つけた！'); }
@@ -467,12 +468,24 @@
       '<div class="hud-party">' + party.map(function (a) { var s = root.Actors.stats(a); var cls = a.dead ? 'dead' : (a.hp < s.maxHp * 0.3 ? 'low' : ''); return '<div class="hud-a ' + cls + '"><span>' + Win.esc(a.name) + '</span> <b>' + a.hp + '</b>/' + s.maxHp + ' <i>' + a.mp + '</i></div>'; }).join('') + '</div>';
   };
 
+  // v7.3 セーブの場所の部屋が無くなっているとき（v7.2 で足した新しい地区の店の一部は、v7.3 で地区の並びを変えて無くなった）：
+  //   その町の新しい地区の塔の前へ（町が分からなければ、最後に泊まった宿屋）。元の地図にある場所なら何もしない
+  World.fixLostMap = function (d) {
+    var pz = d && d.pos; if (!pz || !pz.map || pz.map === 'world' || root.MAP_DEFS[pz.map]) return false;
+    var mt = /^(.+?)_x72_/.exec(pz.map); var town = mt && root.MAP_DEFS[mt[1]] ? mt[1] : null;
+    var tw = town && (root.MAP_DEFS[town].buildings || []).filter(function (b) { return b.id === 'x72_tower'; })[0];
+    if (tw) d.pos = { map: town, x: tw.x + (tw.doorX || 0), y: tw.y + tw.h, dir: 'down' };
+    else if (d.lastInn && root.MAP_DEFS[d.lastInn.map]) d.pos = { map: d.lastInn.map, x: d.lastInn.x, y: d.lastInn.y, dir: 'down' };
+    else d.pos = { map: 'poyo_village', x: 24, y: 32, dir: 'up' };
+    return true;
+  };
   World.start = function () {
     var d = State.data;
     World.maps = {};
     World.makePlayer();
     World.scene = new ExploreScene();
     Engine.replace(World.scene);
+    World.fixLostMap(d);   // v7.3 無くなった部屋にいるセーブ
     if (root.MapRemake) root.MapRemake.migrate(d);   // v7.1 作り直したダンジョンにいる古いセーブ：いる場所・探索済みを新しい座標へ
     World.enterMap(d.pos.map, d.pos.x, d.pos.y, d.pos.dir, { raw: true });
   };

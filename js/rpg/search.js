@@ -89,6 +89,7 @@
     if (p.loot && p.loot.item && root.ITEMS[p.loot.item]) { var q = p.loot.qty || 1; State.addItem(p.loot.item, q); lines.push(root.ITEMS[p.loot.item].name + (q > 1 ? 'を' + q + 'つ' : '') + 'を手に入れた！'); if (root.Audio) root.Audio.sfx('chest'); }
     else if (p.loot && p.loot.gold) { d.gold += p.loot.gold; lines.push(p.loot.gold + 'G を見つけた！'); if (root.Audio) root.Audio.sfx('coin'); }
     else lines.push(p.kind === 'well' ? '冷たい水が見えるだけだ。' : p.kind === 'sparkle' ? '……気のせいだったようだ。' : '何も入っていなかった。');
+    if (p.kind === 'sparkle' && root.Growth73) root.Growth73.bonusDrop(lines, 'sparkle');   // v7.3 光っている所から、ときどき能力の最大値を上げる道具
     State.count('search_found'); if (W && W.updateHud) W.updateHud();
     await Win.message(lines); State.autosave();
     return true;

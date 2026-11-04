@@ -37,7 +37,7 @@
   /* ---------- トレードバトル ---------- */
   // 場面（シナリオ）とシードを決め、NPC の判断を「先に」作ってからプレイヤーの試練を開く（NPC は判断の時点までの足しか見ない）
   TradiaUI.prepare = function (id, rnd) {
-    rnd = rnd || Math.random; var t = T(id); var sid = t.pool[Math.floor(rnd() * t.pool.length)]; var seedOffset = Math.floor(rnd() * 6);
+    rnd = rnd || Math.random; var t = T(id); var sid = t.pool[Math.floor(rnd() * t.pool.length)]; var seedOffset = Math.floor(rnd() * ((root.SCENARIO_SEEDS && root.SCENARIO_SEEDS[sid] && root.SCENARIO_SEEDS[sid].length) || 6));   // v7.3 シードは10
     var scn = root.Scenarios.build(sid, seedOffset); var npc = root.TradeBattle.decide(id, scn);
     return { trader: id, scenarioId: sid, seedOffset: seedOffset, scn: scn, npcDecision: npc };
   };
