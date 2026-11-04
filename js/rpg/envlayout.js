@@ -47,10 +47,11 @@
   // ---------- 解析：守るマス・通れるか・つながり
   function analyze(m) {
     var W = m.w, H = m.h, T = root.Tiles; var A = { m: m, W: W, H: H };
-    var solidEv = {}; (m.events || []).forEach(function (e) { if (e && e.solid) solidEv[e.x + ',' + e.y] = 1; });
-    var npcAt = {}; (m.npcs || []).forEach(function (n) { npcAt[(n.ox !== undefined ? n.ox : n.x) + ',' + (n.oy !== undefined ? n.oy : n.y)] = 1; });
-    A.blockAt = function (x, y) { var k = x + ',' + y; return !!(solidEv[k] || npcAt[k] || BARRIER_T[m.tiles[y][x]]); };
-    A.walkOpen = function (x, y) { if (x < 0 || y < 0 || x >= W || y >= H) return false; var t = m.tiles[y][x]; if (T.isSolid(t) && !BARRIER_T[t]) return false; return !npcAt[x + ',' + y]; };   // 鍵の扉・関所・レバー・通れない出来事を「開いた」とき
+    var solidEv = new Uint8Array(W * H), npcAt = new Uint8Array(W * H); var inb = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H; };
+    (m.events || []).forEach(function (e) { if (e && e.solid && inb(e.x, e.y)) solidEv[e.y * W + e.x] = 1; });
+    (m.npcs || []).forEach(function (n) { var x = n.ox !== undefined ? n.ox : n.x, y = n.oy !== undefined ? n.oy : n.y; if (inb(x, y)) npcAt[y * W + x] = 1; });
+    A.blockAt = function (x, y) { var i = y * W + x; return !!(solidEv[i] || npcAt[i] || BARRIER_T[m.tiles[y][x]]); };
+    A.walkOpen = function (x, y) { if (x < 0 || y < 0 || x >= W || y >= H) return false; var t = m.tiles[y][x]; if (T.isSolid(t) && !BARRIER_T[t]) return false; return !npcAt[y * W + x]; };   // 鍵の扉・関所・レバー・通れない出来事を「開いた」とき
     A.walk = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H && !T.isSolid(m.tiles[y][x]) && !A.blockAt(x, y); };
     // 守るマス：動かさない物からの距離（チェビシェフ）。prot[i] = 距離（遠いほど大きい・最大9）
     var prot = new Uint8Array(W * H).fill(9);
@@ -70,10 +71,11 @@
   }
   function label(A) {
     var W = A.W, H = A.H, L = new Int32Array(W * H).fill(-1), n = 0, q = new Int32Array(W * H);
+    var G = new Uint8Array(W * H); for (var gy = 0; gy < H; gy++) for (var gx = 0; gx < W; gx++) G[gy * W + gx] = A.walk(gx, gy) ? 1 : 0;
     for (var s = 0; s < W * H; s++) {
-      if (L[s] >= 0) continue; var sx = s % W, sy = (s / W) | 0; if (!A.walk(sx, sy)) continue;
+      if (L[s] >= 0 || G[s] !== 1) continue;
       var h = 0, t = 0; q[t++] = s; L[s] = n;
-      while (h < t) { var c = q[h++], cx = c % W, cy = (c / W) | 0; for (var k = 0; k < 4; k++) { var nx = cx + N4[k][0], ny = cy + N4[k][1]; if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue; var ni = ny * W + nx; if (L[ni] < 0 && A.walk(nx, ny)) { L[ni] = n; q[t++] = ni; } } }
+      while (h < t) { var c = q[h++], cx = c % W, cy = (c / W) | 0; for (var k = 0; k < 4; k++) { var nx = cx + N4[k][0], ny = cy + N4[k][1]; if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue; var ni = ny * W + nx; if (L[ni] < 0 && G[ni] === 1) { L[ni] = n; q[t++] = ni; } } }
       n++;
     }
     return L;
@@ -84,10 +86,12 @@
   // 物（出入口・人・宝箱・出来事・調べる所・クイズの魔物）どうしの歩く道のり（閉じた／開いたの両方）。近道ができない・大回りにならない、を確かめる
   function pairDist(A, walkF) {   // A.srcIdx：道のりを測る起点（町は出入口だけ＝軽く。ダンジョンはすべての物）
     var W = A.W, H = A.H, N = W * H, an = A.anchors, out = []; var D = new Int32Array(N), q = new Int32Array(N); var src = A.srcIdx || an.map(function (_, i) { return i; });
-    var stand = an.map(function (a) { var s = []; if (walkF(a[0], a[1])) s.push(a[1] * W + a[0]); for (var k = 0; k < 4; k++) { var nx = a[0] + N4[k][0], ny = a[1] + N4[k][1]; if (walkF(nx, ny)) s.push(ny * W + nx); } return s; });
+    var G = new Uint8Array(N); for (var gy = 0; gy < H; gy++) for (var gx = 0; gx < W; gx++) G[gy * W + gx] = walkF(gx, gy) ? 1 : 0;   // 歩けるか（一度だけ調べる）
+    var gw = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H && G[y * W + x] === 1; };
+    var stand = an.map(function (a) { var s = []; if (gw(a[0], a[1])) s.push(a[1] * W + a[0]); for (var k = 0; k < 4; k++) { var nx = a[0] + N4[k][0], ny = a[1] + N4[k][1]; if (gw(nx, ny)) s.push(ny * W + nx); } return s; });
     for (var si = 0; si < src.length; si++) { var i = src[si];
       D.fill(-1); var h = 0, t = 0; stand[i].forEach(function (c) { if (D[c] < 0) { D[c] = 0; q[t++] = c; } });
-      while (h < t) { var c = q[h++], cx = c % W, cy = (c / W) | 0; for (var k = 0; k < 4; k++) { var nx = cx + N4[k][0], ny = cy + N4[k][1]; if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue; var ni = ny * W + nx; if (D[ni] >= 0 || !walkF(nx, ny)) continue; D[ni] = D[c] + 1; q[t++] = ni; } }
+      while (h < t) { var c = q[h++], cx = c % W, cy = (c / W) | 0; for (var k = 0; k < 4; k++) { var nx = cx + N4[k][0], ny = cy + N4[k][1]; if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue; var ni = ny * W + nx; if (D[ni] >= 0 || G[ni] !== 1) continue; D[ni] = D[c] + 1; q[t++] = ni; } }
       var row = []; for (var j = 0; j < an.length; j++) { var best = -1; stand[j].forEach(function (c) { if (D[c] >= 0 && (best < 0 || D[c] < best)) best = D[c]; }); row.push(best); } out.push(row);
     }
     return out;
@@ -131,6 +135,13 @@
     var why = invariantOk(A, B0);
     if (why) { ops.forEach(function (o, i) { m.tiles[o[1]][o[0]] = prev[i]; }); res.rejected++; res.why[why.split(' ')[0]] = (res.why[why.split(' ')[0]] || 0) + 1; return false; }
     ops.forEach(function (o, i) { res.changed.push([o[0], o[1], prev[i], o[2]]); }); return true;
+  }
+  // まとめて試す：全部を一度に試し、だめなら半分ずつに分けて試す（1つずつ試すより確認の回数がずっと少ない。採るものは、その時の地図で決まりを守るものだけ）
+  function tryGroups(A, B0, groups, res) {
+    if (!groups.length) return 0; var all = []; groups.forEach(function (g) { all = all.concat(g); });
+    var r0 = res.rejected; if (tryOps(A, B0, all, res)) return groups.length; res.rejected = r0;
+    if (groups.length === 1) { res.rejected++; return 0; }
+    var h = groups.length >> 1; return tryGroups(A, B0, groups.slice(0, h), res) + tryGroups(A, B0, groups.slice(h), res);
   }
   function bfsPath(A, sx, sy, goal) {   // goal(x,y)→true のマスまでの最短の道（歩けるマスだけ）
     var W = A.W, H = A.H, prev = new Int32Array(W * H).fill(-2), q = [sy * W + sx], qh = 0; prev[sy * W + sx] = -1;
@@ -192,26 +203,26 @@
         if (tryOps(A, B0, ops, res)) { res.landmark = { kind: LM.kind, x: best[0], y: best[1], w: LM.w, h: LM.h, tile: tile }; for (var ky = best[1] - 2; ky < best[1] + LM.h + 2; ky++) for (var kx = best[0] - 2; kx < best[0] + LM.w + 2; kx++) if (kx >= 0 && ky >= 0 && kx < W && ky < H) keep[ky * W + kx] = 1; } }
     }
     // 並木：大通りの縁（大通りのとなりの空き地）に3マスおき
-    var trees = 0; for (var y = 1; y < H - 1; y++) for (var x = 1; x < W - 1; x++) {
+    var treeOps = []; for (var y = 1; y < H - 1; y++) for (var x = 1; x < W - 1; x++) {
       var i2 = y * W + x; if (keep[i2] || A.prot[i2] < 2 || !TOWN_PLAIN[t[y][x]] || !A.walk(x, y)) continue;
       var adjMain = N4.some(function (d) { return band[(y + d[1]) * W + x + d[0]] === 1; }); if (!adjMain) continue;
-      if ((x + y + seed) % 3 !== 0) continue; if (tryOps(A, B0, [[x, y, F[0]]], res)) trees++;
+      if ((x + y + seed) % 3 !== 0) continue; treeOps.push([[x, y, F[0]]]);
     }
-    res.avenue = trees;
+    res.avenue = tryGroups(A, B0, treeOps, res);
     // 花壇・生け垣：大通り・小道・広場の外の広い空き地の内側（まわり8マスが空き地のマス）に、模様で置く。歩ける縁は残る
     var plots = 0; var free = function (x, y) { var i = y * W + x; return x > 2 && y > 2 && x < W - 3 && y < H - 3 && !keep[i] && A.prot[i] >= 2 && TOWN_PLAIN[t[y][x]] && A.walk(x, y); };
     // 2×2 の区画（花壇・生け垣・荷）：区画の4マスが空き地で、まわりの1マスの輪が歩けるときだけ。区画どうしは2マス以上あける
     var used = new Uint8Array(W * H); var budget = 0; for (var yb = 3; yb < H - 3; yb++) for (var xb = 3; xb < W - 3; xb++) if (free(xb, yb)) budget++;
-    var cap = Math.floor(budget * 0.3);
+    var cap = Math.floor(budget * 0.3); var plotGroups = [];
     for (var y2 = 3; y2 < H - 4 && plots < cap; y2++) for (var x2 = 3; x2 < W - 4 && plots < cap; x2++) {
       if ((x2 + seed) % 2 || (y2 + seed) % 2) continue; var blk = [[x2, y2], [x2 + 1, y2], [x2, y2 + 1], [x2 + 1, y2 + 1]];
       if (!blk.every(function (b) { return free(b[0], b[1]); })) continue;
       var ringOk = true, nearUsed = false; for (var ry = y2 - 2; ry <= y2 + 3; ry++) for (var rx = x2 - 2; rx <= x2 + 3; rx++) { var inner = rx >= x2 && rx <= x2 + 1 && ry >= y2 && ry <= y2 + 1; if (inner) continue; var ring = rx >= x2 - 1 && rx <= x2 + 2 && ry >= y2 - 1 && ry <= y2 + 2; if (ring && !A.walk(rx, ry)) ringOk = false; if (used[ry * W + rx]) nearUsed = true; }
       if (!ringOk || nearUsed || hash(x2, y2, seed) < 0.35) continue;
       var ops = blk.map(function (b, k) { return [b[0], b[1], k === 0 && hash(x2, y2, seed + 1) < 0.5 ? F[1] : F[2]]; });
-      if (tryOps(A, B0, ops, res)) { plots += 4; blk.forEach(function (b) { used[b[1] * W + b[0]] = 1; }); }
+      plotGroups.push(ops); plots += 4; blk.forEach(function (b) { used[b[1] * W + b[0]] = 1; });   // 候補（区画どうしの間あけは、候補のうちに決める）
     }
-    res.plots = plots;
+    res.plots = tryGroups(A, B0, plotGroups, res) * 4;
   }
 
   // ---------- ダンジョン：入口の見通し → 狭まる通路 → 主要な空間 → 見せ場
@@ -287,6 +298,9 @@
     if (m.kind !== 'town' && m.kind !== 'dungeon') return null;
     if (SKIP[m.id]) return skip('専用レシピ'); if (d.noLayout) return skip('noLayout'); if (d.s3121) return skip('s3121'); if (d.onStep) return skip('onStep'); if (typeof d.rows === 'function') return skip('rows関数');
     for (var y = 0; y < m.h; y++) for (var x = 0; x < m.w; x++) { var tt = m.tiles[y][x]; if (/ice/.test(tt)) return skip('氷'); }   // 落とし穴は、まわり2マスを守るマスにして扱う
+    // 同じ地図（タイル・物の位置・着く所が同じ）は、前に決めた変更をそのまま当てる（このページの中だけの覚え。決め方は毎回同じなので結果も同じ）
+    var sig = signature(m); var memo = MEMO[m.id];
+    if (memo && memo.sig === sig) { memo.res.changed.forEach(function (c) { m.tiles[c[1]][c[0]] = c[3]; }); m.envLayout = memo.res; return memo.res; }
     // 近道・大回りの確認の起点：ダンジョンはすべての物どうし、町は出入口（ワープ）から各物まで
     var A = analyze(m), B0 = snapshot(A);
     if (m.kind === 'town') A.srcIdx = A.anchors.map(function (a, i) { return a[2] === 'warp' ? i : -1; }).filter(function (i) { return i >= 0; });
@@ -296,8 +310,19 @@
     catch (e) { res.changed.forEach(function (c) { m.tiles[c[1]][c[0]] = c[2]; }); res.changed = []; res.error = String(e && e.message || e); }
     var fin = invariantOk(A, B0); if (fin) { res.changed.slice().reverse().forEach(function (c) { m.tiles[c[1]][c[0]] = c[2]; }); res.error = '最後の確認で NG（' + fin + '）。元に戻した'; res.changed = []; }
     m.envLayout = res; EL.stats[m.id] = { changed: res.changed.length, rejected: res.rejected, error: res.error || null };
+    MEMO[m.id] = { sig: sig, res: res };
     return res;
   };
+  var MEMO = {}; EL.clearMemo = function () { MEMO = {}; };
+  function signature(m) {   // タイル全部・物の位置・着く所・版（短い数に）
+    var parts = [EL.VERSION, m.w, m.h, m.tiles.map(function (r) { return r.join(','); }).join(';')];
+    (m.warps || []).forEach(function (w) { parts.push('w' + w.x + ',' + w.y); }); (m.events || []).forEach(function (e) { parts.push('e' + e.x + ',' + e.y + (e.solid ? 's' : '')); });
+    (m.chests || []).forEach(function (c) { parts.push('c' + c.x + ',' + c.y); }); (m.npcs || []).forEach(function (n) { parts.push('n' + (n.ox !== undefined ? n.ox : n.x) + ',' + (n.oy !== undefined ? n.oy : n.y) + ',' + (n.wander || 0)); });
+    (m.buildings || []).forEach(function (b) { if (b.doorAbs) parts.push('b' + b.doorAbs.x + ',' + b.doorAbs.y); });
+    arrivals(m.id).forEach(function (a) { parts.push('a' + a[0] + ',' + a[1]); });
+    var str = parts.join('|'), h1 = 5381, h2 = 52711; for (var i = 0; i < str.length; i++) { var ch = str.charCodeAt(i); h1 = (h1 * 33) ^ ch; h2 = (h2 * 33) ^ ch; h1 |= 0; h2 |= 0; }
+    return (h1 >>> 0).toString(36) + (h2 >>> 0).toString(36) + ':' + str.length;
+  }
   // セーブを読むとき：新しい間取りで初めて読むセーブは、読む前にスロットを控えに残す（端末ごとに1回）。立ち位置が塞がっていれば World.enterMap が近くの通れるマスへ移す
   EL.beforeStart = function (d) {
     if (!EL.enabled || !d) return; if (d.layoutVer76) return;
