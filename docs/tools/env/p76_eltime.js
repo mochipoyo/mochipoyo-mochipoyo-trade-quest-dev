@@ -1,0 +1,5 @@
+// 間取りの作り直し（envlayout.js）の時間をブラウザで測る（GameMap を作る時間：作り直しなし／あり（初回）／あり（2回目＝前の結果））
+const { chromium } = require('playwright'); const PORT = process.env.PORT || 8772;
+(async () => { const br = await chromium.launch(); const p = await br.newPage(); await p.goto(`http://localhost:${PORT}/index.html`); await p.waitForFunction(() => window.GameMap && window.EnvLayout && window.MAP_DEFS, null, { timeout: 120000 });
+  const r = await p.evaluate(() => { State.newGame('t', 'warrior'); const out = []; for (const id of ['rivel_town', 'kalion_city', 'verum_town', 'harbor_town', 'iron_mine_2', 'lost_forest', 'oblivion_cave_2']) { const D = MAP_DEFS[id]; EnvLayout.enabled = false; let t = performance.now(); new GameMap(D); const off = performance.now() - t; EnvLayout.enabled = true; EnvLayout.clearMemo(); t = performance.now(); new GameMap(D); const on1 = performance.now() - t; t = performance.now(); new GameMap(D); const on2 = performance.now() - t; out.push([id, off.toFixed(1), on1.toFixed(1), on2.toFixed(1)]); } return out; });
+  r.forEach((x) => console.log(x.join('  '))); await br.close(); })().catch((e) => { console.log('例外', e.message); process.exit(1); });
