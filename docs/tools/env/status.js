@@ -11,7 +11,8 @@ const VISUAL = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tra
   'oblivion_cave_1', 'iron_mine_2', 'sentra_palace_1', 'forbidden_archive_1', 'demon_castle_1', 'auto_factory_1', 'rivel_inn', 'kalion_church', 'scheduled_district'];
 // 前後（env=off と v1）を同じ場所で比べ、レシピ・建物の形が歩けるマスに入っていないことを確かめたマップ（p76_walk.js）
 const WALK_COMPARED = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tradia', 'rivel_town', 'sahar_city', 'frost_town', 'dark_camp', 'kalion_city', 'harbor_town', 'tempus_city', 'magicka_city', 'ignas_town', 'aruna_village', 'verum_town',
-  'oblivion_cave_1', 'iron_mine_2', 'sentra_palace_1', 'auto_factory_1', 'rivel_inn', 'kalion_church', 'demon_castle_1', 'forbidden_archive_1', 'mirage_temple_1', 'sunken_reef_1'];
+  'oblivion_cave_1', 'iron_mine_2', 'sentra_palace_1', 'auto_factory_1', 'rivel_inn', 'kalion_church', 'demon_castle_1', 'forbidden_archive_1', 'mirage_temple_1', 'sunken_reef_1',
+  'aruna_ruins', 'scheduled_district', 'erased_village', 'dow_village', 'ciel_port', 'sentra_capital', 'star_camp', 'volatilia', 'mirror_market', 'rivel_artisan', 'asana_village', 'asana_ruins'];
 const FLAGSHIP = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tradia'];
 const rows = []; const count = {};
 for (const id of Object.keys(plan).sort()) {

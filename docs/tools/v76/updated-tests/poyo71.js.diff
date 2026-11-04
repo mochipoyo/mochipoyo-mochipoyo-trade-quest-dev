@@ -1,0 +1,14 @@
+--- v71/poyo71.js.bak76	2026-11-04 21:02:49.351506658 +0900
++++ v71/poyo71.js	2026-11-04 21:02:49.378595333 +0900
+@@ -8,7 +8,10 @@
+ // 旧い48列の中身：道を延ばした2本（8〜9・30〜31行目の38〜47列）以外は同じ（現在の定義の左48列と、東の地区を足す前の定義を比べる）
+ const base = require('child_process').execFileSync('node', ['-e', "const load=require('./rpgload.js');const A=load();A.w.State.newGame('t','warrior');const m=new A.w.GameMap(A.w.MAP_DEFS.poyo_village);process.stdout.write(JSON.stringify({t:m.tiles,n:m.npcs.map(n=>[n.id,n.x,n.y]),e:m.events.map(e=>[e.type,e.x,e.y]),wp:m.warps.map(x=>[x.x,x.y,x.to,x.tx,x.ty]),b:m.buildings.map(b=>[b.id,b.x,b.y,b.w,b.h])}))"], { cwd: require('path').join(__dirname, '..'), env: Object.assign({}, process.env, { RPG_DIR: process.env.BASE_DIR || '/home/claude/base71/' }), maxBuffer: 1 << 28 }).toString();
+ const B = JSON.parse(base); const diffs = [];
+-for (let y = 0; y < B.t.length; y++) for (let x = 0; x < B.t[0].length; x++) if (B.t[y][x] !== m.tiles[y][x] && !([8, 9, 30, 31].includes(y) && x >= 38)) diffs.push(x + ',' + y + ':' + B.t[y][x] + '>' + m.tiles[y][x]);
++// v7.6 環境リデザイン（js/data/env76.js）：中央の緑地の 2×2 マスを村の大樹（木）にした。その4マスだけは「草→木」であることを確かめ、比べる対象から外す
++const E76 = w.ENV76 ? new Set(['27,12', '28,12', '27,13', '28,13']) : new Set();
++if (E76.size) ok([...E76].every((k) => { const [x, y] = k.split(',').map(Number); return m.tiles[y][x] === 'tree'; }), 'v7.6 の村の大樹の4マスは木（js/data/env76.js）');
++for (let y = 0; y < B.t.length; y++) for (let x = 0; x < B.t[0].length; x++) if (B.t[y][x] !== m.tiles[y][x] && !([8, 9, 30, 31].includes(y) && x >= 38) && !E76.has(x + ',' + y)) diffs.push(x + ',' + y + ':' + B.t[y][x] + '>' + m.tiles[y][x]);
+ ok(diffs.length === 0, '旧い48列の地形は、東へ延ばした2本の道のほかは同じ ' + diffs.slice(0, 5).join(' '));
+ ok(B.n.every(([id, x, y]) => m.npcs.some((n) => n.id === id && n.x === x && n.y === y)), '既存の人 ' + B.n.length + '人は同じ場所');
+ ok(B.e.every(([t, x, y]) => m.events.some((e) => e.type === t && e.x === x && e.y === y)) && B.wp.every(([x, y, to, tx, ty]) => m.warps.some((q) => q.x === x && q.y === y && q.to === to && q.tx === tx && q.ty === ty)) && B.b.every(([id, x, y, ww, hh]) => m.buildings.some((b) => b.id === id && b.x === x && b.y === y && b.w === ww && b.h === hh)), '既存の出来事・出入口・建物は同じ場所');

@@ -69,7 +69,7 @@ export class MapScene3D {
       }
       await r.finalize();
       // v7.0 場所ごとの個性の飾り（壁の飾り・町の外の遠景・床の小物。js/data/placedecor70.js のテーマ）。失敗しても地図は表示する
-      try { const db = new DecorBuilder3D(); const dr = db.build(map, { T: wb.T, OUT: wb.OUT, heightAt: r.heightAt, group: r.group, key: rx && rx.decorKey !== undefined ? rx.decorKey : undefined }); this.decor = { key: dr.key, stats: db.stats }; (dr.smokes || []).forEach((sm) => this.addSmoke(sm)); } catch (e) { this.decor = { key: null, error: String(e && e.message || e) }; console.warn('decor70', e); }
+      try { const db = new DecorBuilder3D(); const dr = db.build(map, { T: wb.T, OUT: wb.OUT, heightAt: r.heightAt, group: r.group, key: rx && rx.decorKey !== undefined ? rx.decorKey : undefined }); this.decor = { key: dr.key, stats: db.stats }; if (rx && rx.decorKey !== undefined) this.decor.envKey = rx.decorKey; (dr.smokes || []).forEach((sm) => this.addSmoke(sm)); } catch (e) { this.decor = { key: null, error: String(e && e.message || e) }; console.warn('decor70', e); }
       await runRecipe({ group: r.group, world: wb, theme });   // v7.6 レシピが作り直した形を足す
       for (const c of map.chests) this.addChest(c);
       if (map.kind === 'town' || map.kind === 'field') this.addMotes(map);

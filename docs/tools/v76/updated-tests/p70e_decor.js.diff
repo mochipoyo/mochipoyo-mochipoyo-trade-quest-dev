@@ -1,0 +1,12 @@
+--- p3d/p70e_decor.js.bak76	2026-11-04 21:02:49.353804843 +0900
++++ p3d/p70e_decor.js	2026-11-04 21:02:49.379135702 +0900
+@@ -15,7 +15,8 @@
+     if (!built) { ok(false, m + '：3D が組み立たない'); continue; }
+     await p.waitForTimeout(1600);
+     const r = await p.evaluate(() => ({ decor: MTQ3D.current.decor || null, theme: window.PLACE_DECOR ? PLACE_DECOR.forMap(World.map.id) : null }));
+-    ok(r.decor && r.decor.key === r.theme && !r.decor.error, m + '：テーマ ' + r.theme + ' ' + JSON.stringify(r.decor && r.decor.stats));
++    // v7.6 環境リデザイン：レシピが飾りのテーマを差し替えたマップ（例：トレディアは光る機械の箱をやめて royal）は、差し替えたテーマで飾られていること
++    ok(r.decor && (r.decor.key === r.theme || (r.decor.envKey !== undefined && r.decor.key === r.decor.envKey)) && !r.decor.error, m + '：テーマ ' + r.theme + (r.decor && r.decor.envKey !== undefined ? '（レシピの差し替え ' + r.decor.envKey + '）' : '') + ' ' + JSON.stringify(r.decor && r.decor.stats));
+     await p.screenshot({ path: SHOT + (process.env.TOD ? 'n_' : '') + m + (process.env.XY ? '_' + x + '_' + y : '') + '.jpg', type: 'jpeg', quality: 72 });
+   }
+   ok(errs.length === 0, 'ページのエラーなし ' + JSON.stringify(errs.slice(0, 3)));
