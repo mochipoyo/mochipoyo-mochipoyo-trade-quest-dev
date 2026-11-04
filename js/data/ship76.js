@@ -2,7 +2,7 @@
    Data / v7.6：港町マリナの「修理中の船」に上がれる・中に入れる
    ・港町マリナ（町の拡張 v7.2 のあとの座標）：船の南の海に、桟橋（dock）から船のタラップ（扉のマス）までの板の通路を足す
      → 船の建物に interior（甲板）を付ける。扉のマスに乗ると甲板へ（ほかの建物と同じ入り方）
-   ・新しいマップ：修理中の船・甲板（外。海が見える）／修理中の船・船室（甲板の昇降口から下りる）
+   ・新しいマップ：修理中の船・甲板（外。海が見える）／修理中の船・船室（甲板の昇降口から下りる）。どちらも種類はダンジョン（1つのまとまり。入口は桟橋だけ）
    ・物語・クエスト（船乗りの修理・潮の大蛇・小型帆船）は変えない。甲板と船室には調べられる物と宝箱1つだけ
    ・各変更は「いまの文字・建物が期待どおりのときだけ」当てる（後段の変更で地図がずれていたら当てずに記録＝SHIP76.skipped）
    ・3D版：船の形は three-src/src/world/ShipModel3D.js（町の建物）と environment/recipes/ship_deck.js（甲板）
@@ -21,7 +21,7 @@
   var dockNext = (town.rows[frontY] || '').charAt(24) === 'd';
   if (bad.length || !dockNext) { R.skipped.push('harbor_town：通路のマスが想定と違う ' + JSON.stringify(bad) + ' 桟橋 ' + dockNext); return; }
   walk.forEach(function (p) { var row = town.rows[p[1]]; town.rows[p[1]] = row.substring(0, p[0]) + 'd' + row.substring(p[0] + 1); });
-  ship.interior = 'harbor_ship_deck'; ship.entry = { x: 14, y: 10 };
+  ship.interior = 'harbor_ship_deck'; ship.entry = { x: 14, y: 10 }; R.tiles = walk.map(function (p) { return [p[0], p[1]]; });   // 変えたマス（テストが参照）
   R.applied.push('harbor_town：通路 ' + walk.length + 'マス・船に甲板への入口');
 
   var D_ = function () { return root.State && root.State.data; };
@@ -57,7 +57,9 @@
     ]
   };
   // 船室（甲板の昇降口から下りる。ハンモック＝E・海図の棚＝K・机＝t）
-  D.harbor_ship_cabin = { id: 'harbor_ship_cabin', name: '修理中の船・船室', kind: 'interior', bgm: 'town', fallback: 'floor_wood', ship76: true,
+  // 船室も「ダンジョン」の種類（甲板と1つのまとまり＝脱出すると船の入口＝桟橋へ）。3D は船の木の部屋（theme3d：harbor）
+  D.harbor_ship_cabin = { id: 'harbor_ship_cabin', name: '修理中の船・船室', kind: 'dungeon', bgm: 'town', fallback: 'floor_wood', noLayout: true, ship76: true,
+    theme3d: { region: 'arcadia', place: 'harbor' },
     rows: [
       'WWWWWWWWWWWWWWWWWW',
       'WKK__E_E____qzz__W',

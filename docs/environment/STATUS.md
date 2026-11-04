@@ -6,11 +6,11 @@
 
 | 種類 | design_only | integrated | visual_checked | gameplay_checked | verified |
 |---|---|---|---|---|---|
-| dungeon | 0 | 112 | 13 | 1 | 0 |
+| dungeon | 0 | 112 | 15 | 1 | 0 |
 | field | 0 | 6 | 6 | 0 | 0 |
 | interior | 0 | 419 | 9 | 1 | 0 |
 | town | 0 | 13 | 14 | 3 | 0 |
-| 合計 | 0 | 550 | 42 | 5 | 0 |
+| 合計 | 0 | 550 | 44 | 5 | 0 |
 
 ## マップごと
 
@@ -220,9 +220,11 @@
 | harbor_inn | interior | room_kit.v1:plaster | integrated | - | - |  |
 | harbor_inn_x72_2f | interior | room_kit.v1:plaster | integrated | - | - |  |
 | harbor_item_shop | interior | room_kit.v1:plaster | integrated | - | - |  |
+| harbor_ship_cabin | dungeon | ship_cabin.v1 | visual_checked | 済 | 対象外（noLayout） |  |
+| harbor_ship_deck | dungeon | ship_deck.v1 | visual_checked | 済 | 対象外（noLayout） |  |
 | harbor_tavern | interior | room_kit.v1:plaster | integrated | - | - |  |
 | harbor_tavern_x72_2f | interior | room_kit.v1:plaster | integrated | - | - |  |
-| harbor_town | town | town_kit.v1 | visual_checked | 済 | 210マス・目印 crane |  |
+| harbor_town | town | town_kit.v1 | visual_checked | 済 | 235マス・目印 crane |  |
 | harbor_town_x72_hall | interior | room_kit.v1:plaster | integrated | - | - |  |
 | harbor_town_x72_house | interior | room_kit.v1:plaster | integrated | - | - |  |
 | harbor_town_x72_house_2f | interior | room_kit.v1:plaster | integrated | - | - |  |

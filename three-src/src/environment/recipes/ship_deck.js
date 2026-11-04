@@ -66,3 +66,15 @@ function rigMasts(add, M, o, list) {
   const o2 = Object.assign({}, o, { hb: () => 0.0 });   // シュラウドを帆柱の根もとへ（実質なし）
   rig((m, gg) => { const p = gg.attributes.position; let lowY = 1e9; for (let i = 0; i < p.count; i++) lowY = Math.min(lowY, p.getY(i)); if (m === M.rope && lowY < 2.0) return; add(m, gg); }, M, o2, list);
 }
+
+// 船室（harbor_ship_cabin）：屋内の作り方（room_kit の板張り）に、家具の下も床板にするフックを足す（ダンジョンの種類なので、家具の下が草地の色にならないように）
+import { roomKit, ROOM_STYLE } from './room_kit.js';
+const FURN = { bed: 1, table: 1, bookshelf: 1, barrel: 1, crate: 1, chest: 1, chest_open: 1, counter: 1 };
+export const cabinRecipe = {
+  id: 'ship_cabin.v1',
+  async prepare(ctx) {
+    const base = roomKit(Object.assign({ archetype: 'ship' }, ROOM_STYLE.ship)); const r = await base.prepare(ctx);
+    r.hooks = Object.assign({}, r.hooks, { floorAs: (t) => (FURN[t] ? 'floor_wood' : null), flatTile: (t) => t === 'floor_wood' || !!FURN[t] || t === 'stairs_up' });
+    return r;
+  }
+};

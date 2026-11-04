@@ -1,0 +1,11 @@
+--- v72/towns72.js.bak76	2026-11-05 07:27:28.711194831 +0900
++++ v72/towns72.js	2026-11-05 07:27:36.824921412 +0900
+@@ -12,7 +12,7 @@
+ ok(towns.length === 24 && X.LIST.every((id) => X.towns[id]), '町 24 を広げた（東に新しい地区）：' + towns.length + '・広げられなかった町 ' + X.LIST.filter((id) => !X.towns[id]).join(','));
+ ok(towns.every((id) => X.towns[id].tower), 'どの町にも3階までの塔がある（新しい地区）');
+ // ① 元の町：地形・人・出来事・宝箱・建物は同じ（つなぐ所・リヴェルの城の前・リヴェルの東の出口だけ）
+-const allowed = (id) => { const t = X.towns[id]; const a = {}; [t.open, t.open + 1].forEach((y) => { a[(t.oldW - 1) + ',' + y] = 1; }); (t.carve || []).forEach((p) => { a[p[0] + ',' + p[1]] = 1; }); if (id === 'rivel_town') (X.rivelFront || []).forEach((p) => { a[p[0] + ',' + p[1]] = 1; }); return a; };
++const allowed = (id) => { const t = X.towns[id]; const a = {}; [t.open, t.open + 1].forEach((y) => { a[(t.oldW - 1) + ',' + y] = 1; }); (t.carve || []).forEach((p) => { a[p[0] + ',' + p[1]] = 1; }); if (id === 'rivel_town') (X.rivelFront || []).forEach((p) => { a[p[0] + ',' + p[1]] = 1; }); if (id === 'harbor_town' && w.SHIP76 && w.SHIP76.tiles) w.SHIP76.tiles.forEach((p) => { a[p[0] + ',' + p[1]] = 1; }); /* v7.6：船への板の通路（js/data/ship76.js） */ return a; };
+ const diffs = [];
+ for (const id of towns) {
+   const b = B[id], c = M[id], t = X.towns[id], al = allowed(id);

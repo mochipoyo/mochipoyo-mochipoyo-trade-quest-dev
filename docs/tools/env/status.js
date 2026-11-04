@@ -13,7 +13,7 @@ const VISUAL = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tra
   'oblivion_cave_1', 'iron_mine_2', 'sentra_palace_1', 'forbidden_archive_1', 'demon_castle_1', 'auto_factory_1', 'rivel_inn', 'kalion_church', 'scheduled_district',
   // 追加作業（2026-11-04）：町の目印・フィールド・近未来と娯楽の町・屋外のダンジョン・城の部屋・ポヨ村の屋内・PBR の撮り比べ
   'harbor_town', 'world', 'world_grania', 'world_islands', 'world_tempus', 'world_machine', 'world_magicka', 'luxbell', 'tradia_sky', 'lost_forest', 'sky_temple_1',
-  'a6_dc_statues', 'ignas_house_1', 'magicka_palace', 'poyo_inn', 'poyo_item_shop', 'rivel_castle_b1', 'sentra_palace_2', 'rivel_castle_library', 'emal_pass', 'grania_pass', 'mist_isle', 'aruna_item'];
+  'a6_dc_statues', 'ignas_house_1', 'magicka_palace', 'poyo_inn', 'poyo_item_shop', 'rivel_castle_b1', 'sentra_palace_2', 'rivel_castle_library', 'emal_pass', 'grania_pass', 'mist_isle', 'aruna_item', 'harbor_ship_deck', 'harbor_ship_cabin'];
 // 前後（env=off と v1）を同じ場所で比べ、レシピ・建物の形が歩けるマスに入っていないことを確かめたマップ（p76_walk.js）
 const WALK_COMPARED = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tradia', 'rivel_town', 'sahar_city', 'frost_town', 'dark_camp', 'kalion_city', 'harbor_town', 'tempus_city', 'magicka_city', 'ignas_town', 'aruna_village', 'verum_town',
   'oblivion_cave_1', 'iron_mine_2', 'sentra_palace_1', 'auto_factory_1', 'rivel_inn', 'kalion_church', 'demon_castle_1', 'forbidden_archive_1', 'mirage_temple_1', 'sunken_reef_1',
@@ -22,7 +22,7 @@ const WALK_COMPARED = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city
   'world', 'world_grania', 'world_islands', 'world_tempus', 'world_machine', 'world_magicka', 'world_sky', 'world_dark', 'world_desert', 'world_dragon', 'world_snow', 'world_kalion',
   'luxbell', 'tradia_sky', 'lost_forest', 'sky_temple_1', 'rivel_castle_b1', 'rivel_castle_library', 'magicka_palace', 'sentra_palace_2',
   'poyo_church', 'poyo_dojo', 'poyo_item_shop', 'poyo_inn', 'poyo_elder_house', 'poyo_house', 'poyo_mill', 'poyo_watch', 'poyo_watch_2f', 'poyo_watch_3f', 'poyo_barn', 'poyo_barn_2f', 'poyo_hall', 'poyo_hall_2f', 'poyo_elder_house_2f', 'poyo_inn_2f', 'poyo_church_2f', 'poyo_church_3f',
-  'emal_pass', 'grania_pass', 'mist_isle', 'a6_em_hut', 'a6_gp_shelter', 'a6_mi_spring', 'aruna_item', 'aruna_lighthouse'];
+  'emal_pass', 'grania_pass', 'mist_isle', 'a6_em_hut', 'a6_gp_shelter', 'a6_mi_spring', 'aruna_item', 'aruna_lighthouse', 'harbor_ship_deck', 'harbor_ship_cabin'];
 const FLAGSHIP = ['poyo_village', 'rivel_castle', 'iron_mine_1', 'node_city', 'tradia'];
 const rows = []; const count = {};
 for (const id of Object.keys(plan).sort()) {

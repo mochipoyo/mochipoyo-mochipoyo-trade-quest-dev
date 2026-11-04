@@ -1,0 +1,11 @@
+--- expandA6test.js.bak76	2026-11-05 07:27:28.706151675 +0900
++++ expandA6test.js	2026-11-05 07:27:36.818886314 +0900
+@@ -30,7 +30,7 @@
+   // ---- 既存マップの変化：入口のある29のダンジョンだけ。地形の行は変えず、イベント1つ（灰の峠は2つ）とワープ1つを足しただけ ----
+   const cur = JSON.parse(execFileSync('node', ['dumpmaps.js'], { cwd: __dirname, maxBuffer: 1 << 28 }).toString());
+   const changed = Object.keys(oldDump.maps).filter(id => JSON.stringify(oldDump.maps[id]) !== JSON.stringify(cur.maps[id]));
+-  const added = Object.keys(cur.maps).filter(id => !oldDump.maps[id]);
++  const added = Object.keys(cur.maps).filter(id => !oldDump.maps[id] && !(w.MAP_DEFS[id] && w.MAP_DEFS[id].ship76));   // v7.6：港町マリナの船の甲板・船室（js/data/ship76.js）は第6段階とは別の追加
+   ok(changed.every(id => S6.patched.includes(id)) && changed.length === 29 && added.length === 29 && added.every(id => S6.maps.includes(id)), '第5段階の版と比べて、中身が変わった既存マップは入口のある29のダンジョンだけ、増えたマップは隠し区画29枚だけ（変化 ' + changed.length + '・追加 ' + added.length + '）');
+   const hostOk = S6.patched.filter(id => { const o = oldDump.maps[id], c = cur.maps[id]; const extraEv = id === 'grania_pass' ? 2 : 1; return JSON.stringify(o.rows) === JSON.stringify(c.rows) && c.events.length === o.events.length + extraEv && c.warps.length === o.warps.length + 1 && JSON.stringify(c.chests) === JSON.stringify(o.chests) && JSON.stringify(c.npcs) === JSON.stringify(o.npcs) && JSON.stringify(c.events.slice(0, o.events.length)) === JSON.stringify(o.events) && JSON.stringify(c.warps.slice(0, o.warps.length)) === JSON.stringify(o.warps); });
+   ok(hostOk.length === 29, '29のダンジョン：地形の行・宝箱・人・既存のイベントとワープは前の版と同じで、後ろに入口のイベントとワープを足しただけ（灰の峠は鍵を埋めた所の調べる所も）' + S6.patched.filter(x => !hostOk.includes(x)).join(','));

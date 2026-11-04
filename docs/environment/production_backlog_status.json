@@ -3447,6 +3447,32 @@
    "inPack": true
   },
   {
+   "mapId": "harbor_ship_cabin",
+   "name": null,
+   "priority": null,
+   "requiredWork": [],
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
+   "gameplayChecked": false,
+   "performanceChecked": false,
+   "recipe": "ship_cabin.v1",
+   "inPack": false
+  },
+  {
+   "mapId": "harbor_ship_deck",
+   "name": null,
+   "priority": null,
+   "requiredWork": [],
+   "status": "visual_checked",
+   "integration": true,
+   "visualChecked": true,
+   "gameplayChecked": false,
+   "performanceChecked": false,
+   "recipe": "ship_deck.v1",
+   "inPack": false
+  },
+  {
    "mapId": "harbor_tavern",
    "name": "マリナの酒場",
    "priority": 3,

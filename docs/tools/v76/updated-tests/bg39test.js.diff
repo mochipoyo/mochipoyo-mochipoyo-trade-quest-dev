@@ -1,0 +1,11 @@
+--- v74/bg39test.js.bak76	2026-11-05 07:27:28.714959082 +0900
++++ v74/bg39test.js	2026-11-05 07:27:36.832302561 +0900
+@@ -33,7 +33,7 @@
+   const hidden = pack.assets.reduce((n, a) => n + a.maps.filter((m) => m.hidden).length, 0); ok(hidden > 0, '隠し区画 ' + hidden + ' マップも主エリアの絵');
+   ok(pack.assets.every((a) => typeof BG.PHOTO_HORIZON[a.variant] === 'number' && BG.PHOTO_HORIZON[a.variant] >= 0.35 && BG.PHOTO_HORIZON[a.variant] <= 0.65), '39枚それぞれの地平線の値（3Dの景色の遠景の板）');
+   // ② 対象外は前の版（v7.3）と同じ
+-  const ids = Object.keys(D).filter((id) => !expect[id] && typeof D[id].rows !== 'function' && ['dungeon', 'field', 'town', 'interior'].includes(D[id].kind || 'town'));
++  const ids = Object.keys(D).filter((id) => !expect[id] && !D[id].ship76 && typeof D[id].rows !== 'function' && ['dungeon', 'field', 'town', 'interior'].includes(D[id].kind || 'town'));   // v7.6：前の版にないマップ（船の甲板・船室）は比べない
+   const old = JSON.parse(require('child_process').execFileSync('node', ['-e', `const load=require('./rpgload.js');const A=load();const w=A.w;w.State.newGame('t','warrior');const o={};${JSON.stringify(ids)}.forEach(id=>{try{w.World.map=w.World.getMap(id);const i=w.BattleBG65.infoFor({enemies:[{defId:'slime'}]},{});o[id]=[i.place,i.region,i.variant];}catch(e){o[id]=['ERR',String(e.message)];}});process.stdout.write(JSON.stringify(o));`], { cwd: path.join(__dirname, '..'), env: Object.assign({}, process.env, { RPG_DIR: BASE }), maxBuffer: 1 << 26 }).toString());
+   const diff = []; ids.forEach((id) => { at(id); const i = BG.infoFor(enemy, {}); const o = old[id]; if (!o || o[0] !== i.place || o[1] !== i.region || o[2] !== i.variant) diff.push(id + ' ' + JSON.stringify(o) + '→' + [i.place, i.region, i.variant]); });
+   ok(ids.length > 400 && !diff.length, '対象外のマップ ' + ids.length + '（迷いの森・忘却の洞窟・フィールド・町・屋内など）は前の版と同じ場所・地域・絵 ' + diff.slice(0, 4).join(' | '));
