@@ -37,6 +37,7 @@
     var solidEv = {}; (m.events || []).forEach(function (e) { if (e && e.solid) solidEv[e.x + ',' + e.y] = 1; });
     var npcAt = {}; (m.npcs || []).forEach(function (n) { npcAt[(n.ox !== undefined ? n.ox : n.x) + ',' + (n.oy !== undefined ? n.oy : n.y)] = 1; });
     A.blockAt = function (x, y) { var k = x + ',' + y; return !!(solidEv[k] || npcAt[k] || BARRIER_T[m.tiles[y][x]]); };
+    A.walkOpen = function (x, y) { if (x < 0 || y < 0 || x >= W || y >= H) return false; var t = m.tiles[y][x]; if (T.isSolid(t) && !BARRIER_T[t]) return false; return !npcAt[x + ',' + y]; };   // 鍵の扉・関所・レバー・通れない出来事を「開いた」とき
     A.walk = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H && !T.isSolid(m.tiles[y][x]) && !A.blockAt(x, y); };
     // 守るマス：動かさない物からの距離（チェビシェフ）。prot[i] = 距離（遠いほど大きい・最大9）
     var prot = new Uint8Array(W * H).fill(9);
@@ -66,6 +67,31 @@
   // 出入口などに近づけるつながり（そのマス、または4方向のとなりの歩けるマスの つながりの番号の集まり）
   function touch(A, L, x, y) { var s = []; var W = A.W; if (A.walk(x, y)) s.push(L[y * W + x]); for (var k = 0; k < 4; k++) { var nx = x + N4[k][0], ny = y + N4[k][1]; if (nx >= 0 && ny >= 0 && nx < W && ny < A.H && A.walk(nx, ny)) s.push(L[ny * W + nx]); } return s; }
   function snapshot(A) { var L = label(A); var tch = A.anchors.map(function (a) { return touch(A, L, a[0], a[1]); }); var walk0 = new Uint8Array(A.W * A.H); for (var i = 0; i < walk0.length; i++) walk0[i] = L[i] >= 0 ? 1 : 0; return { L: L, tch: tch, walk0: walk0 }; }
+  // 物（出入口・人・宝箱・出来事・調べる所・クイズの魔物）どうしの歩く道のり（閉じた／開いたの両方）。近道ができない・大回りにならない、を確かめる
+  function pairDist(A, walkF) {   // A.srcIdx：道のりを測る起点（町は出入口だけ＝軽く。ダンジョンはすべての物）
+    var W = A.W, H = A.H, N = W * H, an = A.anchors, out = []; var D = new Int32Array(N), q = new Int32Array(N); var src = A.srcIdx || an.map(function (_, i) { return i; });
+    var stand = an.map(function (a) { var s = []; if (walkF(a[0], a[1])) s.push(a[1] * W + a[0]); for (var k = 0; k < 4; k++) { var nx = a[0] + N4[k][0], ny = a[1] + N4[k][1]; if (walkF(nx, ny)) s.push(ny * W + nx); } return s; });
+    for (var si = 0; si < src.length; si++) { var i = src[si];
+      D.fill(-1); var h = 0, t = 0; stand[i].forEach(function (c) { if (D[c] < 0) { D[c] = 0; q[t++] = c; } });
+      while (h < t) { var c = q[h++], cx = c % W, cy = (c / W) | 0; for (var k = 0; k < 4; k++) { var nx = cx + N4[k][0], ny = cy + N4[k][1]; if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue; var ni = ny * W + nx; if (D[ni] >= 0 || !walkF(nx, ny)) continue; D[ni] = D[c] + 1; q[t++] = ni; } }
+      var row = []; for (var j = 0; j < an.length; j++) { var best = -1; stand[j].forEach(function (c) { if (D[c] >= 0 && (best < 0 || D[c] < best)) best = D[c]; }); row.push(best); } out.push(row);
+    }
+    return out;
+  }
+  EL.DETOUR = { add: 4, ratio: 0.1 };   // 大回りの許し：元の道のり＋4歩＋1割まで
+  function distOk(A, B0) {
+    if (!B0.dist) return null;
+    var modes = [['closed', A.walk], ['open', A.walkOpen]];
+    for (var mi = 0; mi < modes.length; mi++) {
+      var d1 = pairDist(A, modes[mi][1]), d0 = B0.dist[modes[mi][0]];
+      for (var i = 0; i < d0.length; i++) for (var j = 0; j < d0[i].length; j++) {
+        var a = d0[i][j], b = d1[i][j]; if (a < 0 || b < 0) continue;
+        if (b < a) return 'shortcut ' + modes[mi][0] + ' ' + a + '→' + b;
+        if (b > a + EL.DETOUR.add + Math.floor(a * EL.DETOUR.ratio)) return 'detour ' + modes[mi][0] + ' ' + a + '→' + b;
+      }
+    }
+    return null;
+  }
   // 守る決まりの確認（前 B0 と、いまの地図）
   function invariantOk(A, B0) {
     var L1 = label(A), W = A.W, N = W * A.H; var map01 = {}, map10 = {};
@@ -82,7 +108,7 @@
       for (var k2 in sa) if (!sb[k2]) return 'anchor+ ' + an.join(',');
       if ((an[2] === 'warp' || an[2] === 'event') && B0.walk0[an[1] * W + an[0]] && !A.walk(an[0], an[1])) return 'anchor tile ' + an.join(',');
     }
-    return null;
+    return distOk(A, B0);
   }
   // 変更をまとめて試す：守る決まりが破れたら元に戻す
   function tryOps(A, B0, ops, res) {
@@ -247,7 +273,11 @@
     if (m.kind !== 'town' && m.kind !== 'dungeon') return null;
     if (SKIP[m.id]) return skip('専用レシピ'); if (d.noLayout) return skip('noLayout'); if (d.s3121) return skip('s3121'); if (d.onStep) return skip('onStep'); if (typeof d.rows === 'function') return skip('rows関数');
     for (var y = 0; y < m.h; y++) for (var x = 0; x < m.w; x++) { var tt = m.tiles[y][x]; if (/ice/.test(tt)) return skip('氷'); }   // 落とし穴は、まわり2マスを守るマスにして扱う
-    var A = analyze(m), B0 = snapshot(A); var res = { version: EL.VERSION, kind: m.kind, changed: [], rejected: 0, why: {} };
+    // 近道・大回りの確認の起点：ダンジョンはすべての物どうし、町は出入口（ワープ）から各物まで
+    var A = analyze(m), B0 = snapshot(A);
+    if (m.kind === 'town') A.srcIdx = A.anchors.map(function (a, i) { return a[2] === 'warp' ? i : -1; }).filter(function (i) { return i >= 0; });
+    B0.dist = { closed: pairDist(A, A.walk), open: pairDist(A, A.walkOpen) };
+    var res = { version: EL.VERSION, kind: m.kind, changed: [], rejected: 0, why: {} };
     try { if (m.kind === 'town') town(m, A, B0, res); else dungeon(m, A, B0, res); }
     catch (e) { res.changed.forEach(function (c) { m.tiles[c[1]][c[0]] = c[2]; }); res.changed = []; res.error = String(e && e.message || e); }
     var fin = invariantOk(A, B0); if (fin) { res.changed.slice().reverse().forEach(function (c) { m.tiles[c[1]][c[0]] = c[2]; }); res.error = '最後の確認で NG（' + fin + '）。元に戻した'; res.changed = []; }

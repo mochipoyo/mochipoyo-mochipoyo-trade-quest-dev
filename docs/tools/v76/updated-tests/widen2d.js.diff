@@ -1,0 +1,9 @@
+--- v70/widen2d.js.bak76	2026-11-04 22:54:05.355662916 +0900
++++ v70/widen2d.js	2026-11-04 22:54:05.419153236 +0900
+@@ -1,5 +1,6 @@
+ // v7.0 ダンジョンの広い道：広げたマスの数・新しい抜け道ができていないこと（広げる前と後で、各マスから行けるマスの集まりが同じ＋広げたマスだけ増える）
+ const load = require('../rpgload.js'); const { w, errors } = load(); w.State.newGame('t', 'warrior');
++if (w.EnvLayout) w.EnvLayout.enabled = false;   // v7.6：間取りの作り直し（envlayout.js）は別の層。広げる前と後を同じ条件で比べるため切る（envlayout の確認は docs/tools/env/layout_check.js）
+ const show = process.argv.slice(2); let maps = 0, total = 0; const bad = []; const per = [];
+ const comp = (m) => { const id = new Int32Array(m.w * m.h).fill(-1); let c = 0; for (let y = 0; y < m.h; y++) for (let x = 0; x < m.w; x++) { if (id[y * m.w + x] >= 0 || w.Tiles.isSolid(m.tiles[y][x])) continue; const q = [[x, y]]; id[y * m.w + x] = c; while (q.length) { const [a, b] = q.pop(); for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = a + dx, ny = b + dy; if (nx < 0 || ny < 0 || nx >= m.w || ny >= m.h || id[ny * m.w + nx] >= 0 || w.Tiles.isSolid(m.tiles[ny][nx])) continue; id[ny * m.w + nx] = c; q.push([nx, ny]); } } c++; } return id; };
+ for (const [mid, def] of Object.entries(w.MAP_DEFS)) {
