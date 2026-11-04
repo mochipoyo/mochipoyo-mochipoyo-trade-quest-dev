@@ -87,11 +87,12 @@ async function build(ctx, S0, b) {
   const TALL = { bookshelf: 1, cupboard: 1, stove: 1, counter: 1, bed: 1 };
   let decor = 0;
   // 奥の壁（南向きの面）の飾り：用途・城の部屋の種類ごと。前のマスに背の高い家具があるときは置かない
+  // 奥の壁の飾り：歩けるマスへ 0.1 より出る形は、体の高さ（1.8）より上（1.85 以上）に置く
   const decorFace = (cx, fz, x, z, h) => {
     if (h < 1.5 || TALL[T(x, z + 1)]) return; const u = S.archetype || 'house'; const k = (x * 7 + z * 3) % 3; const y = 2.0;
     const zf = fz + 0.02;
     if (room === 'throne' || room === 'hall') { if (x % (room === 'throne' ? 2 : 4)) return; const cl = new THREE.PlaneGeometry(0.62, 1.5); cl.translate(cx, y + 0.1, zf + 0.01); add(D.cloth, cl); add(D.gold, wbox(0.72, 0.06, 0.05, cx, y + 0.88, zf + 0.02)); if (room === 'throne') add(D.gold, wbox(0.08, 0.08, 0.04, cx, y - 0.2, zf + 0.03)); decor++; return; }
-    if (room === 'corridor') { if (x % 2) return; add(trim, wbox(0.26, h, 0.1, cx - 0.5, h / 2, zf + 0.04)); const ar = new THREE.TorusGeometry(0.5, 0.06, 6, 14, Math.PI); ar.translate(cx, h - 0.75, zf + 0.05); add(trim, ar); if (x % 4 === 0) { add(D.iron, wbox(0.1, 0.24, 0.12, cx, 1.8, zf + 0.06)); add(D.glow, wbox(0.08, 0.12, 0.08, cx, 1.98, zf + 0.12)); } decor++; return; }
+    if (room === 'corridor') { if (x % 2) return; add(trim, wbox(0.26, h, 0.1, cx - 0.5, h / 2, zf + 0.04)); const ar = new THREE.TorusGeometry(0.5, 0.06, 6, 14, Math.PI); ar.translate(cx, h - 0.75, zf + 0.05); add(trim, ar); if (x % 4 === 0) { add(D.iron, wbox(0.1, 0.24, 0.12, cx, 2.0, zf + 0.06)); add(D.glow, wbox(0.08, 0.12, 0.08, cx, 2.18, zf + 0.12)); } decor++; return; }
     if (room === 'garden') { const iv = new THREE.PlaneGeometry(0.9, 0.6 + k * 0.4); iv.translate(cx, h - 0.4 - k * 0.2, zf + 0.01); add(D.green, iv); decor++; return; }
     if (room === 'cellar') { if (x % 3) return; for (let i = -2; i <= 2; i++) add(D.iron, wbox(0.04, 1.0, 0.04, cx + i * 0.14, 1.4, zf + 0.04)); add(D.iron, wbox(0.7, 0.05, 0.05, cx, 1.9, zf + 0.04)); decor++; return; }
     if (room === 'treasury') { add(D.gold, wbox(1.0, 0.07, 0.04, cx, h - 0.35, zf + 0.02)); if (x % 3 === 0) { add(D.gold, new THREE.CircleGeometry(0.22, 16).translate(cx, 1.9, zf + 0.03)); } decor++; return; }
@@ -99,11 +100,11 @@ async function build(ctx, S0, b) {
     if (room === 'study') { if (x % 3) return; add(D.frame, wbox(0.9, 1.2, 0.08, cx, 1.9, zf + 0.04)); for (let i = 0; i < 3; i++) add(D.canvas[i], wbox(0.24, 0.3, 0.06, cx - 0.28 + i * 0.28, 1.6 + (i % 2) * 0.5, zf + 0.09)); decor++; return; }
     if (room === 'tower') { if (x % 2) return; add(D.glass, wbox(0.12, 0.8, 0.04, cx, 2.0, zf + 0.02)); decor++; return; }
     if (x % 3) return;
-    if (u === 'house' || u === 'inn') { add(D.frame, wbox(0.62, 0.48, 0.05, cx, y, zf + 0.025)); add(D.canvas[k], wbox(0.52, 0.38, 0.03, cx, y, zf + 0.05)); if (u === 'inn') { add(D.iron, wbox(0.08, 0.22, 0.1, cx + 0.7, 1.75, zf + 0.05)); add(D.glow, wbox(0.1, 0.12, 0.1, cx + 0.7, 1.92, zf + 0.12)); } decor++; return; }
+    if (u === 'house' || u === 'inn') { add(D.frame, wbox(0.62, 0.48, 0.05, cx, y, zf + 0.025)); add(D.canvas[k], wbox(0.52, 0.38, 0.03, cx, y, zf + 0.05)); if (u === 'inn') { add(D.iron, wbox(0.08, 0.22, 0.1, cx + 0.7, 2.0, zf + 0.05)); add(D.glow, wbox(0.1, 0.12, 0.1, cx + 0.7, 2.17, zf + 0.12)); } decor++; return; }
     if (u === 'tavern' || u === 'camp') { add(D.iron, wbox(0.08, 0.24, 0.12, cx, 1.85, zf + 0.06)); add(D.glow, wbox(0.12, 0.16, 0.12, cx, 2.04, zf + 0.14)); add(D.frame, wbox(0.5, 0.7, 0.04, cx + 0.6, 1.9, zf + 0.02)); decor++; return; }
-    if (u === 'shop') { add(D.frame, wbox(0.9, 0.06, 0.25, cx, 1.7, zf + 0.12)); for (let i = 0; i < 4; i++) add(D.bottle[(i + k) % 3], cyl(0.05, 0.05, 0.2, 6, cx - 0.33 + i * 0.22, 1.83, zf + 0.12)); decor++; return; }
+    if (u === 'shop') { add(D.frame, wbox(0.9, 0.06, 0.25, cx, 1.95, zf + 0.12)); for (let i = 0; i < 4; i++) add(D.bottle[(i + k) % 3], cyl(0.05, 0.05, 0.2, 6, cx - 0.33 + i * 0.22, 2.08, zf + 0.12)); decor++; return; }
     if (u === 'church') { add(D.glass, wbox(0.5, 1.4, 0.03, cx, 2.0, zf + 0.015)); const top = new THREE.CircleGeometry(0.25, 12, 0, Math.PI); top.translate(cx, 2.7, zf + 0.016); add(D.glass, top); ctx.scene.lampSpots.push({ pos: new THREE.Vector3(cx, 2.0, fz + 1.0), color: 0xbcd4ff, power: 0.5, dist: 5 }); decor++; return; }
-    if (u === 'lab' || u === 'factory' || u === 'cyber') { const pp = new THREE.CylinderGeometry(0.06, 0.06, 1.0, 8); pp.rotateZ(Math.PI / 2); pp.translate(cx, 2.3, zf + 0.08); add(D.pipe, pp); add(D.iron, new THREE.CylinderGeometry(0.14, 0.14, 0.04, 14).rotateX(Math.PI / 2).translate(cx + 0.25, 1.8, zf + 0.03)); decor++; return; }
+    if (u === 'lab' || u === 'factory' || u === 'cyber') { const pp = new THREE.CylinderGeometry(0.06, 0.06, 1.0, 8); pp.rotateZ(Math.PI / 2); pp.translate(cx, 2.3, zf + 0.08); add(D.pipe, pp); add(D.iron, new THREE.CylinderGeometry(0.14, 0.14, 0.04, 14).rotateX(Math.PI / 2).translate(cx + 0.25, 2.0, zf + 0.03)); decor++; return; }
     if (u === 'archive' || u === 'time') { add(D.frame, wbox(0.8, 0.6, 0.04, cx, y, zf + 0.02)); add(D.canvas[1], wbox(0.7, 0.5, 0.03, cx, y, zf + 0.045)); decor++; return; }
     if (u === 'observatory') { add(D.night, new THREE.CircleGeometry(0.42, 20).translate(cx, y, zf + 0.02)); decor++; return; }
   };
