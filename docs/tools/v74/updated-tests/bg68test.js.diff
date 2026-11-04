@@ -1,0 +1,11 @@
+--- bg68test.js.bak73	2026-11-04 13:52:25.397887556 +0900
++++ bg68test.js	2026-11-04 13:52:25.698505533 +0900
+@@ -8,7 +8,7 @@
+ d.aboard = 'airship'; i = info(''); ok(BG.photoKey(i) !== 'ship_deck', '飛空艇（空を飛ぶ乗り物）は甲板の画像にしない（' + BG.photoKey(i) + '）');
+ d.aboard = null; i = info(''); ok(BG.photoKey(i) !== 'ship_deck', '船に乗っていないとき（フィールド）は従来どおり（' + BG.photoKey(i) + '）');
+ const sea = Object.keys(w.MAP_DEFS).filter((id) => /海底|沈没|礁/.test(w.MAP_DEFS[id].name || '')).slice(0, 3);
+-for (const id of sea) { World.enterMap(id, 2, 2, 'down'); i = info(''); ok(i.place === 'sea' && BG.photoKey(i) === 'sea', '海の中・沈没船などのダンジョン（' + id + '）は従来の海の画像のまま'); }
++for (const id of sea) { World.enterMap(id, 2, 2, 'down'); i = info(''); const d39 = BG.dungeonVariant && BG.dungeonVariant(id, 'dungeon', null); ok(i.place === 'sea' && BG.photoKey(i) === (d39 || 'sea') && BG.photoKey(i) !== 'ship_deck', '海の中・沈没船などのダンジョン（' + id + '）は船の甲板の画像ではない（v7.4：39ダンジョンの専用の背景があるダンジョンはその絵＝' + (d39 || 'sea') + '。ほかは従来の海の画像）'); }
+ const p = '/home/claude/mochipoyo-trade-quest/' + BG.PHOTO_DIR + BG.PHOTO_VARIANT.ship_deck; const b = fs.readFileSync(p);
+ ok(b.slice(0, 4).toString() === 'RIFF' && b.slice(8, 12).toString() === 'WEBP' && /16_battle_ship_deck\.webp$/.test(BG.photoUrl('ship_deck')), '画像のファイル（WebP）と URL');
+ const man = JSON.parse(fs.readFileSync('/home/claude/mochipoyo-trade-quest/docs/battle-backgrounds-manifest.json', 'utf8')); ok(man.optionalVariants.ship_deck && man.optionalVariants.ship_deck.path === 'assets/battle-backgrounds/16_battle_ship_deck.webp', '戦闘背景の一覧（docs/battle-backgrounds-manifest.json）に登録');
