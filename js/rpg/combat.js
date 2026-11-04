@@ -187,7 +187,7 @@
       var pAgi = aliveParty(b).reduce(function (s, a) { return s + Actors.stats(a).agi; }, 0) / aliveParty(b).length;
       var eAgi = aliveEnemies(b).reduce(function (s, e) { return s + estats(e).agi; }, 0) / aliveEnemies(b).length;
       var chance = b.canEscape ? Math.min(0.95, 0.45 + (pAgi - eAgi) * 0.03 + (b.party.some(function (a) { return a.job === 'thief' && !a.dead; }) ? 0.2 : 0) + (b.escapeBonus || 0)) : 0;   // v6.4 逃走経路確保
-      if (Math.random() < chance) { msg(escCmd.actor.name + 'たちは逃げ出した！'); b.state = 'escaped'; ev.push({ type: 'end', result: 'escaped' }); return ev; }
+      if (Math.random() < chance) { msg(escCmd.actor.name + 'たちは逃げ出した！'); var lostG = b.enemies.reduce(function (q, x) { return q + (!x.dead && x.stolen > 0 ? x.stolen : 0); }, 0); if (lostG > 0) msg('奪われた' + lostG + 'Gは戻らなかった……'); b.state = 'escaped'; ev.push({ type: 'end', result: 'escaped' }); return ev; }
       msg(escCmd.actor.name + 'たちは逃げ出した！ ……しかし回り込まれてしまった！');
     }
 
@@ -316,6 +316,7 @@
     var os = fx(a, 'onHitStatus'); if (os && dmg > 0 && target.hp > 0 && addStatus(target, os)) ev.push({ type: 'msg', text: target.name + 'は' + STATUS_NAME[os.id] + '状態になった' });
     var be = opts.normal ? fx(a, 'bonusElem') : null;
     if (be && dmg > 0 && target.hp > 0) { var bm = resistOf(target, be.element); var bd = Math.round(dmg * be.mult * bm); if (bd > 0) { target.hp = Math.max(0, target.hp - bd); ev.push({ type: 'damage', side: 'enemy', idx: target.idx, value: bd, anim: be.element === 'fire' ? 'fire' : be.element === 'light' ? 'light' : 'hit' }); ev.push({ type: 'msg', text: '追加の' + elName(be.element) + 'ダメージ！ ' + target.name + 'に' + bd }); } }
+    if (target.hp > 0 && target.counter && !target.counter.used && opts.normal && dmg > 0 && !a.dead) { target.counter.used = true; ev.push({ type: 'msg', text: target.name + 'の逆張り！ 攻撃に合わせて反撃してきた！' }); hitActor(b, target, a, target.counter.power, {}, ev); }   // v7.5 逆張りバット
     if (target.hp <= 0) { killEnemy(b, target, ev); onKill(a, ev); }
   }
   // v6.4 利確の三叉槍：倒すとMP回復
@@ -422,15 +423,18 @@
     function msg(t) { ev.push({ type: 'msg', text: t }); }
     var actEv = { type: 'act', side: 'enemy', idx: e.idx }; ev.push(actEv);   // v6.5 行動の始まり（何をするかは選んだあとに書き込む：演出の種類に使う）
     var es = estats(e);
+    if (e.counter) e.counter = null;   // v7.5 逆張りの構え（counterStance）は、自分の次の行動まで
     if (e.status.confuse && Math.random() < 0.5) { var other = pickRandom(aliveEnemies(b)); msg(e.name + 'は混乱している！'); if (other) { var d0 = physDamage(es.atk, estats(other).def, 1.0); other.hp = Math.max(0, other.hp - d0); ev.push({ type: 'damage', side: 'enemy', idx: other.idx, value: d0, anim: 'hit' }); msg(other.name + 'に' + d0 + 'のダメージ'); if (other.hp <= 0) killEnemy(b, other, ev); } return; }
     // 行動選択（重み付き）
     var ratio = e.hp / e.maxHp;
     // ボスのフェーズ移行（HP割合で行動が変わる）
     if (e.boss) { var ph = ratio <= 0.3 ? 2 : ratio <= 0.6 ? 1 : 0; if (ph > e.phase) { e.phase = ph; msg(ph === 2 ? e.name + 'は最後の力を振り絞っている……！' : e.name + 'の様子が変わった！'); ev.push({ type: 'phase', idx: e.idx, phase: ph }); } }
-    var acts = e.actions.filter(function (x) { if (x.hpBelow !== undefined && ratio > x.hpBelow) return false; if (x.hpAbove !== undefined && ratio < x.hpAbove) return false; if ((x.id === 'call' || (SPECIALS[x.id] && SPECIALS[x.id].call)) && aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) return false; if (x.id === 'heal_self' && ratio > 0.8) return false; return true; });
+    var acts = e.actions.filter(function (x) { if (x.hpBelow !== undefined && ratio > x.hpBelow) return false; if (x.hpAbove !== undefined && ratio < x.hpAbove) return false; if ((x.id === 'call' || (SPECIALS[x.id] && SPECIALS[x.id].call)) && aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) return false; if (x.id === 'heal_self' && ratio > 0.8) return false; if (x.ifStolen && !(e.stolen > 0)) return false; return true; });
     if (!acts.length) acts = [{ type: 'attack', w: 1 }];
     var total = acts.reduce(function (s, x) { return s + x.w; }, 0); var r = Math.random() * total; var chosen = acts[0];
     for (var i = 0; i < acts.length; i++) { r -= acts[i].w; if (r <= 0) { chosen = acts[i]; break; } }
+    if (e.charging && SPECIALS[e.charging]) chosen = { type: 'special', id: e.charging, w: 1 };   // v7.5 予告した溜め技（js/data/enemies-add35.js の charge）
+    e.charging = null;
     if (chosen.type === 'skill' && SKILLS[chosen.id] && e.mp < SKILLS[chosen.id].mp) chosen = { type: 'attack' };
     if (chosen.type === 'skill' && e.status.silence && SKILLS[chosen.id] && SKILLS[chosen.id].mp > 0) { msg(e.name + 'は沈黙していて呪文が使えない！'); chosen = { type: 'attack' }; }
     if (chosen.type === 'special' && chosen.id === 'trial' && b.trialCount >= 2) chosen = { type: 'attack' };
@@ -450,17 +454,26 @@
     if (chosen.type === 'special') {
       var sp = SPECIALS[chosen.id]; if (!sp) return;
       msg(e.name + sp.msg); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: sp.power ? 'lunge' : 'buff' });
-      if (sp.flee) { e.dead = true; e.fled = true; ev.push({ type: 'flee', idx: e.idx }); return; }
+      if (sp.flee) { if (e.stolen > 0) msg(e.name + 'は奪った' + e.stolen + 'Gを持ったまま逃げた！（このお金は戻らない）'); e.dead = true; e.fled = true; ev.push({ type: 'flee', idx: e.idx }); return; }
+      if (sp.charge) { e.charging = sp.charge; return; }   // v7.5 溜め：この行動では何もしない（次の行動で sp.charge の技）
+      if (sp.counterStance) { e.counter = { power: sp.counterStance, used: false }; return; }   // v7.5 逆張りの構え：次の自分の行動まで、通常攻撃を受けたら1回反撃
       if (sp.trial) { b.trialCount++; ev.push({ type: 'trial', idx: e.idx }); return; }
       if (sp.call) { var sid = chosen.summon || e.defId; if (!ENEMIES[sid] || b.enemies.length >= 8 || aliveEnemies(b).length >= (b.maxEnemies || MAX_ENEMIES)) { msg('しかし誰も来なかった'); return; } var ne = makeEnemy(sid, b.enemies.length); if (b.scale) Combat.applyScale(ne, b.scale); else if (b.boss) { var kb = Combat.minionScale(e.maxHp >= 3 * ne.maxHp ? e : Combat.bossOf(b.enemies), ne); if (kb) Combat.applyScale(ne, kb); }   /* v7.3 ボスが呼ぶ敵もボスに合わせる */ var cnt = b.enemies.filter(function (x) { return x.defId === sid; }).length; if (cnt > 0) ne.name += String.fromCharCode(65 + cnt); ne.summoned = true; b.enemies.push(ne); ev.push({ type: 'summon', idx: ne.idx }); msg(ne.name + 'が現れた！'); return; }
       if (sp.heal) { var hv = Math.max(1, Math.round(e.maxHp * sp.heal)); e.hp = Math.min(e.maxHp, e.hp + hv); ev.push({ type: 'heal', side: 'enemy', idx: e.idx, value: hv }); msg(e.name + 'のHPが' + hv + '回復した'); return; }
-      if (sp.buff && sp.self) { Object.keys(sp.buff).forEach(function (k) { e.buffs[k] = { value: sp.buff[k], turns: sp.turns || 2 }; }); return; }
+      if (sp.buff && sp.self) {
+        Object.keys(sp.buff).forEach(function (k) {
+          if (sp.stack) { var cb = e.buffs[k]; var nv = Math.min(sp.stack, (cb && cb.turns > 0 ? cb.value : 0) + sp.buff[k]); e.buffs[k] = { value: nv, turns: sp.turns || 2 }; msg(e.name + 'の' + (DEBUFF_NAME[k] || k) + ' +' + Math.round(nv * 100) + '%（重ねがけ。上限 +' + Math.round(sp.stack * 100) + '%）'); }   // v7.5 ナンピンの買い増しなど
+          else e.buffs[k] = { value: sp.buff[k], turns: sp.turns || 2 };
+        });
+        return;
+      }
       if (sp.power) {
         // v6.5 攻撃のあとに状態異常・弱体化（毒の牙・しびれ針・絶望の波動など）：当たった相手だけ
         var after = function (t8) { if (!t8 || t8.dead) return; if (sp.status && addStatus(t8, sp.status, undefined, true)) msg(t8.name + 'は' + STATUS_NAME[sp.status.id] + '状態になった'); if (sp.debuff) debuffActor(t8, sp, msg); };
         if (sp.all) { beginGroup('party'); var hitList = []; living.forEach(function (t7) { if (!t7.dead && hitActor(b, e, t7, sp.power, {}, ev) > 0) hitList.push(t7); }); endGroup(); hitList.forEach(after); return; }
         var hits2 = sp.hits || 1;
-        for (var h2 = 0; h2 < hits2; h2++) { if (!aliveParty(b).length) break; var t5 = pickTarget(); if (!t5 || t5.dead) t5 = pickRandom(aliveParty(b)); var dm = hitActor(b, e, t5, sp.power, {}, ev); if (sp.drain && dm > 0) { e.hp = Math.min(e.maxHp, e.hp + Math.round(dm * 0.5)); msg(e.name + 'は体力を吸い取った'); } if (dm > 0) after(t5); }
+        for (var h2 = 0; h2 < hits2; h2++) { if (!aliveParty(b).length) break; var t5 = pickTarget(); if (!t5 || t5.dead) t5 = pickRandom(aliveParty(b)); var dm = hitActor(b, e, t5, sp.power, {}, ev); if (sp.steal && dm > 0) stealGold(b, e, sp.steal, ev); if (sp.drain && dm > 0) { e.hp = Math.min(e.maxHp, e.hp + Math.round(dm * 0.5)); msg(e.name + 'は体力を吸い取った'); } if (dm > 0) after(t5); }
+        if (sp.selfAfter) { Object.keys(sp.selfAfter).forEach(function (k) { e.buffs[k] = { value: sp.selfAfter[k], turns: sp.selfTurns || 2 }; }); if (sp.afterMsg) msg(e.name + sp.afterMsg); }   // v7.5 フルレバの一撃のあとの隙
         return;
       }
       if (sp.status) { var tg4 = sp.target === 'allies' ? living : [pickTarget()]; tg4.forEach(function (t6) { if (addStatus(t6, sp.status, undefined, true)) msg(t6.name + 'は' + STATUS_NAME[sp.status.id] + '状態になった'); }); }
@@ -492,7 +505,20 @@
   var ULT_K = { attackEnemy: function (b, a, t, p, o, ev) { return attackEnemy(b, a, t, p, o, ev); }, addStatus: function (t, st) { return addStatus(t, st, st.chance, false); }, aliveEnemies: aliveEnemies, aliveParty: aliveParty,
     beginGroup: beginGroup, endGroup: endGroup, maxMp: function (a) { return Actors.stats(a).maxMp; }, maxHp: function (a) { return Actors.stats(a).maxHp; }, atkOf: function (a) { return pstats(a).atk; }, defOf: function (e) { return estats(e).def; }, statusName: function (id) { return STATUS_NAME[id] || id; } };
   Combat._ultK = ULT_K;
-  function killEnemy(b, e, ev) { e.dead = true; ev.push({ type: 'enemy_dead', idx: e.idx }); ev.push({ type: 'msg', text: e.name + 'を倒した！' }); }
+  function killEnemy(b, e, ev) { e.dead = true; ev.push({ type: 'enemy_dead', idx: e.idx }); ev.push({ type: 'msg', text: e.name + 'を倒した！' }); if (e.stolen > 0 && root.State && root.State.data) { root.State.data.gold = (root.State.data.gold || 0) + e.stolen; ev.push({ type: 'msg', text: '奪われた' + e.stolen + 'Gを取り返した！' }); e.stolen = 0; } }
+  /* v7.5 敵がお金を奪う（js/data/enemies-add35.js の steal：{ rate, cap, battleCap }）
+     ・対象は所持金（State.data.gold）だけ。1回で「所持金 × rate」と cap の小さいほう。1回の戦闘で奪われるのは合わせて battleCap（なければ cap の2倍）まで
+     ・奪ったお金は、その敵が持つ（e.stolen）。その戦闘で倒せば全部戻る。その敵が逃げた・味方が逃げた・全滅したときは戻らない */
+  function stealGold(b, e, st, ev) {
+    var d = root.State && root.State.data; if (!d || !st) return 0;
+    var room = Math.max(0, (st.battleCap || st.cap * 2) - (b.stolenTotal || 0));
+    var amt = Math.max(0, Math.min(Math.floor((d.gold || 0) * st.rate), st.cap, room));
+    if (amt <= 0) { ev.push({ type: 'msg', text: (room <= 0 ? e.name + 'はもう奪えるお金を探している……' : e.name + 'は財布を探ったが、何も取れなかった') }); return 0; }
+    d.gold -= amt; e.stolen = (e.stolen || 0) + amt; b.stolenTotal = (b.stolenTotal || 0) + amt;
+    ev.push({ type: 'msg', text: e.name + 'は' + amt + 'Gを奪った！（この戦闘で倒せば取り返せる）' });
+    return amt;
+  }
+  Combat.stealGold = stealGold;
   function killActor(t, ev) { t.dead = true; t.status = {}; t.buffs = {}; ev.push({ type: 'actor_dead', id: t.id }); ev.push({ type: 'msg', text: t.name + 'は倒れた……' }); }
 
   function endOfTurn(b, ev) {

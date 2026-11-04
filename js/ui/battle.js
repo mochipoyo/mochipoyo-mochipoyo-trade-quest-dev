@@ -177,7 +177,8 @@
     if (top > 0) { var avail = H * 0.56 - top - 22; if (avail > 40) f = Math.min(f, avail / (h + lift0)); }
     w = Math.round(w * f); h = Math.round(h * f);
     var lift = Math.round(lift0 * f);   // 飛ぶ敵（新しい画像のデータの lift）
-    return { x: slot * (i + 1) - w / 2, y: H * 0.56 - h - lift, w: w, h: h, size: w, slot: slot, smooth: v.smooth || f !== 1, lift: lift };
+    var foot = Math.round((v.foot || 0) * h);   // v7.5 追加の35体：絵の下端から足もとまで（足もとを地面の線に合わせる）
+    return { x: slot * (i + 1) - w / 2, y: H * 0.56 - h - lift + foot, w: w, h: h, size: w, slot: slot, smooth: v.smooth || f !== 1, lift: lift, foot: foot };
   };
   // v6.5 Phase C 演出の位置：'e:番号'＝敵の絵の中心、'p:id'＝味方（画面下・欄の上）
   BattleScene.prototype.posOf = function (k, W, H) {
@@ -244,7 +245,7 @@
       ctx.translate(cx, cy); ctx.scale(breathe, dying && !e.fled ? Math.max(0.05, 1 - dying.t / dying.dur) * breathe : breathe); ctx.translate(-cx, -cy);
       // 影
       if (!by3d) {
-        var lf = r.lift || 0; ctx.fillStyle = lf ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(cx, y + hh + 2 + lf, size * (lf ? 0.28 : 0.38), lf ? 4 : 6, 0, 0, Math.PI * 2); ctx.fill();
+        var lf = r.lift || 0; ctx.fillStyle = lf ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(cx, y + hh + 2 + lf - (r.foot || 0), size * (lf ? 0.28 : 0.38), lf ? 4 : 6, 0, 0, Math.PI * 2); ctx.fill();
         ctx.imageSmoothingEnabled = !!r.smooth; if (r.smooth) ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(img, Math.round(x), Math.round(y + bob), size, hh);
         var hf = self.anims.filter(function (a) { return a.type === 'hitflash' && a.idx === i; })[0];

@@ -174,7 +174,7 @@ export class BattleActors3D {
       const boss = !!ent.e.boss; const crowd = this.scene && this.scene.b.enemies.length >= 4 ? 0.82 : 1;
       const hgt = Math.max(0.9, Math.min(boss ? 6.2 : 3.8, v.h * PX2W * (boss ? 1.25 : 1.0) * crowd));
       ent.art = buildArtVolume(src, { height: hgt, aspect: av.w / Math.max(1, av.h), smooth: av.smooth !== false, depth: 0.15 });
-      ent.lift = (v.lift || 0) * PX2W; ent.visImg = img; ent.source = v.source || null; ent.waitImg = null;
+      ent.lift = (v.lift || 0) * PX2W - (v.foot || 0) * hgt; ent.visImg = img; ent.source = v.source || null; ent.waitImg = null;   // v7.5 foot：絵の下端から足もとまで（足もとを地面に合わせる。浮かない敵は 0 以下）
       const g = new THREE.Group(); g.name = 'enemy_' + ent.i; g.add(ent.art.mesh); ent.group = g; ent.art.mesh.position.y = ent.lift;
       const shadow = new THREE.Mesh(new THREE.CircleGeometry(1, 28), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.32, depthWrite: false })); shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.02;
       shadow.scale.set(ent.art.size.w * 0.42, ent.art.size.w * 0.16 + 0.15, 1); g.add(shadow); ent.shadow = shadow;

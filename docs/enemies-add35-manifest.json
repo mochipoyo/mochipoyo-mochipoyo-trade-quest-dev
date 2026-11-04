@@ -1,0 +1,1622 @@
+{
+  "schema": "tradequest.enemy_asset_pack.v1",
+  "pack_id": "tradequest_extra_enemies_35_20261104",
+  "created_date_jst": "2026-11-04",
+  "asset_count": 35,
+  "expected_asset_count": 35,
+  "description_ja": "通常敵追加用の静止画戦闘素材。現行リポジトリの敵ID・出現マップとの照合は未実施。",
+  "proposed_game_data_only": true,
+  "recommended_runtime_format": "webp",
+  "enemies": [
+    {
+      "pack_number": 1,
+      "id": "tq_add_cyber_human",
+      "name_ja": "サイバーヒューマン",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "machine",
+      "files": {
+        "png": "assets/png/001_tq_add_cyber_human.png",
+        "webp": "assets/webp/001_tq_add_cyber_human.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          258,
+          123,
+          762,
+          900
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49805,
+          0.87891
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "late",
+      "suggested_combat_role": "機械・雷",
+      "suggested_area_theme": "未来都市・AI支配地域",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 2,
+      "id": "tq_add_boredom_imp",
+      "name_ja": "飽性の小悪魔",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "demon",
+      "files": {
+        "png": "assets/png/002_tq_add_boredom_imp.png",
+        "webp": "assets/webp/002_tq_add_boredom_imp.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          139,
+          115,
+          839,
+          908
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.47754,
+          0.88672
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "early",
+      "suggested_combat_role": "闇・妨害",
+      "suggested_area_theme": "森・洞窟",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 3,
+      "id": "tq_add_wakame_head",
+      "name_ja": "ワカメ頭",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "plant",
+      "files": {
+        "png": "assets/png/003_tq_add_wakame_head.png",
+        "webp": "assets/webp/003_tq_add_wakame_head.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          161,
+          178,
+          871,
+          844
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.50391,
+          0.82422
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "early",
+      "suggested_combat_role": "水・拘束",
+      "suggested_area_theme": "海岸・湿地",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 4,
+      "id": "tq_add_bullish_slime",
+      "name_ja": "陽線スライム",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "slime",
+      "files": {
+        "png": "assets/png/004_tq_add_bullish_slime.png",
+        "webp": "assets/webp/004_tq_add_bullish_slime.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          147,
+          188,
+          877,
+          811
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.5,
+          0.79199
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "early",
+      "suggested_combat_role": "炎・強化",
+      "suggested_area_theme": "序盤の平原・相場都市周辺",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 5,
+      "id": "tq_add_bearish_slime",
+      "name_ja": "陰線スライム",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "slime",
+      "files": {
+        "png": "assets/png/005_tq_add_bearish_slime.png",
+        "webp": "assets/webp/005_tq_add_bearish_slime.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          142,
+          181,
+          882,
+          804
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.5,
+          0.78516
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "early",
+      "suggested_combat_role": "氷・弱体",
+      "suggested_area_theme": "序盤の平原・相場都市周辺",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 6,
+      "id": "tq_add_simplicity_acolyte",
+      "name_ja": "シンプル教の信徒",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "human",
+      "files": {
+        "png": "assets/png/006_tq_add_simplicity_acolyte.png",
+        "webp": "assets/webp/006_tq_add_simplicity_acolyte.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          276,
+          129,
+          703,
+          899
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.47803,
+          0.87793
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "early",
+      "suggested_combat_role": "精神・強化",
+      "suggested_area_theme": "街道・修道院風遺跡",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 7,
+      "id": "tq_add_stoploss_zombie",
+      "name_ja": "損切りゾンビ",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "undead",
+      "files": {
+        "png": "assets/png/007_tq_add_stoploss_zombie.png",
+        "webp": "assets/webp/007_tq_add_stoploss_zombie.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          169,
+          170,
+          860,
+          877
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.50244,
+          0.85645
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "early",
+      "suggested_combat_role": "闇・弱体",
+      "suggested_area_theme": "墓地・廃市街",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 8,
+      "id": "tq_add_averaging_goblin",
+      "name_ja": "ナンピンゴブリン",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "goblin",
+      "files": {
+        "png": "assets/png/008_tq_add_averaging_goblin.png",
+        "webp": "assets/webp/008_tq_add_averaging_goblin.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          180,
+          158,
+          829,
+          883
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49268,
+          0.8623
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "early",
+      "suggested_combat_role": "物理・自己強化",
+      "suggested_area_theme": "山道・鉱山",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 9,
+      "id": "tq_add_full_leverage_ogre",
+      "name_ja": "フルレバオーガ",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "ogre",
+      "files": {
+        "png": "assets/png/009_tq_add_full_leverage_ogre.png",
+        "webp": "assets/webp/009_tq_add_full_leverage_ogre.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          116,
+          139,
+          902,
+          885
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49707,
+          0.86426
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "物理・高火力",
+      "suggested_area_theme": "砦・荒野",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 10,
+      "id": "tq_add_contrarian_bat",
+      "name_ja": "逆張りバット",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "beast",
+      "files": {
+        "png": "assets/png/010_tq_add_contrarian_bat.png",
+        "webp": "assets/webp/010_tq_add_contrarian_bat.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          143,
+          152,
+          889,
+          869
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.50391,
+          0.84863
+        ]
+      },
+      "floating": true,
+      "suggested_stage": "early",
+      "suggested_combat_role": "風・反撃",
+      "suggested_area_theme": "洞窟・山道",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 11,
+      "id": "tq_add_boom_bust_knight",
+      "name_ja": "コツコツドカンナイト",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "armored",
+      "files": {
+        "png": "assets/png/011_tq_add_boom_bust_knight.png",
+        "webp": "assets/webp/011_tq_add_boom_bust_knight.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          139,
+          157,
+          882,
+          871
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49854,
+          0.85059
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "物理・溜め攻撃",
+      "suggested_area_theme": "城塞・廃城",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 12,
+      "id": "tq_add_overtrading_phantom",
+      "name_ja": "ポジポジファントム",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "spirit",
+      "files": {
+        "png": "assets/png/012_tq_add_overtrading_phantom.png",
+        "webp": "assets/webp/012_tq_add_overtrading_phantom.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          178,
+          146,
+          860,
+          889
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.50684,
+          0.86816
+        ]
+      },
+      "floating": true,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "闇・連続行動",
+      "suggested_area_theme": "廃市場・夜の街道",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 13,
+      "id": "tq_add_indicator_mage",
+      "name_ja": "インジ依存メイジ",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "mage",
+      "files": {
+        "png": "assets/png/013_tq_add_indicator_mage.png",
+        "webp": "assets/webp/013_tq_add_indicator_mage.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          169,
+          162,
+          821,
+          877
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.4834,
+          0.85645
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "魔法・妨害",
+      "suggested_area_theme": "研究塔・相場都市周辺",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 14,
+      "id": "tq_add_corrupt_politician",
+      "name_ja": "悪徳議員",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "human",
+      "files": {
+        "png": "assets/png/014_tq_add_corrupt_politician.png",
+        "webp": "assets/webp/014_tq_add_corrupt_politician.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          169,
+          132,
+          823,
+          897
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.48438,
+          0.87598
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "精神・買収",
+      "suggested_area_theme": "王都・行政区",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 15,
+      "id": "tq_add_slush_fund_bureaucrat",
+      "name_ja": "裏金官僚",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "human",
+      "files": {
+        "png": "assets/png/015_tq_add_slush_fund_bureaucrat.png",
+        "webp": "assets/webp/015_tq_add_slush_fund_bureaucrat.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          258,
+          121,
+          765,
+          907
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49951,
+          0.88574
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "精神・資金操作",
+      "suggested_area_theme": "行政区・地下金庫",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 16,
+      "id": "tq_add_corrupt_mayor",
+      "name_ja": "汚職市長",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "human",
+      "files": {
+        "png": "assets/png/016_tq_add_corrupt_mayor.png",
+        "webp": "assets/webp/016_tq_add_corrupt_mayor.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          160,
+          130,
+          856,
+          899
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49609,
+          0.87793
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "物理・召喚",
+      "suggested_area_theme": "地方都市・市庁舎",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 17,
+      "id": "tq_add_propaganda_host",
+      "name_ja": "洗脳メディア司会者",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "human",
+      "files": {
+        "png": "assets/png/017_tq_add_propaganda_host.png",
+        "webp": "assets/webp/017_tq_add_propaganda_host.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          216,
+          121,
+          809,
+          903
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.50049,
+          0.88184
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "精神・混乱",
+      "suggested_area_theme": "電波塔・未来都市",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 18,
+      "id": "tq_add_robber",
+      "name_ja": "強盗",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "human",
+      "files": {
+        "png": "assets/png/018_tq_add_robber.png",
+        "webp": "assets/webp/018_tq_add_robber.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          184,
+          165,
+          793,
+          890
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.47705,
+          0.86914
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "early",
+      "suggested_combat_role": "物理・盗み",
+      "suggested_area_theme": "街道・山賊のアジト",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 19,
+      "id": "tq_add_loan_shark_enforcer",
+      "name_ja": "闇金取り立て屋",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "human",
+      "files": {
+        "png": "assets/png/019_tq_add_loan_shark_enforcer.png",
+        "webp": "assets/webp/019_tq_add_loan_shark_enforcer.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          223,
+          133,
+          799,
+          900
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49902,
+          0.87891
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "物理・資金奪取",
+      "suggested_area_theme": "裏路地・地下街",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 20,
+      "id": "tq_add_galantic_alien",
+      "name_ja": "ギャランティック星人",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "alien",
+      "files": {
+        "png": "assets/png/020_tq_add_galantic_alien.png",
+        "webp": "assets/webp/020_tq_add_galantic_alien.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          189,
+          127,
+          836,
+          900
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.50049,
+          0.87891
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "late",
+      "suggested_combat_role": "宇宙・魔法",
+      "suggested_area_theme": "異星遺跡・宇宙船",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 21,
+      "id": "tq_add_brainwashed_grey",
+      "name_ja": "洗脳グレイ",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "alien",
+      "files": {
+        "png": "assets/png/021_tq_add_brainwashed_grey.png",
+        "webp": "assets/webp/021_tq_add_brainwashed_grey.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          216,
+          127,
+          787,
+          893
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.48975,
+          0.87207
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "late",
+      "suggested_combat_role": "精神・混乱",
+      "suggested_area_theme": "異星研究所",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 22,
+      "id": "tq_add_reptile_human",
+      "name_ja": "レプタイプヒューマン",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "reptile",
+      "files": {
+        "png": "assets/png/022_tq_add_reptile_human.png",
+        "webp": "assets/webp/022_tq_add_reptile_human.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          229,
+          116,
+          795,
+          908
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.5,
+          0.88672
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "late",
+      "suggested_combat_role": "毒・幻惑",
+      "suggested_area_theme": "未来都市・地下施設",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 23,
+      "id": "tq_add_alien_invasion_merchant",
+      "name_ja": "侵略宇宙商人",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "alien",
+      "files": {
+        "png": "assets/png/023_tq_add_alien_invasion_merchant.png",
+        "webp": "assets/webp/023_tq_add_alien_invasion_merchant.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          124,
+          127,
+          899,
+          891
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49951,
+          0.87012
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "late",
+      "suggested_combat_role": "宇宙・買収",
+      "suggested_area_theme": "宇宙交易港・異界市場",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 24,
+      "id": "tq_add_forgetful_samurai",
+      "name_ja": "失念の戦国侍",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "human",
+      "files": {
+        "png": "assets/png/024_tq_add_forgetful_samurai.png",
+        "webp": "assets/webp/024_tq_add_forgetful_samurai.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          270,
+          124,
+          720,
+          900
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.4834,
+          0.87891
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "物理・空振り",
+      "suggested_area_theme": "古戦場・和風遺跡",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 25,
+      "id": "tq_add_earth1992_invader",
+      "name_ja": "地球1992からの侵略者",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "alien",
+      "files": {
+        "png": "assets/png/025_tq_add_earth1992_invader.png",
+        "webp": "assets/webp/025_tq_add_earth1992_invader.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          232,
+          127,
+          708,
+          886
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.45898,
+          0.86523
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "late",
+      "suggested_combat_role": "機械・時空",
+      "suggested_area_theme": "時空断層・旧文明施設",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 26,
+      "id": "tq_add_one_who_stopped_learning",
+      "name_ja": "学びを辞めた者",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "human",
+      "files": {
+        "png": "assets/png/026_tq_add_one_who_stopped_learning.png",
+        "webp": "assets/webp/026_tq_add_one_who_stopped_learning.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          270,
+          127,
+          754,
+          894
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.5,
+          0.87305
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "精神・防御",
+      "suggested_area_theme": "廃学院・図書遺跡",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 27,
+      "id": "tq_add_ungrateful_ghost",
+      "name_ja": "感謝を忘れた亡霊",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "spirit",
+      "files": {
+        "png": "assets/png/027_tq_add_ungrateful_ghost.png",
+        "webp": "assets/webp/027_tq_add_ungrateful_ghost.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          190,
+          120,
+          828,
+          906
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49707,
+          0.88477
+        ]
+      },
+      "floating": true,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "闇・吸収",
+      "suggested_area_theme": "墓地・廃屋",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 28,
+      "id": "tq_add_glutton_arienti",
+      "name_ja": "大喰らいのアリエンティ",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "alien",
+      "files": {
+        "png": "assets/png/028_tq_add_glutton_arienti.png",
+        "webp": "assets/webp/028_tq_add_glutton_arienti.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          128,
+          117,
+          898,
+          900
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.50098,
+          0.87891
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "物理・捕食",
+      "suggested_area_theme": "異界・食糧倉庫",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 29,
+      "id": "tq_add_population_control_drone",
+      "name_ja": "人口調整用ドローン",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "machine",
+      "files": {
+        "png": "assets/png/029_tq_add_population_control_drone.png",
+        "webp": "assets/webp/029_tq_add_population_control_drone.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          139,
+          176,
+          889,
+          825
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.50195,
+          0.80566
+        ]
+      },
+      "floating": true,
+      "suggested_stage": "late",
+      "suggested_combat_role": "機械・範囲攻撃",
+      "suggested_area_theme": "AI統治区域・軍事施設",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 30,
+      "id": "tq_add_betrayal_troll",
+      "name_ja": "裏切りトロール",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "troll",
+      "files": {
+        "png": "assets/png/030_tq_add_betrayal_troll.png",
+        "webp": "assets/webp/030_tq_add_betrayal_troll.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          139,
+          131,
+          875,
+          896
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49512,
+          0.875
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "物理・不意打ち",
+      "suggested_area_theme": "森林・吊り橋",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 31,
+      "id": "tq_add_fool_of_desire",
+      "name_ja": "肉欲の愚者",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "demon",
+      "files": {
+        "png": "assets/png/031_tq_add_fool_of_desire.png",
+        "webp": "assets/webp/031_tq_add_fool_of_desire.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          139,
+          115,
+          871,
+          902
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49316,
+          0.88086
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "精神・魅了",
+      "suggested_area_theme": "歓楽街・魔物の城",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 32,
+      "id": "tq_add_blinded_by_greed",
+      "name_ja": "貪欲の盲者",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "demon",
+      "files": {
+        "png": "assets/png/032_tq_add_blinded_by_greed.png",
+        "webp": "assets/webp/032_tq_add_blinded_by_greed.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          124,
+          122,
+          904,
+          906
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.50195,
+          0.88477
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "物理・資金奪取",
+      "suggested_area_theme": "金庫・財宝洞窟",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 33,
+      "id": "tq_add_cursed_one",
+      "name_ja": "祟られ人",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "cursed",
+      "files": {
+        "png": "assets/png/033_tq_add_cursed_one.png",
+        "webp": "assets/webp/033_tq_add_cursed_one.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          209,
+          143,
+          805,
+          891
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49512,
+          0.87012
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "闇・呪い",
+      "suggested_area_theme": "祠・呪われた村",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 34,
+      "id": "tq_add_keyboard_crushers",
+      "name_ja": "キーボードクラッシャーズ",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "goblin",
+      "files": {
+        "png": "assets/png/034_tq_add_keyboard_crushers.png",
+        "webp": "assets/webp/034_tq_add_keyboard_crushers.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          149,
+          172,
+          871,
+          873
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.49805,
+          0.85254
+        ]
+      },
+      "floating": false,
+      "suggested_stage": "mid",
+      "suggested_combat_role": "物理・連撃",
+      "suggested_area_theme": "電脳区域・廃オフィス",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    },
+    {
+      "pack_number": 35,
+      "id": "tq_add_ai_surveillance_drone",
+      "name_ja": "人間監視用AIドローン",
+      "kind": "normal_enemy",
+      "asset_type": "static_2d_battle_sprite",
+      "family": "machine",
+      "files": {
+        "png": "assets/png/035_tq_add_ai_surveillance_drone.png",
+        "webp": "assets/webp/035_tq_add_ai_surveillance_drone.webp"
+      },
+      "dimensions": {
+        "png": [
+          1600,
+          1600
+        ],
+        "webp": [
+          1024,
+          1024
+        ]
+      },
+      "visible_bbox": {
+        "format": "left_top_right_bottom_exclusive",
+        "reference": "webp",
+        "alpha_threshold": 32,
+        "pixels": [
+          159,
+          166,
+          865,
+          854
+        ]
+      },
+      "ground_anchor": {
+        "reference": "webp",
+        "normalized": [
+          0.5,
+          0.83398
+        ]
+      },
+      "floating": true,
+      "suggested_stage": "late",
+      "suggested_combat_role": "機械・索敵",
+      "suggested_area_theme": "未来都市・監視塔",
+      "integration_status": "not_integrated",
+      "existing_id_checked": false
+    }
+  ]
+}

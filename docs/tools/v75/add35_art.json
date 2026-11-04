@@ -1,0 +1,1262 @@
+[
+ {
+  "no": 1,
+  "packId": "tq_add_cyber_human",
+  "id": "tq_add_cyber_human",
+  "reuse": false,
+  "name": "サイバーヒューマン",
+  "file": "assets/enemies_add35/001_tq_add_cyber_human.webp",
+  "sha256": "609fa9d148521c7ca122b6510c1cb6e138589e712885385f4199fac6594f81a3",
+  "bytes": 76864,
+  "ref": 1024,
+  "bbox": [
+   250,
+   115,
+   520,
+   793
+  ],
+  "visible": [
+   258,
+   123,
+   504,
+   777
+  ],
+  "anchor": [
+   510.0,
+   900.0
+  ],
+  "size": "normal",
+  "draw": [
+   96,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0101,
+  "floating": false,
+  "family": "machine"
+ },
+ {
+  "no": 2,
+  "packId": "tq_add_boredom_imp",
+  "id": "tq_add_boredom_imp",
+  "reuse": false,
+  "name": "飽性の小悪魔",
+  "file": "assets/enemies_add35/002_tq_add_boredom_imp.webp",
+  "sha256": "90c9fe297970dea39eb438217feb568f2bc22aac3be697637c127f51ab554a7a",
+  "bytes": 143338,
+  "ref": 1024,
+  "bbox": [
+   131,
+   107,
+   716,
+   809
+  ],
+  "visible": [
+   139,
+   115,
+   700,
+   793
+  ],
+  "anchor": [
+   489.0,
+   908.0
+  ],
+  "size": "small",
+  "draw": [
+   107,
+   120
+  ],
+  "lift": 0,
+  "foot": 0.0099,
+  "floating": false,
+  "family": "demon"
+ },
+ {
+  "no": 3,
+  "packId": "tq_add_wakame_head",
+  "id": "tq_add_wakame_head",
+  "reuse": false,
+  "name": "ワカメ頭",
+  "file": "assets/enemies_add35/003_tq_add_wakame_head.webp",
+  "sha256": "7deae5e1b21a5394189cb189193b890765f2a77838a569361cddddb76ee9d84c",
+  "bytes": 146752,
+  "ref": 1024,
+  "bbox": [
+   153,
+   170,
+   726,
+   682
+  ],
+  "visible": [
+   161,
+   178,
+   710,
+   666
+  ],
+  "anchor": [
+   516.0,
+   844.0
+  ],
+  "size": "small",
+  "draw": [
+   129,
+   121
+  ],
+  "lift": 0,
+  "foot": 0.0117,
+  "floating": false,
+  "family": "plant"
+ },
+ {
+  "no": 4,
+  "packId": "tq_add_bullish_slime",
+  "id": "yosen_slime",
+  "reuse": true,
+  "name": "陽線スライム",
+  "file": "assets/enemies_add35/004_tq_add_bullish_slime.webp",
+  "sha256": "7ef1984ce34f941ee42e97159e9f3ef67ed7945ad0233892f21bebcac49925b8",
+  "bytes": 91564,
+  "ref": 1024,
+  "bbox": [
+   139,
+   180,
+   746,
+   639
+  ],
+  "visible": [
+   147,
+   188,
+   730,
+   623
+  ],
+  "anchor": [
+   512.0,
+   811.0
+  ],
+  "size": "small",
+  "draw": [
+   141,
+   121
+  ],
+  "lift": 0,
+  "foot": 0.0125,
+  "floating": false,
+  "family": "slime"
+ },
+ {
+  "no": 5,
+  "packId": "tq_add_bearish_slime",
+  "id": "insen_slime",
+  "reuse": true,
+  "name": "陰線スライム",
+  "file": "assets/enemies_add35/005_tq_add_bearish_slime.webp",
+  "sha256": "afdda0919442bd6a16066ab0544fb82baf257829fb7e97c336c128e19c718f71",
+  "bytes": 83760,
+  "ref": 1024,
+  "bbox": [
+   134,
+   173,
+   756,
+   639
+  ],
+  "visible": [
+   142,
+   181,
+   740,
+   623
+  ],
+  "anchor": [
+   512.0,
+   804.0
+  ],
+  "size": "small",
+  "draw": [
+   143,
+   121
+  ],
+  "lift": 0,
+  "foot": 0.0125,
+  "floating": false,
+  "family": "slime"
+ },
+ {
+  "no": 6,
+  "packId": "tq_add_simplicity_acolyte",
+  "id": "simple_cultist",
+  "reuse": true,
+  "name": "シンプル教の信徒",
+  "file": "assets/enemies_add35/006_tq_add_simplicity_acolyte.webp",
+  "sha256": "8c822b17b568f7378439df2a9c3951356ace6e90fee835e764c0fb9fb89cb599",
+  "bytes": 77094,
+  "ref": 1024,
+  "bbox": [
+   268,
+   121,
+   443,
+   786
+  ],
+  "visible": [
+   276,
+   129,
+   427,
+   770
+  ],
+  "anchor": [
+   489.5,
+   899.0
+  ],
+  "size": "normal",
+  "draw": [
+   83,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0102,
+  "floating": false,
+  "family": "human"
+ },
+ {
+  "no": 7,
+  "packId": "tq_add_stoploss_zombie",
+  "id": "stoploss_zombie",
+  "reuse": true,
+  "name": "損切りゾンビ",
+  "file": "assets/enemies_add35/007_tq_add_stoploss_zombie.webp",
+  "sha256": "22f4ad66a78a75545996948f98048df08daff3503e6245eabbcd21bb6b37880f",
+  "bytes": 159138,
+  "ref": 1024,
+  "bbox": [
+   161,
+   162,
+   707,
+   723
+  ],
+  "visible": [
+   169,
+   170,
+   691,
+   707
+  ],
+  "anchor": [
+   514.5,
+   877.0
+  ],
+  "size": "normal",
+  "draw": [
+   144,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0111,
+  "floating": false,
+  "family": "undead"
+ },
+ {
+  "no": 8,
+  "packId": "tq_add_averaging_goblin",
+  "id": "nanpin_goblin",
+  "reuse": true,
+  "name": "ナンピンゴブリン",
+  "file": "assets/enemies_add35/008_tq_add_averaging_goblin.webp",
+  "sha256": "a14215c192412b11494d68d607f54cc949b6665422074f5b587cb940ebe55ad1",
+  "bytes": 109782,
+  "ref": 1024,
+  "bbox": [
+   172,
+   150,
+   665,
+   741
+  ],
+  "visible": [
+   180,
+   158,
+   649,
+   725
+  ],
+  "anchor": [
+   504.5,
+   883.0
+  ],
+  "size": "small",
+  "draw": [
+   108,
+   121
+  ],
+  "lift": 0,
+  "foot": 0.0108,
+  "floating": false,
+  "family": "goblin"
+ },
+ {
+  "no": 9,
+  "packId": "tq_add_full_leverage_ogre",
+  "id": "fullleva_ogre",
+  "reuse": true,
+  "name": "フルレバオーガ",
+  "file": "assets/enemies_add35/009_tq_add_full_leverage_ogre.webp",
+  "sha256": "5430e36a911673fc24d69e3cec7638e579a7c825990845d335ea965f7835e580",
+  "bytes": 143818,
+  "ref": 1024,
+  "bbox": [
+   108,
+   131,
+   802,
+   762
+  ],
+  "visible": [
+   116,
+   139,
+   786,
+   746
+  ],
+  "anchor": [
+   509.0,
+   885.0
+  ],
+  "size": "big",
+  "draw": [
+   183,
+   174
+  ],
+  "lift": 0,
+  "foot": 0.0105,
+  "floating": false,
+  "family": "ogre"
+ },
+ {
+  "no": 10,
+  "packId": "tq_add_contrarian_bat",
+  "id": "contrarian_bat",
+  "reuse": true,
+  "name": "逆張りバット",
+  "file": "assets/enemies_add35/010_tq_add_contrarian_bat.webp",
+  "sha256": "f28049ae7803dda7680d701bae9528282aa3ea52f3f83c701379f4951abfe149",
+  "bytes": 109538,
+  "ref": 1024,
+  "bbox": [
+   135,
+   144,
+   762,
+   733
+  ],
+  "visible": [
+   143,
+   152,
+   746,
+   717
+  ],
+  "anchor": [
+   516.0,
+   869.0
+  ],
+  "size": "small",
+  "draw": [
+   125,
+   121
+  ],
+  "lift": 12,
+  "foot": 0.0109,
+  "floating": true,
+  "family": "beast"
+ },
+ {
+  "no": 11,
+  "packId": "tq_add_boom_bust_knight",
+  "id": "kotsukotsu_knight",
+  "reuse": true,
+  "name": "コツコツドカンナイト",
+  "file": "assets/enemies_add35/011_tq_add_boom_bust_knight.webp",
+  "sha256": "ceaa6a4d67e98fdb3e40f0d3d1cb3000c227f969b25b8629756678b65ce59553",
+  "bytes": 124958,
+  "ref": 1024,
+  "bbox": [
+   131,
+   149,
+   759,
+   730
+  ],
+  "visible": [
+   139,
+   157,
+   743,
+   714
+  ],
+  "anchor": [
+   510.5,
+   871.0
+  ],
+  "size": "normal",
+  "draw": [
+   153,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.011,
+  "floating": false,
+  "family": "armored"
+ },
+ {
+  "no": 12,
+  "packId": "tq_add_overtrading_phantom",
+  "id": "pojipoji_phantom",
+  "reuse": true,
+  "name": "ポジポジファントム",
+  "file": "assets/enemies_add35/012_tq_add_overtrading_phantom.webp",
+  "sha256": "2fe65c046bf2ae8e4984d67faabf50cd7d2a2a4cb467b98ed692d374259c9953",
+  "bytes": 142146,
+  "ref": 1024,
+  "bbox": [
+   170,
+   138,
+   698,
+   759
+  ],
+  "visible": [
+   178,
+   146,
+   682,
+   743
+  ],
+  "anchor": [
+   519.0,
+   889.0
+  ],
+  "size": "normal",
+  "draw": [
+   135,
+   147
+  ],
+  "lift": 14,
+  "foot": 0.0105,
+  "floating": true,
+  "family": "spirit"
+ },
+ {
+  "no": 13,
+  "packId": "tq_add_indicator_mage",
+  "id": "indicator_mage",
+  "reuse": true,
+  "name": "インジ依存メイジ",
+  "file": "assets/enemies_add35/013_tq_add_indicator_mage.webp",
+  "sha256": "7c8cb3f49044e61532a15fd439680367243e68001bd4e7c1429d328209ecb36c",
+  "bytes": 147298,
+  "ref": 1024,
+  "bbox": [
+   161,
+   154,
+   668,
+   731
+  ],
+  "visible": [
+   169,
+   162,
+   652,
+   715
+  ],
+  "anchor": [
+   495.0,
+   877.0
+  ],
+  "size": "normal",
+  "draw": [
+   135,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0109,
+  "floating": false,
+  "family": "mage"
+ },
+ {
+  "no": 14,
+  "packId": "tq_add_corrupt_politician",
+  "id": "tq_add_corrupt_politician",
+  "reuse": false,
+  "name": "悪徳議員",
+  "file": "assets/enemies_add35/014_tq_add_corrupt_politician.webp",
+  "sha256": "101495b2c43525509fe3758d7f621140b6b787466076f93b42df9e92c8cd43e7",
+  "bytes": 83214,
+  "ref": 1024,
+  "bbox": [
+   161,
+   124,
+   670,
+   781
+  ],
+  "visible": [
+   169,
+   132,
+   654,
+   765
+  ],
+  "anchor": [
+   496.0,
+   897.0
+  ],
+  "size": "normal",
+  "draw": [
+   126,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0102,
+  "floating": false,
+  "family": "human"
+ },
+ {
+  "no": 15,
+  "packId": "tq_add_slush_fund_bureaucrat",
+  "id": "tq_add_slush_fund_bureaucrat",
+  "reuse": false,
+  "name": "裏金官僚",
+  "file": "assets/enemies_add35/015_tq_add_slush_fund_bureaucrat.webp",
+  "sha256": "c63d58e909a15338093b7304a4543fd267713a94035ae13cf85a5a164a8f2a13",
+  "bytes": 69660,
+  "ref": 1024,
+  "bbox": [
+   250,
+   113,
+   523,
+   802
+  ],
+  "visible": [
+   258,
+   121,
+   507,
+   786
+  ],
+  "anchor": [
+   511.5,
+   907.0
+  ],
+  "size": "normal",
+  "draw": [
+   96,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.01,
+  "floating": false,
+  "family": "human"
+ },
+ {
+  "no": 16,
+  "packId": "tq_add_corrupt_mayor",
+  "id": "tq_add_corrupt_mayor",
+  "reuse": false,
+  "name": "汚職市長",
+  "file": "assets/enemies_add35/016_tq_add_corrupt_mayor.webp",
+  "sha256": "5463913a08915c94b1ecc10ab30c0014ea6be498f378feb16a1d0a039a491ff0",
+  "bytes": 120374,
+  "ref": 1024,
+  "bbox": [
+   152,
+   122,
+   712,
+   785
+  ],
+  "visible": [
+   160,
+   130,
+   696,
+   769
+  ],
+  "anchor": [
+   508.0,
+   899.0
+  ],
+  "size": "normal",
+  "draw": [
+   133,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0102,
+  "floating": false,
+  "family": "human"
+ },
+ {
+  "no": 17,
+  "packId": "tq_add_propaganda_host",
+  "id": "tq_add_propaganda_host",
+  "reuse": false,
+  "name": "洗脳メディア司会者",
+  "file": "assets/enemies_add35/017_tq_add_propaganda_host.webp",
+  "sha256": "24b0e65d67b5c2c6a096a0536f412e94c34059a0852b4e644ecf0fcacc79d1fe",
+  "bytes": 107060,
+  "ref": 1024,
+  "bbox": [
+   208,
+   113,
+   609,
+   798
+  ],
+  "visible": [
+   216,
+   121,
+   593,
+   782
+  ],
+  "anchor": [
+   512.5,
+   903.0
+  ],
+  "size": "normal",
+  "draw": [
+   112,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.01,
+  "floating": false,
+  "family": "human"
+ },
+ {
+  "no": 18,
+  "packId": "tq_add_robber",
+  "id": "tq_add_robber",
+  "reuse": false,
+  "name": "強盗",
+  "file": "assets/enemies_add35/018_tq_add_robber.webp",
+  "sha256": "07ed64ab23680d774fb5e6bbd3c0c99d79f659688314e7bf490330573715a1f4",
+  "bytes": 96212,
+  "ref": 1024,
+  "bbox": [
+   176,
+   157,
+   625,
+   741
+  ],
+  "visible": [
+   184,
+   165,
+   609,
+   725
+  ],
+  "anchor": [
+   488.5,
+   890.0
+  ],
+  "size": "normal",
+  "draw": [
+   124,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0108,
+  "floating": false,
+  "family": "human"
+ },
+ {
+  "no": 19,
+  "packId": "tq_add_loan_shark_enforcer",
+  "id": "tq_add_loan_shark_enforcer",
+  "reuse": false,
+  "name": "闇金取り立て屋",
+  "file": "assets/enemies_add35/019_tq_add_loan_shark_enforcer.webp",
+  "sha256": "e6393b9530ea01537dea96615164fccdcd155944fe6c2b5e90ce6a14117fa21c",
+  "bytes": 81510,
+  "ref": 1024,
+  "bbox": [
+   215,
+   125,
+   592,
+   783
+  ],
+  "visible": [
+   223,
+   133,
+   576,
+   767
+  ],
+  "anchor": [
+   511.0,
+   900.0
+  ],
+  "size": "normal",
+  "draw": [
+   111,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0102,
+  "floating": false,
+  "family": "human"
+ },
+ {
+  "no": 20,
+  "packId": "tq_add_galantic_alien",
+  "id": "tq_add_galantic_alien",
+  "reuse": false,
+  "name": "ギャランティック星人",
+  "file": "assets/enemies_add35/020_tq_add_galantic_alien.webp",
+  "sha256": "045d8141748ea5038906a29daacddb45e5cbc457943a9c2848b8bc4c00eea00f",
+  "bytes": 138046,
+  "ref": 1024,
+  "bbox": [
+   181,
+   119,
+   663,
+   789
+  ],
+  "visible": [
+   189,
+   127,
+   647,
+   773
+  ],
+  "anchor": [
+   512.5,
+   900.0
+  ],
+  "size": "normal",
+  "draw": [
+   124,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0101,
+  "floating": false,
+  "family": "alien"
+ },
+ {
+  "no": 21,
+  "packId": "tq_add_brainwashed_grey",
+  "id": "tq_add_brainwashed_grey",
+  "reuse": false,
+  "name": "洗脳グレイ",
+  "file": "assets/enemies_add35/021_tq_add_brainwashed_grey.webp",
+  "sha256": "454ffde1467debe79a518588e83098bff6abf6759a380b2b05fca63755d65701",
+  "bytes": 81424,
+  "ref": 1024,
+  "bbox": [
+   208,
+   119,
+   587,
+   782
+  ],
+  "visible": [
+   216,
+   127,
+   571,
+   766
+  ],
+  "anchor": [
+   501.5,
+   893.0
+  ],
+  "size": "small",
+  "draw": [
+   90,
+   120
+  ],
+  "lift": 0,
+  "foot": 0.0102,
+  "floating": false,
+  "family": "alien"
+ },
+ {
+  "no": 22,
+  "packId": "tq_add_reptile_human",
+  "id": "tq_add_reptile_human",
+  "reuse": false,
+  "name": "レプタイプヒューマン",
+  "file": "assets/enemies_add35/022_tq_add_reptile_human.webp",
+  "sha256": "16634ea7058edffdd93218fdb2d267e2d04d35c6efcaf4b46c38a1526573f8d7",
+  "bytes": 100810,
+  "ref": 1024,
+  "bbox": [
+   221,
+   108,
+   582,
+   808
+  ],
+  "visible": [
+   229,
+   116,
+   566,
+   792
+  ],
+  "anchor": [
+   512.0,
+   908.0
+  ],
+  "size": "normal",
+  "draw": [
+   106,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0099,
+  "floating": false,
+  "family": "reptile"
+ },
+ {
+  "no": 23,
+  "packId": "tq_add_alien_invasion_merchant",
+  "id": "tq_add_alien_invasion_merchant",
+  "reuse": false,
+  "name": "侵略宇宙商人",
+  "file": "assets/enemies_add35/023_tq_add_alien_invasion_merchant.webp",
+  "sha256": "aa887062e192d0a7380d9d65728ad1faf6352a77f08eab7fd419638304f668ac",
+  "bytes": 176342,
+  "ref": 1024,
+  "bbox": [
+   116,
+   119,
+   791,
+   780
+  ],
+  "visible": [
+   124,
+   127,
+   775,
+   764
+  ],
+  "anchor": [
+   511.5,
+   891.0
+  ],
+  "size": "big",
+  "draw": [
+   176,
+   174
+  ],
+  "lift": 0,
+  "foot": 0.0103,
+  "floating": false,
+  "family": "alien"
+ },
+ {
+  "no": 24,
+  "packId": "tq_add_forgetful_samurai",
+  "id": "tq_add_forgetful_samurai",
+  "reuse": false,
+  "name": "失念の戦国侍",
+  "file": "assets/enemies_add35/024_tq_add_forgetful_samurai.webp",
+  "sha256": "c06d072d6e6569503f85d1b5043eaf4e8c7874cd817b1b1ba5c64679b19cd05f",
+  "bytes": 98822,
+  "ref": 1024,
+  "bbox": [
+   262,
+   116,
+   466,
+   792
+  ],
+  "visible": [
+   270,
+   124,
+   450,
+   776
+  ],
+  "anchor": [
+   495.0,
+   900.0
+  ],
+  "size": "normal",
+  "draw": [
+   86,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0101,
+  "floating": false,
+  "family": "human"
+ },
+ {
+  "no": 25,
+  "packId": "tq_add_earth1992_invader",
+  "id": "tq_add_earth1992_invader",
+  "reuse": false,
+  "name": "地球1992からの侵略者",
+  "file": "assets/enemies_add35/025_tq_add_earth1992_invader.webp",
+  "sha256": "0b1ad3cc358459fed48ca053f8448a4cffb76f7682ca1d0ec9785de2f12400cc",
+  "bytes": 83450,
+  "ref": 1024,
+  "bbox": [
+   224,
+   119,
+   492,
+   775
+  ],
+  "visible": [
+   232,
+   127,
+   476,
+   759
+  ],
+  "anchor": [
+   470.0,
+   886.0
+  ],
+  "size": "normal",
+  "draw": [
+   93,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0103,
+  "floating": false,
+  "family": "alien"
+ },
+ {
+  "no": 26,
+  "packId": "tq_add_one_who_stopped_learning",
+  "id": "tq_add_one_who_stopped_learning",
+  "reuse": false,
+  "name": "学びを辞めた者",
+  "file": "assets/enemies_add35/026_tq_add_one_who_stopped_learning.webp",
+  "sha256": "98229bcd9dbf9fbe051939a305f4bdf6301f864e11fd096360d78b6d568da635",
+  "bytes": 98876,
+  "ref": 1024,
+  "bbox": [
+   262,
+   119,
+   500,
+   783
+  ],
+  "visible": [
+   270,
+   127,
+   484,
+   767
+  ],
+  "anchor": [
+   512.0,
+   894.0
+  ],
+  "size": "normal",
+  "draw": [
+   94,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0102,
+  "floating": false,
+  "family": "human"
+ },
+ {
+  "no": 27,
+  "packId": "tq_add_ungrateful_ghost",
+  "id": "tq_add_ungrateful_ghost",
+  "reuse": false,
+  "name": "感謝を忘れた亡霊",
+  "file": "assets/enemies_add35/027_tq_add_ungrateful_ghost.webp",
+  "sha256": "397369353f8c7ad89c25f26b28b77f116a17af7059e27904b8815d5f7296cd3c",
+  "bytes": 148552,
+  "ref": 1024,
+  "bbox": [
+   182,
+   112,
+   654,
+   802
+  ],
+  "visible": [
+   190,
+   120,
+   638,
+   786
+  ],
+  "anchor": [
+   509.0,
+   906.0
+  ],
+  "size": "normal",
+  "draw": [
+   120,
+   147
+  ],
+  "lift": 14,
+  "foot": 0.01,
+  "floating": true,
+  "family": "spirit"
+ },
+ {
+  "no": 28,
+  "packId": "tq_add_glutton_arienti",
+  "id": "tq_add_glutton_arienti",
+  "reuse": false,
+  "name": "大喰らいのアリエンティ",
+  "file": "assets/enemies_add35/028_tq_add_glutton_arienti.webp",
+  "sha256": "1fccfc744e880ae8b26249ebe517d50f4a1162506fa93a05a0aac487d2ecd802",
+  "bytes": 134862,
+  "ref": 1024,
+  "bbox": [
+   120,
+   109,
+   786,
+   799
+  ],
+  "visible": [
+   128,
+   117,
+   770,
+   783
+  ],
+  "anchor": [
+   513.0,
+   900.0
+  ],
+  "size": "big",
+  "draw": [
+   171,
+   173
+  ],
+  "lift": 0,
+  "foot": 0.01,
+  "floating": false,
+  "family": "alien"
+ },
+ {
+  "no": 29,
+  "packId": "tq_add_population_control_drone",
+  "id": "tq_add_population_control_drone",
+  "reuse": false,
+  "name": "人口調整用ドローン",
+  "file": "assets/enemies_add35/029_tq_add_population_control_drone.webp",
+  "sha256": "474848c7c6af812d523bfade3b731c2277dd2d48a676715497046adec3d29dff",
+  "bytes": 96728,
+  "ref": 1024,
+  "bbox": [
+   131,
+   168,
+   766,
+   665
+  ],
+  "visible": [
+   139,
+   176,
+   750,
+   649
+  ],
+  "anchor": [
+   514.0,
+   825.0
+  ],
+  "size": "big",
+  "draw": [
+   201,
+   174
+  ],
+  "lift": 17,
+  "foot": 0.012,
+  "floating": true,
+  "family": "machine"
+ },
+ {
+  "no": 30,
+  "packId": "tq_add_betrayal_troll",
+  "id": "tq_add_betrayal_troll",
+  "reuse": false,
+  "name": "裏切りトロール",
+  "file": "assets/enemies_add35/030_tq_add_betrayal_troll.webp",
+  "sha256": "6078980ef6f77102d9dcef668de5aabb03f437655236ae7dcb5904bb6bb1b530",
+  "bytes": 150198,
+  "ref": 1024,
+  "bbox": [
+   131,
+   123,
+   752,
+   781
+  ],
+  "visible": [
+   139,
+   131,
+   736,
+   765
+  ],
+  "anchor": [
+   507.0,
+   896.0
+  ],
+  "size": "big",
+  "draw": [
+   167,
+   174
+  ],
+  "lift": 0,
+  "foot": 0.0102,
+  "floating": false,
+  "family": "troll"
+ },
+ {
+  "no": 31,
+  "packId": "tq_add_fool_of_desire",
+  "id": "tq_add_fool_of_desire",
+  "reuse": false,
+  "name": "肉欲の愚者",
+  "file": "assets/enemies_add35/031_tq_add_fool_of_desire.webp",
+  "sha256": "2339fc0902c1e6aa0ffe88332687ddba90f8b5447ea408fa38387d1d66e63d25",
+  "bytes": 125770,
+  "ref": 1024,
+  "bbox": [
+   131,
+   107,
+   748,
+   803
+  ],
+  "visible": [
+   139,
+   115,
+   732,
+   787
+  ],
+  "anchor": [
+   505.0,
+   902.0
+  ],
+  "size": "normal",
+  "draw": [
+   137,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.01,
+  "floating": false,
+  "family": "demon"
+ },
+ {
+  "no": 32,
+  "packId": "tq_add_blinded_by_greed",
+  "id": "tq_add_blinded_by_greed",
+  "reuse": false,
+  "name": "貪欲の盲者",
+  "file": "assets/enemies_add35/032_tq_add_blinded_by_greed.webp",
+  "sha256": "6c8dc229722a782da0e6cb34de5e1c0185e8dd267eee2a3656585cf52fbcc702",
+  "bytes": 177992,
+  "ref": 1024,
+  "bbox": [
+   116,
+   114,
+   796,
+   800
+  ],
+  "visible": [
+   124,
+   122,
+   780,
+   784
+  ],
+  "anchor": [
+   514.0,
+   906.0
+  ],
+  "size": "normal",
+  "draw": [
+   146,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.01,
+  "floating": false,
+  "family": "demon"
+ },
+ {
+  "no": 33,
+  "packId": "tq_add_cursed_one",
+  "id": "tq_add_cursed_one",
+  "reuse": false,
+  "name": "祟られ人",
+  "file": "assets/enemies_add35/033_tq_add_cursed_one.webp",
+  "sha256": "c3dc3fcd31dda7d743f55aa139e00f890b2981d8c193c3f9e5aac5178dc9e4cc",
+  "bytes": 140162,
+  "ref": 1024,
+  "bbox": [
+   201,
+   135,
+   612,
+   764
+  ],
+  "visible": [
+   209,
+   143,
+   596,
+   748
+  ],
+  "anchor": [
+   507.0,
+   891.0
+  ],
+  "size": "normal",
+  "draw": [
+   118,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0105,
+  "floating": false,
+  "family": "cursed"
+ },
+ {
+  "no": 34,
+  "packId": "tq_add_keyboard_crushers",
+  "id": "tq_add_keyboard_crushers",
+  "reuse": false,
+  "name": "キーボードクラッシャーズ",
+  "file": "assets/enemies_add35/034_tq_add_keyboard_crushers.webp",
+  "sha256": "78c5c5f4ee9c02bd13acba14aad1b04e50b0522481aa0827453d6b77eb6a899b",
+  "bytes": 153088,
+  "ref": 1024,
+  "bbox": [
+   141,
+   164,
+   738,
+   717
+  ],
+  "visible": [
+   149,
+   172,
+   722,
+   701
+  ],
+  "anchor": [
+   510.0,
+   873.0
+  ],
+  "size": "normal",
+  "draw": [
+   152,
+   147
+  ],
+  "lift": 0,
+  "foot": 0.0112,
+  "floating": false,
+  "family": "goblin"
+ },
+ {
+  "no": 35,
+  "packId": "tq_add_ai_surveillance_drone",
+  "id": "tq_add_ai_surveillance_drone",
+  "reuse": false,
+  "name": "人間監視用AIドローン",
+  "file": "assets/enemies_add35/035_tq_add_ai_surveillance_drone.webp",
+  "sha256": "99804057d0e8b36aa409938625c0c22f5df67ca7f3a6c8eec6e30e53baf1b75b",
+  "bytes": 58286,
+  "ref": 1024,
+  "bbox": [
+   151,
+   158,
+   722,
+   704
+  ],
+  "visible": [
+   159,
+   166,
+   706,
+   688
+  ],
+  "anchor": [
+   512.0,
+   854.0
+  ],
+  "size": "small",
+  "draw": [
+   124,
+   121
+  ],
+  "lift": 12,
+  "foot": 0.0114,
+  "floating": true,
+  "family": "machine"
+ }
+]

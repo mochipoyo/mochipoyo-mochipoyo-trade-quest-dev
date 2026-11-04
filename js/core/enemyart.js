@@ -9,12 +9,19 @@
    ・表示：不透明部分の外接矩形（データの bbox）で切り抜き、縦横比を保って基本サイズ（draw）にする。飛ぶ敵は lift だけ浮かせる
      高画質のために表示サイズの2倍までの解像度で1回だけ縮小して持つ（毎フレームの縮小を軽く）。持つのは最大 MAX 体ぶん（古いものから捨てる）
    ・切替：URL に ?enemyart=old（新しい名前・画像を使わない）／?enemyart=new。localStorage 'mtq-enemyart' でも同じ。セーブには保存しない
+   ・v7.5 追加の敵35体（js/data/enemies-add35.js の ENEMY_ADD35.list）も同じ仕組みで表示する。164体の表より優先（既存の敵と同じ人物の10体は、このパックの名前・画像になる）
+     画像は 1024px の透過WebP（ref: 1024。bbox は 1024px での範囲で、余白込み）。足もと（foot）を地面の線に合わせる。
+     新しい25体（tq_add_*）は以前の絵がないので、?enemyart=old でもこのパックの画像を使う（always）。
+     戦闘の直前は、このパックの画像を最大 TIMEOUT_ADD ms 待つ（マップに入ったときに先に読み始めるので、ふだんは待たない）
    ========================================================= */
 (function (root) {
   'use strict';
-  var EA = { ready: {}, failed: {}, pending: {}, order: [], MAX: 48, TIMEOUT: 1500, LS_KEY: 'mtq-enemyart', stats: { loads: 0, fails: 0 } };
-  var BY = {};
-  ((root.ENEMY_REDESIGN && root.ENEMY_REDESIGN.list) || []).forEach(function (r) { BY[r.id] = r; });
+  var EA = { ready: {}, failed: {}, pending: {}, order: [], MAX: 48, TIMEOUT: 1500, TIMEOUT_ADD: 4000, LS_KEY: 'mtq-enemyart', stats: { loads: 0, fails: 0 } };
+  var BY = {}, R164 = {};
+  ((root.ENEMY_REDESIGN && root.ENEMY_REDESIGN.list) || []).forEach(function (r) { BY[r.id] = r; R164[r.id] = r; });
+  // v7.5 追加の敵35体（既存の敵と同じ人物の10体は、164体の表の項目を置き換える）
+  ((root.ENEMY_ADD35 && root.ENEMY_ADD35.list) || []).forEach(function (r) { r.pack = 'add35'; r.always = !r.reuse; BY[r.id] = r; });
+  EA.redesign164 = function (id) { return R164[id] || null; };   // 164体の表の項目（記録用）
   function base() { return (root.Assets && root.Assets.base) || ''; }
 
   EA.mode = function () {
@@ -25,7 +32,8 @@
   EA.entry = function (id) { return BY[id] || null; };
   EA.ids = function () { return Object.keys(BY); };
   // 新しい名前・画像を使う敵か（保留の敵・切替で old のときは使わない）
-  EA.adopted = function (id) { var r = BY[id]; return !!(r && r.status === 'adopted' && r.file && EA.mode() !== 'old'); };
+  EA.adopted = function (id) { var r = BY[id]; return !!(r && r.status === 'adopted' && r.file && (EA.mode() !== 'old' || r.always)); };
+  EA.isAdd35 = function (id) { var r = BY[id]; return !!(r && r.pack === 'add35'); };
   EA.url = function (id) { var r = BY[id]; return EA.adopted(id) ? base() + r.file : null; };
 
   /* ---------- 表示名（読み込み時に1回。内部IDはそのまま） ---------- */
@@ -47,7 +55,7 @@
     while (EA.order.length > EA.MAX) { var k = -1; for (var i = 0; i < EA.order.length; i++) if (!keep[EA.order[i]]) { k = i; break; } if (k < 0) break; var id = EA.order.splice(k, 1)[0]; delete EA.ready[id]; }
   }
   function processImg(img, r) {
-    var bb = r.bbox, pad = 2; var W = img.naturalWidth, H = img.naturalHeight; var k = W / 512;   // 512px 版の bbox を、実際の画像の大きさに合わせる
+    var bb = r.bbox, pad = r.ref ? 0 : 2; var W = img.naturalWidth, H = img.naturalHeight; var k = W / (r.ref || 512);   // 512px 版（v7.5 追加の35体は 1024px 版・余白込み）の bbox を、実際の画像の大きさに合わせる
     var sx = Math.max(0, Math.floor((bb[0] - pad) * k)), sy = Math.max(0, Math.floor((bb[1] - pad) * k));
     var sw = Math.min(W, Math.ceil((bb[0] + bb[2] + pad) * k)) - sx, sh = Math.min(H, Math.ceil((bb[1] + bb[3] + pad) * k)) - sy;
     var tw = Math.min(sw, r.draw[0] * 2), th = Math.round(sh * tw / sw);
@@ -55,7 +63,9 @@
     // 段階的に半分ずつ縮める（一度に大きく縮めると、細い線がつぶれる）
     while (c.width / 2 >= tw) { var h2 = doc.createElement('canvas'); h2.width = Math.round(c.width / 2); h2.height = Math.round(c.height / 2); var x2 = h2.getContext('2d'); x2.imageSmoothingEnabled = true; x2.imageSmoothingQuality = 'high'; x2.drawImage(c, 0, 0, h2.width, h2.height); c = h2; }
     if (c.width !== tw) { var o = doc.createElement('canvas'); o.width = tw; o.height = th; var xo = o.getContext('2d'); xo.imageSmoothingEnabled = true; xo.imageSmoothingQuality = 'high'; xo.drawImage(c, 0, 0, tw, th); c = o; }
-    return { img: c, w: r.draw[0], h: r.draw[1], lift: r.lift || 0, smooth: true, source: 'enemyart', crop: [sx, sy, sw, sh] };
+    // v7.5 foot：切り出した絵の下端から足もと（ground_anchor）までの割合。戦闘ではその分だけ下げて、足もとを地面の線に合わせる
+    var foot = r.anchor ? Math.max(0, Math.min(0.2, (sy + sh - r.anchor[1] * k) / sh)) : 0;
+    return { img: c, w: r.draw[0], h: r.draw[1], lift: r.lift || 0, foot: foot, smooth: true, source: 'enemyart', pack: r.pack || 'r164', crop: [sx, sy, sw, sh] };
   }
   EA.load = function (id) {
     if (!EA.adopted(id)) return Promise.resolve(null);
@@ -98,16 +108,20 @@
   function withSummons(ids) { var out = {}; (ids || []).forEach(function (id) { out[id] = 1; var d = root.ENEMIES && root.ENEMIES[id]; ((d && d.actions) || []).forEach(function (a) { if (a && a.summon) out[a.summon] = 1; }); }); return Object.keys(out); }
   // 戦闘の直前：この戦闘の敵の画像を読む（最大 TIMEOUT ms。読むものがなければ待たない）
   EA.prepare = function (enemyIds) {
-    var jobs = withSummons(enemyIds).filter(function (id) { return EA.adopted(id) && !EA.ready[id] && !EA.failed[id]; }).map(EA.load);
+    var want = withSummons(enemyIds).filter(function (id) { return EA.adopted(id) && !EA.ready[id] && !EA.failed[id]; });
+    var jobs = want.map(EA.load);
     if (!jobs.length) return null;
-    return Promise.race([Promise.all(jobs), new Promise(function (r) { setTimeout(r, EA.TIMEOUT); })]);
+    var ms = want.some(EA.isAdd35) ? Math.max(EA.TIMEOUT, EA.TIMEOUT_ADD) : EA.TIMEOUT;   // v7.5 追加の35体は、読み終わる（または読めないと分かる）まで最大 TIMEOUT_ADD 待つ
+    return Promise.race([Promise.all(jobs), new Promise(function (r) { setTimeout(r, ms); })]);
   };
   // マップに入ったとき：そのマップの出現表の敵を先に読む（待たない。最大12体）
   EA.prefetchMap = function (map) {
     try {
-      if (!map || EA.mode() === 'old' || typeof root.Image === 'undefined') return; var enc = map.encounters; var ids = {};
+      if (!map || typeof root.Image === 'undefined') return;   // ?enemyart=old のときは EA.adopted が追加の25体だけを返す var enc = map.encounters; var ids = {};
       ((enc && enc.zones) || []).forEach(function (z) { (z.groups || []).concat(z.rare || []).forEach(function (g) { (g || []).forEach(function (id) { ids[id] = 1; }); }); });
-      withSummons(Object.keys(ids)).filter(EA.adopted).slice(0, 12).forEach(function (id) { EA.load(id); });
+      var list = withSummons(Object.keys(ids)).filter(EA.adopted);
+      list = list.filter(EA.isAdd35).concat(list.filter(function (id) { return !EA.isAdd35(id); }));   // v7.5 追加の35体を先に（待つ時間が長いため）
+      list.slice(0, 12).forEach(function (id) { EA.load(id); });
     } catch (e) { }
   };
   EA.setMode = function (m) { try { if (m === 'new' || m === 'old') root.localStorage.setItem(EA.LS_KEY, m); else root.localStorage.removeItem(EA.LS_KEY); } catch (e) { } };

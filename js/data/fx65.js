@@ -149,6 +149,9 @@
       if (sp.heal) return { fx: 'heal_glow', motion: 'cast', color: '#7fe3a5', color2: '#ffffff', area: 'single', enemy: true };
       if (sp.buff && sp.self) return { fx: sp.buff.def ? 'barrier' : 'weapon_glow', motion: 'shout', color: '#ff8a5a', color2: '#ffffff', area: 'single', enemy: true };
       if (sp.call) return { fx: 'aura', motion: 'shout', color: '#ffd24a', color2: '#ffffff', area: 'single', enemy: true };
+      if (sp.charge) return { fx: 'aura', motion: 'shout', color: '#ff6a3a', color2: '#ffd24a', area: 'single', enemy: true };   // v7.5 溜め（予告）
+      if (sp.counterStance) return { fx: 'counter_stance', motion: 'shout', color: '#c9a2ff', color2: '#ffffff', area: 'single', enemy: true };   // v7.5 逆張りの構え
+      if (sp.idle) return { fx: 'aura', motion: 'shout', color: '#c0c0d0', color2: '#ffffff', area: 'single', enemy: true };   // v7.5 何もしない（あくび・抜き忘れなど）
       if (sp.power) return { fx: sp.all ? 'spin' : (sp.hits || 1) > 1 ? 'claws' : 'heavy', motion: 'lunge', color: sp.status ? '#a07ad0' : '#ffffff', color2: '#ff6a6a', area: sp.all ? 'all' : 'single', hits: sp.hits || 1, enemy: true };
       if (sp.status || sp.debuff) { var st = sp.status && sp.status.id; return { fx: st === 'sleep' ? 'sleep_mist' : st === 'poison' ? 'poison_mist' : st === 'confuse' ? 'confuse_stars' : st === 'silence' ? 'seal' : st === 'paralyze' ? 'discharge' : 'debuff_aura', motion: 'cast', color: '#a07ad0', color2: '#e0c8ff', area: sp.target === 'allies' ? 'all' : 'single', enemy: true }; }
     }
