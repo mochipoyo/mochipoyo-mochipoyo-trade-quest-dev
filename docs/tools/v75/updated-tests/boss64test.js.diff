@@ -1,0 +1,14 @@
+--- boss64test.js.bak74	2026-11-04 17:49:21.654451091 +0900
++++ boss64test.js	2026-11-04 17:49:21.671998900 +0900
+@@ -13,8 +13,9 @@
+ ok(ids.every(id => SAME.every(k => JSON.stringify(oldE[id][k]) === JSON.stringify(E[id][k]))), '27体：防御・素早さ・経験値・ゴールド・行動・落とす物・耐性・Lv・MP は変えていない');
+ const others = Object.keys(oldE).filter(id => !ids.includes(id));
+ const RD = {}; ((w.ENEMY_REDESIGN && w.ENEMY_REDESIGN.list) || []).forEach(r => { RD[r.id] = r; });   // r164：既存の通常敵164体の表示名の差し替え（名前だけ。名前以外はここで比べる）
+-const diff = others.filter(id => { const a = Object.assign({}, oldE[id]), b = JSON.parse(JSON.stringify(E[id])); if (RD[id]) { if (b.legacyName !== a.name || b.name !== (w.EnemyArt.adopted(id) ? RD[id].name : a.name)) return true; delete a.name; delete b.name; delete b.legacyName; } return JSON.stringify(a) !== JSON.stringify(b); });
+-ok(diff.length === 0 && others.length === Object.keys(E).length - 27 - (w.MONSTERS65 ? w.MONSTERS65.added.length : 0), 'ほかの敵 ' + others.length + '体は前の版と同じ（任意の隠しボス：凍結の時計守・旧都市の演算核・原初の炎竜・灰の王・幽霊船長・海賊カモメの頭・学院地下の3体など）' + diff.join(','));
++const X35 = w.ENEMY_ADD35 || { reuse: [], added: [] };   // v7.5 追加の敵35体：既存IDを使う10体は名前（このパックの正式名）と、足した行動だけが違う（docs/report-enemies35.md）。名前・行動以外はここで比べる
++const diff = others.filter(id => { const a = Object.assign({}, oldE[id]), b = JSON.parse(JSON.stringify(E[id])); if (X35.reuse.includes(id)) { ['name', 'actions'].forEach(k => { delete a[k]; delete b[k]; }); delete b.legacyName; return JSON.stringify(a) !== JSON.stringify(b); } if (RD[id]) { if (b.legacyName !== a.name || b.name !== (w.EnemyArt.adopted(id) ? RD[id].name : a.name)) return true; delete a.name; delete b.name; delete b.legacyName; } return JSON.stringify(a) !== JSON.stringify(b); });
++ok(diff.length === 0 && others.length === Object.keys(E).length - 27 - (w.MONSTERS65 ? w.MONSTERS65.added.length : 0) - X35.added.length, 'ほかの敵 ' + others.length + '体は前の版と同じ（任意の隠しボス：凍結の時計守・旧都市の演算核・原初の炎竜・灰の王・幽霊船長・海賊カモメの頭・学院地下の3体など）' + diff.join(','));
+ const hidden = ['boss_clock_warden', 'boss_old_core', 'boss_primal_flame', 'boss_ash_lord', 'boss_ghost_captain', 'boss_gull_admiral', 'observer_echo', 'soul_warden', 'zero_echo', 'wolf_king', 'crystal_golem'];
+ ok(hidden.every(id => E[id] && !ids.includes(id) && E[id].hp === oldE[id].hp && E[id].atk === oldE[id].atk), '任意の隠しボス11体は表に入っておらず、HP・攻撃力も前の版と同じ');
+ ok(ids.every(id => E[id].hp >= oldE[id].hp && E[id].atk > oldE[id].atk), '27体：HP は前の版以上、攻撃力は前の版より上（弱くなったボスはない）');
