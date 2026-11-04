@@ -35,7 +35,7 @@ if (found) {
   // 古いセーブ（layoutVer76 なし）をスロット1に書く
   const d = State.data; d.pos = { map: found.id, x: found.x, y: found.y, dir: 'up' }; delete d.layoutVer76; State.save(1);
   const raw1 = w.localStorage.getItem('mtq-rpg-v2-slot-1'); ok(!!raw1, 'スロット1に古いセーブを書いた');
-  w.localStorage.removeItem('mtq-layout-backup76'); const before = (Saves.backups() || []).length;
+  w.localStorage.removeItem('mtq-rpg-v2-layout-backup76'); const before = (Saves.backups() || []).length;
   // 読む
   State.data = State.load(1); World.start();
   const p = World.player; const m = World.map;
@@ -46,6 +46,7 @@ if (found) {
   const e = bl[0]; ok(e && /間取りの作り直し/.test(e.reason), '控えの理由：' + (e && e.reason));
   const bd = e && Saves.backupData(e.id); ok(!!bd && bd[1] === raw1, '控えの中のスロット1は、元のセーブと同じ文字列');
   ok(State.data.layoutVer76 === EnvLayout.VERSION, 'セーブに間取りの版を記録：' + State.data.layoutVer76);
+  ok(!!w.localStorage.getItem('mtq-rpg-v2-layout-backup76') && !w.localStorage.getItem('mtq-layout-backup76'), '控えの印は 2D版の名前空間（mtq-rpg-v2-layout-backup76）');
   // 2回目（同じ元のセーブを、もう一度読む）
   State.data = State.load(1); World.start(); ok((Saves.backups() || []).length === before + 1, '2回目に読んでも控えは増えない');
   // 元の間取りに戻す

@@ -1,7 +1,7 @@
 /* =========================================================
    EnvLayout（v7.6 環境リデザイン）：町の街路と、ダンジョンの空間の流れの作り直し（論理のタイル。2D版・3D版・ミニマップが同じ結果）
    ・GameMap を作るときに当てる（js/core/map.js。MapWiden の後）。マップの定義 def.rows は変えない＝切れば元の間取りに戻る
-     切り替え：localStorage 'mtq-layout'＝'off' で元の間取り。URL の ?layout=off|on でも同じ（URL が優先・保存はしない）
+     切り替え：localStorage 'mtq-layout'＝'off' で元の間取り（2D版・3D版で共通。設定の画面で人が切り替えたときだけ書く）。URL の ?layout=off|on でも同じ（URL が優先・保存はしない）
    ・動かさない物：ワープ（出入口・階段）・NPC・宝箱・イベント・建物（入口）・調べる場所・クイズの魔物。そのまわりのマスも変えない
      → 物語の台本・ほかのマップからのワープ・セーブの座標はそのまま使える
    ・守る決まり（マップごとに、作り直す前と後で比べる。1つでも破れたら、その変更を取り消す）
@@ -287,7 +287,9 @@
   // セーブを読むとき：新しい間取りで初めて読むセーブは、読む前にスロットを控えに残す（端末ごとに1回）。立ち位置が塞がっていれば World.enterMap が近くの通れるマスへ移す
   EL.beforeStart = function (d) {
     if (!EL.enabled || !d) return; if (d.layoutVer76) return;
-    try { if (root.localStorage && !root.localStorage.getItem('mtq-layout-backup76') && root.Saves && root.Saves.backup) { root.Saves.backup('間取りの作り直し（v7.6）の前'); root.localStorage.setItem('mtq-layout-backup76', String(Date.now())); } } catch (e) { /* 控えが取れなくても続ける */ }
+    // 控えを取ったかの印は、その版のセーブの名前空間に置く（2D版＝mtq-rpg-v2-layout-backup76／3D版＝mtq-3d-layout-backup76。3D版は 2D版のキーに書かない）
+    var bk = ((root.Saves && root.Saves.NS) || 'mtq-rpg-v2-') + 'layout-backup76';
+    try { if (root.localStorage && !root.localStorage.getItem(bk) && root.Saves && root.Saves.backup) { root.Saves.backup('間取りの作り直し（v7.6）の前'); root.localStorage.setItem(bk, String(Date.now())); } } catch (e) { /* 控えが取れなくても続ける */ }
     d.layoutVer76 = EL.VERSION;
   };
 })(typeof window !== 'undefined' ? window : globalThis);
