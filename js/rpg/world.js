@@ -487,6 +487,7 @@
     Engine.replace(World.scene);
     World.fixLostMap(d);   // v7.3 無くなった部屋にいるセーブ
     if (root.MapRemake) root.MapRemake.migrate(d);   // v7.1 作り直したダンジョンにいる古いセーブ：いる場所・探索済みを新しい座標へ
+    if (root.EnvLayout) root.EnvLayout.beforeStart(d);   // v7.6 間取りの作り直し：初めて読むセーブは控えを残す（立ち位置が塞がっていれば enterMap が近くの通れるマスへ）
     World.enterMap(d.pos.map, d.pos.x, d.pos.y, d.pos.dir, { raw: true });
   };
 

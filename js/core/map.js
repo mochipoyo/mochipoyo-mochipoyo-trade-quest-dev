@@ -34,6 +34,7 @@
       self.buildings.push(bb);
     });
     if (root.MapWiden) { try { root.MapWiden.apply(this); } catch (e) { /* 広げられなくても元の地図のまま */ } }   // v7.0 ダンジョンの広い道（js/rpg/mapwiden.js）
+    if (root.EnvLayout) { try { root.EnvLayout.apply(this); } catch (e) { /* 作り直せなくても元の地図のまま */ } }   // v7.6 町の街路・ダンジョンの空間の流れ（js/rpg/envlayout.js）
   }
   GameMap.buildingKey = function (def, flags) { return (def.buildings || []).filter(function (b) { return b.showIf; }).map(function (b) { return b.showIf + '=' + (flags[b.showIf] ? 1 : 0); }).join(','); };
   // 建物の足元タイル（描画は建物画像が担当）

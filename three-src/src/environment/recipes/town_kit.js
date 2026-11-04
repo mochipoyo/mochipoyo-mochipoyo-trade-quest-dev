@@ -11,6 +11,7 @@ import * as THREE from 'three';
 import { plain, rng } from '../EnvKit3D.js';
 import { Batch } from '../../engine/Materials.js';
 import { canvasTex, texMat, wbox, cyl, drawSetts, floorQuadsH } from './geo.js';
+import { buildLandmark } from './landmarks.js';
 
 // 地域ごとの作り方。road/walk：[石の色, 目地, 幅, 高さ, ばらつき]（キャンバスは 256×256。幅・高さは 256 を割り切る値）
 export const REGION_STYLE = {
@@ -56,7 +57,9 @@ export function townKit(mapId) {
       const map = ctx.map; const prof = ctx.profile || {}; const region = REGION_STYLE[prof.region] ? prof.region : 'arcadia'; const R = REGION_STYLE[region];
       const tex = (key, a) => texMat('tk_' + key, canvasTex('tk_' + key, 256, 256, drawSetts(a[0], a[1], a[2], a[3], a[4])), { roughness: 0.88 });
       const K = { R, region, road: tex(region + '_road', R.road), walk: tex(region + '_walk', R.walk) };
-      const hooks = { skipProp: (t) => t === 'lamp' || (t === 'fence' && !!R.fence) };
+      const LM = map.envLayout && map.envLayout.landmark; const inLM = (x, z) => !!LM && x >= LM.x && x < LM.x + LM.w && z >= LM.y && z < LM.y + LM.h;   // 町ごとの目印のマス（js/rpg/envlayout.js）
+      const hooks = { skipProp: (t, x, z) => t === 'lamp' || (t === 'fence' && !!R.fence) || inLM(x, z), skipTree: (x, z) => inLM(x, z) };
+      K.inLM = inLM; K.LM = LM;
       const building = async (b, o) => { const st = townStyle(b, R); if (!st) return null; return o.bb.build(b, o.rnd, { batch: o.batch, design: o.design, theme: o.theme, style: st }); };
       ctx.stats.region = region;
       return { hooks, building, build: (bb) => build(ctx, K, bb) };
@@ -111,11 +114,12 @@ async function build(ctx, K, b) {
   if (roads.length) add(K.road, floorQuadsH(roads, 1 / 2, 1 / 2, hAt, 0.016));
   if (walks.length) add(K.walk, floorQuadsH(walks, 1 / 2, 1 / 2, hAt, 0.014));
   // ---- 街灯
-  let lamps = 0; for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { if (T(x, z) !== 'lamp') continue; const cx = x + 0.5, cz = z + 0.5, y = hAt(cx, cz); const ly = lamp(add, R.lamp, cx, y, cz, M); ctx.scene.lampSpots.push({ pos: new THREE.Vector3(cx, y + ly, cz), color: R.light, power: 0.95, dist: 9 }); lamps++; }
+  let lamps = 0; for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { if (T(x, z) !== 'lamp' || K.inLM(x, z)) continue; const cx = x + 0.5, cz = z + 0.5, y = hAt(cx, cz); const ly = lamp(add, R.lamp, cx, y, cz, M); ctx.scene.lampSpots.push({ pos: new THREE.Vector3(cx, y + ly, cz), color: R.light, power: 0.95, dist: 9 }); lamps++; }
   // ---- 柵
   let fences = 0; const r = rng(map.w * 131 + map.h);
   if (R.fence) for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { if (T(x, z) !== 'fence') continue; const hx = T(x - 1, z) === 'fence' || T(x + 1, z) === 'fence', hz = T(x, z - 1) === 'fence' || T(x, z + 1) === 'fence'; fence(add, R.fence, x + 0.5, hAt(x + 0.5, z + 0.5), z + 0.5, hx || !hz, hz && !hx, M, r); fences++; }
+  if (K.LM) await buildLandmark(ctx, K.LM, add, g, hAt);   // 町ごとの目印
   batch.build(g);
-  Object.assign(ctx.stats, { lamps, fences, floor: { road: roads.length, walk: walks.length } });
+  Object.assign(ctx.stats, { lamps, fences, floor: { road: roads.length, walk: walks.length }, landmark: K.LM ? K.LM.kind : null });
   return g;
 }

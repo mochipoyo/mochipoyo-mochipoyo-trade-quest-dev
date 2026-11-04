@@ -102,7 +102,19 @@ async function build(ctx, S, b) {
   // ---- 床（石の床のマスだけ。じゅうたん・木の床・水・溶岩などはそのまま）
   let floors = 0;
   if (S.floor) { const list = []; for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { const t = T(x, z); if (t === 'floor_stone' || t === 'stone' || t === 'path_stone' || t === 'cave_floor') list.push([x, z]); } if (list.length) { add(tex('fl_' + S.floor[0], S.floor), floorQuadsH(list, 1 / 2, 1 / 2, hAt, 0.012)); floors = list.length; } }
+  // ---- 空間の流れ（js/rpg/envlayout.js の区間）：入口は白い光、主要な空間は暖かい光と床の輪、見せ場は種類ごとの強い光と目印
+  const secs = (map.envLayout && map.envLayout.sections) || []; let lit = 0;
+  const ACC = { rock: 0x8ad0ff, ashlar: 0xffd890, panel: 0x48c9d6, plank: 0xffb060, plaster: 0xffc890 };
+  for (const sc of secs) {
+    const x = sc.x + 0.5, z = sc.y + 0.5, y = hAt(x, z);
+    if (sc.kind === 'entry') { ctx.scene.lampSpots.push({ pos: new THREE.Vector3(x, y + 2.4, z), color: 0xe8f0ff, power: 0.9, dist: 8 }); lit++; }
+    if (sc.kind === 'main') { ctx.scene.lampSpots.push({ pos: new THREE.Vector3(x, y + 2.8, z), color: 0xffc070, power: 1.3, dist: 11 }); lit++;
+      if (S.fam !== 'rock') { const ring = new THREE.RingGeometry(1.6, 1.85, 32); ring.rotateX(-Math.PI / 2); ring.translate(x, y + 0.03, z); add(trim, ring); } }
+    if (sc.kind === 'climax') { ctx.scene.lampSpots.push({ pos: new THREE.Vector3(x, y + 2.6, z), color: ACC[S.fam] || 0xffd890, power: 1.5, dist: 10 }); lit++;
+      if (S.fam === 'rock') { const cm = plain('#9ad8ff', { emissive: '#6ac0ff', ei: 1.2, keepGlow: true, std: { roughness: 0.2 } }); for (let k = 0; k < 6; k++) { const a = k * 1.05 + 0.3, rr = 2.2 + (k % 2) * 0.6; const px = x + Math.cos(a) * rr, pz = z + Math.sin(a) * rr; if (walkish(Math.floor(px), Math.floor(pz))) continue; add(cm, new THREE.OctahedronGeometry(0.16 + (k % 3) * 0.05, 0).scale(1, 2.2, 1).translate(px, y + 0.3, pz)); } }
+      else { const ring = new THREE.RingGeometry(1.1, 1.3, 32); ring.rotateX(-Math.PI / 2); ring.translate(x, y + 0.03, z); add(low || trim, ring); } }
+  }
   mg.build(g);
-  Object.assign(ctx.stats, { walls, pilasters: pil, floors });
+  Object.assign(ctx.stats, { walls, pilasters: pil, floors, sectionsLit: lit });
   return g;
 }
