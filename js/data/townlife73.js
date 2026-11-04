@@ -16,6 +16,9 @@
   function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
   function rng(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   function say(name, lines) { return async function (c) { await c.say(name, lines); }; }
+  // 足す前の中身を def._pre71 に控える（テストで元と比べるため。ゲームでは使わない。v7.1・v7.2 で控えた町はそのまま）
+  var cl = function (L) { return (L || []).map(function (o) { return o && typeof o === 'object' ? Object.assign({}, o) : o; }); };
+  function pre(d) { if (!d._pre71) d._pre71 = { rows: d.rows.slice(), warps: cl(d.warps), events: cl(d.events), chests: cl(d.chests), npcs: cl(d.npcs), buildings: cl(d.buildings) }; }
   // 話しかけるたびに次の話（記録：d.chat['v73:ID']）
   function rotate(id, name, sets) {
     return async function (c) { var d = root.State && root.State.data; var st = d ? (d.chat || (d.chat = {})) : {}; var k = 'v73:' + id; var n = st[k] | 0; st[k] = n + 1; await c.say(name, sets[n % sets.length]); };
@@ -91,7 +94,7 @@
     var kind = sp.split('_')[0]; var at = pick(g, pref, rnd); if (!at) { X.skipped.push(id + ':' + sp); return; }
     var v = VOICE[kind]; var lines = v[(hash(id) + i) % v.length]; var nm = (root.AnimalArt && root.AnimalArt.NAMES[kind]) || '動物';
     var n = { id: id + '_a73_' + i, name: nm, x: at.x, y: at.y, sprite: 'animal_' + sp, dir: ['down', 'left', 'right', 'up'][Math.floor(rnd() * 4)], wander: WANDER[kind], animal: kind, noChatter: true, v73: true, talk: say(nm, lines) };
-    g.d.npcs = (g.d.npcs || []).concat([n]); X.animals.push({ map: id, kind: kind, sprite: n.sprite, x: at.x, y: at.y });
+    pre(g.d); g.d.npcs = (g.d.npcs || []).concat([n]); X.animals.push({ map: id, kind: kind, sprite: n.sprite, x: at.x, y: at.y });
   }
   function themeOf(id) { var P = root.PLACE_DECOR; return (P && P.forMap && P.forMap(id)) || 'pastoral'; }
   var TOWNS = Object.keys(MAPS).filter(function (id) { var d = MAPS[id]; return d && (d.kind || 'town') === 'town' && !d.s3121 && !d.region && id !== 'tradia_sky' && typeof d.rows !== 'function'; });
@@ -242,6 +245,6 @@
     var g = gcache[ch.map] || (gcache[ch.map] = grid(ch.map)); if (!g) { X.skipped.push('char:' + ch.id); return; }
     var at = pick(g, 'road', rng(hash(ch.id + ':u73'))); if (!at) { X.skipped.push('char:' + ch.id); return; }
     var n = { id: 'u73_' + ch.id, name: ch.name, x: at.x, y: at.y, sprite: key, model3d: ch.m, dir: 'down', wander: ch.w, unique73: true, noChatter: true, v73: true, talk: rotate(ch.id, ch.name, ch.lines) };
-    g.d.npcs = (g.d.npcs || []).concat([n]); X.chars.push({ id: n.id, map: ch.map, name: ch.name, x: at.x, y: at.y });
+    pre(g.d); g.d.npcs = (g.d.npcs || []).concat([n]); X.chars.push({ id: n.id, map: ch.map, name: ch.name, x: at.x, y: at.y });
   });
 })(typeof window !== 'undefined' ? window : globalThis);

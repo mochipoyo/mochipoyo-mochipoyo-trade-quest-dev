@@ -1,0 +1,11 @@
+--- expandAtest.js.bak72	2026-11-04 11:18:18.408821077 +0900
++++ expandAtest.js	2026-11-04 11:18:18.454878813 +0900
+@@ -127,7 +127,7 @@
+   { const z = M.oblivion_cave_lake.encounters.zones[0]; const z2 = M.oblivion_cave_2.encounters.zones[0]; ok(z.level === z2.level && z.groups.every(g => g.every(e => w.ENEMIES[e])) && z.groups.every(g => z2.groups.some(h => JSON.stringify(h) === JSON.stringify(g))) && z.rare[0][0] === 'slime_metal', '地底湖の魔物：洞窟2階の群れから選んだもの（level ' + z.level + '）。まれにメタルスライム'); }
+   { World.enterMap('rivel_castle_b1', 3, 8, 'down'); log.length = 0; await Events.run(World.map.eventAt(3, 9)); ok(log.join().includes('鉄格子') && log.join().includes('ガロン'), '牢の扉を調べると、中の男と話せる'); }
+   // ⑥ 会話：新しい人すべて（エラーなし・贈り物は1回だけ）
+-  const talkers = []; for (const id of NEW) World.getMap(id).npcs.forEach(n => { if (!/^aunt67_/.test(n.id) && !n.v72) talkers.push([id, n]); }); /* v6.7 の豆知識おばさんは chatter67test.js、v7.2 の新しい地区の人は v72/towns72.js で確かめる */ for (const id of PATCHED) { const m = World.getMap(id); const old = oldDump.maps[id].npcs.map(n => n.id); m.npcs.filter(n => !old.includes(n.id) && ['castle_steward', 'rivel_gate_e'].includes(n.id)).forEach(n => talkers.push([id, n])); }
++  const talkers = []; for (const id of NEW) World.getMap(id).npcs.forEach(n => { if (!/^aunt67_/.test(n.id) && !n.v72 && !n.v73) talkers.push([id, n]); }); /* v6.7 の豆知識おばさんは chatter67test.js、v7.2 の新しい地区の人は v72/towns72.js、v7.3 の動物・個性的な人は v73/variety73.js で確かめる */ for (const id of PATCHED) { const m = World.getMap(id); const old = oldDump.maps[id].npcs.map(n => n.id); m.npcs.filter(n => !old.includes(n.id) && ['castle_steward', 'rivel_gate_e'].includes(n.id)).forEach(n => talkers.push([id, n])); }
+   let talkErr = []; for (const [id, n] of talkers) { try { World.enterMap(id, n.x, n.y + 1 < World.getMap(id).h ? n.y + 1 : n.y - 1, 'up'); await n.talk(Events.ctx(n)); await n.talk(Events.ctx(n)); } catch (e) { talkErr.push(n.id + ':' + e.message); } }
+   if (process.env.DBG) console.log('TALKERS', talkers.map(([id, n]) => id + ':' + n.id).join(' '), 'ERR', talkErr.join('|'));
+   ok(!talkErr.length && talkers.length === 23, '新しい人 ' + talkers.length + '人と2回ずつ話せる（エラーなし）' + talkErr.join(','));

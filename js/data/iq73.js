@@ -107,6 +107,7 @@
   // ---- トレディアの館と部屋 ----
   var t = MAPS.tradia; if (!t || !t.buildings) return;
   var b = t.buildings.filter(function (q) { return q.id === 'td_house2'; })[0]; if (!b || b.interior) return;
+  if (!t._pre71) { var cl = function (L) { return (L || []).map(function (o) { return o && typeof o === 'object' ? Object.assign({}, o) : o; }); }; t._pre71 = { rows: t.rows.slice(), warps: cl(t.warps), events: cl(t.events), chests: cl(t.chests), npcs: cl(t.npcs), buildings: cl(t.buildings) }; }   // テストで元と比べるための控え
   b.interior = IQ.ROOM; b.name = 'IQテストの館'; b.entry = { x: 5, y: 7 }; b.v73 = true;
   var dx = b.x + (b.doorX === undefined ? 2 : b.doorX), dy = b.y + (b.h || 3) - 1;
   MAPS[IQ.ROOM] = {

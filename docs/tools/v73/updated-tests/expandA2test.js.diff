@@ -1,0 +1,11 @@
+--- expandA2test.js.bak72	2026-11-04 11:18:18.411549373 +0900
++++ expandA2test.js	2026-11-04 11:18:18.455289067 +0900
+@@ -75,7 +75,7 @@
+   for (const [x, y] of [[11, 5], [17, 5], [16, 8]]) await Events.run(World.map.eventAt(x, y));
+   const hp0 = d.inventory.hi_potion || 0; await st.talk(Events.ctx(st)); await st.talk(Events.ctx(st)); ok(d.flags.spv_reward && (d.inventory.hi_potion || 0) === hp0 + 3, '保管庫の係：木箱3つの札を確かめるとハイポーション×3（1回だけ）');
+   // 会話：新しい人すべて
+-  const talkers = []; for (const id of NEW) World.getMap(id).npcs.forEach(n => talkers.push([id, n]));
++  const talkers = []; for (const id of NEW) World.getMap(id).npcs.forEach(n => { if (!n.v73) talkers.push([id, n]); });   // v7.3 の動物・個性的な人は v73/variety73.js で確かめる
+   let te = []; for (const [id, n] of talkers) { try { World.enterMap(id, n.x, Math.min(n.y + 1, World.getMap(id).h - 2), 'up'); await n.talk(Events.ctx(n)); await n.talk(Events.ctx(n)); } catch (e) { te.push(n.id + ':' + e.message); } }
+   ok(!te.length && talkers.length === 8, '新しい人 ' + talkers.length + '人と2回ずつ話せる（エラーなし）' + te.join(','));
+   Win.message = origMsg; Win.choice = origChoice;
