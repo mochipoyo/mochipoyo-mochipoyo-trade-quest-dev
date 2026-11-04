@@ -57,8 +57,8 @@ export class MapScene3D {
         for (const b of map.buildings) {
           let o = null; if (b.type === 'elevator') { try { o = buildElevatorTower(b, map, textTexture); } catch (e) { o = null; console.warn('elevator', e); } }   // v7.1 空の区画へのエレベーター
           if (!o && b.type === 'watchtower') { try { o = buildTower3D(b); } catch (e) { o = null; console.warn('tower72', e); } }   // v7.2 新しい地区の塔
+          if (!o && rx && rx.building) { try { o = await rx.building(b, { bb, rnd, batch: shared, design, theme }); } catch (e) { const err = new Error('環境レシピの建物に失敗 ' + map.id + ' ' + b.id + '：' + (e && e.message)); err.envRecipe = true; throw err; } }   // v7.6 レシピの建物（用途・地域ごとの形）。近未来の町の汎用の建物より先
           if (!o && modern) { try { o = buildModernBuilding(b, modern, textTexture); } catch (e) { o = null; console.warn('modern building', e); } }
-          if (!o && rx && rx.building) { try { o = await rx.building(b, { bb, rnd, batch: shared, design, theme }); } catch (e) { const err = new Error('環境レシピの建物に失敗 ' + map.id + ' ' + b.id + '：' + (e && e.message)); err.envRecipe = true; throw err; } }   // v7.6 レシピの建物（用途・地域ごとの形）
           if (!o) o = await bb.build(b, rnd, { batch: shared, design, theme }); bgroup.add(o.group);
           o.lights.forEach((l) => this.lampSpots.push(l)); o.smokes.forEach((s) => this.addSmoke(s));
           o.props.forEach((p) => { const v = new THREE.Vector3().setFromMatrixPosition(p.m); wb.put(p.id, p.m, v.x, v.z); });
@@ -68,7 +68,7 @@ export class MapScene3D {
       }
       await r.finalize();
       // v7.0 場所ごとの個性の飾り（壁の飾り・町の外の遠景・床の小物。js/data/placedecor70.js のテーマ）。失敗しても地図は表示する
-      try { const db = new DecorBuilder3D(); const dr = db.build(map, { T: wb.T, OUT: wb.OUT, heightAt: r.heightAt, group: r.group }); this.decor = { key: dr.key, stats: db.stats }; (dr.smokes || []).forEach((sm) => this.addSmoke(sm)); } catch (e) { this.decor = { key: null, error: String(e && e.message || e) }; console.warn('decor70', e); }
+      try { const db = new DecorBuilder3D(); const dr = db.build(map, { T: wb.T, OUT: wb.OUT, heightAt: r.heightAt, group: r.group, key: rx && rx.decorKey !== undefined ? rx.decorKey : undefined }); this.decor = { key: dr.key, stats: db.stats }; (dr.smokes || []).forEach((sm) => this.addSmoke(sm)); } catch (e) { this.decor = { key: null, error: String(e && e.message || e) }; console.warn('decor70', e); }
       await runRecipe({ group: r.group, world: wb, theme });   // v7.6 レシピが作り直した形を足す
       for (const c of map.chests) this.addChest(c);
       if (map.kind === 'town' || map.kind === 'field') this.addMotes(map);

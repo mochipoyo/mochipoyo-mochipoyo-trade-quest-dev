@@ -70,7 +70,7 @@ async function build(ctx, b) {
   for (const z of winZ) {
     B(dark, 0.3, 2.7, 1.5, 1.95, 2.6, z); B(glassDay, 0.06, 2.5, 1.3, 2.08, 2.6, z);
     mg.add(stoneD, new THREE.TorusGeometry(0.7, 0.09, 6, 16, Math.PI), mat4(2.1, 3.95, z, Math.PI / 2));
-    B(stoneD, 0.3, 0.14, 1.7, 2.1, 1.25, z);   // 窓台
+    B(stoneD, 0.2, 0.14, 1.7, 2.04, 1.25, z);   // 窓台（歩けるマスへ 0.14 まで）
   }
   for (const z of [7.5, 13.5, 19.5]) {   // 東：旗（青と赤）と燭台
     B(z === 13.5 ? red : blue, 0.04, 2.2, 1.2, 27.9, 2.6, z); B(gold, 0.06, 0.08, 1.35, 27.88, 3.72, z);
@@ -108,7 +108,7 @@ async function build(ctx, b) {
   const cols = []; for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) if (T(x, z) === 'pillar') cols.push({ x: x + 0.5, z: z + 0.5, s: [0.82, 1.58, 0.82] });
   g.add(await kit(ctx, 'column_classic', cols));
   g.add(await kit(ctx, 'floor_medallion', [{ x: 16, y: 0.02, z: 14.5, s: [1.15, 1, 1.15] }]));
-  g.add(await kit(ctx, 'arch_round', [{ x: 15, y: 0, z: 1.85, s: [1.3, 1.15, 1.2] }]));
+  g.add(await kit(ctx, 'arch_round', [{ x: 15, y: 0, z: 1.5, s: [1.3, 1.15, 1.2] }]));
   // 西の鉢植え（柑橘）：窓と窓の間の壁ぎわ。歩けるマスへ出ない（壁のくぼみ x 1.55〜2.0）
   if (hi) {
     const pm = new Merge();

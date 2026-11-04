@@ -5,6 +5,7 @@
    ・プロファイル：マップIDで引く（data/profiles.json。いまのゲームの全マップ）。未登録のIDは汎用に黙って落とさず、警告を出して記録する（Env.missing）
    ・レシピ：マップごとの作り直し（recipes/）。レシピのあるマップだけ、builder にレシピを渡す。失敗したら従来の表示で続ける（Env.errors に記録）
    ========================================================= */
+import * as THREE from 'three';
 import { EnvironmentCatalog } from './EnvironmentCatalog.js';
 import { addCutout } from '../engine/Cutout.js';
 import { RECIPES } from './recipes/index.js';
@@ -37,5 +38,21 @@ export const Env = {
   },
   recipeFor(map) { if (!map || !Env.enabled() || Env.errors[map.id]) return null; return RECIPES[map.id] || null; },   // 失敗したマップは、その回はレシピなし
   recipeIds() { return Object.keys(RECIPES); },
+  // 確認用：歩けるマスの「体の高さ」（0.15〜1.8）に形があるマスを調べる（下向きの光線。床・水・草・人・宝箱・煙は除く）。テスト（p76_walk.js）が env=off と v1 で比べる
+  probeWalk(ms) {
+    const map = ms && ms.map; if (!map) return null; ms.root.updateMatrixWorld(true);
+    const skip = /^(ground_|water|grass_|flowers|lavasea|cloudsea|motes|smoke|npc|hero|chest|follow)/i; const targets = [];
+    const walk = (o, bad) => { bad = bad || skip.test(o.name || '') || o.isSprite || o.isPoints || (o.userData && (o.userData.npc || o.userData.chest)); if (!bad && (o.isMesh || o.isInstancedMesh) && o.visible !== false) targets.push(o); for (const c of o.children) walk(c, bad); };
+    walk(ms.root, false);
+    const rc = new THREE.Raycaster(); rc.far = 1.65; const down = new THREE.Vector3(0, -1, 0); const out = [];
+    for (let z = 0; z < map.h; z++) for (let x = 0; x < map.w; x++) {
+      const t = map.tile(x, z); if (window.Tiles.isSolid(t) || t === 'bld_door' || t === 'door') continue; const ev = map.eventAt && map.eventAt(x, z); if (ev && ev.solid) continue;   // 扉のマスは建物の中へ入る所（建物の形と重なってよい）
+      for (const [dx, dz] of [[0.5, 0.5], [0.2, 0.2], [0.8, 0.2], [0.2, 0.8], [0.8, 0.8]]) {
+        const y0 = (ms.heightAt ? ms.heightAt(x + dx, z + dz) : 0) + 1.8; rc.set(new THREE.Vector3(x + dx, y0, z + dz), down);
+        const h = rc.intersectObjects(targets, false)[0]; if (h && h.point.y > y0 - 1.65) { let o = h.object, nm = o.name; while (o.parent && !/^(env_|building|buildings|map3d_|kit_)/.test(nm || '')) { o = o.parent; nm = o.name; } out.push({ x, z, y: +h.point.y.toFixed(2), obj: (h.object.name || '?') + ' @ ' + (nm || '?'), env: /^(env_|kit_|building_env_)/.test(nm || '') || nm === 'buildings' }); break; }
+      }
+    }
+    return out;
+  },
   info() { return { mode: Env.mode(), recipes: Object.keys(RECIPES), built: Object.assign({}, Env.built), errors: Object.assign({}, Env.errors), missing: Object.keys(Env.missing), loadError: Env.loadError }; }
 };

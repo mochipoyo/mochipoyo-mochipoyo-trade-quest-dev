@@ -2,7 +2,7 @@
    EnvKit3D：レシピ（マップごとの作り直し）で使う共通の道具
    ・kit(ctx, id, list)：パックの部品（GLB。EnvironmentCatalog が読む）を、同じ部品ごとに InstancedMesh でまとめて置く
        list の要素：{ x, y, z, ry, s }（s は数か [sx, sy, sz]）。形状・材質はカタログが共有する（マップごとに捨てない）
-   ・mat(ctx, name)：パックの材質（画像つき。読めなければ色だけの材質）。どれも Cutout（主人公の手前を抜く）つき
+   ・mat(ctx, name, {repeat, color, bright, emissive, roughness, metalness})：パックの材質（画像つき。読めなければ色だけの材質）。どれも Cutout（主人公の手前を抜く）つき。bright：色に掛ける倍率（暗い画像を明るい面に）
    ・geo 系：その場で作る形（この形はマップごとに捨てる＝userData.own）
    ========================================================= */
 import * as THREE from 'three';
@@ -30,12 +30,14 @@ export async function kit(ctx, id, list, opts) {
 // パックの材質（画像つき）。repeat：1枚の画像を何マスで1回にするか
 const matCache = new Map();
 export async function mat(ctx, name, o) {
-  o = o || {}; const key = name + '|' + (o.color || '') + '|' + (o.repeat || '') + '|' + (o.emissive || '');
+  o = o || {}; const key = name + '|' + (o.color || '') + '|' + (o.repeat || '') + '|' + (o.emissive || '') + '|' + (o.bright || '') + '|' + (o.vertexColors ? 'vc' : '');
   if (matCache.has(key)) return matCache.get(key);
   let base = null; try { base = await ctx.catalog.material(name); } catch (e) { base = null; ctx.stats.matErrors.push(name + '：' + (e && e.message)); }
   const m = base ? base.clone() : new THREE.MeshStandardMaterial({ color: 0x9a948a, roughness: 0.9 });
   if (base && base.map && o.repeat) { m.map = base.map.clone(); m.map.needsUpdate = true; m.map.repeat.set(1 / o.repeat, 1 / o.repeat); m.map.wrapS = m.map.wrapT = THREE.RepeatWrapping; }
   if (o.color) m.color = new THREE.Color(o.color);
+  if (o.bright) m.color.multiplyScalar(o.bright);
+  if (o.vertexColors) m.vertexColors = true;   // 形の頂点色で明るさを変える（床の擦り減りなど）   // 暗い画像を明るい色の面に使う（色の値は1を超えてよい）
   if (o.emissive) { m.emissive = new THREE.Color(o.emissive); m.emissiveIntensity = o.emissiveIntensity || 0.6; }
   if (o.roughness !== undefined) m.roughness = o.roughness; if (o.metalness !== undefined) m.metalness = o.metalness;
   m.name = 'env_' + key; addCutout(m); m.userData.envShared = true; matCache.set(key, m); return m;

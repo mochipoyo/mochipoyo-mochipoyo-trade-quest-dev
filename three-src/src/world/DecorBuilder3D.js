@@ -41,7 +41,7 @@ export class DecorBuilder3D {
   constructor() { this.stats = { wall: 0, floor: 0, sky: 0, field: 0 }; }
   // map：GameMap、T：タイル（外側も）、heightAt、group：足す先、OUT：外側の幅
   build(map, o) {
-    const PD = window.PLACE_DECOR; const key = PD && PD.forMap ? PD.forMap(map.id) : null; this.key = key; if (!key) return { key: null, smokes: [], lamps: [] };
+    const PD = window.PLACE_DECOR; const key = o && o.key !== undefined ? o.key : PD && PD.forMap ? PD.forMap(map.id) : null; this.key = key; if (!key) return { key: null, smokes: [], lamps: [] };   // v7.6 o.key：環境レシピが飾りのテーマを差し替える（null で飾りなし）
     const th = PD.THEMES[key] || {}; const A = th.accent || '#ffffff', A2 = th.accent2 || '#ffffff';
     const b = new Batch(); const add = (m, g, mx) => b.add(m, g, mx); this.b = b; this.add = add; this.A = A; this.A2 = A2; this.key = key;
     const out = { key, smokes: [], lamps: [] }; this.out = out; const W = map.w, H = map.h; const T = o.T; const hAt = o.heightAt || (() => 0);

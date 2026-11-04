@@ -5,9 +5,13 @@
 import { recipe as rivelCastle } from './rivel_castle.js';
 import { recipe as ironMine1 } from './iron_mine_1.js';
 import { recipe as poyoVillage } from './poyo_village.js';
+import { recipe as nodeCity } from './node_city.js';
+import { recipe as tradia } from './tradia.js';
 
 export const RECIPES = {
   rivel_castle: rivelCastle,
   iron_mine_1: ironMine1,
-  poyo_village: poyoVillage
+  poyo_village: poyoVillage,
+  node_city: nodeCity,
+  tradia: tradia
 };

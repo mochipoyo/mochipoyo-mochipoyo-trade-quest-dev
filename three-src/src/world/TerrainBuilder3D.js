@@ -214,7 +214,7 @@ export class TerrainBuilder3D {
     };
     for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
       const t = T(x, y);
-      if (TREE_TILES[t] && !(env && env.skipTree && env.skipTree(x, y))) { placeTree(x + 0.5 + (rnd() - 0.5) * 0.5, y + 0.5 + (rnd() - 0.5) * 0.5, true); if (!nearMapOpen(x + 0.5, y + 0.5, 1) && rnd() < 0.35) placeTree(x + rnd(), y + rnd(), true); }
+      if (TREE_TILES[t]) { const n0 = this.trees.length; placeTree(x + 0.5 + (rnd() - 0.5) * 0.5, y + 0.5 + (rnd() - 0.5) * 0.5, true); if (!nearMapOpen(x + 0.5, y + 0.5, 1) && rnd() < 0.35) placeTree(x + rnd(), y + rnd(), true); if (env && env.skipTree && env.skipTree(x, y)) this.trees.length = n0; }   // v7.6 レシピの木のマス：置いてから外す（乱数の順を変えない＝ほかの木は従来と同じ場所）
     }
     const step = hi ? 1.3 : 1.8;
     for (let z = -OUT - 14; z < H + OUT + 14; z += step) for (let x = -OUT - 14; x < W + OUT + 14; x += step) {

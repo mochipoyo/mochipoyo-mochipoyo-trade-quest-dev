@@ -38,7 +38,7 @@ const PROP = {
 export class WorldBuilder3D {
   constructor(mats, models, quality) { this.mats = mats; this.models = models; this.quality = quality || 'high'; this.time = { value: 0 }; this.stats = {}; }
 
-  // env（v7.6 環境リデザインのレシピのフック。js は three-src/src/environment/）：skipWall(t, x, z)／skipFloor(t, x, z)／skipProp(t, x, z) が true のマスは、汎用の壁・床・小物を作らない（レシピが作り直す）
+  // env（v7.6 環境リデザインのレシピのフック。js は three-src/src/environment/）：skipWall(t, x, z)／skipFloor(t, x, z)／skipProp(t, x, z) が true のマスは、汎用の壁・床・小物を作らない（レシピが作り直す）。skipOutTree(x, z)：町の外の木を置かない
   async build(map, theme, env) {
     const t0 = performance.now(); const hi = this.quality === 'high'; env = env || null; this.env = env;
     const W = map.w, H = map.h, kind = map.kind; const dungeon = kind === 'dungeon' || kind === 'interior'; const field = kind === 'field';
@@ -311,7 +311,8 @@ export class WorldBuilder3D {
       for (let z = -OUT; z < H + OUT; z++) for (let x = -OUT; x < W + OUT; x++) {
         if (inside(x, z)) continue; const d = Math.max(-x, x - W + 1, -z, z - H + 1); if (d < 2) continue;
         const t = T(x, z); if (PAVED[t] || t === 'road' || WATERY[t] || t === 'sand' || t === 'cloud' || t === 'lava') continue;
-        if (rnd() > (d < 4 ? 0.35 : 0.6)) continue; tree(x + rnd(), z + rnd(), 0.9 + rnd() * 0.5); trees++;
+        if (rnd() > (d < 4 ? 0.35 : 0.6)) continue; if (env && env.skipOutTree && env.skipOutTree(x, z)) continue;   // v7.6 レシピ：町の外の木を置かない所（冷却塔の足元・門の前など）
+        tree(x + rnd(), z + rnd(), 0.9 + rnd() * 0.5); trees++;
       }
     }
     this.stats.trees = trees;

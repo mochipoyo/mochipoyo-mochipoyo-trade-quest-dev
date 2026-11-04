@@ -68,10 +68,14 @@ async function build(ctx, b, o) {
     const h = front ? 0.75 + vnoise(x, 0, z) * 0.25 : (worked ? 2.5 : 2.6 + vnoise(x * 0.7, 1, z * 0.7) * 0.9);
     const seg = hi ? 3 : 2; const geo = new THREE.BoxGeometry(1.12, h, 1.12, seg, Math.max(2, Math.round(h * (hi ? 2 : 1))), seg);
     const p = geo.attributes.position; const col = new Float32Array(p.count * 3);
+    const LIM = 0.06, oE = open(x + 1, z), oW = open(x - 1, z), oS = open(x, z + 1), oN = open(x, z - 1), oD = [[1, 1], [-1, 1], [1, -1], [-1, -1]].map(([dx, dz]) => [dx, dz, open(x + dx, z + dz)]);
     for (let i = 0; i < p.count; i++) {
       const lx = p.getX(i), ly = p.getY(i) + h / 2, lz = p.getZ(i); const wx = x + 0.5 + lx, wz = z + 0.5 + lz;
       const amp = worked ? 0.06 : 0.26; const n1 = vnoise(wx * 1.7, ly * 1.3, wz * 1.7) - 0.5, n2 = vnoise(wx * 1.7 + 9, ly * 1.3 + 3, wz * 1.7 + 5) - 0.5;
       let nx = wx + n1 * amp * 2, nz = wz + n2 * amp * 2, ny = ly;
+      // 歩けるマスへはみ出さない（境から 0.06 まで）。斜めのとなりが歩けるときは角を引っ込める
+      if (oE) nx = Math.min(nx, x + 1 + LIM); if (oW) nx = Math.max(nx, x - LIM); if (oS) nz = Math.min(nz, z + 1 + LIM); if (oN) nz = Math.max(nz, z - LIM);
+      for (const [dx, dz, on] of oD) if (on) { const ox = dx > 0 ? nx - (x + 1) : x - nx, oz = dz > 0 ? nz - (z + 1) : z - nz; if (ox > LIM && oz > LIM) { if (ox < oz) nx = dx > 0 ? x + 1 + LIM : x - LIM; else nz = dz > 0 ? z + 1 + LIM : z - LIM; } }
       if (ly > h - 0.05) ny = ly + (vnoise(wx * 2.3, 7, wz * 2.3) - 0.5) * (front ? 0.2 : 0.55);   // 天井側はぎざぎざ
       p.setXYZ(i, nx - (x + 0.5), ny - h / 2, nz - (z + 0.5));
       const k = band(ny) * (0.85 + 0.3 * vnoise(wx * 3, ny * 3, wz * 3)) * (worked ? 1.12 : 1); col[i * 3] = k * 1.05; col[i * 3 + 1] = k * 0.93; col[i * 3 + 2] = k * 0.8;
@@ -80,7 +84,7 @@ async function build(ctx, b, o) {
     mg.add(rock, geo, mat4(x + 0.5, h / 2 - 0.08, z + 0.5)); chunks++;
     // 削った面：板の土留め（運搬路に面した、高い壁だけ）
     if (worked && !front && hi && r() < 0.55) for (const [dx, dz] of [[1, 0], [-1, 0], [0, -1]]) if (onRoute.has((x + dx) + ',' + (z + dz))) {
-      for (let k2 = 0; k2 < 3; k2++) mg.add(oakD, new THREE.BoxGeometry(dx ? 0.05 : 0.9, 0.16, dz ? 0.05 : 0.9), mat4(x + 0.5 + dx * 0.58, 0.5 + k2 * 0.42, z + 0.5 + dz * 0.58));
+      for (let k2 = 0; k2 < 3; k2++) mg.add(oakD, new THREE.BoxGeometry(dx ? 0.05 : 0.9, 0.16, dz ? 0.05 : 0.9), mat4(x + 0.5 + dx * 0.53, 0.5 + k2 * 0.42, z + 0.5 + dz * 0.53));
     }
     // 鉱脈の粒
     if ((T(x, z) === 'ore' || r() < 0.08) && !front) for (let k2 = 0; k2 < (T(x, z) === 'ore' ? 7 : 3); k2++) {
@@ -97,7 +101,7 @@ async function build(ctx, b, o) {
   }
   // ---------------- 坑口（西の入口）：低い梁と柱（柱は岩のマスの上）
   const ent = route[0];
-  if (ent) { for (const dz of [-1, 2]) if (solid(ent[0], ent[1] + dz)) mg.add(oak, new THREE.BoxGeometry(0.3, 2.1, 0.3), mat4(ent[0] + 0.5, 1.05, ent[1] + 0.5 + dz - (dz > 0 ? 0.65 : -0.65)));
+  if (ent) { for (const dz of [-1, 2]) if (solid(ent[0], ent[1] + dz)) mg.add(oak, new THREE.BoxGeometry(0.3, 2.1, 0.3), mat4(ent[0] + 0.5, 1.05, ent[1] + 0.5 + dz + (dz > 0 ? -0.3 : 0.3)));   // 柱は入口の上下の岩のマスの中
     mg.add(oak, new THREE.BoxGeometry(0.35, 0.3, 3.3), mat4(ent[0] + 0.5, 2.05, ent[1] + 1)); }
   // ---------------- 縦坑の見せ場（岩のマス。歩けない）
   const S = o.shaft; const sx = (S.x0 + S.x1 + 1) / 2, sz = (S.z0 + S.z1 + 1) / 2;
