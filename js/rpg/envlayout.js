@@ -31,6 +31,19 @@
   var TOWN_PLAIN = { stone: 1, grass: 1, grass2: 1, path_stone: 1, snow: 1, sand: 1, darkland: 1, ash: 1, dirt: 1 };
   var N4 = [[1, 0], [-1, 0], [0, 1], [0, -1]], N8 = N4.concat([[1, 1], [-1, 1], [1, -1], [-1, -1]]);
 
+  // ほかのマップ・世界地図・出来事から「着く所」（ワープの行き先 tx,ty・世界地図の入口・落とし穴の先・台本の enterMap）。着く所は柱・木にしない
+  EL.EXTRA_ARRIVALS = [['a6_dd_vents', 9, 10], ['a6_ft_ice', 9, 10], ['a6_mt_mirage', 9, 10], ['a6_sk_clouds', 9, 10], ['oblivion_cave_lake', 2, 8], ['poyo_elder_house', 5, 5], ['rivel_castle_b1', 2, 2]];   // js/ の中の enterMap('id', x, y) の直書き
+  var ARR = null, ARR_MR = false;
+  function arrivals(id) {
+    if (!ARR || (!ARR_MR && root.MapRemake)) {   // 作り直したダンジョンの座標の直し（mapremake.js）が読み込まれたら作り直す
+      ARR = {}; ARR_MR = !!root.MapRemake; var add = function (to, x, y) { if (!to || typeof x !== 'number' || typeof y !== 'number') return; var p = { x: x, y: y }; try { if (root.MapRemake && root.MapRemake.pos) p = root.MapRemake.pos(to, x, y) || p; } catch (e) { /* そのまま */ } (ARR[to] = ARR[to] || []).push([p.x, p.y]); };
+      var D = root.MAP_DEFS || {}; Object.keys(D).forEach(function (k) { var d = D[k]; if (Array.isArray(d.warps)) d.warps.forEach(function (w) { if (w) add(w.to, w.tx, w.ty); }); if (Array.isArray(d.events)) d.events.forEach(function (e) { if (e && e.to) add(e.to, e.tx, e.ty); }); });
+      (root.WORLD_LOCATIONS || []).forEach(function (L) { if (L) add(L.to, L.tx, L.ty); });
+      EL.EXTRA_ARRIVALS.forEach(function (a) { add(a[0], a[1], a[2]); });
+    }
+    return ARR[id] || [];
+  }
+  EL.arrivals = arrivals;
   // ---------- 解析：守るマス・通れるか・つながり
   function analyze(m) {
     var W = m.w, H = m.h, T = root.Tiles; var A = { m: m, W: W, H: H };
@@ -47,7 +60,8 @@
     (m.events || []).forEach(function (e) { mark(e.x, e.y, 2); anchors.push([e.x, e.y, e.solid ? 'solidev' : 'event']); });
     (m.chests || []).forEach(function (c) { mark(c.x, c.y, 2); anchors.push([c.x, c.y, 'chest']); });
     (m.npcs || []).forEach(function (n) { var x = n.ox !== undefined ? n.ox : n.x, y = n.oy !== undefined ? n.oy : n.y; mark(x, y, 2 + Math.min(2, n.wander || 0)); anchors.push([x, y, 'npc']); });
-    (m.buildings || []).forEach(function (b) { if (b.doorAbs) { mark(b.doorAbs.x, b.doorAbs.y + 1, 2); mark(b.doorAbs.x, b.doorAbs.y, 1); } });
+    (m.buildings || []).forEach(function (b) { if (b.doorAbs) { mark(b.doorAbs.x, b.doorAbs.y + 1, 2); mark(b.doorAbs.x, b.doorAbs.y, 1); anchors.push([b.doorAbs.x, b.doorAbs.y, 'door']); } });
+    arrivals(m.id).forEach(function (p) { if (p[0] >= 0 && p[1] >= 0 && p[0] < W && p[1] < H) { mark(p[0], p[1], 2); anchors.push([p[0], p[1], 'arrive']); } });   // 着く所   // 建物の扉も「近づける物」（行けなくならない・遠くならない）
     (root.SEARCH_POINTS || []).forEach(function (p) { if (p.map === m.id) { mark(p.x, p.y, 2); anchors.push([p.x, p.y, 'search']); } });
     (root.QUIZ_MONSTERS || []).forEach(function (p) { if (p.map === m.id) { mark(p.x, p.y, 2); anchors.push([p.x, p.y, 'quiz']); } });
     for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) { var t = m.tiles[y][x]; if (t === 'stairs_down' || t === 'stairs_up' || t === 'warp' || t === 'hole' || t === 'bld_door' || t === 'door' || BARRIER_T[t]) mark(x, y, 2); if (x < 2 || y < 2 || x >= W - 2 || y >= H - 2) { var i0 = y * W + x; prot[i0] = Math.min(prot[i0], 0); } }
@@ -106,7 +120,7 @@
       var sb = {}, sa = {}; before.forEach(function (l) { sb[l] = 1; }); after.forEach(function (l) { if (l !== undefined) sa[l] = 1; });
       for (var k in sb) if (!sa[k]) return 'anchor ' + an.join(',');
       for (var k2 in sa) if (!sb[k2]) return 'anchor+ ' + an.join(',');
-      if ((an[2] === 'warp' || an[2] === 'event') && B0.walk0[an[1] * W + an[0]] && !A.walk(an[0], an[1])) return 'anchor tile ' + an.join(',');
+      if ((an[2] === 'warp' || an[2] === 'event' || an[2] === 'arrive') && B0.walk0[an[1] * W + an[0]] && !A.walk(an[0], an[1])) return 'anchor tile ' + an.join(',');
     }
     return distOk(A, B0);
   }

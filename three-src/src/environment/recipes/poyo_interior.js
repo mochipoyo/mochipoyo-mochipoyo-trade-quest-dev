@@ -3,7 +3,7 @@
    ・始まりの農村（arcadia）の色：生成りのしっくい・オークの木・暖かい光
    ・用途：家＝額の絵と皿の棚／村長の家＝地図と巻物の棚／道具屋＝薬瓶の棚と看板／宿屋＝額と壁のランプ／教会＝縦長の色ガラスと光／
      修行場＝チャートの掛け軸／水車小屋・納屋＝道具掛け（鎌・縄）／見張り台＝細い窓／集会所＝村の旗
-   ・奥の壁（北・z=1）の面に、頭より高い所（1.6〜2.8）だけに置く。前のマスに背の高い家具（棚・食器棚・かまど・ベッド）があるときは置かない
+   ・奥の壁（北・z=1）の面に、頭より高い所（1.85〜2.8。歩く体の高さ 1.8 より上）だけに置く。前のマスに背の高い家具（棚・食器棚・かまど・ベッド）があるときは置かない
    ・論理（タイル）は変えない。InteriorBuilder3D の壁・家具・光はそのまま
    ========================================================= */
 import * as THREE from 'three';
@@ -33,15 +33,15 @@ async function build(ctx, kind, b) {
   for (let x = 2; x < W - 2; x++) {
     if (x % 3 !== 1) continue; if (TALL[map.tile(x, 1)]) continue; const cx = x + 0.5, k = x % 3 + (x >> 2) % 3;
     switch (kind) {
-      case 'house': add(M.frame, wbox(0.62, 0.48, 0.05, cx, 2.1, zf)); add(M.canvas[k % 3], wbox(0.52, 0.38, 0.03, cx, 2.1, zf + 0.03)); add(M.oak, wbox(0.9, 0.05, 0.22, cx + 0.9, 1.75, zf + 0.1)); for (let i = 0; i < 3; i++) add(M.plate, new THREE.CylinderGeometry(0.1, 0.1, 0.02, 12).rotateX(Math.PI / 2).translate(cx + 0.62 + i * 0.28, 1.88, zf + 0.06)); break;
-      case 'elder': add(M.frame, wbox(1.0, 0.7, 0.04, cx, 2.15, zf)); add(M.canvas[1], wbox(0.92, 0.62, 0.03, cx, 2.15, zf + 0.025)); add(M.oak, wbox(0.8, 0.05, 0.22, cx + 1.0, 1.8, zf + 0.1)); for (let i = 0; i < 3; i++) add(M.canvas[(i + 1) % 3], cyl(0.05, 0.05, 0.3, 8, cx + 0.8 + i * 0.16, 1.9, zf + 0.1)); break;
-      case 'shop': add(M.oak, wbox(1.0, 0.05, 0.24, cx, 1.75, zf + 0.12)); add(M.oak, wbox(1.0, 0.05, 0.24, cx, 2.25, zf + 0.12)); for (let i = 0; i < 5; i++) { add(M.bottle[(i + k) % 3], cyl(0.05, 0.05, 0.2, 8, cx - 0.4 + i * 0.2, 1.88, zf + 0.12)); add(M.bottle[(i + k + 1) % 3], cyl(0.045, 0.045, 0.17, 8, cx - 0.4 + i * 0.2, 2.36, zf + 0.12)); } break;
-      case 'inn': add(M.frame, wbox(0.62, 0.48, 0.05, cx, 2.1, zf)); add(M.canvas[(k + 2) % 3], wbox(0.52, 0.38, 0.03, cx, 2.1, zf + 0.03)); add(M.iron, wbox(0.08, 0.24, 0.1, cx + 0.75, 1.8, zf + 0.05)); add(M.glow, wbox(0.1, 0.14, 0.1, cx + 0.75, 1.98, zf + 0.12)); ctx.scene.lampSpots.push({ pos: new THREE.Vector3(cx + 0.75, 2.0, 1.6), color: 0xffc070, power: 0.6, dist: 5 }); break;
-      case 'church': add(M.glass[k % 3], wbox(0.42, 1.2, 0.03, cx, 2.15, zf)); add(M.frame, wbox(0.5, 0.06, 0.05, cx, 2.78, zf + 0.01)); ctx.scene.lampSpots.push({ pos: new THREE.Vector3(cx, 2.1, 1.8), color: 0xd8c8ff, power: 0.45, dist: 5 }); break;
-      case 'dojo': { const cl = new THREE.PlaneGeometry(0.55, 1.3); cl.translate(cx, 2.05, zf + 0.01); add(M.chart, cl); add(M.oak, wbox(0.7, 0.05, 0.05, cx, 2.72, zf + 0.03)); add(M.glow, wbox(0.36, 0.03, 0.02, cx, 1.9 + (k % 3) * 0.12, zf + 0.02)); break; }
-      case 'mill': case 'barn': add(M.oak, wbox(1.1, 0.08, 0.08, cx, 2.2, zf + 0.04)); add(M.iron, wbox(0.05, 0.6, 0.04, cx - 0.3, 1.9, zf + 0.06)); add(M.rope, new THREE.TorusGeometry(0.16, 0.04, 6, 12).translate(cx + 0.25, 1.95, zf + 0.06)); break;
-      case 'watch': add(M.sky, wbox(0.16, 0.8, 0.03, cx, 2.1, zf)); break;
-      case 'hall': { const cl = new THREE.PlaneGeometry(0.62, 1.3); cl.translate(cx, 2.1, zf + 0.01); add(M.cloth, cl); add(M.frame, wbox(0.72, 0.05, 0.05, cx, 2.78, zf + 0.03)); break; }
+      case 'house': add(M.frame, wbox(0.62, 0.48, 0.05, cx, 2.1, zf)); add(M.canvas[k % 3], wbox(0.52, 0.38, 0.03, cx, 2.1, zf + 0.03)); add(M.oak, wbox(0.9, 0.05, 0.22, cx + 0.9, 1.95, zf + 0.1)); for (let i = 0; i < 3; i++) add(M.plate, new THREE.CylinderGeometry(0.1, 0.1, 0.02, 12).rotateX(Math.PI / 2).translate(cx + 0.62 + i * 0.28, 2.08, zf + 0.06)); break;
+      case 'elder': add(M.frame, wbox(1.0, 0.7, 0.04, cx, 2.25, zf)); add(M.canvas[1], wbox(0.92, 0.62, 0.03, cx, 2.25, zf + 0.025)); add(M.oak, wbox(0.8, 0.05, 0.22, cx + 1.0, 1.95, zf + 0.1)); for (let i = 0; i < 3; i++) add(M.canvas[(i + 1) % 3], cyl(0.05, 0.05, 0.3, 8, cx + 0.8 + i * 0.16, 2.12, zf + 0.1)); break;
+      case 'shop': add(M.oak, wbox(1.0, 0.05, 0.24, cx, 1.95, zf + 0.12)); add(M.oak, wbox(1.0, 0.05, 0.24, cx, 2.45, zf + 0.12)); for (let i = 0; i < 5; i++) { add(M.bottle[(i + k) % 3], cyl(0.05, 0.05, 0.2, 8, cx - 0.4 + i * 0.2, 2.08, zf + 0.12)); add(M.bottle[(i + k + 1) % 3], cyl(0.045, 0.045, 0.17, 8, cx - 0.4 + i * 0.2, 2.56, zf + 0.12)); } break;
+      case 'inn': add(M.frame, wbox(0.62, 0.48, 0.05, cx, 2.1, zf)); add(M.canvas[(k + 2) % 3], wbox(0.52, 0.38, 0.03, cx, 2.1, zf + 0.03)); add(M.iron, wbox(0.08, 0.24, 0.1, cx + 0.75, 2.02, zf + 0.05)); add(M.glow, wbox(0.1, 0.14, 0.1, cx + 0.75, 2.2, zf + 0.12)); ctx.scene.lampSpots.push({ pos: new THREE.Vector3(cx + 0.75, 2.2, 1.6), color: 0xffc070, power: 0.6, dist: 5 }); break;
+      case 'church': add(M.glass[k % 3], wbox(0.42, 0.9, 0.03, cx, 2.35, zf)); add(M.frame, wbox(0.5, 0.06, 0.05, cx, 2.78, zf + 0.01)); ctx.scene.lampSpots.push({ pos: new THREE.Vector3(cx, 2.1, 1.8), color: 0xd8c8ff, power: 0.45, dist: 5 }); break;
+      case 'dojo': { const cl = new THREE.PlaneGeometry(0.55, 0.9); cl.translate(cx, 2.35, zf + 0.01); add(M.chart, cl); add(M.oak, wbox(0.7, 0.05, 0.05, cx, 2.83, zf + 0.03)); add(M.glow, wbox(0.36, 0.03, 0.02, cx, 2.1 + (k % 3) * 0.12, zf + 0.02)); break; }
+      case 'mill': case 'barn': add(M.oak, wbox(1.1, 0.08, 0.08, cx, 2.2, zf + 0.04)); add(M.iron, wbox(0.05, 0.5, 0.04, cx - 0.3, 2.15, zf + 0.06)); add(M.rope, new THREE.TorusGeometry(0.16, 0.04, 6, 12).translate(cx + 0.25, 2.1, zf + 0.06)); break;
+      case 'watch': add(M.sky, wbox(0.16, 0.8, 0.03, cx, 2.3, zf)); break;
+      case 'hall': { const cl = new THREE.PlaneGeometry(0.62, 0.9); cl.translate(cx, 2.35, zf + 0.01); add(M.cloth, cl); add(M.frame, wbox(0.72, 0.05, 0.05, cx, 2.83, zf + 0.03)); break; }
       default: break;
     }
     n++;

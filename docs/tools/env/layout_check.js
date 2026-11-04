@@ -1,7 +1,7 @@
 // v7.6 環境リデザイン：EnvLayout（町の街路・ダンジョンの空間の流れ）の確認（jsdom でゲームのデータを読む）
 //   使い方：RPG_DIR=<リポジトリ>/ node layout_check.js [出力.json]
 //   ・町・ダンジョンの全マップで、作り直しなし（EnvLayout.enabled=false）と、ありの GameMap を作って比べる（EnvLayout の中の確認とは別に、ここで数え直す）
-//   ・入口（ワープ）から歩いて行ける所（4方向）で、近づける物（ワープ・出来事・宝箱・人・調べる場所・クイズの魔物）の集まりが同じか
+//   ・入口（ワープ）から歩いて行ける所（4方向）で、近づける物（ワープ・出来事・宝箱・人・調べる場所・クイズの魔物・建物の扉）の集まりが同じか
 //     鍵の扉・関所・レバー・通れない出来事を「閉じた」とき と「開いた」とき の両方で比べる（閉じたときに増える＝抜け道、減る＝行けなくなった）
 //   ・建物の表示条件（showIf）が変わる町は、フラグなし と すべてのフラグあり の両方で作る
 //   ・道のり：各ワープから近づける物までの最短の歩数が、短くならない（近道なし）・＋4歩＋1割を超えて長くならない（閉じた・開いたの両方）
@@ -21,6 +21,7 @@ function reach(m, open) {
   m.events.forEach((e) => { if (near(e.x, e.y)) out.push('ev:' + e.type + ':' + e.x + ',' + e.y); });
   m.chests.forEach((c) => { if (near(c.x, c.y)) out.push('chest:' + c.id); });
   m.npcs.forEach((n) => { if (near(n.ox, n.oy)) out.push('npc:' + n.id); });
+  (m.buildings || []).forEach((b) => { if (b.doorAbs && near(b.doorAbs.x, b.doorAbs.y)) out.push('door:' + b.id + '@' + b.doorAbs.x + ',' + b.doorAbs.y); });
   (w.SEARCH_POINTS || []).forEach((p) => { if (p.map === m.id && near(p.x, p.y)) out.push('search:' + p.x + ',' + p.y); });
   (w.QUIZ_MONSTERS || []).forEach((p) => { if (p.map === m.id && near(p.x, p.y)) out.push('quiz:' + p.x + ',' + p.y); });
   return { tiles: seen.size, list: out.sort() };
@@ -29,7 +30,7 @@ function reach(m, open) {
 function dists(m, open) {
   const W = m.w, H = m.h; const solidEv = {}; m.events.forEach((e) => { if (e.solid) solidEv[e.x + ',' + e.y] = 1; }); const npc = {}; m.npcs.forEach((n) => { npc[n.ox + ',' + n.oy] = 1; });
   const ok = (x, y) => x >= 0 && y >= 0 && x < W && y < H && (!TL.isSolid(m.tiles[y][x]) || (open && BAR[m.tiles[y][x]])) && (open || !solidEv[x + ',' + y]) && !npc[x + ',' + y];
-  const objs = []; m.warps.forEach((p) => objs.push(['warp:' + p.x + ',' + p.y, p.x, p.y])); m.events.forEach((e) => objs.push(['ev:' + e.type + ':' + e.x + ',' + e.y, e.x, e.y])); m.chests.forEach((c) => objs.push(['chest:' + c.id, c.x, c.y])); m.npcs.forEach((n) => objs.push(['npc:' + n.id, n.ox, n.oy]));
+  const objs = []; m.warps.forEach((p) => objs.push(['warp:' + p.x + ',' + p.y, p.x, p.y])); m.events.forEach((e) => objs.push(['ev:' + e.type + ':' + e.x + ',' + e.y, e.x, e.y])); m.chests.forEach((c) => objs.push(['chest:' + c.id, c.x, c.y])); m.npcs.forEach((n) => objs.push(['npc:' + n.id, n.ox, n.oy])); (m.buildings || []).forEach((b) => { if (b.doorAbs) objs.push(['door:' + b.id, b.doorAbs.x, b.doorAbs.y]); });
   (w.SEARCH_POINTS || []).forEach((p) => { if (p.map === m.id) objs.push(['search:' + p.x + ',' + p.y, p.x, p.y]); }); (w.QUIZ_MONSTERS || []).forEach((p) => { if (p.map === m.id) objs.push(['quiz:' + p.x + ',' + p.y, p.x, p.y]); });
   const stand = (x, y) => [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]].map(([dx, dy]) => [x + dx, y + dy]).filter(([a, b]) => ok(a, b));
   const out = {};

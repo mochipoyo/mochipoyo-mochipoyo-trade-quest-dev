@@ -1,0 +1,12 @@
+--- v65/events65test.js.bak76	2026-11-04 23:44:20.702298536 +0900
++++ v65/events65test.js	2026-11-04 23:44:20.730874646 +0900
+@@ -39,7 +39,8 @@
+   const lost = []; const prevDir = process.env.RPG_DIR; process.env.RPG_DIR = process.env.BASE_DIR || '/home/claude/baseline-phaseA/'; delete require.cache[require.resolve('../rpgload.js')]; const bw = require('../rpgload.js')().w; process.env.RPG_DIR = prevDir || ''; bw.State.newGame('t', 'warrior');
+   for (const map of ['tradia_weapon', 'tradia_guild', 'dow_village', 'tradia_tavern', 'vol_ancient', 'vol_observatory', 'vol_library']) {
+     const bm = new bw.GameMap(bw.MAP_DEFS[map]); const nm = new w.GameMap(D[map]); const a = reach(bm); const b = reach(nm); const nowSet = new Set([...b]);   // 歩き回る人の今の位置に左右されないよう、置いたばかりの状態で比べる
+-    a.forEach(k => { const [x, y] = k.split(',').map(Number); const m = nm; const occupied = m.npcAt(x, y) || (m.eventAt(x, y) && m.eventAt(x, y).solid); if (!nowSet.has(k) && !occupied) lost.push(map + ':' + k); }); }
++    const envSolid = new Set((nm.envLayout && nm.envLayout.changed || []).filter(c => w.Tiles.isSolid(c[3])).map(c => c[0] + ',' + c[1]));   // v7.6：間取りの作り直し（envlayout.js）で目印・並木・庭にしたマスは除く（行ける物が減らないことは docs/tools/env/layout_check.js で確かめる）
++    a.forEach(k => { const [x, y] = k.split(',').map(Number); const m = nm; const occupied = m.npcAt(x, y) || (m.eventAt(x, y) && m.eventAt(x, y).solid); if (!nowSet.has(k) && !occupied && !envSolid.has(k)) lost.push(map + ':' + k); }); }
+   ok(lost.length === 0, '人や調べる場所を置いても、もとから行けたマスへは今も行ける（置いたマスそのものを除く）' + (lost.length ? ' NG: ' + lost.slice(0, 5) : ''));
+ 
+   for (const [key, P] of Object.entries(PLAN)) {

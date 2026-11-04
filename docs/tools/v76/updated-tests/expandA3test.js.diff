@@ -1,0 +1,12 @@
+--- expandA3test.js.bak76	2026-11-04 23:44:20.699601301 +0900
++++ expandA3test.js	2026-11-04 23:44:20.728739659 +0900
+@@ -37,7 +37,8 @@
+     const after = new GameMap(def); World.applyState(after); const before = new GameMap(Object.assign({}, def, { buildings: def.buildings.filter(b => b.id !== h.building) })); World.applyState(before);
+     const sA = bfs(after, arrivals), sB = bfs(before, arrivals); const nb = after.buildings.find(b => b.id === h.building);
+     const foot = []; for (let y = nb.y; y < nb.y + nb.h; y++) for (let x = nb.x; x < nb.x + nb.w; x++) foot.push(x + ',' + y);
+-    const lost = [...sB].filter(k => !sA.has(k)); const okLost = lost.every(k => foot.includes(k));
++    const envSolid = (after.envLayout && after.envLayout.changed || []).filter(c => Tiles.isSolid(c[3])).map(c => c[0] + ',' + c[1]);   // v7.6：間取りの作り直し（envlayout.js）で目印・並木・庭にしたマスは除く（行ける物が減らないことは docs/tools/env/layout_check.js で確かめる）
++    const lost = [...sB].filter(k => !sA.has(k) && !envSolid.includes(k)); const okLost = lost.every(k => foot.includes(k));
+     const targets = [].concat(before.warps.map(o => [o.x, o.y]), before.buildings.map(b => [b.doorAbs.x, b.doorAbs.y]), before.chests.map(o => [o.x, o.y]), before.npcs.filter(n => !n.hidden).map(n => [n.x, n.y]), before.events.map(o => [o.x, o.y]), sp.filter(p => p.map === h.town).map(p => [p.x, p.y]));
+     const missing = targets.filter(([x, y]) => near(sB, x, y) && !near(sA, x, y));
+     const doorFront = sA.has(nb.doorAbs.x + ',' + (nb.doorAbs.y + 1));
