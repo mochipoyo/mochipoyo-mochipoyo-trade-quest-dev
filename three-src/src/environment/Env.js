@@ -30,6 +30,7 @@ export const Env = {
     catalogJob = catalog.init().then(() => catalog, (e) => { Env.loadError = String(e && e.message || e); console.warn('[環境] 素材の一覧を読めない：' + Env.loadError + '（' + base + '）'); catalogJob = null; throw e; });
     return catalogJob;
   },
+  profileSync(mapId) { return catalog && catalog.profiles ? catalog.profiles[mapId] || null : null; },   // 読み込み済みのときだけ（全体展開のレシピ選び）
   async profile(mapId, renderer) {
     let c = null; try { c = await Env.catalog(renderer); } catch (e) { return null; }
     const p = c.profiles && c.profiles[mapId];
@@ -38,6 +39,8 @@ export const Env = {
   },
   recipeFor(map) { if (!map || !Env.enabled() || Env.errors[map.id]) return null; return RECIPES[map.id] || genericRecipe(map) || null; },   // 専用レシピ→種類ごとの作り方（全体展開）。失敗したマップは、その回はレシピなし
   recipeIds() { return Object.keys(RECIPES); },
+  // 確認用：全マップの「どのレシピを当てるか」（組み立てはしない）。ids：マップIDの一覧、getMap：IDから地図（World.getMap）
+  plan(ids, getMap) { const out = {}; for (const id of ids) { let m = null; try { m = getMap(id); } catch (e) { out[id] = { error: String(e && e.message || e) }; continue; } const r = RECIPES[id] || genericRecipe(m); out[id] = { kind: m.kind, recipe: r ? r.id : null, bespoke: !!RECIPES[id] }; } return out; },
   // 確認用：歩けるマスの「体の高さ」（0.15〜1.8）に形があるマスを調べる（下向きの光線。床・水・草・人・宝箱・煙は除く）。テスト（p76_walk.js）が env=off と v1 で比べる
   probeWalk(ms) {
     const map = ms && ms.map; if (!map) return null; ms.root.updateMatrixWorld(true);

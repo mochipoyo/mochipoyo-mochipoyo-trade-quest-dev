@@ -65,6 +65,35 @@ function sawTooth(xl, xr, zS, zN, y0, rise) {
 }
 const TOWERS = [[7, -7.5, 1.0], [57, -7, 0.9], [32, -10.5, 0.75]];   // 町の外の冷却塔（x, z, 大きさ）
 
+// 材質（パックの金属の画像＋キャンバスの外板・六角タイル）。改革のあと（zeromea_reformed）は光が暖色、生活の掲示
+async function makeK(ctx) {
+  const flags = (window.State && window.State.data && window.State.data.flags) || {}; const reformed = !!flags.zeromea_reformed;
+  const K = {
+    reformed,
+    ind: await mat(ctx, 'metal_industrial', { repeat: 2, color: '#c3ced6', bright: 1.9, roughness: 0.6, metalness: 0.1 }),
+    road: await mat(ctx, 'metal_industrial', { repeat: 2, color: '#9aa7b1', bright: 1.15, roughness: 0.75, metalness: 0.08 }),
+    ceramic: texMat('ceramic', canvasTex('ceramic', 256, 256, drawCeramic), { roughness: 0.5 }),
+    hexL: texMat('hexL', canvasTex('hexL', 512, 296, drawHex('#dde3e7', '#8f99a1', 0.06)), { roughness: 0.62 }),
+    hexD: texMat('hexD', canvasTex('hexD', 512, 296, drawHex('#b9c4cc', '#6f7c86', 0.08)), { roughness: 0.55 }),
+    hexP: texMat('hexP', canvasTex('hexP', 512, 296, drawHex('#eef1f2', '#a6b0b8', 0.04)), { roughness: 0.45 }),
+    metal: plain('#93a2ad', { std: { roughness: 0.5, metalness: 0.18 } }),
+    metalD: plain('#5f6d78', { std: { roughness: 0.55, metalness: 0.15 } }),
+    roof: plain('#d3dade', { std: { roughness: 0.85 } }), roofD: plain('#aeb8bf', { std: { roughness: 0.8 } }),
+    white: plain('#f0f2f2', { std: { roughness: 0.5 } }),
+    glass: plain('#1d2a33', { std: { roughness: 0.12, metalness: 0.35 }, window: true, emissive: reformed ? '#ffd9a0' : '#bfe6ff', ei: 0.2 }),
+    acc: reformed ? plain('#ffcf7a', { emissive: '#ffb850', ei: 1.5, keepGlow: true, std: { roughness: 0.4 } }) : plain('#5fd6e2', { emissive: '#48c9d6', ei: 1.5, keepGlow: true, std: { roughness: 0.4 } }),
+    warn: reformed ? plain('#ffcf7a', { emissive: '#ffb850', ei: 1.4, keepGlow: true }) : plain('#ff6a4a', { emissive: '#ff3a2a', ei: 1.6, keepGlow: true }),
+    paint: plain('#e2c044', { std: { roughness: 0.7 } }),
+    notice: texMat(reformed ? 'noticeLife' : 'noticeOfficial', canvasTex(reformed ? 'noticeLife' : 'noticeOfficial', 128, 160, drawNotice(reformed ? 'life' : 'official')), { roughness: 0.8 }),
+    pot: plain('#8a6a54', { std: { roughness: 0.85 } }), leaf: plain('#4f8f4a', { std: { roughness: 0.85 } }), leaf2: plain('#6aa85a', { std: { roughness: 0.85 } }),
+    cloth: ['#d9534a', '#f0c24a', '#3fa7a0', '#e88a3a', '#7a6ad8'].map((c) => plain(c, { std: { roughness: 0.9, side: THREE.DoubleSide } })),
+    bulb: plain('#ffe2a0', { emissive: '#ffc060', ei: 2.0, keepGlow: true }),
+    crate: plain('#9a7a54', { std: { roughness: 0.9 } }),
+    lightColor: reformed ? 0xffc070 : 0xd8f0ff
+  };
+  return K;
+}
+
 export const recipe = {
   id: 'node_city.v1',
   async prepare(ctx) {
@@ -72,38 +101,14 @@ export const recipe = {
     const need = ['core', 'registry', 'school', 'ration', 'inn', 'armor', 'house'];
     const ids = (map.buildings || []).map((b) => b.id); const miss = need.filter((id) => !ids.includes(id)); if (miss.length) throw new Error('建物がない：' + miss.join(','));
     const core = map.buildings.find((b) => b.id === 'core'); if (core.w !== 10 || core.h !== 6 || map.w !== 64 || map.h !== 30) throw new Error('中央データ塔・地図の大きさが想定と違う');
-    const flags = (window.State && window.State.data && window.State.data.flags) || {}; const reformed = !!flags.zeromea_reformed;
-    // 材質（パックの金属の画像＋キャンバスの外板・六角タイル）
-    const K = {
-      reformed,
-      ind: await mat(ctx, 'metal_industrial', { repeat: 2, color: '#c3ced6', bright: 1.9, roughness: 0.6, metalness: 0.1 }),
-      road: await mat(ctx, 'metal_industrial', { repeat: 2, color: '#9aa7b1', bright: 1.15, roughness: 0.75, metalness: 0.08 }),
-      ceramic: texMat('ceramic', canvasTex('ceramic', 256, 256, drawCeramic), { roughness: 0.5 }),
-      hexL: texMat('hexL', canvasTex('hexL', 512, 296, drawHex('#dde3e7', '#8f99a1', 0.06)), { roughness: 0.62 }),
-      hexD: texMat('hexD', canvasTex('hexD', 512, 296, drawHex('#b9c4cc', '#6f7c86', 0.08)), { roughness: 0.55 }),
-      hexP: texMat('hexP', canvasTex('hexP', 512, 296, drawHex('#eef1f2', '#a6b0b8', 0.04)), { roughness: 0.45 }),
-      metal: plain('#93a2ad', { std: { roughness: 0.5, metalness: 0.18 } }),
-      metalD: plain('#5f6d78', { std: { roughness: 0.55, metalness: 0.15 } }),
-      roof: plain('#d3dade', { std: { roughness: 0.85 } }), roofD: plain('#aeb8bf', { std: { roughness: 0.8 } }),
-      white: plain('#f0f2f2', { std: { roughness: 0.5 } }),
-      glass: plain('#1d2a33', { std: { roughness: 0.12, metalness: 0.35 }, window: true, emissive: reformed ? '#ffd9a0' : '#bfe6ff', ei: 0.2 }),
-      acc: reformed ? plain('#ffcf7a', { emissive: '#ffb850', ei: 1.5, keepGlow: true, std: { roughness: 0.4 } }) : plain('#5fd6e2', { emissive: '#48c9d6', ei: 1.5, keepGlow: true, std: { roughness: 0.4 } }),
-      warn: reformed ? plain('#ffcf7a', { emissive: '#ffb850', ei: 1.4, keepGlow: true }) : plain('#ff6a4a', { emissive: '#ff3a2a', ei: 1.6, keepGlow: true }),
-      paint: plain('#e2c044', { std: { roughness: 0.7 } }),
-      notice: texMat(reformed ? 'noticeLife' : 'noticeOfficial', canvasTex(reformed ? 'noticeLife' : 'noticeOfficial', 128, 160, drawNotice(reformed ? 'life' : 'official')), { roughness: 0.8 }),
-      pot: plain('#8a6a54', { std: { roughness: 0.85 } }), leaf: plain('#4f8f4a', { std: { roughness: 0.85 } }), leaf2: plain('#6aa85a', { std: { roughness: 0.85 } }),
-      cloth: ['#d9534a', '#f0c24a', '#3fa7a0', '#e88a3a', '#7a6ad8'].map((c) => plain(c, { std: { roughness: 0.9, side: THREE.DoubleSide } })),
-      bulb: plain('#ffe2a0', { emissive: '#ffc060', ei: 2.0, keepGlow: true }),
-      crate: plain('#9a7a54', { std: { roughness: 0.9 } }),
-      lightColor: reformed ? 0xffc070 : 0xd8f0ff
-    };
+    const K = await makeK(ctx);
     const hooks = {
       skipWall: (t) => t === 'castle_wall' || t === 'roof_blue',
       skipProp: (t) => t === 'lamp' || t === 'fountain',
       skipOutTree: (x, z) => z >= map.h - 1 || TOWERS.some(([tx, tz, s]) => (x - tx) ** 2 + (z - tz) ** 2 < (5 * s) ** 2)   // 南（カメラの側）と冷却塔の足元には木を置かない
     };
     const building = async (b, o) => { const f = BUILD[b.id]; if (!f) return null; const out = { group: new THREE.Group(), lights: [], smokes: [], props: [] }; out.group.name = 'building_env_' + b.id; await f(ctx, K, b, o.batch, out); return out; };
-    return { hooks, building, build: (bb) => build(ctx, K, bb) };
+    return { hooks, building, build: (bb) => build(ctx, K, bb, { plazas: [[50, 15.5, 2.3]], lot: 'sealed' }) };
   }
 };
 
@@ -323,7 +328,8 @@ async function flowerShop(ctx, K, b, batch, out) {
 }
 
 // ---------------- 町全体：床・壁と配管・門・街灯・噴水・広場・外の冷却塔
-async function build(ctx, K, b) {
+async function build(ctx, K, b, opt) {
+  opt = opt || {};
   const map = ctx.map, W = map.w, H = map.h; const hi = ctx.quality !== 'low'; const hAt = b.heightAt || (() => 0);
   const g = new THREE.Group(); g.name = 'env_node_city'; b.root.add(g);
   const batch = new Batch(); const add = (m, gg) => batch.add(m, gg);
@@ -346,7 +352,7 @@ async function build(ctx, K, b) {
   };
   const fountain = []; for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) if (T(x, z) === 'fountain') fountain.push([x, z]);
   for (const [x, z] of fountain) hexPlaza(x + 0.5, z + 0.5, 3.4);
-  hexPlaza(50, 15.5, 2.3);
+  for (const [px, pz, pr] of opt.plazas || []) hexPlaza(px, pz, pr);
   // 噴水 → データの泉（六角の水盤＋データ柱）
   for (const [x, z] of fountain) { add(K.metalD, hexPrism(0.5, 0.42, x + 0.5, 0.21, z + 0.5)); add(K.acc, hexPrism(0.42, 0.02, x + 0.5, 0.43, z + 0.5)); }
   if (fountain.length) g.add(await kit(ctx, 'server_pillar', fountain.map(([x, z]) => ({ x: x + 0.5, y: 0.42, z: z + 0.5, s: [0.42, 0.72, 0.42] }))));
@@ -374,7 +380,8 @@ async function build(ctx, K, b) {
   }
   // ---- 封鎖区画（改革前：自由市場の場所。青い屋根のマス）：金網の柵と同じ形のコンテナ
   const lot = []; for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) if (T(x, z) === 'roof_blue') lot.push([x, z]);
-  if (lot.length) {
+  if (lot.length && opt.lot === 'housing') ctx.stats.blocks = housingBlocks(add, K, map, T, g);
+  else if (lot.length) {
     const x0 = Math.min(...lot.map((p) => p[0])), x1 = Math.max(...lot.map((p) => p[0])) + 1, z0 = Math.min(...lot.map((p) => p[1])), z1 = Math.max(...lot.map((p) => p[1])) + 1;
     add(K.metalD, wbox(x1 - x0 - 0.1, 0.12, z1 - z0 - 0.1, (x0 + x1) / 2, 0.06, (z0 + z1) / 2));
     for (const [ax, az, bx, bz] of [[x0, z0, x1, z0], [x0, z1, x1, z1], [x0, z0, x0, z1], [x1, z0, x1, z1]]) { const along = bx !== ax, len = along ? bx - ax : bz - az; const sh = az === z1 && !along ? 1.0 : (az === z1 ? 1.0 : 1.9); add(K.metal, wbox(along ? len : 0.06, 0.06, along ? 0.06 : len, (ax + bx) / 2 + (along ? 0 : (ax === x0 ? 0.08 : -0.08)), sh, (az + bz) / 2 + (along ? (az === z0 ? 0.08 : -0.08) : 0))); for (let t = 0; t <= len; t += 1) add(K.metalD, wbox(0.06, sh, 0.06, ax + (along ? t : 0) + (along ? 0 : (ax === x0 ? 0.08 : -0.08)), sh / 2, az + (along ? 0 : t) + (along ? (az === z0 ? 0.08 : -0.08) : 0))); }
@@ -387,8 +394,40 @@ async function build(ctx, K, b) {
   const ct = new THREE.Group(); ct.name = 'env_cooling_towers';
   const pts = []; for (let i = 0; i <= 14; i++) { const y = i / 14 * 10; pts.push(new THREE.Vector2(1.75 * Math.sqrt(1 + ((y - 7) / 4.5) ** 2), y)); }
   const concrete = plain('#cdd3d6', { std: { roughness: 0.9, side: THREE.DoubleSide } });
-  for (const [x, z, s] of TOWERS) { const lg = new THREE.LatheGeometry(pts, hi ? 28 : 16); lg.scale(s, s, s); lg.translate(x, 0, z); add(concrete, lg); add(K.metalD, cyl(2.15 * s, 2.15 * s, 0.25 * s, 24, x, 9.9 * s, z)); add(K.metalD, cyl(3.3 * s, 3.4 * s, 0.4, 24, x, 0.2, z)); add(K.warn, new THREE.SphereGeometry(0.12, 8, 6).translate(x + 2.0 * s, 10.15 * s, z)); ctx.scene.addSmoke(new THREE.Vector3(x, 10.3 * s, z)); }
+  for (const [x, z, s] of opt.noTowers ? [] : TOWERS) { const lg = new THREE.LatheGeometry(pts, hi ? 28 : 16); lg.scale(s, s, s); lg.translate(x, 0, z); add(concrete, lg); add(K.metalD, cyl(2.15 * s, 2.15 * s, 0.25 * s, 24, x, 9.9 * s, z)); add(K.metalD, cyl(3.3 * s, 3.4 * s, 0.4, 24, x, 0.2, z)); add(K.warn, new THREE.SphereGeometry(0.12, 8, 6).translate(x + 2.0 * s, 10.15 * s, z)); ctx.scene.addSmoke(new THREE.Vector3(x, 10.3 * s, z)); }
   batch.build(g);
   ctx.stats.lamps = lamps; ctx.stats.walls = wallN; ctx.stats.pipeRuns = pipeRuns; ctx.stats.curbs = curbs; ctx.stats.pipeBridges = bridges.length; ctx.stats.reformed = K.reformed;
   return g;
 }
+
+// 規格の居住棟（青い屋根のマス＝入口のない棟。第7居住区）：同じ形の棟を並べ、棟ごとに大きな番号（居住棟の番号ゲート）
+function housingBlocks(add, K, map, T, g) {
+  const seen = new Set(); let n = 0;
+  for (let z = 0; z < map.h; z++) for (let x = 0; x < map.w; x++) {
+    if (T(x, z) !== 'roof_blue' || seen.has(x + ',' + z)) continue;
+    let x1 = x; while (T(x1 + 1, z) === 'roof_blue') x1++; let z1 = z; while (T(x, z1 + 1) === 'roof_blue') z1++;
+    for (let zz = z; zz <= z1; zz++) for (let xx = x; xx <= x1; xx++) seen.add(xx + ',' + zz);
+    n++; const xl = x + 0.12, xr = x1 + 0.88, zb = z + 0.12, zf = z1 + 0.88, W = xr - xl, D = zf - zb, cx = (xl + xr) / 2, cz = (zb + zf) / 2, H = 2.7;
+    add(K.metalD, wbox(W + 0.08, 0.28, D + 0.08, cx, 0.14, cz)); add(K.ceramic, wbox(W, H - 0.28, D, cx, 0.28 + (H - 0.28) / 2, cz)); add(K.roof, wbox(W + 0.12, 0.12, D + 0.12, cx, H + 0.06, cz));
+    const units = Math.max(2, Math.round(W / 1.5)); const uw = W / units;
+    for (let i = 0; i < units; i++) { const ux = xl + (i + 0.5) * uw; for (const y of [0.95, 1.95]) { add(K.metalD, wbox(0.62, 0.52, 0.05, ux, y, zf + 0.015)); add(K.glass, wbox(0.54, 0.44, 0.05, ux, y, zf + 0.04)); } if (i) add(K.metalD, wbox(0.05, H - 0.3, 0.05, xl + i * uw, 0.28 + (H - 0.3) / 2, zf + 0.015)); add(K.metal, wbox(0.36, 0.26, 0.36, ux, H + 0.25, zb + 0.4)); }
+    // 棟の番号（妻の面の上の大きな板）
+    const tex = numberTex(n, K.reformed); const plate = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.9), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.6 })); plate.geometry.userData.own = true; plate.position.set(xl + 0.6, H - 0.55, zf + 0.06); g.add(plate);
+    add(K.acc, wbox(W - 0.2, 0.03, 0.03, cx, H - 0.1, zf + 0.03));
+  }
+  return n;
+}
+const NUM_TX = {};
+function numberTex(n, warm) { const k = n + (warm ? 'w' : 'c'); if (NUM_TX[k]) return NUM_TX[k]; const t = canvasTex('num_' + k, 128, 128, (g2, w, h) => { g2.fillStyle = warm ? '#f4e2c0' : '#2c3a46'; g2.fillRect(0, 0, w, h); g2.fillStyle = warm ? '#6a4a2a' : '#e6f0f4'; g2.font = 'bold 72px sans-serif'; g2.textAlign = 'center'; g2.textBaseline = 'middle'; g2.fillText(String(n).padStart(2, '0'), w / 2, h / 2 + 4); }); NUM_TX[k] = t; return t; }
+// 第7居住区（scheduled_district）：演算都市ノードと同じ作り方（外殻・六角の床・配管の帯・門）＋規格の居住棟の並び
+const SCHED_BUILD = { house: (c, K, b, bt, out) => shellHousing(c, K, b, bt, out, { H: 2.4 }), inn: (c, K, b, bt, out) => shellHousing(c, K, b, bt, out, { capsule: true, H: 3.3, notice: false }), item: (c, K, b, bt, out) => shellFacility(c, K, b, bt, out, { counter: true, H: 2.8 }), dojo: (c, K, b, bt, out) => shellFacility(c, K, b, bt, out, { saw: true, shutter: true, H: 3.0 }) };
+export const scheduledRecipe = {
+  id: 'scheduled_district.v1',
+  async prepare(ctx) {
+    const map = ctx.map; if (!(map.buildings || []).length) throw new Error('建物がない');
+    const K = await makeK(ctx);
+    const hooks = { skipWall: (t) => t === 'castle_wall' || t === 'roof_blue', skipProp: (t) => t === 'lamp' || t === 'fountain', skipOutTree: (x, z) => z >= map.h - 1 };
+    const building = async (b, o) => { const f = SCHED_BUILD[b.type]; if (!f) return null; const out = { group: new THREE.Group(), lights: [], smokes: [], props: [] }; out.group.name = 'building_env_' + b.id; await f(ctx, K, b, o.batch, out); return out; };
+    return { hooks, building, build: (bb) => build(ctx, K, bb, { plazas: [], lot: 'housing', noTowers: true }) };
+  }
+};

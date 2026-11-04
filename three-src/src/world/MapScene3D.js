@@ -33,6 +33,7 @@ export class MapScene3D {
     this.coverage = mapCoverage(map);   // 'done'（専用に作り込んだ3D）／'generic'（汎用の3D＝仮3D）
     // v7.6 環境リデザイン：このマップのレシピ（three-src/src/environment/recipes/）。準備（素材の一覧の読み込み・論理のタイルの確認）ができたら、builder にフックを渡し、最後に作り直した形を足す
     //   レシピの準備・組み立てで失敗したら、例外に envRecipe をつけて投げる → GameBridge.ensure がレシピなしで組み立て直す（Env.errors に記録）
+    if (Env.enabled() && !Env.errors[map.id]) { try { await Env.catalog(app.renderer && app.renderer.renderer); } catch (e) { /* 読めないときはレシピの選び方が地域・場所だけになる */ } }   // プロファイル（種類）でレシピを選ぶので、先に一覧を読む
     const recipe = Env.recipeFor(map); let rx = null; this.envRecipe = null;
     if (recipe) {
       const ctx = { map, app, scene: this, stats: ctxStats(), quality: app.quality };

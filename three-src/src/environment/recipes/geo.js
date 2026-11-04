@@ -56,9 +56,12 @@ export function drawSetts(base, mortar, cw, ch, vari) {     return (g, w, h) => 
 // 1マス1枚の床（四隅の高さを地面に合わせる）。list：[x, z]、hAt：地面の高さ、lift：地面からの高さ
 export function floorQuadsH(list, su, sv, hAt, lift, colFn) {
   const pos = [], uv = [], nrm = [], col = [], idx = []; let v = 0; lift = lift || 0.014;
+  let skipped = 0;
   for (const [x, z] of list) {
+    // 地面がマスの中で曲がっている所（坂・段・岸）は、平らな板が浮く・沈むので置かない（地面の模様のまま）
+    const hc = [hAt(x, z), hAt(x + 1, z), hAt(x + 1, z + 1), hAt(x, z + 1)]; const avg = (hc[0] + hc[1] + hc[2] + hc[3]) / 4; if (Math.abs(hAt(x + 0.5, z + 0.5) - avg) > 0.03 || Math.abs(hAt(x + 0.25, z + 0.25) - (hc[0] * 0.5625 + hc[1] * 0.1875 + hc[3] * 0.1875 + hc[2] * 0.0625)) > 0.03 || Math.abs(hAt(x + 0.75, z + 0.75) - (hc[2] * 0.5625 + hc[1] * 0.1875 + hc[3] * 0.1875 + hc[0] * 0.0625)) > 0.03) { skipped++; continue; }
     for (const [px, pz] of [[x, z], [x + 1, z], [x + 1, z + 1], [x, z + 1]]) { pos.push(px, hAt(px, pz) + lift, pz); uv.push(px * su, pz * sv); nrm.push(0, 1, 0); if (colFn) { const c = colFn(px, pz); col.push(c, c, c); } }
     idx.push(v, v + 3, v + 2, v, v + 2, v + 1); v += 4;
   }
-  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); g.setAttribute('normal', new THREE.Float32BufferAttribute(nrm, 3)); if (colFn) g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.setIndex(idx); g.computeVertexNormals(); return g;
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); g.setAttribute('normal', new THREE.Float32BufferAttribute(nrm, 3)); if (colFn) g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.setIndex(idx); g.computeVertexNormals(); g.userData.skipped = skipped; return g;
 }
