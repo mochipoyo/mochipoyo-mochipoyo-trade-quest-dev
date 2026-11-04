@@ -550,6 +550,16 @@ function buildWatchtower(bd, add, ctx, out) {
     const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; const plate = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 0.48), new THREE.MeshStandardMaterial({ map: tx, roughness: 0.8 })); plate.position.set(dx, 2.3, zf + 0.08); ctx.group.add(plate); } catch (e) { /* 名札なし */ }
 }
 
+/* ---------- v7.2 汎用の町の塔（新しい地区の見張りの塔・灯台・時計塔など。建物の種類 watchtower）：ポヨ村の見張り台と同じ形 */
+export function buildTower3D(b) {
+  const out = { group: new THREE.Group(), lights: [], smokes: [], props: [], lamps: [] }; out.group.name = 'tower72_' + b.id;
+  const bt = new Batch(); const add = (m, g, mx) => bt.add(m, g, mx);
+  const bd = Object.assign({ doorAbs: { x: b.x + (b.doorX || 0), y: b.y + b.h - 1 } }, b);
+  buildWatchtower(bd, add, { group: out.group }, out);
+  bt.build(out.group, { castShadow: true });
+  return out;
+}
+
 /* ---------- v7.1 エレベーターの塔（トレディア：地上から空の区画へ。空の区画：地上へ）
    ・地上：金属の台座・高いガラスの筒（光の帯）・てっぺんの空の区画の底（浮島の裏側と光の輪）
    ・空の区画：台座と短い筒（下へ続く）・扉の上の名札 */

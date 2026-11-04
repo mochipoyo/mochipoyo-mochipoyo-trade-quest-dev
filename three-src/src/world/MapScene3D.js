@@ -10,7 +10,7 @@ import { TerrainBuilder3D, rngFrom } from './TerrainBuilder3D.js';
 import { BuildingBuilder3D } from './BuildingBuilder3D.js';
 import { InteriorBuilder3D, INTERIOR_KINDS } from './InteriorBuilder3D.js';
 import { WorldBuilder3D } from './WorldBuilder3D.js';
-import { DecorBuilder3D, modernStyle, buildModernBuilding, buildVillageDecor, buildElevatorTower } from './DecorBuilder3D.js';
+import { DecorBuilder3D, modernStyle, buildModernBuilding, buildVillageDecor, buildElevatorTower, buildTower3D } from './DecorBuilder3D.js';
 import { themeFor } from './themes.js';
 import { mapCoverage } from './coverage.js';
 import { buildArtVolume } from '../battle/ArtVolume.js';
@@ -43,6 +43,7 @@ export class MapScene3D {
         const modern = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null);   // v7.0 近未来・機械・娯楽の町は、ガラスと金属の建物
         for (const b of map.buildings) {
           let o = null; if (b.type === 'elevator') { try { o = buildElevatorTower(b, map, textTexture); } catch (e) { o = null; console.warn('elevator', e); } }   // v7.1 空の区画へのエレベーター
+          if (!o && b.type === 'watchtower') { try { o = buildTower3D(b); } catch (e) { o = null; console.warn('tower72', e); } }   // v7.2 新しい地区の塔
           if (!o && modern) { try { o = buildModernBuilding(b, modern, textTexture); } catch (e) { o = null; console.warn('modern building', e); } }
           if (!o) o = await bb.build(b, rnd, { batch: shared, design, theme }); bgroup.add(o.group);
           o.lights.forEach((l) => this.lampSpots.push(l)); o.smokes.forEach((s) => this.addSmoke(s));

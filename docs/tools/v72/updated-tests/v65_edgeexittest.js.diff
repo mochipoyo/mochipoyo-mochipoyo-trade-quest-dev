@@ -1,0 +1,20 @@
+--- v65/edgeexittest.js.bak71	2026-11-04 07:07:00.094383737 +0900
++++ v65/edgeexittest.js	2026-11-04 08:36:11.154303302 +0900
+@@ -27,7 +27,7 @@
+   towns.forEach(def => { const m = World.getMap(def.id); EX.openEdges(m, d).forEach(t => { const dir = { top: 'up', bottom: 'down', left: 'left', right: 'right' }[t.side]; if (!EX.find(m, t.x, t.y, dir)) uncovered.push(def.id + '@' + t.x + ',' + t.y + '(' + t.side + ')'); }); });
+   ok(uncovered.length === 0, '25の町・村：外周の開いたマスはすべて「今のワープ」か「外周の出口」（残り ' + uncovered.length + '）' + (uncovered.length ? ' ' + uncovered.slice(0, 10).join(' ') : ''));
+   const closedEdge = towns.filter(def => !EX.DEFS[def.id] && !def.edgeExits && !def.s3121).length;   // v6.9 アサナ村の4枚（印 s3121）は数に入れない（外周の開いたマスは上の確認で見る）
+-  ok(closedEdge === 23, 'ほかの23の町・村は外周が壁・木・建物・水で閉じている（全周を出口にはしていない）');
++  ok(closedEdge === 23 + (w.MAP_DEFS.tradia_sky ? 1 : 0), 'ほかの23の町・村は外周が壁・木・建物・水で閉じている（全周を出口にはしていない。v7.1 の空の区画は雲に囲まれた町なので +1）');
+ 
+   console.log('--- 3. 行き先：出た向きの側・通れる・ワープや宝箱やイベントでない・いつもの出口から歩いて行ける ---');
+   const sum = {};
+@@ -47,7 +47,7 @@
+   const walkOut = async (id, x, y, dir) => { World.enterMap(id, x, y, dir); await waitIdle(); clearUi(); World.busy = false; World.tryMove(dir); await waitIdle(); return { map: World.map.id, x: World.player.x, y: World.player.y, dir: World.player.dir }; };
+   let r = await walkOut('harbor_town', 0, 12, 'left');
+   ok(r.map === 'world' && r.x < 22 && Math.abs(r.y - 72) <= 2 && r.dir === 'left', '港町マリナの西の外周 → 町の印の西（' + JSON.stringify(r) + '）');
+-  r = await walkOut('harbor_town', 51, 20, 'right');
++  r = await walkOut('harbor_town', w.MAP_DEFS.harbor_town.rows[0].length - 1, 20, 'right');   // v7.2 港町マリナは東に新しい地区（東の外周は新しい地区の東の端）
+   ok(r.map === 'world' && r.x > 22 && Math.abs(r.y - 72) <= 2 && r.dir === 'right', '港町マリナの東の外周 → 町の印の東（' + JSON.stringify(r) + '）');
+   r = await walkOut('harbor_town', 6, 0, 'up');
+   ok(r.map === 'world' && r.y < 72 && r.dir === 'up', '港町マリナの北の外周（出口でないところ）→ 町の印の北（' + JSON.stringify(r) + '）');

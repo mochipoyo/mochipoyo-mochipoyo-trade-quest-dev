@@ -1,0 +1,11 @@
+--- expandA2test.js.bak71	2026-11-04 08:36:11.139236987 +0900
++++ expandA2test.js	2026-11-04 08:36:11.154023683 +0900
+@@ -37,7 +37,7 @@
+   ok(JSON.stringify(oldDump.wl) === JSON.stringify(cur.wl) && JSON.stringify(oldDump.sp) === JSON.stringify(cur.sp.slice(0, oldDump.sp.length)), 'ワールドの入口・既存の探索ポイントは変わらない');
+   // 出入口は両方向
+   let pairs = 0, bad2 = [];
+-  for (const id of NEW.concat(PATCHED)) { const m = fresh(id); for (const wp of m.warps) { if (PATCHED.includes(id) && oldDump.maps[id].warps.some(o => o.x === wp.x && o.y === wp.y)) continue; const to = World.getMap(wp.to); const back = to.warps.filter(b => b.to === id && Math.abs(b.x - wp.tx) + Math.abs(b.y - wp.ty) <= 1); const arr = walkable(to, wp.tx, wp.ty, {}) && !to.warpAt(wp.tx, wp.ty); if (back.length && arr && back.some(b => Math.abs(b.tx - wp.x) + Math.abs(b.ty - wp.y) <= 1)) pairs++; else bad2.push(id + '(' + wp.x + ',' + wp.y + ')→' + wp.to); } }
++  for (const id of NEW.concat(PATCHED)) { const m = fresh(id); for (const wp of m.warps) { if (w.MAP_DEFS[wp.to] && w.MAP_DEFS[wp.to].v72) continue;   /* v7.2 町の新しい地区の建物の扉は v72/towns72.js で確かめる */ if (PATCHED.includes(id) && oldDump.maps[id].warps.some(o => o.x === wp.x && o.y === wp.y)) continue; const to = World.getMap(wp.to); const back = to.warps.filter(b => b.to === id && Math.abs(b.x - wp.tx) + Math.abs(b.y - wp.ty) <= 1); const arr = walkable(to, wp.tx, wp.ty, {}) && !to.warpAt(wp.tx, wp.ty); if (back.length && arr && back.some(b => Math.abs(b.tx - wp.x) + Math.abs(b.ty - wp.y) <= 1)) pairs++; else bad2.push(id + '(' + wp.x + ',' + wp.y + ')→' + wp.to); } }
+   ok(!bad2.length && pairs === 8, '新しい出入口 ' + pairs + 'か所：着いたマスは通れてワープでなく、すぐそばに戻り口 ' + bad2.join(' / '));
+   // 到達
+   { const ent = M.magicka_city.buildings.filter(b => b.interior === 'magicka_palace')[0]; const s = reach('magicka_palace', ent.entry.x, ent.entry.y); ok(s.has('1,12') && s.has('14,12'), '魔導王宮：入口から左下・右下の階段へ歩ける'); }

@@ -1,0 +1,53 @@
+--- expandAtest.js.bak71	2026-11-04 07:06:30.814894878 +0900
++++ expandAtest.js	2026-11-04 09:14:22.464879619 +0900
+@@ -56,18 +56,21 @@
+   const oldSp = JSON.stringify(oldDump.sp), curSp = JSON.stringify(cur.sp.slice(0, oldDump.sp.length)); ok(oldSp === curSp, '既存の探索ポイント ' + oldDump.sp.length + '件はそのまま（このあと追加された探索ポイント：' + (cur.sp.length - oldDump.sp.length) + '件）');
+   // ③ 出入口は両方向
+   const allMaps = NEW.concat(PATCHED); let pairs = 0, bad2 = [];
++  // v7.1 作り直したダンジョン（2倍の地図）：行き先の座標（旧座標）を新しい座標に直し、比べる距離も2倍まで
++  const RM71 = (mid) => !!(w.MapRemake && w.MapRemake.isRemade(mid)); const RX71 = (mid, x, y) => (w.MapRemake ? w.MapRemake.pos(mid, x, y) : { x, y }); const OLD71 = (mid, x, y) => (RM71(mid) ? [Math.floor(x / 2), Math.floor(y / 2)] : [x, y]);
+   // 戻りがワープでなく「調べる所」のもの（古井戸・壁のひび）：[行き先マップ, 調べる所の x, y]
+   const PORTAL = { 'rivel_castle_b1>rivel_artisan': [28, 19] };
+-  for (const id of allMaps) { const m = fresh(id); for (const wp of m.warps) { if (PATCHED.includes(id) && (oldDump.maps[id].warps.some(o => o.x === wp.x && o.y === wp.y) || oldDump.maps[id].buildings.some(b => b.interior === wp.to))) continue; const to = World.getMap(wp.to);
++  for (const id of allMaps) { const m = fresh(id); for (const wp of m.warps) { if (wp.dup71) continue; if (PATCHED.includes(id) && (oldDump.maps[id].warps.some(o => o.x === OLD71(id, wp.x, wp.y)[0] && o.y === OLD71(id, wp.x, wp.y)[1]) || oldDump.maps[id].buildings.some(b => b.interior === wp.to))) continue; const to = World.getMap(wp.to);
+       const pt = PORTAL[id + '>' + wp.to]; if (pt) { const ev = to.eventAt(pt[0], pt[1]); if (ev && ev.type === 'script' && Math.abs(pt[0] - wp.tx) + Math.abs(pt[1] - wp.ty) <= 1 && walk(to, wp.tx, wp.ty, {})) pairs++; else bad2.push(id + '→' + wp.to + ' 調べる所なし'); continue; }
+-      const back = to.warps.filter(b => b.to === id && Math.abs(b.x - wp.tx) + Math.abs(b.y - wp.ty) <= 1); const arr = walk(to, wp.tx, wp.ty, {}) && !to.warpAt(wp.tx, wp.ty); if (!back.length || !arr || !back.some(b => Math.abs(b.tx - wp.x) + Math.abs(b.ty - wp.y) <= 1)) bad2.push(id + '(' + wp.x + ',' + wp.y + ')→' + wp.to + '(' + wp.tx + ',' + wp.ty + ') back=' + back.length + ' arr=' + arr); else pairs++; } }
++      const tq = RX71(wp.to, wp.tx, wp.ty); const back = to.warps.filter(b => b.to === id && Math.abs(b.x - tq.x) + Math.abs(b.y - tq.y) <= (RM71(wp.to) ? 2 : 1)); const arr = walk(to, tq.x, tq.y, {}) && !to.warpAt(tq.x, tq.y); if (!back.length || !arr || !back.some(b => { const bq = RX71(id, b.tx, b.ty); return Math.abs(bq.x - wp.x) + Math.abs(bq.y - wp.y) <= (RM71(id) ? 2 : 1); })) bad2.push(id + '(' + wp.x + ',' + wp.y + ')→' + wp.to + '(' + wp.tx + ',' + wp.ty + ') back=' + back.length + ' arr=' + arr); else pairs++; } }
+   ok(!bad2.length, '新しい出入口 ' + pairs + 'か所：着いたマスは通れてワープでなく、すぐそばに戻りのワープがある ' + bad2.join(' / '));
+   // ④ 到達（BFS）
+   // 条件のフラグを一時的に立ててマップを作り直す（扉の絵＝通れるかも、フラグに合わせて変わる）→ 調べ終わったら元に戻す
+-  const reach = (id, sx, sy, flags) => { flags = flags || {}; const keep = Object.assign({}, d.flags); Object.assign(d.flags, flags); const s = bfs(fresh(id), sx, sy, d.flags); d.flags = keep; State.data.flags = keep; fresh(id); return s; };
++  const reach = (id, sx, sy, flags) => { { const q71 = w.MapRemake ? w.MapRemake.pos(id, sx, sy) : { x: sx, y: sy }; sx = q71.x; sy = q71.y; }   // v7.1 旧座標 → 新しい座標
++    flags = flags || {}; const keep = Object.assign({}, d.flags); Object.assign(d.flags, flags); const s = bfs(fresh(id), sx, sy, d.flags); d.flags = keep; State.data.flags = keep; fresh(id); return s; };
+   { const m = fresh('rivel_castle'); const ent = M.rivel_town.buildings.filter(b => b.interior === 'rivel_castle')[0]; const s = bfs(m, ent.entry.x, ent.entry.y, {}); ok(s.has('2,24') && s.has('27,24'), '玉座の間：城の入口から左下の階段・右下の階段へ歩ける（入口 ' + ent.entry.x + ',' + ent.entry.y + '）'); }
+   { const m = fresh('rivel_town'); const L = w.WORLD_LOCATIONS.filter(L => L.to === 'rivel_town')[0]; const s = bfs(m, L.tx, L.ty, {}); ok(s.has('63,20') && s.has('63,21'), '城下町：ワールドからの入口（' + L.tx + ',' + L.ty + '）から東門（63,20〜21）へ歩ける'); }
+-  { const oc1 = M.oblivion_cave_1.warps.filter(x => x.to === 'oblivion_cave_2')[0]; const s = reach('oblivion_cave_2', oc1.tx, oc1.ty); ok(s.has('27,5') && M.oblivion_cave_2.events.some(e => e.x === 27 && e.y === 6 && e.type === 'script'), '洞窟2階：1階から来た所（' + oc1.tx + ',' + oc1.ty + '）から行き止まり（27,5）へ歩け、その奥（27,6）にひびがある'); }
++  { const oc1 = M.oblivion_cave_1.warps.filter(x => x.to === 'oblivion_cave_2')[0]; const s = reach('oblivion_cave_2', oc1.tx, oc1.ty); const c5 = w.MapRemake.pos('oblivion_cave_2', 27, 5), c6 = w.MapRemake.pos('oblivion_cave_2', 27, 6); ok(s.has(c5.x + ',' + c5.y) && M.oblivion_cave_2.events.some(e => e.x === c6.x && e.y === c6.y && e.type === 'script'), '洞窟2階：1階から来た所（' + oc1.tx + ',' + oc1.ty + '）から行き止まり（27,5）へ歩け、その奥（27,6）にひびがある'); }
+   { const s = reach('rivel_castle_2f', 2, 9); const m = World.getMap('rivel_castle_2f'); ok(s.has('28,10') && m.npcs.every(n => near(s, n.x, n.y)) && m.chests.every(c => near(s, c.x, c.y)) && m.events.every(e => near(s, e.x, e.y)), '2階：階段から4つの部屋・人・宝箱・調べる所すべてへ行ける'); }
+   { const s0 = reach('rivel_castle_3f', 14, 13), m = World.getMap('rivel_castle_3f'); const tc = m.chests; ok(tc.every(c => !near(s0, c.x, c.y)) && near(s0, 14, 1) && near(s0, 5, 6) && m.npcs.every(n => near(s0, n.x, n.y)), '3階：宝物庫の宝箱3つは扉が閉じている間は届かない。展望台の望遠鏡・王の私室・人へは行ける');
+     const s1 = reach('rivel_castle_3f', 14, 13, { rivel_treasury_open: true }); ok(tc.every(c => near(s1, c.x, c.y)), '3階：宝物庫が開けば宝箱3つへ行ける'); }
+@@ -110,10 +113,11 @@
+   await Events.run(World.map.eventAt(37, 13)); await Events.run(World.map.eventAt(37, 13)); const hs1 = State.itemCount ? State.itemCount('herb_soup') : (d.inventory.herb_soup || 0);
+   ok(d.flags.ra_cat_found && hs1 === hs0 + 2, '菜園の迷い猫：見つけると薬草スープ×2（1回だけ）');
+   // 洞窟のひび → 地底湖、レバー2つ → 水門
+-  World.enterMap('oblivion_cave_2', 27, 5, 'down'); answer = 1; await Events.run(World.map.eventAt(27, 6)); ok(World.map.id === 'oblivion_cave_2' && !d.flags.ocl_found, '壁のひび：「やめる」なら進まない');
+-  ok(World.map.tile(27, 6) === 'cave_wall' && !World.map.passable(27, 6, d) && World.map.warpAt(27, 6) && World.map.warpAt(27, 6).needFlag === 'ocl_found', '壁のひび：見つける前は岩の壁で通れない（地底湖へのワープは needFlag つき）');
+-  answer = 0; await Events.run(World.map.eventAt(27, 6)); ok(World.map.id === 'oblivion_cave_lake' && World.player.x === 2 && World.player.y === 8 && d.flags.ocl_found, '壁のひび：「進む」で地底湖へ');
+-  World.enterMap('oblivion_cave_2', 27, 5, 'down'); ok(World.map.tile(27, 6) === 'cave_floor' && World.map.passable(27, 6, d), '壁のひび：広げた後は通路になり、歩いて入れる（地底湖へのワープ）');
++  const K6 = w.MapRemake ? w.MapRemake.pos('oblivion_cave_2', 27, 6) : { x: 27, y: 6 };   // v7.1 作り直した洞窟2階：旧座標のひび → 新しい座標
++  World.enterMap('oblivion_cave_2', 27, 5, 'down'); answer = 1; await Events.run(World.map.eventAt(K6.x, K6.y)); ok(World.map.id === 'oblivion_cave_2' && !d.flags.ocl_found, '壁のひび：「やめる」なら進まない');
++  ok(World.map.tile(K6.x, K6.y) === 'cave_wall' && !World.map.passable(K6.x, K6.y, d) && World.map.warpAt(K6.x, K6.y) && World.map.warpAt(K6.x, K6.y).needFlag === 'ocl_found', '壁のひび：見つける前は岩の壁で通れない（地底湖へのワープは needFlag つき）');
++  answer = 0; await Events.run(World.map.eventAt(K6.x, K6.y)); ok(World.map.id === 'oblivion_cave_lake' && World.player.x === 2 && World.player.y === 8 && d.flags.ocl_found, '壁のひび：「進む」で地底湖へ');
++  World.enterMap('oblivion_cave_2', 27, 5, 'down'); ok(World.map.tile(K6.x, K6.y) === 'cave_floor' && World.map.passable(K6.x, K6.y, d), '壁のひび：広げた後は通路になり、歩いて入れる（地底湖へのワープ）');
+   World.enterMap('oblivion_cave_lake', 25, 5, 'up'); log.length = 0; await Events.run(World.map.eventAt(25, 4)); ok(!d.flags.ocl_gate_open && World.map.tile(25, 4) === 'fence', '水門：レバーを倒す前は開かない');
+   await Events.run(World.map.eventAt(2, 2)); ok(d.flags.ocl_lever_w && !d.flags.ocl_levers, 'レバー（西）：1つ目だけでは水門は動かない');
+   await Events.run(World.map.eventAt(2, 2)); ok(log[log.length - 1].includes('もう倒してある'), 'レバー：2回目は「もう倒してある」');
+@@ -123,7 +127,7 @@
+   { const z = M.oblivion_cave_lake.encounters.zones[0]; const z2 = M.oblivion_cave_2.encounters.zones[0]; ok(z.level === z2.level && z.groups.every(g => g.every(e => w.ENEMIES[e])) && z.groups.every(g => z2.groups.some(h => JSON.stringify(h) === JSON.stringify(g))) && z.rare[0][0] === 'slime_metal', '地底湖の魔物：洞窟2階の群れから選んだもの（level ' + z.level + '）。まれにメタルスライム'); }
+   { World.enterMap('rivel_castle_b1', 3, 8, 'down'); log.length = 0; await Events.run(World.map.eventAt(3, 9)); ok(log.join().includes('鉄格子') && log.join().includes('ガロン'), '牢の扉を調べると、中の男と話せる'); }
+   // ⑥ 会話：新しい人すべて（エラーなし・贈り物は1回だけ）
+-  const talkers = []; for (const id of NEW) World.getMap(id).npcs.forEach(n => { if (!/^aunt67_/.test(n.id)) talkers.push([id, n]); }); /* v6.7 の豆知識おばさんは chatter67test.js で確かめる */ for (const id of PATCHED) { const m = World.getMap(id); const old = oldDump.maps[id].npcs.map(n => n.id); m.npcs.filter(n => !old.includes(n.id) && ['castle_steward', 'rivel_gate_e'].includes(n.id)).forEach(n => talkers.push([id, n])); }
++  const talkers = []; for (const id of NEW) World.getMap(id).npcs.forEach(n => { if (!/^aunt67_/.test(n.id) && !n.v72) talkers.push([id, n]); }); /* v6.7 の豆知識おばさんは chatter67test.js、v7.2 の新しい地区の人は v72/towns72.js で確かめる */ for (const id of PATCHED) { const m = World.getMap(id); const old = oldDump.maps[id].npcs.map(n => n.id); m.npcs.filter(n => !old.includes(n.id) && ['castle_steward', 'rivel_gate_e'].includes(n.id)).forEach(n => talkers.push([id, n])); }
+   let talkErr = []; for (const [id, n] of talkers) { try { World.enterMap(id, n.x, n.y + 1 < World.getMap(id).h ? n.y + 1 : n.y - 1, 'up'); await n.talk(Events.ctx(n)); await n.talk(Events.ctx(n)); } catch (e) { talkErr.push(n.id + ':' + e.message); } }
+   if (process.env.DBG) console.log('TALKERS', talkers.map(([id, n]) => id + ':' + n.id).join(' '), 'ERR', talkErr.join('|'));
+   ok(!talkErr.length && talkers.length === 23, '新しい人 ' + talkers.length + '人と2回ずつ話せる（エラーなし）' + talkErr.join(','));

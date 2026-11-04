@@ -18,7 +18,7 @@
     // 港町マリナ：北・西・東の外周が草地のまま開いている（南は海）。北の真ん中（24〜27）は今までどおりの出口のワープ
     harbor_town: [
       { side: 'top', range: [0, 23] }, { side: 'top', range: [28, 51] },
-      { side: 'left', range: [0, 27] }, { side: 'right', range: [0, 27] }
+      { side: 'left', range: [0, 27] }, { side: 'right', range: [1, 27] }   // v7.2 東は新しい地区の東の端（いちばん上の角は木）
     ],
     // 地図から消えた村：北の端まで道が続いている（出口は南）
     erased_village: [{ side: 'top', range: [11, 12] }]

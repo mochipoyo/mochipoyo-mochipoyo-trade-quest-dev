@@ -1,0 +1,26 @@
+--- dumpmaps.js.bak71	2026-11-04 07:02:52.446856732 +0900
++++ dumpmaps.js	2026-11-04 08:34:22.941336658 +0900
+@@ -8,15 +8,21 @@
+ const load = require('./rpgload.js'); const { w } = load();
+ const out = {};
+ const S69 = (id) => !!(w.MAP_DEFS[id] && w.MAP_DEFS[id].s3121);
+-for (const [id, d] of Object.entries(w.MAP_DEFS)) {
++for (let [id, d] of Object.entries(w.MAP_DEFS)) {
+   if (d.s3121) continue;
+   // v7.0：出口のマス（木・崖・壁の上にあって歩いて出られなかった）を道にした3マップは、以前の文字に戻して比べる（v70/stuckcheck2.js・solidwarps.js で確かめる）
+   const R70 = { aruna_village: [23, [13, 14], 'f'], aruna_ruins: [29, [18, 19, 20, 21], 'c'], scheduled_district: [23, [14, 15], 'C'] };
++  // v7.1：作り直したダンジョン（2倍の地図。js/rpg/mapremake.js）は、作り直す前の中身（旧座標の行・ワープ・宝箱・人・出来事）で比べる
++  //       （作り直した地図が元と同じ道順・同じ中身かは v71/remake71test.js で確かめる）
++  const R71 = d.remake71 && d.remake71.old; if (R71) d = Object.assign({}, d, { rows: R71.rows, warps: R71.warps, events: R71.events, chests: R71.chests, npcs: R71.npcs });
++  // v7.1：ポヨ村の作り込み（東へ広げる・2階3階の階段）とトレディアのエレベーターは、足す前の中身で比べる（v71/poyo71.js・tradiasky71.js で確かめる）
++  if (d._pre71) d = Object.assign({}, d, d._pre71);
++  if (w.REMAKE71 && w.REMAKE71.poyo && w.REMAKE71.poyo.interiors.indexOf(id) >= 0 || id === 'tradia_sky' || /^tradia_sky_/.test(id) || w.MAP_DEFS[id].v72) continue;   // v7.1・v7.2 で増えたマップ（v7.2 の町の新しい地区の部屋・2階・城の上の階は v72/towns72.js で確かめる）
+   let rows = typeof d.rows === 'function' ? null : d.rows;
+   if (rows && R70[id]) { const [ry, xs, ch] = R70[id]; rows = rows.slice(); const r = rows[ry].split(''); xs.forEach((x) => { if (r[x] === 'r') r[x] = ch; }); rows[ry] = r.join(''); }
+   out[id] = { rows, warps: require('./v68tradia.js').stripWarps(id, d.warps).filter(x => !S69(x.to)).map(x => (id === 'tradia' && x.to === 'world_magicka' ? Object.assign({}, x, { to: 'world_kalion', tx: 36, ty: 89 }) : x)).map(x => ({ x: x.x, y: x.y, to: x.to, tx: x.tx, ty: x.ty, needFlag: x.needFlag || null })), chests: (d.chests || []).map(c => ({ id: c.id, x: c.x, y: c.y, item: c.item || null, gold: c.gold || null })),
+     npcs: (d.npcs || []).filter(n => !n.s3121 && !/^ev65/.test(n.id) && !/^tmaster_/.test(n.id) && !/^aunt67_/.test(n.id) && !['mina', 'seris', 'gald', 'lucia', 'kazuto', 'mochipoyo', 'ponta'].includes(n.id)).map(n => ({ id: n.id, x: n.x, y: n.y })), events: (d.events || []).filter(e => !e.v65 && !e.s3121).map(e => ({ x: e.x, y: e.y, type: e.type, doneFlag: e.doneFlag || null })), buildings: (d.buildings || []).filter(b => !b.s3121).map(b => ({ id: b.id, x: b.x, y: b.y, w: b.w, h: b.h, doorX: b.doorX, interior: b.interior || null })) };
+ }
+-const sp = (w.SEARCH_POINTS || []).map(p => ({ id: p.id, map: p.map, x: p.x, y: p.y }));
++const sp = (w.SEARCH_POINTS || []).map(p => ({ id: p.id, map: p.map, x: p._rm71 ? p._ox : p.x, y: p._rm71 ? p._oy : p.y }));   // v7.1 作り直したダンジョンの探索ポイントは旧座標で比べる
+ const wl = (w.WORLD_LOCATIONS || []).filter(L => L.id !== 'asana_ruins').map(L => ({ id: L.id, to: L.to, x: L.x, y: L.y, tx: L.tx, ty: L.ty }));
+ process.stdout.write(JSON.stringify({ maps: out, sp, wl }));
