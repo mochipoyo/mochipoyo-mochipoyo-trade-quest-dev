@@ -10,6 +10,7 @@ import * as THREE from 'three';
 import { worldUV } from '../EnvKit3D.js';
 import { addCutout } from '../../engine/Cutout.js';
 import { textTexture } from '../../engine/Materials.js';
+import { rng } from '../EnvKit3D.js';
 
 const TX = {};
 export function canvasTex(key, w, h, draw) {
@@ -44,4 +45,20 @@ export function floorQuads(list, su, sv, colFn) {
 export function namePlate(group, text, x, y, z, ry, style, w) {
   w = w || 1.9; const tex = textTexture(text || '', style); const m = new THREE.Mesh(new THREE.PlaneGeometry(w, w * 0.2526), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.6 })); m.geometry.userData.own = true;
   m.position.set(x, y, z); m.rotation.y = ry || 0; m.castShadow = false; group.add(m); return m;
+}
+
+// 石の舗装の画像（段ごとにずらす）。base：石の色・mortar：目地・cw/ch：石の幅と高さ（画素）・vari：明るさのばらつき
+export function drawSetts(base, mortar, cw, ch, vari) {     return (g, w, h) => {
+    const r = rng(base.length * 17 + cw); g.fillStyle = mortar; g.fillRect(0, 0, w, h);
+    for (let y = 0, row = 0; y < h; y += ch, row++) for (let x = -((row % 2) * cw) / 2; x < w; x += cw) { g.fillStyle = shade(base, 1 - vari / 2 + r() * vari); g.fillRect(x + 1.5, y + 1.5, cw - 3, ch - 3); }
+  };
+}
+// 1マス1枚の床（四隅の高さを地面に合わせる）。list：[x, z]、hAt：地面の高さ、lift：地面からの高さ
+export function floorQuadsH(list, su, sv, hAt, lift, colFn) {
+  const pos = [], uv = [], nrm = [], col = [], idx = []; let v = 0; lift = lift || 0.014;
+  for (const [x, z] of list) {
+    for (const [px, pz] of [[x, z], [x + 1, z], [x + 1, z + 1], [x, z + 1]]) { pos.push(px, hAt(px, pz) + lift, pz); uv.push(px * su, pz * sv); nrm.push(0, 1, 0); if (colFn) { const c = colFn(px, pz); col.push(c, c, c); } }
+    idx.push(v, v + 3, v + 2, v, v + 2, v + 1); v += 4;
+  }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); g.setAttribute('normal', new THREE.Float32BufferAttribute(nrm, 3)); if (colFn) g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.setIndex(idx); g.computeVertexNormals(); return g;
 }

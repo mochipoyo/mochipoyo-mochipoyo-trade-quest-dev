@@ -8,7 +8,7 @@
 import * as THREE from 'three';
 import { EnvironmentCatalog } from './EnvironmentCatalog.js';
 import { addCutout } from '../engine/Cutout.js';
-import { RECIPES } from './recipes/index.js';
+import { RECIPES, genericRecipe } from './recipes/index.js';
 
 const LS_KEY = 'mtq3d-env';
 let catalog = null, catalogJob = null;
@@ -36,7 +36,7 @@ export const Env = {
     if (!p && !Env.missing[mapId]) { Env.missing[mapId] = true; console.warn('[環境] プロファイルが未登録のマップ：' + mapId + '（docs/tools/env/build_profiles.js で作り直す）'); }
     return p || null;
   },
-  recipeFor(map) { if (!map || !Env.enabled() || Env.errors[map.id]) return null; return RECIPES[map.id] || null; },   // 失敗したマップは、その回はレシピなし
+  recipeFor(map) { if (!map || !Env.enabled() || Env.errors[map.id]) return null; return RECIPES[map.id] || genericRecipe(map) || null; },   // 専用レシピ→種類ごとの作り方（全体展開）。失敗したマップは、その回はレシピなし
   recipeIds() { return Object.keys(RECIPES); },
   // 確認用：歩けるマスの「体の高さ」（0.15〜1.8）に形があるマスを調べる（下向きの光線。床・水・草・人・宝箱・煙は除く）。テスト（p76_walk.js）が env=off と v1 で比べる
   probeWalk(ms) {
