@@ -242,6 +242,9 @@
   var gcache = {};
   CHARS.forEach(function (ch) {
     var key = 'u73_' + ch.id; if (root.Chars && root.Chars.addPalette) root.Chars.addPalette(key, ch.pal);
+    // 画像は作っていない（色だけで描く歩行キャラ）。素材の一覧に「missing」で登録する（v6.4 のトレーダーと同じ。js/data/asset-manifest.js）
+    var MF = root.ASSET_MANIFEST; if (MF) { var ent = { name: ch.name, spriteId: key, anchor: 'bottom-center', path: null, status: 'missing', use: false, fallback: 'chars', style: 'procedural', note: 'v7.3 追加。画像未作成のためコード描画' };
+      if (MF.npcs && !MF.npcs[key]) MF.npcs[key] = Object.assign({ kind: 'portrait' }, ent); if (MF.overworld && !MF.overworld[key]) MF.overworld[key] = Object.assign({ kind: 'walk' }, ent); }
     var g = gcache[ch.map] || (gcache[ch.map] = grid(ch.map)); if (!g) { X.skipped.push('char:' + ch.id); return; }
     var at = pick(g, 'road', rng(hash(ch.id + ':u73'))); if (!at) { X.skipped.push('char:' + ch.id); return; }
     var n = { id: 'u73_' + ch.id, name: ch.name, x: at.x, y: at.y, sprite: key, model3d: ch.m, dir: 'down', wander: ch.w, unique73: true, noChatter: true, v73: true, talk: rotate(ch.id, ch.name, ch.lines) };
