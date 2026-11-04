@@ -224,7 +224,8 @@ export class BattleStage3D {
     if (this.actorMode) { const bb = scene.b; this.span = bb ? layoutSpan(bb.enemies.length, bb.party.length, !!(bb.enemies[0] && bb.enemies[0].boss), !!bb.pet) : null; this.fitCamera(W, H); }   // Phase 2：左に敵・右に味方を、斜め前の少し上から見る
     this.backdrop(scene, W, H);
     // 霧（遠くを背景の色に溶かす）
-    const fogC = col(indoor ? (place === 'castle' ? P.far : '#140e12') : (P.sky ? P.sky[1] : '#c0d4e8')); if (night) fogC.multiplyScalar(0.45);
+    const vstyle = BG.variantStyle ? BG.variantStyle(info.variant) : null; this.vstyle = vstyle;   // v7.4 39ダンジョンの専用の背景：3Dの地面と霧の色を絵に合わせる
+    const fogC = col(vstyle && vstyle.fog ? vstyle.fog : indoor ? (place === 'castle' ? P.far : '#140e12') : (P.sky ? P.sky[1] : '#c0d4e8')); if (night) fogC.multiplyScalar(0.45);
     S.fog = new THREE.Fog(fogC, indoor ? 8 : 18, far * (indoor ? 1.05 : 0.95)); S.background = fogC.clone();
     this.fogBase = [S.fog.near, S.fog.far]; this.fitFog(); this.fogObj = S.fog; this.bgColor = S.background; this.photoSrc = null; this.photoTex = null;
     // 光
@@ -239,7 +240,7 @@ export class BattleStage3D {
     // 地面・地形・飾り（v6.6 前後の並びで戦闘背景の画像を使うときは隠す＝envObjs）
     const envStart = S.children.length;
     this.buildGround(S, place, P, far, night);
-    this.buildProps(S, place, P, night);
+    if (!vstyle) this.buildProps(S, place, P, night);   // v7.4 専用の背景の絵があるダンジョンは、場所の飾り（柱・旗・木・雲など）を置かない（絵の景色と重ならない）
     this.envObjs = S.children.slice(envStart).filter((o) => !o.isLight);
     // 粒（場所の粒＋演出の粒）
     const scale = (this.quality === 'high' ? 300 : 260) * this.pr;
@@ -262,11 +263,12 @@ export class BattleStage3D {
     this.stats.builds++; this.stats.lastBuildMs = Math.round(performance.now() - t0); this.stats.place = place;
   }
   buildGround(S, place, P, far, night) {
-    const water = place === 'sea' || place === 'harbor';
+    const water = (place === 'sea' || place === 'harbor') && !this.vstyle;   // v7.4 専用の背景の絵があるダンジョンは、絵の床につながる平らな地面（水面・雲の床は作らない）
     const gw = 140, gd = far + 20; const geo = new THREE.PlaneGeometry(gw, gd, 120, 60); geo.rotateX(-Math.PI / 2); geo.translate(0, 0, 12 - gd / 2);
     const pos = geo.attributes.position; const cols = new Float32Array(pos.count * 3); const c0 = col(P.ground[0]), c1 = col(P.ground[1]); const tmp = new THREE.Color();
     const tint = { castle: ['#8a7a6a', '#4a3e34'], cave: ['#3a3036', '#1a141a'], mine: ['#5a4a3a', '#2a2018'], snow: ['#f4f8ff', '#c8d6ea'], volcano: ['#3a2a24', '#140c0a'], dark: ['#2e1c22', '#0c0608'], machine_city: ['#5a6272', '#22283a'], magic_city: ['#6a5a9a', '#2a1a4a'], sky: ['#f4f8ff', '#d0e0f4'], desert: ['#ecd09a', '#b88e56'], forest: ['#4a7a3a', '#1e3a1e'] }[place];
     if (tint) { c0.set(tint[0]); c1.set(tint[1]); }
+    if (this.vstyle && this.vstyle.ground) { c0.set(this.vstyle.ground[1]); c1.set(this.vstyle.ground[0]); }   // v7.4 絵の床の色（c0＝奥・c1＝手前。ground は［手前, 奥］）
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i), z = pos.getZ(i); let y = 0; const n = h1(Math.floor(x * 1.3) * 7.1 + Math.floor(z * 1.3) * 3.3);
       const away = Math.max(0, Math.abs(x) - 8) + Math.max(0, -z - 14);   // 戦う場所（中央）は平ら、周りは起伏
@@ -293,7 +295,7 @@ export class BattleStage3D {
       if (place === 'sea') g.visible = false;
       this.anim.push((dt, t) => { const a = wg.attributes.position; for (let i = 0; i < a.count; i++) { const x = base[i * 3], z = base[i * 3 + 2]; a.setY(i, 0.02 + Math.sin(x * 0.45 + t * 1.6) * 0.09 + Math.cos(z * 0.6 + t * 1.2) * 0.08); } a.needsUpdate = true; wg.computeVertexNormals(); });
     }
-    if (place === 'sky') {   // 雲海：戦う場所の下に白い雲の床
+    if (place === 'sky' && !this.vstyle) {   // 雲海：戦う場所の下に白い雲の床
       g.visible = false;
       const cm = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, emissive: 0x8090a8, emissiveIntensity: night ? 0.1 : 0.35 });
       const n = this.quality === 'high' ? 120 : 60; const ig = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 12, 8), cm, n); const m4 = new THREE.Matrix4();

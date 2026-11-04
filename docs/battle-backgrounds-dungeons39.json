@@ -1,0 +1,1221 @@
+{
+  "schemaVersion": 1,
+  "title": "トレードクエスト 39ダンジョン戦闘背景",
+  "created": "2026-11-04",
+  "imageCount": 39,
+  "mapCount": 116,
+  "format": "WebP",
+  "encoding": "lossy quality 94; original native dimensions; no upscaling",
+  "sourceRepository": "mochipoyo/mochipoyo-mochipoyo-trade-quest-dev",
+  "sourceBranch": "feature/3d-full",
+  "mapSourceCommit": "62900a3d3df0f50fa9fe32e2fe7e119eea89e960",
+  "grouping": "1 image per requested area; all listed floors and side rooms share the area image",
+  "artStatus": "Newly generated interpretation of the supplied place descriptions, not a screenshot or an exact reconstruction of the current dungeon geometry.",
+  "runtimeStatus": "Assets and ID mapping validated; game integration and rendering are to be performed by Claude.",
+  "assets": [
+    {
+      "number": 1,
+      "assetId": "emal_pass",
+      "name": "エマール山道",
+      "region": "アルカディア相場大陸",
+      "file": "assets/battle-backgrounds/dungeons39/01_emal_pass.webp",
+      "variant": "d39_emal_pass",
+      "width": 1672,
+      "height": 941,
+      "bytes": 301148,
+      "sha256": "fc4b74d6dbb200f2beb3a6943acd389e97fa8f79a2ee79ade128e61e50874d39",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "emal_pass",
+          "mapName": "エマール山道",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_em_hut",
+          "mapName": "エマール山道・道標の谷",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "山賊のアジトへ続く山道。追加エリアは道標の谷。"
+    },
+    {
+      "number": 2,
+      "assetId": "bandit_hideout",
+      "name": "山賊のアジト",
+      "region": "アルカディア相場大陸",
+      "file": "assets/battle-backgrounds/dungeons39/02_bandit_hideout.webp",
+      "variant": "d39_bandit_hideout",
+      "width": 1672,
+      "height": 941,
+      "bytes": 177554,
+      "sha256": "ffcdd8a5790eca7ad4880a453a05456b16cbb99e056f135529785f6fb0fd6251",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "bandit_hideout",
+          "mapName": "山賊のアジト",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_bd_store",
+          "mapName": "山賊のアジト・先代の物置",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "エマール山道から入る。山賊討伐サブクエスト。先代の物置あり。"
+    },
+    {
+      "number": 3,
+      "assetId": "verum_hideout",
+      "name": "地下の集会所",
+      "region": "グラニア鉱業地方",
+      "file": "assets/battle-backgrounds/dungeons39/03_verum_hideout.webp",
+      "variant": "d39_verum_hideout",
+      "width": 1672,
+      "height": 941,
+      "bytes": 152410,
+      "sha256": "a7c723ce3192a29c4374ad7125ebc3abf2d2dc63312199621253989d678d9816",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "verum_hideout",
+          "mapName": "地下の集会所",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_vh_store",
+          "mapName": "地下の集会所・古い荷置き場",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "灰鉱町ヴェルムの労働者の宿舎から入る。会話中心の拠点。古い荷置き場あり。"
+    },
+    {
+      "number": 4,
+      "assetId": "iron_fort_gate",
+      "name": "鉄冠将軍の砦",
+      "region": "グラニア鉱業地方",
+      "file": "assets/battle-backgrounds/dungeons39/04_iron_fort_gate.webp",
+      "variant": "d39_iron_fort_gate",
+      "width": 1672,
+      "height": 941,
+      "bytes": 163212,
+      "sha256": "cb9237ddb3f2ed1fbd96f41425af67dbcaceabf9dd263243964a47629e5baa17",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "iron_fort_gate",
+          "mapName": "鉄冠将軍の砦・門前",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_fg_armory",
+          "mapName": "鉄冠将軍の砦・古い武器庫",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "登録されている本体は門前。古い武器庫への寄り道あり。現マップにボスイベントなし。"
+    },
+    {
+      "number": 5,
+      "assetId": "iron_mine",
+      "name": "鉄鎖鉱山",
+      "region": "グラニア鉱業地方",
+      "file": "assets/battle-backgrounds/dungeons39/05_iron_mine.webp",
+      "variant": "d39_iron_mine",
+      "width": 1672,
+      "height": 941,
+      "bytes": 205230,
+      "sha256": "be0c8e71962dbb66abe9168ae1a729920ee95148ec696c58cd9ec929412d0de8",
+      "mapCount": 4,
+      "maps": [
+        {
+          "mapId": "iron_mine_1",
+          "mapName": "鉄鎖鉱山 1階",
+          "hidden": false
+        },
+        {
+          "mapId": "iron_mine_2",
+          "mapName": "鉄鎖鉱山 2階",
+          "hidden": false
+        },
+        {
+          "mapId": "iron_mine_3",
+          "mapName": "鉄鎖鉱山 最深部",
+          "hidden": false
+        },
+        {
+          "mapId": "a4_im_old",
+          "mapName": "鉄の鉱山・廃坑道",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "1階・2階・最深部。捕虜救出、看守長戦、監督官戦。廃坑道あり。"
+    },
+    {
+      "number": 6,
+      "assetId": "grania_pass",
+      "name": "灰の峠",
+      "region": "グラニア鉱業地方／カリオン徴収連邦",
+      "file": "assets/battle-backgrounds/dungeons39/06_grania_pass.webp",
+      "variant": "d39_grania_pass",
+      "width": 1672,
+      "height": 941,
+      "bytes": 169512,
+      "sha256": "c548da7d3def05793e737557a136933770152d5ccadfd318c62ed0b68356f61d",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "grania_pass",
+          "mapName": "灰の峠",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_gp_shelter",
+          "mapName": "灰の峠・坑夫の避難小屋",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "グラニア側の南口とカリオン側の北口をつなぐ。坑夫の避難小屋あり。"
+    },
+    {
+      "number": 7,
+      "assetId": "ash_cave",
+      "name": "灰の洞窟",
+      "region": "グラニア鉱業地方",
+      "file": "assets/battle-backgrounds/dungeons39/07_ash_cave.webp",
+      "variant": "d39_ash_cave",
+      "width": 1672,
+      "height": 941,
+      "bytes": 152028,
+      "sha256": "c6c6ff367d8b890d2ce62740bbd3a4caf4d35654beee1295e1ec9174c6be9c2c",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "ash_cave_1",
+          "mapName": "灰の洞窟",
+          "hidden": false
+        },
+        {
+          "mapId": "ash_cave_2",
+          "mapName": "灰の洞窟 奥",
+          "hidden": false
+        },
+        {
+          "mapId": "a4_ac_press",
+          "mapName": "灰の洞窟・圧力の間",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "寄り道の隠しボス。追加エリアは圧力の間。"
+    },
+    {
+      "number": 8,
+      "assetId": "sunken_reef",
+      "name": "沈没船の礁",
+      "region": "グラニア鉱業地方",
+      "file": "assets/battle-backgrounds/dungeons39/08_sunken_reef.webp",
+      "variant": "d39_sunken_reef",
+      "width": 1672,
+      "height": 941,
+      "bytes": 232796,
+      "sha256": "4ef2b32fbf2aa91be0d1c686ab8b8e6b5fdceea14b2b18257baa9247e8ebed1a",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "sunken_reef_1",
+          "mapName": "沈没船の礁",
+          "hidden": false
+        },
+        {
+          "mapId": "sunken_reef_2",
+          "mapName": "沈没船 船長室",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_sr_hold",
+          "mapName": "沈没船の礁・船長室の奥",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "船長室に隠しボス。追加マップ名は「沈没船の礁・船長室の奥」だが入口は礁の本体。"
+    },
+    {
+      "number": 9,
+      "assetId": "pirate_nest",
+      "name": "海賊カモメの巣",
+      "region": "グラニア鉱業地方",
+      "file": "assets/battle-backgrounds/dungeons39/09_pirate_nest.webp",
+      "variant": "d39_pirate_nest",
+      "width": 1672,
+      "height": 941,
+      "bytes": 226906,
+      "sha256": "0eff2124969e1e4e9ad2ab49e53fa6097fee2fbc313481adc0b00dfb884aa715",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "pirate_nest",
+          "mapName": "海賊カモメの巣",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_pn_cave",
+          "mapName": "海賊カモメの巣・岩の下の洞",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "任意ボスの島。岩の下の洞あり。"
+    },
+    {
+      "number": 10,
+      "assetId": "ash_cape",
+      "name": "灰の岬",
+      "region": "グラニア鉱業地方",
+      "file": "assets/battle-backgrounds/dungeons39/10_ash_cape.webp",
+      "variant": "d39_ash_cape",
+      "width": 1672,
+      "height": 941,
+      "bytes": 160794,
+      "sha256": "91b606215f57e48d9519c426bcb108f9b53c26741018d211d67558cbd7205e24",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "ash_cape",
+          "mapName": "灰の岬",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_ap_canal",
+          "mapName": "灰の岬・地下の水路",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "寄り道エリア。追加エリアは地下の水路。通常エンカウント設定なし。"
+    },
+    {
+      "number": 11,
+      "assetId": "kalion_archive",
+      "name": "地下記録庫",
+      "region": "カリオン徴収連邦",
+      "file": "assets/battle-backgrounds/dungeons39/11_kalion_archive.webp",
+      "variant": "d39_kalion_archive",
+      "width": 1672,
+      "height": 941,
+      "bytes": 190674,
+      "sha256": "ca4a711ed9865db3e4fc0aaefc12643e1bc145220b6a1a8d2afa9a9ad225f1fb",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "kalion_archive_1",
+          "mapName": "地下記録庫 1階",
+          "hidden": false
+        },
+        {
+          "mapId": "kalion_archive_2",
+          "mapName": "地下記録庫 2階（黒い帳簿）",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_ka_ledger",
+          "mapName": "地下記録庫・古い帳簿庫",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "徴収都市カリオンの財務局から入る。黒い帳簿の調査。古い帳簿庫あり。"
+    },
+    {
+      "number": 12,
+      "assetId": "kalion_lab",
+      "name": "秘密研究所",
+      "region": "カリオン徴収連邦",
+      "file": "assets/battle-backgrounds/dungeons39/12_kalion_lab.webp",
+      "variant": "d39_kalion_lab",
+      "width": 1672,
+      "height": 941,
+      "bytes": 170760,
+      "sha256": "b5ee815853355bb3304145eb9a2c84290d62b3d8103aac1d16b458af43b0e342",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "kalion_lab",
+          "mapName": "秘密研究所",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_kl_scale",
+          "mapName": "秘密研究所・計量室",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "場所を知るフラグ lab_known が入口条件。計量室あり。"
+    },
+    {
+      "number": 13,
+      "assetId": "sentra_palace",
+      "name": "王宮・帳簿中枢",
+      "region": "カリオン徴収連邦",
+      "file": "assets/battle-backgrounds/dungeons39/13_sentra_palace.webp",
+      "variant": "d39_sentra_palace",
+      "width": 1672,
+      "height": 941,
+      "bytes": 186196,
+      "sha256": "cb27536c086bfb4b5f99729eed03e8b21a1c4e3205cc050b09604c58df21ed99",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "sentra_palace_1",
+          "mapName": "王宮",
+          "hidden": false
+        },
+        {
+          "mapId": "sentra_palace_2",
+          "mapName": "帳簿中枢・玉座の間",
+          "hidden": false
+        }
+      ],
+      "scopeNote": "王都セントラから入る。親衛隊長と帳簿中枢の戦闘。西棟・地下保管庫は室内分類のため126件に含めない。"
+    },
+    {
+      "number": 14,
+      "assetId": "aruna_clocktower",
+      "name": "時計塔〈アルナ〉",
+      "region": "断裂群島",
+      "file": "assets/battle-backgrounds/dungeons39/14_aruna_clocktower.webp",
+      "variant": "d39_aruna_clocktower",
+      "width": 1672,
+      "height": 941,
+      "bytes": 220048,
+      "sha256": "f9dcb24b319b16b03f042ad06b75ec9cf86c85a61168dd1d538b92ee6fb37a3f",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "aruna_ruins_1",
+          "mapName": "時計塔 1階",
+          "hidden": false
+        },
+        {
+          "mapId": "aruna_ruins_2",
+          "mapName": "時計塔 2階（止まった時計）",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_ar_light",
+          "mapName": "時計塔・光路の間",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "廃墟の街から入る。止まった時計、光路の間。"
+    },
+    {
+      "number": 15,
+      "assetId": "aruna_underground",
+      "name": "地下施設〈アルナ〉",
+      "region": "断裂群島",
+      "file": "assets/battle-backgrounds/dungeons39/15_aruna_underground.webp",
+      "variant": "d39_aruna_underground",
+      "width": 1672,
+      "height": 941,
+      "bytes": 206874,
+      "sha256": "4c71d8a8918ca6257aef212af724d57dab618936d277f2210d8989d8d9284484",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "aruna_underground_1",
+          "mapName": "地下施設 1階",
+          "hidden": false
+        },
+        {
+          "mapId": "aruna_underground_2",
+          "mapName": "地下施設 最深部（観測室）",
+          "hidden": false
+        },
+        {
+          "mapId": "a4_au_lamps",
+          "mapName": "アルナの地下・灯りの間",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "廃墟の街から入る。最深部は観測室。灯りの間あり。"
+    },
+    {
+      "number": 16,
+      "assetId": "mist_isle",
+      "name": "霧の島",
+      "region": "断裂群島",
+      "file": "assets/battle-backgrounds/dungeons39/16_mist_isle.webp",
+      "variant": "d39_mist_isle",
+      "width": 1672,
+      "height": 941,
+      "bytes": 203028,
+      "sha256": "6fd6f7071d6a2cd19bc6f2c5f1f48e02690b263d3e512743ead1d768b7e77e5e",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "mist_isle",
+          "mapName": "霧の島",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_mi_spring",
+          "mapName": "霧の島・湧き水の洞",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "入口条件 iris_joined。湧き水の洞あり。"
+    },
+    {
+      "number": 17,
+      "assetId": "elmina_undersea",
+      "name": "海底都市エルミナ",
+      "region": "断裂群島",
+      "file": "assets/battle-backgrounds/dungeons39/17_elmina_undersea.webp",
+      "variant": "d39_elmina_undersea",
+      "width": 1672,
+      "height": 941,
+      "bytes": 193874,
+      "sha256": "f53d40a140ea4da150e9adefa877d63d251848bc7957630cf3d10b2bfc0dc86d",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "elmina_undersea",
+          "mapName": "海底都市エルミナ",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_el_current",
+          "mapName": "海底都市・潮流の回廊",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "断裂群島南岸の潜航地点から入る。潜航装置所持 submarine_owned が必要。記憶の図書館につながる。潮流の回廊あり。"
+    },
+    {
+      "number": 18,
+      "assetId": "memory_library",
+      "name": "記憶の図書館",
+      "region": "断裂群島",
+      "file": "assets/battle-backgrounds/dungeons39/18_memory_library.webp",
+      "variant": "d39_memory_library",
+      "width": 1672,
+      "height": 941,
+      "bytes": 219586,
+      "sha256": "3f126bc3bd9973af524adc065f4af363850eae100af6daa4eef27624fa556d6d",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "memory_library",
+          "mapName": "記憶の図書館",
+          "hidden": false
+        },
+        {
+          "mapId": "memory_library_seal",
+          "mapName": "記憶の図書館・封印区画",
+          "hidden": false
+        },
+        {
+          "mapId": "a4_ml_closed",
+          "mapName": "記憶の図書館・閉架書庫",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "海底都市エルミナから入る。封印区画と閉架書庫あり。"
+    },
+    {
+      "number": 19,
+      "assetId": "time_bank_vault",
+      "name": "地下契約室",
+      "region": "時の神殿領",
+      "file": "assets/battle-backgrounds/dungeons39/19_time_bank_vault.webp",
+      "variant": "d39_time_bank_vault",
+      "width": 1672,
+      "height": 941,
+      "bytes": 132338,
+      "sha256": "0698dbe96e47db912f6af92711a883f981cc20698b39faf2d3cbb9a87ef0e73d",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "time_bank_vault_1",
+          "mapName": "地下契約室 1階",
+          "hidden": false
+        },
+        {
+          "mapId": "time_bank_vault_2",
+          "mapName": "地下契約室 最深部",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_tb_exchange",
+          "mapName": "地下契約室・古い両替所",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "時間銀行から入る。契約書の書き換えに固定戦闘あり。古い両替所あり。"
+    },
+    {
+      "number": 20,
+      "assetId": "temple_of_time",
+      "name": "時の神殿",
+      "region": "時の神殿領",
+      "file": "assets/battle-backgrounds/dungeons39/20_temple_of_time.webp",
+      "variant": "d39_temple_of_time",
+      "width": 1672,
+      "height": 941,
+      "bytes": 127876,
+      "sha256": "b608c205193b691f88c120cca901ecdf55079daa23ba92c5527a4c0c4f468a09",
+      "mapCount": 4,
+      "maps": [
+        {
+          "mapId": "temple_of_time_1",
+          "mapName": "時の神殿 第一の回廊",
+          "hidden": false
+        },
+        {
+          "mapId": "temple_of_time_2",
+          "mapName": "時の神殿 第二の回廊",
+          "hidden": false
+        },
+        {
+          "mapId": "temple_of_time_3",
+          "mapName": "時の神殿 最深部",
+          "hidden": false
+        },
+        {
+          "mapId": "a4_tt_sand",
+          "mapName": "時の神殿・砂時計の間",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "第一・第二の回廊と最深部。砂時計の間あり。"
+    },
+    {
+      "number": 21,
+      "assetId": "vol_under",
+      "name": "地下実験施設〈ボラティリティア学院〉",
+      "region": "時の神殿領",
+      "file": "assets/battle-backgrounds/dungeons39/21_vol_under.webp",
+      "variant": "d39_vol_under",
+      "width": 1672,
+      "height": 941,
+      "bytes": 152320,
+      "sha256": "c936b419da0bc6d7ee9e60dba9138ce65f39b6c0579fb6e0ef927348ecf488eb",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "vol_under_1",
+          "mapName": "地下実験施設 1階",
+          "hidden": false
+        },
+        {
+          "mapId": "vol_under_2",
+          "mapName": "地下実験施設 2階",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_vu_numbers",
+          "mapName": "地下実験施設・数の実験室",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "学院の地下実験施設入口から入る。研究クエストの任意ボス3種。数の実験室あり。"
+    },
+    {
+      "number": 22,
+      "assetId": "old_city",
+      "name": "廃棄された旧都市",
+      "region": "ゼロメア",
+      "file": "assets/battle-backgrounds/dungeons39/22_old_city.webp",
+      "variant": "d39_old_city",
+      "width": 1672,
+      "height": 941,
+      "bytes": 223672,
+      "sha256": "aeab106497903558f667e068da7e4fed3360172c30ea0550f49d4240cb3afbc6",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "old_city_1",
+          "mapName": "廃棄された旧都市",
+          "hidden": false
+        },
+        {
+          "mapId": "old_city_2",
+          "mapName": "旧都市 記録庫（深層）",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_oc_vault",
+          "mapName": "旧都市・暗号保管室",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "記録庫で監視ドローン群との戦闘。暗号保管室あり。別項目の旧都市 深層へ続く。"
+    },
+    {
+      "number": 23,
+      "assetId": "old_city_deep",
+      "name": "旧都市 深層",
+      "region": "ゼロメア",
+      "file": "assets/battle-backgrounds/dungeons39/23_old_city_deep.webp",
+      "variant": "d39_old_city_deep",
+      "width": 1672,
+      "height": 941,
+      "bytes": 119940,
+      "sha256": "aaf4101d3c49f858898c506addb0ce99c5aaeb4b1265af0d719807e9062d2216",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "old_city_deep_1",
+          "mapName": "旧都市 深層",
+          "hidden": false
+        },
+        {
+          "mapId": "old_city_deep_2",
+          "mapName": "旧都市 深層 演算核",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_od_scan",
+          "mapName": "旧都市 深層・探知室",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "旧都市の記録庫から入る高レベルの寄り道。探知室あり。"
+    },
+    {
+      "number": 24,
+      "assetId": "auto_factory",
+      "name": "自動工場",
+      "region": "ゼロメア",
+      "file": "assets/battle-backgrounds/dungeons39/24_auto_factory.webp",
+      "variant": "d39_auto_factory",
+      "width": 1672,
+      "height": 941,
+      "bytes": 172050,
+      "sha256": "6b301d31c689501729eb90bae13b06b4ffee65705167c3480b91306c33adf971",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "auto_factory_1",
+          "mapName": "自動工場 1階",
+          "hidden": false
+        },
+        {
+          "mapId": "auto_factory_2",
+          "mapName": "自動工場 2階（制御室）",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_af_control",
+          "mapName": "自動工場・配電室",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "1階・2階制御室。配電室あり。"
+    },
+    {
+      "number": 25,
+      "assetId": "oracle_core",
+      "name": "オラクル中枢",
+      "region": "ゼロメア",
+      "file": "assets/battle-backgrounds/dungeons39/25_oracle_core.webp",
+      "variant": "d39_oracle_core",
+      "width": 1672,
+      "height": 941,
+      "bytes": 125774,
+      "sha256": "b99a23414260b6a9302bfa7ba0b890765d15e540d596a7bebeef9806bbad0fcd",
+      "mapCount": 4,
+      "maps": [
+        {
+          "mapId": "oracle_core_1",
+          "mapName": "オラクル中枢 第1層",
+          "hidden": false
+        },
+        {
+          "mapId": "oracle_core_2",
+          "mapName": "オラクル中枢 第2層（記録層）",
+          "hidden": false
+        },
+        {
+          "mapId": "oracle_core_3",
+          "mapName": "オラクル中枢 第3層（演算核）",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_or_lamps",
+          "mapName": "オラクル中枢・記録の鍵の間",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "演算都市ノードから入る3層構造。記録の鍵の間あり。"
+    },
+    {
+      "number": 26,
+      "assetId": "forbidden_archive",
+      "name": "禁書庫",
+      "region": "マクディア魔導王国",
+      "file": "assets/battle-backgrounds/dungeons39/26_forbidden_archive.webp",
+      "variant": "d39_forbidden_archive",
+      "width": 1672,
+      "height": 941,
+      "bytes": 171130,
+      "sha256": "43c95cd8b57dcc5e1c139496e5a071a3e11a47073104ae2fa54db913294eaab4",
+      "mapCount": 4,
+      "maps": [
+        {
+          "mapId": "forbidden_archive_1",
+          "mapName": "禁書庫 1階",
+          "hidden": false
+        },
+        {
+          "mapId": "forbidden_archive_2",
+          "mapName": "禁書庫 2階",
+          "hidden": false
+        },
+        {
+          "mapId": "forbidden_archive_3",
+          "mapName": "禁書庫 最深部",
+          "hidden": false
+        },
+        {
+          "mapId": "a4_fa_seal",
+          "mapName": "禁書庫・封印の書架",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "入館許可 archive_permit が必要。最深部に大臣。封印の書架あり。"
+    },
+    {
+      "number": 27,
+      "assetId": "origin_lab",
+      "name": "起源の実験室",
+      "region": "マクディア魔導王国",
+      "file": "assets/battle-backgrounds/dungeons39/27_origin_lab.webp",
+      "variant": "d39_origin_lab",
+      "width": 1672,
+      "height": 941,
+      "bytes": 153404,
+      "sha256": "78e1eb6dad3b27eb8f886fdd43cd75d581ccca0f52b813f5e586bc876abe01b5",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "origin_lab_1",
+          "mapName": "起源の実験室",
+          "hidden": false
+        },
+        {
+          "mapId": "origin_lab_2",
+          "mapName": "起源の実験室 最深部・格納庫",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_ol_mixing",
+          "mapName": "起源の実験室・調合室",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "大臣撃破 minister_defeated が入口条件。最深部は格納庫。調合室あり。"
+    },
+    {
+      "number": 28,
+      "assetId": "star_tower",
+      "name": "星見塔",
+      "region": "天空群島",
+      "file": "assets/battle-backgrounds/dungeons39/28_star_tower.webp",
+      "variant": "d39_star_tower",
+      "width": 1672,
+      "height": 941,
+      "bytes": 153912,
+      "sha256": "af41b2ea90eb969135e94c1124f6c4565ce60a28e4253ebc7b3b1c4a9d8da491",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "star_tower_1",
+          "mapName": "星見塔",
+          "hidden": false
+        },
+        {
+          "mapId": "star_tower_2",
+          "mapName": "星見塔 最上階",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_st_rings",
+          "mapName": "星見塔・星の輪の間",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "最上階で記録を調査。星の輪の間あり。"
+    },
+    {
+      "number": 29,
+      "assetId": "sky_temple",
+      "name": "天空神殿",
+      "region": "天空群島",
+      "file": "assets/battle-backgrounds/dungeons39/29_sky_temple.webp",
+      "variant": "d39_sky_temple",
+      "width": 1672,
+      "height": 941,
+      "bytes": 175830,
+      "sha256": "cd222fcff0e3a42940049968e0eceecbd0536376d6b0f116fa4187e12473aebf",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "sky_temple_1",
+          "mapName": "天空神殿",
+          "hidden": false
+        },
+        {
+          "mapId": "sky_temple_2",
+          "mapName": "天空神殿 制御装置の間",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_sk_clouds",
+          "mapName": "天空神殿・雲の回廊",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "入口条件 sky_record。制御装置の間と雲の回廊。"
+    },
+    {
+      "number": 30,
+      "assetId": "void_wasteland",
+      "name": "虚無の荒野",
+      "region": "暗黒大陸",
+      "file": "assets/battle-backgrounds/dungeons39/30_void_wasteland.webp",
+      "variant": "d39_void_wasteland",
+      "width": 1672,
+      "height": 941,
+      "bytes": 105204,
+      "sha256": "3f79d2a9b53e435702acd53a5bfdb3a55c567639f0cef1ecb07334b650d5e5a9",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "void_wasteland_1",
+          "mapName": "虚無の荒野",
+          "hidden": false
+        },
+        {
+          "mapId": "void_wasteland_2",
+          "mapName": "虚無の荒野 深部",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_vw_doors",
+          "mapName": "虚無の荒野・三つの扉の間",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "ザルグの残滓、セヴランの影との戦闘。三つの扉の間あり。"
+    },
+    {
+      "number": 31,
+      "assetId": "demon_castle",
+      "name": "魔王城",
+      "region": "暗黒大陸",
+      "file": "assets/battle-backgrounds/dungeons39/31_demon_castle.webp",
+      "variant": "d39_demon_castle",
+      "width": 1672,
+      "height": 941,
+      "bytes": 138248,
+      "sha256": "b2185970282f880bd2952e7e0b7182e84e71011b2398e1a40dd95e37f34bcdb8",
+      "mapCount": 7,
+      "maps": [
+        {
+          "mapId": "demon_castle_gate",
+          "mapName": "魔王城の門",
+          "hidden": false
+        },
+        {
+          "mapId": "demon_castle_1",
+          "mapName": "魔王城 1階",
+          "hidden": false
+        },
+        {
+          "mapId": "demon_castle_2",
+          "mapName": "魔王城 2階 欲望の間",
+          "hidden": false
+        },
+        {
+          "mapId": "demon_castle_3",
+          "mapName": "魔王城 3階 恐怖の間",
+          "hidden": false
+        },
+        {
+          "mapId": "demon_castle_4",
+          "mapName": "魔王城 4階 支配の間",
+          "hidden": false
+        },
+        {
+          "mapId": "demon_castle_5",
+          "mapName": "魔王城 玉座の間",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_dc_statues",
+          "mapName": "魔王城・像の回廊",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "門、1階、欲望・恐怖・支配の間、玉座。門の開放はグロート再戦と感情の試練。玉座で魔王3形態。像の回廊あり。"
+    },
+    {
+      "number": 32,
+      "assetId": "sandstorm_corridor",
+      "name": "砂嵐の回廊",
+      "region": "リシア砂漠",
+      "file": "assets/battle-backgrounds/dungeons39/32_sandstorm_corridor.webp",
+      "variant": "d39_sandstorm_corridor",
+      "width": 1672,
+      "height": 941,
+      "bytes": 111198,
+      "sha256": "196ddae949a5387da964e33ea285a2a9287bc2e49e87268ea13bb7938aff9732",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "sandstorm_corridor_1",
+          "mapName": "砂嵐の回廊",
+          "hidden": false
+        },
+        {
+          "mapId": "sandstorm_corridor_2",
+          "mapName": "砂嵐の回廊 2階",
+          "hidden": false
+        },
+        {
+          "mapId": "a4_sc_shrine",
+          "mapName": "砂嵐の回廊・砂に埋もれた祠",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "北口・南口あり。隊商護衛とザイード戦。砂に埋もれた祠あり。"
+    },
+    {
+      "number": 33,
+      "assetId": "mirage_temple",
+      "name": "蜃気楼神殿",
+      "region": "リシア砂漠",
+      "file": "assets/battle-backgrounds/dungeons39/33_mirage_temple.webp",
+      "variant": "d39_mirage_temple",
+      "width": 1672,
+      "height": 941,
+      "bytes": 176976,
+      "sha256": "cd5f830d3822cb6be35381b5ef3a0b2d9ceffe689a6e31019a9bcf8aede9d1f1",
+      "mapCount": 5,
+      "maps": [
+        {
+          "mapId": "mirage_temple_1",
+          "mapName": "蜃気楼神殿",
+          "hidden": false
+        },
+        {
+          "mapId": "mirage_temple_2",
+          "mapName": "蜃気楼神殿 2階",
+          "hidden": false
+        },
+        {
+          "mapId": "mirage_temple_3",
+          "mapName": "蜃気楼神殿 3階",
+          "hidden": false
+        },
+        {
+          "mapId": "mirage_temple_4",
+          "mapName": "蜃気楼神殿 最奥",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_mt_mirage",
+          "mapName": "蜃気楼神殿・二つの幻の間",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "隊商護衛完了 caravan_done が入口条件。扉選択で進む4層。二つの幻の間あり。"
+    },
+    {
+      "number": 34,
+      "assetId": "crater_altar",
+      "name": "火口の祭壇",
+      "region": "竜炎火山群島",
+      "file": "assets/battle-backgrounds/dungeons39/34_crater_altar.webp",
+      "variant": "d39_crater_altar",
+      "width": 1672,
+      "height": 941,
+      "bytes": 149368,
+      "sha256": "925aa8bd1265724b62c37b9cb60c71de3eb666fe6a199fd6a8e1a8521432102a",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "crater_altar",
+          "mapName": "火口の祭壇",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_ca_forge",
+          "mapName": "火口の祭壇・古い鍛冶場",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "火山の祭壇。古い鍛冶場あり。"
+    },
+    {
+      "number": 35,
+      "assetId": "dragon_vein",
+      "name": "竜脈洞窟",
+      "region": "竜炎火山群島",
+      "file": "assets/battle-backgrounds/dungeons39/35_dragon_vein.webp",
+      "variant": "d39_dragon_vein",
+      "width": 1672,
+      "height": 941,
+      "bytes": 164420,
+      "sha256": "d40e2fd0570321bfc016d9530104c12453e913443ce12db7b7e815a2671ef78e",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "dragon_vein_1",
+          "mapName": "竜脈洞窟",
+          "hidden": false
+        },
+        {
+          "mapId": "dragon_vein_2",
+          "mapName": "竜脈洞窟 古竜の間",
+          "hidden": false
+        },
+        {
+          "mapId": "a4_dv_pool",
+          "mapName": "竜脈・溶岩の溜まり",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "古竜の間に溶岩の番竜。溶岩の溜まりあり。別項目の最深部へ続く。"
+    },
+    {
+      "number": 36,
+      "assetId": "dragon_vein_deep",
+      "name": "竜脈の最深部",
+      "region": "竜炎火山群島",
+      "file": "assets/battle-backgrounds/dungeons39/36_dragon_vein_deep.webp",
+      "variant": "d39_dragon_vein_deep",
+      "width": 1672,
+      "height": 941,
+      "bytes": 178446,
+      "sha256": "d7c23084e483e2f5ce8adac643fec3e514e0572fdc183247652e8998849b22ff",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "dragon_vein_deep_1",
+          "mapName": "竜脈の最深部",
+          "hidden": false
+        },
+        {
+          "mapId": "dragon_vein_deep_2",
+          "mapName": "竜脈の最深部 原初の炎",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_dd_vents",
+          "mapName": "竜脈の最深部・熱の通り道",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "竜脈洞窟の古竜の間から入る任意ボスエリア。熱の通り道あり。"
+    },
+    {
+      "number": 37,
+      "assetId": "memory_vault",
+      "name": "記憶庫",
+      "region": "忘却の雪原",
+      "file": "assets/battle-backgrounds/dungeons39/37_memory_vault.webp",
+      "variant": "d39_memory_vault",
+      "width": 1672,
+      "height": 941,
+      "bytes": 154622,
+      "sha256": "581f15b904f07698d6ebe2a8f61abe7bceb288a4b6ec06e64cf9b5e4563d071a",
+      "mapCount": 2,
+      "maps": [
+        {
+          "mapId": "memory_vault",
+          "mapName": "記憶庫",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_mv_echo",
+          "mapName": "記憶庫・残響の間",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "記憶を売る町フロストから入る。残響の間あり。"
+    },
+    {
+      "number": 38,
+      "assetId": "spirit_forest",
+      "name": "精霊の森",
+      "region": "忘却の雪原",
+      "file": "assets/battle-backgrounds/dungeons39/38_spirit_forest.webp",
+      "variant": "d39_spirit_forest",
+      "width": 1672,
+      "height": 941,
+      "bytes": 242498,
+      "sha256": "3a740f7faec557cb1ed47f9df18ef75f4a97b50e0e7a5aeb89d69e98efd1f1ed",
+      "mapCount": 3,
+      "maps": [
+        {
+          "mapId": "spirit_forest_1",
+          "mapName": "精霊の森",
+          "hidden": false
+        },
+        {
+          "mapId": "spirit_forest_2",
+          "mapName": "精霊の森 奥",
+          "hidden": false
+        },
+        {
+          "mapId": "a4_sf_spring",
+          "mapName": "精霊の森・精霊の泉",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "凍てついた大精霊の解放。精霊の泉あり。"
+    },
+    {
+      "number": 39,
+      "assetId": "frozen_tower",
+      "name": "凍結時計塔",
+      "region": "忘却の雪原",
+      "file": "assets/battle-backgrounds/dungeons39/39_frozen_tower.webp",
+      "variant": "d39_frozen_tower",
+      "width": 1672,
+      "height": 941,
+      "bytes": 231458,
+      "sha256": "645d4c8d41f69e9d8c4514eee9cc8a82432e6254c7bb66a072687253ed2da8d9",
+      "mapCount": 5,
+      "maps": [
+        {
+          "mapId": "frozen_tower_1",
+          "mapName": "凍結時計塔",
+          "hidden": false
+        },
+        {
+          "mapId": "frozen_tower_2",
+          "mapName": "凍結時計塔 2階",
+          "hidden": false
+        },
+        {
+          "mapId": "frozen_tower_3",
+          "mapName": "凍結時計塔 3階",
+          "hidden": false
+        },
+        {
+          "mapId": "frozen_tower_4",
+          "mapName": "凍結時計塔 最上階",
+          "hidden": false
+        },
+        {
+          "mapId": "a6_ft_ice",
+          "mapName": "凍結時計塔・薄氷の間",
+          "hidden": true
+        }
+      ],
+      "scopeNote": "入口条件 aster_joined。4層の任意ボスエリア。薄氷の間あり。"
+    }
+  ]
+}

@@ -89,7 +89,14 @@
   // 地域の色を薄く重ねる（画像の景色と地域が合わない組み合わせだけ。例：灰の地方の草原は灰色がかる）
   var REGION_TINT = { grania: ['#8a8070', 0.30], kalion: ['#c8b48a', 0.12], tempus: ['#b8a0d0', 0.14], islands: ['#9ae0e8', 0.08] };
   var TINT_PLACES = { grassland: 1, forest: 1, cave: 1, castle: 1, harbor: 1, mine: 1, grassland_mountain: 1 };
-  BG.PHOTO = PHOTO; BG.PHOTO_VARIANT = PHOTO_VARIANT; BG.PHOTO_SIZE = [1672, 941]; BG.PHOTO_DIR = PHOTO_DIR;
+  // v7.4 39ダンジョンの専用の背景（js/data/battlebg39.js。マップIDの完全一致。キーは d39_*）。画像は PHOTO_DIR の dungeons39/ に置く
+  var D39 = root.BATTLE_BG39 || null; var own = Object.prototype.hasOwnProperty;
+  if (D39) Object.keys(D39.files || {}).forEach(function (k) { PHOTO_VARIANT[k] = D39.files[k]; if (D39.horizon && typeof D39.horizon[k] === 'number') PHOTO_HORIZON[k] = D39.horizon[k]; });
+  // そのダンジョンの専用の背景のキー（なければ null）。乗り物に乗っているとき（船の上の戦闘など）・ダンジョン以外は従来どおり
+  BG.dungeonVariant = function (mapId, kind, aboard) { if (!D39 || kind !== 'dungeon' || aboard || !mapId || !own.call(D39.maps || {}, mapId)) return null; var k = D39.maps[mapId]; return PHOTO_VARIANT[k] ? k : null; };
+  // 3D版の「3Dの景色」：その絵に合わせた3Dの地面（手前・奥）と霧の色（なければ null＝従来の色）
+  BG.variantStyle = function (key) { if (!D39 || !key || !D39.ground || !own.call(D39.ground, key)) return null; return { ground: D39.ground[key], fog: D39.fog && D39.fog[key] }; };
+  BG.PHOTO = PHOTO; BG.PHOTO_VARIANT = PHOTO_VARIANT; BG.PHOTO_SIZE = [1672, 941]; BG.PHOTO_DIR = PHOTO_DIR; BG.PHOTO_HORIZON = PHOTO_HORIZON;
   var photos = {}, keep = [], MAXKEEP = 4;
   function base() { return (root.Assets && root.Assets.base) || ''; }
   function nowMs() { return root.performance && root.performance.now ? root.performance.now() : Date.now(); }
@@ -242,13 +249,15 @@
     if (place === 'grassland' && kind === 'field' && /荒野|荒地|山脈|山地/.test((opts && opts.zone) || '')) variant = 'grassland_mountain';
     // v6.8 船に乗っているときの戦闘（海の上）は船の甲板の画像。海底・沈没船・礁のダンジョン（同じ「sea」）は従来の海の画像のまま。空を飛ぶ乗り物（飛空艇など）は対象外
     if (place === 'sea' && d && d.aboard && BG.onShip(d.aboard)) variant = 'ship_deck';
-    return { place: place, region: region, night: !!night, weather: weather, boss: boss, bossColor: bossColor, variant: variant };
+    // v7.4 39ダンジョンの専用の背景（同じエリアの階・隠し区画は同じ1枚。通常の戦闘もボス戦も同じ絵。ボスの色・粒・天気は place から従来どおり）
+    var dv = BG.dungeonVariant(mapId, kind, d && d.aboard); if (dv) variant = dv;
+    return { place: place, region: region, night: !!night, weather: weather, boss: boss, bossColor: bossColor, variant: variant, mapId: mapId };
   };
   BG.PAL = PAL;
   BG.PLACES = ['grassland', 'forest', 'cave', 'castle', 'mine', 'harbor', 'sea', 'desert', 'snow', 'volcano', 'magic_city', 'machine_city', 'sky', 'dark'];
   // v6.6 画像の対応と場所の一覧がずれていないか（ずれていても動く：画像のない場所は従来の背景）
   (function () { var miss = BG.PLACES.filter(function (k) { return !PHOTO[k]; }), extra = Object.keys(PHOTO).filter(function (k) { return BG.PLACES.indexOf(k) < 0; }); if ((miss.length || extra.length) && root.console) console.warn('戦闘背景の画像の対応がずれています', miss, extra); })();
   // 地図に入ったら、その場所の戦闘背景を先に読み込んでおく（戦闘の始めに間に合うように。読み込み中は従来の背景）
-  if (root.World && root.World.enterHooks) root.World.enterHooks.push(function (m) { try { var d = root.State && root.State.data; var pl = BG.placeOf(m.id, m.kind, null, d && d.aboard); BG.prefetch({ place: pl, region: BG.regionOf(m.id), variant: pl === 'sea' && d && d.aboard && BG.onShip(d.aboard) ? 'ship_deck' : null }); } catch (err) { } });
+  if (root.World && root.World.enterHooks) root.World.enterHooks.push(function (m) { try { var d = root.State && root.State.data; var pl = BG.placeOf(m.id, m.kind, null, d && d.aboard); BG.prefetch({ place: pl, region: BG.regionOf(m.id), variant: BG.dungeonVariant(m.id, m.kind, d && d.aboard) || (pl === 'sea' && d && d.aboard && BG.onShip(d.aboard) ? 'ship_deck' : null) }); } catch (err) { } });   // v7.4 専用の背景があるダンジョンは、その絵だけを先に読む
   root.BattleBG65 = BG;
 })(typeof window !== 'undefined' ? window : globalThis);
