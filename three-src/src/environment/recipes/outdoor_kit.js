@@ -1,8 +1,9 @@
 /* =========================================================
-   レシピ（屋外のダンジョン）：outdoor_kit — 森（lost_forest ほか）と空（sky_temple ほか）
+   レシピ（屋外のダンジョン）：outdoor_kit — 森（lost_forest ほか）と空（sky_temple ほか）と、草地の屋外（山道・峠・霧の島）
    ・森：歩ける地面のシダと花（高さ 0.12 以下）、通れない森のマス（道から1〜3マス）に倒木・大きなキノコ・苔むした岩（パックの rock_cluster）、
          空間の流れ（js/rpg/envlayout.js）の見せ場に、光の差す大木
    ・空：歩ける所の外（雲・通れないマス）に浮かぶ岩と断柱（パックの column_classic）、風見の旗、低い雲の帯
+   ・草地の屋外（pass）：通れないマスに岩の塊（パックの rock_cluster）・苔・低い茂み、歩ける地面に下草
    ・論理（タイル）は変えない。歩けるマスの上には体の高さの形を置かない
    ========================================================= */
 import * as THREE from 'three';
@@ -42,6 +43,11 @@ async function build(ctx, kind, spots, b) {
       else if (k === 1) { for (let m = 0; m < 3; m++) { const dx = (m - 1) * 0.28, h = 0.35 + m * 0.18; add(M.stem, cyl(0.05, 0.07, h, 6, x + dx, y + h / 2, z)); add(M.cap, new THREE.SphereGeometry(0.16 + m * 0.04, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2).translate(x + dx, y + h, z)); } }
       else if (k === 2) K('rock_cluster', x, y, z, 0.35, ry);
       else { add(M.moss, new THREE.IcosahedronGeometry(0.4, 1).scale(1, 0.45, 1).translate(x, y + 0.12, z)); }
+    } else if (kind === 'pass') {   // 山道・峠・島（草地の屋外）：岩の塊・苔・低い茂み
+      const k = i % 3;
+      if (k === 0) K('rock_cluster', x, y, z, 0.42, ry);
+      else if (k === 1) { add(M.moss, new THREE.IcosahedronGeometry(0.42, 1).scale(1, 0.5, 1).translate(x, y + 0.14, z)); add(M.rock, new THREE.IcosahedronGeometry(0.22, 0).translate(x + 0.2, y + 0.12, z - 0.1)); }
+      else { add(M.leaf, new THREE.IcosahedronGeometry(0.36, 1).scale(1, 0.75, 1).translate(x, y + 0.3, z)); add(M.leaf2, new THREE.IcosahedronGeometry(0.26, 1).translate(x + 0.3, y + 0.22, z + 0.15)); }
     } else {
       const k = i % 3; const yy = y + 2.6 + (i % 3) * 0.7;
       if (k === 0) { add(M.rock, new THREE.IcosahedronGeometry(0.55, 0).scale(1.3, 0.55, 1.1).translate(x, yy, z)); K('column_classic', x, yy + 0.2, z, [0.35, 0.45, 0.35], ry); }
@@ -55,7 +61,7 @@ async function build(ctx, kind, spots, b) {
   if (kind === 'forest') for (const sc of secs) { if (sc.kind !== 'climax' && sc.kind !== 'main') continue; const x = sc.x + 0.5, z = sc.y + 0.5, y = hAt(x, z); sb.add(M.shaft, new THREE.CylinderGeometry(0.5, 1.2, 6, 12, 1, true).translate(x, y + 3, z)); ctx.scene.lampSpots.push({ pos: new THREE.Vector3(x, y + 2.6, z), color: 0xfff0c0, power: 0.9, dist: 9 }); }
   // 下草（森）・雲の帯（空）
   let n = 0; const r = rng(W * 7 + H * 5);
-  if (kind === 'forest' && hi) { const geo = new THREE.ConeGeometry(0.05, 0.1, 4); for (let z = 1; z < H - 1; z++) for (let x = 1; x < W - 1; x++) { const t = map.tile(x, z); if (window.Tiles.isSolid(t) || /stairs|warp|door|bridge/.test(t)) continue; if (r() > 0.22) continue; for (let k = 0; k < 3; k++) { const px = x + 0.15 + r() * 0.7, pz = z + 0.15 + r() * 0.7; add(k ? M.leaf2 : M.leaf, geo.clone().scale(1.4, 1, 1.4).translate(px, hAt(px, pz) + 0.05, pz)); n++; } } }
+  if ((kind === 'forest' || kind === 'pass') && hi) { const geo = new THREE.ConeGeometry(0.05, 0.1, 4); for (let z = 1; z < H - 1; z++) for (let x = 1; x < W - 1; x++) { const t = map.tile(x, z); if (window.Tiles.isSolid(t) || /stairs|warp|door|bridge/.test(t)) continue; if (r() > 0.22) continue; for (let k = 0; k < 3; k++) { const px = x + 0.15 + r() * 0.7, pz = z + 0.15 + r() * 0.7; add(k ? M.leaf2 : M.leaf, geo.clone().scale(1.4, 1, 1.4).translate(px, hAt(px, pz) + 0.05, pz)); n++; } } }
   if (kind === 'sky') { for (let k = 0; k < 14; k++) { const x = -6 + r() * (W + 12), z = -6 + r() * (H + 12); const onMap = x > 0 && z > 0 && x < W && z < H; if (onMap && !window.Tiles.isSolid(map.tile(Math.floor(x), Math.floor(z)))) continue; add(M.cloud, new THREE.IcosahedronGeometry(1.2 + r() * 1.2, 1).scale(1.8, 0.35, 1.2).translate(x, -1.6 - r() * 1.2, z)); n++; } }
   for (const [id, list] of Object.entries(kits)) g.add(await kit(ctx, id, list));
   bt.build(g); sb.build(sg, { castShadow: false }); ctx.stats.ground = n; return g;

@@ -39,7 +39,7 @@ export function genericRecipe(map) {
   if (map.kind === 'field') return generic['field:' + map.id] || (generic['field:' + map.id] = fieldKit(map.id));
   if (map.kind === 'dungeon' || map.kind === 'interior') {
     const th = themeFor(map); const P = th.placeDef || {};
-    if (P.outdoor || P.wall === 'trees') { const k = P.wall === 'trees' || th.place === 'forest' ? 'forest' : th.place === 'sky' ? 'sky' : null; if (!k) return null; return generic['out:' + map.id] || (generic['out:' + map.id] = outdoorKit(k)); }   // 屋外のダンジョン（森・空）
+    if ((P.outdoor || P.wall === 'trees') && !(map.kind === 'interior' && P.wall !== 'trees' && th.place !== 'sky')) { const k = P.wall === 'trees' || th.place === 'forest' ? 'forest' : th.place === 'sky' ? 'sky' : 'pass'; return generic['out:' + map.id] || (generic['out:' + map.id] = outdoorKit(k)); }   // 屋外のダンジョン（森・空・草地の屋外）。屋内なのに草地の扱いのもの（島の店・灯台）は下の屋内へ   // 屋外のダンジョン（森・空）
     const prof = (window.MTQ3D_ENV && window.MTQ3D_ENV.profileSync && window.MTQ3D_ENV.profileSync(map.id)) || null;
     let st = prof && ROOM_STYLE[prof.archetype];
     if (st === null) return null;
