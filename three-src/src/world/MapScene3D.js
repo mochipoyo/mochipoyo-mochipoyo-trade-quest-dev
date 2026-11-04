@@ -20,6 +20,8 @@ import { Animal3D, isAnimalSprite } from '../entities/Animal3D.js';
 import { buildFurniture73 } from './Furniture73.js';
 import { characterModelFor, fieldModelFor } from '../assets/manifest.js';
 import { Batch, box, M4, softTexture, textTexture } from '../engine/Materials.js';
+import { Env } from '../environment/Env.js';
+import { ctxStats } from '../environment/EnvKit3D.js';
 
 export class MapScene3D {
   constructor(app) { this.app = app; this.root = new THREE.Group(); this.npcs = []; this.chests = []; this.smokes = []; this.sway = []; this.animated = []; this.lampSpots = []; }
@@ -29,12 +31,21 @@ export class MapScene3D {
     this.root.name = 'map3d_' + map.id;
     const t0 = performance.now();
     this.coverage = mapCoverage(map);   // 'done'（専用に作り込んだ3D）／'generic'（汎用の3D＝仮3D）
+    // v7.6 環境リデザイン：このマップのレシピ（three-src/src/environment/recipes/）。準備（素材の一覧の読み込み・論理のタイルの確認）ができたら、builder にフックを渡し、最後に作り直した形を足す
+    //   レシピの準備・組み立てで失敗したら、例外に envRecipe をつけて投げる → GameBridge.ensure がレシピなしで組み立て直す（Env.errors に記録）
+    const recipe = Env.recipeFor(map); let rx = null; this.envRecipe = null;
+    if (recipe) {
+      const ctx = { map, app, scene: this, stats: ctxStats(), quality: app.quality };
+      try { ctx.catalog = await Env.catalog(app.renderer && app.renderer.renderer); ctx.profile = await Env.profile(map.id); rx = await recipe.prepare(ctx); rx.ctx = ctx; this.envRecipe = { id: recipe.id, stats: ctx.stats }; }
+      catch (e) { const err = new Error('環境レシピの準備に失敗 ' + map.id + '：' + (e && e.message)); err.envRecipe = true; err.cause = e; throw err; }
+    }
+    const runRecipe = async (o) => { if (!rx) return; const t1 = performance.now(); try { await rx.build(Object.assign({ map, root: this.root, scene: this, heightAt: this.heightAt }, o || {})); } catch (e) { const err = new Error('環境レシピの組み立てに失敗 ' + map.id + '：' + (e && e.message)); err.envRecipe = true; err.cause = e; throw err; } Env.built[map.id] = { recipe: recipe.id, ms: Math.round(performance.now() - t1), kit: rx.ctx.stats.kit, matErrors: rx.ctx.stats.matErrors.length }; };
     if (this.coverage === 'generic') {
       // ---- Phase 1 汎用3Dワールド：町・フィールド・ダンジョン・ポヨ村以外の屋内
       const theme = themeFor(map); this.theme = theme;
       theme.modern = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null);   // v7.0 近未来・機械・娯楽の町（舗装・建物）
       const wb = new WorldBuilder3D(app.mats, app.models, app.quality); this.world = wb;
-      const r = await wb.build(map, theme);
+      const r = await wb.build(map, theme, rx && rx.hooks);
       this.root.add(r.group); this.heightAt = r.heightAt; this.lampSpots = r.lampSpots.slice();
       (r.smokes || []).forEach((sm) => this.addSmoke(sm));   // v6.6 目印の煙突・噴気孔
       this.dark = this.interior || (map.kind === 'dungeon' && !(theme.placeDef && theme.placeDef.outdoor)); this.ambient = (theme.placeDef && theme.placeDef.light) || null;
@@ -47,6 +58,7 @@ export class MapScene3D {
           let o = null; if (b.type === 'elevator') { try { o = buildElevatorTower(b, map, textTexture); } catch (e) { o = null; console.warn('elevator', e); } }   // v7.1 空の区画へのエレベーター
           if (!o && b.type === 'watchtower') { try { o = buildTower3D(b); } catch (e) { o = null; console.warn('tower72', e); } }   // v7.2 新しい地区の塔
           if (!o && modern) { try { o = buildModernBuilding(b, modern, textTexture); } catch (e) { o = null; console.warn('modern building', e); } }
+          if (!o && rx && rx.building) { try { o = await rx.building(b, { bb, rnd, batch: shared, design, theme }); } catch (e) { const err = new Error('環境レシピの建物に失敗 ' + map.id + ' ' + b.id + '：' + (e && e.message)); err.envRecipe = true; throw err; } }   // v7.6 レシピの建物（用途・地域ごとの形）
           if (!o) o = await bb.build(b, rnd, { batch: shared, design, theme }); bgroup.add(o.group);
           o.lights.forEach((l) => this.lampSpots.push(l)); o.smokes.forEach((s) => this.addSmoke(s));
           o.props.forEach((p) => { const v = new THREE.Vector3().setFromMatrixPosition(p.m); wb.put(p.id, p.m, v.x, v.z); });
@@ -57,6 +69,7 @@ export class MapScene3D {
       await r.finalize();
       // v7.0 場所ごとの個性の飾り（壁の飾り・町の外の遠景・床の小物。js/data/placedecor70.js のテーマ）。失敗しても地図は表示する
       try { const db = new DecorBuilder3D(); const dr = db.build(map, { T: wb.T, OUT: wb.OUT, heightAt: r.heightAt, group: r.group }); this.decor = { key: dr.key, stats: db.stats }; (dr.smokes || []).forEach((sm) => this.addSmoke(sm)); } catch (e) { this.decor = { key: null, error: String(e && e.message || e) }; console.warn('decor70', e); }
+      await runRecipe({ group: r.group, world: wb, theme });   // v7.6 レシピが作り直した形を足す
       for (const c of map.chests) this.addChest(c);
       if (map.kind === 'town' || map.kind === 'field') this.addMotes(map);
       this.bounds = (this.interior && map.w <= 16 && map.h <= 14) ? { x0: 1, z0: 1, x1: map.w - 1, z1: map.h - 1 } : null;   // 小さな部屋だけ部屋全体を見る
@@ -67,7 +80,7 @@ export class MapScene3D {
       this.heightAt = () => 0;
     } else {
       const tb = new TerrainBuilder3D(app.mats, app.models, app.quality); this.terrain = tb;
-      const r = await tb.build(map);
+      const r = await tb.build(map, rx && rx.hooks);
       this.root.add(r.group); this.heightAt = r.heightAt; this.lampSpots = r.lampSpots.slice();
       // 門（出口の道の上）
       const gl = tb.gate(r.group, map.name); if (gl) this.lampSpots.push(...gl);
@@ -78,7 +91,8 @@ export class MapScene3D {
       const design = (window.LocationDesign && window.LocationDesign.forMap) ? window.LocationDesign.forMap(map.id) : null; this.design = design;
       for (const b of map.buildings) {
         if (b.type === 'windmill' || b.type === 'watchtower') continue;   // v7.1 風車・見張り台は buildVillageDecor が作る
-        const o = await bb.build(b, rnd, { batch: shared, design }); bgroup.add(o.group);
+        let o = null; if (rx && rx.building) { try { o = await rx.building(b, { bb, rnd, batch: shared, design }); } catch (e) { const err = new Error('環境レシピの建物に失敗 ' + map.id + ' ' + b.id + '：' + (e && e.message)); err.envRecipe = true; throw err; } }   // v7.6 レシピの建物
+        if (!o) o = await bb.build(b, rnd, { batch: shared, design }); bgroup.add(o.group);
         o.lights.forEach((l) => this.lampSpots.push(l));
         o.smokes.forEach((s) => this.addSmoke(s));
         o.props.forEach((p) => { const v = new THREE.Vector3().setFromMatrixPosition(p.m); tb.put(p.id, p.m, v.x, v.z); });
@@ -89,6 +103,7 @@ export class MapScene3D {
       try { const vd = buildVillageDecor(map, { put: (id, m, x, z) => tb.put(id, m, x, z), heightAt: r.heightAt, group: r.group, mats: app.mats }); vd.animated.forEach((a) => this.animated.push(a)); vd.lamps.forEach((l) => this.lampSpots.push(l)); this.decor = { key: 'village', stats: vd.stats }; } catch (e) { this.decor = { key: null, error: String(e && e.message || e) }; console.warn('village decor', e); }
       await r.finalize();
       r.group.traverse((o) => { if (o.name && (o.name.startsWith('grass_') || o.name === 'flowers')) o.renderOrder = 3; });
+      await runRecipe({ group: r.group, terrain: tb });   // v7.6 レシピ（ポヨ村の大樹・畑・水車など）
       // 宝箱
       for (const c of map.chests) this.addChest(c);
       this.addMotes(map);

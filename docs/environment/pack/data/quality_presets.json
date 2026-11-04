@@ -1,0 +1,31 @@
+{
+  "note": "以下は設計予算であり実測値ではない。既存Renderer3Dのhigh/lowへ接続し、計測して調整する。",
+  "high": {
+    "targetFps": 60,
+    "p95FrameMs": 20,
+    "pixelRatioMax": 1.5,
+    "shadowMapSize": 2048,
+    "shadowCastingLights": 1,
+    "pointLightsVisible": 6,
+    "drawCallsTarget": 300,
+    "visibleTrianglesTarget": 650000,
+    "textureBudgetMiB": 192,
+    "bloomStrength": 0.18,
+    "ao": "optional_after_profiling",
+    "depthOfField": false
+  },
+  "low": {
+    "targetFps": 30,
+    "p95FrameMs": 40,
+    "pixelRatioMax": 1.0,
+    "shadowMapSize": 1024,
+    "shadowCastingLights": 1,
+    "pointLightsVisible": 2,
+    "drawCallsTarget": 140,
+    "visibleTrianglesTarget": 220000,
+    "textureBudgetMiB": 80,
+    "bloomStrength": 0,
+    "ao": false,
+    "depthOfField": false
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "arcadia": {
+    "name": "牧歌の丘陵",
+    "terrain": "黄土の小道・段々畑・広葉樹林・穏やかな河岸",
+    "architecture": "漆喰と木組み、茅葺きと赤瓦、家ごとに異なる棟方向",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "wood_oak",
+    "baseColor": "#9fae73",
+    "accentColor": "#f0d7a4",
+    "signatureProps": "風車・水車・大樹・生活の道具",
+    "lighting": "穏やかな午後、木漏れ日、薄い遠景霧"
+  },
+  "grania": {
+    "name": "灰と鉄の鉱業地帯",
+    "terrain": "切り立つ採掘断面・鉱滓・露出した地層・運搬路",
+    "architecture": "煤けた石積み、鉄骨補強、非対称な煙突",
+    "floorMaterial": "rock_basalt",
+    "wallMaterial": "stone_fortress",
+    "baseColor": "#666a67",
+    "accentColor": "#df9a51",
+    "signatureProps": "巻上機・鉱石選別台・荷車・煙突",
+    "lighting": "低い日差し、炉の暖色、空気の灰は少量"
+  },
+  "kalion": {
+    "name": "秩序と格差の都市圏",
+    "terrain": "直線の官庁街と曲がる生活路、台地・運河",
+    "architecture": "明るい石灰岩列柱と粗い長屋、規模差を作る",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "stone_fortress",
+    "baseColor": "#b4a99a",
+    "accentColor": "#b9483f",
+    "signatureProps": "帳簿庫・公示板・関所・公共水盤",
+    "lighting": "公的空間は強い対称光、裏通りは庇の影"
+  },
+  "islands": {
+    "name": "断裂した海洋文明",
+    "terrain": "入江・岩棚・断崖・浅瀬・崩れた海岸都市",
+    "architecture": "塩に傷んだ白壁、青瓦、再利用船材、半壊アーチ",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "wood_oak",
+    "baseColor": "#65a8ad",
+    "accentColor": "#e1b977",
+    "signatureProps": "灯台・係留柱・帆布・水没した円柱",
+    "lighting": "海からの青い反射光とランタン"
+  },
+  "tempus": {
+    "name": "時を記録する領域",
+    "terrain": "段丘・水路・時計塔が見通せる広場・古い環状路",
+    "architecture": "銅屋根、砂岩、時計の歯車を外構に使う",
+    "floorMaterial": "stone_sandstone",
+    "wallMaterial": "wood_oak",
+    "baseColor": "#a7afb7",
+    "accentColor": "#bd8d4c",
+    "signatureProps": "日時計・天球儀・鐘・水時計",
+    "lighting": "低角度の光、時計の刻印に細い陰影"
+  },
+  "machine": {
+    "name": "演算と統制の都市",
+    "terrain": "幾何学街区・配管谷・雨水溝・整備デッキ",
+    "architecture": "白いセラミック外皮、鋼のリブ、保守用レイヤー",
+    "floorMaterial": "metal_industrial",
+    "wallMaterial": "stone_fortress",
+    "baseColor": "#7b919d",
+    "accentColor": "#48c9d6",
+    "signatureProps": "冷却塔・データ柱・監視門・配電盤",
+    "lighting": "冷白色、警告灯は点在、改革後は暖色を混ぜる"
+  },
+  "magicka": {
+    "name": "魔導と学術の王国",
+    "terrain": "段丘庭園・結晶露頭・学術回廊・星図広場",
+    "architecture": "青紫の釉薬屋根、象牙色石材、弧を描くバットレス",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "stone_fortress",
+    "baseColor": "#8e87a4",
+    "accentColor": "#9c75cf",
+    "signatureProps": "魔導灯・書架・観測器・回転する環",
+    "lighting": "低彩度の紫と暖白色、発光を主材にしない"
+  },
+  "sky": {
+    "name": "空中の遺構",
+    "terrain": "浮遊する岩盤・千切れた橋・雲の層・足場の断面",
+    "architecture": "風化した淡色列柱、細い銅の接合、開放的な屋根",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "stone_sandstone",
+    "baseColor": "#ccd8de",
+    "accentColor": "#c6ad6c",
+    "signatureProps": "天球儀・風見・欠けた橋桁・翼を模した控壁",
+    "lighting": "拡散した天空光、影と下方の雲で高さを伝える"
+  },
+  "dark": {
+    "name": "虚無と支配の領域",
+    "terrain": "沈んだ大地・空洞・歪んだ断層・孤立した足場",
+    "architecture": "黒い玄武岩、骨状リブ、重量のある張り出し",
+    "floorMaterial": "rock_basalt",
+    "wallMaterial": "stone_fortress",
+    "baseColor": "#494252",
+    "accentColor": "#9b61b7",
+    "signatureProps": "裂けた玉座・拘束鎖・空洞の像・破れた軍旗",
+    "lighting": "通路は読みやすく、奈落と背景だけを暗くする"
+  },
+  "desert": {
+    "name": "水と交易の砂漠",
+    "terrain": "風紋・岩の露頭・オアシス・影のある路地",
+    "architecture": "砂岩の中庭住宅、土壁、平屋根、布の庇",
+    "floorMaterial": "stone_sandstone",
+    "wallMaterial": "wood_oak",
+    "baseColor": "#d4b981",
+    "accentColor": "#3d9b9b",
+    "signatureProps": "貯水槽・水路・天幕・測量柱",
+    "lighting": "強い日差しと深い庇影、砂嵐は入口を隠さない"
+  },
+  "dragon": {
+    "name": "火山と鍛冶の群島",
+    "terrain": "柱状節理・溶岩棚・噴気孔・黒い礫の海岸",
+    "architecture": "耐熱黒石、赤銅屋根、太い柱と開放された作業場",
+    "floorMaterial": "rock_basalt",
+    "wallMaterial": "metal_industrial",
+    "baseColor": "#61534c",
+    "accentColor": "#e88b48",
+    "signatureProps": "炉・風箱・排熱筒・冷却水槽",
+    "lighting": "炉口の暖色、外光は灰色、赤一色にしない"
+  },
+  "snow": {
+    "name": "忘却の雪原",
+    "terrain": "雪庇・氷河・針葉樹・流氷の港・青い氷の割れ目",
+    "architecture": "急勾配の屋根、厚い壁、二重の玄関、霜の石柱",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "wood_oak",
+    "baseColor": "#cbd8df",
+    "accentColor": "#e2a568",
+    "signatureProps": "積雪棚・橇・防風柵・記憶瓶",
+    "lighting": "雪の反射と窓の暖色、白飛びを避ける"
+  }
+}

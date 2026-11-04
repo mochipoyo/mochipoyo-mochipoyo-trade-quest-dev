@@ -1,0 +1,42 @@
+{
+  "tool": "built-in image generation",
+  "transparent_background": false,
+  "actualTextureSize": [
+    1254,
+    1254
+  ],
+  "prompts": [
+    {
+      "id": "stone_courtyard",
+      "prompt": "Use case: stylized-concept. Asset type: production base-color surface texture for an original high quality 3D Japanese fantasy RPG, stone_courtyard. Create a single square 1024x1024 seamless tileable texture filling the entire image: weathered warm gray limestone courtyard flagstones, irregular interlocking polygon stones medium sized, delicate fine grain and pores, small chips, sparse dry moss in narrow joints, subtle balanced variations, no large cracks. Refined miniature realism, detailed natural material, suitable for physically based materials. Perfectly straight top-down orthographic view of a flat surface, uniform neutral diffuse illumination, no directional cast shadows, no perspective, no vignette, no specular shine, no bevelled frame, no text, no labels, no UI, no scene, no border. Edges must repeat seamlessly. One material only."
+    },
+    {
+      "id": "stone_fortress",
+      "prompt": "Use case: stylized-concept. Asset type: production base-color surface texture for an original high quality 3D Japanese fantasy RPG, stone_fortress. Create a single square 1024x1024 seamless tileable texture filling the entire image: dark blue-gray medieval fortress masonry wall, horizontally coursed rectangular ashlar stone blocks, chiselled faces, rounded worn edges, subtle soot and damp staining, narrow recessed mortar. Refined miniature realism, detailed natural material, suitable for physically based materials. Perfectly straight top-down orthographic view of a flat surface, uniform neutral diffuse illumination, no directional cast shadows, no perspective, no vignette, no specular shine, no bevelled frame, no text, no labels, no UI, no scene, no border. Edges must repeat seamlessly. One material only."
+    },
+    {
+      "id": "wood_oak",
+      "prompt": "Use case: stylized-concept. Asset type: production base-color surface texture for an original high quality 3D Japanese fantasy RPG, wood_oak. Create a single square 1024x1024 seamless tileable texture filling the entire image: aged warm brown oak floor planks, long straight staggered boards viewed orthogonally from above, believable subtle elongated wood grain and knots, delicate edge wear, no exaggerated scratches, no nails. Refined miniature realism, detailed natural material, suitable for physically based materials. Perfectly straight top-down orthographic view of a flat surface, uniform neutral diffuse illumination, no directional cast shadows, no perspective, no vignette, no specular shine, no bevelled frame, no text, no labels, no UI, no scene, no border. Edges must repeat seamlessly. One material only."
+    },
+    {
+      "id": "rock_basalt",
+      "prompt": "Use case: stylized-concept. Asset type: production base-color surface texture for an original high quality 3D Japanese fantasy RPG, rock_basalt. Create a single square 1024x1024 seamless tileable texture filling the entire image: dark volcanic basalt rock ground, natural fine-grained charcoal basalt plates with irregular fine fissures, dull mineral speckles, no lava, no glow, not brick. Refined miniature realism, detailed natural material, suitable for physically based materials. Perfectly straight top-down orthographic view of a flat surface, uniform neutral diffuse illumination, no directional cast shadows, no perspective, no vignette, no specular shine, no bevelled frame, no text, no labels, no UI, no scene, no border. Edges must repeat seamlessly. One material only."
+    },
+    {
+      "id": "stone_sandstone",
+      "prompt": "A single square seamless tileable base-color texture: warm pale ochre sandstone wall with large horizontal ashlar blocks, fine sedimentary banding, subtle worn corners and sandy mortar, refined original fantasy RPG material. Flat straight-on orthographic view, uniform neutral diffuse light without cast shadows, no perspective, no scene, no text, no border, no vignette. Full frame surface, intended for repeat wrap, 1024x1024."
+    },
+    {
+      "id": "metal_industrial",
+      "prompt": "A single square seamless tileable base-color texture: restrained blue-gray steel industrial floor plates with narrow seams, small rivets near corners, fine brushed texture, patches of dark oxidation and sparse warm rust around joins, original fantasy science-fiction RPG environment. Top-down orthographic flat surface, neutral diffuse light, no reflections, no directional shadows, no glowing strips, no text, no border, no vignette. Full frame material, 1024x1024."
+    },
+    {
+      "id": "concept_towns",
+      "prompt": "Use case: stylized-concept. Create a premium original Japanese fantasy RPG ENVIRONMENT ART DIRECTION BOARD as six equal wide landscape panels in a clean 2-column by 3-row grid, landscape overall 1536x1024. No text or UI. Same elevated isometric 3D miniature camera and believable textured detailed materials across all six, tiny neutral adventurers only for scale. Panel top-left: idyllic farming village with organically curving lanes around an old huge tree and watermill, timber and plaster homes each distinct silhouette, meadows and distant ridge. Top-right: terraced iron-mining town, cranes, furnaces and ore lifts against a slate quarry, warm workshops cool shadow. Middle-left: opulent limestone tax capital, grand arcaded government avenue contrasted with modest dense narrow alleys separated by a canal. Middle-right: whitewashed harbor settlement with blue tile roofs, sails, fish market, curved seawall and turquoise waves. Bottom-left: clockwork city of copper bell towers, radial patterned plaza and aqueducts, quiet bronze afternoon. Bottom-right: advanced computation city with ceramic dark steel hexagonal buildings, vertical server towers, cyan light and wet paving, visibly distinct architecture. Fine 3D handcrafted miniature realism, legible playable paths, sophisticated lighting, natural surface roughness, layered foreground midground background, restrained bloom, all original architecture not copying any franchise location. These are aspirational concept scenes, not a UI mockup."
+    },
+    {
+      "id": "concept_dungeons",
+      "prompt": "Use case: stylized-concept. Create a premium original Japanese fantasy RPG ENVIRONMENT ART DIRECTION BOARD, six equal wide landscape panels, clean 2-column by 3-row grid, landscape overall 1536x1024. No text UI or watermarks. Same elevated isometric 3D miniature camera, finely textured believable material, adventurous small human silhouettes for scale. Top-left: abandoned iron mine, irregular carved cavern with timber supports rails and a suspended ore winch over a chasm, warm lanterns and cold rock. Top-right: ruined coastal citadel with broken vaulted arches and courtyard, salt-weathered stone, vines, distant turquoise sea. Middle-left: ancient time temple, circular brass astrolabe and enormous stone sundial, layered curved corridors, sunlight shaft, sandstone and bronze. Middle-right: underwater library, drowned tiered book alcoves, coral columns, turquoise volumetric water light and curved ceremonial aisle. Bottom-left: snowbound magical observatory, ice-encrusted pale stone, brass telescope, aurora visible through broken dome, warm sanctuary below. Bottom-right: final dark fortress, ribbed black basalt architecture, asymmetrical bridges over abyss, restrained violet energy at the altar, strong navigable silhouette. Distinct topology in EVERY scene; no rectangular grid of identical boxes, no flat untextured polygon look, all original architecture. Refined realistic stylized 3D JRPG, restrained depth of field preserving paths, contact shadows, deliberate light hierarchy, cinematic but plausible realtime target, concept art not actual screenshot."
+    }
+  ]
+}

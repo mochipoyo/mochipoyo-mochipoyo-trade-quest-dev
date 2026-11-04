@@ -3,6 +3,8 @@
    1) 2D側へフックを入れる → 2) 2D版を起動（タイトル）→ 3) 3D素材を裏で読み込む
    ========================================================= */
 import { App3D, notice2D } from './bridge/GameBridge.js';
+import { Env } from './environment/Env.js';
+window.MTQ3D_ENV = Env;   // v7.6 環境リデザインの状態（Env.info()：切り替え・レシピ・組み立て・未登録のマップ・失敗）
 window.MTQ3D_BUILD = typeof __MTQ3D_BUILD__ !== 'undefined' ? __MTQ3D_BUILD__ : '-';   // ビルドの日時（vite.config.js）
 
 // 安全装置：js/rpg/state.js が3D版に対応していない（古い）と、3D版が2D版のセーブ枠へ書き込んでしまうため起動しない

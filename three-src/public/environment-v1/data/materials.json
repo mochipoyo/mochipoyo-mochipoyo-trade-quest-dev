@@ -1,0 +1,95 @@
+{
+ "version": 1,
+ "textures": {
+  "stone_courtyard": {
+   "file": "textures/stone_courtyard.jpg",
+   "colorSpace": "srgb",
+   "roughness": 0.88,
+   "metalness": 0,
+   "worldRepeatMeters": 3,
+   "normalMap": null,
+   "status": "AI base-color candidate; inspect tiling in preview",
+   "notes": "法線・AO・高さは計測されたPBRマップではありません。画像の明暗から法線を自動捏造しない。",
+   "resolution": [
+    1024,
+    1024
+   ],
+   "source": "パックの assets/textures/stone_courtyard.png（1254×1254）を 1024×1024 の JPEG（品質88）に縮小"
+  },
+  "stone_fortress": {
+   "file": "textures/stone_fortress.jpg",
+   "colorSpace": "srgb",
+   "roughness": 0.92,
+   "metalness": 0,
+   "worldRepeatMeters": 3,
+   "normalMap": null,
+   "status": "AI base-color candidate; inspect tiling in preview",
+   "notes": "法線・AO・高さは計測されたPBRマップではありません。画像の明暗から法線を自動捏造しない。",
+   "resolution": [
+    1024,
+    1024
+   ],
+   "source": "パックの assets/textures/stone_fortress.png（1254×1254）を 1024×1024 の JPEG（品質88）に縮小"
+  },
+  "wood_oak": {
+   "file": "textures/wood_oak.jpg",
+   "colorSpace": "srgb",
+   "roughness": 0.78,
+   "metalness": 0,
+   "worldRepeatMeters": 2,
+   "normalMap": null,
+   "status": "AI base-color candidate; inspect tiling in preview",
+   "notes": "法線・AO・高さは計測されたPBRマップではありません。画像の明暗から法線を自動捏造しない。",
+   "resolution": [
+    1024,
+    1024
+   ],
+   "source": "パックの assets/textures/wood_oak.png（1254×1254）を 1024×1024 の JPEG（品質88）に縮小"
+  },
+  "rock_basalt": {
+   "file": "textures/rock_basalt.jpg",
+   "colorSpace": "srgb",
+   "roughness": 0.96,
+   "metalness": 0,
+   "worldRepeatMeters": 3,
+   "normalMap": null,
+   "status": "AI base-color candidate; inspect tiling in preview",
+   "notes": "法線・AO・高さは計測されたPBRマップではありません。画像の明暗から法線を自動捏造しない。",
+   "resolution": [
+    1024,
+    1024
+   ],
+   "source": "パックの assets/textures/rock_basalt.png（1254×1254）を 1024×1024 の JPEG（品質88）に縮小"
+  },
+  "stone_sandstone": {
+   "file": "textures/stone_sandstone.jpg",
+   "colorSpace": "srgb",
+   "roughness": 0.91,
+   "metalness": 0,
+   "worldRepeatMeters": 3,
+   "normalMap": null,
+   "status": "AI base-color candidate; inspect tiling in preview",
+   "notes": "法線・AO・高さは計測されたPBRマップではありません。画像の明暗から法線を自動捏造しない。",
+   "resolution": [
+    1024,
+    1024
+   ],
+   "source": "パックの assets/textures/stone_sandstone.png（1254×1254）を 1024×1024 の JPEG（品質88）に縮小"
+  },
+  "metal_industrial": {
+   "file": "textures/metal_industrial.jpg",
+   "colorSpace": "srgb",
+   "roughness": 0.65,
+   "metalness": 0.55,
+   "worldRepeatMeters": 2,
+   "normalMap": null,
+   "status": "AI base-color candidate; inspect tiling in preview",
+   "notes": "法線・AO・高さは計測されたPBRマップではありません。画像の明暗から法線を自動捏造しない。",
+   "resolution": [
+    1024,
+    1024
+   ],
+   "source": "パックの assets/textures/metal_industrial.png（1254×1254）を 1024×1024 の JPEG（品質88）に縮小"
+  }
+ }
+}

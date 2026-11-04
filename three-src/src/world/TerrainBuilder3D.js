@@ -58,7 +58,8 @@ const TREE_TILES = { tree: 1, forest: 1 };
 export class TerrainBuilder3D {
   constructor(mats, models, quality) { this.mats = mats; this.models = models; this.quality = quality || 'high'; this.noise = noiseTexture(); this.time = { value: 0 }; this.day = { value: 1 }; }
 
-  async build(map) {
+  // env（v7.6 環境リデザインのレシピのフック）：skipTree(x, z) が true のマスには汎用の木を置かない（レシピが大樹などを作る）
+  async build(map, env) {
     const W = map.w, H = map.h, OUT = 22, R = 170;
     const hi = this.quality === 'high';
     const group = new THREE.Group(); group.name = 'terrain';
@@ -213,7 +214,7 @@ export class TerrainBuilder3D {
     };
     for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
       const t = T(x, y);
-      if (TREE_TILES[t]) { placeTree(x + 0.5 + (rnd() - 0.5) * 0.5, y + 0.5 + (rnd() - 0.5) * 0.5, true); if (!nearMapOpen(x + 0.5, y + 0.5, 1) && rnd() < 0.35) placeTree(x + rnd(), y + rnd(), true); }
+      if (TREE_TILES[t] && !(env && env.skipTree && env.skipTree(x, y))) { placeTree(x + 0.5 + (rnd() - 0.5) * 0.5, y + 0.5 + (rnd() - 0.5) * 0.5, true); if (!nearMapOpen(x + 0.5, y + 0.5, 1) && rnd() < 0.35) placeTree(x + rnd(), y + rnd(), true); }
     }
     const step = hi ? 1.3 : 1.8;
     for (let z = -OUT - 14; z < H + OUT + 14; z += step) for (let x = -OUT - 14; x < W + OUT + 14; x += step) {

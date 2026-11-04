@@ -23,6 +23,7 @@ import { readableStats } from '../battle/readable.js';
 import { BattleStage3D, FAMILY_TABLE } from '../battle/BattleStage3D.js';
 import { battleLayout, partyStyle } from '../battle/BattleActors3D.js';
 import * as PartyDir from '../battle/PartyDirections.js';
+import { Env } from '../environment/Env.js';
 
 const G = window;
 const WALK = 2.7, RUN = 5.4, RADIUS = 0.28;
@@ -206,7 +207,11 @@ export class App3D {
       this.trimCache(map.id);
       if (G.World.map === map) this.activate(ms);
       this.prebuild();
-    }).catch((e) => { console.error('3D build failed', map.id, e); this.mapFailed(map.id, e, '組み立て'); this.building = null; });
+    }).catch((e) => {
+      // v7.6 環境リデザインのレシピで失敗したら、記録してレシピなし（従来の表示）で組み立て直す
+      if (e && e.envRecipe && !Env.errors[map.id]) { Env.errors[map.id] = String(e.message) + (e.cause ? '｜' + (e.cause.stack || e.cause.message || e.cause).toString().slice(0, 400) : ''); console.warn('[環境] レシピを使わずに表示します', map.id, e.cause || e); try { ms.dispose(); } catch (e2) { /* なし */ } this.building = null; this.ensure(map); return; }
+      console.error('3D build failed', map.id, e); this.mapFailed(map.id, e, '組み立て'); this.building = null;
+    });
   }
   // 汎用3Dのマップは直近のものだけ残す（メモリ）
   trimCache(keepId) {

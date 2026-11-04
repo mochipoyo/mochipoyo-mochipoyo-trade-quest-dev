@@ -1,0 +1,144 @@
+{
+  "mapId": "node_city",
+  "status": "proposal",
+  "sourceSize": [
+    40,
+    30
+  ],
+  "targetSize": null,
+  "coordinateVersionFrom": null,
+  "coordinateVersionTo": null,
+  "anchorMoves": [],
+  "incomingWarpsToUpdate": [
+    {
+      "from": "world_machine",
+      "at": [
+        82,
+        58
+      ],
+      "arrival": [
+        19,
+        28
+      ]
+    },
+    {
+      "from": "node_registry",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        6,
+        7
+      ]
+    },
+    {
+      "from": "no_failure_school",
+      "at": [
+        5,
+        9
+      ],
+      "arrival": [
+        32,
+        7
+      ]
+    },
+    {
+      "from": "node_ration",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        6,
+        17
+      ]
+    },
+    {
+      "from": "node_inn",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        32,
+        17
+      ]
+    },
+    {
+      "from": "node_armor",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        6,
+        27
+      ]
+    },
+    {
+      "from": "node_house",
+      "at": [
+        5,
+        7
+      ],
+      "arrival": [
+        32,
+        27
+      ]
+    },
+    {
+      "from": "node_market",
+      "at": [
+        5,
+        7
+      ],
+      "arrival": [
+        19,
+        26
+      ]
+    },
+    {
+      "from": "oracle_core_1",
+      "at": [
+        9,
+        13
+      ],
+      "arrival": [
+        19,
+        8
+      ]
+    },
+    {
+      "from": "oracle_core_1",
+      "at": [
+        10,
+        13
+      ],
+      "arrival": [
+        19,
+        8
+      ]
+    },
+    {
+      "from": "a3_node_family",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        15,
+        15
+      ]
+    }
+  ],
+  "savePositionMapping": [],
+  "flagStatesToVerify": [
+    "new_game",
+    "before_unlock",
+    "after_unlock",
+    "boss_defeated",
+    "revisit"
+  ],
+  "note": "Fill from actual modified map before validation. No fabricated target coordinates."
+}

@@ -1,0 +1,56 @@
+{
+  "mapId": "rivel_castle",
+  "status": "proposal",
+  "sourceSize": [
+    30,
+    28
+  ],
+  "targetSize": null,
+  "coordinateVersionFrom": null,
+  "coordinateVersionTo": null,
+  "anchorMoves": [],
+  "incomingWarpsToUpdate": [
+    {
+      "from": "rivel_town",
+      "at": [
+        30,
+        11
+      ],
+      "arrival": [
+        14,
+        24
+      ]
+    },
+    {
+      "from": "rivel_castle_2f",
+      "at": [
+        1,
+        9
+      ],
+      "arrival": [
+        3,
+        24
+      ]
+    },
+    {
+      "from": "rivel_castle_b1",
+      "at": [
+        27,
+        2
+      ],
+      "arrival": [
+        26,
+        24
+      ]
+    }
+  ],
+  "savePositionMapping": [],
+  "flagStatesToVerify": [
+    "new_game",
+    "before_unlock",
+    "after_unlock",
+    "boss_defeated",
+    "revisit"
+  ],
+  "note": "Fill from actual modified map before validation. No fabricated target coordinates."
+}

@@ -1,0 +1,100 @@
+{
+  "mapId": "poyo_village",
+  "status": "proposal",
+  "sourceSize": [
+    48,
+    40
+  ],
+  "targetSize": null,
+  "coordinateVersionFrom": null,
+  "coordinateVersionTo": null,
+  "anchorMoves": [],
+  "incomingWarpsToUpdate": [
+    {
+      "from": "world",
+      "at": [
+        28,
+        58
+      ],
+      "arrival": [
+        24,
+        32
+      ]
+    },
+    {
+      "from": "poyo_house",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        7,
+        31
+      ]
+    },
+    {
+      "from": "poyo_elder_house",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        10,
+        8
+      ]
+    },
+    {
+      "from": "poyo_item_shop",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        36,
+        8
+      ]
+    },
+    {
+      "from": "poyo_inn",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        12,
+        19
+      ]
+    },
+    {
+      "from": "poyo_church",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        38,
+        19
+      ]
+    },
+    {
+      "from": "poyo_dojo",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        36,
+        30
+      ]
+    }
+  ],
+  "savePositionMapping": [],
+  "flagStatesToVerify": [
+    "new_game",
+    "before_unlock",
+    "after_unlock",
+    "boss_defeated",
+    "revisit"
+  ],
+  "note": "Fill from actual modified map before validation. No fabricated target coordinates."
+}

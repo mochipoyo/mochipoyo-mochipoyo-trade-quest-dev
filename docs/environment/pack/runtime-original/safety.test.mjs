@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {validateSolidDecoration,compareReachability,validateMigration} from '../runtime/LayoutSafety.js';
+const snap=()=>({id:'demo',width:8,height:8,solid:Array.from({length:8},()=>Array(8).fill(true)),npcs:[],chests:[],events:[],warps:[],buildings:[]});
+const bounds={min:[-.2,0,-.2],max:[.2,1,.2]};
+test('rejects a rotated scaled mesh extending into walkable cells',()=>{const s=snap();s.solid[3][4]=false;assert.equal(validateSolidDecoration(s,{x:3.5,z:3.5,scale:3,yaw:Math.PI/4},bounds).ok,false);});
+test('protects entry arrivals even when currently marked solid',()=>{const s=snap();s.incomingWarps=[{arrival:[4,4]}];assert.equal(validateSolidDecoration(s,{x:3.5,z:3.5},bounds).ok,false);});
+test('does not decorate building footprints',()=>{const s=snap();s.buildings=[{id:'b',x:3,y:3,w:2,h:2}];assert.equal(validateSolidDecoration(s,{x:3.5,z:3.5},bounds).ok,false);});
+test('accepts a small in-bounds noninteractive solid tile placement',()=>{assert.equal(validateSolidDecoration(snap(),{x:3.5,z:3.5},bounds).ok,true);});
+test('detects a formerly reachable NPC sealed behind a new wall',()=>{const a=snap();for(let y=1;y<7;y++)a.solid[y][3]=false;a.npcs=[{id:'keeper',x:3,y:6}];const b=structuredClone(a);b.solid[4][3]=true;assert.deepEqual(compareReachability(a,b,{x:3,y:1},{x:3,y:1}),['npcs: unreachable keeper']);});
+test('does not demand opening an originally inaccessible secret',()=>{const a=snap();a.solid[1][1]=false;a.npcs=[{id:'secret',x:6,y:6}];assert.deepEqual(compareReachability(a,a,{x:1,y:1},{x:1,y:1}),[]);});
+test('migration rejects changed IDs and incomplete approval status',()=>{assert.ok(validateMigration({mapId:'demo',status:'proposal'},snap(),{...snap(),id:'changed'}).length===2);});

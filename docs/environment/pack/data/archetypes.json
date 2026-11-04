@@ -1,0 +1,184 @@
+{
+  "village": {
+    "topology": "周回生活路",
+    "landmark": "大樹／井戸",
+    "floorMaterial": "wood_oak",
+    "wallMaterial": "stone_courtyard",
+    "geometry": "丸い樹冠、短い家屋、畑の低い段差"
+  },
+  "castle": {
+    "topology": "前庭→回廊→謁見室＋側廊",
+    "landmark": "紋章付きの大アーチ",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "stone_fortress",
+    "geometry": "円柱、ヴォールト、厚い城壁、異なる塔の高さ"
+  },
+  "mine": {
+    "topology": "運搬軸＋採掘枝＋崩落迂回路",
+    "landmark": "巻上機と鉱石断面",
+    "floorMaterial": "rock_basalt",
+    "wallMaterial": "wood_oak",
+    "geometry": "岩肌に沿う曲面、梁とレールの用途を合わせる"
+  },
+  "cave": {
+    "topology": "曲がる狭路→大空洞→地底湖沿い",
+    "landmark": "天然石柱／地下水",
+    "floorMaterial": "rock_basalt",
+    "wallMaterial": "stone_fortress",
+    "geometry": "直角を減らし、凹凸は通行領域の外側へ"
+  },
+  "forest": {
+    "topology": "蛇行路＋樹根の輪＋明るい空地",
+    "landmark": "根が抱く祠",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "wood_oak",
+    "geometry": "巨木の幹、低木群、苔、林縁の隙間"
+  },
+  "ruin": {
+    "topology": "崩落した主軸＋側面迂回→開けた遺構",
+    "landmark": "折れたアーチ",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "stone_fortress",
+    "geometry": "完全な部材と破損部材、瓦礫の傾斜を対比"
+  },
+  "undersea": {
+    "topology": "曲線の回廊＋浸水中庭",
+    "landmark": "珊瑚に覆われた円柱",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "stone_fortress",
+    "geometry": "貝殻、塩蝕、薄い水面、通路には水中効果を重ねすぎない"
+  },
+  "archive": {
+    "topology": "主閲覧軸＋書架の環＋封印区画",
+    "landmark": "巨大な書架／契約盤",
+    "floorMaterial": "wood_oak",
+    "wallMaterial": "stone_fortress",
+    "geometry": "本の密度で方向を示し、本棚で入口を塞がない"
+  },
+  "time": {
+    "topology": "同心の回廊＋斜めの観測路",
+    "landmark": "大型の日時計／星の環",
+    "floorMaterial": "stone_sandstone",
+    "wallMaterial": "stone_fortress",
+    "geometry": "円弧、青銅の目盛り、動く歯車は背景に限定"
+  },
+  "factory": {
+    "topology": "生産ライン＋保守路＋制御室",
+    "landmark": "配管束と操作盤",
+    "floorMaterial": "metal_industrial",
+    "wallMaterial": "stone_fortress",
+    "geometry": "梁、トラス、配線ラック、異なる機械の高さ"
+  },
+  "cyber": {
+    "topology": "外周保守路＋演算核への軸",
+    "landmark": "多層の演算柱",
+    "floorMaterial": "metal_industrial",
+    "wallMaterial": "stone_fortress",
+    "geometry": "六角の支持体、セラミック、ガラス、細い発光"
+  },
+  "magic": {
+    "topology": "曲線回廊＋結晶を囲む庭",
+    "landmark": "浮遊環と魔導灯",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "stone_fortress",
+    "geometry": "細い支柱と弧、発光に頼らず形状で識別"
+  },
+  "observatory": {
+    "topology": "観測床の環＋機器の側廊",
+    "landmark": "天球儀と開いたドーム",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "metal_industrial",
+    "geometry": "円形床、細い器具、風を通す空間"
+  },
+  "sky": {
+    "topology": "島状の床＋短い橋＋退避床",
+    "landmark": "雲上の断柱",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "stone_sandstone",
+    "geometry": "断面の厚い岩盤と細い橋の対比"
+  },
+  "void": {
+    "topology": "途切れた軸＋迂回足場＋前庭",
+    "landmark": "空洞の門／裂けた玉座",
+    "floorMaterial": "rock_basalt",
+    "wallMaterial": "stone_fortress",
+    "geometry": "肋骨状リブ、凹凸の黒石、奈落の空白"
+  },
+  "desert": {
+    "topology": "陰のある回廊＋水の中庭",
+    "landmark": "段状水盤／風化柱",
+    "floorMaterial": "stone_sandstone",
+    "wallMaterial": "wood_oak",
+    "geometry": "平屋根、格子窓、布、砂溜まりは端へ"
+  },
+  "volcano": {
+    "topology": "冷えた溶岩棚＋排熱枝＋祭壇",
+    "landmark": "炉／柱状節理",
+    "floorMaterial": "rock_basalt",
+    "wallMaterial": "metal_industrial",
+    "geometry": "丸い溶岩塊と垂直の節理、熱源は局所的"
+  },
+  "ice": {
+    "topology": "防風の回廊＋凍結広間",
+    "landmark": "氷の柱／記憶瓶",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "stone_fortress",
+    "geometry": "透明面を絞り、雪の厚みは縁で見せる"
+  },
+  "ship": {
+    "topology": "竜骨に沿う主廊＋船倉＋船長室",
+    "landmark": "折れた船梁",
+    "floorMaterial": "wood_oak",
+    "wallMaterial": "metal_industrial",
+    "geometry": "湾曲した船肋、傾いた床、積荷"
+  },
+  "camp": {
+    "topology": "焚火と作業場を囲む短い生活路",
+    "landmark": "天幕と軍旗",
+    "floorMaterial": "wood_oak",
+    "wallMaterial": "rock_basalt",
+    "geometry": "布のたるみ、支柱、縄、土嚢"
+  },
+  "shop": {
+    "topology": "入口→展示→カウンター＋作業奥",
+    "landmark": "商品に応じた展示台",
+    "floorMaterial": "wood_oak",
+    "wallMaterial": "stone_courtyard",
+    "geometry": "武器は縦、薬草は吊り、道具は箱で用途差"
+  },
+  "inn": {
+    "topology": "玄関→受付→食堂→廊下→寝室",
+    "landmark": "暖炉と階段",
+    "floorMaterial": "wood_oak",
+    "wallMaterial": "stone_fortress",
+    "geometry": "寝室を食堂から分離、地域の寝具と器"
+  },
+  "church": {
+    "topology": "前室→礼拝軸→祭壇＋側礼拝室",
+    "landmark": "祭壇と色ガラス",
+    "floorMaterial": "stone_courtyard",
+    "wallMaterial": "stone_fortress",
+    "geometry": "高い天井、列柱、横からの光、静かな余白"
+  },
+  "house": {
+    "topology": "土間→共用室＋仕事場＋寝室",
+    "landmark": "暮らしを示す仕事道具",
+    "floorMaterial": "wood_oak",
+    "wallMaterial": "stone_courtyard",
+    "geometry": "職業による生活用品、余白と収納"
+  },
+  "tavern": {
+    "topology": "前室→客席→カウンター＋厨房",
+    "landmark": "暖炉と大テーブル",
+    "floorMaterial": "wood_oak",
+    "wallMaterial": "stone_fortress",
+    "geometry": "丸卓、食器棚、煙突、梁、違う椅子"
+  },
+  "lab": {
+    "topology": "受付→作業室→機器室＋保管室",
+    "landmark": "その研究の実験装置",
+    "floorMaterial": "metal_industrial",
+    "wallMaterial": "stone_courtyard",
+    "geometry": "研究内容ごとに器具を変える、謎の水槽の量産禁止"
+  }
+}

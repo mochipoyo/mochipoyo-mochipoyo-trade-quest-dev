@@ -21,18 +21,24 @@ export class BuildingBuilder3D {
     const batch = (opts && opts.batch) || new Batch();
     const type = b.type || 'house';
     const rng = rnd || Math.random;
+    // v7.6 環境リデザイン：建物の形の指定（町・用途ごと。three-src/src/environment/ のレシピが渡す）。なければ従来どおり
+    //   roof：'gable'（棟が東西・従来）／'gableZ'（棟が南北＝妻入り）／'hip'（寄棟）／'flat'（平屋根＋胸壁）。pitch・eave：勾配・軒の出
+    //   two：2階建て／base・h1：土台・1階の高さ／plaster：壁の色／frame：false で木組みなし（石・土の壁）／wall：'stone'（壁を石に）
+    //   roofColor：屋根の色／porch：扉の上の庇／bell：屋根の上の小さな鐘楼／chimney：false で煙突なし
+    const st = (opts && opts.style) || {};
     // ---- 寸法
     const xl = b.x + 0.18, xr = b.x + b.w - 0.18, zb = b.y + 0.2, zf = b.y + b.h - 0.62;
     const W = xr - xl, D = zf - zb, cx = (xl + xr) / 2, cz = (zb + zf) / 2;
-    const two = (type === 'elder' || type === 'inn') && b.w >= 10;
-    const base = 0.32;
-    const h1 = type === 'church' ? 3.3 : two ? 2.3 : 3.0;
+    const two = st.two !== undefined ? !!st.two : (type === 'elder' || type === 'inn') && b.w >= 10;
+    const base = st.base || 0.32;
+    const h1 = st.h1 || (type === 'church' ? 3.3 : two ? 2.3 : 3.0);
     const h2 = two ? 2.0 : 0; const jet = two ? 0.16 : 0;
     const top = base + h1 + h2;
     const doorX = b.doorAbs.x + 0.5;
     const theme = opts && opts.theme;   // Phase 1 地域テーマ（壁の色・家の屋根の色）。ポヨ村では渡さない（従来どおり）
     if (type === 'castle' && theme) return this.castle(b, out, batch, theme);
-    const plaster = theme && theme.plaster ? M.tinted('plaster', theme.plaster) : M.get('plaster'), timber = M.get('timber'), stone = M.get('stonewall');
+    const plaster = st.wall === 'stone' ? M.tinted('stonewall', st.plaster || '#d8d0c0') : st.plaster ? M.tinted('plaster', st.plaster) : theme && theme.plaster ? M.tinted('plaster', theme.plaster) : M.get('plaster'), timber = M.get('timber'), stone = M.get('stonewall');
+    const tb = st.frame === false ? { add() { } } : batch;   // 木組み（柱・梁・間柱・筋かい）。frame:false の建物は描かない
 
     // ---- 土台
     batch.add(stone, box(W + 0.16, base, D + 0.16, 1.6), M4(cx, base / 2, cz));
@@ -46,9 +52,9 @@ export class BuildingBuilder3D {
     // ---- 木組み（柱・梁・筋かい）
     const frameFace = (y0, h, ex, ez) => {   // ex,ez：その階の外形
       const x0 = cx - ex / 2, x1 = cx + ex / 2, z0 = cz - ez / 2, z1 = cz + ez / 2;
-      for (const [x, z] of [[x0, z0], [x1, z0], [x0, z1], [x1, z1]]) batch.add(timber, box(0.2, h, 0.2, 1), M4(x, y0 + h / 2, z));
-      for (const z of [z0, z1]) { batch.add(timber, box(ex + 0.06, 0.14, 0.08, 1.5), M4(cx, y0 + 0.07, z + (z === z1 ? 0.03 : -0.03))); batch.add(timber, box(ex + 0.06, 0.14, 0.08, 1.5), M4(cx, y0 + h - 0.07, z + (z === z1 ? 0.03 : -0.03))); }
-      for (const x of [x0, x1]) { batch.add(timber, box(0.08, 0.14, ez + 0.06, 1.5), M4(x + (x === x1 ? 0.03 : -0.03), y0 + 0.07, cz)); batch.add(timber, box(0.08, 0.14, ez + 0.06, 1.5), M4(x + (x === x1 ? 0.03 : -0.03), y0 + h - 0.07, cz)); }
+      for (const [x, z] of [[x0, z0], [x1, z0], [x0, z1], [x1, z1]]) tb.add(timber, box(0.2, h, 0.2, 1), M4(x, y0 + h / 2, z));
+      for (const z of [z0, z1]) { tb.add(timber, box(ex + 0.06, 0.14, 0.08, 1.5), M4(cx, y0 + 0.07, z + (z === z1 ? 0.03 : -0.03))); tb.add(timber, box(ex + 0.06, 0.14, 0.08, 1.5), M4(cx, y0 + h - 0.07, z + (z === z1 ? 0.03 : -0.03))); }
+      for (const x of [x0, x1]) { tb.add(timber, box(0.08, 0.14, ez + 0.06, 1.5), M4(x + (x === x1 ? 0.03 : -0.03), y0 + 0.07, cz)); tb.add(timber, box(0.08, 0.14, ez + 0.06, 1.5), M4(x + (x === x1 ? 0.03 : -0.03), y0 + h - 0.07, cz)); }
       return { x0, x1, z0, z1 };
     };
     const f1 = frameFace(base, h1, W, D); const f2 = two ? frameFace(base + h1, h2, W + jet * 2, D + jet * 2) : null;
@@ -58,19 +64,19 @@ export class BuildingBuilder3D {
     for (let x = xl + 1.25; x < xr - 0.9; x += step) { if (Math.abs(x - doorX) < 1.35) continue; winsFront.push(x); }
     const studsAt = (x0, x1, avoid) => { const xs = []; for (let x = x0 + 1.05; x < x1 - 0.5; x += 1.05) if (!avoid.some((a) => Math.abs(a - x) < 0.62)) xs.push(x); return xs; };
     // 正面・背面の間柱
-    for (const z of [f1.z0 - 0.03, f1.z1 + 0.03]) for (const x of studsAt(f1.x0, f1.x1, winsFront.concat(z > cz ? [doorX] : []))) batch.add(timber, box(0.12, h1 - 0.2, 0.06, 1), M4(x, base + h1 / 2, z));
-    if (f2) for (const z of [f2.z0 - 0.03, f2.z1 + 0.03]) for (const x of studsAt(f2.x0, f2.x1, winsFront)) batch.add(timber, box(0.12, h2 - 0.2, 0.06, 1), M4(x, base + h1 + h2 / 2, z));
+    for (const z of [f1.z0 - 0.03, f1.z1 + 0.03]) for (const x of studsAt(f1.x0, f1.x1, winsFront.concat(z > cz ? [doorX] : []))) tb.add(timber, box(0.12, h1 - 0.2, 0.06, 1), M4(x, base + h1 / 2, z));
+    if (f2) for (const z of [f2.z0 - 0.03, f2.z1 + 0.03]) for (const x of studsAt(f2.x0, f2.x1, winsFront)) tb.add(timber, box(0.12, h2 - 0.2, 0.06, 1), M4(x, base + h1 + h2 / 2, z));
     // 筋かい（両端の壁面）
     const brace = (x, z, y0, h, dir, depthAxis) => {
       const len = Math.sqrt(1.0 + (h - 0.3) * (h - 0.3)); const ang = Math.atan2(h - 0.3, 1.0) * dir;
       const g = box(0.1, len, 0.06, 1);
-      batch.add(timber, g, depthAxis ? M4(x, y0 + h / 2, z, Math.PI / 2, 0, ang) : M4(x, y0 + h / 2, z, 0, 0, ang));
+      tb.add(timber, g, depthAxis ? M4(x, y0 + h / 2, z, Math.PI / 2, 0, ang) : M4(x, y0 + h / 2, z, 0, 0, ang));
     };
     const side1 = [f1.x0 + 0.6, f1.x1 - 0.6];
     if (!winsFront.some((x) => x < f1.x0 + 1.3)) brace(side1[0], f1.z1 + 0.035, base, h1, 1);
     if (!winsFront.some((x) => x > f1.x1 - 1.3)) brace(side1[1], f1.z1 + 0.035, base, h1, -1);
     if (f2) { if (!winsFront.some((x) => x < f2.x0 + 1.3)) brace(f2.x0 + 0.6, f2.z1 + 0.035, base + h1, h2, 1); if (!winsFront.some((x) => x > f2.x1 - 1.3)) brace(f2.x1 - 0.6, f2.z1 + 0.035, base + h1, h2, -1); brace(f2.x0 + 0.6, f2.z0 - 0.035, base + h1, h2, -1); brace(f2.x1 - 0.6, f2.z0 - 0.035, base + h1, h2, 1); }
-    for (const x of [f1.x0 - 0.035, f1.x1 + 0.035]) for (const z of [cz - D / 4, cz + D / 4]) batch.add(timber, box(0.06, h1 - 0.2, 0.12, 1), M4(x, base + h1 / 2, z));
+    for (const x of [f1.x0 - 0.035, f1.x1 + 0.035]) for (const z of [cz - D / 4, cz + D / 4]) tb.add(timber, box(0.06, h1 - 0.2, 0.12, 1), M4(x, base + h1 / 2, z));
 
     // ---- 窓
     const shutterMat = M.get(SHUTTER[type] || 'shutterGreen'); const glass = M.get('glass');
@@ -123,17 +129,21 @@ export class BuildingBuilder3D {
     plate.position.set(doorX, two ? base + h1 + 0.42 : base + 2.4, two ? f2.z1 + 0.05 : dz + 0.07); plate.castShadow = false; out.group.add(plate);
 
     // ---- 屋根（切妻・棟は X 方向・板瓦を段に重ねる）
-    const pitch = type === 'church' ? 0.88 : 0.72;   // 約50度／41度
-    const ovZ = 0.3, ovX = 0.38;
-    const ex = (two ? W + jet * 2 : W), ez = (two ? D + jet * 2 : D);
+    const pitch = st.pitch || (type === 'church' ? 0.88 : 0.72);   // 約50度／41度
+    const ovZ = st.eave || 0.3, ovX = (st.eave || 0.3) + 0.08;
+    // v7.6 棟の向き：gableZ は棟を南北に（妻入り）。屋根の部品を建物の中心で90度回して置く
+    const rotZ = st.roof === 'gableZ'; const RM = rotZ ? new THREE.Matrix4().makeTranslation(cx, 0, cz).multiply(new THREE.Matrix4().makeRotationY(Math.PI / 2)).multiply(new THREE.Matrix4().makeTranslation(-cx, 0, -cz)) : null;
+    const RB = { add: (mm, g, mx) => { if (!RM) return batch.add(mm, g, mx); const g2 = g.index ? g.toNonIndexed() : g.clone(); if (mx) g2.applyMatrix4(mx); g2.applyMatrix4(RM); return batch.add(mm, g2); } };
+    let ex = (two ? W + jet * 2 : W), ez = (two ? D + jet * 2 : D); if (rotZ) { const t0 = ex; ex = ez; ez = t0; }
+    const gableRoof = !st.roof || st.roof === 'gable' || rotZ;
     const half = ez / 2 + ovZ; const rise = (ez / 2) * Math.tan(pitch); const slope = half / Math.cos(pitch);
     // v6.2 場所のデザイン（materials.roof3d・thatch3d）。茅葺き：わら色・厚い段・色むらを小さく
     const des = opts && opts.design; const r3 = des && des.materials && des.materials.roof3d; const thatch = !!(des && des.materials && des.materials.thatch3d && type !== 'church' && type !== 'dojo');
-    const roofMat = M.roof((r3 && (r3[type] || r3.default)) || (theme && theme.roof && type === 'house' ? theme.roof : null) || ROOF[type] || '#a8483a'); roofMat.vertexColors = true;
+    const roofMat = M.roof(st.roofColor || (r3 && (r3[type] || r3.default)) || (theme && theme.roof && type === 'house' ? theme.roof : null) || ROOF[type] || '#a8483a'); roofMat.vertexColors = true;
     const rowLen = thatch ? 0.22 : 0.27; const rows = Math.ceil(slope / (rowLen * 0.92));
     const roofColRng = thatch ? () => 0.9 + rng() * 0.14 : () => 0.82 + rng() * 0.3;
     const rowThick = thatch ? 0.1 : 0.055;
-    for (const s of [1, -1]) {
+    if (gableRoof) for (const s of [1, -1]) {
       for (let r = 0; r < rows; r++) {
         const t = (r + 0.5) / rows;   // 0=軒先 1=棟
         const dist = slope * (1 - t);
@@ -143,27 +153,44 @@ export class BuildingBuilder3D {
         const uv = g.attributes.uv, pos = g.attributes.position, nrm = g.attributes.normal;
         for (let i = 0; i < uv.count; i++) { if (nrm.getY(i) > 0.5) { uv.setXY(i, (pos.getX(i) + cx) / 2.0 + (r % 2) * 0.0, ((r % 8) + (pos.getZ(i) * s > 0 ? 0 : 1)) / 8); } }
         const c = roofColRng(); const cols = new Float32Array(pos.count * 3).fill(c); g.setAttribute('color', new THREE.BufferAttribute(cols, 3));
-        batch.add(roofMat, g, M4(cx + (rng() - 0.5) * 0.03, yy, zz, 0, s * pitch + (rng() - 0.5) * 0.02, (rng() - 0.5) * 0.01));
+        RB.add(roofMat, g, M4(cx + (rng() - 0.5) * 0.03, yy, zz, 0, s * pitch + (rng() - 0.5) * 0.02, (rng() - 0.5) * 0.01));
       }
     }
     // 棟と破風板
-    batch.add(M.get('ridge'), box(ex + ovX * 2 + 0.1, 0.16, 0.16, 1), M4(cx, top + rise + 0.1, cz, 0, Math.PI / 4, 0));
-    for (const sx of [-1, 1]) {
+    if (gableRoof) RB.add(M.get('ridge'), box(ex + ovX * 2 + 0.1, 0.16, 0.16, 1), M4(cx, top + rise + 0.1, cz, 0, Math.PI / 4, 0));
+    if (gableRoof) for (const sx of [-1, 1]) {
       const gx = cx + sx * (ex / 2 + ovX - 0.02);
-      for (const s of [1, -1]) { batch.add(timber, box(0.08, 0.22, slope + 0.1, 1), M4(gx, top + (rise - ovZ * Math.tan(pitch)) / 2 + 0.06, cz + s * half / 2, 0, s * pitch, 0)); }
+      for (const s of [1, -1]) { RB.add(timber, box(0.08, 0.22, slope + 0.1, 1), M4(gx, top + (rise - ovZ * Math.tan(pitch)) / 2 + 0.06, cz + s * half / 2, 0, s * pitch, 0)); }
       // 妻壁（三角形）：しっくい＋梁
       const tri = new THREE.BufferGeometry();
       const xw = cx + sx * (ex / 2); const v = [xw, top, cz - ez / 2, xw, top, cz + ez / 2, xw, top + rise, cz];
       tri.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); tri.setAttribute('uv', new THREE.Float32BufferAttribute([0, 0, ez / 2.2, 0, ez / 4.4, rise / 2.2], 2));
       tri.setIndex(sx > 0 ? [0, 2, 1] : [0, 1, 2]); tri.computeVertexNormals();
-      batch.add(plaster, tri);
-      batch.add(timber, box(0.06, 0.12, ez, 1), M4(xw + sx * 0.03, top + 0.06, cz));
-      batch.add(timber, box(0.06, rise - 0.1, 0.12, 1), M4(xw + sx * 0.03, top + rise / 2, cz));
-      for (const s of [-1, 1]) batch.add(timber, box(0.06, 0.1, Math.sqrt((ez / 2) ** 2 + rise ** 2) * 0.55, 1), M4(xw + sx * 0.035, top + rise * 0.45, cz + s * ez * 0.16, 0, s * Math.atan2(rise, ez / 2), 0));
-      if (rise > 1.2) window_(xw + sx * 0.02, top + rise * 0.38, cz, sx > 0 ? 'R' : 'L', 0.5, 0.55, { shutters: false });
+      RB.add(plaster, tri);
+      RB.add(timber, box(0.06, 0.12, ez, 1), M4(xw + sx * 0.03, top + 0.06, cz));
+      RB.add(timber, box(0.06, rise - 0.1, 0.12, 1), M4(xw + sx * 0.03, top + rise / 2, cz));
+      for (const s of [-1, 1]) RB.add(timber, box(0.06, 0.1, Math.sqrt((ez / 2) ** 2 + rise ** 2) * 0.55, 1), M4(xw + sx * 0.035, top + rise * 0.45, cz + s * ez * 0.16, 0, s * Math.atan2(rise, ez / 2), 0));
+      if (rise > 1.2 && !rotZ) window_(xw + sx * 0.02, top + rise * 0.38, cz, sx > 0 ? 'R' : 'L', 0.5, 0.55, { shutters: false });
+    }
+    // v7.6 寄棟（hip）・平屋根（flat）
+    if (st.roof === 'hip') {
+      const L = ex + ovX * 2, Dd = ez + ovZ * 2, rH = (ez / 2) * Math.tan(pitch) * 0.85, ridge = Math.max(0, L - Dd);
+      const y0 = top + 0.02, y1 = top + rH; const x0 = cx - L / 2, x1 = cx + L / 2, z0 = cz - Dd / 2, z1 = cz + Dd / 2, r0 = cx - ridge / 2, r1 = cx + ridge / 2;
+      const P = [x0, y0, z1, x1, y0, z1, r1, y1, cz, r0, y1, cz, x1, y0, z0, x0, y0, z0];
+      const hipG = new THREE.BufferGeometry(); hipG.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
+      hipG.setIndex([0, 1, 2, 0, 2, 3, 4, 5, 3, 4, 3, 2, 1, 4, 2, 5, 0, 3]); hipG.computeVertexNormals();
+      const uvs = []; for (let i = 0; i < P.length; i += 3) uvs.push(P[i] / 2, P[i + 2] / 2); hipG.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+      hipG.setAttribute('color', new THREE.BufferAttribute(new Float32Array(6 * 3).fill(0.95), 3));
+      batch.add(roofMat, hipG); batch.add(M.get('ridge'), box(Math.max(0.2, ridge + 0.1), 0.14, 0.14, 1), M4(cx, y1 + 0.05, cz));
+      batch.add(timber, box(L + 0.04, 0.12, 0.08, 1), M4(cx, y0, z1)); batch.add(timber, box(L + 0.04, 0.12, 0.08, 1), M4(cx, y0, z0));
+    }
+    if (st.roof === 'flat') {
+      batch.add(stone, box(ex + 0.3, 0.22, ez + 0.3, 1.5), M4(cx, top + 0.11, cz));
+      for (const zz of [cz - ez / 2 - 0.1, cz + ez / 2 + 0.1]) batch.add(stone, box(ex + 0.3, 0.45, 0.14, 1.5), M4(cx, top + 0.45, zz));
+      for (const xx of [cx - ex / 2 - 0.1, cx + ex / 2 + 0.1]) batch.add(stone, box(0.14, 0.45, ez + 0.3, 1.5), M4(xx, top + 0.45, cz));
     }
     // ドーマー（大きい建物の正面屋根）
-    if (two || type === 'elder') {
+    if ((two || type === 'elder') && gableRoof && !rotZ) {
       for (const x of winsFront.filter((_, i) => i % 2 === 1).slice(0, 2)) {
         const dzp = cz + ez / 2 * 0.45, dy = top + rise * 0.45;
         batch.add(plaster, box(1.1, 1.0, 1.1, 2), M4(x, dy + 0.3, dzp));
@@ -172,14 +199,17 @@ export class BuildingBuilder3D {
       }
     }
     // 煙突（宿屋・村長の家・民家・道具屋）
-    if (['inn', 'elder', 'house', 'item', 'dojo'].includes(type)) {
-      const chx = type === 'item' ? xr - 1.2 : xl + 1.4, chz = cz - ez * 0.22;
+    if (st.chimney !== false && ['inn', 'elder', 'house', 'item', 'dojo'].includes(type)) {
+      const chx = type === 'item' ? xr - 1.2 : xl + 1.4, chz = cz - (rotZ ? D : ez) * 0.22;
       const chTop = top + rise + 0.9; const yFoot = top + rise * 0.35;
       batch.add(stone, box(0.62, chTop - yFoot, 0.62, 1.2), M4(chx, (chTop + yFoot) / 2, chz));
       batch.add(stone, box(0.78, 0.14, 0.78, 1), M4(chx, chTop + 0.05, chz));
       out.smokes.push(new THREE.Vector3(chx, chTop + 0.2, chz));
     }
 
+    // v7.6 庇（扉の上。歩けるマスの上に柱は立てない＝腕木で壁から出す）・屋根の上の小さな鐘楼
+    if (st.porch) { const pw = Math.min(W - 0.4, st.porch === true ? 3.2 : st.porch); batch.add(M.roof(st.roofColor || '#7a5a3a'), box(pw, 0.08, 1.0, 1), M4(doorX, base + 2.55, dz + 0.45, 0, -0.25, 0)); for (const sx of [-1, 1]) batch.add(timber, box(0.08, 0.08, 0.95, 1), M4(doorX + sx * (pw / 2 - 0.15), base + 2.3, dz + 0.42, 0, 0.6, 0)); }
+    if (st.bell) { const by = top + (gableRoof ? (ez / 2) * Math.tan(pitch) : 0.4); batch.add(timber, box(0.7, 0.9, 0.7, 1), M4(cx, by + 0.45, cz)); batch.add(M.roof(st.roofColor || '#5a4a3a'), new THREE.ConeGeometry(0.62, 0.7, 4), M4(cx, by + 1.25, cz, Math.PI / 4)); batch.add(M.get('gold'), new THREE.CylinderGeometry(0.12, 0.2, 0.3, 10), M4(cx, by + 0.55, cz)); }
     // ---- 種類ごとの飾り
     if (type === 'church') await this.churchTower(b, batch, out, { cx: doorX, zf: dz, base, top, plaster, timber, stone, roofMat, rng });
     if (ICON[type] && type !== 'church') {

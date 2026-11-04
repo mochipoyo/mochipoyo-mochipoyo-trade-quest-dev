@@ -1,0 +1,23 @@
+{
+  "mapId": "iron_mine_1",
+  "status": "integration_smoke_only",
+  "note": "接続試験用。完成の見た目や改装済みレイアウトを示さない。最新状態のsnapshotで再検証する。",
+  "placements": [
+    {
+      "assetId": "stalagmites",
+      "x": 2.5,
+      "z": 2.5,
+      "scale": 0.35,
+      "yaw": 0,
+      "policy": "solid_only"
+    },
+    {
+      "assetId": "stalagmites",
+      "x": 10.5,
+      "z": 2.5,
+      "scale": 0.35,
+      "yaw": 0,
+      "policy": "solid_only"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "mapId": "iron_mine_1",
+  "status": "proposal",
+  "sourceSize": [
+    30,
+    16
+  ],
+  "targetSize": null,
+  "coordinateVersionFrom": null,
+  "coordinateVersionTo": null,
+  "anchorMoves": [],
+  "incomingWarpsToUpdate": [
+    {
+      "from": "world_grania",
+      "at": [
+        86,
+        34
+      ],
+      "arrival": [
+        1,
+        14
+      ]
+    },
+    {
+      "from": "iron_mine_2",
+      "at": [
+        1,
+        1
+      ],
+      "arrival": [
+        27,
+        2
+      ]
+    }
+  ],
+  "savePositionMapping": [],
+  "flagStatesToVerify": [
+    "new_game",
+    "before_unlock",
+    "after_unlock",
+    "boss_defeated",
+    "revisit"
+  ],
+  "note": "Fill from actual modified map before validation. No fabricated target coordinates."
+}

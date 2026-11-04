@@ -38,8 +38,9 @@ const PROP = {
 export class WorldBuilder3D {
   constructor(mats, models, quality) { this.mats = mats; this.models = models; this.quality = quality || 'high'; this.time = { value: 0 }; this.stats = {}; }
 
-  async build(map, theme) {
-    const t0 = performance.now(); const hi = this.quality === 'high';
+  // env（v7.6 環境リデザインのレシピのフック。js は three-src/src/environment/）：skipWall(t, x, z)／skipFloor(t, x, z)／skipProp(t, x, z) が true のマスは、汎用の壁・床・小物を作らない（レシピが作り直す）
+  async build(map, theme, env) {
+    const t0 = performance.now(); const hi = this.quality === 'high'; env = env || null; this.env = env;
     const W = map.w, H = map.h, kind = map.kind; const dungeon = kind === 'dungeon' || kind === 'interior'; const field = kind === 'field';
     const P = theme.placeDef || {}; this.theme = theme;
     const outdoorD = kind === 'dungeon' && !!P.outdoor;   // 森・草原・天空などの屋外のダンジョン：外側も地形が続く
@@ -228,6 +229,7 @@ export class WorldBuilder3D {
     let fillets = 0;
     for (let z = (dungeon ? -1 : 0); z < (dungeon ? H + 1 : H); z++) for (let x = (dungeon ? -1 : 0); x < (dungeon ? W + 1 : W); x++) {
       const t = T(x, z);
+      if (env && env.skipWall && env.skipWall(t, x, z)) continue;   // v7.6 レシピが壁を作り直すマス
       const open = (dx, dz) => { const n = T(x + dx, z + dz); return !(WALL_TILES[n] || n === '_void' || n === 'mountain' || n === 'cliff'); };
       if (t === '_void') { if (open(1, 0) || open(-1, 0) || open(0, 1) || open(0, -1)) { const hv = open(0, -1) && !open(0, 1) ? 0.7 : 2.0; if (round) pillar(t, x, z, hv); else wb.add(wallMat(P.wall === 'rock' ? 'cave_wall' : 'castle_wall'), box(1, hv, 1, 1.5), M4(x + 0.5, hv / 2, z + 0.5)); walls++; } continue; }
       if (!WALL_TILES[t]) {
@@ -254,6 +256,7 @@ export class WorldBuilder3D {
           const e1 = NB4[(k + 3) % 4], e2 = NB4[k]; const ax = x + e1[0], az = z + e1[1], bx = x + e2[0], bz = z + e2[1];
           const ta = T(ax, az), tb = T(bx, bz); if (!ROUNDABLE[ta] || !ROUNDABLE[tb] || openAt(x + e1[0] + e2[0], z + e1[1] + e2[1])) continue;
           const ha = cellH(ax, az), hb = cellH(bx, bz); if (!ha || !hb) continue;
+          if (env && env.skipWall && (env.skipWall(ta, ax, az) || env.skipWall(tb, bx, bz))) continue;   // v7.6 レシピの壁には丸い隅を足さない
           const rk = rockish(ta) && rockish(tb); const hf = Math.min(ha, hb);
           wb.add(roundMat(ta), cornerFillet(x, z, k, hf, rk ? 0.42 : 0.3, { y0: -0.12, uvS: 1.5, topAmp: rk ? topAmpOf(ta, hf) : 0 }), null); fillets++;
         }
@@ -264,6 +267,7 @@ export class WorldBuilder3D {
     // 床板・じゅうたん（ダンジョン・町の中）
     for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
       const t = T(x, z);
+      if (env && env.skipFloor && env.skipFloor(t, x, z)) continue;   // v7.6 レシピが床を作り直すマス
       if (t === 'floor_wood' || t === 'door') wb.add(M.get('planks'), box(1, 0.06, 1, 1.5), M4(x + 0.5, 0.03, z + 0.5));
       else if (t === 'carpet') wb.add(M.get('carpet'), box(1, 0.07, 1, 3), M4(x + 0.5, 0.035, z + 0.5));
       else if (t === 'bridge' || t === 'dock') { const w = wet.has(x + ',' + z); wb.add(M.tinted('planks', '#a07a52'), box(1.0, 0.1, 0.96, 1), M4(x + 0.5, w ? 0.0 : 0.03, z + 0.5)); if (w) for (const sx of [-0.42, 0.42]) wb.add(M.get('timber'), box(0.12, 1.0, 0.12, 1), M4(x + 0.5 + sx, -0.5, z + 0.5 + sx * 0.0)); }
@@ -334,7 +338,7 @@ export class WorldBuilder3D {
     for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
       const t = T(x, z); const cx = x + 0.5, cz = z + 0.5; const y = heightAt(cx, cz);
       const id = PROP[t];
-      if (id && !nearLm(cx, cz)) {
+      if (id && !nearLm(cx, cz) && !(env && env.skipProp && env.skipProp(t, x, z))) {   // v7.6 レシピが作り直す小物は置かない
         let m;
         if (t === 'fence') { let hx = 0, hz = 0; for (const k of [-1, 1]) { if (T(x + k, z) === 'fence') hx++; if (T(x, z + k) === 'fence') hz++; } m = M4(cx, y, cz, hz > hx ? Math.PI / 2 : 0); }
         else if (t === 'barrel' || t === 'bush' || t === 'ore' || t === 'stalactite' || t === 'root') m = M4(cx, y, cz, rnd() * 6.28, 0, 0, t === 'bush' ? 0.9 + rnd() * 0.3 : 1);

@@ -1,0 +1,5658 @@
+{
+  "maps": [
+    {
+      "mapId": "world",
+      "name": "アルカディア相場大陸",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_grania",
+      "name": "グラニア鉱業地方",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_kalion",
+      "name": "カリオン徴収連邦",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_islands",
+      "name": "断裂群島",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_tempus",
+      "name": "時の神殿領",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_machine",
+      "name": "ゼロメア",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_magicka",
+      "name": "マクディア魔導王国",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_sky",
+      "name": "天空群島",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_dark",
+      "name": "暗黒大陸",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_desert",
+      "name": "リシア砂漠",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_dragon",
+      "name": "竜炎火山群島",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "world_snow",
+      "name": "忘却の雪原",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "poyo_village",
+      "name": "ポヨ村",
+      "priority": 0,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "poyo_house",
+      "name": "農夫の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "poyo_elder_house",
+      "name": "村長の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "poyo_item_shop",
+      "name": "道具屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "poyo_inn",
+      "name": "ポヨ村の宿屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "poyo_church",
+      "name": "ポヨ村の教会",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "poyo_dojo",
+      "name": "トレード修行場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_town",
+      "name": "リヴェル城下町",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_weapon_shop",
+      "name": "武器屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_armor_shop",
+      "name": "防具屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_item_shop",
+      "name": "道具屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_inn",
+      "name": "リヴェルの宿屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_church",
+      "name": "リヴェル教会",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_tavern",
+      "name": "リヴェルの酒場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_guild",
+      "name": "冒険者ギルド",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_bank",
+      "name": "リヴェル銀行",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_castle",
+      "name": "リヴェル城",
+      "priority": 0,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dow_village",
+      "name": "ダウの村",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dow_house",
+      "name": "狩人の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dow_dojo",
+      "name": "師匠ハケイの修行場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dow_weapon_shop",
+      "name": "森の武器屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dow_inn",
+      "name": "ダウの村の宿屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "harbor_town",
+      "name": "港町マリナ",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "harbor_house",
+      "name": "漁師の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "harbor_warehouse",
+      "name": "港の倉庫",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "harbor_item_shop",
+      "name": "港の道具屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "harbor_inn",
+      "name": "マリナの宿屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "harbor_tavern",
+      "name": "マリナの酒場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "lost_forest",
+      "name": "迷いの森",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "lost_forest_shrine",
+      "name": "森の祠",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "lost_forest_treasure",
+      "name": "祠の宝物庫",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "forest_hidden_room",
+      "name": "祠の隠し書庫",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "oblivion_cave_1",
+      "name": "忘却の洞窟 1階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "oblivion_cave_2",
+      "name": "忘却の洞窟 2階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "cave_hidden_room",
+      "name": "洞窟の隠し工房",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "oblivion_cave_3",
+      "name": "忘却の洞窟 最深部",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "emal_pass",
+      "name": "エマール山道",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "bandit_hideout",
+      "name": "山賊のアジト",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ash_shore_hut",
+      "name": "灰の浜の番小屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "verum_town",
+      "name": "灰鉱町ヴェルム",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "verum_dorm",
+      "name": "労働者の宿舎",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "verum_hideout",
+      "name": "地下の集会所",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "verum_overseer_house",
+      "name": "監督官の館",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "verum_factory",
+      "name": "鉱石工場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "verum_ration",
+      "name": "配給所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "verum_inn",
+      "name": "坑夫の宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "verum_school",
+      "name": "ヴェルムの学び舎",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "iron_fort_gate",
+      "name": "鉄冠将軍の砦・門前",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "iron_mine_1",
+      "name": "鉄鎖鉱山 1階",
+      "priority": 0,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "iron_mine_2",
+      "name": "鉄鎖鉱山 2階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "iron_mine_3",
+      "name": "鉄鎖鉱山 最深部",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "grania_pass",
+      "name": "灰の峠",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_city",
+      "name": "徴収都市カリオン",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_finance",
+      "name": "財務局",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_tax",
+      "name": "税務庁舎",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_archive_1",
+      "name": "地下記録庫 1階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_archive_2",
+      "name": "地下記録庫 2階（黒い帳簿）",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_lab",
+      "name": "秘密研究所",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_weapon",
+      "name": "カリオン武器店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_armor",
+      "name": "カリオン防具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_item",
+      "name": "配給商店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_inn",
+      "name": "徴収都市の宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_church",
+      "name": "カリオン教会",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "kalion_tavern",
+      "name": "裏通りの酒場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "erased_village",
+      "name": "地図から消えた村",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "erased_elder",
+      "name": "村長の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "erased_house",
+      "name": "病人の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_capital",
+      "name": "王都セントラ",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_knights",
+      "name": "騎士団詰所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_office",
+      "name": "監察官の事務所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_tavern",
+      "name": "王都の酒場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_inn",
+      "name": "王都の宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_item",
+      "name": "王都の道具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_armor",
+      "name": "王都の防具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_palace_1",
+      "name": "王宮",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_palace_2",
+      "name": "帳簿中枢・玉座の間",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_village",
+      "name": "灰灯島アルナ・生存者の村",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_inn",
+      "name": "灯りの宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_item",
+      "name": "島の道具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_house_yorn",
+      "name": "ヨルンの家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_house_iris",
+      "name": "測量士の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_lighthouse",
+      "name": "灰灯島の灯台",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_lighthouse_top",
+      "name": "灯台の最上階",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_ruins",
+      "name": "廃墟の街",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ruins_post",
+      "name": "郵便局跡",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ruins_store",
+      "name": "倉庫跡",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_ruins_1",
+      "name": "時計塔 1階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_ruins_2",
+      "name": "時計塔 2階（止まった時計）",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_underground_1",
+      "name": "地下施設 1階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "aruna_underground_2",
+      "name": "地下施設 最深部（観測室）",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "mist_isle",
+      "name": "霧の島",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "elmina_undersea",
+      "name": "海底都市エルミナ",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "memory_library",
+      "name": "記憶の図書館",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "memory_library_seal",
+      "name": "記憶の図書館・封印区画",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tempus_city",
+      "name": "鐘都テンプス",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tempus_bell",
+      "name": "鐘楼",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "time_bank",
+      "name": "時間銀行",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "time_bank_vault_1",
+      "name": "地下契約室 1階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "time_bank_vault_2",
+      "name": "地下契約室 最深部",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tempus_inn",
+      "name": "刻の宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tempus_church",
+      "name": "鐘の教会",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tempus_weapon",
+      "name": "鐘都の武具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tempus_item",
+      "name": "鐘都の道具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tempus_armor",
+      "name": "鐘都の防具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "temple_of_time_1",
+      "name": "時の神殿 第一の回廊",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "temple_of_time_2",
+      "name": "時の神殿 第二の回廊",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "temple_of_time_3",
+      "name": "時の神殿 最深部",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "node_city",
+      "name": "演算都市ノード",
+      "priority": 0,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "node_registry",
+      "name": "登録所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "no_failure_school",
+      "name": "失敗を禁止された学校",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "school_roof",
+      "name": "学校の屋上",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "node_ration",
+      "name": "配給所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "node_inn",
+      "name": "休息区画",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "node_armor",
+      "name": "装備配給所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "node_house",
+      "name": "居住ユニット",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "node_market",
+      "name": "自由市場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "scheduled_district",
+      "name": "第7居住区",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "district_house",
+      "name": "居住ユニット 7-1",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "district_inn",
+      "name": "休息ユニット",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "district_ration",
+      "name": "配給ユニット",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "old_city_1",
+      "name": "廃棄された旧都市",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "old_city_2",
+      "name": "旧都市 記録庫（深層）",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "auto_factory_1",
+      "name": "自動工場 1階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "auto_factory_2",
+      "name": "自動工場 2階（制御室）",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "oracle_core_1",
+      "name": "オラクル中枢 第1層",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "oracle_core_2",
+      "name": "オラクル中枢 第2層（記録層）",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "oracle_core_3",
+      "name": "オラクル中枢 第3層（演算核）",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_city",
+      "name": "魔導都マクディア",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_palace",
+      "name": "魔導王宮",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_academy",
+      "name": "王立学院",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_weapon",
+      "name": "魔導武具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_armor",
+      "name": "魔導防具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_item",
+      "name": "魔導具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_inn",
+      "name": "星詠みの宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_church",
+      "name": "魔導教会",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_tavern",
+      "name": "魔導士の酒場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "forbidden_archive_1",
+      "name": "禁書庫 1階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "forbidden_archive_2",
+      "name": "禁書庫 2階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "forbidden_archive_3",
+      "name": "禁書庫 最深部",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "origin_lab_1",
+      "name": "起源の実験室",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "origin_lab_2",
+      "name": "起源の実験室 最深部・格納庫",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "star_camp",
+      "name": "星見塔の野営地",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "star_tower_1",
+      "name": "星見塔",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "star_tower_2",
+      "name": "星見塔 最上階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sky_temple_1",
+      "name": "天空神殿",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sky_temple_2",
+      "name": "天空神殿 制御装置の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dark_camp",
+      "name": "虚無の荒野の前線基地",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dark_inn",
+      "name": "野戦宿舎",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dark_shop",
+      "name": "補給所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dark_armory",
+      "name": "武器庫",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dark_tent_hald",
+      "name": "外れの天幕",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "void_wasteland_1",
+      "name": "虚無の荒野",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "void_wasteland_2",
+      "name": "虚無の荒野 深部",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "demon_castle_gate",
+      "name": "魔王城の門",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "demon_castle_1",
+      "name": "魔王城 1階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "demon_castle_2",
+      "name": "魔王城 2階 欲望の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "demon_castle_3",
+      "name": "魔王城 3階 恐怖の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "demon_castle_4",
+      "name": "魔王城 4階 支配の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "demon_castle_5",
+      "name": "魔王城 玉座の間",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sahar_city",
+      "name": "砂都サハル",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sahar_inn",
+      "name": "砂の宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sahar_weapon",
+      "name": "曲刀の店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sahar_armor",
+      "name": "布と鎧の店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sahar_item",
+      "name": "水と道具の店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sahar_church",
+      "name": "オアシスの祠",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sahar_guild",
+      "name": "隊商ギルド",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sahar_water_office",
+      "name": "水番所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "mirror_market",
+      "name": "鏡の市場",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sandstorm_corridor_1",
+      "name": "砂嵐の回廊",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sandstorm_corridor_2",
+      "name": "砂嵐の回廊 2階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "mirage_temple_1",
+      "name": "蜃気楼神殿",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "mirage_temple_2",
+      "name": "蜃気楼神殿 2階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "mirage_temple_3",
+      "name": "蜃気楼神殿 3階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "mirage_temple_4",
+      "name": "蜃気楼神殿 最奥",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ignas_town",
+      "name": "鍛冶街イグナス",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ignas_armor",
+      "name": "竜鱗の防具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ignas_item",
+      "name": "火山の道具屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ignas_inn",
+      "name": "熾火の宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ignas_house_1",
+      "name": "鍛冶職人の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ignas_house_2",
+      "name": "長老の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ignas_forge",
+      "name": "竜の鍛冶場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ignas_hall",
+      "name": "祭りの集会所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "crater_altar",
+      "name": "火口の祭壇",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dragon_vein_1",
+      "name": "竜脈洞窟",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dragon_vein_2",
+      "name": "竜脈洞窟 古竜の間",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dragon_vein_deep_1",
+      "name": "竜脈の最深部",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "dragon_vein_deep_2",
+      "name": "竜脈の最深部 原初の炎",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ciel_port",
+      "name": "氷港シエル",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ciel_inn",
+      "name": "流氷の宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ciel_item",
+      "name": "港の道具屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ciel_weapon",
+      "name": "氷港の武具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ciel_harbor",
+      "name": "港の詰所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "frost_town",
+      "name": "記憶を売る町フロスト",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "frost_inn",
+      "name": "雪灯りの宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "frost_item",
+      "name": "フロストの道具屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "frost_weapon",
+      "name": "フロストの武器屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "frost_armor",
+      "name": "フロストの防具屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "frost_house",
+      "name": "リクの家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "memory_market",
+      "name": "記憶市場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "memory_vault",
+      "name": "記憶庫",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "spirit_forest_1",
+      "name": "精霊の森",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "spirit_forest_2",
+      "name": "精霊の森 奥",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "frozen_tower_1",
+      "name": "凍結時計塔",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "frozen_tower_2",
+      "name": "凍結時計塔 2階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "frozen_tower_3",
+      "name": "凍結時計塔 3階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "frozen_tower_4",
+      "name": "凍結時計塔 最上階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ash_cave_1",
+      "name": "灰の洞窟",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ash_cave_2",
+      "name": "灰の洞窟 奥",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sunken_reef_1",
+      "name": "沈没船の礁",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sunken_reef_2",
+      "name": "沈没船 船長室",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "old_city_deep_1",
+      "name": "旧都市 深層",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "old_city_deep_2",
+      "name": "旧都市 深層 演算核",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "pirate_nest",
+      "name": "海賊カモメの巣",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "ash_cape",
+      "name": "灰の岬",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "luxbell",
+      "name": "娯楽都市ラックスベル",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "luxbell_casino",
+      "name": "グランカジノ・ラックスベル",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "luxbell_labs",
+      "name": "カジノ研究棟",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "luxbell_inn",
+      "name": "金の鈴亭",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "luxbell_item",
+      "name": "ラックスベル雑貨店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "luxbell_dining",
+      "name": "ラックスベル食堂",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "volatilia",
+      "name": "ボラティリティア学院",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_dean",
+      "name": "学院長室",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_lecture",
+      "name": "講義室",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_observatory",
+      "name": "天文観測室",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_library",
+      "name": "大図書館",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_quantum",
+      "name": "量子物理研究室",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_mind",
+      "name": "意識研究所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_ancient",
+      "name": "古代文明研究室",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_dorm",
+      "name": "研究者の居住区",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_under_gate",
+      "name": "地下実験施設の入口",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_under_1",
+      "name": "地下実験施設 1階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "vol_under_2",
+      "name": "地下実験施設 2階",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia",
+      "name": "相場都市トレディア",
+      "priority": 0,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_exchange",
+      "name": "トレディア証券市場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_arena",
+      "name": "トレード闘技場",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_guild",
+      "name": "投資家ギルド",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_lab",
+      "name": "相場研究所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_levex",
+      "name": "レバレッジ取引所",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_mansion",
+      "name": "富豪の屋敷",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_bank",
+      "name": "トレディア銀行",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_tavern",
+      "name": "トレーダーの酒場「損切り亭」",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_weapon",
+      "name": "高級武器店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_armor",
+      "name": "トレディア防具店",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_item",
+      "name": "トレディア道具屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_inn",
+      "name": "宿屋「満期の宿」",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "tradia_house",
+      "name": "住宅街の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_castle_2f",
+      "name": "リヴェル城 2階",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_castle_3f",
+      "name": "リヴェル城 3階",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_castle_b1",
+      "name": "リヴェル城 地下",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_artisan",
+      "name": "リヴェル城下・職人通り",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_artisan_smith",
+      "name": "鍛冶屋の工房",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_artisan_weaver",
+      "name": "機織りの家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "rivel_artisan_herbal",
+      "name": "薬草師の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "oblivion_cave_lake",
+      "name": "忘却の洞窟・地底湖",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_palace_2f",
+      "name": "魔導王宮 2階",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "magicka_palace_b1",
+      "name": "魔導王宮 地下",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_palace_west",
+      "name": "王宮 西棟（2階）",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "sentra_palace_vault",
+      "name": "王宮 地下の保管庫",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_dow_hunter",
+      "name": "狩人の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_harbor_net",
+      "name": "網元の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_verum_row",
+      "name": "坑夫の長屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_kalion_estate",
+      "name": "北区の屋敷",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_sentra_noble",
+      "name": "老貴族の屋敷",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_aruna_hut",
+      "name": "漂着者の小屋",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_ruins_keeper",
+      "name": "灯守りの家（中は荒れている）",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_tempus_clock",
+      "name": "時計職人の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_node_family",
+      "name": "識別票のない家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_district_9",
+      "name": "9号棟",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_magicka_crafter",
+      "name": "魔導具職人の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_star_tent",
+      "name": "観測者の天幕",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_sahar_water",
+      "name": "水売りの家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_mirror_changer",
+      "name": "両替商の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_ignas_smith_home",
+      "name": "鍛冶師の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_frost_keeper",
+      "name": "記憶を売らなかった家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_luxbell_dice",
+      "name": "サイコロ職人の家",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_vol_lodging",
+      "name": "研究生の下宿",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_erased_cellar",
+      "name": "村長の家・地下の書庫",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_dark_command",
+      "name": "作戦天幕",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a3_ciel_lookout",
+      "name": "港の詰所・見張り台",
+      "priority": 3,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a4_lf_glade",
+      "name": "迷いの森・獣道の奥",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a4_im_old",
+      "name": "鉄の鉱山・廃坑道",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a4_au_lamps",
+      "name": "アルナの地下・灯りの間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a4_tt_sand",
+      "name": "時の神殿・砂時計の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a4_fa_seal",
+      "name": "禁書庫・封印の書架",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a4_dv_pool",
+      "name": "竜脈・溶岩の溜まり",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a4_sf_spring",
+      "name": "精霊の森・精霊の泉",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a4_ac_press",
+      "name": "灰の洞窟・圧力の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a4_sc_shrine",
+      "name": "砂嵐の回廊・砂に埋もれた祠",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a4_ml_closed",
+      "name": "記憶の図書館・閉架書庫",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_em_hut",
+      "name": "エマール山道・道標の谷",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_bd_store",
+      "name": "山賊のアジト・先代の物置",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_vh_store",
+      "name": "地下の集会所・古い荷置き場",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_fg_armory",
+      "name": "鉄冠将軍の砦・古い武器庫",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_gp_shelter",
+      "name": "灰の峠・坑夫の避難小屋",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_ka_ledger",
+      "name": "地下記録庫・古い帳簿庫",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_kl_scale",
+      "name": "秘密研究所・計量室",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_ar_light",
+      "name": "時計塔・光路の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_mi_spring",
+      "name": "霧の島・湧き水の洞",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_el_current",
+      "name": "海底都市・潮流の回廊",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_tb_exchange",
+      "name": "地下契約室・古い両替所",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_oc_vault",
+      "name": "旧都市・暗号保管室",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_af_control",
+      "name": "自動工場・配電室",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_or_lamps",
+      "name": "オラクル中枢・記録の鍵の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_ol_mixing",
+      "name": "起源の実験室・調合室",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_st_rings",
+      "name": "星見塔・星の輪の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_sk_clouds",
+      "name": "天空神殿・雲の回廊",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_vw_doors",
+      "name": "虚無の荒野・三つの扉の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_dc_statues",
+      "name": "魔王城・像の回廊",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_mt_mirage",
+      "name": "蜃気楼神殿・二つの幻の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_ca_forge",
+      "name": "火口の祭壇・古い鍛冶場",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_dd_vents",
+      "name": "竜脈の最深部・熱の通り道",
+      "priority": 1,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_mv_echo",
+      "name": "記憶庫・残響の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_ft_ice",
+      "name": "凍結時計塔・薄氷の間",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_sr_hold",
+      "name": "沈没船の礁・船長室の奥",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_od_scan",
+      "name": "旧都市 深層・探知室",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_pn_cave",
+      "name": "海賊カモメの巣・岩の下の洞",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_ap_canal",
+      "name": "灰の岬・地下の水路",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    },
+    {
+      "mapId": "a6_vu_numbers",
+      "name": "地下実験施設・数の実験室",
+      "priority": 2,
+      "status": "design_only",
+      "integration": false,
+      "visualChecked": false,
+      "gameplayChecked": false,
+      "performanceChecked": false,
+      "requiredWork": [
+        "tile/layout and anchor migration",
+        "authored environment assembly",
+        "material UV and lighting",
+        "collision/height/camera",
+        "regression and performance"
+      ]
+    }
+  ],
+  "additionalHeroAssets": [
+    {
+      "id": "poyo_hero_tree",
+      "description": "ポヨ村の大樹、根・枝・樹冠3層",
+      "status": "required_not_included",
+      "responsible": "Claude implementation"
+    },
+    {
+      "id": "regional_roofs",
+      "description": "茅葺き・青瓦・銅屋根・雪国急屋根の形状",
+      "status": "required_not_included",
+      "responsible": "Claude implementation"
+    },
+    {
+      "id": "node_building_shells",
+      "description": "ノードの外殻3型とサービス設備",
+      "status": "required_not_included",
+      "responsible": "Claude implementation"
+    },
+    {
+      "id": "tradia_exchange_facade",
+      "description": "証券市場の正面と板表示の枠",
+      "status": "required_not_included",
+      "responsible": "Claude implementation"
+    },
+    {
+      "id": "rivel_castle_silhouette",
+      "description": "リヴェル城の塔・門・回廊・紋章",
+      "status": "required_not_included",
+      "responsible": "Claude implementation"
+    },
+    {
+      "id": "mine_wall_sections",
+      "description": "岩壁の曲面パネルと鉱脈",
+      "status": "required_not_included",
+      "responsible": "Claude implementation"
+    },
+    {
+      "id": "terrain_biomes",
+      "description": "12地域の地形・植生・岸辺の固有セット",
+      "status": "required_not_included",
+      "responsible": "Claude implementation"
+    }
+  ]
+}

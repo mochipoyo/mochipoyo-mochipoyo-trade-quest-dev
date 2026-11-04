@@ -1,0 +1,23 @@
+{
+  "mapId": "poyo_village",
+  "status": "integration_smoke_only",
+  "note": "接続試験用。完成の見た目や改装済みレイアウトを示さない。最新状態のsnapshotで再検証する。",
+  "placements": [
+    {
+      "assetId": "rock_cluster",
+      "x": 2.5,
+      "z": 2.5,
+      "scale": 0.35,
+      "yaw": 0,
+      "policy": "solid_only"
+    },
+    {
+      "assetId": "rock_cluster",
+      "x": 19.5,
+      "z": 2.5,
+      "scale": 0.35,
+      "yaw": 0,
+      "policy": "solid_only"
+    }
+  ]
+}

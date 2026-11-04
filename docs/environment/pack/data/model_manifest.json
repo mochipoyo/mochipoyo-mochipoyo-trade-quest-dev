@@ -1,0 +1,548 @@
+[
+  {
+    "id": "wall_ashlar",
+    "file": "assets/models/wall_ashlar.glb",
+    "bytes": 230428,
+    "triangles": 2376,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -1.5499999523162842,
+        1.7881393032936899e-9,
+        -0.33000001311302185
+      ],
+      "max": [
+        1.5499999523162842,
+        2.194999933242798,
+        0.33000001311302185
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "arch_round",
+    "file": "assets/models/arch_round.glb",
+    "bytes": 236160,
+    "triangles": 2436,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -1.590000033378601,
+        1.7881393032936899e-9,
+        -0.4099999964237213
+      ],
+      "max": [
+        1.590000033378601,
+        3.438004732131958,
+        0.4099999964237213
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "column_classic",
+    "file": "assets/models/column_classic.glb",
+    "bytes": 93264,
+    "triangles": 948,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -0.6000000238418579,
+        1.7881393032936899e-9,
+        -0.6000000238418579
+      ],
+      "max": [
+        0.6000000238418579,
+        2.7200000286102295,
+        0.6000000238418579
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "stairs_stone",
+    "file": "assets/models/stairs_stone.glb",
+    "bytes": 95708,
+    "triangles": 972,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -1.434999942779541,
+        -5.9604645663569045e-9,
+        -1.3300000429153442
+      ],
+      "max": [
+        1.434999942779541,
+        1.5310695171356201,
+        1.3300000429153442
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "parapet",
+    "file": "assets/models/parapet.glb",
+    "bytes": 85244,
+    "triangles": 864,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -1.5499999523162842,
+        5.9604645663569045e-9,
+        -0.3199999928474426
+      ],
+      "max": [
+        1.5499999523162842,
+        1.659999966621399,
+        0.3199999928474426
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "floor_medallion",
+    "file": "assets/models/floor_medallion.glb",
+    "bytes": 283308,
+    "triangles": 2928,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -1.7000000476837158,
+        8.940696516468449e-10,
+        -1.7000000476837158
+      ],
+      "max": [
+        1.7000000476837158,
+        0.11249999701976776,
+        1.7000000476837158
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "rock_cluster",
+    "file": "assets/models/rock_cluster.glb",
+    "bytes": 24484,
+    "triangles": 240,
+    "drawCalls": 1,
+    "bounds": {
+      "min": [
+        -1.4268238544464111,
+        -0.08899267017841339,
+        -1.1323754787445068
+      ],
+      "max": [
+        1.3272674083709717,
+        1.1675455570220947,
+        0.740652859210968
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "stalagmites",
+    "file": "assets/models/stalagmites.glb",
+    "bytes": 23416,
+    "triangles": 230,
+    "drawCalls": 1,
+    "bounds": {
+      "min": [
+        -0.8715783357620239,
+        1.7881393032936899e-9,
+        -0.8778905272483826
+      ],
+      "max": [
+        0.8799999952316284,
+        1.649999976158142,
+        0.7665173411369324
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "mine_support",
+    "file": "assets/models/mine_support.glb",
+    "bytes": 95628,
+    "triangles": 972,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -1.6749999523162842,
+        0,
+        -0.20000000298023224
+      ],
+      "max": [
+        1.6749999523162842,
+        2.7300000190734863,
+        0.20000000298023224
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "minecart",
+    "file": "assets/models/minecart.glb",
+    "bytes": 164216,
+    "triangles": 1676,
+    "drawCalls": 3,
+    "bounds": {
+      "min": [
+        -0.75,
+        0.019999995827674866,
+        -0.625
+      ],
+      "max": [
+        0.75,
+        1.2941908836364746,
+        0.625
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "rail_section",
+    "file": "assets/models/rail_section.glb",
+    "bytes": 95616,
+    "triangles": 972,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -0.800000011920929,
+        1.3411045607369942e-9,
+        -1.25
+      ],
+      "max": [
+        0.800000011920929,
+        0.2800000011920929,
+        1.25
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "ore_lift",
+    "file": "assets/models/ore_lift.glb",
+    "bytes": 253348,
+    "triangles": 2616,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -1.2000000476837158,
+        0,
+        -0.75
+      ],
+      "max": [
+        1.2000000476837158,
+        3.444999933242798,
+        0.75
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "market_stall",
+    "file": "assets/models/market_stall.glb",
+    "bytes": 161092,
+    "triangles": 1644,
+    "drawCalls": 3,
+    "bounds": {
+      "min": [
+        -1.399999976158142,
+        2.3841858265427618e-8,
+        -0.9542549252510071
+      ],
+      "max": [
+        1.399999976158142,
+        2.6563596725463867,
+        0.9614598155021667
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "dock_section",
+    "file": "assets/models/dock_section.glb",
+    "bytes": 151416,
+    "triangles": 1564,
+    "drawCalls": 1,
+    "bounds": {
+      "min": [
+        -1.2999999523162842,
+        0,
+        -1.399999976158142
+      ],
+      "max": [
+        1.2999999523162842,
+        1.5,
+        1.399999976158142
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "mooring_post",
+    "file": "assets/models/mooring_post.glb",
+    "bytes": 156488,
+    "triangles": 1596,
+    "drawCalls": 3,
+    "bounds": {
+      "min": [
+        -0.32499998807907104,
+        1.1920929132713809e-8,
+        -0.30000001192092896
+      ],
+      "max": [
+        0.32499998807907104,
+        0.8999999761581421,
+        0.30000001192092896
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "waterwheel",
+    "file": "assets/models/waterwheel.glb",
+    "bytes": 515220,
+    "triangles": 5344,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -1.5099999904632568,
+        -0.009999990463256836,
+        -0.5
+      ],
+      "max": [
+        1.5099999904632568,
+        3.009999990463257,
+        0.5
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "clock_monument",
+    "file": "assets/models/clock_monument.glb",
+    "bytes": 254356,
+    "triangles": 2616,
+    "drawCalls": 3,
+    "bounds": {
+      "min": [
+        -0.7749999761581421,
+        1.7881393032936899e-9,
+        -0.6000000238418579
+      ],
+      "max": [
+        0.7749999761581421,
+        3.6700000762939453,
+        0.6000000238418579
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "server_pillar",
+    "file": "assets/models/server_pillar.glb",
+    "bytes": 445856,
+    "triangles": 4608,
+    "drawCalls": 3,
+    "bounds": {
+      "min": [
+        -0.7794228792190552,
+        -1.4901161415892261e-9,
+        -0.8999999761581421
+      ],
+      "max": [
+        0.7794228792190552,
+        3,
+        0.8999999761581421
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "pipe_bridge",
+    "file": "assets/models/pipe_bridge.glb",
+    "bytes": 97456,
+    "triangles": 992,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -1.600000023841858,
+        4.7683716530855236e-8,
+        -0.375
+      ],
+      "max": [
+        1.600000023841858,
+        3.140000104904175,
+        0.375
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "magic_ring",
+    "file": "assets/models/magic_ring.glb",
+    "bytes": 123252,
+    "triangles": 1248,
+    "drawCalls": 3,
+    "bounds": {
+      "min": [
+        -0.9649999737739563,
+        1.7881393032936899e-9,
+        -0.8600000143051147
+      ],
+      "max": [
+        0.9649999737739563,
+        2.759999990463257,
+        0.8600000143051147
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "basalt_ribs",
+    "file": "assets/models/basalt_ribs.glb",
+    "bytes": 16432,
+    "triangles": 158,
+    "drawCalls": 1,
+    "bounds": {
+      "min": [
+        -1.75,
+        -0.027783401310443878,
+        -0.6499999761581421
+      ],
+      "max": [
+        1.75,
+        2.700000047683716,
+        0.75
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "ice_spires",
+    "file": "assets/models/ice_spires.glb",
+    "bytes": 6140,
+    "triangles": 50,
+    "drawCalls": 1,
+    "bounds": {
+      "min": [
+        -0.8227240443229675,
+        -0.030427243560552597,
+        -0.71651691198349
+      ],
+      "max": [
+        0.7092324495315552,
+        1.9996581077575684,
+        0.6918339133262634
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "library_shelf",
+    "file": "assets/models/library_shelf.glb",
+    "bytes": 542412,
+    "triangles": 5616,
+    "drawCalls": 3,
+    "bounds": {
+      "min": [
+        -1.125,
+        -4.7683716530855236e-8,
+        -0.32499998807907104
+      ],
+      "max": [
+        1.125,
+        2.484999895095825,
+        0.32499998807907104
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "roof_gable",
+    "file": "assets/models/roof_gable.glb",
+    "bytes": 44804,
+    "triangles": 452,
+    "drawCalls": 1,
+    "bounds": {
+      "min": [
+        -1.7797889709472656,
+        0.030000003054738045,
+        -1.5099999904632568
+      ],
+      "max": [
+        1.7797889709472656,
+        1.4240561723709106,
+        1.5099999904632568
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "half_timber_bay",
+    "file": "assets/models/half_timber_bay.glb",
+    "bytes": 85268,
+    "triangles": 864,
+    "drawCalls": 2,
+    "bounds": {
+      "min": [
+        -1.4500000476837158,
+        -0.004999952390789986,
+        -0.09999999403953552
+      ],
+      "max": [
+        1.4500000476837158,
+        2.3450000286102295,
+        0.20000000298023224
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  },
+  {
+    "id": "courtyard_fountain",
+    "file": "assets/models/courtyard_fountain.glb",
+    "bytes": 81412,
+    "triangles": 816,
+    "drawCalls": 3,
+    "bounds": {
+      "min": [
+        -1.5,
+        -1.4901161415892261e-9,
+        -1.5
+      ],
+      "max": [
+        1.5,
+        2.305000066757202,
+        1.5
+      ]
+    },
+    "pivot": "ground center unless naturally elevated; see bounds",
+    "collision": "none; author collider separately"
+  }
+]

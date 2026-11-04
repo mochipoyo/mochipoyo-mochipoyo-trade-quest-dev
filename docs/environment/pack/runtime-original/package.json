@@ -1,0 +1,1 @@
+{"name":"tradequest-environment-overhaul-kit","private":true,"type":"module","version":"1.0.0","scripts":{"build:models":"node scripts/build_models.mjs","test":"node --test tests/*.test.mjs","preview":"python3 -m http.server 8790"},"devDependencies":{"three":"0.186.1"}}

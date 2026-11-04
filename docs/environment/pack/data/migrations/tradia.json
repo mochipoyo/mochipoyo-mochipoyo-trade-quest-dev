@@ -1,0 +1,177 @@
+{
+  "mapId": "tradia",
+  "status": "proposal",
+  "sourceSize": [
+    48,
+    40
+  ],
+  "targetSize": null,
+  "coordinateVersionFrom": null,
+  "coordinateVersionTo": null,
+  "anchorMoves": [],
+  "incomingWarpsToUpdate": [
+    {
+      "from": "world_magicka",
+      "at": [
+        60,
+        80
+      ],
+      "arrival": [
+        23,
+        38
+      ]
+    },
+    {
+      "from": "tradia_exchange",
+      "at": [
+        12,
+        11
+      ],
+      "arrival": [
+        24,
+        8
+      ]
+    },
+    {
+      "from": "tradia_arena",
+      "at": [
+        11,
+        13
+      ],
+      "arrival": [
+        7,
+        15
+      ]
+    },
+    {
+      "from": "tradia_guild",
+      "at": [
+        8,
+        9
+      ],
+      "arrival": [
+        17,
+        15
+      ]
+    },
+    {
+      "from": "tradia_lab",
+      "at": [
+        9,
+        9
+      ],
+      "arrival": [
+        30,
+        15
+      ]
+    },
+    {
+      "from": "tradia_levex",
+      "at": [
+        10,
+        11
+      ],
+      "arrival": [
+        40,
+        15
+      ]
+    },
+    {
+      "from": "tradia_mansion",
+      "at": [
+        9,
+        11
+      ],
+      "arrival": [
+        41,
+        8
+      ]
+    },
+    {
+      "from": "tradia_bank",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        5,
+        25
+      ]
+    },
+    {
+      "from": "tradia_tavern",
+      "at": [
+        6,
+        9
+      ],
+      "arrival": [
+        15,
+        25
+      ]
+    },
+    {
+      "from": "tradia_weapon",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        31,
+        25
+      ]
+    },
+    {
+      "from": "tradia_armor",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        41,
+        25
+      ]
+    },
+    {
+      "from": "tradia_item",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        31,
+        35
+      ]
+    },
+    {
+      "from": "tradia_inn",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        41,
+        35
+      ]
+    },
+    {
+      "from": "tradia_house",
+      "at": [
+        5,
+        8
+      ],
+      "arrival": [
+        4,
+        6
+      ]
+    }
+  ],
+  "savePositionMapping": [],
+  "flagStatesToVerify": [
+    "new_game",
+    "before_unlock",
+    "after_unlock",
+    "boss_defeated",
+    "revisit"
+  ],
+  "note": "Fill from actual modified map before validation. No fabricated target coordinates."
+}

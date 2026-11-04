@@ -1,0 +1,23 @@
+{
+  "mapId": "tradia",
+  "status": "integration_smoke_only",
+  "note": "接続試験用。完成の見た目や改装済みレイアウトを示さない。最新状態のsnapshotで再検証する。",
+  "placements": [
+    {
+      "assetId": "column_classic",
+      "x": 21.5,
+      "z": 15.5,
+      "scale": 0.35,
+      "yaw": 0,
+      "policy": "solid_only"
+    },
+    {
+      "assetId": "column_classic",
+      "x": 26.5,
+      "z": 15.5,
+      "scale": 0.35,
+      "yaw": 0,
+      "policy": "solid_only"
+    }
+  ]
+}
