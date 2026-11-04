@@ -1,0 +1,11 @@
+--- v59test.js.bak74	2026-11-04 17:47:18.907857360 +0900
++++ v59test.js	2026-11-04 17:47:18.923034482 +0900
+@@ -30,7 +30,7 @@
+   let max2=0, maxN=0; for(let k=0;k<40;k++){ State.newGame('t','warrior'); const h=State.data.hero; h.level=30; w.Actors.fullHeal(h); const b=C.create(['nanpin_goblin'],State.partyActors(),{maxEnemies:2}); for(let t=0;t<10&&b.state==='command';t++){ C.runTurn(b,[{actorId:'hero',type:'defend'}]); max2=Math.max(max2,b.enemies.filter(x=>!x.dead).length);} const b2=C.create(['nanpin_goblin'],State.partyActors(),{}); w.Actors.fullHeal(h); for(let t=0;t<10&&b2.state==='command';t++){ C.runTurn(b2,[{actorId:'hero',type:'defend'}]); maxN=Math.max(maxN,b2.enemies.filter(x=>!x.dead).length);} }
+   ok(max2<=2 && maxN>2, 'ナンピン：ひとり旅では2体まで（最大'+max2+'）、仲間がいれば増える（最大'+maxN+'）');
+   // 図鑑の区分と総数
+-  ok(Object.keys(w.ENEMIES).length===201+7+40, '敵の総数 191 → 201（v5.9）→ 208（v6.1 学院の魔物7種を含む）→ '+Object.keys(w.ENEMIES).length+'（v6.5 Phase B 地域の新しいモンスター40種を含む）');
++  ok(Object.keys(w.ENEMIES).length===201+7+40+25, '敵の総数 191 → 201（v5.9）→ 208（v6.1 学院の魔物7種を含む）→ 248（v6.5 Phase B 地域の新しいモンスター40種を含む）→ '+Object.keys(w.ENEMIES).length+'（v7.5 追加の通常敵25種を含む）');
+ 
+   console.log('② 本棚の本');
+   const B=w.Books; ok(B && B.all.length>=30 && B.all.every(b=>b.id&&b.title&&b.pages.length&&b.cat), '本 '+B.all.length+'冊（ヒント'+B.all.filter(b=>b.cat==='トレードのヒント').length+'・相場格言'+B.all.filter(b=>b.cat==='相場格言').length+'・伝承'+B.all.filter(b=>b.cat==='伝承').length+'）');
