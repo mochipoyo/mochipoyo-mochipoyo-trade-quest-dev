@@ -43,7 +43,8 @@ const PLACE = {
   machine_city: { wall: 'metal', wallTint: '#8a9098', floor: '#6a7078', light: 0.7, torch: false, glow: '#4ad8ff' },
   magic_city: { wall: 'stone', wallTint: '#b0a0c8', floor: '#8a7aa0', light: 0.7, torch: true, glow: '#c08aff' },
   desert: { wall: 'stone', wallTint: '#d0b088', floor: '#c8a878', light: 0.8, torch: true },
-  snow: { wall: 'rock', wallTint: '#c8d4e0', floor: '#d8e4ec', light: 0.8, torch: true }
+  snow: { wall: 'rock', wallTint: '#c8d4e0', floor: '#d8e4ec', light: 0.8, torch: true },
+  deck: { wall: 'wood', wallTint: '#8a6446', floor: '#a8784a', light: 0.95, torch: false, outdoor: true }   // v7.6 船の甲板（外。js/data/ship76.js の theme3d）
 };
 
 export function themeFor(map) {

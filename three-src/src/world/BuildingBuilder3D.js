@@ -12,6 +12,7 @@ const ROOF = { weapon: '#8a3a3a', armor: '#3f5f9f', item: '#3f8a5a', inn: '#b860
 const SHUTTER = { item: 'shutterGreen', inn: 'shutterRed', church: 'shutterBlue', dojo: 'shutterBlue', elder: 'shutterGreen', house: 'shutterRed' };
 const ICON = { item: 'icon_potion', inn: 'icon_bed', weapon: 'icon_sword', church: 'icon_bell', dojo: 'icon_chart', elder: 'icon_scroll', armor: 'icon_sword', tavern: 'icon_potion' };
 
+import { buildTownShip } from './ShipModel3D.js';
 export class BuildingBuilder3D {
   constructor(mats, models) { this.mats = mats; this.models = models; }
 
@@ -37,6 +38,11 @@ export class BuildingBuilder3D {
     const doorX = b.doorAbs.x + 0.5;
     const theme = opts && opts.theme;   // Phase 1 地域テーマ（壁の色・家の屋根の色）。ポヨ村では渡さない（従来どおり）
     if (type === 'castle' && theme) return this.castle(b, out, batch, theme);
+    if (type === 'ship') {   // v7.6 港町マリナの「修理中の船」：家の形ではなく帆船（world/ShipModel3D.js）。2D版は船の絵
+      buildTownShip(b, (m, g) => batch.add(m, g), out, rng);
+      if (!(opts && opts.batch)) batch.build(out.group);
+      return out;
+    }
     const plaster = st.wall === 'stone' ? M.tinted('stonewall', st.plaster || '#d8d0c0') : st.plaster ? M.tinted('plaster', st.plaster) : theme && theme.plaster ? M.tinted('plaster', theme.plaster) : M.get('plaster'), timber = M.get('timber'), stone = M.get('stonewall');
     const tb = st.frame === false ? { add() { } } : batch;   // 木組み（柱・梁・間柱・筋かい）。frame:false の建物は描かない
 

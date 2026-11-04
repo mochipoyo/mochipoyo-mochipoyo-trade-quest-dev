@@ -14,6 +14,7 @@ import { roomKit, ROOM_STYLE } from './room_kit.js';
 import { recipe as poyoInterior } from './poyo_interior.js';
 import { fieldKit } from './field_kit.js';
 import { outdoorKit } from './outdoor_kit.js';
+import { recipe as shipDeck } from './ship_deck.js';
 import { mapCoverage } from '../../world/coverage.js';
 import { themeFor } from '../../world/themes.js';
 
@@ -23,7 +24,8 @@ export const RECIPES = {
   poyo_village: poyoVillage,
   node_city: nodeCity,
   tradia: tradia,
-  scheduled_district: scheduledRecipe   // 演算都市ノードの作り方を使う（旗艦の5地点ではない）
+  scheduled_district: scheduledRecipe,   // 演算都市ノードの作り方を使う（旗艦の5地点ではない）
+  harbor_ship_deck: shipDeck   // v7.6 港町マリナの修理中の船・甲板（js/data/ship76.js）
 };
 
 // 近未来・機械・娯楽の町（ガラスと金属の汎用の建物）は町の作り方を当てない

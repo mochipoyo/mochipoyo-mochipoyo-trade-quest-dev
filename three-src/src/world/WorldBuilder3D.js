@@ -55,6 +55,8 @@ export class WorldBuilder3D {
     this.T = T;
     // 水の上の橋・桟橋（下は水として扱う）
     const wet = new Set(); for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { const t = map.tile(x, z); if ((t === 'bridge' || t === 'dock') && [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dz]) => WATERY[T(x + dx, z + dz)])) wet.add(x + ',' + z); }
+    if (env && env.wetTile) for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) if (env.wetTile(map.tile(x, z), x, z)) wet.add(x + ',' + z);   // v7.6 レシピが「下は海」とするマス（船の甲板の舷墻など）
+    (map.buildings || []).forEach((bd) => { if (bd.type === 'ship') for (let z = bd.y; z < bd.y + bd.h; z++) for (let x = bd.x; x < bd.x + bd.w; x++) wet.add(x + ',' + z); });   // v7.6 船の建物の下は海（船体は ShipModel3D.js）
     const Tg = (x, z) => (wet.has(x + ',' + z) ? 'water' : T(x, z));   // 地面・水面用
 
     // ---------------- 高さ
@@ -84,7 +86,8 @@ export class WorldBuilder3D {
       return (a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + d * u) * v;
     };
     const heightAtRaw = heightAt;
-    const heightAtWalk = (x, z) => (wet.has(Math.floor(x) + ',' + Math.floor(z)) ? 0.05 : heightAtRaw(x, z));
+    const flat = env && env.flatTile ? (x, z) => env.flatTile(T(Math.floor(x), Math.floor(z))) : null;   // v7.6 レシピが「床の高さ 0 で平ら」とするマス（船の甲板。縁の海のマスに引っぱられて沈まない）
+    const heightAtWalk = (x, z) => (wet.has(Math.floor(x) + ',' + Math.floor(z)) ? 0.05 : flat && flat(x, z) ? 0.0 : heightAtRaw(x, z));
     this.heightAt = heightAtWalk;
 
     // ---------------- 塗り分けのテクスチャ（2テクセル／タイル）
@@ -266,12 +269,12 @@ export class WorldBuilder3D {
     this.stats.wallMs = Math.round(performance.now() - tWall);
     // 床板・じゅうたん（ダンジョン・町の中）
     for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
-      const t = T(x, z);
+      const t0 = T(x, z); const t = (env && env.floorAs && env.floorAs(t0, x, z)) || t0;   // v7.6 レシピが「この小物の下は床板」とするマス（船の甲板の樽・木箱・帆柱）
       if (env && env.skipFloor && env.skipFloor(t, x, z)) continue;   // v7.6 レシピが床を作り直すマス
       if (t === 'floor_wood' || t === 'door') wb.add(M.get('planks'), box(1, 0.06, 1, 1.5), M4(x + 0.5, 0.03, z + 0.5));
       else if (t === 'carpet') wb.add(M.get('carpet'), box(1, 0.07, 1, 3), M4(x + 0.5, 0.035, z + 0.5));
       else if (t === 'bridge' || t === 'dock') { const w = wet.has(x + ',' + z); wb.add(M.tinted('planks', '#a07a52'), box(1.0, 0.1, 0.96, 1), M4(x + 0.5, w ? 0.0 : 0.03, z + 0.5)); if (w) for (const sx of [-0.42, 0.42]) wb.add(M.get('timber'), box(0.12, 1.0, 0.12, 1), M4(x + 0.5 + sx, -0.5, z + 0.5 + sx * 0.0)); }
-      if (t === 'door') for (const sx of [-0.5, 0.5]) wb.add(M.get('timber'), box(0.14, 2.0, 0.3, 1), M4(x + 0.5 + sx, 1.0, z + 0.5));
+      if (t0 === 'door') for (const sx of [-0.5, 0.5]) wb.add(M.get('timber'), box(0.14, 2.0, 0.3, 1), M4(x + 0.5 + sx, 1.0, z + 0.5));
       if (t === 'slot_machine') { wb.add(M.tinted('planks', '#7a1a3a'), box(0.82, 1.45, 0.62, 1), M4(x + 0.5, 0.725, z + 0.5)); wb.add(M.get('gold'), box(0.86, 0.12, 0.66, 1), M4(x + 0.5, 1.5, z + 0.5)); }
       if (t === 'hole') { const d = new THREE.Mesh(new THREE.CircleGeometry(0.42, 18), new THREE.MeshBasicMaterial({ color: 0x050302 })); d.rotation.x = -Math.PI / 2; d.position.set(x + 0.5, 0.03, z + 0.5); group.add(d); }
     }
