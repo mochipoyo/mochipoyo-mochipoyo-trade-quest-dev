@@ -84,6 +84,13 @@ export class Join76 {
         if (pr) { try { await Promise.race([pr, new Promise((r) => setTimeout(r, 4000))]); } catch (e) { /* 用意できなくても表示はできる */ } }
         st.compileMs = Math.round(performance.now() - tc); last = performance.now();
       }
+      // 画像（テクスチャ）も先に GPU へ送る（初めて映るフレームでまとめて送らない）。1 フレームに 25ms まで
+      if (R && R.initTexture) {
+        const texs = new Set(); ms.root.traverse((o) => { const mm = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : []; mm.forEach((mt) => { if (!mt) return; for (const k in mt) { const v = mt[k]; if (v && v.isTexture) texs.add(v); } if (mt.uniforms) for (const k in mt.uniforms) { const v = mt.uniforms[k] && mt.uniforms[k].value; if (v && v.isTexture) texs.add(v); } }); });
+        let tb = performance.now(); st.textures = texs.size;
+        for (const tx of texs) { try { R.initTexture(tx); } catch (e) { /* 送れなくても映すときに送られる */ } if (performance.now() - tb > 25) { await slice(); tb = performance.now(); } }
+        mark(); last = performance.now();
+      }
       mark();
       const old = a.cache.get(id); if (old && old !== ms && old !== a.current) { try { old.dispose(); } catch (e) { /* なし */ } }
       a.cache.set(id, ms); ms.usedAt = performance.now(); a.stats['build_' + id] = Math.round(performance.now() - t0); a.stats['slice_' + id] = Math.round(st.max); this.building = null; this.buildingMap = null;
