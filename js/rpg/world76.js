@@ -355,6 +355,8 @@
     d.w76moved = { from: from, to: best.map, at: Date.now() };   // 救済した記録（確認用。ゲームの進行には使わない）
     return true;
   };
+  // その地図（町・ダンジョン・建物の中）が、行き先の地域に属しているか（出口のワープをたどった地域。BattleBG65.regionOf と同じ考え方）
+  function sameHome(fromMap, toId) { if (!fromMap) return false; if (fromMap.id === toId) return true; var BG = root.BattleBG65; if (!BG || !BG.regionOf) return false; try { return BG.regionOf(fromMap.id) === BG.regionOf(toId); } catch (e) { return false; } }
   function patchWorld() {
     var World = root.World; if (!World || World._w76) return; World._w76 = true;
     var st = World.start; World.start = function () { try { W76.normalizeSave(root.State.data); } catch (e) { console.error(e); } return st.apply(this, arguments); };
@@ -365,7 +367,7 @@
     };
     // 到着先の確かめ（ファストトラベル・脱出・全滅・イベントの移動・セーブの読み込みも同じ決まり）：まだ行けない地域・乗り物で入れない地域には着かない
     var em = World.enterMap; World.enterMap = function (id, x, y, dir, opt) {
-      if (W76.on() && RECT[id] && !(opt && (opt.raw || opt.w76ok))) { /* raw（セーブの読み込み・確認用の置き直し）は対象外 */ var d = D(); var b = W76.entryBlock(id, d && d.aboard, null); if (b && b.kind === 'flag') { console.warn('World76: まだ行けない地域への到着を止めた', id); W76.blockedArrivals = (W76.blockedArrivals || 0) + 1; var safe = d.lastInn && root.MAP_DEFS[d.lastInn.map] && !(RECT[d.lastInn.map] && W76.entryBlock(d.lastInn.map, null, null)) ? d.lastInn : { map: 'poyo_village', x: 24, y: 32 }; say(b.text); return em.call(this, safe.map, safe.x, safe.y, 'down', opt); } }
+      if (W76.on() && RECT[id] && !(opt && (opt.raw || opt.w76ok)) && !sameHome(World.map, id)) { /* raw（セーブの読み込み・確認用の置き直し）と、その地域の町・ダンジョンから出るときは対象外 */ var d = D(); var b = W76.entryBlock(id, d && d.aboard, null); if (b && b.kind === 'flag') { console.warn('World76: まだ行けない地域への到着を止めた', id); W76.blockedArrivals = (W76.blockedArrivals || 0) + 1; var safe = d.lastInn && root.MAP_DEFS[d.lastInn.map] && !(RECT[d.lastInn.map] && W76.entryBlock(d.lastInn.map, null, null)) ? d.lastInn : { map: 'poyo_village', x: 24, y: 32 }; say(b.text); return em.call(this, safe.map, safe.x, safe.y, 'down', opt); } }
       return em.apply(this, arguments);
     };
   }

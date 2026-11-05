@@ -153,6 +153,10 @@ const ng = []; const ok = (c, m) => { if (!c) ng.push(m); console.log((c ? 'OK  
   setF(['ship_ready', 'galleon_ready', 'airship_owned']); const topMap = W.mapAt(300, 0); place(topMap, 300 - W.rect(topMap).x, 0, 'airship'); r = w.World.tryMove('up');
   ok(r === true && w.World.busy === true, '飛空艇：世界の北の果てから上へ → 天空群島へ上がる（' + topMap + '・別の空間への入口）');
   w.World.busy = false;
+  // ---------- 到着先の確かめ（ワープ・イベントの移動）
+  setF(['ship_ready']); d.lastInn = { map: 'poyo_village', x: 24, y: 32 }; place('world', 40, 60, null); w.World.enterMap('world_magicka', 80, 60, 'down');
+  const g1m = w.World.map.id; place('magicka_city', 10, 10, null); w.World.enterMap('world_magicka', 80, 60, 'down'); const g2m = w.World.map.id;
+  ok(g1m !== 'world_magicka' && g2m === 'world_magicka', 'まだ行けない地域へ、ほかの地域からワープで着こうとすると止める（' + g1m + '）／その地域の町から出るときは止めない（' + g2m + '）');
   // ---------- セーブ
   setF(['ship_ready', 'galleon_ready', 'yorn_letter_done']); const sea = W.SEAS.find((id) => { const m = w.World.getMap(id); return w.Vehicle.terrainOk('galleon', m, 5, 5); }); place(sea, 5, 5, 'galleon');
   const save = JSON.parse(JSON.stringify(d)); ok(save.pos.map === sea && save.vehicles.galleon.map === sea, '共通の海でのセーブ：形は「地図の ID＋ローカル座標」（' + sea + ' 5,5）');
