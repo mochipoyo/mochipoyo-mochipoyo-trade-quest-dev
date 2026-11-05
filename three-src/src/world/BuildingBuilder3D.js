@@ -6,7 +6,7 @@
    ・施設ごとの吊り看板（3Dアイコン）と名札、教会の鐘楼、修行場の幟
    ========================================================= */
 import * as THREE from 'three';
-import { box, Batch, M4, textTexture } from '../engine/Materials.js';
+import { box, rbox, Batch, M4, textTexture } from '../engine/Materials.js';
 
 const ROOF = { weapon: '#8a3a3a', armor: '#3f5f9f', item: '#3f8a5a', inn: '#b8603a', church: '#55607a', tavern: '#7a5a2a', bank: '#5a5a6a', guild: '#7a3a6a', dojo: '#2f5f8a', house: '#a8483a', elder: '#7a5a32', warehouse: '#5a6a7a', castle: '#4a4a6a' };
 const SHUTTER = { item: 'shutterGreen', inn: 'shutterRed', church: 'shutterBlue', dojo: 'shutterBlue', elder: 'shutterGreen', house: 'shutterRed' };
@@ -59,11 +59,12 @@ export class BuildingBuilder3D {
     const tb = st.frame === false ? { add() { } } : batch;   // 木組み（柱・梁・間柱・筋かい）。frame:false の建物は描かない
 
     // ---- 土台
-    batch.add(stone, box(W + 0.16, base, D + 0.16, 1.6), M4(cx, base / 2, cz));
+    const wbox = DET ? (w, h, d, s, r) => rbox(w, h, d, s, r) : (w, h, d, s) => box(w, h, d, s);   // v7.6 作り込み：壁と土台の角を丸く（人形・ジオラマ風）
+    batch.add(stone, wbox(W + 0.16, base, D + 0.16, 1.6, 0.07), M4(cx, base / 2, cz));
     // ---- 壁（1階・2階）
-    batch.add(plaster, box(W, h1, D, 2.2), M4(cx, base + h1 / 2, cz));
+    batch.add(plaster, wbox(W, h1, D, 2.2, 0.13), M4(cx, base + h1 / 2, cz));
     if (two) {
-      batch.add(plaster, box(W + jet * 2, h2, D + jet * 2, 2.2), M4(cx, base + h1 + h2 / 2, cz));
+      batch.add(plaster, wbox(W + jet * 2, h2, D + jet * 2, 2.2, 0.13), M4(cx, base + h1 + h2 / 2, cz));
       batch.add(timber, box(W + jet * 2 + 0.08, 0.16, D + jet * 2 + 0.08, 1.5), M4(cx, base + h1 + 0.02, cz));   // 2階床の梁
       for (let x = xl + 0.4; x < xr; x += 0.55) { batch.add(timber, box(0.12, 0.12, jet + 0.15, 1), M4(x, base + h1 - 0.06, zf + jet / 2)); batch.add(timber, box(0.12, 0.12, jet + 0.15, 1), M4(x, base + h1 - 0.06, zb - jet / 2)); }   // 根太の先
     }
@@ -220,7 +221,7 @@ export class BuildingBuilder3D {
     if (st.chimney !== false && ['inn', 'elder', 'house', 'item', 'dojo'].includes(type)) {
       const chx = type === 'item' ? xr - 1.2 : xl + 1.4, chz = cz - (rotZ ? D : ez) * 0.22;
       const chTop = top + rise + 0.9; const yFoot = top + rise * 0.35;
-      batch.add(stone, box(0.62, chTop - yFoot, 0.62, 1.2), M4(chx, (chTop + yFoot) / 2, chz));
+      batch.add(stone, DET ? rbox(0.62, chTop - yFoot, 0.62, 1.2, 0.08) : box(0.62, chTop - yFoot, 0.62, 1.2), M4(chx, (chTop + yFoot) / 2, chz));
       batch.add(stone, box(0.78, 0.14, 0.78, 1), M4(chx, chTop + 0.05, chz));
       out.smokes.push(new THREE.Vector3(chx, chTop + 0.2, chz));
     }
@@ -282,8 +283,8 @@ export class BuildingBuilder3D {
     }
     // ---- 壁の足元の汚れ（色の濃い帯）と苔
     const grime = stoneWall ? M.tinted('stonewall', darkHex(wallHex, 0.7)) : M.tinted('plaster', darkHex(wallHex, 0.8));
-    add(grime, box(W + 0.03, 0.4, D + 0.03, 2.2), M4(cx, base + 0.2, cz));
-    if (two && st.frame === false) add(grime, box(W + jet * 2 + 0.03, 0.12, D + jet * 2 + 0.03, 2.2), M4(cx, base + h1 + 0.06, cz));   // 2階の床の線
+    add(grime, rbox(W + 0.03, 0.4, D + 0.03, 2.2, 0.14), M4(cx, base + 0.2, cz));
+    if (two && st.frame === false) add(grime, rbox(W + jet * 2 + 0.03, 0.12, D + jet * 2 + 0.03, 2.2, 0.05), M4(cx, base + h1 + 0.06, cz));   // 2階の床の線
     if (HUMID[region] && hx(3) < 0.7) {
       const moss = M.tinted('plaster', region === 'magicka' ? '#5a6a4a' : '#5f7a3c'); const blob = new THREE.IcosahedronGeometry(1, 0);
       for (const [x0, sgn] of [[xl, 1], [xr, -1]]) for (let i = 0; i < 4; i++) { const r = 0.1 + rng() * 0.1; add(moss, blob, M4(x0 + sgn * (0.05 + rng() * 0.45), base + 0.05 + rng() * 0.25, zf + 0.02 + rng() * 0.05, rng() * 3, 0, 0, r, r * 0.6, r * 0.5)); }

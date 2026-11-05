@@ -3,6 +3,7 @@
    ========================================================= */
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { TEXTURES } from '../assets/manifest.js';
 import { addCutout } from './Cutout.js';
 
@@ -67,6 +68,18 @@ export function box(w, h, d, uvScale) {
     const nx = Math.abs(n.getX(i)), ny = Math.abs(n.getY(i));
     const x = p.getX(i) + w / 2, y = p.getY(i) + h / 2, z = p.getZ(i) + d / 2;
     if (nx > 0.5) uv.setXY(i, z / s, y / s); else if (ny > 0.5) uv.setXY(i, x / s, z / s); else uv.setXY(i, x / s, y / s);
+  }
+  return g;
+}
+// v7.6 角の丸い箱（人形・ジオラマ風のやわらかい角）。UV は box と同じくワールド単位（面の向きで投影）
+export function rbox(w, h, d, uvScale, r) {
+  const rr = Math.min(r || 0.1, w / 2 - 0.001, h / 2 - 0.001, d / 2 - 0.001); if (rr <= 0.005) return box(w, h, d, uvScale);
+  const g = new RoundedBoxGeometry(w, h, d, 2, rr);
+  const s = uvScale || 1; const uv = g.attributes.uv; const n = g.attributes.normal; const p = g.attributes.position;
+  for (let i = 0; i < uv.count; i++) {
+    const nx = Math.abs(n.getX(i)), ny = Math.abs(n.getY(i)), nz = Math.abs(n.getZ(i));
+    const x = p.getX(i) + w / 2, y = p.getY(i) + h / 2, z = p.getZ(i) + d / 2;
+    if (nx >= ny && nx >= nz) uv.setXY(i, z / s, y / s); else if (ny >= nz) uv.setXY(i, x / s, z / s); else uv.setXY(i, x / s, y / s);
   }
   return g;
 }
