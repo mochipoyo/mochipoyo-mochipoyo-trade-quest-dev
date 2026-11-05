@@ -655,7 +655,7 @@
       var sk = SKILLS[id]; if (sk.target !== 'enemy' && sk.target !== 'enemies') return; if (sk.kind !== 'attack' && sk.kind !== 'magic') return;
       var n = sk.target === 'enemies' ? foes.length : 1; var r = resistOf(target, sk.element);
       var est = sk.kind === 'attack' ? Math.max(1, s.atk * (sk.power || 1) - es.def * 0.5 * (1 - (sk.pierce || 0))) * (sk.hits || 1) : Math.max(1, (sk.power || 0) + s.mag * 1.2 - es.mdef * 0.5);
-      var score = est * r * (n > 1 ? n * 0.85 : (sk.v76 ? 0.7 : 1));   // v7.6 全体攻撃の技（js/data/skills76.js）は、敵が1体のときは選びにくくする（MP の使いすぎを防ぐ）
+      var score = est * r * (n > 1 ? n * (sk.v76 ? 0.6 : 0.85) : (sk.v76 ? 0.6 : 1));   // v7.6 全体攻撃の技（js/data/skills76.js）は、自動戦闘では選びにくくする（0.6 倍で比べる。MP の使いすぎで勝率が下がったため）
       if (score > bestScore) { bestScore = score; best = id; }
     });
     if (best) return cmd(best, SKILLS[best].target === 'enemy' ? { side: 'enemy', idx: target.idx } : null);

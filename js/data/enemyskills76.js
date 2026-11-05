@@ -5,7 +5,7 @@
    ・共通の呪文・特技（火球・雷撃・毒刃など）を使う敵は、その敵の名前のついた同じ性能の技に置きかえる（名前だけ固有。強さは同じ）
    ・ボス（44体）：手書きの固有技を2つ（単体の得意技・HP 半分以下で使う全体の大技）。強さは前の版に近づける：
      得意技は物理 1.1 倍／呪文は攻撃力の 0.9 倍ほど（魔力の高いボスは mult で弱める）。全体の大技は物理 0.4 倍・呪文は攻撃力の 0.35 倍ほど、
-     状態異常は単体 25%・全体 12%。得意技の重みのぶん、ふつうの攻撃の重みを 1 減らす（確認：boss64test のシミュレーション）
+     状態異常は単体 18%・全体 8%、会心 +15%・防御無視 20%・2回攻撃は1回 0.5 倍。得意技の重みのぶん、ふつうの攻撃の重みを 1 減らす（確認：boss64test のシミュレーション）
    ・敵の技は MP を使わない（spell：呪文。沈黙で使えない）。特殊行動（溜め・仲間を呼ぶ など）は変えない
    ・敵のID・能力・出現・報酬は変えない。前の版の行動は ENEMIES[id].actions0（JSON に出ない）に残す。戦闘の演出（FX65）は技の種類・属性から作る（置きかえた技は元の技と同じ演出）
    ・確認：docs/tools/v76/enemyskills_check.js
@@ -93,7 +93,7 @@
         var p = line.split('|'); var t = p[1], ele = EL[p[2]] || 'none'; var o = { name: uniq(p[0]), element: ele, mp: 0, owner: id, desc: e.name + 'の固有技' };
         if (t === 'w' || t === 'W') { o.kind = 'attack'; o.target = t === 'W' ? 'enemies' : 'enemy'; o.power = t === 'W' ? 0.4 : 1.1; o.anim = ele === 'none' ? 'slash' : ANIM[ele]; }
         else { o.kind = 'magic'; o.target = t === 'S' ? 'enemies' : 'enemy'; o.spell = true; o.anim = ANIM[ele]; o.power = t === 'S' ? Math.max(8, Math.round(0.35 * atk - 1.2 * mag)) : Math.max(12, Math.round(0.85 * atk - 1.2 * mag)); { const m = (t === 'S' ? 0.35 : 0.9) * atk / (o.power + 1.2 * mag); if (m < 1) o.mult = Math.round(m * 100) / 100; } }   // 強さ：単体は攻撃力の 0.9 倍・全体は 0.35 倍ほど（魔力の高いボスは mult で弱める）
-        p.slice(3).forEach(function (x) { if (x === 'h2') { o.hits = 2; o.power = Math.round(o.power * 0.65 * 100) / 100; } else if (x === 'p') o.pierce = 0.3; else if (x === 'c') o.crit = 0.3; else if (ST[x]) o.status = { id: ST[x], chance: o.target === 'enemies' ? 0.12 : 0.25 }; });
+        p.slice(3).forEach(function (x) { if (x === 'h2') { o.hits = 2; o.power = Math.round(o.power * 0.5 * 100) / 100; } else if (x === 'p') o.pierce = 0.2; else if (x === 'c') o.crit = 0.15; else if (ST[x]) o.status = { id: ST[x], chance: o.target === 'enemies' ? 0.08 : 0.18 }; });
         var sid = 'e76_' + id + '_' + (k + 1); addSkill(sid, o);
         acts.push(k === 0 ? { type: 'skill', id: sid, w: 1 } : { type: 'skill', id: sid, w: 1, hpBelow: 0.5 });
       });
