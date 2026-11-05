@@ -235,7 +235,7 @@
     srcLocs.forEach(function (l) {
       var p; if (l.fixed) p = { x: l.x, y: l.y }; else if (spec.pins && spec.pins[l.id]) { var t = L.tile(spec.pins[l.id][0], spec.pins[l.id][1]); p = { x: t.x - r.x, y: t.y - r.y }; } else { var f = fwd(xf, l.x, l.y); p = { x: Math.round(f.x) - r.x, y: Math.round(f.y) - r.y }; }
       p.x = Math.max(1, Math.min(Wd - 2, p.x)); p.y = Math.max(1, Math.min(Hd - 2, p.y));
-      if (!l.fixed && !(spec.islets && spec.islets.indexOf(l.id) >= 0)) { var q = snap(G, Wd, Hd, p.x, p.y, function (c, xx, yy) { return walkCh(c) && !WALLM[yy * Wd + xx] && !occupied[xx + ',' + yy] && nearWalk(G, Wd, Hd, xx, yy, WALLM) >= 3; }, 14); if (q) p = q; }
+      if (!(spec.islets && spec.islets.indexOf(l.id) >= 0)) { var q = snap(G, Wd, Hd, p.x, p.y, function (c, xx, yy) { return walkCh(c) && !WALLM[yy * Wd + xx] && !occupied[xx + ',' + yy] && nearWalk(G, Wd, Hd, xx, yy, WALLM) >= 3; }, 14); if (q) p = q; }
       locs.push({ id: l.id, x: p.x, y: p.y, comp: l.comp, icon: l.icon, ref: l.ref }); occupied[p.x + ',' + p.y] = 1; pos['L:' + l.id] = p;
     });
     locs.forEach(function (l) { for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var xx = l.x + dx, yy = l.y + dy; if (xx < 0 || yy < 0 || xx >= Wd || yy >= Hd || WALLM[yy * Wd + xx]) continue; var c = G[yy][xx]; if (WATER[c]) { if (!dx && !dy) G[yy][xx] = 's'; continue; } if (solidCh(c)) G[yy][xx] = c === '9' ? '8' : (id === 'world_dark' ? '+' : id === 'world_snow' ? 'n' : id === 'world_desert' ? 's' : '.'); }
@@ -279,7 +279,7 @@
     if (inOld) [root.SEARCH_POINTS, root.QUIZ_MONSTERS].forEach(function (Lst, li) { (Lst || []).forEach(function (sp, i) { if (!sp || sp.map !== id || typeof sp.x !== 'number') return; var q = place(li ? 'Q' : 'S', { x: sp.x, y: sp.y, ref: { id: (li ? 'q' : 's') + i } }, i); pos[(li ? 'Q' : 'S') + '#' + i] = q; }); });
     if (def.earth && def.earth.post) def.earth.post(G, { r: r, Wd: Wd, Hd: Hd, set: function (x, y, c) { if (x >= 0 && y >= 0 && x < Wd && y < Hd) G[y][x] = c; } });
     var rows = G.map(function (rw) { return rw.join(''); });
-    GEN[id] = { rows: rows, pos: pos, locs: locs, bridges: bridges, lab: labels(G, Wd, Hd), zoneOf: zoneOf, W: Wd, H: Hd, roads: roads, rect: r };
+    GEN[id] = { rows: rows, pos: pos, locs: locs, bridges: bridges, lab: labels(G, Wd, Hd), zoneOf: zoneOf, W: Wd, H: Hd, roads: roads, rect: r, objs: objs };
     return GEN[id];
   }
   function cpLocal(a) { return (a || []).map(function (o2) { return { ref: o2, x: o2.x, y: o2.y }; }); }
@@ -388,8 +388,8 @@
     var ex = EXACT[id] = {};
     g.locs.forEach(function (l) { if (l.ref) { if (o) ex[l.ref.x + ',' + l.ref.y] = { x: l.x, y: l.y }; l.ref.x = l.x; l.ref.y = l.y; } });
     (def.warps || []).forEach(function (wp) { var p = g.pos['L:' + wp.locId]; if (p) { wp.x = p.x; wp.y = p.y; } });
+    ['chests', 'npcs', 'events'].forEach(function (k, ki) { ((g.objs || {})[k] || []).forEach(function (it, i) { var key = 'CNE'[ki] + ':' + (it.ref && it.ref.id ? it.ref.id : i); var p = g.pos[key]; if (!p || !it.ref) return; if (o) ex[it.x + ',' + it.y] = ex[it.x + ',' + it.y] || { x: p.x, y: p.y }; it.ref.x = p.x; it.ref.y = p.y; }); });
     if (o) {
-      ['chests', 'npcs', 'events'].forEach(function (k, ki) { o[k].forEach(function (it, i) { var key = 'CNE'[ki] + ':' + (it.ref && it.ref.id ? it.ref.id : i); var p = g.pos[key]; if (!p) return; ex[it.x + ',' + it.y] = ex[it.x + ',' + it.y] || { x: p.x, y: p.y }; it.ref.x = p.x; it.ref.y = p.y; }); });
       [root.SEARCH_POINTS, root.QUIZ_MONSTERS].forEach(function (Lst, li) { (Lst || []).forEach(function (sp, i) { if (!sp || sp.map !== id) return; var p = g.pos[(li ? 'Q' : 'S') + '#' + i]; if (!p) return; sp._e78o = [sp.x, sp.y]; sp.x = p.x; sp.y = p.y; }); });
       // 出現表：新しい座標 → 旧座標で、前と同じ区分（始まりの草原・森など）
       if (def.encounters && def.encounters.zones && !def.encounters._e78) { def.encounters = Object.assign({}, def.encounters, { _e78: true, zones: def.encounters.zones.map(function (z) { var z2 = Object.assign({}, z); z2.test = function (x, y, m) { var b = mapBack(id, x, y); return z.test(b.x, b.y, m); }; return z2; }) }); }
