@@ -112,7 +112,9 @@ function tent(b, ctx) {
     flag(add, M, cx, wallH + h + 0.55, cz, col[0]);
   } else {   // 棟のある天幕：2本の柱と三角の布
     const h = 2.1 + rz * 0.35; const s = new THREE.Shape(); s.moveTo(-rz - 0.35, 0); s.lineTo(0, h); s.lineTo(rz + 0.35, 0); s.closePath();
-    const g = new THREE.ExtrudeGeometry(s, { depth: (rx + 0.3) * 2, bevelEnabled: false }); g.rotateY(Math.PI / 2); g.translate(cx - rx - 0.3, wallH - 0.05, cz); add(cloth, g, null);
+    const g = new THREE.ExtrudeGeometry(s, { depth: (rx + 0.3) * 2, bevelEnabled: false }); g.rotateY(Math.PI / 2); g.translate(cx - rx - 0.3, wallH - 0.05, cz);
+    { const P = g.attributes.position, U = g.attributes.uv; for (let i = 0; i < P.count; i++) U.setXY(i, (P.getX(i) - (cx - rx - 0.3)) / 4.8, (P.getY(i) - wallH) / h); U.needsUpdate = true; }   // v7.6 縞を棟から軒へ（以前は棟と平行の横縞で、屋根の建物に見えた）
+    add(cloth, g, null);
     const wb = new THREE.BoxGeometry(rx * 2, wallH, rz * 2); wb.translate(cx, wallH / 2, cz); add(wallC, wb, null);
     for (const sx of [-1, 1]) add(pole, new THREE.CylinderGeometry(0.06, 0.07, wallH + h + 0.5, 6).translate(cx + sx * (rx - 0.2), (wallH + h + 0.5) / 2, cz), null);
     add(pole, box(rx * 2 + 0.4, 0.08, 0.08, 1), M4(cx, wallH + h - 0.03, cz));
