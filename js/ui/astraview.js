@@ -82,7 +82,7 @@
       var first = this.region === undefined; this.region = rg;
       var nm = rg ? ((root.MAP_DEFS[rg] || {}).name || rg) : '外洋'; if (!first || this.anim) this.flash(nm, rg ? '' : '地域と地域のあいだの海');
       var rec = rg ? A().record(rg) : null;
-      if (rec) { this.flash(nm, '観測記録 ' + rec.n + '/' + A().ids().length + '：' + rec.text, 5200); if (root.Audio) root.Audio.sfx('magic'); if (rec.all) this.logComplete(); }
+      if (rec) { this.flash(nm, '観測記録 ' + rec.n + '/' + (A().logIds ? A().logIds() : A().ids()).length + '：' + rec.text, 5200); if (root.Audio) root.Audio.sfx('magic'); if (rec.all) this.logComplete(); }
     }
     // 位置の保存（オートセーブ。飛んでいる途中で閉じても、その場所から再開できる）
     this.saveT += dt; if (this.saveT > 8000) { this.saveT = 0; root.State.autosave(); }
@@ -113,7 +113,7 @@
   Scene.prototype.menu = async function () {
     if (this.busy) return; this.busy = true; this.vx = this.vy = 0; var Win = root.Win;
     try {
-      var i = await Win.list([{ label: '着陸地点を選ぶ（世界地図）' }, { label: '高度', right: this.alt === 'high' ? '高空' : '低空' }, { label: '観測記録', right: A().logCount() + '/' + A().ids().length }, { label: 'セーブ' }, { label: '操作', sub: '方向キー：飛ぶ／決定：近くに降りる／N・M：高度／X：このメニュー' }], { title: '星界航行船アストラ号' });
+      var i = await Win.list([{ label: '着陸地点を選ぶ（世界地図）' }, { label: '高度', right: this.alt === 'high' ? '高空' : '低空' }, { label: '観測記録', right: A().logCount() + '/' + (A().logIds ? A().logIds() : A().ids()).length }, { label: 'セーブ' }, { label: '操作', sub: '方向キー：飛ぶ／決定：近くに降りる／N・M：高度／X：このメニュー' }], { title: '星界航行船アストラ号' });
       if (i === 0) { this.openMap(); }
       if (i === 1) this.setAlt(this.alt === 'low' ? 'high' : 'low');
       if (i === 2) await A().showLog();
@@ -174,7 +174,7 @@
     // 表示（地域・座標・高度・案内）
     var rg = A().regionAt(s.wx, s.wy); var loc = A().toLocal(s.wx, s.wy); var nr = rg ? null : A().nearestRegion(s.wx, s.wy);
     var top = rg ? ((root.MAP_DEFS[rg] || {}).name || rg) + (loc ? '（' + loc.x + ', ' + loc.y + '）' : '') : '外洋' + (nr ? '（' + ((root.MAP_DEFS[nr.id] || {}).name || nr.id) + 'まで約' + Math.round(nr.d) + 'マス）' : '');
-    this.panel(ctx, 8, 8, top, '世界 ' + Math.round(s.wx) + ', ' + Math.round(s.wy) + '　' + (this.alt === 'high' ? '高空' : '低空') + '　観測 ' + A().logCount() + '/' + A().ids().length);
+    this.panel(ctx, 8, 8, top, '世界 ' + Math.round(s.wx) + ', ' + Math.round(s.wy) + '　' + (this.alt === 'high' ? '高空' : '低空') + '　観測 ' + A().logCount() + '/' + (A().logIds ? A().logIds() : A().ids()).length);
     var hint = near ? '決定：' + near.name + 'の近くに降りる' : (this.auto ? this.auto.name + 'へ自動で飛んでいる' : '方向キー：飛ぶ　決定：近くに降りる');
     this.panel(ctx, 8, H - 34, hint + '　X：メニュー　N：高度', null);
     if (this.banner) { var b = this.banner; var a = Math.min(1, b.t / 250, (b.dur - b.t) / 400); ctx.globalAlpha = Math.max(0, a); ctx.fillStyle = 'rgba(8,14,32,0.82)'; var bw = Math.min(W - 40, 560); ctx.fillRect(W / 2 - bw / 2, 52, bw, b.sub ? 64 : 34); ctx.strokeStyle = '#e8c15a'; ctx.strokeRect(W / 2 - bw / 2 + 0.5, 52.5, bw - 1, (b.sub ? 64 : 34) - 1); ctx.fillStyle = '#ffe08a'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(b.text, W / 2, 75); if (b.sub) { ctx.fillStyle = '#fff'; ctx.font = '11px sans-serif'; this.wrap(ctx, b.sub, W / 2, 94, bw - 20, 13); } ctx.globalAlpha = 1; }

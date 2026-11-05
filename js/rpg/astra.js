@@ -125,7 +125,7 @@
   // 地域の上空に入ったとき（飛行中）。新しく記録したら { id, text, n, all } を返す
   Astra.record = function (id) {
     var s = Astra.state(); if (!s || !s.owned || !id || !Astra.GRID[id] || !Astra.unlocked(id)) return null; s.log = s.log || {};
-    if (s.log[id]) return null; s.log[id] = Date.now(); var n = Astra.logCount(); var all = n >= Astra.ids().length;
+    if (s.log[id]) return null; s.log[id] = Date.now(); var n = Astra.logCount(); var all = n >= (Astra.logIds ? Astra.logIds() : Astra.ids()).length;
     return { id: id, text: Astra.LOG_TEXT[id] || '', n: n, all: all };
   };
 
@@ -178,7 +178,7 @@
     var W = root.World, Win = root.Win, s = Astra.state(); if (!s || !s.owned) return null;
     var where = s.flying ? '飛行中' : ((root.MAP_DEFS[s.map] || {}).name || s.map) + '（' + s.x + ', ' + s.y + '）';
     var here = Astra.recallSpot(); var canCall = !!here && !(s.map === W.map.id && Math.abs(s.x - W.player.x) + Math.abs(s.y - W.player.y) <= 2);
-    var i = await Win.list([{ label: 'ここへ呼ぶ', disabled: !canCall, sub: here ? '今いる地域の、すぐ近くに降りてくる' : '地域のフィールド（町・ダンジョンの外）で呼べる' }, { label: '観測記録', right: Astra.logCount() + '/' + Astra.ids().length }, { label: 'いまの置き場所', right: where }], { title: '星界航行船アストラ号' });
+    var i = await Win.list([{ label: 'ここへ呼ぶ', disabled: !canCall, sub: here ? '今いる地域の、すぐ近くに降りてくる' : '地域のフィールド（町・ダンジョンの外）で呼べる' }, { label: '観測記録', right: Astra.logCount() + '/' + (Astra.logIds ? Astra.logIds() : Astra.ids()).length }, { label: 'いまの置き場所', right: where }], { title: '星界航行船アストラ号' });
     if (i === 0 && canCall) { Astra.recall(); Win.toast('アストラ号が降りてきた'); if (root.Audio) root.Audio.sfx('magic'); root.State.autosave(); return 'called'; }
     if (i === 1) { await Astra.showLog(); }
     if (i === 2) { await Win.message(['アストラ号は ' + where + ' にある。', 'メニューの「ここへ呼ぶ」で、今いる地域へ呼べる。']); }
@@ -186,7 +186,7 @@
   };
   Astra.showLog = async function () {
     var s = Astra.state(), Win = root.Win; var lines = Astra.ids().map(function (id) { var n = (root.MAP_DEFS[id] || {}).name || id; return (s.log && s.log[id] ? '★ ' + Astra.LOG_TEXT[id] : '・' + n + '：まだ記録していない（上空を飛ぶと記録される）'); });
-    await Win.message(['観測記録 ' + Astra.logCount() + '/' + Astra.ids().length].concat(lines));
+    await Win.message(['観測記録 ' + Astra.logCount() + '/' + (Astra.logIds ? Astra.logIds() : Astra.ids()).length].concat(lines));
   };
   // 読み込んだとき：置き場所の点検と、飛んでいる途中のセーブならその場所から飛び続ける
   if (root.World && root.World.start) { var origStart = root.World.start; root.World.start = function () { var r = origStart.apply(this, arguments); try { Astra.validate(); if (Astra.flying() && root.AstraView) root.AstraView.open({ resume: true }); } catch (e) { if (root.console) console.error('Astra', e); } return r; }; }
