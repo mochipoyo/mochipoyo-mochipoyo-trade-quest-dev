@@ -93,7 +93,7 @@
   function reachOK(def, rows, id) {
     var H = rows.length, W = rows[0].length; var POT = {}; (root.SEARCH_POINTS || []).forEach(function (p) { if (p && p.map === id) POT[p.x + ',' + p.y] = 1; });   // 調べる所（壺など）は通れないものとして数える
     var walk = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H && !solidCh(def, rows[y][x]) && !POT[x + ',' + y]; };
-    var npcAt = {}; (def.npcs || []).forEach(function (n) { if (n.wander === 0) npcAt[n.x + ',' + n.y] = 1; });
+    var npcAt = {}; (def.npcs || []).forEach(function (n) { npcAt[n.x + ',' + n.y] = 1; });   // 人の立ち位置は通れないものとして数える（歩き回る人も、立っているときに行き止まりを作らない）
     var starts = (def.warps || []).filter(function (q) { return q && walk(q.x, q.y); }); if (!starts.length) return true;
     var seen = {}; var q = [[starts[0].x, starts[0].y]]; seen[starts[0].x + ',' + starts[0].y] = 1;
     while (q.length) { var a = q.pop(); [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) { var nx = a[0] + d[0], ny = a[1] + d[1], k = nx + ',' + ny; if (seen[k] || !walk(nx, ny) || npcAt[k]) return; seen[k] = 1; q.push([nx, ny]); }); }

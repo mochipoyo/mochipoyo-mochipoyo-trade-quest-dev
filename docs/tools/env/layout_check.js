@@ -50,13 +50,14 @@ for (const id of Object.keys(D)) {
     S.data.flags = saved;
     const L = m1.envLayout; const nChanged = L ? L.changed.length : 0;
     const r = { kind, flags: allFlags ? 'all' : 'none', skip: L && L.skip || null, changed: nChanged, rejected: L ? L.rejected : 0, error: L && L.error || null, landmark: L && L.landmark || null, sections: L && L.sections ? L.sections.map((s) => s.kind + (s.carved ? '+' + s.carved : '') + (s.pillars ? '/p' + s.pillars : '') + (s.placed ? '/n' + s.placed : '')) : null };
+    const TR76 = !!(m1.def && m1.def.levels76);
     for (const open of [false, true]) {
       const a = reach(m0, open), b = reach(m1, open); const A = new Set(a.list), B = new Set(b.list);
       const lost = a.list.filter((k) => !B.has(k)), gained = b.list.filter((k) => !A.has(k));
       r[open ? 'open' : 'closed'] = { tiles: a.tiles + '→' + b.tiles, lost, gained };
       if (lost.length || gained.length) { r.ng = true; }
       const d0 = dists(m0, open), d1 = dists(m1, open); const sc = [], dt = [];
-      for (const k of Object.keys(d0)) { if (d1[k] === undefined) continue; if (d1[k] < d0[k]) sc.push(k + ' ' + d0[k] + '→' + d1[k]); else if (d1[k] > d0[k] + 4 + Math.floor(d0[k] * 0.1)) dt.push(k + ' ' + d0[k] + '→' + d1[k]); if (d1[k] - d0[k] > maxDetour) maxDetour = d1[k] - d0[k]; }
+      for (const k of Object.keys(d0)) { if (d1[k] === undefined) continue; if (d1[k] < d0[k]) sc.push(k + ' ' + d0[k] + '→' + d1[k]); else if (d1[k] > d0[k] + (TR76 ? 8 : 4) + Math.floor(d0[k] * (TR76 ? 0.2 : 0.1))) dt.push(k + ' ' + d0[k] + '→' + d1[k]);   /* v7.6 段のある町（towns76）は擁壁を回る分＋8歩＋2割まで */ if (d1[k] - d0[k] > maxDetour) maxDetour = d1[k] - d0[k]; }
       r[open ? 'open' : 'closed'].shortcut = sc.slice(0, 5); r[open ? 'open' : 'closed'].detour = dt.slice(0, 5); if (sc.length) { r.ng = true; shortcutN++; } if (dt.length) { r.ng = true; detourN++; }
     }
     if (r.ng) ng++; if (nChanged) { changedMaps++; totalChanged += nChanged; }
