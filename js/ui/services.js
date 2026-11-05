@@ -42,6 +42,7 @@
     var extra = kind === 'item' && root.SHOP_EXTRAS && World.map ? root.SHOP_EXTRAS[World.map.id] : null;
     if (extra) stock = stock.concat(extra.filter(function (id) { return ITEMS[id] && stock.indexOf(id) < 0; }));
     stock = Services.addedStock(stock);   // v6.4 新しい装備・道具（js/data/gear64.js の SHOP_ADD。物語の進み具合で並ぶ）
+    if ((kind === 'weapon' || kind === 'armor') && root.ShopTier76 && World.map) stock = root.ShopTier76.filter(stock, World.map.id);   // v7.6 前の地域の弱い装備は並べない（js/rpg/shoptier76.js）
     while (true) {
       var a = await Win.choice('いらっしゃい。何をする？（所持金 ' + d.gold + 'G）', ['買う', '売る', 'やめる']);
       if (a === 2 || a === -1) { await Win.message(['またどうぞ。']); return; }
