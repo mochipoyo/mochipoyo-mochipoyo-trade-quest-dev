@@ -13,7 +13,7 @@
 
   /* ---------- 表示用データ（既存の地域ID → 位置・演出） ---------- */
   // 位置は従来の「世界」タブ（Minimap.GLOBE の x・y）と同じ並び（3列×5段）。舞台は 1200×1820（段の間に航路のマークを置く余白）
-  var STAGE = { w: 1200, h: 1820 }; var WM_JOIN76 = false;
+  var STAGE = { w: 1200, h: 1820 }; var WM_JOIN76 = false; var WM_BAND = 0;
   var PIC = { w: 280, h: 191 };   // 地域の絵の表示サイズ（元画像 332×227）
   var LAYOUT = {
     world_dark: { x: 190, y: 185, fx: 'dark', color: '#4a2a6a' },
@@ -29,15 +29,17 @@
     world_machine: { x: 600, y: 1585, color: '#5a5a9a' },
     world_dragon: { x: 1005, y: 1570, fx: 'lava', color: '#a83a1a' }
   };
-  // v7.6 つないだ世界（js/rpg/world76.js。3D 版）：地域の絵を、つないだ世界の並び（4 列 × 3 段）に置き直す。
-  //   天空群島（空の上）とゼロメア（異空間）は下の段に別に置く。外海（sea76_*）は絵なし（海だけ）
+  // v7.6 つないだ世界（js/rpg/world76.js。3D 版）：地域の絵を、つないだ世界の実際の配置（世界の座標 × 2.4）に置き直す（地図と同じデータ）。
+  //   天空群島（空の上）とゼロメア（異空間）は、下の帯に別の空間として置く。共通の海（sea76_*）は絵なし
   (function () {
     var W76 = root.World76; if (!W76 || !W76.on || !W76.on()) return;
-    var cols = W76.GRID[0].length, rows = W76.GRID.length, CWp = 400, CHp = 400;
-    STAGE.w = cols * CWp; STAGE.h = (rows + 1) * CHp + 40;
-    W76.GRID.forEach(function (row, r) { row.forEach(function (id, c) { if (!LAYOUT[id]) return; LAYOUT[id].x = c * CWp + CWp / 2; LAYOUT[id].y = r * CHp + CHp / 2 + 20; }); });
-    if (LAYOUT.world_sky) { LAYOUT.world_sky.x = CWp / 2; LAYOUT.world_sky.y = rows * CHp + CHp / 2 + 20; }
-    if (LAYOUT.world_machine) { LAYOUT.world_machine.x = (cols - 1) * CWp + CWp / 2; LAYOUT.world_machine.y = rows * CHp + CHp / 2 + 20; }
+    var SC = 2.4, sz = W76.size(); var band = 420;
+    STAGE.w = Math.round(sz.w * SC); STAGE.h = Math.round(sz.h * SC) + band;
+    W76.REGIONS.forEach(function (id) { var r = W76.rect(id); if (!LAYOUT[id] || !r) return; LAYOUT[id].x = Math.round((r.x + r.w / 2) * SC); LAYOUT[id].y = Math.round((r.y + r.h / 2) * SC); });
+    var bandY = Math.round(sz.h * SC) + band / 2;
+    if (LAYOUT.world_sky) { LAYOUT.world_sky.x = Math.round(((W76.rect('world') || { x: 0 }).x + 80) * SC); LAYOUT.world_sky.y = bandY; }
+    if (LAYOUT.world_machine) { var rt = W76.rect('world_tempus') || { x: 0 }; LAYOUT.world_machine.x = Math.round((rt.x + 80) * SC); LAYOUT.world_machine.y = bandY; }
+    WM_BAND = Math.round(sz.h * SC);
     WM_JOIN76 = true;
   })();
   var VEH = { '徒歩': 'walk', '小型帆船': 'boat', '遠洋航海船': 'ship', '飛空艇': 'air' };
@@ -86,7 +88,7 @@
       '<div class="wm-sea"' + (imgUrl('sea') ? ' style="background-image:url(\'' + imgUrl('sea') + '\')"' : '') + '></div>' +
       '<svg class="wm-routes" id="wm-routes" width="' + STAGE.w + '" height="' + STAGE.h + '" viewBox="0 0 ' + STAGE.w + ' ' + STAGE.h + '"></svg>' +
       '<div class="wm-frame"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div>' +
-      '<div class="wm-compass" style="left:' + (STAGE.w - 160) + 'px;top:36px">' + COMPASS + '</div>' + (WM_JOIN76 ? '<div class="wm-join76" style="position:absolute;left:24px;top:' + (STAGE.h - 430) + 'px;width:' + (STAGE.w - 48) + 'px;height:2px;border-top:2px dashed rgba(255,233,168,0.45)"></div><div style="position:absolute;left:30px;top:' + (STAGE.h - 425) + 'px;color:#ffe9a8;font:bold 22px sans-serif;text-shadow:0 1px 3px #000">ここから下は、つながった世界の外（空の上・異空間）</div>' : '');
+      '<div class="wm-compass" style="left:' + (STAGE.w - 160) + 'px;top:36px">' + COMPASS + '</div>' + (WM_JOIN76 ? '<div class="wm-join76" style="position:absolute;left:24px;top:' + (WM_BAND + 6) + 'px;width:' + (STAGE.w - 48) + 'px;height:2px;border-top:2px dashed rgba(255,233,168,0.45)"></div><div style="position:absolute;left:30px;top:' + (WM_BAND + 12) + 'px;color:#ffe9a8;font:bold 22px sans-serif;text-shadow:0 1px 3px #000">ここから下は、地上の世界とは別の空間（空の上・異空間）</div>' : '');
     ids().forEach(function (id) {
       var L = LAYOUT[id]; var u = imgUrl(id);
       html += '<div class="wm-region' + (L.fx ? ' fx-' + L.fx : '') + '" data-id="' + id + '" role="button" aria-label="' + esc(shortName(id)) + '" style="left:' + (L.x - PIC.w / 2) + 'px;top:' + (L.y - PIC.h / 2) + 'px;width:' + PIC.w + 'px;height:' + PIC.h + 'px;--rc:' + L.color + '">' +
@@ -128,6 +130,7 @@
       var r = WM.regions[id]; var s = status(id);
       r.classList.toggle('navt', id === navR);
       r.classList.toggle('cur', s.cur); r.classList.toggle('visited', s.vis); r.classList.toggle('unvisited', !s.vis); r.classList.toggle('sel', WM.sel === id);
+      var nmEl = r.querySelector('.wm-name'); if (nmEl && nmEl.firstChild && nmEl.firstChild.nodeType === 3) nmEl.firstChild.textContent = (WM_JOIN76 && !s.vis && !s.cur) ? '？？？' : shortName(id);   // v7.6 つないだ世界：訪れていない地域の名前は「？？？」
       var sub = r.querySelector('.wm-sub'); sub.textContent = s.cur || s.vis ? '' : s.reach ? '未踏・行ける' : '未踏'; sub.style.display = sub.textContent ? '' : 'none';
     });
     // 航路（SVG の線）と乗り物のマーク
@@ -162,7 +165,7 @@
         (open.length ? open.map(function (p) { var here = root.World.map && root.World.map.id === p.to; return '<button class="wm-tp" data-act="travel" data-id="' + esc(p.id) + '"' + (!cu.ok || here ? ' disabled' : '') + '>' + esc(p.name) + (p.kind === 'dungeon' ? '（入口）' : '') + (here ? '・現在地' : '') + '</button>'; }).join('') : '<span class="small muted">まだ訪れた場所がない</span>') +
         (pts.length > open.length ? '<span class="small muted wm-travel-rest">未訪問の場所 ' + (pts.length - open.length) + 'か所</span>' : '') + '</div>';
     }
-    info.innerHTML = '<div class="wm-info-head"><b>' + esc(fullName(id)) + '</b><span class="wm-chip ' + (s.cur ? 'cur' : s.vis ? 'vis' : 'new') + '">' + (s.cur ? '現在地' : s.vis ? '訪問済み' : s.reach ? '未踏（行ける）' : '未踏') + '</span><button class="wm-x" data-act="close" aria-label="閉じる">✕</button></div>' +
+    info.innerHTML = '<div class="wm-info-head"><b>' + esc((WM_JOIN76 && !s.vis && !s.cur) ? '？？？' : fullName(id)) + '</b><span class="wm-chip ' + (s.cur ? 'cur' : s.vis ? 'vis' : 'new') + '">' + (s.cur ? '現在地' : s.vis ? '訪問済み' : s.reach ? '未踏（行ける）' : '未踏') + '</span><button class="wm-x" data-act="close" aria-label="閉じる">✕</button></div>' +
       '<div class="wm-info-body"><div class="small">訪れた町・ダンジョン：' + seen + '／' + locs.length + '</div>' + (routes ? '<ul class="wm-routes-list">' + routes + '</ul>' : '') + tl + '</div>' +
       '<div class="wm-info-foot"><button class="wm-go" data-act="terrain">地形を見る（地域の地図）</button></div>';
     info.classList.add('on');

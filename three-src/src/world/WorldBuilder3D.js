@@ -204,12 +204,20 @@ export class WorldBuilder3D {
     // ---------------- 水・溶岩・雲海
     this.surfaces = [];
     let spaceRim = null;   // v7.6 異空間：色の r＝角を囲む4マスのうち陸の割合（岸のそばの光る縁）
-    // v7.6 つないだ世界：となりの地域との境目の近く（BLEND マス）は、水の色をとなりの地域の色へ半分まで寄せる（境目で色が切れない）
+    // v7.6 つないだ世界：水の色は世界の座標から決める（地図の境目・海の地図との境目で切れない）
+    //   色合い＝まわりの地域の水の色を、地域の長方形からの距離で重みづけ（中は自分の色、境目は半分ずつ、遠い沖は外洋の色）
+    //   深さ＝いちばん近い陸からの距離（World76.landDist。岸の近くは明るく、沖は深い色）。タイルの種類（浅瀬・海・深い海）は乗り物と敵の出方にだけ使う
     let seaBlend = null;
-    if (J76 && window.World76) { const BLEND = 14; const nbs = window.World76.neighbors(map.id).map((nb) => { let th = null; try { th = themeFor({ id: nb.id, kind: 'field', def: (window.MAP_DEFS || {})[nb.id] || {} }); } catch (e) { th = null; } return th ? { side: nb.side, water: new THREE.Color(th.water), deep: new THREE.Color(th.deep) } : null; }).filter(Boolean);
-      if (nbs.length) { const tmp = new THREE.Color(); seaBlend = (arr, cx, cz, t) => { if (!WATERY[t] && t !== 'water') return arr; let r = arr[0], g = arr[1], b = arr[2];
-        for (const n of nbs) { const dist = n.side === 'w' ? cx : n.side === 'e' ? W - cx : n.side === 'n' ? cz : H - cz; if (dist >= BLEND) continue; const k = 0.5 * (1 - Math.max(0, dist) / BLEND); tmp.copy(t === 'deep' ? n.deep : n.water); r += (tmp.r - r) * k; g += (tmp.g - g) * k; b += (tmp.b - b) * k; }
-        return [r, g, b]; }; } }
+    if (J76 && window.World76 && window.World76.landDist) { const W76 = window.World76; const o = W76.origin(map.id);
+      const regs = (W76.REGIONS || []).map((id) => { let th = null; try { th = themeFor({ id, kind: 'field', def: (window.MAP_DEFS || {})[id] || {} }); } catch (e) { th = null; } return th ? { id, w: new THREE.Color(th.water), d: new THREE.Color(th.deep) } : null; }).filter(Boolean);
+      const ocW = new THREE.Color('#2c6a9c'), ocD = new THREE.Color('#163c68'), sh = new THREE.Color('#6ab8c8'); const L2 = 24 * 24;
+      seaBlend = (arr, cx, cz, t) => { if (!WATERY[t] && t !== 'water') return arr; const gx = o.x + cx, gz = o.y + cz;
+        let ws = 0.03, wr = ocW.r * 0.03, wg = ocW.g * 0.03, wb = ocW.b * 0.03, dr = ocD.r * 0.03, dg = ocD.g * 0.03, db = ocD.b * 0.03;
+        for (const r of regs) { const dd = W76.distTo(r.id, gx, gz); if (dd > 72) continue; const k = Math.exp(-(dd * dd) / L2); ws += k; wr += r.w.r * k; wg += r.w.g * k; wb += r.w.b * k; dr += r.d.r * k; dg += r.d.g * k; db += r.d.b * k; }
+        let ld = 99; for (const [dx, dz] of [[-1, -1], [0, -1], [-1, 0], [0, 0]]) ld = Math.min(ld, W76.landDist(Math.floor(gx + dx), Math.floor(gz + dz)));
+        const dep = Math.max(0, Math.min(1, (ld - 1.5) / 12)); const near = Math.max(0, Math.min(1, 1 - (ld - 0.5) / 2.5)) * 0.55;
+        let r0 = (wr + (dr - wr) * dep) / ws, g0 = (wg + (dg - wg) * dep) / ws, b0 = (wb + (db - wb) * dep) / ws;
+        r0 += (sh.r - r0) * near; g0 += (sh.g - g0) * near; b0 += (sh.b - b0) * near; return [r0, g0, b0]; }; }
     const surf = (test, y, mat, name, margin) => {
       const qs = [];
       for (let z = gz0; z < gz1; z++) for (let x = gx0; x < gx1; x++) { if (!margin && !inside(x, z)) continue; if (test(Tg(x, z), x, z)) qs.push([x, z]); }

@@ -208,7 +208,8 @@
     var along = destHarbor ? ((e0.edge === 'east' || e0.edge === 'west') ? destHarbor.moor.y : destHarbor.moor.x) : null;
     if (along === null && path.length === 1 && t.x !== null) along = (e0.edge === 'east' || e0.edge === 'west') ? t.y : t.x;
     if (aboard && r.vehicle.indexOf(aboard) >= 0) {
-      var ep = H ? H.edgePoint(m, e0.edge, along, aboard, W().player.x, W().player.y) : null;
+      if (root.World76) root.World76._segRoute = r;   // v7.6 つないだ世界：その道の範囲（seg）の中の出口を選ぶ
+      var ep = H ? H.edgePoint(m, e0.edge, along, aboard, W().player.x, W().player.y) : null; if (root.World76) root.World76._segRoute = null;
       return ep ? { x: ep.x, y: ep.y, kind: 'edge', label: r.name, sea: true } : { none: true, reason: r.name + 'の出口が見つからない' };
     }
     var parked = usableVehicles(r).map(function (v) { var s = V.state(v); return s && s.map === m.id ? { id: v, x: s.x, y: s.y } : null; }).filter(Boolean)[0];
