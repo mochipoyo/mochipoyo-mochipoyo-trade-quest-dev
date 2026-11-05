@@ -239,7 +239,8 @@
 - 回帰の修正（jsdom・作業中の版）：towns76_check 21 町 OK・interior76_check 240 部屋 OK・layout_check NG 0・edgeexittest 24 OK・events65test 52 OK・expandA2/A3/A4/A6・expandAtest 80 OK・towns72・ch1012・p2test・tradiatest。
 - 3D の画面（ヘッドレス Chromium・ソフトウェア描画）：PC（高画質）でリヴェル・カリオン・ダウ（夜）・マクディアの丘・リヴェルの宿屋・砂都サハル、スマホ（iPhone 13 の画面・軽量）でダウ。ページのエラーなし。
 - 描画の量（ヘッドレスの数字。実機の値ではない）：建物の作り込みで町の描画回数 +20〜40 回（色ごとの材質）、三角形 +1〜2 万。スマホの画面（軽量）でダウの 1 フレーム 580ms → 613ms（ソフトウェア描画なので実機の速さは未測定）。
-- 回帰一式（6832a43 のスナップショット）：実行中（結果は 10-4 に書き足す）。
+- 回帰一式（6832a43 のスナップショット）：2D の回帰 52 件・追加 26 件は前の基準（r75）と比べて新しい失敗なし（もとから落ちている p1test・navsim・entryaudit は同じ。v59test・boss64test は今回は通った）。towns76_check・interior76_check（240 部屋・家具 2292）・bread76_test・layout_check（NG 0）・arrival_check・save_layout_test はすべて OK。3D の一部 9 件：8 件 OK、p75b_save は画面の保存の時間切れ（同時にもう1組の 3D の確認を動かしていた）→ 単独で動かし直して OK。
+- 3D だけの追加（角の丸み・天幕の縞・敷物・梁。dc16922 のスナップショット）：3D の一部 9 件のうち 7 件 OK、p68d_follow（画面の保存の時間切れ）・p74b_fallback（戦闘の画面の確認が時間内に始まらない）は同時に動かしていたため → 最新（22fe9c2）で単独で動かし直して OK。噴水の水の幕（22fe9c2）は画面で確認しただけ。
 
 ### 10-3. 画像（`docs/images/environment/`。左＝前（05ef41d）・右＝後（6832a43）。同じ場所・同じカメラ・同じ時間帯）
 - `finish79_town.jpg`（リヴェルの広場・カリオン・ダウの夜）・`finish79_field_inn.jpg`（マクディアの丘・リヴェルの宿屋）。
