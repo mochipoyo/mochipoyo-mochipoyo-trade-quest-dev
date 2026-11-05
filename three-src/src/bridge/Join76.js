@@ -66,13 +66,28 @@ export class Join76 {
     for (const nb of W76.neighbors(a.current.map.id)) { if (a.failed[nb.id]) continue; const c = a.cache.get(nb.id); if (c && c.map === window.World.maps[nb.id]) continue; const dist = this.edgeDist(nb.side); if (dist < NEAR && (!pick || dist < pick.dist)) pick = { id: nb.id, dist }; }
     if (pick) this.build(pick.id);
   }
+  // 裏で組み立てる：組み立ての途中（地面・水・壁・木・建物などの区切り）で 1 フレーム画面へ返す（ゲームが止まる時間を短くする）。
+  //   最後に、映す前にシェーダーを用意する（compileAsync。初めて映るときの引っかかりを減らす。4 秒で打ち切り）
+  //   止まった時間（区切りの間の一番長い時間）は stats.slice_<地域> に残す（確認用）
   build(id) {
     const a = this.app; let m; try { m = window.World.getMap(id); } catch (e) { a.failed[id] = true; return; }
-    this.building = id; const ms = new MapScene3D(a); const t0 = performance.now();
-    ms.build(m).then(() => {
+    this.building = id; this.buildingMap = m; const ms = new MapScene3D(a); const t0 = performance.now();
+    const st = { id, n: 0, max: 0, sum: 0, compileMs: null }; this.sliceStats = st; let last = performance.now();
+    const mark = () => { const d = performance.now() - last; st.n++; st.sum += d; if (d > st.max) st.max = d; };
+    const slice = () => { mark(); return new Promise((r) => requestAnimationFrame(() => setTimeout(() => { last = performance.now(); r(); }, 0))); };
+    ms.build(m, { slice }).then(async () => {
+      await slice();
+      const R = a.renderer && a.renderer.renderer; const cam = a.camera && a.camera.camera;
+      if (R && R.compileAsync && cam) {
+        const tc = performance.now(); let pr = null; try { pr = R.compileAsync(ms.root, cam, a.scene); } catch (e) { pr = null; }
+        const sync = performance.now() - tc; st.n++; st.sum += sync; if (sync > st.max) st.max = sync; st.compileSync = Math.round(sync);   // 用意の始め（同期の部分）も止まる時間に数える
+        if (pr) { try { await Promise.race([pr, new Promise((r) => setTimeout(r, 4000))]); } catch (e) { /* 用意できなくても表示はできる */ } }
+        st.compileMs = Math.round(performance.now() - tc); last = performance.now();
+      }
+      mark();
       const old = a.cache.get(id); if (old && old !== ms && old !== a.current) { try { old.dispose(); } catch (e) { /* なし */ } }
-      a.cache.set(id, ms); ms.usedAt = performance.now(); a.stats['build_' + id] = Math.round(performance.now() - t0); this.building = null;
+      a.cache.set(id, ms); ms.usedAt = performance.now(); a.stats['build_' + id] = Math.round(performance.now() - t0); a.stats['slice_' + id] = Math.round(st.max); this.building = null; this.buildingMap = null;
       if (window.World.map === m && a.current !== ms) a.activate(ms); else this.layout();
-    }).catch((e) => { console.error('join76 build failed', id, e); a.failed[id] = true; this.building = null; });
+    }).catch((e) => { console.error('join76 build failed', id, e); a.failed[id] = true; this.building = null; this.buildingMap = null; });
   }
 }

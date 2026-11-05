@@ -24,7 +24,7 @@
   Saves.writeRaw = function (slot, text) { var s = ls(); if (!s) return false; try { s.setItem(PREFIX + slot, text); return true; } catch (e) { return false; } };
 
   /* ---------- 一覧に出す情報 ---------- */
-  Saves.placeName = function (mapId) { var M = root.MAP_DEFS || {}; return (M[mapId] && M[mapId].name) || (root.WORLD_DEF && root.WORLD_DEF.id === mapId ? root.WORLD_DEF.name : '') || mapId || '—'; };
+  Saves.placeName = function (mapId) { var M = root.MAP_DEFS || {}; return (M[mapId] && M[mapId].name) || (root.WORLD_DEF && root.WORLD_DEF.id === mapId ? root.WORLD_DEF.name : '') || (root.World76 && root.World76.FILLERS && root.World76.FILLERS[mapId] ? root.World76.FILLERS[mapId].name : '') || mapId || '—'; };   // v7.6 つないだ世界の外海（2D 版・つながないときは地図に無い）も名前で
   Saves.chapter = function (d) { var C = root.STORY_CHAPTERS || []; var cur = null; C.forEach(function (c) { if (!c.flag || (d.flags && d.flags[c.flag])) cur = c; }); return cur ? cur.title : ''; };
   Saves.meta = function (d) {
     if (!d || !d.hero) return null; var J = root.JOBS || {};

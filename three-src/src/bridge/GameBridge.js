@@ -201,6 +201,7 @@ export class App3D {
     const c = this.cache.get(map.id);
     if (c && c.map === map) { this.activate(c); return; }
     if (this.building === map) return;
+    if (this.join.building === map.id && this.join.buildingMap === map) return;   // v7.6 つないだ世界：となりの地域として裏で組み立て中（できたら Join76 が切り替える。同じ地域を2つ作らない）
     this.building = map; const t0 = performance.now();
     const ms = new MapScene3D(this);
     ms.build(map).then(() => {

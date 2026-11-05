@@ -90,6 +90,7 @@ export class WorldBuilder3D {
       let shore = 0; if (round && n > 0) { let wv = 0, ld = 0; for (const tz of zs) for (const tx of xs) { if (WATERY[Tg(tx, tz)]) wv++; else ld++; } if (wv && ld) shore = (fbm(x * 0.9 + 31, z * 0.9 + 17) - 0.5) * 0.8; }   // v6.8 岸の高さを揺らす（岸の線がまっすぐにならない）
       return s / n + shore + (amp ? (fbm(x * 0.33 + 7, z * 0.33 + 3) - 0.5) * amp * 2 : 0);
     };
+    if (this.slice) await this.slice();   // v7.6 つないだ世界：となりの地域を裏で組み立てるときは、ここで一度画面へ返す（止まる時間を短く）
     // ---------------- 地面（区画ごと）
     const S = hi ? 2 : 1; const CH = field ? 32 : 24;
     // v7.6 つないだ世界（js/rpg/world76.js）：となりの地域がある側は、地図の外の地面・海・木・山を作らない（となりの地域と重ならない）
@@ -123,6 +124,7 @@ export class WorldBuilder3D {
     const heightAtWalk = (x, z) => (WY && WY(x, z) !== null ? WY(x, z) : wet.has(Math.floor(x) + ',' + Math.floor(z)) ? 0.05 + lvY(Math.floor(x), Math.floor(z)) : quay.has(Math.floor(x) + ',' + Math.floor(z)) ? lvY(Math.floor(x), Math.floor(z)) + 0.04 : flat && flat(x, z) ? 0.0 : heightAtRaw(x, z));
     this.heightAt = heightAtWalk;
 
+    if (this.slice) await this.slice();
     // ---------------- 塗り分けのテクスチャ（2テクセル／タイル）
     const tSplat = performance.now();
     const SP = round ? 4 : 2, SW = (gx1 - gx0) * SP, SH = (gz1 - gz0) * SP;   // v6.8 丸みを使うマップは細かく（4テクセル／タイル）して広くぼかす
@@ -177,6 +179,7 @@ export class WorldBuilder3D {
     const splat = toTex(sp, 4), tint = toTex(tn, 3);
     this.stats.splatMs = Math.round(performance.now() - tSplat);
     const groundMat = this.groundMaterial(splat, tint, gx0, gz0, gx1 - gx0, gz1 - gz0, theme, round);
+    if (this.slice) await this.slice();
     // 区画ごとのメッシュ
     const chunkRanges = (a0, a1) => { const out = []; for (let a = a0; a < a1; a += CH) out.push([a, Math.min(a1, a + CH)]); return out; };
     let groundTris = 0;
@@ -197,6 +200,7 @@ export class WorldBuilder3D {
     if (voidOut) { const under = new THREE.Mesh(new THREE.PlaneGeometry(W + 80, H + 80), new THREE.MeshBasicMaterial({ color: 0x050403 })); under.rotation.x = -Math.PI / 2; under.position.set(W / 2, -2.2, H / 2); group.add(under); }
     this.stats.groundTris = groundTris;
 
+    if (this.slice) await this.slice();
     // ---------------- 水・溶岩・雲海
     this.surfaces = [];
     let spaceRim = null;   // v7.6 異空間：色の r＝角を囲む4マスのうち陸の割合（岸のそばの光る縁）
@@ -232,6 +236,7 @@ export class WorldBuilder3D {
     surf((t) => t === 'lava', -0.16, this.lavaMaterial(), 'lava', !dungeon);
     surf((t) => t === 'cloud', -0.95, this.cloudMaterial(), 'cloudsea', !dungeon);
 
+    if (this.slice) await this.slice();
     // ---------------- 壁・崖・洞窟の壁（材質ごとに結合）
     const M = this.mats; const wb = new Batch();
     const wallMat = (t) => {
@@ -309,6 +314,7 @@ export class WorldBuilder3D {
       }
     }
     this.stats.fillets = fillets;
+    if (this.slice) await this.slice();
     // v7.6 町の段：擁壁・手すり・階段・坂（Terrace3D.js）
     if (TRI) { const tr = buildTerraces({ map, T, quay: this.quay, add: (m, g, mx) => wb.add(m, g, mx), M, theme, rnd: rngFrom(777 + W * 3 + H), style: (map.def && map.def.terrace76Style) || {} }); this.stats.terraceFaces = tr.faces; this.stats.terraceSteps = tr.steps; }
     this.stats.wallMs = Math.round(performance.now() - tWall);
@@ -327,6 +333,7 @@ export class WorldBuilder3D {
     wb.build(group);
     this.stats.walls = walls;
 
+    if (this.slice) await this.slice();
     // ---------------- 区画（チャンク）へ置く小物・木・山
     const PCH = field ? 32 : 24;
     const buckets = new Map();
@@ -365,6 +372,7 @@ export class WorldBuilder3D {
       }
     }
     this.stats.trees = trees;
+    if (this.slice) await this.slice();
     // 山（手続き型の形をインスタンス化）
     const mountains = []; const snowCap = !!theme.snowCap;
     for (let z = -ON; z < H + OS; z++) for (let x = -OW; x < W + OE; x++) {
@@ -379,6 +387,7 @@ export class WorldBuilder3D {
     for (const [x, z, y] of rockSpots) put(rnd() < 0.5 ? 'rock_a' : 'rock_b', M4(x + (rnd() - 0.5) * 0.3, y, z + (rnd() - 0.5) * 0.3, rnd() * 6.28, 0, 0, 0.6 + rnd() * 0.6), x, z, new THREE.Color(theme.rock));
     // タイルの小物
     const lampSpots = []; const lights = [];
+    if (this.slice) await this.slice();
     // v6.6 フィールドの町・城・洞窟・塔（LandmarkBuilder3D）：マップ内の全目印を材質ごとにまとめて結合
     const LD = window.LocationDesign; const flags = (window.State && window.State.data && window.State.data.flags) || {};
     const locs = (field && map.def && map.def.locations) || []; const locAt = (x, z) => locs.find((L) => L.x === x && L.y === z) || null;
@@ -439,6 +448,7 @@ export class WorldBuilder3D {
     this.stats.props = props;
     this.lampSpots = lampSpots;
     this.stats.buildMs = Math.round(performance.now() - t0);
+    if (this.slice) await this.slice();
     // v7.6 噴水（段の水盤・水の柱・落ちる水の幕。つながった噴水マスは1つの大きな噴水）
     const animated = [];
     if (space) { try { const fr = floatingRocks(map, (x, z) => !!WATERY[T(x, z)], hi ? 18 : 10, (x, z) => { let h = (x * 374761393 + z * 668265263) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }); group.add(fr.group); fr.animated.forEach((a) => animated.push(a)); this.stats.space76Rocks = fr.count; } catch (e) { /* 浮かぶ岩がなくても星空のまま */ } }   // v7.6 異空間の浮かぶ岩
@@ -464,6 +474,7 @@ export class WorldBuilder3D {
       this.lodChunks.push({ cx: b.cx, cz: b.cz, near, far: hasFar ? far : null, lod: 0 });
     }
     await Promise.all(jobs);
+    if (this.slice) await this.slice();
     await this.buildTrees(group);
     this.lodAt = null;
   }

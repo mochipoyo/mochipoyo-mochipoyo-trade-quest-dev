@@ -30,8 +30,8 @@ import { setPBRQuality } from '../environment/ProcPBR.js';
 export class MapScene3D {
   constructor(app) { this.app = app; this.root = new THREE.Group(); this.npcs = []; this.chests = []; this.smokes = []; this.sway = []; this.animated = []; this.lampSpots = []; }
 
-  async build(map) {
-    const app = this.app; this.map = map; this.interior = map.kind === 'interior';
+  async build(map, opts) {
+    const app = this.app; this.map = map; const slice = (opts && opts.slice) || null;   // v7.6 つないだ世界：裏で組み立てるとき、途中で画面へ返す（Join76.js） this.interior = map.kind === 'interior';
     this.root.name = 'map3d_' + map.id;
     const t0 = performance.now();
     this.coverage = mapCoverage(map);   // 'done'（専用に作り込んだ3D）／'generic'（汎用の3D＝仮3D）
@@ -51,8 +51,9 @@ export class MapScene3D {
       // ---- Phase 1 汎用3Dワールド：町・フィールド・ダンジョン・ポヨ村以外の屋内
       const theme = themeFor(map); this.theme = theme;
       theme.modern = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null);   // v7.0 近未来・機械・娯楽の町（舗装・建物）
-      const wb = new WorldBuilder3D(app.mats, app.models, app.quality); this.world = wb;
+      const wb = new WorldBuilder3D(app.mats, app.models, app.quality); this.world = wb; wb.slice = slice;
       const r = await wb.build(map, theme, rx && rx.hooks);
+      if (slice) await slice();
       this.root.add(r.group); this.heightAt = r.heightAt; this.lampSpots = r.lampSpots.slice();
       (r.animated || []).forEach((a) => this.animated.push(a));   // v7.6 噴水の水
       (r.smokes || []).forEach((sm) => this.addSmoke(sm));   // v6.6 目印の煙突・噴気孔
@@ -64,7 +65,9 @@ export class MapScene3D {
         const modern = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null);   // v7.0 近未来・機械・娯楽の町は、ガラスと金属の建物
         const TRm = window.Terrace76 && window.Terrace76.has(map) ? window.Terrace76 : null;   // v7.6 町の段：建物を扉のマスの段の高さへ
         const bdy = (b) => (TRm && b.doorAbs ? TRm.levelAt(map, b.doorAbs.x, b.doorAbs.y) * TRm.LH : 0);
+        let bi = 0;
         for (const b of map.buildings) {
+          if (slice && ++bi % 6 === 0) await slice();
           const dy = bdy(b); const bat = dy ? liftBatch(shared, dy) : shared;
           let o = null; if (b.type === 'elevator') { try { o = buildElevatorTower(b, map, textTexture); } catch (e) { o = null; console.warn('elevator', e); } }   // v7.1 空の区画へのエレベーター
           if (!o && b.type === 'watchtower') { try { o = buildTower3D(b); } catch (e) { o = null; console.warn('tower72', e); } }   // v7.2 新しい地区の塔
@@ -78,10 +81,14 @@ export class MapScene3D {
         }
         shared.build(bgroup);
       }
+      if (slice) await slice();
       await r.finalize();
+      if (slice) await slice();
       // v7.0 場所ごとの個性の飾り（壁の飾り・町の外の遠景・床の小物。js/data/placedecor70.js のテーマ）。失敗しても地図は表示する
       try { const db = new DecorBuilder3D(); const dr = db.build(map, { T: wb.T, OUT: wb.OUT, heightAt: r.heightAt, group: r.group, key: rx && rx.decorKey !== undefined ? rx.decorKey : undefined }); this.decor = { key: dr.key, stats: db.stats }; if (rx && rx.decorKey !== undefined) this.decor.envKey = rx.decorKey; (dr.smokes || []).forEach((sm) => this.addSmoke(sm)); } catch (e) { this.decor = { key: null, error: String(e && e.message || e) }; console.warn('decor70', e); }
+      if (slice) await slice();
       await runRecipe({ group: r.group, world: wb, theme });   // v7.6 レシピが作り直した形を足す
+      if (slice) { await slice(); wb.slice = null; }
       for (const c of map.chests) this.addChest(c);
       if (map.kind === 'town' || map.kind === 'field') this.addMotes(map);
       this.bounds = (this.interior && map.w <= 16 && map.h <= 14) ? { x0: 1, z0: 1, x1: map.w - 1, z1: map.h - 1 } : null;   // 小さな部屋だけ部屋全体を見る
@@ -121,6 +128,7 @@ export class MapScene3D {
       for (const c of map.chests) this.addChest(c);
       this.addMotes(map);
     }
+    if (slice) await slice();
     // v6.1 調べる共通システムの探索ポイント（光る場所・壺・机など）。データは2D版と同じ Search
     this.addSearchPoints(map);
     // v7.3 本棚（本が並ぶ）・台所・トイレ（形から作る。js/core/tiles.js の stove / sink / cupboard / toilet）
