@@ -131,6 +131,7 @@
     return Q ? Q.desc : '';
   }
   var START_TEXT = { main_1: '村長の家で、村長の話を聞く', main_6: '灰の峠を越えて、北へ向かう', main_8: '港町マリナへ戻る', main_10: '断裂群島の東の遠洋航路の先へ向かう', main_13: '時の神殿領の東の遠洋航路の先へ向かう' };
+  Nav.START_TEXT = START_TEXT;   // v7.8 地球の世界の案内の文（js/rpg/earth78.js）が書きかえる
   var NOSTEP_TEXT = { king_quest1: 'リヴェル城で、リヴェル王に会う', forest_boss: '迷いの森の奥の祠で「トレンド迷子」を倒し、祠を調べる', king_quest2: 'リヴェル王に報告する', cave_boss: '忘却の洞窟の最深部で、クリスタルの欠片を取り戻す', shard_returned: 'リヴェル王に欠片を届ける' };
   function textOf(e) { if (e.done === '_start' && START_TEXT[e.q]) return START_TEXT[e.q]; if (NOSTEP_TEXT[e.done]) return NOSTEP_TEXT[e.done]; return stepText(e); }
   // メインクエストの並び（QUESTS の main を章の順に）

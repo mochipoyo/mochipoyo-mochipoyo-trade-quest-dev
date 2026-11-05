@@ -218,4 +218,7 @@
       await c.msg(['番人は、泡になって消えた。……最後に、少しだけ頭を下げたように見えた。', 'ハンドルを回した。ゴゴゴ……と、低く、長い音。', '潮門が開いた。神殿の外で、潮の流れが向きを変える音がする。']);
       d.flags.ner_gate = true; root.State.autosave();
     } }], encounters: null });
+  /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
+  R.tag(['world_nereia', 'nereia_city', 'nereia_old_hi', 'nereia_old_lo', 'nereia_inn', 'nereia_shop', 'nereia_gear', 'nereia_hall', 'nereia_beacon', 'nereia_archive'], 'nereia', null, 'islands');
+  R.tag(['nereia_temple_1', 'nereia_temple_2'], 'nereia', 'sea', 'islands');
 })(typeof window !== 'undefined' ? window : globalThis);

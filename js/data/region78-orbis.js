@@ -181,4 +181,6 @@
     } });
     def.npcs.push({ id: 'dc_gatetech', x: 7, y: 16, sprite: 'scholar', dir: 'down', wander: 0, talk: async function (c) { await c.say('転送門の技師', open() ? ['転送門が目を覚ました！ 行き先は……地球を回る輪、「環星ステーション・オルビス」だ。', '宇宙船がなくても、門で行き来できる。帰りも、向こうの門から戻ってこられるよ。'] : ['ゼロメアから来た技師だ。この結晶の柱は、古い転送門らしい。', '荒野の魔物の気配が強すぎて、門が眠ったままだ。……暗黒大陸の攻略が終われば、目を覚ますかもしれない。']); } });
   })();
+  /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
+  R.tag(['orbis_ring', 'orbis_obs_1', 'orbis_obs_2', 'orbis_sat', 'orbis_lounge'], 'orbis', 'machine_city', 'machine');
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -357,11 +357,48 @@
   E.aeriaAt = function () { var a = L.aeria; if (!a) return null; var t = L.tile(a.lon, a.lat); return { x: t.x, y: t.y, r: a.r }; };   // 浮天城アエリアの影が落ちる海（世界の座標）
   E.labels = function () { return LABELS.map(function (l) { var t = L.tile(l[1], l[2]); return { name: l[0], x: t.x, y: t.y, sea: !!l[3], big: !!l[4] }; }); };
 
+  /* ---------- 案内の文（地域どうしの方角・航路）：地球の配置に合わせる（地球の世界のときだけ。データの文は書きかえず、表示するときに置きかえる） ---------- */
+  var PHRASES = [
+    ['南の端から外海へ出る。海流に流されても慌てないで。私が読む。', '港から大西洋の外海へ出て、南西の沖へ。海流に流されても慌てないで。私が読む。'],
+    ['ワールドマップの南端から「南の遠洋航路」で断裂群島へ渡れる。', 'マリナの港から大西洋へ出て、南西の沖（アゾレスのあたり）の断裂群島へ渡れる。'],
+    ['アルカディア相場大陸の北の空の果てから「北の空路」で天空群島へ。', '飛空艇で世界の北の果て（北極の空）まで飛べば、「北の空路」で天空群島へ。'],
+    ['アルカディア相場大陸の南の外海の先、断裂群島。', 'アルカディア相場大陸の南西、大西洋の沖の断裂群島。'],
+    ['遠洋航海船で大陸の南の端の遠洋航路を抜け、灰灯島アルナの村でヨルン老人に会おう。', '遠洋航海船でマリナの港から大西洋へ出て、南西の沖の灰灯島アルナの村でヨルン老人に会おう。'],
+    ['断裂群島の東の遠洋航路の先、時の神殿領。', '断裂群島から東へ。ジブラルタルの海峡を抜けて地中海の東の端、時の神殿領（エジプト・アラビア）。'],
+    ['時の神殿領の東の遠洋航路の先、マクディア魔導王国。', '時の神殿領から東へ。アラビアの海の先（陸づたいにも行ける）、マクディア魔導王国（インド）。'],
+    ['飛空艇でアルカディア相場大陸へ行き、大陸の北の端の空路を抜けて天空群島へ向かおう。', '飛空艇で世界の北の果て（北極の空）まで飛び、北の空路を抜けて天空群島へ向かおう。'],
+    ['海路を東へ進み、グラニア鉱業地方の灰鉱町ヴェルムへ。', '小型帆船でジブラルタルの海峡を抜け、地中海を東へ進み、グラニア鉱業地方（イタリア）の灰鉱町ヴェルムへ。'],
+    ['遠洋航海船で南の遠洋航路を抜け、灰灯島アルナの村でヨルン老人に会う', '遠洋航海船で大西洋の南西の沖へ出て、灰灯島アルナの村でヨルン老人に会う'],
+    ['断裂群島の東の遠洋航路で時の神殿領へ。', '断裂群島から東へ、地中海を抜けて時の神殿領へ。'],
+    ['時の神殿領の東の遠洋航路でマクディア魔導王国へ。', '時の神殿領から東へ、マクディア魔導王国（インド）へ。'],
+    ['北の空路で天空群島へ渡り、', '世界の北の果て（北極の空）から「北の空路」で天空群島へ渡り、'],
+    ['飛空艇でアルカディア大陸の北の空へ抜け、天空群島に着く', '飛空艇で世界の北の果て（北極の空）へ抜け、天空群島に着く'],
+    ['沿岸づたいに大陸を回って東の端の海路を抜ければ、グラニア鉱業地方の西の海に出る。', '沿岸づたいにイベリア半島を南へ回り、ジブラルタルの海峡から地中海を東へ抜ければ、グラニア鉱業地方の西の海に出る。'],
+    ['海路を東へ抜ければグラニア鉱業地方——ガルドの故郷だ。', '南へ回ってジブラルタルの海峡を抜け、地中海を東へ行けばグラニア鉱業地方——ガルドの故郷だ。'],
+    ['断裂群島の東の遠洋航路の先へ向かう', '断裂群島から東へ、地中海の東の端へ向かう'],
+    ['時の神殿領の東の遠洋航路の先へ向かう', '時の神殿領から東へ向かう']
+  ];
+  E.PHRASES = PHRASES;
+  function fixText(t) { if (typeof t !== 'string' || !E.active()) return t; for (var i = 0; i < PHRASES.length; i++) if (t.indexOf(PHRASES[i][0]) >= 0) t = t.split(PHRASES[i][0]).join(PHRASES[i][1]); return t; }
+  E.fixText = fixText;
+  function applyTexts() {
+    var Q = root.QUESTS || {}; Object.keys(Q).forEach(function (k) { var q = Q[k]; q.desc = fixText(q.desc); (q.steps || []).forEach(function (st) { st[1] = fixText(st[1]); }); });
+    (root.OBJECTIVES || []).forEach(function (o) { if (o.h) o.h = o.h.map(fixText); if (o.text) o.text = fixText(o.text); });
+    var N = root.Nav; if (N && N.START_TEXT) Object.keys(N.START_TEXT).forEach(function (k) { N.START_TEXT[k] = fixText(N.START_TEXT[k]); });
+    var Win = root.Win; if (Win && Win.message && !Win._e78) { Win._e78 = true; var m0 = Win.message; Win.message = function (lines) { var a = Array.prototype.slice.call(arguments); a[0] = Array.isArray(lines) ? lines.map(fixText) : fixText(lines); return m0.apply(this, a); }; }   // 会話（町の人・仲間の言葉）
+  }
+
   /* ---------- 組み立て（World76.init から：地球の配置のとき） ---------- */
   E.active = function () { var W76 = root.World76; return !!(W76 && W76.earth); };
   E.setup = function (W76) {
     var t0 = Date.now(); decode();
     var ids = Object.keys(L.regions).filter(function (id) { return !!root.MAP_DEFS[id]; });
+    // 噂を話す人（地球の世界だけ。旧座標で置き、ほかの物と同じく新しい場所へ）：新しい地域への道しるべ
+    var wd = root.MAP_DEFS.world; if (wd && !(wd.npcs || []).some(function (n) { return n.id === 'w_mapseller78'; })) wd.npcs.push({ id: 'w_mapseller78', x: 25, y: 70, sprite: 'sailor', dir: 'down', wander: 0, talk: async function (c) {
+      var ch = await c.choice('大洋の地図売り「海の噂を聞くかい？」', ['大西洋の噂', '太平洋の噂', 'やめる']);
+      if (ch === 0) await c.say('大洋の地図売り', ['港から大西洋へ出て南西へ行けば、断裂群島。そのずっと南、赤道のあたりに、輪の形をした大陸があるそうだ。環潮大陸ネレイア。外礁の切れ目は、遠洋航海船でないと抜けられない。', '大西洋をまっすぐ西へ渡ると、北アメリカの東岸。灰に覆われた港町の廃墟がある。灰岸都市メリディアンだ。……断裂群島の霧が晴れてから行ってみな。']);
+      else if (ch === 1) await c.say('大洋の地図売り', ['地球の反対側、東アジアの沿岸には、雨がやまない街がある。錆雨市ネオン・ドック。マクディア魔導王国まで行けたら、さらに東の海へ。', 'それと、太平洋のど真ん中——ハワイのあたりで、雲の上から城の影が落ちてくるって話だ。空を飛ぶ船でもなけりゃ、確かめようがないがね。', '世界は東西にぐるっとつながってる。太平洋を東へ渡れば、アメリカの西の海に出るよ。']);
+    } });
     // 旧地図の控え（作り直す前）と、旧座標 → 新座標の変換
     ids.forEach(function (id) { if (!L.regions[id].isNew) { snapshotOld(id); fitXf(id); } });
     // 配置を World76 へ
@@ -378,7 +415,7 @@
     // 地域の地図を作り直す
     ids.forEach(function (id) { var t1 = Date.now(); genRegion(id); E.stats['gen_' + id] = Date.now() - t1; });
     ids.forEach(function (id) { applyRegion(id); });
-    rewriteGlobals(ids);
+    rewriteGlobals(ids); applyTexts();
     E.ids = ids; E.ready = true; E.stats.total = Date.now() - t0;
   };
   // 地図の定義を新しいものに（旧の物は新しい座標へ）

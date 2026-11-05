@@ -217,4 +217,9 @@
       var r = await c.battle(['boss_block_signal'], { boss: true }); if (r === 'lost') { await root.World.gameOver(); return; } if (r !== 'won') return;
       d.flags.mer_why = true; await c.msg(['信号機の灯が、ゆっくりと消えた。', '記録装置に、最後の記録が残っていた。「崩落ノ危険ヲ検知。列車ヲ停止。乗客ノ降車ヲ確認——二百十四名」', 'ホームの端で、誰かが帽子を取った。……車掌の影だ。']); root.State.autosave();
     } }], encounters: null });
+  /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
+  R.tag(['world_meridian', 'meridian_highway'], 'meridian', 'grassland', 'grania');
+  R.tag(['meridian_shelter'], 'meridian', null, 'grania', R.MOOD.ashSky);
+  R.tag(['meridian_inn', 'meridian_shop', 'meridian_gear', 'meridian_hq', 'meridian_tent', 'meridian_harbor'], 'meridian', null, 'grania');
+  R.tag(['meridian_subway_1', 'meridian_subway_2', 'meridian_station'], 'meridian', 'machine_city', 'machine');
 })(typeof window !== 'undefined' ? window : globalThis);

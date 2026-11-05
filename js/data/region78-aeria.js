@@ -153,4 +153,6 @@
       await c.msg(['暴走していた力が抜け、炉心の光が全体に広がった。', '炉の制御盤に手を置くと、力の配分の目盛りが、ゆっくりと真ん中に戻っていく。', '城が、かすかに揺れて——止まった。床の傾きが、なくなった。']);
       d.flags.aer_reactor = true; root.State.autosave();
     } }], encounters: null });
+  /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
+  R.tag(['aeria_dock', 'aeria_garden_hi', 'aeria_garden_lo', 'aeria_corridor', 'aeria_reactor'], 'aeria', 'sky', 'sky');
 })(typeof window !== 'undefined' ? window : globalThis);

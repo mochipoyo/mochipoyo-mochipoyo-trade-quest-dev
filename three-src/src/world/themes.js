@@ -18,7 +18,13 @@ const REGION = {
   dark: { grass: '#8a8098', tree: ['dead'], water: '#2a2a40', deep: '#141424', rock: '#4a4450', snowCap: false, fog: '#3a2a48', plaster: '#8a8090', roof: '#3a2a40', dim: 0.55 },
   desert: { grass: '#d8d0a0', tree: ['palm'], water: '#3a8aa0', deep: '#1a4a6a', rock: '#c09a6a', snowCap: false, fog: '#e8d0a8', plaster: '#f0dcb8', roof: '#b07a4a' },
   dragon: { grass: '#a8a080', tree: ['dead'], water: '#3a4a5a', deep: '#1a2430', rock: '#5a4a44', snowCap: false, fog: '#7a4a3a', plaster: '#c8b8a8', roof: '#6a2a1a', lava: true, dim: 0.8 },
-  snow: { grass: '#e8f0f4', tree: ['snowpine'], water: '#4a7aa0', deep: '#24486a', rock: '#a8b0b8', snowCap: true, fog: '#e4ecf4', plaster: '#f8f8fc', roof: '#5a6a8a' }
+  snow: { grass: '#e8f0f4', tree: ['snowpine'], water: '#4a7aa0', deep: '#24486a', rock: '#a8b0b8', snowCap: true, fog: '#e4ecf4', plaster: '#f8f8fc', roof: '#5a6a8a' },
+  // v7.8 地球の世界の新しい地域（js/data/region78-*.js の theme3d）
+  neon: { grass: '#8a9a88', tree: ['pine'], water: '#1f5a6a', deep: '#0f2a3a', rock: '#5a6070', snowCap: false, fog: '#2a3448', plaster: '#6a7280', roof: '#2a3040', dim: 0.7 },
+  meridian: { grass: '#c8c8b8', tree: ['dead', 'oak'], water: '#4a5a6a', deep: '#22303a', rock: '#8a8478', snowCap: false, fog: '#c8c4b8', plaster: '#b8b4a8', roof: '#5a5450', dim: 0.9 },
+  nereia: { grass: '#c8f0a0', tree: ['palm', 'oak'], water: '#2ab0c0', deep: '#1270a0', rock: '#d8c8a8', snowCap: false, fog: '#c0e8f0', plaster: '#fffaf0', roof: '#2a8ab0' },
+  orbis: { grass: '#c0c8d0', tree: ['pine'], water: '#2a3a6a', deep: '#101a3a', rock: '#8a90a0', snowCap: false, fog: '#1a2040', plaster: '#d8e0e8', roof: '#4a5a7a', dim: 0.8 },
+  aeria: { grass: '#e0f4d0', tree: ['oak'], water: '#7ab8e8', deep: '#4a88c0', rock: '#d8dce8', snowCap: false, fog: '#e8f2fc', plaster: '#ffffff', roof: '#3a6ab8', cloud: true }
 };
 
 // タイルの地面の色（地形タイル → 色。草は地域の色）

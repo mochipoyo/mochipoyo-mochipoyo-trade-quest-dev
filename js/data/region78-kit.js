@@ -77,6 +77,10 @@
     var x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9; cs.forEach(function (c) { x0 = Math.min(x0, c.x); x1 = Math.max(x1, c.x); y0 = Math.min(y0, c.y); y1 = Math.max(y1, c.y); });
     (root.EARTH78_BLOBS = root.EARTH78_BLOBS || []).push({ id: id, th: theme, cs: cs, sg: sigma, box: [x0 - sigma * 3, y0 - sigma * 3, x1 + sigma * 3, y1 + sigma * 3] });
   };
+  // 地域の見た目（3D 版のテーマ・戦闘の背景の地域・3D の空気）：ids の地図に付ける
+  R78.tag = function (ids, region3d, place3d, bgRegion, mood) { ids.forEach(function (id) { var def = root.MAP_DEFS[id]; if (!def) return; def.theme3d = { region: region3d, place: place3d || (def.theme3d && def.theme3d.place) }; if (bgRegion) def.bgRegion = bgRegion; if (mood) def.mood3d = mood; }); };
+  R78.MOOD = { neonNight: { sun: 0x8aa0d0, si: 0.7, hemi: 0x6a5a9a, hi: 0.6, fog: 0x1e2440, top: 0x0a0e22, hor: 0x6a2a7a, win: 2.9, exp: 1.14, fogD: 0.016 },
+    ashSky: { sun: 0xe8e0d0, si: 1.5, hemi: 0xb8b4a8, hi: 0.85, fog: 0xc0bab0, top: 0x8a8a92, hor: 0xd8d0c0, win: 0.4, exp: 1.0, fogD: 0.014 } };
   // 共通：会話の文字（地域ごとの話し手）
   R78.D = function () { return root.State.data; };
   R78.questDone = function (q) { var d = R78.D(); return !!(d.quests && d.quests[q] && d.quests[q].state === 'done'); };

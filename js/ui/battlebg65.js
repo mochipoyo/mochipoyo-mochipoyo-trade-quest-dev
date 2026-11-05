@@ -21,6 +21,7 @@
   var REGION_OF_MAP = { world: 'arcadia', world_grania: 'grania', world_kalion: 'kalion', world_islands: 'islands', world_tempus: 'tempus', world_machine: 'machine', world_magicka: 'magicka', world_sky: 'sky', world_dark: 'dark', world_desert: 'desert', world_dragon: 'dragon', world_snow: 'snow' };
   BG.regionOf = function (mapId) {
     if (REGION_OF_MAP[mapId]) return REGION_OF_MAP[mapId];
+    var d78 = root.MAP_DEFS && root.MAP_DEFS[mapId]; if (d78 && d78.bgRegion) return d78.bgRegion;   // v7.8 新しい地域（js/data/region78-*.js）：戦闘の背景の地域
     if (root.World76 && root.World76.isSea && root.World76.isSea(mapId)) return BG.regionOf(root.World76.nearestRegion(mapId));   // v7.6 つないだ世界の共通の海：いちばん近い地域
     var def = root.MAP_DEFS && root.MAP_DEFS[mapId]; if (!def) return 'arcadia';
     // ダンジョン・町は、出口のワープ先の地域（たどれなければ名前から）

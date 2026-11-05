@@ -219,4 +219,9 @@
       d.flags.neon_ai_fixed = true; root.State.autosave();
       await c.say('配給管理AI ミズハ', ['ありがとう。わたしは、正しい記録を持ってくる人を、ずっと待っていたのかもしれません。']);
     } }], encounters: null });
+  /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
+  R.tag(['world_neon'], 'neon', null, 'machine');
+  R.tag(['neon_town'], 'neon', 'machine_city', 'machine', R.MOOD.neonNight);
+  R.tag(['neon_inn', 'neon_shop', 'neon_gear', 'neon_house', 'neon_house2', 'neon_office', 'neon_lighthouse'], 'neon', null, 'machine');
+  R.tag(['neon_works_1', 'neon_works_2', 'neon_works_core'], 'neon', 'machine_city', 'machine');
 })(typeof window !== 'undefined' ? window : globalThis);
