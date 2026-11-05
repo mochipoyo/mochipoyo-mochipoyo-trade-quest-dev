@@ -9,7 +9,7 @@ import * as THREE from 'three';
 import { MapScene3D } from '../world/MapScene3D.js';
 import { Env } from '../environment/Env.js';
 
-const NEAR = 48, DROP = 72, MAXSHOWN = 8;
+const NEAR = 48, DROP = 72, MAXSHOWN = 8, WALL = 44;   // WALL：霧・嵐の壁を出す距離
 let mistTex = null, stormTex = null;
 function gradTex(c0, c1) {
   const c = document.createElement('canvas'); c.width = 8; c.height = 128; const g = c.getContext('2d');
@@ -49,11 +49,11 @@ export class Join76 {
     const a = this.app; const W76 = this.W76(); const want = new Map();
     if (this.active()) {
       const g = this.pg(); const S = W76.size();
-      for (const id of W76.mapsIn(g.x - DROP, g.y - DROP, g.x + DROP, g.y + DROP)) { if (!W76.isRegion(id) || W76.unlocked(id)) continue; const r = W76.rect(id);
+      for (const id of W76.mapsIn(g.x - WALL, g.y - WALL, g.x + WALL, g.y + WALL)) { if (!W76.isRegion(id) || W76.unlocked(id)) continue; const r = W76.rect(id);
         want.set('L:' + id + ':n', { x0: r.x, z0: r.y, x1: r.x + r.w, z1: r.y, kind: 'mist' }); want.set('L:' + id + ':s', { x0: r.x, z0: r.y + r.h, x1: r.x + r.w, z1: r.y + r.h, kind: 'mist' });
         want.set('L:' + id + ':w', { x0: r.x, z0: r.y, x1: r.x, z1: r.y + r.h, kind: 'mist' }); want.set('L:' + id + ':e', { x0: r.x + r.w, z0: r.y, x1: r.x + r.w, z1: r.y + r.h, kind: 'mist' }); }
-      if (g.y < DROP) want.set('E:n', { x0: 0, z0: 0, x1: S.w, z1: 0, kind: 'storm' }); if (S.h - g.y < DROP) want.set('E:s', { x0: 0, z0: S.h, x1: S.w, z1: S.h, kind: 'storm' });
-      if (g.x < DROP) want.set('E:w', { x0: 0, z0: 0, x1: 0, z1: S.h, kind: 'storm' }); if (S.w - g.x < DROP) want.set('E:e', { x0: S.w, z0: 0, x1: S.w, z1: S.h, kind: 'storm' });
+      if (g.y < WALL) want.set('E:n', { x0: 0, z0: 0, x1: S.w, z1: 0, kind: 'storm' }); if (S.h - g.y < WALL) want.set('E:s', { x0: 0, z0: S.h, x1: S.w, z1: S.h, kind: 'storm' });
+      if (g.x < WALL) want.set('E:w', { x0: 0, z0: 0, x1: 0, z1: S.h, kind: 'storm' }); if (S.w - g.x < WALL) want.set('E:e', { x0: S.w, z0: 0, x1: S.w, z1: S.h, kind: 'storm' });
     }
     for (const [k, mesh] of this.walls) if (!want.has(k)) { a.scene.remove(mesh); mesh.geometry.dispose(); this.walls.delete(k); }
     if (!want.size) return; const o0 = W76.origin(a.current.map.id);

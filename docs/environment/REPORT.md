@@ -425,6 +425,11 @@ GPU のないコンテナ（2 CPU・8GB）の jsdom とヘッドレス Chromium�
 - 共通の海の深い所では、遠洋航海船の「外海」の敵が出る（地域の海より強い）。敵の分布は変わってよいという指示に合わせたが、強さの調整はしていない。
 - 確認用の URL：公開の手順はとっていない（本番に出していない）。ローカルで動かすには、リポジトリのルートを `python3 -m http.server` などで配信し、`/3d/index.html` を開く。
 
+### 14-5. 最終の回帰（スナップショット 986e1aa（2D）・ff4cfd0（3D）。テストは 1 本ずつ順に）
+- 2D の回帰一式（regress65 の 52 本＋追加 26 本）：前からの失敗（p1test・navsim・entryaudit）のほかはすべて EXIT 0。boss64test 10 OK / 0 NG（記憶庫の番人 F=1 38%：60 戦）
+- 確認ツール：towns76・interior76・bread76・layout・arrival・save_layout・shoptier・enemyskills・mob76・world76 → すべて OK
+- 3D：（このあとに書く）
+
 ### 14-4. 画像（`docs/images/environment/`。左＝前（818d133 のスナップショット＝つなぐ前）・右＝後。同じ場所・同じカメラ・ヘッドレスの画像）
 - `world82_layout.jpg`：世界全体の配置（地形のタイルから描いた図）
 - `seam82_a_desert.jpg`（砂漠の東の海岸）・`seam82_b_ridge.jpg`（灰の峠の山並み）・`seam82_c_snow.jpg`（雪原の西の海岸）・`seam82_d_dragon.jpg`（竜炎火山群島）・`seam82_e_sea.jpg`（群島の東から共通の海へ）
