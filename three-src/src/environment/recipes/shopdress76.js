@@ -72,7 +72,7 @@ const WALLISH = (t) => t === '_void' || /wall|^roof_|castle_wall/.test(t);
 function faceOf(T, x, z) { if (WALLISH(T(x, z - 1))) return 0; if (WALLISH(T(x - 1, z))) return Math.PI / 2; if (WALLISH(T(x + 1, z))) return -Math.PI / 2; if (WALLISH(T(x, z + 1))) return Math.PI; return 0; }
 
 export function dressBuild76(plan, o) {
-  const { add, T, scene } = o; let n = 0;
+  const { add, T, scene } = o; let n = 0; const beams76 = {};   // 吊りランプの梁（行ごとに1本）
   const C = {
     brick: plain('#8a4a32', { std: { roughness: 0.95 } }), brickD: plain('#5a2e22', { std: { roughness: 1 } }), iron: plain('#3a3c42', { std: { roughness: 0.5, metalness: 0.6 } }), steel: plain('#c8ccd2', { std: { roughness: 0.28, metalness: 0.75 } }),
     fire: plain('#ffb050', { emissive: '#ff7a1a', ei: 2.2, keepGlow: true }), coal: plain('#2a2420', { std: { roughness: 1 } }), wood: plain('#7a5236', { std: { roughness: 0.85 } }), woodD: plain('#4e3424', { std: { roughness: 0.9 } }),
@@ -154,7 +154,16 @@ export function dressBuild76(plan, o) {
       return true;
     }
     if (it.what === 'herbs') { const A = at(cx, it.z + 0.04, 0); A(C.woodD, wbox(0.8, 0.04, 0.06, 0, 2.45, 0.05, 1)); for (let i = 0; i < 4; i++) { const g = new THREE.ConeGeometry(0.07, 0.36, 6); g.rotateX(Math.PI); g.translate(-0.3 + i * 0.2, 2.24, 0.08); A(i % 2 ? C.herb : C.herb2, g); A(C.leather, cyl(0.01, 0.01, 0.1, 4, -0.3 + i * 0.2, 2.41, 0.08)); } if (k % 2) { const pan = new THREE.CylinderGeometry(0.16, 0.13, 0.06, 12); pan.rotateX(Math.PI / 2); pan.translate(0.42, 2.1, 0.05); A(C.iron, pan); } return true; }
-    if (it.what === 'rug') { const g = new THREE.PlaneGeometry(2.2, 1.7); g.rotateX(-Math.PI / 2); g.translate(cx + 0.0, 0.075, cz); A0(C.rug[k % 3], g); const b2 = new THREE.PlaneGeometry(1.9, 1.4); b2.rotateX(-Math.PI / 2); b2.translate(cx, 0.078, cz); A0(C.rugIn[k % 3], b2); return true; }
+    if (it.what === 'rug') {   // v7.6 机全体の下に（以前は机の左上のマスに合わせたうえ、位置を2回足していて部屋の外へずれていた）
+      let tw = 1, th = 1; while (T(it.x + tw, it.z) === 'table') tw++; while (T(it.x, it.z + th) === 'table') th++;
+      const R = at(it.x + tw / 2, it.z + th / 2, 0);
+      const g = new THREE.PlaneGeometry(tw + 1.2, th + 0.9); g.rotateX(-Math.PI / 2); g.translate(0, 0.075, 0); R(C.rug[k % 3], g);
+      const b2 = new THREE.PlaneGeometry(tw + 0.9, th + 0.6); b2.rotateX(-Math.PI / 2); b2.translate(0, 0.078, 0); R(C.rugIn[k % 3], b2); return true;
+    }
+    if (it.what === 'lantern' && !beams76[it.z]) {   // v7.6 吊りランプの梁（天井がないので、壁から壁へ渡した梁から吊るす）
+      beams76[it.z] = 1; let x0 = it.x, x1 = it.x; while (x0 > 0 && T(x0 - 1, it.z) !== 'wall' && T(x0 - 1, it.z) !== '_void') x0--; while (T(x1 + 1, it.z) !== 'wall' && T(x1 + 1, it.z) !== '_void') x1++;
+      const L = x1 - x0 + 1 + 0.1; if (L > 1.5 && L < 40) at((x0 + x1 + 1) / 2, cz, 0)(C.wood, wbox(L, 0.14, 0.15, 0, 3.27, 0, 1));
+    }
     if (it.what === 'lantern') { const A = at(cx, cz, 0); A(C.hoop, cyl(0.012, 0.012, 0.5, 4, 0, 2.95, 0)); A(C.iron, cyl(0.12, 0.16, 0.06, 8, 0, 2.66, 0)); A(C.fire, cyl(0.1, 0.1, 0.22, 8, 0, 2.52, 0)); A(C.iron, cyl(0.16, 0.12, 0.05, 8, 0, 2.39, 0)); scene.lampSpots.push({ pos: new THREE.Vector3(cx, 2.4, cz), color: 0xffc070, power: 1.0, dist: 7 }); return true; }
     return false;
   }
