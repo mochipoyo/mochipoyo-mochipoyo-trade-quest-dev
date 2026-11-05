@@ -79,8 +79,13 @@
   };
   // 地域の見た目（3D 版のテーマ・戦闘の背景の地域・3D の空気）：ids の地図に付ける
   R78.tag = function (ids, region3d, place3d, bgRegion, mood) { ids.forEach(function (id) { var def = root.MAP_DEFS[id]; if (!def) return; def.theme3d = { region: region3d, place: place3d || (def.theme3d && def.theme3d.place) }; if (bgRegion) def.bgRegion = bgRegion; if (mood) def.mood3d = mood; }); };
-  R78.MOOD = { neonNight: { sun: 0x8aa0d0, si: 0.7, hemi: 0x6a5a9a, hi: 0.6, fog: 0x1e2440, top: 0x0a0e22, hor: 0x6a2a7a, win: 2.9, exp: 1.14, fogD: 0.016 },
+  R78.MOOD = { neonNight: { sun: 0x9aaee0, si: 1.05, hemi: 0x8a7ab8, hi: 1.15, fog: 0x262c4a, top: 0x0e1430, hor: 0x7a3a8a, win: 2.9, exp: 1.34, fogD: 0.012 },
+    rainDusk: { sun: 0xb8c2d4, si: 1.3, hemi: 0x9aa2b8, hi: 1.05, fog: 0x5a6276, top: 0x3a4256, hor: 0x8a6a8a, win: 1.4, exp: 1.2, fogD: 0.015 },   // v7.8 錆雨市のフィールド：雨雲の夕暮れ
     ashSky: { sun: 0xe8e0d0, si: 1.5, hemi: 0xb8b4a8, hi: 0.85, fog: 0xc0bab0, top: 0x8a8a92, hor: 0xd8d0c0, win: 0.4, exp: 1.0, fogD: 0.014 } };
+  // 3D の屋内・ダンジョンの作り方（room：three-src の ROOM_STYLE の名前）と飾りのテーマ（decor：js/data/placedecor70.js の THEMES の名前）
+  R78.look = function (ids, o) { ids.forEach(function (id) { var def = root.MAP_DEFS[id]; if (!def) return; if (o.room) def.room78 = o.room; if (o.decor && root.PLACE_DECOR && root.PLACE_DECOR.MAPS && !root.PLACE_DECOR.MAPS[id]) root.PLACE_DECOR.MAPS[id] = o.decor; }); };
+  // 場所の外観（js/data/designs.js の LOCATION_DESIGNS と同じ形。2D の地図の絵と 3D の目印・町の建物が読む）
+  R78.design = function (id, o) { if (!root.LOCATION_DESIGNS || root.LOCATION_DESIGNS[id]) return; o.id = id; root.LOCATION_DESIGNS[id] = o; };
   // 共通：会話の文字（地域ごとの話し手）
   R78.D = function () { return root.State.data; };
   R78.questDone = function (q) { var d = R78.D(); return !!(d.quests && d.quests[q] && d.quests[q].state === 'done'); };

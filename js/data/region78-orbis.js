@@ -183,4 +183,5 @@
   })();
   /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
   R.tag(['orbis_ring', 'orbis_obs_1', 'orbis_obs_2', 'orbis_sat', 'orbis_lounge'], 'orbis', 'machine_city', 'machine');
+  R.look(['orbis_ring', 'orbis_obs_1', 'orbis_obs_2', 'orbis_sat', 'orbis_lounge'], { room: 'cyber', decor: 'tech' });
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -219,6 +219,12 @@
       d.flags.ner_gate = true; root.State.autosave();
     } }], encounters: null });
   /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
+  // 場所の外観（2D の地図の絵・3D の目印）
+  R.design('ner_city', { architectureStyle: '白い壁と青緑の丸屋根が環のように並ぶ海上都市', silhouette: 'desert_city', roofStyle: 'dome', materials: { wall: '#fbf6ea', wallD: '#c8c0ae', mortar: '#e0d8c6', roof: '#1e9ab8', roofD: '#14708c', accent: '#e8c060', cloth: '#2ab0c0' }, decoration: ['big_dome', 'minarets2', 'arch_gate'], environment: ['palms'] });
+  R.design('ner_oldtown', { architectureStyle: '潮が満ちると沈む、高床の旧市街', silhouette: 'stilt_shacks', roofStyle: 'shed', materials: { wall: '#d8d0c0', wallD: '#a89e8a', wood: '#6a5a44', roof: '#2a8aa8', roofD: '#1a6a84', flag: '#2ab0c0', accent: '#f4f4f4' }, decoration: ['barrels'], environment: ['sea', 'stilts'] });
+  R.design('ner_reeflight', { architectureStyle: '外礁に立つ白と青の灯標', silhouette: 'lighthouse', roofStyle: 'cone', materials: { wall: '#f4f2ec', wallD: '#c8c4b8', stripe: '#2a8ab0', roof: '#2a3a4a', glow: '#fff2a0' }, decoration: ['lamp'], environment: ['cliff', 'sea'] });
   R.tag(['world_nereia', 'nereia_city', 'nereia_old_hi', 'nereia_old_lo', 'nereia_inn', 'nereia_shop', 'nereia_gear', 'nereia_hall', 'nereia_beacon', 'nereia_archive'], 'nereia', null, 'islands');
   R.tag(['nereia_temple_1', 'nereia_temple_2'], 'nereia', 'sea', 'islands');
+  R.look(['nereia_temple_1', 'nereia_temple_2'], { room: 'undersea', decor: 'sea' });
+  R.look(['nereia_city'], { decor: 'harbor' });
 })(typeof window !== 'undefined' ? window : globalThis);

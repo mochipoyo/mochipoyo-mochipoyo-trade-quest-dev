@@ -31,7 +31,11 @@ export const REGION_STYLE = {
   snow: { plaster: ['#f4f2ee', '#ece8e2'], frame: true, roofs: ['#4a5a7a', '#3a4a68', '#5a3a32'], pitch: 0.95, road: ['#a8b0b8', '#6a727a', 64, 32, 0.1], walk: ['#d8dee4', '#98a0a8', 32, 32, 0.08], lamp: 'lantern', light: 0xffc890, fence: 'stone' },
   casino: { plaster: ['#3a1a34'], frame: false, roofs: ['#2a1028'], pitch: 0.5, road: ['#2a2230', '#c9a24a', 128, 128, 0.05], walk: ['#3a3040', '#8a7040', 64, 64, 0.06], lamp: 'brass', light: 0xffd890, fence: 'railing', modern: true },
   skyterrace: { plaster: ['#ffffff'], frame: false, roofs: ['#4a7ab8'], pitch: 0.5, road: ['#f4f6f8', '#c8d0d8', 128, 64, 0.03], walk: ['#fafbfc', '#d0d8e0', 64, 64, 0.03], lamp: 'iron', light: 0xf0f6ff, fence: 'balustrade', modern: true },
-  machine: { plaster: ['#d8dce0'], frame: false, roofs: ['#4a5a6a'], pitch: 0.5, road: ['#8a929a', '#4e555c', 128, 64, 0.06], walk: ['#b8bec4', '#80868c', 64, 64, 0.05], lamp: 'iron', light: 0xe0f0ff, fence: 'railing' }
+  machine: { plaster: ['#d8dce0'], frame: false, roofs: ['#4a5a6a'], pitch: 0.5, road: ['#8a929a', '#4e555c', 128, 64, 0.06], walk: ['#b8bec4', '#80868c', 64, 64, 0.05], lamp: 'iron', light: 0xe0f0ff, fence: 'railing' },
+  // v7.8 地球の世界の新しい地域（マップの theme3d.region で選ぶ。js/data/region78-*.js）
+  neon: { plaster: ['#6a6e74', '#5e636a', '#74706a'], wall: 'stone', frame: false, roofs: ['#3a2e2a', '#2a3038', '#5a3a2a'], pitch: 0.32, road: ['#3a3e44', '#1e2226', 128, 64, 0.1], walk: ['#4e5258', '#2a2e32', 64, 64, 0.1], lamp: 'iron', light: 0x5ae0ff, fence: 'railing' },
+  meridian: { plaster: ['#b4b0a6', '#a8a49a', '#bcb6aa'], wall: 'stone', frame: false, roofs: ['#5a5450', '#4a4642', '#6a5a4e'], pitch: 0.36, road: ['#8a857c', '#55514a', 128, 64, 0.16], walk: ['#a29e94', '#66625a', 64, 64, 0.12], lamp: 'oil', light: 0xffb070, fence: 'palisade' },
+  nereia: { plaster: ['#fffcf4', '#f6f2ea', '#fdf8ee'], frame: false, roofs: ['#1e90b8', '#2aa8c0', '#187898'], pitch: 0.42, hip: true, road: ['#ece2c8', '#c0ae8c', 64, 64, 0.08], walk: ['#f4eedc', '#ccbc9c', 32, 32, 0.07], lamp: 'rope', light: 0xffe4a8, fence: 'drift' }
 };
 const hash = (x, y, k) => { let h = (x * 374761393 + y * 668265263 + k * 2147483647) >>> 0; h = (h ^ (h >>> 13)) * 1274126177 >>> 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };   // v7.6 0..1 に直す（以前は半分ほどが負になり、壁・屋根の色の選びが空になって既定の色に落ちていた）
 const pick = (arr, r) => arr[Math.floor(r * arr.length) % arr.length];

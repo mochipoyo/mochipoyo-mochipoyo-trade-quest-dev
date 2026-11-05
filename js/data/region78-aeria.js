@@ -155,4 +155,5 @@
     } }], encounters: null });
   /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
   R.tag(['aeria_dock', 'aeria_garden_hi', 'aeria_garden_lo', 'aeria_corridor', 'aeria_reactor'], 'aeria', 'sky', 'sky');
+  R.look(['aeria_dock', 'aeria_garden_hi', 'aeria_garden_lo', 'aeria_corridor', 'aeria_reactor'], { decor: 'sky' });
 })(typeof window !== 'undefined' ? window : globalThis);

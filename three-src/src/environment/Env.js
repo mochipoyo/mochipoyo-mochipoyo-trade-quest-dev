@@ -35,8 +35,13 @@ export const Env = {
   async profile(mapId, renderer) {
     let c = null; try { c = await Env.catalog(renderer); } catch (e) { return null; }
     const p = c.profiles && c.profiles[mapId];
+    if (!p) { const d78 = window.MAP_DEFS && window.MAP_DEFS[mapId]; if (/^w78_/.test(mapId) || (d78 && d78.region78)) return Env.profile78(mapId, d78); }   // v7.8 地球の世界で増えた地図（地域の外の陸と海・新しい地域）：マップの theme3d から作る
     if (!p && !Env.missing[mapId]) { Env.missing[mapId] = true; console.warn('[環境] プロファイルが未登録のマップ：' + mapId + '（docs/tools/env/build_profiles.js で作り直す）'); }
     return p || null;
+  },
+  profile78(mapId, d) {
+    const th = (d && d.theme3d) || {}; const kind = (d && d.kind) || 'field';
+    return { kind, region: th.region || 'arcadia', archetype: kind === 'interior' ? 'house' : kind === 'town' ? 'village' : kind, source: 'v78', name: (d && d.name) || mapId };
   },
   recipeFor(map) { if (!map || !Env.enabled() || Env.errors[map.id]) return null; return RECIPES[map.id] || genericRecipe(map) || null; },   // 専用レシピ→種類ごとの作り方（全体展開）。失敗したマップは、その回はレシピなし
   recipeIds() { return Object.keys(RECIPES); },

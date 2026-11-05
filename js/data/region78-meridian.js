@@ -218,8 +218,15 @@
       d.flags.mer_why = true; await c.msg(['信号機の灯が、ゆっくりと消えた。', '記録装置に、最後の記録が残っていた。「崩落ノ危険ヲ検知。列車ヲ停止。乗客ノ降車ヲ確認——二百十四名」', 'ホームの端で、誰かが帽子を取った。……車掌の影だ。']); root.State.autosave();
     } }], encounters: null });
   /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
-  R.tag(['world_meridian', 'meridian_highway'], 'meridian', 'grassland', 'grania');
+  // 場所の外観（2D の地図の絵・3D の目印）
+  R.design('mer_shelter', { architectureStyle: '倒れた家の材木と板で補修した避難所の集落', silhouette: 'survivor_village', roofStyle: 'patched', materials: { wall: '#a8a49a', wallD: '#76726a', wood: '#6a5a4a', roof: '#6a625a', roofD: '#4a4440', patch: '#8a7a5a', glow: '#ffb070' }, decoration: ['patches', 'laundry'], environment: ['rubble'] });
+  R.design('mer_highway', { architectureStyle: '灰に埋もれた、崩れた高架道路', silhouette: 'ruins', roofStyle: 'broken', materials: { wall: '#9a968c', wallD: '#6a665e', mortar: '#7a766e', roof: '#5a5650', moss: '#8a8478' }, decoration: [], environment: ['rubble'] });
+  R.design('mer_subway', { architectureStyle: '灰の平野に口を開けた地下鉄の入口', silhouette: 'bunker', roofStyle: 'none', materials: { rock: '#8a857c', rockL: '#b0aaa0', rockD: '#5a564e', metal: '#7a8088', glow: '#ffcc66' }, decoration: ['vault_door'], environment: ['rocks'] });
+  R.design('mer_harbor', { architectureStyle: '灰の浜の見張り小屋と船着き場', silhouette: 'shore_hut', roofStyle: 'shed', materials: { wall: '#9a948a', wallD: '#6e6a62', wood: '#5a4a3a', roof: '#5a5a62', roofD: '#3a3a42', glow: '#ffcc66' }, decoration: ['lantern'], environment: ['beach', 'pier'] });
+  R.tag(['world_meridian', 'meridian_highway'], 'meridian', 'grassland', 'grania', R.MOOD.ashSky);
   R.tag(['meridian_shelter'], 'meridian', null, 'grania', R.MOOD.ashSky);
   R.tag(['meridian_inn', 'meridian_shop', 'meridian_gear', 'meridian_hq', 'meridian_tent', 'meridian_harbor'], 'meridian', null, 'grania');
   R.tag(['meridian_subway_1', 'meridian_subway_2', 'meridian_station'], 'meridian', 'machine_city', 'machine');
+  R.look(['meridian_subway_1', 'meridian_subway_2', 'meridian_station'], { room: 'factory', decor: 'machine' });
+  R.look(['meridian_shelter'], { decor: 'ruins' });
 })(typeof window !== 'undefined' ? window : globalThis);

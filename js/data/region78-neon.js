@@ -220,8 +220,13 @@
       await c.say('配給管理AI ミズハ', ['ありがとう。わたしは、正しい記録を持ってくる人を、ずっと待っていたのかもしれません。']);
     } }], encounters: null });
   /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
-  R.tag(['world_neon'], 'neon', null, 'machine');
+  // 場所の外観（2D の地図の絵・3D の目印）
+  R.design('neon_dock', { architectureStyle: '錆びた高層の港湾都市・雨に濡れたネオン看板', silhouette: 'old_city', roofStyle: 'broken', materials: { wall: '#5e646e', wallD: '#3a3e46', glow: '#ff4ad8', moss: '#3a5a5a' }, decoration: ['broken_windows'], environment: ['rubble'] });
+  R.design('neon_works', { architectureStyle: '海に沈みかけた、のこぎり屋根の工場', silhouette: 'factory', roofStyle: 'sawtooth', materials: { wall: '#8a6a58', wallD: '#5a4438', roof: '#5a4a44', roofD: '#3a302c', metal: '#7a7470', glow: '#4ae8ff' }, decoration: ['conveyor', 'warning_light'], environment: ['grid'] });
+  R.design('neon_lookout', { architectureStyle: '錆びた鉄骨の灯台', silhouette: 'lighthouse', roofStyle: 'cone', materials: { wall: '#8a8e96', wallD: '#5a5e66', stripe: '#c85a3a', roof: '#3a3a4a', glow: '#5ae0ff' }, decoration: ['lamp'], environment: ['cliff', 'sea'] });
+  R.tag(['world_neon'], 'neon', null, 'machine', R.MOOD.rainDusk);
   R.tag(['neon_town'], 'neon', 'machine_city', 'machine', R.MOOD.neonNight);
   R.tag(['neon_inn', 'neon_shop', 'neon_gear', 'neon_house', 'neon_house2', 'neon_office', 'neon_lighthouse'], 'neon', null, 'machine');
   R.tag(['neon_works_1', 'neon_works_2', 'neon_works_core'], 'neon', 'machine_city', 'machine');
+  R.look(['neon_works_1', 'neon_works_2', 'neon_works_core'], { room: 'factory', decor: 'machine' });
 })(typeof window !== 'undefined' ? window : globalThis);

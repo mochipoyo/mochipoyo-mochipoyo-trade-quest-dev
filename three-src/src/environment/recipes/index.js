@@ -9,7 +9,7 @@ import { recipe as ironMine1 } from './iron_mine_1.js';
 import { recipe as poyoVillage } from './poyo_village.js';
 import { recipe as nodeCity, scheduledRecipe } from './node_city.js';
 import { recipe as tradia } from './tradia.js';
-import { townKit } from './town_kit.js';
+import { townKit, REGION_STYLE } from './town_kit.js';
 import { roomKit, ROOM_STYLE } from './room_kit.js';
 import { recipe as poyoInterior } from './poyo_interior.js';
 import { fieldKit } from './field_kit.js';
@@ -37,6 +37,8 @@ export function genericRecipe(map) {
   const PD = window.PLACE_DECOR; const key = PD && PD.forMap ? PD.forMap(map.id) : null;
   if (mapCoverage(map) === 'done' && map.kind === 'interior') return poyoInterior;   // ポヨ村の作り込んだ屋内：用途ごとの奥の壁の飾り
   if (mapCoverage(map) !== 'generic') return null;
+  const st78 = map.def && map.def.region78 && map.def.theme3d && REGION_STYLE[map.def.theme3d.region] ? map.def.theme3d.region : null;   // v7.8 地球の世界の新しい地域の町（地域の作り方を直接指定）
+  if (map.kind === 'town' && st78) return generic['town:' + map.id] || (generic['town:' + map.id] = townKit(map.id, { style: st78 }));
   if (map.kind === 'town' && !MODERN[key]) return generic['town:' + map.id] || (generic['town:' + map.id] = townKit(map.id));
   if (map.kind === 'town' && (key === 'casino' || key === 'tech')) return generic['town:' + map.id] || (generic['town:' + map.id] = townKit(map.id, { style: key === 'casino' ? 'casino' : 'skyterrace' }));   // 近未来・娯楽の町（建物はそのまま）
   if (map.kind === 'field' && map.def && map.def.sea76) return null;   // v7.6 つないだ世界の共通の海：レシピなし（海と岩礁だけ）
@@ -45,7 +47,8 @@ export function genericRecipe(map) {
     const th = themeFor(map); const P = th.placeDef || {};
     if ((P.outdoor || P.wall === 'trees') && !(map.kind === 'interior' && P.wall !== 'trees' && th.place !== 'sky')) { const k = P.wall === 'trees' || th.place === 'forest' ? 'forest' : th.place === 'sky' ? 'sky' : 'pass'; return generic['out:' + map.id] || (generic['out:' + map.id] = outdoorKit(k)); }   // 屋外のダンジョン（森・空・草地の屋外）。屋内なのに草地の扱いのもの（島の店・灯台）は下の屋内へ   // 屋外のダンジョン（森・空）
     const prof = (window.MTQ3D_ENV && window.MTQ3D_ENV.profileSync && window.MTQ3D_ENV.profileSync(map.id)) || null;
-    let st = prof && ROOM_STYLE[prof.archetype];
+    const r78 = map.def && map.def.region78;   // v7.8 地球の世界の新しい地域：プロファイルがないので、マップの room78（ROOM_STYLE の名前）か場所の材質から
+    let st = prof ? ROOM_STYLE[prof.archetype] : r78 ? (ROOM_STYLE[map.def.room78] || undefined) : null;
     if (st === null) return null;
     if (!st) st = P.wall === 'rock' ? ROOM_STYLE.cave : P.wall === 'metal' ? ROOM_STYLE.lab : P.wall === 'wood' ? ROOM_STYLE.ship : map.kind === 'interior' ? ROOM_STYLE.house : ROOM_STYLE.castle;
     if (st.fam === 'rock' && P.wall !== 'rock' && map.kind === 'interior') st = ROOM_STYLE.house;   // 屋内で岩の種類なのに岩の壁でない所は、しっくい
