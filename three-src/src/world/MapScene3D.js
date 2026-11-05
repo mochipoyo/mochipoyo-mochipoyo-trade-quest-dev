@@ -435,6 +435,7 @@ export class MapScene3D {
     });
     if (this.root.parent) this.root.parent.remove(this.root);
     this.npcs.forEach((ch) => ch.mixer.stopAllAction());
+    if (this.world && this.world.dispose) this.world.dispose();   // v7.6 地図ごとの画像・マテリアル（地面の塗り分け・水・溶岩・雲海）
   }
 
   // ---- 当たり判定

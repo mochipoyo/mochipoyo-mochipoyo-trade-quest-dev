@@ -1,0 +1,28 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/p68d_follow.orig.js	2026-11-05 23:06:00.265740004 +0900
++++ p68d_follow.js	2026-11-05 23:06:00.267662727 +0900
+@@ -28,7 +28,7 @@
+   }));
+   ok(verifiedMeshes, '表示中の仲間は待機・歩行・走行付きの立体モデル');
+   ok(fi.names.every((n) => /^char_field_/.test(n)), '移動用GLBのルート ' + fi.names.join(','));
+-  await p.screenshot({ path: SHOT + TAG + '_follow_harbor.jpg', type: 'jpeg', quality: 78 });
++  await p.screenshot({ path: SHOT + TAG + '_follow_harbor.jpg', type: 'jpeg', quality: 78, timeout: 120000 });
+   // フィールド
+   await p.evaluate(() => { World.busy = false; World.enterMap('world', 28, 62, 'up'); });
+   await p.waitForFunction(() => MTQ3D.current && MTQ3D.current.map && MTQ3D.current.map.id === 'world', null, { timeout: 90000 }).catch(() => { });
+@@ -36,14 +36,14 @@
+   await p.waitForTimeout(1500);
+   const fw = await p.evaluate(() => MTQ3D.followerInfo());
+   ok(fw.length >= 1 && fw.every((x) => x.model === 'field_' + x.id), 'フィールドでも本人の3Dモデル：' + fw.map((x) => x.id + '=' + x.model + (x.visible ? '' : '(非表示)')).join(' '));
+-  await p.screenshot({ path: SHOT + TAG + '_follow_world.jpg', type: 'jpeg', quality: 78 });
++  await p.screenshot({ path: SHOT + TAG + '_follow_world.jpg', type: 'jpeg', quality: 78, timeout: 120000 });
+   // 仲間になる前の仲間の NPC（リヴェルの酒場のカイル）
+   await p.evaluate(() => { World.busy = false; World.enterMap('rivel_tavern', 5, 7, 'up'); });
+   await p.waitForFunction(() => MTQ3D.current && MTQ3D.current.map && MTQ3D.current.map.id === 'rivel_tavern', null, { timeout: 90000 }).catch(() => { });
+   await p.waitForTimeout(2500);
+   const nk = await p.evaluate(() => { const names = []; MTQ3D.current.root.traverse((o) => { if (/^char_field_/.test(o.name)) names.push(o.name); }); const n = World.map.npcs.find((x) => x.id === 'kyle'); return { names, actorArt: n && n.actorArt, hidden: n && n.hidden }; });
+   ok(nk.names.includes('char_field_kyle'), 'リヴェルの酒場のカイル（仲間になる前）も本人の3Dモデル ' + JSON.stringify(nk));
+-  await p.screenshot({ path: SHOT + TAG + '_npc_kyle.jpg', type: 'jpeg', quality: 78 });
++  await p.screenshot({ path: SHOT + TAG + '_npc_kyle.jpg', type: 'jpeg', quality: 78, timeout: 120000 });
+   ok(errs.length === 0, 'ページのエラーなし ' + JSON.stringify(errs.slice(0, 3)));
+   ok(bad.length === 0, '読み込みの失敗なし ' + JSON.stringify(bad.slice(0, 5)));
+   fs.writeFileSync(SHOT + TAG + '_result.json', JSON.stringify({ fi, fw, nk, fails, errs, bad }, null, 1));

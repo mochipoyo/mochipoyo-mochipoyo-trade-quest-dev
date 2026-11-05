@@ -176,7 +176,7 @@ export class WorldBuilder3D {
     };
     if (round) { blurFast(sp, 4, 2); blurFast(sp, 4, 1); blurFast(tn, 3, 2); blurFast(tn, 3, 1); } else { blur(sp, 4, 1); blur(tn, 3, 1); }
     const toTex = (arr, ch) => { const n = SW * SH; const d = new Uint8Array(n * 4); for (let k = 0; k < n; k++) { for (let c = 0; c < 4; c++) d[k * 4 + c] = c < ch ? Math.round(Math.max(0, Math.min(1, ch === 3 ? Math.pow(arr[k * 3 + c], 1 / 2.2) : arr[k * ch + c])) * 255) : 255; } const t = new THREE.DataTexture(d, SW, SH, THREE.RGBAFormat); t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearFilter; t.needsUpdate = true; return t; };
-    const splat = toTex(sp, 4), tint = toTex(tn, 3);
+    const splat = toTex(sp, 4), tint = toTex(tn, 3); this.own(splat); this.own(tint);   // v7.6 地図ごとの画像（捨てるときに GPU からも消す）
     this.stats.splatMs = Math.round(performance.now() - tSplat);
     const groundMat = this.groundMaterial(splat, tint, gx0, gz0, gx1 - gx0, gz1 - gz0, theme, round);
     if (this.slice) await this.slice();
@@ -519,11 +519,14 @@ export class WorldBuilder3D {
     }
   }
   update(t) { this.time.value = t; }
+  // v7.6 この地図だけで使う画像・マテリアル（共有の素材は入れない）。MapScene3D.dispose から捨てる（長い移動で GPU の画像が増え続けないように）
+  own(o) { if (o) (this._own || (this._own = [])).push(o); return o; }
+  dispose() { (this._own || []).forEach((o) => { try { o.dispose(); } catch (e) { /* なし */ } }); this._own = []; }
 
   /* ---------- マテリアル ---------- */
   groundMaterial(splat, tint, ox, oz, sw, sh, theme, round) {
     const tx = this.mats.tex;
-    const mat = new THREE.MeshStandardMaterial({ map: tx.grass_albedo || null, roughness: 0.95, metalness: 0 });
+    const mat = new THREE.MeshStandardMaterial({ map: tx.grass_albedo || null, roughness: 0.95, metalness: 0 }); this.own(mat);
     const U = { uSplat: { value: splat }, uTint: { value: tint }, uOrigin: { value: new THREE.Vector2(ox, oz) }, uSize: { value: new THREE.Vector2(sw, sh) },
       uDirt: { value: tx.dirt_albedo || null }, uCobble: { value: tx.cobble_albedo || null }, uRock: { value: tx.stonewall_albedo || null }, uRockTint: { value: new THREE.Color(theme.rock || '#9a948a') }, uSnow: { value: theme.region === 'snow' ? 1 : 0 },
       uNoise: { value: sharedNoiseTexture() }, uRound: { value: round ? 1 : 0 }, uModern: { value: theme && theme.modern ? 1 : 0 } };   // v7.0 uModern：近未来・機械・娯楽の町の舗装（石畳の代わりに平らな板石の目地）   // v6.8 丸み：境界をノイズでゆがめる（uRound=0 のときは以前と同じ）
@@ -567,7 +570,7 @@ export class WorldBuilder3D {
   }
   waterMaterial() {
     const time = this.time;
-    const m = new THREE.MeshStandardMaterial({ vertexColors: true, transparent: true, opacity: 0.86, roughness: 0.12, metalness: 0.15, depthWrite: false });
+    const m = new THREE.MeshStandardMaterial({ vertexColors: true, transparent: true, opacity: 0.86, roughness: 0.12, metalness: 0.15, depthWrite: false }); this.own(m);
     m.onBeforeCompile = (sh) => {
       sh.uniforms.uTime = time; WorldBuilder3D.withUv(sh);
       sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uTime;')
@@ -582,7 +585,7 @@ export class WorldBuilder3D {
   }
   lavaMaterial() {
     const time = this.time;
-    const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.6, emissive: 0xff5a10, emissiveIntensity: 1.6 });
+    const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.6, emissive: 0xff5a10, emissiveIntensity: 1.6 }); this.own(m);
     m.onBeforeCompile = (sh) => {
       sh.uniforms.uTime = time; WorldBuilder3D.withUv(sh);
       sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uTime;')
@@ -592,7 +595,7 @@ export class WorldBuilder3D {
   }
   cloudMaterial() {
     const time = this.time;
-    const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, transparent: true, opacity: 0.94, depthWrite: false, emissive: 0xbcd0e8, emissiveIntensity: 0.25 });
+    const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, transparent: true, opacity: 0.94, depthWrite: false, emissive: 0xbcd0e8, emissiveIntensity: 0.25 }); this.own(m);
     m.onBeforeCompile = (sh) => {
       sh.uniforms.uTime = time; WorldBuilder3D.withUv(sh);
       sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uTime;')
