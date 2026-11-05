@@ -101,7 +101,7 @@
       ctx.drawImage(root.Buildings.image(b), b.x * TS - cam.x, b.y * TS - cam.y);
     });
     // エンティティ（y順）
-    var ents = this.npcs.filter(function (n) { return !n.hidden; }).map(function (n) { return { y: n.y * TS + (n.oy_px || 0), draw: function () { drawChar(ctx, n.sprite, n.dir, n.frame, n.x * TS + (n.ox_px || 0) - cam.x, n.y * TS + (n.oy_px || 0) - cam.y, n.phase); } }; });
+    var selfMap0 = this; var ents = this.npcs.filter(function (n) { return !n.hidden; }).map(function (n) { return { y: n.y * TS + (n.oy_px || 0), draw: function () { drawChar(ctx, n.sprite, n.dir, n.frame, n.x * TS + (n.ox_px || 0) - cam.x, n.y * TS + (n.oy_px || 0) - cam.y, n.phase, root.Mob76 ? root.Mob76.kindFor(selfMap0, n) : null); } }; });   // v7.6 町の人の装い（js/data/mob76.js）
     // v5.7 ワールドマップの町・城・洞窟・塔を大きな絵で（入口のマスの下端を基準に y 順で描く）
     var lms = (this.def.locations && root.Landmarks) ? this.def.locations.filter(function (L) { var Mg = root.Landmarks.MARGIN; return L.x >= x0 - Mg && L.x <= x1 + Mg && L.y >= y0 - 1 && L.y <= y1 + Mg * 2; }) : [];
     var selfMap = this;
@@ -125,7 +125,7 @@
   };
   // 歩行キャラの描画優先順位：1) assets/characters/overworld のシート（4方向×3フレーム） 2) Chars.frame（従来） 3) Sprites（旧）
   // phase: 歩行サイクル 0..3（待機0 → 左足1 → 待機0 → 右足2）。省略時は frame(0/1) から推定
-  function drawChar(ctx, sprite, dir, frame, px, py, phase) {
+  function drawChar(ctx, sprite, dir, frame, px, py, phase, dress) {
     // v7.3 町の動物（犬・猫・家畜。js/core/animals73.js）
     if (root.AnimalArt && root.AnimalArt.has(sprite)) {
       var big = root.AnimalArt.isBig(sprite);
@@ -135,7 +135,7 @@
     // 足元の影
     ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(px + Engine.TS / 2, py + Engine.TS - 2, Engine.TS * 0.3, Engine.TS * 0.12, 0, 0, Math.PI * 2); ctx.fill();
     var wf = root.Assets ? root.Assets.walkFrame(sprite, dir, phase === undefined ? (frame ? 1 : 0) : [0, 1, 0, 2][phase & 3]) : null;
-    if (wf) { var S = Engine.SCALE; var dw = wf.w * S, dh = wf.h * S; ctx.imageSmoothingEnabled = false; ctx.drawImage(wf.img, wf.sx, wf.sy, wf.w, wf.h, Math.round(px + (Engine.TS - dw) / 2), Math.round(py + Engine.TS - dh), dw, dh); return; }   // 足元中央＝タイル下端
+    if (wf) { var S = Engine.SCALE; var dw = wf.w * S, dh = wf.h * S; ctx.imageSmoothingEnabled = false; ctx.drawImage(wf.img, wf.sx, wf.sy, wf.w, wf.h, Math.round(px + (Engine.TS - dw) / 2), Math.round(py + Engine.TS - dh), dw, dh); if (dress && root.Mob76 && wf.w === 16 && wf.h === 24) root.Mob76.draw2d(ctx, dress, dir, Math.round(px + (Engine.TS - dw) / 2), Math.round(py + Engine.TS - dh), S); return; }   // 足元中央＝タイル下端
     var img = Chars.has(sprite) ? Chars.frame(sprite, dir, frame) : (root.Sprites && root.Sprites.has(sprite) ? legacySprite(sprite) : Chars.frame('villager_m', dir, frame));
     ctx.drawImage(img, px, py - 4);
   }

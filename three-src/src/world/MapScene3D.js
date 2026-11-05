@@ -7,7 +7,8 @@
    ========================================================= */
 import * as THREE from 'three';
 import { TerrainBuilder3D, rngFrom } from './TerrainBuilder3D.js';
-import { BuildingBuilder3D } from './BuildingBuilder3D.js';
+import { BuildingBuilder3D, bdetailSetting } from './BuildingBuilder3D.js';
+import { dressMob } from '../entities/MobDress76.js';
 import { InteriorBuilder3D, INTERIOR_KINDS } from './InteriorBuilder3D.js';
 import { WorldBuilder3D } from './WorldBuilder3D.js';
 import { DecorBuilder3D, modernStyle, buildModernBuilding, buildVillageDecor, buildElevatorTower, buildTower3D } from './DecorBuilder3D.js';
@@ -134,6 +135,7 @@ export class MapScene3D {
       }
       const ch = cr ? (await Character3D.create(app.models, cr.model, { color: cr.color, accent: cr.accent, scale: cr.scale }) || await Character3D.create(app.models, model)) : await Character3D.create(app.models, model);
       if (!ch) continue; ch.npc = n; this.root.add(ch.root); this.npcs.push(ch);
+      if (!cr && window.Mob76 && bdetailSetting() !== 'off') { try { const dk = window.Mob76.kindFor(map, n); if (dk && dressMob(ch, dk)) this.dressed76 = (this.dressed76 || 0) + 1; } catch (e) { /* 装いがなくても NPC は出す */ } }   // v7.6 町の人の装い（js/data/mob76.js・MobDress76.js）
       ch.yaw = ch.wantYaw = DIR_YAW[n.dir] || 0;
       this.placeNpc(ch, 0, true);
     }

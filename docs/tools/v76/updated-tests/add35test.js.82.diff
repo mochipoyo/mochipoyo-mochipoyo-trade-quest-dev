@@ -1,0 +1,16 @@
+--- /home/claude/envwork/docs/tools/v76/updated-tests/add35test.before82.js	2026-11-05 16:27:16.465643016 +0900
++++ v75/add35test.js	2026-11-05 16:27:16.732303045 +0900
+@@ -39,10 +39,11 @@
+   const changed = [];
+   Object.keys(old.E).forEach((id) => { const o = old.E[id], e = EN[id]; if (!e) { changed.push(id + ' 消えた'); return; } ['lv', 'hp', 'atk', 'def', 'agi', 'mag', 'exp', 'gold', 'mp', 'area', 'family', 'boss'].forEach((k) => { if (JSON.stringify(o[k]) !== JSON.stringify(k === 'boss' ? !!e.boss : e[k])) changed.push(id + '.' + k); }); if (JSON.stringify(o.drops) !== JSON.stringify(e.drops)) changed.push(id + '.drops'); if (JSON.stringify(o.resist) !== JSON.stringify(e.resist)) changed.push(id + '.resist'); });
+   ok(!changed.length, '既存の ' + Object.keys(old.E).length + ' 体：レベル・HP・攻撃・守備・素早さ・魔力・経験値・お金・落とす物・耐性・出現場所・種族は前の版と同じ ' + changed.slice(0, 6).join(','));
+-  const actCh = Object.keys(old.E).filter((id) => JSON.stringify(old.E[id].actions) !== JSON.stringify(EN[id].actions));
++  const act0 = (id) => EN[id].actions0 || EN[id].actions;   // v7.6 敵の固有技（js/data/enemyskills76.js）を足す前の行動で比べる
++  const actCh = Object.keys(old.E).filter((id) => JSON.stringify(old.E[id].actions) !== JSON.stringify(act0(id)));
+   ok(JSON.stringify(actCh.sort()) === JSON.stringify(['contrarian_bat', 'kotsukotsu_knight', 'nanpin_goblin']), '行動が変わったのは足した3体だけ（逆張りバット・コツコツドカンナイト・ナンピンゴブリン）' + actCh.join(','));
+   ok(old.E.nanpin_goblin.actions.every((a, i) => JSON.stringify(a) === JSON.stringify(EN.nanpin_goblin.actions[i])) && old.E.contrarian_bat.actions.every((a, i) => JSON.stringify(a) === JSON.stringify(EN.contrarian_bat.actions[i])), 'ナンピンゴブリン（仲間を増やす）・逆張りバット（逆張り突撃・吸血）のもとの行動は残っている（後ろに足しただけ）');
+-  ok(EN.kotsukotsu_knight.actions.map((a) => a.id || a.type).join() === 'kotsukotsu,dokan_charge,harden' && SP.dokan_charge.charge === 'dokan' && JSON.stringify(SP.dokan) === JSON.stringify(old.SP.dokan), 'コツコツドカンナイト：「ドカン」（威力2.2はそのまま）を予告してから撃つ');
++  ok(act0('kotsukotsu_knight').map((a) => a.id || a.type).join() === 'kotsukotsu,dokan_charge,harden' && SP.dokan_charge.charge === 'dokan' && JSON.stringify(SP.dokan) === JSON.stringify(old.SP.dokan), 'コツコツドカンナイト：「ドカン」（威力2.2はそのまま）を予告してから撃つ');
+   const spCh = Object.keys(old.SP).filter((k) => JSON.stringify(old.SP[k]) !== JSON.stringify(SP[k]));
+   ok(JSON.stringify(spCh) === '["full_leverage"]' && SP.full_leverage.power === old.SP.full_leverage.power && SP.full_leverage.selfAfter.def < 0, '既存の特殊行動で変えたのはフルレバ一撃だけ（威力はそのまま。撃ったあとの隙を足した）' + spCh.join(','));
+   ok(old.L.every((id, i) => w.ENEMY_LIST[i] === id) && w.ENEMY_LIST.length === old.L.length + 25 && w.ENEMY_LIST.slice(old.L.length).every((id) => NEW.includes(id)), '図鑑の並び：既存の敵の番号はそのまま。新しい25体は後ろ（' + old.L.length + '→' + w.ENEMY_LIST.length + '）');

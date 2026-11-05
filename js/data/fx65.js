@@ -41,14 +41,16 @@
     var el = s.element && s.element !== 'none' ? s.element : null; var all = s.target === 'enemies' || s.target === 'allies';
     var c = COL[el || 'none']; var d = { fx: 'slash', motion: 'swing', color: c[0], color2: c[1], area: all ? 'all' : 'single', hits: s.hits || 1 };
     if (s.kind === 'attack') {
-      if (s.anim === 'arrow') { d.fx = all ? 'arrow_rain' : 'arrow'; d.motion = 'shoot'; }
+      var el3 = el === 'fire' || el === 'ice' || el === 'thunder';   // v7.6 炎・氷・雷の技は、矢・貫通でも属性の演出（js/data/skills76.js・enemyskills76.js）
+      if (s.anim === 'arrow' && !el3) { d.fx = all ? 'arrow_rain' : 'arrow'; d.motion = 'shoot'; }
       else if (s.anim === 'hit') { d.fx = (s.hits || 1) > 2 ? 'fist' : 'heavy'; d.motion = (s.hits || 1) > 2 ? 'punch' : 'chop'; }
       else if (el === 'fire' || el === 'ice' || el === 'thunder') { d.fx = 'slash'; d.motion = 'swing'; d.overlay = el; }
       else if (el === 'wind') { d.fx = all ? 'tornado' : 'wind_blade'; d.motion = 'swing'; }
       else if (el === 'light') { d.fx = 'slash'; d.overlay = 'light'; }
       else if (el === 'dark') { d.fx = 'shadow_dash'; d.motion = 'dash'; }
       else { d.fx = all ? 'spin' : ((s.hits || 1) > 1 ? 'slash_multi' : 'slash'); d.motion = 'swing'; }
-      if (s.pierce) d.fx = 'pierce';
+      if (s.pierce && !el3) d.fx = 'pierce';
+      if (el3 && s.anim === 'arrow') d.motion = 'shoot';
     } else if (s.kind === 'magic') {
       d.motion = 'cast';
       d.fx = { fire: all ? 'explosion' : 'fireball', ice: all ? 'blizzard' : 'icicle', thunder: all ? 'discharge' : 'bolt', wind: all ? 'tornado' : 'wind_blade', light: all ? 'holy_burst' : 'holy_beam', dark: all ? 'dark_mist' : 'dark_orb' }[el] || (all ? 'stardust' : 'arcane');

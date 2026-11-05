@@ -31,8 +31,8 @@ Object.keys(E).forEach(id => {
   } catch (er) { ng.push('戦闘で例外 ' + id + ' ' + (er && er.stack || er).toString().split('\n').slice(0, 2).join(' ')); }
 });
 // 職業・キャラの技
-const v76 = Object.keys(S).filter(k => S[k].v76); const jobN = Object.keys(w.JOBS).filter(j => w.JOBS[j].skills.some(s => s.v76)).length;
-ok(Object.keys(w.JOBS).every(j => w.JOBS[j].skills.filter(s => s.v76).length === 10), '職業の技が10でない');
+const v76 = Object.keys(S).filter(k => S[k].v76); const jobN = Object.keys(w.JOB_SKILLS76).length;
+ok(Object.keys(w.JOBS).every(j => (w.JOB_SKILLS76[j] || []).length === 10) && Object.keys(w.JOBS).every(j => !w.JOBS[j].skills.some(s => /^j76_/.test(s.id))), '職業の技が10でない（または既存の一覧に入っている）');
 ok(Object.keys(w.CHAR_SKILLS76).every(c => w.CHAR_SKILLS76[c].length === 10), 'キャラの技が10でない');
 ok(v76.every(k => S[k].target === 'enemies'), '全体攻撃でない技がある');
 ok(v76.every(k => !!w.FX65.DEFS[k]), '職業・キャラの技に演出がない');

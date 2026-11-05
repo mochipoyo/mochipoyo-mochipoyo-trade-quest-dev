@@ -1,6 +1,6 @@
 /* =========================================================
    Data / skills76（v7.6）：職業ごと・キャラごとの全体攻撃の特技と呪文（各10種）
-   ・職業（21）：JOBS[job].skills の後ろに足す（レベル LV で覚える。転職しても覚えた技は残る＝従来どおり）
+   ・職業（21）：JOB_SKILLS76[job]（JOBS[job].skills には足さない。Actors.refreshSkills が、いまの職業でレベル LV で覚える。転職しても覚えた技は残る＝従来どおり）
    ・キャラ（主人公＋仲間16）：CHAR_SKILLS76[キャラID]（Actors.refreshSkills がキャラのレベル LVC で覚える。職業を変えても残る）
    ・旧セーブ：State.migrate が、いまのレベルまでに覚える技だけを足す（ほかの技・項目は変えない）
    ・強さ：同じレベルで覚える既存の全体技（回転斬り 1.1・火炎嵐 28 など）を超えないよう、段ごとの値（PW・MG）で決める
@@ -82,15 +82,16 @@
     if (names[name]) throw new Error('skills76: 名前が重複 ' + name);
     names[name] = id; SKILLS[id] = sk; made.push(id); return sk;
   }
-  Object.keys(JOB76).forEach(function (job) { var J = JOBS[job]; if (!J) return; JOB76[job].forEach(function (line, i) { var id = 'j76_' + job + '_' + (i + 1); make(id, line, i, job); J.skills.push({ lv: LV[i], id: id, v76: true }); }); });
+  var JS = root.JOB_SKILLS76 = {};   // 職業の技は JOBS[job].skills（既存の一覧）には足さず、別の表に持つ（職業の画面・既存の確認の前提を変えない）
+  Object.keys(JOB76).forEach(function (job) { var J = JOBS[job]; if (!J) return; JS[job] = JOB76[job].map(function (line, i) { var id = 'j76_' + job + '_' + (i + 1); make(id, line, i, job); return { lv: LV[i], id: id }; }); });
   var CH = root.CHAR_SKILLS76 = {};
   Object.keys(CHAR76).forEach(function (cid) { CH[cid] = CHAR76[cid].map(function (line, i) { var id = 'c76_' + cid + '_' + (i + 1); make(id, line, i, cid); return { lv: LVC[i], id: id }; }); });
   // キャラの技（Actors.refreshSkills から）と、旧セーブの補い（State.migrate から）
   root.Skills76 = {
     LV: LV, LVC: LVC, made: made,
-    learn: function (a) {   // a：キャラ（hero・仲間）。いまのレベルまでの職業の技（v76）とキャラの技を足す（ほかの技は変えない）
+    learn: function (a) {   // a：キャラ（hero・仲間）。いまの職業で、いまのレベルまでの職業の技（v76）とキャラの技を足す（ほかの技は変えない。転職しても覚えた技は残る）
       if (!a || !a.skills) return 0; var n = 0; var J = JOBS[a.job];
-      if (J) J.skills.forEach(function (s) { if (s.v76 && a.level >= s.lv && a.skills.indexOf(s.id) < 0) { a.skills.push(s.id); n++; } });
+      if (J) (JS[a.job] || []).forEach(function (s) { if (a.level >= s.lv && a.skills.indexOf(s.id) < 0) { a.skills.push(s.id); n++; } });
       (CH[a.id] || []).forEach(function (s) { if (a.level >= s.lv && a.skills.indexOf(s.id) < 0) { a.skills.push(s.id); n++; } });
       return n;
     },

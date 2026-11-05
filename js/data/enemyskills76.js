@@ -1,11 +1,13 @@
 /* =========================================================
    Data / enemyskills76（v7.6）：通常敵・ボスが固有の技と呪文を使う
    ・通常敵（全部）：その敵だけの「得意技」を1つ足す（名前は敵の名前の言葉＋種族・属性の技の言葉）。
-     強さは通常攻撃の 1.2〜1.3 倍ほど（物理）／その敵の呪文と同じくらい。出る割合は行動全体の 2 割ほど
+     強さは通常攻撃の 1.2〜1.3 倍ほど（物理。竜の息は全体 0.45 倍）／その敵の呪文と同じくらい。出る割合は行動全体の 2 割ほど
    ・共通の呪文・特技（火球・雷撃・毒刃など）を使う敵は、その敵の名前のついた同じ性能の技に置きかえる（名前だけ固有。強さは同じ）
-   ・ボス（44体）：手書きの固有技を2つ（単体の得意技・HP 半分以下で使う全体の大技）
+   ・ボス（44体）：手書きの固有技を2つ（単体の得意技・HP 半分以下で使う全体の大技）。強さは前の版に近づける：
+     得意技は物理 1.1 倍／呪文は攻撃力の 0.9 倍ほど（魔力の高いボスは mult で弱める）。全体の大技は物理 0.4 倍・呪文は攻撃力の 0.35 倍ほど、
+     状態異常は単体 25%・全体 12%。得意技の重みのぶん、ふつうの攻撃の重みを 1 減らす（確認：boss64test のシミュレーション）
    ・敵の技は MP を使わない（spell：呪文。沈黙で使えない）。特殊行動（溜め・仲間を呼ぶ など）は変えない
-   ・敵のID・能力・出現・報酬は変えない。戦闘の演出（FX65）は技の種類・属性から作る（置きかえた技は元の技と同じ演出）
+   ・敵のID・能力・出現・報酬は変えない。前の版の行動は ENEMIES[id].actions0（JSON に出ない）に残す。戦闘の演出（FX65）は技の種類・属性から作る（置きかえた技は元の技と同じ演出）
    ・確認：docs/tools/v76/enemyskills_check.js
    ========================================================= */
 (function (root) {
@@ -70,6 +72,9 @@
   function addSkill(id, o) { if (S[id]) throw new Error('enemyskills76: ID が重複 ' + id); o.id = id; o.e76 = true; S[id] = o; made.push(id); return o; }
   function totalW(acts) { return acts.reduce(function (s, a) { return s + (a.hpBelow !== undefined || a.hpAbove !== undefined ? 0 : (a.w || 0)); }, 0); }
   var ids = Object.keys(E);
+  // 前の版の行動（記録・確認用。JSON には出さない）
+  ids.forEach(function (id) { var e = E[id]; if (e.actions && !e.actions0) Object.defineProperty(e, 'actions0', { value: JSON.parse(JSON.stringify(e.actions)), enumerable: false, configurable: true }); });
+  function mark(e, n) { Object.defineProperty(e, 'skills76', { value: n, enumerable: false, configurable: true, writable: true }); }
   // 1) 共通の技 → その敵の名前の技（同じ性能）
   ids.forEach(function (id) {
     var e = E[id]; if (!e.actions) return; var kw = kwOf(id, e);
@@ -86,20 +91,21 @@
     if (e.boss && BOSS[id]) {
       BOSS[id].forEach(function (line, k) {
         var p = line.split('|'); var t = p[1], ele = EL[p[2]] || 'none'; var o = { name: uniq(p[0]), element: ele, mp: 0, owner: id, desc: e.name + 'の固有技' };
-        if (t === 'w' || t === 'W') { o.kind = 'attack'; o.target = t === 'W' ? 'enemies' : 'enemy'; o.power = t === 'W' ? 0.85 : 1.4; o.anim = ele === 'none' ? 'slash' : ANIM[ele]; }
-        else { o.kind = 'magic'; o.target = t === 'S' ? 'enemies' : 'enemy'; o.spell = true; o.anim = ANIM[ele]; o.power = t === 'S' ? Math.max(10, Math.round(0.9 * atk - 1.2 * mag), maxMagic(acts, true)) : Math.max(16, Math.round(1.4 * atk - 1.2 * mag), maxMagic(acts)); }
-        p.slice(3).forEach(function (x) { if (x === 'h2') { o.hits = 2; o.power = Math.round(o.power * 0.65 * 100) / 100; } else if (x === 'p') o.pierce = 0.3; else if (x === 'c') o.crit = 0.3; else if (ST[x]) o.status = { id: ST[x], chance: 0.35 }; });
+        if (t === 'w' || t === 'W') { o.kind = 'attack'; o.target = t === 'W' ? 'enemies' : 'enemy'; o.power = t === 'W' ? 0.4 : 1.1; o.anim = ele === 'none' ? 'slash' : ANIM[ele]; }
+        else { o.kind = 'magic'; o.target = t === 'S' ? 'enemies' : 'enemy'; o.spell = true; o.anim = ANIM[ele]; o.power = t === 'S' ? Math.max(8, Math.round(0.35 * atk - 1.2 * mag)) : Math.max(12, Math.round(0.85 * atk - 1.2 * mag)); { const m = (t === 'S' ? 0.35 : 0.9) * atk / (o.power + 1.2 * mag); if (m < 1) o.mult = Math.round(m * 100) / 100; } }   // 強さ：単体は攻撃力の 0.9 倍・全体は 0.35 倍ほど（魔力の高いボスは mult で弱める）
+        p.slice(3).forEach(function (x) { if (x === 'h2') { o.hits = 2; o.power = Math.round(o.power * 0.65 * 100) / 100; } else if (x === 'p') o.pierce = 0.3; else if (x === 'c') o.crit = 0.3; else if (ST[x]) o.status = { id: ST[x], chance: o.target === 'enemies' ? 0.12 : 0.25 }; });
         var sid = 'e76_' + id + '_' + (k + 1); addSkill(sid, o);
-        acts.push(k === 0 ? { type: 'skill', id: sid, w: 2 } : { type: 'skill', id: sid, w: 3, hpBelow: 0.5 });
+        acts.push(k === 0 ? { type: 'skill', id: sid, w: 1 } : { type: 'skill', id: sid, w: 1, hpBelow: 0.5 });
       });
-      e.actions = acts; e.skills76 = BOSS[id].length; return;
+      var atkA = acts.filter(function (a) { return a.type === 'attack' && a.hpBelow === undefined && a.hpAbove === undefined; })[0]; if (atkA && atkA.w >= 2) atkA.w -= 1;   // 得意技のぶん、ふつうの攻撃を少し減らす（強さを前の版に近づける）
+      e.actions = acts; mark(e, BOSS[id].length); return;
     }
     // 通常敵（ボスで手書きのないものも、ここで1つ）
     var fam = e.family || ''; var caster = mag >= atk * 0.8 || acts.some(function (a) { return a.type === 'skill' && S[a.id] && S[a.id].kind === 'magic'; });
     var h = hash(id); var o = { element: el, mp: 0, owner: id, target: 'enemy' };
     var dragon = /ドラゴン系|竜系/.test(fam);
-    if (dragon) { o.kind = 'attack'; o.target = 'enemies'; o.power = 0.75; o.name = join(kw, BREATH[el === 'none' ? 'fire' : el]); o.element = el === 'none' ? 'fire' : el; o.anim = ANIM[o.element]; }
-    else if (caster) { var pool = EL_S[el]; o.kind = 'magic'; o.spell = true; o.anim = ANIM[el]; o.power = Math.max(10, Math.round(1.25 * atk - 1.2 * mag), maxMagic(acts)); o.name = join(kw, pool[h % pool.length]); }
+    if (dragon) { o.kind = 'attack'; o.target = 'enemies'; o.power = 0.45; o.name = join(kw, BREATH[el === 'none' ? 'fire' : el]); o.element = el === 'none' ? 'fire' : el; o.anim = ANIM[o.element]; }
+    else if (caster) { var pool = EL_S[el]; o.kind = 'magic'; o.spell = true; o.anim = ANIM[el]; o.power = Math.max(10, Math.round(0.95 * atk - 1.2 * mag), maxMagic(acts)); o.name = join(kw, pool[h % pool.length]); }
     else { var pw = FAM_W[fam] || ['強打', '突撃']; o.kind = 'attack'; o.power = e.arche === 'glass' ? 1.2 : 1.3; o.anim = el === 'none' ? (/獣|鳥|虫|爬虫|竜/.test(fam) ? 'slash' : 'hit') : ANIM[el]; o.name = join(kw, pw[h % pw.length]);
       if (/獣系|鳥系/.test(fam)) { o.hits = 2; o.power = 0.65; } else if (/ゴーレム系|人形系|機械系/.test(fam)) o.pierce = 0.25; else if (/人間系/.test(fam)) o.crit = 0.25; }
     if (/昆虫系|虫系|爬虫類系/.test(fam) && !o.status) o.status = { id: 'poison', chance: 0.35 };
@@ -111,7 +117,7 @@
     var sid = 'e76_' + id + '_1'; addSkill(sid, o);
     var tw = totalW(acts); if (tw < 3) acts.forEach(function (a) { if (a.w) a.w *= 3; }); tw = totalW(acts);
     acts.push({ type: 'skill', id: sid, w: Math.max(1, Math.round(tw * 0.25)) });
-    e.actions = acts; e.skills76 = 1;
+    e.actions = acts; mark(e, 1);
   });
   // 演出（FX65）：作った技の演出を作り直し、置きかえた技は元の技の演出をそのまま使う
   if (root.FX65 && root.FX65.rebuild) { root.FX65.rebuild(); clones.forEach(function (cid) { var b = S[cid].base; if (root.FX65.DEFS[b]) root.FX65.DEFS[cid] = Object.assign({}, root.FX65.DEFS[b], { id: cid }); }); }

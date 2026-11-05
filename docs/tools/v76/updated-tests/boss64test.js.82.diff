@@ -1,0 +1,17 @@
+--- /home/claude/envwork/docs/tools/v76/updated-tests/boss64test.before82.js	2026-11-05 16:27:16.463043540 +0900
++++ boss64test.js	2026-11-05 16:27:16.599364434 +0900
+@@ -10,11 +10,12 @@
+ ok(ids.length === 27 && B.applied.length === 27 && B.skipped.length === 0, '表の27体すべてに反映（反映できなかったもの ' + B.skipped.length + '）');
+ ok(ids.every(id => ['hp', 'atk', 'mag'].every(k => !B.table[id][k] || (oldE[id][k] || 0) === B.table[id][k][0] && E[id][k] === B.table[id][k][1])), '27体：前の版の値が表の「変更前」と同じで、いまの値は表の「変更後」');
+ const SAME = ['def', 'agi', 'exp', 'gold', 'actions', 'drops', 'resist', 'lv', 'boss', 'name', 'mp'];
+-ok(ids.every(id => SAME.every(k => JSON.stringify(oldE[id][k]) === JSON.stringify(E[id][k]))), '27体：防御・素早さ・経験値・ゴールド・行動・落とす物・耐性・Lv・MP は変えていない');
++const cur = (id, k) => (k === 'actions' && E[id].actions0 ? E[id].actions0 : E[id][k]);   // v7.6 敵の固有技（js/data/enemyskills76.js）を足す前の行動で比べる
++ok(ids.every(id => SAME.every(k => JSON.stringify(oldE[id][k]) === JSON.stringify(cur(id, k)))), '27体：防御・素早さ・経験値・ゴールド・行動・落とす物・耐性・Lv・MP は変えていない');
+ const others = Object.keys(oldE).filter(id => !ids.includes(id));
+ const RD = {}; ((w.ENEMY_REDESIGN && w.ENEMY_REDESIGN.list) || []).forEach(r => { RD[r.id] = r; });   // r164：既存の通常敵164体の表示名の差し替え（名前だけ。名前以外はここで比べる）
+ const X35 = w.ENEMY_ADD35 || { reuse: [], added: [] };   // v7.5 追加の敵35体：既存IDを使う10体は名前（このパックの正式名）と、足した行動だけが違う（docs/report-enemies35.md）。名前・行動以外はここで比べる
+-const diff = others.filter(id => { const a = Object.assign({}, oldE[id]), b = JSON.parse(JSON.stringify(E[id])); if (X35.reuse.includes(id)) { ['name', 'actions'].forEach(k => { delete a[k]; delete b[k]; }); delete b.legacyName; return JSON.stringify(a) !== JSON.stringify(b); } if (RD[id]) { if (b.legacyName !== a.name || b.name !== (w.EnemyArt.adopted(id) ? RD[id].name : a.name)) return true; delete a.name; delete b.name; delete b.legacyName; } return JSON.stringify(a) !== JSON.stringify(b); });
++const diff = others.filter(id => { const a = Object.assign({}, oldE[id]), b = JSON.parse(JSON.stringify(E[id])); if (E[id].actions0) b.actions = JSON.parse(JSON.stringify(E[id].actions0)); if (X35.reuse.includes(id)) { ['name', 'actions'].forEach(k => { delete a[k]; delete b[k]; }); delete b.legacyName; return JSON.stringify(a) !== JSON.stringify(b); } if (RD[id]) { if (b.legacyName !== a.name || b.name !== (w.EnemyArt.adopted(id) ? RD[id].name : a.name)) return true; delete a.name; delete b.name; delete b.legacyName; } return JSON.stringify(a) !== JSON.stringify(b); });
+ ok(diff.length === 0 && others.length === Object.keys(E).length - 27 - (w.MONSTERS65 ? w.MONSTERS65.added.length : 0) - X35.added.length, 'ほかの敵 ' + others.length + '体は前の版と同じ（任意の隠しボス：凍結の時計守・旧都市の演算核・原初の炎竜・灰の王・幽霊船長・海賊カモメの頭・学院地下の3体など）' + diff.join(','));
+ const hidden = ['boss_clock_warden', 'boss_old_core', 'boss_primal_flame', 'boss_ash_lord', 'boss_ghost_captain', 'boss_gull_admiral', 'observer_echo', 'soul_warden', 'zero_echo', 'wolf_king', 'crystal_golem'];
+ ok(hidden.every(id => E[id] && !ids.includes(id) && E[id].hp === oldE[id].hp && E[id].atk === oldE[id].atk), '任意の隠しボス11体は表に入っておらず、HP・攻撃力も前の版と同じ');
