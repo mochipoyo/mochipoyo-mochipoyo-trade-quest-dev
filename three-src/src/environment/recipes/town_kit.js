@@ -13,6 +13,7 @@ import { Batch } from '../../engine/Materials.js';
 import { canvasTex, texMat, wbox, cyl, drawSetts, floorQuadsH, settsHeight } from './geo.js';
 import { buildLandmark } from './landmarks.js';
 import { buildVariant76 } from './variants76.js';
+import { bdetailSetting } from '../../world/BuildingBuilder3D.js';
 
 // 地域ごとの作り方。road/walk：[石の色, 目地, 幅, 高さ, ばらつき]（キャンバスは 256×256。幅・高さは 256 を割り切る値）
 export const REGION_STYLE = {
@@ -31,7 +32,7 @@ export const REGION_STYLE = {
   skyterrace: { plaster: ['#ffffff'], frame: false, roofs: ['#4a7ab8'], pitch: 0.5, road: ['#f4f6f8', '#c8d0d8', 128, 64, 0.03], walk: ['#fafbfc', '#d0d8e0', 64, 64, 0.03], lamp: 'iron', light: 0xf0f6ff, fence: 'balustrade', modern: true },
   machine: { plaster: ['#d8dce0'], frame: false, roofs: ['#4a5a6a'], pitch: 0.5, road: ['#8a929a', '#4e555c', 128, 64, 0.06], walk: ['#b8bec4', '#80868c', 64, 64, 0.05], lamp: 'iron', light: 0xe0f0ff, fence: 'railing' }
 };
-const hash = (x, y, k) => { let h = (x * 374761393 + y * 668265263 + k * 2147483647) >>> 0; h = (h ^ (h >>> 13)) * 1274126177 >>> 0; return (h ^ (h >>> 16)) / 4294967296; };
+const hash = (x, y, k) => { let h = (x * 374761393 + y * 668265263 + k * 2147483647) >>> 0; h = (h ^ (h >>> 13)) * 1274126177 >>> 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };   // v7.6 0..1 に直す（以前は半分ほどが負になり、壁・屋根の色の選びが空になって既定の色に落ちていた）
 const pick = (arr, r) => arr[Math.floor(r * arr.length) % arr.length];
 
 // 用途ごとの屋根の形（地域の値と、位置から決まる値で少し変える）
@@ -69,6 +70,7 @@ export function townKit(mapId, opt) {
       // 近未来・娯楽の町（R.modern）：建物はガラスと金属の汎用のまま（舗装・街灯・柵・目印だけ）
       const building = async (b, o) => {
         if (R.modern) return null; const st = townStyle(b, R) || (b.shape76 ? { plaster: R.plaster[0], roofColor: R.roofs[0] } : null); if (!st) return null;
+        st.detail76 = true;   // v7.6 建物の作り込み（BuildingBuilder3D.detail76）
         if (b.shape76 || b.doorSide === 'left' || b.doorSide === 'right' || /^(weapon|armor|tavern)$/.test(b.type || '')) { const r = await buildVariant76(b, Object.assign({}, o, { sample76: true }), R, st, region); if (r) return r; }   // v7.6 丸い家・八角の家・テント・露店・横の入口（variants76.js）
         return o.bb.build(b, o.rnd, { batch: o.batch, design: o.design, theme: o.theme, style: st });
       };
@@ -129,8 +131,47 @@ async function build(ctx, K, b) {
   // ---- 柵
   let fences = 0; const r = rng(map.w * 131 + map.h);
   if (R.fence) for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { if (T(x, z) !== 'fence') continue; const hx = T(x - 1, z) === 'fence' || T(x + 1, z) === 'fence', hz = T(x, z - 1) === 'fence' || T(x, z + 1) === 'fence'; fence(add, R.fence, x + 0.5, hAt(x + 0.5, z + 0.5), z + 0.5, hx || !hz, hz && !hx, M, r); fences++; }
+  // ---- v7.6 地面の汚れ・落ち葉・水たまり・石の欠け（通れるマスの上の、平らな模様だけ。当たり判定は変えない）
+  let decals = 0; if (bdetailSetting() !== 'off') decals = groundDecals(add, map, T, covered, K, hAt, R, K.region);
   if (K.LM) await buildLandmark(ctx, K.LM, add, g, hAt);   // 町ごとの目印
   batch.build(g);
-  Object.assign(ctx.stats, { lamps, fences, floor: { road: roads.length, walk: walks.length }, landmark: K.LM ? K.LM.kind : null });
+  Object.assign(ctx.stats, { lamps, fences, decals, floor: { road: roads.length, walk: walks.length }, landmark: K.LM ? K.LM.kind : null });
   return g;
+}
+
+// v7.6 地面の模様（汚れ・落ち葉・水たまり・石の欠け）：1枚の絵（4つに分けた）を、通れる道・歩道のマスに少しずつ置く。1回の描画
+let decalMat = null;
+function decalMaterial() {
+  if (decalMat) return decalMat;
+  const cv = document.createElement('canvas'); cv.width = cv.height = 256; const g = cv.getContext('2d'); const r = rng(4242);
+  const blob = (cx, cy, rad, col, n) => { for (let i = 0; i < n; i++) { const a = r() * Math.PI * 2, d = r() * rad * 0.6, rr = rad * (0.25 + r() * 0.35); const gr = g.createRadialGradient(cx + Math.cos(a) * d, cy + Math.sin(a) * d, 0, cx + Math.cos(a) * d, cy + Math.sin(a) * d, rr); gr.addColorStop(0, col); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(cx - rad * 2, cy - rad * 2, rad * 4, rad * 4); } };
+  g.save(); g.beginPath(); g.rect(0, 0, 128, 128); g.clip(); blob(64, 64, 46, 'rgba(70,50,32,0.42)', 12); g.restore();   // 0：汚れ
+  g.save(); g.beginPath(); g.rect(128, 0, 128, 128); g.clip();                                                      // 1：落ち葉
+  const leafC = ['#c8782a', '#a8502a', '#d8a838', '#7a8a3a', '#8a5a2a'];
+  for (let i = 0; i < 12; i++) { const x = 146 + r() * 92, y = 18 + r() * 92; g.save(); g.translate(x, y); g.rotate(r() * 6.3); g.fillStyle = leafC[i % 5]; g.beginPath(); g.ellipse(0, 0, 13, 6.5, 0, 0, Math.PI * 2); g.fill(); g.strokeStyle = 'rgba(60,30,10,0.5)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(-12, 0); g.lineTo(12, 0); g.stroke(); g.restore(); }
+  g.restore();
+  g.save(); g.beginPath(); g.rect(0, 128, 128, 128); g.clip(); blob(64, 192, 46, 'rgba(70,90,110,0.55)', 7); g.fillStyle = 'rgba(220,235,255,0.35)'; g.beginPath(); g.ellipse(52, 184, 14, 4, -0.4, 0, Math.PI * 2); g.fill(); g.restore();   // 2：水たまり
+  g.save(); g.beginPath(); g.rect(128, 128, 128, 128); g.clip(); g.strokeStyle = 'rgba(40,32,26,0.6)'; g.lineWidth = 2.5;  // 3：石の欠け・ひび
+  for (let k = 0; k < 3; k++) { let x = 160 + r() * 60, y = 150 + r() * 60; g.beginPath(); g.moveTo(x, y); for (let i = 0; i < 5; i++) { x += (r() - 0.5) * 26; y += (r() - 0.5) * 26; g.lineTo(x, y); } g.stroke(); }
+  blob(200, 200, 14, 'rgba(50,40,30,0.4)', 3); g.restore();
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace;
+  decalMat = new THREE.MeshStandardMaterial({ map: t, transparent: true, depthWrite: false, roughness: 0.6, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
+  decalMat.userData.noShadow = true; decalMat.name = 'decal76'; return decalMat;
+}
+function groundDecals(add, map, T, covered, K, hAt, R, region) {
+  const W = map.w, H = map.h; const pos = [], uv = [], nrm = [], idx = []; let v = 0, n = 0;
+  const kinds = region === 'desert' ? [0, 0, 3] : region === 'snow' ? [0, 3, 2] : region === 'dark' || region === 'dragon' ? [0, 3, 3] : region === 'sky' || region === 'magicka' ? [0, 3] : [0, 1, 1, 2, 3];
+  for (let z = 1; z < H - 1; z++) for (let x = 1; x < W - 1; x++) {
+    const t = T(x, z); if (t !== 'road' && t !== 'stone' && t !== 'path_stone') continue; if (covered.has(x + ',' + z) || K.inLM(x, z)) continue;
+    const h = hash(x, z, 77); if (h > 0.1) continue;
+    const c = [hAt(x, z), hAt(x + 1, z), hAt(x + 1, z + 1), hAt(x, z + 1)]; const y = hAt(x + 0.5, z + 0.5); if (c.some((q) => Math.abs(q - y) > 0.02)) continue;   // 平らなマスだけ
+    const kind = kinds[Math.floor(hash(x, z, 78) * kinds.length) % kinds.length]; const u0 = (kind % 2) * 0.5, v0 = kind < 2 ? 0.5 : 0;   // 絵の上下（UV の v は下から）
+    const s = 0.7 + hash(x, z, 79) * 0.25, a = hash(x, z, 80) * Math.PI * 2, cx = x + 0.5 + (hash(x, z, 81) - 0.5) * 0.1, cz = z + 0.5 + (hash(x, z, 82) - 0.5) * 0.1;   // マスの中に収める
+    const ca = Math.cos(a) * s / 2, sa = Math.sin(a) * s / 2;
+    for (const [px, pz, uu, vv] of [[-1, -1, 0, 0], [1, -1, 1, 0], [1, 1, 1, 1], [-1, 1, 0, 1]]) { pos.push(cx + px * ca - pz * sa, y + 0.024, cz + px * sa + pz * ca); uv.push(u0 + uu * 0.5, v0 + vv * 0.5); nrm.push(0, 1, 0); }
+    idx.push(v, v + 2, v + 1, v, v + 3, v + 2); v += 4; n++;
+  }
+  if (!n) return 0;
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); g.setAttribute('normal', new THREE.Float32BufferAttribute(nrm, 3)); g.setIndex(idx);
+  add(decalMaterial(), g); return n;
 }

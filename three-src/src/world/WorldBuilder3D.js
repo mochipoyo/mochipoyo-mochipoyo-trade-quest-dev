@@ -518,7 +518,9 @@ export class WorldBuilder3D {
         `);
     };
     mat.customProgramCacheKey = () => 'world-ground-v3';
-    addCutout(mat); return mat;
+    // v7.6 地面は「主人公の手前を抜く」対象にしない：丘・町の段で持ち上がった地面を抜くと、下に何もないため空の色（白い三角）が見えていた。
+    //   地面の陰に隠れた主人公は、主人公の淡いシルエット（Character3D の xray）で見える
+    return mat;
   }
   // 水・溶岩・雲の面：テクスチャを使わないので、自前の UV（vWuv）を渡す
   static withUv(sh) {

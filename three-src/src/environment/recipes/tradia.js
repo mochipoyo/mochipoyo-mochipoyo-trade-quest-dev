@@ -69,7 +69,7 @@ export const recipe = {
     const hooks = { skipProp: (t) => t === 'fence' || t === 'lamp', skipOutTree: (x, z) => z >= map.h - 1 && Math.abs(x - gateX) < 12 };   // 南の門の前（カメラの側）には町の外の木を置かない
     const building = async (b, o) => {
       const f = BUILD[b.id] || BUILD_TYPE[b.type]; if (f) { const out = { group: new THREE.Group(), lights: [], smokes: [], props: [] }; out.group.name = 'building_env_' + b.id; await f(ctx, K, b, o.batch, out); return out; }
-      const st = STYLE[b.type]; if (!st) return null; return o.bb.build(b, o.rnd, { batch: o.batch, design: o.design, theme: o.theme, style: st });
+      const st = STYLE[b.type]; if (!st) return null; return o.bb.build(b, o.rnd, { batch: o.batch, design: o.design, theme: o.theme, style: Object.assign({}, st, { detail76: true }) });
     };
     return { hooks, building, decorKey: 'royal', build: (bb) => build(ctx, K, bb, { ex, boards }) };   // 飾りのテーマ：光る機械の箱（tech）ではなく、鉢植え・壺・ベンチ（royal）
   }

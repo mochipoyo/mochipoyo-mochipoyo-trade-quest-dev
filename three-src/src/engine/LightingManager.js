@@ -68,6 +68,7 @@ export class LightingManager {
   // 地域テーマ（themes.js）：霧・地平の色を地域の色へ寄せ、暗い地域は日差しを弱める
   setTheme(theme) { this.theme = theme || null; this._fogC = theme && theme.fog ? new THREE.Color(theme.fog) : null; }
   setInterior(on, ambient) { this.interior = on; this.ambient = ambient || null; }
+  setMapKind(k) { this.mapKind = k || null; }   // v7.6 画面の仕上げのぼかしの強さ（field/town/dungeon/interior）
   // v6.9 マップ固有の空気（2D のマップ定義 def.mood3d）：襲撃の夜のアサナ村など。時間帯の色の代わりに使う（屋外だけ）
   setMood(m) { this.mood = m || null; }
   update(t, focus) {
@@ -103,6 +104,11 @@ export class LightingManager {
     for (const m of this.glowMats) m.emissiveIntensity = (m.userData.baseEmissive || 1) * (this.interior ? 0.6 : 0.25 + this.night * 0.9);
     const nk = this.interior ? 0 : Math.max(0, Math.min(1, (this.night - 0.15) / 0.6)); for (const m of this.nightMats) { m.opacity = m.userData.nightGlow * nk * nk * (3 - 2 * nk); m.visible = m.opacity > 0.004; }
     this.renderer.setBloom(0.25 + this.night * 0.6);
+    if (this.renderer.setFinish) {   // v7.6 画面の仕上げ（Finish76.js）：地域・時間帯・屋内で色の調子とぼかしを変える
+      const ti = ((tt % 1) + 1) % 1; const dusk = this.mood ? 0 : Math.max(0, 1 - Math.abs(ti - 0.76) / 0.08) + 0.6 * Math.max(0, 1 - Math.abs(ti - 0.23) / 0.07);
+      const kind = this.mapKind === 'interior' ? 'interior' : (this.mapKind || 'town');
+      this.renderer.setFinish({ theme: this.theme, night: this.interior ? 0 : this.night, dusk: this.interior ? 0 : Math.min(1, dusk), interior: kind === 'interior', kind });
+    }
     // 近いランタンだけ点光源で照らす（夜・屋内）
     // v6.6 チラつき対策：以前は毎フレーム「近い順の N 個」へ点光源を付け替えていたため、歩くと N 番目あたりの街灯が一瞬で点いたり消えたりした。
     //   いまは照らしている街灯をスロットに保持し、近い N+2 個から外れたときだけ 0.35 秒かけて消し、空いたスロットで新しい街灯を 0.35 秒かけて点ける

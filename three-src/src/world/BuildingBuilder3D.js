@@ -13,6 +13,17 @@ const SHUTTER = { item: 'shutterGreen', inn: 'shutterRed', church: 'shutterBlue'
 const ICON = { item: 'icon_potion', inn: 'icon_bed', weapon: 'icon_sword', church: 'icon_bell', dojo: 'icon_chart', elder: 'icon_scroll', armor: 'icon_sword', tavern: 'icon_potion' };
 
 import { buildTownShip } from './ShipModel3D.js';
+// v7.6 建物の作り込み（町のレシピが style.detail76 を渡した建物だけ）：厚い屋根と深い軒・壁の足元の汚れと苔・角石・日よけ・つた・洗濯物・
+//   窓の灯りのにじみ（夜）・建物の足元（通れないマスの中）の植木鉢・薪・袋・立て看板。当たり判定・扉・名札は変えない
+//   切り替え：localStorage 'mtq3d-bdetail'＝'off'（使わない＝以前の形）。URL の ?bdetail=on|off が優先（保存しない）
+export function bdetailSetting() {
+  try { const q = /[?&]bdetail=(on|off)\b/.exec(location.search || ''); if (q) return q[1]; } catch (e) { /* なし */ }
+  try { return localStorage.getItem('mtq3d-bdetail') === 'off' ? 'off' : 'on'; } catch (e) { return 'on'; }
+}
+export function setBdetailSetting(v) { try { if (v === 'off') localStorage.setItem('mtq3d-bdetail', 'off'); else localStorage.removeItem('mtq3d-bdetail'); } catch (e) { /* なし */ } }
+const hashB = (x, y, k) => { let h = (x * 374761393 + y * 668265263 + k * 2147483647) >>> 0; h = (h ^ (h >>> 13)) * 1274126177 >>> 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };   // 0..1（符号なしに直す）
+const darkHex = (hex, f) => '#' + new THREE.Color(hex).multiplyScalar(f).getHexString();
+const HUMID = { arcadia: 1, grania: 1, kalion: 1, tempus: 1, islands: 1, magicka: 1 };
 export class BuildingBuilder3D {
   constructor(mats, models) { this.mats = mats; this.models = models; }
 
@@ -27,6 +38,7 @@ export class BuildingBuilder3D {
     //   two：2階建て／base・h1：土台・1階の高さ／plaster：壁の色／frame：false で木組みなし（石・土の壁）／wall：'stone'（壁を石に）
     //   roofColor：屋根の色／porch：扉の上の庇／bell：屋根の上の小さな鐘楼／chimney：false で煙突なし
     const st = (opts && opts.style) || {};
+    const DET = !!st.detail76 && bdetailSetting() !== 'off';   // v7.6 建物の作り込み
     // ---- 寸法
     const xl = b.x + 0.18, xr = b.x + b.w - 0.18, zb = b.y + 0.2, zf = b.y + b.h - 0.62;
     const W = xr - xl, D = zf - zb, cx = (xl + xr) / 2, cz = (zb + zf) / 2;
@@ -111,7 +123,7 @@ export class BuildingBuilder3D {
       }
     };
     const wy1 = base + Math.min(1.45, h1 * 0.55), wy2 = base + h1 + h2 * 0.5;
-    winsFront.forEach((x, i) => { window_(x, wy1, f1.z1 + 0.02, 1, 0.82, 0.92, { flowers: i % 2 === 0 }); if (f2) window_(x, wy2, f2.z1 + 0.02, 1, 0.74, 0.8); });
+    winsFront.forEach((x, i) => { window_(x, wy1, f1.z1 + 0.02, 1, 0.82, 0.92, { flowers: i % 2 === 0 }); if (f2) window_(x, wy2, f2.z1 + 0.02, 1, 0.74, 0.8, { flowers: DET && i % 2 === 1 }); });
     for (let x = xl + 1.6; x < xr - 1.0; x += 2.8) { window_(x, wy1, f1.z0 - 0.02, -1, 0.75, 0.85, { shutters: false }); if (f2) window_(x, wy2, f2.z0 - 0.02, -1, 0.7, 0.75, { shutters: false }); }
     if (D > 3) { window_(f1.x0 - 0.02, wy1, cz, 'L', 0.75, 0.85); window_(f1.x1 + 0.02, wy1, cz, 'R', 0.75, 0.85); }
 
@@ -136,7 +148,7 @@ export class BuildingBuilder3D {
 
     // ---- 屋根（切妻・棟は X 方向・板瓦を段に重ねる）
     const pitch = st.pitch || (type === 'church' ? 0.88 : 0.72);   // 約50度／41度
-    const ovZ = st.eave || 0.3, ovX = (st.eave || 0.3) + 0.08;
+    const ovZ = st.eave || 0.3, ovX = (st.eave || (DET ? 0.42 : 0.3)) + 0.08;   // v7.6 作り込み：妻側の軒を深く（正面の軒は名札が隠れないよう従来のまま）
     // v7.6 棟の向き：gableZ は棟を南北に（妻入り）。屋根の部品を建物の中心で90度回して置く
     const rotZ = st.roof === 'gableZ'; const RM = rotZ ? new THREE.Matrix4().makeTranslation(cx, 0, cz).multiply(new THREE.Matrix4().makeRotationY(Math.PI / 2)).multiply(new THREE.Matrix4().makeTranslation(-cx, 0, -cz)) : null;
     const RB = { add: (mm, g, mx) => { if (!RM) return batch.add(mm, g, mx); const g2 = g.index ? g.toNonIndexed() : g.clone(); if (mx) g2.applyMatrix4(mx); g2.applyMatrix4(RM); return batch.add(mm, g2); } };
@@ -244,8 +256,106 @@ export class BuildingBuilder3D {
     if (type === 'house') { out.props.push({ id: 'barrel', m: M4(xr - 0.6, 0, front) }, { id: 'crate', m: M4(xr - 1.3, 0, front + 0.05, 0.3) }); }
     if (type === 'dojo') { out.props.push({ id: 'barrel', m: M4(xl + 0.7, 0, front) }); }
 
+    if (DET) this.detail76({ b, type, st, theme, batch, RB, out, rng, plaster, timber, stone, xl, xr, zb, zf, W, D, cx, cz, base, h1, h2, two, jet, top, rise, pitch, ex, ez, ovX, ovZ, half, slope, gableRoof, f1, f2, winsFront, wy1, wy2, doorX, dz, front });
+
     if (!(opts && opts.batch)) batch.build(out.group);
     return out;
+  }
+
+  // v7.6 建物の作り込み（DQ3 リメイク・DQ7 リイマジンドの「人形・ジオラマ」風の厚みと生活感に近づける。形・色は仮の値）
+  detail76(o) {
+    const M = this.mats; const { b, type, st, batch, RB, xl, xr, zf, W, D, cx, cz, base, h1, h2, two, jet, top, rise, pitch, ex, ovX, half, slope, f1, f2 } = o;
+    const region = (o.theme && o.theme.region) || 'arcadia'; const hx = (k) => hashB(b.x, b.y, k); const rng = o.rng;
+    const stoneWall = st.wall === 'stone'; const wallHex = st.plaster || (o.theme && o.theme.plaster) || '#efe6d6';
+    const add = (m, g, mx) => batch.add(m, g, mx);
+    // ---- 厚い屋根：屋根の下地（厚さ）・軒先の鼻隠し
+    if (o.gableRoof) for (const s of [1, -1]) {
+      const yy = top + rise - Math.sin(pitch) * slope / 2 - 0.02, zz = cz + s * Math.cos(pitch) * slope / 2;
+      RB.add(o.timber, box(ex + ovX * 2 - 0.02, 0.1, slope, 1.5), M4(cx, yy, zz, 0, s * pitch, 0));   // 屋根の厚み（瓦の下地）
+      const ye = top + rise - Math.sin(pitch) * slope, ze = cz + s * half;
+      RB.add(o.timber, box(ex + ovX * 2 + 0.06, 0.15, 0.1, 1.5), M4(cx, ye + 0.05, ze, 0, s * pitch, 0));   // 軒先の板（下へは垂らさない：扉の上の名札を隠さない）
+    }
+    if (st.roof === 'hip') {
+      const L = ex + ovX * 2, Dd = (two ? D + jet * 2 : D) + o.ovZ * 2;
+      for (const zz of [cz - Dd / 2, cz + Dd / 2]) add(o.timber, box(L + 0.1, 0.16, 0.12, 1.5), M4(cx, top + 0.06, zz));
+      for (const xx of [cx - L / 2, cx + L / 2]) add(o.timber, box(0.12, 0.16, Dd + 0.1, 1.5), M4(xx, top + 0.06, cz));
+    }
+    // ---- 壁の足元の汚れ（色の濃い帯）と苔
+    const grime = stoneWall ? M.tinted('stonewall', darkHex(wallHex, 0.7)) : M.tinted('plaster', darkHex(wallHex, 0.8));
+    add(grime, box(W + 0.03, 0.4, D + 0.03, 2.2), M4(cx, base + 0.2, cz));
+    if (two && st.frame === false) add(grime, box(W + jet * 2 + 0.03, 0.12, D + jet * 2 + 0.03, 2.2), M4(cx, base + h1 + 0.06, cz));   // 2階の床の線
+    if (HUMID[region] && hx(3) < 0.7) {
+      const moss = M.tinted('plaster', region === 'magicka' ? '#5a6a4a' : '#5f7a3c'); const blob = new THREE.IcosahedronGeometry(1, 0);
+      for (const [x0, sgn] of [[xl, 1], [xr, -1]]) for (let i = 0; i < 4; i++) { const r = 0.1 + rng() * 0.1; add(moss, blob, M4(x0 + sgn * (0.05 + rng() * 0.45), base + 0.05 + rng() * 0.25, zf + 0.02 + rng() * 0.05, rng() * 3, 0, 0, r, r * 0.6, r * 0.5)); }
+    }
+    // ---- 角石（木組みのない壁）
+    if (st.frame === false && !stoneWall) {
+      const q = M.tinted('stonewall', region === 'desert' ? '#d8b88a' : '#d4ccbc'); const hh = h1 + (two ? h2 : 0);
+      for (const [x, sx] of [[f1.x0, -1], [f1.x1, 1]]) for (let y = base + 0.1, i = 0; y < base + hh - 0.1; y += 0.34, i++) { const lng = i % 2 === 0; add(q, box(lng ? 0.42 : 0.26, 0.3, 0.06, 1), M4(x - sx * (lng ? 0.17 : 0.1), y + 0.15, zf + 0.03)); add(q, box(0.06, 0.3, lng ? 0.26 : 0.42, 1), M4(x + sx * 0.03, y + 0.15, zf - (lng ? 0.1 : 0.17))); }
+    }
+    // ---- 日よけ（店・宿・一部の家の1階の正面の窓）
+    const shop = /^(item|weapon|armor|tavern|shop|inn|bank|guild)$/.test(type);
+    if (shop) {
+      const cols = [['#c8463a', '#f4ead8'], ['#3a6a9a', '#f0ecdc'], ['#3e7a4a', '#f2ead6'], ['#d89a2a', '#f6eedc'], ['#7a4a8a', '#f0e8f4']];
+      const awn = this.awningMat(cols[Math.floor(hx(7) * cols.length) % cols.length]);
+      o.winsFront.forEach((x) => { const w = 1.15, y = o.wy1 + 0.74, dep = 0.36, drop = 0.24; const g = new THREE.PlaneGeometry(w, Math.hypot(dep, drop), 1, 1); g.rotateX(-Math.PI / 2 + Math.atan2(drop, dep)); add(awn, g, M4(x, y - drop / 2, f1.z1 + 0.04 + dep / 2)); add(awn, box(w, 0.1, 0.02, 1), M4(x, y - drop - 0.05, f1.z1 + 0.05 + dep)); });   // 浅く・高めに（夜の窓の灯りを隠しすぎない）
+    }
+    // ---- つた（家・村長の家・宿の正面の端）
+    if (HUMID[region] && /^(house|elder|inn|tavern)$/.test(type) && hx(5) < 0.45) {
+      const leaf = M.tinted('plaster', '#4e6e34'), leaf2 = M.tinted('plaster', '#6a8a42'); const blob = new THREE.IcosahedronGeometry(1, 0);
+      const sx = hx(8) < 0.5 ? 1 : -1; const x0 = sx > 0 ? f1.x0 + 0.15 : f1.x1 - 0.15; const hh = h1 * 0.95 + (two ? h2 * 0.6 : 0);
+      for (let i = 0; i < 22; i++) { const t = rng(); const y = base + t * hh; const spread = 0.25 + (1 - t) * 0.35; const r = 0.09 + rng() * 0.08; add(i % 3 ? leaf : leaf2, blob, M4(x0 + sx * rng() * spread, y, zf + 0.04, rng() * 3, 0, 0, r, r, r * 0.45)); }
+    }
+    // ---- 洗濯物（家：正面の、扉から遠い側の壁）
+    if (type === 'house' && hx(6) < 0.55) {
+      const left = (o.doorX - xl) > (xr - o.doorX); const a = left ? xl + 0.35 : o.doorX + 1.1, c = left ? o.doorX - 1.1 : xr - 0.35;
+      if (c - a >= 1.3) {
+        const iron = M.get('iron'); const y = base + h1 - 0.3, z = zf + 0.42;
+        for (const x of [a, c]) add(iron, box(0.04, 0.04, 0.42, 1), M4(x, y, zf + 0.21));
+        add(M.tinted('plaster', '#d8ccb0'), box(c - a, 0.02, 0.02, 1), M4((a + c) / 2, y, z));
+        const cloth = ['#f4f2ec', '#8ab0d8', '#e8a8b8', '#f0d878', '#a8c890']; let x = a + 0.25;
+        for (let i = 0; x < c - 0.2; i++) { const w = 0.26 + rng() * 0.16, h = 0.32 + rng() * 0.22; add(M.tinted('plaster', cloth[(i + Math.floor(hx(9) * 5)) % 5]), box(w, h, 0.03, 1), M4(x + w / 2, y - h / 2 - 0.01, z, (rng() - 0.5) * 0.15)); x += w + 0.1; }
+      }
+    }
+    // ---- 窓の灯りのにじみ（夜だけ見える。影は落とさない）
+    const glow = this.winGlowMat(); const gp = new THREE.PlaneGeometry(1, 1);
+    o.winsFront.forEach((x) => { add(glow, gp, M4(x, o.wy1, f1.z1 + 0.09, 0, 0, 0, 1.5, 1.6, 1)); if (f2) add(glow, gp, M4(x, o.wy2, f2.z1 + 0.09, 0, 0, 0, 1.35, 1.45, 1)); });
+    // ---- 建物の足元の小物（前の帯：扉のマスと店先の小物を避ける）
+    const used = []; const busy = { item: [xl + 0.7, xl + 0.75, xr - 0.7, xr - 1.35], inn: [xl + 1.4, xr - 0.7], elder: [xl + 0.8, xr - 0.8], house: [xr - 0.6, xr - 1.3], dojo: [xl + 0.7] }[type] || [];
+    busy.forEach((x) => used.push(x)); if (/^(weapon|armor|tavern)$/.test(type)) [1.75, -1.75, 2.6, -2.6].forEach((d) => used.push(o.doorX + d));   // 店先の小物（variants76.js の shopFront）の位置
+    const free = (x, r) => type !== 'church' && x - r > xl + 0.05 && x + r < xr - 0.05 && Math.abs(x - o.doorX) > 0.8 + r && !used.some((u) => Math.abs(u - x) < 0.45 + r);
+    const zf2 = zf + 0.3;
+    const pot = (x) => { const terra = M.tinted('plaster', '#b0623e'); add(terra, new THREE.CylinderGeometry(0.17, 0.12, 0.3, 10), M4(x, 0.15, zf2)); add(M.tinted('plaster', '#3f6a34'), new THREE.IcosahedronGeometry(0.22, 1), M4(x, 0.42, zf2, 0, 0, 0, 1, 0.85, 1)); if (hx(11) < 0.6) add(M.tinted('plaster', ['#e8506a', '#f0d040', '#f4f4f8'][Math.floor(hx(12) * 3) % 3]), new THREE.IcosahedronGeometry(0.06, 0), M4(x + 0.08, 0.58, zf2 + 0.08)); used.push(x); };
+    for (const sx of [-1, 1]) { const x = o.doorX + sx * 1.0; if (free(x, 0.2)) pot(x); }
+    if (type === 'house' && st.chimney !== false) {   // 薪の山
+      const x = (o.doorX - xl) > (xr - o.doorX) ? xl + 0.75 : xr - 0.75;
+      if (free(x, 0.5)) { const wood = M.tinted('timber', '#a07a52'); const lg = new THREE.CylinderGeometry(0.07, 0.07, 0.9, 6); lg.rotateZ(Math.PI / 2); for (let r = 0; r < 3; r++) for (let k = 0; k < 4 - r; k++) add(wood, lg, M4(x, 0.08 + r * 0.13, zf + 0.12 + k * 0.13 + r * 0.065)); used.push(x); }
+    }
+    if (type === 'item' || type === 'shop') {   // 袋
+      const x = (xl + xr) / 2 + (o.doorX > cx ? -1.6 : 1.6);
+      if (free(x, 0.35)) { const sack = M.tinted('plaster', '#c8b088'); for (const [dx, dz2, r] of [[-0.18, 0, 0.2], [0.16, 0.04, 0.18], [0, 0.0, 0.17]]) add(sack, new THREE.SphereGeometry(r, 8, 6), M4(x + dx, r * 0.9 + (dx === 0 ? 0.25 : 0), zf2 + dz2, 0, 0, 0, 1, 1.15, 0.85)); used.push(x); }
+    }
+    if (/^(inn|tavern|item|weapon|armor)$/.test(type)) {   // 立て看板（扉の横・前の帯の中）
+      for (const sx of [1, -1]) { const x = o.doorX + sx * 1.55; if (!free(x, 0.3)) continue; const brd = M.tinted('timber', '#8a6444'), slate = M.tinted('plaster', '#3e5248');
+        for (const t of [1, -1]) { add(brd, box(0.42, 0.6, 0.04, 1), M4(x, 0.31, zf2 + t * 0.08, 0, t * 0.22, 0)); add(slate, box(0.32, 0.4, 0.01, 1), M4(x, 0.33, zf2 + t * 0.105, 0, t * 0.22, 0)); }
+        used.push(x); break; }
+    }
+    o.out.detail76 = true;
+  }
+  awningMat(c) {
+    this._awn = this._awn || {}; const k = c.join(); if (this._awn[k]) return this._awn[k];
+    const cv = document.createElement('canvas'); cv.width = 64; cv.height = 8; const g = cv.getContext('2d');
+    for (let i = 0; i < 8; i++) { g.fillStyle = c[i % 2]; g.fillRect(i * 8, 0, 8, 8); }
+    const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = THREE.RepeatWrapping;
+    const m = new THREE.MeshStandardMaterial({ map: t, roughness: 1, side: THREE.DoubleSide }); this._awn[k] = m; return m;
+  }
+  winGlowMat() {
+    if (this._wg) return this._wg;
+    const cv = document.createElement('canvas'); cv.width = cv.height = 64; const g = cv.getContext('2d');
+    const gr = g.createRadialGradient(32, 32, 4, 32, 32, 32); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.4, 'rgba(255,255,255,0.45)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
+    const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace;
+    const m = new THREE.MeshBasicMaterial({ map: t, color: 0xffb860, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, fog: false });
+    m.userData.nightGlow = 0.42; m.userData.noShadow = true; m.userData.noReceive = true; m.visible = false; this._wg = m; return m;
   }
 
   // Phase 1 城（type 'castle'）：石の外壁・四隅の塔（円錐の屋根）・胸壁・門。足元・入口の位置は2D版と同じ。形は仮（仮3D）

@@ -5,6 +5,8 @@
    ========================================================= */
 import { scope3D, setScope3D } from '../world/coverage.js';
 import { roundSetting, setRoundSetting } from '../world/Organic.js';
+import { finishSetting, setFinishSetting } from '../engine/Finish76.js';
+import { bdetailSetting, setBdetailSetting } from '../world/BuildingBuilder3D.js';
 const G3B = () => window.BattleStage3D;
 export class UIOverlay {
   constructor(app) {
@@ -79,6 +81,8 @@ export class UIOverlay {
     this.tools.innerHTML = '<div><button data-a="zin">＋</button> <button data-a="zout">－</button> <button data-a="panel">3D設定</button></div>' +
       '<div id="g3-panel"><div class="row"><span class="lab">カメラ角度</span><button data-cam="38">38°</button><button data-cam="48">48°</button><button data-cam="56">56°</button></div>' +
       '<div class="row"><span class="lab">画質</span><button data-q="high">高（PC）</button><button data-q="low">軽量（スマホ）</button></div>' +
+      '<div class="row"><span class="lab">画面の仕上げ</span><button data-fin="on">使う（ジオラマ風のぼかし・色の調子）</button><button data-fin="off">使わない（以前の表示）</button><span class="small" style="color:#aab">高画質のときだけ</span></div>' +
+      '<div class="row"><span class="lab">建物の作り込み</span><button data-bd="on">使う（厚い屋根・汚れ・日よけ・小物）</button><button data-bd="off">使わない（以前の形）</button></div>' +
       '<div class="row"><span class="lab">時間帯の確認</span><button data-t="-1">ゲーム内</button><button data-t="0.3">朝</button><button data-t="0.5">昼</button><button data-t="0.74">夕</button><button data-t="0.95">夜</button></div>' +
       '<div class="row"><span class="lab">モーション</span><button data-m="Attack">攻撃</button><button data-m="Cast">呪文</button><button data-m="Hit">被弾</button><button data-m="Defend">防御</button><button data-m="Victory">勝利</button><button data-m="Defeat">倒れる</button></div>' +
       '<div class="row"><span class="lab">戦闘の3D</span><button data-b="on">3Dの舞台</button><button data-b="off">2Dの背景</button></div>' +
@@ -103,6 +107,8 @@ export class UIOverlay {
       if (b.dataset.ba && G3B()) G3B().setActors(b.dataset.ba === 'on');   // Phase 2：次の戦闘から
       if (b.dataset.bl) { try { localStorage.setItem('mtq3d-battle-layout', b.dataset.bl); } catch (e) { /* なし */ } }   // 戦闘の並び：次の戦闘から
       if (b.dataset.bb) { try { localStorage.setItem('mtq3d-battle-bg', b.dataset.bb); } catch (e) { /* なし */ } }   // v6.6 前後の並びの背景：すぐ反映（戦闘中でも）
+      if (b.dataset.fin) { setFinishSetting(b.dataset.fin); if (app.renderer && app.renderer.setFinishEnabled) app.renderer.setFinishEnabled(b.dataset.fin !== 'off'); }   // v7.6 画面の仕上げ：すぐ反映
+      if (b.dataset.bd && b.dataset.bd !== bdetailSetting()) { setBdetailSetting(b.dataset.bd); app.rebuildGeneric(); }   // v7.6 建物の作り込み：汎用3Dのマップを作り直す
       if (b.dataset.sc) setScope3D(b.dataset.sc);                         // Phase 1：すぐ反映（今いるマップも）
       if (b.dataset.rd && b.dataset.rd !== roundSetting()) { setRoundSetting(b.dataset.rd); app.rebuildGeneric(); }   // v6.8 丸み：汎用3Dのマップを作り直す
       this.refresh();
@@ -143,6 +149,8 @@ export class UIOverlay {
     let bl = 'front'; try { bl = localStorage.getItem('mtq3d-battle-layout') === 'side' ? 'side' : 'front'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-bl]').forEach((b) => b.classList.toggle('on', b.dataset.bl === bl));
     let bbg = 'photo'; try { bbg = localStorage.getItem('mtq3d-battle-bg') === '3d' ? '3d' : 'photo'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-bb]').forEach((b) => b.classList.toggle('on', b.dataset.bb === bbg));
     let ba = true; try { ba = localStorage.getItem('mtq3d-battle-actors') !== 'off'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-ba]').forEach((b) => b.classList.toggle('on', (b.dataset.ba === 'on') === ba));
+    const fin = (app.renderer && app.renderer.finish) ? (app.renderer.finish.enabled() ? 'on' : 'off') : finishSetting(); this.tools.querySelectorAll('[data-fin]').forEach((b) => { b.classList.toggle('on', b.dataset.fin === fin); b.disabled = !(app.renderer && app.renderer.finish); });
+    const bd = bdetailSetting(); this.tools.querySelectorAll('[data-bd]').forEach((b) => b.classList.toggle('on', b.dataset.bd === bd));
     const sc = scope3D(); this.tools.querySelectorAll('[data-sc]').forEach((b) => b.classList.toggle('on', b.dataset.sc === sc));
     const rd = roundSetting(); this.tools.querySelectorAll('[data-rd]').forEach((b) => b.classList.toggle('on', b.dataset.rd === rd));
   }

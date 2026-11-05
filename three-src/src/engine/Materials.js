@@ -89,7 +89,7 @@ export class Batch {
       else list.forEach((g) => { if (g.attributes.color) g.deleteAttribute('color'); });
       const merged = mergeGeometries(list, false); if (!merged) continue;
       merged.computeBoundingSphere(); merged.userData.own = true;
-      const mesh = new THREE.Mesh(merged, mat); mesh.castShadow = opts.castShadow !== false; mesh.receiveShadow = true;
+      const mesh = new THREE.Mesh(merged, mat); mesh.castShadow = opts.castShadow !== false && !(mat.userData && mat.userData.noShadow); mesh.receiveShadow = !(mat.userData && mat.userData.noReceive);   // v7.6 noShadow：影を落とさない（地面の汚れ・光のにじみ）／noReceive：影を受けない（光のにじみ）
       group.add(mesh);
     }
     this.lists.clear();

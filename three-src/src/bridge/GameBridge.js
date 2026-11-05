@@ -156,7 +156,7 @@ export class App3D {
     const ac = this.battle && this.battle.actors; const part = ac && ac.why ? '／一部2D（' + ac.why + '）' : ''; const bk = this.battle && this.battle.backWhy ? '／' + this.battle.backWhy : '';
     const rs = readableStats(); const rd = rs.loading + rs.tainted + rs.error + rs.ok ? '／画像の読み直し ' + rs.ok + '件成功・' + (rs.tainted + rs.error) + '件失敗' : '';
     const vv = G.visualViewport; const scr = '／画面 ' + innerWidth + '×' + innerHeight + (vv ? '（見える ' + Math.round(vv.width) + '×' + Math.round(vv.height) + '・上 ' + Math.round(vv.offsetTop) + '）' : '') + '・スクロール ' + Math.round(scrollY);
-    return '3D：' + st3d + '／戦闘：' + stB + part + bk + rd + '／' + ver + '・' + gpu + '・画質 ' + this.quality + miss + scr + '／版 ' + (G.MTQ3D_BUILD || '-');
+    return '3D：' + st3d + '／戦闘：' + stB + part + bk + rd + '／' + ver + '・' + gpu + '・画質 ' + this.quality + (this.renderer && this.renderer.finish ? '・仕上げ ' + (this.renderer.finish.enabled() ? '入' : '切') : '') + miss + scr + '／版 ' + (G.MTQ3D_BUILD || '-');
   }
   installBattleStage() {
     const app = this;
@@ -241,6 +241,7 @@ export class App3D {
     this.ui.setBadge(ms.coverage === 'generic' ? '3D版 開発中：汎用3D（仮3D・自動生成）' : '3D版：専用3D（ポヨ村）');
     this.lighting.setLampSpots(ms.lampSpots); this.lighting.setInterior(ms.interior || !!ms.dark, ms.ambient);
     if (this.lighting.setTheme) this.lighting.setTheme(ms.theme || null);
+    if (this.lighting.setMapKind) this.lighting.setMapKind(ms.interior ? 'interior' : (ms.map && ms.map.kind) || null);   // v7.6 画面の仕上げ
     if (this.lighting.setMood) this.lighting.setMood((ms.map && ms.map.def && ms.map.def.mood3d) || null);   // v6.9 マップ固有の空気
     const closeCam = ms.interior || (ms.map.kind === 'dungeon');
     this.camera.setInterior(closeCam); if (!closeCam) { this.camera.setPitch(this.userPitch); if (ms.map.kind === 'field') this.camera.wantDist = Math.max(this.camera.wantDist, 24); }
