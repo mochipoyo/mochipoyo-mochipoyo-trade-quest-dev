@@ -1,0 +1,18 @@
+// v7.6 シームレスな世界：前後の画像（同じ場所・同じカメラ）。PORT・TAG（before/after）・Q
+const { chromium } = require('playwright'); const fs = require('fs');
+const PORT = process.env.PORT || 8772; const TAG = process.env.TAG || 'after'; const Q = process.env.Q || 'high'; const SHOT = '/home/claude/work/p3d/shots/v76/join76_v2/'; fs.mkdirSync(SHOT, { recursive: true });
+(async () => {
+  const br = await chromium.launch(); const ctx = await br.newContext({ viewport: { width: 1280, height: 720 } }); await ctx.addInitScript((Q) => { try { localStorage.setItem('mtq3d-quality', Q); } catch (e) { } }, Q);
+  const p = await ctx.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+  await p.goto(`http://localhost:${PORT}/3d/index.html`); await p.waitForFunction(() => window.MTQ3D && MTQ3D.ready, null, { timeout: 300000 });
+  await p.evaluate(() => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay); State.newGame('もち', 'warrior'); const d = State.data; ['s3121_new_prologue', 'ship_ready', 'galleon_ready', 'airship_owned', 'kalion_open', 'yorn_letter_done', 'zeromea_choice_done', 'magicka_arrived'].forEach((f) => d.flags[f] = true); d.hero.level = 30; ['world', 'world_grania', 'world_kalion', 'world_islands', 'world_tempus', 'world_desert', 'world_snow', 'world_magicka'].forEach((id) => d.visited[id] = true); World.start(); });
+  await p.waitForTimeout(1500);
+  const place = (map, x, y, veh, dir) => p.evaluate(([map, x, y, veh, dir]) => { const d = State.data; document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay); World.busy = false; d.aboard = veh || null; if (veh) d.vehicles[veh] = { owned: true, map, x, y, port: { map, x, y } }; World.enterMap(map, x, y, dir || 'down', { raw: true }); }, [map, x, y, veh, dir]);
+  const settle = async (id) => { await p.waitForFunction((id) => MTQ3D.current && MTQ3D.current.map.id === id, id, { timeout: 400000 }).catch(() => { }); await p.evaluate(() => { MTQ3D.lighting.preview = 0.4; MTQ3D.camera.wantDist = 40; }); await p.waitForFunction(() => !MTQ3D.join || (!MTQ3D.join.building && !MTQ3D.building), null, { timeout: 600000, polling: 1000 }).catch(() => { }); await p.waitForTimeout(6000); await p.waitForFunction(() => !MTQ3D.join || (!MTQ3D.join.building && !MTQ3D.building), null, { timeout: 600000, polling: 1000 }).catch(() => { }); await p.waitForTimeout(2500); };
+  const VIEWS = [['a_desert_east', 'world_desert', 152, 70], ['b_ridge', 'world_grania', 60, 6], ['c_snow_west', 'world_snow', 8, 60], ['d_dragon', 'world_dragon', 80, 20], ['e_sea_islands', 'world_islands', 150, 60]];
+  for (const [name, map, x, y] of VIEWS) { await place(map, x, y, 'airship'); await settle(map); await p.screenshot({ path: SHOT + TAG + '_' + name + '.jpg', type: 'jpeg', quality: 82, timeout: 300000 }); console.log('shot', name); }
+  await p.evaluate(() => { Minimap.openBig(); Minimap.setMode('world'); }); await p.waitForTimeout(1500);
+  await p.evaluate(() => { const b = document.querySelector('.bm-ctl [data-act="fit"]'); if (b) b.click(); }); await p.waitForTimeout(1500); await p.screenshot({ path: SHOT + TAG + '_f_map_all.jpg', type: 'jpeg', quality: 82, timeout: 300000 });
+  await p.evaluate(() => { Minimap.setMode('globe'); }); await p.waitForTimeout(1500); await p.evaluate(() => { const b = document.querySelector('.bm-ctl [data-act="fit"]'); if (b) b.click(); }); await p.waitForTimeout(1500); await p.screenshot({ path: SHOT + TAG + '_g_globe.jpg', type: 'jpeg', quality: 82, timeout: 300000 });
+  console.log(TAG, 'errors', JSON.stringify(errs.slice(0, 3))); await br.close();
+})().catch((e) => { console.log('例外', e.stack); process.exit(1); });

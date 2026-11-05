@@ -21,11 +21,11 @@ const fails = []; const ok = (c, m) => { if (!c) fails.push(m); console.log((c ?
   await p.waitForTimeout(1500); await p.screenshot({ path: SHOT + 'air_1_crossed.jpg', type: 'jpeg', quality: 80, timeout: 240000 });
   // 2) 魔導王国 → 暗黒大陸（まだ行けない）
   await p.evaluate(() => { window.__toasts = []; const t = Win.toast; Win.toast = function (m) { window.__toasts.push(String(m)); return t.apply(this, arguments); }; });
-  await place('world_magicka', 150, 30); ok(await waitCur('world_magicka'), '魔導王国（飛空艇）');
-  const r2 = await go('right', 20, true); console.log(JSON.stringify(r2));
-  ok(r2.map === 'world_magicka' && r2.x === 159, '飛空艇でも、まだ行けない暗黒大陸の境目で止まる（x=' + r2.x + '）');
+  const L2 = await p.evaluate(() => World76.toLocal(World76.rect('world_dark').x - 6, 150)); await place(L2.map, L2.x, L2.y); ok(await waitCur(L2.map), '暗黒大陸の西の海（' + L2.map + '・飛空艇）');
+  const W2 = await p.evaluate((id) => World76.rect(id).w, L2.map); const r2 = await go('right', 20, true); console.log(JSON.stringify(r2));
+  ok(r2.map === L2.map && r2.x === W2 - 1, '飛空艇でも、まだ行けない暗黒大陸の境目で止まる（' + r2.map + ' x=' + r2.x + '）');
   const msg = await p.evaluate(() => (window.__toasts || []).join(' / '));
-  ok(/暗黒大陸/.test(msg), '止まった理由が出る「' + msg.replace(/\s+/g, ' ').slice(0, 60) + '」');
+  ok(/黒い嵐/.test(msg), '止まった理由が出る「' + msg.slice(0, 80) + '」');
   ok(errs.length === 0, 'ページのエラーなし ' + errs.slice(0, 3).join(' / '));
   console.log(fails.length ? '結果：NG ' + fails.length : '結果：すべて OK'); await br.close(); process.exit(fails.length ? 1 : 0);
 })().catch((e) => { console.log('例外', e.stack); process.exit(1); });

@@ -1,7 +1,7 @@
 // v7.6 つないだ世界：セーブの互換（3D 版・2D 版）
 //   ① この変更の前の版（envsnap_t84 ＝ 818d133）で作ったセーブ（アルカディアの東の海で帆船に乗っている）を 3D 版で読み込み、
 //      そのまま東の境目を越えてグラニアへ。セーブして読み直す・ページを読み直して続きから
-//   ② つないだ世界の外海（南の外海）でセーブ → 「つながない」設定の 3D 版・2D 版で読むと、となりの地域の端へ（乗り物ごと）
+//   ② 共通の海（時の神殿領の北の海）でセーブ → 「つながない」設定の 3D 版・2D 版で読むと、近い地域の端へ（乗り物ごと）
 //   ③ 2D 版の通常のセーブ（mtq-rpg-v2-slot-*）は、3D 版の操作で書き換わらない
 const { chromium } = require('playwright'); const fs = require('fs');
 const PORT = process.env.PORT || 8772; const SHOT = process.env.SHOT || '/home/claude/work/p3d/shots/v76/join76/'; fs.mkdirSync(SHOT, { recursive: true });
@@ -40,16 +40,16 @@ const old = JSON.parse(oldSave);
   ok(r2.map === 'world_grania' && r2.x === cr.x && r2.y === cr.y && r2.aboard === 'sailboat', 'ページを読み直しても、グラニアの同じ場所（帆船）から続けられる ' + JSON.stringify(r2));
   ok(await waitCur('world_grania'), '3D：読み直したあとグラニアを表示');
   await p.waitForTimeout(1500); await p.screenshot({ path: SHOT + '8_oldsave_continue.jpg', type: 'jpeg', quality: 80, timeout: 120000 });
-  // ② 外海（南の外海）でセーブ
+  // ② 共通の海でセーブ（世界の座標 400,220 の地図）
   await clean();
-  const r3 = await p.evaluate(() => { const d = State.data; ['galleon_ready', 'yorn_letter_done'].forEach((f) => d.flags[f] = true); const m = World.getMap('sea76_south'); let t = null; for (let y = 40; y < 80 && !t; y++) for (let x = 60; x < 100; x++) if (Vehicle.terrainOk('galleon', m, x, y)) { t = { x, y }; break; }
-    d.vehicles.galleon = { owned: true, map: 'sea76_south', x: t.x, y: t.y, port: { map: 'world_tempus', x: 80, y: 60 } }; d.aboard = 'galleon'; World.enterMap('sea76_south', t.x, t.y, 'down', { raw: true }); const saved = State.save(3); return { saved, map: World.map.id, name: World.map.name, t, place: Saves.placeName('sea76_south'), txt: State.exportJSON() }; });
-  ok(r3.saved && r3.map === 'sea76_south' && r3.place === '南の外海', 'つないだ世界：南の外海（' + r3.name + '）でセーブできた ' + JSON.stringify(r3.t));
-  await waitCur('sea76_south');
+  const r3 = await p.evaluate(() => { const d = State.data; ['galleon_ready', 'yorn_letter_done'].forEach((f) => d.flags[f] = true); const SEA = World76.mapAt(400, 220); window.__sea = SEA; const m = World.getMap(SEA); let t = null; for (let y = 40; y < 80 && !t; y++) for (let x = 60; x < 100; x++) if (Vehicle.terrainOk('galleon', m, x, y)) { t = { x, y }; break; }
+    d.vehicles.galleon = { owned: true, map: SEA, x: t.x, y: t.y, port: { map: 'world_tempus', x: 80, y: 60 } }; d.aboard = 'galleon'; World.enterMap(SEA, t.x, t.y, 'down', { raw: true }); const saved = State.save(3); return { saved, map: World.map.id, sea: SEA, name: World.map.name, t, place: Saves.placeName(SEA), txt: State.exportJSON() }; });
+  ok(r3.saved && r3.map === r3.sea && /の沖|外海/.test(r3.place) && r3.place === r3.name, 'つないだ世界：共通の海「' + r3.name + '」（' + r3.sea + '）でセーブできた ' + JSON.stringify(r3.t));
+  await waitCur(r3.sea);
   // 「つながない」設定にして読み直す
   await p.evaluate(() => localStorage.setItem('mtq3d-join', 'off')); await p.reload(); await p.waitForFunction(() => window.MTQ3D && MTQ3D.ready, null, { timeout: 240000 }); await clean();
-  const r4 = await p.evaluate(() => { const info = Saves.placeName('sea76_south'); State.data = State.load(3); World.start(); return { on: World76.on(), map: World.map.id, x: World.player.x, y: World.player.y, aboard: State.data.aboard, veh: State.data.vehicles.galleon.map, defs: !!MAP_DEFS[World.map.id], info }; });
-  ok(!r4.on && r4.map !== 'sea76_south' && r4.defs && r4.aboard === 'galleon' && r4.veh === r4.map && r4.info === '南の外海', '「つながない」3D 版で外海のセーブを読むと、となりの地域の端へ（遠洋航海船に乗ったまま）' + JSON.stringify(r4));
+  const r4 = await p.evaluate((SEA) => { const info = Saves.placeName(SEA); State.data = State.load(3); World.start(); return { on: World76.on(), map: World.map.id, x: World.player.x, y: World.player.y, aboard: State.data.aboard, veh: State.data.vehicles.galleon.map, defs: !!MAP_DEFS[World.map.id], info }; }, r3.sea);
+  ok(!r4.on && r4.map !== 'sea76_south' && r4.defs && r4.aboard === 'galleon' && r4.veh === r4.map && r4.info === r3.name, '「つながない」3D 版で共通の海のセーブを読むと、となりの地域の端へ（遠洋航海船に乗ったまま）' + JSON.stringify(r4));
   ok(await waitCur(r4.map), '3D：移した先の地域を表示（' + r4.map + '）');
   await p.evaluate(() => localStorage.removeItem('mtq3d-join'));
   const norm1 = await p.evaluate(() => Object.keys(localStorage).filter((k) => /^mtq-rpg-v2-/.test(k)).sort().map((k) => k + ':' + localStorage.getItem(k).length + ':' + localStorage.getItem(k).slice(-40)).join('|'));
@@ -58,7 +58,7 @@ const old = JSON.parse(oldSave);
   // 2D 版で外海のセーブを読む
   p = await ctx.newPage(); hook(p); await p.goto(`http://localhost:${PORT}/index.html`); await p.waitForFunction(() => window.State && window.World && window.World76, null, { timeout: 60000 });
   const r5 = await p.evaluate((txt) => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay); const d = State.importJSON(txt); State.data = d; World.start(); return { on: World76.on(), map: World.map.id, x: World.player.x, y: World.player.y, aboard: State.data.aboard, veh: State.data.vehicles.galleon.map, w: World.map.w, h: World.map.h }; }, r3.txt);
-  ok(!r5.on && r5.map !== 'sea76_south' && r5.aboard === 'galleon' && r5.veh === r5.map && r5.w === 160 && r5.h === 120, '2D 版で外海のセーブを読むと、となりの地域の端へ（2D はつながない・地図は 160×120 のまま）' + JSON.stringify(r5));
+  ok(!r5.on && r5.map !== r3.sea && r5.aboard === 'galleon' && r5.veh === r5.map && r5.w === 160 && r5.h === 120, '2D 版で共通の海のセーブを読むと、近い地域の端へ（2D はつながない・地図は 160×120 のまま）' + JSON.stringify(r5));
   await p.waitForTimeout(800); await p.screenshot({ path: SHOT + '9_2d_from_filler.jpg', type: 'jpeg', quality: 80, timeout: 120000 });
   await p.evaluate(() => { localStorage.removeItem('mtq-rpg-v2-slot-2'); localStorage.removeItem('mtq-3d-slot-3'); });
   ok(errs.length === 0, 'ページのエラーなし ' + errs.slice(0, 3).join(' / '));
