@@ -91,7 +91,8 @@
     for (var x2 = 30; x2 <= 33; x2++) E.put(x2, 15, '/');   // 城への大階段（堀の橋から）
     for (var x3 = 2; x3 <= 61; x3++) E.put(x3, 32, '|');
     E.put(10, 32, ';').put(11, 32, ';');   // 西の坂
-    E.put(30, 32, '/').put(32, 32, '/').put(33, 32, '/');   // 噴水の広場から南の町へ（噴水 31,31 の下は擁壁）
+    E.put(31, 31, 'r'); for (var x5 = 30; x5 <= 33; x5++) E.put(x5, 32, '/');   // 広場から南の町へ（幅4の階段。噴水は中の段の十字路へ移した）
+    E.put(31, 20, 'Q').put(32, 20, 'Q').put(31, 21, 'Q').put(32, 21, 'Q');   // 大きな噴水（2×2）：中の段の大通りの十字路の真ん中
     E.put(50, 32, '/').put(51, 32, '/');
     var b;
     b = bld(def, 'armor'); if (b) b.doorSide = 'left';
@@ -177,4 +178,139 @@
   };
   T.PLANS = PLANS; T.door = door; T.anchorsOf = anchorsOf;
   Object.keys(PLANS).forEach(apply);
+
+  /* =========================================================
+     見本の作り方を残りの町へ（自動の計画）
+     ・読み込み時（定義）：建物の形（地域の飾りのテーマで選ぶ）・横の入口・角の入口・パンの露店と売り子
+     ・マップを作るとき（EnvLayout の街路のあと）：段の境（擁壁・階段・坂）。行ける所・話せる人が変わる段は付けない（T.terraceMap）
+     ・対象外：専用レシピの町（ポヨ村・ノード・第7居住区・トレディア）・物語のアサナの4町・空のテラス（近未来）
+     ========================================================= */
+  var AUTO = ['dow_village', 'verum_town', 'kalion_city', 'erased_village', 'sentra_capital', 'aruna_village', 'aruna_ruins', 'tempus_city', 'magicka_city', 'star_camp', 'dark_camp', 'mirror_market', 'ignas_town', 'ciel_port', 'frost_town', 'luxbell', 'volatilia', 'rivel_artisan'];
+  var hashS = function (s, k) { var h = 2166136261 ^ (k || 0); for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 1000) / 1000; };
+  var THEME = function (id) { var PD = root.PLACE_DECOR; try { return PD && PD.forMap ? PD.forMap(id) : null; } catch (e) { return null; } };
+  var BREADS = { forest: ['bread_round', 'bread_milk', 'bread_honey'], harbor: ['bread_round', 'bread_milk', 'bread_fish'], desert: ['bread_round', 'bread_honey', 'bread_date'], ruins: ['bread_round', 'bread_herb'], dark: ['bread_round', 'bread_herb', 'bread_baguette'], frost: ['bread_round', 'bread_milk', 'bread_honey', 'bread_baguette'], sky: ['bread_round', 'bread_honey'] };
+  var breadFor = function (theme) { return (BREADS[theme] || ['bread_round', 'bread_milk', 'bread_honey', 'bread_herb', 'bread_baguette']).filter(function (x) { return root.ITEMS && root.ITEMS[x]; }); };
+  // 定義の上での歩ける（建物の足元は通れない）
+  var defGrid = function (def) { var rows = def.rows; var H = rows.length, W = rows[0].length; var g = []; for (var y = 0; y < H; y++) { var r = []; for (var x = 0; x < W; x++) { var n = TL.byChar[rows[y][x]] || def.fallback || 'grass'; r.push(!TL.isSolid(n)); } g.push(r); }
+    (def.buildings || []).forEach(function (b) { foot(b).forEach(function (p) { if (g[p[1]]) g[p[1]][p[0]] = false; }); if (!(b.shape76 === 'stall' && !b.interior)) { var d0 = door(b).door; if (g[d0.y]) g[d0.y][d0.x] = true; } }); return g; };
+  var reachAll = function (id, def, grid) {   // 町に入る位置から、守るマスへ（隣でもよい）
+    var H = grid.length, W = grid[0].length; var A = anchorsOf(id, def); var starts = []; Object.keys(D).forEach(function (k) { (D[k].warps || []).forEach(function (q) { if (q.to === id && k !== id) starts.push([q.tx, q.ty]); }); });
+    var seen = {}; var qq = []; starts.forEach(function (s0) { if (grid[s0[1]] && grid[s0[1]][s0[0]] && !seen[s0[0] + ',' + s0[1]]) { seen[s0[0] + ',' + s0[1]] = 1; qq.push(s0); } }); if (!qq.length) return false;
+    while (qq.length) { var a = qq.pop(); [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (o) { var nx = a[0] + o[0], ny = a[1] + o[1]; if (nx < 0 || ny < 0 || nx >= W || ny >= H || seen[nx + ',' + ny] || !grid[ny][nx]) return; seen[nx + ',' + ny] = 1; qq.push([nx, ny]); }); }
+    return Object.keys(A).every(function (k) { var p = k.split(',').map(Number); if (seen[k]) return true; return [[1, 0], [-1, 0], [0, 1], [0, -1]].some(function (o) { return seen[(p[0] + o[0]) + ',' + (p[1] + o[1])]; }); });
+  };
+  var autoBuildings = function (id, def) {
+    var theme = THEME(id) || ''; var log = []; if (theme === 'casino' || theme === 'tech' || theme === 'machine') return log;
+    var grid0 = defGrid(def); var free = function (x, y) { return grid0[y] && grid0[y][x]; };
+    var A0 = anchorsOf(id, def);
+    var setSafe = function (b, props, why) {   // 入口を変える：新しい入口の前が歩けて、ほかの守るマスでなく、全部に行けるときだけ
+      var keep = {}; Object.keys(props).forEach(function (k2) { keep[k2] = b[k2]; }); Object.assign(b, props); var f = door(b).front;
+      var ok = free(f.x, f.y) && !A0[f.x + ',' + f.y] && reachAll(id, def, defGrid(def));
+      if (!ok) { Object.keys(keep).forEach(function (k2) { if (keep[k2] === undefined) delete b[k2]; else b[k2] = keep[k2]; }); return false; } log.push(b.id + '：' + why); return true;
+    };
+    var sides = 0;
+    def.buildings.forEach(function (b) {
+      if (b.v76 || /^(castle|elevator|watchtower|windmill|ship)$/.test(b.type || '') || b.s3121) return;
+      var h = hashS(id + ':' + b.id, 7); var t = b.type || 'house';
+      if (theme === 'desert') { if (t === 'house' || t === 'guild' || t === 'elder') b.shape76 = h < 0.55 ? 'tent' : 'round'; else if (t === 'item' && h < 0.5) b.shape76 = 'round'; }
+      else if (theme === 'harbor' || theme === 'sky') { if (t === 'house' && h < 0.45) b.shape76 = 'round'; else if ((t === 'tavern' || t === 'guild') && h < 0.6) { if (!setSafe(b, { doorX: h < 0.3 ? 0 : b.w - 1, shape76: 'octa' }, '八角（角の入口）')) b.shape76 = 'octa'; } }
+      else { if (t === 'house' && h < 0.3) b.shape76 = 'round'; else if ((t === 'tavern' || t === 'elder' || t === 'guild' || t === 'church') && h < 0.5 && t !== 'church') { if (!setSafe(b, { doorX: h < 0.25 ? 0 : b.w - 1, shape76: 'octa' }, '八角（角の入口）')) b.shape76 = 'octa'; } }
+      if (!b.shape76 && sides < 2 && (t === 'house' || t === 'item' || t === 'armor' || t === 'bank') && h > 0.55) { if (setSafe(b, { doorSide: h > 0.78 ? 'right' : 'left' }, '横の入口')) sides++; }
+      if (b.shape76) log.push(b.id + '：' + b.shape76);
+    });
+    return log;
+  };
+  // パンの露店：町の真ん中に近い、歩ける 3×2 と手前の 3 マス（守るマス・建物でない）。置いたあとも全部に行けるときだけ
+  var autoBread = function (id, def) {
+    var grid = defGrid(def); var H = grid.length, W = grid[0].length; var A = anchorsOf(id, def); var rows = def.rows;
+    var cands = [];
+    for (var y = 2; y < H - 3; y++) for (var x = 2; x < W - 4; x++) {
+      var ok = true; for (var dy = 0; dy < 3 && ok; dy++) for (var dx = 0; dx < 3 && ok; dx++) { var X = x + dx, Y = y + dy; if (!grid[Y][X] || A[X + ',' + Y]) ok = false; var n = TL.byChar[rows[Y][X]]; if (n === 'bridge' || n === 'dock' || n === 'stairs_up' || n === 'stairs_down') ok = false; }
+      if (!ok) continue; var d = Math.abs(x + 1 - W / 2) / W + Math.abs(y + 1 - H / 2) / H; cands.push({ x: x, y: y, s: d + hashS(id + x + ',' + y, 3) * 0.05 });
+    }
+    cands.sort(function (a, b) { return a.s - b.s; });
+    for (var i = 0; i < Math.min(cands.length, 40); i++) {
+      var c = cands[i]; var bld = { id: 'bread_stall76', type: 'bakery', shape76: 'stall', name: 'パンの露店', x: c.x, y: c.y, w: 3, h: 2, doorX: 1, keeper76: { x: 1, y: 0 }, v76: true };
+      def.buildings.push(bld); var g2 = defGrid(def); g2[c.y][c.x + 1] = false;   // 店主のマス（動かない）
+      if (reachAll(id, def, g2)) { def.npcs.push(shopNpc(id + '_bread76', c.x + 1, c.y, 'villager_f', 'パン売り', breadLines(id), 'item', breadFor(THEME(id)))); if (root.EnvLayout && root.EnvLayout.EXTRA_ARRIVALS) for (var k = 0; k < 3; k++) root.EnvLayout.EXTRA_ARRIVALS.push([id, c.x + k, c.y + 2]); return c; }
+      def.buildings.pop();
+    }
+    return null;
+  };
+  T.auto = {};
+  AUTO.forEach(function (id) {
+    var def = D[id]; if (!def || typeof def.rows === 'function' || def.plan76 || def.s3121) return;
+    try {
+      def._orig76 = { rows: def.rows, buildings: def.buildings, npcs: def.npcs, noLayout: def.noLayout, exits: {} };
+      def.buildings = (def.buildings || []).map(clone); def.npcs = (def.npcs || []).slice();
+      var before = {}; def.buildings.forEach(function (b) { before[b.id] = { doorX: b.doorX, doorSide: b.doorSide }; if (b.interior && D[b.interior]) def._orig76.exits[b.interior] = D[b.interior].warps; });
+      var log = autoBuildings(id, def); var br = autoBread(id, def);
+      def.buildings.forEach(function (b) { var o = before[b.id]; if (o && (o.doorX !== b.doorX || o.doorSide !== b.doorSide)) setExit(id, b); });
+      def.auto76 = true; T.auto[id] = { buildings: log, bread: br ? br.x + ',' + br.y : null };
+    } catch (e) { T.errors.push(id + '：' + (e && e.message)); }
+  });
+
+  /* ---------- 段（マップを作るとき・EnvLayout の街路のあと） ---------- */
+  var ROADY = { road: 1, path_stone: 1, stone: 1, path: 1, bridge: 0 };
+  T.terraceMap = function (m) {
+    var def = m.def; if (!def || !def.auto76 || def.levels76 && !def._auto76lv) return;
+    if (def._auto76lv) { applyLv(m, def._auto76lv); return; }
+    var W = m.w, H = m.h; var id = m.id; var A = anchorsOf(id, def);
+    (m.buildings || []).forEach(function (b) { if (b.doorFront) A[b.doorFront.x + ',' + b.doorFront.y] = 1; if (b.doorAbs) A[b.doorAbs.x + ',' + b.doorAbs.y] = 1; });
+    var WARP = {}; (m.warps || []).forEach(function (q) { A[q.x + ',' + q.y] = 1; WARP[q.x + ',' + q.y] = 1; });
+    var BLK = {}; (def.chests || []).forEach(function (c) { BLK[c.x + ',' + c.y] = 1; }); (def.events || []).forEach(function (e) { if (e && e.solid) BLK[e.x + ',' + e.y] = 1; }); (root.SEARCH_POINTS || []).forEach(function (sp) { if (sp && sp.map === id && root.Search && root.Search.solidAt && root.Search.solidAt(m, sp.x, sp.y)) BLK[sp.x + ',' + sp.y] = 1; });   // あとで通れなくなる物（宝箱・壺・閉じた扉）
+    var walk = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H && !TL.isSolid(m.tiles[y][x]) && !BLK[x + ',' + y]; };
+    var best = null;
+    var castle = (m.buildings || []).filter(function (b) { return b.type === 'castle'; })[0];
+    var stallRows = {}; (m.buildings || []).forEach(function (b) { if (b.shape76 === 'stall') for (var sy = b.y - 1; sy <= b.y + b.h; sy++) stallRows[sy] = 1; });   // 露店は1つの段の上に（境の行・その上下にかけない）
+    for (var r = Math.ceil(H * 0.3); r <= Math.floor(H * 0.7); r++) {
+      if (stallRows[r] || stallRows[r - 1]) continue;
+      var cells = []; var bad = false; var stairs = []; var ledges = []; var roads = 0;
+      for (var x = 0; x < W; x++) { if (!walk(x, r)) continue; var t = m.tiles[r][x]; if (t === 'bridge' || t === 'dock' || t === 'bld_door' || WARP[x + ',' + r] || /^stairs/.test(t)) { bad = true; break; }
+        var canStair = walk(x, r - 1) && walk(x, r + 1) && !/^stairs|bridge|dock/.test(m.tiles[r - 1][x]) && !/^stairs|bridge|dock/.test(m.tiles[r + 1][x]);
+        var isRoad = ROADY[t] && ROADY[m.tiles[r - 1][x]] && ROADY[m.tiles[r + 1][x]];
+        if (A[x + ',' + r]) { if (!canStair) { bad = true; break; } stairs.push(x); continue; }
+        if (castle && x >= castle.doorAbs.x - 1 && x <= castle.doorAbs.x + 2 && castle.doorAbs.y < r && canStair) { stairs.push(x); continue; }
+        if (isRoad && canStair) { roads++; stairs.push(x); continue; }
+        ledges.push(x); }
+      if (bad || !stairs.length) continue;
+      // 階段は道の幅ごと（続いた列）。広すぎる道は 4 まで（残りは擁壁）
+      var runs = []; stairs.sort(function (a, b) { return a - b; }).forEach(function (x) { var L = runs[runs.length - 1]; if (L && x === L[L.length - 1] + 1) L.push(x); else runs.push([x]); });
+      var st2 = []; runs.forEach(function (R) { var keep = R.filter(function (x) { return A[x + ',' + r]; }); var mid = Math.floor(R.length / 2); var take = R.slice(Math.max(0, mid - 2), Math.max(0, mid - 2) + Math.min(4, R.length)); keep.forEach(function (x) { if (take.indexOf(x) < 0) take.push(x); }); R.forEach(function (x) { if (take.indexOf(x) >= 0) st2.push(x); else ledges.push(x); }); });
+      var score = Math.abs(r - H / 2) * 0.4 - roads * 0.5 + ledges.length * 0.02 + (castle && castle.doorAbs.y < r ? -3 : 0);
+      if (!best || score < best.score) best = { r: r, stairs: st2, ledges: ledges, score: score };
+    }
+    if (!best) { def._auto76lv = { none: true }; return; }
+    // 段の表（北＝上の段）。ためしに当てて、決まりと行ける所を確かめる
+    var lv = []; for (var y = 0; y < H; y++) lv.push(new Array(W + 1).join(y < best.r ? '1' : '0'));
+    var tilesSave = m.tiles.map(function (row) { return row.slice(); });
+    best.stairs.forEach(function (x) { m.tiles[best.r][x] = 'steps'; }); best.ledges.forEach(function (x) { m.tiles[best.r][x] = 'ledge'; });
+    var fake = { w: W, h: H, tiles: m.tiles, def: { levels76: lv } };
+    for (var it = 0; it < 10; it++) {
+      var probs = T76.problems(fake); if (!probs.length) break; var ch = 0;
+      var land = {}; for (var ly = 0; ly < H; ly++) for (var lx = 0; lx < W; lx++) { if (!T76.isStair(m.tiles[ly][lx])) continue; var dd = T76.stepDir(fake, lx, ly); if (dd) { land[(lx + dd[0]) + ',' + (ly + dd[1])] = 1; land[(lx - dd[0]) + ',' + (ly - dd[1])] = 1; } }
+      probs.forEach(function (p) { if (!p.b) return; var a = p.a, b = p.b; var ta = m.tiles[a[1]][a[0]], tb = m.tiles[b[1]][b[0]]; var sa = T76.isStair(ta), sb = T76.isStair(tb); if (sa && sb) return; var la = +lv[a[1]][a[0]], lb = +lv[b[1]][b[0]];
+        var pick = sa ? b : sb ? a : (la >= lb ? a : b); if (!sa && !sb && land[pick[0] + ',' + pick[1]]) { var oth = pick === a ? b : a; if (!land[oth[0] + ',' + oth[1]]) pick = oth; } var k = pick[0] + ',' + pick[1]; if (A[k]) return; if (m.tiles[pick[1]][pick[0]] !== 'ledge') { m.tiles[pick[1]][pick[0]] = 'ledge'; ch++; } });
+      if (!ch) break;
+    }
+    // 擁壁の段＝上の段（手すりが低い側に付く）・階段の段＝下
+    var okRules = !T76.problems(fake).length;
+    // 行ける所：町に入る位置から、守るマス（隣でもよい）
+    var reachOk = false; if (okRules) { var grid = []; for (var yy = 0; yy < H; yy++) { var rr = []; for (var xx = 0; xx < W; xx++) rr.push(!TL.isSolid(m.tiles[yy][xx]) && !(m.npcs.some(function (n) { return n.wander === 0 && n.x === xx && n.y === yy; }))); grid.push(rr); }
+      var starts = []; Object.keys(D).forEach(function (k) { (D[k].warps || []).forEach(function (q) { if (q.to === id && k !== id) starts.push([q.tx, q.ty]); }); });
+      var seen = {}; var qq = starts.filter(function (s0) { return grid[s0[1]] && grid[s0[1]][s0[0]]; }); qq.forEach(function (s0) { seen[s0[0] + ',' + s0[1]] = 1; });
+      while (qq.length) { var a2 = qq.pop(); [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (o) { var nx = a2[0] + o[0], ny = a2[1] + o[1]; if (nx < 0 || ny < 0 || nx >= W || ny >= H || seen[nx + ',' + ny] || !grid[ny][nx]) return; seen[nx + ',' + ny] = 1; qq.push([nx, ny]); }); }
+      reachOk = Object.keys(A).every(function (k) { var p = k.split(',').map(Number); if (seen[k]) return true; if (WARP[k] && grid[p[1]] && grid[p[1]][p[0]]) return false; return [[1, 0], [-1, 0], [0, 1], [0, -1]].some(function (o) { var nx = p[0] + o[0], ny = p[1] + o[1]; return seen[nx + ',' + ny] || (m.tiles[ny] && m.tiles[ny][nx] === 'counter' && seen[(nx + o[0]) + ',' + (ny + o[1])]); }); });
+    }
+    if (!okRules || !reachOk) { m.tiles = tilesSave; def._auto76lv = { none: true, why: okRules ? '行ける所が変わる' : '段の決まり' }; return; }
+    // 決まった：変えたマスと段を覚える（次に作るときは同じに当てる）
+    var changes = []; for (var y2 = 0; y2 < H; y2++) for (var x2 = 0; x2 < W; x2++) if (m.tiles[y2][x2] !== tilesSave[y2][x2]) changes.push([x2, y2, m.tiles[y2][x2]]);
+    // 擁壁は上の段の高さ、階段は下の段
+    var lv2 = lv.map(function (s2) { return s2.split(''); }); changes.forEach(function (c) { if (c[2] === 'steps') lv2[c[1]][c[0]] = '0'; else { var hi = 0; [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (o) { var nx = c[0] + o[0], ny = c[1] + o[1]; if (nx < 0 || ny < 0 || nx >= W || ny >= H) return; var tn = m.tiles[ny][nx]; if (TL.isSolid(tn)) return; hi = Math.max(hi, +lv[ny][nx] + (T76.isStair(tn) ? 1 : 0)); }); lv2[c[1]][c[0]] = String(hi); } });
+    // 建物の足元＝入口の段
+    (m.buildings || []).forEach(function (b) { if (!b.doorAbs) return; var L = lv2[b.doorAbs.y] ? lv2[b.doorAbs.y][b.doorAbs.x] : '0'; foot(b).forEach(function (p) { if (lv2[p[1]]) lv2[p[1]][p[0]] = L; }); });
+    def._auto76lv = { r: best.r, changes: changes, levels: lv2.map(function (a3) { return a3.join(''); }) };
+    def.levels76 = def._auto76lv.levels; def.terrace76Style = def.terrace76Style || { ledge: 'rail' };
+  };
+  var applyLv = function (m, L) { if (L.none) return; L.changes.forEach(function (c) { m.tiles[c[1]][c[0]] = c[2]; }); m.def.levels76 = L.levels; };
 })(typeof window !== 'undefined' ? window : globalThis);

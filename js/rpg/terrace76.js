@@ -21,6 +21,29 @@
     add('ramp', ';', false, function (g) { g.fill('#a8a090'); for (var y = 1; y < 16; y += 5) for (var x = (y % 2) * 2; x < 16; x += 5) { g.rect(x, y, 4, 3, '#bcb4a2'); g.hline(x, y + 3, 4, '#8a8272'); } });
   }
   T76.isStair = function (t) { return t === 'steps' || t === 'ramp'; };
+  // 2D版：つながった噴水のマス（2×2 など）は、上に1つの大きな噴水の絵を描く（マスの絵は小さな噴水のまま）
+  var FCACHE = {};
+  var fountainsOf = function (m) {
+    if (FCACHE[m.id] && FCACHE[m.id].tiles === m.tiles) return FCACHE[m.id].list; var seen = {}, list = [];
+    for (var y = 0; y < m.h; y++) for (var x = 0; x < m.w; x++) { if (m.tiles[y][x] !== 'fountain' || seen[x + ',' + y]) continue; var q = [[x, y]], cells = []; seen[x + ',' + y] = 1;
+      while (q.length) { var a = q.pop(); cells.push(a); [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) { var nx = a[0] + d[0], ny = a[1] + d[1]; if (nx < 0 || ny < 0 || nx >= m.w || ny >= m.h || seen[nx + ',' + ny] || m.tiles[ny][nx] !== 'fountain') return; seen[nx + ',' + ny] = 1; q.push([nx, ny]); }); }
+      if (cells.length < 2) continue; var x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1; cells.forEach(function (c) { x0 = Math.min(x0, c[0]); y0 = Math.min(y0, c[1]); x1 = Math.max(x1, c[0]); y1 = Math.max(y1, c[1]); }); list.push({ x0: x0, y0: y0, x1: x1, y1: y1 }); }
+    FCACHE[m.id] = { tiles: m.tiles, list: list }; return list;
+  };
+  root.MAP_DRAW_LAYERS = root.MAP_DRAW_LAYERS || [];
+  root.MAP_DRAW_LAYERS.push(function (m, cam, x0, y0, x1, y1, TS) {
+    return fountainsOf(m).filter(function (f) { return f.x1 >= x0 - 1 && f.x0 <= x1 + 1 && f.y1 >= y0 - 1 && f.y0 <= y1 + 1; }).map(function (f) {
+      return { y: (f.y1 + 0.5) * TS, draw: function (ctx) {
+        var px = f.x0 * TS - cam.x, py = f.y0 * TS - cam.y, w = (f.x1 - f.x0 + 1) * TS, h = (f.y1 - f.y0 + 1) * TS, cx = px + w / 2, cy = py + h / 2, r = Math.min(w, h) / 2 - 1; var t = (root.Engine && root.Engine.frame) || 0;
+        ctx.save(); ctx.fillStyle = '#9a9aa8'; ctx.fillRect(px, py, w, h);
+        ctx.beginPath(); ctx.ellipse(cx, cy, r, r * 0.92, 0, 0, Math.PI * 2); ctx.fillStyle = '#d8d4cc'; ctx.fill();
+        ctx.beginPath(); ctx.ellipse(cx, cy, r * 0.82, r * 0.74, 0, 0, Math.PI * 2); ctx.fillStyle = '#3f8ad8'; ctx.fill();
+        ctx.strokeStyle = 'rgba(200,235,255,0.7)'; ctx.lineWidth = 1; for (var k = 0; k < 2; k++) { var rr = r * (0.35 + ((t / 40 + k * 0.5) % 1) * 0.45); ctx.beginPath(); ctx.ellipse(cx, cy, rr, rr * 0.9, 0, 0, Math.PI * 2); ctx.stroke(); }
+        ctx.beginPath(); ctx.ellipse(cx, cy, r * 0.3, r * 0.26, 0, 0, Math.PI * 2); ctx.fillStyle = '#e8e4dc'; ctx.fill();
+        ctx.beginPath(); ctx.ellipse(cx, cy, r * 0.2, r * 0.17, 0, 0, Math.PI * 2); ctx.fillStyle = '#6ab4ff'; ctx.fill();
+        ctx.fillStyle = '#e8f6ff'; ctx.fillRect(cx - 1, cy - r * 0.7 + Math.sin(t / 6) * 1.5, 2, r * 0.55); ctx.restore(); } };
+    });
+  });
   var defOf = function (m) { return m && m.def ? m.def : m; };
   // 段の高さ（マップか定義）
   T76.levelAt = function (m, x, y) {

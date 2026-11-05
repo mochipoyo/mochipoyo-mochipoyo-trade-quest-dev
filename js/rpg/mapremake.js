@@ -259,6 +259,7 @@
   //   ＝旧座標で「となりの物の方を向いて立つ」書き方（物語の台本・テスト）が、新しい地図でもそのまま「となりの物の方を向いて立つ」になる
   MapRemake.pos = function (id, x, y, dir) {
     var r = MapRemake.maps[id]; if (!r || typeof x !== 'number' || typeof y !== 'number') return { x: x, y: y };
+    if (r.mapPos) return r.mapPos(Math.min(x, r.oldW - 1), Math.min(y, r.oldH - 1));   // v7.6 広げた屋内（js/rpg/interior76.js）：列・行を差し込んだ分だけずらす
     var ox = dir === 'right' ? 1 : 0, oy = dir === 'down' ? 1 : 0;
     return { x: Math.min(x * S + ox, r.oldW * S - 1), y: Math.min(y * S + oy, r.oldH * S - 1) };
   };
@@ -270,7 +271,13 @@
       var r = MapRemake.maps[id]; if (d.remakeVer[id] === r.version) return;
       if (d.pos && d.pos.map === id) { var p = MapRemake.pos(id, d.pos.x, d.pos.y); d.pos.x = p.x; d.pos.y = p.y; }
       var disc = d.mapDiscovery && d.mapDiscovery[id];
-      if (disc && disc.length) {
+      if (disc && disc.length && r.mapBack) {   // v7.6 広げた屋内：探索済みの印を新しい座標へ（差し込んだマスは、元になったマスの印を写す）
+        var o2 = []; var has = function (x, y) { var row = disc[y]; return !!(row && ((row[(x / 30) | 0] || 0) & (1 << (x % 30)))); };
+        var nw = r.newW || r.oldW, nh = r.newH || r.oldH;
+        for (var Y = 0; Y < nh; Y++) { o2[Y] = []; for (var X = 0; X < nw; X++) { var b = r.mapBack(X, Y); if (has(b.x, b.y)) { var ii = (X / 30) | 0; o2[Y][ii] = (o2[Y][ii] || 0) | (1 << (X % 30)); } } }
+        d.mapDiscovery[id] = o2;
+      }
+      else if (disc && disc.length) {
         var out = [];
         var bit = function (x, y) { out[y] = out[y] || []; var i = (x / 30) | 0; out[y][i] = (out[y][i] || 0) | (1 << (x % 30)); };
         for (var y = 0; y < disc.length; y++) { var row = disc[y]; if (!row) continue; for (var i = 0; i < row.length; i++) { var v = row[i] || 0; if (!v) continue; for (var b = 0; b < 30; b++) if (v & (1 << b)) { var x = i * 30 + b; for (var dy = 0; dy < S; dy++) for (var dx = 0; dx < S; dx++) bit(x * S + dx, y * S + dy); } } }

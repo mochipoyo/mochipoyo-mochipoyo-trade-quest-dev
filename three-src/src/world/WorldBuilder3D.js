@@ -16,6 +16,7 @@ import { roundFor, roundedPillar, cornerFillet } from './Organic.js';
 import { addCutout } from '../engine/Cutout.js';
 import { LandmarkBuilder3D } from './LandmarkBuilder3D.js';
 import { terraceInfo, stairFrac, buildTerraces } from './Terrace3D.js';
+import { buildFountains, animateFountain } from './Fountain76.js';
 
 function hash2(x, y) { let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
 function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y); const xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf); const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; }
@@ -90,7 +91,11 @@ export class WorldBuilder3D {
     const NX = (gx1 - gx0) * S + 1, NZ = (gz1 - gz0) * S + 1;
     const hgrid = new Float32Array(NX * NZ);
     const tHgt = performance.now();
-    for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) hgrid[j * NX + i] = vertexH(gx0 + i / S, gz0 + j / S);
+    // v7.6 フィールドの高低差（field_kit の terraceField）：丘・山のまわりの高さを段々に（棚田・岩棚のような段）。通れるマスは変えない
+    const TFLD = env && env.terraceField; const hillT = { hill: 1, mountain: 1, cliff: 1 };
+    const terr = (h) => { const q = 0.42; const b = Math.floor(h / q); const f = h / q - b; const e = f < 0.78 ? 0 : (f - 0.78) / 0.22; return (b + e * e * (3 - 2 * e)) * q; };
+    const vertexF = TFLD ? (x, z) => { const h = vertexH(x, z); const fx = Math.floor(x - 0.001), fz = Math.floor(z - 0.001); let hh = 0; for (let dz = 0; dz <= 1; dz++) for (let dx = 0; dx <= 1; dx++) if (hillT[Tg(fx + dx, fz + dz)]) hh++; if (!hh) return h; return terr(h * (1 + 0.45 * hh / 4)); } : vertexH;
+    for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) hgrid[j * NX + i] = vertexF(gx0 + i / S, gz0 + j / S);
     this.stats.heightMs = Math.round(performance.now() - tHgt);
     const heightAt = (x, z) => {
       const fx = (x - gx0) * S, fz = (z - gz0) * S; const i = Math.max(0, Math.min(NX - 2, Math.floor(fx))), j = Math.max(0, Math.min(NZ - 2, Math.floor(fz)));
@@ -360,7 +365,7 @@ export class WorldBuilder3D {
     let props = 0;
     for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
       const t = T(x, z); const cx = x + 0.5, cz = z + 0.5; const y = heightAt(cx, cz);
-      const id = PROP[t];
+      const id = t === 'fountain' ? null : PROP[t];   // v7.6 噴水は Fountain76.js が作る（下）
       if (id && !nearLm(cx, cz) && !(env && env.skipProp && env.skipProp(t, x, z))) {   // v7.6 レシピが作り直す小物は置かない
         let m;
         if (t === 'fence') { let hx = 0, hz = 0; for (const k of [-1, 1]) { if (T(x + k, z) === 'fence') hx++; if (T(x, z + k) === 'fence') hz++; } m = M4(cx, y, cz, hz > hx ? Math.PI / 2 : 0); }
@@ -412,7 +417,10 @@ export class WorldBuilder3D {
     this.stats.props = props;
     this.lampSpots = lampSpots;
     this.stats.buildMs = Math.round(performance.now() - t0);
-    return { group, heightAt: heightAtWalk, lampSpots, smokes, finalize: () => this.finalize(group) };
+    // v7.6 噴水（段の水盤・水の柱・落ちる水の幕。つながった噴水マスは1つの大きな噴水）
+    const animated = [];
+    if (!(env && env.skipProp && env.skipProp('fountain', -1, -1))) { try { const fbat = new Batch(); const fr = buildFountains({ map, T, add: (m, g) => fbat.add(m, g), group, lvY }); fbat.build(group); fr.animated.forEach((a) => animated.push(a)); fr.lights.forEach((l) => lampSpots.push(l)); this.stats.fountains = fr.count; } catch (e) { console.warn('fountain76', e); } }
+    return { group, heightAt: heightAtWalk, lampSpots, smokes, animated, finalize: () => this.finalize(group) };
   }
 
   // 置き場所が全部決まってから（建物の小物も put したあと）インスタンス化する。木は区画ごとに精細・簡略の2つを作って距離で切り替える

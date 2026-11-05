@@ -35,7 +35,7 @@ export function fieldKit(mapId) {
       const map = ctx.map; const F = FIELD[map.id]; if (!F) throw new Error('地方の作り方がない：' + map.id);
       const spots = pickSpots(map, F.lm.length * 2 + 2);
       const set = new Set(spots.map((s) => s.x + ',' + s.z));
-      const hooks = { skipTree: (x, z) => set.has(x + ',' + z) };
+      const hooks = { skipTree: (x, z) => set.has(x + ',' + z), terraceField: true };   // v7.6 丘・山を段々に（WorldBuilder3D）
       ctx.stats.landmarks = spots.length;
       return { hooks, build: (b) => build(ctx, F, spots, b) };
     }

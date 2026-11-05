@@ -23,6 +23,7 @@ import { Batch, box, M4, softTexture, textTexture } from '../engine/Materials.js
 import { Env } from '../environment/Env.js';
 import { ctxStats } from '../environment/EnvKit3D.js';
 import { liftBatch } from './Terrace3D.js';
+import { animateFountain } from './Fountain76.js';
 import { setPBRQuality } from '../environment/ProcPBR.js';
 
 export class MapScene3D {
@@ -52,6 +53,7 @@ export class MapScene3D {
       const wb = new WorldBuilder3D(app.mats, app.models, app.quality); this.world = wb;
       const r = await wb.build(map, theme, rx && rx.hooks);
       this.root.add(r.group); this.heightAt = r.heightAt; this.lampSpots = r.lampSpots.slice();
+      (r.animated || []).forEach((a) => this.animated.push(a));   // v7.6 噴水の水
       (r.smokes || []).forEach((sm) => this.addSmoke(sm));   // v6.6 目印の煙突・噴気孔
       this.dark = this.interior || (map.kind === 'dungeon' && !(theme.placeDef && theme.placeDef.outdoor)); this.ambient = (theme.placeDef && theme.placeDef.light) || null;
       if (map.buildings.length) {
@@ -246,7 +248,7 @@ export class MapScene3D {
       const sc = 0.35 + l * 1.3; p.s.scale.set(sc, sc, sc); p.s.material.opacity = Math.sin(l * Math.PI) * 0.32;
     }
     for (const w of this.sway) { w.obj.rotation.z = w.base.z + Math.sin(t * 1.4 + w.ph) * 0.06; w.obj.rotation.x = w.base.x + Math.sin(t * 1.1 + w.ph) * 0.04; }
-    for (const a of this.animated) if (a.kind === 'swing') a.obj.rotation.z = Math.sin(t * 1.3) * 0.12;   // v7.1 鐘楼の鐘
+    for (const a of this.animated) if (a.kind === 'swing') a.obj.rotation.z = Math.sin(t * 1.3) * 0.12; else if (a.kind && a.kind.indexOf('fountain') === 0) animateFountain(a, t);   // v7.1 鐘楼の鐘・v7.6 噴水の水
     for (const a of this.animated) {   // v7.1 風車の羽根・池のアヒル
       if (a.kind === 'spin') a.obj.rotation.z = -t * (a.speed || 0.6);
       else if (a.kind === 'duck') { const ang = t * 0.25 + a.ph; a.obj.position.x = a.cx + Math.cos(ang) * a.r; a.obj.position.z = a.cz + Math.sin(ang) * a.r; a.obj.position.y = -0.14 + Math.sin(t * 2 + a.ph) * 0.015; a.obj.rotation.y = -ang; }

@@ -13,7 +13,6 @@ import { Batch } from '../../engine/Materials.js';
 import { canvasTex, texMat, wbox, cyl, drawSetts, floorQuadsH, settsHeight } from './geo.js';
 import { buildLandmark } from './landmarks.js';
 import { buildVariant76 } from './variants76.js';
-import { SAMPLE76 } from './shopdress76.js';
 
 // 地域ごとの作り方。road/walk：[石の色, 目地, 幅, 高さ, ばらつき]（キャンバスは 256×256。幅・高さは 256 を割り切る値）
 export const REGION_STYLE = {
@@ -70,7 +69,7 @@ export function townKit(mapId, opt) {
       // 近未来・娯楽の町（R.modern）：建物はガラスと金属の汎用のまま（舗装・街灯・柵・目印だけ）
       const building = async (b, o) => {
         if (R.modern) return null; const st = townStyle(b, R) || (b.shape76 ? { plaster: R.plaster[0], roofColor: R.roofs[0] } : null); if (!st) return null;
-        if (b.shape76 || b.doorSide === 'left' || b.doorSide === 'right' || (SAMPLE76[map.id] && /^(weapon|armor|tavern)$/.test(b.type || ''))) { const r = await buildVariant76(b, Object.assign({}, o, { sample76: !!SAMPLE76[map.id] }), R, st, region); if (r) return r; }   // v7.6 丸い家・八角の家・テント・露店・横の入口（variants76.js）
+        if (b.shape76 || b.doorSide === 'left' || b.doorSide === 'right' || /^(weapon|armor|tavern)$/.test(b.type || '')) { const r = await buildVariant76(b, Object.assign({}, o, { sample76: true }), R, st, region); if (r) return r; }   // v7.6 丸い家・八角の家・テント・露店・横の入口（variants76.js）
         return o.bb.build(b, o.rnd, { batch: o.batch, design: o.design, theme: o.theme, style: st });
       };
       ctx.stats.region = region;

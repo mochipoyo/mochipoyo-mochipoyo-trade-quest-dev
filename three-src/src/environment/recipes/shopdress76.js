@@ -10,15 +10,26 @@ import { plain } from '../EnvKit3D.js';
 import { armorStand, shieldOn } from './variants76.js';
 
 export const SAMPLE76 = { rivel_town: 1, harbor_town: 1, sahar_city: 1 };
+// 部屋の用途（js/rpg/interior76.js と同じ考え方。広げた部屋は def._i76.use）
+function useOf(map) {
+  const d = map.def || {}; if (d._i76 && d._i76.use) return d._i76.use; const n = map.name || '';
+  if (d.shop && d.shop.kind) return d.shop.kind === 'weapon' || d.shop.kind === 'armor' ? d.shop.kind : 'item';
+  if (/酒場|隊商宿|バー/.test(n) || d.bgm === 'tavern') return 'tavern'; if (/城|宮|玉座|謁見|王/.test(n)) return 'castle';
+  if (/宿/.test(n)) return 'inn'; if (/教会|祠|聖堂|神殿/.test(n)) return 'church'; if (/ギルド|銀行|学院|取引所|役所|詰所/.test(n)) return 'office';
+  if (/倉庫/.test(n)) return 'storage'; if (/塔|やぐら|灯台/.test(n)) return 'tower'; if (/修行/.test(n)) return 'dojo'; if (/パン/.test(n)) return 'bakery'; if (/工房|鍛冶/.test(n)) return 'weapon';
+  return 'house';
+}
+// 当てる屋内：ポヨ村の作り込んだ部屋（専用の飾り）以外の屋内すべて（町の建物・城の部屋）
 export function dressPlan76(map) {
-  if (!map || !(map.warps || []).some((w) => SAMPLE76[w.to])) return null;
-  const d = map.def || {}; const nm = map.name || '';
-  let kind = d.shop && (d.shop.kind === 'weapon' || d.shop.kind === 'armor') ? d.shop.kind : null;
-  if (!kind && (/酒場|隊商宿/.test(nm) || d.bgm === 'tavern')) kind = 'tavern';
-  if (!kind) return null;
+  if (!map || map.kind !== 'interior' || /^poyo_/.test(map.id || '')) return null;
+  const d = map.def || {}; const nm = map.name || ''; const use = useOf(map);
+  let kind = d.shop && (d.shop.kind === 'weapon' || d.shop.kind === 'armor') ? d.shop.kind : (use === 'weapon' ? 'weapon' : null);
+  if (!kind && use === 'tavern') kind = 'tavern';
   const W = map.w, H = map.h; const T = (x, z) => (x < 0 || z < 0 || x >= W || z >= H ? '_void' : map.tile(x, z));
   const items = []; const skip = new Set(); const used = new Set();
-  const put = (x, z, what, o) => { items.push(Object.assign({ x, z, what }, o || {})); if (what !== 'mugs' && what !== 'bar') skip.add(x + ',' + z); used.add(x + ',' + z); };
+  const ON = { tableTop: 1, counterTop: 1, barrelTop: 1, crateTop: 1, mugs: 1, bar: 1, wallShelf: 1, herbs: 1, rug: 1, lantern: 1 };
+  const put = (x, z, what, o) => { items.push(Object.assign({ x, z, what, use }, o || {})); if (!ON[what]) skip.add(x + ',' + z); used.add(x + ',' + z); };
+  const walk = (x, z) => { const t = T(x, z); return t !== '_void' && window.Tiles && !window.Tiles.isSolid(t); };
   for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
     const t = T(x, z); if (used.has(x + ',' + z)) continue;
     if (kind === 'weapon' || kind === 'armor') {
@@ -28,15 +39,32 @@ export function dressPlan76(map) {
       else if (t === 'barrel') put(x, z, 'swordbarrel');
       else if (t === 'crate') put(x, z, 'anvil');
       else if (t === 'pillar') put(x, z, 'armorstand');
-    } else {
+      else if (t === 'table') put(x, z, 'tableTop');
+    } else if (kind === 'tavern') {
       if (t === 'barrel') put(x, z, 'cask');
       else if (t === 'bookshelf' || t === 'cupboard') put(x, z, 'bottleshelf');
       else if (t === 'crate') put(x, z, 'bottlecrate');
       else if (t === 'counter') put(x, z, 'bar');
       else if (t === 'table') put(x, z, 'mugs');
+    } else {
+      if (t === 'table') put(x, z, 'tableTop');
+      else if (t === 'counter') put(x, z, 'counterTop');
+      else if (t === 'barrel') put(x, z, 'barrelTop');
+      else if (t === 'crate') put(x, z, 'crateTop');
     }
   }
-  return items.length ? { kind, items, skip } : null;
+  // 壁の高い所（体の高さより上）：奥・横の壁ぞいの床のマスに、棚と小物・吊るした薬草や鍋（3マスに1つ。部屋の飾りの絵と重ならない列）
+  const WAL = (t) => t === '_void' || /wall|castle_wall/.test(t);
+  if (use !== 'castle' && use !== 'church') for (let z = 1; z < H - 1; z++) for (let x = 1; x < W - 1; x++) {   // 城・教会は前回の部屋ごとの飾り（旗・ステンドグラス）のまま
+    if (!walk(x, z)) continue;
+    if (WAL(T(x, z - 1)) && (x % 3) === 1) put(x, z, (x * 5 + z) % 4 === 0 && /house|bakery|inn|tavern|item/.test(use) ? 'herbs' : 'wallShelf', { face: 'n' });
+    else if (WAL(T(x - 1, z)) && (z % 3) === 1 && !WAL(T(x, z + 1))) put(x, z, 'wallShelf', { face: 'w' });
+    else if (WAL(T(x + 1, z)) && (z % 3) === 2 && !WAL(T(x, z + 1))) put(x, z, 'wallShelf', { face: 'e' });
+  }
+  // 机のまわりの敷物・天井の吊りランプ（部屋の中央の歩ける所）
+  for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) if (T(x, z) === 'table' && !(T(x - 1, z) === 'table') && !(T(x, z - 1) === 'table')) items.push({ x, z, what: 'rug', use });
+  const lamps = W * H > 150 ? 2 : 1; for (let i = 0; i < lamps; i++) { const lx = Math.floor(W * (i + 1) / (lamps + 1)), lz = Math.floor(H / 2); items.push({ x: lx, z: lz, what: 'lantern', use }); }
+  return items.length ? { kind: kind || use, use, items, skip } : null;
 }
 
 // 向き：うしろの壁（なければ横の壁）。戻り値：正面の向きの角度（+z を正面とする回転）
@@ -50,7 +78,9 @@ export function dressBuild76(plan, o) {
     fire: plain('#ffb050', { emissive: '#ff7a1a', ei: 2.2, keepGlow: true }), coal: plain('#2a2420', { std: { roughness: 1 } }), wood: plain('#7a5236', { std: { roughness: 0.85 } }), woodD: plain('#4e3424', { std: { roughness: 0.9 } }),
     leather: plain('#6a4228', { std: { roughness: 0.9 } }), gold: plain('#c9a24a', { std: { roughness: 0.35, metalness: 0.6 } }), hoop: plain('#4a4440', { std: { roughness: 0.5, metalness: 0.5 } }),
     glass: [plain('#3a7a3a', { std: { roughness: 0.15, metalness: 0.1 } }), plain('#7a4a1e', { std: { roughness: 0.15 } }), plain('#8a2a3a', { std: { roughness: 0.15 } }), plain('#c8b860', { std: { roughness: 0.15 } })],
-    foam: plain('#f6f0dc', { std: { roughness: 0.9 } }), beer: plain('#c88a2a', { std: { roughness: 0.4 } }), pewter: plain('#9a9ea4', { std: { roughness: 0.4, metalness: 0.5 } })
+    foam: plain('#f6f0dc', { std: { roughness: 0.9 } }), beer: plain('#c88a2a', { std: { roughness: 0.4 } }), pewter: plain('#9a9ea4', { std: { roughness: 0.4, metalness: 0.5 } }),
+    sack: plain('#c8b088', { std: { roughness: 1 } }), paper: plain('#f2ead6', { std: { roughness: 0.95 } }), basket: plain('#a87a46', { std: { roughness: 0.9 } }), herb: plain('#6a8a3a', { std: { roughness: 1 } }), herb2: plain('#a86a3a', { std: { roughness: 1 } }),
+    rug: [plain('#8a2a2a', { std: { roughness: 1 } }), plain('#2a4a7a', { std: { roughness: 1 } }), plain('#5a6a2a', { std: { roughness: 1 } })], rugIn: [plain('#c8a24a', { std: { roughness: 1 } }), plain('#c8b890', { std: { roughness: 1 } }), plain('#d8c070', { std: { roughness: 1 } })]
   };
   // 回転つきで足す：局所の座標（正面 +z）→ マスの中心へ
   const at = (x, z, ry) => { const m = new THREE.Matrix4().makeTranslation(x, 0, z).multiply(new THREE.Matrix4().makeRotationY(ry)); return (mat, g) => { g.applyMatrix4(m); add(mat, g); }; };
@@ -80,7 +110,52 @@ export function dressBuild76(plan, o) {
     else if (it.what === 'bottlecrate') { A(C.wood, wbox(0.6, 0.36, 0.45, 0, 0.18, 0)); for (let k = 0; k < 6; k++) { const px = -0.2 + (k % 3) * 0.2, pz = -0.1 + Math.floor(k / 3) * 0.2; A(C.glass[k % 4], cyl(0.035, 0.04, 0.16, 6, px, 0.42, pz)); } }
     else if (it.what === 'bar') { bottle(A, -0.25, 1.02, -0.1, it.x); mug(A, 0.15, 1.02, 0.05); if ((it.x + it.z) % 2) mug(A, 0.32, 1.02, -0.1); }
     else if (it.what === 'mugs') { mug(A, -0.15, 0.8, 0.05); mug(A, 0.18, 0.8, -0.08); A(C.pewter, cyl(0.15, 0.15, 0.02, 14, 0.0, 0.81, 0.15)); }
+    else if (generic(it, cx, cz, ry, A)) { /* 下の汎用の小物 */ }
     n++;
   }
   return n;
+  // ---- 汎用の小物（全部の屋内）。k：マスごとの決まった値（同じ部屋は毎回同じ見た目）
+  function generic(it, cx, cz, ry0, A0) {
+    const k = ((it.x * 73856093) ^ (it.z * 19349663)) >>> 0; const r = (i) => ((k >> (i * 3)) & 7) / 7;
+    const u = it.use || 'house'; const top = 0.8;
+    const candle = (A, x, y, z) => { A(C.foam, cyl(0.03, 0.03, 0.14, 8, x, y + 0.07, z)); A(C.fire, new THREE.SphereGeometry(0.025, 6, 5).translate(x, y + 0.17, z)); A(C.hoop, cyl(0.06, 0.06, 0.015, 10, x, y + 0.008, z)); };
+    const books = (A, x, y, z, n2) => { for (let i = 0; i < n2; i++) A(C.glass[(k + i) % 4], wbox(0.22, 0.05, 0.16, x + (i % 2) * 0.02, y + 0.025 + i * 0.05, z)); };
+    const jar = (A, x, y, z, i) => { const m = [C.brick, C.pewter, C.glass[i % 4], C.wood][i % 4]; A(m, cyl(0.06, 0.07, 0.16, 10, x, y + 0.08, z)); A(m, cyl(0.04, 0.05, 0.04, 10, x, y + 0.18, z)); };
+    const bread = (A, x, y, z) => { const g = new THREE.SphereGeometry(0.08, 10, 8); g.scale(1.5, 0.7, 1); g.translate(x, y + 0.05, z); A(C.beer, g); };
+    const apple = (A, x, y, z, i) => A(i % 2 ? C.glass[2] : C.glass[0], new THREE.SphereGeometry(0.045, 8, 6).translate(x, y + 0.045, z));
+    const sack = (A, x, y, z) => { const g = new THREE.SphereGeometry(0.2, 10, 8); g.scale(1, 1.15, 0.9); g.translate(x, y + 0.2, z); A(C.sack, g); A(C.leather, cyl(0.05, 0.07, 0.06, 8, x, y + 0.42, z)); };
+    if (it.what === 'tableTop') {
+      const A = at(cx, cz, (k & 1) ? 0 : Math.PI / 2);
+      if (u === 'tavern' || u === 'inn' || u === 'castle') { mug(A, -0.15, top, 0.05); A(C.pewter, cyl(0.15, 0.15, 0.02, 14, 0.1, top + 0.01, -0.1)); bread(A, 0.1, top + 0.02, -0.1); candle(A, 0.25, top, 0.18); }
+      else if (u === 'office' || u === 'church' || u === 'tower' || u === 'dojo') { books(A, -0.18, top, 0.0, 2 + (k % 3)); A(C.paper, wbox(0.32, 0.01, 0.24, 0.12, top + 0.005, 0.05, 1).rotateY(0.3)); candle(A, 0.25, top, -0.2); }
+      else if (u === 'item') { for (let i = 0; i < 4; i++) bottle(A, -0.25 + i * 0.16, top, (i % 2) * 0.1 - 0.05, i + k); }
+      else if (u === 'storage') { sack(A, 0, top, 0); }
+      else if (u === 'weapon' || u === 'armor') { A(C.steel, wbox(0.06, 0.02, 0.62, -0.1, top + 0.01, 0, 1)); A(C.iron, wbox(0.24, 0.04, 0.05, -0.1, top + 0.02, 0.3, 1)); A(C.steel, new THREE.SphereGeometry(0.12, 10, 8, 0, Math.PI * 2, 0, Math.PI * 0.6).translate(0.2, top, 0)); }
+      else { A(C.basket, cyl(0.17, 0.13, 0.1, 10, -0.12, top + 0.05, 0)); for (let i = 0; i < 3; i++) (u === 'bakery' ? bread : apple)(A, -0.16 + i * 0.05, top + 0.08, (i - 1) * 0.06, i); jar(A, 0.2, top, 0.1, k); candle(A, 0.2, top, -0.18); }
+      return true;
+    }
+    if (it.what === 'counterTop') {
+      const A = A0; const ct = 1.02;
+      if (u === 'item') { for (let i = 0; i < 3; i++) bottle(A, -0.3 + i * 0.13, ct, -0.05, i + k); A(C.gold, cyl(0.12, 0.12, 0.02, 12, 0.2, ct + 0.12, 0)); A(C.hoop, cyl(0.015, 0.015, 0.12, 6, 0.2, ct + 0.06, 0)); }
+      else if (u === 'inn') { books(A, -0.2, ct, 0, 1); A(C.gold, new THREE.SphereGeometry(0.05, 8, 6, 0, Math.PI * 2, 0, Math.PI / 2).translate(0.15, ct, 0.05)); candle(A, 0.3, ct, -0.1); }
+      else if (u === 'office') { for (let i = 0; i < 4; i++) A(C.gold, cyl(0.04, 0.04, 0.02 + i * 0.015, 10, -0.2 + i * 0.09, ct + 0.01 + i * 0.008, 0)); A(C.paper, wbox(0.3, 0.01, 0.22, 0.2, ct + 0.005, 0, 1)); }
+      else if (u === 'church') { candle(A, -0.2, ct, 0); candle(A, 0.2, ct, 0); books(A, 0, ct, 0, 1); }
+      else { jar(A, -0.2, ct, 0, k); bread(A, 0.15, ct, 0.05); }
+      return true;
+    }
+    if (it.what === 'barrelTop') { const A = A0; A(C.wood, cyl(0.31, 0.31, 0.04, 12, 0, 0.72, 0)); if (k % 3 === 0) sack(A, 0, 0.74, 0); else for (let i = 0; i < 5; i++) apple(A, -0.1 + (i % 3) * 0.1, 0.74, (i > 2 ? 0.08 : -0.04), i); return true; }
+    if (it.what === 'crateTop') { const A = A0; if (k % 2) sack(A, 0.05, 0.5, 0); else { A(C.wood, wbox(0.4, 0.3, 0.34, 0.06, 0.65, 0.02, 1).rotateY(0.3)); } return true; }
+    if (it.what === 'wallShelf') {
+      // 壁の面（奥＝z の小さい側の壁・左右の壁）。棚板は 1.95 より上
+      const f = it.face; const yy = 1.98; let A;
+      if (f === 'n') A = at(cx, it.z + 0.02, 0); else if (f === 'w') A = at(it.x + 0.02, cz, Math.PI / 2); else A = at(it.x + 0.98, cz, -Math.PI / 2);
+      A(C.woodD, wbox(0.86, 0.05, 0.26, 0, yy, 0.13, 1)); for (const sx of [-0.33, 0.33]) A(C.woodD, wbox(0.04, 0.2, 0.2, sx, yy - 0.12, 0.1, 1));
+      for (let i = 0; i < 4; i++) { const px = -0.3 + i * 0.2; if ((k + i) % 3 === 0) books(A, px, yy + 0.025, 0.12, 2); else jar(A, px, yy + 0.025, 0.12, k + i); }
+      return true;
+    }
+    if (it.what === 'herbs') { const A = at(cx, it.z + 0.04, 0); A(C.woodD, wbox(0.8, 0.04, 0.06, 0, 2.45, 0.05, 1)); for (let i = 0; i < 4; i++) { const g = new THREE.ConeGeometry(0.07, 0.36, 6); g.rotateX(Math.PI); g.translate(-0.3 + i * 0.2, 2.24, 0.08); A(i % 2 ? C.herb : C.herb2, g); A(C.leather, cyl(0.01, 0.01, 0.1, 4, -0.3 + i * 0.2, 2.41, 0.08)); } if (k % 2) { const pan = new THREE.CylinderGeometry(0.16, 0.13, 0.06, 12); pan.rotateX(Math.PI / 2); pan.translate(0.42, 2.1, 0.05); A(C.iron, pan); } return true; }
+    if (it.what === 'rug') { const g = new THREE.PlaneGeometry(2.2, 1.7); g.rotateX(-Math.PI / 2); g.translate(cx + 0.0, 0.075, cz); A0(C.rug[k % 3], g); const b2 = new THREE.PlaneGeometry(1.9, 1.4); b2.rotateX(-Math.PI / 2); b2.translate(cx, 0.078, cz); A0(C.rugIn[k % 3], b2); return true; }
+    if (it.what === 'lantern') { const A = at(cx, cz, 0); A(C.hoop, cyl(0.012, 0.012, 0.5, 4, 0, 2.95, 0)); A(C.iron, cyl(0.12, 0.16, 0.06, 8, 0, 2.66, 0)); A(C.fire, cyl(0.1, 0.1, 0.22, 8, 0, 2.52, 0)); A(C.iron, cyl(0.16, 0.12, 0.05, 8, 0, 2.39, 0)); scene.lampSpots.push({ pos: new THREE.Vector3(cx, 2.4, cz), color: 0xffc070, power: 1.0, dist: 7 }); return true; }
+    return false;
+  }
 }
