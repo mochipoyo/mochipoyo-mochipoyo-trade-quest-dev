@@ -18,6 +18,7 @@ import { LandmarkBuilder3D } from './LandmarkBuilder3D.js';
 import { terraceInfo, stairFrac, buildTerraces } from './Terrace3D.js';
 import { buildFountains, animateFountain } from './Fountain76.js';
 import { voidMaterial, floatingRocks } from '../environment/Space76.js';
+import { themeFor } from './themes.js';
 
 function hash2(x, y) { let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
 function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y); const xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf); const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; }
@@ -199,6 +200,12 @@ export class WorldBuilder3D {
     // ---------------- 水・溶岩・雲海
     this.surfaces = [];
     let spaceRim = null;   // v7.6 異空間：色の r＝角を囲む4マスのうち陸の割合（岸のそばの光る縁）
+    // v7.6 つないだ世界：となりの地域との境目の近く（BLEND マス）は、水の色をとなりの地域の色へ半分まで寄せる（境目で色が切れない）
+    let seaBlend = null;
+    if (J76 && window.World76) { const BLEND = 14; const nbs = window.World76.neighbors(map.id).map((nb) => { let th = null; try { th = themeFor({ id: nb.id, kind: 'field', def: (window.MAP_DEFS || {})[nb.id] || {} }); } catch (e) { th = null; } return th ? { side: nb.side, water: new THREE.Color(th.water), deep: new THREE.Color(th.deep) } : null; }).filter(Boolean);
+      if (nbs.length) { const tmp = new THREE.Color(); seaBlend = (arr, cx, cz, t) => { if (!WATERY[t] && t !== 'water') return arr; let r = arr[0], g = arr[1], b = arr[2];
+        for (const n of nbs) { const dist = n.side === 'w' ? cx : n.side === 'e' ? W - cx : n.side === 'n' ? cz : H - cz; if (dist >= BLEND) continue; const k = 0.5 * (1 - Math.max(0, dist) / BLEND); tmp.copy(t === 'deep' ? n.deep : n.water); r += (tmp.r - r) * k; g += (tmp.g - g) * k; b += (tmp.b - b) * k; }
+        return [r, g, b]; }; } }
     const surf = (test, y, mat, name, margin) => {
       const qs = [];
       for (let z = gz0; z < gz1; z++) for (let x = gx0; x < gx1; x++) { if (!margin && !inside(x, z)) continue; if (test(Tg(x, z), x, z)) qs.push([x, z]); }
@@ -212,7 +219,7 @@ export class WorldBuilder3D {
         let t = Tg(x, z); if (round && !WATERY[t] && t !== 'lava' && t !== 'cloud') t = 'water'; c.set(colOf(t));
         const corners = [[x, z], [x + 1, z], [x, z + 1], [x + 1, z + 1]];
         const yy = (name === 'water' && env && env.waterY && env.waterY(x, z) !== null) ? env.waterY(x, z) : y;   // v7.6 水路の水面（町の目玉）
-        corners.forEach(([cx, cz], m) => { pos.set([cx, yy, cz], k * 12 + m * 3); uv.set([cx / 8, cz / 8], k * 8 + m * 2); colA.set(spaceRim ? spaceRim(cx, cz) : round && (WATERY[t] || t === 'water') ? cornerCol(cx, cz, [c.r, c.g, c.b]) : [c.r, c.g, c.b], k * 12 + m * 3); });
+        corners.forEach(([cx, cz], m) => { pos.set([cx, yy, cz], k * 12 + m * 3); uv.set([cx / 8, cz / 8], k * 8 + m * 2); let cv = spaceRim ? spaceRim(cx, cz) : round && (WATERY[t] || t === 'water') ? cornerCol(cx, cz, [c.r, c.g, c.b]) : [c.r, c.g, c.b]; if (seaBlend && !spaceRim && name === 'water') cv = seaBlend(cv, cx, cz, t); colA.set(cv, k * 12 + m * 3); });
         idx.set([k * 4, k * 4 + 2, k * 4 + 1, k * 4 + 1, k * 4 + 2, k * 4 + 3], k * 6);
       });
       const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); g.setAttribute('color', new THREE.BufferAttribute(colA, 3)); g.setIndex(new THREE.BufferAttribute(idx, 1)); g.computeVertexNormals(); g.computeBoundingSphere(); g.userData.own = true;
