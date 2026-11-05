@@ -7,7 +7,7 @@
    ・2D：歩く絵（assets/characters/overworld の 16×24 の絵）の上に、ドットでかぶり物を描く（js/core/map.js の drawChar から）
    ・3D：three-src/src/entities/MobDress76.js が頭の骨に小さな立体を付ける（MapScene3D から）
    ・NPC のデータ（ID・スプライト・会話・位置）とセーブは変えない。設定の「建物の作り込み」を「なし」にすると 3D は付けない（2D は付ける）
-   ・コードで描いた仮の装い（画像素材ではない）。素材の仕様は docs/v76/ENEMY_ART76.md の「町の人の装い」
+   ・コードで描いた仮の装い（画像素材ではない）。素材の仕様は docs/environment/ENEMY_ART76.md の「町の人の装い」
    ========================================================= */
 (function (root) {
   'use strict';
