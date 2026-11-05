@@ -29,7 +29,7 @@
     boss_demon_greed: ['強欲の黄金爪|w|n|c', '狂乱の熱狂相場|S|f'], boss_demon_fixed: ['固定観念の鎖|s|n|sz', '固定の大檻|S|d'], sphinx: ['謎かけの石眼|s|l|sz', '砂の審判|S|n'],
     kraken: ['大触腕の締めつけ|w|i|sz', '深海の大渦|S|i'], dragon_red: ['紅竜の爪|w|f|c', '紅蓮の竜息|S|f'], demon_lord: ['魔王の暗黒剣|w|d|p', '相場崩壊|S|d'],
     boss_storm_chief: ['砂嵐の曲刀|w|w', '大砂嵐|S|w'], boss_mirage_lord: ['蜃気楼の幻刃|s|n|sc', '幻影の大波|S|w'], boss_magma_wyrm: ['溶岩の牙|w|f', '溶岩流|S|f'],
-    boss_primal_flame: ['原初の焔爪|w|f|p', '創世の炎|S|f'], boss_frost_spirit: ['氷霊の槍|s|i', '永久凍土の吹雪|S|i|sz'], boss_memory_keeper: ['記憶の抜き取り|s|d|sc', '忘却の帳|S|d'],
+    boss_primal_flame: ['原初の焔爪|w|f|p', '創世の炎|S|f'], boss_frost_spirit: ['氷霊の槍|s|i', '永久凍土の吹雪|S|i|sz'], boss_memory_keeper: ['記憶の抜き取り|s|d', '忘却の帳|S|d'],
     boss_clock_warden: ['凍れる秒針|s|i|sz', '時の氷結|S|i'], boss_ash_lord: ['灰の拳|w|f', '灰燼の嵐|S|f'], boss_ghost_captain: ['亡霊のサーベル|w|d|c', '幽霊船の一斉砲撃|W|d'],
     boss_old_core: ['旧演算の雷|s|t', '都市崩壊プロトコル|S|t'], boss_gull_admiral: ['提督のくちばし|w|w|c', 'かもめ海賊団の急降下|W|w'], observer_echo: ['観測の眼光|s|l|sz', '収束する残響|S|n'],
     soul_warden: ['魂刈りの鎌|w|d|c', '冥界の門|S|d'], zero_echo: ['零点の響き|s|n', 'ゼロポイント崩壊|S|n']

@@ -88,6 +88,16 @@ const ng = []; const ok = (c, m) => { if (!c) ng.push(m); console.log((c ? 'OK  
   ok(v1.found && v1.ok && v1.end === 'world_islands' && v1.veh === 'world_islands', '遠洋航海船：アルカディア → 断裂群島（' + v1.steps + ' 歩・通った地図 ' + (v1.maps || []).join('→') + '）。ワープなし（毎歩、世界の座標が 1 マスだけ動く）');
   setF(['ship_ready', 'galleon_ready', 'yorn_letter_done']); const v2 = voyage('world_islands', 80, 2, 'world_tempus', 'galleon', 4000);
   ok(v2.found && v2.ok && v2.end === 'world_tempus', '遠洋航海船：断裂群島 → 共通の海 → 時の神殿領（' + v2.steps + ' 歩・' + (v2.maps || []).length + ' 枚の地図）' + (v2.why || ''));
+  // 着いた地域で上陸 → 歩く → 船に戻って乗る
+  const landTest = (mapId, vid) => { const m = w.World.getMap(mapId); const sx = p.x, sy = p.y; const prev = {}; const q = [[sx, sy]]; prev[sx + ',' + sy] = null; let goal = null;
+    while (q.length && !goal) { const [cx, cy] = q.shift(); for (const [dx, dy, dn] of [[1, 0, 'right'], [-1, 0, 'left'], [0, 1, 'down'], [0, -1, 'up']]) { const nx = cx + dx, ny = cy + dy; if (nx < 0 || ny < 0 || nx >= m.w || ny >= m.h) continue; if (m.passable(nx, ny, d) && !w.Tiles.isWater(m.tiles[ny][nx]) && !m.warpAt(nx, ny)) { goal = { x: cx, y: cy, land: [nx, ny], dir: dn }; break; } const k = nx + ',' + ny; if (k in prev || !w.Vehicle.terrainOk(vid, m, nx, ny)) continue; prev[k] = [cx, cy, dn]; q.push([nx, ny]); } }
+    if (!goal) return { ok: false, why: '上陸できる岸が見つからない' }; const dirs = []; for (let c = [goal.x, goal.y]; prev[c[0] + ',' + c[1]]; ) { const pv = prev[c[0] + ',' + c[1]]; dirs.unshift(pv[2]); c = [pv[0], pv[1]]; }
+    for (const dn of dirs) { d.stepsSinceBattle = 0; if (!step(dn)) return { ok: false, why: '岸まで進めない' }; }
+    const shipAt = { x: p.x, y: p.y }; d.stepsSinceBattle = 0; if (!step(goal.dir) || d.aboard) return { ok: false, why: '上陸できない' }; const ashore = { x: p.x, y: p.y, aboard: d.aboard, veh: { ...d.vehicles[vid] } };
+    const back = { right: 'left', left: 'right', up: 'down', down: 'up' }[goal.dir]; d.stepsSinceBattle = 0; const rb = step(back);
+    return { ok: !!rb && d.aboard === vid && p.x === shipAt.x && p.y === shipAt.y && ashore.veh.map === mapId && ashore.veh.x === shipAt.x && ashore.veh.y === shipAt.y, ship: shipAt, ashore, again: d.aboard };
+  };
+  const lt = landTest('world_tempus', 'galleon'); ok(lt.ok, '時の神殿領に着いたあと：岸で上陸 → 船は岸に残る → 戻って乗る（' + JSON.stringify(lt).slice(0, 160) + '）');
   const v3 = voyage('world_tempus', 80, 2, 'world_snow', 'galleon', 4000); ok(v3.found && v3.ok && v3.end === 'world_snow', '遠洋航海船：時の神殿領 → 北の忘却の雪原（' + v3.steps + ' 歩・' + (v3.maps || []).length + ' 枚の地図）' + (v3.why || ''));
   w.Vehicle.drift = drift0;
   // 飛空艇：時の神殿領 → 魔導王国（結界）

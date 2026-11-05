@@ -39,6 +39,7 @@ export function genericRecipe(map) {
   if (mapCoverage(map) !== 'generic') return null;
   if (map.kind === 'town' && !MODERN[key]) return generic['town:' + map.id] || (generic['town:' + map.id] = townKit(map.id));
   if (map.kind === 'town' && (key === 'casino' || key === 'tech')) return generic['town:' + map.id] || (generic['town:' + map.id] = townKit(map.id, { style: key === 'casino' ? 'casino' : 'skyterrace' }));   // 近未来・娯楽の町（建物はそのまま）
+  if (map.kind === 'field' && map.def && map.def.sea76) return null;   // v7.6 つないだ世界の共通の海：レシピなし（海と岩礁だけ）
   if (map.kind === 'field') return generic['field:' + map.id] || (generic['field:' + map.id] = fieldKit(map.id));
   if (map.kind === 'dungeon' || map.kind === 'interior') {
     const th = themeFor(map); const P = th.placeDef || {};

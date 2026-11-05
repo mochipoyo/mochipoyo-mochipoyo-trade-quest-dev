@@ -7,8 +7,9 @@
 // ・実機の GPU では未確認（作業環境のヘッドレス Chromium の画像でだけ確認）
 import * as THREE from 'three';
 import { MapScene3D } from '../world/MapScene3D.js';
+import { Env } from '../environment/Env.js';
 
-const NEAR = 48, DROP = 84, MAXSHOWN = 10;
+const NEAR = 48, DROP = 72, MAXSHOWN = 8;
 let mistTex = null, stormTex = null;
 function gradTex(c0, c1) {
   const c = document.createElement('canvas'); c.width = 8; c.height = 128; const g = c.getContext('2d');
@@ -83,7 +84,7 @@ export class Join76 {
     this.building = id; this.buildingMap = m; const ms = new MapScene3D(a); const t0 = performance.now();
     const st = { id, n: 0, max: 0, sum: 0, compileMs: null }; this.sliceStats = st; let last = performance.now();
     const mark = () => { const d = performance.now() - last; st.n++; st.sum += d; if (d > st.max) st.max = d; };
-    const slice = () => { mark(); return new Promise((r) => requestAnimationFrame(() => setTimeout(() => { last = performance.now(); r(); }, 0))); };
+    const slice = () => { if (performance.now() - last < 24) return Promise.resolve(); mark(); return new Promise((r) => requestAnimationFrame(() => setTimeout(() => { last = performance.now(); r(); }, 0))); };   // 24ms 以上続けて動いたときだけ画面へ返す
     ms.build(m, { slice }).then(async () => {
       await slice();
       const R = a.renderer && a.renderer.renderer; const cam = a.camera && a.camera.camera;
@@ -104,6 +105,10 @@ export class Join76 {
       const old = a.cache.get(id); if (old && old !== ms && old !== a.current) { try { old.dispose(); } catch (e) { /* なし */ } }
       a.cache.set(id, ms); ms.usedAt = performance.now(); a.stats['build_' + id] = Math.round(performance.now() - t0); a.stats['slice_' + id] = Math.round(st.max); this.building = null; this.buildingMap = null;
       if (window.World.map === m && a.current !== ms) a.activate(ms); else this.layout();
-    }).catch((e) => { console.error('join76 build failed', id, e); a.failed[id] = true; this.building = null; this.buildingMap = null; });
+      if (a.trimCache) a.trimCache(id);   // 並べていない古い地図は捨てる（長い航海でメモリが増え続けないように。並べている・組み立て中のものは残す）
+    }).catch((e) => {
+      this.building = null; this.buildingMap = null; try { ms.dispose(); } catch (e2) { /* なし */ }
+      if (e && e.envRecipe && !Env.errors[id]) { Env.errors[id] = String(e.message); console.warn('[環境] レシピを使わずに組み立て直す', id, e.cause || e); this.build(id); return; }   // GameBridge.ensure と同じ（レシピなしでもう一度）
+      console.error('join76 build failed', id, e); a.failed[id] = true; });
   }
 }

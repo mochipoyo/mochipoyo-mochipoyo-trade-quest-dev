@@ -106,6 +106,8 @@
     if (aboard === 'sailboat' && !SAIL_MAPS[toId]) return { text: '小型帆船では外海へ出られない。（遠洋航海船が必要）', kind: 'vehicle' };
     return null;
   };
+  W76.nameOf = function (id) { if (root.MAP_DEFS && root.MAP_DEFS[id]) return root.MAP_DEFS[id].name; if (RECT[id] && RECT[id].sea) return seaName(id); if (LEGACY[id]) return id === 'sea76_south' ? '南の外海' : '南東の外海'; return ''; };   // セーブの一覧などに（つながないときも）
+  W76.nearestRegion = function (id) { var r = RECT[id]; return r ? (r.region ? id : r.near || 'world') : null; };   // 共通の海 → いちばん近い地域（戦闘の背景などに）
   W76.regionName = function (id) { var d = D(); var def = root.MAP_DEFS && root.MAP_DEFS[id]; if (!def) return id; if (RECT[id] && RECT[id].sea) return def.name; return d && d.visited && d.visited[id] ? def.name : '？？？'; };
 
   /* ---------- 地形（つないだときだけ） ---------- */
@@ -258,6 +260,7 @@
   function seaName(id) {   // いちばん近い地域の沖（遠ければ「外海」）
     var r = RECT[id]; var cx = r.x + r.w / 2, cy = r.y + r.h / 2; var best = null;
     REGIONS.forEach(function (rid) { var dd = W76.distTo(rid, cx, cy); if (!best || dd < best.d) best = { id: rid, d: dd }; });
+    r.near = best ? best.id : 'world';
     var def = best && root.MAP_DEFS[best.id]; return best && best.d < 70 && def ? def.name + 'の沖' : '外海';
   }
   function defineSeas() {
