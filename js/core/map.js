@@ -77,16 +77,18 @@
     var x0 = Math.floor(cam.x / TS), y0 = Math.floor(cam.y / TS);
     var x1 = Math.min(this.w - 1, x0 + Engine.VIEW_W + 1), y1 = Math.min(this.h - 1, y0 + Engine.VIEW_H + 1);
     ctx.fillStyle = '#000'; ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    var self = this;
+    var self = this; var space = !!(root.Space76 && root.Space76.on(this));
+    if (space) { ctx.fillStyle = '#070818'; ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height); }   // v7.6 地図の外も宇宙
     for (var y = Math.max(0, y0); y <= y1; y++) for (var x = Math.max(0, x0); x <= x1; x++) {
       var name = this.tiles[y][x]; var px = x * TS - cam.x, py = y * TS - cam.y;
       var variant = Math.floor(Tiles.hash(x, y, 3) * 4);
       if (root.Landmarks && this.def.locations && (name === 'village' || name === 'castle_icon' || name === 'cave_icon' || name === 'tower_icon')) { var Lm = this.def.locations.filter(function (L) { return L.x === x && L.y === y; })[0]; if (Lm && Tiles.has(root.Landmarks.groundTile(root.Landmarks.terrainOf(this, Lm)))) name = root.Landmarks.groundTile(root.Landmarks.terrainOf(this, Lm)); }   // v5.7 入口のマスは地面（絵を上に描く）
-      ctx.drawImage(Tiles.get(name, frame, variant), px, py);
+      var sp76 = space && Tiles.isWater(name);   // v7.6 異空間（ゼロメア）：水のマスを星空で描く（js/core/space76.js。タイルは水のまま）
+      ctx.drawImage(Tiles.get(sp76 ? 'space76' : name, frame, variant), px, py);
       // 縁取り（オートタイル）
       if (Tiles.isWater(name)) {
         var m = 0; if (!Tiles.isWater(this.tile(x, y - 1))) m |= 1; if (!Tiles.isWater(this.tile(x + 1, y))) m |= 2; if (!Tiles.isWater(this.tile(x, y + 1))) m |= 4; if (!Tiles.isWater(this.tile(x - 1, y))) m |= 8;
-        if (m) ctx.drawImage(Tiles.edge('shore', m), px, py);
+        if (m) ctx.drawImage(sp76 ? root.Space76.rim(m) : Tiles.edge('shore', m), px, py);
       } else if (!Tiles.isTall(name) && name !== 'bld_block') {
         var sm = 0; if (Tiles.isTall(this.tile(x, y - 1))) sm |= 1; if (Tiles.isTall(this.tile(x - 1, y))) sm |= 8;
         if (sm) ctx.drawImage(Tiles.edge('shadow', sm), px, py);

@@ -243,6 +243,7 @@ export class App3D {
     if (this.lighting.setTheme) this.lighting.setTheme(ms.theme || null);
     if (this.lighting.setMapKind) this.lighting.setMapKind(ms.interior ? 'interior' : (ms.map && ms.map.kind) || null);   // v7.6 画面の仕上げ
     if (this.lighting.setMood) this.lighting.setMood((ms.map && ms.map.def && ms.map.def.mood3d) || null);   // v6.9 マップ固有の空気
+    if (this.lighting.setSpace) this.lighting.setSpace(!!(ms.map && ms.map.def && ms.map.def.space76 && !ms.interior));   // v7.6 異空間（ゼロメア）の星空
     const closeCam = ms.interior || (ms.map.kind === 'dungeon');
     this.camera.setInterior(closeCam); if (!closeCam) { this.camera.setPitch(this.userPitch); if (ms.map.kind === 'field') this.camera.wantDist = Math.max(this.camera.wantDist, 24); }
     this.snap();

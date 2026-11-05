@@ -1,6 +1,6 @@
 /* =========================================================
    Data / World region : ゼロメア（異空間の島・第11〜12章）。40×30 の設計図 → 160×120 タイル
-   ・時の神殿領の転移門から入る（海路なし。周囲の海は静かで、船は来ない）
+   ・時の神殿領の転移門から入る（海路なし。v7.6 から周りは宇宙空間のような異空間として描く。データ上は水のマスのまま）
    ・中央に演算都市ノード（オラクル中枢）、南西に第7居住区、北の崖の上に旧都市、東の丘に自動工場、南に転移門（帰還）
    ========================================================= */
 (function (root) {
@@ -60,5 +60,6 @@
   });
   // 改革後はドローンのエンカウントが減る
   var baseRate = def.encounters.rate; Object.defineProperty(def.encounters, 'rate', { get: function () { var d = root.State && root.State.data; return (d && d.flags && d.flags.zeromea_reformed) ? baseRate * 0.5 : baseRate; }, set: function (v) { baseRate = v; }, configurable: true });
+  def.space76 = true;   // v7.6 異空間：周りの水を宇宙空間として描く（2D：js/core/space76.js・3D：three-src/src/environment/Space76.js）。タイルは水のまま（通行・乗り物・セーブは同じ）
   root.MACHINE_DEF = def;
 })(typeof window !== 'undefined' ? window : globalThis);

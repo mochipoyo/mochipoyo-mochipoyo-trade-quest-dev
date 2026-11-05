@@ -12,15 +12,16 @@
 import * as THREE from 'three';
 import { plain, rng } from '../EnvKit3D.js';
 import { canvasTex, texMat, wbox, cyl, drawSetts } from './geo.js';
+import { icePortPlan, clockTowerPlan, forgePlan, oasisPlan } from './showpiece76b.js';
 
-export const SHOWPIECE = { rivel_artisan: 'canal', magicka_city: 'magic', verum_town: 'quarry', harbor_town: 'lighthouse' };
+export const SHOWPIECE = { rivel_artisan: 'canal', magicka_city: 'magic', verum_town: 'quarry', harbor_town: 'lighthouse', ciel_port: 'iceport', tempus_city: 'clocktower', ignas_town: 'forge', sahar_city: 'oasis' };   // v7.6 第2弾（showpiece76b.js）：氷港シエル・鐘都テンプス・鍛冶街イグナス・砂都サハル
 const WATER = { water: 1, deep: 1, shallow: 1 };
 const solidT = (t) => !!(window.Tiles && window.Tiles.isSolid(t));
 const touching = (x, z) => { const fx = Math.floor(x), fz = Math.floor(z); const xs = Math.abs(x - fx) < 1e-6 ? [fx - 1, fx] : [fx], zs = Math.abs(z - fz) < 1e-6 ? [fz - 1, fz] : [fz]; const out = []; for (const a of zs) for (const b of xs) out.push([b, a]); return out; };
 
 export function showpieceFor(map) {
   const k = SHOWPIECE[map.id]; if (!k) return null;
-  try { if (k === 'canal') return canalPlan(map); if (k === 'magic') return magicPlan(map); if (k === 'quarry') return quarryPlan(map); if (k === 'lighthouse') return lighthousePlan(map); } catch (e) { console.warn('showpiece76', e); }
+  try { if (k === 'canal') return canalPlan(map); if (k === 'magic') return magicPlan(map); if (k === 'quarry') return quarryPlan(map); if (k === 'lighthouse') return lighthousePlan(map); if (k === 'iceport') return icePortPlan(map); if (k === 'clocktower') return clockTowerPlan(map); if (k === 'forge') return forgePlan(map); if (k === 'oasis') return oasisPlan(map); } catch (e) { console.warn('showpiece76', e); }
   return null;
 }
 

@@ -3,6 +3,7 @@
    時間帯は既存の State.data.timeOfDay（0=深夜 0.25=朝 0.5=昼 0.75=夕）。表示だけを切り替える「プレビュー」も可
    ========================================================= */
 import * as THREE from 'three';
+import { SPACE_GLSL } from '../environment/Space76.js';
 
 const KEYS = [   // t, 太陽の色・強さ, 空（上・地平）, 霧, 半球光, 窓, 露出
   { t: 0.0, sun: 0x8a9ad0, si: 0.72, top: 0x14204a, hor: 0x2c3a64, fog: 0x232c4c, hemi: 0x7a8cc4, hi: 0.66, win: 2.6, exp: 1.16 },   // v6.6 夜：月明かりで地形・道が見える明るさに（以前は si 0.35・hi 0.35・露出 1.05）
@@ -46,9 +47,9 @@ export class LightingManager {
     const g = new THREE.SphereGeometry(400, 32, 16);
     const m = new THREE.ShaderMaterial({
       side: THREE.BackSide, depthWrite: false, fog: false,
-      uniforms: { top: { value: new THREE.Color(0x4a8ad8) }, hor: { value: new THREE.Color(0xd4e6f4) }, sunDir: { value: new THREE.Vector3(0, 1, 0) }, sunCol: { value: new THREE.Color(0xffffff) } },
-      vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
-      fragmentShader: 'uniform vec3 top; uniform vec3 hor; uniform vec3 sunDir; uniform vec3 sunCol; varying vec3 vP;\nvoid main(){ float h = clamp(vP.y*1.6+0.08,0.0,1.0); vec3 c = mix(hor, top, pow(h,0.7)); float s = max(dot(normalize(vP), normalize(sunDir)),0.0); c += sunCol*pow(s,64.0)*0.8 + sunCol*pow(s,6.0)*0.12; gl_FragColor = vec4(c,1.0);\n#include <colorspace_fragment>\n}'
+      uniforms: { top: { value: new THREE.Color(0x4a8ad8) }, hor: { value: new THREE.Color(0xd4e6f4) }, sunDir: { value: new THREE.Vector3(0, 1, 0) }, sunCol: { value: new THREE.Color(0xffffff) }, space: { value: 0 }, uT: { value: 0 } },
+      vertexShader: 'varying vec3 vP; varying vec3 vW; void main(){ vP = normalize(position); vW = (modelMatrix * vec4(position,1.0)).xyz; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+      fragmentShader: 'uniform vec3 top; uniform vec3 hor; uniform vec3 sunDir; uniform vec3 sunCol; uniform float space; uniform float uT; varying vec3 vP; varying vec3 vW;\n' + SPACE_GLSL + '\nvoid main(){ float h = clamp(vP.y*1.6+0.08,0.0,1.0); vec3 c = mix(hor, top, pow(h,0.7)); float s = max(dot(normalize(vP), normalize(sunDir)),0.0); c += sunCol*pow(s,64.0)*0.8 + sunCol*pow(s,6.0)*0.12; if (space > 0.5) c = space76sky(vW - cameraPosition, uT); gl_FragColor = vec4(c,1.0);\n#include <colorspace_fragment>\n}'
     });
     const mesh = new THREE.Mesh(g, m); mesh.renderOrder = -10; mesh.frustumCulled = false; return mesh;
   }
@@ -72,6 +73,8 @@ export class LightingManager {
   setMapKind(k) { this.mapKind = k || null; }   // v7.6 画面の仕上げのぼかしの強さ（field/town/dungeon/interior）
   // v6.9 マップ固有の空気（2D のマップ定義 def.mood3d）：襲撃の夜のアサナ村など。時間帯の色の代わりに使う（屋外だけ）
   setMood(m) { this.mood = m || null; }
+  // v7.6 異空間（ゼロメア）のフィールド：空を星空に・霧を暗い紫に（Space76.js）
+  setSpace(on) { this.space = !!on; }
   update(t, focus) {
     const tt = this.preview !== null ? this.preview : (t === undefined ? 0.35 : t);
     const k = lerpKey(((tt % 1) + 1) % 1);
@@ -99,6 +102,8 @@ export class LightingManager {
     this.sky.material.uniforms.top.value.setHex(k.top); this.sky.material.uniforms.hor.value.setHex(k.hor);
     if (skyHor) { this.sky.material.uniforms.hor.value.lerp(skyHor, 0.5); if (th.dim) this.sky.material.uniforms.top.value.lerp(skyHor, 0.35).multiplyScalar(0.6 + th.dim * 0.4); } this.sky.material.uniforms.sunDir.value.copy(dir); this.sky.material.uniforms.sunCol.value.setHex(k.sun);
     this.sky.position.copy(f);
+    this.sky.material.uniforms.space.value = this.space && !this.interior ? 1 : 0;
+    if (this.space && !this.interior) { this.sky.material.uniforms.uT.value = performance.now() / 1000; this.fog.color.setHex(0x120e26); this.fog.density = 0.006; this.hemi.color.lerp(new THREE.Color(0xb8a8ff), 0.35); }   // v7.6 異空間
     this.scene.background = null;
     this.renderer.renderer.toneMappingExposure = k.exp;
     for (const m of this.windowMats) m.emissiveIntensity = this.interior ? 0.6 : k.win;

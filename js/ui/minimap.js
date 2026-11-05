@@ -56,10 +56,10 @@
   function renderTerrain(map, cell) {
     var c = document.createElement('canvas'); c.width = map.w * cell; c.height = map.h * cell; var ctx = c.getContext('2d');
     for (var y = 0; y < map.h; y++) for (var x = 0; x < map.w; x++) {
-      var t = map.tiles[y][x]; if (isChestTile(t) && !showChests()) t = groundNear(map, x, y); ctx.fillStyle = colorOf(t); ctx.fillRect(x * cell, y * cell, cell, cell);
+      var t = map.tiles[y][x]; if (isChestTile(t) && !showChests()) t = groundNear(map, x, y); ctx.fillStyle = (root.Space76 && root.Space76.on(map) && root.Tiles.isWater(t)) ? root.Space76.color(t) : colorOf(t); ctx.fillRect(x * cell, y * cell, cell, cell);   /* v7.6 異空間の周り */
       if (cell >= 4 && (t === 'tree' || t === 'forest')) { ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.fillRect(x * cell + 1, y * cell + 1, cell - 2, cell - 2); }
       if (cell >= 4 && t === 'mountain') { ctx.fillStyle = '#a89a8a'; ctx.beginPath(); ctx.moveTo(x * cell, y * cell + cell); ctx.lineTo(x * cell + cell / 2, y * cell + 1); ctx.lineTo(x * cell + cell, y * cell + cell); ctx.fill(); }
-      if (cell >= 4 && (t === 'water' || t === 'shallow') && ((x + y) % 3 === 0)) { ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(x * cell, y * cell + (cell >> 1), cell >> 1, 1); }
+      if (cell >= 4 && (t === 'water' || t === 'shallow') && ((x + y) % 3 === 0) && !(root.Space76 && root.Space76.on(map))) { ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(x * cell, y * cell + (cell >> 1), cell >> 1, 1); }
     }
     // v5.9 隠された場所（hidden: true で、まだ条件を満たしていない場所）は地図に出さない（周りの地面の色で塗る）
     var hid = hiddenLocs(map); hid.forEach(function (L) { var g = map.tiles[L.y] && map.tiles[L.y][L.x - 1 >= 0 ? L.x - 1 : L.x + 1]; ctx.fillStyle = colorOf(g || 'grass'); ctx.fillRect(L.x * cell, L.y * cell, cell, cell); });
@@ -433,7 +433,7 @@
       var html = floors.length > 1 ? floors.map(function (id) { var vis = !!d.visited[id]; var nm = root.MAP_DEFS[id].name; return '<button data-floor="' + id + '" class="' + (id === m.id ? 'on' : '') + '" ' + (vis ? '' : 'disabled') + '>' + root.Win.esc(vis ? nm : '？？？') + '</button>'; }).join('') : '';
       if (fl.getAttribute('data-html') !== html) { fl.innerHTML = html; fl.setAttribute('data-html', html); fl.querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { Minimap._floor = b.getAttribute('data-floor'); Minimap.clearTip(); Minimap.home(); }); }); }
       Minimap.renderLegend(m.kind === 'dungeon' ? [['nav', '次の目的地'], ['arrow', '現在地'], ['floor', '通路（探索済み）'], ['wall', '壁'], ['fog', '未探索'], ['stairs', '階段・出入口']].concat(showChests() ? [['chest', '宝箱（測量士）']] : []).concat([['lock', '鍵の扉'], ['gate', '試練の扉'], ['boss', '強敵の気配']]) :
-        m.kind === 'field' ? [['nav', '次の目的地'], ['anchor', '桟橋'], ['arrow', '現在地'], ['grass', '草原'], ['forest', '森'], ['mtn', '山'], ['road', '道'], ['water', '海・川'], ['town', '町・ダンジョン']] :
+        m.kind === 'field' ? [['nav', '次の目的地'], ['anchor', '桟橋'], ['arrow', '現在地'], ['grass', '草原'], ['forest', '森'], ['mtn', '山'], ['road', '道'], ((root.Space76 && root.Space76.on(m)) ? ['void76', '異空間'] : ['water', '海・川']), ['town', '町・ダンジョン']] :
         [['nav', '次の目的地'], ['arrow', '現在地'], ['weapon', '武器屋'], ['armor', '防具屋'], ['item', '道具屋'], ['inn', '宿屋'], ['church', '教会'], ['tavern', '酒場'], ['bank', '銀行'], ['guild', 'ギルド'], ['dojo', '修行場'], ['house', '民家'], ['warp', '出入口']]);
     }
     Minimap._hot = hot;
@@ -515,7 +515,7 @@
     if (el.getAttribute('data-key') === key) return; el.setAttribute('data-key', key);
     el.innerHTML = items.map(function (it) { return '<span class="lg"><canvas width="18" height="18" data-k="' + it[0] + '"></canvas>' + root.Win.esc(it[1]) + '</span>'; }).join('');
     el.querySelectorAll('canvas').forEach(function (cv) { var k = cv.getAttribute('data-k'); var ctx = cv.getContext('2d');
-      var colors = { mtn: '#8a7a6a', forest: '#1f5a2a', sand: '#d8c070', snow: '#e8f0ff', water: '#1f4f9a', grass: '#4f9a3f', road: '#b08a5a', floor: '#8a8a98', wall: '#2e2e3a', fog: '#0a0c18' };
+      var colors = { mtn: '#8a7a6a', forest: '#1f5a2a', sand: '#d8c070', snow: '#e8f0ff', water: '#1f4f9a', grass: '#4f9a3f', road: '#b08a5a', floor: '#8a8a98', wall: '#2e2e3a', fog: '#0a0c18', void76: '#0a0a24' };
       if (k === 'arrow') drawArrow(ctx, 9, 9, 'up', 6, '#ffd24a'); else if (k === 'nav') drawNavRing(ctx, 9, 9, 6, true); else if (k === 'anchor') drawAnchor(ctx, 9, 9, 6); else if (colors[k]) { ctx.fillStyle = colors[k]; ctx.fillRect(2, 2, 14, 14); } else if (['stairs', 'chest', 'lock', 'gate', 'boss', 'town', 'cave', 'warp'].indexOf(k) >= 0) drawSymbol(ctx, k, 9, 9, 6); else drawIcon(ctx, k, 9, 9, 8); });
   };
 

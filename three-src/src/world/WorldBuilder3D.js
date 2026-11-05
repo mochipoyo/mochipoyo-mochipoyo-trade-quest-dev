@@ -17,6 +17,7 @@ import { addCutout } from '../engine/Cutout.js';
 import { LandmarkBuilder3D } from './LandmarkBuilder3D.js';
 import { terraceInfo, stairFrac, buildTerraces } from './Terrace3D.js';
 import { buildFountains, animateFountain } from './Fountain76.js';
+import { voidMaterial, floatingRocks } from '../environment/Space76.js';
 
 function hash2(x, y) { let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
 function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y); const xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf); const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; }
@@ -48,6 +49,7 @@ export class WorldBuilder3D {
     const outdoorD = kind === 'dungeon' && !!P.outdoor;   // 森・草原・天空などの屋外のダンジョン：外側も地形が続く
     const voidOut = dungeon && !outdoorD;
     const OUT = voidOut ? 3 : field ? 16 : outdoorD ? 10 : 14; this.OUT = OUT;
+    const space = !!(field && map.def && map.def.space76); this.stats.space76 = space;   // v7.6 異空間（ゼロメア）：周りの海を宇宙空間に（Space76.js）
     const round = roundFor(map, theme); this.round = round; this.stats.round = round; this.stats.region = theme.region;   // v6.8 道・壁・境界線の丸み（Organic.js。まずアルカディアだけ）
     const group = new THREE.Group(); group.name = 'world3d_' + map.id;
     const rnd = rngFrom(4321 + W * 17 + H * 3);
@@ -193,6 +195,7 @@ export class WorldBuilder3D {
 
     // ---------------- 水・溶岩・雲海
     this.surfaces = [];
+    let spaceRim = null;   // v7.6 異空間：色の r＝角を囲む4マスのうち陸の割合（岸のそばの光る縁）
     const surf = (test, y, mat, name, margin) => {
       const qs = [];
       for (let z = gz0; z < gz1; z++) for (let x = gx0; x < gx1; x++) { if (!margin && !inside(x, z)) continue; if (test(Tg(x, z), x, z)) qs.push([x, z]); }
@@ -206,7 +209,7 @@ export class WorldBuilder3D {
         let t = Tg(x, z); if (round && !WATERY[t] && t !== 'lava' && t !== 'cloud') t = 'water'; c.set(colOf(t));
         const corners = [[x, z], [x + 1, z], [x, z + 1], [x + 1, z + 1]];
         const yy = (name === 'water' && env && env.waterY && env.waterY(x, z) !== null) ? env.waterY(x, z) : y;   // v7.6 水路の水面（町の目玉）
-        corners.forEach(([cx, cz], m) => { pos.set([cx, yy, cz], k * 12 + m * 3); uv.set([cx / 8, cz / 8], k * 8 + m * 2); colA.set(round && (WATERY[t] || t === 'water') ? cornerCol(cx, cz, [c.r, c.g, c.b]) : [c.r, c.g, c.b], k * 12 + m * 3); });
+        corners.forEach(([cx, cz], m) => { pos.set([cx, yy, cz], k * 12 + m * 3); uv.set([cx / 8, cz / 8], k * 8 + m * 2); colA.set(spaceRim ? spaceRim(cx, cz) : round && (WATERY[t] || t === 'water') ? cornerCol(cx, cz, [c.r, c.g, c.b]) : [c.r, c.g, c.b], k * 12 + m * 3); });
         idx.set([k * 4, k * 4 + 2, k * 4 + 1, k * 4 + 1, k * 4 + 2, k * 4 + 3], k * 6);
       });
       const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); g.setAttribute('color', new THREE.BufferAttribute(colA, 3)); g.setIndex(new THREE.BufferAttribute(idx, 1)); g.computeVertexNormals(); g.computeBoundingSphere(); g.userData.own = true;
@@ -214,7 +217,8 @@ export class WorldBuilder3D {
     };
     // v6.8 丸み：水面を岸のとなりのマスまで広げる（岸の線は地面の高さで決まる＝タイルの四角い縁が出ない）
     const nearWater = (x, z) => { for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) if (WATERY[Tg(x + dx, z + dz)]) return true; return false; };
-    surf((t, x, z) => !!WATERY[t] || (round && t !== 'lava' && t !== 'cloud' && !WALL_TILES[t] && t !== '_void' && nearWater(x, z)), -0.2, this.waterMaterial(), 'water', !dungeon);
+    if (space) { spaceRim = (cx, cz) => { let n = 0; for (const [dx, dz] of [[-1, -1], [0, -1], [-1, 0], [0, 0]]) if (!WATERY[Tg(cx + dx, cz + dz)]) n++; return [n / 4, 0, 0]; }; surf((t, x, z) => !!WATERY[t] || (t !== 'lava' && t !== 'cloud' && !WALL_TILES[t] && t !== '_void' && nearWater(x, z)), -0.2, voidMaterial(this.time), 'space76_void', true); spaceRim = null; }
+    else surf((t, x, z) => !!WATERY[t] || (round && t !== 'lava' && t !== 'cloud' && !WALL_TILES[t] && t !== '_void' && nearWater(x, z)), -0.2, this.waterMaterial(), 'water', !dungeon);
     surf((t) => t === 'lava', -0.16, this.lavaMaterial(), 'lava', !dungeon);
     surf((t) => t === 'cloud', -0.95, this.cloudMaterial(), 'cloudsea', !dungeon);
 
@@ -427,6 +431,7 @@ export class WorldBuilder3D {
     this.stats.buildMs = Math.round(performance.now() - t0);
     // v7.6 噴水（段の水盤・水の柱・落ちる水の幕。つながった噴水マスは1つの大きな噴水）
     const animated = [];
+    if (space) { try { const fr = floatingRocks(map, (x, z) => !!WATERY[T(x, z)], hi ? 18 : 10, (x, z) => { let h = (x * 374761393 + z * 668265263) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }); group.add(fr.group); fr.animated.forEach((a) => animated.push(a)); this.stats.space76Rocks = fr.count; } catch (e) { /* 浮かぶ岩がなくても星空のまま */ } }   // v7.6 異空間の浮かぶ岩
     if (!(env && env.skipProp && env.skipProp('fountain', -1, -1))) { try { const fbat = new Batch(); const fr = buildFountains({ map, T, add: (m, g) => fbat.add(m, g), group, lvY }); fbat.build(group); fr.animated.forEach((a) => animated.push(a)); fr.lights.forEach((l) => lampSpots.push(l)); this.stats.fountains = fr.count; } catch (e) { console.warn('fountain76', e); } }
     return { group, heightAt: heightAtWalk, lampSpots, smokes, animated, finalize: () => this.finalize(group) };
   }
