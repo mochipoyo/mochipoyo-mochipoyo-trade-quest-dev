@@ -1,0 +1,11 @@
+--- tradiatest.js.bak76b	2026-11-05 10:28:24.484045761 +0900
++++ tradiatest.js	2026-11-05 10:33:25.613002276 +0900
+@@ -15,7 +15,7 @@
+   const fac = ['トレード闘技場', 'レバレッジ取引所', '投資家ギルド', '相場研究所', '証券市場', '銀行', '酒場', '高級武器店', '防具店', '道具屋', '宿屋', '住宅街', '富豪の屋敷'];
+   ok(fac.every(f => bt.some(n => n.indexOf(f) >= 0)) && town.npcs.some(n => n.id === 'td_galva') && town.npcs.filter(n => /bankrupt/.test(n.id)).length === 3, '施設14：建物13（' + town.buildings.length + '棟）＋破産者の集まる裏通り（南西の路地。ガルバと3人）');
+   ok(town.buildings.filter(b => b.interior).every(b => M[b.interior] && (M[b.interior].warps || []).some(x => x.to === 'tradia' && x.tx === b.x + b.doorX && x.ty === b.y + b.h)), '建物の中から出ると、その建物の入口の前に戻る');
+-  ok(town.buildings.filter(b => b.interior).every(b => { const gm = new w.GameMap(M[b.interior]); return gm.passable(b.entry.x, b.entry.y, d); }), '建物に入ったときの位置は、中の通れるマス');
++  ok(town.buildings.filter(b => b.interior).every(b => { const gm = new w.GameMap(M[b.interior]); const q = w.MapRemake ? w.MapRemake.pos(b.interior, b.entry.x, b.entry.y) : b.entry; return gm.passable(q.x, q.y, d); }), '建物に入ったときの位置は、中の通れるマス');   // v7.6 広げた屋内：入る位置は enterMap が新座標に直す
+   // v6.8 トレディアはマクディア地方へ移した（入口 (60,80)）。カリオン徴収連邦の入口はない
+   const wk = M.world_magicka; const loc = wk.locations.find(L => L.id === 'tradia'); ok(!!loc && loc.x === 60 && loc.y === 80 && wk.warps.some(x => x.to === 'tradia' && x.x === 60 && x.y === 80) && !M.world_kalion.locations.some(L => L.id === 'tradia') && !M.world_kalion.warps.some(x => x.to === 'tradia'), 'ワールド（マクディア地方）の (60,80) に入口（カリオン徴収連邦からは外した）');
+   { const gm = new w.GameMap(wk); const k = wk.locations.find(L => L.id === 'magicka_city'); const seen = new Set([k.x + ',' + k.y]); const qq = [[k.x, k.y]]; let found = false;

@@ -1,0 +1,11 @@
+--- p2test.js.bak76b	2026-11-05 10:28:24.482275287 +0900
++++ p2test.js	2026-11-05 10:33:25.612460895 +0900
+@@ -23,7 +23,7 @@
+   return done ? v : 'TIMEOUT';
+ }
+ function talk(map, id, picks) { const m = World.map.id === map ? World.map : (World.enterMap(map, 1, 1, 'down'), World.map); const n = m.npcs.find(x => x.id === id); if (!n) return Promise.resolve('NO NPC ' + id); return drive(Promise.resolve(n.talk(w.Events.ctx(n))), picks); }
+-function ev(map, x, y, picks) { if (World.map.id !== map) World.enterMap(map, 1, 1, 'down'); const e = World.map.eventAt(x, y); if (!e) return Promise.resolve('NO EVENT'); return drive(w.Events.run(e), picks); }
++function ev(map, x, y, picks) { if (World.map.id !== map) World.enterMap(map, 1, 1, 'down'); const q = w.MapRemake ? w.MapRemake.pos(map, x, y) : { x, y }; const e = World.map.eventAt(q.x, q.y);   /* v7.6 広げた屋内：旧座標→新座標 */ if (!e) return Promise.resolve('NO EVENT'); return drive(w.Events.run(e), picks); }
+ const F = k => !!State.data.flags[k];
+ (async () => {
+   await frames(5); doc.querySelectorAll('#ui > *').forEach(n => n.remove()); E.scenes = E.scenes.filter(sc => !sc.overlay);

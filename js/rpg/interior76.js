@@ -90,8 +90,9 @@
   }
 
   // 出口から歩いて行けるか（人・出来事・宝箱は隣に立てる・カウンター越しでもよい）
-  function reachOK(def, rows) {
-    var H = rows.length, W = rows[0].length; var walk = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H && !solidCh(def, rows[y][x]); };
+  function reachOK(def, rows, id) {
+    var H = rows.length, W = rows[0].length; var POT = {}; (root.SEARCH_POINTS || []).forEach(function (p) { if (p && p.map === id) POT[p.x + ',' + p.y] = 1; });   // 調べる所（壺など）は通れないものとして数える
+    var walk = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H && !solidCh(def, rows[y][x]) && !POT[x + ',' + y]; };
     var npcAt = {}; (def.npcs || []).forEach(function (n) { if (n.wander === 0) npcAt[n.x + ',' + n.y] = 1; });
     var starts = (def.warps || []).filter(function (q) { return q && walk(q.x, q.y); }); if (!starts.length) return true;
     var seen = {}; var q = [[starts[0].x, starts[0].y]]; seen[starts[0].x + ',' + starts[0].y] = 1;
@@ -108,7 +109,7 @@
   function furnish(id, def, use, S) {
     var rows = def.rows.map(function (r) { return r.split(''); }); var H = rows.length, W = rows[0].length;
     var str = function () { return rows.map(function (r) { return r.join(''); }); };
-    var base = reachOK(def, str()); if (!base.ok) return 0;
+    var base = reachOK(def, str(), id); if (!base.ok) return 0;
     var anchors = {}; var mark = function (x, y) { anchors[x + ',' + y] = 1; };
     (def.npcs || []).forEach(function (n) { mark(n.x, n.y); }); (def.events || []).forEach(function (e) { if (e) mark(e.x, e.y); }); (def.chests || []).forEach(function (c) { mark(c.x, c.y); }); (def.warps || []).forEach(function (q) { if (q) mark(q.x, q.y); });
     (root.SEARCH_POINTS || []).forEach(function (p) { if (p && p.map === id) mark(p.x, p.y); });
@@ -133,8 +134,8 @@
       // となりに置いた家具とくっつけすぎない（2つまで続けてよい）
       var run = [[1, 0], [-1, 0], [0, 1], [0, -1]].filter(function (d) { var ch = rows[p.y + d[1]][p.x + d[0]]; return !wallCh(def, ch) && solidCh(def, ch); }).length; if (run >= 2) continue;
       var ch = pal.charAt(k % pal.length); if (!TL.byChar[ch]) continue;
-      rows[p.y][p.x] = ch; var r2 = reachOK(def, str());
-      if (!r2.ok || r2.count < base.count - (placed + 1) - 1) { rows[p.y][p.x] = S.floor; continue; }
+      rows[p.y][p.x] = ch; var r2 = reachOK(def, str(), id);
+      if (!r2.ok || r2.count !== base.count - (placed + 1)) { rows[p.y][p.x] = S.floor; continue; }   // 置いたマスのほかに行けなくなるマスがあれば置かない
       placed++; k++;
     }
     def.rows = str(); return placed;

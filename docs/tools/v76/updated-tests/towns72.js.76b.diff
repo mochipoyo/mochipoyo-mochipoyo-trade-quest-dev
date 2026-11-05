@@ -1,0 +1,46 @@
+--- v72/towns72.js.bak76b	2026-11-05 10:28:24.478453083 +0900
++++ v72/towns72.js	2026-11-05 10:36:00.557785894 +0900
+@@ -15,7 +15,7 @@
+ const allowed = (id) => { const t = X.towns[id]; const a = {}; [t.open, t.open + 1].forEach((y) => { a[(t.oldW - 1) + ',' + y] = 1; }); (t.carve || []).forEach((p) => { a[p[0] + ',' + p[1]] = 1; }); if (id === 'rivel_town') (X.rivelFront || []).forEach((p) => { a[p[0] + ',' + p[1]] = 1; }); if (id === 'harbor_town' && w.SHIP76 && w.SHIP76.tiles) w.SHIP76.tiles.forEach((p) => { a[p[0] + ',' + p[1]] = 1; }); /* v7.6：船への板の通路（js/data/ship76.js） */ return a; };
+ const diffs = [];
+ for (const id of towns) {
+-  const b = B[id], c = M[id], t = X.towns[id], al = allowed(id);
++  const b = B[id], t = X.towns[id], al = allowed(id); const c = M[id]._orig76 ? Object.assign({}, M[id], { rows: M[id]._orig76.rows, buildings: M[id]._orig76.buildings, npcs: M[id]._orig76.npcs }) : M[id];   // v7.6 町の作り直し（js/data/towns76.js）の前の定義と比べる（v7.6 の変更は docs/tools/env/towns76_check.js が確かめる）
+   for (let y = 0; y < b.rows.length; y++) for (let x = 0; x < b.rows[0].length; x++) if (b.rows[y][x] !== c.rows[y][x] && !al[x + ',' + y]) diffs.push(id + '@' + x + ',' + y);
+   if (c.rows.length !== b.rows.length || c.rows[0].length !== t.w) diffs.push(id + ' 大きさ');
+   b.npcs.forEach(([nid, x, y]) => { if (!c.npcs.some((n) => n.id === nid && n.x === x && n.y === y)) diffs.push(id + ' 人 ' + nid); });
+@@ -47,7 +47,7 @@
+ for (const id of X.maps) {
+   const def = M[id]; const W0 = def.rows[0].length; if (def.rows.some((r) => r.length !== W0)) badM.push(id + ' 幅'); def.rows.forEach((r) => r.split('').forEach((ch) => { if (!T.byChar[ch]) badM.push(id + ' 文字' + ch); }));
+   const m = new w.GameMap(def); w.World.applyState(m);
+-  m.warps.forEach((q) => { const to = M[q.to]; if (!to) { badM.push(id + '→' + q.to + ' なし'); return; } const tm = World.getMap(q.to); if (!walkable(tm, q.tx, q.ty, d) || tm.warpAt(q.tx, q.ty)) badM.push(id + '→' + q.to + ' 着く所 ' + q.tx + ',' + q.ty); if (!tm.warps.some((r) => r.to === id && Math.abs(r.x - q.tx) + Math.abs(r.y - q.ty) <= 1) && !tm.buildings.some((b) => b.interior === id && Math.abs(b.doorAbs.x - q.tx) + Math.abs(b.doorAbs.y - q.ty) <= 1)) badM.push(id + '→' + q.to + ' 戻りがそばにない'); });
++  m.warps.forEach((q0) => { const to = M[q0.to]; if (!to) { badM.push(id + '→' + q0.to + ' なし'); return; } const tm = World.getMap(q0.to); const P76 = w.MapRemake ? w.MapRemake.pos(q0.to, q0.tx, q0.ty) : { x: q0.tx, y: q0.ty }; const q = Object.assign({}, q0, { tx: P76.x, ty: P76.y });   /* v7.6 広げた屋内：着く所は enterMap が新座標に直す */ if (!walkable(tm, q.tx, q.ty, d) || tm.warpAt(q.tx, q.ty)) badM.push(id + '→' + q.to + ' 着く所 ' + q.tx + ',' + q.ty); if (!tm.warps.some((r) => r.to === id && Math.abs(r.x - q.tx) + Math.abs(r.y - q.ty) <= 1) && !tm.buildings.some((b) => b.interior === id && Math.abs(b.doorAbs.x - q.tx) + Math.abs(b.doorAbs.y - q.ty) <= 1)) badM.push(id + '→' + q.to + ' 戻りがそばにない'); });
+   const st = m.warps[0]; const s0 = [[st.x, st.y - 1], [st.x, st.y + 1], [st.x + 1, st.y], [st.x - 1, st.y]].find(([x, y]) => walkable(m, x, y, d)); if (!s0) { badM.push(id + ' 入口の前'); continue; }
+   const S = reach(m, s0[0], s0[1]); m.warps.forEach((q) => { if (!near(S, q.x, q.y)) badM.push(id + ' 出入口へ行けない'); }); m.npcs.forEach((n) => { if (!near(S, n.x, n.y)) badM.push(id + ' 人 ' + n.id); }); m.events.forEach((e) => { if (!near(S, e.x, e.y)) badM.push(id + ' 出来事'); }); m.chests.forEach((c) => { if (!near(S, c.x, c.y)) badM.push(id + ' 宝箱 ' + c.id); });
+ }
+@@ -55,7 +55,7 @@
+ // ④ 既存の屋内に足した階段（50）：部屋の中で行ける所が減らない・階段へ行ける
+ const badS = [];
+ X.stairs.forEach((s) => {
+-  const b = B[s.from]; const c = M[s.from]; let df = 0; const hm = ((w.HOMES73 || {}).homes || []).find((h) => h.id === s.from); for (let y = 0; y < b.rows.length; y++) for (let x = 0; x < b.rows[0].length; x++) if (b.rows[y][x] !== c.rows[y][x] && !(hm && x === hm.oldW - 1 && (y === hm.open || y === hm.open + 1))) df++;   // v7.3 家の台所とトイレ（東の壁の2マスを通り口にした所）は数えない
++  const b = B[s.from]; const c = M[s.from]._i76 ? Object.assign({}, M[s.from], { rows: M[s.from]._i76.old.rows, warps: M[s.from]._i76.old.warps, npcs: M[s.from]._i76.old.npcs, events: M[s.from]._i76.old.events, chests: M[s.from]._i76.old.chests }) : M[s.from]; let df = 0;   /* v7.6 広げた屋内（js/rpg/interior76.js）は広げる前の部屋で比べる */ const hm = ((w.HOMES73 || {}).homes || []).find((h) => h.id === s.from); for (let y = 0; y < b.rows.length; y++) for (let x = 0; x < b.rows[0].length; x++) if (b.rows[y][x] !== c.rows[y][x] && !(hm && x === hm.oldW - 1 && (y === hm.open || y === hm.open + 1))) df++;   // v7.3 家の台所とトイレ（東の壁の2マスを通り口にした所）は数えない
+   if (df !== 1 || c.rows[s.y][s.x] !== '<') badS.push(s.from + ' 変えたマス ' + df);
+   const m0 = new w.GameMap(Object.assign({}, c, { rows: b.rows, warps: c.warps.filter((q) => !q.v72) })); const m1 = new w.GameMap(c);
+   const e0 = m0.warps[0]; const st = [[e0.x, e0.y - 1], [e0.x, e0.y + 1]].find(([x, y]) => walkable(m0, x, y, d)); if (!st) { badS.push(s.from + ' 入口'); return; }
+@@ -72,12 +72,13 @@
+   ok(World.map.id === 'rivel_town' && World.player.x === t.w - 2, '職人通りから城下町へ：新しい地区の東の端に着く（' + World.player.x + ',' + World.player.y + '）');
+   await go(t.w - 1, World.player.y); ok(World.map.id === 'rivel_artisan', '新しい地区の東の端から、職人通りへ出られる');
+   const tw = M.rivel_town.buildings.find((b) => b.id === 'x72_tower'); World.enterMap('rivel_town', tw.x + tw.doorX, tw.y + tw.h, 'up'); await go(tw.x + tw.doorX, tw.y + tw.h - 1);
+-  ok(World.map.id === 'rivel_town_x72_tower', '新しい地区の塔に入れる'); await go(10, 1); ok(World.map.id === 'rivel_town_x72_tower_2f', '1階 → 2階'); await go(1, 7); ok(World.map.id === 'rivel_town_x72_tower_3f', '2階 → 3階（てっぺん）');
++  ok(World.map.id === 'rivel_town_x72_tower', '新しい地区の塔に入れる'); { const P76 = w.MapRemake ? w.MapRemake.pos('rivel_town_x72_tower', 10, 1) : { x: 10, y: 1 }; await go(P76.x, P76.y); }   // v7.6 広げた屋内：旧座標→新座標
++   ok(World.map.id === 'rivel_town_x72_tower_2f', '1階 → 2階'); await go(1, 7); ok(World.map.id === 'rivel_town_x72_tower_3f', '2階 → 3階（てっぺん）');
+   await go(1, 7); ok(World.map.id === 'rivel_town_x72_tower_2f', '3階 → 2階');
+-  const s = X.stairs.find((q) => q.from === 'rivel_inn'); World.enterMap('rivel_inn', s.x, s.y + 1, 'up'); await go(s.x, s.y); ok(World.map.id === 'rivel_inn_x72_2f', '宿屋の上り階段 → 2階（客室）'); const dn = World.map.warps[0]; await go(dn.x, dn.y); ok(World.map.id === 'rivel_inn' && World.player.x === s.x && World.player.y === s.y + 1, '2階の下り階段 → 宿屋の階段の前');
++  const s0 = X.stairs.find((q) => q.from === 'rivel_inn'); const sP = w.MapRemake ? w.MapRemake.pos('rivel_inn', s0.x, s0.y) : s0; const s = Object.assign({}, s0, { x: sP.x, y: sP.y });   /* v7.6 広げた屋内：階段の位置は新座標 */ World.enterMap('rivel_inn', s.x, s.y + 1, 'up', { raw: true }); await go(s.x, s.y); ok(World.map.id === 'rivel_inn_x72_2f', '宿屋の上り階段 → 2階（客室）'); const dn = World.map.warps[0]; await go(dn.x, dn.y); ok(World.map.id === 'rivel_inn' && World.player.x === s.x && World.player.y === s.y + 1, '2階の下り階段 → 宿屋の階段の前');
+   const s2 = X.stairs.find((q) => q.from === 'rivel_castle_3f'); World.enterMap('rivel_castle_3f', s2.x, s2.y + 1, 'up'); await go(s2.x, s2.y); ok(World.map.id === 'rivel_castle_4f', 'リヴェル城 3階 → 屋上（物見台）');
+   // 新しい人と話せる（全員・エラーなし）
+-  const said = []; const ctx = { say: async (n, l) => { said.push(n); }, msg: async () => {} }; const terr = []; let nt = 0;
++  const said = []; const ctx = { say: async (n, l) => { said.push(n); }, msg: async () => {}, shop: async () => {} };   /* v7.6：パン職人など店の人（c.shop） */ const terr = []; let nt = 0;
+   for (const id of towns.concat(X.maps)) for (const n of (M[id].npcs || []).filter((n) => n.v72 || X.maps.includes(id))) { try { await n.talk(ctx); nt++; } catch (e) { terr.push(n.id + ':' + e.message); } }
+   ok(nt > 150 && !terr.length && said.length === nt, '新しい人 ' + nt + '人と話せる（エラーなし）' + terr.slice(0, 3).join(','));
+   console.log('errors', errors.slice(0, 3)); ok(!errors.length, 'ページのエラーなし');

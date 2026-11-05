@@ -91,7 +91,7 @@
     for (var x2 = 30; x2 <= 33; x2++) E.put(x2, 15, '/');   // 城への大階段（堀の橋から）
     for (var x3 = 2; x3 <= 61; x3++) E.put(x3, 32, '|');
     E.put(10, 32, ';').put(11, 32, ';');   // 西の坂
-    E.put(31, 31, 'r'); for (var x5 = 30; x5 <= 33; x5++) E.put(x5, 32, '/');   // 広場から南の町へ（幅4の階段。噴水は中の段の十字路へ移した）
+    E.put(31, 31, 'r'); for (var x5 = 30; x5 <= 34; x5++) E.put(x5, 32, '/');   // 広場から南の町へ（幅4の階段。噴水は中の段の十字路へ移した）
     E.put(31, 20, 'Q').put(32, 20, 'Q').put(31, 21, 'Q').put(32, 21, 'Q');   // 大きな噴水（2×2）：中の段の大通りの十字路の真ん中
     E.put(50, 32, '/').put(51, 32, '/');
     var b;
@@ -265,6 +265,7 @@
     var stallRows = {}; (m.buildings || []).forEach(function (b) { if (b.shape76 === 'stall') for (var sy = b.y - 1; sy <= b.y + b.h; sy++) stallRows[sy] = 1; });   // 露店は1つの段の上に（境の行・その上下にかけない）
     for (var r = Math.ceil(H * 0.3); r <= Math.floor(H * 0.7); r++) {
       if (stallRows[r] || stallRows[r - 1]) continue;
+      if ((m.npcs || []).some(function (n) { return /^aunt67_/.test(n.id) && Math.abs(n.y - r) <= 2; })) continue;   // 豆知識おばさんのまわり（5×5）は空けておく（chatter67）
       var cells = []; var bad = false; var stairs = []; var ledges = []; var roads = 0;
       for (var x = 0; x < W; x++) { if (!walk(x, r)) continue; var t = m.tiles[r][x]; if (t === 'bridge' || t === 'dock' || t === 'bld_door' || WARP[x + ',' + r] || /^stairs/.test(t)) { bad = true; break; }
         var canStair = walk(x, r - 1) && walk(x, r + 1) && !/^stairs|bridge|dock/.test(m.tiles[r - 1][x]) && !/^stairs|bridge|dock/.test(m.tiles[r + 1][x]);

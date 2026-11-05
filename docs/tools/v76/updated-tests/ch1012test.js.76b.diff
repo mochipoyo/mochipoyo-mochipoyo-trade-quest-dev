@@ -1,0 +1,11 @@
+--- ch1012test.js.bak76b	2026-11-05 10:28:24.480440977 +0900
++++ ch1012test.js	2026-11-05 10:33:25.611822837 +0900
+@@ -44,7 +44,7 @@
+   // 時間銀行
+   World.enterMap('time_bank',9,3,'up'); await frames(2); ok(!World.map.warps.find(x=>x.to==='time_bank_vault_1' && (!x.needFlag||d.flags[x.needFlag])),'vault locked before quest');
+   await talk('tb_clerk'); ok(d.flags.time_bank_quest && d.quests.time_bank.state==='active','time bank quest');
+-  World.player.x=6; World.player.y=2; World.player.px=6*32; World.player.py=64; await walk('up',1); await drive((async()=>{ let g=0; while((World.busy||World.map.id==='time_bank') && g++<60) await frames(3); })(),[]); ok(World.map.id==='time_bank_vault_1','into vault got '+World.map.id);
++  { const q = w.MapRemake ? w.MapRemake.pos('time_bank', 6, 2) : { x: 6, y: 2 }; World.player.x=q.x; World.player.y=q.y; World.player.px=q.x*32; World.player.py=q.y*32; } await walk('up',1);   /* v7.6 広げた屋内（js/rpg/interior76.js）：旧座標→新座標 */ await drive((async()=>{ let g=0; while((World.busy||World.map.id==='time_bank') && g++<60) await frames(3); })(),[]); ok(World.map.id==='time_bank_vault_1','into vault got '+World.map.id);
+   World.enterMap('time_bank_vault_2',7,5,'up'); await frames(2); healAll(); let r=await interactAt(7,5,'up',[0]); log('bank fight', r); ok(d.flags.time_bank_freed && d.quests.time_bank.state==='done' && d.inventory.temporal_robe>=1,'bank freed');
+   // 時の神殿
+   World.enterMap('temple_of_time_1',9,5,'up'); await frames(2); r=await interactAt(9,5,'up',[]); ok(d.flags.corridor_1,'corridor 1');
