@@ -7,6 +7,14 @@
 import * as THREE from 'three';
 
 let MATS = null;
+// 水の幕の筋（縦の白い筋・途切れ・透け）。繰り返して下へ流す
+function streakTex() {
+  const c = document.createElement('canvas'); c.width = 64; c.height = 128; const g = c.getContext('2d'); let s = 7; const r = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
+  g.clearRect(0, 0, 64, 128);
+  for (let i = 0; i < 26; i++) { const x = r() * 64, w = 1 + r() * 2.5, y = r() * 128, h = 30 + r() * 90, a = 0.25 + r() * 0.55; const gr = g.createLinearGradient(0, y, 0, y + h); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(0.3, 'rgba(255,255,255,' + a + ')'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; for (const dy of [0, -128]) g.fillRect(x, y + dy, w, h); }
+  g.fillStyle = 'rgba(220,240,255,0.16)'; g.fillRect(0, 0, 64, 128);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(5, 1); return t;
+}
 function mats() {
   if (MATS) return MATS;
   const std = (c, o) => new THREE.MeshStandardMaterial(Object.assign({ color: new THREE.Color(c), roughness: 0.8, metalness: 0 }, o || {}));
@@ -14,7 +22,8 @@ function mats() {
     stone: std('#d9d3c6', { roughness: 0.75 }), stoneD: std('#a9a296', { roughness: 0.85, side: THREE.DoubleSide }), trim: std('#efe9dc', { roughness: 0.6 }), gold: std('#c9a24a', { roughness: 0.35, metalness: 0.6 }),
     water: std('#3f9ad8', { roughness: 0.08, metalness: 0.1, transparent: true, opacity: 0.82, emissive: new THREE.Color('#0a3a66'), emissiveIntensity: 0.35 }),
     jet: std('#d8f0ff', { roughness: 0.1, transparent: true, opacity: 0.36, emissive: new THREE.Color('#6ab4e8'), emissiveIntensity: 0.4, depthWrite: false, side: THREE.DoubleSide }),
-    foam: std('#ffffff', { roughness: 0.3, transparent: true, opacity: 0.7, depthWrite: false })
+    foam: std('#ffffff', { roughness: 0.3, transparent: true, opacity: 0.7, depthWrite: false }),
+    sheet: std('#e6f6ff', { roughness: 0.15, transparent: true, opacity: 1, map: streakTex(), emissive: new THREE.Color('#5aa8e0'), emissiveIntensity: 0.3, depthWrite: false, side: THREE.DoubleSide })   // v7.6 水の幕：縦の筋（下へ流れる）。以前は一様な半透明でガラスの筒に見えた
   };
   Object.values(MATS).forEach((m) => { m.userData.envShared = true; m.userData.keepGlow = true; });
   return MATS;
@@ -58,7 +67,7 @@ function one(o, out, cx, cz, R, kx, kz, y0) {
     disc(br - 0.03, yb + br * 0.4, M.water);
     // 受け皿の縁から落ちる水の幕（下の水面まで）
     const fallTop = yb + br * 0.42, fallBot = i === 0 ? y0 + rimH - 0.12 : yb - 0.55 + 0.1; const fh = fallTop - fallBot;
-    const sheet = new THREE.Mesh(new THREE.CylinderGeometry(br + 0.02, br + 0.12, fh, seg, 4, true), M.jet); sheet.position.set(cx, fallBot + fh / 2, cz); sheet.renderOrder = 2; o.group.add(sheet);
+    const sheet = new THREE.Mesh(new THREE.CylinderGeometry(br + 0.02, br + 0.12, fh, seg, 4, true), M.sheet); sheet.position.set(cx, fallBot + fh / 2, cz); sheet.renderOrder = 2; o.group.add(sheet);
     out.animated.push({ kind: 'fountainSheet', obj: sheet, ph: Math.random() * 6 });
     const foam = new THREE.Mesh(new THREE.RingGeometry(br + 0.04, br + 0.2, seg), M.foam); foam.rotation.x = -Math.PI / 2; foam.position.set(cx, fallBot + 0.012, cz); o.group.add(foam); out.animated.push({ kind: 'fountainFoam', obj: foam, ph: Math.random() * 6 });
     if (i < tiers - 1) { const c2 = new THREE.CylinderGeometry(pr * 0.7, pr * 0.8, 0.55, 10); c2.translate(cx, yb + br * 0.42 + 0.27, cz); add(M.stone, c2); yb += br * 0.42 + 0.55; br *= 0.6; }
@@ -77,7 +86,7 @@ function one(o, out, cx, cz, R, kx, kz, y0) {
 // MapScene3D の update から呼ぶ（水の柱・幕・泡・弧を揺らす）
 export function animateFountain(a, t) {
   if (a.kind === 'fountainJet') { const k = 1 + Math.sin(t * 9 + a.ph) * 0.06 + Math.sin(t * 15.3 + a.ph) * 0.04; a.obj.scale.set(1 / k, k, 1 / k); a.obj.position.y = a.base + (k - 1) * a.h * 0.5; return true; }
-  if (a.kind === 'fountainSheet') { a.obj.scale.set(1 + Math.sin(t * 6 + a.ph) * 0.015, 1, 1 + Math.cos(t * 6 + a.ph) * 0.015); return true; }
+  if (a.kind === 'fountainSheet') { a.obj.scale.set(1 + Math.sin(t * 6 + a.ph) * 0.015, 1, 1 + Math.cos(t * 6 + a.ph) * 0.015); const mp = a.obj.material.map; if (mp) mp.offset.y = (t * 0.9) % 1; return true; }   // 筋を下へ流す
   if (a.kind === 'fountainFoam') { const k = 1 + Math.sin(t * 3 + a.ph) * 0.06; a.obj.scale.set(k, k, 1); a.obj.rotation.z = t * 0.3; return true; }
   if (a.kind === 'fountainArc') { a.obj.scale.setScalar(1 + Math.sin(t * 7 + a.ph) * 0.05); return true; }
   return false;
