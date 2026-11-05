@@ -351,6 +351,12 @@
   // 外の地図の (gx, gy) を、いちばん近い地域のローカル座標（その地域の出現表の判定用。旧座標の地域は旧座標）に
   function nearLocal(near, gx, gy) { var r = L.rectOf(near); var dx = root.World76.dxWrap(gx - (r.x + r.w / 2)); gx = r.x + r.w / 2 + dx; var lx = Math.max(0, Math.min(r.w - 1, gx - r.x)), ly = Math.max(0, Math.min(r.h - 1, gy - r.y)); if (OLD[near] && XF[near]) { var p = inv(XF[near], r.x + lx, r.y + ly); return { x: Math.round(p.x), y: Math.round(p.y) }; } return { x: lx, y: ly }; }
 
+  // 大陸・海の名前（世界の地図に薄く描く）
+  var LABELS = [['北アメリカ大陸', -102, 47, 0, 1], ['南アメリカ大陸', -60, -12, 0, 1], ['アフリカ大陸', 22, -2, 0, 1], ['ユーラシア大陸', 92, 56, 0, 1], ['オーストラリア大陸', 134, -25, 0, 1], ['南極大陸', 120, -74, 0, 1], ['グリーンランド', -41, 73, 0, 0], ['日本列島', 139.5, 35.5, 0, 0],
+    ['太平洋', -140, 5, 1, 1], ['太平洋', 168, 22, 1, 0], ['大西洋', -40, 30, 1, 1], ['大西洋', -18, -32, 1, 0], ['インド洋', 78, -22, 1, 1], ['北極海', 40, 78, 1, 0], ['南極海', -60, -62, 1, 0]];
+  E.aeriaAt = function () { var a = L.aeria; if (!a) return null; var t = L.tile(a.lon, a.lat); return { x: t.x, y: t.y, r: a.r }; };   // 浮天城アエリアの影が落ちる海（世界の座標）
+  E.labels = function () { return LABELS.map(function (l) { var t = L.tile(l[1], l[2]); return { name: l[0], x: t.x, y: t.y, sea: !!l[3], big: !!l[4] }; }); };
+
   /* ---------- 組み立て（World76.init から：地球の配置のとき） ---------- */
   E.active = function () { var W76 = root.World76; return !!(W76 && W76.earth); };
   E.setup = function (W76) {

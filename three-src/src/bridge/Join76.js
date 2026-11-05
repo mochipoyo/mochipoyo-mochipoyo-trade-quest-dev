@@ -37,7 +37,7 @@ export class Join76 {
   layout() {
     const a = this.app; const want = new Map(); const W76 = this.W76();
     if (this.active()) { const cur = a.current.map.id; const o0 = W76.origin(cur); const g = this.pg(); const list = [];
-      for (const id of W76.mapsIn(g.x - DROP, g.y - DROP, g.x + DROP, g.y + DROP)) { if (id === cur) continue; const ms = a.cache.get(id); if (!ms || !ms.map || ms.map !== window.World.maps[id]) continue; const o = W76.origin(id); list.push({ id, ms, nb: { id, dx: o.x - o0.x, dy: o.y - o0.y }, d: W76.distTo(id, g.x, g.y) }); }
+      for (const id of W76.mapsIn(g.x - DROP, g.y - DROP, g.x + DROP, g.y + DROP)) { if (id === cur) continue; const ms = a.cache.get(id); if (!ms || !ms.map || ms.map !== window.World.maps[id]) continue; const o = W76.origin(id, cur); list.push({ id, ms, nb: { id, dx: o.x - o0.x, dy: o.y - o0.y }, d: W76.distTo(id, g.x, g.y) }); }   // v7.8 東西の一周：いまの地図から見て近い側
       list.sort((p, q) => p.d - q.d).slice(0, MAXSHOWN).forEach((e) => want.set(e.id, e)); }
     for (const [id, e] of this.shown) if (!want.has(id) || want.get(id).ms !== e.ms) { if (e.ms !== a.current) a.scene.remove(e.ms.root); this.shown.delete(id); }
     for (const [id, e] of want) { e.ms.root.position.set(e.nb.dx, 0, e.nb.dy); if (!this.shown.has(id)) { a.scene.add(e.ms.root); a.lighting.registerScene(e.ms.root); } this.shown.set(id, e); }
@@ -49,11 +49,11 @@ export class Join76 {
     const a = this.app; const W76 = this.W76(); const want = new Map();
     if (this.active()) {
       const g = this.pg(); const S = W76.size();
-      for (const id of W76.mapsIn(g.x - WALL, g.y - WALL, g.x + WALL, g.y + WALL)) { if (!W76.isRegion(id) || W76.unlocked(id)) continue; const r = W76.rect(id);
+      const cur0 = a.current.map.id; for (const id of W76.mapsIn(g.x - WALL, g.y - WALL, g.x + WALL, g.y + WALL)) { if ((!W76.earth && !W76.isRegion(id)) || W76.unlocked(id)) continue; const r0 = W76.rect(id); const r = { x: W76.origin(id, cur0).x, y: r0.y, w: r0.w, h: r0.h };   // v7.8 地球：外の地図も（近い地域の条件）
         want.set('L:' + id + ':n', { x0: r.x, z0: r.y, x1: r.x + r.w, z1: r.y, kind: 'mist' }); want.set('L:' + id + ':s', { x0: r.x, z0: r.y + r.h, x1: r.x + r.w, z1: r.y + r.h, kind: 'mist' });
         want.set('L:' + id + ':w', { x0: r.x, z0: r.y, x1: r.x, z1: r.y + r.h, kind: 'mist' }); want.set('L:' + id + ':e', { x0: r.x + r.w, z0: r.y, x1: r.x + r.w, z1: r.y + r.h, kind: 'mist' }); }
       if (g.y < WALL) want.set('E:n', { x0: 0, z0: 0, x1: S.w, z1: 0, kind: 'storm' }); if (S.h - g.y < WALL) want.set('E:s', { x0: 0, z0: S.h, x1: S.w, z1: S.h, kind: 'storm' });
-      if (g.x < WALL) want.set('E:w', { x0: 0, z0: 0, x1: 0, z1: S.h, kind: 'storm' }); if (S.w - g.x < WALL) want.set('E:e', { x0: S.w, z0: 0, x1: S.w, z1: S.h, kind: 'storm' });
+      if (!(W76.wrap && W76.wrap()) && g.x < WALL) want.set('E:w', { x0: 0, z0: 0, x1: 0, z1: S.h, kind: 'storm' }); if (!(W76.wrap && W76.wrap()) && S.w - g.x < WALL) want.set('E:e', { x0: S.w, z0: 0, x1: S.w, z1: S.h, kind: 'storm' });
     }
     for (const [k, mesh] of this.walls) if (!want.has(k)) { a.scene.remove(mesh); mesh.geometry.dispose(); this.walls.delete(k); }
     if (!want.size) return; const o0 = W76.origin(a.current.map.id);

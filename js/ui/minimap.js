@@ -62,7 +62,22 @@
   var JOINED = null;
   function joinedMap() { var S = J76().size(); if (!JOINED || JOINED.w !== S.w) JOINED = { id: '__join76', name: 'つながった世界', w: S.w, h: S.h, kind: 'field', join76: true, def: { region: false, locations: [] }, warps: [], buildings: [], chests: [], npcs: [] }; return JOINED; }
   function regionMap(id) { var W = root.World; return W.maps[id] || W.getMap(id); }
+  // v7.8 地球の世界：全体の地形を 1 マス 1 画素で（地図の定義の文字から直接。町・ダンジョンの印は上に描く）
+  var RGB = {};
+  function rgbOf(col) { if (RGB[col]) return RGB[col]; var c = document.createElement('canvas').getContext('2d'); var v = [60, 60, 60]; try { c.fillStyle = col; var s = c.fillStyle; if (/^#/.test(s)) v = [parseInt(s.slice(1, 3), 16), parseInt(s.slice(3, 5), 16), parseInt(s.slice(5, 7), 16)]; else { var m = /(\d+)\D+(\d+)\D+(\d+)/.exec(s); if (m) v = [+m[1], +m[2], +m[3]]; } } catch (e) { /* 灰色 */ } RGB[col] = v; return v; }
+  function earthTerrain(store) {
+    var W76 = J76(); var S = W76.size(); var key = W76.MAPS.map(function (id) { return W76.unlocked(id) ? 1 : 0; }).join('') + ':' + (Minimap._dirty.__earth || 0);
+    var e = store.__join76; if (e && e.key === key) return e;
+    var c = document.createElement('canvas'); c.width = S.w; c.height = S.h; var ctx = c.getContext('2d'); var img = ctx.createImageData(S.w, S.h); var px = img.data; var T = root.Tiles; var col = {};
+    W76.MAPS.forEach(function (id) { var def = root.MAP_DEFS[id]; if (!def) return; var rows = typeof def.rows === 'function' ? def.rows() : def.rows; var o = W76.origin(id); var lock = !W76.unlocked(id);
+      for (var y = 0; y < rows.length; y++) { var row = rows[y]; for (var x = 0; x < row.length; x++) { var ch = row[x]; var nm = T.byChar[ch] || 'grass'; var v; var gx = o.x + x, gy = o.y + y;
+        if (T.isWater(nm)) v = rgbOf(seaCol76(gx, gy)); else { v = col[ch] || (col[ch] = rgbOf(colorOf(nm))); }
+        var i = (gy * S.w + gx) * 4; var k = lock && !T.isWater(nm) ? 0.38 : 1; px[i] = v[0] * k; px[i + 1] = v[1] * k; px[i + 2] = v[2] * k + (lock && !T.isWater(nm) ? 16 : 0); px[i + 3] = 255; } } });
+    ctx.putImageData(img, 0, 0); e = { canvas: c, cell: 1, rev: 0, hk: '', key: key }; store.__join76 = e; return e;
+  }
+  Minimap.earthImage = function () { var e = earthTerrain(Minimap.bigCache); return e.canvas.toDataURL('image/png'); };   // v7.8 「世界」タブの背景
   function joinedTerrain(big) {
+    if (J76().earth) return earthTerrain(big ? Minimap.bigCache : Minimap.cache);
     var W76 = J76(); var store = big ? Minimap.bigCache : Minimap.cache; var cell = big ? 4 : 2; var ids = W76.MAPS.slice();
     var parts = ids.map(function (id) { var m = regionMap(id); return { id: id, m: m, t: getTerrain(m, big) }; });
     var key = parts.map(function (q) { return q.id + ':' + q.t.rev + ':' + q.t.hk + ':' + (W76.unlocked(q.id) ? 1 : 0); }).join('|');
@@ -275,11 +290,11 @@
     var mw = m.w * cell, mh = m.h * cell;
     var ox = pxT * cell - w / 2, oy = pyT * cell - h / 2;
     var W76 = J76(); var jo = W76 && W76.inGrid(m.id) ? W76.origin(m.id) : null;   // v7.6 つながった世界：端で止めず、となりの地域も描く
-    if (jo) { var S = W76.size(); ox = Math.max(-jo.x * cell, Math.min((S.w - jo.x) * cell - w, ox)); oy = Math.max(-jo.y * cell, Math.min((S.h - jo.y) * cell - h, oy)); }
+    if (jo) { var S = W76.size(); if (!W76.wrap || !W76.wrap()) ox = Math.max(-jo.x * cell, Math.min((S.w - jo.x) * cell - w, ox)); oy = Math.max(-jo.y * cell, Math.min((S.h - jo.y) * cell - h, oy)); }
     else { if (mw <= w) ox = (mw - w) / 2; else ox = Math.max(0, Math.min(mw - w, ox));
     if (mh <= h) oy = (mh - h) / 2; else oy = Math.max(0, Math.min(mh - h, oy)); }
     ctx.save(); ctx.translate(-ox, -oy);
-    if (jo) { W76.mapsIn(jo.x + ox / cell - 1, jo.y + oy / cell - 1, jo.x + (ox + w) / cell + 1, jo.y + (oy + h) / cell + 1).forEach(function (nid) { if (nid === m.id) return; var no = W76.origin(nid); var nx0 = (no.x - jo.x) * cell, ny0 = (no.y - jo.y) * cell;
+    if (jo) { W76.mapsIn(jo.x + ox / cell - 1, jo.y + oy / cell - 1, jo.x + (ox + w) / cell + 1, jo.y + (oy + h) / cell + 1).forEach(function (nid) { if (nid === m.id) return; var no = W76.origin(nid, m.id); var nx0 = (no.x - jo.x) * cell, ny0 = (no.y - jo.y) * cell;
       var nm = regionMap(nid); ctx.save(); ctx.translate(nx0, ny0); drawMapLayer(ctx, nm, cell, false); if (!W76.unlocked(nid)) shadeLand(ctx, nm, 0, 0, cell); ctx.restore(); }); }
     drawMapLayer(ctx, m, cell, false);
     // 建物の施設アイコン（町）
@@ -368,7 +383,7 @@
     var m = currentBigMap(); var t = getTerrain(m, true); var cell = t.cell; var W = root.World;
     var fit = Math.min(Minimap.bigW / (m.w * cell), Minimap.bigH / (m.h * cell));
     Minimap.zoom = Minimap.mode === 'world' ? Math.max(fit, 0.9) : Math.max(fit, Math.min(1.2, fit * 1.0));
-    if (Minimap.mode === 'world') Minimap.zoom = m.join76 ? Math.max(fit, Math.min(1, fit * 2.2)) : fit; // 世界地図は全体表示から（つながった世界は、いまの地域のあたりを少し大きく）
+    if (Minimap.mode === 'world') Minimap.zoom = m.join76 ? (J76() && J76().earth ? Math.max(fit, Math.min(3, fit * 4)) : Math.max(fit, Math.min(1, fit * 2.2))) : fit; // 世界地図は全体表示から（つながった世界は、いまの地域のあたりを少し大きく）
     var focus = Minimap.focusTile(m);
     Minimap.pan = { x: Minimap.bigW / 2 - (focus.x + 0.5) * cell * Minimap.zoom, y: Minimap.bigH / 2 - (focus.y + 0.5) * cell * Minimap.zoom };
     Minimap.clampPan(m, cell);
@@ -376,7 +391,7 @@
   // 注目タイル：エリアなら自分の位置（他の階層ならその階の入口）、世界地図なら現在地域
   Minimap.focusTile = function (m) {
     var W = root.World;
-    if (m && m.join76) { var W76 = J76(); var v = Minimap.viewRegion && W76.inGrid(Minimap.viewRegion) ? Minimap.viewRegion : null; if (v) { var ov = W76.origin(v); return { x: ov.x + 80, y: ov.y + 60 }; } var rid = isRegion(W.map) ? W.map.id : (Minimap.worldPosOf(W.map.id) || {}).region; var gp = rid && W76.inGrid(rid) ? (isRegion(W.map) ? W76.toGlobal(rid, W.player.x, W.player.y) : (function () { var wp = Minimap.worldPosOf(W.map.id); return W76.toGlobal(rid, wp.x, wp.y); })()) : null; return gp || { x: m.w / 2, y: m.h / 2 }; }
+    if (m && m.join76) { var W76 = J76(); var v = Minimap.viewRegion && W76.inGrid(Minimap.viewRegion) ? Minimap.viewRegion : null; if (v) { var ov = W76.origin(v), rv = W76.rect(v); return { x: ov.x + rv.w / 2, y: ov.y + rv.h / 2 }; } var rid = isRegion(W.map) ? W.map.id : (Minimap.worldPosOf(W.map.id) || {}).region; var gp = rid && W76.inGrid(rid) ? (isRegion(W.map) ? W76.toGlobal(rid, W.player.x, W.player.y) : (function () { var wp = Minimap.worldPosOf(W.map.id); return W76.toGlobal(rid, wp.x, wp.y); })()) : null; return gp || { x: m.w / 2, y: m.h / 2 }; }
     if (Minimap.mode === 'world') { if (m.id !== Minimap.currentRegionId()) return { x: m.w / 2, y: m.h / 2 }; if (isRegion(W.map)) return { x: W.player.x, y: W.player.y }; var wp = Minimap.worldPosOf(W.map.id); return wp ? { x: wp.x, y: wp.y } : { x: m.w / 2, y: m.h / 2 }; }
     if (m === W.map) return { x: W.player.x, y: W.player.y };
     var w0 = m.warps[0]; return w0 ? { x: w0.x, y: w0.y } : { x: m.w / 2, y: m.h / 2 };
@@ -387,7 +402,7 @@
     if (mh <= H) Minimap.pan.y = (H - mh) / 2; else Minimap.pan.y = Math.min(0, Math.max(H - mh, Minimap.pan.y));
   };
   Minimap.zoomBy = function (f, cx, cy) {
-    var m = currentBigMap(); var cell = getTerrain(m, true).cell; var z0 = Minimap.zoom; var z1 = Math.max(0.3, Math.min(6, z0 * f)); if (cx === undefined) { cx = Minimap.bigW / 2; cy = Minimap.bigH / 2; }
+    var m = currentBigMap(); var cell = getTerrain(m, true).cell; var z0 = Minimap.zoom; var z1 = Math.max(0.3, Math.min(24 / Math.max(1, cell), z0 * f)); if (cx === undefined) { cx = Minimap.bigW / 2; cy = Minimap.bigH / 2; }
     Minimap.pan.x = cx - (cx - Minimap.pan.x) * (z1 / z0); Minimap.pan.y = cy - (cy - Minimap.pan.y) * (z1 / z0); Minimap.zoom = z1; Minimap.clampPan(m, cell);
   };
   function bindPointer(cv) {
@@ -397,7 +412,7 @@
     root.addEventListener('mouseup', function (e) { if (!drag) return; if (!drag.moved) Minimap.clickAt(e.clientX, e.clientY); drag = null; });
     cv.addEventListener('wheel', function (e) { e.preventDefault(); var r = cv.getBoundingClientRect(); Minimap.zoomBy(e.deltaY < 0 ? 1.15 : 0.87, e.clientX - r.left, e.clientY - r.top); }, { passive: false });
     cv.addEventListener('touchstart', function (e) { e.preventDefault(); if (e.touches.length === 1) { var t = e.touches[0]; drag = { x: t.clientX, y: t.clientY, px: Minimap.pan.x, py: Minimap.pan.y, moved: false }; pinch = null; } else if (e.touches.length === 2) { drag = null; pinch = { d: dist(e.touches), z: Minimap.zoom, cx: (e.touches[0].clientX + e.touches[1].clientX) / 2, cy: (e.touches[0].clientY + e.touches[1].clientY) / 2 }; } }, { passive: false });
-    cv.addEventListener('touchmove', function (e) { e.preventDefault(); var m = currentBigMap(); var cell = getTerrain(m, true).cell; if (pinch && e.touches.length === 2) { var r = cv.getBoundingClientRect(); var f = dist(e.touches) / pinch.d; var z1 = Math.max(0.3, Math.min(6, pinch.z * f)); var cx = pinch.cx - r.left, cy = pinch.cy - r.top; Minimap.pan.x = cx - (cx - Minimap.pan.x) * (z1 / Minimap.zoom); Minimap.pan.y = cy - (cy - Minimap.pan.y) * (z1 / Minimap.zoom); Minimap.zoom = z1; Minimap.clampPan(m, cell); } else if (drag && e.touches.length === 1) { var t = e.touches[0]; var dx = t.clientX - drag.x, dy = t.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 6) drag.moved = true; Minimap.pan.x = drag.px + dx; Minimap.pan.y = drag.py + dy; Minimap.clampPan(m, cell); } }, { passive: false });
+    cv.addEventListener('touchmove', function (e) { e.preventDefault(); var m = currentBigMap(); var cell = getTerrain(m, true).cell; if (pinch && e.touches.length === 2) { var r = cv.getBoundingClientRect(); var f = dist(e.touches) / pinch.d; var z1 = Math.max(0.3, Math.min(24 / Math.max(1, cell), pinch.z * f)); var cx = pinch.cx - r.left, cy = pinch.cy - r.top; Minimap.pan.x = cx - (cx - Minimap.pan.x) * (z1 / Minimap.zoom); Minimap.pan.y = cy - (cy - Minimap.pan.y) * (z1 / Minimap.zoom); Minimap.zoom = z1; Minimap.clampPan(m, cell); } else if (drag && e.touches.length === 1) { var t = e.touches[0]; var dx = t.clientX - drag.x, dy = t.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 6) drag.moved = true; Minimap.pan.x = drag.px + dx; Minimap.pan.y = drag.py + dy; Minimap.clampPan(m, cell); } }, { passive: false });
     cv.addEventListener('touchend', function (e) { if (drag && !drag.moved && e.changedTouches.length) Minimap.clickAt(e.changedTouches[0].clientX, e.changedTouches[0].clientY); if (e.touches.length === 0) { drag = null; pinch = null; } });
     function dist(t) { var dx = t[0].clientX - t[1].clientX, dy = t[0].clientY - t[1].clientY; return Math.sqrt(dx * dx + dy * dy); }
   }
@@ -474,7 +489,8 @@
   // v7.6 つながった世界の「地域の地図」：全地域の地名・乗り物・次の目的地・現在地、まだ行けない地域の印
   function drawJoinedWorld(ctx, m, cell, toScreen, z, hot) {
     var W76 = J76(), W = root.World, d = root.State.data; var title = document.getElementById('bm-title');
-    title.textContent = 'つながった世界（地上の地域と海）';
+    title.textContent = W76.earth ? '未来の地球（地上の地域と海）' : 'つながった世界（地上の地域と海）';
+    if (W76.earth && root.Earth78 && root.Earth78.labels) root.Earth78.labels().forEach(function (lb) { var s = toScreen(lb.x, lb.y); ctx.font = (lb.sea ? 'italic ' : 'bold ') + (lb.big ? 15 : 12) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.55)'; ctx.fillStyle = lb.sea ? 'rgba(190,220,255,0.75)' : 'rgba(255,245,215,0.8)'; ctx.strokeText(lb.name, s.x, s.y); ctx.fillText(lb.name, s.x, s.y); });   // v7.8 大陸・海の名前
     W76.REGIONS.forEach(function (id) { (function () { var o = W76.origin(id); var rm = regionMap(id); var off = function (x, y) { return toScreen(o.x + x, o.y + y); };
       var c = toScreen(o.x + rm.w / 2, o.y); c = { x: c.x, y: c.y + 16 }; ctx.font = 'bold 13px sans-serif';   // 名前は区画の上から 16px（拡大率によらず、上の段でも欠けない）
       ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.fillStyle = W76.unlocked(id) ? '#ffe9a8' : '#b8bcd0';
@@ -486,7 +502,7 @@
       try { hot = hot.concat(drawNav(ctx, rm, cell, off, Math.max(2.5, cell * z * 0.9))); } catch (e) { /* 案内がなくても地図は描く */ }
       if (root.Vehicle) root.Vehicle.onMap(id).forEach(function (v) { if (v.aboard) return; var sv = off(v.x, v.y); ctx.fillStyle = '#ffd24a'; ctx.beginPath(); ctx.moveTo(sv.x - 6, sv.y + 2); ctx.lineTo(sv.x + 6, sv.y + 2); ctx.lineTo(sv.x + 3, sv.y + 5); ctx.lineTo(sv.x - 3, sv.y + 5); ctx.closePath(); ctx.fill(); hot.push({ x: sv.x, y: sv.y, text: (root.VEHICLES[v.id] || {}).name || v.id }); });
     })(); });
-    (W76.SEAS || []).forEach(function (id) { var o = W76.origin(id); var rm = regionMap(id); var off = function (x, y) { return toScreen(o.x + x, o.y + y); };   // 共通の海：案内の線と乗り物
+    (W76.SEAS || []).forEach(function (id) { if (W76.earth && !W.maps[id] && !(root.Vehicle && root.Vehicle.onMap(id).length)) return; var o = W76.origin(id); var rm = regionMap(id); var off = function (x, y) { return toScreen(o.x + x, o.y + y); };   // 共通の海：案内の線と乗り物
       try { hot = hot.concat(drawNav(ctx, rm, cell, off, Math.max(2.5, cell * z * 0.9))); } catch (e) { /* 案内がなくても地図は描く */ }
       if (root.Vehicle) root.Vehicle.onMap(id).forEach(function (v) { if (v.aboard) return; var sv = off(v.x, v.y); ctx.fillStyle = '#ffd24a'; ctx.beginPath(); ctx.arc(sv.x, sv.y, 4, 0, Math.PI * 2); ctx.fill(); }); });
     var rid = isRegion(W.map) ? W.map.id : (Minimap.worldPosOf(W.map.id) || {}).region;

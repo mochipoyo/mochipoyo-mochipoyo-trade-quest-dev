@@ -31,17 +31,25 @@
   };
   // v7.6 つないだ世界（js/rpg/world76.js。3D 版）：地域の絵を、つないだ世界の実際の配置（世界の座標 × 2.4）に置き直す（地図と同じデータ）。
   //   天空群島（空の上）とゼロメア（異空間）は、下の帯に別の空間として置く。共通の海（sea76_*）は絵なし
-  (function () {
-    var W76 = root.World76; if (!W76 || !W76.on || !W76.on()) return;
+  //   v7.8 地球の世界（js/rpg/earth78.js）：組み立てが読み込みの最後になったので、「世界」タブを初めて開くときに置き直す。背景に地球の地形、地域は印と地名だけ（地域の絵は出さない）
+  var JOIN_DONE = false;
+  function applyJoinLayout() {
+    var W76 = root.World76; if (JOIN_DONE || !W76 || !W76.on || !W76.on()) return; JOIN_DONE = true;
+    if (W76.earth) { var NEWL = { world_neon: { color: '#d0407a', fx: 'neon' }, world_meridian: { color: '#8a8a7a' }, world_nereia: { color: '#2a9ab0' }, world_aeria: { color: '#bfe0ff', fx: 'sky' }, world_orbis: { color: '#202a5a' } };
+      Object.keys(NEWL).forEach(function (k) { if (root.MAP_DEFS && root.MAP_DEFS[k] && !LAYOUT[k]) LAYOUT[k] = { x: 0, y: 0, color: NEWL[k].color, fx: NEWL[k].fx }; }); }
     var SC = 2.4, sz = W76.size(); var band = 420;
     STAGE.w = Math.round(sz.w * SC); STAGE.h = Math.round(sz.h * SC) + band;
     W76.REGIONS.forEach(function (id) { var r = W76.rect(id); if (!LAYOUT[id] || !r) return; LAYOUT[id].x = Math.round((r.x + r.w / 2) * SC); LAYOUT[id].y = Math.round((r.y + r.h / 2) * SC); });
     var bandY = Math.round(sz.h * SC) + band / 2;
     if (LAYOUT.world_sky) { LAYOUT.world_sky.x = Math.round(((W76.rect('world') || { x: 0 }).x + 80) * SC); LAYOUT.world_sky.y = bandY; }
     if (LAYOUT.world_machine) { var rt = W76.rect('world_tempus') || { x: 0 }; LAYOUT.world_machine.x = Math.round((rt.x + 80) * SC); LAYOUT.world_machine.y = bandY; }
+    if (LAYOUT.world_aeria) { var ra = (root.Earth78 && root.Earth78.aeriaAt && root.Earth78.aeriaAt()) || { x: 80 }; LAYOUT.world_aeria.x = Math.round(ra.x * SC); LAYOUT.world_aeria.y = bandY; }   // 太平洋の上空
+    if (LAYOUT.world_orbis) { var rd = W76.rect('world_dark') || { x: 640 }; LAYOUT.world_orbis.x = Math.round((rd.x + 200) * SC); LAYOUT.world_orbis.y = bandY; }   // 地球の周回軌道
     WM_BAND = Math.round(sz.h * SC);
-    WM_JOIN76 = true;
-  })();
+    WM_JOIN76 = true; WM_EARTH = !!W76.earth;
+  }
+  var WM_EARTH = false;
+  applyJoinLayout();
   var VEH = { '徒歩': 'walk', '小型帆船': 'boat', '遠洋航海船': 'ship', '飛空艇': 'air' };
   // 乗り物のマーク（SVG）
   var ICON = {
@@ -83,9 +91,11 @@
   /* ---------- 組み立て（初めて「世界」タブを開いたときに1回） ---------- */
   WM.build = function () {
     var body = document.querySelector('#bigmap .bm-body'); if (!body) return false;
+    applyJoinLayout();
     var wm = document.createElement('div'); wm.className = 'wm'; wm.id = 'wm';
     var html = '<div class="wm-stage" id="wm-stage" style="width:' + STAGE.w + 'px;height:' + STAGE.h + 'px">' +
       '<div class="wm-sea"' + (imgUrl('sea') ? ' style="background-image:url(\'' + imgUrl('sea') + '\')"' : '') + '></div>' +
+      (WM_EARTH && MM() && MM().earthImage ? '<style>#wm-stage .wm-pic,#wm-stage .wm-fallback{display:none}#wm-stage .wm-region{width:120px!important;height:80px!important;margin-left:80px;margin-top:55px}</style><img class="wm-earth" alt="" draggable="false" src="' + MM().earthImage() + '" style="position:absolute;left:0;top:0;width:' + STAGE.w + 'px;height:' + WM_BAND + 'px;image-rendering:pixelated;opacity:.96">' : '') +
       '<svg class="wm-routes" id="wm-routes" width="' + STAGE.w + '" height="' + STAGE.h + '" viewBox="0 0 ' + STAGE.w + ' ' + STAGE.h + '"></svg>' +
       '<div class="wm-frame"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div>' +
       '<div class="wm-compass" style="left:' + (STAGE.w - 160) + 'px;top:36px">' + COMPASS + '</div>' + (WM_JOIN76 ? '<div class="wm-join76" style="position:absolute;left:24px;top:' + (WM_BAND + 6) + 'px;width:' + (STAGE.w - 48) + 'px;height:2px;border-top:2px dashed rgba(255,233,168,0.45)"></div><div style="position:absolute;left:30px;top:' + (WM_BAND + 12) + 'px;color:#ffe9a8;font:bold 22px sans-serif;text-shadow:0 1px 3px #000">ここから下は、地上の世界とは別の空間（空の上・異空間）</div>' : '');

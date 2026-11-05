@@ -20,4 +20,50 @@ for (const id of E.ids) { const o = E.OLD[id], g = E.GEN[id]; if (!o) continue; 
 // ---------- 港：停める海が外の海につながる（湖でない）
 const H = w.Harbors.HARBORS; Object.keys(H).forEach((k) => { const h = H[k]; const m = w.World.getMap(h.map); const c = m.tiles[h.moor.y][h.moor.x]; const gl = W.toGlobal(h.map, h.moor.x, h.moor.y); ok(T.isWater(c) && E.dist(gl.x, gl.y) >= 1, '港 ' + h.name + '：停める所が海（' + c + '）・桟橋 ' + h.land.x + ',' + h.land.y); });
 Object.keys(w.VEHICLES).forEach((k) => { const hm = w.VEHICLES[k].home; const m = w.World.getMap(hm.map); const c = m.tiles[hm.y][hm.x]; ok(k === 'airship' ? !T.isSolid(c) || T.isWater(c) : T.isWater(c), '乗り物の母港 ' + k + ' ' + hm.map + ' ' + hm.x + ',' + hm.y + '（' + c + '）'); });
+
+// ---------- 移動と進入の条件（世界の座標で、地図の境目をまたいで調べる）
+w.World.start(); const d = w.State.data; const WW = S.w, WH = S.h;
+const CH = new Array(WW * WH); for (const id of W.MAPS) { const r = W.rect(id); const rows = w.MAP_DEFS[id].rows(); for (let y = 0; y < r.h; y++) for (let x = 0; x < r.w; x++) CH[(r.y + y) * WW + r.x + x] = rows[y][x]; }
+const MID = new Array(WW * WH); for (let gy = 0; gy < WH; gy++) for (let gx = 0; gx < WW; gx++) MID[gy * WW + gx] = W.mapAt(gx, gy);
+const tname = (c) => T.byChar[c];
+const passBy = { walk: (c) => { const n = tname(c); return !!n && !T.isSolid(n) && !T.isWater(n); },
+  sailboat: (c, i) => c === '~' || c === 'w' || (c === 'b' && W.isBridge76(MID[i], (i % WW) - W.rect(MID[i]).x, ((i / WW) | 0) - W.rect(MID[i]).y)),
+  galleon: (c, i) => c === '~' || c === 'w' || c === '0' || (c === 'b' && W.isBridge76(MID[i], (i % WW) - W.rect(MID[i]).x, ((i / WW) | 0) - W.rect(MID[i]).y)),
+  airship: () => true };
+const setF = (fs) => { Object.keys(W.GATE).forEach((id) => delete d.flags[W.GATE[id].flag]); ['ship_ready', 'galleon_ready', 'airship_owned', 'dark_route_open'].forEach((f) => delete d.flags[f]); fs.forEach((f) => d.flags[f] = true); };
+// 1 つの乗り物（または徒歩）で行ける所（start: 世界の座標の配列）
+function flood(mode, starts) {
+  const seen = new Uint8Array(WW * WH); const q = []; starts.forEach((s) => { const i = s[1] * WW + w.World76.wrapX(s[0]); if (!seen[i]) { seen[i] = 1; q.push(i); } });
+  const ok = passBy[mode]; const veh = mode === 'walk' ? null : mode;
+  for (let h = 0; h < q.length; h++) { const c = q[h], cx = c % WW, cy = (c / WW) | 0; const from = MID[c];
+    for (let k = 0; k < 4; k++) { const nx = W.wrapX(cx + [1, -1, 0, 0][k]), ny = cy + [0, 0, 1, -1][k]; if (ny < 0 || ny >= WH) continue; const n = ny * WW + nx; if (seen[n]) continue; const to = MID[n];
+      if (!ok(CH[n], n)) continue; if (to !== from && W.entryBlock(to, veh, from)) continue; seen[n] = 1; q.push(n); } }
+  return seen;
+}
+function regionsIn(seen) { const set = new Set(); for (let i = 0; i < seen.length; i++) if (seen[i]) { const m = MID[i]; if (W.isRegion(m)) set.add(m); } return set; }
+// 物語の段階ごと：ポヨ村から歩いて＋持っている船で（上陸して歩く）行ける地域
+const poyo = W.toGlobal('world', w.MAP_DEFS.world.locations.find((l) => l.id === 'poyo_village').x, w.MAP_DEFS.world.locations.find((l) => l.id === 'poyo_village').y + 1);
+const harbor = w.Harbors.HARBORS.marina; const hg = W.toGlobal('world', harbor.moor.x, harbor.moor.y);
+function reach(flags) {
+  setF(flags); let land = flood('walk', [[poyo.x, poyo.y]]); const ship = flags.includes('galleon_ready') ? 'galleon' : flags.includes('ship_ready') ? 'sailboat' : null;
+  if (ship) { const sea = flood(ship, [[hg.x, hg.y]]); const st = []; for (let i = 0; i < sea.length; i++) if (sea[i]) { const cx = i % WW, cy = (i / WW) | 0; for (let k = 0; k < 4; k++) { const nx = W.wrapX(cx + [1, -1, 0, 0][k]), ny = cy + [0, 0, 1, -1][k]; if (ny < 0 || ny >= WH) continue; const n = ny * WW + nx; if (passBy.walk(CH[n]) && !W.entryBlock(MID[n], null, MID[i]) ) st.push([nx, ny]); } }
+    const land2 = flood('walk', st.concat([[poyo.x, poyo.y]])); for (let i = 0; i < land.length; i++) land[i] |= land2[i] | sea[i]; }
+  return regionsIn(land);
+}
+const STAGES = [['はじめ', [], ['world']], ['船を直した（ship_ready）', ['ship_ready'], ['world', 'world_grania']], ['灰の峠の関所（kalion_open）', ['ship_ready', 'kalion_open'], ['world', 'world_grania', 'world_kalion']],
+  ['遠洋航海船（galleon_ready）', ['ship_ready', 'kalion_open', 'galleon_ready'], ['world', 'world_grania', 'world_kalion', 'world_islands', 'world_nereia']],
+  ['断裂群島の用事（yorn_letter_done）', ['ship_ready', 'kalion_open', 'galleon_ready', 'yorn_letter_done'], ['world', 'world_grania', 'world_kalion', 'world_islands', 'world_nereia', 'world_tempus', 'world_desert', 'world_snow', 'world_meridian']],
+  ['ゼロメアの選択（zeromea_choice_done）', ['ship_ready', 'kalion_open', 'galleon_ready', 'yorn_letter_done', 'zeromea_choice_done'], ['world', 'world_grania', 'world_kalion', 'world_islands', 'world_nereia', 'world_tempus', 'world_desert', 'world_snow', 'world_meridian', 'world_magicka']],
+  ['魔導王国に着いた（magicka_arrived）', ['ship_ready', 'kalion_open', 'galleon_ready', 'yorn_letter_done', 'zeromea_choice_done', 'magicka_arrived'], ['world', 'world_grania', 'world_kalion', 'world_islands', 'world_nereia', 'world_tempus', 'world_desert', 'world_snow', 'world_meridian', 'world_magicka', 'world_dragon', 'world_neon']]];
+for (const [nm, fl, exp] of STAGES) { const got = [...reach(fl)].filter((id) => w.MAP_DEFS[id]); const e = exp.filter((id) => w.MAP_DEFS[id]); const miss = e.filter((x) => !got.includes(x)), extra = got.filter((x) => !e.includes(x)); ok(!miss.length && !extra.length, '物語の段階「' + nm + '」：歩き＋船で行ける地域 ' + got.length + (miss.length ? ' 足りない ' + miss.join(',') : '') + (extra.length ? ' 早すぎる ' + extra.join(',') : '')); }
+// 暗黒大陸（南極）：闇の空路のあと、飛空艇だけ
+setF(['ship_ready', 'kalion_open', 'galleon_ready', 'yorn_letter_done', 'zeromea_choice_done', 'magicka_arrived', 'dark_route_open', 'airship_owned']);
+ok([...reach(['ship_ready', 'kalion_open', 'galleon_ready', 'yorn_letter_done', 'zeromea_choice_done', 'magicka_arrived', 'dark_route_open'])].indexOf('world_dark') < 0, '暗黒大陸：闇の空路が開いても、船・徒歩では入れない');
+const ALL = ['ship_ready', 'kalion_open', 'galleon_ready', 'yorn_letter_done', 'zeromea_choice_done', 'magicka_arrived', 'airship_owned'];
+setF(ALL.concat(['dark_route_open'])); const air = regionsIn(flood('airship', [[poyo.x, poyo.y]])); ok(air.has('world_dark'), '暗黒大陸：飛空艇で入れる（闇の空路のあと）');
+setF(ALL); ok(!regionsIn(flood('airship', [[poyo.x, poyo.y]])).has('world_dark'), '暗黒大陸：闇の空路の前は飛空艇でも入れない');
+// 東西の一周：遠洋航海船で太平洋を東西に横断（右端 → 左端）
+setF(['galleon_ready', 'yorn_letter_done', 'magicka_arrived', 'zeromea_choice_done']);
+const pac = flood('galleon', [[1300, 330]]); let wrapOK = false; for (let y = 200; y < 600; y++) if (pac[y * WW + 0] && pac[y * WW + WW - 1]) { wrapOK = true; break; }
+ok(wrapOK && pac[330 * WW + 300], '遠洋航海船：日本の東（経度 156°E）から太平洋を東へ、世界の右端 → 左端をまたいで北アメリカの西（経度 94°W）まで');
 console.log(ng.length ? '結果：NG ' + ng.length : '結果：すべて OK'); process.exit(ng.length ? 1 : 0);
