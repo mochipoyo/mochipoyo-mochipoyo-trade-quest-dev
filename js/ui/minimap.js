@@ -331,7 +331,8 @@
     else if (a === 'fit') { if (WMp) WMp.fit(); else Minimap.fitAll(); }
     else { if (WMp) { WMp.home(); } else { if (Minimap.mode === 'world') Minimap.viewRegion = null; Minimap.home(); } }   // 「◎ 現在地」で今いる地域へ戻る
   };
-  Minimap.fitAll = function () { if (Minimap.mode === 'globe') return; var m = currentBigMap(); var cell = getTerrain(m, true).cell; Minimap.zoom = Math.min(Minimap.bigW / (m.w * cell), Minimap.bigH / (m.h * cell)); Minimap.clampPan(m, cell); };
+  Minimap.fitAll = function () { if (Minimap.mode === 'globe') return; var m = currentBigMap(); var cell = getTerrain(m, true).cell; var padY = m.id === '__join76' ? 80 : 0;   // v7.6 つながった世界：上の「地域」の選択と、上の段の地域の名前が重ならないよう上下をあける
+    Minimap.zoom = Math.min(Minimap.bigW / (m.w * cell), Math.max(40, Minimap.bigH - padY) / (m.h * cell)); Minimap.clampPan(m, cell); };
   // v6.0 スマホ縦向き：拡大マップを開いている間は地図の表示エリアを縦に広げる（下の方向キー・決定・メニューはその下へずらして使える）
   Minimap.tallLayout = function (on) {
     var b = document.body; var st = document.getElementById('stage'); var cv = document.getElementById('game'); if (!b || !st || !cv) return;
@@ -467,7 +468,8 @@
     var W76 = J76(), W = root.World, d = root.State.data; var title = document.getElementById('bm-title');
     title.textContent = 'つながった世界（地上の地域と海）';
     W76.GRID.forEach(function (row) { row.forEach(function (id) { if (!id) return; var o = W76.origin(id); var rm = regionMap(id); var off = function (x, y) { return toScreen(o.x + x, o.y + y); };
-      var c = toScreen(o.x + rm.w / 2, o.y + 6); ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.fillStyle = W76.unlocked(id) ? '#ffe9a8' : '#b8bcd0';
+      var c = toScreen(o.x + rm.w / 2, o.y); c = { x: c.x, y: c.y + 16 }; ctx.font = 'bold 13px sans-serif';   // 名前は区画の上から 16px（拡大率によらず、上の段でも欠けない）
+      ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.fillStyle = W76.unlocked(id) ? '#ffe9a8' : '#b8bcd0';
       var nm = rm.def.name + (W76.unlocked(id) ? '' : '（まだ行けない）'); ctx.strokeText(nm, c.x, c.y); ctx.fillText(nm, c.x, c.y);
       if (!W76.unlocked(id)) return;
       (rm.def.locations || []).forEach(function (L) { if (L.hidden && !d.flags[L.needFlag]) return; var visited = !!d.visited[L.to]; if (!visited) return; var s = off(L.x, L.y); drawSymbol(ctx, L.icon === 'village' ? 'town' : L.icon === 'castle_icon' ? 'castle' : 'cave', s.x, s.y, 6);
@@ -518,6 +520,10 @@
     });
     var list = Object.keys(map).map(function (k) { var e = map[k]; var v = e.vehicles.indexOf('sailboat') >= 0 ? 'sailboat' : e.vehicles.indexOf('galleon') >= 0 ? 'galleon' : 'airship'; e.label = VNAME[v]; e.name = e.names[0].replace(/（.*$/, ''); return e; });
     GLOBE_LAND.forEach(function (L) { list.push({ a: L.a, b: L.b, label: L.label, name: L.name, open: L.open(d) }); });
+    // v7.6 つないだ世界の陸の橋：歩いて渡れる（乗り物がなくても、行き先の条件だけ）
+    var W76 = J76(); if (W76) (W76.BRIDGES || []).forEach(function (b) { if (!b.at) return; list.forEach(function (e) { if (!e.vehicles || !((e.a === b.a && e.b === b.b) || (e.a === b.b && e.b === b.a))) return;
+      e.label = '徒歩'; e.name = '陸の橋（' + ((root.MAP_DEFS[b.a] || {}).name || b.a) + '〜' + ((root.MAP_DEFS[b.b] || {}).name || b.b) + '）';
+      e.open = W76.unlocked(e.a) && W76.unlocked(e.b); }); });   // 両側の地域が行けるようになっていれば渡れる
     return list;
   };
   function drawGlobe(ctx, title) {
