@@ -91,7 +91,10 @@ export class WorldBuilder3D {
     };
     // ---------------- 地面（区画ごと）
     const S = hi ? 2 : 1; const CH = field ? 32 : 24;
-    const gx0 = -OUT, gz0 = -OUT, gx1 = W + OUT, gz1 = H + OUT;
+    // v7.6 つないだ世界（js/rpg/world76.js）：となりの地域がある側は、地図の外の地面・海・木・山を作らない（となりの地域と重ならない）
+    const J76 = field && window.World76 && window.World76.on && window.World76.on() ? window.World76.sides(map.id) : null; this.stats.join76 = J76 ? Object.keys(J76).filter((k) => J76[k]).join('') : null;
+    const OW = J76 && J76.w ? 0 : OUT, OE = J76 && J76.e ? 0 : OUT, ON = J76 && J76.n ? 0 : OUT, OS = J76 && J76.s ? 0 : OUT;
+    const gx0 = -OW, gz0 = -ON, gx1 = W + OE, gz1 = H + OS;
     const NX = (gx1 - gx0) * S + 1, NZ = (gz1 - gz0) * S + 1;
     const hgrid = new Float32Array(NX * NZ);
     const tHgt = performance.now();
@@ -347,7 +350,7 @@ export class WorldBuilder3D {
     }
     // 町の外周：草地なら森（出口の道の延長は空ける）
     if (kind === 'town' || outdoorD) {
-      for (let z = -OUT; z < H + OUT; z++) for (let x = -OUT; x < W + OUT; x++) {
+      for (let z = -ON; z < H + OS; z++) for (let x = -OW; x < W + OE; x++) {
         if (inside(x, z)) continue; const d = Math.max(-x, x - W + 1, -z, z - H + 1); if (d < 2) continue;
         const t = T(x, z); if (PAVED[t] || t === 'road' || WATERY[t] || t === 'sand' || t === 'cloud' || t === 'lava') continue;
         if (rnd() > (d < 4 ? 0.35 : 0.6)) continue; if (env && env.skipOutTree && env.skipOutTree(x, z)) continue;   // v7.6 レシピ：町の外の木を置かない所（冷却塔の足元・門の前など）
@@ -357,7 +360,7 @@ export class WorldBuilder3D {
     this.stats.trees = trees;
     // 山（手続き型の形をインスタンス化）
     const mountains = []; const snowCap = !!theme.snowCap;
-    for (let z = -OUT; z < H + OUT; z++) for (let x = -OUT; x < W + OUT; x++) {
+    for (let z = -ON; z < H + OS; z++) for (let x = -OW; x < W + OE; x++) {
       if (T(x, z) !== 'mountain') continue; if (!inside(x, z) && rnd() < 0.5) continue;
       if (nearLm(x + 0.5, z + 0.5, 0.8)) continue;   // v6.6 町・城・洞窟の建物に山が重ならないように（地面の高さはそのまま）
       const s = 0.85 + rnd() * 0.5; const h = 1.6 + rnd() * 1.8;

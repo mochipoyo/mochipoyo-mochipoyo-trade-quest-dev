@@ -83,6 +83,7 @@ export class UIOverlay {
       '<div class="row"><span class="lab">画質</span><button data-q="high">高（PC）</button><button data-q="low">軽量（スマホ）</button></div>' +
       '<div class="row"><span class="lab">画面の仕上げ</span><button data-fin="on">使う（ジオラマ風のぼかし・色の調子）</button><button data-fin="off">使わない（以前の表示）</button><span class="small" style="color:#aab">高画質のときだけ</span></div>' +
       '<div class="row"><span class="lab">建物の作り込み</span><button data-bd="on">使う（厚い屋根・汚れ・日よけ・小物・町の目玉・部屋の暖炉と窓）</button><button data-bd="off">使わない（以前の形）</button></div>' +
+      '<div class="row"><span class="lab">世界のつながり</span><button data-join="on">つなぐ（地上の地域と海を1枚に・境目で画面を切り替えない）</button><button data-join="off">地域ごと（以前のつながり）</button></div>' +
       '<div class="row"><span class="lab">時間帯の確認</span><button data-t="-1">ゲーム内</button><button data-t="0.3">朝</button><button data-t="0.5">昼</button><button data-t="0.74">夕</button><button data-t="0.95">夜</button></div>' +
       '<div class="row"><span class="lab">モーション</span><button data-m="Attack">攻撃</button><button data-m="Cast">呪文</button><button data-m="Hit">被弾</button><button data-m="Defend">防御</button><button data-m="Victory">勝利</button><button data-m="Defeat">倒れる</button></div>' +
       '<div class="row"><span class="lab">戦闘の3D</span><button data-b="on">3Dの舞台</button><button data-b="off">2Dの背景</button></div>' +
@@ -108,7 +109,8 @@ export class UIOverlay {
       if (b.dataset.bl) { try { localStorage.setItem('mtq3d-battle-layout', b.dataset.bl); } catch (e) { /* なし */ } }   // 戦闘の並び：次の戦闘から
       if (b.dataset.bb) { try { localStorage.setItem('mtq3d-battle-bg', b.dataset.bb); } catch (e) { /* なし */ } }   // v6.6 前後の並びの背景：すぐ反映（戦闘中でも）
       if (b.dataset.fin) { setFinishSetting(b.dataset.fin); if (app.renderer && app.renderer.setFinishEnabled) app.renderer.setFinishEnabled(b.dataset.fin !== 'off'); }   // v7.6 画面の仕上げ：すぐ反映
-      if (b.dataset.bd && b.dataset.bd !== bdetailSetting()) { setBdetailSetting(b.dataset.bd); app.rebuildGeneric(); }   // v7.6 建物の作り込み：汎用3Dのマップを作り直す
+      if (b.dataset.bd && b.dataset.bd !== bdetailSetting()) { setBdetailSetting(b.dataset.bd); app.rebuildGeneric(); }
+      if (b.dataset.join && window.World76 && b.dataset.join !== window.World76.setting()) { try { localStorage.setItem('mtq3d-join', b.dataset.join); } catch (e) { /* なし */ } const Win = window.Win; if (Win && Win.choice) Win.choice('世界のつながりの変更は、ページの再読み込みで反映される。今すぐ再読み込みする？（オートセーブから再開できる）', ['再読み込み', 'あとで']).then((c) => { if (c === 0) { try { window.State.autosave(); } catch (e) { /* なし */ } location.reload(); } }); }   // v7.6 世界のつながり（js/rpg/world76.js）   // v7.6 建物の作り込み：汎用3Dのマップを作り直す
       if (b.dataset.sc) setScope3D(b.dataset.sc);                         // Phase 1：すぐ反映（今いるマップも）
       if (b.dataset.rd && b.dataset.rd !== roundSetting()) { setRoundSetting(b.dataset.rd); app.rebuildGeneric(); }   // v6.8 丸み：汎用3Dのマップを作り直す
       this.refresh();
@@ -151,6 +153,7 @@ export class UIOverlay {
     let ba = true; try { ba = localStorage.getItem('mtq3d-battle-actors') !== 'off'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-ba]').forEach((b) => b.classList.toggle('on', (b.dataset.ba === 'on') === ba));
     const fin = (app.renderer && app.renderer.finish) ? (app.renderer.finish.enabled() ? 'on' : 'off') : finishSetting(); this.tools.querySelectorAll('[data-fin]').forEach((b) => { b.classList.toggle('on', b.dataset.fin === fin); b.disabled = !(app.renderer && app.renderer.finish); });
     const bd = bdetailSetting(); this.tools.querySelectorAll('[data-bd]').forEach((b) => b.classList.toggle('on', b.dataset.bd === bd));
+    const jn = window.World76 ? window.World76.setting() : 'off'; this.tools.querySelectorAll('[data-join]').forEach((b) => b.classList.toggle('on', b.dataset.join === jn));
     const sc = scope3D(); this.tools.querySelectorAll('[data-sc]').forEach((b) => b.classList.toggle('on', b.dataset.sc === sc));
     const rd = roundSetting(); this.tools.querySelectorAll('[data-rd]').forEach((b) => b.classList.toggle('on', b.dataset.rd === rd));
   }

@@ -50,6 +50,22 @@
 
   /* ---------- 地形キャッシュ ---------- */
   function isRegion(map) { return !!(map && map.def && map.def.region); }
+  // v7.6 つないだ世界（js/rpg/world76.js。3D 版）：地域の地図は 1 枚の世界として描く・ミニマップは境目の向こうも描く
+  function J76() { return root.World76 && root.World76.on && root.World76.on() ? root.World76 : null; }
+  var JOINED = null;
+  function joinedMap() { var S = J76().size(); if (!JOINED || JOINED.w !== S.w) JOINED = { id: '__join76', name: 'つながった世界', w: S.w, h: S.h, kind: 'field', join76: true, def: { region: false, locations: [] }, warps: [], buildings: [], chests: [], npcs: [] }; return JOINED; }
+  function regionMap(id) { var W = root.World; return W.maps[id] || W.getMap(id); }
+  function joinedTerrain(big) {
+    var W76 = J76(); var store = big ? Minimap.bigCache : Minimap.cache; var cell = big ? 4 : 2; var ids = W76.GRID.reduce(function (a, r) { return a.concat(r); }, []).filter(Boolean);
+    var parts = ids.map(function (id) { var m = regionMap(id); return { id: id, m: m, t: getTerrain(m, big) }; });
+    var key = parts.map(function (q) { return q.id + ':' + q.t.rev + ':' + q.t.hk + ':' + (W76.unlocked(q.id) ? 1 : 0); }).join('|');
+    var e = store.__join76; if (e && e.key === key) return e;
+    var S = W76.size(); var c = document.createElement('canvas'); c.width = S.w * cell; c.height = S.h * cell; var ctx = c.getContext('2d'); ctx.imageSmoothingEnabled = false;
+    ctx.fillStyle = '#122f6a'; ctx.fillRect(0, 0, c.width, c.height);
+    parts.forEach(function (q) { var o = W76.origin(q.id); ctx.drawImage(q.t.canvas, 0, 0, q.t.canvas.width, q.t.canvas.height, o.x * cell, o.y * cell, q.m.w * cell, q.m.h * cell);
+      if (!W76.unlocked(q.id)) { ctx.fillStyle = 'rgba(14,16,30,0.62)'; ctx.fillRect(o.x * cell, o.y * cell, q.m.w * cell, q.m.h * cell); } });
+    e = { canvas: c, cell: cell, rev: 0, hk: '', key: key }; store.__join76 = e; return e;
+  }
   function regionLocations() { var out = []; Object.keys(root.MAP_DEFS || {}).forEach(function (k) { var d = root.MAP_DEFS[k]; if (d.region && d.locations) d.locations.forEach(function (L) { out.push(Object.assign({ region: k }, L)); }); }); if (!out.length && root.WORLD_LOCATIONS) out = root.WORLD_LOCATIONS.map(function (L) { return Object.assign({ region: 'world' }, L); }); return out; }
   Minimap.isRegion = isRegion; Minimap.regionLocations = regionLocations;
   function cellFor(map, big) { if (big) return isRegion(map) ? 4 : 10; if (isRegion(map)) return 2; return Math.max(3, Math.min(8, Math.floor(150 / Math.max(map.w, map.h * 1.25)))); }
@@ -76,6 +92,7 @@
   function isHiddenAt(hid, x, y) { for (var i = 0; i < hid.length; i++) if (hid[i].x === x && hid[i].y === y) return true; return false; }
   Minimap.hiddenLocs = hiddenLocs;
   function getTerrain(map, big) {
+    if (map && map.join76) return joinedTerrain(big);   // v7.6 つながった世界
     var store = big ? Minimap.bigCache : Minimap.cache; var e = store[map.id]; var cell = cellFor(map, big);
     var hk = hiddenLocs(map).map(function (L) { return L.id; }).join(',') + (showChests() ? '|c' : '');   // 隠し地点が見つかったら描き直す（v6.8 測量士の有無で宝箱の表示が変わるときも）
     if (!e || e.rev !== (Minimap._dirty[map.id] || 0) || e.hk !== hk) { e = { canvas: renderTerrain(map, cell), cell: cell, rev: Minimap._dirty[map.id] || 0, hk: hk }; store[map.id] = e; }
@@ -249,9 +266,13 @@
     var pxT = p.px / TS + 0.5, pyT = p.py / TS + 0.5;
     var mw = m.w * cell, mh = m.h * cell;
     var ox = pxT * cell - w / 2, oy = pyT * cell - h / 2;
-    if (mw <= w) ox = (mw - w) / 2; else ox = Math.max(0, Math.min(mw - w, ox));
-    if (mh <= h) oy = (mh - h) / 2; else oy = Math.max(0, Math.min(mh - h, oy));
+    var W76 = J76(); var jo = W76 && W76.inGrid(m.id) ? W76.origin(m.id) : null;   // v7.6 つながった世界：端で止めず、となりの地域も描く
+    if (jo) { var S = W76.size(); ox = Math.max(-jo.x * cell, Math.min((S.w - jo.x) * cell - w, ox)); oy = Math.max(-jo.y * cell, Math.min((S.h - jo.y) * cell - h, oy)); }
+    else { if (mw <= w) ox = (mw - w) / 2; else ox = Math.max(0, Math.min(mw - w, ox));
+    if (mh <= h) oy = (mh - h) / 2; else oy = Math.max(0, Math.min(mh - h, oy)); }
     ctx.save(); ctx.translate(-ox, -oy);
+    if (jo) { for (var dr = -1; dr <= 1; dr++) for (var dc = -1; dc <= 1; dc++) { if (!dr && !dc) continue; var nid = W76.regionAt(jo.x + dc * W76.CW + 1, jo.y + dr * W76.CH + 1); if (!nid) continue; var no = W76.origin(nid); var nx0 = (no.x - jo.x) * cell, ny0 = (no.y - jo.y) * cell; if (nx0 > ox + w || ny0 > oy + h || nx0 + W76.CW * cell < ox || ny0 + W76.CH * cell < oy) continue;
+      var nm = regionMap(nid); ctx.save(); ctx.translate(nx0, ny0); drawMapLayer(ctx, nm, cell, false); if (!W76.unlocked(nid)) { ctx.fillStyle = 'rgba(14,16,30,0.62)'; ctx.fillRect(0, 0, nm.w * cell, nm.h * cell); } ctx.restore(); } }
     drawMapLayer(ctx, m, cell, false);
     // 建物の施設アイコン（町）
     m.buildings.forEach(function (b) { drawIcon(ctx, b.type, b.doorAbs.x * cell + cell / 2, (b.y + b.h / 2) * cell, Math.max(3, cell * 0.9)); });
@@ -332,13 +353,13 @@
   // v5.9 「地域の地図」で見ている地域（null なら今いる地域）。全地域の地形を最初から見られる
   Minimap.viewRegion = null;
   Minimap.viewRegionId = function () { var v = Minimap.viewRegion; return v && root.MAP_DEFS[v] && root.MAP_DEFS[v].region ? v : Minimap.currentRegionId(); };
-  function currentBigMap() { if (Minimap.mode === 'world') return root.World.getMap(Minimap.viewRegionId()); var id = Minimap._floor || root.World.map.id; var m = root.World.maps[id] || root.World.getMap(id); if (m !== root.World.map) root.World.applyState(m); return m; }
+  function currentBigMap() { if (Minimap.mode === 'world' && J76() && !(Minimap.viewRegion && !J76().inGrid(Minimap.viewRegion) && root.MAP_DEFS[Minimap.viewRegion]) && (Minimap.viewRegion || isRegion(root.World.map) || J76().inGrid(Minimap.currentRegionId()))) return joinedMap(); if (Minimap.mode === 'world') return root.World.getMap(Minimap.viewRegionId()); var id = Minimap._floor || root.World.map.id; var m = root.World.maps[id] || root.World.getMap(id); if (m !== root.World.map) root.World.applyState(m); return m; }
   Minimap.home = function () {
     if (Minimap.mode === 'globe') { Minimap.zoom = 1; Minimap.pan = { x: 0, y: 0 }; if (root.WorldMap && root.WorldMap.isShown()) root.WorldMap.home(); return; }
     var m = currentBigMap(); var t = getTerrain(m, true); var cell = t.cell; var W = root.World;
     var fit = Math.min(Minimap.bigW / (m.w * cell), Minimap.bigH / (m.h * cell));
     Minimap.zoom = Minimap.mode === 'world' ? Math.max(fit, 0.9) : Math.max(fit, Math.min(1.2, fit * 1.0));
-    if (Minimap.mode === 'world') Minimap.zoom = fit; // 世界地図は全体表示から
+    if (Minimap.mode === 'world') Minimap.zoom = m.join76 ? Math.max(fit, Math.min(1, fit * 2.2)) : fit; // 世界地図は全体表示から（つながった世界は、いまの地域のあたりを少し大きく）
     var focus = Minimap.focusTile(m);
     Minimap.pan = { x: Minimap.bigW / 2 - (focus.x + 0.5) * cell * Minimap.zoom, y: Minimap.bigH / 2 - (focus.y + 0.5) * cell * Minimap.zoom };
     Minimap.clampPan(m, cell);
@@ -346,6 +367,7 @@
   // 注目タイル：エリアなら自分の位置（他の階層ならその階の入口）、世界地図なら現在地域
   Minimap.focusTile = function (m) {
     var W = root.World;
+    if (m && m.join76) { var W76 = J76(); var v = Minimap.viewRegion && W76.inGrid(Minimap.viewRegion) ? Minimap.viewRegion : null; if (v) { var ov = W76.origin(v); return { x: ov.x + 80, y: ov.y + 60 }; } var rid = isRegion(W.map) ? W.map.id : (Minimap.worldPosOf(W.map.id) || {}).region; var gp = rid && W76.inGrid(rid) ? (isRegion(W.map) ? W76.toGlobal(rid, W.player.x, W.player.y) : (function () { var wp = Minimap.worldPosOf(W.map.id); return W76.toGlobal(rid, wp.x, wp.y); })()) : null; return gp || { x: m.w / 2, y: m.h / 2 }; }
     if (Minimap.mode === 'world') { if (m.id !== Minimap.currentRegionId()) return { x: m.w / 2, y: m.h / 2 }; if (isRegion(W.map)) return { x: W.player.x, y: W.player.y }; var wp = Minimap.worldPosOf(W.map.id); return wp ? { x: wp.x, y: wp.y } : { x: m.w / 2, y: m.h / 2 }; }
     if (m === W.map) return { x: W.player.x, y: W.player.y };
     var w0 = m.warps[0]; return w0 ? { x: w0.x, y: w0.y } : { x: m.w / 2, y: m.h / 2 };
@@ -394,7 +416,8 @@
     ctx.restore();
     var hot = [];
     function toScreen(tx, ty) { return { x: Minimap.pan.x + (tx + 0.5) * cell * z, y: Minimap.pan.y + (ty + 0.5) * cell * z }; }
-    if (Minimap.mode === 'world') {
+    if (Minimap.mode === 'world' && m.join76) { hot = drawJoinedWorld(ctx, m, cell, toScreen, z, hot); }
+    else if (Minimap.mode === 'world') {
       title.textContent = m.name;
       regionLocations().filter(function (L) { return L.region === m.id; }).forEach(function (L) {
         var visited = !!d.visited[L.to]; var s = toScreen(L.x, L.y);
@@ -439,6 +462,28 @@
     Minimap._hot = hot;
     if (Minimap._tip) { ctx.strokeStyle = '#ffd24a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(Minimap._tip.x, Minimap._tip.y, 14, 0, Math.PI * 2); ctx.stroke(); }
   };
+  // v7.6 つながった世界の「地域の地図」：全地域の地名・乗り物・次の目的地・現在地、まだ行けない地域の印
+  function drawJoinedWorld(ctx, m, cell, toScreen, z, hot) {
+    var W76 = J76(), W = root.World, d = root.State.data; var title = document.getElementById('bm-title');
+    title.textContent = 'つながった世界（地上の地域と海）';
+    W76.GRID.forEach(function (row) { row.forEach(function (id) { if (!id) return; var o = W76.origin(id); var rm = regionMap(id); var off = function (x, y) { return toScreen(o.x + x, o.y + y); };
+      var c = toScreen(o.x + rm.w / 2, o.y + 6); ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.fillStyle = W76.unlocked(id) ? '#ffe9a8' : '#b8bcd0';
+      var nm = rm.def.name + (W76.unlocked(id) ? '' : '（まだ行けない）'); ctx.strokeText(nm, c.x, c.y); ctx.fillText(nm, c.x, c.y);
+      if (!W76.unlocked(id)) return;
+      (rm.def.locations || []).forEach(function (L) { if (L.hidden && !d.flags[L.needFlag]) return; var visited = !!d.visited[L.to]; if (!visited) return; var s = off(L.x, L.y); drawSymbol(ctx, L.icon === 'village' ? 'town' : L.icon === 'castle_icon' ? 'castle' : 'cave', s.x, s.y, 6);
+        if (z * cell >= 2.4) { ctx.font = 'bold 11px sans-serif'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.8)'; ctx.fillStyle = '#fff'; ctx.strokeText(L.name, s.x, s.y + 17); ctx.fillText(L.name, s.x, s.y + 17); }
+        hot.push({ x: s.x, y: s.y, text: L.name + (L.icon === 'cave_icon' ? '（ダンジョン）' : '（町）') }); });
+      try { hot = hot.concat(drawNav(ctx, rm, cell, off, Math.max(2.5, cell * z * 0.9))); } catch (e) { /* 案内がなくても地図は描く */ }
+      if (root.Vehicle) root.Vehicle.onMap(id).forEach(function (v) { if (v.aboard) return; var sv = off(v.x, v.y); ctx.fillStyle = '#ffd24a'; ctx.beginPath(); ctx.moveTo(sv.x - 6, sv.y + 2); ctx.lineTo(sv.x + 6, sv.y + 2); ctx.lineTo(sv.x + 3, sv.y + 5); ctx.lineTo(sv.x - 3, sv.y + 5); ctx.closePath(); ctx.fill(); hot.push({ x: sv.x, y: sv.y, text: (root.VEHICLES[v.id] || {}).name || v.id }); });
+    }); });
+    var rid = isRegion(W.map) ? W.map.id : (Minimap.worldPosOf(W.map.id) || {}).region;
+    if (rid && W76.inGrid(rid)) { var cur = isRegion(W.map) ? { x: W.player.px / root.Engine.TS, y: W.player.py / root.Engine.TS, dir: W.player.dir } : (function () { var wp = Minimap.worldPosOf(W.map.id); return { x: wp.x, y: wp.y, dir: 'down', inside: true }; })(); var g = W76.toGlobal(rid, cur.x, cur.y); var cs = toScreen(g.x, g.y);
+      if (cur.inside) { ctx.strokeStyle = '#ffd24a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(cs.x, cs.y, 12 + Math.sin(Date.now() / 200) * 2, 0, Math.PI * 2); ctx.stroke(); } drawArrow(ctx, cs.x, cs.y, cur.dir, 9, '#ffd24a'); }
+    else title.textContent += '　—　いまは' + (W.map.def && W.map.def.name ? W.map.def.name : '別の場所') + '（つながった世界の外）';
+    Minimap.renderLegend([['nav', '次の目的地'], ['anchor', '桟橋・上陸地点'], ['town', '町（訪問済み）'], ['cave', 'ダンジョン（発見済み）'], ['arrow', '現在地'], ['fog', 'まだ行けない地域']]);
+    Minimap.regionSelect('__join76');
+    return hot;
+  }
   // v5.9 「地域の地図」の左上：見る地域を選ぶ（全12地域。名前の後ろに 訪問済み／未踏／現在地）
   Minimap.regionSelect = function (shownId) {
     var d = root.State.data; var fl = document.getElementById('bm-floors'); if (!fl) return; var curId = Minimap.currentRegionId();
@@ -446,10 +491,11 @@
     var byId = {}; GLOBE.forEach(function (n) { byId[n.id] = n; });
     var list = ORDER.map(function (id) { return byId[id]; }).filter(Boolean).concat(GLOBE.filter(function (n) { return ORDER.indexOf(n.id) < 0; }));
     var opts = list.filter(function (n) { return root.MAP_DEFS[n.id]; }).map(function (n) { return '<option value="' + n.id + '"' + (n.id === shownId ? ' selected' : '') + '>' + root.Win.esc(n.name + (n.id === curId ? '（現在地）' : d.visited[n.id] ? '' : '（未踏）')) + '</option>'; }).join('');
+    if (J76()) { opts = '<option value="__join76"' + (shownId === '__join76' && !Minimap.viewRegion ? ' selected' : '') + '>つながった世界（全体）</option>' + (shownId === '__join76' && Minimap.viewRegion ? opts.replace('value="' + Minimap.viewRegion + '"', 'value="' + Minimap.viewRegion + '" selected') : opts); }   // v7.6
     var html = '<label class="bm-region">地域 <select id="bm-region-sel">' + opts + '</select></label>';
     if (fl.getAttribute('data-html') === html) return; fl.innerHTML = html; fl.setAttribute('data-html', html);
     var sel = document.getElementById('bm-region-sel');
-    sel.addEventListener('change', function () { Minimap.viewRegion = sel.value; Minimap.clearTip(); Minimap.home(); });
+    sel.addEventListener('change', function () { Minimap.viewRegion = sel.value === '__join76' ? null : sel.value; Minimap.clearTip(); Minimap.home(); });
     sel.addEventListener('keydown', function (e) { e.stopPropagation(); });
   };
   /* ---------- v5.5 「世界」タブ：全地域の模式図（位置関係・航路・必要な乗り物・訪問状況） ---------- */

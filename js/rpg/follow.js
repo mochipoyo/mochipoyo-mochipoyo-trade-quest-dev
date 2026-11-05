@@ -31,6 +31,8 @@
     for (var k = 1; k <= Follow.MAX; k++) { var nx = tx + bk[0] * k, ny = ty + bk[1] * k; if (!Follow.walkable(map, nx, ny)) break; Follow.trail.push({ x: nx + 0.5, y: ny + 0.5 }); }
   };
   // 毎フレーム：主人公の位置（マスの中心単位）を渡す
+  // v7.6 つないだ世界（js/rpg/world76.js）：となりの地域へ移ったとき、足跡を新しい地域の座標へずらす（隊列を崩さない）
+  Follow.shift = function (dx, dy, map) { Follow.trail.forEach(function (t) { t.x += dx; t.y += dy; }); var m = map || (root.World && root.World.map); Follow.mapId = m ? m.id : Follow.mapId; };
   Follow.update = function (map, cx, cy, dir) {
     if (!map) return;
     var d = D(); if (d && d.aboard) { Follow.mapId = null; Follow.trail = []; return; }   // 乗船中は足跡を残さない（降りたときに作り直す）

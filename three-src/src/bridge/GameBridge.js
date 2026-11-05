@@ -24,6 +24,7 @@ import { BattleStage3D, FAMILY_TABLE } from '../battle/BattleStage3D.js';
 import { battleLayout, partyStyle } from '../battle/BattleActors3D.js';
 import * as PartyDir from '../battle/PartyDirections.js';
 import { Env } from '../environment/Env.js';
+import { Join76 } from './Join76.js';
 
 const G = window;
 const WALK = 2.7, RUN = 5.4, RADIUS = 0.28;
@@ -43,6 +44,7 @@ export class App3D {
     this.ready = false; this.disabled = false; this.cache = new Map(); this.failed = {}; this.current = null; this.building = null;
     this.pos = new THREE.Vector3(); this.yaw = 0; this.speed = 0; this.lastTile = null; this.lastMap = null; this.talkNpc = null;
     this.shift = false; this.fps = 0; this._fc = 0; this._ft = 0; this.stats = {};
+    this.join = new Join76(this); this._cross = null;   // v7.6 つないだ世界（Join76.js・js/rpg/world76.js）
     this.userPitch = (() => { try { const v = +localStorage.getItem('mtq3d-pitch'); return v >= 30 && v <= 60 ? v : 48; } catch (e) { return 48; } })();
   }
 
@@ -50,7 +52,8 @@ export class App3D {
   install() {
     const app = this, W = G.World;
     const origStart = W.start;
-    W.start = function () { app.cache.forEach((ms) => { try { ms.dispose(); } catch (e) { console.warn(e); } }); app.cache.clear(); app.current = null; app.lastMap = null; const r = origStart.apply(this, arguments); app.attach(W.scene); return r; };
+    if (G.World76 && G.World76.onSwitch) G.World76.onSwitch((ev) => { app._cross = ev; });   // v7.6 となりの地域へ移った（画面を切り替えない）
+    W.start = function () { app.join.clear(); app.cache.forEach((ms) => { try { ms.dispose(); } catch (e) { console.warn(e); } }); app.cache.clear(); app.current = null; app.lastMap = null; const r = origStart.apply(this, arguments); app.attach(W.scene); return r; };
     // タイトル：2D版のセーブを取り込む
     const T = G.Title; const S = G.State, Win = G.Win;
     T.menu = async function () {
@@ -215,7 +218,7 @@ export class App3D {
   }
   // 汎用3Dのマップは直近のものだけ残す（メモリ）
   trimCache(keepId) {
-    const gen = [...this.cache.entries()].filter(([id, ms]) => ms.coverage === 'generic' && id !== keepId && ms !== this.current).sort((a, b) => (a[1].usedAt || 0) - (b[1].usedAt || 0));
+    const gen = [...this.cache.entries()].filter(([id, ms]) => ms.coverage === 'generic' && id !== keepId && ms !== this.current && !this.join.keeps(id)).sort((a, b) => (a[1].usedAt || 0) - (b[1].usedAt || 0));
     while (gen.length > CACHE_GENERIC - 1) { const [id, ms] = gen.shift(); try { ms.dispose(); } catch (e) { console.warn(e); } this.cache.delete(id); }
   }
   // 村の中の屋内は先に作っておく（出入りを待たせない）
@@ -230,23 +233,25 @@ export class App3D {
   }
   // v6.8 道・壁・境界線の丸み（Organic.js）の設定を変えたとき：汎用3Dのマップを作り直す（今いるマップも。専用3Dのポヨ村は変わらない）
   rebuildGeneric() {
-    const W = G.World; const cur = this.current;
+    const W = G.World; const cur = this.current; this.join.clear();
     for (const [id, ms] of [...this.cache.entries()]) { if (ms.coverage !== 'generic' || ms === cur) continue; try { ms.dispose(); } catch (e) { console.warn(e); } this.cache.delete(id); }
     if (cur && cur.coverage === 'generic' && W.map) { this.cache.delete(cur.map.id); this.building = null; const old = cur; this.ensure(W.map); const t = setInterval(() => { if (this.current !== old) { clearInterval(t); try { old.dispose(); } catch (e) { /* なし */ } } }, 200); setTimeout(() => clearInterval(t), 60000); }
   }
   activate(ms) {
     if (this.current === ms) return;
+    const cross = this._cross && ms.map && this._cross.to === ms.map.id && this.current && this.current.map && this.current.map.id === this._cross.from ? this._cross : null; this._cross = null;   // v7.6 つないだ世界：となりの地域へ移った
     if (this.current) this.scene.remove(this.current.root);
-    this.scene.add(ms.root); this.current = ms; ms.usedAt = performance.now();
+    this.scene.add(ms.root); ms.root.position.set(0, 0, 0); this.current = ms; ms.usedAt = performance.now();
     this.ui.setBadge(ms.coverage === 'generic' ? '3D版 開発中：汎用3D（仮3D・自動生成）' : '3D版：専用3D（ポヨ村）');
     this.lighting.setLampSpots(ms.lampSpots); this.lighting.setInterior(ms.interior || !!ms.dark, ms.ambient);
     if (this.lighting.setTheme) this.lighting.setTheme(ms.theme || null);
     if (this.lighting.setMapKind) this.lighting.setMapKind(ms.interior ? 'interior' : (ms.map && ms.map.kind) || null);   // v7.6 画面の仕上げ
     if (this.lighting.setMood) this.lighting.setMood((ms.map && ms.map.def && ms.map.def.mood3d) || null);   // v6.9 マップ固有の空気
     if (this.lighting.setSpace) this.lighting.setSpace(!!(ms.map && ms.map.def && ms.map.def.space76 && !ms.interior));   // v7.6 異空間（ゼロメア）の星空
+    if (cross) { this.join.shift(cross); this.join.layout(); return; }   // v7.6 位置・カメラをずらすだけ（置き直さない・カメラは飛ばない）
     const closeCam = ms.interior || (ms.map.kind === 'dungeon');
     this.camera.setInterior(closeCam); if (!closeCam) { this.camera.setPitch(this.userPitch); if (ms.map.kind === 'field') this.camera.wantDist = Math.max(this.camera.wantDist, 24); }
-    this.snap();
+    this.snap(); this.join.layout();
   }
   snap() {
     const p = G.World.player; if (!p || !this.current) return;
@@ -598,6 +603,7 @@ export class App3D {
     h.update(dt);
     if (!this.aboardNow) this.updateFollowers(dt); else if (this.followers) this.followers.forEach((ent) => { if (ent.ch) ent.ch.root.visible = false; });
     this.current.update(dt, t, this.pos);
+    this.join.update(dt, t, now);   // v7.6 となりの地域（水面の動き・先に組み立てる・遠いものを外す）
     if (this.current.interior && this.current.bounds) {   // 屋内：部屋全体が入るよう、部屋の中心寄りに見る
       const b = this.current.bounds; const cx = (b.x0 + b.x1) / 2, cz = (b.z0 + b.z1) / 2 - 0.4;
       this._focus = this._focus || new THREE.Vector3(); this._focus.set(cx + (this.pos.x - cx) * 0.35, 0, cz + (this.pos.z - cz) * 0.35);
