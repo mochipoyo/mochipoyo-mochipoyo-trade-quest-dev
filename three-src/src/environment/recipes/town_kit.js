@@ -12,6 +12,8 @@ import { plain, rng } from '../EnvKit3D.js';
 import { Batch } from '../../engine/Materials.js';
 import { canvasTex, texMat, wbox, cyl, drawSetts, floorQuadsH, settsHeight } from './geo.js';
 import { buildLandmark } from './landmarks.js';
+import { buildVariant76 } from './variants76.js';
+import { SAMPLE76 } from './shopdress76.js';
 
 // 地域ごとの作り方。road/walk：[石の色, 目地, 幅, 高さ, ばらつき]（キャンバスは 256×256。幅・高さは 256 を割り切る値）
 export const REGION_STYLE = {
@@ -61,10 +63,16 @@ export function townKit(mapId, opt) {
       const tex = (key, a) => texMat('tk_' + key, canvasTex('tk_' + key, 256, 256, drawSetts(a[0], a[1], a[2], a[3], a[4])), { roughness: 0.88 }, { height: settsHeight(a[2], a[3], a[2] * 7 + a[3]), depth: 3 });   // 高画質：石の形から法線・AO（ProcPBR.js）
       const K = { R, region, road: tex(region + '_road', R.road), walk: tex(region + '_walk', R.walk) };
       const LM = map.envLayout && map.envLayout.landmark; const inLM = (x, z) => !!LM && x >= LM.x && x < LM.x + LM.w && z >= LM.y && z < LM.y + LM.h;   // 町ごとの目印のマス（js/rpg/envlayout.js）
-      const hooks = { skipProp: (t, x, z) => t === 'lamp' || (t === 'fence' && !!R.fence) || inLM(x, z), skipTree: (x, z) => inLM(x, z) };
+      // v7.6 露店のマス（カウンター・奥）は露店の形が作る（家具のカウンターを置かない）
+      const stallCell = new Set(); (map.buildings || []).forEach((b) => { if (b.shape76 !== 'stall') return; for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) stallCell.add(x + ',' + y); });
+      const hooks = { skipProp: (t, x, z) => t === 'lamp' || (t === 'fence' && !!R.fence) || inLM(x, z) || stallCell.has(x + ',' + z), skipTree: (x, z) => inLM(x, z) };
       K.inLM = inLM; K.LM = LM;
       // 近未来・娯楽の町（R.modern）：建物はガラスと金属の汎用のまま（舗装・街灯・柵・目印だけ）
-      const building = async (b, o) => { if (R.modern) return null; const st = townStyle(b, R); if (!st) return null; return o.bb.build(b, o.rnd, { batch: o.batch, design: o.design, theme: o.theme, style: st }); };
+      const building = async (b, o) => {
+        if (R.modern) return null; const st = townStyle(b, R) || (b.shape76 ? { plaster: R.plaster[0], roofColor: R.roofs[0] } : null); if (!st) return null;
+        if (b.shape76 || b.doorSide === 'left' || b.doorSide === 'right' || (SAMPLE76[map.id] && /^(weapon|armor|tavern)$/.test(b.type || ''))) { const r = await buildVariant76(b, Object.assign({}, o, { sample76: !!SAMPLE76[map.id] }), R, st, region); if (r) return r; }   // v7.6 丸い家・八角の家・テント・露店・横の入口（variants76.js）
+        return o.bb.build(b, o.rnd, { batch: o.batch, design: o.design, theme: o.theme, style: st });
+      };
       ctx.stats.region = region;
       return { hooks, building, build: (bb) => build(ctx, K, bb) };
     }

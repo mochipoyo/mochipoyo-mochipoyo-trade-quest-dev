@@ -55,6 +55,7 @@
     });
     if (opts.boss && enemies.length > 1) { var bz = Combat.bossOf(enemies); enemies.forEach(function (m) { var k = Combat.minionScale(bz, m); if (k) Combat.applyScale(m, k); }); }   // v7.3 ボスの供の敵
     party.forEach(function (a) { a.buffs = {}; a.cover = false; a.counter = false; a.defending = false; a._gutsUsed = false; a._atkTurn = -9; a._defTurn = -9; a._supTurn = -9; a._firstHit = false; a._turn = 0; a.counterMult = 1; });
+    if (root.Meal76) root.Meal76.beforeBattle(party);   // v7.6 パンの効果（次の戦闘3回まで。js/rpg/meal76.js）
     var pet = opts.pet === false ? null : Combat.petFor(party);   // v6.8 神聖犬ポン太（4人とは別枠）
     return { pet: pet, enemies: enemies, party: party, turn: 0, state: 'command', scale: (opts.scale && !opts.boss) ? opts.scale : null, boss: !!opts.boss, canEscape: opts.canEscape !== false && !opts.boss, log: [], trialCount: 0, result: null, maxEnemies: opts.maxEnemies || MAX_ENEMIES };
   };
@@ -414,6 +415,7 @@
     // v6.8 全回復（伝説のポークビッツ丼）・能力の上げ下げ（安いワイン：攻撃+8%・守備-5%など。turns ターンのあいだ）
     if (ef.fullHp) { var bh2 = t.hp; t.hp = s.maxHp; ev.push({ type: 'heal', side: 'party', id: t.id, value: t.hp - bh2 }); msg(t.name + 'のHPが全回復した'); }
     if (ef.fullMp) { t.mp = s.maxMp; msg(t.name + 'のMPが全回復した'); }
+    if (ef.meal && root.Meal76) { root.Meal76.eat(t, it, true).forEach(msg); ev.push({ type: 'anim', side: 'party', id: t.id, anim: 'buff' }); }
     if (ef.buff) { t.buffs = t.buffs || {}; var up = [], down = []; Object.keys(ef.buff).forEach(function (k) { var v = ef.buff[k]; t.buffs[k] = { value: v, turns: ef.turns || 2 }; (v >= 0 ? up : down).push((DEBUFF_NAME[k] || k) + (v >= 1 ? 'が' + (1 + v) + '倍' : (v >= 0 ? '+' : '') + Math.round(v * 100) + '%')); });
       ev.push({ type: 'anim', side: 'party', id: t.id, anim: 'buff' }); msg(t.name + 'は' + up.concat(down).join('・') + '（' + (ef.turns || 2) + 'ターン）'); }
     if (ef.cure) { var cured = []; ef.cure.forEach(function (c) { if (t.status[c]) { delete t.status[c]; cured.push(STATUS_NAME[c]); } }); if (cured.length) { msg(t.name + 'の' + cured.join('・') + 'が治った'); cureBonus(t, ev); } }

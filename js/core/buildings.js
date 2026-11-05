@@ -130,8 +130,57 @@
 
   /* ---------- 建物1枚絵の生成 ---------- */
   // b: { type, style, w, h, door(dx), name }
+  /* ---------- v7.6 形の作り分け（2D は簡単な絵。3D は three-src/src/environment/recipes/variants76.js） ---------- */
+  var COL76 = { bakery: ['#d8862e', '#f6ead2'], weapon: ['#a8302a', '#f2e8d8'], armor: ['#2e5a9a', '#f0ece2'], item: ['#3a8a5a', '#f2ecd8'], tavern: ['#7a4a2a', '#efe0c4'], guild: ['#7a2e6a', '#f2e4c8'], house: ['#b0603a', '#f4e8d0'], inn: ['#a8483a', '#f6ead2'], elder: ['#8a6a2a', '#f2e6cc'] };
+  function rowsFill(g, y0, y1, fx, c) { for (var y = y0; y < y1; y++) { var r = fx(y); if (r && r[1] > r[0]) g.rect(r[0], y, r[1] - r[0], 1, typeof c === 'function' ? c(y) : c); } }
+  function door76(g, x, H, ddw, ddh, trim) { var dy = H - ddh; g.rect(x - 1, dy - 1, ddw + 2, ddh + 1, trim); g.rect(x, dy, ddw, ddh, '#5a3a1a'); g.rect(x + 1, dy + 1, ddw - 2, ddh - 2, '#7a4e26'); g.vline(x + Math.round(ddw / 2), dy + 1, ddh - 2, '#5a3a1a'); g.rect(x - 2, H - 1, ddw + 4, 1, '#8a8a96'); }
+  function paintShape76(g, W, H, b, T, ST) {
+    var sh = b.shape76; var col = COL76[b.type] || COL76.house; var ddw = 8, ddh = 11; var dX = b.doorX * 16 + 8 - 4;
+    if (sh === 'stall') {   // 露店：縞の日よけ（奥の段の上）・柱・カウンターと品物（店主のマスは空ける）
+      var kx = b.keeper76 ? b.keeper76.x * 16 : -99;
+      g.rect(1, 2, 2, H - 4, '#5a3a1a'); g.rect(W - 3, 2, 2, H - 4, '#5a3a1a');
+      for (var x = 0; x < W; x += 4) g.rect(x, 0, 4, 8, (x / 4) % 2 ? col[1] : col[0]); g.rect(0, 8, W, 1, 'rgba(0,0,0,0.3)');
+      for (var fx = 2; fx < W; fx += 4) g.rect(fx, 9, 2, 2, col[0]);
+      for (var bx = 0; bx < W; bx += 16) { if (bx === kx) continue; g.rect(bx + 2, 10, 12, 5, '#8a6a44'); g.rect(bx + 3, 11, 4, 3, b.type === 'bakery' ? '#c98a42' : b.type === 'weapon' ? '#c8ccd2' : '#9aa4b0'); g.rect(bx + 8, 11, 5, 3, b.type === 'bakery' ? '#a8642a' : b.type === 'weapon' ? '#a8302a' : '#2e5a9a'); }
+      var cy = H - 16; g.rect(0, cy + 3, W, 13, '#8a5a30'); g.rect(0, cy + 1, W, 4, '#c9a06a'); g.rect(0, cy + 8, W, 3, col[0]);
+      for (var gx = 3; gx < W - 4; gx += 6) { if (b.type === 'bakery') { g.rect(gx, cy - 1, 5, 3, '#c98a42'); g.rect(gx + 1, cy - 1, 3, 1, '#e0a860'); } else if (b.type === 'weapon') { g.rect(gx, cy + 1, 5, 1, '#e0e4ea'); g.rect(gx + 4, cy, 1, 3, '#6a5a3a'); } else { g.rect(gx, cy - 1, 4, 3, '#b8c0c8'); g.rect(gx + 1, cy - 1, 2, 1, '#e8ecf0'); } }
+      return true;
+    }
+    if (sh === 'round') {   // 丸い家：丸い屋根（砂の町はドーム）と円い壁
+      var desert = b.style === 'adobe'; var wallTop = Math.round(H * 0.42); var cx = W / 2, rx = W / 2 - 1;
+      rowsFill(g, wallTop, H - 1, function (y) { var t = (y - wallTop) / (H - wallTop); var inset = Math.round(2 * (1 - t)); return [inset, W - inset]; }, function (y) { return y % 5 === 0 ? ST.wallD : ST.wall; });
+      g.rect(W - 3, wallTop, 2, H - wallTop - 1, ST.wallD); g.rect(0, H - 2, W, 2, ST.trim);
+      var roofC = desert ? ['#f4e6c8', '#d8c4a0', '#fff6e0'] : [T.roof, T.roofD, T.roofL];
+      rowsFill(g, 0, wallTop + 2, function (y) { var ry = wallTop + 1; var t = (ry - y) / ry; var w = desert ? rx * Math.sqrt(Math.max(0, 1 - t * t)) : rx * (1 - t) + 1.5; return [Math.round(cx - w - 1), Math.round(cx + w + 1)]; }, function (y) { return y % 3 === 0 ? roofC[1] : roofC[0]; });
+      g.rect(Math.round(cx) - 1, 0, 2, 3, desert ? '#c9a24a' : '#5a3a1a');
+      g.rect(Math.round(cx - rx * 0.5), Math.round(wallTop * 0.4), 3, Math.round(wallTop * 0.5), roofC[2]);
+      door76(g, dX, H, ddw, ddh, ST.trim);
+      for (var wx = 6; wx < W - 8; wx += 14) { if (Math.abs(wx + 2 - (dX + 4)) < 9) continue; g.rect(wx, wallTop + 5, 5, 5, '#3a2a10'); g.rect(wx + 1, wallTop + 6, 3, 3, '#8fd0ff'); }
+      return true;
+    }
+    if (sh === 'tent') {   // テント：縞の布の三角と、開いた入口
+      var base = H - 1; var top = 1; var cx2 = W / 2;
+      rowsFill(g, top, base, function (y) { var t = (y - top) / (base - top); var w = 2 + t * (W / 2 - 1); return [Math.round(cx2 - w), Math.round(cx2 + w)]; }, col[1]);
+      for (var sx = -W / 2; sx < W / 2; sx += 6) rowsFill(g, top + 2, base, function (y) { var t = (y - top) / (base - top); var x0 = Math.round(cx2 + sx * t), w = Math.max(1, Math.round(3 * t)); return [x0, x0 + w]; }, col[0]);
+      g.rect(Math.round(cx2) - 1, 0, 2, 3, '#5a3a1a'); g.rect(Math.round(cx2) + 1, 0, 4, 2, col[0]);
+      g.rect(0, base - 1, W, 2, 'rgba(0,0,0,0.25)');
+      var ex = dX; rowsFill(g, H - 12, H - 1, function (y) { var t = (y - (H - 12)) / 11; var w = Math.round(1 + t * 4); return [ex + 4 - w, ex + 4 + w]; }, '#2a1e16');
+      return true;
+    }
+    if (sh === 'octa') {   // 八角の家：角を落とした壁と、八角の屋根。端の扉は角（斜め）
+      var wallTop2 = Math.round(H * 0.45); var c = 5;
+      rowsFill(g, wallTop2, H - 1, function () { return [0, W]; }, function (y) { return y % 4 === 0 ? ST.wallD : ST.wall; });
+      g.rect(0, wallTop2, c, H - wallTop2 - 1, ST.wallD); g.rect(W - c, wallTop2, c, H - wallTop2 - 1, ST.wallD); g.rect(0, H - 2, W, 2, ST.trim);
+      rowsFill(g, 0, wallTop2 + 2, function (y) { var t = y / (wallTop2 + 2); var w = 3 + t * (W / 2 + 1); return [Math.round(W / 2 - w), Math.round(W / 2 + w)]; }, function (y) { return y % 3 === 0 ? T.roofD : T.roof; });
+      g.rect(Math.round(W / 2) - 1, 0, 2, 3, '#c9a24a');
+      var ox = b.doorX >= b.w - 1 ? W - ddw - 2 : b.doorX <= 0 ? 2 : dX; door76(g, ox, H, ddw, ddh, ST.trim);
+      for (var wx2 = 8; wx2 < W - 10; wx2 += 12) { if (Math.abs(wx2 + 2 - (ox + 4)) < 9) continue; g.rect(wx2, wallTop2 + 4, 5, 6, '#3a2a10'); g.rect(wx2 + 1, wallTop2 + 5, 3, 4, '#8fd0ff'); }
+      return true;
+    }
+    return false;
+  }
   Buildings.image = function (b) {
-    var key = [b.type, b.style, b.w, b.h, b.doorX, b.name || '', b.variant || 0].join('#');
+    var key = [b.type, b.style, b.w, b.h, b.doorX, b.name || '', b.variant || 0, b.doorSide || '', b.shape76 || '', b.keeper76 ? b.keeper76.x + ',' + b.keeper76.y : ''].join('#');
     if (Buildings.cache[key]) return Buildings.cache[key];
     var TS = root.Engine.TS, S = root.Engine.SCALE;
     var W = b.w * 16, H = b.h * 16;
@@ -143,6 +192,7 @@
     if (b.type === 'watchtower') { paintWatchtower(g, W, H, b.doorX); Buildings.cache[key] = c; return c; }   // v7.1 見張り台（石の塔・3階）
     if (b.type === 'elevator') { paintElevator(g, W, H, b.doorX); Buildings.cache[key] = c; return c; }   // v7.1 空の区画へのエレベーター（ガラスの塔）
     if (b.type === 'castle') { paintCastle(g, ctx, W, H, b, S); Buildings.cache[key] = c; return c; }
+    if (b.shape76 && paintShape76(g, W, H, b, T, ST)) { Buildings.cache[key] = c; return c; }   // v7.6 丸い家・テント・八角の家・露店（js/data/towns76.js）
     var roofH = Math.max(5, Math.round(H * (T.tower ? 0.42 : 0.45)));
     var wallY = roofH, wallH = H - roofH;
 
@@ -161,6 +211,7 @@
     var u = Math.max(1, Math.min(2, Math.round(H / 48)));   // 大きな建物（2倍拡大）はドア・窓も大きく
     var ddw = 8 * u - (u > 1 ? 2 : 0), ddh = 12 * u - (u > 1 ? 4 : 0);
     var dx = b.doorX * 16 + 8 - Math.round(ddw / 2); var dy = H - ddh;
+    if (b.doorSide === 'left') dx = 1; else if (b.doorSide === 'right') dx = W - ddw - 3;   // v7.6 横の入口：側面の角に扉（入るのは横から）
     g.rect(dx - 1, dy - 1, ddw + 2, ddh + 1, ST.trim);
     g.rect(dx, dy, ddw, ddh, '#5a3a1a'); g.rect(dx + 1, dy + 1, ddw - 2, ddh - 2, '#7a4e26'); g.vline(dx + Math.round(ddw / 2), dy + 1, ddh - 2, '#5a3a1a'); g.px(dx + Math.round(ddw / 2) + 2, dy + Math.round(ddh / 2), '#e8c15a');
     if (u > 1) { for (var ay = 0; ay < 3; ay++) g.hline(dx + ay, dy - 3 + ay, ddw - ay * 2, ST.trim); }   // アーチ

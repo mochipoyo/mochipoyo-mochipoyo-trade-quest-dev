@@ -9,6 +9,7 @@
    ・状態：integrated（組み込み・自動の確認まで）。部屋ごとの間取りや見せ場の作り込みはしていない
    ========================================================= */
 import * as THREE from 'three';
+import { dressPlan76, dressBuild76 } from './shopdress76.js';
 import { plain, rng, worldUV, mat4, Merge } from '../EnvKit3D.js';
 import { canvasTex, texMat, wbox, cyl, drawSetts, floorQuadsH, shade, settsHeight } from './geo.js';
 
@@ -39,7 +40,8 @@ export function roomKit(style) {
   return {
     id: 'room_kit.v1:' + style.fam,
     async prepare(ctx) {
-      const hooks = { skipWall: (t) => !!WALLS[t] };
+      const plan = dressPlan76(ctx.map); ctx.dress76 = plan;   // v7.6 見本の町の店・酒場の中の飾り（shopdress76.js）
+      const hooks = { skipWall: (t) => !!WALLS[t] }; if (plan) hooks.skipProp = (t, x, z) => plan.skip.has(x + ',' + z);
       ctx.stats.family = style.fam;
       return { hooks, build: (bb) => build(ctx, style, bb) };
     }
@@ -168,6 +170,7 @@ async function build(ctx, S0, b) {
       if (S.fam === 'rock') { const cm = plain('#9ad8ff', { emissive: '#6ac0ff', ei: 1.2, keepGlow: true, std: { roughness: 0.2 } }); for (let k = 0; k < 6; k++) { const a = k * 1.05 + 0.3, rr = 2.2 + (k % 2) * 0.6; const px = x + Math.cos(a) * rr, pz = z + Math.sin(a) * rr; if (walkish(Math.floor(px), Math.floor(pz))) continue; add(cm, new THREE.OctahedronGeometry(0.16 + (k % 3) * 0.05, 0).scale(1, 2.2, 1).translate(px, y + 0.3, pz)); } }
       else { const ring = new THREE.RingGeometry(1.1, 1.3, 32); ring.rotateX(-Math.PI / 2); ring.translate(x, y + 0.03, z); add(low || trim, ring); } }
   }
+  if (ctx.dress76) { try { ctx.stats.dress76 = dressBuild76(ctx.dress76, { add, T, scene: ctx.scene }); ctx.stats.dressKind = ctx.dress76.kind; } catch (e) { ctx.stats.dress76Error = String(e && e.message || e); console.warn('dress76', e); } }
   mg.build(g);
   Object.assign(ctx.stats, { walls, pilasters: pil, floors, sectionsLit: lit, decor });
   return g;

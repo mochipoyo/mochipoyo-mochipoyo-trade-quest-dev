@@ -22,6 +22,7 @@ import { characterModelFor, fieldModelFor } from '../assets/manifest.js';
 import { Batch, box, M4, softTexture, textTexture } from '../engine/Materials.js';
 import { Env } from '../environment/Env.js';
 import { ctxStats } from '../environment/EnvKit3D.js';
+import { liftBatch } from './Terrace3D.js';
 import { setPBRQuality } from '../environment/ProcPBR.js';
 
 export class MapScene3D {
@@ -42,6 +43,7 @@ export class MapScene3D {
       try { ctx.catalog = await Env.catalog(app.renderer && app.renderer.renderer); ctx.profile = await Env.profile(map.id); rx = await recipe.prepare(ctx); rx.ctx = ctx; this.envRecipe = { id: recipe.id, stats: ctx.stats }; }
       catch (e) { const err = new Error('環境レシピの準備に失敗 ' + map.id + '：' + (e && e.message)); err.envRecipe = true; err.cause = e; throw err; }
     }
+    this.envSkipProp = rx && rx.hooks && rx.hooks.skipProp ? rx.hooks.skipProp : null;   // v7.6 本棚など（Furniture73）もレシピが作り直すマスは作らない
     const runRecipe = async (o) => { if (!rx) return; const t1 = performance.now(); try { await rx.build(Object.assign({ map, root: this.root, scene: this, heightAt: this.heightAt }, o || {})); } catch (e) { const err = new Error('環境レシピの組み立てに失敗 ' + map.id + '：' + (e && e.message)); err.envRecipe = true; err.cause = e; throw err; } Env.built[map.id] = { recipe: recipe.id, ms: Math.round(performance.now() - t1), kit: rx.ctx.stats.kit, matErrors: rx.ctx.stats.matErrors.length }; };
     if (this.coverage === 'generic') {
       // ---- Phase 1 汎用3Dワールド：町・フィールド・ダンジョン・ポヨ村以外の屋内
@@ -57,12 +59,16 @@ export class MapScene3D {
         const shared = new Batch(); const bgroup = new THREE.Group(); bgroup.name = 'buildings'; this.root.add(bgroup);
         const design = (window.LocationDesign && window.LocationDesign.forMap) ? window.LocationDesign.forMap(map.id) : null; this.design = design;
         const modern = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null);   // v7.0 近未来・機械・娯楽の町は、ガラスと金属の建物
+        const TRm = window.Terrace76 && window.Terrace76.has(map) ? window.Terrace76 : null;   // v7.6 町の段：建物を扉のマスの段の高さへ
+        const bdy = (b) => (TRm && b.doorAbs ? TRm.levelAt(map, b.doorAbs.x, b.doorAbs.y) * TRm.LH : 0);
         for (const b of map.buildings) {
+          const dy = bdy(b); const bat = dy ? liftBatch(shared, dy) : shared;
           let o = null; if (b.type === 'elevator') { try { o = buildElevatorTower(b, map, textTexture); } catch (e) { o = null; console.warn('elevator', e); } }   // v7.1 空の区画へのエレベーター
           if (!o && b.type === 'watchtower') { try { o = buildTower3D(b); } catch (e) { o = null; console.warn('tower72', e); } }   // v7.2 新しい地区の塔
-          if (!o && rx && rx.building) { try { o = await rx.building(b, { bb, rnd, batch: shared, design, theme }); } catch (e) { const err = new Error('環境レシピの建物に失敗 ' + map.id + ' ' + b.id + '：' + (e && e.message)); err.envRecipe = true; throw err; } }   // v7.6 レシピの建物（用途・地域ごとの形）。近未来の町の汎用の建物より先
+          if (!o && rx && rx.building) { try { o = await rx.building(b, { bb, rnd, batch: bat, design, theme }); } catch (e) { const err = new Error('環境レシピの建物に失敗 ' + map.id + ' ' + b.id + '：' + (e && e.message)); err.envRecipe = true; throw err; } }   // v7.6 レシピの建物（用途・地域ごとの形）。近未来の町の汎用の建物より先
           if (!o && modern) { try { o = buildModernBuilding(b, modern, textTexture); } catch (e) { o = null; console.warn('modern building', e); } }
-          if (!o) o = await bb.build(b, rnd, { batch: shared, design, theme }); bgroup.add(o.group);
+          if (!o) o = await bb.build(b, rnd, { batch: bat, design, theme }); bgroup.add(o.group);
+          if (dy) { o.group.position.y += dy; o.lights.forEach((l) => { if (l.pos) l.pos.y += dy; }); o.smokes.forEach((sm) => { if (sm && sm.y !== undefined) sm.y += dy; }); const Tl = new THREE.Matrix4().makeTranslation(0, dy, 0); o.props.forEach((p) => { p.m = Tl.clone().multiply(p.m); }); }
           o.lights.forEach((l) => this.lampSpots.push(l)); o.smokes.forEach((s) => this.addSmoke(s));
           o.props.forEach((p) => { const v = new THREE.Vector3().setFromMatrixPosition(p.m); wb.put(p.id, p.m, v.x, v.z); });
           o.group.traverse((x) => { if (x.userData && x.userData.sway) this.sway.push({ obj: x, base: x.rotation.clone(), ph: Math.random() * 6 }); });
@@ -115,7 +121,7 @@ export class MapScene3D {
     // v6.1 調べる共通システムの探索ポイント（光る場所・壺・机など）。データは2D版と同じ Search
     this.addSearchPoints(map);
     // v7.3 本棚（本が並ぶ）・台所・トイレ（形から作る。js/core/tiles.js の stove / sink / cupboard / toilet）
-    try { const fg = buildFurniture73(map, this.heightAt); if (fg) { this.root.add(fg); this.furniture = fg.userData.stats; } } catch (e) { console.warn('furniture73', e); }
+    try { const fg = buildFurniture73(map, this.heightAt, this.envSkipProp || null); if (fg) { this.root.add(fg); this.furniture = fg.userData.stats; } } catch (e) { console.warn('furniture73', e); }
     // NPC
     for (const n of map.npcs) {
       const model = fieldModelFor(n.actorArt) || fieldModelFor(n.id) || characterModelFor(n.model3d || n.sprite);   // v7.3 model3d：個性的な町の人（2D は専用の色・3D は共通のモデル）

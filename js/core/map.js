@@ -29,6 +29,11 @@
     (def.buildings || []).filter(function (b) { return !b.showIf || flags[b.showIf]; }).forEach(function (b) {   // v5.0: showIf で物語の進行により現れる建物
       var bb = Object.assign({ w: 5, h: 3, doorX: 2, style: def.style || 'wood' }, b);
       bb.doorAbs = { x: bb.x + bb.doorX, y: bb.y + bb.h - 1 };
+      // v7.6 横の入口：doorSide 'left'／'right'（扉は側面の下の段。doorY で段を変えられる）。扉の前のマス＝doorFront
+      if (bb.doorSide === 'left' || bb.doorSide === 'right') bb.doorAbs = { x: bb.doorSide === 'left' ? bb.x : bb.x + bb.w - 1, y: bb.y + (bb.doorY !== undefined ? bb.doorY : bb.h - 1) };
+      bb.doorFront = bb.doorSide === 'left' ? { x: bb.doorAbs.x - 1, y: bb.doorAbs.y } : bb.doorSide === 'right' ? { x: bb.doorAbs.x + 1, y: bb.doorAbs.y } : { x: bb.doorAbs.x, y: bb.doorAbs.y + 1 };
+      // v7.6 露店（shape76 'stall'・中に入らない）：奥の段は通れない（店主のマス keeper76 だけ床）、手前の段はカウンター（越しに話せる）。扉はない
+      if (bb.shape76 === 'stall' && !bb.interior) { for (var sy = bb.y; sy < bb.y + bb.h; sy++) for (var sx = bb.x; sx < bb.x + bb.w; sx++) { var kp = bb.keeper76 && sx === bb.x + bb.keeper76.x && sy === bb.y + bb.keeper76.y; self.setTile(sx, sy, kp ? 'floor_stone' : sy === bb.y + bb.h - 1 ? 'counter' : 'bld_block'); } self.buildings.push(bb); return; }
       for (var yy = bb.y; yy < bb.y + bb.h; yy++) for (var xx = bb.x; xx < bb.x + bb.w; xx++) self.setTile(xx, yy, (xx === bb.doorAbs.x && yy === bb.doorAbs.y) ? 'bld_door' : 'bld_block');
       if (bb.interior) self.warps.push({ x: bb.doorAbs.x, y: bb.doorAbs.y, to: bb.interior, tx: bb.entry ? bb.entry.x : 5, ty: bb.entry ? bb.entry.y : 7, name: bb.name });
       self.buildings.push(bb);

@@ -61,7 +61,7 @@
     (m.events || []).forEach(function (e) { mark(e.x, e.y, 2); anchors.push([e.x, e.y, e.solid ? 'solidev' : 'event']); });
     (m.chests || []).forEach(function (c) { mark(c.x, c.y, 2); anchors.push([c.x, c.y, 'chest']); });
     (m.npcs || []).forEach(function (n) { var x = n.ox !== undefined ? n.ox : n.x, y = n.oy !== undefined ? n.oy : n.y; mark(x, y, 2 + Math.min(2, n.wander || 0)); anchors.push([x, y, 'npc']); });
-    (m.buildings || []).forEach(function (b) { if (b.doorAbs) { mark(b.doorAbs.x, b.doorAbs.y + 1, 2); mark(b.doorAbs.x, b.doorAbs.y, 1); anchors.push([b.doorAbs.x, b.doorAbs.y, 'door']); } });
+    (m.buildings || []).forEach(function (b) { if (b.doorAbs) { var fr = b.doorFront || { x: b.doorAbs.x, y: b.doorAbs.y + 1 }; mark(fr.x, fr.y, 2); mark(b.doorAbs.x, b.doorAbs.y, 1); anchors.push([b.doorAbs.x, b.doorAbs.y, 'door']); } });
     arrivals(m.id).forEach(function (p) { if (p[0] >= 0 && p[1] >= 0 && p[0] < W && p[1] < H) { mark(p[0], p[1], 2); anchors.push([p[0], p[1], 'arrive']); } });   // 着く所   // 建物の扉も「近づける物」（行けなくならない・遠くならない）
     (root.SEARCH_POINTS || []).forEach(function (p) { if (p.map === m.id) { mark(p.x, p.y, 2); anchors.push([p.x, p.y, 'search']); } });
     (root.QUIZ_MONSTERS || []).forEach(function (p) { if (p.map === m.id) { mark(p.x, p.y, 2); anchors.push([p.x, p.y, 'quiz']); } });
@@ -178,14 +178,14 @@
     for (var o = 0; o < HUB_ORDER.length && !hub; o++) hub = bs.filter(function (b) { return b.type === HUB_ORDER[o]; }).sort(function (a, b) { return b.w * b.h - a.w * a.h; })[0] || null;
     if (!hub) hub = bs.slice().sort(function (a, b) { return b.w * b.h - a.w * a.h; })[0] || null;
     var gates = (m.warps || []).filter(function (w) { var d = root.MAP_DEFS && root.MAP_DEFS[w.to]; return (w.to === 'world' || /^world/.test(w.to) || (d && d.kind === 'field')) && A.walk(w.x, w.y); });
-    var hubFront = hub ? [hub.doorAbs.x, hub.doorAbs.y + 1] : [W >> 1, H >> 1];
+    var hubFront = hub ? (hub.doorFront ? [hub.doorFront.x, hub.doorFront.y] : [hub.doorAbs.x, hub.doorAbs.y + 1]) : [W >> 1, H >> 1];
     var markPath = function (p, width, into, bandArr) { p.forEach(function (c) { for (var dy = -width; dy <= width; dy++) for (var dx = -width; dx <= width; dx++) { var nx = c[0] + dx, ny = c[1] + dy; if (nx >= 0 && ny >= 0 && nx < W && ny < H) { keep[ny * W + nx] = 1; if (bandArr) bandArr[ny * W + nx] = 1; if (into && !dx && !dy) into[ny * W + nx] = 1; } } }); };
     var paveOps = [];
     gates.slice(0, 2).forEach(function (g) { var p = bfsPath(A, g.x, g.y, function (x, y) { return x === hubFront[0] && y === hubFront[1]; }); if (!p) return; markPath(p, 1, main, band); p.forEach(function (c) { var tt = t[c[1]][c[0]]; if (TOWN_PLAIN[tt] && tt !== 'road') paveOps.push([c[0], c[1], 'road']); }); });
     if (paveOps.length) tryOps(A, B0, paveOps, res); res.mainStreet = paveOps.length;
     // 建物の入口・人への小道（大通りへ）
     var lanes = 0; var isMain = function (x, y) { return main[y * W + x] === 1; }; var hasMain = main.some(function (v) { return v; });
-    bs.forEach(function (b) { var fx = b.doorAbs.x, fy = b.doorAbs.y + 1; if (fy >= H || !A.walk(fx, fy)) return; var p = hasMain ? bfsPath(A, fx, fy, isMain) : null; if (!p) return; markPath(p, 0, null); var ops = []; p.forEach(function (c) { var tt = t[c[1]][c[0]]; if (TOWN_PLAIN[tt] && tt !== 'path_stone' && !isMain(c[0], c[1])) ops.push([c[0], c[1], 'path_stone']); }); if (ops.length && tryOps(A, B0, ops, res)) lanes++; });
+    bs.forEach(function (b) { var fx = b.doorFront ? b.doorFront.x : b.doorAbs.x, fy = b.doorFront ? b.doorFront.y : b.doorAbs.y + 1; if (fy >= H || !A.walk(fx, fy)) return; var p = hasMain ? bfsPath(A, fx, fy, isMain) : null; if (!p) return; markPath(p, 0, null); var ops = []; p.forEach(function (c) { var tt = t[c[1]][c[0]]; if (TOWN_PLAIN[tt] && tt !== 'path_stone' && !isMain(c[0], c[1])) ops.push([c[0], c[1], 'path_stone']); }); if (ops.length && tryOps(A, B0, ops, res)) lanes++; });
     (m.npcs || []).forEach(function (n) { var x = n.ox !== undefined ? n.ox : n.x, y = n.oy !== undefined ? n.oy : n.y; for (var dy = -2; dy <= 2; dy++) for (var dx = -2; dx <= 2; dx++) { var nx = x + dx, ny = y + dy; if (nx >= 0 && ny >= 0 && nx < W && ny < H) keep[ny * W + nx] = 1; } });
     res.lanes = lanes;
     // 目印（広場）：大通りのそばの、まわりを1マス歩ける空き地。まわり2マスは広場として残す

@@ -33,7 +33,7 @@ function styleFor(map) {
   if (/^(royal|arcane|academy|bureau)$/.test(k)) return STYLE.royal; return STYLE.wood;
 }
 
-export function buildFurniture73(map, heightAt) {
+export function buildFurniture73(map, heightAt, skip) {   // skip(t, x, z)：v7.6 レシピが作り直すマス（見本の町の店の棚など）
   const W = map.w, H = map.h; const T = (x, z) => (x < 0 || z < 0 || x >= W || z >= H) ? 'wall' : map.tile(x, z);
   const walk = (x, z) => !window.Tiles.isSolid(T(x, z));
   const KIND = { bookshelf: 1, stove: 1, sink: 1, cupboard: 1, toilet: 1 }; let n = 0;
@@ -42,7 +42,7 @@ export function buildFurniture73(map, heightAt) {
   const S = styleFor(map); const b = new Batch(); const add = (m, g, mx) => b.add(m, g, mx);
   const g = new THREE.Group(); g.name = 'furniture73'; const stats = {};
   for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
-    const t = T(x, z); if (!KIND[t]) continue; stats[t] = (stats[t] || 0) + 1;
+    const t = T(x, z); if (!KIND[t]) continue; if (skip && skip(t, x, z)) continue; stats[t] = (stats[t] || 0) + 1;
     // 正面の向き（歩けるとなり。手前＝南を優先）。yaw は +z が正面
     let yaw = 0; for (const [dx, dz, a] of [[0, 1, 0], [1, 0, Math.PI / 2], [-1, 0, -Math.PI / 2], [0, -1, Math.PI]]) { if (walk(x + dx, z + dz)) { yaw = a; break; } }
     const cx = x + 0.5, cz = z + 0.5, y = heightAt ? heightAt(cx, cz) : 0;

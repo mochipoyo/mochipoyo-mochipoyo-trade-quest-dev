@@ -15,6 +15,7 @@ import { rngFrom, sharedNoiseTexture } from './TerrainBuilder3D.js';
 import { roundFor, roundedPillar, cornerFillet } from './Organic.js';
 import { addCutout } from '../engine/Cutout.js';
 import { LandmarkBuilder3D } from './LandmarkBuilder3D.js';
+import { terraceInfo, stairFrac, buildTerraces } from './Terrace3D.js';
 
 function hash2(x, y) { let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
 function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y); const xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf); const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; }
@@ -53,6 +54,7 @@ export class WorldBuilder3D {
     const T = (x, y) => (x < 0 || y < 0 || x >= W || y >= H) ? (voidOut ? '_void' : clampT(x, y)) : map.tile(x, y);
     const inside = (x, y) => x >= 0 && y >= 0 && x < W && y < H;
     this.T = T;
+    const TRI = terraceInfo(map); const lvY = TRI ? (x, z) => TRI.lvY(x, z) : () => 0; this.lvY = lvY;   // v7.6 町の段（js/rpg/terrace76.js・Terrace3D.js）
     // 水の上の橋・桟橋（下は水として扱う）
     const wet = new Set(); for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { const t = map.tile(x, z); if ((t === 'bridge' || t === 'dock') && [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dz]) => WATERY[T(x + dx, z + dz)])) wet.add(x + ',' + z); }
     if (env && env.wetTile) for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) if (env.wetTile(map.tile(x, z), x, z)) wet.add(x + ',' + z);   // v7.6 レシピが「下は海」とするマス（船の甲板の舷墻など）
@@ -63,9 +65,20 @@ export class WorldBuilder3D {
     const baseH = (t) => (t === '_void' ? 0 : (HEIGHT[t] !== undefined ? HEIGHT[t] : 0));
     const noiseAmp = (t) => (t === 'hill' ? 0.32 : t === 'mountain' ? 0.5 : (t === 'grass' || t === 'grass2' || t === 'sand' || t === 'snow' || t === 'ash' || t === 'darkland') ? 0.1 : t === 'cliff' ? 0.15 : 0);
     // 頂点（タイルの角・辺・中心）：周りのタイルの重みつき平均（陸を重く＝岸がえぐれすぎない）
+    const solidT76 = (t) => !!(window.Tiles && window.Tiles.isSolid(t));
     const vertexH = (x, z) => {
       const fx = Math.floor(x), fz = Math.floor(z); const ex = Math.abs(x - fx) < 1e-6, ez = Math.abs(z - fz) < 1e-6;
       const xs = ex ? [fx - 1, fx] : [fx], zs = ez ? [fz - 1, fz] : [fz];
+      if (TRI) {   // 段のある町：通れるマス（階段は辺の高さ）だけで決める＝通れるマスは平ら・段の境は擁壁が隠す
+        let wetB = null, hiLand = false; for (const tz of zs) for (const tx of xs) { const t = Tg(tx, tz); if (WATERY[t]) wetB = baseH(t); else if (inside(tx, tz) && TRI.lvY(tx, tz) > 0) hiLand = true; }
+        if (wetB !== null && hiLand) return wetB;   // 上の段の岸：水の底まで下げる（水が見える。岸の壁と石の板が縁を隠す。歩く高さは heightAtWalk が平らにする）
+        let ws = 0, wn = 0, s2 = 0, n2 = 0, amp2 = 0, stairNear = false;
+        for (const tz of zs) for (const tx of xs) { const t = Tg(tx, tz); const ins = inside(tx, tz); const L = ins ? TRI.lvY(tx, tz) : 0;
+          if (ins && TRI.isStair(map.tile(tx, tz))) { const d = TRI.dir(tx, tz); if (d) { ws += L + TRI.LH * Math.max(0, Math.min(1, stairFrac(x, z, tx, tz, d))); wn++; stairNear = true; continue; } }
+          if (ins && !solidT76(map.tile(tx, tz)) && !WATERY[t]) { ws += baseH(t) + L; wn++; amp2 = Math.max(amp2, noiseAmp(t)); }
+          const w = WATERY[t] ? 1 : 2; s2 += (baseH(t) + (WATERY[t] ? 0 : L)) * w; n2 += w; }
+        const v = wn ? ws / wn : s2 / n2; return v + (amp2 && !stairNear ? (fbm(x * 0.33 + 7, z * 0.33 + 3) - 0.5) * amp2 * 1.2 : 0);
+      }
       let s = 0, n = 0, amp = 0;
       for (const tz of zs) for (const tx of xs) { const t = Tg(tx, tz); const w = WATERY[t] || t === 'cloud' || t === 'lava' ? 1 : 2; s += baseH(t) * w; n += w; amp = Math.max(amp, noiseAmp(t)); }
       let shore = 0; if (round && n > 0) { let wv = 0, ld = 0; for (const tz of zs) for (const tx of xs) { if (WATERY[Tg(tx, tz)]) wv++; else ld++; } if (wv && ld) shore = (fbm(x * 0.9 + 31, z * 0.9 + 17) - 0.5) * 0.8; }   // v6.8 岸の高さを揺らす（岸の線がまっすぐにならない）
@@ -87,7 +100,9 @@ export class WorldBuilder3D {
     };
     const heightAtRaw = heightAt;
     const flat = env && env.flatTile ? (x, z) => env.flatTile(T(Math.floor(x), Math.floor(z))) : null;   // v7.6 レシピが「床の高さ 0 で平ら」とするマス（船の甲板。縁の海のマスに引っぱられて沈まない）
-    const heightAtWalk = (x, z) => (wet.has(Math.floor(x) + ',' + Math.floor(z)) ? 0.05 : flat && flat(x, z) ? 0.0 : heightAtRaw(x, z));
+    const quay = new Set(); if (TRI) for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { if (!(lvY(x, z) > 0) || WATERY[map.tile(x, z)] || TRI.isStair(map.tile(x, z))) continue; let wv = false; for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) if (WATERY[T(x + dx, z + dz)]) wv = true; if (wv) quay.add(x + ',' + z); }
+    this.quay = quay;   // v7.6 上の段の岸のマス（歩く高さは段の高さで平ら。Terrace3D が石の板を張る）
+    const heightAtWalk = (x, z) => (wet.has(Math.floor(x) + ',' + Math.floor(z)) ? 0.05 + lvY(Math.floor(x), Math.floor(z)) : quay.has(Math.floor(x) + ',' + Math.floor(z)) ? lvY(Math.floor(x), Math.floor(z)) + 0.04 : flat && flat(x, z) ? 0.0 : heightAtRaw(x, z));
     this.heightAt = heightAtWalk;
 
     // ---------------- 塗り分けのテクスチャ（2テクセル／タイル）
@@ -244,8 +259,8 @@ export class WorldBuilder3D {
       if (!dungeon || open(1, 0) || open(-1, 0) || open(0, 1) || open(0, -1)) {
         // 部屋の手前（南）の壁は低く：北側が床で南側が壁・外のとき（ジオラマ式。中が見える）
         const front = dungeon && open(0, -1) && !open(0, 1);
-        const h = front ? 0.7 : wallH(t); if (round && ROUNDABLE[t]) pillar(t, x, z, h); else wb.add(wallMat(t), box(1, h, 1, 1.5), M4(x + 0.5, h / 2, z + 0.5)); walls++;
-        if (t === 'castle_wall' && !dungeon && ((x + z) & 1) === 0) wb.add(wallMat(t), box(0.45, 0.35, 0.45, 1), M4(x + 0.5, h + 0.17, z + 0.5));   // 胸壁
+        const h = front ? 0.7 : wallH(t); const ly = lvY(x, z); if (round && ROUNDABLE[t] && !ly) pillar(t, x, z, h); else wb.add(wallMat(t), box(1, h, 1, 1.5), M4(x + 0.5, h / 2 + ly, z + 0.5)); walls++;
+        if (t === 'castle_wall' && !dungeon && ((x + z) & 1) === 0) wb.add(wallMat(t), box(0.45, 0.35, 0.45, 1), M4(x + 0.5, h + 0.17 + ly, z + 0.5));   // 胸壁
         if (/^roof_/.test(t)) wb.add(M.roof('#3f5f9f'), box(1.1, 0.2, 1.1, 1), M4(x + 0.5, h + 0.1, z + 0.5));
         if (t === 'cave_wall' && rnd() < 0.5) rockSpots.push([x + 0.5, z + 0.5, h - 0.2]);
       }
@@ -260,20 +275,24 @@ export class WorldBuilder3D {
           const ta = T(ax, az), tb = T(bx, bz); if (!ROUNDABLE[ta] || !ROUNDABLE[tb] || openAt(x + e1[0] + e2[0], z + e1[1] + e2[1])) continue;
           const ha = cellH(ax, az), hb = cellH(bx, bz); if (!ha || !hb) continue;
           if (env && env.skipWall && (env.skipWall(ta, ax, az) || env.skipWall(tb, bx, bz))) continue;   // v7.6 レシピの壁には丸い隅を足さない
+          if (lvY(ax, az) || lvY(bx, bz) || lvY(x, z)) continue;   // v7.6 段の上は丸い隅を足さない（高さが合わない）
           const rk = rockish(ta) && rockish(tb); const hf = Math.min(ha, hb);
           wb.add(roundMat(ta), cornerFillet(x, z, k, hf, rk ? 0.42 : 0.3, { y0: -0.12, uvS: 1.5, topAmp: rk ? topAmpOf(ta, hf) : 0 }), null); fillets++;
         }
       }
     }
     this.stats.fillets = fillets;
+    // v7.6 町の段：擁壁・手すり・階段・坂（Terrace3D.js）
+    if (TRI) { const tr = buildTerraces({ map, T, quay: this.quay, add: (m, g, mx) => wb.add(m, g, mx), M, theme, rnd: rngFrom(777 + W * 3 + H), style: (map.def && map.def.terrace76Style) || {} }); this.stats.terraceFaces = tr.faces; this.stats.terraceSteps = tr.steps; }
     this.stats.wallMs = Math.round(performance.now() - tWall);
     // 床板・じゅうたん（ダンジョン・町の中）
     for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
       const t0 = T(x, z); const t = (env && env.floorAs && env.floorAs(t0, x, z)) || t0;   // v7.6 レシピが「この小物の下は床板」とするマス（船の甲板の樽・木箱・帆柱）
       if (env && env.skipFloor && env.skipFloor(t, x, z)) continue;   // v7.6 レシピが床を作り直すマス
-      if (t === 'floor_wood' || t === 'door') wb.add(M.get('planks'), box(1, 0.06, 1, 1.5), M4(x + 0.5, 0.03, z + 0.5));
-      else if (t === 'carpet') wb.add(M.get('carpet'), box(1, 0.07, 1, 3), M4(x + 0.5, 0.035, z + 0.5));
-      else if (t === 'bridge' || t === 'dock') { const w = wet.has(x + ',' + z); wb.add(M.tinted('planks', '#a07a52'), box(1.0, 0.1, 0.96, 1), M4(x + 0.5, w ? 0.0 : 0.03, z + 0.5)); if (w) for (const sx of [-0.42, 0.42]) wb.add(M.get('timber'), box(0.12, 1.0, 0.12, 1), M4(x + 0.5 + sx, -0.5, z + 0.5 + sx * 0.0)); }
+      const fy = lvY(x, z);
+      if (t === 'floor_wood' || t === 'door') wb.add(M.get('planks'), box(1, 0.06, 1, 1.5), M4(x + 0.5, 0.03 + fy, z + 0.5));
+      else if (t === 'carpet') wb.add(M.get('carpet'), box(1, 0.07, 1, 3), M4(x + 0.5, 0.035 + fy, z + 0.5));
+      else if (t === 'bridge' || t === 'dock') { const w = wet.has(x + ',' + z); wb.add(M.tinted('planks', '#a07a52'), box(1.0, 0.1, 0.96, 1), M4(x + 0.5, (w ? 0.0 : 0.03) + fy, z + 0.5)); if (w && !fy) for (const sx of [-0.42, 0.42]) wb.add(M.get('timber'), box(0.12, 1.0, 0.12, 1), M4(x + 0.5 + sx, -0.5, z + 0.5 + sx * 0.0)); }
       if (t0 === 'door') for (const sx of [-0.5, 0.5]) wb.add(M.get('timber'), box(0.14, 2.0, 0.3, 1), M4(x + 0.5 + sx, 1.0, z + 0.5));
       if (t === 'slot_machine') { wb.add(M.tinted('planks', '#7a1a3a'), box(0.82, 1.45, 0.62, 1), M4(x + 0.5, 0.725, z + 0.5)); wb.add(M.get('gold'), box(0.86, 0.12, 0.66, 1), M4(x + 0.5, 1.5, z + 0.5)); }
       if (t === 'hole') { const d = new THREE.Mesh(new THREE.CircleGeometry(0.42, 18), new THREE.MeshBasicMaterial({ color: 0x050302 })); d.rotation.x = -Math.PI / 2; d.position.set(x + 0.5, 0.03, z + 0.5); group.add(d); }
@@ -384,7 +403,7 @@ export class WorldBuilder3D {
       let n = 0; for (let z = 1; z < H - 1; z++) for (let x = 1; x < W - 1; x++) {
         const t = T(x, z); if (Tiles().isSolid(t) || WALL_TILES[t]) continue; if (!(WALL_TILES[T(x, z - 1)] || T(x, z - 1) === '_void')) continue;
         if (hash2(x * 3, z * 7) > 0.14 || n > 40) continue;
-        put('wall_lantern', M4(x + 0.5, 1.7, z + 0.08, Math.PI), x, z); lampSpots.push({ pos: new THREE.Vector3(x + 0.5, 1.5, z + 0.5), color: 0xffa050, power: 0.9, dist: 7 }); n++;
+        put('wall_lantern', M4(x + 0.5, 1.7 + lvY(x, z), z + 0.08, Math.PI), x, z); lampSpots.push({ pos: new THREE.Vector3(x + 0.5, 1.5 + lvY(x, z), z + 0.5), color: 0xffa050, power: 0.9, dist: 7 }); n++;
       }
     }
     // 屋内・暗いダンジョン：天井の明かり（点光源の候補。見た目の器具は置かない）
