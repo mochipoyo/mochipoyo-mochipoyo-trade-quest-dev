@@ -402,3 +402,8 @@
 
 ### 14-3. 未完了・未検証
 （このあとに書く）
+
+### 14-4. 画像（`docs/images/environment/`。左＝前（818d133 のスナップショット＝つなぐ前）・右＝後。同じ場所・同じカメラ・ヘッドレスの画像）
+- `world82_layout.jpg`：世界全体の配置（地形のタイルから描いた図）
+- `seam82_a_desert.jpg`（砂漠の東の海岸）・`seam82_b_ridge.jpg`（灰の峠の山並み）・`seam82_c_snow.jpg`（雪原の西の海岸）・`seam82_d_dragon.jpg`（竜炎火山群島）・`seam82_e_sea.jpg`（群島の東から共通の海へ）
+- `seam82_f_map.jpg`（地域の地図 → 1 枚の世界）・`seam82_g_globe.jpg`（世界の絵の地図）

@@ -52,6 +52,8 @@
   function isRegion(map) { return !!(map && map.def && map.def.region); }
   // v7.6 つないだ世界（js/rpg/world76.js。3D 版）：地域の地図は 1 枚の世界として描く・ミニマップは境目の向こうも描く
   function J76() { return root.World76 && root.World76.on && root.World76.on() ? root.World76 : null; }
+  // v7.6 まだ行けない地域：陸だけ暗くする（海は続けて見せる。四角く暗くしない）
+  function shadeLand(ctx, m, x0, y0, cell) { ctx.fillStyle = 'rgba(14,16,30,0.66)'; var T = root.Tiles; for (var y = 0; y < m.h; y++) { var row = m.tiles[y], run = -1; for (var x = 0; x <= m.w; x++) { var land = x < m.w && !T.isWater(row[x]); if (land && run < 0) run = x; else if (!land && run >= 0) { ctx.fillRect(x0 + run * cell, y0 + y * cell, (x - run) * cell, cell); run = -1; } } } }
   var SEA76 = {};
   function seaCol76(gx, gy) {   // 陸からの距離：1 以内＝浅瀬の色、2〜14 で海 → 深い海の色へ
     var d = J76().landDist(gx, gy); var k = d <= 1 ? -1 : Math.min(12, Math.max(0, d - 2)); if (SEA76[k]) return SEA76[k];
@@ -68,7 +70,7 @@
     var S = W76.size(); var c = document.createElement('canvas'); c.width = S.w * cell; c.height = S.h * cell; var ctx = c.getContext('2d'); ctx.imageSmoothingEnabled = false;
     ctx.fillStyle = '#122f6a'; ctx.fillRect(0, 0, c.width, c.height);
     parts.forEach(function (q) { var o = W76.origin(q.id); ctx.drawImage(q.t.canvas, 0, 0, q.t.canvas.width, q.t.canvas.height, o.x * cell, o.y * cell, q.m.w * cell, q.m.h * cell);
-      if (!W76.unlocked(q.id)) { ctx.fillStyle = 'rgba(14,16,30,0.62)'; ctx.fillRect(o.x * cell, o.y * cell, q.m.w * cell, q.m.h * cell); } });
+      if (!W76.unlocked(q.id)) shadeLand(ctx, q.m, o.x * cell, o.y * cell, cell); });
     e = { canvas: c, cell: cell, rev: 0, hk: '', key: key }; store.__join76 = e; return e;
   }
   function regionLocations() { var out = []; Object.keys(root.MAP_DEFS || {}).forEach(function (k) { var d = root.MAP_DEFS[k]; if (d.region && d.locations) d.locations.forEach(function (L) { out.push(Object.assign({ region: k }, L)); }); }); if (!out.length && root.WORLD_LOCATIONS) out = root.WORLD_LOCATIONS.map(function (L) { return Object.assign({ region: 'world' }, L); }); return out; }
@@ -278,7 +280,7 @@
     if (mh <= h) oy = (mh - h) / 2; else oy = Math.max(0, Math.min(mh - h, oy)); }
     ctx.save(); ctx.translate(-ox, -oy);
     if (jo) { W76.mapsIn(jo.x + ox / cell - 1, jo.y + oy / cell - 1, jo.x + (ox + w) / cell + 1, jo.y + (oy + h) / cell + 1).forEach(function (nid) { if (nid === m.id) return; var no = W76.origin(nid); var nx0 = (no.x - jo.x) * cell, ny0 = (no.y - jo.y) * cell;
-      var nm = regionMap(nid); ctx.save(); ctx.translate(nx0, ny0); drawMapLayer(ctx, nm, cell, false); if (!W76.unlocked(nid)) { ctx.fillStyle = 'rgba(14,16,30,0.62)'; ctx.fillRect(0, 0, nm.w * cell, nm.h * cell); } ctx.restore(); }); }
+      var nm = regionMap(nid); ctx.save(); ctx.translate(nx0, ny0); drawMapLayer(ctx, nm, cell, false); if (!W76.unlocked(nid)) shadeLand(ctx, nm, 0, 0, cell); ctx.restore(); }); }
     drawMapLayer(ctx, m, cell, false);
     // 建物の施設アイコン（町）
     m.buildings.forEach(function (b) { drawIcon(ctx, b.type, b.doorAbs.x * cell + cell / 2, (b.y + b.h / 2) * cell, Math.max(3, cell * 0.9)); });
