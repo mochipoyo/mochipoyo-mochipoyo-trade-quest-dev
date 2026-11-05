@@ -94,7 +94,11 @@ export class WorldBuilder3D {
     // v7.6 フィールドの高低差（field_kit の terraceField）：丘・山のまわりの高さを段々に（棚田・岩棚のような段）。通れるマスは変えない
     const TFLD = env && env.terraceField; const hillT = { hill: 1, mountain: 1, cliff: 1 };
     const terr = (h) => { const q = 0.42; const b = Math.floor(h / q); const f = h / q - b; const e = f < 0.78 ? 0 : (f - 0.78) / 0.22; return (b + e * e * (3 - 2 * e)) * q; };
-    const vertexF = TFLD ? (x, z) => { const h = vertexH(x, z); const fx = Math.floor(x - 0.001), fz = Math.floor(z - 0.001); let hh = 0; for (let dz = 0; dz <= 1; dz++) for (let dx = 0; dx <= 1; dx++) if (hillT[Tg(fx + dx, fz + dz)]) hh++; if (!hh) return h; return terr(h * (1 + 0.45 * hh / 4)); } : vertexH;
+    // 丘の奥行き（丘でないマスからの距離）：奥ほど高い台地にして段を重ねる
+    let hdep = null; if (TFLD) { hdep = new Int16Array(W * H).fill(-1); const q0 = []; for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) if (!hillT[map.tile(x, z)]) { hdep[z * W + x] = 0; q0.push(x, z); }
+      for (let i = 0; i < q0.length; i += 2) { const x = q0[i], z = q0[i + 1], d = hdep[z * W + x]; for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = x + dx, nz = z + dz; if (nx < 0 || nz < 0 || nx >= W || nz >= H || hdep[nz * W + nx] >= 0) continue; hdep[nz * W + nx] = d + 1; q0.push(nx, nz); } } }
+    const depAt = (x, z) => (hdep && x >= 0 && z >= 0 && x < W && z < H ? Math.max(0, hdep[z * W + x]) : 0);
+    const vertexF = TFLD ? (x, z) => { const h = vertexH(x, z); const fx = Math.floor(x), fz = Math.floor(z); const xs = Math.abs(x - fx) < 1e-6 ? [fx - 1, fx] : [fx], zs = Math.abs(z - fz) < 1e-6 ? [fz - 1, fz] : [fz]; let hh = 0, dsum = 0, dn = 0; for (const tz of zs) for (const tx of xs) { dn++; if (hillT[Tg(tx, tz)]) { hh++; dsum += Math.min(4, depAt(tx, tz)); } } if (!hh) return h; const k = hh / dn; return terr(h + k * (0.5 + (dsum / hh) * 0.32)); } : vertexH;   // 丘のマスは 0.5＋奥行き×0.32 だけ高く（段に丸める）
     for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) hgrid[j * NX + i] = vertexF(gx0 + i / S, gz0 + j / S);
     this.stats.heightMs = Math.round(performance.now() - tHgt);
     const heightAt = (x, z) => {
