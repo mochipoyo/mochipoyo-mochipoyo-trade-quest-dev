@@ -420,7 +420,8 @@
     Object.keys(d.vehicles || {}).forEach(function (k) { var s = d.vehicles[k]; if (!s) return; var ship = k !== 'airship';
       if (s.map && isNeed(s.map) && typeof s.x === 'number') { var p2 = d.aboard === k && d.pos && d.pos.map === s.map ? { x: d.pos.x, y: d.pos.y } : convPt(s.map, s.x, s.y, ship); if (p2) { s.x = p2.x; s.y = p2.y; } changed = true; }
       if (s.port && s.port.map && isNeed(s.port.map)) { var p3 = convPt(s.port.map, s.port.x, s.port.y, ship); if (p3) { s.port.x = p3.x; s.port.y = p3.y; } } });
-    var A = d.astra; if (A && A.map && isNeed(A.map) && typeof A.x === 'number') { var p4 = convPt(A.map, A.x, A.y, false); if (p4) { A.x = p4.x; A.y = p4.y; } A.e78wx = null; changed = true; }
+    var A = d.astra; if (A && A.map && isNeed(A.map) && typeof A.x === 'number') { var p4 = convPt(A.map, A.x, A.y, false); if (p4) { A.x = p4.x; A.y = p4.y; } changed = true; }
+    if (A && A.from && isNeed(A.from.map)) { var p6 = convPt(A.from.map, A.from.x, A.from.y, false); if (p6) { A.from.x = p6.x; A.from.y = p6.y; } }
     if (d.dungeonEntry && isNeed(d.dungeonEntry.map)) { var p5 = mapPos(d.dungeonEntry.map, d.dungeonEntry.x, d.dungeonEntry.y); d.dungeonEntry.x = p5.x; d.dungeonEntry.y = p5.y; }
     // 探索済みの印（ミニマップ）：新しいマスの元の旧マスが探索済みなら
     need.forEach(function (id) { var disc = d.mapDiscovery && d.mapDiscovery[id]; if (disc && disc.length) { var g2 = GEN[id]; var has = function (x, y) { var row = disc[y]; return !!(row && ((row[(x / 30) | 0] || 0) & (1 << (x % 30)))); }; var out = [];
@@ -466,7 +467,7 @@
     var World = root.World; if (!World || World._e78) return; World._e78 = true;
     var st = World.start; World.start = function () {
       var d = root.State && root.State.data;
-      try { if (root.World76 && root.World76.normalizeSave) root.World76.normalizeSave(d); if (E.active() && E.ready) migrateOn(d); else migrateOff(d); } catch (e) { console.error('Earth78 セーブ', e); }
+      try { if (root.World76 && root.World76.normalizeSave) root.World76.normalizeSave(d); if (E.active() && E.ready) migrateOn(d); else { migrateOff(d); if (root.Astra && root.Astra.offNormalize) root.Astra.offNormalize(d); } } catch (e) { console.error('Earth78 セーブ', e); }
       return st.apply(this, arguments);
     };
   }

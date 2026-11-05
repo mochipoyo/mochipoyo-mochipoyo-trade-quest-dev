@@ -68,13 +68,13 @@
     var I = root.Engine.Input; var ix = (I.keys.right ? 1 : 0) - (I.keys.left ? 1 : 0), iy = (I.keys.down ? 1 : 0) - (I.keys.up ? 1 : 0);
     var sp = A().SPEED[this.alt] || 26; var tvx = 0, tvy = 0;
     if (ix || iy) { this.auto = null; var l = Math.hypot(ix, iy); tvx = ix / l * sp; tvy = iy / l * sp; }
-    else if (this.auto) { var dx = this.auto.wx - s.wx, dy = this.auto.wy - s.wy, dd = Math.hypot(dx, dy); if (dd < 0.6) { var p = this.auto; this.auto = null; this.vx = this.vy = 0; s.wx = p.wx; s.wy = p.wy; this.startLand(p); return; } var v = Math.min(sp * 1.15, dd * 3 + 4); tvx = dx / dd * v; tvy = dy / dd * v; }
+    else if (this.auto) { var dx = A().dxw ? A().dxw(this.auto.wx - s.wx) : this.auto.wx - s.wx, dy = this.auto.wy - s.wy, dd = Math.hypot(dx, dy); if (dd < 0.6) { var p = this.auto; this.auto = null; this.vx = this.vy = 0; s.wx = p.wx; s.wy = p.wy; this.startLand(p); return; } var v = Math.min(sp * 1.15, dd * 3 + 4); tvx = dx / dd * v; tvy = dy / dd * v; }
     var acc = Math.min(1, sec * (this.auto ? 6 : 3.5)); this.vx += (tvx - this.vx) * acc; this.vy += (tvy - this.vy) * acc;
     if (Math.abs(this.vx) < 0.01 && Math.abs(this.vy) < 0.01) { this.vx = this.vy = 0; }
     var nx = s.wx + this.vx * sec, ny = s.wy + this.vy * sec;
     var bl = A().blockAt(nx, ny);
     if (bl) { this.vx = this.vy = 0; this.auto = null; if (this.t - this.blockT > 2500) { this.blockT = this.t; this.flash(bl.region ? '未踏の空域' : '星の海の果て', bl.reason, 3200); } }
-    else { s.wx = nx; s.wy = ny; }
+    else { s.wx = nx; s.wy = ny; if (A().wrapW) s.wx = ((s.wx % A().wrapW) + A().wrapW) % A().wrapW; }   // v7.8 地球：東西は一周
     if (this.vx || this.vy) s.hd = Math.atan2(this.vy, this.vx);
     // 地域の境目：名前を出す（暗転しない）・観測記録
     var rg = A().regionAt(s.wx, s.wy);
@@ -88,7 +88,7 @@
     this.saveT += dt; if (this.saveT > 8000) { this.saveT = 0; root.State.autosave(); }
   };
   Scene.prototype.loadNear = function (wx, wy) {
-    var self = this; var R = this.alt === 'high' ? 260 : 180; var need = A().ids().filter(function (id) { if (AV.chunks[id]) return false; var r = A().rect(id); var dx = Math.max(r.x0 - wx, 0, wx - r.x1), dy = Math.max(r.y0 - wy, 0, wy - r.y1); return Math.hypot(dx, dy) < R; });
+    var self = this; var R = this.alt === 'high' ? 260 : 180; var need = A().ids().filter(function (id) { if (AV.chunks[id]) return false; if (A().rectDist) return A().rectDist(id, wx, wy) < R; var r = A().rect(id); var dx = Math.max(r.x0 - wx, 0, wx - r.x1), dy = Math.max(r.y0 - wy, 0, wy - r.y1); return Math.hypot(dx, dy) < R; });
     if (this.mode === 'map' && !need.length) need = A().ids().filter(function (id) { return !AV.chunks[id]; });
     if (!need.length) return; need.sort(function (a, b) { var ra = A().rect(a), rb = A().rect(b); return Math.hypot((ra.x0 + ra.x1) / 2 - wx, (ra.y0 + ra.y1) / 2 - wy) - Math.hypot((rb.x0 + rb.x1) / 2 - wx, (rb.y0 + rb.y1) / 2 - wy); });
     try { AV.buildChunk(need[0]); } catch (e) { AV.chunks[need[0]] = 'fail'; if (root.console) console.warn('astra chunk', need[0], e); }
@@ -139,13 +139,15 @@
     var Q = (root.BattleBG65 && root.BattleBG65.quality) ? root.BattleBG65.quality() : 'high';   // 設定「戦闘背景の品質」に合わせて軽くする（軽量：波の線なし・雲を減らす）
     ctx.fillStyle = 'rgba(160,210,255,0.13)'; var step = Q === 'low' ? 1e9 : 26; for (var yy = -((cy * z) % step) - step; yy < H + step; yy += step) for (var xx = -((cx * z) % step) - step; xx < W + step; xx += step) { var o = Math.sin(t * 1.2 + (xx + cx * z) * 0.05 + (yy + cy * z) * 0.07) * 4; ctx.fillRect(xx + o, yy, 9, 1); }
     // 地域
-    var self = this;
+    var self = this; var EARTH = !!(A().earth && A().earth());
+    if (EARTH) this.drawEarth(ctx, W, H, cx, cy, z, t);   // v7.8 地球の地形（外の陸・海）と、北の果ての上の空の帯
+    var shiftOf = function (x0, x1) { if (!A().wrapW) return 0; var c = (x0 + x1) / 2; return s.wx + A().dxw(c - s.wx) - c; };
     A().ids().forEach(function (id) {
-      var r = A().rect(id); var sx = (r.x0 - cx) * z, sy = (r.y0 - cy) * z, sw = (r.x1 - r.x0) * z, sh = (r.y1 - r.y0) * z;
+      var r = A().rect(id); var shx = A().BAND && A().BAND[id] ? 0 : shiftOf(r.x0, r.x1); var sx = (r.x0 + shx - cx) * z, sy = (r.y0 - cy) * z, sw = (r.x1 - r.x0) * z, sh = (r.y1 - r.y0) * z;
       if (sx > W || sy > H || sx + sw < 0 || sy + sh < 0) return;
       var ch = AV.chunks[id]; var L = root.WorldMap && root.WorldMap.LAYOUT && root.WorldMap.LAYOUT[id];
       if (ch && ch !== 'fail') { ctx.imageSmoothingEnabled = z < AV.S0; ctx.drawImage(ch, sx, sy, sw, sh); ctx.imageSmoothingEnabled = false; }
-      else { ctx.fillStyle = (L && L.color) || '#4a7a4a'; ctx.globalAlpha = 0.85; ctx.fillRect(sx + sw * 0.08, sy + sh * 0.1, sw * 0.84, sh * 0.8); ctx.globalAlpha = 1; }
+      else if (!EARTH || (A().BAND && A().BAND[id])) { ctx.fillStyle = (L && L.color) || '#4a7a4a'; ctx.globalAlpha = 0.85; ctx.fillRect(sx + sw * 0.08, sy + sh * 0.1, sw * 0.84, sh * 0.8); ctx.globalAlpha = 1; }
       if (id === 'world_sky') {   // 雲海の縁：ふちに沿って雲のかたまりを置いて、四角い境目をぼかす
         ctx.fillStyle = 'rgba(244,248,255,0.55)'; var per = 2 * (r.x1 - r.x0 + r.y1 - r.y0); for (var cb = 0; cb < per; cb += 7) { var ex, ey; var q = cb; if (q < r.x1 - r.x0) { ex = r.x0 + q; ey = r.y0; } else if ((q -= r.x1 - r.x0) < r.y1 - r.y0) { ex = r.x1; ey = r.y0 + q; } else if ((q -= r.y1 - r.y0) < r.x1 - r.x0) { ex = r.x1 - q; ey = r.y1; } else { q -= r.x1 - r.x0; ex = r.x0; ey = r.y1 - q; }
           var rr = (5 + h1(cb * 1.3) * 6) * z; var px0 = (ex - cx) * z, py0 = (ey - cy) * z; if (px0 < -rr || py0 < -rr || px0 > W + rr || py0 > H + rr) continue; ctx.beginPath(); ctx.arc(px0 + (h1(cb) - 0.5) * 4 * z, py0 + (h1(cb * 2) - 0.5) * 4 * z, rr, 0, Math.PI * 2); ctx.fill(); }
@@ -158,10 +160,11 @@
     });
     // 着陸地点（低空：名前つき）
     var near = A().nearestLanding(s.wx, s.wy, this.alt === 'high' ? 22 : 14);
-    A().allLandingPoints().forEach(function (p) { var px = (p.wx - cx) * z, py = (p.wy - cy) * z; if (px < -20 || py < -20 || px > W + 20 || py > H + 20) return; var on = near && near.id === p.id && near.region === p.region; var pr = on ? 6 + Math.sin(t * 5) * 1.5 : 4;
+    if (EARTH) this.drawAeria(ctx, cx, cy, z, t, s);
+    A().allLandingPoints().forEach(function (p) { var pwx = A().wrapW ? s.wx + A().dxw(p.wx - s.wx) : p.wx; var px = (pwx - cx) * z, py = (p.wy - cy) * z; if (px < -20 || py < -20 || px > W + 20 || py > H + 20) return; var on = near && near.id === p.id && near.region === p.region; var pr = on ? 6 + Math.sin(t * 5) * 1.5 : 4;
       ctx.strokeStyle = on ? '#ffe08a' : 'rgba(255,240,200,0.7)'; ctx.lineWidth = on ? 2 : 1; ctx.beginPath(); ctx.moveTo(px, py - pr); ctx.lineTo(px + pr, py); ctx.lineTo(px, py + pr); ctx.lineTo(px - pr, py); ctx.closePath(); ctx.stroke();
       if (z >= 5 || on) self.label(ctx, p.name, px, py - 10, on ? '#ffe08a' : '#ffffff', 11); });
-    if (this.auto) { var ax = (this.auto.wx - cx) * z, ay = (this.auto.wy - cy) * z; ctx.strokeStyle = 'rgba(255,224,138,0.6)'; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(W / 2, H / 2); ctx.lineTo(ax, ay); ctx.stroke(); ctx.setLineDash([]); }
+    if (this.auto) { var ax = ((A().wrapW ? s.wx + A().dxw(this.auto.wx - s.wx) : this.auto.wx) - cx) * z, ay = (this.auto.wy - cy) * z; ctx.strokeStyle = 'rgba(255,224,138,0.6)'; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(W / 2, H / 2); ctx.lineTo(ax, ay); ctx.stroke(); ctx.setLineDash([]); }
     // 雲（高空ほど多く、速く流れる）
     var cn = (this.alt === 'high' ? 16 : 7) * (Q === 'low' ? 0.4 : Q === 'normal' ? 0.7 : 1) | 0; for (var c = 0; c < cn; c++) { var wx = (h1(c * 5.1) * A().WORLD.w + t * (6 + c % 4)) % A().WORLD.w, wy = h1(c * 9.7) * A().WORLD.h; var px2 = (wx - cx) * z * 1.15 - W * 0.075, py2 = (wy - cy) * z * 1.15 - H * 0.075; if (px2 < -200 || py2 < -120 || px2 > W + 200 || py2 > H + 120) continue; ctx.fillStyle = 'rgba(255,255,255,0.22)'; for (var k2 = 0; k2 < 4; k2++) { ctx.beginPath(); ctx.arc(px2 + k2 * 22 * z / 4, py2 + (k2 % 2) * 8, (18 + k2 * 4) * Math.max(0.6, z / 5), 0, Math.PI * 2); ctx.fill(); } }
     // 船（影は高度ぶんずらす）
@@ -182,6 +185,7 @@
     var s = A().state(); var WW = A().WORLD; var z = Math.min(W / WW.w, H / WW.h) * 0.94; var ox = (W - WW.w * z) / 2, oy = (H - WW.h * z) / 2;
     ctx.fillStyle = '#0b1a36'; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#16407a'; ctx.fillRect(ox, oy, WW.w * z, WW.h * z);
     var self = this;
+    if (A().earth && A().earth()) { var ec = root.Minimap && root.Minimap.earthCanvas ? root.Minimap.earthCanvas() : null; ctx.fillStyle = '#26365e'; ctx.fillRect(ox, oy, WW.w * z, A().OFF * z); if (ec) { ctx.imageSmoothingEnabled = true; ctx.drawImage(ec, ox, oy + A().OFF * z, WW.w * z, ec.height * z); ctx.imageSmoothingEnabled = false; } var ap = A().aeriaPoint && A().aeriaPoint(); if (ap) { ctx.fillStyle = '#e8f4ff'; ctx.beginPath(); ctx.arc(ox + ap.wx * z, oy + ap.wy * z, 4, 0, Math.PI * 2); ctx.fill(); } }   // v7.8 地球
     A().ids().forEach(function (id) { var r = A().rect(id); var ch = AV.chunks[id]; var sx = ox + r.x0 * z, sy = oy + r.y0 * z, sw = (r.x1 - r.x0) * z, sh = (r.y1 - r.y0) * z;
       if (ch && ch !== 'fail') { ctx.imageSmoothingEnabled = true; ctx.drawImage(ch, sx, sy, sw, sh); ctx.imageSmoothingEnabled = false; } else { var L = root.WorldMap && root.WorldMap.LAYOUT && root.WorldMap.LAYOUT[id]; ctx.fillStyle = (L && L.color) || '#4a7a4a'; ctx.fillRect(sx + sw * 0.1, sy + sh * 0.1, sw * 0.8, sh * 0.8); }
       if (!A().unlocked(id)) { ctx.fillStyle = 'rgba(30,36,56,0.85)'; ctx.fillRect(sx, sy, sw, sh); self.label(ctx, '未踏', sx + sw / 2, sy + sh / 2, '#c8d0e8', 10); }
@@ -189,6 +193,27 @@
     (this.points || []).forEach(function (p, i) { var px = ox + p.wx * z, py = oy + p.wy * z; var on = i === self.sel; ctx.fillStyle = on ? '#ffe08a' : 'rgba(255,240,200,0.85)'; ctx.fillRect(px - (on ? 3 : 1.5), py - (on ? 3 : 1.5), on ? 6 : 3, on ? 6 : 3); if (on) { ctx.strokeStyle = '#ffe08a'; ctx.beginPath(); ctx.arc(px, py, 7 + Math.sin(t * 5) * 1.5, 0, Math.PI * 2); ctx.stroke(); } });
     var sx2 = ox + s.wx * z, sy2 = oy + s.wy * z; AV.drawShip(ctx, sx2, sy2, s.hd || 0, 0.45, t, false);
     var p = (this.points || [])[this.sel]; this.panel(ctx, 8, 8, '着陸地点を選ぶ' + (p ? '：' + p.name + '（' + ((root.MAP_DEFS[p.region] || {}).name || p.region) + '）' : '（まだない）'), '方向キー：選ぶ　決定：自動で飛んで行く　X：もどる');
+  };
+  // v7.8 地球の地形（世界地図と同じ 1 マス 1 画素の絵）を、見えている所だけ拡大して描く（東西の一周）。北の果ての上は空の帯
+  Scene.prototype.drawEarth = function (ctx, W, H, cx, cy, z, t) {
+    var OFF = A().OFF, WW = A().wrapW; var by1 = (OFF - cy) * z;
+    if (by1 > 0) { var g = ctx.createLinearGradient(0, (0 - cy) * z, 0, by1); g.addColorStop(0, '#0a0f2a'); g.addColorStop(0.55, '#3a4f86'); g.addColorStop(1, '#8aa8d8'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, Math.min(H, by1));
+      ctx.fillStyle = 'rgba(255,255,255,0.5)'; for (var i = 0; i < 40; i++) { var sxs = ((h1(i * 3.7) * WW - cx) % WW + WW) % WW * z, sys = (h1(i * 5.3) * OFF * 0.6 - cy) * z; if (sxs < W && sys > 0 && sys < by1) ctx.fillRect(sxs, sys, 1.5, 1.5); } }
+    var ec = root.Minimap && root.Minimap.earthCanvas ? root.Minimap.earthCanvas() : null; if (!ec) return;
+    var sw = W / z, sh = H / z; ctx.imageSmoothingEnabled = false;
+    for (var k = -1; k <= 1; k++) { var x0 = cx - k * WW, y0 = cy - OFF; var a0 = Math.max(0, x0), a1 = Math.min(WW, x0 + sw), b0 = Math.max(0, y0), b1 = Math.min(ec.height, y0 + sh); if (a1 > a0 && b1 > b0) ctx.drawImage(ec, a0, b0, a1 - a0, b1 - b0, (a0 - x0) * z, (b0 - y0) * z, (a1 - a0) * z, (b1 - b0) * z); }
+    if (by1 > 0 && by1 < H) { ctx.fillStyle = 'rgba(244,248,255,0.65)'; for (var c = 0; c < 60; c++) { var wx = c * WW / 60; var px = ((wx - cx) % WW + WW) % WW * z; if (px > W + 30) continue; ctx.beginPath(); ctx.arc(px, by1 + (h1(c) - 0.5) * 6, (8 + h1(c * 2) * 10) * z / 3, 0, Math.PI * 2); ctx.fill(); } }   // 北の果ての雲の縁
+  };
+  // 浮天城アエリア（太平洋の上空）：城の形と、雲の海に落ちる影
+  Scene.prototype.drawAeria = function (ctx, cx, cy, z, t, s) {
+    var ap = A().aeriaPoint && A().aeriaPoint(); if (!ap) return; var wx = A().wrapW ? s.wx + A().dxw(ap.wx - s.wx) : ap.wx; var x = (wx - cx) * z, y = (ap.wy - cy) * z; var W = ctx.canvas.width, H = ctx.canvas.height; if (x < -200 || y < -200 || x > W + 200 || y > H + 200) return;
+    var k = z / 7; ctx.save(); ctx.translate(x, y + Math.sin(t * 0.8) * 2 * k);
+    ctx.fillStyle = 'rgba(0,0,0,0.28)'; ctx.beginPath(); ctx.ellipse(18 * k, 26 * k, 70 * k, 22 * k, 0, 0, Math.PI * 2); ctx.fill();   // 海に落ちる影
+    ctx.fillStyle = 'rgba(244,248,255,0.85)'; [[-44, 10, 22], [-20, 16, 26], [8, 18, 28], [36, 12, 22], [54, 6, 16]].forEach(function (c) { ctx.beginPath(); ctx.arc(c[0] * k, c[1] * k, c[2] * k, 0, Math.PI * 2); ctx.fill(); });   // 城を支える雲
+    ctx.fillStyle = '#c8ccd8'; ctx.beginPath(); ctx.moveTo(-40 * k, 4 * k); ctx.lineTo(40 * k, 4 * k); ctx.lineTo(24 * k, 22 * k); ctx.lineTo(-24 * k, 22 * k); ctx.closePath(); ctx.fill();   // 浮かぶ岩盤
+    ctx.fillStyle = '#eef0f8'; ctx.fillRect(-30 * k, -14 * k, 60 * k, 18 * k); [[-30, -30, 10], [-6, -42, 12], [20, -30, 10]].forEach(function (tw) { ctx.fillRect(tw[0] * k, tw[1] * k, tw[2] * k, 30 * k); ctx.fillStyle = '#4a6aa8'; ctx.beginPath(); ctx.moveTo(tw[0] * k - 2 * k, tw[1] * k); ctx.lineTo((tw[0] + tw[2] / 2) * k, (tw[1] - 12) * k); ctx.lineTo((tw[0] + tw[2]) * k + 2 * k, tw[1] * k); ctx.fill(); ctx.fillStyle = '#eef0f8'; });
+    ctx.fillStyle = 'rgba(120,200,255,' + (0.5 + 0.3 * Math.sin(t * 3)) + ')'; ctx.beginPath(); ctx.arc(0, 14 * k, 5 * k, 0, Math.PI * 2); ctx.fill();   // 浮力炉の光
+    ctx.restore(); this.label(ctx, '浮天城アエリア', x, y - 50 * k, '#e8f4ff', 12);
   };
   Scene.prototype.label = function (ctx, text, x, y, col, size) { ctx.font = 'bold ' + (size || 12) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.75)'; ctx.strokeText(text, x, y); ctx.fillStyle = col || '#fff'; ctx.fillText(text, x, y); };
   Scene.prototype.panel = function (ctx, x, y, a, b) { ctx.font = 'bold 12px sans-serif'; var w = Math.max(ctx.measureText(a).width, b ? ctx.measureText(b).width : 0) + 16; ctx.fillStyle = 'rgba(8,14,32,0.78)'; ctx.fillRect(x, y, w, b ? 38 : 24); ctx.fillStyle = '#ffe08a'; ctx.textAlign = 'left'; ctx.fillText(a, x + 8, y + 16); if (b) { ctx.fillStyle = '#e8eefc'; ctx.font = '11px sans-serif'; ctx.fillText(b, x + 8, y + 31); } };

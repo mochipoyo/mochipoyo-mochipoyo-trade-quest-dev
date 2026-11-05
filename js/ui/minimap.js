@@ -75,6 +75,7 @@
         var i = (gy * S.w + gx) * 4; var k = lock && !T.isWater(nm) ? 0.38 : 1; px[i] = v[0] * k; px[i + 1] = v[1] * k; px[i + 2] = v[2] * k + (lock && !T.isWater(nm) ? 16 : 0); px[i + 3] = 255; } } });
     ctx.putImageData(img, 0, 0); e = { canvas: c, cell: 1, rev: 0, hk: '', key: key }; store.__join76 = e; return e;
   }
+  Minimap.earthCanvas = function () { var W = J76(); return W && W.earth ? earthTerrain(Minimap.bigCache).canvas : null; };   // v7.8 アストラ号の飛ぶ画面の地形
   Minimap.earthImage = function () { var e = earthTerrain(Minimap.bigCache); return e.canvas.toDataURL('image/png'); };   // v7.8 「世界」タブの背景
   function joinedTerrain(big) {
     if (J76().earth) return earthTerrain(big ? Minimap.bigCache : Minimap.cache);
