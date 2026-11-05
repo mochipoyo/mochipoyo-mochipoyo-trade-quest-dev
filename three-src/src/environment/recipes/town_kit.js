@@ -14,6 +14,7 @@ import { canvasTex, texMat, wbox, cyl, drawSetts, floorQuadsH, settsHeight } fro
 import { buildLandmark } from './landmarks.js';
 import { buildVariant76 } from './variants76.js';
 import { bdetailSetting } from '../../world/BuildingBuilder3D.js';
+import { showpieceFor } from './showpiece76.js';
 
 // 地域ごとの作り方。road/walk：[石の色, 目地, 幅, 高さ, ばらつき]（キャンバスは 256×256。幅・高さは 256 を割り切る値）
 export const REGION_STYLE = {
@@ -67,6 +68,9 @@ export function townKit(mapId, opt) {
       const stallCell = new Set(); (map.buildings || []).forEach((b) => { if (b.shape76 !== 'stall') return; for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) stallCell.add(x + ',' + y); });
       const hooks = { skipProp: (t, x, z) => t === 'lamp' || (t === 'fence' && !!R.fence) || inLM(x, z) || stallCell.has(x + ',' + z), skipTree: (x, z) => inLM(x, z) };
       K.inLM = inLM; K.LM = LM;
+      // v7.6 町ごとの目玉（showpiece76.js：水路・崖・灯台など）。「建物の作り込み」を使うときだけ
+      const SP = bdetailSetting() !== 'off' && !R.modern ? showpieceFor(map) : null; K.SP = SP;
+      if (SP && SP.hooks) { const h = SP.hooks; ['groundY', 'waterY', 'walkY', 'skipFloor', 'skipOutTree'].forEach((k) => { if (h[k]) hooks[k] = h[k]; }); }
       // 近未来・娯楽の町（R.modern）：建物はガラスと金属の汎用のまま（舗装・街灯・柵・目印だけ）
       const building = async (b, o) => {
         if (R.modern) return null; const st = townStyle(b, R) || (b.shape76 ? { plaster: R.plaster[0], roofColor: R.roofs[0] } : null); if (!st) return null;
@@ -134,6 +138,7 @@ async function build(ctx, K, b) {
   // ---- v7.6 地面の汚れ・落ち葉・水たまり・石の欠け（通れるマスの上の、平らな模様だけ。当たり判定は変えない）
   let decals = 0; if (bdetailSetting() !== 'off') decals = groundDecals(add, map, T, covered, K, hAt, R, K.region);
   if (K.LM) await buildLandmark(ctx, K.LM, add, g, hAt);   // 町ごとの目印
+  if (K.SP) { try { K.SP.build({ add, g, ctx, K, hAt }); } catch (e) { ctx.stats.showpieceError = String(e && e.message || e); console.warn('showpiece76', e); } }   // v7.6 町ごとの目玉
   batch.build(g);
   Object.assign(ctx.stats, { lamps, fences, decals, floor: { road: roads.length, walk: walks.length }, landmark: K.LM ? K.LM.kind : null });
   return g;

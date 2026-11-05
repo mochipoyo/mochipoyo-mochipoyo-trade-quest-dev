@@ -67,7 +67,9 @@ export class WorldBuilder3D {
     const noiseAmp = (t) => (t === 'hill' ? 0.32 : t === 'mountain' ? 0.5 : (t === 'grass' || t === 'grass2' || t === 'sand' || t === 'snow' || t === 'ash' || t === 'darkland') ? 0.1 : t === 'cliff' ? 0.15 : 0);
     // 頂点（タイルの角・辺・中心）：周りのタイルの重みつき平均（陸を重く＝岸がえぐれすぎない）
     const solidT76 = (t) => !!(window.Tiles && window.Tiles.isSolid(t));
+    const GY = env && env.groundY ? env.groundY : null;   // v7.6 町の目玉（showpiece76.js）：水路の底など、地面の高さを決める所
     const vertexH = (x, z) => {
+      if (GY) { const gy = GY(x, z); if (gy !== null && gy !== undefined) return gy; }
       const fx = Math.floor(x), fz = Math.floor(z); const ex = Math.abs(x - fx) < 1e-6, ez = Math.abs(z - fz) < 1e-6;
       const xs = ex ? [fx - 1, fx] : [fx], zs = ez ? [fz - 1, fz] : [fz];
       if (TRI) {   // 段のある町：通れるマス（階段は辺の高さ）だけで決める＝通れるマスは平ら・段の境は擁壁が隠す
@@ -111,7 +113,8 @@ export class WorldBuilder3D {
     const flat = env && env.flatTile ? (x, z) => env.flatTile(T(Math.floor(x), Math.floor(z))) : null;   // v7.6 レシピが「床の高さ 0 で平ら」とするマス（船の甲板。縁の海のマスに引っぱられて沈まない）
     const quay = new Set(); if (TRI) for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { if (!(lvY(x, z) > 0) || WATERY[map.tile(x, z)] || TRI.isStair(map.tile(x, z))) continue; let wv = false; for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) if (WATERY[T(x + dx, z + dz)]) wv = true; if (wv) quay.add(x + ',' + z); }
     this.quay = quay;   // v7.6 上の段の岸のマス（歩く高さは段の高さで平ら。Terrace3D が石の板を張る）
-    const heightAtWalk = (x, z) => (wet.has(Math.floor(x) + ',' + Math.floor(z)) ? 0.05 + lvY(Math.floor(x), Math.floor(z)) : quay.has(Math.floor(x) + ',' + Math.floor(z)) ? lvY(Math.floor(x), Math.floor(z)) + 0.04 : flat && flat(x, z) ? 0.0 : heightAtRaw(x, z));
+    const WY = env && env.walkY ? env.walkY : null;   // v7.6 町の目玉：岸の石畳・反り橋の歩く高さ
+    const heightAtWalk = (x, z) => (WY && WY(x, z) !== null ? WY(x, z) : wet.has(Math.floor(x) + ',' + Math.floor(z)) ? 0.05 + lvY(Math.floor(x), Math.floor(z)) : quay.has(Math.floor(x) + ',' + Math.floor(z)) ? lvY(Math.floor(x), Math.floor(z)) + 0.04 : flat && flat(x, z) ? 0.0 : heightAtRaw(x, z));
     this.heightAt = heightAtWalk;
 
     // ---------------- 塗り分けのテクスチャ（2テクセル／タイル）
@@ -202,7 +205,8 @@ export class WorldBuilder3D {
       qs.forEach(([x, z], k) => {
         let t = Tg(x, z); if (round && !WATERY[t] && t !== 'lava' && t !== 'cloud') t = 'water'; c.set(colOf(t));
         const corners = [[x, z], [x + 1, z], [x, z + 1], [x + 1, z + 1]];
-        corners.forEach(([cx, cz], m) => { pos.set([cx, y, cz], k * 12 + m * 3); uv.set([cx / 8, cz / 8], k * 8 + m * 2); colA.set(round && (WATERY[t] || t === 'water') ? cornerCol(cx, cz, [c.r, c.g, c.b]) : [c.r, c.g, c.b], k * 12 + m * 3); });
+        const yy = (name === 'water' && env && env.waterY && env.waterY(x, z) !== null) ? env.waterY(x, z) : y;   // v7.6 水路の水面（町の目玉）
+        corners.forEach(([cx, cz], m) => { pos.set([cx, yy, cz], k * 12 + m * 3); uv.set([cx / 8, cz / 8], k * 8 + m * 2); colA.set(round && (WATERY[t] || t === 'water') ? cornerCol(cx, cz, [c.r, c.g, c.b]) : [c.r, c.g, c.b], k * 12 + m * 3); });
         idx.set([k * 4, k * 4 + 2, k * 4 + 1, k * 4 + 1, k * 4 + 2, k * 4 + 3], k * 6);
       });
       const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); g.setAttribute('color', new THREE.BufferAttribute(colA, 3)); g.setIndex(new THREE.BufferAttribute(idx, 1)); g.computeVertexNormals(); g.computeBoundingSphere(); g.userData.own = true;

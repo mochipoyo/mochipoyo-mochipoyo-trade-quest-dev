@@ -40,7 +40,7 @@ export class LightingManager {
     for (let i = 0; i < n; i++) { const l = new THREE.PointLight(0xffb05a, 0, 9, 1.6); l.castShadow = false; scene.add(l); this.lampLights.push(l); }
     // v6.6 点光源の割り当て（スロットごと：照らしている街灯・明るさ 0..1）。近い街灯が入れ替わるときは、ふっと消えて／ふっと点く（チラつき対策）
     this.slots = this.lampLights.map(() => ({ spot: null, lv: 0 })); this._lampT = 0;
-    this.lampSpots = []; this.windowMats = new Set(); this.glowMats = new Set(); this.nightMats = new Set(); this.night = 0; this.preview = null; this.interior = false;
+    this.lampSpots = []; this.windowMats = new Set(); this.glowMats = new Set(); this.nightMats = new Set(); this.dayMats = new Set(); this.night = 0; this.preview = null; this.interior = false;
   }
   makeSky() {
     const g = new THREE.SphereGeometry(400, 32, 16);
@@ -58,6 +58,7 @@ export class LightingManager {
       if (!o.material) return;
       (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => {
         if (m.userData && m.userData.nightGlow !== undefined) { this.nightMats.add(m); return; }
+        if (m.userData && m.userData.dayGlow !== undefined) { this.dayMats.add(m); return; }   // v7.6 昼だけ（屋内の窓の光の帯・窓のガラス）
         if (m.userData && m.userData.keepGlow) return;   // v7.0 場所の飾りの光る部分（画面・水晶など）：昼も夜も同じ明るさ   // v6.6 町明かりのにじみ（夜だけ）
         if (m.userData && m.userData.window) this.windowMats.add(m);
         else if (m.emissive && (m.emissive.r + m.emissive.g + m.emissive.b) > 0.05 && m.emissiveIntensity > 0) { if (m.userData.baseEmissive === undefined) m.userData.baseEmissive = m.emissiveIntensity; this.glowMats.add(m); }
@@ -104,6 +105,7 @@ export class LightingManager {
     for (const m of this.glowMats) m.emissiveIntensity = (m.userData.baseEmissive || 1) * (this.interior ? 0.6 : 0.25 + this.night * 0.9);
     const nk = this.interior ? 0 : Math.max(0, Math.min(1, (this.night - 0.15) / 0.6)); for (const m of this.nightMats) { m.opacity = m.userData.nightGlow * nk * nk * (3 - 2 * nk); m.visible = m.opacity > 0.004; }
     this.renderer.setBloom(0.25 + this.night * 0.6);
+    { const day = 1 - this.night; for (const m of this.dayMats) { if (m.userData.dayEmissive !== undefined) { m.emissiveIntensity = m.userData.dayEmissive * (0.12 + 0.88 * day); if (m.color && m.userData.dayCol === undefined) m.userData.dayCol = m.color.getHex(); if (m.color) m.color.setHex(m.userData.dayCol).multiplyScalar(0.35 + 0.65 * day); } else { m.opacity = m.userData.dayGlow * day * day; m.visible = m.opacity > 0.004; } } }   // v7.6 窓の光（昼）
     if (this.renderer.setFinish) {   // v7.6 画面の仕上げ（Finish76.js）：地域・時間帯・屋内で色の調子とぼかしを変える
       const ti = ((tt % 1) + 1) % 1; const dusk = this.mood ? 0 : Math.max(0, 1 - Math.abs(ti - 0.76) / 0.08) + 0.6 * Math.max(0, 1 - Math.abs(ti - 0.23) / 0.07);
       const kind = this.mapKind === 'interior' ? 'interior' : (this.mapKind || 'town');

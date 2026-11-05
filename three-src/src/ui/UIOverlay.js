@@ -82,7 +82,7 @@ export class UIOverlay {
       '<div id="g3-panel"><div class="row"><span class="lab">カメラ角度</span><button data-cam="38">38°</button><button data-cam="48">48°</button><button data-cam="56">56°</button></div>' +
       '<div class="row"><span class="lab">画質</span><button data-q="high">高（PC）</button><button data-q="low">軽量（スマホ）</button></div>' +
       '<div class="row"><span class="lab">画面の仕上げ</span><button data-fin="on">使う（ジオラマ風のぼかし・色の調子）</button><button data-fin="off">使わない（以前の表示）</button><span class="small" style="color:#aab">高画質のときだけ</span></div>' +
-      '<div class="row"><span class="lab">建物の作り込み</span><button data-bd="on">使う（厚い屋根・汚れ・日よけ・小物）</button><button data-bd="off">使わない（以前の形）</button></div>' +
+      '<div class="row"><span class="lab">建物の作り込み</span><button data-bd="on">使う（厚い屋根・汚れ・日よけ・小物・町の目玉・部屋の暖炉と窓）</button><button data-bd="off">使わない（以前の形）</button></div>' +
       '<div class="row"><span class="lab">時間帯の確認</span><button data-t="-1">ゲーム内</button><button data-t="0.3">朝</button><button data-t="0.5">昼</button><button data-t="0.74">夕</button><button data-t="0.95">夜</button></div>' +
       '<div class="row"><span class="lab">モーション</span><button data-m="Attack">攻撃</button><button data-m="Cast">呪文</button><button data-m="Hit">被弾</button><button data-m="Defend">防御</button><button data-m="Victory">勝利</button><button data-m="Defeat">倒れる</button></div>' +
       '<div class="row"><span class="lab">戦闘の3D</span><button data-b="on">3Dの舞台</button><button data-b="off">2Dの背景</button></div>' +

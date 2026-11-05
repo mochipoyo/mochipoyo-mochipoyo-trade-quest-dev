@@ -69,7 +69,7 @@ export class Merge {
       const withColor = list.some((g) => g.attributes.color);
       list.forEach((g) => { if (withColor && !g.attributes.color) g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(g.attributes.position.count * 3).fill(1), 3)); if (!withColor && g.attributes.color) g.deleteAttribute('color'); });
       const merged = mergeGeometries(list, false); if (!merged) continue; merged.computeBoundingSphere(); merged.userData.own = true;
-      const mesh = new THREE.Mesh(merged, m); mesh.castShadow = opts.shadow !== false; mesh.receiveShadow = true; if (opts.name) mesh.name = opts.name; group.add(mesh);
+      const mesh = new THREE.Mesh(merged, m); mesh.castShadow = opts.shadow !== false && !(m.userData && m.userData.noShadow); mesh.receiveShadow = !(m.userData && m.userData.noReceive); if (opts.name) mesh.name = opts.name; group.add(mesh);
     }
     this.lists.clear(); return group;
   }

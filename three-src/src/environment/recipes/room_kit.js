@@ -12,6 +12,8 @@ import * as THREE from 'three';
 import { dressPlan76, dressBuild76 } from './shopdress76.js';
 import { plain, rng, worldUV, mat4, Merge } from '../EnvKit3D.js';
 import { canvasTex, texMat, wbox, cyl, drawSetts, floorQuadsH, shade, settsHeight } from './geo.js';
+import { planRoom76, buildFireplace76, wallExtras76, sideWindow76, plasterMat76 } from './roomdeco76.js';
+import { bdetailSetting } from '../../world/BuildingBuilder3D.js';
 
 // 種類 → 作り方。fam：rock（岩塊）／ashlar（切石）／panel（金属）／plank（板）／plaster（しっくいと腰板）
 export const ROOM_STYLE = {
@@ -118,8 +120,11 @@ async function build(ctx, S0, b) {
   if (S.fam === 'ashlar') { body = tex('ash_' + S.stone[0], [S.stone[0], S.stone[1], 128, 64, 0.08]); trim = plain(shade(S.stone[0], 0.82), { std: { roughness: 0.85 } }); }
   if (S.fam === 'panel') { body = tex('pan_' + S.panel, [S.panel, shade(S.panel, 0.7), 128, 128, 0.04]); trim = plain(shade(S.panel, 0.6), { std: { roughness: 0.5, metalness: 0.2 } }); low = plain('#48c9d6', { emissive: '#48c9d6', ei: 1.2, keepGlow: true }); }
   if (S.fam === 'plank') { body = tex('plk_' + S.wood, [S.wood, shade(S.wood, 0.6), 32, 256, 0.18]); trim = plain(shade(S.wood, 0.7), { std: { roughness: 0.9 } }); }
-  if (S.fam === 'plaster') { body = plain(S.plaster, { std: { roughness: 0.92 } }); trim = plain(S.wood, { std: { roughness: 0.8 } }); low = tex('wain_' + S.wood, [S.wood, shade(S.wood, 0.65), 64, 256, 0.12]); }
+  if (S.fam === 'plaster') { body = bdetailSetting() !== 'off' ? plasterMat76(S.plaster) : plain(S.plaster, { std: { roughness: 0.92 } }); trim = plain(S.wood, { std: { roughness: 0.8 } }); low = tex('wain_' + S.wood, [S.wood, shade(S.wood, 0.65), 64, 256, 0.12]); }   // v7.6 しっくいに むら・汚れの模様（以前は一色）
   const moss = S.moss ? plain('#6e7e4a', { std: { roughness: 1 } }) : null;
+  // ---- v7.6 部屋らしさ（roomdeco76）：暖炉・木組み（柱・梁・梁の端）・窓と光の帯。当たり判定は変えない（歩けるマスへは 0.1 まで・体の高さより上は 0.6 まで）
+  const R76 = bdetailSetting() !== 'off' ? planRoom76({ map, S, room, T, walkish, WALLS, TALL, dress: ctx.dress76 }) : { fire: null, windows: new Set(), side: new Map(), posts: new Set(), reserved: new Set(), stats: { off: true } };   // 3D設定「建物の作り込み」を使わないときは以前のまま
+  const mgNo = new Merge();   // 影を落とさない（光の帯・光の板）
   for (let z = -1; z <= H; z++) for (let x = -1; x <= W; x++) {
     if (!WALLS[T(x, z)]) continue;
     const nb = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]]; if (!nb.some(([dx, dz]) => walkish(x + dx, z + dz))) continue;
@@ -142,15 +147,19 @@ async function build(ctx, S0, b) {
       add(rockM, geo.applyMatrix4(mat4(cx, h / 2 - 0.08, cz))); walls++; continue;
     }
     const h = front ? 0.7 : 2.4;
-    add(body, wbox(1, h, 1, cx, y0 + h / 2, cz));
+    const fireHere = R76.fire && R76.fire.x === x && R76.fire.z === z;
+    if (fireHere) buildFireplace76(R76.fire, { add, g, scene: ctx.scene, body, trim, S, h }); else add(body, wbox(1, h, 1, cx, y0 + h / 2, cz));
     // 歩けるマスに面した面：台座（幅木）・軒蛇腹・付け柱／腰板
     for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
       if (!walkish(x + dx, z + dz)) continue; const fx = cx + dx * 0.5, fz = cz + dz * 0.5; const along = dz !== 0;   // 面が東西に延びる
       const strip = (hh, yy, dd, m) => add(m, wbox(along ? 1.0 : dd, hh, along ? dd : 1.0, fx + dx * dd / 2, yy, fz + dz * dd / 2));
-      if (S.fam === 'plaster') { strip(Math.min(0.9, h - 0.05), Math.min(0.9, h - 0.05) / 2, 0.04, low); strip(0.12, 0.06, 0.06, trim); if (h > 1) strip(0.08, Math.min(0.9, h - 0.05) + 0.04, 0.06, trim); if (h > 1.5) strip(0.12, h - 0.06, 0.07, trim); }
+      if (fireHere && dz > 0) { if (h > 1.5) strip(0.2, h - 0.1, 0.14, trim); continue; }   // 暖炉の面（腰板・飾りなし。上の梁だけ）
+      if (S.fam === 'plaster') { strip(Math.min(0.9, h - 0.05), Math.min(0.9, h - 0.05) / 2, 0.04, low); strip(0.12, 0.06, 0.06, trim); if (h > 1) strip(0.08, Math.min(0.9, h - 0.05) + 0.04, 0.06, trim); if (h > 1.5) strip(dz > 0 ? 0.2 : 0.12, h - (dz > 0 ? 0.1 : 0.06), dz > 0 ? 0.14 : 0.07, trim); }   // v7.6 奥の壁の上は太い梁（桁）
       else { strip(0.3, 0.15, 0.06, trim); if (h > 1.5) strip(0.12, h - 0.06, 0.08, trim); if (S.fam === 'panel' && h > 1.5) strip(0.03, 1.1, 0.065, low); }
       if (h > 1.5 && dz > 0 && x % 3 === 0 && S.fam !== 'plaster' && !room) { add(trim, wbox(0.32, h, 0.07, cx, h / 2, fz + 0.035)); pil++; }   // 付け柱（奥の壁の正面）
-      if (dz > 0 && S.fam !== 'rock') decorFace(cx, fz, x, z, h);   // 奥の壁の飾り（地域×用途・城の部屋の種類）
+      if (dz > 0 && S.fam !== 'rock' && !R76.reserved.has(x + ',' + z)) decorFace(cx, fz, x, z, h);   // 奥の壁の飾り（地域×用途・城の部屋の種類）。暖炉・窓の所は置かない
+      if (dz > 0 && h > 1.5) wallExtras76(R76, x, z, cx, fz, h, { add, addNo: (m, gg) => mgNo.add(m, gg), trim, S });   // v7.6 柱・梁の端・窓と光の帯
+      else if (dx !== 0 && h > 1.5) sideWindow76(R76, x, z, dx, fx, { add, addNo: (m, gg) => mgNo.add(m, gg), trim });   // v7.6 横の壁の窓
       if (moss && h > 1.5 && r() < 0.18) add(moss, wbox(along ? 0.5 + r() * 0.4 : 0.03, 0.25 + r() * 0.5, along ? 0.03 : 0.5 + r() * 0.4, fx + dx * 0.015, 0.2 + r() * 1.2, fz + dz * 0.015));
     }
     walls++;
@@ -171,7 +180,7 @@ async function build(ctx, S0, b) {
       else { const ring = new THREE.RingGeometry(1.1, 1.3, 32); ring.rotateX(-Math.PI / 2); ring.translate(x, y + 0.03, z); add(low || trim, ring); } }
   }
   if (ctx.dress76) { try { ctx.stats.dress76 = dressBuild76(ctx.dress76, { add, T, scene: ctx.scene }); ctx.stats.dressKind = ctx.dress76.kind; } catch (e) { ctx.stats.dress76Error = String(e && e.message || e); console.warn('dress76', e); } }
-  mg.build(g);
-  Object.assign(ctx.stats, { walls, pilasters: pil, floors, sectionsLit: lit, decor });
+  mg.build(g); mgNo.build(g, { shadow: false });
+  Object.assign(ctx.stats, { walls, pilasters: pil, floors, sectionsLit: lit, decor, room76: R76.stats });
   return g;
 }

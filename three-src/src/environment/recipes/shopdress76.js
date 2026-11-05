@@ -162,9 +162,9 @@ export function dressBuild76(plan, o) {
     }
     if (it.what === 'lantern' && !beams76[it.z]) {   // v7.6 吊りランプの梁（天井がないので、壁から壁へ渡した梁から吊るす）
       beams76[it.z] = 1; let x0 = it.x, x1 = it.x; while (x0 > 0 && T(x0 - 1, it.z) !== 'wall' && T(x0 - 1, it.z) !== '_void') x0--; while (T(x1 + 1, it.z) !== 'wall' && T(x1 + 1, it.z) !== '_void') x1++;
-      const L = x1 - x0 + 1 + 0.1; if (L > 1.5 && L < 40) at((x0 + x1 + 1) / 2, cz, 0)(C.wood, wbox(L, 0.14, 0.15, 0, 3.27, 0, 1));
+      const L = x1 - x0 + 1 + 0.1; if (L > 1.5 && L < 40) at((x0 + x1 + 1) / 2, cz, 0)(C.wood, wbox(L, 0.14, 0.15, 0, 2.47, 0, 1));   // 壁の上（屋内の壁は 2.4）にのせる
     }
-    if (it.what === 'lantern') { const A = at(cx, cz, 0); A(C.hoop, cyl(0.012, 0.012, 0.5, 4, 0, 2.95, 0)); A(C.iron, cyl(0.12, 0.16, 0.06, 8, 0, 2.66, 0)); A(C.fire, cyl(0.1, 0.1, 0.22, 8, 0, 2.52, 0)); A(C.iron, cyl(0.16, 0.12, 0.05, 8, 0, 2.39, 0)); scene.lampSpots.push({ pos: new THREE.Vector3(cx, 2.4, cz), color: 0xffc070, power: 1.0, dist: 7 }); return true; }
+    if (it.what === 'lantern') { const A = at(cx, cz, 0); A(C.hoop, cyl(0.012, 0.012, 0.22, 4, 0, 2.29, 0)); A(C.iron, cyl(0.12, 0.16, 0.06, 8, 0, 2.16, 0)); A(C.fire, cyl(0.1, 0.1, 0.2, 8, 0, 2.03, 0)); A(C.iron, cyl(0.16, 0.12, 0.05, 8, 0, 1.905, 0)); scene.lampSpots.push({ pos: new THREE.Vector3(cx, 1.95, cz), color: 0xffc070, power: 1.0, dist: 7 }); return true; }   // v7.6 梁（2.4）から吊るす。下端 1.88（体の高さより上）
     return false;
   }
 }
