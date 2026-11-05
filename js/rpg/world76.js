@@ -50,60 +50,76 @@
   W76.PLACE = PLACE; W76.REGIONS = REGIONS; W76.GATE = GATE; W76.BRIDGES = BRIDGES; W76.SAIL_MAPS = SAIL_MAPS; W76.LEGACY = LEGACY;
 
   /* ---------- 配置（ブロック → 地図） ---------- */
-  var RECT = {}, OWN = new Array(WB * HB), SEAS = [];
-  REGIONS.forEach(function (id) { var p = PLACE[id]; RECT[id] = { x: p[0] * BW, y: p[1] * BH, w: W76.CW, h: W76.CH, region: true };
-    for (var by = p[1]; by < p[1] + 4; by++) for (var bx = p[0]; bx < p[0] + 4; bx++) { if (OWN[by * WB + bx]) throw new Error('World76: 地域が重なっている ' + id); OWN[by * WB + bx] = id; } });
-  (function makeSeas() {   // 地域のないブロックを、長方形（最大 4×4）にまとめる
-    for (var by = 0; by < HB; by++) for (var bx = 0; bx < WB; bx++) {
+  var RECT = {}, OWN = [], SEAS = [], SZ = {}, FILL = 'sea76_', WRAP = false, V76RECT = null;
+  // 配置を作る（地域の長方形と、残りのブロックをまとめた「外の地図」）。v7.8 地球の配置（js/rpg/earth78.js）は W76.useLayout で差し替える
+  function layout() {
+    RECT = {}; OWN = new Array(WB * HB); SEAS = [];
+    REGIONS.forEach(function (id) { var p = PLACE[id]; var sz = SZ[id] || [4, 4]; RECT[id] = { x: p[0] * BW, y: p[1] * BH, w: sz[0] * BW, h: sz[1] * BH, region: true };
+      for (var by = p[1]; by < p[1] + sz[1]; by++) for (var bx = p[0]; bx < p[0] + sz[0]; bx++) { if (OWN[by * WB + bx]) throw new Error('World76: 地域が重なっている ' + id); OWN[by * WB + bx] = id; } });
+    for (var by = 0; by < HB; by++) for (var bx = 0; bx < WB; bx++) {   // 地域のないブロックを、長方形（最大 4×4）にまとめる
       if (OWN[by * WB + bx]) continue;
       var w = 1; while (w < 4 && bx + w < WB && !OWN[by * WB + bx + w]) w++;
       var h = 1; while (h < 4 && by + h < HB) { var ok = true; for (var k = 0; k < w; k++) if (OWN[(by + h) * WB + bx + k]) ok = false; if (!ok) break; h++; }
-      var id = 'sea76_' + bx + '_' + by; RECT[id] = { x: bx * BW, y: by * BH, w: w * BW, h: h * BH, sea: true }; SEAS.push(id);
+      var id = FILL + bx + '_' + by; RECT[id] = { x: bx * BW, y: by * BH, w: w * BW, h: h * BH, sea: true }; SEAS.push(id);
       for (var yy = by; yy < by + h; yy++) for (var xx = bx; xx < bx + w; xx++) OWN[yy * WB + xx] = id;
     }
-  })();
-  W76.SEAS = SEAS; W76.RECT = RECT;
-  W76.MAPS = REGIONS.concat(SEAS);
+    W76.SEAS = SEAS; W76.RECT = RECT; W76.MAPS = REGIONS.concat(SEAS); W76.REGIONS = REGIONS; W76.PLACE = PLACE; W76.GATE = GATE; W76.SAIL_MAPS = SAIL_MAPS;
+  }
+  layout();
+  // v7.8 配置の差し替え：o = { BW, BH, WB, HB, PLACE, SZ, GATE, SAIL_MAPS, fill, wrap, BRIDGES }
+  W76.useLayout = function (o) {
+    if (!V76RECT) V76RECT = RECT;   // 前の版（v7.6）の配置：古いセーブ（共通の海 sea76_*）の救済に使う
+    BW = o.BW; BH = o.BH; WB = o.WB; HB = o.HB; PLACE = o.PLACE; SZ = o.SZ || {}; GATE = o.GATE || {}; SAIL_MAPS = o.SAIL_MAPS || {}; FILL = o.fill || 'sea76_'; WRAP = !!o.wrap;
+    REGIONS = Object.keys(PLACE); BRIDGES = o.BRIDGES || []; W76.BRIDGES = BRIDGES; W76.CW = null; W76.CH = null; FGATE = {}; layout();
+  };
+  W76.wrap = function () { return WRAP; };
+  function wrapX(gx) { var WW = WB * BW; return WRAP ? ((gx % WW) + WW) % WW : gx; }
+  W76.wrapX = wrapX;
+  // 東西が一周するとき：a から見た b の x の差（いちばん近い向き）
+  W76.dxWrap = function (d) { if (!WRAP) return d; var WW = WB * BW; d = ((d % WW) + WW) % WW; return d > WW / 2 ? d - WW : d; };
   W76.isFiller = function (id) { return !!(RECT[id] && RECT[id].sea) || !!LEGACY[id]; };
   W76.isSea = function (id) { return !!(RECT[id] && RECT[id].sea); };
   W76.isRegion = function (id) { return !!(RECT[id] && RECT[id].region); };
   W76.inGrid = function (id) { return !!RECT[id]; };   // つないだ世界の地図か（地域・共通の海）
-  W76.setting = function () { try { return root.localStorage && root.localStorage.getItem('mtq3d-join') === 'off' ? 'off' : 'on'; } catch (e) { return 'on'; } };
+  W76.setting = function () { try { var v = root.localStorage && root.localStorage.getItem('mtq3d-join'); return v === 'off' ? 'off' : v === 'v76' ? 'v76' : 'on'; } catch (e) { return 'on'; } };
   var ON = !!root.MTQ_JOIN76 && W76.setting() !== 'off';
+  // v7.8 地球の配置（js/rpg/earth78.js）：3D 版のページが地形のデータ（js/data/earth78-terrain.js）を読んだときだけ。設定 'v76' で前の版の配置
+  W76.earth = ON && !!root.EARTH78_TERRAIN && W76.setting() !== 'v76';   // 配置（earth78-layout.js）と仕組み（earth78.js）は最後に読む
   W76.on = function () { return ON && W76.ready; };
   W76.ready = false;
   W76.rect = function (id) { return RECT[id] || null; };
-  W76.origin = function (id) { var r = RECT[id]; return r ? { x: r.x, y: r.y } : null; };
+  W76.origin = function (id, ref) { var r = RECT[id]; if (!r) return null; if (!WRAP || !ref || !RECT[ref]) return { x: r.x, y: r.y }; var o = RECT[ref]; return { x: o.x + W76.dxWrap(r.x - o.x), y: r.y }; };   // v7.8 ref：その地図から見ていちばん近い位置（東西の一周）
   W76.size = function () { return { w: WB * BW, h: HB * BH, bw: WB, bh: HB }; };
-  W76.mapAt = function (gx, gy) { if (gx < 0 || gy < 0 || gx >= WB * BW || gy >= HB * BH) return null; return OWN[Math.floor(gy / BH) * WB + Math.floor(gx / BW)] || null; };
+  W76.mapAt = function (gx, gy) { gx = wrapX(gx); if (gx < 0 || gy < 0 || gx >= WB * BW || gy >= HB * BH) return null; return OWN[Math.floor(gy / BH) * WB + Math.floor(gx / BW)] || null; };
   W76.regionAt = W76.mapAt;
   W76.toGlobal = function (id, x, y) { var r = RECT[id]; return r ? { x: r.x + x, y: r.y + y } : null; };
-  W76.toLocal = function (gx, gy) { var id = W76.mapAt(gx, gy); if (!id) return null; var r = RECT[id]; return { map: id, x: gx - r.x, y: gy - r.y }; };
+  W76.toLocal = function (gx, gy) { gx = wrapX(gx); var id = W76.mapAt(gx, gy); if (!id) return null; var r = RECT[id]; return { map: id, x: gx - r.x, y: gy - r.y }; };
   // 地図 id の (nx, ny)（端の外）が、どの地図のどこか
   W76.neighbor = function (id, nx, ny) { var g = W76.toGlobal(id, nx, ny); if (!g) return null; var L = W76.toLocal(g.x, g.y); return L && L.map !== id ? L : null; };
   // 端の外に何かあるか（世界の果てでないか）：3D の地図の外の海・木・山を作るかどうか
-  W76.sides = function (id) { var r = RECT[id]; if (!r) return null; return { n: r.y > 0, s: r.y + r.h < HB * BH, w: r.x > 0, e: r.x + r.w < WB * BW }; };
+  W76.sides = function (id) { var r = RECT[id]; if (!r) return null; return { n: r.y > 0, s: r.y + r.h < HB * BH, w: WRAP || r.x > 0, e: WRAP || r.x + r.w < WB * BW }; };
   // となりの地図（境目を接するもの）：[{ id, side, dx, dy, a, b }]（a〜b：その辺のローカルの範囲）
   W76.neighbors = function (id) {
-    var r = RECT[id]; if (!r) return []; var out = {}; var push = function (nid, side, a) { if (!nid || nid === id) return; var k = nid + side; var o = RECT[nid]; if (!out[k]) out[k] = { id: nid, side: side, dx: o.x - r.x, dy: o.y - r.y, a: a, b: a }; else { out[k].a = Math.min(out[k].a, a); out[k].b = Math.max(out[k].b, a); } };
+    var r = RECT[id]; if (!r) return []; var out = {}; var push = function (nid, side, a) { if (!nid || nid === id) return; var k = nid + side; var o = RECT[nid]; if (!out[k]) out[k] = { id: nid, side: side, dx: W76.dxWrap(o.x - r.x), dy: o.y - r.y, a: a, b: a }; else { out[k].a = Math.min(out[k].a, a); out[k].b = Math.max(out[k].b, a); } };
     for (var x = 0; x < r.w; x += 1) { push(W76.mapAt(r.x + x, r.y - 1), 'n', x); push(W76.mapAt(r.x + x, r.y + r.h), 's', x); }
     for (var y = 0; y < r.h; y += 1) { push(W76.mapAt(r.x - 1, r.y + y), 'w', y); push(W76.mapAt(r.x + r.w, r.y + y), 'e', y); }
     return Object.keys(out).map(function (k) { return out[k]; });
   };
   // 世界の座標の窓（x0..x1, y0..y1）に重なる地図
-  W76.mapsIn = function (x0, y0, x1, y1) { return W76.MAPS.filter(function (id) { var r = RECT[id]; return r.x < x1 && r.x + r.w > x0 && r.y < y1 && r.y + r.h > y0; }); };
+  W76.mapsIn = function (x0, y0, x1, y1) { var WW = WB * BW; var sh = WRAP ? [0, -WW, WW] : [0]; return W76.MAPS.filter(function (id) { var r = RECT[id]; return r.y < y1 && r.y + r.h > y0 && sh.some(function (k) { return r.x + k < x1 && r.x + k + r.w > x0; }); }); };
   // 点と地図の長方形の距離（中なら 0）
-  W76.distTo = function (id, gx, gy) { var r = RECT[id]; if (!r) return Infinity; var dx = Math.max(r.x - gx, 0, gx - (r.x + r.w)), dy = Math.max(r.y - gy, 0, gy - (r.y + r.h)); return Math.sqrt(dx * dx + dy * dy); };
+  W76.distTo = function (id, gx, gy) { var r = RECT[id]; if (!r) return Infinity; if (WRAP) gx = r.x + r.w / 2 + W76.dxWrap(gx - (r.x + r.w / 2)); var dx = Math.max(r.x - gx, 0, gx - (r.x + r.w)), dy = Math.max(r.y - gy, 0, gy - (r.y + r.h)); return Math.sqrt(dx * dx + dy * dy); };
   function D() { return root.State && root.State.data; }
-  W76.unlocked = function (id) { var g = GATE[id]; var d = D(); return !g || !!(d && d.flags && d.flags[g.flag]); };
-  W76.gateText = function (id) { var g = GATE[id]; return g ? g.text : ''; };
+  var FGATE = {}; W76.gateOf = function (id) { if (GATE[id]) return GATE[id]; var r = RECT[id]; var g = r && r.sea && r.near && GATE[r.near]; if (!g) return null; var k = r.near; return FGATE[k] || (FGATE[k] = { flag: g.flag, text: g.text }); };   // v7.8 外の地図は、いちばん近い地域のフラグだけ（乗り物の決まりは地域そのものだけ）
+  W76.unlocked = function (id) { var g = W76.gateOf(id); var d = D(); return !g || !!(d && d.flags && d.flags[g.flag]); };
+  W76.gateText = function (id) { var g = W76.gateOf(id); return g ? g.text : ''; };
   W76.onSwitch = function (fn) { W76.listeners.push(fn); };
   // 進入の判定（境目の移動・到着先の確かめ・地図の案内が同じ決まりを使う）。戻り値：null＝入れる／{ text }＝入れない理由
   W76.entryBlock = function (toId, aboard, fromId) {
-    if (!RECT[toId]) return null; var g = GATE[toId];
+    if (!RECT[toId]) return null; var g = W76.gateOf(toId);
     if (g && !W76.unlocked(toId)) return { text: g.text, kind: 'flag' };
     if (g && g.vehicles && fromId !== toId && g.vehicles.indexOf(aboard || 'walk') < 0) return { text: g.vtext || g.text, kind: 'vehicle' };
-    if (aboard === 'sailboat' && !SAIL_MAPS[toId]) return { text: '小型帆船では外海へ出られない。（遠洋航海船が必要）', kind: 'vehicle' };
+    if (aboard === 'sailboat' && !SAIL_MAPS[toId] && !(RECT[toId].sea && SAIL_MAPS[RECT[toId].near])) return { text: '小型帆船では外海へ出られない。（遠洋航海船が必要）', kind: 'vehicle' };
     return null;
   };
   W76.nameOf = function (id) { if (root.MAP_DEFS && root.MAP_DEFS[id]) return root.MAP_DEFS[id].name; if (RECT[id] && RECT[id].sea) return seaName(id); if (LEGACY[id]) return id === 'sea76_south' ? '南の外海' : '南東の外海'; return ''; };   // セーブの一覧などに（つながないときも）
@@ -216,6 +232,7 @@
   }
   var bridgeSet = {};   // 'map:x,y' → true（船が下をくぐれる橋のマス）
   W76.isBridge76 = function (mapId, x, y) { return !!bridgeSet[mapId + ':' + x + ',' + y]; };
+  W76.addBridge = function (mapId, x, y) { bridgeSet[mapId + ':' + x + ',' + y] = true; };   // v7.8 地球の地域の道の橋
   function makeBridges() {
     BRIDGES.forEach(function (b) {
       var A = rowsOf(b.a), B = rowsOf(b.b); if (!A || !B) return; var ra0 = RECT[b.a], rb0 = RECT[b.b]; if (ra0.x + ra0.w !== rb0.x || ra0.y !== rb0.y) return;
@@ -235,6 +252,7 @@
   // 共通の海：世界の座標から決まる地形。陸からの距離 1 以内＝浅瀬、5 以内＝海、それより遠く＝深い海（遠洋航海船）。沖に小さな岩礁（崖・上陸できない）
   var LAND = null, DIST = null;
   function buildWorldField() {
+    if (W76.earth && root.Earth78) { var f = root.Earth78.field(); LAND = f.land; DIST = f.dist; return; }   // v7.8 地球：陸と、陸からの距離は Earth78 が作る
     var WW = WB * BW, WH = HB * BH; LAND = new Uint8Array(WW * WH); DIST = new Uint16Array(WW * WH).fill(65535); var q = new Int32Array(WW * WH); var t = 0;
     REGIONS.forEach(function (id) { var rows = rowsOf(id); var r = RECT[id]; for (var y = 0; y < r.h; y++) { var row = rows[y]; for (var x = 0; x < r.w; x++) if (!WATERC[row[x]]) { var k = (r.y + y) * WW + r.x + x; LAND[k] = 1; DIST[k] = 0; q[t++] = k; } } });
     var t0 = t; var D8 = new Uint16Array(DIST);   // 4 方向と 8 方向の距離の平均（八角形に近い＝ひし形・四角の縁にならない）
@@ -245,7 +263,7 @@
       for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { if (!dx && !dy) continue; var xx = cx2 + dx, yy = cy2 + dy; if (xx < 0 || yy < 0 || xx >= WW || yy >= WH) continue; var n2 = yy * WW + xx; if (D8[n2] > d2) { D8[n2] = d2; q[t2++] = n2; } } }
     for (var i = 0; i < WW * WH; i++) if (DIST[i] !== 65535) DIST[i] = Math.round((DIST[i] + Math.min(D8[i], DIST[i])) / 2);
   }
-  W76.landDist = function (gx, gy) { var WW = WB * BW; if (!DIST || gx < 0 || gy < 0 || gx >= WW || gy >= HB * BH) return 65535; return DIST[gy * WW + gx]; };
+  W76.landDist = function (gx, gy) { var WW = WB * BW; gx = wrapX(gx); if (!DIST || gx < 0 || gy < 0 || gx >= WW || gy >= HB * BH) return 65535; return DIST[gy * WW + gx]; };
   function seaChar(gx, gy) {
     var WW = WB * BW, WH = HB * BH; var d = W76.landDist(gx, gy);
     if (d <= 1) return 'w'; if (d <= 5) return '~';
@@ -258,12 +276,14 @@
     var g = rows.map(function (s) { return s.split(''); }); for (var y2 = 0; y2 < r.h; y2++) for (var x2 = 0; x2 < r.w; x2++) { if (g[y2][x2] !== '0') continue; for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var gy = r.y + y2 + dy, gx = r.x + x2 + dx; if ((dx || dy) && seaChar(gx, gy) === 'c') { g[y2][x2] = 'w'; dy = 2; break; } } }
     return g.map(function (s) { return s.join(''); }); }
   function seaName(id) {   // いちばん近い地域の沖（遠ければ「外海」）
+    if (W76.earth && root.Earth78) return root.Earth78.fillerName(id);
     var r = RECT[id]; var cx = r.x + r.w / 2, cy = r.y + r.h / 2; var best = null;
     REGIONS.forEach(function (rid) { var dd = W76.distTo(rid, cx, cy); if (!best || dd < best.d) best = { id: rid, d: dd }; });
     r.near = best ? best.id : 'world';
     var def = best && root.MAP_DEFS[best.id]; return best && best.d < 70 && def ? def.name + 'の沖' : '外海';
   }
   function defineSeas() {
+    if (W76.earth && root.Earth78) { SEAS.forEach(function (id) { if (!root.MAP_DEFS[id]) root.MAP_DEFS[id] = root.Earth78.fillerDef(id); }); return; }
     SEAS.forEach(function (id) { if (root.MAP_DEFS[id]) return; var cache = null;
       root.MAP_DEFS[id] = { id: id, name: seaName(id), kind: 'field', rows: function () { return cache || (cache = seaRows(id)); }, fallback: 'deep', bgm: 'field', region: true, sea76: true, filler76: true,
         locations: [], warps: [], chests: [], npcs: [], events: [], encounters: null, theme3d: { region: 'islands' } }; });
@@ -335,22 +355,24 @@
     if (RECT[id].sea) { if (nm !== lastSea && !(RECT[fromId] && RECT[fromId].sea && root.MAP_DEFS[fromId] && root.MAP_DEFS[fromId].name === nm)) say(nm + 'に出た'); lastSea = nm; }
     else { lastSea = null; say((d.aboard ? nm + 'の海域に入った' : nm + 'に入った') + (first ? '（はじめて）' : '')); }
     W76.crossings = (W76.crossings || 0) + 1;
-    var ev = { from: fromId, to: id, dx: o1.x - o0.x, dy: o1.y - o0.y };
+    var ev = { from: fromId, to: id, dx: W76.dxWrap(o1.x - o0.x), dy: o1.y - o0.y };
     W76.listeners.forEach(function (fn) { try { fn(ev); } catch (e) { console.error(e); } });
   };
 
   /* ---------- セーブ：つながない（2D 版・設定「地域ごと」）ときに共通の海にいたら、いちばん近い地域の端へ（乗り物ごと） ---------- */
-  function nearestRegionEdge(gx, gy, avoid) {
-    var best = null; REGIONS.forEach(function (id) { if (avoid && avoid[id]) return; if (!root.MAP_DEFS[id]) return; var r = RECT[id]; var lx = Math.max(0, Math.min(r.w - 1, gx - r.x)), ly = Math.max(0, Math.min(r.h - 1, gy - r.y)); var dd = Math.abs(gx - r.x - lx) + Math.abs(gy - r.y - ly); if (!best || dd < best.dist) best = { map: id, x: lx, y: ly, dist: dd }; }); return best;
+  function nearestRegionEdge(gx, gy, avoid, rects) {
+    var R0 = rects || RECT; var best = null; Object.keys(R0).forEach(function (id) { if (!R0[id].region) return; if (avoid && avoid[id]) return; if (!root.MAP_DEFS[id]) return; var r = R0[id]; var lx = Math.max(0, Math.min(r.w - 1, gx - r.x)), ly = Math.max(0, Math.min(r.h - 1, gy - r.y)); var dd = Math.abs(gx - r.x - lx) + Math.abs(gy - r.y - ly); if (!best || dd < best.dist) best = { map: id, x: lx, y: ly, dist: dd }; }); return best;
   }
   W76.normalizeSave = function (d) {
     if (!d || !d.pos) return false; var id = d.pos.map; var best = null;
     if (LEGACY[id]) {   // 前の版の外海：その版の並びで、いちばん近いとなりの地域の端へ（地域の ID とローカル座標は今の版でも同じ）
       var L0 = LEGACY[id]; var gx = L0.o[0] + d.pos.x, gy = L0.o[1] + d.pos.y; Object.keys(L0.nb).forEach(function (nid) { var o = L0.nb[nid]; var lx = Math.max(0, Math.min(159, gx - o[0])), ly = Math.max(0, Math.min(119, gy - o[1])); var dd = Math.abs(gx - o[0] - lx) + Math.abs(gy - o[1] - ly); if (!best || dd < best.dist) best = { map: nid, x: lx, y: ly, dist: dd }; });
     } else if (RECT[id] && RECT[id].sea && !(W76.on() && root.MAP_DEFS[id])) { var g = W76.toGlobal(id, d.pos.x, d.pos.y); best = nearestRegionEdge(g.x, g.y); }
+    else if (/^sea76_/.test(id) && !RECT[id] && V76RECT && V76RECT[id]) { var r6 = V76RECT[id]; best = nearestRegionEdge(r6.x + d.pos.x, r6.y + d.pos.y, null, V76RECT); }   // v7.8 地球の配置のとき：前の版（v7.6）の共通の海 → その版の並びで近い地域の端（旧座標。このあと地球の座標へ直す）
+    else if (!W76.earth && root.Earth78 && root.Earth78.legacyPos) best = root.Earth78.legacyPos(d);   // v7.8 地球の配置のセーブを、地球を使わないで読む（外の地図・新しい地域）
     if (!best) return false;
     var from = id; d.pos = { map: best.map, x: best.x, y: best.y, dir: d.pos.dir || 'down' };
-    var isOld = function (mid) { return mid === from || !!LEGACY[mid] || (RECT[mid] && RECT[mid].sea && !(W76.on() && root.MAP_DEFS[mid])); };
+    var isOld = function (mid) { return mid === from || !!LEGACY[mid] || (RECT[mid] && RECT[mid].sea && !(W76.on() && root.MAP_DEFS[mid])) || (/^sea76_/.test(mid) && !RECT[mid]) || (!W76.earth && /^w78_/.test(mid)); };
     Object.keys(d.vehicles || {}).forEach(function (k) { var s = d.vehicles[k]; if (!s || !isOld(s.map)) return; if (d.aboard === k) { s.map = best.map; s.x = best.x; s.y = best.y; } else if (s.port && !isOld(s.port.map)) { s.map = s.port.map; s.x = s.port.x; s.y = s.port.y; } else { var hm = root.VEHICLES && root.VEHICLES[k] && root.VEHICLES[k].home; if (hm) { s.map = hm.map; s.x = hm.x; s.y = hm.y; } } });
     d.w76moved = { from: from, to: best.map, at: Date.now() };   // 救済した記録（確認用。ゲームの進行には使わない）
     return true;
@@ -376,6 +398,9 @@
     if (W76._init) return; W76._init = true;
     patchWorld();
     if (!ON) return;
+    if (W76.earth) {   // v7.8 地球の配置（js/rpg/earth78.js）
+      root.Earth78.setup(W76); buildWorldField(); defineSeas(); rebuildRoutes(); patchVehicle(); W76.ready = true; if (root.Earth78.after) root.Earth78.after(W76); return;
+    }
     // 地域の大きさが 160×120 でなければ、つながない（安全のため）
     var ok = REGIONS.every(function (id) { var r = rowsOf(id); return r && r.length === W76.CH && r[0].length === W76.CW; });
     if (!ok) { console.warn('World76: 地域の大きさが合わないため、つながない'); return; }
@@ -383,5 +408,5 @@
     W76.ready = true;
   };
   root.World76 = W76;
-  if (root.World && root.Vehicle && root.MAP_DEFS) W76.init();
+  if (root.World && root.Vehicle && root.MAP_DEFS && !W76.earth) W76.init();   // 地球の配置のときは、すべて読み込んだあとに js/rpg/earth78.js が呼ぶ
 })(typeof window !== 'undefined' ? window : globalThis);

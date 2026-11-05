@@ -158,7 +158,7 @@
     var stand = null; [[0, 1], [1, 0], [-1, 0], [0, -1]].some(function (dv) { var nx = p.x + dv[0], ny = p.y + dv[1]; if (landOk(m, nx, ny)) { stand = { x: nx, y: ny }; return true; } return false; });
     if (!stand) { stand = Astra.safeNear(m, p.x, p.y, 6); if (!stand) return false; }
     Astra.park(p.region, p.x, p.y);
-    root.World.enterMap(p.region, stand.x, stand.y, 'down');
+    root.World.enterMap(p.region, stand.x, stand.y, 'down', { raw: true });   // v7.8 今いる地図の座標（旧座標からの変換をしない）
     return { map: p.region, x: stand.x, y: stand.y, ship: { x: p.x, y: p.y } };
   };
   // 呼び寄せ：今いる地域（フィールド）の、主人公の近くの安全なマスへ
