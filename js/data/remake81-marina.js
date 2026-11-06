@@ -44,7 +44,7 @@
   }
   function levels(w, h, rws) { var L = []; for (var y = 0; y < h; y++) { var s = ''; for (var x = 0; x < w; x++) { var c = rws[y].charAt(x); s += y < LY ? '1' : y > LY ? '0' : (c === '/' || c === ';') ? '0' : '1'; } L.push(s); } return L; }
   R.define('harbor_town', {
-    version: 1, rows: rows, levels: levels, arrive: [37, 2],
+    version: 1, rows: rows, levels: levels, arrive: [37, 6],
     buildings: {
       inn: { x: 4, y: 3, w: 10, h: 6, doorX: 5 }, a3_harbor_net: { x: 16, y: 5, w: 6, h: 4, doorX: 2 }, item: { x: 23, y: 3, w: 12, h: 6, doorX: 5 },
       x72_house: { x: 56, y: 4, w: 7, h: 5, doorX: 3 },
@@ -67,7 +67,7 @@
     warps: [].concat(
       [0, 1].map(function (y) { return [36, 37, 38, 39].map(function (x) { return { x: x, y: y, to: 'world', tx: 22, ty: 71 }; }); }).reduce(function (a, b) { return a.concat(b); }, []),
       [24, 25, 26, 27].map(function (y) { return { x: 0, y: y, to: 'world', tx: 19, ty: 73, name: '船着き場へ' }; })),
-    anchors: [[24, 2, 36, 2], [25, 2, 37, 2], [26, 2, 38, 2], [27, 2, 39, 2], [24, 3, 36, 3], [25, 3, 37, 3], [26, 3, 38, 3], [27, 3, 39, 3]],   // 前の北の門の内側の道 → 新しい北の街道（古いセーブ・物語で置く位置）
+    anchors: [[24, 2, 36, 5], [25, 2, 37, 5], [26, 2, 38, 5], [27, 2, 39, 5], [24, 3, 36, 6], [25, 3, 37, 6], [26, 3, 38, 6], [27, 3, 39, 6]],   // 前の北の門の内側の道 → 新しい北の街道（古いセーブ・物語で置く位置）
     edgeExits: [{ side: 'top', range: [0, 35] }, { side: 'top', range: [40, W - 1] }, { side: 'left', range: [0, LY - 1] }, { side: 'left', range: [LY + 1, 23] }, { side: 'right', range: [0, LY - 1] }, { side: 'right', range: [LY + 1, 25] }],
     after: function (def) {
       def.events.forEach(function (e) {

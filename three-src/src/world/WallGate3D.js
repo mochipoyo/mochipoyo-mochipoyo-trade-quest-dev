@@ -8,6 +8,7 @@
    ========================================================= */
 import * as THREE from 'three';
 import { Batch, box, M4, textTexture } from '../engine/Materials.js';
+import { addCutout } from '../engine/Cutout.js';
 
 const WALLT = { castle_wall: 1 };
 // 出口のまとまり：[{ side, a0, a1, v0, v1 }]（side＝S/N/E/W、a＝辺に沿った範囲、v＝城壁の厚みの範囲）
@@ -48,7 +49,7 @@ export function buildWallGates(map, ctx) {
   const desert = theme.region === 'desert';
   const stone = M.tinted('stonewall', theme.region === 'dark' ? '#6a6070' : desert ? '#d8b88a' : '#c8c0b4'), lite = M.tinted('stonewall', theme.region === 'dark' ? '#8a8090' : desert ? '#ecd6ae' : '#e4ded2');
   const roof = M.roof(theme.roof || '#3f4f8a'), iron = M.get('iron'), gold = M.get('gold'), dark = M.tinted('planks', '#2a1c12');
-  const bannerMat = new THREE.MeshStandardMaterial({ map: crestTexture(theme.roof || '#2a4f9a'), roughness: 0.95, side: THREE.DoubleSide });
+  const bannerMat = addCutout(new THREE.MeshStandardMaterial({ map: crestTexture(theme.roof || '#2a4f9a'), roughness: 0.95, side: THREE.DoubleSide }));   // v8.1 主人公の手前では網目に抜く（額・旗が主人公に重ならない）
   const WALLH = 2.6;
   for (const g of gates) {
     const L = g.a1 - g.a0 + 1; const depth = g.v1 - g.v0 + 1; const ca = (g.a0 + g.a1 + 1) / 2, cv = (g.v0 + g.v1 + 1) / 2;
@@ -86,7 +87,7 @@ export function buildWallGates(map, ctx) {
     // 額（町の名）・旗・門灯（外側と内側）
     const name = (map.name || '').replace(/（.*?）/g, '');
     for (const s of [1, -1]) {
-      const plate = new THREE.Mesh(new THREE.PlaneGeometry(Math.min(ow + 0.4, 3.2), 0.6), new THREE.MeshStandardMaterial({ map: textTexture(name || '城門'), roughness: 0.8 }));
+      const plate = new THREE.Mesh(new THREE.PlaneGeometry(Math.min(ow + 0.4, 3.2), 0.6), addCutout(new THREE.MeshStandardMaterial({ map: textTexture(name || '城門'), roughness: 0.8 })));
       const pp = new THREE.Vector3(0, apex + 0.75, s * (D / 2 + 0.04)).applyMatrix4(base); plate.position.copy(pp); plate.rotation.y = ry + (s < 0 ? Math.PI : 0); ctx.group.add(plate);
       for (const k of [-1, 1]) { const bp = new THREE.Vector3(k * (ow / 2 + ts / 2 - 0.05), Hb - 0.4, s * (ts / 2 + 0.03)).applyMatrix4(base);
         const ban = new THREE.Mesh(new THREE.PlaneGeometry(0.7, 1.9), bannerMat); ban.position.copy(bp).add(new THREE.Vector3(0, -0.95, 0)); ban.rotation.y = ry + (s < 0 ? Math.PI : 0); ban.castShadow = true; ctx.group.add(ban); }

@@ -34,7 +34,7 @@ async function walkTo(gx, gy) { const id0 = W.map.id; for (let n = 0; n < 200; n
   const into = (fm.def.warps || []).filter((q) => q.to === ID); ok(into.length > 0, 'フィールド ' + fieldId + ' に城下町への入口 ' + into.length);
   if (into.length) { const e = into[0]; let st = null; for (const [dx, dy, k] of [[0, 1, 'up'], [1, 0, 'left'], [-1, 0, 'right'], [0, -1, 'down']]) { if (passAt(fm, e.x + dx, e.y + dy)) { st = [e.x + dx, e.y + dy, k]; break; } }
     W.enterMap(fieldId, st[0], st[1], st[2], { raw: true }); await flush(); await step(st[2]);
-    ok(W.map.id === ID && W.player.dir === 'up' && W.player.y >= m.h - 5, 'フィールドの入口から歩いて入る → 城下町 ' + W.player.x + ',' + W.player.y + '（向き ' + W.player.dir + '）'); }
+    ok(W.map.id === ID && W.player.dir === 'up' && W.player.y >= m.h - 9, 'フィールドの入口から歩いて入る → 城下町 ' + W.player.x + ',' + W.player.y + '（向き ' + W.player.dir + '）'); }
   W.enterMap(ID, 35, 56, 'up', { raw: true }); await flush();
   const seen = []; let n = 0; while (W.map.id === ID && n++ < 60) { const y0 = W.player.y; seen.push(m.tile(W.player.x, W.player.y)); await step('up'); if (W.map.id === ID && W.player.y !== y0 - 1) break; }
   ok(W.map.id === 'rivel_castle', '南の門の内側から王道をまっすぐ北へ ' + n + ' 歩 → 内門・前庭・跳ね橋を通って城の中へ（' + W.map.id + ' ' + W.player.x + ',' + W.player.y + '）');

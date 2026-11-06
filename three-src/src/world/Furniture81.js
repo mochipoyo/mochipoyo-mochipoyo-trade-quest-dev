@@ -7,6 +7,7 @@
    ・向き：歩けるとなりのマスの方（手前＝南を優先）を正面にする（道具かけ・黒板は壁を背にする）
    ========================================================= */
 import * as THREE from 'three';
+import { addCutout } from '../engine/Cutout.js';
 import { Batch, box, M4 } from '../engine/Materials.js';
 
 const MAT = new Map();
@@ -14,7 +15,7 @@ function mat(hex, o) {
   o = o || {}; const key = hex + '|' + [o.rough, o.metal, o.glow].join(','); if (MAT.has(key)) return MAT.get(key);
   const m = new THREE.MeshStandardMaterial({ color: new THREE.Color(hex), roughness: o.rough !== undefined ? o.rough : 0.75, metalness: o.metal || 0 });
   if (o.glow) { m.emissive = new THREE.Color(hex); m.emissiveIntensity = o.glow; m.userData.keepGlow = true; }
-  m.name = 'furn81_' + key; MAT.set(key, m); return m;
+  m.name = 'furn81_' + key; addCutout(m); MAT.set(key, m); return m;   /* 主人公の手前では網目に抜く */
 }
 const KINDS = { target: 1, hearth: 1, rack: 1, armillary: 1, blackboard: 1, instrument: 1, meridian: 1 };
 export function buildFurniture81(map, heightAt) {

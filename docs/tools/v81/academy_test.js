@@ -33,7 +33,7 @@ async function walkTo(gx, gy) { const id0 = W.map.id; for (let n = 0; n < 200; n
   const into = (fm.def.warps || []).filter((q) => q.to === ID); ok(into.length > 0, 'フィールド ' + fieldId + ' に学院への入口 ' + into.length);
   if (into.length) { const e = into[0]; let st = null; for (const [dx, dy, k] of [[0, 1, 'up'], [1, 0, 'left'], [-1, 0, 'right'], [0, -1, 'down']]) { if (passAt(fm, e.x + dx, e.y + dy)) { st = [e.x + dx, e.y + dy, k]; break; } }
     W.enterMap(fieldId, st[0], st[1], st[2], { raw: true }); await flush(); await step(st[2]);
-    ok(W.map.id === ID && W.player.dir === 'up' && W.player.y >= m.h - 4, 'フィールドの入口から歩いて入る → 学院 ' + W.player.x + ',' + W.player.y + '（向き ' + W.player.dir + '）');
+    ok(W.map.id === ID && W.player.dir === 'up' && W.player.y >= m.h - 7, 'フィールドの入口から歩いて入る → 学院 ' + W.player.x + ',' + W.player.y + '（向き ' + W.player.dir + '）');
     // 正面の子午線を北へ：観測塔の前の広場（y 32〜34）まで、門・アーチの下をまっすぐ
     let sx = W.player.x, ok2 = true; for (let i = 0; i < 12 && W.player.y > 32; i++) { const y0 = W.player.y; await step('up'); if (W.player.y !== y0 - 1) { ok2 = false; break; } }
     ok(ok2 && W.player.y <= 33 && W.player.x === sx, '門からまっすぐ北へ歩いて、アーチの下を通り観測塔の前の広場へ（' + W.player.x + ',' + W.player.y + '・タイル ' + m.tile(W.player.x, W.player.y) + '）');

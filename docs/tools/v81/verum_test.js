@@ -29,7 +29,7 @@ async function walkTo(gx, gy) { const id0 = W.map.id; for (let n = 0; n < 200; n
   ok(m.def.remake81 && m.w === 64 && m.h === 40 && T76.has(m) && !T76.validate(m).length, 'ヴェルムが作り直した形 ' + m.w + '×' + m.h + '・段の決まり OK（' + (two ? '2D 版' : '地球の世界') + '）');
   const fieldId = m.def.warps[0].to; const fm = W.getMap(fieldId); const into = (fm.def.warps || []).filter((q) => q.to === ID);
   if (into.length) { const e = into[0]; let st = null; for (const [dx, dy, k] of [[0, 1, 'up'], [1, 0, 'left'], [-1, 0, 'right'], [0, -1, 'down']]) { if (passAt(fm, e.x + dx, e.y + dy)) { st = [e.x + dx, e.y + dy, k]; break; } }
-    W.enterMap(fieldId, st[0], st[1], st[2], { raw: true }); await flush(); await step(st[2]); ok(W.map.id === ID && W.player.y >= m.h - 4, 'フィールドの入口から歩いて入る → ヴェルム ' + W.player.x + ',' + W.player.y); }
+    W.enterMap(fieldId, st[0], st[1], st[2], { raw: true }); await flush(); await step(st[2]); ok(W.map.id === ID && W.player.y >= m.h - 6, 'フィールドの入口から歩いて入る → ヴェルム ' + W.player.x + ',' + W.player.y); }
   W.enterMap(ID, 31, 37, 'up', { raw: true }); await flush(); const lv = []; let n = 0;
   while (n++ < 50 && W.map.id === ID) { lv.push(T76.levelAt(m, W.player.x, W.player.y)); await step('up'); }
   const ls = [...new Set(lv)].join('→'); ok(W.map.id !== ID && ls === '0→1→2', '南の門から坂道をまっすぐ北へ ' + n + ' 歩：段 ' + ls + ' → 北の門から ' + W.map.id + ' ' + W.player.x + ',' + W.player.y);

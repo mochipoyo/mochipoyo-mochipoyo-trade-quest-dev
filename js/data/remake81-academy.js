@@ -70,7 +70,7 @@
     points: { opt_056: [20, 3] },
     warps: [AX, AX + 1].map(function (x) { return { x: x, y: H - 1, to: 'world_tempus', tx: 100, ty: 89, name: '学院の外へ' }; }),
     keepWarp: function () { return false; },
-    arrive: [AX, H - 3],
+    arrive: [AX, H - 5],   // 門の下でなく少し内側（いつものカメラで門の塔と外の木が主人公にかからない）
     after: function (def) {
       def.events.forEach(function (e) { if (e.v72 || (e.x === 50 && e.y === 9)) e.text = ['【書庫の回廊のそば】', '研究生の下宿・研究者の居住区・学者の家が、北東の塀ぞいに並ぶ。回廊を登ると、観測塔の前の広場へ出る。']; });
       // 3D：渡り廊下（低いアーチの屋根）・書庫の回廊・側廊（js/../Furniture81 ではなく three-src/src/world/Arcade81.js）
@@ -123,18 +123,21 @@
   });
   // 講義室：奥の黒板と教壇（カウンター越しに講師）・段になった机の列（真ん中の通路に段）
   R.define('vol_lecture', {
+    // 講義室：段床（3 段）。奥（南）の入口から、真ん中の通路の階段を下りて教壇と黒板へ。段ごとに机の列と座る列
     version: 1, arrive: [8, 11],
     rows: function (canvas) {
       var C = canvas(17, 13, '_'); C.frame(0, 0, 17, 13, '#'); C.set(8, 12, 'D');
-      C.rect(5, 1, 7, 1, '}'); C.set(2, 1, 'K'); C.set(3, 1, 'K'); C.set(13, 1, 'K'); C.set(14, 1, 'K'); C.rect(7, 3, 3, 1, 'T');
-      C.rect(1, 2, 15, 2, ':'); C.rect(7, 3, 3, 1, 'T');   /* 教壇のまわりは石の床 */
-      C.rect(7, 4, 3, 7, 'p');   /* 真ん中の通路（敷物） */
-      [5, 7, 9].forEach(function (y) { C.rect(2, y, 5, 1, 't'); C.rect(10, y, 5, 1, 't'); });
+      C.rect(5, 1, 7, 1, '}'); C.set(2, 1, 'K'); C.set(3, 1, 'K'); C.set(13, 1, 'K'); C.set(14, 1, 'K');
+      C.rect(1, 2, 15, 2, ':'); C.rect(7, 3, 3, 1, 'T');   /* 教壇（石の床）と講卓 */
+      [4, 7, 10].forEach(function (y) { C.rect(2, y, 5, 1, 't'); C.rect(10, y, 5, 1, 't'); });   /* 段ごとの机の列 */
+      C.rect(7, 4, 3, 8, 'p');   /* 真ん中の通路（敷物） */
+      [6, 9].forEach(function (y) { C.rect(1, y, 15, 1, '|'); C.rect(7, y, 3, 1, '/'); });   /* 段の縁と通路の階段 */
       C.set(1, 11, 'z'); C.set(15, 11, '{');
       return C;
     },
+    levels: function (w, h, rws) { var L = []; for (var y = 0; y < h; y++) { var s = ''; for (var x = 0; x < w; x++) { var st = rws[y].charAt(x) === '/'; s += y < 6 ? '0' : y === 6 ? (st ? '0' : '1') : y < 9 ? '1' : y === 9 ? (st ? '1' : '2') : '2'; } L.push(s); } return L; },
     npcs: { va_lecturer: [8, 2, 'down', 0], va_listener: [4, 8, 'up', 0] },
-    events: [[5, 1, 3, 1]],
+    events: [[5, 1, 6, 1]],
     warps: [{ x: 8, y: 12, to: 'volatilia', tx: 7, ty: 8 }]
   });
   // 量子物理研究室：左右に対になる測定台（計器）。あいだを真鍮の線（もつれの対）が結ぶ。奥に棚
@@ -210,14 +213,5 @@
   });
 
   // 初めて学院に入ったとき（3D）：カメラが門から渡り廊下の上を通って観測塔のドームを映し、4 秒でふだんの追従に戻る（歩くのは止めない。2 回目からはしない）
-  (root.MAP_ENTER_HOOKS = root.MAP_ENTER_HOOKS || []).push(function (m) {
-    if (!m || m.id !== 'volatilia' || !R.applied.volatilia) return; var d = root.State && root.State.data; if (!d || !d.flags || d.flags.v81_acad_view) return;
-    var A3 = root.MTQ3D; if (!A3 || !A3.camera || !A3.camera.setCine || (A3.mode3D && !A3.mode3D())) return;
-    var t0 = Date.now(); var iv = setInterval(function () {
-      var cur = A3.current && A3.current.map; if (Date.now() - t0 > 20000 || (root.World && root.World.map && root.World.map.id !== 'volatilia')) { clearInterval(iv); return; }
-      if (!cur || cur.id !== 'volatilia' || A3.building) return; clearInterval(iv); d.flags.v81_acad_view = true;
-      try { A3.camera.setCine({ x: AX + 0.5, y: 5, z: 31, dist: 27, pitch: 30 }); } catch (e) { /* カメラがなくても続ける */ }
-      setTimeout(function () { try { A3.camera.setCine(null); } catch (e) { /* なし */ } }, 4000);
-    }, 200);
-  });
+  R.firstView('volatilia', 'v81_acad_view', { x: AX + 0.5, y: 5, z: 31, dist: 27, pitch: 30 }, 4000);
 })(typeof window !== 'undefined' ? window : globalThis);

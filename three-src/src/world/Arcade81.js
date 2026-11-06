@@ -5,6 +5,7 @@
    ・形は 1 つの Batch にまとめる（光は足さない）
    ========================================================= */
 import * as THREE from 'three';
+import { addCutout } from '../engine/Cutout.js';
 import { Batch, box, M4 } from '../engine/Materials.js';
 
 export function buildArcades81(map, ctx) {
@@ -12,7 +13,7 @@ export function buildArcades81(map, ctx) {
   const M = ctx.mats; const b = new Batch(); const H = ctx.heightAt || (() => 0);
   const light = M.tinted('stonewall', '#d8d0c0'), dark = M.tinted('stonewall', '#9a9284'), timber = M.get('timber'), roofM = M.tinted('stonewall', '#7a7066');
   const brass = new THREE.MeshStandardMaterial({ color: 0xc8a050, roughness: 0.35, metalness: 0.8 });
-  const sand = M.tinted('stonewall', '#e0c89a'), awning = new THREE.MeshStandardMaterial({ color: 0xd8b878, roughness: 0.95, side: THREE.DoubleSide });
+  const sand = M.tinted('stonewall', '#e0c89a'), awning = addCutout(new THREE.MeshStandardMaterial({ color: 0xd8b878, roughness: 0.95, side: THREE.DoubleSide }));
   for (const a of L) {
     if (a.kind === 'ring') {   // 弧の日陰回廊（砂の町）：中心 cx, cy・半径 r・幅 w。gaps（度。0＝東・90＝南）の向きは抜け道として開ける
       const y0 = H(a.cx, a.cy), roofY = y0 + 2.7, r = a.r, half = (a.w || 2) / 2; const N = Math.max(24, Math.round(2 * Math.PI * r / 1.0)); const gaps = (a.gaps || []).map((g) => g * Math.PI / 180); const gw = (a.gapW || 1.4) / r;

@@ -5,6 +5,7 @@
    ・banner：true なら紋章の両わきに縦長の垂れ幕。見た目だけ（通れるマスは変えない）。光は足さない。形は 1 つの Batch
    ========================================================= */
 import * as THREE from 'three';
+import { addCutout } from '../engine/Cutout.js';
 import { Batch, box, M4 } from '../engine/Materials.js';
 
 const MAT = new Map();
@@ -12,7 +13,7 @@ function mat(hex, o) {
   o = o || {}; const key = hex + '|' + [o.rough, o.metal, o.glow].join(','); if (MAT.has(key)) return MAT.get(key);
   const m = new THREE.MeshStandardMaterial({ color: new THREE.Color(hex), roughness: o.rough !== undefined ? o.rough : 0.7, metalness: o.metal || 0, side: THREE.DoubleSide });
   if (o.glow) { m.emissive = new THREE.Color(hex); m.emissiveIntensity = o.glow; m.userData.keepGlow = true; }
-  m.name = 'crest81_' + key; MAT.set(key, m); return m;
+  m.name = 'crest81_' + key; addCutout(m); MAT.set(key, m); return m;   /* 主人公の手前では網目に抜く */
 }
 const YAW = { s: 0, n: Math.PI, e: Math.PI / 2, w: -Math.PI / 2 };
 const PAL = {

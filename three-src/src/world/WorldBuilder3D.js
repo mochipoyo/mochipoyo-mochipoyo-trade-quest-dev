@@ -157,14 +157,14 @@ export class WorldBuilder3D {
       const colCache = {}; const TW = gx1 - gx0, TH = gz1 - gz0;
       for (let tz = 0; tz < TH; tz++) for (let tx = 0; tx < TW; tx++) {
         const t = Tg(gx0 + tx, gz0 + tz); const L = lookCache[t] || (lookCache[t] = tileLook(t));
-        let cc = colCache[t]; if (!cc) { if (L[1]) col.set(L[1]); else col.copy(grassC); if (dungeon && !L[1] && P.floor) col.set(P.floor); cc = colCache[t] = [col.r, col.g, col.b]; }
+        let cc = colCache[t]; if (!cc) { if (L[1]) col.set(L[1]); else col.copy(grassC); if (dungeon && !L[1] && P.floor) col.set(P.floor); else if (kind === 'interior' && !L[1]) col.set('#8a7660');   /* v8.1 屋内で色の決まっていない家具の下（机・黒板など）が草の色にならないように */ cc = colCache[t] = [col.r, col.g, col.b]; }
         for (let jj = 0; jj < SP; jj++) { let o = (tz * SP + jj) * SW + tx * SP; for (let ii = 0; ii < SP; ii++, o++) { sp[o * 4] = L[0][0]; sp[o * 4 + 1] = L[0][1]; sp[o * 4 + 2] = L[0][2]; sp[o * 4 + 3] = L[0][3]; tn[o * 3] = cc[0]; tn[o * 3 + 1] = cc[1]; tn[o * 3 + 2] = cc[2]; } }
       }
     } else for (let j = 0; j < SH; j++) for (let i = 0; i < SW; i++) {
       const tx = Math.floor(gx0 + (i + 0.5) / SP), tz = Math.floor(gz0 + (j + 0.5) / SP); const t = Tg(tx, tz);
       const L = lookCache[t] || (lookCache[t] = tileLook(t)); const o = (j * SW + i);
       sp[o * 4] = L[0][0]; sp[o * 4 + 1] = L[0][1]; sp[o * 4 + 2] = L[0][2]; sp[o * 4 + 3] = L[0][3];
-      if (L[1]) col.set(L[1]); else col.copy(grassC); if (dungeon && !L[1] && P.floor) col.set(P.floor);
+      if (L[1]) col.set(L[1]); else col.copy(grassC); if (dungeon && !L[1] && P.floor) col.set(P.floor); else if (kind === 'interior' && !L[1]) col.set('#8a7660');   /* v8.1 屋内で色の決まっていない家具の下（机・黒板など）が草の色にならないように */
       tn[o * 3] = col.r; tn[o * 3 + 1] = col.g; tn[o * 3 + 2] = col.b;
     }
     const blur = (arr, ch, rad) => { const tmp = new Float32Array(arr.length); for (const [dx, dy] of [[1, 0], [0, 1]]) { const src = dx ? arr : tmp, dst = dx ? tmp : arr; for (let j = 0; j < SH; j++) for (let i = 0; i < SW; i++) for (let c = 0; c < ch; c++) { let s = 0, n = 0; for (let k = -rad; k <= rad; k++) { const ii = Math.min(SW - 1, Math.max(0, i + k * dx)), jj = Math.min(SH - 1, Math.max(0, j + k * dy)); s += src[(jj * SW + ii) * ch + c]; n++; } dst[(j * SW + i) * ch + c] = s / n; } } };

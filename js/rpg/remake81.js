@@ -23,7 +23,9 @@
   var nameOf = function (def, c) { return TL.byChar[c] || def.fallback || 'grass'; };
   // 建物の扉と扉の前（js/core/map.js と同じ計算）
   // 初めて入ったときだけ（3D）：カメラを少しのあいだ目印へ向ける（入口から最初に見える物）。フラグで 2 回目からは待たせない。2D 版・元の間取りでは何もしない
+  R.views = {};   // 町ごとの見せ場のカメラ（確かめの道具が使う）
   R.firstView = function (id, flag, cine, ms) {
+    R.views[id] = { flag: flag, cine: cine, ms: ms || 4000 };
     (root.MAP_ENTER_HOOKS = root.MAP_ENTER_HOOKS || []).push(function (m) {
       if (!m || m.id !== id || !R.applied[id]) return; var d = root.State && root.State.data; if (!d || !d.flags || d.flags[flag]) return;
       var A3 = root.MTQ3D; if (!A3 || !A3.camera || !A3.camera.setCine || (A3.mode3D && !A3.mode3D())) return;

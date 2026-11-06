@@ -34,7 +34,7 @@
   }
   function levels(w, h, rws) { var L = []; for (var y = 0; y < h; y++) { var s = ''; for (var x = 0; x < w; x++) { var c = rws[y].charAt(x); var st = c === '/' || c === ';'; s += y < L1 ? '2' : y === L1 ? (st ? '1' : '2') : y < L2 ? '1' : y === L2 ? (st ? '0' : '1') : '0'; } L.push(s); } return L; }
   R.define('verum_town', {
-    version: 1, rows: rows, levels: levels, arrive: [31, 37],
+    version: 1, rows: rows, levels: levels, arrive: [31, 35],
     buildings: {
       factory: { x: 3, y: 2, w: 10, h: 6, doorX: 5 }, a3_verum_row: { x: 16, y: 3, w: 6, h: 4, doorX: 2 },
       overseer: { x: 40, y: 2, w: 10, h: 6, doorSide: 'left', doorY: 3 }, x72_house: { x: 52, y: 2, w: 7, h: 5, doorX: 3 },
@@ -56,7 +56,7 @@
     events: [[20, 10, 34, 18], [36, 23, 39, 31], [59, 20, 58, 22]],
     chests: { vt1: [61, 36] },
     points: { sp_verum_town_13_11: [14, 11], sp_verum_town_8_11: [6, 11], opt_024: [60, 3] },
-    anchors: [[22, 1, 30, 1], [23, 1, 31, 1], [24, 1, 32, 1], [25, 1, 33, 1], [22, 2, 30, 2], [23, 2, 31, 2], [24, 2, 32, 2], [25, 2, 33, 2], [23, 33, 30, 37], [24, 33, 31, 37], [25, 33, 32, 37], [26, 33, 33, 37], [23, 34, 30, 38], [24, 34, 31, 38], [25, 34, 32, 38], [26, 34, 33, 38]],   // 前の北・南の門の内側 → 新しい門の内側
+    anchors: [[22, 1, 30, 1], [23, 1, 31, 1], [24, 1, 32, 1], [25, 1, 33, 1], [22, 2, 30, 2], [23, 2, 31, 2], [24, 2, 32, 2], [25, 2, 33, 2], [23, 33, 30, 35], [24, 33, 31, 35], [25, 33, 32, 35], [26, 33, 33, 35], [23, 34, 30, 36], [24, 34, 31, 36], [25, 34, 32, 36], [26, 34, 33, 36]],   // 前の北・南の門の内側 → 新しい門の内側
     warps: [].concat([RX, RX + 1, RX + 2, RX + 3].map(function (x) { return { x: x, y: H - 1, to: 'world_grania', tx: 56, ty: 59 }; }),
       [RX, RX + 1, RX + 2, RX + 3].map(function (x) { return { x: x, y: 0, to: 'world_grania', tx: 56, ty: 57 }; })),
     after: function (def) {

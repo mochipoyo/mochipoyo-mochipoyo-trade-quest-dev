@@ -40,7 +40,7 @@
     return C;
   }
   R.define('sahar_city', {
-    version: 1, rows: rows, arrive: [29, 41],
+    version: 1, rows: rows, arrive: [29, 40],
     buildings: {
       x72_tower: { x: 2, y: 2, w: 6, h: 6, doorX: 2 },
       guild: { x: 10, y: 9, w: 10, h: 6, doorX: 4 },
@@ -63,12 +63,14 @@
     events: [[18, 24, 26, 8], [47, 12, 45, 33]],
     chests: { sh1: [58, 9] },
     points: { sp_sahar_city_7_20: [6, 24], sp_sahar_city_29_12: [27, 13], opt_085: [33, 20] },
-    anchors: [[19, 27, 29, 41], [20, 27, 30, 41], [19, 28, 29, 42], [20, 28, 30, 42]],   // 前の南の門の内側 → 新しい南の門の内側
+    anchors: [[19, 27, 29, 39], [20, 27, 30, 39], [19, 28, 29, 40], [20, 28, 30, 40]],   // 前の南の門の内側 → 新しい南の門の内側
     warps: [{ x: 29, y: H - 1, to: 'world_desert', tx: 50, ty: 35 }, { x: 30, y: H - 1, to: 'world_desert', tx: 50, ty: 35 }],
     after: function (def) {
       def.events.forEach(function (e) {
         if (e.x === 45 && e.y === 33) e.text = ['【隊商の囲い】', '南の門から入った隊商は、ここでらくだを休ませる。囲いの西に隊商宿、北に隊商の家。'];
       });
+      // 水の音：水路・給水場（水番所）の前・井戸・オアシスの岸の近くで聞こえる（js/ui/ambient81.js）
+      def.waterSound81 = [{ x: 31, y: 12, r: 8 }, { x: 35, y: 14, r: 6 }, { x: 30, y: 22, r: 5, v: 0.6 }, { x: 27, y: 8, r: 9, v: 0.8 }];
       def.arcades81 = [{ kind: 'ring', cx: CX + 0.5, cy: CY + 0.5, r: 7.5, w: 2, gaps: [0, 90, 180, 270, -49, 139, 45], gapW: 1.5 }];
     }
   });
