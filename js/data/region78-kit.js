@@ -10,7 +10,7 @@
    ========================================================= */
 (function (root) {
   'use strict';
-  var R78 = root.R78 = { monsters: [], maps: [] };
+  var R78 = root.R78 = { monsters: [], maps: [], specials: [], objs: [], designs: [], decors: [], offMaps: [] };
   var EN = root.ENEMIES, ITEMS = root.ITEMS, Q = root.QUESTS;
   function statsFor(lv, arche) {   // js/data/monsters65.js と同じ式
     var s = { hp: Math.round(18 + lv * 9.5), atk: Math.round(5 + lv * 2.2), def: Math.round(2 + lv * 1.3), agi: Math.round(3 + lv * 0.9), mag: Math.round(lv * 0.8), exp: Math.round(3 + lv * lv * 0.9), gold: Math.round(3 + lv * 1.7) };
@@ -29,14 +29,14 @@
     o.weak = Object.keys(o.resist).filter(function (k) { return o.resist[k] > 1; });
     EN[id] = o; R78.monsters.push(id); return o;
   };
-  R78.special = function (id, o) { var SP = root.ENEMY_SPECIALS; if (SP && !SP[id]) SP[id] = o; };
+  R78.special = function (id, o) { var SP = root.ENEMY_SPECIALS; if (SP && !SP[id]) { SP[id] = o; R78.specials.push(id); } };
   function item(o) { if (ITEMS[o.id]) throw new Error('region78: アイテムの ID が重複 ' + o.id); ITEMS[o.id] = o; return o; }
   R78.weapon = function (id, name, type, atk, price, extra) { return item(Object.assign({ id: id, name: name, cat: 'weapon', type: type, atk: atk, price: price }, extra || {})); };
   R78.armor = function (id, name, type, def, price, extra) { return item(Object.assign({ id: id, name: name, cat: 'armor', type: type, def: def, price: price }, extra || {})); };
   R78.item = function (id, name, price, effect, desc, extra) { return item(Object.assign({ id: id, name: name, cat: 'consumable', price: price, effect: effect, desc: desc }, extra || {})); };
   R78.key = function (id, name, desc) { return item({ id: id, name: name, cat: 'key', price: 0, desc: desc }); };
-  R78.quest = function (id, o) { if (Q[id]) throw new Error('region78: クエストの ID が重複 ' + id); o.side = true; Q[id] = o; return o; };
-  R78.obj = function (q, done, t, h) { var O = root.OBJECTIVES; if (O) O.push({ q: q, done: done, t: t, h: h || [], side: true }); };
+  R78.quest = function (id, o) { if (Q[id]) throw new Error('region78: クエストの ID が重複 ' + id); o.side = true; Q[id] = o; R78.questIds.push(id); return o; };
+  R78.obj = function (q, done, t, h) { var O = root.OBJECTIVES; if (O) { var e = { q: q, done: done, t: t, h: h || [], side: true }; O.push(e); R78.objs.push(e); } };
   R78.add = function (def) { def.region78 = true; root.TownKit.add(def); R78.maps.push(def.id); return def; };
   R78.shop = function (id, name, town, exitX, exitY, keeper, kind, stock, lines) { var d = root.TownKit.shopInterior(id, name, town, exitX, exitY, keeper, kind, stock, lines); var def = root.MAP_DEFS[id]; if (def) { def.region78 = true; R78.maps.push(id); } return d; };
   R78.inn = function (id, name, town, exitX, exitY, price) { root.TownKit.innInterior(id, name, town, exitX, exitY, price); var def = root.MAP_DEFS[id]; if (def) { def.region78 = true; R78.maps.push(id); } };
@@ -83,9 +83,25 @@
     rainDusk: { sun: 0xb8c2d4, si: 1.3, hemi: 0x9aa2b8, hi: 1.05, fog: 0x5a6276, top: 0x3a4256, hor: 0x8a6a8a, win: 1.4, exp: 1.2, fogD: 0.015 },   // v7.8 錆雨市のフィールド：雨雲の夕暮れ
     ashSky: { sun: 0xe8e0d0, si: 1.5, hemi: 0xb8b4a8, hi: 0.85, fog: 0xc0bab0, top: 0x8a8a92, hor: 0xd8d0c0, win: 0.4, exp: 1.0, fogD: 0.014 } };
   // 3D の屋内・ダンジョンの作り方（room：three-src の ROOM_STYLE の名前）と飾りのテーマ（decor：js/data/placedecor70.js の THEMES の名前）
-  R78.look = function (ids, o) { ids.forEach(function (id) { var def = root.MAP_DEFS[id]; if (!def) return; if (o.room) def.room78 = o.room; if (o.decor && root.PLACE_DECOR && root.PLACE_DECOR.MAPS && !root.PLACE_DECOR.MAPS[id]) root.PLACE_DECOR.MAPS[id] = o.decor; }); };
+  R78.look = function (ids, o) { ids.forEach(function (id) { var def = root.MAP_DEFS[id]; if (!def) return; if (o.room) def.room78 = o.room; if (o.decor && root.PLACE_DECOR && root.PLACE_DECOR.MAPS && !root.PLACE_DECOR.MAPS[id]) { root.PLACE_DECOR.MAPS[id] = o.decor; R78.decors.push(id); } }); };
   // 場所の外観（js/data/designs.js の LOCATION_DESIGNS と同じ形。2D の地図の絵と 3D の目印・町の建物が読む）
-  R78.design = function (id, o) { if (!root.LOCATION_DESIGNS || root.LOCATION_DESIGNS[id]) return; o.id = id; root.LOCATION_DESIGNS[id] = o; };
+  R78.design = function (id, o) { if (!root.LOCATION_DESIGNS || root.LOCATION_DESIGNS[id]) return; o.id = id; root.LOCATION_DESIGNS[id] = o; R78.designs.push(id); };
+  // 読み込みの最後（js/rpg/earth78.js から）：地球の世界でないとき（2D 版・3D 版の設定「v7.6 の配置」「地域ごと」）は、新しい地域へ行けないので、
+  //   地図・敵・案内・外観を外す（2D 版の図鑑・クエスト掲示板・地図の一覧は前のまま）。アイテムとクエストの定義は残す（地球の世界のセーブを読んでも、持ち物・クエストの画面が壊れない）。
+  //   クエストは future（受注前は掲示しない）にする。外した地図の ID は offMaps（セーブの救済：Earth78.newRegionOf）
+  R78.finish = function (earth) {
+    if (R78.finished) return; R78.finished = true; R78.earth = !!earth; if (earth) return;
+    R78.offMaps = R78.maps.slice(); R78.maps.forEach(function (id) { delete root.MAP_DEFS[id]; });
+    R78.monsters.forEach(function (id) { if (EN) delete EN[id]; }); R78.specials.forEach(function (id) { if (root.ENEMY_SPECIALS) delete root.ENEMY_SPECIALS[id]; });
+    var O = root.OBJECTIVES; if (O) R78.objs.forEach(function (e) { var i = O.indexOf(e); if (i >= 0) O.splice(i, 1); });
+    R78.designs.forEach(function (id) { delete root.LOCATION_DESIGNS[id]; }); if (root.DungeonExit && root.DungeonExit.DEFS) R78.maps.forEach(function (id) { delete root.DungeonExit.DEFS[id]; }); R78.decors.forEach(function (id) { delete root.PLACE_DECOR.MAPS[id]; });
+    R78.questIds.forEach(function (id) { if (Q[id]) Q[id].future = true; });
+    var BS = root.BossSymbol; if (BS && BS.REGISTRY) R78.bossSyms.forEach(function (e) { var i = BS.REGISTRY.indexOf(e); if (i >= 0) BS.REGISTRY.splice(i, 1); });
+  };
+  R78.questIds = [];
+  // ボスの姿（js/rpg/bosssymbol.js の REGISTRY）：台本で戦うボスを、戦いの場所（調べるマス）に見せる
+  R78.bossSyms = [];
+  R78.bossSym = function (map, x, y, enemy, show) { var BS = root.BossSymbol; if (!BS || !BS.REGISTRY) return; var e = { map: map, at: { x: x, y: y }, enemy: enemy, show: show, script: true, v78: true }; BS.REGISTRY.push(e); R78.bossSyms.push(e); };
   // 共通：会話の文字（地域ごとの話し手）
   R78.D = function () { return root.State.data; };
   R78.questDone = function (q) { var d = R78.D(); return !!(d.quests && d.quests[q] && d.quests[q].state === 'done'); };

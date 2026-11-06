@@ -15,6 +15,8 @@ for (const id of ids) { const def = w.MAP_DEFS[id]; if (!def) { ok(false, id + '
   const starts = []; Object.keys(w.MAP_DEFS).forEach((mid) => { const dd = w.MAP_DEFS[mid]; (dd.warps || []).forEach((wp) => { if (wp.to === id) { const p = w.MapRemake ? w.MapRemake.pos(id, wp.tx, wp.ty) : { x: wp.tx, y: wp.ty }; starts.push([p.x, p.y, mid]); } }); (dd.buildings || []).forEach((b) => { if (b.interior === id && b.entry) starts.push([b.entry.x, b.entry.y, mid + '(建物)']); }); });
   const bad = starts.filter((s) => !(s[0] >= 0 && s[1] >= 0 && s[0] < m.w && s[1] < m.h && (pass(s[0], s[1]) || m.warpAt(s[0], s[1]))));
   ok(def.kind === 'field' || (starts.length > 0 && !bad.length), id + '：入って来る所 ' + starts.length + ' か所が歩けるマス ' + bad.map((b) => b.join(',')).join(' '));
+  const onSolid = (m.npcs || []).filter((n) => { const t = m.tiles[n.y] && m.tiles[n.y][n.x]; return !t || w.Tiles.isSolid(t) || w.Tiles.isWater(t) || !!m.warpAt(n.x, n.y) || (m.chests || []).some((c) => c.x === n.x && c.y === n.y); });
+  ok(!onSolid.length, id + '：人 ' + (m.npcs || []).length + ' 人が歩けるマスの上（出入口・宝箱の上ではない） ' + onSolid.map((n) => n.id + '@' + n.x + ',' + n.y).join(' '));
   if (def.kind === 'field') continue;
   const seen = new Uint8Array(m.w * m.h); const q = []; starts.forEach((s) => { if (s[0] >= 0 && s[1] >= 0 && s[0] < m.w && s[1] < m.h) { seen[s[1] * m.w + s[0]] = 1; q.push(s[0], s[1]); } });
   for (let h = 0; h < q.length; h += 2) { const x = q[h], y = q[h + 1]; for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = x + dx, ny = y + dy; if (nx < 0 || ny < 0 || nx >= m.w || ny >= m.h || seen[ny * m.w + nx]) continue; if (!pass(nx, ny) && !m.warpAt(nx, ny)) continue; seen[ny * m.w + nx] = 1; if (!m.warpAt(nx, ny)) q.push(nx, ny); } }

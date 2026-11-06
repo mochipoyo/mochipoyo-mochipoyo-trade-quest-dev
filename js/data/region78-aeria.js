@@ -154,6 +154,9 @@
       d.flags.aer_reactor = true; root.State.autosave();
     } }], encounters: null });
   /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
+  R.bossSym('aeria_reactor', 8, 2, 'boss_anchor_core', function (f) { return !f.aer_reactor; });
   R.tag(['aeria_dock', 'aeria_garden_hi', 'aeria_garden_lo', 'aeria_corridor', 'aeria_reactor'], 'aeria', 'sky', 'sky');
+  // 脱出の羽・帰還の術：雲の上の城の「入口」は船着き場（アストラ号のそば）。地上へは船着き場のアストラ号で
+  if (root.DungeonExit && root.DungeonExit.DEFS) ['aeria_dock', 'aeria_garden_hi', 'aeria_garden_lo', 'aeria_corridor', 'aeria_reactor'].forEach(function (id) { root.DungeonExit.DEFS[id] = { map: DOCK, x: 9, y: 10, label: '浮天城アエリアの船着き場（アストラ号のそば）' }; });
   R.look(['aeria_dock', 'aeria_garden_hi', 'aeria_garden_lo', 'aeria_corridor', 'aeria_reactor'], { decor: 'sky' });
 })(typeof window !== 'undefined' ? window : globalThis);

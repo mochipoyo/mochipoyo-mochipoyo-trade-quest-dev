@@ -384,12 +384,13 @@
     if (best.old) d.e78skip = { map: best.map, x: best.x, y: best.y };   // v7.8 旧座標で決めた位置：このあとの「地球の座標 → 旧座標」の戻し（Earth78.migrateOff）で二重に直さない
     var from = id; d.pos = { map: best.map, x: best.x, y: best.y, dir: d.pos.dir || 'down' };
     var isOld = function (mid) { return mid === from || !!LEGACY[mid] || (RECT[mid] && RECT[mid].sea && !(W76.on() && root.MAP_DEFS[mid])) || (/^sea76_/.test(mid) && !RECT[mid]) || (!W76.earth && /^w78_/.test(mid)); };
+    if (best.inn) d.aboard = null;   // v7.8 新しい地域にいたセーブ → 宿へ：乗り物から降りる（乗り物は Earth78.offFix が港・置き場へ）
     Object.keys(d.vehicles || {}).forEach(function (k) { var s = d.vehicles[k]; if (!s || !isOld(s.map)) return; if (d.aboard === k) { s.map = best.map; s.x = best.x; s.y = best.y; } else if (s.port && !isOld(s.port.map)) { s.map = s.port.map; s.x = s.port.x; s.y = s.port.y; } else { var hm = root.VEHICLES && root.VEHICLES[k] && root.VEHICLES[k].home; if (hm) { s.map = hm.map; s.x = hm.x; s.y = hm.y; } } });
     d.w76moved = { from: from, to: best.map, at: Date.now() };   // 救済した記録（確認用。ゲームの進行には使わない）
     return true;
   };
   // その地図（町・ダンジョン・建物の中）が、行き先の地域に属しているか（出口のワープをたどった地域。BattleBG65.regionOf と同じ考え方）
-  function sameHome(fromMap, toId) { if (!fromMap) return false; if (fromMap.id === toId) return true; var BG = root.BattleBG65; if (!BG || !BG.regionOf) return false; try { return BG.regionOf(fromMap.id) === BG.regionOf(toId); } catch (e) { return false; } }
+  function sameHome(fromMap, toId) { if (!fromMap) return false; if (fromMap.id === toId) return true; if (fromMap.def && fromMap.def.region78 && root.MAP_DEFS[toId] && root.MAP_DEFS[toId].region78) return true; /* v7.8 新しい地域の町・ダンジョンから、その地域のフィールドへ */ var BG = root.BattleBG65; if (!BG || !BG.regionOf) return false; try { return BG.regionOf(fromMap.id) === BG.regionOf(toId); } catch (e) { return false; } }
   function patchWorld() {
     var World = root.World; if (!World || World._w76) return; World._w76 = true;
     var st = World.start; World.start = function () { try { W76.normalizeSave(root.State.data); } catch (e) { console.error(e); } return st.apply(this, arguments); };

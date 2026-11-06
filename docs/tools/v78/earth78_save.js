@@ -43,4 +43,16 @@ old76.w.State.data = JSON.parse(save2); old76.w.World.start(); const v5 = old76.
 ok(v5.pos.map === 'world' && Math.abs(v5.pos.x - exit.tx) + Math.abs(v5.pos.y - exit.ty) <= 3 && walk(old76.w, 'world', v5.pos.x, v5.pos.y) && !(v5.remakeVer || {}).world, '地球のセーブ → v7.6 の配置：旧座標のポヨ村の出口の近くへ ' + JSON.stringify(v5.pos));
 dd.pos = { map: f3, x: 5, y: 5, dir: 'down' }; old76.w.State.data = JSON.parse(JSON.stringify(dd)); old76.w.World.start(); const v6 = old76.w.State.data;
 ok(W76o.inGrid(v6.pos.map) && !/^w78_/.test(v6.pos.map) && walk(old76.w, v6.pos.map, v6.pos.x, v6.pos.y), '地球の外の地図のセーブ → v7.6 の配置：その配置の地図の歩けるマスへ ' + JSON.stringify(v6.pos));
+// ---------- 6) 2D 版には新しい地域の地図・敵・案内がない（行けないので外す）。アイテム・クエストの定義は残す（クエストは掲示しない）
+const R2 = w2.R78; ok(R2.offMaps.length === R2.maps.length && R2.maps.every((id) => !w2.MAP_DEFS[id]) && R2.monsters.every((id) => !w2.ENEMIES[id]) && !w2.OBJECTIVES.some((e) => /78_/.test(e.q)), '2D 版：新しい地域の地図 ' + R2.offMaps.length + '・敵 ' + R2.monsters.length + '・案内を外した');
+ok(w2.ITEMS.neon_umbrella && w2.QUESTS.neon78_water && w2.QUESTS.neon78_water.future && w3.MAP_DEFS.neon_town && w3.ENEMIES.rust_drone && !w3.QUESTS.neon78_water.future, '2D 版：アイテム・クエストの定義は残す（クエストは掲示しない）／3D 版の地球の世界ではすべてある');
+// 地球の世界で、新しい地域で遠洋航海船に乗り・アストラ号を置き・錆雨市の宿に泊まったセーブ → 2D 版
+w3.State.newGame('t', 'warrior'); w3.World.start(); const g6 = w3.State.data; g6.flags.galleon_ready = true;
+g6.pos = { map: 'world_nereia', x: 10, y: 10, dir: 'down' }; g6.aboard = 'galleon'; g6.vehicles.galleon = { owned: true, map: 'world_nereia', x: 10, y: 10, port: { map: 'world_nereia', x: 12, y: 12 } };
+g6.astra = { owned: true, map: 'world_neon', x: 20, y: 20, flying: false, e78: true, log: {} }; g6.lastInn = { map: 'neon_inn', x: 5, y: 6 }; g6.dungeonEntry = { group: 'x', map: 'world_meridian', x: 3, y: 3 };
+w2.State.data = JSON.parse(JSON.stringify(g6)); w2.World.start(); const h6 = w2.State.data; const gv6 = h6.vehicles.galleon;
+ok(w2.World76.REGIONS.includes(h6.pos.map) && h6.aboard === 'galleon' && gv6.map === h6.pos.map && gv6.x === h6.pos.x && gv6.y === h6.pos.y && water(w2, gv6.map, gv6.x, gv6.y), '2D 版：新しい地域の海（環潮大陸）で船に乗っていた → 近い地域（' + h6.pos.map + '）の海へ、船ごと ' + JSON.stringify(h6.pos));
+g6.pos = { map: 'neon_town', x: 17, y: 16, dir: 'down' }; g6.aboard = null; w2.State.data = JSON.parse(JSON.stringify(g6)); w2.World.start(); const k6 = w2.State.data;
+ok(k6.pos.map === 'poyo_village' && !k6.aboard && w2.MAP_DEFS[k6.vehicles.galleon.map] && !/nereia/.test(k6.vehicles.galleon.map), '2D 版：錆雨市の町にいた（最後の宿も錆雨市）→ ポヨ村・新しい地域に置いた船は置き場へ（' + k6.vehicles.galleon.map + '）');
+ok(h6.astra.map === 'world_sky' && h6.lastInn.map === 'poyo_village' && !h6.dungeonEntry, '2D 版：アストラ号は空の区画・最後の宿はポヨ村・新しい地域の入口の記録は消す ' + JSON.stringify({ astra: h6.astra.map, inn: h6.lastInn.map }));
 console.log(ng.length ? '結果：NG ' + ng.length : '結果：すべて OK'); process.exit(ng.length ? 1 : 0);

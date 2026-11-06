@@ -1,0 +1,11 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/ch18test.js.orig	2026-11-06 10:14:31.779236064 +0900
++++ ch18test.js	2026-11-06 10:14:31.790329325 +0900
+@@ -152,7 +152,7 @@
+   { const a=d.companions.elna; a.level=25; w.Actors.refreshSkills(a); ok(a.skills.includes('full_audit')&&a.skills.includes('final_ledger'),'auditor high skills');
+     ['ord','nagi','iris','sophia','io','ganes','aster'].forEach(id=>{ const c=d.companions[id]; if(!c) return; c.level=(id==='aster'&&w.JOBS.spirit_warden.skills.some(k=>k.id==='spirit_rebirth'&&k.lv===40))?40:25; w.Actors.refreshSkills(c); }); ok(d.companions.aster.skills.includes('spirit_rebirth')&&d.companions.ganes.skills.includes('field_forge')&&d.companions.io.skills.includes('overclock'),'high skills learned'); }
+   { const M=w.Minimap; d.visited.world_snow=true; d.visited.world_tempus=true; const e=M.globeEdges().find(e=>(e.a==='world_tempus'&&e.b==='world_snow')||(e.a==='world_snow'&&e.b==='world_tempus')); ok(e&&e.open,'globe snow edge'); }
+-  ok(Object.keys(w.QUESTS).length===85+6+(w.TRADERS?2:0)+(w.EVENTS65?5:0)+(w.Astra?1:0)+(w.Story3121?6:0),'85+6（v6.1 学院の研究クエスト）+2（v6.4 Phase D トレディア）+5（v6.5 Phase B イベントA〜E）+1（v6.5 Phase E アストラ号）+6（v6.9 西暦3121年：プロローグと任意5本） quests got '+Object.keys(w.QUESTS).length);
++  ok(Object.keys(w.QUESTS).length===85+6+(w.TRADERS?2:0)+(w.EVENTS65?5:0)+(w.Astra?1:0)+(w.Story3121?6:0)+(w.R78?w.R78.questIds.length:0),'85+6（v6.1 学院の研究クエスト）+2（v6.4 Phase D トレディア）+5（v6.5 Phase B イベントA〜E）+1（v6.5 Phase E アストラ号）+6（v6.9 西暦3121年：プロローグと任意5本）+5（v7.8 新しい5地域。地球の世界でないときは掲示しない） quests got '+Object.keys(w.QUESTS).length);
+   State.save(2); const loaded=State.load(2); ok(loaded.companions.aster&&loaded.flags.ft1_done&&loaded.quests.mq_s,'save ok');
+   console.log('ERRORS:', errs); process.exit(0);
+ } catch(e){ console.log('CRASH', e.stack.split('\n').slice(0,4).join(' '), 'ERRORS so far:', errs); process.exit(1);} })();

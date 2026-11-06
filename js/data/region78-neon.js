@@ -122,14 +122,14 @@
   // 噴水：直ったあとは別の文に
   (function () { var def = root.MAP_DEFS[T]; var ev = def.events[0]; ev.type = 'script'; ev.run = async function (c) { await c.msg(D().flags.neon_ai_fixed ? ev.doneText : ev.text); }; })();
   R.inn('neon_inn', '旅籠「雨宿り」', T, 27, 5, 140);
-  R.shop('neon_shop', '配給品の店', T, 8, 15, 'merchant', 'item', ['hi_potion', 'hi_ether', 'elixir', 'antidote', 'wake_bell', 'escape_wing', 'tent'], ['配給品だよ。……雨水じゃない水は、ここにはない。']);
+  R.shop('neon_shop', '配給品の店', T, 8, 15, 'merchant', 'item', ['hi_potion', 'hi_ether', 'elixir', 'antidote', 'wake_bell', 'escape_wing', 'escape_feather', 'tent'], ['配給品だよ。……雨水じゃない水は、ここにはない。']);
   R.shop('neon_gear', 'ネオン街の仕立て屋', T, 26, 15, 'merchant', 'armor', ['neon_raincoat', 'knight_armor', 'arcane_hat', 'aegis_shield', 'ember_robe'], ['看板の灯を織った合羽がおすすめだよ。雨の夜でも目立つ。']);
   function room(id, name, exitX, exitY, npcs, rows) { return R.add({ id: id, name: name, kind: 'interior', bgm: 'town', rows: rows || ['############', '#E__K_____E#', '#__________#', '#_t______q_#', '#__________#', '#_z____]___#', '#__________#', '#__________#', '#####D######'], warps: [{ x: 5, y: 8, to: T, tx: exitX, ty: exitY }], npcs: npcs }); }
-  room('neon_house', '止まった蛇口の家', 4, 10, [{ id: 'nh_mother', x: 7, y: 5, sprite: 'villager_f', dir: 'down', wander: 0, talk: async function (c) { await c.say('住宅街の母親', c.flag('neon_ai_fixed') ? ['蛇口をひねったら、水が出たの。……三か月ぶりよ。', '子どもが、手を洗うのを喜んでる。当たり前のことなのにね。'] : ['見て、この蛇口。ひねっても、空気の音しかしない。', '水道局は「配給表どおり」って言うの。配給表が間違ってるのに。']); } }]);
+  room('neon_house', '止まった蛇口の家', 4, 10, [{ id: 'nh_mother', x: 7, y: 4, sprite: 'villager_f', dir: 'down', wander: 0, talk: async function (c) { await c.say('住宅街の母親', c.flag('neon_ai_fixed') ? ['蛇口をひねったら、水が出たの。……三か月ぶりよ。', '子どもが、手を洗うのを喜んでる。当たり前のことなのにね。'] : ['見て、この蛇口。ひねっても、空気の音しかしない。', '水道局は「配給表どおり」って言うの。配給表が間違ってるのに。']); } }]);
   room('neon_house2', '配管工の長屋', 30, 10, [{ id: 'nh_worker', x: 3, y: 4, sprite: 'villager_m', dir: 'down', wander: 1, talk: async function (c) { await c.say('配管工', ['工場の配管は三階建てさ。外の搬入口から入って、下の階へ、下の階へ。', '一番奥が管理室だ。そこにいるAIが、街じゅうの弁を握ってる。']); } }]);
   R.add({ id: 'neon_office', name: '水道局の出張所', kind: 'interior', bgm: 'town', rows: ['############', '#KK_XX__KK_#', '#__________#', '#_TTTT_____#', '#__________#', '#_t___t_q__#', '#__________#', '#__________#', '#####D######'], warps: [{ x: 5, y: 8, to: T, tx: 9, ty: 5 }],
     npcs: [
-      { id: 'no_terminal', x: 4, y: 1, sprite: 'golem', dir: 'down', wander: 0, talk: async function (c) {
+      { id: 'no_terminal', x: 4, y: 2, sprite: 'golem', dir: 'down', wander: 0, talk: async function (c) {
         var d = D();
         if (d.flags.neon_ai_fixed) { await c.msg(['配給端末の画面：', '「第三浄水工場：閉鎖（記録 更新済み）」', '「住宅街 第一〜第四区：配給 再開」']); return; }
         await c.msg(['配給端末の画面：', '「第三浄水工場：稼働中　配給量 一日 四万二千トン」', '「住宅街 第一〜第四区：配給 停止（需要の記録なし）」', '「最終更新：十二年前」']);
@@ -227,6 +227,7 @@
   R.tag(['world_neon'], 'neon', null, 'machine', R.MOOD.rainDusk);
   R.tag(['neon_town'], 'neon', 'machine_city', 'machine', R.MOOD.neonNight);
   R.tag(['neon_inn', 'neon_shop', 'neon_gear', 'neon_house', 'neon_house2', 'neon_office', 'neon_lighthouse'], 'neon', null, 'machine');
+  R.bossSym('neon_works_core', 9, 3, 'boss_archive_warden', function (f) { return f.neon_has_record && f.neon_meter && !f.neon_warden_down; });   // 記録をそろえると、管理室の奥に監督機の気配
   R.tag(['neon_works_1', 'neon_works_2', 'neon_works_core'], 'neon', 'machine_city', 'machine');
   R.look(['neon_works_1', 'neon_works_2', 'neon_works_core'], { room: 'factory', decor: 'machine' });
 })(typeof window !== 'undefined' ? window : globalThis);

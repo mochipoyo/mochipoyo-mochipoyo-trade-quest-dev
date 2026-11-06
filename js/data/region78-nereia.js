@@ -114,7 +114,7 @@
     { id: 'nc_scholar', x: 25, y: 4, sprite: 'scholar', dir: 'down', wander: 1, talk: async function (c) { await c.say('潮の学者', ['ネレイアは、大西洋の真ん中に浮かぶ輪の大陸だ。西に南アメリカ、東にアフリカ。', '昔の人は、海に沈んだ大陸の伝説を語った。……ここが沈まずに済んでいるのは、潮門のおかげかもしれない。']); } }
   ] });
   R.inn('nereia_inn', '宿「満ち潮」', CT, 26, 4, 90);
-  R.shop('nereia_shop', '潟の市場', CT, 4, 11, 'merchant', 'item', ['hi_potion', 'ether', 'hi_ether', 'antidote', 'calm_water', 'escape_wing', 'tent'], ['潟で採れた貝の干物もあるよ。……薬の話だったね。']);
+  R.shop('nereia_shop', '潟の市場', CT, 4, 11, 'merchant', 'item', ['hi_potion', 'ether', 'hi_ether', 'antidote', 'calm_water', 'escape_wing', 'escape_feather', 'tent'], ['潟で採れた貝の干物もあるよ。……薬の話だったね。']);
   R.shop('nereia_gear', '珊瑚細工の店', CT, 28, 11, 'merchant', 'armor', ['coral_mail', 'knight_armor', 'knight_shield', 'iron_helm'], ['珊瑚の鎧は軽いよ。泳いでも沈まない……かもしれない。']);
   R.add({ id: 'nereia_hall', name: '潮守の館', kind: 'interior', bgm: 'town', rows: ['############', '#KK_XX__KK_#', '#__________#', '#_TTTT_____#', '#__________#', '#_t___t_q__#', '#__________#', '#__________#', '#####D######'], warps: [{ x: 5, y: 8, to: CT, tx: 8, ty: 4 }],
     events: [{ x: 4, y: 1, type: 'inspect', solid: true, text: ['潮の記録。何百年分もの、満ちる時と引く時が並んでいる。', '百年ごとに、ひときわ高い印。「大潮」。最後の印の横に「次」とだけ書いてある。'] }] });
@@ -224,6 +224,7 @@
   R.design('ner_oldtown', { architectureStyle: '潮が満ちると沈む、高床の旧市街', silhouette: 'stilt_shacks', roofStyle: 'shed', materials: { wall: '#d8d0c0', wallD: '#a89e8a', wood: '#6a5a44', roof: '#2a8aa8', roofD: '#1a6a84', flag: '#2ab0c0', accent: '#f4f4f4' }, decoration: ['barrels'], environment: ['sea', 'stilts'] });
   R.design('ner_reeflight', { architectureStyle: '外礁に立つ白と青の灯標', silhouette: 'lighthouse', roofStyle: 'cone', materials: { wall: '#f4f2ec', wallD: '#c8c4b8', stripe: '#2a8ab0', roof: '#2a3a4a', glow: '#fff2a0' }, decoration: ['lamp'], environment: ['cliff', 'sea'] });
   R.tag(['world_nereia', 'nereia_city', 'nereia_old_hi', 'nereia_old_lo', 'nereia_inn', 'nereia_shop', 'nereia_gear', 'nereia_hall', 'nereia_beacon', 'nereia_archive'], 'nereia', null, 'islands');
+  R.bossSym('nereia_temple_2', 9, 2, 'boss_tides', function (f) { return !f.ner_gate; });
   R.tag(['nereia_temple_1', 'nereia_temple_2'], 'nereia', 'sea', 'islands');
   R.look(['nereia_temple_1', 'nereia_temple_2'], { room: 'undersea', decor: 'sea' });
   R.look(['nereia_city'], { decor: 'harbor' });

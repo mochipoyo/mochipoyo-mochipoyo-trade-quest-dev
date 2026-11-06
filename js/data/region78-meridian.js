@@ -121,7 +121,7 @@
     if (d.flags.mer_gave_mother && d.flags.mer_gave_oldman && d.flags.mer_gave_girl) { d.flags.mer_delivered = true; c.take('mer_letters', 1); await c.msg(['三通の伝言を、すべて届けた。']); }
   }
   R.inn('meridian_inn', '診療テント', S, 23, 5, 110);
-  R.shop('meridian_shop', '物資の配給所', S, 24, 10, 'merchant', 'item', ['hi_potion', 'hi_ether', 'antidote', 'calm_water', 'escape_wing', 'tent', 'phoenix_feather'], ['物資は、みんなで分ける。……旅の人の分も、ちゃんとある。']);
+  R.shop('meridian_shop', '物資の配給所', S, 24, 10, 'merchant', 'item', ['hi_potion', 'hi_ether', 'antidote', 'calm_water', 'escape_wing', 'escape_feather', 'tent', 'phoenix_feather'], ['物資は、みんなで分ける。……旅の人の分も、ちゃんとある。']);
   R.shop('meridian_gear', '古着の仕立て場', S, 5, 16, 'merchant', 'armor', ['ashshore_coat', 'knight_armor', 'iron_helm', 'knight_shield'], ['塩を払うには、厚手のコートがいちばんだよ。']);
   R.add({ id: 'meridian_hq', name: '避難所の本部', kind: 'interior', bgm: 'town', rows: ['############', '#KK_SS__KK_#', '#__________#', '#_TTTT__t__#', '#__________#', '#_t___t_q__#', '#__________#', '#__________#', '#####D######'], warps: [{ x: 5, y: 8, to: S, tx: 9, ty: 5 }],
     npcs: [{ id: 'mh_radio', x: 6, y: 2, sprite: 'scholar', dir: 'down', wander: 0, talk: async function (c) { await c.say('通信係', c.flag('mer_why') ? ['信号機の記録、読ませてもらった。「崩落ノ危険。停止」……最後まで正しく働いてたんだな、あの信号は。'] : ['最後の通信は「路線図にない駅に停車」。……そんな駅、どの地図にも載っていない。', '工事の途中で止まった計画があった、という噂はある。地下の避難用ホームの話だ。']); } }],
@@ -226,6 +226,7 @@
   R.tag(['world_meridian', 'meridian_highway'], 'meridian', 'grassland', 'grania', R.MOOD.ashSky);
   R.tag(['meridian_shelter'], 'meridian', null, 'grania', R.MOOD.ashSky);
   R.tag(['meridian_inn', 'meridian_shop', 'meridian_gear', 'meridian_hq', 'meridian_tent', 'meridian_harbor'], 'meridian', null, 'grania');
+  R.bossSym('meridian_station', 8, 3, 'boss_block_signal', function (f) { return f.mer_found && !f.mer_why; });
   R.tag(['meridian_subway_1', 'meridian_subway_2', 'meridian_station'], 'meridian', 'machine_city', 'machine');
   R.look(['meridian_subway_1', 'meridian_subway_2', 'meridian_station'], { room: 'factory', decor: 'machine' });
   R.look(['meridian_shelter'], { decor: 'ruins' });

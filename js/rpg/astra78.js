@@ -80,7 +80,7 @@
   // 飛び立つとき：地球の座標の印
   var tk = A.takeOff; A.takeOff = function (m, x, y) { var r = tk.apply(this, arguments); var s = A.state(); if (r && s && on()) s.e78 = true; return r; };
   // 地球を使わないで読むとき：地球の座標で飛んでいたら、飛び立った場所に降ろしておく
-  A.offNormalize = function (d) { var s = d && d.astra; if (!s || !s.e78 || on()) return; if (s.flying) { s.flying = false; if (s.from && MD()[s.from.map] && !MD()[s.from.map].region78) { s.map = s.from.map; s.x = s.from.x; s.y = s.from.y; } else { s.map = 'world_sky'; s.x = 48; s.y = 78; } } if (s.map === 'aeria_dock') { s.map = 'world_sky'; s.x = 48; s.y = 78; } delete s.e78; };
+  A.offNormalize = function (d) { var s = d && d.astra; if (!s || !s.e78 || on()) return; if (s.flying) { s.flying = false; if (s.from && MD()[s.from.map] && !MD()[s.from.map].region78) { s.map = s.from.map; s.x = s.from.x; s.y = s.from.y; } else { s.map = 'world_sky'; s.x = 48; s.y = 78; } } if (s.map === 'aeria_dock' || !MD()[s.map] || MD()[s.map].region78 || (root.Earth78 && root.Earth78.newRegionOf && root.Earth78.newRegionOf(s.map))) { s.map = 'world_sky'; s.x = 48; s.y = 78; } delete s.e78; };   // 新しい地域・地球の外の地図（地球を使わないときはない地図）にいたら空の区画へ
   A.setupEarth = function () { if (!on()) return; A.WORLD = { w: SZ().w, h: SZ().h + OFF }; A.wrapW = SZ().w; A._lpCache = {}; };
 
   /* ---------- 船で太平洋を行くと、雲の上から城の影 ---------- */

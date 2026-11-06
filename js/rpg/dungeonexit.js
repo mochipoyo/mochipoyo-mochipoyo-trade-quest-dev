@@ -68,7 +68,7 @@
     if (!ex.length) return all.length ? { locked: true, exit: all[0] } : null;
     var d = D(), en = d && d.dungeonEntry, pick = null;
     if (en && en.group === g.key) {   // 入ってきた入口へ
-      var bd = 1e9; ex.forEach(function (l) { if (l.to !== en.map) return; var dd = Math.abs(l.tx - en.x) + Math.abs(l.ty - en.y); if (dd < bd) { bd = dd; pick = l; } });
+      var bd = 1e9; ex.forEach(function (l) { if (l.to !== en.map) return; var lp = root.MapRemake && root.MapRemake.pos ? root.MapRemake.pos(l.to, l.tx, l.ty) : { x: l.tx, y: l.ty }; var dd = Math.abs(lp.x - en.x) + Math.abs(lp.y - en.y); if (dd < bd) { bd = dd; pick = l; } });   // v7.8 出口の着地点は前の座標で書く決まり → 今の座標に直して比べる（地球の配置）
       if (pick && bd > 8) pick = null;
     }
     if (!pick) {   // いちばん近い出口（同じならフィールドへの出口を先に）

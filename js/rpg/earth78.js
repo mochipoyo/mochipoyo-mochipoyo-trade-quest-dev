@@ -261,7 +261,7 @@
       p.x = Math.max(1, Math.min(Wd - 2, p.x)); p.y = Math.max(1, Math.min(Hd - 2, p.y));
       var zs = zoneOf[oc]; var q;
       if (water) q = snap(G, Wd, Hd, p.x, p.y, function (c) { return c === '~' || c === 'w'; }, 20);
-      else if (!inOld && walkCh(G[p.y][p.x])) q = p;
+      else if (!inOld && walkCh(G[p.y][p.x]) && !ICONCH[G[p.y][p.x]] && !occupied[p.x + ',' + p.y]) q = p;   // 新しい地域：書いた場所のまま（入口の印・ほかの物の上は除く）
       else { q = snap(G, Wd, Hd, p.x, p.y, function (c, xx, yy) { return walkCh(c) && !ICONCH[c] && c !== 'r' && c !== 'b' && !occupied[xx + ',' + yy] && !WALLM[yy * Wd + xx] && (!zs || zs[lab[yy * Wd + xx]]); }, 30);
         if (!q && !zs && oc >= 0 && inOld && !o.locComp[oc]) {   // 旧地図の小島（入口のない島の宝箱など）：海なら小島を作る
           var qq = snap(G, Wd, Hd, p.x, p.y, function (c, xx, yy) { return (c === '~' || c === 'w') && xx > 2 && yy > 2 && xx < Wd - 3 && yy < Hd - 3; }, 20);
@@ -490,7 +490,7 @@
     var m = /^w78_(\d+)_(\d+)$/.exec(id); var gx, gy;
     if (m) { gx = +m[1] * BW + d.pos.x; gy = +m[2] * BH + d.pos.y; }
     else if (L.regions[id] && L.regions[id].isNew) { var r0 = L.rectOf(id); gx = r0.x + d.pos.x; gy = r0.y + d.pos.y; }
-    else if (newRegionOf(id)) { var inn = d.lastInn && !newRegionOf(d.lastInn.map) && root.MAP_DEFS[d.lastInn.map] ? d.lastInn : null; return inn ? { map: inn.map, x: inn.x, y: inn.y, dist: 0 } : { map: 'poyo_village', x: 12, y: 16, dist: 0 }; }
+    else if (newRegionOf(id)) { var inn = d.lastInn && !newRegionOf(d.lastInn.map) && root.MAP_DEFS[d.lastInn.map] ? d.lastInn : null; return inn ? { map: inn.map, x: inn.x, y: inn.y, dist: 0, inn: true } : { map: 'poyo_village', x: 24, y: 32, dist: 0, inn: true }; }
     else return null;
     var best = null; Object.keys(L.regions).forEach(function (rid) { if (L.regions[rid].isNew || !root.MAP_DEFS[rid]) return; var r = L.rectOf(rid); var dx = Math.max(r.x - gx, 0, gx - (r.x + r.w - 1)), dy = Math.max(r.y - gy, 0, gy - (r.y + r.h - 1)); var dd = dx + dy; if (!best || dd < best.d) best = { id: rid, d: dd, x: Math.max(0, Math.min(r.w - 1, gx - r.x)), y: Math.max(0, Math.min(r.h - 1, gy - r.y)) }; });
     if (!best) return null; snapshotOld(best.id); fitXf(best.id); var o = OLD[best.id]; var q = mapBack(best.id, best.x, best.y, null);
@@ -498,7 +498,7 @@
     return { map: best.id, x: s.x, y: s.y, dist: best.d, old: true };
   };
   // その地図が新しい地域（v7.8）のものか（町・ダンジョンも。def.region78）
-  function newRegionOf(mapId) { var def = root.MAP_DEFS && root.MAP_DEFS[mapId]; return !!(def && def.region78); }
+  function newRegionOf(mapId) { var def = root.MAP_DEFS && root.MAP_DEFS[mapId]; return !!(def && def.region78) || !!(root.R78 && root.R78.offMaps && root.R78.offMaps.indexOf(mapId) >= 0); }
   E.newRegionOf = newRegionOf;
 
   /* ---------- 読み込みの最後：地球の配置で World76 を組み立てる・セーブの引き継ぎ ---------- */
@@ -506,11 +506,27 @@
     var World = root.World; if (!World || World._e78) return; World._e78 = true;
     var st = World.start; World.start = function () {
       var d = root.State && root.State.data;
-      try { if (root.World76 && root.World76.normalizeSave) root.World76.normalizeSave(d); if (E.active() && E.ready) migrateOn(d); else { migrateOff(d); if (root.Astra && root.Astra.offNormalize) root.Astra.offNormalize(d); } } catch (e) { console.error('Earth78 セーブ', e); }
+      try { if (root.World76 && root.World76.normalizeSave) root.World76.normalizeSave(d); if (E.active() && E.ready) migrateOn(d); else { migrateOff(d); if (root.Astra && root.Astra.offNormalize) root.Astra.offNormalize(d); offFix(d); } } catch (e) { console.error('Earth78 セーブ', e); }
       return st.apply(this, arguments);
     };
   }
+  // 地球を使わないで読むとき：ない地図（新しい地域・地球の外の地図）を指している記録を、ある所へ（宿・入口の記録・乗り物）
+  function offFix(d) {
+    if (!d) return; var MD = root.MAP_DEFS || {}; var gone = function (m) { return !!m && (!MD[m] || newRegionOf(m)); };
+    if (d.lastInn && gone(d.lastInn.map)) d.lastInn = { map: 'poyo_village', x: 24, y: 32 };
+    if (d.dungeonEntry && gone(d.dungeonEntry.map)) delete d.dungeonEntry;
+    var posKind = d.pos && MD[d.pos.map] ? (MD[d.pos.map].kind || 'town') : null;
+    if (d.aboard && posKind !== 'field') d.aboard = null;   // 宿などへ移したとき：乗り物から降りる
+    Object.keys(d.vehicles || {}).forEach(function (k) { var s = d.vehicles[k]; if (!s || !s.map) return; var onIt = d.aboard === k;
+      if (onIt && !gone(s.map) && d.pos && s.map === d.pos.map) return;
+      if (!gone(s.map) && (MD[s.map].kind || 'town') === 'field') return;
+      if (onIt) { s.map = d.pos.map; s.x = d.pos.x; s.y = d.pos.y; return; }
+      if (s.port && !gone(s.port.map)) { s.map = s.port.map; s.x = s.port.x; s.y = s.port.y; return; }
+      var hm = root.VEHICLES && root.VEHICLES[k] && root.VEHICLES[k].home; if (hm) { s.map = hm.map; s.x = hm.x; s.y = hm.y; } });
+  }
+  E.offFix = offFix;
   E.after = function () { /* World76 の組み立てのあと（js/rpg/world76.js から） */ };
+  if (root.R78 && root.R78.finish) root.R78.finish(!!(root.World76 && root.World76.earth));   // 新しい地域：地球の世界でないときは外す
   patchStart();
   var W76 = root.World76; if (W76 && W76.earth && !W76._init && root.World && root.Vehicle && root.MAP_DEFS) { try { W76.init(); } catch (e) { console.error('Earth78', e); } }
 })(typeof window !== 'undefined' ? window : globalThis);
