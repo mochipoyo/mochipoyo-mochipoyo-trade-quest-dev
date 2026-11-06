@@ -42,7 +42,7 @@
     var Au = audio(); if (!Au) return;
     if (lv > 0.001 && !s.src) start(Au);
     if (s.gain) { var now = Au.ctx.currentTime; s.gain.gain.cancelScheduledValues(now); s.gain.gain.setTargetAtTime(lv * 0.55, now, 0.35); s.vol = lv * 0.55; }
-    if (lv <= 0.001 && s.src && s.vol <= 0.001) { clearTimeout(A._off); A._off = setTimeout(function () { if (A.state.target <= 0.001) stop(); }, 1500); }
+    if (lv <= 0.001 && s.src && s.vol <= 0.001 && !A._off) A._off = setTimeout(function () { A._off = null; if (A.state.target <= 0.001) stop(); }, 1500);   // 聞こえない所が続いたら止める
   };
   A.init = function () { if (A._iv) return; A._iv = setInterval(function () { try { A.tick(); } catch (e) { /* 音なしで続ける */ } }, 250); };
   if (typeof document !== 'undefined' && (root.AudioContext || root.webkitAudioContext)) A.init();   // 音の使えない環境（jsdom の確かめなど）では回さない
