@@ -1,0 +1,13 @@
+diff --git a/docs/tools/v78/region78_flow.js b/docs/tools/v78/region78_flow.js
+index 8e85665..fc7cea8 100644
+--- a/docs/tools/v78/region78_flow.js
++++ b/docs/tools/v78/region78_flow.js
+@@ -63,7 +63,7 @@ const has = (it) => (d.inventory[it] || 0) > 0;
+   await npc('aeria_dock', 'ad_keeper'); ok(d.flags.aer_heard && has('aer_gate_key'), 'アエリア：城守の人形から依頼・水門の鍵');
+   ok(W.getMap('aeria_dock').warps[0].to === 'aeria_garden_hi', 'アエリア：水門の前は満水の庭園へ');
+   await ev('aeria_garden_hi', 2, 9); ok(d.flags.aer_gate && W.map.id === 'aeria_garden_lo' && W.getMap('aeria_dock').warps[0].to === 'aeria_garden_lo', 'アエリア：水門を開け、水が引いた（船着き場の門も水の引いた庭園へ）');
+-  ok(W.getMap('aeria_garden_lo').warpAt(16, 8) && !W.getMap('aeria_garden_hi').warpAt(16, 8), 'アエリア：水が引いたあとだけ回廊への階段');
++  { const toC = (id) => W.getMap(id).warps.some((q) => q.to === 'aeria_corridor'); /* v8.1 作り直した庭園（remake81）は階段の位置が変わる：回廊へのワープがあるかで見る */ ok(toC('aeria_garden_lo') && !toC('aeria_garden_hi'), 'アエリア：水が引いたあとだけ回廊への階段'); }
+   await ev('aeria_reactor', 8, 2); ok(d.flags.aer_reactor, 'アエリア：浮力炉を修復');
+   await npc('aeria_dock', 'ad_keeper'); ok(qdone('aeria78_float') && has('azure_sword') && has('aeria_robe') && has('reactor_shard'), 'アエリア：クエスト完了・報酬');
+   AS.takeOffAeria(); ok(s.flying && Math.abs(s.wx - ap.wx) < 2, 'アエリア：船着き場から飛び立つ');
