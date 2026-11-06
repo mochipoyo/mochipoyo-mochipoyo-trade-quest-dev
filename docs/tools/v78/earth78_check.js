@@ -66,4 +66,14 @@ setF(ALL); ok(!regionsIn(flood('airship', [[poyo.x, poyo.y]])).has('world_dark')
 setF(['galleon_ready', 'yorn_letter_done', 'magicka_arrived', 'zeromea_choice_done']);
 const pac = flood('galleon', [[1300, 330]]); let wrapOK = false; for (let y = 200; y < 600; y++) if (pac[y * WW + 0] && pac[y * WW + WW - 1]) { wrapOK = true; break; }
 ok(wrapOK && pac[330 * WW + 300], '遠洋航海船：日本の東（経度 156°E）から太平洋を東へ、世界の右端 → 左端をまたいで北アメリカの西（経度 94°W）まで');
+// 町・ダンジョンから出たところから本土へ歩ける（入口の横の小さな陸に閉じこめられない。港町マリナで起きた）。島の入口（船で行く所）は対象外
+{ const d = w.State.data; ['s3121_new_prologue', 'ship_ready', 'galleon_ready', 'kalion_open', 'yorn_letter_done', 'zeromea_choice_done', 'magicka_arrived', 'dark_route_open'].forEach((f) => d.flags[f] = true); d.aboard = null; w.World.start();
+  const pockets = [], traps = []; let nExit = 0; const V = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  const reach = (m, x, y, cap) => { const seen = new Set([x + ',' + y]); const q = [[x, y]]; while (q.length && seen.size < cap) { const [cx, cy] = q.shift(); for (const [dx, dy] of V) { const nx = cx + dx, ny = cy + dy, k = nx + ',' + ny; if (seen.has(k) || nx < 0 || ny < 0 || nx >= m.w || ny >= m.h || m.warpAt(nx, ny) || !m.passable(nx, ny, d)) continue; seen.add(k); q.push([nx, ny]); } } return seen.size; };
+  const mainland = {}; W.REGIONS.forEach((rid) => { const m = w.World.getMap(rid); (m.def.locations || []).forEach((L) => { const sz = V.map(([dx, dy]) => (m.passable(L.x + dx, L.y + dy, d) && !m.warpAt(L.x + dx, L.y + dy)) ? reach(m, L.x + dx, L.y + dy, 200) : 0).filter((n) => n > 0);
+    if (sz.some((n) => n >= 60)) { mainland[L.to] = true; if (sz.some((n) => n < 60)) pockets.push(rid + ':' + L.id + '(' + sz.join(',') + ')'); } }); });
+  Object.keys(w.MAP_DEFS).forEach((id) => { if (W.REGIONS.includes(id) || W.SEAS.includes(id)) return; (w.MAP_DEFS[id].warps || []).forEach((wp) => { if (!wp || !W.REGIONS.includes(wp.to) || !mainland[id]) return; nExit++;
+    w.World.enterMap(wp.to, wp.tx, wp.ty, 'down'); const m = w.World.map; const n = reach(m, w.World.player.x, w.World.player.y, 200); if (n < 60) traps.push(id + '→' + m.id + '@' + w.World.player.x + ',' + w.World.player.y + '(' + n + ')'); }); });
+  ok(!pockets.length, '本土にある入口のまわりに、本土とつながらない小さな陸がない ' + pockets.join(' '));
+  ok(nExit > 30 && !traps.length, '本土にある町・ダンジョン ' + nExit + ' の出口から出ると、本土へ歩いて行ける（閉じこめられない） ' + traps.slice(0, 5).join(' ')); }
 console.log(ng.length ? '結果：NG ' + ng.length : '結果：すべて OK'); process.exit(ng.length ? 1 : 0);

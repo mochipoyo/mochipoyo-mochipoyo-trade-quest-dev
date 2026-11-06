@@ -278,9 +278,27 @@
     // 調べる場所・クイズの魔物（この地図の物）
     if (inOld) [root.SEARCH_POINTS, root.QUIZ_MONSTERS].forEach(function (Lst, li) { (Lst || []).forEach(function (sp, i) { if (!sp || sp.map !== id || typeof sp.x !== 'number') return; var q = place(li ? 'Q' : 'S', { x: sp.x, y: sp.y, ref: { id: (li ? 'q' : 's') + i } }, i); pos[(li ? 'Q' : 'S') + '#' + i] = q; }); });
     if (def.earth && def.earth.post) def.earth.post(G, { r: r, Wd: Wd, Hd: Hd, set: function (x, y, c) { if (x >= 0 && y >= 0 && x < Wd && y < Hd) G[y][x] = c; } });
+    repairPockets(G, Wd, Hd, locs, spec, WALLM, bridges);   // v7.8 入口の横の小さな陸（海と入口の印に囲まれた所）を本土へつなぐ（港町マリナから出ると閉じこめられた）
     var rows = G.map(function (rw) { return rw.join(''); });
     GEN[id] = { rows: rows, pos: pos, locs: locs, bridges: bridges, lab: labels(G, Wd, Hd), zoneOf: zoneOf, W: Wd, H: Hd, roads: roads, rect: r, objs: objs };
     return GEN[id];
+  }
+  // 入口のまわりの陸のうち、本土（入口のまわりのいちばん大きな陸）とつながらない小さな陸を、橋・道でつなぐ。島の入口（spec.islets）は対象外
+  function repairPockets(G, Wd, Hd, locs, spec, WM, bridges) {
+    var fixed = []; var V = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+    var walk = function (x, y) { return x >= 0 && y >= 0 && x < Wd && y < Hd && walkCh(G[y][x]) && !ICONCH[G[y][x]] && !WM[y * Wd + x]; };
+    var comp = function (x, y, cap) { var seen = {}; seen[x + ',' + y] = 1; var q = [[x, y]], n = 1; while (q.length && n < cap) { var c = q.shift(); for (var k = 0; k < 4; k++) { var nx = c[0] + V[k][0], ny = c[1] + V[k][1], kk = nx + ',' + ny; if (seen[kk] || !walk(nx, ny)) continue; seen[kk] = 1; n++; q.push([nx, ny]); } } return { n: n, seen: seen }; };
+    var cost = function (c, x, y) { if (WM[y * Wd + x] || ICONCH[c] || c === '0' || c === 'l' || c === '7') return Infinity; if (WATER[c]) return 2.5; return solidCh(c) ? 4 : 1; };
+    locs.forEach(function (l) {
+      if (spec && spec.islets && spec.islets.indexOf(l.id) >= 0) return;
+      var nb = []; V.forEach(function (v) { var x = l.x + v[0], y = l.y + v[1]; if (walk(x, y)) nb.push({ x: x, y: y, c: comp(x, y, 400) }); });
+      var big = nb.filter(function (q) { return q.c.n >= 60; }); if (!big.length) return;
+      nb.forEach(function (q) { if (q.c.n >= 60 || big.some(function (b) { return b.c.seen[q.x + ',' + q.y]; })) return;
+        var res = astar(G, Wd, Hd, q.x, q.y, big[0].x, big[0].y, cost); if (!res) return;
+        res.path.forEach(function (pt) { var c = G[pt[1]][pt[0]]; if (WATER[c]) { G[pt[1]][pt[0]] = 'b'; bridges.push([pt[0], pt[1]]); } else if (solidCh(c) && !ICONCH[c]) G[pt[1]][pt[0]] = 'r'; });
+        fixed.push(l.id + '@' + q.x + ',' + q.y); });
+    });
+    if (fixed.length) E.stats.pockets = (E.stats.pockets || []).concat(fixed);
   }
   function cpLocal(a) { return (a || []).map(function (o2) { return { ref: o2, x: o2.x, y: o2.y }; }); }
   function nearWalk(G, Wd, Hd, x, y, WM) { var n = 0; for (var k = 0; k < 4; k++) { var xx = x + [1, -1, 0, 0][k], yy = y + [0, 0, 1, -1][k]; if (xx >= 0 && yy >= 0 && xx < Wd && yy < Hd && walkCh(G[yy][xx]) && !WM[yy * Wd + xx]) n++; } return n; }

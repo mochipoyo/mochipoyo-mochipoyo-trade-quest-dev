@@ -31,7 +31,8 @@ export class MapScene3D {
   constructor(app) { this.app = app; this.root = new THREE.Group(); this.npcs = []; this.chests = []; this.smokes = []; this.sway = []; this.animated = []; this.lampSpots = []; }
 
   async build(map, opts) {
-    const app = this.app; this.map = map; const slice = (opts && opts.slice) || null;   // v7.6 つないだ世界：裏で組み立てるとき、途中で画面へ返す（Join76.js） this.interior = map.kind === 'interior';
+    const app = this.app; this.map = map; const slice = (opts && opts.slice) || null;   // v7.6 つないだ世界：裏で組み立てるとき、途中で画面へ返す（Join76.js）
+    this.interior = map.kind === 'interior';   // v7.8 直した：v7.6 で上の行の注釈に入ってしまい、建物の中が外として組み立てられていた
     this.root.name = 'map3d_' + map.id;
     const t0 = performance.now();
     this.coverage = mapCoverage(map);   // 'done'（専用に作り込んだ3D）／'generic'（汎用の3D＝仮3D）
