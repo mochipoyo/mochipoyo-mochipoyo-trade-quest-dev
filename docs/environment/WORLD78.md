@@ -204,3 +204,9 @@ v7.9 の最初は実在の名前を少し変えただけ（北メリカ・泰平
 - 確認ツール：`docs/tools/v79/ship792_test.js`（jsdom：停泊位置・歩いて乗る・入口のそばで降りる・呼び戻す・前のセーブ・2D 版は前と同じ）、`docs/tools/v79/earth792_save.js`（e78.3 のセーブ → e78.4／2D 版）、
   3D の確認 `docs/tools/v79/ship792_3d.js`（ヘッドレス。`work/p3d` から動かす：船の模型が出る・3D の移動で歩いて乗る・停め直し・前のセーブ）。`earth79_check.js` は版の確かめ方だけ最小の更新（差分 `updated-tests/earth79_check.js.diff`）。
 
+### v7.9.3（2026-11-06 18:11 の依頼）
+- 城の門（3D）：町の中の城（`castle`）の楼門（`BuildingBuilder3D.castleGate`）、城壁の町の出口の楼門（`world/WallGate3D.js`。近未来・機械の町は除く）、フィールドの城壁のある町の目印の楼門と跳ね橋（`LandmarkBuilder3D` の `walls`）。見た目だけ（通れるマス・入口の位置は前と同じ）。
+- 推奨レベル（2D・3D）：フィールド・ダンジョン・船の上で、地名のとなりに「推奨Lv」、地図・出現地帯が変わったときに画面の上に表示（`js/rpg/reclevel79.js`）。地帯の level → `docs/balance-v67.md` の想定レベルの表。新しい地域は敵の Lv の平均から（推定）。
+- 出会いの率：馬車 ×0.8 → ×0.35、船（帆船・遠洋航海船）1 歩 0.03 → 0.012。
+- 確認ツール：`docs/tools/v79/reclevel793_test.js`・`reclevel793_3d.js`・`reclevel793_2d_probe.js`・`gates793_3d.js`・`gates793b_3d.js`。詳しくは `docs/environment/REPORT.md` の 20。
+

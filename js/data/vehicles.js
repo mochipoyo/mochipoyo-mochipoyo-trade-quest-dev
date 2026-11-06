@@ -2,7 +2,7 @@
    Data / Vehicles (v5.0) : 乗り物と海路
    ・sailboat（小型帆船・第4章）: 今回実装。galleon（遠洋航海船・第8章）, airship（飛空艇・第14章）: 将来データ
    ・terrain: 乗ったまま進めるタイル名。landing: 乗ったまま隣の陸（通れるタイル）へ降りられる
-   ・encounters: 乗船中のエンカウント（地域マップのゾーンではなく乗り物固有）
+   ・encounters: 乗船中のエンカウント（地域マップのゾーンではなく乗り物固有）。v7.9.3：船は 1 歩 0.03 → 0.012（×0.4。船は歩きより速く進むので、出会いが多すぎた。前の値は rate79）
    ・SEA_ROUTES: 地域マップの端から別の地域へ（乗り物ごと移動）。edge: east/west/north/south
    ========================================================= */
 (function (root) {
@@ -10,10 +10,10 @@
   var VEHICLES = {
     sailboat: { id: 'sailboat', name: '小型帆船', unlockFlag: 'ship_ready', terrain: ['water', 'shallow'], landing: true, speedMul: 1.35,
       home: { map: 'world', x: 19, y: 72 },   // 港町マリナ西の海（ship_ready で出現）
-      encounters: { rate: 0.03, zones: [{ name: '沿岸の海', test: function () { return true; }, groups: [['jelly_float', 'jelly_float'], ['reef_crab'], ['gull_pirate', 'gull_pirate'], ['sea_serpent'], ['reef_crab', 'jelly_float'], ['gull_pirate', 'jelly_float', 'jelly_float']], level: 9 }] },
+      encounters: { rate: 0.012, rate79: 0.03, zones: [{ name: '沿岸の海', test: function () { return true; }, groups: [['jelly_float', 'jelly_float'], ['reef_crab'], ['gull_pirate', 'gull_pirate'], ['sea_serpent'], ['reef_crab', 'jelly_float'], ['gull_pirate', 'jelly_float', 'jelly_float']], level: 9 }] },
       desc: '沿岸を航海できる小さな帆船。港町マリナの船乗りが修理した。' },
     galleon: { id: 'galleon', name: '遠洋航海船', unlockFlag: 'galleon_ready', terrain: ['water', 'shallow', 'deep'], landing: true, speedMul: 1.6, home: { map: 'world', x: 19, y: 72 },
-      encounters: { rate: 0.03, zones: [
+      encounters: { rate: 0.012, rate79: 0.03, zones: [
         { name: '外海', test: function (x, y, map) { return map && map.tiles[y][x] === 'deep'; }, groups: [['pirate_raider', 'pirate_raider'], ['storm_ray'], ['kraken_arm'], ['pirate_raider', 'gull_pirate', 'gull_pirate'], ['storm_ray', 'storm_ray'], ['kraken_arm', 'storm_ray']], level: 19 },
         { name: '沿岸の海', test: function () { return true; }, groups: [['sea_serpent'], ['reef_crab', 'reef_crab'], ['gull_pirate', 'gull_pirate', 'gull_pirate'], ['jelly_float', 'jelly_float', 'reef_crab'], ['sea_serpent', 'jelly_float']], level: 12 }
       ] },

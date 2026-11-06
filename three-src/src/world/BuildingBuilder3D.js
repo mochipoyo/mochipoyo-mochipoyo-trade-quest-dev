@@ -376,12 +376,79 @@ export class BuildingBuilder3D {
       batch.add(stone, new THREE.CylinderGeometry(0.85, 0.95, h + 1.6, 14), M4(tx, (h + 1.6) / 2, tz));
       batch.add(roof, new THREE.ConeGeometry(1.1, 2.0, 14), M4(tx, h + 1.6 + 1.0, tz));
     }
-    // 門（入口の位置）と窓
-    const dx = b.doorAbs.x + 0.5; batch.add(dark, box(1.4, 2.2, 0.2, 1), M4(dx, 1.1, z1 + 0.02));
-    const glass = M.get('glass'); for (let x = x0 + 1.5; x < x1 - 1; x += 2.2) { if (Math.abs(x - dx) < 1.2) continue; batch.add(glass, box(0.4, 0.8, 0.06, 1), M4(x, 2.8, z1 + 0.02)); }
-    out.lights.push({ pos: new THREE.Vector3(dx, 2.4, z1 + 0.6), color: 0xffb05a, power: 1.0, dist: 8 });
-    for (const sx of [-1, 1]) out.props.push({ id: 'wall_lantern', m: M4(dx + sx * 1.0, 2.2, z1 + 0.05, Math.PI) });
+    // 門（入口の位置）と窓。v7.9.3 城門：左右の塔・石のアーチ・両開きの扉・落とし格子・胸壁の楼門（前は 1.4×2.2 の暗い板だけ）
+    const dx = b.doorAbs.x + 0.5; const g = this.castleGate(b, out, batch, { dx, x0, x1, z1, h, stone, roof, dark, theme });
+    const glass = M.get('glass'); for (let x = x0 + 1.5; x < x1 - 1; x += 2.2) { if (Math.abs(x - dx) < g.half + 0.6) continue; batch.add(glass, box(0.4, 0.8, 0.06, 1), M4(x, 2.8, z1 + 0.02)); }
     return out;
+  }
+  // v7.9.3 城門（楼門）：入口のマスの前に、城壁より高い門の建物。足元・入口の位置・通れるマスは前と同じ（見た目だけ。前へは城の区画の中でだけ張り出す）
+  //   ・左右に円い塔（矢狭間・円錐の屋根）、門の上に張り出した胸壁（持ち送り＋凸凹）、石の半円アーチ（迫石と要石）
+  //   ・アーチの中は両開きの木の扉（鉄の帯・鋲・輪の取っ手）、その手前に上げた落とし格子（下の歯が見える）
+  //   ・門の左右に紋章の旗・門灯・敷石
+  castleGate(b, out, batch, o) {
+    const M = this.mats; const { dx, x0, x1, z1, h, stone, roof } = o;
+    const Wc = x1 - x0; const GW = Math.max(3.8, Math.min(6.2, Wc * 0.42)); const half = GW / 2;
+    const ow = Math.max(2.0, Math.min(2.6, GW * 0.44)), ar = ow / 2, rh = Math.max(2.2, ow * 0.95), apex = rh + ar;   // 開口の幅・半円の半径・縦の辺の高さ・頂点
+    const Hg = Math.max(h + 1.3, apex + 1.5); const zf = z1 + 0.42, gd = 1.9, gz = zf - gd / 2;   // 門の建物の高さ・正面・奥行き
+    const lite = M.tinted('stonewall', '#e8e2d6'), wood = M.get('door'), iron = M.get('iron'), gold = M.get('gold');
+    // 門の建物（開口の左右の柱・上の壁・アーチの角の壁）
+    const pw = (GW - ow) / 2;
+    for (const s of [-1, 1]) batch.add(stone, box(pw, Hg, gd, 2), M4(dx + s * (ow / 2 + pw / 2), Hg / 2, gz));
+    batch.add(stone, box(ow, Hg - apex, gd, 2), M4(dx, apex + (Hg - apex) / 2, gz));
+    const sp = new THREE.Shape(); sp.moveTo(-ar, 0); sp.lineTo(-ar, ar + 0.02); sp.lineTo(ar, ar + 0.02); sp.lineTo(ar, 0); sp.absarc(0, 0, ar, 0, Math.PI, false);
+    const spg = new THREE.ExtrudeGeometry(sp, { depth: gd, bevelEnabled: false, curveSegments: 14 }); batch.add(stone, spg, M4(dx, rh, gz - gd / 2));
+    // 通路の奥の暗がり（扉の後ろ）と、迫石・要石
+    batch.add(o.dark, box(ow, apex, 0.05, 1), M4(dx, apex / 2, gz - gd / 2 + 0.05));
+    const ring = new THREE.TorusGeometry(ar + 0.16, 0.17, 6, 18, Math.PI); batch.add(lite, ring, M4(dx, rh, zf + 0.04));
+    for (const s of [-1, 1]) batch.add(lite, box(0.34, rh, 0.14, 1), M4(dx + s * (ar + 0.16), rh / 2, zf + 0.04));
+    batch.add(lite, box(0.42, 0.5, 0.22, 1), M4(dx, apex + 0.1, zf + 0.06));
+    // 両開きの扉（アーチの形）：開口から 0.5 奥。鉄の帯・鋲・輪の取っ手
+    const dz = zf - 0.5; const ds = new THREE.Shape(); ds.moveTo(-ar, -rh); ds.lineTo(-ar, 0); ds.absarc(0, 0, ar, Math.PI, 0, true); ds.lineTo(ar, -rh); ds.lineTo(-ar, -rh);
+    const dg = new THREE.ExtrudeGeometry(ds, { depth: 0.1, bevelEnabled: false, curveSegments: 14 }); const uv = dg.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * 0.9, uv.getY(i) * 0.45);
+    batch.add(wood, dg, M4(dx, rh, dz - 0.05));
+    batch.add(iron, box(0.05, apex - 0.05, 0.04, 1), M4(dx, (apex - 0.05) / 2, dz + 0.07));   // 合わせ目
+    for (const y of [0.45, 1.25, Math.min(rh - 0.2, 2.05)]) batch.add(iron, box(ow - 0.08, 0.09, 0.04, 1), M4(dx, y, dz + 0.07));
+    for (const s of [-1, 1]) { for (const y of [0.45, 1.25]) for (let k = 0; k < 3; k++) batch.add(iron, new THREE.SphereGeometry(0.035, 6, 4), M4(dx + s * (0.22 + k * 0.3), y, dz + 0.1)); batch.add(gold, new THREE.TorusGeometry(0.11, 0.025, 6, 14), M4(dx + s * 0.2, 1.0, dz + 0.11)); }
+    // 落とし格子（上げてある：開口の上の方に格子と下の歯）
+    const pz = zf - 0.22, gy0 = rh + 0.15; const nb = Math.max(5, Math.round(ow / 0.3));
+    for (let i = 0; i <= nb; i++) { const x = -ar + 0.08 + i * (ow - 0.16) / nb; const top = Math.sqrt(Math.max(0, ar * ar - x * x)); const len = rh + top - gy0; if (len < 0.15) continue;
+      batch.add(iron, box(0.06, len, 0.06, 1), M4(dx + x, gy0 + len / 2, pz)); batch.add(iron, new THREE.ConeGeometry(0.05, 0.2, 4), M4(dx + x, gy0 - 0.1, pz, 0, Math.PI)); }
+    for (const y of [gy0 + 0.25, gy0 + 0.65]) { const w2 = 2 * Math.sqrt(Math.max(0, ar * ar - (y - rh) * (y - rh))) - 0.06; if (w2 > 0.2) batch.add(iron, box(w2, 0.06, 0.06, 1), M4(dx, y, pz)); }
+    // 上の張り出した胸壁：持ち送り（石の腕木）＋通路＋凸凹
+    const pd = 0.42; for (let x = -half + 0.25; x <= half - 0.2; x += 0.5) batch.add(stone, box(0.22, 0.42, pd, 1), M4(dx + x, Hg - 0.2, zf + pd / 2 - 0.02));
+    batch.add(stone, box(GW + 0.2, 0.22, gd + pd, 2), M4(dx, Hg + 0.11, gz + pd / 2));
+    const nm = Math.max(4, Math.round(GW / 0.62)); for (let i = 0; i < nm; i++) { const x = -half + (i + 0.5) * GW / nm; if (i % 2 === 0) { batch.add(stone, box(GW / nm, 0.55, 0.3, 1), M4(dx + x, Hg + 0.22 + 0.275, zf + pd - 0.17)); batch.add(stone, box(GW / nm, 0.55, 0.3, 1), M4(dx + x, Hg + 0.22 + 0.275, gz - gd / 2 + 0.15)); } }
+    // 左右の円い塔（城の区画の中）
+    const tr = Math.max(0.62, Math.min(0.95, GW * 0.16)); const th = Hg + 1.5;
+    for (const s of [-1, 1]) {
+      let tx = dx + s * (half + tr * 0.55); tx = Math.max(x0 + tr + 0.15, Math.min(x1 - tr - 0.15, tx)); const tz = Math.min(z1 + 0.42 - tr - 0.02, gz + 0.1);
+      batch.add(stone, new THREE.CylinderGeometry(tr * 0.94, tr, th, 16), M4(tx, th / 2, tz));
+      batch.add(lite, new THREE.CylinderGeometry(tr * 1.06, tr * 1.06, 0.18, 16), M4(tx, th * 0.42, tz));   // 帯石
+      for (let k = 0; k < 8; k += 2) { const a = k / 8 * Math.PI * 2; batch.add(stone, box(0.3, 0.42, 0.3, 1), M4(tx + Math.sin(a) * tr * 1.0, th + 0.21, tz + Math.cos(a) * tr * 1.0, a)); }
+      batch.add(stone, new THREE.CylinderGeometry(tr * 1.08, tr * 1.08, 0.16, 16), M4(tx, th + 0.02, tz));
+      batch.add(roof, new THREE.ConeGeometry(tr * 1.05, tr * 2.6, 16), M4(tx, th + 0.42 + tr * 1.3, tz)); batch.add(gold, new THREE.SphereGeometry(0.09, 8, 6), M4(tx, th + 0.42 + tr * 2.6 + 0.05, tz));
+      for (const y of [th * 0.3, th * 0.62]) batch.add(o.dark, box(0.1, 0.5, 0.05, 1), M4(tx, y, tz + tr * 0.99));   // 矢狭間
+      out.props.push({ id: 'wall_lantern', m: M4(dx + s * (ow / 2 + 0.38), 2.5, zf + 0.06, Math.PI) });
+    }
+    // 敷石・紋章の旗
+    batch.add(lite, box(ow + 0.8, 0.1, 0.5, 1), M4(dx, 0.05, zf + 0.2));
+    const banner = new THREE.MeshStandardMaterial({ map: this.crestTexture(o.theme), roughness: 0.95, side: THREE.DoubleSide });
+    for (const s of [-1, 1]) { const bw = Math.min(0.85, pw * 0.62), bh = Math.min(2.6, Hg - apex + 1.6); const m = new THREE.Mesh(new THREE.PlaneGeometry(bw, bh), banner); m.position.set(dx + s * (ow / 2 + pw / 2), Hg - 0.55 - bh / 2, zf + 0.025); m.castShadow = true; out.group.add(m);
+      batch.add(gold, new THREE.CylinderGeometry(0.03, 0.03, bw + 0.2, 6), M4(dx + s * (ow / 2 + pw / 2), Hg - 0.5, zf + 0.06, 0, 0, Math.PI / 2)); }
+    out.lights.push({ pos: new THREE.Vector3(dx, 2.6, zf + 0.7), color: 0xffb05a, power: 1.2, dist: 9 });
+    return { half, Hg };
+  }
+  // 紋章の旗（城門の左右）：地の色は地域の屋根の色、金の縁と盾の紋章
+  crestTexture(theme) {
+    const base = (theme && theme.roof) || '#2a4f9a'; const key = '_crest' + base; if (this[key]) return this[key];
+    const c = document.createElement('canvas'); c.width = 128; c.height = 320; const g = c.getContext('2d');
+    g.fillStyle = base; g.fillRect(0, 0, 128, 290); g.beginPath(); g.moveTo(0, 290); g.lineTo(64, 320); g.lineTo(128, 290); g.fill();
+    g.fillStyle = '#e8c15a'; g.fillRect(0, 0, 128, 10); g.fillRect(0, 0, 8, 290); g.fillRect(120, 0, 8, 290);
+    g.fillStyle = '#e8c15a'; g.beginPath(); g.moveTo(30, 90); g.lineTo(98, 90); g.lineTo(98, 150); g.quadraticCurveTo(98, 196, 64, 214); g.quadraticCurveTo(30, 196, 30, 150); g.closePath(); g.fill();
+    g.fillStyle = base; g.beginPath(); g.moveTo(40, 100); g.lineTo(88, 100); g.lineTo(88, 150); g.quadraticCurveTo(88, 186, 64, 200); g.quadraticCurveTo(40, 186, 40, 150); g.closePath(); g.fill();
+    g.fillStyle = '#f4f0e0'; g.beginPath(); g.moveTo(64, 112); g.lineTo(76, 140); g.lineTo(64, 186); g.lineTo(52, 140); g.closePath(); g.fill();   // 剣の形
+    g.fillRect(48, 136, 32, 7);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; this[key] = t; return t;
   }
   async churchTower(b, batch, out, o) {
     const M = this.mats; const { cx, zf, base, plaster, timber, stone } = o;

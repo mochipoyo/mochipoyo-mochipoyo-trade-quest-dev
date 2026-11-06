@@ -251,7 +251,7 @@
       if (since > 8) {
         var rate = encDef.rate * Math.min(1.5, 0.5 + (since - 8) / 25); if (d.flags.repel) rate *= 0.3;
         if (!d.aboard && (d.counters.repel_steps || 0) > 0) rate *= 0.35;   // v6.4 危険察知の鐘
-        if (root.Carriage && root.Carriage.riding(m)) rate *= root.Carriage.ENC;   // v7.9 馬車：20% 出会いにくい
+        if (root.Carriage && root.Carriage.riding(m)) rate *= root.Carriage.ENC;   // v7.9 馬車：出会いにくい（v7.9.3 で ×0.35）
         if (Math.random() < rate) World.encounter(encDef);
       }
     }

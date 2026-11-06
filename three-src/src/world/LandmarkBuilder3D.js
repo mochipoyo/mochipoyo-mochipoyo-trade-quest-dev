@@ -170,20 +170,39 @@ class Kit {
   }
   // 城壁（四角）：前（+Z）の中央に門。corner＝角の塔の屋根
   walls(w, d, h, o) {
-    o = o || {}; const K = this.K; const wallM = K[o.mat || 'stone'] || K.stone; const c = hexOf(o.wall, 0xd8d2c8); const t = 0.1; const gw = o.gate || 0.42;
+    o = o || {}; const K = this.K; const wallM = K[o.mat || 'stone'] || K.stone; const c = hexOf(o.wall, 0xd8d2c8); const t = 0.1; const gw = o.gate || 0.64;   // v7.9.3 門を広く（前 0.42）
     const seg = (x, z, len, alongX) => { this.add(wallM, box(alongX ? len : t, h, alongX ? t : len, 0.4), M4(x, h / 2, z), c); const n = Math.floor(len / 0.13); for (let i = 0; i < n; i += 2) { const u = -len / 2 + (i + 0.5) * len / n; this.add(wallM, box(alongX ? len / n : t * 1.1, 0.06, alongX ? t * 1.1 : len / n), M4(alongX ? x + u : x, h + 0.03, alongX ? z : z + u), c); } };
     seg(0, -d / 2, w, true); seg(-w / 2, 0, d, false); seg(w / 2, 0, d, false);
     const side = (w - gw) / 2; seg(-w / 2 + side / 2, d / 2, side, true); seg(w / 2 - side / 2, d / 2, side, true);
-    // 門：両わきの塔＋アーチ＋扉（夜は門灯）
-    for (const s of [-1, 1]) this.tower(s * (gw / 2 + 0.07), d / 2 + 0.02, 0.1, h * 1.35, { top: o.gateTop || 'crenel', wall: c, roof: o.roof, glow: o.glow, mat: o.mat });
-    this.add(wallM, box(gw + 0.08, 0.12, t * 1.4), M4(0, h * 0.95, d / 2), c);
-    this.add(o.gateGlow ? K.glow(o.gateGlow, 1.4) : K.wood, box(gw * 0.8, h * 0.78, 0.03), M4(0, h * 0.39, d / 2 + 0.035), o.gateGlow ? undefined : 0x4a2e1a);
-    if (o.lamps !== false) for (const s of [-1, 1]) { this.add(K.glow(hexOf(o.glow, 0xffb04a), 1.2), new THREE.SphereGeometry(0.03, 6, 4), M4(s * (gw / 2 + 0.07), h * 1.05, d / 2 + 0.13)); }
+    // v7.9.3 門：城壁より高い楼門（石のアーチ・両開きの扉・上げた落とし格子・張り出した胸壁）と、左右の太い塔。夜は門灯
+    const ow = gw * 0.6, ar = ow / 2, rh = h * 0.72, apex = rh + ar, Hg = Math.max(h * 2.05, apex + 0.24), gd = 0.36, zf = d / 2 + gd / 2 - 0.02;
+    const pw = (gw - ow) / 2 + 0.04; const lite = shadeHex(c, 1.12), dk = shadeHex(c, 0.78);
+    for (const s of [-1, 1]) this.add(wallM, box(pw, Hg, gd, 0.4), M4(s * (ow / 2 + pw / 2), Hg / 2, d / 2), c);
+    this.add(wallM, box(ow, Hg - apex, gd, 0.4), M4(0, apex + (Hg - apex) / 2, d / 2), c);
+    const sp = new THREE.Shape(); sp.moveTo(-ar, 0); sp.lineTo(-ar, ar + 0.004); sp.lineTo(ar, ar + 0.004); sp.lineTo(ar, 0); sp.absarc(0, 0, ar, 0, Math.PI, false);
+    this.add(wallM, new THREE.ExtrudeGeometry(sp, { depth: gd, bevelEnabled: false, curveSegments: 10 }), M4(0, rh, d / 2 - gd / 2), c);
+    this.add(K.stone, new THREE.TorusGeometry(ar + 0.025, 0.022, 5, 12, Math.PI), M4(0, rh, zf + 0.004), lite);   // 迫石
+    this.add(K.stone, box(0.05, 0.06, 0.03), M4(0, apex + 0.02, zf + 0.01), lite);   // 要石
+    // 扉（アーチの形・少し奥）と鉄の帯
+    const ds = new THREE.Shape(); ds.moveTo(-ar, -rh); ds.lineTo(-ar, 0); ds.absarc(0, 0, ar, Math.PI, 0, true); ds.lineTo(ar, -rh); ds.lineTo(-ar, -rh);
+    this.add(o.gateGlow ? K.glow(o.gateGlow, 1.4) : K.wood, new THREE.ExtrudeGeometry(ds, { depth: 0.012, bevelEnabled: false, curveSegments: 10 }), M4(0, rh, zf - 0.07), o.gateGlow ? undefined : 0x5a3820);
+    if (!o.gateGlow) { this.add(K.metal, box(0.008, apex - 0.01, 0.006), M4(0, (apex - 0.01) / 2, zf - 0.055), 0x2a2a30); for (const y of [rh * 0.25, rh * 0.62]) this.add(K.metal, box(ow - 0.02, 0.012, 0.006), M4(0, y, zf - 0.055), 0x2a2a30); }
+    // 上げた落とし格子（アーチの上の方に下の歯）
+    for (let i = 0; i <= 5; i++) { const x = -ar + 0.02 + i * (ow - 0.04) / 5; const top = Math.sqrt(Math.max(0, ar * ar - x * x)); const y0 = rh + 0.02; const len = rh + top - y0; if (len < 0.02) continue; this.add(K.metal, box(0.01, len, 0.01), M4(x, y0 + len / 2, zf - 0.03), 0x34343c); this.add(K.metal, new THREE.ConeGeometry(0.008, 0.03, 4), M4(x, y0 - 0.015, zf - 0.03, 0, Math.PI), 0x34343c); }
+    // 張り出した胸壁（持ち送り＋凸凹）
+    for (let x = -gw / 2 + 0.03; x <= gw / 2 - 0.02; x += 0.07) this.add(wallM, box(0.03, 0.05, 0.05), M4(x, Hg - 0.025, zf + 0.02), dk);
+    this.add(wallM, box(gw + 0.04, 0.03, gd + 0.08), M4(0, Hg + 0.015, d / 2 + 0.04), c);
+    const nm = Math.max(5, Math.round(gw / 0.08)); for (let i = 0; i < nm; i += 2) { const x = -gw / 2 + (i + 0.5) * gw / nm; this.add(wallM, box(gw / nm, 0.07, 0.04), M4(x, Hg + 0.065, zf + 0.04), c); }
+    // 旗（紋章の色＝屋根の色）
+    for (const s of [-1, 1]) { this.add(K.cloth, box(0.1, 0.26, 0.004), M4(s * (ow / 2 + pw / 2), Hg - 0.19, zf + 0.012), hexOf(o.roof, 0x2a4f9a)); this.add(K.metal, box(0.06, 0.04, 0.006), M4(s * (ow / 2 + pw / 2), Hg - 0.15, zf + 0.016), 0xd8b04a); }
+    // 左右の太い塔（城壁より高い）
+    for (const s of [-1, 1]) this.tower(s * (gw / 2 + 0.12), d / 2 + 0.03, 0.165, Hg + 0.26, { top: o.gateTop || 'crenel', wall: c, roof: o.roof, glow: o.glow, mat: o.mat });
+    if (o.lamps !== false) for (const s of [-1, 1]) { this.add(K.glow(hexOf(o.glow, 0xffb04a), 1.2), new THREE.SphereGeometry(0.03, 6, 4), M4(s * (ow / 2 + 0.04), rh * 0.9, zf + 0.05)); }
     this.light(0, h * 1.1, d / 2 + 0.3, hexOf(o.glow, 0xffb04a), 1.1, 6);
     // 角の塔
     for (const sx of [-1, 1]) for (const sz of [-1, 1]) this.tower(sx * w / 2, sz * d / 2, 0.13, h * 1.5, { top: o.corner || 'cone', wall: c, roof: o.roof, glow: o.glow, mat: o.mat, rh: o.cornerRh });
     // 堀
-    if (o.moat) { const mc = 0x3a6aa8; const mw = 0.14; for (const s of [-1, 1]) { this.add(K.shiny, box(w + 0.5, 0.02, mw), M4(0, 0.012, s * (d / 2 + 0.2)), mc); this.add(K.shiny, box(mw, 0.02, d + 0.26), M4(s * (w / 2 + 0.2), 0.012, 0), mc); } this.add(K.wood, box(gw * 0.8, 0.03, 0.3), M4(0, 0.03, d / 2 + 0.2), 0x7a5a32); }
+    if (o.moat) { const mc = 0x3a6aa8; const mw = 0.14; for (const s of [-1, 1]) { this.add(K.shiny, box(w + 0.5, 0.02, mw), M4(0, 0.012, s * (d / 2 + 0.2)), mc); this.add(K.shiny, box(mw, 0.02, d + 0.26), M4(s * (w / 2 + 0.2), 0.012, 0), mc); } this.add(K.wood, box(gw * 0.66, 0.03, 0.34), M4(0, 0.03, d / 2 + 0.22), 0x7a5a32); for (const s of [-1, 1]) { const x = s * gw * 0.31; const a = Math.atan2(h * 0.62, 0.36); this.add(K.metal, new THREE.CylinderGeometry(0.006, 0.006, Math.hypot(h * 0.62, 0.36), 4), M4(x, 0.03 + h * 0.31, d / 2 + 0.2, 0, -(Math.PI / 2 - a)), 0x34343c); } }   // v7.9.3 跳ね橋（鎖つき）
   }
   // 岩山（洞窟の丘）：rx ry rz・色（rockD→rock→rockL）・雪
   mound(x, z, rx, ry, rz, o) {

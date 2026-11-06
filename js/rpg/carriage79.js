@@ -4,14 +4,15 @@
    ・フィールド（地図の種類 field）でだけ使える。町・ダンジョン・建物の中、船・飛空艇に乗っているあいだは歩く
      乗っている設定（State.data.carriage.on）は覚えておき、町から出たり船を降りたりしてフィールドに戻ると、また馬車で進む
    ・乗り降り：C キー（スマホは操作パネルの「馬車」）。メニューの「馬車」からも
-   ・効果：移動の速さ ×1.6（2D 版はマスを進む速さ、3D 版は自由移動の速さ）・ランダムエンカウント ×0.8（20% 出会いにくい）
+   ・効果：移動の速さ ×1.6（2D 版はマスを進む速さ、3D 版は自由移動の速さ）・ランダムエンカウント ×0.35（1 歩あたり 65% 出会いにくい。v7.9 は ×0.8。
+     v7.9.3 で「馬車でもまだ出やすい」ので大幅に下げた。速く進むぶんを入れても、同じ時間で出会う回数は歩きの約 0.56 倍）
      （ほかの出会いにくくする効果（聖水・危険察知の鐘）と重ねられる。ボス・イベントの戦闘は変わらない）
    ・見た目：2D 版は馬と幌馬車の絵（js/ui/vehicleart.js）、3D 版は馬と幌馬車の模型（three-src/src/world/Carriage3D.js）。仲間は馬車の中（隊列を出さない）
    ・セーブ：State.data.carriage = { owned, on }（ないセーブは「持っていない」）。2D 版・3D 版で同じ
    ========================================================= */
 (function (root) {
   'use strict';
-  var C = root.Carriage = { SPEED: 1.6, ENC: 0.8 };
+  var C = root.Carriage = { SPEED: 1.6, ENC: 0.35, ENC79: 0.8 };
   function D() { return root.State && root.State.data; }
   C.owned = function () { var d = D(); return !!(d && d.carriage && d.carriage.owned); };
   C.wanted = function () { var d = D(); return !!(C.owned() && d.carriage.on); };

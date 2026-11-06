@@ -8,6 +8,7 @@
 import * as THREE from 'three';
 import { TerrainBuilder3D, rngFrom } from './TerrainBuilder3D.js';
 import { BuildingBuilder3D, bdetailSetting } from './BuildingBuilder3D.js';
+import { buildWallGates } from './WallGate3D.js';
 import { dressMob } from '../entities/MobDress76.js';
 import { InteriorBuilder3D, INTERIOR_KINDS } from './InteriorBuilder3D.js';
 import { WorldBuilder3D } from './WorldBuilder3D.js';
@@ -82,6 +83,8 @@ export class MapScene3D {
         }
         shared.build(bgroup);
       }
+      // v7.9.3 城壁の町の出口の上に石の楼門（world/WallGate3D.js）。失敗しても町は表示する
+      try { const modernG = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null); const wg = modernG ? { n: 0 } : buildWallGates(map, { mats: app.mats, theme, group: r.group, put: (id, m, x, z) => wb.put(id, m, x, z) });   /* 近未来・機械の町は石の楼門にしない */ if (wg.n) { (wg.lamps || []).forEach((l) => this.lampSpots.push(l)); this.wallGates = wg.gates; } } catch (e) { console.warn('wallgate', e); }
       if (slice) await slice();
       await r.finalize();
       if (slice) await slice();

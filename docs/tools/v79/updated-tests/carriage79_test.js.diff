@@ -1,0 +1,27 @@
+diff --git a/docs/tools/v79/carriage79_test.js b/docs/tools/v79/carriage79_test.js
+index 04b92bb..5015b1c 100644
+--- a/docs/tools/v79/carriage79_test.js
++++ b/docs/tools/v79/carriage79_test.js
+@@ -1,4 +1,4 @@
+-// v7.9 馬車（jsdom）：リヴェル城の厩舎番でもらう・C キーで乗り降り・フィールドだけ・速さ ×1.6・出会い ×0.8・仲間は馬車の中・町／船では歩く・セーブ
++// v7.9 馬車（jsdom）：リヴェル城の厩舎番でもらう・C キーで乗り降り・フィールドだけ・速さ ×1.6・出会い ×0.35（v7.9.3。v7.9 は ×0.8）・仲間は馬車の中・町／船では歩く・セーブ
+ // 使い方：node carriage79_test.js（2D 版の配置と、3D 版の地球の世界の両方）
+ const load = require('../v78/load78.js');
+ const ng = []; const ok = (c, m) => { if (!c) ng.push(m); console.log((c ? 'OK  ' : 'NG  ') + m); };
+@@ -24,11 +24,13 @@ async function run(label, opts) {
+   I.clear(); I.press('carriage'); W.scene.handleInput(); ok(w.Carriage.riding() && d.carriage.on, label + '：フィールドで C キー → 馬車に乗る');
+   ok(Math.abs(p.speed / base - 1.6) < 1e-6, label + '：移動の速さ ×1.6（' + base.toFixed(3) + ' → ' + p.speed.toFixed(3) + '）');
+   ok(!w.Follow.enabled() && w.Follow.positions().length === 0, label + '：仲間は馬車の中（隊列を出さない）');
+-  // 出会い ×0.8：乱数を固定して、歩いた 1 歩ごとの判定を比べる
+-  const enc = m2rate(w, W, d); const r = (enc * 0.9);   // 歩いたときの率の 0.9 倍の乱数 → 歩きなら出会う・馬車なら（0.8 倍で）出会わない
++  // 出会い：乱数を固定して、歩いた 1 歩ごとの判定を比べる
++  // v7.9.3 最小の更新：倍率は w.Carriage.ENC（×0.35）。乱数を「歩きの率 × (倍率 + 0.05)」にして、ちょうど倍率のところで分かれることを確かめる
++  const enc = m2rate(w, W, d); let r = enc * (w.Carriage.ENC + 0.05);   // 歩きなら出会う・馬車なら（倍率ぶん下がって）出会わない
+   const stepOnce = () => { let hit = 0; const e0 = W.encounter; W.encounter = () => { hit++; }; const mr = w.Math.random; w.Math.random = () => r; d.stepsSinceBattle = 60; W.busy = false; W.onStep(); w.Math.random = mr; W.encounter = e0; return hit; };
+   const withC = stepOnce(); d.carriage.on = false; w.Carriage.apply(); const walk = stepOnce(); d.carriage.on = true; w.Carriage.apply();
+-  ok(walk === 1 && withC === 0, label + '：出会いの率 ×0.8（同じ乱数で、歩きは出会い・馬車は出会わない。歩きの率 ' + enc.toFixed(4) + '）');
++  r = enc * (w.Carriage.ENC - 0.05); const withC2 = stepOnce();   // 倍率より少し小さい乱数なら、馬車でも出会う（出会いがなくなったわけではない）
++  ok(w.Carriage.ENC === 0.35 && walk === 1 && withC === 0 && withC2 === 1, label + '：出会いの率 ×' + w.Carriage.ENC + '（同じ乱数で、歩きは出会い・馬車は出会わない。倍率より小さい乱数なら馬車でも出会う。歩きの率 ' + enc.toFixed(4) + '）');
+   // 2D の絵
+   W.scene.draw && (function () { try { W.scene.draw(w.document.createElement('canvas').getContext('2d')); } catch (e) { /* 描画の stub */ } })(); ok(p.vehicle === 'carriage' && !!w.VehicleArt.image('carriage'), label + '：絵は馬車（主人公の位置に馬と幌馬車）');
+   // 押しっぱなしの入力が会話のあとで勝手に効かない
