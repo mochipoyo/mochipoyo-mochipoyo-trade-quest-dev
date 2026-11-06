@@ -8,6 +8,8 @@
      見つからなければ、いつもの出口の着地点に出る
    ・いつもの出口が物語の条件（needFlag）で閉じているあいだは、外周からも出られない（理由を表示。フラグは変えない）
    ・今あるワープ（出口・建物の扉）はそのまま。外周の出口は「ワープのない外周のマス」から外へ進んだときだけ働く
+   ・v8.1 開いた村（定義の open81。js/rpg/remake81.js）：外周のすべてのマスが出口。出た辺と辺の上の位置を、フィールドの入口のまわりの
+     同じ側・同じ並びのマス（入口の範囲の外・水や人の上でない・外へ広くつながる）へ出す。出たあとは、振り返って入口の範囲に入ればすぐ入れる
    ========================================================= */
 (function (root) {
   'use strict';
@@ -38,6 +40,7 @@
   EdgeExit.find = function (m, x, y, dir) {
     var side = SIDE[dir]; if (!side || !onSide(m, x, y, side)) return null;
     if (m.warpAt(x, y)) return null;   // ワープのあるマスは今までどおり
+    if (m.def && m.def.open81) return { side: side, range: [0, (side === 'top' || side === 'bottom') ? m.w - 1 : m.h - 1], open81: true };   // v8.1 開いた村（js/rpg/remake81.js）：外周のどこからでも
     var pos = along(x, y, side), segs = EdgeExit.segments(m);
     for (var i = 0; i < segs.length; i++) { var s = segs[i]; if (s.side === side && pos >= s.range[0] && pos <= s.range[1]) return s; }
     return null;
@@ -90,6 +93,12 @@
     var W = root.World; if (!W || W.busy) return false;
     var d = root.State && root.State.data; if (d && d.aboard) return false;
     var seg = EdgeExit.find(m, x, y, dir); if (!seg) return false;
+    if (seg.open81 && root.Remake81) {   // v8.1 開いた村：出た辺と、辺の上の位置を、フィールドの入口のまわりの同じ側・同じ並びのマスへ
+      var o = root.Remake81.toField(m, x, y, seg.side); if (!o) return false;
+      if (m.def.onStep) { try { m.def.onStep(m, W.player, true); } catch (e) { console.error(e); } }
+      W.doWarp({ to: o.to, tx: o.tx, ty: o.ty, name: '村の外へ', face: FACE[seg.side], edge: true, raw: true, lmGrace: 0 });
+      return true;
+    }
     var base = EdgeExit.baseExit(m, seg, x, y); if (!base) return false;
     if (base.needFlag && !flags()[base.needFlag]) { if (!base.hidden) W.lockedWarp(base); return !base.hidden; }
     var dest = EdgeExit.destination(m, seg, x, y); if (!dest) return false;

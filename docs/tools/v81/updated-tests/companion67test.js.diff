@@ -1,0 +1,13 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/companion67test.orig.js	2026-11-06 21:45:53.181467866 +0900
++++ companion67test.js	2026-11-06 21:45:53.194040810 +0900
+@@ -22,7 +22,9 @@
+   // 古いセーブ：アルカディアですでに仲間にしていたミナは、新しい場所に出ない
+   State.newGame('t', 'warrior'); State.joinCompanion('mina'); World.enterMap('kalion_tavern', 5, 7, 'up'); ok(World.map.npcs.find(n => n.id === 'mina').hidden, '古いセーブ：すでに仲間のミナは、カリオンの酒場に出ない');
+   // ダウの村の見た目（建物・出入口）は前の版と同じ（仲間の NPC は配置が決まったあとで外す）
+-  const m = new w.GameMap(w.MAP_DEFS.dow_village); ok(m.warps.some(x => x.x === 10 && x.y === 23) && !m.warps.some(x => x.x === 10 && x.y === 22), 'ダウの村の建物の出入口は前の版と同じ位置（10,23）');
++  const m = new w.GameMap(w.MAP_DEFS.dow_village);
++  if (w.MAP_DEFS.dow_village.remake81) { const hb = m.buildings.find(b => b.id === 'house'); const p81 = w.MapRemake.pos('dow_village', 10, 24); ok(hb && m.warps.some(x => x.x === hb.doorAbs.x && x.y === hb.doorAbs.y && x.to === 'dow_house') && p81.x === hb.doorFront.x && p81.y === hb.doorFront.y, 'ダウの村の狩人の家の出入口（v8.1 で村を作り直した：旧座標 10,24 の扉の前 → 新しい扉の前 ' + p81.x + ',' + p81.y + '）'); }   // v8.1 最小の更新（js/rpg/remake81.js で村を作り直したため。旧座標は MapRemake.pos で新しい扉の前に写る）
++  else ok(m.warps.some(x => x.x === 10 && x.y === 23) && !m.warps.some(x => x.x === 10 && x.y === 22), 'ダウの村の建物の出入口は前の版と同じ位置（10,23）');
+   ok(errors.length === 0, 'エラーなし ' + errors.slice(0, 2).join('|'));
+   console.log('結果: ' + pass + ' OK / ' + fail + ' NG'); process.exit(fail ? 1 : 0);
+ })().catch(e => { console.log('EXC', e && e.stack); process.exit(1); });

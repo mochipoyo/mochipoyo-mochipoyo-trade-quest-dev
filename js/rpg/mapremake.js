@@ -269,12 +269,14 @@
     if (!d) return; d.remakeVer = d.remakeVer || {};
     Object.keys(MapRemake.maps).forEach(function (id) {
       var r = MapRemake.maps[id]; if (d.remakeVer[id] === r.version) return;
-      if (d.pos && d.pos.map === id) { var p = MapRemake.pos(id, d.pos.x, d.pos.y); d.pos.x = p.x; d.pos.y = p.y; }
+      var fromPrev = !!(r.prev && r.fromPrev && d.remakeVer[id] === r.prev.version);   // v8.1 前の作り直し（広げた屋内など）の座標で書かれたセーブ → その上に重ねた作り直し（js/rpg/remake81.js）の分だけ直す
+      if (d.pos && d.pos.map === id) { var p = fromPrev ? r.fromPrev(d.pos.x, d.pos.y) : MapRemake.pos(id, d.pos.x, d.pos.y); d.pos.x = p.x; d.pos.y = p.y; }
       var disc = d.mapDiscovery && d.mapDiscovery[id];
-      if (disc && disc.length && r.mapBack) {   // v7.6 広げた屋内：探索済みの印を新しい座標へ（差し込んだマスは、元になったマスの印を写す）
+      var mapBack = fromPrev ? r.backPrev : r.mapBack;
+      if (disc && disc.length && mapBack) {   // v7.6 広げた屋内：探索済みの印を新しい座標へ（差し込んだマスは、元になったマスの印を写す）
         var o2 = []; var has = function (x, y) { var row = disc[y]; return !!(row && ((row[(x / 30) | 0] || 0) & (1 << (x % 30)))); };
         var nw = r.newW || r.oldW, nh = r.newH || r.oldH;
-        for (var Y = 0; Y < nh; Y++) { o2[Y] = []; for (var X = 0; X < nw; X++) { var b = r.mapBack(X, Y); if (has(b.x, b.y)) { var ii = (X / 30) | 0; o2[Y][ii] = (o2[Y][ii] || 0) | (1 << (X % 30)); } } }
+        for (var Y = 0; Y < nh; Y++) { o2[Y] = []; for (var X = 0; X < nw; X++) { var b = mapBack(X, Y); if (has(b.x, b.y)) { var ii = (X / 30) | 0; o2[Y][ii] = (o2[Y][ii] || 0) | (1 << (X % 30)); } } }
         d.mapDiscovery[id] = o2;
       }
       else if (disc && disc.length) {

@@ -27,7 +27,7 @@ function fbm(x, y) { let s = 0, a = 0.5, f = 1, n = 0; for (let i = 0; i < 4; i+
 // タイル → 地面の高さ（歩ける所はほぼ 0）
 const HEIGHT = { water: -0.55, deep: -0.8, shallow: -0.3, lava: -0.32, cloud: -1.7, puddle: -0.04, hill: 0.42, mountain: 0.85, cliff: 0.2, forest: 0.06, tree: 0.04, slag: 0.1 };
 const WATERY = { water: 1, deep: 1, shallow: 1 };
-const PAVED = { road: 1, stone: 1, path_stone: 1, floor_stone: 1, bld_door: 1, bridge: 1, dock: 1, stairs_down: 1, stairs_up: 1 };
+const PAVED = { road: 1, stone: 1, path_stone: 1, floor_stone: 1, bld_door: 1, bridge: 1, dock: 1, stairs_down: 1, stairs_up: 1, meridian: 1 };   // v8.1 meridian：子午線を埋めた石の床（真鍮の線は Furniture81）
 const WALL_TILES = { wall: 1, castle_wall: 1, wall_wood: 1, cave_wall: 1, bld_block: 1, window: 1, roof_blue: 1, roof_red: 1, roof_green: 1 };
 const TREE_SOLID = { tree: 1, forest: 1 };
 const LANDMARK = { village: 'lm_village', castle_icon: 'lm_castle', cave_icon: 'lm_cave', tower_icon: 'lm_tower' };
@@ -135,7 +135,7 @@ export class WorldBuilder3D {
       // [R 石畳, G 土, B 岩, A 平滑], 色
       if (t === '_void') return [[0, 0, 1, 0], '#0a0806'];
       if (PAVED[t]) return [[1, 0, 0, 0], G[t] || '#c8c0b0'];
-      if (t === 'road') return [[field ? 0 : 1, field ? 1 : 0, 0, 0], G.road];
+      if (t === 'road') { const dirt = field || !!(map.def && map.def.dirtRoad81); return [[dirt ? 0 : 1, dirt ? 1 : 0, 0, 0], G.road]; }   // v8.1 dirtRoad81：村の踏み跡は土の道（js/data/remake81-*.js）
       if (t === 'sand') return [theme.sandSplat || [0, 0.2, 0, 1], G.sand];   // v7.9 砂漠は土の粒を混ぜる（themes.js の sandSplat）
       if (t === 'snow') return [[0, 0, 0, 1], G.snow];
       if (t === 'ash') return [[0, 0.3, 0.3, 0.7], G.ash];
@@ -372,10 +372,11 @@ export class WorldBuilder3D {
     }
     // 町の外周：草地なら森（出口の道の延長は空ける）
     if (kind === 'town' || outdoorD) {
+      const open81 = !!(map.def && map.def.open81);
       for (let z = -ON; z < H + OS; z++) for (let x = -OW; x < W + OE; x++) {
         if (inside(x, z)) continue; const d = Math.max(-x, x - W + 1, -z, z - H + 1); if (d < 2) continue;
         const t = T(x, z); if (PAVED[t] || t === 'road' || WATERY[t] || t === 'sand' || t === 'cloud' || t === 'lava') continue;
-        if (rnd() > (d < 4 ? 0.35 : 0.6)) continue; if (env && env.skipOutTree && env.skipOutTree(x, z)) continue;   // v7.6 レシピ：町の外の木を置かない所（冷却塔の足元・門の前など）
+        if (open81 ? (d < 6 || rnd() > 0.12) : rnd() > (d < 4 ? 0.35 : 0.6)) continue; if (env && env.skipOutTree && env.skipOutTree(x, z)) continue;   // v7.6 レシピ：町の外の木を置かない所（冷却塔の足元・門の前など）　v8.1 開いた村（open81）：外は草地が続き、木は遠くにまばら（壁に見せない）
         tree(x + rnd(), z + rnd(), 0.9 + rnd() * 0.5); trees++;
       }
     }

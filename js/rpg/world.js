@@ -232,6 +232,10 @@
       else { var lmd = delta(p.dir) || [0, 0]; lmWas = World.landmarkTouch(m, p.x - lmd[0], p.y - lmd[1]); }   // 出てきた直後など：来た方向の1マス手前で判断
       if (lmWas !== lmHere) w = lmHere;   // 範囲の中を歩いているだけ（出てきた所が範囲の中など）のときは入らない
     }
+    if (w && m.kind === 'field' && root.Remake81 && root.MAP_DEFS[w.to] && root.MAP_DEFS[w.to].open81 && !d.aboard) {   // v8.1 開いた村：入った側・並びに着く（js/rpg/remake81.js）
+      var od = delta(p.dir) || [0, 0]; var pv = (lmPrev && lmPrev.m === m && !(lmPrev.x === p.x && lmPrev.y === p.y) && Math.max(Math.abs(lmPrev.x - p.x), Math.abs(lmPrev.y - p.y)) <= 1) ? lmPrev : { x: p.x - od[0], y: p.y - od[1] };
+      var ow = root.Remake81.fromField(m, w, pv.x, pv.y); if (ow) w = ow;
+    }
     if (w && (!w.needFlag || d.flags[w.needFlag])) { if (m.def.onStep) m.def.onStep(m, p, true); World.doWarp(w); return; }
     if (w && w.needFlag && !d.flags[w.needFlag] && !w.hidden) { World.lockedWarp(w); return; }   // v6.2 閉ざされた場所：理由を表示（フラグは変えない）
     if (m.def.onStep && m.def.onStep(m, p)) return;   // v5.6 マップごとの歩数処理（凍結時計塔の時限扉など）。true なら以降の処理をしない
@@ -304,8 +308,9 @@
     m.warps.forEach(function (w) {
       if (!World.LM_TOUCH[m.tile(w.x, w.y)]) return;
       var cand = []; var f = World.landmarkFace(m, w); var half = m.tile(w.x, w.y) === 'tower_icon' ? 1 : 2;
-      for (var v = -2; v <= 1; v++) for (var u = -half; u <= half; u++) {   // u：横、v：正面方向（+1＝出てくる側）
-        if (!u && !v) continue; if (half === 2 && Math.abs(u) === 2 && (v === -2 || v === 1)) continue;
+      var open81 = !!(root.MAP_DEFS[w.to] && root.MAP_DEFS[w.to].open81);   // v8.1 開いた村：四方とも同じ広さ（±2・四隅を除く）。どの側から近づいても入れる
+      for (var v = -2; v <= (open81 ? 2 : 1); v++) for (var u = -half; u <= half; u++) {   // u：横、v：正面方向（+1＝出てくる側）
+        if (!u && !v) continue; if (half === 2 && Math.abs(u) === 2 && (open81 ? Math.abs(v) === 2 : (v === -2 || v === 1))) continue;
         var dx = f[0] * v - f[1] * u, dy = f[1] * v + f[0] * u; var x = w.x + dx, y = w.y + dy;
         if (!walk(x, y) || m.warpAt(x, y) || m.eventAt(x, y) || (m.chestAt && m.chestAt(x, y)) || foot[x + ',' + y]) continue;
         cand.push([x, y]);
@@ -341,7 +346,8 @@
       var fade = document.getElementById('fade'); if (fade) fade.classList.add('on');
       setTimeout(function () {
         var dir = World.player.dir;
-        World.enterMap(w.to, w.tx, w.ty, w.face || ((root.MAP_DEFS[w.to] && root.MAP_DEFS[w.to].region) ? (State.data.aboard ? dir : 'down') : dir));   // v6.5 face：外周から出たときは出た向きのまま
+        World.enterMap(w.to, w.tx, w.ty, w.face || ((root.MAP_DEFS[w.to] && root.MAP_DEFS[w.to].region) ? (State.data.aboard ? dir : 'down') : dir), w.raw ? { raw: true } : undefined);   // v6.5 face：外周から出たときは出た向きのまま　v8.1 raw：新しい座標のまま（開いた村の出入り）
+        if (typeof w.lmGrace === 'number') World._lmGrace = w.lmGrace;   // v8.1 開いた村から出たとき：振り返ればすぐ入れる
         if (ride) { if (fade) fade.classList.remove('on'); var fin = function () { World.busy = false; }; ride.arrive(w).then(fin, fin); return; }
         setTimeout(function () { if (fade) fade.classList.remove('on'); World.busy = false; if (root.Audio) root.Audio.sfx('step'); }, 150);
       }, 180);

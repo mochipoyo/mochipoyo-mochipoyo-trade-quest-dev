@@ -132,7 +132,7 @@ async function build(ctx, K, b) {
   // ---- 床：道と歩道を地域の石に（建物の足元・水・橋・草・畑・砂などは従来のまま）
   const roads = [], walks = [];
   for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { if (covered.has(x + ',' + z)) continue; const t = T(x, z); if (t === 'road') roads.push([x, z]); else if (t === 'stone' || t === 'path_stone' || t === 'lamp' || t === 'fountain' || t === 'well' || t === 'bench' || t === 'barrel' || t === 'crate') walks.push([x, z]); }
-  if (roads.length) add(K.road, floorQuadsH(roads, 1 / 2, 1 / 2, hAt, 0.016));
+  if (roads.length && !(map.def && map.def.dirtRoad81)) add(K.road, floorQuadsH(roads, 1 / 2, 1 / 2, hAt, 0.016));   // v8.1 dirtRoad81（開いた村の踏み跡）は石を敷かない（土の道のまま）
   if (walks.length) add(K.walk, floorQuadsH(walks, 1 / 2, 1 / 2, hAt, 0.014));
   // ---- 街灯
   let lamps = 0; for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { if (T(x, z) !== 'lamp' || K.inLM(x, z)) continue; const cx = x + 0.5, cz = z + 0.5, y = hAt(cx, cz); const ly = lamp(add, R.lamp, cx, y, cz, M); ctx.scene.lampSpots.push({ pos: new THREE.Vector3(cx, y + ly, cz), color: R.light, power: 0.95, dist: 9 }); lamps++; }

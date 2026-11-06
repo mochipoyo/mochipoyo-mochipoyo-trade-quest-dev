@@ -1,0 +1,23 @@
+diff --git a/docs/tools/env/towns76_check.js b/docs/tools/env/towns76_check.js
+index db5b4c9..51ae15e 100644
+--- a/docs/tools/env/towns76_check.js
++++ b/docs/tools/env/towns76_check.js
+@@ -8,7 +8,8 @@ for (const id of Object.keys(TW.applied).concat(Object.keys(TW.auto || {}))) {
+   w.World.maps = {}; const m = w.World.getMap(id); const def = m.def; const O = def._orig76; const R = { problems: w.Terrace76.validate(m), unreachable: [], lost: [], npcSolid: [] };
+   // 歩けるか（NPC は通れないものとして、ただし話す相手としては隣に立てればよい）
+   const pass = (x, y) => x >= 0 && y >= 0 && x < m.w && y < m.h && (!w.Tiles.isSolid(m.tiles[y][x]) || m.tiles[y][x] === 'door_locked');   // 閉じた扉は物語が進むと開く（もとからの仕掛け）
+-  const starts = []; Object.keys(w.MAP_DEFS).forEach((k) => { (w.MAP_DEFS[k].warps || []).forEach((q) => { if (q.to === id && k !== id) starts.push([q.tx, q.ty, k]); }); });
++  const P81 = (x, y) => (w.MapRemake && def.remake81 ? w.MapRemake.pos(id, x, y) : { x: x, y: y });   // v8.1 作り直した町（js/rpg/remake81.js）：旧座標の着く所は、ゲームと同じく World.enterMap の変換のあと
++  const starts = []; Object.keys(w.MAP_DEFS).forEach((k) => { (w.MAP_DEFS[k].warps || []).forEach((q) => { if (q.to === id && k !== id) { const p0 = P81(q.tx, q.ty); starts.push([p0.x, p0.y, k]); } }); });
+   const seen = new Set(); const q = []; starts.forEach((s) => { if (pass(s[0], s[1])) { seen.add(s[0] + ',' + s[1]); q.push([s[0], s[1]]); } else R.unreachable.push('入ってくる位置が通れない ' + s.join(',')); });
+   const npcAt = {}; m.npcs.forEach((n) => { npcAt[n.x + ',' + n.y] = n; });
+   while (q.length) { const [x, y] = q.shift(); for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = x + dx, ny = y + dy, k = nx + ',' + ny; if (seen.has(k) || !pass(nx, ny)) continue; if (npcAt[k] && npcAt[k].wander === 0) continue; seen.add(k); q.push([nx, ny]); } }
+@@ -26,7 +27,7 @@ for (const id of Object.keys(TW.applied).concat(Object.keys(TW.auto || {}))) {
+   (O.npcs || []).forEach((n) => { if (!nNow.has(n.id)) R.lost.push('NPC ' + n.id); });
+   // 中のマップの出口が、建物の入口の前か
+   const ob = {}; (O.buildings || []).forEach((b) => { ob[b.id] = b; }); const moved = (b) => { const o = ob[b.id]; return !o || o.x !== b.x || o.y !== b.y || o.w !== b.w || o.h !== b.h || o.doorX !== b.doorX || o.doorSide !== b.doorSide; };
+-  const exits = []; def.buildings.forEach((b) => { if (!b.interior || !moved(b)) return; const it = w.MAP_DEFS[b.interior]; const f = TW.door(b).front; (it.warps || []).filter((q3) => q3.to === id).forEach((q3) => { if (q3.tx !== f.x || q3.ty !== f.y) { if (b.type === 'castle') return; R.unreachable.push('出口が入口の前でない ' + b.interior + ' ' + q3.tx + ',' + q3.ty + '（入口の前 ' + f.x + ',' + f.y + '）'); } exits.push(b.interior); }); });
++  const exits = []; def.buildings.forEach((b) => { if (!b.interior || !moved(b)) return; const it = w.MAP_DEFS[b.interior]; const f = TW.door(b).front; (it.warps || []).filter((q3) => q3.to === id).forEach((q3) => { const p3 = P81(q3.tx, q3.ty); if (p3.x !== f.x || p3.y !== f.y) { if (b.type === 'castle') return; R.unreachable.push('出口が入口の前でない ' + b.interior + ' ' + q3.tx + ',' + q3.ty + '（入口の前 ' + f.x + ',' + f.y + '）'); } exits.push(b.interior); }); });
+   const shapes = {}; def.buildings.forEach((b) => { const k = (b.shape76 || 'box') + (b.doorSide ? '・横の入口' : ''); shapes[k] = (shapes[k] || 0) + 1; });
+   let steps = 0, ramps = 0, ledges = 0; for (let y = 0; y < m.h; y++) for (let x = 0; x < m.w; x++) { const t = m.tiles[y][x]; if (t === 'steps') steps++; else if (t === 'ramp') ramps++; else if (t === 'ledge') ledges++; }
+   R.stats = { reach: seen.size, steps, ramps, ledges, shapes, buildings: def.buildings.length, npcs: m.npcs.length, autoLedge: TW.fixes[id], terrace: def._auto76lv ? (def._auto76lv.none ? 'なし：' + (def._auto76lv.why || '候補なし') : '境の行 ' + def._auto76lv.r) : '計画' , auto: TW.auto && TW.auto[id] };

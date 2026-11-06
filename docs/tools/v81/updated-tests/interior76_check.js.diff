@@ -1,0 +1,13 @@
+diff --git a/docs/tools/env/interior76_check.js b/docs/tools/env/interior76_check.js
+index ea4c5ab..20598df 100644
+--- a/docs/tools/env/interior76_check.js
++++ b/docs/tools/env/interior76_check.js
+@@ -23,7 +23,7 @@ for (const id of Object.keys(I.maps)) {
+     N4.forEach(([dx, dy]) => { const c0 = old.rows[q0.y + dy] && old.rows[q0.y + dy][q0.x + dx]; if (c0 !== 'T') return; const c1 = def.rows[q1.y + dy] && def.rows[q1.y + dy][q1.x + dx]; if (c1 !== 'T') bad('カウンター越しが切れた ' + q0.id); }); });
+   // 元の家具（通れない物）の数が減っていない
+   const cnt = (rows) => { const o = {}; rows.join('').split('').forEach((c) => { const t = TL.byChar[c]; if (t && TL.isSolid(t)) o[c] = (o[c] || 0) + 1; }); return o; };
+-  const c0 = cnt(old.rows), c1 = cnt(def.rows); Object.keys(c0).forEach((c) => { if ((c1[c] || 0) < c0[c]) bad('家具が減った ' + c + ' ' + c0[c] + '→' + (c1[c] || 0)); });
++  const c0 = cnt(old.rows), c1 = cnt(def.rows); if (!def.remake81) Object.keys(c0).forEach((c) => { if ((c1[c] || 0) < c0[c]) bad('家具が減った ' + c + ' ' + c0[c] + '→' + (c1[c] || 0)); });   // v8.1 手で設計し直した部屋（js/rpg/remake81.js。用途に合わせて家具を置きかえた）は、広げた部屋の家具の数の比べの対象外
+   // ほかのマップからここへ入る位置（旧座標で書かれている）が、新しい部屋で通れる
+   Object.keys(D).forEach((k) => { (D[k].warps || []).concat((D[k].buildings || []).filter((b) => b.interior === id).map((b) => ({ to: id, tx: b.entry ? b.entry.x : 5, ty: b.entry ? b.entry.y : 7 }))).forEach((q) => { if (!q || q.to !== id || typeof q.tx !== 'number') return; const p = MR.pos(id, q.tx, q.ty); if (!walk(p.x, p.y)) bad('入る位置が通れない（' + k + '）' + q.tx + ',' + q.ty + '→' + p.x + ',' + p.y); }); });
+   // 大きさ

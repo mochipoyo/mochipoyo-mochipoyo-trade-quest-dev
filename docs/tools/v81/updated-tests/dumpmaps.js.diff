@@ -1,0 +1,10 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/dumpmaps.orig.js	2026-11-06 21:47:38.032417773 +0900
++++ dumpmaps.js	2026-11-06 21:47:38.042498787 +0900
+@@ -27,6 +27,6 @@
+   out[id] = { rows, warps: require('./v68tradia.js').stripWarps(id, d.warps).filter(x => !S69(x.to)).map(x => (id === 'tradia' && x.to === 'world_magicka' ? Object.assign({}, x, { to: 'world_kalion', tx: 36, ty: 89 }) : x)).map(x => ({ x: x.x, y: x.y, to: x.to, tx: x.tx, ty: x.ty, needFlag: x.needFlag || null })), chests: (d.chests || []).map(c => ({ id: c.id, x: c.x, y: c.y, item: c.item || null, gold: c.gold || null })),
+     npcs: (d.npcs || []).filter(n => !n.s3121 && !/^ev65/.test(n.id) && !/^tmaster_/.test(n.id) && !/^aunt67_/.test(n.id) && !['mina', 'seris', 'gald', 'lucia', 'kazuto', 'mochipoyo', 'ponta'].includes(n.id)).map(n => ({ id: n.id, x: n.x, y: n.y })), events: (d.events || []).filter(e => !e.v65 && !e.s3121).map(e => ({ x: e.x, y: e.y, type: e.type, doneFlag: e.doneFlag || null })), buildings: (d.buildings || []).filter(b => !b.s3121).map(b => ({ id: b.id, x: b.x, y: b.y, w: b.w, h: b.h, doorX: b.doorX, interior: b.interior || null })) };
+ }
+-const sp = (w.SEARCH_POINTS || []).map(p => ({ id: p.id, map: p.map, x: p._rm71 ? p._ox : p._i76 ? p._i76.x : p.x, y: p._rm71 ? p._oy : p._i76 ? p._i76.y : p.y }));   // v7.1 作り直したダンジョン・v7.6 広げた屋内の探索ポイントは旧座標で比べる   // v7.1 作り直したダンジョンの探索ポイントは旧座標で比べる
++const sp = (w.SEARCH_POINTS || []).map(p => ({ id: p.id, map: p.map, x: p._rm71 ? p._ox : p._i76 ? p._i76.x : p._o81 ? p._o81[0] : p.x, y: p._rm71 ? p._oy : p._i76 ? p._i76.y : p._o81 ? p._o81[1] : p.y }));   // v8.1 作り直した町（js/rpg/remake81.js）の探索ポイントも旧座標で比べる（_o81）   // v7.1 作り直したダンジョン・v7.6 広げた屋内の探索ポイントは旧座標で比べる   // v7.1 作り直したダンジョンの探索ポイントは旧座標で比べる
+ const wl = (w.WORLD_LOCATIONS || []).filter(L => L.id !== 'asana_ruins').map(L => ({ id: L.id, to: L.to, x: L.x, y: L.y, tx: L.tx, ty: L.ty }));
+ process.stdout.write(JSON.stringify({ maps: out, sp, wl }));
