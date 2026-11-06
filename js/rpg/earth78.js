@@ -369,8 +369,13 @@
     var W76 = root.World76, r = W76.rect(id); var cache = null; var near = r.near;
     var nd = root.MAP_DEFS[near]; var enc = null;
     if (nd && nd.encounters && nd.encounters.zones) enc = { rate: nd.encounters.rate, zones: nd.encounters.zones.map(function (z) { var z2 = Object.assign({}, z); z2.test = function (x, y, m) { return z.test(nearLocal(near, r.x + x, r.y + y).x, nearLocal(near, r.x + x, r.y + y).y, m); }; return z2; }) };
-    return { id: id, name: E.fillerName(id), kind: 'field', rows: function () { return cache || (cache = E.fillerRows(id)); }, fallback: 'deep', bgm: 'field', region: true, sea76: (r.landRatio || 0) < 0.05, filler76: true, earth78: true,
+    var def = { id: id, name: E.fillerName(id), kind: 'field', rows: function () { return cache || (cache = E.fillerRows(id)); }, fallback: 'deep', bgm: 'field', region: true, sea76: (r.landRatio || 0) < 0.05, filler76: true, earth78: true,
       locations: [], warps: [], chests: [], npcs: [], events: [], encounters: enc, theme3d: { region: (THEME3D[near] || 'islands') } };
+    // 地球の記録（js/data/region78-earth.js）：この地図の中にある遺跡を、いちばん近い歩ける陸に石の柱で置く
+    (root.EARTH78_SITES || []).forEach(function (st) { var t = L.tile(st.lon, st.lat); var lx = root.World76.dxWrap(t.x - r.x), ly = t.y - r.y; if (lx < 0 || ly < 0 || lx >= r.w || ly >= r.h) return;
+      var rows = def.rows(); var q = snap(rows, r.w, r.h, lx, ly, function (c, xx, yy) { return walkCh(c) && !ICONCH[c] && xx > 1 && yy > 1 && xx < r.w - 2 && yy < r.h - 2 && nearWalk(rows, r.w, r.h, xx, yy, {}) >= 3; }, 12); if (!q) return;
+      st.map = id; st.x = q.x; st.y = q.y; def.events.push({ x: q.x, y: q.y, type: 'script', solid: true, tile: 'pillar', site78: st.id, run: st.run }); });
+    return def;
   };
   var THEME3D = {};
   // 外の地図の (gx, gy) を、いちばん近い地域のローカル座標（その地域の出現表の判定用。旧座標の地域は旧座標）に
@@ -420,7 +425,8 @@
     var ids = Object.keys(L.regions).filter(function (id) { return !!root.MAP_DEFS[id]; });
     // 噂を話す人（地球の世界だけ。旧座標で置き、ほかの物と同じく新しい場所へ）：新しい地域への道しるべ
     var wd = root.MAP_DEFS.world; if (wd && !(wd.npcs || []).some(function (n) { return n.id === 'w_mapseller78'; })) wd.npcs.push({ id: 'w_mapseller78', x: 25, y: 70, sprite: 'sailor', dir: 'down', wander: 0, talk: async function (c) {
-      var ch = await c.choice('大洋の地図売り「海の噂を聞くかい？」', ['大西洋の噂', '太平洋の噂', 'やめる']);
+      var ER = root.R78 && root.R78.earthRecords; var ch = await c.choice('大洋の地図売り「海の噂を聞くかい？」', ['大西洋の噂', '太平洋の噂', '町のない大陸の記録', 'やめる']);
+      if (ch === 2) { if (ER) await ER.talk(c); return; }
       if (ch === 0) await c.say('大洋の地図売り', ['港から大西洋へ出て南西へ行けば、断裂群島。そのずっと南、赤道のあたりに、輪の形をした大陸があるそうだ。環潮大陸ネレイア。外礁の切れ目は、遠洋航海船でないと抜けられない。', '大西洋をまっすぐ西へ渡ると、北アメリカの東岸。灰に覆われた港町の廃墟がある。灰岸都市メリディアンだ。……断裂群島の霧が晴れてから行ってみな。']);
       else if (ch === 1) await c.say('大洋の地図売り', ['地球の反対側、東アジアの沿岸には、雨がやまない街がある。錆雨市ネオン・ドック。マクディア魔導王国まで行けたら、さらに東の海へ。', 'それと、太平洋のど真ん中——ハワイのあたりで、雲の上から城の影が落ちてくるって話だ。空を飛ぶ船でもなけりゃ、確かめようがないがね。', '世界は東西にぐるっとつながってる。太平洋を東へ渡れば、アメリカの西の海に出るよ。']);
     } });
