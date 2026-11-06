@@ -85,6 +85,25 @@
       });
     }
   });
+  /* ---------- マリナの宿屋：船室のような小部屋（北）・魚の長机の食堂・海側の窓（南）・入口の帳場 ---------- */
+  R.define('harbor_inn', {
+    version: 1, arrive: [9, 10],
+    rows: function (canvas) {
+      var C = canvas(18, 12, '_'); C.frame(0, 0, 18, 12, '#'); C.set(9, 11, 'D');
+      [4, 8, 12].forEach(function (x) { C.rect(x, 1, 1, 2, 'W'); });   // 船室の仕切り（板壁）
+      [1, 5, 9].forEach(function (x) { C.set(x, 1, 'E'); C.set(x + 2, 1, 'q'); }); C.set(13, 1, 'E');
+      C.set(15, 1, '<'); C.set(16, 1, '{');
+      C.rect(3, 6, 8, 1, 'T'); C.rect(3, 5, 8, 1, 'e'); C.rect(3, 7, 8, 1, 'e');   // 魚の長机と長いす
+      C.set(1, 5, 'y'); C.set(16, 5, 'q'); C.set(16, 6, 'q'); C.set(16, 8, 'x'); C.set(1, 8, 'x');   // 灯・樽・干した網
+      C.rect(2, 11, 4, 1, 'o'); C.rect(12, 11, 4, 1, 'o');   // 海側の窓
+      C.set(13, 8, 'T'); C.set(14, 8, 'T');   // 帳場
+      return C;
+    },
+    npcs: { harbor_inn_keeper: [14, 7, 'down', 0], harbor_inn_guest: [6, 9, 'up', 1] },
+    warps: [{ x: 9, y: 11, to: 'harbor_town', tx: 8, ty: 7 }, { x: 15, y: 1, to: 'harbor_inn_x72_2f', tx: 9, ty: 2 }],
+    anchors: [[13, 2, 15, 2]]
+  });
+
   // 初めて港町に入ったとき（3D）：北の街道から、高台の通りの先の海と長い桟橋・修理中の船へ
   R.firstView('harbor_town', 'v81_marina_view', { x: 38, y: 0, z: 24, dist: 30, pitch: 32 }, 4000);
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -12,7 +12,20 @@ export function buildArcades81(map, ctx) {
   const M = ctx.mats; const b = new Batch(); const H = ctx.heightAt || (() => 0);
   const light = M.tinted('stonewall', '#d8d0c0'), dark = M.tinted('stonewall', '#9a9284'), timber = M.get('timber'), roofM = M.tinted('stonewall', '#7a7066');
   const brass = new THREE.MeshStandardMaterial({ color: 0xc8a050, roughness: 0.35, metalness: 0.8 });
+  const sand = M.tinted('stonewall', '#e0c89a'), awning = new THREE.MeshStandardMaterial({ color: 0xd8b878, roughness: 0.95, side: THREE.DoubleSide });
   for (const a of L) {
+    if (a.kind === 'ring') {   // 弧の日陰回廊（砂の町）：中心 cx, cy・半径 r・幅 w。gaps（度。0＝東・90＝南）の向きは抜け道として開ける
+      const y0 = H(a.cx, a.cy), roofY = y0 + 2.7, r = a.r, half = (a.w || 2) / 2; const N = Math.max(24, Math.round(2 * Math.PI * r / 1.0)); const gaps = (a.gaps || []).map((g) => g * Math.PI / 180); const gw = (a.gapW || 1.4) / r;
+      const open = (ang) => gaps.some((g) => { let d = Math.abs(((ang - g) % (2 * Math.PI) + 3 * Math.PI) % (2 * Math.PI) - Math.PI); return d < gw; });
+      for (let i = 0; i < N; i++) {
+        const a0 = i / N * Math.PI * 2, a1 = (i + 1) / N * Math.PI * 2, am = (a0 + a1) / 2; if (open(am)) continue;
+        const seg = 2 * Math.PI * r / N + 0.05; const ry = -am + Math.PI / 2;
+        b.add(sand, box(0.12 + seg, 0.14, half * 2 + 0.5, 1), M4(a.cx + Math.cos(am) * r, roofY, a.cy + Math.sin(am) * r, ry));   // 平らな屋根
+        b.add(awning, box(seg + 0.1, 0.04, 0.7, 1), M4(a.cx + Math.cos(am) * (r - half - 0.45), roofY - 0.25, a.cy + Math.sin(am) * (r - half - 0.45), ry, 0.45));   // 内側の日よけの布
+        if (i % 2 === 0) for (const rr of [r - half, r + half]) { const px = a.cx + Math.cos(a0) * rr, pz = a.cy + Math.sin(a0) * rr; b.add(sand, box(0.26, 2.7, 0.26, 1), M4(px, y0 + 1.35, pz)); b.add(sand, box(0.4, 0.18, 0.4, 1), M4(px, y0 + 2.5, pz)); }
+      }
+      continue;
+    }
     const horiz = a.w >= a.h; const len = horiz ? a.w : a.h; const span = horiz ? a.h : a.w;
     const stoneM = a.kind === 'cloister' ? dark : light; const y0 = H(a.x + a.w / 2, a.y + a.h / 2); const roofY = y0 + 2.75;
     // 長い辺の柱とアーチ（両側）
