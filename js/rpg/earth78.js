@@ -332,6 +332,10 @@
     var ex = EXACT[id] && EXACT[id][x + ',' + y]; if (ex) return { x: ex.x, y: ex.y };
     var g = GEN[id], o = OLD[id], r = g.rect; var f = fwd(XF[id], x, y); var p = { x: Math.max(0, Math.min(g.W - 1, Math.round(f.x) - r.x)), y: Math.max(0, Math.min(g.H - 1, Math.round(f.y) - r.y)) };
     var water = o && o.isWater(x, y); var rows = g.rows;
+    // v7.9.2 場所（町・洞窟など）の入口のそば（3 マス以内）の陸は、新しい入口から同じ向き・同じ距離へ（町のあいだを広げたので、
+    //   直線の対応だけでは入口から 5 マスほどずれることがあった：セーブの位置・入口の記録・旧座標で書いた移動先）
+    if (o && !water && o.locations && g.locs) { var best = null; o.locations.forEach(function (ol) { var d0 = Math.abs(ol.x - x) + Math.abs(ol.y - y); if (d0 > 0 && d0 <= 3 && (!best || d0 < best.d)) best = { ol: ol, d: d0 }; });
+      if (best) { var nl = null; g.locs.forEach(function (l) { if (l.id === best.ol.id) nl = l; }); if (nl) { var q0 = snap(rows, g.W, g.H, nl.x + (x - best.ol.x), nl.y + (y - best.ol.y), function (c) { return walkCh(c) && !ICONCH[c]; }, 3); if (q0) return q0; } } }
     var q = snap(rows, g.W, g.H, p.x, p.y, water ? function (c) { return c === '~' || c === 'w'; } : function (c) { return walkCh(c) && !ICONCH[c]; }, 30);
     if (!q && water) q = snap(rows, g.W, g.H, p.x, p.y, function (c) { return !!WATER[c]; }, 30);
     return q || p;
@@ -540,11 +544,37 @@
     var good = function (c, x, y) { if (!walkCh(c) || ICONCH[c] || x < 1 || y < 1 || x >= g.W - 1 || y >= g.H - 1 || ev[x + ',' + y]) return false; for (var k = 0; k < 4; k++) { var xx = x + [1, -1, 0, 0][k], yy = y + [0, 0, 1, -1][k]; var c2 = g.rows[yy] && g.rows[yy][xx]; if (c2 === '~' || c2 === 'w') return true; } return false; };
     if (good(g.rows[la.y] && g.rows[la.y][la.x], la.x, la.y)) return la; var q = snap(g.rows, g.W, g.H, mo ? mo.x : la.x, mo ? mo.y : la.y, good, 8); return q || la;
   }
+  // v7.9.2 港の停泊位置：町・洞窟などの入口（場所の印）から 3 マス以上離れた海へ（3D 版では町の模型が入口のまわり 2 マスほどに建つので、
+  //   入口のすぐ横の海に停めた船が建物に隠れて見えず、乗れないように見えた：港町マリナ）。桟橋の陸は入口から 2 マス以上離れた「海のとなりの歩けるマス」で、
+  //   その港の町（near）から歩いて行けるところのうち、いちばん近いもの。帆船で進める海（浅瀬・海）が 60 マス以上つながっているところだけ
+  function dockAway(map, h) {
+    var g = GEN[map]; if (!g || !h || !h.moor || !h.land) return null; var locs = g.locs || [];
+    var cheb = function (x, y) { var m = 1e9; locs.forEach(function (l) { var d = Math.max(Math.abs(l.x - x), Math.abs(l.y - y)); if (d < m) m = d; }); return m; };
+    if (cheb(h.moor.x, h.moor.y) >= 3 && cheb(h.land.x, h.land.y) >= 2) return null;
+    var at = function (x, y) { return x >= 0 && y >= 0 && x < g.W && y < g.H ? g.rows[y][x] : null; };
+    var sea = function (c) { return c === '~' || c === 'w'; };
+    var ev = {}; ((g.objs || {}).events || []).forEach(function (it, i) { var p = g.pos ? g.pos['E:' + (it.ref && it.ref.id ? it.ref.id : i)] : null; if (p) ev[p.x + ',' + p.y] = 1; });
+    var openCache = {}; var open = function (x, y) { var k0 = x + ',' + y; if (openCache[k0] !== undefined) return openCache[k0]; var seen = {}; seen[k0] = 1; var q = [[x, y]], n = 0;
+      while (q.length && n < 60) { var c = q.shift(); n++; for (var k = 0; k < 4; k++) { var nx = c[0] + [1, -1, 0, 0][k], ny = c[1] + [0, 0, 1, -1][k], kk = nx + ',' + ny; if (seen[kk] || !sea(at(nx, ny))) continue; seen[kk] = 1; q.push([nx, ny]); } }
+      return (openCache[k0] = n >= 60); };
+    var near = null; locs.forEach(function (l) { if (l.id === h.near) near = l; }); var st = near || h.land;
+    var dist = {}; dist[st.x + ',' + st.y] = 0; var Q = [st], head = 0;
+    while (head < Q.length && head < 4000) { var p = Q[head++]; var d0 = dist[p.x + ',' + p.y];
+      var c0 = at(p.x, p.y); if (d0 > 0 && !ICONCH[c0] && !ev[p.x + ',' + p.y] && p.x > 0 && p.y > 0 && p.x < g.W - 1 && p.y < g.H - 1 && cheb(p.x, p.y) >= 2) {
+        for (var k = 0; k < 4; k++) { var wx = p.x + [1, -1, 0, 0][k], wy = p.y + [0, 0, 1, -1][k]; if (sea(at(wx, wy)) && cheb(wx, wy) >= 3 && open(wx, wy)) return { moor: { x: wx, y: wy }, land: { x: p.x, y: p.y } }; } }
+      if (d0 >= 40) continue;
+      for (var k2 = 0; k2 < 4; k2++) { var nx2 = p.x + [1, -1, 0, 0][k2], ny2 = p.y + [0, 0, 1, -1][k2], kk2 = nx2 + ',' + ny2; var c2 = at(nx2, ny2); if (dist[kk2] !== undefined || !c2 || !walkCh(c2) || ICONCH[c2]) continue; dist[kk2] = d0 + 1; Q.push({ x: nx2, y: ny2 }); } }
+    return null;
+  }
+  E.dockAway = function (map, h) { return dockAway(map, h); };
   function rewriteGlobals(ids) {
     // 港（停める海・桟橋の陸）
-    var H0 = root.Harbors && root.Harbors.HARBORS; if (H0) Object.keys(H0).forEach(function (k) { var h = H0[k]; if (!OLD[h.map] || h._e78) return; var mo = convPt(h.map, h.moor.x, h.moor.y, true), la = convPt(h.map, h.land.x, h.land.y, false); h._e78 = { moor: h.moor, land: h.land }; if (mo) h.moor = mo; if (la) h.land = pierLand(h.map, la, mo); });
+    var H0 = root.Harbors && root.Harbors.HARBORS; if (H0) Object.keys(H0).forEach(function (k) { var h = H0[k]; if (!OLD[h.map] || h._e78) return; var mo = convPt(h.map, h.moor.x, h.moor.y, true), la = convPt(h.map, h.land.x, h.land.y, false); h._e78 = { moor: h.moor, land: h.land }; if (mo) h.moor = mo; if (la) h.land = pierLand(h.map, la, mo);
+      var dk = dockAway(h.map, h); if (dk) { h._e79 = { moor: h.moor, land: h.land }; h.moor = dk.moor; h.land = dk.land; } });   // v7.9.2 入口から離れた海へ
     // 乗り物の母港
-    var VV = root.VEHICLES; if (VV) Object.keys(VV).forEach(function (k) { var hm = VV[k].home; if (!hm || !OLD[hm.map] || VV[k]._e78) return; var p = convPt(hm.map, hm.x, hm.y, k !== 'airship'); VV[k]._e78 = { home: hm }; if (p) VV[k].home = { map: hm.map, x: p.x, y: p.y }; });
+    var VV = root.VEHICLES; if (VV) Object.keys(VV).forEach(function (k) { var hm = VV[k].home; if (!hm || !OLD[hm.map] || VV[k]._e78) return; var p = convPt(hm.map, hm.x, hm.y, k !== 'airship'); VV[k]._e78 = { home: hm }; if (p) VV[k].home = { map: hm.map, x: p.x, y: p.y };
+      // v7.9.2 船の母港が港（母港の印のある港）のそばなら、その港の停泊位置（入口から離れた海）にそろえる
+      if (k !== 'airship' && H0) Object.keys(H0).forEach(function (hk) { var h = H0[hk]; var o0 = h._e78 && h._e78.moor; if (!h.home || h.map !== hm.map || !o0 || Math.abs(o0.x - hm.x) > 6 || Math.abs(o0.y - hm.y) > 6) return; VV[k].home = { map: hm.map, x: h.moor.x, y: h.moor.y }; }); });
     // 海の宝（js/rpg/seatreasure.js）
     var ST = root.SeaTreasure; var spots = ST && (ST.SPOTS || ST.spots || ST.LIST); if (spots && spots.forEach) spots.forEach(function (s) { var m = s.map || s[1]; if (!OLD[m]) return; var x = typeof s.x === 'number' ? s.x : s[2], y = typeof s.y === 'number' ? s.y : s[3]; var p = convPt(m, x, y, true); if (!p) return; if (typeof s.x === 'number') { s.x = p.x; s.y = p.y; } else { s[2] = p.x; s[3] = p.y; } });
     if (root.Harbors && root.Harbors.clearCache) root.Harbors.clearCache();
@@ -558,7 +588,12 @@
     Object.keys(d.remakeVer).forEach(function (id) { var ver = d.remakeVer[id]; if (ver === VER || !L.prev || !L.prev[ver] || !L.regions[id] || L.regions[id].isNew) return;
       if (!L.prev[ver][id]) { d.remakeVer[id] = VER; return; }
       snapshotOld(id); var o = OLD[id]; var xf = fitXfPrev(id, ver); if (!o || !xf) return; var r = L.rectOf(id);
-      var back = function (x, y, water) { var p = inv(xf, r.x + x, r.y + y); var q = { x: Math.max(0, Math.min(o.W - 1, Math.round(p.x))), y: Math.max(0, Math.min(o.H - 1, Math.round(p.y))) };
+      // v7.9.2 その版の場所の入口（ピンのマス）のそば（3 マス以内）の陸は、旧座標の入口から同じ向き・同じ距離へ（直線の対応だけでは入口から数マスずれた）
+      var pins = (L.prev[ver][id] || {}).pins || {}; var pinT = {}; Object.keys(pins).forEach(function (k) { var t = L.tile(pins[k][0], pins[k][1]); pinT[k] = { x: t.x - r.x, y: t.y - r.y }; });
+      var back = function (x, y, water) {
+        if (!water) { var nb = null; (o.locations || []).forEach(function (ol) { var t = pinT[ol.id]; if (!t) return; var d0 = Math.abs(t.x - x) + Math.abs(t.y - y); if (d0 <= 3 && (!nb || d0 < nb.d)) nb = { ol: ol, t: t, d: d0 }; });
+          if (nb) { var q0 = snap(o.rows, o.W, o.H, nb.ol.x + (x - nb.t.x), nb.ol.y + (y - nb.t.y), function (c) { return walkCh(c) && !ICONCH[c]; }, 3); if (q0) return q0; } }
+        var p = inv(xf, r.x + x, r.y + y); var q = { x: Math.max(0, Math.min(o.W - 1, Math.round(p.x))), y: Math.max(0, Math.min(o.H - 1, Math.round(p.y))) };
         return snap(o.rows, o.W, o.H, q.x, q.y, water ? function (c) { return c === '~' || c === 'w'; } : function (c) { return walkCh(c) && !ICONCH[c]; }, 30) || q; };
       var on = function (m) { return m === id; };
       if (d.pos && on(d.pos.map) && !same(d.pos)) { var p = back(d.pos.x, d.pos.y, d.aboard && d.aboard !== 'airship'); d.pos.x = p.x; d.pos.y = p.y; }
@@ -600,7 +635,11 @@
     var same = function (o) { return !!skip && !!o && o.map === skip.map && o.x === skip.x && o.y === skip.y; };
     if (!d || !d.remakeVer) return false; upgradePrev(d, same); var ids = Object.keys(L.regions).filter(function (id) { return d.remakeVer[id] === VER && root.MAP_DEFS[id] && !L.regions[id].isNew; }); if (!ids.length) return false;
     ids.forEach(function (id) { snapshotOld(id); fitXf(id); });
-    var back = function (m, x, y, water) { var o = OLD[m]; var q = mapBack(m, x, y, null); var s = snap(o.rows, o.W, o.H, q.x, q.y, water ? function (c) { return c === '~' || c === 'w'; } : function (c) { return walkCh(c) && !ICONCH[c]; }, 30); return s || q; };
+    var back = function (m, x, y, water) { var o = OLD[m];
+      // v7.9.2 入口のそば（3 マス以内）の陸は、旧座標の入口から同じ向き・同じ距離へ（mapPos の逆）
+      var g = GEN[m]; if (!water && g && g.locs && o.locations) { var nb = null; g.locs.forEach(function (l) { var d0 = Math.abs(l.x - x) + Math.abs(l.y - y); if (d0 <= 3 && (!nb || d0 < nb.d)) nb = { l: l, d: d0 }; });
+        if (nb) { var ol = null; o.locations.forEach(function (q1) { if (q1.id === nb.l.id) ol = q1; }); if (ol) { var q0 = snap(o.rows, o.W, o.H, ol.x + (x - nb.l.x), ol.y + (y - nb.l.y), function (c) { return walkCh(c) && !ICONCH[c]; }, 3); if (q0) return q0; } } }
+      var q = mapBack(m, x, y, null); var s = snap(o.rows, o.W, o.H, q.x, q.y, water ? function (c) { return c === '~' || c === 'w'; } : function (c) { return walkCh(c) && !ICONCH[c]; }, 30); return s || q; };
     var isB = function (m) { return ids.indexOf(m) >= 0; };
     if (d.pos && isB(d.pos.map) && !same(d.pos)) { var p = back(d.pos.map, d.pos.x, d.pos.y, d.aboard && d.aboard !== 'airship'); d.pos.x = p.x; d.pos.y = p.y; }
     Object.keys(d.vehicles || {}).forEach(function (k) { var s = d.vehicles[k]; if (!s) return; if (s.map && isB(s.map) && !same(s)) { var p2 = back(s.map, s.x, s.y, k !== 'airship'); s.x = p2.x; s.y = p2.y; } if (s.port && isB(s.port.map)) { var p3 = back(s.port.map, s.port.x, s.port.y, k !== 'airship'); s.port.x = p3.x; s.port.y = p3.y; } });

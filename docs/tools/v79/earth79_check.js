@@ -6,7 +6,7 @@ const ng = []; const ok = (c, m) => { if (!c) ng.push(m); console.log((c ? 'OK  
 const A = load(); const w = A.w; const W = w.World, S = w.State, W76 = w.World76, E = w.Earth78, T = w.Tiles;
 S.newGame('t', 'warrior'); const d = S.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; W.start();
 ok(!A.errors.length, '読み込みのエラーなし ' + A.errors.slice(0, 2).join(' / '));
-ok(E.VERSION === 'e78.3', '配置の版 e78.3 ' + E.VERSION);
+ok(/^e78\.[34]$/.test(E.VERSION), '配置の版 e78.3 以降（v7.9.2 で e78.4：アルカディアを広げた） ' + E.VERSION);   // v7.9.2 最小の更新（版の確かめ方だけ）
 const V4 = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 const reachMaps = (aboard, flags) => { const keep = Object.assign({}, d.flags); Object.assign(d.flags, flags); const seen = new Set(['world']); const q = ['world']; while (q.length) { const id = q.shift(); W76.neighbors(id).forEach((nb) => { const n = nb.id; if (seen.has(n) || W76.entryBlock(n, aboard, id)) return; seen.add(n); const r = W76.rect(n); if (!(r.region && n !== 'world')) q.push(n); }); } d.flags = keep; S.data.flags = keep; return seen; };
 // C：ニヴェリス

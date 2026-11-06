@@ -303,7 +303,9 @@ function port_(k, D) {
   const style = D.roofStyle === 'steep' ? 'steep' : 'gable';
   // 真ん中の通り（x≒0）は空ける：港町は北から入ることが多い（出たときに立つマスが建物の中にならないように）
   const L = [[-0.8, -0.55, 0.58, 0.46, 0.46, 0.1], [0.78, -0.7, 0.62, 0.48, 0.55, -0.05], [0.85, 0.05, 0.5, 0.42, 0.42, -0.2], [-0.95, 0.3, 0.5, 0.42, 0.38, 0.3], [-0.45, -1.15, 0.42, 0.36, 0.4, 0]];
-  L.forEach((h, i) => k.house(h[0], h[1], h[2], h[3], h[4], { wall: i % 2 ? col(D, 'wallD', wall) : wall, roof: i % 2 ? roofD : roof, style, glow, ry: h[5], timbered: true, wood: col(D, 'wood'), snow, chimney: i === 1 }));
+  // v7.9.2 家は陸にだけ建てる（海が西や北にある港町で、海の上に家が建ち、そこに停めた船を隠していた：地球の世界の港町マリナ）
+  const dry = (x, z) => !k.env.water || !k.env.water(k.W(x, 0, z).x, k.W(x, 0, z).z);
+  L.forEach((h, i) => dry(h[0], h[1]) && k.house(h[0], h[1], h[2], h[3], h[4], { wall: i % 2 ? col(D, 'wallD', wall) : wall, roof: i % 2 ? roofD : roof, style, glow, ry: h[5], timbered: true, wood: col(D, 'wood'), snow, chimney: i === 1 }));
   // 灯台（港の目印）
   const lhB = snow ? [col(D, 'ice', '#bfe8ff'), '#f4f8ff', col(D, 'ice', '#bfe8ff'), '#f4f8ff'] : ['#f4f0e8', col(D, 'stripe', '#d83a3a'), '#f4f0e8', col(D, 'stripe', '#d83a3a')];
   k.tower(1.05, 0.65, 0.16, 1.15, { bands: lhB, top: 'lamp', roof: '#3a3a42', glow: snow ? '#c8f0ff' : '#fff2a0' });
@@ -313,7 +315,7 @@ function port_(k, D) {
   for (const [x, z, ry, c] of [[-0.85, 1.25, 0.9, snow ? '#5a4a3a' : '#7a4a2a'], [0.2, 1.3, -0.7, '#3a6a9a'], [-1.25, 0.9, 0.3, '#7a4a2a']]) if (wet(x, z)) k.boat(x, z, ry, c);
   if (has(D, 'awnings')) for (const [x, c] of [[-0.3, col(D, 'stripe', '#d83a3a')], [0.32, col(D, 'accent', '#3a8ad8')]]) { k.add(k.K.cloth, box(0.3, 0.015, 0.22), M4(x, 0.3, 0.42, 0, 0.3), hexOf(c)); for (const s of [-1, 1]) k.add(k.K.wood, box(0.015, 0.3, 0.015), M4(x + s * 0.13, 0.15, 0.5), 0x6a4a2e); }
   if (snow) { for (const [x, z] of [[-1.3, -1.0], [1.3, -1.1]]) k.tree(x, z, 1.0, { pine: true, snow: true, leaf: '#2f5a4a' }); for (let i = 0; i < 5; i++) k.add(k.K.shiny, new THREE.ConeGeometry(0.012, 0.07, 4), M4(-1.0 + i * 0.12, 0.32, 0.56, 0, Math.PI), 0xdff4ff); }
-  else for (const [x, z] of [[-1.3, -1.05], [1.35, -0.9]]) k.tree(x, z, 0.99, { leaf: k.r() < 0.5 ? '#3f7a34' : '#4f8a3a' });
+  else for (const [x, z] of [[-1.3, -1.05], [1.35, -0.9]]) { const leaf = k.r() < 0.5 ? '#3f7a34' : '#4f8a3a'; if (dry(x, z)) k.tree(x, z, 0.99, { leaf }); }   /* 乱数の順番は前と同じ（陸の木の色を変えない） */
   k.lamp(-0.15, 0.25, 0.36, glow, 0.6); k.lamp(0.45, 0.2, 0.36, glow, 0.6);
   k.halo(0.95, 3.8, glow); k.light(0, 0.9, 0.2, glow, 1.3, 6);
 }
