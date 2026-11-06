@@ -138,6 +138,22 @@
     ctx.restore();
   }
   Minimap.sites78 = sites78;
+  // v8.0 異界の門（新しいボス 19 体の「ボスの間」の入口）の印。その外の地図に行ったことがあれば出す。倒したボスの門は金色＋小さな点
+  function lairs19() {
+    var BL = root.R78 && root.R78.bossLairs, W76 = J76(), d = root.State && root.State.data; if (!BL || !W76 || !W76.earth || !d) return [];
+    return BL.list.filter(function (L) { return (d.visited && (d.visited[L.map] || d.visited[L.id])) || d.flags[L.flag]; }).map(function (L) {
+      if (L.x === undefined && root.World && root.World.getMap) { try { root.World.getMap(L.map); } catch (e) { /* 地図が作れないときは印を出さない */ } }   // 門の位置は外の地図を作るときに決まる
+      return L.x === undefined ? null : { s: { map: L.map, x: L.x, y: L.y, name: L.name }, done: !!d.flags[L.flag], L: L };
+    }).filter(Boolean);
+  }
+  function drawLair(ctx, cx, cy, r, done) {
+    ctx.save(); ctx.fillStyle = 'rgba(10,8,20,0.8)'; ctx.beginPath(); ctx.arc(cx, cy, r * 1.15, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = done ? '#ffd24a' : '#c070ff'; ctx.lineWidth = Math.max(1.5, r / 3.2); ctx.beginPath(); ctx.arc(cx, cy, r * 0.72, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = done ? '#ffd24a' : '#ff4a6a'; ctx.beginPath(); ctx.moveTo(cx, cy - r * 0.42); ctx.lineTo(cx + r * 0.36, cy); ctx.lineTo(cx, cy + r * 0.42); ctx.lineTo(cx - r * 0.36, cy); ctx.closePath(); ctx.fill();
+    if (done) { ctx.fillStyle = '#3ad07a'; ctx.beginPath(); ctx.arc(cx + r * 0.78, cy - r * 0.78, r * 0.3, 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore();
+  }
+  Minimap.lairs19 = lairs19;
   function drawSymbol(ctx, kind, cx, cy, r) {
     ctx.save(); ctx.lineWidth = Math.max(1, r / 4);
     if (kind === 'stairs') { ctx.fillStyle = '#9fe0ff'; for (var i = 0; i < 3; i++) ctx.fillRect(cx - r + i * (r * 2 / 3), cy + r - (i + 1) * (r * 2 / 3), r * 2 / 3, (i + 1) * (r * 2 / 3)); }
@@ -315,6 +331,7 @@
     m.buildings.forEach(function (b) { drawIcon(ctx, b.type, b.doorAbs.x * cell + cell / 2, (b.y + b.h / 2) * cell, Math.max(3, cell * 0.9)); });
     // v7.9 地球の記録の遺跡の印（いまの地図ととなり）
     if (jo) sites78().forEach(function (it) { var so = W76.origin(it.s.map, m.id); drawSite(ctx, (so.x - jo.x + it.s.x + 0.5) * cell, (so.y - jo.y + it.s.y + 0.5) * cell, Math.max(4, cell * 1.6), it.done); });
+    if (jo) lairs19().forEach(function (it) { var so = W76.origin(it.s.map, m.id); drawLair(ctx, (so.x - jo.x + it.s.x + 0.5) * cell, (so.y - jo.y + it.s.y + 0.5) * cell, Math.max(4, cell * 1.6), it.done); });   // v8.0 異界の門
     // v6.2 航路・桟橋・次の目的地
     var navHot = []; try { navHot = drawNav(ctx, m, cell); } catch (e) { if (!Minimap._navErr) { Minimap._navErr = true; console.error('nav', e); } }
     // プレイヤー
@@ -508,6 +525,7 @@
     title.textContent = W76.earth ? '3121年の地球（地上の地域と海）' : 'つながった世界（地上の地域と海）';
     if (W76.earth && root.Earth78 && root.Earth78.labels) root.Earth78.labels().forEach(function (lb) { var s = toScreen(lb.x, lb.y); ctx.font = (lb.sea ? 'italic ' : 'bold ') + (lb.big ? 15 : 12) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.55)'; ctx.fillStyle = lb.sea ? 'rgba(190,220,255,0.75)' : 'rgba(255,245,215,0.8)'; ctx.strokeText(lb.name, s.x, s.y); ctx.fillText(lb.name, s.x, s.y); });   // v7.8 大陸・海の名前
     sites78().forEach(function (it) { var o = W76.origin(it.s.map); var sp = toScreen(o.x + it.s.x + 0.5, o.y + it.s.y + 0.5); drawSite(ctx, sp.x, sp.y, 7, it.done); hot.push({ x: sp.x, y: sp.y, text: '地球の記録「' + it.s.name + '」（' + it.s.area + '）' + (it.done ? '・調べた' : '・まだ') }); });   // v7.9 遺跡の印
+    lairs19().forEach(function (it) { var o = W76.origin(it.s.map); var sp = toScreen(o.x + it.s.x + 0.5, o.y + it.s.y + 0.5); drawLair(ctx, sp.x, sp.y, 7, it.done); var en = root.ENEMIES[it.L.boss]; var rc = it.L.rec(); hot.push({ x: sp.x, y: sp.y, text: '異界の門「' + it.s.name + '」' + (en ? en.name : '') + '（推奨Lv ' + rc[0] + '〜' + rc[1] + '）' + (it.done ? '・倒した' : '') }); });   // v8.0 異界の門
     W76.REGIONS.forEach(function (id) { (function () { var o = W76.origin(id); var rm = regionMap(id); var off = function (x, y) { return toScreen(o.x + x, o.y + y); };
       var c = toScreen(o.x + rm.w / 2, o.y); c = { x: c.x, y: c.y + 16 }; ctx.font = 'bold 13px sans-serif';   // 名前は区画の上から 16px（拡大率によらず、上の段でも欠けない）
       ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.fillStyle = W76.unlocked(id) ? '#ffe9a8' : '#b8bcd0';
@@ -526,7 +544,7 @@
     if (rid && W76.inGrid(rid)) { var cur = isRegion(W.map) ? { x: W.player.px / root.Engine.TS, y: W.player.py / root.Engine.TS, dir: W.player.dir } : (function () { var wp = Minimap.worldPosOf(W.map.id); return { x: wp.x, y: wp.y, dir: 'down', inside: true }; })(); var g = W76.toGlobal(rid, cur.x, cur.y); var cs = toScreen(g.x, g.y);
       if (cur.inside) { ctx.strokeStyle = '#ffd24a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(cs.x, cs.y, 12 + Math.sin(Date.now() / 200) * 2, 0, Math.PI * 2); ctx.stroke(); } drawArrow(ctx, cs.x, cs.y, cur.dir, 9, '#ffd24a'); }
     else title.textContent += '　—　いまは' + (W.map.def && W.map.def.name ? W.map.def.name : '別の場所') + '（つながった世界の外）';
-    Minimap.renderLegend([['nav', '次の目的地'], ['anchor', '桟橋・上陸地点'], ['town', '町（訪問済み）'], ['cave', 'ダンジョン（発見済み）'], ['arrow', '現在地'], ['fog', 'まだ行けない地域']].concat(sites78().length ? [['site78', '地球の記録の遺跡']] : []));
+    Minimap.renderLegend([['nav', '次の目的地'], ['anchor', '桟橋・上陸地点'], ['town', '町（訪問済み）'], ['cave', 'ダンジョン（発見済み）'], ['arrow', '現在地'], ['fog', 'まだ行けない地域']].concat(sites78().length ? [['site78', '地球の記録の遺跡']] : []).concat(lairs19().length ? [['lair19', '異界の門（強いボス）']] : []));
     Minimap.regionSelect('__join76');
     return hot;
   }
@@ -612,7 +630,7 @@
     el.innerHTML = items.map(function (it) { return '<span class="lg"><canvas width="18" height="18" data-k="' + it[0] + '"></canvas>' + root.Win.esc(it[1]) + '</span>'; }).join('');
     el.querySelectorAll('canvas').forEach(function (cv) { var k = cv.getAttribute('data-k'); var ctx = cv.getContext('2d');
       var colors = { mtn: '#8a7a6a', forest: '#1f5a2a', sand: '#d8c070', snow: '#e8f0ff', water: '#1f4f9a', grass: '#4f9a3f', road: '#b08a5a', floor: '#8a8a98', wall: '#2e2e3a', fog: '#0a0c18', void76: '#0a0a24' };
-      if (k === 'site78') drawSite(ctx, 9, 9, 6, false); else if (k === 'arrow') drawArrow(ctx, 9, 9, 'up', 6, '#ffd24a'); else if (k === 'nav') drawNavRing(ctx, 9, 9, 6, true); else if (k === 'anchor') drawAnchor(ctx, 9, 9, 6); else if (colors[k]) { ctx.fillStyle = colors[k]; ctx.fillRect(2, 2, 14, 14); } else if (['stairs', 'chest', 'lock', 'gate', 'boss', 'town', 'cave', 'warp'].indexOf(k) >= 0) drawSymbol(ctx, k, 9, 9, 6); else drawIcon(ctx, k, 9, 9, 8); });
+      if (k === 'site78') drawSite(ctx, 9, 9, 6, false); else if (k === 'lair19') drawLair(ctx, 9, 9, 6, false); else if (k === 'arrow') drawArrow(ctx, 9, 9, 'up', 6, '#ffd24a'); else if (k === 'nav') drawNavRing(ctx, 9, 9, 6, true); else if (k === 'anchor') drawAnchor(ctx, 9, 9, 6); else if (colors[k]) { ctx.fillStyle = colors[k]; ctx.fillRect(2, 2, 14, 14); } else if (['stairs', 'chest', 'lock', 'gate', 'boss', 'town', 'cave', 'warp'].indexOf(k) >= 0) drawSymbol(ctx, k, 9, 9, 6); else drawIcon(ctx, k, 9, 9, 8); });
   };
 
   root.Minimap = Minimap;

@@ -21,6 +21,8 @@
   ((root.ENEMY_REDESIGN && root.ENEMY_REDESIGN.list) || []).forEach(function (r) { BY[r.id] = r; R164[r.id] = r; });
   // v7.5 追加の敵35体（既存の敵と同じ人物の10体は、164体の表の項目を置き換える）
   ((root.ENEMY_ADD35 && root.ENEMY_ADD35.list) || []).forEach(function (r) { r.pack = 'add35'; r.always = !r.reuse; BY[r.id] = r; });
+  // v8.0 新しいボス19体（js/data/bosses19.js の BOSS19.list）：以前の絵がないので、?enemyart=old でもこの画像を使う（always）。1024px の透過WebP（ref: 1024）
+  ((root.BOSS19 && root.BOSS19.list) || []).forEach(function (r) { r.pack = 'boss19'; r.always = true; BY[r.id] = r; });
   EA.redesign164 = function (id) { return R164[id] || null; };   // 164体の表の項目（記録用）
   function base() { return (root.Assets && root.Assets.base) || ''; }
 
@@ -33,7 +35,7 @@
   EA.ids = function () { return Object.keys(BY); };
   // 新しい名前・画像を使う敵か（保留の敵・切替で old のときは使わない）
   EA.adopted = function (id) { var r = BY[id]; return !!(r && r.status === 'adopted' && r.file && (EA.mode() !== 'old' || r.always)); };
-  EA.isAdd35 = function (id) { var r = BY[id]; return !!(r && r.pack === 'add35'); };
+  EA.isAdd35 = function (id) { var r = BY[id]; return !!(r && (r.pack === 'add35' || r.pack === 'boss19')); };   // v8.0 新しいボス19体も、読み終わるまで長めに待つ（同じ 1024px の WebP）
   EA.url = function (id) { var r = BY[id]; return EA.adopted(id) ? base() + r.file : null; };
 
   /* ---------- 表示名（読み込み時に1回。内部IDはそのまま） ---------- */
@@ -117,8 +119,10 @@
   // マップに入ったとき：そのマップの出現表の敵を先に読む（待たない。最大12体）
   EA.prefetchMap = function (map) {
     try {
-      if (!map || typeof root.Image === 'undefined') return;   // ?enemyart=old のときは EA.adopted が追加の25体だけを返す var enc = map.encounters; var ids = {};
+      if (!map || typeof root.Image === 'undefined') return;   /* ?enemyart=old のときは EA.adopted が追加の25体だけを返す */
+      var enc = map.encounters; var ids = {};   // v8.0 直した：前は上の行のコメントの中に入っていて、先読みが動いていなかった（enc・ids が未定義で try に捕まっていた）
       ((enc && enc.zones) || []).forEach(function (z) { (z.groups || []).concat(z.rare || []).forEach(function (g) { (g || []).forEach(function (id) { ids[id] = 1; }); }); });
+      ((map.events || [])).forEach(function (ev) { if (ev && ev.type === 'boss') (ev.enemies || [ev.enemy]).forEach(function (id) { if (id) ids[id] = 1; }); });   // v8.0 その地図のボス（シンボル・戦闘の絵）も先に読む
       var list = withSummons(Object.keys(ids)).filter(EA.adopted);
       list = list.filter(EA.isAdd35).concat(list.filter(function (id) { return !EA.isAdd35(id); }));   // v7.5 追加の35体を先に（待つ時間が長いため）
       list.slice(0, 12).forEach(function (id) { EA.load(id); });

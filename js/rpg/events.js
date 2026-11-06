@@ -132,6 +132,7 @@
             d.flags[ev.doneFlag] = true;
             if (ev.after) await Win.message(ev.after);
             if (ev.reward) { State.addItem(ev.reward.item, ev.reward.qty || 1); await Win.message([ITEMS[ev.reward.item].name + 'を手に入れた！']); }
+            if (ev.onWin) await ev.onWin(Events.ctx(null), ev);   // v8.0 勝ったときの処理（新しいボス19体：複数の報酬・記録。js/data/bosslair19.js）
             if (ev.questComplete) await Events.questComplete(ev.questComplete);
             World.applyState(World.map); State.autosave();
           } else if (result === 'lost') { World.busy = false; await World.gameOver(); return; }

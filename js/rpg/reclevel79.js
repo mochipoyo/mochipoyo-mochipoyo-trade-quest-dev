@@ -43,6 +43,7 @@
     if (x === undefined && p) { x = p.x; y = p.y; }
     var d = D(); var kind = map.kind || (map.def && map.def.kind) || 'town';
     if (!(d && d.aboard) && kind !== 'field' && kind !== 'dungeon') return null;
+    var fx = map.def && map.def.recLevel; if (fx && !(d && d.aboard)) return { lo: fx[0], hi: fx[1], level: 0, zone: '', map: map.id, kind: kind, fixed: true };   // v8.0 地図ごとに決めた推奨レベル（異界のボスの間）
     var z = R.zoneAt(map, x, y); if (!z) return null; var lv = R.zoneLevel(z); var r = R.range(lv); if (!r) return null;
     return { lo: r[0], hi: r[1], level: lv, zone: z.name || '', map: map.id, kind: d && d.aboard ? 'sea' : kind };
   };
@@ -70,7 +71,10 @@
     if (typeof document === 'undefined') return; var st = document.getElementById('stage') || document.body; if (!st) return;
     var el = document.getElementById('rec-banner'); if (!el) { el = document.createElement('div'); el.id = 'rec-banner'; st.appendChild(el); }
     var g = R.grade(r); el.className = 'rl-' + g; el.innerHTML = '<span class="rb-place">' + esc(R.placeName(r, map)) + '</span><span class="rb-lv">推奨レベル <b>Lv ' + (r.lo === r.hi ? r.lo : r.lo + '〜' + r.hi) + '</b></span><span class="rb-pl">いまの平均 Lv ' + R.partyLevel() + '（' + R.gradeText[g] + '）</span>';
-    var show = function () { void el.offsetWidth; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(function () { el.classList.remove('show'); }, 3200); };
+    var inBattle = function () { var B = root.BattleUI; return !!(B && B.scene); };   // v8.0 戦闘が始まったら消す（ボスの間に入ってすぐボスに話しかけたときなど、戦闘の画面に重ならない）
+    var show = function () { if (inBattle()) return; void el.offsetWidth; el.classList.add('show'); clearTimeout(el._t); clearInterval(el._b); var t1 = Date.now();
+      el._b = setInterval(function () { var b = inBattle(); if (b || Date.now() - t1 > 3400) { clearInterval(el._b); if (b) el.classList.remove('show'); } }, 150);
+      el._t = setTimeout(function () { el.classList.remove('show'); }, 3200); };
     // 3D 版：地図の 3D を組み立てているあいだ（読み込みの表示中）は待って、できてから出す（最大 20 秒）
     clearInterval(R._wait); var A3 = root.MTQ3D; var W0 = root.World;
     var in3d = function () { try { return !!(A3 && !A3.disabled && A3.mode3D && A3.mode3D()); } catch (e) { return false; } };

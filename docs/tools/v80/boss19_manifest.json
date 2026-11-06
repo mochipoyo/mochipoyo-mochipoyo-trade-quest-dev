@@ -1,0 +1,550 @@
+{
+  "pack": "trade_quest_bosses_19",
+  "type": "boss_battle_sprite",
+  "image_sizes_px": {
+    "png": [
+      1600,
+      1600
+    ],
+    "webp": [
+      1024,
+      1024
+    ]
+  },
+  "id_scope": "proposed_asset_ids",
+  "bounds_convention": "left,top,right_exclusive,bottom_exclusive; alpha > 40",
+  "bosses": [
+    {
+      "pack_number": 1,
+      "display_name": "デラックス・モチコ",
+      "asset_id": "tq_boss_deluxe_mochiko",
+      "visual_concept": "白桃色の三段の餅と漆器の甲冑をまとい、巨大な金杵を担ぐ餅の女帝。",
+      "png": "png/01_tq_boss_deluxe_mochiko.png",
+      "webp": "webp/01_tq_boss_deluxe_mochiko.webp",
+      "webp_visible_bounds_xyxy": [
+        116,
+        114,
+        910,
+        905
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 110,
+      "source_visible_bounds_xyxy": [
+        9,
+        6,
+        1249,
+        1241
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "dfa469f0863fc54c9637a9950566c4adff5ddf081032dd34c411930723029da3",
+      "webp_sha256": "12892907ba1691c1cc2e2562c11772a6c03f06641a40d312491893162b340275"
+    },
+    {
+      "pack_number": 2,
+      "display_name": "不安の伝道師",
+      "asset_id": "tq_boss_apostle_of_anxiety",
+      "visual_concept": "鳴りかけた警鐘を胸に抱き、片手を耳に当てて囁く青灰色の巡礼者。",
+      "png": "png/02_tq_boss_apostle_of_anxiety.png",
+      "webp": "webp/02_tq_boss_apostle_of_anxiety.webp",
+      "webp_visible_bounds_xyxy": [
+        147,
+        132,
+        869,
+        900
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 111,
+      "source_visible_bounds_xyxy": [
+        57,
+        33,
+        1184,
+        1234
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "118b1a33c7af76c0895f8e28d4a6a86925803afd827bdabaf1f9bdebb993f80a",
+      "webp_sha256": "09c01f08f23d51a96549e003aa59d047964227d6ee3fbffe27e0cf622d411798"
+    },
+    {
+      "pack_number": 3,
+      "display_name": "欲姫のメサキ",
+      "asset_id": "tq_boss_princess_mesaki",
+      "visual_concept": "目先の宝石へ手を伸ばし、割れた宝冠を背負う紅珊瑚の姫。",
+      "png": "png/03_tq_boss_princess_mesaki.png",
+      "webp": "webp/03_tq_boss_princess_mesaki.webp",
+      "webp_visible_bounds_xyxy": [
+        122,
+        135,
+        902,
+        890
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 111,
+      "source_visible_bounds_xyxy": [
+        19,
+        38,
+        1236,
+        1218
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "7e2891557ebb16c6919aa2d11e9e980305a6e51b261cfcc73b95660dc4fa11e0",
+      "webp_sha256": "e67de753867dac94a0d38c65f5f9b25f26b8789b579baaa84c509e50fa9b216b"
+    },
+    {
+      "pack_number": 4,
+      "display_name": "ダークマター生命体X",
+      "asset_id": "tq_boss_dark_matter_lifeform_x",
+      "visual_concept": "黒い核を囲んで四つの鉱殻が浮遊する、非生物めいた宇宙生命体。",
+      "png": "png/04_tq_boss_dark_matter_lifeform_x.png",
+      "webp": "webp/04_tq_boss_dark_matter_lifeform_x.webp",
+      "webp_visible_bounds_xyxy": [
+        150,
+        165,
+        866,
+        871
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 123,
+      "source_visible_bounds_xyxy": [
+        62,
+        86,
+        1180,
+        1187
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "b432b5b92bd02fbf74e058366a3ae493ada8e103c0e81433b3fe71510d16e9f6",
+      "webp_sha256": "a2a75f16e578559eeb1b45a05897cd54a712b3c683cbd9786414491fca283252"
+    },
+    {
+      "pack_number": 5,
+      "display_name": "裏切りの宣教師",
+      "asset_id": "tq_boss_missionary_of_betrayal",
+      "visual_concept": "差し出した白い仮面と、法衣の陰の短剣が対をなす偽りの宣教師。",
+      "png": "png/05_tq_boss_missionary_of_betrayal.png",
+      "webp": "webp/05_tq_boss_missionary_of_betrayal.webp",
+      "webp_visible_bounds_xyxy": [
+        181,
+        113,
+        829,
+        904
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 111,
+      "source_visible_bounds_xyxy": [
+        110,
+        4,
+        1123,
+        1240
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "1a951117b72e6d9004d27eeb3bd609d5428a2805590e9acd92ca33fc3d8547fa",
+      "webp_sha256": "164c8a1fbbc13fab63c62e212c3bc9bbf7babd8106e6fd35df317e492848a0ef"
+    },
+    {
+      "pack_number": 6,
+      "display_name": "変わらぬ人の欲望",
+      "asset_id": "tq_boss_enduring_human_desire",
+      "visual_concept": "空洞の心臓へいくつもの青銅の手が伸び続ける、人の欲望の集合体。",
+      "png": "png/06_tq_boss_enduring_human_desire.png",
+      "webp": "webp/06_tq_boss_enduring_human_desire.webp",
+      "webp_visible_bounds_xyxy": [
+        150,
+        123,
+        860,
+        890
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 121,
+      "source_visible_bounds_xyxy": [
+        61,
+        20,
+        1171,
+        1217
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "54bf47fec8c88f3c7932dc2723f7b2f39167e3448159ee323a9de29f8ba16d3b",
+      "webp_sha256": "6d7b6f128dde56387ab71029716ad3373d3246e75d7ffe2f04ea71e9b8e4f908"
+    },
+    {
+      "pack_number": 7,
+      "display_name": "ナンピン皇子",
+      "asset_id": "tq_boss_averaging_prince",
+      "visual_concept": "下の段ほど重い三段の貨幣鎧を着込み、折れかけた槍で踏みとどまる皇子。",
+      "png": "png/07_tq_boss_averaging_prince.png",
+      "webp": "webp/07_tq_boss_averaging_prince.webp",
+      "webp_visible_bounds_xyxy": [
+        117,
+        116,
+        908,
+        892
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 110,
+      "source_visible_bounds_xyxy": [
+        10,
+        8,
+        1246,
+        1220
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "2eeca8ae1315eba1ac26e5592fdc80d4eeca186bf096301b194d963e31052932",
+      "webp_sha256": "555ae98838321756065283dcb3cf84196fff2191dad86edd0cf3c47f246e8b8b"
+    },
+    {
+      "pack_number": 8,
+      "display_name": "かつてサウロンだった意識",
+      "asset_id": "tq_boss_former_sauron_consciousness",
+      "visual_concept": "砕けた石板の間に亡き支配者の横顔が浮かぶ、肉体を失った意識。",
+      "png": "png/08_tq_boss_former_sauron_consciousness.png",
+      "webp": "webp/08_tq_boss_former_sauron_consciousness.webp",
+      "webp_visible_bounds_xyxy": [
+        161,
+        134,
+        860,
+        866
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 111,
+      "source_visible_bounds_xyxy": [
+        79,
+        36,
+        1170,
+        1179
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "75ed5858d600fbfce6a5df20147d3247c58b436face73e97e47774f0e94054ee",
+      "webp_sha256": "743cf82232c14afcb51ca2bbe906ce97adc60a917d801342417d82549177bd77"
+    },
+    {
+      "pack_number": 9,
+      "display_name": "笑わぬ大盾",
+      "asset_id": "tq_boss_unsmiling_greatshield",
+      "visual_concept": "無表情の石面が彫られた大盾が、鉄の脚で立つ自律甲冑。",
+      "png": "png/09_tq_boss_unsmiling_greatshield.png",
+      "webp": "webp/09_tq_boss_unsmiling_greatshield.webp",
+      "webp_visible_bounds_xyxy": [
+        189,
+        135,
+        822,
+        888
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 111,
+      "source_visible_bounds_xyxy": [
+        122,
+        38,
+        1111,
+        1214
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "cb177ae13edca2b2cf4d6702b55dae74a6bd1211cca06315bf1e8160714a9809",
+      "webp_sha256": "0a6794bcc334987818667d81803ac21dede939a6b8ed2e0b2cd7c0001165a40d"
+    },
+    {
+      "pack_number": 10,
+      "display_name": "ゲームマスター",
+      "asset_id": "tq_boss_game_master",
+      "visual_concept": "盤面をマントに織り込み、黒い駒を操る仮面のゲームマスター。",
+      "png": "png/10_tq_boss_game_master.png",
+      "webp": "webp/10_tq_boss_game_master.webp",
+      "webp_visible_bounds_xyxy": [
+        152,
+        154,
+        878,
+        888
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 111,
+      "source_visible_bounds_xyxy": [
+        65,
+        68,
+        1199,
+        1214
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "f47862b11acae0e6de9203f9d965ee6bd444f4b60423b8b13ccc3d74a88a8a8f",
+      "webp_sha256": "edaeb2b8da05848561195042d6c455ed9a799c002aaf5c53d85adebdd40c8411"
+    },
+    {
+      "pack_number": 11,
+      "display_name": "美の堕天使マンジャロ",
+      "asset_id": "tq_boss_fallen_angel_manjaro",
+      "visual_concept": "白磁の翼と割れた姿見を携え、理想の姿を映そうとする堕天使。",
+      "png": "png/11_tq_boss_fallen_angel_manjaro.png",
+      "webp": "webp/11_tq_boss_fallen_angel_manjaro.webp",
+      "webp_visible_bounds_xyxy": [
+        176,
+        118,
+        853,
+        909
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 110,
+      "source_visible_bounds_xyxy": [
+        102,
+        11,
+        1159,
+        1247
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "7fc286a1840e4926035d7ed87f6da3ec14e3ebaa6dd53cc8efff1c36b84f2615",
+      "webp_sha256": "bf026cf4014a6e27505be69ae5231b0b3189392a42788a7f1203567dc907c9c2"
+    },
+    {
+      "pack_number": 12,
+      "display_name": "金利の番人フォムシー",
+      "asset_id": "tq_boss_rate_warden_fomsy",
+      "visual_concept": "利上げと利下げを指し分ける真鍮の計器を胸に組み込んだ時計仕掛けの門番。",
+      "png": "png/12_tq_boss_rate_warden_fomsy.png",
+      "webp": "webp/12_tq_boss_rate_warden_fomsy.webp",
+      "webp_visible_bounds_xyxy": [
+        124,
+        164,
+        895,
+        844
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 122,
+      "source_visible_bounds_xyxy": [
+        21,
+        83,
+        1225,
+        1145
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "a226750bea655209e5a737bf8ddd8899e43a8455e73544a449c89791f952789d",
+      "webp_sha256": "095a509a168dce8e70a6782badbafb6d1ad8f6863ea864ee1b1eeb1806c8f03c"
+    },
+    {
+      "pack_number": 13,
+      "display_name": "正義の番人サイバーン",
+      "asset_id": "tq_boss_justice_guardian_cybern",
+      "visual_concept": "白い装甲に群青の司法官マントを重ね、電子封印を押すサイバー執行官。",
+      "png": "png/13_tq_boss_justice_guardian_cybern.png",
+      "webp": "webp/13_tq_boss_justice_guardian_cybern.webp",
+      "webp_visible_bounds_xyxy": [
+        133,
+        123,
+        876,
+        896
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 122,
+      "source_visible_bounds_xyxy": [
+        35,
+        19,
+        1196,
+        1227
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "71d98e3bdb276e930f75c8c3d8e58f75921f95f5e886ceafe91fc49eab9ee96b",
+      "webp_sha256": "fe962fa13ca2dd492a440d563c67753dcdac738ab1e0ad1a0046ec2fdcdf0c6c"
+    },
+    {
+      "pack_number": 14,
+      "display_name": "追憶の森のウブド",
+      "asset_id": "tq_boss_ubud_of_remembrance",
+      "visual_concept": "古木の角に琥珀の記憶を宿し、苔の毛皮をまとう森の霊獣。",
+      "png": "png/14_tq_boss_ubud_of_remembrance.png",
+      "webp": "webp/14_tq_boss_ubud_of_remembrance.webp",
+      "webp_visible_bounds_xyxy": [
+        181,
+        140,
+        837,
+        883
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 117,
+      "source_visible_bounds_xyxy": [
+        110,
+        46,
+        1135,
+        1206
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "0e8be864d9d00d3aac41d7c73aff0460dd5c1eb794045b80d3952e89c2f0b8e7",
+      "webp_sha256": "cdcea27358e4e3086e4c4784a597b831a9423fb7f7368b35c1710c7ea9471c39"
+    },
+    {
+      "pack_number": 15,
+      "display_name": "醜悪の堕天使ルッキズム",
+      "asset_id": "tq_boss_fallen_angel_lookism",
+      "visual_concept": "他者を品定めする仮面が何層も連なり、翼にまで鏡の棘が生えた堕天使。",
+      "png": "png/15_tq_boss_fallen_angel_lookism.png",
+      "webp": "webp/15_tq_boss_fallen_angel_lookism.webp",
+      "webp_visible_bounds_xyxy": [
+        130,
+        142,
+        891,
+        888
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 111,
+      "source_visible_bounds_xyxy": [
+        31,
+        49,
+        1219,
+        1214
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "21eea7a572447d264c6e073f05e1cacd789eb8c5e1233652a09acec5cda5d1ad",
+      "webp_sha256": "2b120cbe47414c3c9651d39c791eb93251138dd2649348d3da832b96140bb63c"
+    },
+    {
+      "pack_number": 16,
+      "display_name": "快楽の魔人ヴェロ",
+      "asset_id": "tq_boss_pleasure_djinn_velo",
+      "visual_concept": "極彩色の香炉から立ちのぼり、鈴を鳴らして相手を酔わせる魔人。",
+      "png": "png/16_tq_boss_pleasure_djinn_velo.png",
+      "webp": "webp/16_tq_boss_pleasure_djinn_velo.webp",
+      "webp_visible_bounds_xyxy": [
+        158,
+        121,
+        866,
+        907
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 117,
+      "source_visible_bounds_xyxy": [
+        75,
+        16,
+        1179,
+        1243
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "926d9e0976b51dcd52f7b76f357ee2e08402d93214eb72d7e8b34300785d2534",
+      "webp_sha256": "c98836b73326cf9ab165908f2faa2a47dff00aaffddcf8bc245436b27b1e9f8d"
+    },
+    {
+      "pack_number": 17,
+      "display_name": "確率の化身",
+      "asset_id": "tq_boss_avatar_of_probability",
+      "visual_concept": "ひとつの出目が決まる瞬間を、分岐した水晶の腕と多面体の核で表した化身。",
+      "png": "png/17_tq_boss_avatar_of_probability.png",
+      "webp": "webp/17_tq_boss_avatar_of_probability.webp",
+      "webp_visible_bounds_xyxy": [
+        159,
+        130,
+        901,
+        891
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 111,
+      "source_visible_bounds_xyxy": [
+        75,
+        30,
+        1235,
+        1219
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "5f49776138047b0c739ae2936cb8cc6fbdfcc204fcbc7167b1663cba7395143a",
+      "webp_sha256": "1f57fa28e71c41ffdac34ab7aaa185424cf74338d07a341a51aeb85140b2f351"
+    },
+    {
+      "pack_number": 18,
+      "display_name": "重力の天秤",
+      "asset_id": "tq_boss_gravitational_balance",
+      "visual_concept": "白色矮星と黒い特異点を左右の皿に載せた、意志を持つ星の天秤。",
+      "png": "png/18_tq_boss_gravitational_balance.png",
+      "webp": "webp/18_tq_boss_gravitational_balance.webp",
+      "webp_visible_bounds_xyxy": [
+        210,
+        270,
+        808,
+        710
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 125,
+      "source_visible_bounds_xyxy": [
+        156,
+        249,
+        1089,
+        937
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "c47544bcef9fbc382ab8f439403198ef58019bddf1c0c7c3d45051e7140809a6",
+      "webp_sha256": "923e1e294024c2aad0ddc6fa4a9263d763f4a6f2a98c36feba9fdac06a8a3877"
+    },
+    {
+      "pack_number": 19,
+      "display_name": "クロスロードの悪魔",
+      "asset_id": "tq_boss_crossroads_devil",
+      "visual_concept": "分かれ道を象った二又の角と、左右で色の異なる契約札を持つ選択の悪魔。",
+      "png": "png/19_tq_boss_crossroads_devil.png",
+      "webp": "webp/19_tq_boss_crossroads_devil.webp",
+      "webp_visible_bounds_xyxy": [
+        164,
+        119,
+        857,
+        905
+      ],
+      "png_clear_margin_px": 173,
+      "webp_clear_margin_px": 117,
+      "source_visible_bounds_xyxy": [
+        83,
+        13,
+        1166,
+        1241
+      ],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "png_sha256": "5c023b8d260d7ea7bd45d3c2a8899fcfe5f70b41423b24ffc47eba0df7760f4a",
+      "webp_sha256": "650df3ce78473e91d153e23db20eec6f706c891e9c301c89557cd9a321596c4a"
+    }
+  ]
+}

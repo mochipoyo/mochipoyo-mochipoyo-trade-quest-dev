@@ -437,6 +437,14 @@
     (root.EARTH78_SITES || []).forEach(function (st) { var t = L.tile(st.lon, st.lat); var lx = root.World76.dxWrap(t.x - r.x), ly = t.y - r.y; if (lx < 0 || ly < 0 || lx >= r.w || ly >= r.h) return;
       var rows = def.rows(); var q = snap(rows, r.w, r.h, lx, ly, function (c, xx, yy) { return walkCh(c) && !ICONCH[c] && xx > 1 && yy > 1 && xx < r.w - 2 && yy < r.h - 2 && nearWalk(rows, r.w, r.h, xx, yy, {}) >= 3; }, 12); if (!q) return;
       st.map = id; st.x = q.x; st.y = q.y; def.events.push({ x: q.x, y: q.y, type: 'script', solid: true, tile: 'pillar', site78: st.id, run: st.run }); });
+    // v8.0 異界の門（js/data/bosslair19.js）：この地図の中の門を、地形を作ったとき（最初に rows を読んだとき）に、いちばん近い「まわりも歩ける陸」へ魔法陣で置く。
+    //   遺跡・ほかの門から 4 マス以上はなす。門の南（なければまわり）の歩けるマスを、ボスの間から戻ったときに立つ所（ox, oy）にする
+    var lairs = (root.EARTH78_LAIRS || []).filter(function (lr) { return lr.map === id; });
+    if (lairs.length) { var rows0 = def.rows, placed = false; def.rows = function () { var rows = rows0.call(def); if (!placed) { placed = true; lairs.forEach(function (lr) {
+      var t = L.tile(lr.lon, lr.lat); var lx = root.World76.dxWrap(t.x - r.x), ly = t.y - r.y; lx = Math.max(2, Math.min(r.w - 3, lx)); ly = Math.max(2, Math.min(r.h - 3, ly));
+      var far = function (xx, yy) { return def.events.every(function (e) { return Math.abs(e.x - xx) + Math.abs(e.y - yy) >= 4; }); };
+      var q = snap(rows, r.w, r.h, lx, ly, function (c, xx, yy) { return walkCh(c) && !ICONCH[c] && xx > 2 && yy > 2 && xx < r.w - 3 && yy < r.h - 4 && nearWalk(rows, r.w, r.h, xx, yy, {}) >= 3 && walkCh(rows[yy + 1][xx]) && !ICONCH[rows[yy + 1][xx]] && far(xx, yy); }, 24); if (!q) return;
+      lr.x = q.x; lr.y = q.y; lr.ox = q.x; lr.oy = q.y + 1; def.events.push({ x: q.x, y: q.y, type: 'script', solid: true, tile: 'warp', lair19: lr.key, run: lr.run }); }); } return rows; }; }
     return def;
   };
   var THEME3D = {};

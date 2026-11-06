@@ -9,6 +9,7 @@ import * as THREE from 'three';
 import { TerrainBuilder3D, rngFrom } from './TerrainBuilder3D.js';
 import { BuildingBuilder3D, bdetailSetting } from './BuildingBuilder3D.js';
 import { buildWallGates } from './WallGate3D.js';
+import { buildLairGates } from './LairGate3D.js';
 import { dressMob } from '../entities/MobDress76.js';
 import { InteriorBuilder3D, INTERIOR_KINDS } from './InteriorBuilder3D.js';
 import { WorldBuilder3D } from './WorldBuilder3D.js';
@@ -85,6 +86,8 @@ export class MapScene3D {
       }
       // v7.9.3 城壁の町の出口の上に石の楼門（world/WallGate3D.js）。失敗しても町は表示する
       try { const modernG = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null); const wg = modernG ? { n: 0 } : buildWallGates(map, { mats: app.mats, theme, group: r.group, put: (id, m, x, z) => wb.put(id, m, x, z) });   /* 近未来・機械の町は石の楼門にしない */ if (wg.n) { (wg.lamps || []).forEach((l) => this.lampSpots.push(l)); this.wallGates = wg.gates; } } catch (e) { console.warn('wallgate', e); }
+      // v8.0 異界の門（新しいボス 19 体のボスの間の入口。world/LairGate3D.js）。失敗しても地図は表示する
+      try { const lg = buildLairGates(map, { mats: app.mats, group: r.group, heightAt: r.heightAt }); if (lg.n) { lg.lamps.forEach((l) => this.lampSpots.push(l)); lg.animated.forEach((a) => this.animated.push(a)); this.lairGates = lg.n; } } catch (e) { console.warn('lairgate', e); }
       if (slice) await slice();
       await r.finalize();
       if (slice) await slice();
@@ -370,6 +373,7 @@ export class MapScene3D {
     for (const s of L) {
       if (s.kind === 'npc') continue; const key = s.enemy + '@' + s.x + ',' + s.y; seen.add(key); let o = this.bossSyms.get(key);
       if (!o) {
+        const EA = window.EnemyArt; if (EA && EA.adopted && EA.adopted(s.enemy) && !(EA.failed && EA.failed[s.enemy]) && !EA.visual(s.enemy)) { if (EA.load && !EA.isLoading(s.enemy)) EA.load(s.enemy); continue; }   // v8.0 新しいボスの絵（EnemyArt）は読み終わってから立体にする（仮の絵で作ったままにしない）
         const v = BS.visual(s.enemy); if (!v || !v.img) continue;
         const ok = v.img instanceof HTMLCanvasElement || (v.img.complete && v.img.naturalWidth > 0); if (!ok) continue;   // 読み込み中：次のフレームでもう一度
         // 別のサイト扱いの画像（iPhone の Safari のテストプレイで発生）は WebGL に渡すと例外になり、マップ全体が2Dに戻っていた → 読めるように読み直す。読めなければ光の輪だけ

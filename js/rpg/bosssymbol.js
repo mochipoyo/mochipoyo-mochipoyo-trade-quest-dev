@@ -83,7 +83,14 @@
     if (e.art && root.MonsterArt) { var c = root.MonsterArt.image(e.art, 2, 0); return { img: c, w: c.width, h: c.height, smooth: false }; }
     return null;
   }
-  BossSymbol.visual = function (id) { var k = 'v:' + id; var v = BossSymbol.cache[k]; if (v && v.img && (v.source !== 'monsterart' || !root.BossArt || !root.BossArt.get(id))) return v; v = visualOf(id); if (v) BossSymbol.cache[k] = v; return v; };
+  BossSymbol.visual = function (id) {
+    var k = 'v:' + id; var v = BossSymbol.cache[k];
+    // v8.0 EnemyArt の絵（新しいボス19体など）を使う敵：読み終わるまでの仮の絵を覚えたままにしない（読めたら差しかえる）
+    var EA = root.EnemyArt; var eaWant = !!(EA && EA.adopted && EA.adopted(id) && !(EA.failed && EA.failed[id]));
+    if (v && v.img && (v.source !== 'monsterart' || !root.BossArt || !root.BossArt.get(id)) && !(eaWant && v.source !== 'enemyart')) return v;
+    if (eaWant && !EA.visual(id) && EA.load && !(EA.isLoading && EA.isLoading(id))) EA.load(id);
+    v = visualOf(id); if (v) BossSymbol.cache[k] = v; return v;
+  };
   var AURA = { fire: '255,120,60', ice: '140,210,255', thunder: '255,230,90', wind: '150,255,190', light: '255,245,200', dark: '170,90,255' };
   function auraColor(id) {
     var e = EN()[id] || {}; var r = e.resist || {}; var best = null, bv = 1;
