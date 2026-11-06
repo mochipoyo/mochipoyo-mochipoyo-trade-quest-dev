@@ -11,41 +11,41 @@
   var L = {
     VERSION: 'e78.3', W: 1440, H: 840, BW: 40, BH: 30, LON0: -169, LAT_N: 80,
     regions: {
-      world: { rect: [15, 5, 3, 5], name: 'アルカディア相場大陸', area: '西ユーロパ',
+      world: { rect: [15, 5, 3, 5], name: 'アルカディア相場大陸', area: '西グランメリア',
         // v7.8 e78.2：町どうしの歩く距離を前の地図と同じくらいに広げた（ポヨ村＝ロワール、リヴェル＝パリの北、港町マリナ＝ビスケー湾の海岸、迷いの森＝黒い森、ダウの村＝リヨンの西、忘却の洞窟＝ピレネーの北東、エマール峠＝フランドルの丘）
         pins: { poyo_village: [0.1, 47.1], rivel_castle_town: [2.6, 49.0], lost_forest: [7.6, 48.0], dow_village: [4.4, 45.3], oblivion_cave: [2.9, 43.2], emal_pass: [4.2, 50.9], harbor: [-1.1, 44.0] },
         hills: [[4.2, 51.1, 1.6, 0.9]] },   // エマール山脈（[経度, 緯度, 半径（度）, 濃さ]）
-      world_grania: { rect: [18, 7, 4, 2], name: 'グラニア鉱業地方', area: 'イタリカ・バルカン', gate: 'ship_ready',
+      world_grania: { rect: [18, 7, 4, 2], name: 'グラニア鉱業地方', area: '長靴の半島と山の半島', gate: 'ship_ready',
         gateText: 'グラニアへは海から。（港町マリナの船を直してから）',
         // v7.9 e78.3：町どうしの歩く距離を前の地図と同じくらいに（イタリア半島は細くて町が近すぎたので、前の並びのままバルカン・ドナウ側へ広げた：灰の浜＝ダルマチアの海岸、灰鉱町ヴェルム＝バルカンの山地、灰の洞窟＝パンノニアの南、灰の峠の南口＝カルパチア、鉱山・砦＝ドナウの東）
         pins: { grania_pass_s: [23.7, 47.9], ash_shore: [17.3, 43.05], verum_town: [22.6, 41.9], ash_cave: [19.7, 45.9], iron_mine: [29.8, 46.9], iron_fort: [34.8, 47.9], sunken_reef: [25.4, 36.5], pirate_nest: [12.1, 37.9], ash_cape: [29.2, 43.0] },
         islets: ['sunken_reef', 'pirate_nest', 'ash_cape'], ash: true },
-      world_kalion: { rect: [18, 4, 2, 3], name: 'カリオン徴収連邦', area: '中央ユーロパ・バルティ海', gate: 'kalion_open',
+      world_kalion: { rect: [18, 4, 2, 3], name: 'カリオン徴収連邦', area: '中央グランメリア・灰の内海', gate: 'kalion_open',
         // v7.8 e78.2：前の地図の並びのまま広げた（カリオン市＝ポーランド中部、灰の峠の北口＝タトラ山地、セントラ＝バルト海の東岸）
         pins: { grania_pass_n: [20.6, 49.2], kalion_city: [20.6, 51.9], luxbell: [30.1, 50.4], asana_ruins: [11.6, 52.8], erased_village: [16.6, 54.5], secret_lab: [28.6, 54.1], sentra_capital: [22.9, 57.5] } },
-      world_islands: { rect: [13, 8, 2, 3], name: '断裂群島', area: '大西海・アゾラ', gate: 'galleon_ready', vehicles: ['galleon', 'airship'],
+      world_islands: { rect: [13, 8, 2, 3], name: '断裂群島', area: 'オルディス海・霧の島々', gate: 'galleon_ready', vehicles: ['galleon', 'airship'],
         oldMask: { s: 0.6, cx: 80, cy: 62, gx: 560, gy: 286 } },   // 架空の島々：旧地図の陸の形を縮めて置く（島・小島の分かれ方がそのまま）
-      world_desert: { rect: [15, 10, 5, 2], name: 'リシア砂漠', area: 'サハリ', gate: 'yorn_letter_done',
+      world_desert: { rect: [15, 10, 5, 2], name: 'リシア砂漠', area: '砂の海', gate: 'yorn_letter_done',
         // v7.9 e78.3：南北の間を広げた（前の地図より縦が詰まっていた。砂嵐の回廊の北口・南口を南東へ、蜃気楼の神殿を盆地の南東へ）
         pins: { sahar_city: [-2.0, 28.6], mirror_market: [6.0, 28.2], storm_north: [10.6, 25.8], storm_south: [10.6, 22.8], mirage_temple: [18.5, 17.4] },
         basin: { lon: 12, lat: 20.5, rx: 58, ry: 20 } },   // 南の「蜃気楼の盆地」：砂嵐の崖の輪で囲む（輪の中へは砂嵐の回廊だけ）
-      world_tempus: { rect: [20, 9, 3, 3], name: '時の神殿領', area: 'エジプタ・アラビス・メソポタミナ', gate: 'yorn_letter_done',
+      world_tempus: { rect: [20, 9, 3, 3], name: '時の神殿領', area: '砂の王朝・砂の湾・二つの川', gate: 'yorn_letter_done',
         pins: { tempus_city: [31.6, 30.2], temple_of_time: [51.0, 34.4], volatilia: [46.7, 24.7], dimension_gate: [55.3, 23.4] } },
-      world_magicka: { rect: [23, 9, 3, 4], name: 'マクディア魔導王国', area: 'インデア', gate: 'zeromea_choice_done',
+      world_magicka: { rect: [23, 9, 3, 4], name: 'マクディア魔導王国', area: '翠玉海の北岸', gate: 'zeromea_choice_done',
         pins: { magicka_city: [78.0, 19.0], forbidden_archive: [78.1, 25.6], tradia: [74.9, 13.3], origin_lab: [85.6, 20.3] } },   // v7.8 e78.2：デカン高原・ガンジス平原・カルナータカの海岸・オディシャへ広げた
-      world_snow: { rect: [20, 2, 4, 4], name: '忘却の雪原', area: '北ロシカ・白海', gate: 'yorn_letter_done',
+      world_snow: { rect: [20, 2, 4, 4], name: '忘却の雪原', area: '北グランメリア・白海', gate: 'yorn_letter_done',
         pins: { ciel_port: [40.2, 64.7], frost_town: [45.5, 65.5], spirit_forest: [35.5, 67.3], frozen_tower: [62.0, 67.6] } },
-      world_dragon: { rect: [26, 12, 5, 3], name: '竜炎火山群島', area: 'インデシア', gate: 'magicka_arrived',
+      world_dragon: { rect: [26, 12, 5, 3], name: '竜炎火山群島', area: '竜脈の島々', gate: 'magicka_arrived',
         pins: { ignas_town: [100.6, -0.6], crater_altar: [101.6, 1.0], dragon_vein: [114.6, 0.4] }, islets: [] },
-      world_dark: { rect: [16, 24, 4, 4], name: '暗黒大陸', area: 'アンタルカ', gate: 'dark_route_open', vehicles: ['airship'],
-        gateText: '暗黒大陸（アンタルカ）は黒い嵐に包まれていて近づけない。（闇の空路が開いてから）', vtext: '黒い嵐が海を荒らしていて、船では近づけない。（飛空艇で空から）',
+      world_dark: { rect: [16, 24, 4, 4], name: '暗黒大陸', area: 'ニヴェリス', gate: 'dark_route_open', vehicles: ['airship'],
+        gateText: '暗黒大陸（ニヴェリス）は黒い嵐に包まれていて近づけない。（闇の空路が開いてから）', vtext: '黒い嵐が海を荒らしていて、船では近づけない。（飛空艇で空から）',
         pins: { demon_castle: [8.0, -71.6], void_wasteland: [8.0, -74.6], dark_camp: [8.0, -77.2] } },
       // 新しい地域（中身は js/data/region78-*.js）
-      world_neon: { rect: [28, 7, 4, 4], name: '錆雨市ネオン・ドック', area: '東アジエ沿岸', gate: 'magicka_arrived', isNew: true,
-        gateText: '東アジエの沖は酸の雨と霧に閉ざされている。（マクディア魔導王国に着いてから）' },
-      world_meridian: { rect: [8, 7, 3, 3], name: '灰岸都市メリディアン', area: '北メリカ東岸', gate: 'yorn_letter_done', isNew: true,
-        gateText: '北メリカの東岸は灰の嵐に閉ざされている。（断裂群島での用事を済ませると通れる）' },
-      world_nereia: { rect: [14, 13, 2, 3], name: '環潮大陸ネレイア', area: '大西海・赤道', gate: 'galleon_ready', vehicles: ['galleon', 'airship'], isNew: true,
+      world_neon: { rect: [28, 7, 4, 4], name: '錆雨市ネオン・ドック', area: '東方の沿岸', gate: 'magicka_arrived', isNew: true,
+        gateText: '東方の沖は酸の雨と霧に閉ざされている。（マクディア魔導王国に着いてから）' },
+      world_meridian: { rect: [8, 7, 3, 3], name: '灰岸都市メリディアン', area: 'エルドラン東岸', gate: 'yorn_letter_done', isNew: true,
+        gateText: 'エルドランの東岸は灰の嵐に閉ざされている。（断裂群島での用事を済ませると通れる）' },
+      world_nereia: { rect: [14, 13, 2, 3], name: '環潮大陸ネレイア', area: 'オルディス海・赤道', gate: 'galleon_ready', vehicles: ['galleon', 'airship'], isNew: true,
         gateText: 'ネレイアの外礁は荒波が砕けている。（遠洋航海船が必要）', vtext: '外礁の荒波で、この船では近づけない。（遠洋航海船で外礁の切れ目を抜けよう）' }
     },
     // 地域の境目の山並み（陸だけ）：[地域 a, 地域 b, 文字]。v7.8 では使わない（進入の条件で止める。まっすぐな山並みが地図に出ないように）

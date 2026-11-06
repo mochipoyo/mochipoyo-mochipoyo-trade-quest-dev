@@ -11,21 +11,21 @@
   var Q = 'earth78_records';
   R.armor('earth_globe', '地球儀のブローチ', 'acc', 5, 0, { desc: '小さな地球儀を閉じこめたブローチ。最大HP+30・魔法防御+5・すばやさ+3', hp: 30, mdef: 5, agi: 3 });
   var SITES = root.EARTH78_SITES = [
-    { id: 'amazon', flag: 'erec_amazon', lon: -62.5, lat: -3.5, name: '沈んだ天文台', area: '南メリカ（アマゾナの密林）', item: 'hi_ether',
+    { id: 'amazon', flag: 'erec_amazon', lon: -62.5, lat: -3.5, name: '沈んだ天文台', area: 'シルヴァーナ（翠緑の大密林）', item: 'hi_ether',
       text: ['密林に半分のみこまれた、白い丸屋根の天文台。', '壁の記録板：「大雨の百年。川は町をのみ、森は道をのみこんだ。それでも、ここから星の位置を測り続けた」', '……最後の観測日の欄だけが、空いたまま残っている。'] },
-    { id: 'andes', flag: 'erec_andes', lon: -71.5, lat: -13.5, name: '空の段々畑', area: '南メリカ（アンデラの山）', item: 'elixir',
+    { id: 'andes', flag: 'erec_andes', lon: -71.5, lat: -13.5, name: '空の段々畑', area: 'シルヴァーナ（天梯山脈）', item: 'elixir',
       text: ['山の斜面に刻まれた、石の段々畑。今も誰かが手入れをしているように、緑が残っている。', '石碑：「水を分け合う決まりは、どの王よりも長生きした」'] },
-    { id: 'rift', flag: 'erec_rift', lon: 36.3, lat: -1.5, name: '大地の裂け目の足跡', area: 'アフリア東部（大裂溝）', item: 'phoenix_feather',
+    { id: 'rift', flag: 'erec_rift', lon: 36.3, lat: -1.5, name: '大地の裂け目の足跡', area: 'ソルディア東部（裂け目の谷）', item: 'phoenix_feather',
       text: ['大地の裂け目に沿って、化石になった足跡が続いている。', '記録板：「人がはじめて歩いた道。何万年たっても、足跡は同じ向きを向いている」'] },
-    { id: 'cape', flag: 'erec_cape', lon: 19.5, lat: -33.8, name: '岬の灯台跡', area: 'アフリア南端', item: 'hi_ether',
+    { id: 'cape', flag: 'erec_cape', lon: 19.5, lat: -33.8, name: '岬の灯台跡', area: 'ソルディア南端', item: 'hi_ether',
       text: ['二つの海がぶつかる岬に、崩れた灯台が立っている。', '灯室の記録：「嵐の岬と呼ばれ、のちに希望の岬と名を変えた。名前を変えたのは、岬ではなく人のほうだった」'] },
-    { id: 'uluru', flag: 'erec_uluru', lon: 131.0, lat: -25.3, name: '赤い一枚岩の観測所', area: 'オストラリス（中央の砂漠）', item: 'elixir',
+    { id: 'uluru', flag: 'erec_uluru', lon: 131.0, lat: -25.3, name: '赤い一枚岩の観測所', area: 'ルベラ（中央の砂漠）', item: 'elixir',
       text: ['砂漠のまんなかに、赤く大きな一枚岩。ふもとに、無人の観測所がある。', '記録板：「夕方、岩の色が変わる時刻を、千年分書きとめた。同じ色の日は、一日もなかった」'] },
-    { id: 'siberia', flag: 'erec_siberia', lon: 105.0, lat: 62.0, name: '凍った鉄路の駅', area: 'シビリア（針葉樹の森）', item: 'phoenix_feather',
+    { id: 'siberia', flag: 'erec_siberia', lon: 105.0, lat: 62.0, name: '凍った鉄路の駅', area: '白樺の凍原（針葉樹の森）', item: 'phoenix_feather',
       text: ['針葉樹の森の中に、雪に埋もれた駅舎。線路は東と西へ、どこまでも続いている。', '時刻表：「次の列車：未定」。……その下に、子どもの字で「でも、まってる」。'] },
-    { id: 'gobi', flag: 'erec_gobi', lon: 106.0, lat: 41.0, name: '砂に埋もれた長い城壁', area: 'アジエ内陸（ゴビアの南）', item: 'hi_ether',
+    { id: 'gobi', flag: 'erec_gobi', lon: 106.0, lat: 41.0, name: '砂に埋もれた長い城壁', area: 'グランメリア内陸（黄塵の砂原の南）', item: 'hi_ether',
       text: ['砂丘から、城壁の上だけが顔を出している。東西に、地平線まで。', '記録板：「外から守るために築いた壁が、今は砂から町を守っている」'] },
-    { id: 'canyon', flag: 'erec_canyon', lon: -112.1, lat: 36.1, name: '赤い岩の大峡谷', area: '北メリカ西部', item: 'elixir',
+    { id: 'canyon', flag: 'erec_canyon', lon: -112.1, lat: 36.1, name: '赤い岩の大峡谷', area: 'エルドラン西部', item: 'elixir',
       text: ['足もとが、いきなり切れ落ちている。はるか下を、細い川が流れている。', '記録板：「川が一年に削るのは、紙一枚ぶん。それを二十億年続けると、こうなる」'] }
   ];
   var found = function () { var d = D(); return SITES.filter(function (s) { return d.flags[s.flag]; }).length; };
@@ -68,7 +68,7 @@
     var d = D(); var n = found(), N = SITES.length;
     if (c.questDone(Q)) { await c.say('大洋の地図売り', ['あの記録の写し、毎晩読み返してるよ。', '……地図には、町の名前しか書けない。でも、あそこに人がいたことは、書いておきたいんだ。']); return; }
     if (!c.questActive(Q)) {
-      await c.say('大洋の地図売り', ['海の向こうには、町のない大陸がいくつもある。', 'でも、人がいなかったわけじゃない。石の柱に、古い記録が残ってるって話だ。', 'アマゾナの密林、アンデラの山、アフリアの東と南の端、オストラリスのまんなか、シビリアの森、ゴビアの砂、北メリカの西の大峡谷。全部で ' + N + ' か所。']);
+      await c.say('大洋の地図売り', ['海の向こうには、町のない大陸がいくつもある。', 'でも、人がいなかったわけじゃない。石の柱に、古い記録が残ってるって話だ。', '翠緑の大密林、天梯山脈、ソルディアの東と南の端、ルベラのまんなか、白樺の凍原の森、黄塵の砂原の砂、エルドランの西の大峡谷。全部で ' + N + ' か所。']);
       var ch = await c.choice('記録を書き写して、見せてくれないか？', ['引き受ける', 'あとにする']); if (ch !== 0) return;
       c.questStart(Q); await c.msg(['クエスト「失われた地球の記録」を引き受けた。（遠洋航海船で海岸に上陸して、石の柱を調べる）']);
       if (n < N && !order().length) await c.say('大洋の地図売り', ['……といっても、いまの船じゃ、どの大陸にも近づけないだろう。', '（' + condText() + '）', '行けるようになったら、近いところから回ってくれ。']);

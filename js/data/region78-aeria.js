@@ -17,7 +17,7 @@
   R.monster('buoy_spirit', { name: '浮力の精', lv: 42, arche: 'glass', art: { family: 'crystal', c: { base: '#c0e8ff', accent: '#ffffff', eye: '#4a8aff' } }, family: '精霊系', area: '水没の回廊', resist: { dark: 1.5, light: 0.5 }, actions: [A('attack', 2), A('skill', 'wind_blade', 1)], drops: [{ item: 'hi_ether', rate: 0.2 }], desc: '浮力炉から漏れた力の欠片。' });
   R.monster('castle_guardian', { name: '城の守護騎士', lv: 44, arche: 'tank', art: { family: 'knight', c: { base: '#d0d8e8', accent: '#ffd24a', eye: '#4affff' } }, family: '魔法生物系', area: '水没の回廊', resist: { thunder: 1.3, dark: 1.3 }, actions: [A('attack', 2), A('skill', 'full_slash', 1)], drops: [{ item: 'hi_potion', rate: 0.4 }], desc: '城を造った人々の、最後の命令を守る鎧。' });
   R.monster('storm_hawk', { name: '嵐の鷹', lv: 43, arche: 'fast', art: { family: 'bird', c: { base: '#5a6a8a', accent: '#ffe08a', eye: '#ff3a3a' } }, family: '鳥系', area: '浮天城アエリア', resist: { thunder: 1.4, wind: 0.6 }, actions: [A('attack', 3), A('skill', 'wind_blade', 1)], drops: [{ item: 'hi_potion', rate: 0.3 }], desc: '城の塔に巣をかけた鷹。' });
-  R.monster('boss_anchor_core', { name: '暴走炉心アンカー・コア', lv: 46, arche: 'tank', boss: true, hpMult: 14.4, atkMult: 1.8, magMult: 1.8, art: { family: 'crystal', size: 'boss', c: { base: '#4a8aff', accent: '#ffe08a', eye: '#ff3a3a' } }, family: '魔法生物系', area: '浮力炉', resist: { dark: 1.4, light: 0.6, thunder: 1.2 },
+  R.monster('boss_anchor_core', { name: '暴走炉心アンカー・コア', lv: 46, arche: 'tank', boss: true, hpMult: 18.72, hpMult78: 14.4, atkMult: 1.8, magMult: 1.8, art: { family: 'crystal', size: 'boss', c: { base: '#4a8aff', accent: '#ffe08a', eye: '#ff3a3a' } }, family: '魔法生物系', area: '浮力炉', resist: { dark: 1.4, light: 0.6, thunder: 1.2 },
     actions: [A('attack', 2), A('special', 'ballast_drop', 1), A('special', 'updraft', 1), A('skill', 'thunder', 1), { type: 'special', id: 'call', summon: 'buoy_spirit', w: 1, hpBelow: 0.5 }], drops: [{ item: 'elixir', rate: 1 }], desc: '片側だけに力を送り続け、城を傾けている暴走した炉心。' });
 
   /* ---------- 報酬 ---------- */
@@ -27,10 +27,10 @@
   R.key('aer_gate_key', '水門の鍵', '浮天城の庭園の水門の鍵。城守の人形から預かった。');
 
   /* ---------- クエスト ---------- */
-  R.quest('aeria78_float', { title: '浮天城の浮力炉', theme: '傾きを、元に戻す', desc: '泰平洋の上空に浮かぶ浮天城アエリアが、傾き始めている。庭園の水門で水位を下げ、水没していた回廊の奥の浮力炉を修復する。',
+  R.quest('aeria78_float', { title: '浮天城の浮力炉', theme: '傾きを、元に戻す', desc: 'アズール大洋の上空に浮かぶ浮天城アエリアが、傾き始めている。庭園の水門で水位を下げ、水没していた回廊の奥の浮力炉を修復する。',
     steps: [['aer_docked', 'アストラ号で、浮天城アエリアの上空の船着き場に接舷する'], ['aer_heard', '城守の人形から、城の傾きの話を聞く'], ['aer_gate', '庭園の水門を操作して、水位を下げる'], ['aer_corridor', '現れた回廊の奥へ進む'], ['aer_reactor', '浮力炉を修復する'], ['aer_done', '城守の人形に報告する']],
     reward: { exp: 20000, gold: 12000, item: 'azure_sword' } });
-  R.obj('aeria78_float', 'aer_docked', 'map:aeria_dock', ['泰平洋の上空。', '浮天城アエリアの上空の船着き場。', 'アストラ号で泰平洋の真ん中（ハヴァイの近く）の上空へ。城の影の上で降りる（決定）と接舷できる。']);
+  R.obj('aeria78_float', 'aer_docked', 'map:aeria_dock', ['アズール大洋の上空。', '浮天城アエリアの上空の船着き場。', 'アストラ号でアズール大洋の真ん中（常夏の島々の近く）の上空へ。城の影の上で降りる（決定）と接舷できる。']);
   R.obj('aeria78_float', 'aer_heard', 'npc:aeria_dock:ad_keeper', ['浮天城アエリア。', '船着き場の城守の人形。', '船着き場の城守の人形に話しかけよう。']);
   R.obj('aeria78_float', 'aer_gate', 'ev:aeria_garden_hi:2,9', ['浮天城アエリアの庭園。', '庭園の西の端の水門。', '庭園の西の端の水門を、水門の鍵で操作しよう。']);
   R.obj('aeria78_float', 'aer_corridor', 'map:aeria_corridor', ['水の引いた庭園。', '庭園の東の、現れた階段。', '水の引いた庭園の東の階段から、回廊へ下りよう。']);
@@ -57,7 +57,7 @@
   ], warps: [{ x: 9, y: 1, to: 'aeria_garden_hi', tx: 9, ty: 12 }],
     events: [
       { x: 9, y: 12, type: 'script', solid: true, tile: 'crate', run: async function (c) { var ch = await c.choice('星界航行船アストラ号が、船着き場に係留されている。', ['飛び立つ', 'やめる']); if (ch !== 0) return; if (root.Astra && root.Astra.takeOffAeria) root.Astra.takeOffAeria(); } },
-      { x: 6, y: 9, type: 'inspect', solid: true, text: ['船着き場の縁から下を見ると、雲の海。その切れ間の、はるか下に、泰平洋が光っている。'] }
+      { x: 6, y: 9, type: 'inspect', solid: true, text: ['船着き場の縁から下を見ると、雲の海。その切れ間の、はるか下に、アズール大洋が光っている。'] }
     ],
     npcs: [
       { id: 'ad_keeper', x: 9, y: 7, sprite: 'golem', dir: 'down', wander: 0, talk: async function (c) {
@@ -65,7 +65,7 @@
         if (c.questDone('aeria78_float')) { await c.say('城守の人形', ['城は、水平に戻りました。庭園の水も、もう片側に寄りません。', '城を造った人々は、とうにいません。けれど、城は、あなたのような訪問者のために浮かび続けます。']); return; }
         if (d.flags.aer_reactor) { await c.say('城守の人形', ['……浮力炉の音が変わりました。均等な、静かな音。', '城の傾き、ゼロ。浮天城アエリアは、救われました。']); d.flags.aer_done = true; await c.questComplete('aeria78_float'); c.give('aeria_robe', 1); c.give('reactor_shard', 1); await c.msg(['浮天の羽衣と、浮力炉の欠片も受け取った。']); return; }
         if (!c.questActive('aeria78_float')) {
-          await c.say('城守の人形', ['船着き場への接舷を確認。……訪問者は、百二十年ぶりです。', 'ここは浮天城アエリア。泰平洋の上空に浮かぶ城です。浮力炉が片側にだけ力を送り始め、城が傾いています。', '傾きのせいで、庭園の水が片側に寄り、浮力炉へ続く回廊が水没しました。わたしは水に入れません。']);
+          await c.say('城守の人形', ['船着き場への接舷を確認。……訪問者は、百二十年ぶりです。', 'ここは浮天城アエリア。アズール大洋の上空に浮かぶ城です。浮力炉が片側にだけ力を送り始め、城が傾いています。', '傾きのせいで、庭園の水が片側に寄り、浮力炉へ続く回廊が水没しました。わたしは水に入れません。']);
           var ch = await c.choice('浮力炉を、修復してほしい。', ['引き受ける', 'あとにする']); if (ch !== 0) return;
           c.questStart('aeria78_float'); d.flags.aer_docked = true; d.flags.aer_heard = true; c.give('aer_gate_key', 1);
           await c.msg(['水門の鍵を受け取った。']);
@@ -73,7 +73,7 @@
         }
         await c.say('城守の人形', ['庭園の西の端の水門を開けてください。回廊の奥が浮力炉です。']);
       } },
-      { id: 'ad_gardener', x: 4, y: 5, sprite: 'elder', dir: 'down', wander: 0, talk: async function (c) { var ch = await c.choice('庭師の老婆「休んでいくかい？ 雲の上の寝床は、よく眠れるよ」', ['休む（300G）', '話を聞く', 'やめる']); if (ch === 0) { await c.inn(300); return; } if (ch === 1) await c.say('庭師の老婆', ['わたしは、この城で生まれた最後の一人さ。下の世界へは、一度も降りたことがない。', '雲の切れ間から、大きな海と、遠くの島々が見えるんだ。……あれが泰平洋。東へ行けばメリカ、西へ行けばヒノモト。']); } },
+      { id: 'ad_gardener', x: 4, y: 5, sprite: 'elder', dir: 'down', wander: 0, talk: async function (c) { var ch = await c.choice('庭師の老婆「休んでいくかい？ 雲の上の寝床は、よく眠れるよ」', ['休む（300G）', '話を聞く', 'やめる']); if (ch === 0) { await c.inn(300); return; } if (ch === 1) await c.say('庭師の老婆', ['わたしは、この城で生まれた最後の一人さ。下の世界へは、一度も降りたことがない。', '雲の切れ間から、大きな海と、遠くの島々が見えるんだ。……あれがアズール大洋。東へ行けばエルドラン、西へ行けば弓月列島。']); } },
       { id: 'ad_merchant', x: 14, y: 5, sprite: 'golem', dir: 'down', wander: 0, talk: async function (c) { await c.shop('item', ['elixir', 'hi_potion', 'hi_ether', 'phoenix_feather', 'wake_bell']); } }
     ], encounters: null });
 

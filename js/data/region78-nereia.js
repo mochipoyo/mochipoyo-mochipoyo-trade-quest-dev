@@ -21,7 +21,7 @@
   R.monster('whirl_jelly', { name: '潮渦のクラゲ', lv: 23, arche: 'mage', art: { family: 'jelly', c: { base: '#6ad0e0', accent: '#ffffff', eye: '#2a6a8a' } }, family: '水棲系', area: 'ネレイアの浜', resist: { thunder: 1.6, fire: 1.2 }, actions: [A('attack', 1), A('special', 'riptide', 2), A('skill', 'ice', 1)], drops: [{ item: 'ether', rate: 0.2 }], desc: '潮の渦に乗って浮かぶ。' });
   R.monster('atoll_shark', { name: '環礁のサメ', lv: 25, arche: 'glass', art: { family: 'shark', c: { base: '#4a6a8a', accent: '#d0e0f0', eye: '#ff3a3a' } }, family: '水棲系', area: '海底神殿', resist: { thunder: 1.4 }, actions: [A('attack', 3), A('special', 'devour', 1)], drops: [{ item: 'hi_ether', rate: 0.1 }], desc: '外礁の切れ目を回遊している。' });
   R.monster('foam_spirit', { name: '泡の精', lv: 24, arche: 'fast', art: { family: 'spirit', c: { base: '#e0f4ff', accent: '#8ad0ff', eye: '#2a4a8a' } }, family: '精霊系', area: 'ネレイアの浜', resist: { wind: 1.5, dark: 1.2 }, actions: [A('attack', 2), A('skill', 'sleep', 1)], drops: [{ item: 'calm_water', rate: 0.3 }], desc: '波の泡から生まれ、波の泡に帰る。' });
-  R.monster('boss_tides', { name: '大潮の番人ティデス', lv: 27, arche: 'tank', boss: true, hpMult: 11.7, atkMult: 2.45, magMult: 2.45, art: { family: 'hydra', size: 'boss', c: { base: '#2a6a8a', accent: '#ffe0a0', eye: '#4affe0' } }, family: '魔物系', area: '海底神殿 潮門の間', resist: { thunder: 1.5, ice: 0.5, fire: 0.8 },
+  R.monster('boss_tides', { name: '大潮の番人ティデス', lv: 27, arche: 'tank', boss: true, hpMult: 14.04, hpMult78: 11.7, atkMult: 2.45, magMult: 2.45, art: { family: 'hydra', size: 'boss', c: { base: '#2a6a8a', accent: '#ffe0a0', eye: '#4affe0' } }, family: '魔物系', area: '海底神殿 潮門の間', resist: { thunder: 1.5, ice: 0.5, fire: 0.8 },
     actions: [A('attack', 2), A('special', 'spring_tide', 1), A('special', 'riptide', 1), A('special', 'hydra_breath', 1)], drops: [{ item: 'elixir', rate: 1 }], desc: '潮門の前で、閉じた門を守り続けた番人。「門ハ、閉ジテイル。ダカラ、守ル」' });
 
   /* ---------- 報酬 ---------- */
@@ -34,7 +34,7 @@
   R.quest('nereia78_tide', { title: '大潮の潮門', theme: '満ちる時と、引く時を読む', desc: '環潮大陸ネレイアに、百年に一度の大潮が近づいている。旧市街の潮の満ち引きを読み、海底神殿の奥で古代の潮門を開いて、街を守る。',
     steps: [['ner_heard', '環状都市の潮守ミラから、大潮の話を聞く'], ['ner_bell', '旧市街の潮見の鐘で、潮の満ち引きを確かめる'], ['ner_has_shell', '満潮のとき、渡し舟で中島の記録庫へ渡り、潮読みの貝を手に入れる'], ['ner_stairs', '干潮のとき、水路の底の南の端の階段から、海底神殿へ入る'], ['ner_gate', '海底神殿の奥で、古代の潮門を開く'], ['ner_done', '潮守ミラに報告する']],
     reward: { exp: 4800, gold: 3600, item: 'tidegate_staff' } });
-  R.obj('nereia78_tide', 'ner_heard', 'npc:nereia_city:nc_mira', ['大西海の赤道付近、環潮大陸ネレイア。', '環状都市ネレイアの潮守ミラ。', '外礁の切れ目を遠洋航海船で抜け、環状都市の潮守ミラに話しかけよう。']);
+  R.obj('nereia78_tide', 'ner_heard', 'npc:nereia_city:nc_mira', ['オルディス海の赤道付近、環潮大陸ネレイア。', '環状都市ネレイアの潮守ミラ。', '外礁の切れ目を遠洋航海船で抜け、環状都市の潮守ミラに話しかけよう。']);
   R.obj('nereia78_tide', 'ner_bell', 'ev:nereia_old_hi:3,8', ['ネレイアの東の旧市街。', '旧市街の大通りの「潮見の鐘」。', '旧市街の大通りの西にある潮見の鐘を鳴らしてみよう。']);
   R.obj('nereia78_tide', 'ner_has_shell', 'npc:nereia_old_hi:no_ferry', ['旧市街（満潮）。', '西の桟橋の渡し守。', '満潮のとき、西の桟橋の渡し守に頼んで、中島の記録庫へ渡ろう。']);
   R.obj('nereia78_tide', 'ner_stairs', 'map:nereia_temple_1', ['旧市街（干潮）。', '水路の底の南の端の階段。', '干潮のとき、水路の底を南へ歩き、海底神殿への階段を下りよう。']);
@@ -57,7 +57,7 @@
     earth: {
       // 陸：輪の大陸だけ（この長方形の中の地球の陸＝リベリアの海岸の端は、海にする）
       land: function (gx, gy) { var q = ringR(gx, gy); if (q.r < q.outer && q.r > q.inner && !channel(gx, gy)) return 1; return 0; },
-      theme: function (b, gx, gy, n) { var q = ringR(gx, gy); var edge = Math.min(q.outer - q.r, q.r - q.inner); if (edge < 2.2) return 's'; var v = root.Earth78.vnoise(gx, gy, 5, 73); return v > 0.66 ? 'F' : n < 0.12 ? 'f' : n < 0.5 ? ',' : '.'; },
+      theme: function (b, gx, gy, n) { var q = ringR(gx, gy); var edge = Math.min(q.outer - q.r, q.r - q.inner); if (edge < 2.2) return 's'; var v = root.Earth78.vnoise(gx, gy, 5, 73); return v > 0.78 ? 'F' : n < 0.05 ? 'f' : n < 0.5 ? ',' : '.'; },   /* v7.9 密林を減らした */
       // 外礁：輪の外の海に、岩の輪（切れ目 3 つ）
       post: function (G, ctx) { var r = ctx.r; for (var y = 0; y < ctx.Hd; y++) for (var x = 0; x < ctx.Wd; x++) { var gx = r.x + x, gy = r.y + y; var q = ringR(gx, gy); if (G[y][x] !== '0' && G[y][x] !== '~') continue; var d = q.r - (q.outer + 6.5); if (Math.abs(d) > 0.8) continue;
         var deg = (q.a * 180 / Math.PI + 360) % 360; if (Math.abs(deg - 180) < 9 || Math.abs(deg - 55) < 8 || Math.abs(deg - 300) < 8) continue; if (root.Earth78.hash2(gx, gy, 74) < 0.86) ctx.set(x, y, 'c'); } }
@@ -111,7 +111,7 @@
     } },
     { id: 'nc_boatman', x: 8, y: 14, sprite: 'sailor', dir: 'down', wander: 0, talk: async function (c) { await c.say('水路の舟人', ['この街の道の半分は水路さ。橋を渡るか、舟で行くか。', '外の海からは、西の水路で潟に入れる。遠洋航海船は大きすぎて、潟の奥までは入れないがな。']); } },
     { id: 'nc_kid', x: 20, y: 10, sprite: 'child', dir: 'down', wander: 1, talk: async function (c) { await c.say('街の子ども', ['旧市街の鐘を鳴らすと、潮が変わるんだよ！ ほんとだよ！', 'おばあちゃんは、鐘じゃなくて月が潮を呼ぶって言うけど。']); } },
-    { id: 'nc_scholar', x: 25, y: 4, sprite: 'scholar', dir: 'down', wander: 1, talk: async function (c) { await c.say('潮の学者', ['ネレイアは、大西海の真ん中に浮かぶ輪の大陸だ。西に南メリカ、東にアフリア。', '昔の人は、海に沈んだ大陸の伝説を語った。……ここが沈まずに済んでいるのは、潮門のおかげかもしれない。']); } }
+    { id: 'nc_scholar', x: 25, y: 4, sprite: 'scholar', dir: 'down', wander: 1, talk: async function (c) { await c.say('潮の学者', ['ネレイアは、オルディス海の真ん中に浮かぶ輪の大陸だ。西にシルヴァーナ、東にソルディア。', '昔の人は、海に沈んだ大陸の伝説を語った。……ここが沈まずに済んでいるのは、潮門のおかげかもしれない。']); } }
   ] });
   R.inn('nereia_inn', '宿「満ち潮」', CT, 26, 4, 90);
   R.shop('nereia_shop', '潟の市場', CT, 4, 11, 'merchant', 'item', ['hi_potion', 'ether', 'hi_ether', 'antidote', 'calm_water', 'escape_wing', 'escape_feather', 'tent'], ['潟で採れた貝の干物もあるよ。……薬の話だったね。']);

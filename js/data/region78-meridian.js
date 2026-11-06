@@ -19,7 +19,7 @@
   R.monster('guard_bot', { name: '錆びた警備ロボ', lv: 26, arche: 'fast', art: { family: 'machine', c: { base: '#6a7a6a', accent: '#ffd24a', eye: '#ff3a3a' } }, family: '機械系', area: '倒壊した高架道路', resist: { thunder: 1.5 }, actions: [A('attack', 3), A('skill', 'thunder', 1)], drops: [{ item: 'antidote', rate: 0.3 }], desc: '避難の誘導を続ける警備ロボ。案内の声は、もうかすれている。' });
   R.monster('subway_rats', { name: '地下鉄のネズミ群', lv: 27, arche: 'glass', art: { family: 'swarm', c: { base: '#5a4a3a', accent: '#c09a6a', eye: '#ffea4a' } }, family: '獣系', area: '浸水した地下鉄', resist: { fire: 1.5 }, actions: [A('attack', 2), A('special', 'toxic_bite', 1)], drops: [{ item: 'antidote', rate: 0.4 }], desc: '線路の下で増えた。水の来ない場所を、よく知っている。' });
   R.monster('flood_gator', { name: '浸水の大ワニ', lv: 28, arche: 'tank', art: { family: 'reptile', c: { base: '#3a5a3a', accent: '#8ab06a', eye: '#ffd24a' } }, family: '魔物系', area: '浸水した地下鉄', resist: { ice: 1.4, thunder: 1.2 }, actions: [A('attack', 2), A('special', 'devour', 1)], drops: [{ item: 'hi_potion', rate: 0.3 }], desc: '水没したホームに棲みついた。' });
-  R.monster('boss_block_signal', { name: '閉塞信号機ブロック・シグナル', lv: 30, arche: 'tank', boss: true, hpMult: 12.5, atkMult: 2.2, magMult: 2.2, art: { family: 'turret', size: 'boss', c: { base: '#3a3a3a', accent: '#ff3a3a', eye: '#3aff6a' } }, family: '機械系', area: '路線図にない駅', resist: { thunder: 1.5, light: 0.8 },
+  R.monster('boss_block_signal', { name: '閉塞信号機ブロック・シグナル', lv: 30, arche: 'tank', boss: true, hpMult: 17.25, hpMult78: 12.5, atkMult: 2.2, magMult: 2.2, art: { family: 'turret', size: 'boss', c: { base: '#3a3a3a', accent: '#ff3a3a', eye: '#3aff6a' } }, family: '機械系', area: '路線図にない駅', resist: { thunder: 1.5, light: 0.8 },
     actions: [A('attack', 2), A('special', 'red_signal', 1), A('special', 'rail_rush', 1), { type: 'special', id: 'call', summon: 'guard_bot', w: 1, hpBelow: 0.5 }], drops: [{ item: 'elixir', rate: 1 }], desc: '最後の列車の前で、赤い灯を点し続けた信号機。「この先、崩落。停止セヨ」' });
 
   /* ---------- 報酬 ---------- */
@@ -33,7 +33,7 @@
   R.quest('meridian78_train', { title: '最後の避難列車', theme: '待つ人へ、知らせを届ける', desc: '灰岸都市メリディアンの最後の避難列車は、路線図にない駅で止まった。なぜ止まったのかを追い、乗客名簿と伝言を、避難所の家族へ届ける。',
     steps: [['mer_heard', '郊外の避難所の駅長代理グレイから、最後の列車の話を聞く'], ['mer_highway', '塩の平野の先、倒壊した高架道路を越える'], ['mer_found', '浸水した地下鉄の奥で、止まった列車を見つける'], ['mer_why', '路線図にない駅で、列車が止まった理由を知る'], ['mer_delivered', '避難所の家族3人に、伝言を届ける'], ['mer_done', '駅長代理グレイに報告する']],
     reward: { exp: 6500, gold: 4500, item: 'guide_flag_spear' } });
-  R.obj('meridian78_train', 'mer_heard', 'npc:meridian_shelter:ms_grey', ['大西海の西、北メリカの東岸。', '「郊外の避難所」の駅長代理グレイ。', '灰岸都市メリディアンの郊外の避難所で、駅長代理グレイに話しかけよう。']);
+  R.obj('meridian78_train', 'mer_heard', 'npc:meridian_shelter:ms_grey', ['オルディス海の西、エルドランの東岸。', '「郊外の避難所」の駅長代理グレイ。', '灰岸都市メリディアンの郊外の避難所で、駅長代理グレイに話しかけよう。']);
   R.obj('meridian78_train', 'mer_highway', 'map:meridian_highway', ['避難所の東。', '塩の平野の先の「倒壊した高架道路」。', '塩の平野を東へ進み、倒壊した高架道路に入ろう。']);
   R.obj('meridian78_train', 'mer_found', 'ev:meridian_subway_2:24,6', ['灰岸の街の中心。', '「浸水した地下鉄」の奥の線路。', '浸水した地下鉄の下の階、線路の奥で止まった列車を探そう。']);
   R.obj('meridian78_train', 'mer_why', 'ev:meridian_station:8,3', ['浸水した地下鉄の最深部。', '「路線図にない駅」の信号機。', '路線図にない駅で、赤い灯を点し続ける信号機を止めよう。']);
@@ -55,7 +55,7 @@
     events: [{ at: ['mer_shelter', 8, 0], type: 'inspect', solid: false, text: ['地面が白い。……雪ではなく、塩だ。踏むと、さくさくと鳴る。', '錆びた標識：「メリディアン中央駅まで 22km」'] }],
     encounters: { rate: 0.04, zones: [{ name: '塩の平野', test: function () { return true; }, groups: [['salt_ghost'], ['salt_ghost', 'guard_bot'], ['rubble_golem'], ['guard_bot', 'guard_bot'], ['salt_ghost', 'salt_ghost']] }] },
     earth: {} });
-  R.blob(F, 11, function (b, gx, gy, n) { if (b === 'M' || b === 'W') return null; var v = root.Earth78.vnoise(gx, gy, 7, 91); return v > 0.55 ? (n < 0.04 ? 'c' : n < 0.25 ? ',' : 'n') : n < 0.08 ? '9' : n < 0.14 ? 'h' : n < 0.5 ? ',' : '.'; }, [[-74.9, 40.35]]);
+  R.blob(F, 11, function (b, gx, gy, n) { if (b === 'M' || b === 'W') return null; var v = root.Earth78.vnoise(gx, gy, 7, 91); return v > 0.55 ? (n < 0.015 ? 'c' : n < 0.25 ? ',' : 'n') : n < 0.035 ? '9' : n < 0.14 ? 'h' : n < 0.5 ? ',' : '.'; }   /* v7.9 崖・鉱滓を減らした */, [[-74.9, 40.35]]);
 
   /* ---------- 郊外の避難所 ---------- */
   var S = 'meridian_shelter';
@@ -129,7 +129,7 @@
   R.add({ id: 'meridian_tent', name: '家族のテント', kind: 'interior', bgm: 'town', rows: ['############', '#E__E__E__E#', '#__________#', '#_t______q_#', '#__________#', '#_z________#', '#__________#', '#__________#', '#####D######'], warps: [{ x: 5, y: 8, to: S, tx: 5, ty: 10 }],
     npcs: [{ id: 'mt_boy', x: 6, y: 4, sprite: 'child', dir: 'down', wander: 1, talk: async function (c) { await c.say('避難所の男の子', ['ぼくのお兄ちゃんは、列車に乗れなかったの。だから、ここにいる。', '乗れた人たちは、どこに行っちゃったんだろう。']); } }] });
   R.add({ id: 'meridian_harbor', name: '灰岸の港', kind: 'interior', bgm: 'town', rows: ['############', '#o___XX___o#', '#__________#', '#____II____#', '#__________#', '#_t______q_#', '#__________#', '#__________#', '#####D######'], warps: [R.warp(5, 8, F, 'mer_harbor', '外へ')],
-    events: [{ x: 5, y: 1, type: 'inspect', solid: true, text: ['港の見張り台の窓から、灰色の海が見える。', '水の上に、ビルの先だけが並んでいる。……灰岸都市メリディアンの中心は、いまは海の中だ。', '遠く、大西海の向こうは、旧大陸の方角だ。'] }] });
+    events: [{ x: 5, y: 1, type: 'inspect', solid: true, text: ['港の見張り台の窓から、灰色の海が見える。', '水の上に、ビルの先だけが並んでいる。……灰岸都市メリディアンの中心は、いまは海の中だ。', '遠く、オルディス海の向こうは、旧大陸の方角だ。'] }] });
 
   /* ---------- 倒壊した高架道路 ---------- */
   var HW_ENC = { rate: 0.05, zones: [{ name: '倒壊した高架道路', test: function () { return true; }, groups: [['rubble_golem'], ['guard_bot', 'guard_bot'], ['salt_ghost', 'rubble_golem'], ['guard_bot', 'salt_ghost']] }] };

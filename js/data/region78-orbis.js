@@ -20,7 +20,7 @@
   R.monster('solar_jelly', { name: '太陽風のクラゲ', lv: 38, arche: 'mage', art: { family: 'jelly', c: { base: '#ffb04a', accent: '#fff0a0', eye: '#ff3a3a' } }, family: '精霊系', area: '無重力の観測棟', resist: { ice: 1.5, fire: 0 }, actions: [A('attack', 1), A('special', 'solar_flare', 2)], drops: [{ item: 'elixir', rate: 0.04 }], desc: '太陽の風に乗って、窓から入り込んだ。' });
   R.monster('meteor_golem', { name: '隕石ゴーレム', lv: 39, arche: 'tank', art: { family: 'golem', c: { base: '#5a4a4a', accent: '#ff8a3a', eye: '#ffd24a' } }, family: '魔法生物系', area: '環星ステーション', resist: { thunder: 0.6, ice: 1.4 }, actions: [A('attack', 2), A('special', 'crush', 1)], drops: [{ item: 'hi_potion', rate: 0.3 }], desc: '外壁にぶつかった隕石が、形を持った。' });
   R.monster('stardust_swarm', { name: '星屑の群れ', lv: 37, arche: 'glass', art: { family: 'swarm', c: { base: '#e0e8ff', accent: '#ffe08a', eye: '#4a8aff' } }, family: '精霊系', area: '無重力の観測棟', resist: { wind: 1.5, dark: 1.3 }, actions: [A('attack', 2), A('skill', 'sleep', 1)], drops: [{ item: 'calm_water', rate: 0.3 }], desc: '光る塵の群れ。近づくと眠くなる。' });
-  R.monster('boss_sentinel_orbis', { name: '守衛AIセンチネル・オルビス', lv: 41, arche: 'tank', boss: true, hpMult: 18.2, atkMult: 2.0, magMult: 2.0, art: { family: 'turret', size: 'boss', c: { base: '#d0d8e8', accent: '#ff3a3a', eye: '#4affff' } }, family: '機械系', area: '警報衛星の制御室', resist: { thunder: 1.5, dark: 0.7, light: 0.8 },
+  R.monster('boss_sentinel_orbis', { name: '守衛AIセンチネル・オルビス', lv: 41, arche: 'tank', boss: true, hpMult: 24.57, hpMult78: 18.2, atkMult: 2.0, magMult: 2.0, art: { family: 'turret', size: 'boss', c: { base: '#d0d8e8', accent: '#ff3a3a', eye: '#4affff' } }, family: '機械系', area: '警報衛星の制御室', resist: { thunder: 1.5, dark: 0.7, light: 0.8 },
     actions: [A('attack', 2), A('special', 'false_alarm', 1), A('special', 'solar_flare', 1), A('skill', 'thunder', 1), { type: 'special', id: 'call', summon: 'drift_drone', w: 1, hpBelow: 0.5 }], drops: [{ item: 'elixir', rate: 1 }], desc: '誤った警報を「脅威」と判定し、地上との回線を切り続けた守衛AI。' });
 
   /* ---------- 報酬 ---------- */
@@ -165,7 +165,7 @@
     '###############'
   ], warps: [{ x: 7, y: 7, to: RING, tx: 15, ty: 8 }],
     events: [{ x: 7, y: 1, type: 'script', solid: true, run: async function (c) {
-      await c.msg(['壁一面の窓の向こうに、地球が丸ごと浮かんでいる。', '南北メリカ、ユーラシオ、アフリア、オストラリス、アンタルカ。……そして、弓のように連なるヒノモト列島。', '歩いてきた道、船で渡った海、飛んだ空。全部が、一つの青い球の上にあった。']);
+      await c.msg(['壁一面の窓の向こうに、地球が丸ごと浮かんでいる。', 'エルドランとシルヴァーナ、グランメリア、ソルディア、ルベラ、ニヴェリス。……そして、弓のように連なる弓月列島。', '歩いてきた道、船で渡った海、飛んだ空。全部が、一つの青い球の上にあった。']);
       var ch = await c.choice('窓から、世界の地図を見渡す？', ['見渡す', 'やめる']); if (ch !== 0) return;
       var MM = root.Minimap; if (MM && MM.openBig) { MM.openBig(); if (MM.setMode) MM.setMode('world'); if (MM.home) MM.home(); if (MM.drawBig) MM.drawBig(); }
     } }], npcs: [{ id: 'ol_noah', x: 11, y: 6, sprite: 'golem', dir: 'down', wander: 0, talk: async function (c) { await c.say('管理AIノア', ['この窓は、ステーションを造った人たちが、いちばんこだわった場所だそうです。', '「地球を一度に見られる場所が、一つはあるべきだ」と。']); } }], encounters: null });
