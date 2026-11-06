@@ -1,10 +1,10 @@
 /* =========================================================
    Data / v8.1 第7居住区（scheduled_district）：同じ間隔の灯りと生け垣、時間割の掲示板の広場。一軒だけ列からはみ出した 9 号棟
    ・住む理由：演算都市が決めた予定どおりに暮らす居住区。起床・配給・移動の時刻が掲示板に貼られる
-   ・入口から最初に見える物：南の門から「朝の通り」。等間隔の灯り、その先の広場の掲示板と噴水、北に同じ形のユニットが並ぶ
-   ・道：朝の通り（門 → 南の通り → 時間割の広場 → 北の通り）。北の通りに居住ユニット 7-1・休息ユニット・配給ユニット・技師の家
+   ・入口から最初に見える物：北の門（演算都市の側。フィールドでは居住区の北から入る）から「朝の通り」。両側に同じ形のユニット、その先の広場の掲示板と噴水、等間隔の灯り
+   ・道：朝の通り（門 → 北の通り → 時間割の広場 → 南の通り）。北の通りに居住ユニット 7-1・休息ユニット・配給ユニット・技師の家
      南の通りの東は工区（観測塔・整備工場）。西の端に、列からはみ出して花を植えた 9 号棟
-   ・境界：城壁（防御型）。出入りは南の門
+   ・境界：城壁（防御型）。出入りは北の門（前は南の端に門があり、出るとフィールドでは居住区の北に出ていた。向きをそろえた）
    ・人・出来事・宝箱・調べる所はそのまま（位置だけ）。掲示板の出来事は広場の噴水の北
    ========================================================= */
 (function (root) {
@@ -13,9 +13,9 @@
   var W = 54, H = 26, GX = 26;
   function rows(canvas) {
     var C = canvas(W, H, '=');
-    C.frame(0, 0, W, H, 'C'); C.rect(GX, H - 1, 2, 1, 'r');
+    C.frame(0, 0, W, H, 'C'); C.rect(GX, 0, 2, 1, 'r');
     C.rect(1, 6, W - 2, 2, 'r'); C.rect(1, 19, W - 2, 2, 'r');   // 北の通り・南の通り
-    C.rect(GX, 6, 2, H - 7, 'r');   // 朝の通り
+    C.rect(GX, 0, 2, 21, 'r');   // 朝の通り
     C.rect(17, 9, 16, 9, 'P');   // 時間割の広場
     C.rect(21, 13, 2, 2, 'Q'); C.set(31, 12, 'I');   // 噴水と時計の柱
     // 等間隔の灯りと生け垣（どこも同じ形）
@@ -28,7 +28,7 @@
     return C;
   }
   R.define('scheduled_district', {
-    version: 1, rows: rows, arrive: [GX, 23],
+    version: 1, rows: rows, arrive: [GX, 2],
     buildings: {
       h1: { x: 8, y: 2, w: 6, h: 4, doorX: 2 }, h2: { x: 16, y: 2, w: 6, h: 4, doorX: 2 }, h3: { x: 32, y: 2, w: 6, h: 4, doorX: 2 }, x72_house: { x: 40, y: 1, w: 7, h: 5, doorX: 3 },
       a3_district_9: { x: 8, y: 15, w: 4, h: 4, doorX: 1 }, x72_tower: { x: 35, y: 13, w: 6, h: 6, doorX: 2 }, x72_hall: { x: 43, y: 14, w: 8, h: 5, doorX: 3 }
@@ -41,8 +41,8 @@
     },
     events: [[12, 18, 21, 12], [33, 10, 34, 10]],
     chests: { sd1: [52, 24] }, points: { sp_scheduled_district_13_2: [21, 1] },
-    warps: [GX, GX + 1].map(function (x) { return { x: x, y: H - 1, to: 'world_machine', tx: 42, ty: 84, name: '居住区の外へ' }; }),
-    anchors: [[14, 22, GX, 24], [15, 22, GX + 1, 24], [14, 21, GX, 23], [15, 21, GX + 1, 23]],
+    warps: [GX, GX + 1].map(function (x) { return { x: x, y: 0, to: 'world_machine', tx: 42, ty: 84, name: '居住区の外へ' }; }),
+    anchors: [[14, 22, GX, 1], [15, 22, GX + 1, 1], [14, 21, GX, 2], [15, 21, GX + 1, 2]],
     after: function (def) {
       def.events.forEach(function (e) { if (e.x === 34 && e.y === 10) e.text = ['【東の工区】', '南の通りの東に観測塔と整備工場。北の通りの東に技師の家。']; });
       var say = function (name, lines) { return async function (c) { await c.say(name, lines); }; };
@@ -52,5 +52,5 @@
       });
     }
   });
-  R.firstView('scheduled_district', 'v81_district_view', { x: GX + 1, y: 1, z: 11, dist: 24, pitch: 40 }, 4000);
+  R.firstView('scheduled_district', 'v81_district_view', { x: GX + 1, y: 1, z: 12, dist: 24, pitch: 40 }, 4000);
 })(typeof window !== 'undefined' ? window : globalThis);
