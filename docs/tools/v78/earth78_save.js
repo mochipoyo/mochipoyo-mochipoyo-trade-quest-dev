@@ -30,7 +30,7 @@ ok(e2.vehicles.sailboat && water(w2, 'world', e2.vehicles.sailboat.x, e2.vehicle
 // ---------- 3) 地球の外の地図（w78_*）・新しい地域にいたセーブ → 2D 版
 w3.State.newGame('t', 'warrior'); w3.World.start(); const f3 = w3.World76.SEAS.find((id) => /^w78_/.test(id) && w3.World76.rect(id).near === 'world_grania'); const r3 = w3.World76.rect(f3);
 const dd = w3.State.data; dd.pos = { map: f3, x: 5, y: 5, dir: 'down' }; let s3 = JSON.parse(JSON.stringify(dd)); w2.State.data = s3; w2.World.start();
-ok(w2.World76.REGIONS.includes(w2.State.data.pos.map) && w2.World.getMap(w2.State.data.pos.map).tiles[w2.State.data.pos.y][w2.State.data.pos.x], '地球の外の地図（' + f3 + '）のセーブ → 2D 版：近い地域（' + w2.State.data.pos.map + '）へ');
+ok(w2.World76.REGIONS.includes(w2.State.data.pos.map) && walk(w2, w2.State.data.pos.map, w2.State.data.pos.x, w2.State.data.pos.y), '地球の外の地図（' + f3 + '）のセーブ → 2D 版：近い地域（' + w2.State.data.pos.map + '）へ');
 dd.pos = { map: 'neon_town', x: 17, y: 16, dir: 'down' }; dd.lastInn = { map: 'harbor_town', x: 10, y: 5 }; s3 = JSON.parse(JSON.stringify(dd)); w2.State.data = s3; w2.World.start();
 ok(w2.State.data.pos.map === 'harbor_town', '新しい地域の町（錆雨市）にいたセーブ → 2D 版：最後に泊まった宿へ ' + JSON.stringify(w2.State.data.pos));
 // ---------- 4) 前の版（v7.6 のつないだ世界）の共通の海にいたセーブ → 地球
@@ -38,4 +38,9 @@ const old76 = load({ earth: false }); const W76o = old76.w.World76; ok(W76o.on()
 const sea = W76o.SEAS.find((id) => W76o.rect(id).near === 'world'); old76.w.State.newGame('t', 'warrior'); const o4 = old76.w.State.data; o4.pos = { map: sea, x: 3, y: 3, dir: 'down' }; o4.aboard = 'galleon'; o4.flags.galleon_ready = true; o4.vehicles.galleon = { owned: true, map: sea, x: 3, y: 3, port: { map: 'world', x: 19, y: 72 } };
 w3.State.data = JSON.parse(JSON.stringify(o4)); w3.World.start(); const q4 = w3.State.data; const gv = q4.vehicles.galleon;
 ok(w3.World76.inGrid(q4.pos.map) && q4.pos.map === gv.map && q4.pos.x === gv.x && q4.pos.y === gv.y && water(w3, gv.map, gv.x, gv.y), 'v7.6 の共通の海（' + sea + '）で遠洋航海船に乗ったセーブ → 地球：近い地域の海へ、船ごと ' + JSON.stringify(q4.pos));
+// ---------- 5) 地球のセーブ → 3D 版の設定「つなぐ（v7.6 の配置）」で読む：旧座標へ戻す（外の地図にいたら近い地域へ）
+old76.w.State.data = JSON.parse(save2); old76.w.World.start(); const v5 = old76.w.State.data;
+ok(v5.pos.map === 'world' && Math.abs(v5.pos.x - exit.tx) + Math.abs(v5.pos.y - exit.ty) <= 3 && walk(old76.w, 'world', v5.pos.x, v5.pos.y) && !(v5.remakeVer || {}).world, '地球のセーブ → v7.6 の配置：旧座標のポヨ村の出口の近くへ ' + JSON.stringify(v5.pos));
+dd.pos = { map: f3, x: 5, y: 5, dir: 'down' }; old76.w.State.data = JSON.parse(JSON.stringify(dd)); old76.w.World.start(); const v6 = old76.w.State.data;
+ok(W76o.inGrid(v6.pos.map) && !/^w78_/.test(v6.pos.map) && walk(old76.w, v6.pos.map, v6.pos.x, v6.pos.y), '地球の外の地図のセーブ → v7.6 の配置：その配置の地図の歩けるマスへ ' + JSON.stringify(v6.pos));
 console.log(ng.length ? '結果：NG ' + ng.length : '結果：すべて OK'); process.exit(ng.length ? 1 : 0);

@@ -471,12 +471,14 @@
   E.migrateOn = migrateOn;
   // 地球を使わない（2D 版・設定「地域ごと」）：地球の座標のセーブを旧座標へ戻す（陸・海のマスへ）
   function migrateOff(d) {
+    var skip = d && d.e78skip; if (d) delete d.e78skip;   // World76.normalizeSave が旧座標で決めた位置（外の地図・新しい地域にいたセーブ）
+    var same = function (o) { return !!skip && !!o && o.map === skip.map && o.x === skip.x && o.y === skip.y; };
     if (!d || !d.remakeVer) return false; var ids = Object.keys(L.regions).filter(function (id) { return d.remakeVer[id] === VER && root.MAP_DEFS[id] && !L.regions[id].isNew; }); if (!ids.length) return false;
     ids.forEach(function (id) { snapshotOld(id); fitXf(id); });
     var back = function (m, x, y, water) { var o = OLD[m]; var q = mapBack(m, x, y, null); var s = snap(o.rows, o.W, o.H, q.x, q.y, water ? function (c) { return c === '~' || c === 'w'; } : function (c) { return walkCh(c) && !ICONCH[c]; }, 30); return s || q; };
     var isB = function (m) { return ids.indexOf(m) >= 0; };
-    if (d.pos && isB(d.pos.map)) { var p = back(d.pos.map, d.pos.x, d.pos.y, d.aboard && d.aboard !== 'airship'); d.pos.x = p.x; d.pos.y = p.y; }
-    Object.keys(d.vehicles || {}).forEach(function (k) { var s = d.vehicles[k]; if (!s) return; if (s.map && isB(s.map)) { var p2 = back(s.map, s.x, s.y, k !== 'airship'); s.x = p2.x; s.y = p2.y; } if (s.port && isB(s.port.map)) { var p3 = back(s.port.map, s.port.x, s.port.y, k !== 'airship'); s.port.x = p3.x; s.port.y = p3.y; } });
+    if (d.pos && isB(d.pos.map) && !same(d.pos)) { var p = back(d.pos.map, d.pos.x, d.pos.y, d.aboard && d.aboard !== 'airship'); d.pos.x = p.x; d.pos.y = p.y; }
+    Object.keys(d.vehicles || {}).forEach(function (k) { var s = d.vehicles[k]; if (!s) return; if (s.map && isB(s.map) && !same(s)) { var p2 = back(s.map, s.x, s.y, k !== 'airship'); s.x = p2.x; s.y = p2.y; } if (s.port && isB(s.port.map)) { var p3 = back(s.port.map, s.port.x, s.port.y, k !== 'airship'); s.port.x = p3.x; s.port.y = p3.y; } });
     if (d.astra && isB(d.astra.map)) { var p4 = back(d.astra.map, d.astra.x, d.astra.y, false); d.astra.x = p4.x; d.astra.y = p4.y; }
     ids.forEach(function (id) { if (d.mapDiscovery) delete d.mapDiscovery[id]; delete d.remakeVer[id]; });
     d.e78back = { at: Date.now(), maps: ids.length }; return true;
@@ -493,7 +495,7 @@
     var best = null; Object.keys(L.regions).forEach(function (rid) { if (L.regions[rid].isNew || !root.MAP_DEFS[rid]) return; var r = L.rectOf(rid); var dx = Math.max(r.x - gx, 0, gx - (r.x + r.w - 1)), dy = Math.max(r.y - gy, 0, gy - (r.y + r.h - 1)); var dd = dx + dy; if (!best || dd < best.d) best = { id: rid, d: dd, x: Math.max(0, Math.min(r.w - 1, gx - r.x)), y: Math.max(0, Math.min(r.h - 1, gy - r.y)) }; });
     if (!best) return null; snapshotOld(best.id); fitXf(best.id); var o = OLD[best.id]; var q = mapBack(best.id, best.x, best.y, null);
     var s = snap(o.rows, o.W, o.H, q.x, q.y, d.aboard && d.aboard !== 'airship' ? function (c) { return c === '~' || c === 'w'; } : function (c) { return walkCh(c) && !ICONCH[c]; }, 40) || q;
-    return { map: best.id, x: s.x, y: s.y, dist: best.d };
+    return { map: best.id, x: s.x, y: s.y, dist: best.d, old: true };
   };
   // その地図が新しい地域（v7.8）のものか（町・ダンジョンも。def.region78）
   function newRegionOf(mapId) { var def = root.MAP_DEFS && root.MAP_DEFS[mapId]; return !!(def && def.region78); }

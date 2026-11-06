@@ -363,6 +363,15 @@
   function nearestRegionEdge(gx, gy, avoid, rects) {
     var R0 = rects || RECT; var best = null; Object.keys(R0).forEach(function (id) { if (!R0[id].region) return; if (avoid && avoid[id]) return; if (!root.MAP_DEFS[id]) return; var r = R0[id]; var lx = Math.max(0, Math.min(r.w - 1, gx - r.x)), ly = Math.max(0, Math.min(r.h - 1, gy - r.y)); var dd = Math.abs(gx - r.x - lx) + Math.abs(gy - r.y - ly); if (!best || dd < best.dist) best = { map: id, x: lx, y: ly, dist: dd }; }); return best;
   }
+  function snapSafe(best, aboard) {
+    var T = root.Tiles, Wd = root.World; if (!T || !Wd || !Wd.getMap || !root.MAP_DEFS[best.map]) return best;
+    var m = null; try { m = Wd.getMap(best.map); } catch (e) { return best; } if (!m || !m.tiles) return best;
+    var ship = aboard && aboard !== 'airship'; var ok = function (x, y) { var t = m.tiles[y] && m.tiles[y][x]; if (!t) return false; return ship ? T.isWater(t) : !T.isSolid(t) && !T.isWater(t); };
+    if (ok(best.x, best.y)) return best;
+    var R = Math.max(m.w || 0, m.h || 0, 40); for (var r = 1; r <= R; r++) for (var dy = -r; dy <= r; dy++) for (var dx = -r; dx <= r; dx++) { if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue; var x = best.x + dx, y = best.y + dy; if (ok(x, y)) return { map: best.map, x: x, y: y, dist: best.dist, old: best.old }; }
+    return best;
+  }
+  W76.snapSafe = snapSafe;
   W76.normalizeSave = function (d) {
     if (!d || !d.pos) return false; var id = d.pos.map; var best = null;
     if (LEGACY[id]) {   // 前の版の外海：その版の並びで、いちばん近いとなりの地域の端へ（地域の ID とローカル座標は今の版でも同じ）
@@ -371,6 +380,8 @@
     else if (/^sea76_/.test(id) && !RECT[id] && V76RECT && V76RECT[id]) { var r6 = V76RECT[id]; best = nearestRegionEdge(r6.x + d.pos.x, r6.y + d.pos.y, null, V76RECT); }   // v7.8 地球の配置のとき：前の版（v7.6）の共通の海 → その版の並びで近い地域の端（旧座標。このあと地球の座標へ直す）
     else if (!W76.earth && root.Earth78 && root.Earth78.legacyPos) best = root.Earth78.legacyPos(d);   // v7.8 地球の配置のセーブを、地球を使わないで読む（外の地図・新しい地域）
     if (!best) return false;
+    if (!W76.earth) best = snapSafe(best, d.aboard);   // v7.8 今の版の地形（2D 版・v7.6 の配置）で、歩ける所（船に乗っているときは海）へ寄せる（地形を手直しした地域の端など）。地球の配置では、このあと地球の座標へ直してから寄せる
+    if (best.old) d.e78skip = { map: best.map, x: best.x, y: best.y };   // v7.8 旧座標で決めた位置：このあとの「地球の座標 → 旧座標」の戻し（Earth78.migrateOff）で二重に直さない
     var from = id; d.pos = { map: best.map, x: best.x, y: best.y, dir: d.pos.dir || 'down' };
     var isOld = function (mid) { return mid === from || !!LEGACY[mid] || (RECT[mid] && RECT[mid].sea && !(W76.on() && root.MAP_DEFS[mid])) || (/^sea76_/.test(mid) && !RECT[mid]) || (!W76.earth && /^w78_/.test(mid)); };
     Object.keys(d.vehicles || {}).forEach(function (k) { var s = d.vehicles[k]; if (!s || !isOld(s.map)) return; if (d.aboard === k) { s.map = best.map; s.x = best.x; s.y = best.y; } else if (s.port && !isOld(s.port.map)) { s.map = s.port.map; s.x = s.port.x; s.y = s.port.y; } else { var hm = root.VEHICLES && root.VEHICLES[k] && root.VEHICLES[k].home; if (hm) { s.map = hm.map; s.x = hm.x; s.y = hm.y; } } });
