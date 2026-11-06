@@ -21,7 +21,9 @@ for (const id of ids) {
   const thing = []; m.npcs.forEach((n) => thing.push(['人 ' + n.id, n.x, n.y])); m.events.forEach((e) => thing.push(['出来事 ' + e.x + ',' + e.y, e.x, e.y])); (m.chests || []).forEach((c) => thing.push(['宝箱 ' + c.id, c.x, c.y]));
   const keeper = {}; m.buildings.forEach((b) => { if (b.shape76 === 'stall' && b.keeper76) keeper[(b.x + b.keeper76.x) + ',' + (b.y + b.keeper76.y)] = 1; });   // 露店の店主のマス
   thing.forEach((t) => { const k = t[1] + ',' + t[2]; if (occ[k] && !(keeper[k] && /^人 /.test(t[0]))) bad.push(t[0] + ' が建物 ' + occ[k] + ' の上'); });
-  const fronts = m.buildings.filter((b) => b.interior).map((b) => [b.id, b.doorFront.x, b.doorFront.y]);
+  const lockedAt = (x, y) => { const e = m.eventAt(x, y); return !!(e && e.type === 'locked'); };   /* 閉じた門（物語で入る建物。前の間取りでも扉の前に閉じた門の出来事があった） */
+  const lockedB = m.buildings.filter((b) => b.interior && lockedAt(b.doorFront.x, b.doorFront.y)).map((b) => b.id); if (lockedB.length) console.log('    （閉じた門の建物：' + lockedB.join('・') + '：扉の前の確かめは門のとなりで見る）');
+  const fronts = m.buildings.filter((b) => b.interior && !lockedB.includes(b.id)).map((b) => [b.id, b.doorFront.x, b.doorFront.y]);
   fronts.forEach((f) => { if (!m.passable(f[1], f[2], d)) bad.push(f[0] + ' の扉の前 ' + f[1] + ',' + f[2] + ' が歩けない'); if (m.npcAt(f[1], f[2])) bad.push(f[0] + ' の扉の前に人'); });
   ok(!bad.length, id + '：建物 ' + m.buildings.length + '（重なり・扉の前）' + bad.slice(0, 6).join(' / '));
   if (def.levels76) { const pr = w.Terrace76.validate(m); ok(!pr.length, id + '：段（擁壁・階段・坂）の決まり ' + pr.slice(0, 4).join(' / ')); }
@@ -53,11 +55,11 @@ for (const id of ids) {
   m.npcs.forEach((n) => { if (!n.hidden && !talk(n)) miss.push('人 ' + n.id); });
   m.events.forEach((e) => { if (!reach(e.x, e.y)) miss.push('出来事 ' + e.x + ',' + e.y); }); (m.chests || []).forEach((c) => { if (!reach(c.x, c.y)) miss.push('宝箱 ' + c.id); });
   (w.SEARCH_POINTS || []).forEach((sp) => { if (sp.map === id && !reach(sp.x, sp.y)) miss.push('調べる所 ' + sp.id); });
-  (m.warps || []).forEach((q2) => { if (!reach(q2.x, q2.y)) miss.push('出口 ' + q2.to); });
+  (m.warps || []).forEach((q2) => { if (!reach(q2.x, q2.y) && !m.buildings.some((b) => lockedB.includes(b.id) && b.doorAbs && b.doorAbs.x === q2.x && b.doorAbs.y === q2.y)) miss.push('出口 ' + q2.to); });
   if (def.open81) starts.forEach((p) => { if (pass(p[0], p[1]) && !seen.has(p.join(','))) miss.push('外周 ' + p.join(',')); });
   ok(!miss.length, id + '：' + (def.open81 ? '外周のどこからでも' : '着く所から') + '、扉の前 ' + fronts.length + '・人 ' + m.npcs.length + '・出来事 ' + m.events.length + '・宝箱 ' + (m.chests || []).length + ' へ行ける ' + miss.slice(0, 8).join(' / '));
   // 中の地図から出たときの着く所 = 扉の前
-  const exitBad = []; m.buildings.forEach((b) => { if (!b.interior || !w.MAP_DEFS[b.interior]) return; (w.MAP_DEFS[b.interior].warps || []).forEach((q2) => { if (q2.to !== id) return; const p = w.MapRemake.pos(id, q2.tx, q2.ty); if (p.x !== b.doorFront.x || p.y !== b.doorFront.y) exitBad.push(b.interior + '→' + p.x + ',' + p.y + '（扉の前 ' + b.doorFront.x + ',' + b.doorFront.y + '）'); }); });
+  const exitBad = []; m.buildings.forEach((b) => { if (!b.interior || !w.MAP_DEFS[b.interior]) return; const lk = lockedB.includes(b.id); (w.MAP_DEFS[b.interior].warps || []).forEach((q2) => { if (q2.to !== id) return; const p = w.MapRemake.pos(id, q2.tx, q2.ty); if (lk ? !(Math.abs(p.x - b.doorFront.x) + Math.abs(p.y - b.doorFront.y) === 1 && pass(p.x, p.y)) : (p.x !== b.doorFront.x || p.y !== b.doorFront.y)) exitBad.push(b.interior + '→' + p.x + ',' + p.y + '（扉の前 ' + b.doorFront.x + ',' + b.doorFront.y + '）'); }); });
   ok(!exitBad.length, id + '：建物から出ると扉の前に着く ' + exitBad.join(' / '));
   // 旧座標 → 新しい位置（人・出来事）
   const pre = def._pre81; const mapBad = []; const reg = w.MapRemake.maps[id]; const P0 = (x, y) => (reg && reg.prev ? reg.fromPrev(x, y) : w.MapRemake.pos(id, x, y));   // _pre81 は前の作り直しのあとの座標

@@ -22,7 +22,9 @@ const isField = (id) => { const t = w.MAP_DEFS[id]; return !!(t && (t.region || 
       if (st) { W.enterMap(fieldIn[0], st[0], st[1], st[2], { raw: true }); await flush(); await step(st[2]); }
       ok(W.map.id === ID && m.passable(W.player.x, W.player.y, d) && !m.warpAt(W.player.x, W.player.y), ID + '：フィールド（' + fieldIn[0] + '）から歩いて入る → ' + W.map.id + ' ' + W.player.x + ',' + W.player.y); }
     // 建物
-    for (const b of m.buildings.filter((q) => q.interior && w.MAP_DEFS[q.interior])) {
+    const locked = (b) => { const e = m.eventAt(b.doorFront.x, b.doorFront.y); return !!(e && e.type === 'locked'); };
+    m.buildings.filter((q) => q.interior && locked(q)).forEach((b) => console.log('    （' + ID + '／' + b.id + ' は閉じた門：物語で入る建物なので歩いては入らない）'));
+    for (const b of m.buildings.filter((q) => q.interior && w.MAP_DEFS[q.interior] && !locked(q))) {
       W.enterMap(ID, arr[0], arr[1], 'up', { raw: true }); await flush();
       const door = w.Remake81.door(b).door; if (!route(W.map, W.player.x, W.player.y, b.doorFront.x, b.doorFront.y)) { ok(false, ID + '／' + b.id + '：扉の前へ行く道がない'); continue; }
       await walkTo(b.doorFront.x, b.doorFront.y); const toDoor = Object.keys(D4).find((k2) => b.doorFront.x + D4[k2][0] === door.x && b.doorFront.y + D4[k2][1] === door.y) || 'up';
