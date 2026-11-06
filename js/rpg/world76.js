@@ -110,7 +110,7 @@
   // 点と地図の長方形の距離（中なら 0）
   W76.distTo = function (id, gx, gy) { var r = RECT[id]; if (!r) return Infinity; if (WRAP) gx = r.x + r.w / 2 + W76.dxWrap(gx - (r.x + r.w / 2)); var dx = Math.max(r.x - gx, 0, gx - (r.x + r.w)), dy = Math.max(r.y - gy, 0, gy - (r.y + r.h)); return Math.sqrt(dx * dx + dy * dy); };
   function D() { return root.State && root.State.data; }
-  var FGATE = {}; W76.gateOf = function (id) { if (GATE[id]) return GATE[id]; var r = RECT[id]; var g = r && r.sea && r.near && GATE[r.near]; if (!g) return null; var k = r.near; return FGATE[k] || (FGATE[k] = { flag: g.flag, text: g.text }); };   // v7.8 外の地図は、いちばん近い地域のフラグだけ（乗り物の決まりは地域そのものだけ）
+  var FGATE = {}; W76.gateOf = function (id) { if (GATE[id]) return GATE[id]; var r = RECT[id]; if (r && r.sea && W76.earth && root.Earth78 && root.Earth78.gateFor) { var g79 = root.Earth78.gateFor(id); if (g79 !== undefined) return g79; }   /* v7.9 地球の世界：外の地図は大陸・海の名前の文と、アンタルカ（南極）の決まり（js/rpg/earth78.js の gateFor） */ var g = r && r.sea && r.near && GATE[r.near]; if (!g) return null; var k = r.near; return FGATE[k] || (FGATE[k] = { flag: g.flag, text: g.text }); };   // v7.8 外の地図は、いちばん近い地域のフラグだけ（乗り物の決まりは地域そのものだけ）
   W76.unlocked = function (id) { var g = W76.gateOf(id); var d = D(); return !g || !!(d && d.flags && d.flags[g.flag]); };
   W76.gateText = function (id) { var g = W76.gateOf(id); return g ? g.text : ''; };
   W76.onSwitch = function (fn) { W76.listeners.push(fn); };
@@ -118,7 +118,7 @@
   W76.entryBlock = function (toId, aboard, fromId) {
     if (!RECT[toId]) return null; var g = W76.gateOf(toId);
     if (g && !W76.unlocked(toId)) return { text: g.text, kind: 'flag' };
-    if (g && g.vehicles && fromId !== toId && g.vehicles.indexOf(aboard || 'walk') < 0) return { text: g.vtext || g.text, kind: 'vehicle' };
+    if (g && g.vehicles && fromId !== toId && g.vehicles.indexOf(aboard || 'walk') < 0 && !(W76.earth && !aboard && ((RECT[fromId] && RECT[fromId].sea) || RECT[toId].sea))) return { text: g.vtext || g.text, kind: 'vehicle' };   // v7.9 地球の世界：陸の境目を歩いて越えるとき（外の地図とのあいだ）は、乗り物の決まりを使わない（暗黒大陸からアンタルカの陸へ歩いて出て、戻れなくなっていた）
     if (aboard === 'sailboat' && !SAIL_MAPS[toId] && !(RECT[toId].sea && SAIL_MAPS[RECT[toId].near])) return { text: '小型帆船では外海へ出られない。（遠洋航海船が必要）', kind: 'vehicle' };
     return null;
   };

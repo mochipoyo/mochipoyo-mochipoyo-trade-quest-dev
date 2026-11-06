@@ -14,7 +14,7 @@
    ========================================================= */
 (function (root) {
   'use strict';
-  var E = root.Earth78 = { ready: false, stats: {}, VERSION: 'e78.2' };
+  var E = root.Earth78 = { ready: false, stats: {}, VERSION: 'e78.3' };
   var L = root.EARTH78_LAYOUT; if (!L) { var W0 = root.World76; if (W0 && W0.earth && !W0._init) { W0.earth = false; W0.init(); } return; }   // 配置のデータがなければ、前の版の配置でつなぐ
   var W = L.W, H = L.H, BW = L.BW, BH = L.BH, WB = W / BW, HB = H / BH;
   var VER = L.VERSION; E.VERSION = VER;
@@ -343,10 +343,10 @@
 
   /* ---------- 外の地図（地域のないブロック） ---------- */
   var CONT = [   // 地名（陸）：[名前, 経度0, 経度1, 緯度0, 緯度1]（最初に当たったもの）
-    ['日本列島', 128, 146, 30, 46], ['グリーンランド', -75, -10, 59, 84], ['南極大陸', -180, 180, -90, -60], ['オーストラリア大陸', 112, 155, -45, -10], ['ニュージーランド', 165, 180, -48, -33],
-    ['マダガスカル島', 42, 51, -26, -11], ['南アメリカ大陸', -82, -34, -56, 13], ['北アメリカ大陸', -170, -52, 7, 84], ['アフリカ大陸', -18, 52, -36, 38], ['ユーラシア大陸', -12, 180, 0, 84], ['ユーラシア大陸', -180, -168, 60, 75]];
-  var OCEAN = [['北極海', -180, 180, 72, 90], ['南極海', -180, 180, -90, -58], ['地中海', -6, 37, 30, 46], ['カリブ海', -90, -60, 9, 24], ['インド洋', 20, 120, -58, 25], ['北大西洋', -80, 0, 0, 72], ['南大西洋', -70, 20, -58, 0],
-    ['北太平洋', 120, 180, 0, 72], ['北太平洋', -180, -80, 0, 72], ['南太平洋', 120, 180, -58, 0], ['南太平洋', -180, -70, -58, 0], ['大西洋', -180, 180, -90, 90]];
+    ['ヒノモト列島', 128, 146, 30, 46], ['グレンランド', -75, -10, 59, 84], ['アンタルカ大陸', -180, 180, -90, -60], ['オストラリス大陸', 112, 155, -45, -10], ['ニューゼラント', 165, 180, -48, -33],
+    ['マダガスカル島', 42, 51, -26, -11], ['南メリカ大陸', -82, -34, -56, 13], ['北メリカ大陸', -170, -52, 7, 84], ['アフリア大陸', -18, 52, -36, 38], ['ユーラシオ大陸', -12, 180, 0, 84], ['ユーラシオ大陸', -180, -168, 60, 75]];
+  var OCEAN = [['極北の海', -180, 180, 72, 90], ['アンタルカ海', -180, 180, -90, -58], ['中つ海', -6, 37, 30, 46], ['カリバ海', -90, -60, 9, 24], ['インデア洋', 20, 120, -58, 25], ['北大西海', -80, 0, 0, 72], ['南大西海', -70, 20, -58, 0],
+    ['北泰平洋', 120, 180, 0, 72], ['北泰平洋', -180, -80, 0, 72], ['南泰平洋', 120, 180, -58, 0], ['南泰平洋', -180, -70, -58, 0], ['大西海', -180, 180, -90, 90]];
   function placeName(list, lon, lat) { for (var i = 0; i < list.length; i++) { var c = list[i]; if (lon >= c[1] && lon <= c[2] && lat >= c[3] && lat <= c[4]) return c[0]; } return null; }
   E.placeName = function (gx, gy) { var lon = L.lonOf(mod(gx, W) + 0.5), lat = L.latOf(gy + 0.5); return E.isLand(gx, gy) ? placeName(CONT, lon, lat) || '名もない陸' : placeName(OCEAN, lon, lat) || '外海'; };
   E.fillerName = function (id) {
@@ -365,12 +365,68 @@
     for (var y = 0; y < r.h; y++) { var s = ''; for (var x = 0; x < r.w; x++) { var gx = r.x + x, gy = r.y + y; s += LAND[gy * W + gx] ? (WALLSET[gx + ',' + gy] || regionChar(null, String.fromCharCode(BIO[gy * W + gx]), gx, gy)) : waterChar(gx, gy); } rows.push(s); }
     return rows;
   };
+  /* ---------- v7.9 外の地図の気候と、入れないときの文 ----------
+     ・気候：陸のマスの地形の種類（BIO）でいちばん多いもの。アンタルカ（南極）は暗黒大陸と同じ扱い
+     ・出る敵：気候に合う地域の出現地帯のうち、強さ（level）が「いちばん近い地域の、その場所の地帯」にいちばん近いもの（強いほうへは寄せにくく）
+       → 地帯の名前と level はそのまま使う（js/data/enemy-scale67.js の倍率が、同じ名前と level の地帯の値になる）
+     ・入れないときの文：その大陸・海の名前と、いちばん近い地域の条件（かっこの中）
+     ・入れる条件（フラグ）は、いちばん近い地域と同じ（アンタルカだけ暗黒大陸と同じ「闇の空路」・飛空艇） */
+  var CLIM_SRC = {
+    antarctic: [['world_dark', '暗黒大陸'], ['world_dark', '魔王城の山麓']],
+    ice: [['world_snow', '忘却の雪原'], ['world_snow', '北の雪原']],
+    cold: [['world_snow', '忘却の雪原'], ['world_snow', '北の雪原']],
+    desert: [['world_desert', 'リシア砂漠'], ['world_desert', '南の砂漠']],
+    dry: [['world', '南の荒野'], ['world_tempus', '鐘都の平野'], ['world_desert', 'リシア砂漠'], ['world_desert', '南の砂漠']],
+    tropical: [['world_islands', '灰灯島の草地'], ['world_islands', '廃墟側の荒地'], ['world_nereia', null]],
+    mountain: [['world', 'エマール山脈'], ['world_grania', '鉱山地帯'], ['world_tempus', '神殿の山地'], ['world_magicka', '実験室の山地']],
+    temperate: [['world', '始まりの草原'], ['world', 'ダウの大森林'], ['world_grania', 'グラニアの灰野'], ['world_kalion', 'カリオン平野'], ['world_kalion', '王都周辺'], ['world_tempus', '鐘都の平野'], ['world_magicka', 'マクディア平原'], ['world_meridian', null], ['world_neon', null]]
+  };
+  var CLIM_NAME = { antarctic: '氷の大陸', ice: '氷原', cold: '寒い森と凍土', desert: '砂漠', dry: '乾いた草原', tropical: '熱帯の森', mountain: '山地', temperate: '温かい森と草原', sea: '海' };
+  var CLIM_THEME = { antarctic: 'snow', ice: 'snow', cold: 'snow', desert: 'desert', dry: 'tempus', tropical: 'islands' };
+  var CLIM_BG = { antarctic: 'snow', ice: 'snow', cold: 'snow', desert: 'desert', dry: 'tempus', tropical: 'islands' };
+  var MILD = { arcadia: 1, grania: 1, kalion: 1, tempus: 1, magicka: 1, meridian: 1, neon: 1, nereia: 1, islands: 1 };
+  var CLIM = {};
+  E.climate = function (id) {
+    if (CLIM[id]) return CLIM[id]; var W76 = root.World76, r = W76.rect(id); var nm = E.fillerName(id);
+    var cnt = { ice: 0, cold: 0, desert: 0, dry: 0, tropical: 0, mountain: 0, temperate: 0 }, n = 0;
+    var K = { 73: 'ice', 84: 'cold', 66: 'cold', 68: 'desert', 83: 'dry', 82: 'tropical', 77: 'mountain', 72: 'mountain', 70: 'temperate', 71: 'temperate' };   // I T B D S R M H F G
+    for (var y = r.y; y < r.y + r.h; y += 2) for (var x = r.x; x < r.x + r.w; x += 2) { var i = y * W + mod(x, W); if (!LAND[i]) continue; var k = K[BIO[i]] || 'temperate'; cnt[k] += k === 'mountain' ? 0.6 : 1; n++; }
+    var kind = 'sea'; if (n) { kind = 'temperate'; Object.keys(cnt).forEach(function (k) { if (cnt[k] > cnt[kind]) kind = k; }); }
+    var lat = L.latOf(r.y + r.h / 2); if (/アンタルカ/.test(nm) || lat < -58) kind = 'antarctic';
+    return (CLIM[id] = { kind: kind, name: CLIM_NAME[kind] || '', land: n });
+  };
+  function zoneAt(near, gx, gy) { var nd = root.MAP_DEFS[near]; if (!nd || !nd.encounters || !nd.encounters.zones) return null; var p = nearLocal(near, gx, gy); var z = null; try { z = nd.encounters.zones.filter(function (zz) { return zz.test(p.x, p.y, null); })[0] || null; } catch (e) { z = null; } return z || nd.encounters.zones[0]; }
+  function zoneLevel(z) { if (!z) return 1; if (z.level) return z.level; var n = 0, t = 0; (z.groups || []).forEach(function (g) { g.forEach(function (e) { var en = root.ENEMIES && root.ENEMIES[e]; if (en && en.lv) { n++; t += en.lv; } }); }); return n ? Math.round(t / n) : 1; }   // 新しい地域の地帯は level がない → 敵の lv の平均
+  function climateEnc(id, cl) {
+    var W76 = root.World76, r = W76.rect(id), near = r.near; var nd = root.MAP_DEFS[near]; var z0 = zoneAt(near, r.x + r.w / 2, r.y + r.h / 2);
+    var lv = zoneLevel(z0); if (cl.kind === 'antarctic') lv = Math.max(lv, 34);
+    var cands = []; var add = function (mid, zn, bonus) { var dd = root.MAP_DEFS[mid]; if (!dd || !dd.encounters || !dd.encounters.zones) return; dd.encounters.zones.forEach(function (z) { if (zn && z.name !== zn) return; if (!z.groups || !z.groups.length) return; cands.push({ z: z, map: mid, bonus: bonus || 0 }); }); };
+    var kind = cl.kind === 'sea' ? 'temperate' : cl.kind;
+    if ((kind === 'temperate' || kind === 'mountain') && MILD[climateTheme({ kind: 'temperate' }, near)] && z0) cands.push({ z: z0, map: near, bonus: -1.5 });   // 穏やかな地域のとなりは、その地域の地帯を先に
+    (CLIM_SRC[kind] || CLIM_SRC.temperate).forEach(function (c) { add(c[0], c[1]); });
+    if (!cands.length) { if (!nd || !nd.encounters) return null; cands.push({ z: z0 || nd.encounters.zones[0], map: near, bonus: 0 }); }
+    var best = null; cands.forEach(function (c) { var zl = zoneLevel(c.z); var cost = Math.abs(zl - lv) + (zl > lv ? 0.5 : 0) + c.bonus; if (!best || cost < best.cost) best = { c: c, cost: cost }; });
+    var src = best.c; if (zoneLevel(src.z) > lv + 4 && z0 && cl.kind !== 'antarctic') src = { z: z0, map: near };   /* 気候に合う地帯がどれもずっと強いとき（序盤に船で行けるグレンランドなど）は、となりの地域の地帯のまま */ var zz = Object.assign({}, src.z); zz.test = function () { return true; };
+    return { rate: (nd && nd.encounters && nd.encounters.rate) || 0.035, zones: [zz], from78: src.map + '|' + src.z.name, level78: lv };
+  }
+  function climateTheme(cl, near) { var th = THEME3D[near] || 'islands'; if (cl.kind === 'temperate' || cl.kind === 'sea' || cl.kind === 'mountain') return th === 'dragon' || th === 'dark' || th === 'desert' || th === 'snow' ? 'arcadia' : th; return CLIM_THEME[cl.kind] || th; }
+  function climateBG(cl, near) { var BG = root.BattleBG65; var b = null; try { b = BG && BG.regionOf ? BG.regionOf(near) : null; } catch (e) { b = null; } if (cl.kind === 'temperate' || cl.kind === 'sea' || cl.kind === 'mountain') return b === 'dragon' || b === 'dark' || b === 'desert' || b === 'snow' || !b ? 'arcadia' : b; return CLIM_BG[cl.kind] || b || 'arcadia'; }
+  // 入れる条件（World76.gateOf から。外の地図だけ）。null＝条件なし
+  var GATEFOR = {};
+  E.gateFor = function (id) {
+    if (!E.ready || !E._GATE) return undefined; if (GATEFOR[id] !== undefined) return GATEFOR[id];
+    var W76 = root.World76, r = W76.rect(id); if (!r || !r.sea) return undefined; var nm = E.fillerName(id), cl = E.climate(id); var land = (r.landRatio || 0) >= 0.3;
+    if (cl.kind === 'antarctic') { var gd = E._GATE.world_dark || { flag: 'dark_route_open' }; return (GATEFOR[id] = { flag: gd.flag, text: nm + 'は、黒い嵐に包まれていて近づけない。（闇の空路が開いてから）', vehicles: ['airship'], vtext: '黒い嵐が海を荒らしていて、船では' + nm + 'に近づけない。（飛空艇で空から）' }); }
+    var g = E._GATE[r.near]; if (!g) return (GATEFOR[id] = null);
+    var m = /（[^（）]*）\s*$/.exec(g.text || ''); var cond = m ? m[0] : '（' + (W76.nameOf ? W76.nameOf(r.near) : '') + 'へ行けるようになってから）';
+    return (GATEFOR[id] = { flag: g.flag, text: nm + (land ? 'のまわりは、荒れた海と深い霧に閉ざされている。' : 'は、嵐と高波に閉ざされている。') + cond });
+  };
   E.fillerDef = function (id) {
     var W76 = root.World76, r = W76.rect(id); var cache = null; var near = r.near;
-    var nd = root.MAP_DEFS[near]; var enc = null;
-    if (nd && nd.encounters && nd.encounters.zones) enc = { rate: nd.encounters.rate, zones: nd.encounters.zones.map(function (z) { var z2 = Object.assign({}, z); z2.test = function (x, y, m) { return z.test(nearLocal(near, r.x + x, r.y + y).x, nearLocal(near, r.x + x, r.y + y).y, m); }; return z2; }) };
-    var def = { id: id, name: E.fillerName(id), kind: 'field', rows: function () { return cache || (cache = E.fillerRows(id)); }, fallback: 'deep', bgm: 'field', region: true, sea76: (r.landRatio || 0) < 0.05, filler76: true, earth78: true,
-      locations: [], warps: [], chests: [], npcs: [], events: [], encounters: enc, theme3d: { region: (THEME3D[near] || 'islands') } };
+    var nm = E.fillerName(id); var cl = E.climate(id);   // v7.9 気候（出る敵・戦闘の背景・3D の見た目を大陸の気候に合わせる）
+    var enc = climateEnc(id, cl);
+    var def = { id: id, name: nm, kind: 'field', rows: function () { return cache || (cache = E.fillerRows(id)); }, fallback: 'deep', bgm: 'field', region: true, sea76: (r.landRatio || 0) < 0.05, filler76: true, earth78: true,
+      locations: [], warps: [], chests: [], npcs: [], events: [], encounters: enc, theme3d: { region: climateTheme(cl, near) }, bgRegion: climateBG(cl, near), climate78: cl.kind };
     // 地球の記録（js/data/region78-earth.js）：この地図の中にある遺跡を、いちばん近い歩ける陸に石の柱で置く
     (root.EARTH78_SITES || []).forEach(function (st) { var t = L.tile(st.lon, st.lat); var lx = root.World76.dxWrap(t.x - r.x), ly = t.y - r.y; if (lx < 0 || ly < 0 || lx >= r.w || ly >= r.h) return;
       var rows = def.rows(); var q = snap(rows, r.w, r.h, lx, ly, function (c, xx, yy) { return walkCh(c) && !ICONCH[c] && xx > 1 && yy > 1 && xx < r.w - 2 && yy < r.h - 2 && nearWalk(rows, r.w, r.h, xx, yy, {}) >= 3; }, 12); if (!q) return;
@@ -382,30 +438,30 @@
   function nearLocal(near, gx, gy) { var r = L.rectOf(near); var dx = root.World76.dxWrap(gx - (r.x + r.w / 2)); gx = r.x + r.w / 2 + dx; var lx = Math.max(0, Math.min(r.w - 1, gx - r.x)), ly = Math.max(0, Math.min(r.h - 1, gy - r.y)); if (OLD[near] && XF[near]) { var p = inv(XF[near], r.x + lx, r.y + ly); return { x: Math.round(p.x), y: Math.round(p.y) }; } return { x: lx, y: ly }; }
 
   // 大陸・海の名前（世界の地図に薄く描く）
-  var LABELS = [['北アメリカ大陸', -102, 47, 0, 1], ['南アメリカ大陸', -60, -12, 0, 1], ['アフリカ大陸', 22, -2, 0, 1], ['ユーラシア大陸', 92, 56, 0, 1], ['オーストラリア大陸', 134, -25, 0, 1], ['南極大陸', 120, -74, 0, 1], ['グリーンランド', -41, 73, 0, 0], ['日本列島', 139.5, 35.5, 0, 0],
-    ['太平洋', -140, 5, 1, 1], ['太平洋', 168, 22, 1, 0], ['大西洋', -40, 30, 1, 1], ['大西洋', -18, -32, 1, 0], ['インド洋', 78, -22, 1, 1], ['北極海', 40, 78, 1, 0], ['南極海', -60, -62, 1, 0]];
+  var LABELS = [['北メリカ大陸', -102, 47, 0, 1], ['南メリカ大陸', -60, -12, 0, 1], ['アフリア大陸', 22, -2, 0, 1], ['ユーラシオ大陸', 92, 56, 0, 1], ['オストラリス大陸', 134, -25, 0, 1], ['アンタルカ大陸', 120, -74, 0, 1], ['グレンランド', -41, 73, 0, 0], ['ヒノモト列島', 139.5, 35.5, 0, 0],
+    ['泰平洋', -140, 5, 1, 1], ['泰平洋', 168, 22, 1, 0], ['大西海', -40, 30, 1, 1], ['大西海', -18, -32, 1, 0], ['インデア洋', 78, -22, 1, 1], ['極北の海', 40, 78, 1, 0], ['アンタルカ海', -60, -62, 1, 0]];
   E.aeriaAt = function () { var a = L.aeria; if (!a) return null; var t = L.tile(a.lon, a.lat); return { x: t.x, y: t.y, r: a.r }; };   // 浮天城アエリアの影が落ちる海（世界の座標）
   E.labels = function () { return LABELS.map(function (l) { var t = L.tile(l[1], l[2]); return { name: l[0], x: t.x, y: t.y, sea: !!l[3], big: !!l[4] }; }); };
 
   /* ---------- 案内の文（地域どうしの方角・航路）：地球の配置に合わせる（地球の世界のときだけ。データの文は書きかえず、表示するときに置きかえる） ---------- */
   var PHRASES = [
-    ['南の端から外海へ出る。海流に流されても慌てないで。私が読む。', '港から大西洋の外海へ出て、南西の沖へ。海流に流されても慌てないで。私が読む。'],
-    ['ワールドマップの南端から「南の遠洋航路」で断裂群島へ渡れる。', 'マリナの港から大西洋へ出て、南西の沖（アゾレスのあたり）の断裂群島へ渡れる。'],
-    ['アルカディア相場大陸の北の空の果てから「北の空路」で天空群島へ。', '飛空艇で世界の北の果て（北極の空）まで飛べば、「北の空路」で天空群島へ。'],
-    ['アルカディア相場大陸の南の外海の先、断裂群島。', 'アルカディア相場大陸の南西、大西洋の沖の断裂群島。'],
-    ['遠洋航海船で大陸の南の端の遠洋航路を抜け、灰灯島アルナの村でヨルン老人に会おう。', '遠洋航海船でマリナの港から大西洋へ出て、南西の沖の灰灯島アルナの村でヨルン老人に会おう。'],
-    ['断裂群島の東の遠洋航路の先、時の神殿領。', '断裂群島から東へ。ジブラルタルの海峡を抜けて地中海の東の端、時の神殿領（エジプト・アラビア）。'],
-    ['時の神殿領の東の遠洋航路の先、マクディア魔導王国。', '時の神殿領から東へ。アラビアの海の先（陸づたいにも行ける）、マクディア魔導王国（インド）。'],
-    ['飛空艇でアルカディア相場大陸へ行き、大陸の北の端の空路を抜けて天空群島へ向かおう。', '飛空艇で世界の北の果て（北極の空）まで飛び、北の空路を抜けて天空群島へ向かおう。'],
-    ['海路を東へ進み、グラニア鉱業地方の灰鉱町ヴェルムへ。', '小型帆船でジブラルタルの海峡を抜け、地中海を東へ進み、グラニア鉱業地方（イタリア）の灰鉱町ヴェルムへ。'],
-    ['遠洋航海船で南の遠洋航路を抜け、灰灯島アルナの村でヨルン老人に会う', '遠洋航海船で大西洋の南西の沖へ出て、灰灯島アルナの村でヨルン老人に会う'],
-    ['断裂群島の東の遠洋航路で時の神殿領へ。', '断裂群島から東へ、地中海を抜けて時の神殿領へ。'],
-    ['時の神殿領の東の遠洋航路でマクディア魔導王国へ。', '時の神殿領から東へ、マクディア魔導王国（インド）へ。'],
-    ['北の空路で天空群島へ渡り、', '世界の北の果て（北極の空）から「北の空路」で天空群島へ渡り、'],
-    ['飛空艇でアルカディア大陸の北の空へ抜け、天空群島に着く', '飛空艇で世界の北の果て（北極の空）へ抜け、天空群島に着く'],
-    ['沿岸づたいに大陸を回って東の端の海路を抜ければ、グラニア鉱業地方の西の海に出る。', '沿岸づたいにイベリア半島を南へ回り、ジブラルタルの海峡から地中海を東へ抜ければ、グラニア鉱業地方の西の海に出る。'],
-    ['海路を東へ抜ければグラニア鉱業地方——ガルドの故郷だ。', '南へ回ってジブラルタルの海峡を抜け、地中海を東へ行けばグラニア鉱業地方——ガルドの故郷だ。'],
-    ['断裂群島の東の遠洋航路の先へ向かう', '断裂群島から東へ、地中海の東の端へ向かう'],
+    ['南の端から外海へ出る。海流に流されても慌てないで。私が読む。', '港から大西海の外海へ出て、南西の沖へ。海流に流されても慌てないで。私が読む。'],
+    ['ワールドマップの南端から「南の遠洋航路」で断裂群島へ渡れる。', 'マリナの港から大西海へ出て、南西の沖（アゾラのあたり）の断裂群島へ渡れる。'],
+    ['アルカディア相場大陸の北の空の果てから「北の空路」で天空群島へ。', '飛空艇で世界の北の果て（極北の空）まで飛べば、「北の空路」で天空群島へ。'],
+    ['アルカディア相場大陸の南の外海の先、断裂群島。', 'アルカディア相場大陸の南西、大西海の沖の断裂群島。'],
+    ['遠洋航海船で大陸の南の端の遠洋航路を抜け、灰灯島アルナの村でヨルン老人に会おう。', '遠洋航海船でマリナの港から大西海へ出て、南西の沖の灰灯島アルナの村でヨルン老人に会おう。'],
+    ['断裂群島の東の遠洋航路の先、時の神殿領。', '断裂群島から東へ。ジブラルトの海峡を抜けて中つ海の東の端、時の神殿領（エジプタ・アラビス）。'],
+    ['時の神殿領の東の遠洋航路の先、マクディア魔導王国。', '時の神殿領から東へ。アラビスの海の先（陸づたいにも行ける）、マクディア魔導王国（インデア）。'],
+    ['飛空艇でアルカディア相場大陸へ行き、大陸の北の端の空路を抜けて天空群島へ向かおう。', '飛空艇で世界の北の果て（極北の空）まで飛び、北の空路を抜けて天空群島へ向かおう。'],
+    ['海路を東へ進み、グラニア鉱業地方の灰鉱町ヴェルムへ。', '小型帆船でジブラルトの海峡を抜け、中つ海を東へ進み、グラニア鉱業地方（イタリカ）の灰鉱町ヴェルムへ。'],
+    ['遠洋航海船で南の遠洋航路を抜け、灰灯島アルナの村でヨルン老人に会う', '遠洋航海船で大西海の南西の沖へ出て、灰灯島アルナの村でヨルン老人に会う'],
+    ['断裂群島の東の遠洋航路で時の神殿領へ。', '断裂群島から東へ、中つ海を抜けて時の神殿領へ。'],
+    ['時の神殿領の東の遠洋航路でマクディア魔導王国へ。', '時の神殿領から東へ、マクディア魔導王国（インデア）へ。'],
+    ['北の空路で天空群島へ渡り、', '世界の北の果て（極北の空）から「北の空路」で天空群島へ渡り、'],
+    ['飛空艇でアルカディア大陸の北の空へ抜け、天空群島に着く', '飛空艇で世界の北の果て（極北の空）へ抜け、天空群島に着く'],
+    ['沿岸づたいに大陸を回って東の端の海路を抜ければ、グラニア鉱業地方の西の海に出る。', '沿岸づたいにイベラ半島を南へ回り、ジブラルトの海峡から中つ海を東へ抜ければ、グラニア鉱業地方の西の海に出る。'],
+    ['海路を東へ抜ければグラニア鉱業地方——ガルドの故郷だ。', '南へ回ってジブラルトの海峡を抜け、中つ海を東へ行けばグラニア鉱業地方——ガルドの故郷だ。'],
+    ['断裂群島の東の遠洋航路の先へ向かう', '断裂群島から東へ、中つ海の東の端へ向かう'],
     ['時の神殿領の東の遠洋航路の先へ向かう', '時の神殿領から東へ向かう']
   ];
   E.PHRASES = PHRASES;
@@ -425,10 +481,10 @@
     var ids = Object.keys(L.regions).filter(function (id) { return !!root.MAP_DEFS[id]; });
     // 噂を話す人（地球の世界だけ。旧座標で置き、ほかの物と同じく新しい場所へ）：新しい地域への道しるべ
     var wd = root.MAP_DEFS.world; if (wd && !(wd.npcs || []).some(function (n) { return n.id === 'w_mapseller78'; })) wd.npcs.push({ id: 'w_mapseller78', x: 25, y: 70, sprite: 'sailor', dir: 'down', wander: 0, talk: async function (c) {
-      var ER = root.R78 && root.R78.earthRecords; var ch = await c.choice('大洋の地図売り「海の噂を聞くかい？」', ['大西洋の噂', '太平洋の噂', '町のない大陸の記録', 'やめる']);
+      var ER = root.R78 && root.R78.earthRecords; var ch = await c.choice('大洋の地図売り「海の噂を聞くかい？」', ['大西海の噂', '泰平洋の噂', '町のない大陸の記録', 'やめる']);
       if (ch === 2) { if (ER) await ER.talk(c); return; }
-      if (ch === 0) await c.say('大洋の地図売り', ['港から大西洋へ出て南西へ行けば、断裂群島。そのずっと南、赤道のあたりに、輪の形をした大陸があるそうだ。環潮大陸ネレイア。外礁の切れ目は、遠洋航海船でないと抜けられない。', '大西洋をまっすぐ西へ渡ると、北アメリカの東岸。灰に覆われた港町の廃墟がある。灰岸都市メリディアンだ。……断裂群島の霧が晴れてから行ってみな。']);
-      else if (ch === 1) await c.say('大洋の地図売り', ['地球の反対側、東アジアの沿岸には、雨がやまない街がある。錆雨市ネオン・ドック。マクディア魔導王国まで行けたら、さらに東の海へ。', 'それと、太平洋のど真ん中——ハワイのあたりで、雲の上から城の影が落ちてくるって話だ。空を飛ぶ船でもなけりゃ、確かめようがないがね。', '世界は東西にぐるっとつながってる。太平洋を東へ渡れば、アメリカの西の海に出るよ。']);
+      if (ch === 0) await c.say('大洋の地図売り', ['港から大西海へ出て南西へ行けば、断裂群島。そのずっと南、赤道のあたりに、輪の形をした大陸があるそうだ。環潮大陸ネレイア。外礁の切れ目は、遠洋航海船でないと抜けられない。', '大西海をまっすぐ西へ渡ると、北メリカの東岸。灰に覆われた港町の廃墟がある。灰岸都市メリディアンだ。……断裂群島の霧が晴れてから行ってみな。']);
+      else if (ch === 1) await c.say('大洋の地図売り', ['地球の反対側、東アジエの沿岸には、雨がやまない街がある。錆雨市ネオン・ドック。マクディア魔導王国まで行けたら、さらに東の海へ。', 'それと、泰平洋のど真ん中——ハヴァイのあたりで、雲の上から城の影が落ちてくるって話だ。空を飛ぶ船でもなけりゃ、確かめようがないがね。', '世界は東西にぐるっとつながってる。泰平洋を東へ渡れば、メリカの西の海に出るよ。']);
     } });
     // 旧地図の控え（作り直す前）と、旧座標 → 新座標の変換
     ids.forEach(function (id) { if (!L.regions[id].isNew) { snapshotOld(id); fitXf(id); } });
@@ -438,6 +494,7 @@
       if (sp.gate) GATE[id] = { flag: sp.gate, text: sp.gateText || (old && old.text) || (sp.name + 'へは、まだ行けない。'), vehicles: sp.vehicles || (old && old.vehicles), vtext: sp.vtext || (old && old.vtext) }; });
     (L.sail || []).forEach(function (id) { SAIL[id] = true; });
     W76.useLayout({ BW: BW, BH: BH, WB: WB, HB: HB, PLACE: PLACE, SZ: SZ, GATE: GATE, SAIL_MAPS: SAIL, fill: 'w78_', wrap: true, BRIDGES: [] });
+    E._GATE = GATE; GATEFOR = {}; CLIM = {};   // v7.9 外の地図の入れる条件・気候（E.gateFor・E.climate）
     // 外の地図のいちばん近い地域
     W76.SEAS.forEach(function (sid) { W76.rect(sid).near = nearOf(sid); });
     ids.forEach(function (id) { var th = null; try { var dd = root.MAP_DEFS[id]; th = dd.theme3d && dd.theme3d.region; } catch (e) { th = null; } THEME3D[id] = th || ({ world_desert: 'desert', world_snow: 'snow', world_dragon: 'dragon', world_dark: 'dark' })[id] || null; });
@@ -475,9 +532,15 @@
     if (root.World && root.World.maps && root.World.maps[id]) delete root.World.maps[id];   // 作り直す前の地図を作っていたら捨てる
   }
   function convPt(map, x, y, water) { if (!GEN[map] || !OLD[map]) return null; var p = mapPos(map, x, y); if (water) { var g = GEN[map]; var q = snap(g.rows, g.W, g.H, p.x, p.y, function (c) { return c === '~' || c === 'w'; }, 30); if (q) p = q; } return p; }
+  // v7.9 桟橋の陸：変換した点が歩けない（看板・入口）か地図の端なら、停める海のそばの「海のとなりの歩ける陸」へ（灰の浜の桟橋が看板のマスになっていた）
+  function pierLand(map, la, mo) {
+    var g = GEN[map]; if (!g) return la; var ev = {}; ((g.objs || {}).events || []).forEach(function (it, i) { var p = g.pos ? g.pos['E:' + (it.ref && it.ref.id ? it.ref.id : i)] : null; if (p) ev[p.x + ',' + p.y] = 1; });
+    var good = function (c, x, y) { if (!walkCh(c) || ICONCH[c] || x < 1 || y < 1 || x >= g.W - 1 || y >= g.H - 1 || ev[x + ',' + y]) return false; for (var k = 0; k < 4; k++) { var xx = x + [1, -1, 0, 0][k], yy = y + [0, 0, 1, -1][k]; var c2 = g.rows[yy] && g.rows[yy][xx]; if (c2 === '~' || c2 === 'w') return true; } return false; };
+    if (good(g.rows[la.y] && g.rows[la.y][la.x], la.x, la.y)) return la; var q = snap(g.rows, g.W, g.H, mo ? mo.x : la.x, mo ? mo.y : la.y, good, 8); return q || la;
+  }
   function rewriteGlobals(ids) {
     // 港（停める海・桟橋の陸）
-    var H0 = root.Harbors && root.Harbors.HARBORS; if (H0) Object.keys(H0).forEach(function (k) { var h = H0[k]; if (!OLD[h.map] || h._e78) return; var mo = convPt(h.map, h.moor.x, h.moor.y, true), la = convPt(h.map, h.land.x, h.land.y, false); h._e78 = { moor: h.moor, land: h.land }; if (mo) h.moor = mo; if (la) h.land = la; });
+    var H0 = root.Harbors && root.Harbors.HARBORS; if (H0) Object.keys(H0).forEach(function (k) { var h = H0[k]; if (!OLD[h.map] || h._e78) return; var mo = convPt(h.map, h.moor.x, h.moor.y, true), la = convPt(h.map, h.land.x, h.land.y, false); h._e78 = { moor: h.moor, land: h.land }; if (mo) h.moor = mo; if (la) h.land = pierLand(h.map, la, mo); });
     // 乗り物の母港
     var VV = root.VEHICLES; if (VV) Object.keys(VV).forEach(function (k) { var hm = VV[k].home; if (!hm || !OLD[hm.map] || VV[k]._e78) return; var p = convPt(hm.map, hm.x, hm.y, k !== 'airship'); VV[k]._e78 = { home: hm }; if (p) VV[k].home = { map: hm.map, x: p.x, y: p.y }; });
     // 海の宝（js/rpg/seatreasure.js）

@@ -34,7 +34,7 @@
   R.quest('neon78_water', { title: '錆雨市の蛇口', theme: '記録と現実を照らし合わせる', desc: '錆雨市ネオン・ドックの住宅街では蛇口が止まった。誰もいない工場には毎日水が届く。水没工場の配管をたどり、配給を続ける管理AIを直す。',
     steps: [['neon_heard', '水路番のシズクから、止まった蛇口の話を聞く'], ['neon_terminal', '水道局の出張所の端末で、配給表を見る'], ['neon_has_record', '水没工場の事務所で、閉鎖の記録を見つける'], ['neon_meter', '水没工場の2階で、流量計の値を読む'], ['neon_ai_fixed', '奥の管理室で、配給管理AI「ミズハ」の配給を直す'], ['neon_done', 'シズクに、水が戻ったことを伝える']],
     reward: { exp: 9000, gold: 6000, item: 'neon_umbrella' } });
-  R.obj('neon78_water', 'neon_heard', 'npc:neon_town:nt_shizuku', ['東アジアの沖、錆雨市ネオン・ドック。', '運河の桟橋にいる水路番のシズク。', '錆雨市に入って、運河の桟橋の水路番シズクに話しかけよう。']);
+  R.obj('neon78_water', 'neon_heard', 'npc:neon_town:nt_shizuku', ['東アジエの沖、錆雨市ネオン・ドック。', '運河の桟橋にいる水路番のシズク。', '錆雨市に入って、運河の桟橋の水路番シズクに話しかけよう。']);
   R.obj('neon78_water', 'neon_terminal', 'npc:neon_office:no_terminal', ['錆雨市ネオン・ドック。', '北西の「水道局の出張所」の配給端末。', '水道局の出張所に入り、奥の端末で配給表を見よう。']);
   R.obj('neon78_water', 'neon_has_record', 'ev:neon_works_1:26,2', ['錆雨市の南の工場地帯。', '「水没工場」1階の事務所。', '水没工場の1階、右上の事務所の棚で閉鎖の記録を探そう。']);
   R.obj('neon78_water', 'neon_meter', 'ev:neon_works_2:15,9', ['水没工場。', '2階の配水管の中央にある流量計。', '2階の中央の流量計を調べよう。']);
@@ -46,7 +46,7 @@
     locations: [
       { id: 'neon_dock', name: '錆雨市ネオン・ドック', icon: 'castle_icon', lon: 121.3, lat: 31.4, to: 'neon_town', tx: 17, ty: 17 },
       { id: 'neon_works', name: '水没工場', icon: 'cave_icon', lon: 120.6, lat: 30.3, to: 'neon_works_1', tx: 1, ty: 12 },
-      { id: 'neon_lookout', name: '旧東京湾の灯台', icon: 'tower_icon', lon: 139.8, lat: 35.2, to: 'neon_lighthouse', tx: 5, ty: 7 }
+      { id: 'neon_lookout', name: '旧トウケイ湾の灯台', icon: 'tower_icon', lon: 139.8, lat: 35.2, to: 'neon_lighthouse', tx: 5, ty: 7 }
     ],
     npcs: [
       { id: 'nw_engineer', at: ['neon_works', 2, -2], sprite: 'scholar', dir: 'down', wander: 0, talk: async function (c) { await c.say('流れ者の技師', c.flag('neon_ai_fixed') ? ['工場の弁が閉じた。……配管の唸りが止んだよ。', '機械は悪くない。古い記録を、誰も書きかえなかっただけだ。'] : ['この工場は十二年前に閉鎖された。なのに、今も水が流れ込んでる。', '中の機械は、最後に受けた指令を守ってるだけさ。止める人がいなかった。']); } },
@@ -139,9 +139,9 @@
     ] });
 
   /* ---------- 旧東京湾の灯台（日本列島。景色と小さな記録） ---------- */
-  R.add({ id: 'neon_lighthouse', name: '旧東京湾の灯台', kind: 'interior', bgm: 'town', rows: ['############', '#o___XX___o#', '#__________#', '#____II____#', '#__________#', '#_t______q_#', '#__________#', '#__________#', '#####D######'], warps: [{ x: 5, y: 8, to: F, tx: 0, ty: 0 }],
+  R.add({ id: 'neon_lighthouse', name: '旧トウケイ湾の灯台', kind: 'interior', bgm: 'town', rows: ['############', '#o___XX___o#', '#__________#', '#____II____#', '#__________#', '#_t______q_#', '#__________#', '#__________#', '#####D######'], warps: [{ x: 5, y: 8, to: F, tx: 0, ty: 0 }],
     npcs: [{ id: 'nl_keeper', x: 5, y: 2, sprite: 'sailor', dir: 'down', wander: 0, talk: async function (c) { await c.say('灯台守', ['この灯台は、海の底に沈んだ街の上に建ってる。窓の下は、昔は港だったそうだ。', '海面が上がっても、灯りは同じ場所に点す。……船乗りは、変わらない目印を頼りにするからな。']); } }],
-    events: [{ x: 5, y: 1, type: 'inspect', solid: true, text: ['窓の外に、細長い島々が見える。北から南へ、弓のように連なっている。', '灯台の記録：「日本列島。かつては一億を超える人が暮らした。いまは雨と、緑と、少しの灯り」'] }] });
+    events: [{ x: 5, y: 1, type: 'inspect', solid: true, text: ['窓の外に、細長い島々が見える。北から南へ、弓のように連なっている。', '灯台の記録：「ヒノモト列島。かつては一億を超える人が暮らした。いまは雨と、緑と、少しの灯り」'] }] });
   root.MAP_DEFS.neon_lighthouse.warps[0] = R.warp(5, 8, F, 'neon_lookout', '外へ');
 
   /* ---------- 水没工場（3層） ---------- */

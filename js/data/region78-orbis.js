@@ -1,6 +1,6 @@
 /* =========================================================
    Data / Region78 オルビス（v7.8）：地球周回軌道「環星ステーション・オルビス」（地球の上の別の空間）
-   ・到達：暗黒大陸の「虚無の荒野の前線基地」の転送門。開く条件は第15章「暗黒大陸」の完了（main_15。宇宙船の有無は問わない）。転送門で往復できる
+   ・到達：暗黒大陸の「虚無の荒野の前線基地」の転送門。開く条件は v7.9 から「本編クリアのあと」（game_cleared。前は第15章「暗黒大陸」の完了。宇宙船の有無は問わない）。転送門で往復できる
    ・居住環（窓の外を地球が流れる）→ 無重力の観測棟（2 区画）→ 警報衛星の制御室。クリアのあと、地球を一望できる展望室が開く
    ・無重力の区画：明るい床（石の床）に乗ると、その向きに、壁か磁気の床（じゅうたん）に当たるまで流される（2D 版・3D 版とも World.onStep から）
    ・物語「途絶えた警報衛星」（orbis78_signal）：地上との通信が途絶えた警報衛星を復旧する
@@ -8,7 +8,7 @@
 (function (root) {
   'use strict';
   var R = root.R78; if (!R) return; var A = R.A; var D = R.D;
-  function open() { return R.questDone('main_15'); }   // 転送門の条件：暗黒大陸の攻略完了（第15章「暗黒大陸」）
+  function open() { var d = D(); return !!(d && d.flags && d.flags.game_cleared); }   // v7.9 転送門の条件：本編クリアのあと（前は第15章「暗黒大陸」の完了）。ボスの強さ（第16章の想定）とも合わせた
   root.R78.orbisOpen = open;
 
   /* ---------- 敵（Lv37〜40） ---------- */
@@ -165,21 +165,21 @@
     '###############'
   ], warps: [{ x: 7, y: 7, to: RING, tx: 15, ty: 8 }],
     events: [{ x: 7, y: 1, type: 'script', solid: true, run: async function (c) {
-      await c.msg(['壁一面の窓の向こうに、地球が丸ごと浮かんでいる。', '南北アメリカ、ユーラシア、アフリカ、オーストラリア、南極。……そして、弓のように連なる日本列島。', '歩いてきた道、船で渡った海、飛んだ空。全部が、一つの青い球の上にあった。']);
+      await c.msg(['壁一面の窓の向こうに、地球が丸ごと浮かんでいる。', '南北メリカ、ユーラシオ、アフリア、オストラリス、アンタルカ。……そして、弓のように連なるヒノモト列島。', '歩いてきた道、船で渡った海、飛んだ空。全部が、一つの青い球の上にあった。']);
       var ch = await c.choice('窓から、世界の地図を見渡す？', ['見渡す', 'やめる']); if (ch !== 0) return;
       var MM = root.Minimap; if (MM && MM.openBig) { MM.openBig(); if (MM.setMode) MM.setMode('world'); if (MM.home) MM.home(); if (MM.drawBig) MM.drawBig(); }
     } }], npcs: [{ id: 'ol_noah', x: 11, y: 6, sprite: 'golem', dir: 'down', wander: 0, talk: async function (c) { await c.say('管理AIノア', ['この窓は、ステーションを造った人たちが、いちばんこだわった場所だそうです。', '「地球を一度に見られる場所が、一つはあるべきだ」と。']); } }], encounters: null });
 
-  /* ---------- 前線基地の転送門（第15章「暗黒大陸」のあと） ---------- */
+  /* ---------- 前線基地の転送門（本編クリアのあと） ---------- */
   (function () { var def = root.MAP_DEFS.dark_camp; if (!def) return; if (!(root.World76 && root.World76.earth)) return;   // 3D 版の地球の世界のときだけ（2D 版の前線基地は変えない）
     def.events = def.events || []; def.npcs = def.npcs || [];
     def.events.push({ x: 5, y: 17, type: 'script', solid: true, tile: 'crystal', orbisGate: true, run: async function (c) {
-      if (!open()) { await c.msg(['結晶の柱が、地面に半分埋まっている。表面に、輪の形の紋章。……今は眠っているようだ。', '（暗黒大陸の攻略を終えると、目を覚ますようだ）']); return; }
+      if (!open()) { await c.msg(['結晶の柱が、地面に半分埋まっている。表面に、輪の形の紋章。……今は眠っているようだ。', '（魔王を倒して世界に静けさが戻ると、目を覚ますようだ）']); return; }
       var ch = await c.choice('転送門が青く光っている。行き先：「環星ステーション・オルビス」', ['転送する', 'やめる']); if (ch !== 0) return;
       if (root.Audio) root.Audio.sfx('magic'); await c.msg(['体が光に包まれ、足もとの重さが消えた——']);
       root.World.enterMap('orbis_ring', 2, 8, 'right', { raw: true });
     } });
-    def.npcs.push({ id: 'dc_gatetech', x: 7, y: 16, sprite: 'scholar', dir: 'down', wander: 0, talk: async function (c) { await c.say('転送門の技師', open() ? ['転送門が目を覚ました！ 行き先は……地球を回る輪、「環星ステーション・オルビス」だ。', '宇宙船がなくても、門で行き来できる。帰りも、向こうの門から戻ってこられるよ。'] : ['ゼロメアから来た技師だ。この結晶の柱は、古い転送門らしい。', '荒野の魔物の気配が強すぎて、門が眠ったままだ。……暗黒大陸の攻略が終われば、目を覚ますかもしれない。']); } });
+    def.npcs.push({ id: 'dc_gatetech', x: 7, y: 16, sprite: 'scholar', dir: 'down', wander: 0, talk: async function (c) { await c.say('転送門の技師', open() ? ['転送門が目を覚ました！ 行き先は……地球を回る輪、「環星ステーション・オルビス」だ。', '宇宙船がなくても、門で行き来できる。帰りも、向こうの門から戻ってこられるよ。'] : ['ゼロメアから来た技師だ。この結晶の柱は、古い転送門らしい。', '荒野の魔物の気配が強すぎて、門が眠ったままだ。……魔王がいなくなれば、目を覚ますかもしれない。']); } });
   })();
   /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
   R.bossSym('orbis_sat', 8, 2, 'boss_sentinel_orbis', function (f) { return !f.orb_sat; });

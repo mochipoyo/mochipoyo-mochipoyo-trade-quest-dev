@@ -15,6 +15,7 @@
         var d = State.data;
         var MENU = ['ステータス', 'どうぐ', 'そうび', 'じゅもん・とくぎ', 'なかま', 'クエスト', '次の目的地', '図鑑', 'トレード修行', 'ファストトラベル', 'セーブ', '設定'];   // v6.2「次の目的地」を追加（項目名で振り分け）
         if (root.Astra && root.Astra.owned()) MENU.splice(MENU.indexOf('ファストトラベル') + 1, 0, 'アストラ号');   // v6.5 Phase E
+        if (root.Carriage && root.Carriage.owned()) MENU.splice(MENU.indexOf('ファストトラベル') + 1, 0, root.Carriage.wanted() ? '馬車を降りる' : '馬車に乗る');   // v7.9 馬車（C キーと同じ）
         if (root.Ultimates && root.TraderDojo && (root.Ultimates.count(d) > 0 || Object.keys((d.ultimate && d.ultimate.masters) || {}).length)) MENU.splice(MENU.indexOf('じゅもん・とくぎ') + 1, 0, '必殺技');   // 必殺技（覚えた技・流派と師匠・成績）
         var i = await Win.list(MENU.map(function (l) { return { label: l }; }), { title: 'メニュー　' + d.gold + 'G　' + World.map.name, cls: 'main-menu' });
         if (i < 0) break; var lb = MENU[i];
@@ -30,6 +31,7 @@
         else if (lb === 'トレード修行') await Menu.training();
         else if (lb === 'ファストトラベル') { if (await Menu.travel()) break; }   // v6.1 移動したらメニューを閉じる
         else if (lb === 'アストラ号') await root.Astra.menu();
+        else if (lb === '馬車に乗る' || lb === '馬車を降りる') { if (root.Carriage.toggle()) break; }   // v7.9 乗り降りしたらメニューを閉じる
         else if (lb === 'セーブ') await Menu.save();
         else if (lb === '設定') { var r = await Menu.settings(); if (r === 'title') return; }
       }

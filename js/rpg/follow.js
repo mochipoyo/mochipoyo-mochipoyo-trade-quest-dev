@@ -15,7 +15,7 @@
   function D() { return root.State && root.State.data; }
   function dist(a, b) { var dx = a.x - b.x, dy = a.y - b.y; return Math.sqrt(dx * dx + dy * dy); }
 
-  Follow.enabled = function () { var d = D(); if (!d) return false; if (d.settings && d.settings.followers === 'off') return false; if (d.aboard) return false; return true; };
+  Follow.enabled = function () { var d = D(); if (!d) return false; if (d.settings && d.settings.followers === 'off') return false; if (d.aboard) return false; if (root.Carriage && root.Carriage.riding()) return false; return true; };   /* v7.9 馬車に乗っているあいだ、仲間は馬車の中 */
   // 隊列に並ぶ仲間：戦闘メンバーの2人目以降（並び順どおり。最大3人。待機メンバーは出さない）
   Follow.members = function () { var d = D(); if (!d || !d.party) return []; var S = root.State; return d.party.slice(1, 1 + Follow.MAX).map(function (id) { return S.actor(id); }).filter(Boolean); };
   Follow.walkable = function (map, x, y) {
@@ -35,7 +35,7 @@
   Follow.shift = function (dx, dy, map) { Follow.trail.forEach(function (t) { t.x += dx; t.y += dy; }); var m = map || (root.World && root.World.map); Follow.mapId = m ? m.id : Follow.mapId; };
   Follow.update = function (map, cx, cy, dir) {
     if (!map) return;
-    var d = D(); if (d && d.aboard) { Follow.mapId = null; Follow.trail = []; return; }   // 乗船中は足跡を残さない（降りたときに作り直す）
+    var d = D(); if (d && (d.aboard || (root.Carriage && root.Carriage.riding(map)))) { Follow.mapId = null; Follow.trail = []; return; }   /* v7.9 馬車も */   // 乗船中は足跡を残さない（降りたときに作り直す）
     if (map.id !== Follow.mapId || !Follow.trail.length) { Follow.reset(map, cx, cy, dir); return; }
     var h = Follow.trail[0]; var dd = dist(h, { x: cx, y: cy });
     if (dd > 1.6) { Follow.reset(map, cx, cy, dir); return; }   // ワープ・瞬間移動

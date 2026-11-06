@@ -462,6 +462,7 @@ body.m-dpad .mpad .dpad { display: grid; } body.m-dpad .mp-stick { display: none
 .mp-tools { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-content: flex-start; }
 .mp-t { min-height: 38px; min-width: 64px; padding: 4px 10px; border-radius: 8px; border: 1px solid #5b6ea8; background: rgba(22,34,74,.92); font-size: 12px; }
 .mp-t.off { opacity: .55; text-decoration: line-through; }
+.mp-t.on78 { border-color: var(--gold); background: linear-gradient(180deg, #6a5420, #3a2c10); }   /* v7.9 馬車に乗っているとき */
 body.mctx-dialog .mp-tools, body.mctx-battle .mp-tools, body.mctx-title .mp-tools { visibility: hidden; }
 #pad button.on, .mp-t:active, .mp-b:active { filter: brightness(1.4); }
 /* 縦画面：画面の下に操作パネル（ツール列／スティック・ボタン） */

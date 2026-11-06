@@ -35,6 +35,7 @@
       '<div class="mp-tools">' +
         '<button data-cmd="minimap" class="mp-t w">ミニマップ</button><button data-cmd="map" class="mp-t w">全体マップ</button>' +
         '<button data-cmd="help" class="mp-t w">操作説明</button><button data-cmd="save" class="mp-t w">セーブ</button>' +
+        '<button data-cmd="carriage" id="mp-carriage" class="mp-t w" style="display:none">馬車</button>' +   // v7.9 馬車を持っているときだけ
         (fsSupported() ? '<button data-cmd="fullscreen" class="mp-t">全画面</button>' : '') +
       '</div>' +
       '<div class="mp-act"><button data-key="cancel" class="mp-b cancel"><span class="lb-menu">メニュー</span><span class="lb-back">戻る</span></button><button data-key="ok" class="mp-b ok">決定<small>調べる・話す</small></button></div>';
@@ -45,13 +46,14 @@
       b.addEventListener('touchend', function () { MobileUI._touchAt = Date.now(); });
     });
     MobileUI.bindStick(pad.querySelector('.mp-stick'));
-    MobileUI.pad = pad;
+    MobileUI.pad = pad; if (root.Carriage) root.Carriage.updateUI();
   };
   // 補助ボタンのコマンド
   MobileUI.command = function (cmd) {
     var W = root.World;
     if (cmd === 'minimap') { Input.press('minimap'); return; }
     if (cmd === 'map') { Input.press('map'); return; }
+    if (cmd === 'carriage') { Input.press('carriage'); return; }   // v7.9 馬車の乗り降り（C キーと同じ）
     if (cmd === 'fullscreen') { MobileUI.toggleFullscreen(); return; }
     if (cmd === 'help' || cmd === 'save') {
       if (!(root.Sidebar && root.Sidebar.canOpen())) { if (root.Win) root.Win.toast('今は開けません（会話・戦闘・画面を閉じてから）'); return; }
@@ -64,7 +66,7 @@
   MobileUI.help = function () {
     return root.Win.panel('<div class="rw-title">操作説明（スマートフォン）</div><div class="lesson">' +
       '・左下のスティック（設定で十字キーに変更可）：移動。メニューや選択肢では上下の選択\n・決定：話す・調べる・宝箱を開ける・メッセージ送り・決定\n・メニュー／戻る：探索中はメニュー、会話や画面の中では戻る\n' +
-      '・ミニマップ：表示・非表示の切り替え（全体マップとは別）\n・全体マップ：世界の地図。訪れた町へファストトラベル\n・セーブ：その場でセーブ（オートセーブも常に動いています）\n' +
+      '・ミニマップ：表示・非表示の切り替え（全体マップとは別）\n・馬車：馬車を持っているとき、フィールドで乗り降り（速く進み、魔物に出会いにくい）\n・全体マップ：世界の地図。訪れた町へファストトラベル\n・セーブ：その場でセーブ（オートセーブも常に動いています）\n' +
       (fsSupported() ? '・全画面：ブラウザの枠を隠して画面いっぱいに表示\n' : '') + '・選択肢やリストは、項目を直接タップしても選べます（もう一度タップで決定）\n・横画面にすると、ゲーム画面を大きく表示できます</div>', {});
   };
 

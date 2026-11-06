@@ -26,6 +26,7 @@ import * as PartyDir from '../battle/PartyDirections.js';
 import { Env } from '../environment/Env.js';
 import { Join76 } from './Join76.js';
 import { Effects78 } from '../world/Effects78.js';
+import { Carriage3D } from '../world/Carriage3D.js';
 
 const G = window;
 const WALK = 2.7, RUN = 5.4, RADIUS = 0.28;
@@ -113,6 +114,7 @@ export class App3D {
     this.scene = new THREE.Scene();
     this.lighting = new LightingManager(this.scene, this.renderer, this.quality);
     this.fx78 = new Effects78(this.scene, this.quality);   // v7.8 雨・浮天城アエリアの影・展望室の地球（world/Effects78.js）
+    this.car79 = new Carriage3D(this.scene);   // v7.9 馬車の模型（world/Carriage3D.js）
     this.renderer.setScene(this.scene, this.camera.camera);
     this.mats = new Materials(this.base, this.renderer.renderer); this.models = new ModelManager(this.base);
     // 戦闘の3D（敵＝絵の立体・味方＝ドット絵）は3Dの素材（GLB）を使わないので、素材の読み込みを待たずに使えるようにする
@@ -286,7 +288,8 @@ export class App3D {
   /* ---------- 入力・移動（探索シーンの update から呼ばれる） ---------- */
   handleInput() {
     const W = G.World, I = G.Engine.Input;
-    if (W.busy || !this.current || this.current.map !== W.map) return;
+    if (W.busy || !this.current || this.current.map !== W.map) { I.consume('carriage'); return; }   // v7.9 会話・戦闘中に押した C は捨てる
+    if (I.consume('carriage')) { if (G.Carriage) G.Carriage.toggle(); return; }   // v7.9 馬車の乗り降り（C キー）
     if (I.consume('cancel')) { G.Menu.open(); return; }
     if (I.consume('ok')) { this.interact(); return; }
   }
@@ -310,7 +313,7 @@ export class App3D {
     if (mag < 0.01) { this.speed = 0; return; }
     ix /= mag; iz /= mag;
     const settings = G.State.data && G.State.data.settings; const mul = (W.WALK && W.WALK[settings && settings.walkSpeed]) || 1;
-    const sp = (run ? RUN : WALK) * (0.75 + 0.25 * mul);
+    const sp = (run ? RUN : WALK) * (0.75 + 0.25 * mul) * ((G.Carriage && G.Carriage.riding()) ? G.Carriage.SPEED : 1);   // v7.9 馬車は速い
     this.speed = sp; this.running = run; this.yaw = Math.atan2(ix, iz);
     // 移動（大きく動くときは分割）＋押し出し
     let dist = sp * Math.min(dt, 0.05); const steps = Math.ceil(dist / 0.2); const x0 = this.pos.x, z0 = this.pos.z;
@@ -600,7 +603,12 @@ export class App3D {
     this.updateVehicles(dt, t);
     this.updateRide();   // v7.1 エレベーター
     const h = this.hero; h.root.position.copy(this.pos); if (this.rideY) h.root.position.y += this.rideY; h.faceTo(this.yaw); h.root.visible = !this.aboardNow;
-    if (this.speed > 0.1) { this._emote = null; h.play(this.running ? 'Run' : 'Walk', 0.15); h.setSpeed(this.running ? this.speed / RUN : this.speed / WALK); }
+    // v7.9 馬車：模型を出して、主人公は御者台に（仲間は馬車の中＝隊列は js/rpg/follow.js が出さない）
+    const riding79 = !this.aboardNow && !!(G.Carriage && G.Carriage.riding());
+    try { this.car79.update(dt, riding79, this.pos, this.yaw, this.speed); } catch (e) { /* 表示だけ：失敗しても進める */ }
+    if (riding79 && this.car79.g) { this._seat79 = this._seat79 || new THREE.Vector3(); this.car79.seat(this._seat79); h.root.position.copy(this._seat79); h.root.position.y -= 0.42; h.faceTo(this.car79.yaw); }
+    if (riding79) { this._emote = null; h.play('Idle', 0.25); }
+    else if (this.speed > 0.1) { this._emote = null; h.play(this.running ? 'Run' : 'Walk', 0.15); h.setSpeed(this.running ? this.speed / RUN : this.speed / WALK); }
     else if (this._emote && t < this._emote.until) h.play(this._emote.name, 0.2);
     else if (!h.onceName) { this._emote = null; h.play('Idle', 0.25); }
     h.update(dt);

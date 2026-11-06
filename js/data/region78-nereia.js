@@ -34,7 +34,7 @@
   R.quest('nereia78_tide', { title: '大潮の潮門', theme: '満ちる時と、引く時を読む', desc: '環潮大陸ネレイアに、百年に一度の大潮が近づいている。旧市街の潮の満ち引きを読み、海底神殿の奥で古代の潮門を開いて、街を守る。',
     steps: [['ner_heard', '環状都市の潮守ミラから、大潮の話を聞く'], ['ner_bell', '旧市街の潮見の鐘で、潮の満ち引きを確かめる'], ['ner_has_shell', '満潮のとき、渡し舟で中島の記録庫へ渡り、潮読みの貝を手に入れる'], ['ner_stairs', '干潮のとき、水路の底の南の端の階段から、海底神殿へ入る'], ['ner_gate', '海底神殿の奥で、古代の潮門を開く'], ['ner_done', '潮守ミラに報告する']],
     reward: { exp: 4800, gold: 3600, item: 'tidegate_staff' } });
-  R.obj('nereia78_tide', 'ner_heard', 'npc:nereia_city:nc_mira', ['大西洋の赤道付近、環潮大陸ネレイア。', '環状都市ネレイアの潮守ミラ。', '外礁の切れ目を遠洋航海船で抜け、環状都市の潮守ミラに話しかけよう。']);
+  R.obj('nereia78_tide', 'ner_heard', 'npc:nereia_city:nc_mira', ['大西海の赤道付近、環潮大陸ネレイア。', '環状都市ネレイアの潮守ミラ。', '外礁の切れ目を遠洋航海船で抜け、環状都市の潮守ミラに話しかけよう。']);
   R.obj('nereia78_tide', 'ner_bell', 'ev:nereia_old_hi:3,8', ['ネレイアの東の旧市街。', '旧市街の大通りの「潮見の鐘」。', '旧市街の大通りの西にある潮見の鐘を鳴らしてみよう。']);
   R.obj('nereia78_tide', 'ner_has_shell', 'npc:nereia_old_hi:no_ferry', ['旧市街（満潮）。', '西の桟橋の渡し守。', '満潮のとき、西の桟橋の渡し守に頼んで、中島の記録庫へ渡ろう。']);
   R.obj('nereia78_tide', 'ner_stairs', 'map:nereia_temple_1', ['旧市街（干潮）。', '水路の底の南の端の階段。', '干潮のとき、水路の底を南へ歩き、海底神殿への階段を下りよう。']);
@@ -111,7 +111,7 @@
     } },
     { id: 'nc_boatman', x: 8, y: 14, sprite: 'sailor', dir: 'down', wander: 0, talk: async function (c) { await c.say('水路の舟人', ['この街の道の半分は水路さ。橋を渡るか、舟で行くか。', '外の海からは、西の水路で潟に入れる。遠洋航海船は大きすぎて、潟の奥までは入れないがな。']); } },
     { id: 'nc_kid', x: 20, y: 10, sprite: 'child', dir: 'down', wander: 1, talk: async function (c) { await c.say('街の子ども', ['旧市街の鐘を鳴らすと、潮が変わるんだよ！ ほんとだよ！', 'おばあちゃんは、鐘じゃなくて月が潮を呼ぶって言うけど。']); } },
-    { id: 'nc_scholar', x: 25, y: 4, sprite: 'scholar', dir: 'down', wander: 1, talk: async function (c) { await c.say('潮の学者', ['ネレイアは、大西洋の真ん中に浮かぶ輪の大陸だ。西に南アメリカ、東にアフリカ。', '昔の人は、海に沈んだ大陸の伝説を語った。……ここが沈まずに済んでいるのは、潮門のおかげかもしれない。']); } }
+    { id: 'nc_scholar', x: 25, y: 4, sprite: 'scholar', dir: 'down', wander: 1, talk: async function (c) { await c.say('潮の学者', ['ネレイアは、大西海の真ん中に浮かぶ輪の大陸だ。西に南メリカ、東にアフリア。', '昔の人は、海に沈んだ大陸の伝説を語った。……ここが沈まずに済んでいるのは、潮門のおかげかもしれない。']); } }
   ] });
   R.inn('nereia_inn', '宿「満ち潮」', CT, 26, 4, 90);
   R.shop('nereia_shop', '潟の市場', CT, 4, 11, 'merchant', 'item', ['hi_potion', 'ether', 'hi_ether', 'antidote', 'calm_water', 'escape_wing', 'escape_feather', 'tent'], ['潟で採れた貝の干物もあるよ。……薬の話だったね。']);

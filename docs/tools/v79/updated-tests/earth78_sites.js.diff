@@ -1,0 +1,13 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/earth78_sites.js.orig	2026-11-06 14:14:14.839778711 +0900
++++ earth78_sites.js	2026-11-06 14:14:14.857705485 +0900
+@@ -21,7 +21,9 @@
+   // 引き受ける前に 1 か所調べておく
+   await sites[0].run(ctx()); ok(d.flags[sites[0].flag] && (d.inventory[sites[0].item] || 0) > 0, '引き受ける前でも遺跡を調べると記録になる（' + sites[0].name + '・' + sites[0].item + '）');
+   picks = [2, 0]; await seller.talk(ctx()); ok(d.quests.earth78_records && d.quests.earth78_records.state === 'active', '地図売りから「失われた地球の記録」を引き受けた');
+-  const objs = w.OBJECTIVES.filter((e) => e.q === 'earth78_records'); const unres = objs.filter((e) => !w.Nav.resolve(e.t)); ok(objs.length === 9 && !unres.length, '案内の目的地 9 件がすべて解決する ' + unres.map((e) => e.done).join(' '));
++  // v7.9 案内は「いま行ける遺跡を近い順に」の 1 件（any）＋報告の 1 件。行ける条件を満たしたとき、残りの遺跡の目的地がすべて解決する
++  const objs = w.OBJECTIVES.filter((e) => e.q === 'earth78_records'); const fk = Object.assign({}, d.flags); ['ship_ready', 'galleon_ready', 'yorn_letter_done', 'zeromea_choice_done', 'magicka_arrived', 'kalion_open'].forEach((f) => d.flags[f] = true); const dyn = objs.find((e) => Array.isArray(e.any)); const refs = dyn ? dyn.any.map((a) => a.t) : []; const unres = refs.filter((t) => !w.Nav.resolve(t)).concat(objs.filter((e) => e !== dyn && !w.Nav.resolve(e.t)).map((e) => e.done)); Object.keys(d.flags).forEach((k) => { if (!(k in fk)) delete d.flags[k]; });
++  ok(objs.length === 2 && refs.length === 7 && !unres.length, '案内の目的地（残りの遺跡 ' + refs.length + ' か所と報告）がすべて解決する ' + unres.join(' '));
+   picks = [2]; await seller.talk(ctx()); ok(!d.flags.erec_done && log.some((l) => /1\/8/.test(l)), '途中で話すと、残りの場所を教えてくれる');
+   for (const s of sites.slice(1)) await s.run(ctx()); ok(ER.found() === 8, '8 か所すべて調べた');
+   picks = [2]; await seller.talk(ctx()); ok(d.flags.erec_done && d.quests.earth78_records.state === 'done' && (d.inventory.earth_globe || 0) > 0, '報告して完了・地球儀のブローチ');

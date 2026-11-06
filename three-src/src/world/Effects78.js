@@ -4,6 +4,8 @@
    ・浮天城アエリアの影：太平洋の上空の城（js/rpg/earth78.js の aeriaAt）の真下の海に、大きな影（地球の世界の外の地図・地域）
    ・展望室の地球：環星ステーション・オルビスの展望室（def.earthWindow78）の窓の前に、地球の地形の絵を貼った球（ゆっくり回る。上から見るカメラでも見える位置）
    ・重さ：雨は線 700 本（低画質は 350 本）。影は円 1 枚。地球は球 1 つ（展望室だけ）
+   ・v7.9 雨の地面に水たまりの波紋（輪 36 個・低画質 18 個）と雨音（ゲームの効果音の音量・消音に従う。雨のある屋外だけ）
+   ・v7.9 アエリアの影：陸の上にも落とす（影の下の地面のいちばん高い所の少し上に置く。海だけのときは海面）
    ========================================================= */
 import * as THREE from 'three';
 
@@ -17,6 +19,34 @@ export class Effects78 {
   constructor(scene, quality) {
     this.scene = scene; this.low = quality === 'low'; this.mapId = null;
     this.rain = null; this.shadow = null; this.globe = null; this.globeHalo = null;
+    this.ripples = null; this.rainAudio = null;
+  }
+  // v7.9 水たまりの波紋：輪が広がって消える（主人公のまわり）
+  makeRipples() {
+    const N = this.low ? 18 : 36; const geo = new THREE.RingGeometry(0.8, 1.0, 20); geo.rotateX(-Math.PI / 2); const list = [];
+    const grp = new THREE.Group(); grp.name = 'fx78_ripples';
+    for (let i = 0; i < N; i++) { const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xcfe0ff, transparent: true, opacity: 0, depthWrite: false })); m.renderOrder = 4; m.visible = false; grp.add(m); list.push({ m, life: Math.random() * 0.8, dur: 0.7 }); }
+    this.scene.add(grp); this.ripples = { grp, list }; return this.ripples;
+  }
+  updateRipples(dt, focus, on, current) {
+    if (!on) { if (this.ripples) this.ripples.grp.visible = false; return; }
+    const R = this.ripples || this.makeRipples(); R.grp.visible = true;
+    for (const r of R.list) {
+      r.life += dt; if (r.life >= r.dur) { r.life = 0; r.dur = 0.5 + Math.random() * 0.4; const x = focus.x + (Math.random() * 2 - 1) * 9, z = focus.z + (Math.random() * 2 - 1) * 7; let y = 0; try { y = current && current.heightAt ? current.heightAt(x, z) : 0; } catch (e) { y = 0; } r.m.position.set(x, (y || 0) + 0.03, z); r.m.visible = true; }
+      const k = r.life / r.dur; r.m.scale.setScalar(0.06 + k * 0.32); r.m.material.opacity = 0.5 * (1 - k);
+    }
+  }
+  // v7.9 雨音：白い雑音を高い音だけ通して、ゲームの効果音の音量（Audio.seGain）へ。音が使えるようになってから（最初のキー操作のあと）
+  rainSound(on) {
+    const A = window.Audio; if (!A || !A.ctx || !A.seGain || typeof A.ctx.createBufferSource !== 'function') return;
+    const c = A.ctx; const now = c.currentTime;
+    if (on && !this.rainAudio) {
+      const len = c.sampleRate * 2, buf = c.createBuffer(1, len, c.sampleRate), ch = buf.getChannelData(0); for (let i = 0; i < len; i++) ch[i] = Math.random() * 2 - 1;
+      const src = c.createBufferSource(); src.buffer = buf; src.loop = true; const hp = c.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 900; const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 6500;
+      const g = c.createGain(); g.gain.value = 0; g.gain.linearRampToValueAtTime(0.32, now + 1.2); src.connect(hp); hp.connect(lp); lp.connect(g); g.connect(A.seGain); src.start(); this.rainAudio = { src, g };
+    } else if (!on && this.rainAudio) {
+      const ra = this.rainAudio; this.rainAudio = null; try { ra.g.gain.cancelScheduledValues(now); ra.g.gain.setValueAtTime(ra.g.gain.value, now); ra.g.gain.linearRampToValueAtTime(0, now + 0.8); ra.src.stop(now + 0.9); } catch (e) { /* 止められなくても進める */ }
+    }
   }
   // 雨の線（世界の座標で持つ。主人公のまわりの箱の中で落ちる）
   makeRain() {
@@ -42,7 +72,10 @@ export class Effects78 {
       if (a && r) { const lx = W76.dxWrap(a.x - r.x) + 0.5, lz = a.y - r.y + 0.5; const o = current.root.position;
         if (Math.abs(lx - (r.w / 2)) < r.w / 2 + 70 && Math.abs(lz - (r.h / 2)) < r.h / 2 + 70) {
           if (!this.shadow) { const m = new THREE.MeshBasicMaterial({ map: radialTex(), color: 0x000814, transparent: true, opacity: 0.62, depthWrite: false }); const s = new THREE.Mesh(new THREE.CircleGeometry(1, 48), m); s.rotation.x = -Math.PI / 2; s.name = 'fx78_aeria_shadow'; s.renderOrder = 4; this.scene.add(s); this.shadow = s; }
-          const rr = (a.r || 7) * 1.4; this.shadow.scale.set(rr * 1.35, rr, 1); this.shadow.position.set(o.x + lx + Math.sin(t * 0.05) * 1.2, 0.06, o.z + lz + Math.cos(t * 0.04) * 0.8); show = true; } }
+          const rr = (a.r || 7) * 1.4; this.shadow.scale.set(rr * 1.35, rr, 1);
+          // v7.9 陸の上にも：影の下の地面のいちばん高い所の少し上に置く（1 秒ごとに測る。海だけなら海面の高さ）
+          if (!this._shY || t - this._shT > 1) { let hy = 0.06; try { for (let i = -3; i <= 3; i++) for (let j = -3; j <= 3; j++) { const sx = lx + i * rr * 0.4, sz = lz + j * rr * 0.3; if (sx < 0 || sz < 0 || sx >= r.w || sz >= r.h) continue; const hh = current.heightAt ? current.heightAt(sx, sz) : 0; if (hh > hy - 0.06) hy = Math.max(hy, hh + 0.08); } } catch (e) { hy = 0.06; } this._shY = Math.min(hy, 3.5); this._shT = t; }
+          this.shadow.position.set(o.x + lx + Math.sin(t * 0.05) * 1.2, this._shY, o.z + lz + Math.cos(t * 0.04) * 0.8); show = true; } }
     }
     if (this.shadow) this.shadow.visible = show;
   }
@@ -63,7 +96,10 @@ export class Effects78 {
   }
   update(dt, t, focus, current) {
     const def = current && current.map && current.map.def; const outdoor = current && !current.interior;
-    this.updateRain(dt, focus, !!(def && def.rain78 && outdoor));
+    const rain = !!(def && def.rain78 && outdoor);
+    this.updateRain(dt, focus, rain);
+    this.updateRipples(dt, focus, rain, current);
+    try { this.rainSound(rain && !document.hidden); } catch (e) { /* 音は飾り */ }
     this.updateShadow(t, current);
     this.updateGlobe(dt, current);
   }

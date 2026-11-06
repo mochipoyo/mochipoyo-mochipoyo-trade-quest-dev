@@ -1,0 +1,19 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/variety73.js.orig	2026-11-06 14:20:26.397379424 +0900
++++ v73/variety73.js	2026-11-06 14:20:47.694479051 +0900
+@@ -64,12 +64,13 @@
+   const badH = []; const B73 = JSON.parse(require('child_process').execFileSync('node', ['-e', `const load=require('./rpgload.js');const A=load();const o={};${JSON.stringify(HM.homes.map((h) => h.id))}.forEach(id=>{const d=A.w.MAP_DEFS[id];o[id]=d&&!d.v72?{rows:d.rows}:null;});process.stdout.write(JSON.stringify(o));`], { cwd: path.join(__dirname, '..'), env: Object.assign({}, process.env, { RPG_DIR: BASE }), maxBuffer: 1 << 26 }).toString());
+   for (const h of HM.homes) {
+     const def = M[h.id]; const m = new w.GameMap(def); const p0 = B73[h.id] || def._pre71; const W0 = h.oldW;   // 既存の家は v7.2 の版と、v7.2 で足した家は台所を足す前の控えと比べる
+-    if (!def.rows.every((r) => r.length === W0 + 4)) badH.push(h.id + ' 幅');
+-    for (let y = 0; y < p0.rows.length; y++) for (let x = 0; x < W0; x++) if (p0.rows[y][x] !== def.rows[y][x] && !(x === W0 - 1 && (y === h.open || y === h.open + 1))) badH.push(h.id + ' 元の部屋が変わった ' + x + ',' + y);
++    const wid76 = !!(w.Interior76 && w.Interior76.maps && w.Interior76.maps[h.id]);   /* v7.9 v7.6 で部屋をさらに広げた家（js/rpg/interior76.js）は、v7.3 の「幅・元の部屋」の比べ方の対象外（台所・トイレへ行ける・調べるは調べる） */
++    if (!wid76 && !def.rows.every((r) => r.length === W0 + 4)) badH.push(h.id + ' 幅');
++    if (!wid76) for (let y = 0; y < p0.rows.length; y++) for (let x = 0; x < W0; x++) if (p0.rows[y][x] !== def.rows[y][x] && !(x === W0 - 1 && (y === h.open || y === h.open + 1))) badH.push(h.id + ' 元の部屋が変わった ' + x + ',' + y);
+     const st = m.warps.find((q) => q.y === m.h - 1) || m.warps[0]; const s0 = [[st.x, st.y - 1], [st.x, st.y + 1]].find(([x, y]) => walkable(m, x, y)); if (!s0) { badH.push(h.id + ' 入口'); continue; }
+     const S = reach(m, s0[0], s0[1]); const ks = ['stove', 'sink', 'cupboard', 'toilet'].map((n) => { for (let y = 0; y < m.h; y++) for (let x = 0; x < m.w; x++) if (m.tiles[y][x] === n) return [x, y]; return null; });
+     if (ks.some((k) => !k || !near(S, k[0], k[1]))) badH.push(h.id + ' 台所・トイレへ行けない');
+-    const m0 = new w.GameMap(Object.assign({}, def, { rows: p0.rows, events: (def.events || []).filter((e) => !e.v73) })); const S0 = reach(m0, s0[0], s0[1]); const lost = [...S0].filter((k) => !S.has(k)); if (lost.length) badH.push(h.id + ' 行けなくなった ' + lost.length);
++    const m0 = new w.GameMap(Object.assign({}, def, { rows: p0.rows, events: (def.events || []).filter((e) => !e.v73) })); const S0 = reach(m0, s0[0], s0[1]); const lost = [...S0].filter((k) => !S.has(k)); if (lost.length && !wid76) badH.push(h.id + ' 行けなくなった ' + lost.length);   /* v7.9 広げた家は座標が変わるので比べない */
+     if ((def.events || []).filter((e) => e.v73 && e.type === 'inspect').length !== 4) badH.push(h.id + ' 調べる');
+   }
+   ok(!badH.length, '家の東に台所（食器棚・かまど・流し）とトイレ：元の部屋は東の壁の2マスだけ変える・入口から行ける・行ける所は減らない・調べると一言 ' + badH.slice(0, 5).join(' | '));

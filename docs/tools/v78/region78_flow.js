@@ -43,7 +43,8 @@ const has = (it) => (d.inventory[it] || 0) > 0;
   // ---------- オルビス：開く時機（第15章「暗黒大陸」の完了）
   const gate = w.MAP_DEFS.dark_camp.events.find((e) => e.orbisGate);
   d.quests.main_15 = { state: 'active' }; W.enterMap('dark_camp', 5, 18, 'up', { raw: true }); await gate.run(ctx(), gate); ok(W.map.id === 'dark_camp', 'オルビス：第15章の途中は、転送門は眠っている');
-  delete d.flags.astra_owned; d.quests.main_15 = { state: 'done' }; W.enterMap('dark_camp', 5, 18, 'up', { raw: true }); await gate.run(ctx(), gate); ok(W.map.id === 'orbis_ring', 'オルビス：第15章「暗黒大陸」の完了後、宇宙船なしで転送門からオルビスへ');
+  delete d.flags.astra_owned; d.quests.main_15 = { state: 'done' }; W.enterMap('dark_camp', 5, 18, 'up', { raw: true }); await gate.run(ctx(), gate); ok(W.map.id === 'dark_camp', 'オルビス：v7.9 第15章の完了だけでは、まだ眠っている（本編クリアのあと）');
+  d.flags.game_cleared = true; W.enterMap('dark_camp', 5, 18, 'up', { raw: true }); await gate.run(ctx(), gate); ok(W.map.id === 'orbis_ring', 'オルビス：本編クリアのあと、宇宙船なしで転送門からオルビスへ');
   const back = W.map.warps.find((x) => x.to === 'dark_camp'); ok(!!back, 'オルビス：居住環から前線基地へ戻る転送門がある');
   await npc('orbis_ring', 'or_noah'); ok(d.flags.orb_arrived, 'オルビス：管理AIノアから依頼');
   await ev('orbis_obs_1', 2, 9); await ev('orbis_obs_2', 13, 2); W.enterMap('orbis_obs_2', 12, 9, 'right', { raw: true }); w.MAP_ENTER_HOOKS.forEach((f) => f(W.map)); ok(d.flags.orb_code_a && d.flags.orb_code_b && d.flags.orb_codes, 'オルビス：鍵コードの前半・後半');

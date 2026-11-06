@@ -16,7 +16,8 @@ const REGION = {
   magicka: { grass: '#d8d8c8', tree: ['oak', 'pine'], water: '#4a4a9a', deep: '#22205a', rock: '#8a80a0', snowCap: false, fog: '#c0b0d8', plaster: '#ece4f4', roof: '#6a3a8a' },
   sky: { grass: '#e0f0c0', tree: ['oak'], water: '#6aa8d8', deep: '#3a78b0', rock: '#c8c8d0', snowCap: false, fog: '#e0ecf8', plaster: '#ffffff', roof: '#4a7ab8', cloud: true },
   dark: { grass: '#8a8098', tree: ['dead'], water: '#2a2a40', deep: '#141424', rock: '#4a4450', snowCap: false, fog: '#3a2a48', plaster: '#8a8090', roof: '#3a2a40', dim: 0.55 },
-  desert: { grass: '#d8d0a0', tree: ['palm'], water: '#3a8aa0', deep: '#1a4a6a', rock: '#c09a6a', snowCap: false, fog: '#e8d0a8', plaster: '#f0dcb8', roof: '#b07a4a' },
+  desert: { grass: '#d2c08a', tree: ['palm'], water: '#3a8aa0', deep: '#1a4a6a', rock: '#c09a6a', snowCap: false, fog: '#e8d0a8', plaster: '#f0dcb8', roof: '#b07a4a',
+    groundOver: { sand: '#d2a45a' }, sandSplat: [0, 0.45, 0, 0.55] },   // v7.9 砂漠の砂：白っぽく雪に見えたので、濃い砂の色と土の粒（なめらかさを減らす）
   dragon: { grass: '#a8a080', tree: ['dead'], water: '#3a4a5a', deep: '#1a2430', rock: '#5a4a44', snowCap: false, fog: '#7a4a3a', plaster: '#c8b8a8', roof: '#6a2a1a', lava: true, dim: 0.8 },
   snow: { grass: '#e8f0f4', tree: ['snowpine'], water: '#4a7aa0', deep: '#24486a', rock: '#a8b0b8', snowCap: true, fog: '#e4ecf4', plaster: '#f8f8fc', roof: '#5a6a8a' },
   // v7.8 地球の世界の新しい地域（js/data/region78-*.js の theme3d）
@@ -60,7 +61,7 @@ export function themeFor(map) {
   try { if (BG && BG.placeOf) place = BG.placeOf(id, map.kind) || 'grassland'; } catch (e) { /* 既定値 */ }
   const ov = map.def && map.def.theme3d; if (ov) { if (ov.region) region = ov.region; if (ov.place) place = ov.place; }   // v7.1 マップごとの指定（空の区画＝天空の空・機械の町の材質）
   const r = REGION[region] || REGION.arcadia; const p = PLACE[place] || PLACE.grassland;
-  return Object.assign({ region, place, known: !!REGION[region] && !!PLACE[place] }, r, { placeDef: p, ground: GROUND });
+  return Object.assign({ region, place, known: !!REGION[region] && !!PLACE[place] }, r, { placeDef: p, ground: r.groundOver ? Object.assign({}, GROUND, r.groundOver) : GROUND });   // v7.9 地域ごとの地面の色の上書き（砂漠の砂）
 }
 
 export const THEME_REGIONS = Object.keys(REGION);

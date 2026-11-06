@@ -33,7 +33,7 @@
   R.quest('meridian78_train', { title: '最後の避難列車', theme: '待つ人へ、知らせを届ける', desc: '灰岸都市メリディアンの最後の避難列車は、路線図にない駅で止まった。なぜ止まったのかを追い、乗客名簿と伝言を、避難所の家族へ届ける。',
     steps: [['mer_heard', '郊外の避難所の駅長代理グレイから、最後の列車の話を聞く'], ['mer_highway', '塩の平野の先、倒壊した高架道路を越える'], ['mer_found', '浸水した地下鉄の奥で、止まった列車を見つける'], ['mer_why', '路線図にない駅で、列車が止まった理由を知る'], ['mer_delivered', '避難所の家族3人に、伝言を届ける'], ['mer_done', '駅長代理グレイに報告する']],
     reward: { exp: 6500, gold: 4500, item: 'guide_flag_spear' } });
-  R.obj('meridian78_train', 'mer_heard', 'npc:meridian_shelter:ms_grey', ['大西洋の西、北アメリカの東岸。', '「郊外の避難所」の駅長代理グレイ。', '灰岸都市メリディアンの郊外の避難所で、駅長代理グレイに話しかけよう。']);
+  R.obj('meridian78_train', 'mer_heard', 'npc:meridian_shelter:ms_grey', ['大西海の西、北メリカの東岸。', '「郊外の避難所」の駅長代理グレイ。', '灰岸都市メリディアンの郊外の避難所で、駅長代理グレイに話しかけよう。']);
   R.obj('meridian78_train', 'mer_highway', 'map:meridian_highway', ['避難所の東。', '塩の平野の先の「倒壊した高架道路」。', '塩の平野を東へ進み、倒壊した高架道路に入ろう。']);
   R.obj('meridian78_train', 'mer_found', 'ev:meridian_subway_2:24,6', ['灰岸の街の中心。', '「浸水した地下鉄」の奥の線路。', '浸水した地下鉄の下の階、線路の奥で止まった列車を探そう。']);
   R.obj('meridian78_train', 'mer_why', 'ev:meridian_station:8,3', ['浸水した地下鉄の最深部。', '「路線図にない駅」の信号機。', '路線図にない駅で、赤い灯を点し続ける信号機を止めよう。']);
@@ -129,7 +129,7 @@
   R.add({ id: 'meridian_tent', name: '家族のテント', kind: 'interior', bgm: 'town', rows: ['############', '#E__E__E__E#', '#__________#', '#_t______q_#', '#__________#', '#_z________#', '#__________#', '#__________#', '#####D######'], warps: [{ x: 5, y: 8, to: S, tx: 5, ty: 10 }],
     npcs: [{ id: 'mt_boy', x: 6, y: 4, sprite: 'child', dir: 'down', wander: 1, talk: async function (c) { await c.say('避難所の男の子', ['ぼくのお兄ちゃんは、列車に乗れなかったの。だから、ここにいる。', '乗れた人たちは、どこに行っちゃったんだろう。']); } }] });
   R.add({ id: 'meridian_harbor', name: '灰岸の港', kind: 'interior', bgm: 'town', rows: ['############', '#o___XX___o#', '#__________#', '#____II____#', '#__________#', '#_t______q_#', '#__________#', '#__________#', '#####D######'], warps: [R.warp(5, 8, F, 'mer_harbor', '外へ')],
-    events: [{ x: 5, y: 1, type: 'inspect', solid: true, text: ['港の見張り台の窓から、灰色の海が見える。', '水の上に、ビルの先だけが並んでいる。……灰岸都市メリディアンの中心は、いまは海の中だ。', '遠く、大西洋の向こうは、旧大陸の方角だ。'] }] });
+    events: [{ x: 5, y: 1, type: 'inspect', solid: true, text: ['港の見張り台の窓から、灰色の海が見える。', '水の上に、ビルの先だけが並んでいる。……灰岸都市メリディアンの中心は、いまは海の中だ。', '遠く、大西海の向こうは、旧大陸の方角だ。'] }] });
 
   /* ---------- 倒壊した高架道路 ---------- */
   var HW_ENC = { rate: 0.05, zones: [{ name: '倒壊した高架道路', test: function () { return true; }, groups: [['rubble_golem'], ['guard_bot', 'guard_bot'], ['salt_ghost', 'rubble_golem'], ['guard_bot', 'salt_ghost']] }] };

@@ -75,8 +75,9 @@
   function ExploreScene() { }
   ExploreScene.prototype.enter = function () { World.updateHud(); };
   ExploreScene.prototype.handleInput = function () {
-    if (World.busy) return;
+    if (World.busy) { Input.consume('carriage'); return; }   // v7.9 会話・戦闘中に押した C は捨てる（あとで勝手に乗り降りしない）
     var p = World.player;
+    if (Input.consume('carriage')) { if (root.Carriage) root.Carriage.toggle(); return; }   // v7.9 馬車の乗り降り
     if (Input.consume('cancel')) { root.Menu.open(); return; }
     if (Input.consume('ok')) { if (!World.justTalked()) World.interact(); return; }   // v6.2 会話を閉じた直後の連打で、同じ人との会話がすぐ始まらないように
     if (!p.moving) {
@@ -118,7 +119,7 @@
   ExploreScene.prototype.draw = function (ctx) {
     var m = World.map, p = World.player;
     var cam = World.camera();
-    p.vehicle = State.data.aboard || null;
+    p.vehicle = State.data.aboard || ((root.Carriage && root.Carriage.riding(m)) ? 'carriage' : null);   // v7.9 馬車に乗っているときは馬車の絵（仲間は中）
     p.followers = (root.Follow && !p.vehicle) ? root.Follow.drawList(TS, p) : null;   // v6.4 Phase F 仲間の隊列
     var extras = root.Vehicle ? root.Vehicle.onMap(m.id).filter(function (v) { return !v.aboard; }).map(function (v) { return { x: v.x, y: v.y, vehicle: v.id }; }) : [];
     if (root.Astra) extras = extras.concat(root.Astra.extras(m.id));   // v6.5 Phase E 止めてあるアストラ号
@@ -250,6 +251,7 @@
       if (since > 8) {
         var rate = encDef.rate * Math.min(1.5, 0.5 + (since - 8) / 25); if (d.flags.repel) rate *= 0.3;
         if (!d.aboard && (d.counters.repel_steps || 0) > 0) rate *= 0.35;   // v6.4 危険察知の鐘
+        if (root.Carriage && root.Carriage.riding(m)) rate *= root.Carriage.ENC;   // v7.9 馬車：20% 出会いにくい
         if (Math.random() < rate) World.encounter(encDef);
       }
     }

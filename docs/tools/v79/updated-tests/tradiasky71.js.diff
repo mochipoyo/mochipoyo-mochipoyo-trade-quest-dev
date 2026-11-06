@@ -1,0 +1,23 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/tradiasky71.js.orig	2026-11-06 14:19:35.277452085 +0900
++++ v71/tradiasky71.js	2026-11-06 14:19:56.557954494 +0900
+@@ -11,16 +11,16 @@
+ const sky = new w.GameMap(w.MAP_DEFS.tradia_sky); const S1 = reach(sky, 19, 19); const bad = [];
+ sky.buildings.forEach((b) => { if (!S1.has(b.doorAbs.x + ',' + (b.doorAbs.y + 1))) bad.push('建物 ' + b.id); }); sky.npcs.forEach((n) => { if (![[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => S1.has((n.x + dx) + ',' + (n.y + dy)))) bad.push('人 ' + n.id); }); sky.events.forEach((e) => { if (![[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => S1.has((e.x + dx) + ',' + (e.y + dy)))) bad.push('出来事 ' + e.x + ',' + e.y); }); sky.chests.forEach((c) => { if (![[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => S1.has((c.x + dx) + ',' + (c.y + dy)))) bad.push('宝箱'); });
+ ok(!bad.length, '空の区画：着いた所から、建物・人・出来事・宝箱・展望デッキへ歩いて行ける ' + bad.join(','));
+-const R = w.REMAKE71.tradiaSky.maps; const badR = []; R.forEach((id) => { const def = w.MAP_DEFS[id]; const W0 = def.rows[0].length; def.rows.forEach((r, y) => { if (r.length !== W0) badR.push(id + ' 幅' + y); for (const ch of r) if (!w.Tiles.byChar[ch]) badR.push(id + ' 文字' + ch); }); const mm = new w.GameMap(def); mm.warps.forEach((wp) => { const to = new w.GameMap(w.MAP_DEFS[wp.to]); if (!walk(to, wp.tx, wp.ty) || to.warpAt(wp.tx, wp.ty)) badR.push(id + '→' + wp.to + ' 着く場所'); }); });
++const R = w.REMAKE71.tradiaSky.maps; const badR = []; R.forEach((id) => { const def = w.MAP_DEFS[id]; const W0 = def.rows[0].length; def.rows.forEach((r, y) => { if (r.length !== W0) badR.push(id + ' 幅' + y); for (const ch of r) if (!w.Tiles.byChar[ch]) badR.push(id + ' 文字' + ch); }); const mm = new w.GameMap(def); mm.warps.forEach((wp) => { const to = new w.GameMap(w.MAP_DEFS[wp.to]); const P = w.MapRemake ? w.MapRemake.pos(wp.to, wp.tx, wp.ty) : { x: wp.tx, y: wp.ty }; if (!walk(to, P.x, P.y) || to.warpAt(P.x, P.y)) badR.push(id + '→' + wp.to + ' 着く場所');   /* v7.9 部屋を広げた（v7.6）あとの座標で調べる */ }); });
+ ok(!badR.length, '空の区画の5マップ：形・出入口の着く場所 ' + badR.join(' | '));
+ (async () => {
+-  const go = async (x, y) => { const p = World.player; p.x = x; p.y = y; p.px = x * 32; p.py = y * 32; World.busy = false; World.onStep(); for (let i = 0; i < 400 && World.busy; i++) await new Promise((r) => setTimeout(r, 5)); await new Promise((r) => setTimeout(r, 30)); };
++  const go = async (x0, y0) => { const q = w.MapRemake ? w.MapRemake.pos(World.map.id, x0, y0) : { x: x0, y: y0 }; const x = q.x, y = q.y; /* v7.9 部屋を広げた（v7.6）あとの座標へ */ const p = World.player; p.x = x; p.y = y; p.px = x * 32; p.py = y * 32; World.busy = false; World.onStep(); for (let i = 0; i < 400 && World.busy; i++) await new Promise((r) => setTimeout(r, 5)); await new Promise((r) => setTimeout(r, 30)); };
+   World.enterMap('tradia', 16, 36, 'up'); ANS.push(1); LOG.length = 0; await go(16, 35); ok(World.map.id === 'tradia' && LOG.some((l) => /エレベーターに乗って、空の区画へ/.test(l)), 'エレベーター：「やめる」を選ぶと乗らない');
+   ANS.push(0); await go(16, 35); ok(World.map.id === 'tradia_sky' && World.player.x === 19 && World.player.y === 19, 'エレベーター：「乗る」→ 空の区画（19,19）に着く');
+   await go(9, 8); ok(World.map.id === 'tradia_sky_exchange', 'スカイ取引所に入れる'); await go(5, 8); ok(World.map.id === 'tradia_sky', '取引所から出られる');
+   await go(29, 8); await go(10, 1); ok(World.map.id === 'tradia_sky_lounge_2f', '展望ラウンジ → 2階'); await go(10, 1); await go(5, 8); ok(World.map.id === 'tradia_sky', 'ラウンジから戻れる');
+-  LOG.length = 0; World.busy = false; w.Events.run(World.map.eventAt(15, 25)); await new Promise((r) => setTimeout(r, 30)); ok(LOG.some((l) => /望遠鏡/.test(l)), '展望デッキの望遠鏡');
+-  ANS.push(0); await go(19, 18); ok(World.map.id === 'tradia' && World.player.x === 16 && World.player.y === 36, '空の区画のエレベーター → 地上のトレディア（16,36）');
++  LOG.length = 0; World.busy = false; w.Events.run(World.map.eventAt(w.MapRemake.pos(World.map.id, 15, 25).x, w.MapRemake.pos(World.map.id, 15, 25).y)); await new Promise((r) => setTimeout(r, 30)); ok(LOG.some((l) => /望遠鏡/.test(l)), '展望デッキの望遠鏡');
++  ANS.push(0); await go(19, 18); ok(World.map.id === 'tradia' && World.player.x === w.MapRemake.pos('tradia', 16, 36).x && World.player.y === w.MapRemake.pos('tradia', 16, 36).y, '空の区画のエレベーター → 地上のトレディア（16,36）');
+   const n = new w.GameMap(w.MAP_DEFS.tradia_sky_boutique).npcs[0]; ok(n && n.id === 'sky_boutique_keeper', 'スカイ・ブティックの店主');
+   console.log('errors', errors.slice(0, 3)); console.log('結果：' + pass + ' OK / ' + fail + ' NG');
+ })();

@@ -136,7 +136,7 @@ export class WorldBuilder3D {
       if (t === '_void') return [[0, 0, 1, 0], '#0a0806'];
       if (PAVED[t]) return [[1, 0, 0, 0], G[t] || '#c8c0b0'];
       if (t === 'road') return [[field ? 0 : 1, field ? 1 : 0, 0, 0], G.road];
-      if (t === 'sand') return [[0, 0.2, 0, 1], G.sand];
+      if (t === 'sand') return [theme.sandSplat || [0, 0.2, 0, 1], G.sand];   // v7.9 砂漠は土の粒を混ぜる（themes.js の sandSplat）
       if (t === 'snow') return [[0, 0, 0, 1], G.snow];
       if (t === 'ash') return [[0, 0.3, 0.3, 0.7], G.ash];
       if (t === 'darkland') return [[0, 0.5, 0.2, 0.4], G.darkland];
