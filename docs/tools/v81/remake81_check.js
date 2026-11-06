@@ -62,6 +62,6 @@ for (const id of ids) {
   const oldFront = {}; (pre.buildings || []).forEach((b) => { const f = w.Remake81.door(b).front; oldFront[f.x + ',' + f.y] = 1; });   /* 旧い扉の前に立っていた人は、その座標が扉の前へ写る（扉の前が先） */
   pre.npcs.forEach((n) => { const nn = m.npcs.find((x) => x.id === n.id); if (!nn) { mapBad.push('人がいない ' + n.id); return; } if (oldFront[n.x + ',' + n.y]) return; const p = P0(n.x, n.y); if (p.x !== nn.x || p.y !== nn.y) mapBad.push(n.id); });
   pre.events.forEach((e) => { const p = P0(e.x, e.y); if (!m.eventAt(p.x, p.y)) mapBad.push('出来事 ' + e.x + ',' + e.y); });
-  ok(!mapBad.length && pre.npcs.length === m.npcs.length && pre.events.length === m.events.filter((e) => !e.v81).length && (pre.chests || []).length === (m.chests || []).length && pre.buildings.length <= m.buildings.length, id + '：人 ' + pre.npcs.length + '・出来事 ' + pre.events.length + '・宝箱・建物 ' + pre.buildings.length + ' を消さずに、旧座標から新しい位置へ写せる ' + mapBad.join(' '));
+  ok(!mapBad.length && pre.npcs.length === m.npcs.length && pre.events.length === m.events.filter((e) => !e.v81).length && (pre.chests || []).length === (m.chests || []).length && pre.buildings.length <= def.buildings.length, id + '：人 ' + pre.npcs.length + '・出来事 ' + pre.events.length + '・宝箱・建物 ' + pre.buildings.length + ' を消さずに、旧座標から新しい位置へ写せる ' + mapBad.join(' '));
 }
 console.log(ng.length ? '結果：NG ' + ng.length : '結果：すべて OK'); process.exit(ng.length ? 1 : 0);

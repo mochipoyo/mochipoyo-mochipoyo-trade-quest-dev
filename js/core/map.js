@@ -35,7 +35,12 @@
       // v7.6 露店（shape76 'stall'・中に入らない）：奥の段は通れない（店主のマス keeper76 だけ床）、手前の段はカウンター（越しに話せる）。扉はない
       if (bb.shape76 === 'stall' && !bb.interior) { for (var sy = bb.y; sy < bb.y + bb.h; sy++) for (var sx = bb.x; sx < bb.x + bb.w; sx++) { var kp = bb.keeper76 && sx === bb.x + bb.keeper76.x && sy === bb.y + bb.keeper76.y; self.setTile(sx, sy, kp ? 'floor_stone' : sy === bb.y + bb.h - 1 ? 'counter' : 'bld_block'); } self.buildings.push(bb); return; }
       for (var yy = bb.y; yy < bb.y + bb.h; yy++) for (var xx = bb.x; xx < bb.x + bb.w; xx++) self.setTile(xx, yy, (xx === bb.doorAbs.x && yy === bb.doorAbs.y) ? 'bld_door' : 'bld_block');
-      if (bb.interior) self.warps.push({ x: bb.doorAbs.x, y: bb.doorAbs.y, to: bb.interior, tx: bb.entry ? bb.entry.x : 5, ty: bb.entry ? bb.entry.y : 7, name: bb.name });
+      if (bb.interior) { var bw = { x: bb.doorAbs.x, y: bb.doorAbs.y, to: bb.interior, tx: bb.entry ? bb.entry.x : 5, ty: bb.entry ? bb.entry.y : 7, name: bb.name };
+        // v8.1 作り直した町（def.remake81）：中の地図で着く所が、中の地図の出口（扉）の上になってしまう建物は、1 マス内側に着く（すぐ出られない・戻ろうとして出てしまう、を防ぐ）
+        if (def.remake81 && root.MapRemake && root.MAP_DEFS && root.MAP_DEFS[bb.interior]) { try { var ID0 = root.MAP_DEFS[bb.interior]; var ap = root.MapRemake.pos(bb.interior, bw.tx, bw.ty); var onW = function (x, y) { return (ID0.warps || []).some(function (q) { return q.x === x && q.y === y; }); };
+          if (onW(ap.x, ap.y)) { var TL0 = root.Tiles; var okC = function (x, y) { var r = ID0.rows && ID0.rows[y]; if (!r || x < 0 || x >= r.length) return false; var nm = TL0.byChar[r.charAt(x)] || ID0.fallback || 'grass'; return !TL0.isSolid(nm) && !onW(x, y); };
+            var cand = [[0, -1], [-1, 0], [1, 0], [0, 1]].map(function (o) { return [ap.x + o[0], ap.y + o[1]]; }).filter(function (p) { return okC(p[0], p[1]); })[0]; if (cand) { bw.tx = cand[0]; bw.ty = cand[1]; bw.raw = true; } } } catch (e) { /* いつもどおり */ } }
+        self.warps.push(bw); }
       self.buildings.push(bb);
     });
     if (root.MapWiden) { try { root.MapWiden.apply(this); } catch (e) { /* 広げられなくても元の地図のまま */ } }   // v7.0 ダンジョンの広い道（js/rpg/mapwiden.js）
