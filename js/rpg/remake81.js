@@ -22,6 +22,19 @@
   var cl = function (L) { return (L || []).map(function (o) { return o && typeof o === 'object' ? Object.assign({}, o) : o; }); };
   var nameOf = function (def, c) { return TL.byChar[c] || def.fallback || 'grass'; };
   // 建物の扉と扉の前（js/core/map.js と同じ計算）
+  // 初めて入ったときだけ（3D）：カメラを少しのあいだ目印へ向ける（入口から最初に見える物）。フラグで 2 回目からは待たせない。2D 版・元の間取りでは何もしない
+  R.firstView = function (id, flag, cine, ms) {
+    (root.MAP_ENTER_HOOKS = root.MAP_ENTER_HOOKS || []).push(function (m) {
+      if (!m || m.id !== id || !R.applied[id]) return; var d = root.State && root.State.data; if (!d || !d.flags || d.flags[flag]) return;
+      var A3 = root.MTQ3D; if (!A3 || !A3.camera || !A3.camera.setCine || (A3.mode3D && !A3.mode3D())) return;
+      var t0 = Date.now(); var iv = setInterval(function () {
+        var cur = A3.current && A3.current.map; if (Date.now() - t0 > 20000 || (root.World && root.World.map && root.World.map.id !== id)) { clearInterval(iv); return; }
+        if (!cur || cur.id !== id || A3.building) return; clearInterval(iv); d.flags[flag] = true;
+        try { A3.camera.setCine(cine); } catch (e) { /* カメラがなくても続ける */ }
+        setTimeout(function () { try { A3.camera.setCine(null); } catch (e) { /* なし */ } }, ms || 4000);
+      }, 200);
+    });
+  };
   R.door = function (b) {
     var bb = Object.assign({ w: 5, h: 3, doorX: 2 }, b); var d = { x: bb.x + bb.doorX, y: bb.y + bb.h - 1 };
     if (bb.doorSide === 'left' || bb.doorSide === 'right') d = { x: bb.doorSide === 'left' ? bb.x : bb.x + bb.w - 1, y: bb.y + (bb.doorY !== undefined ? bb.doorY : bb.h - 1) };

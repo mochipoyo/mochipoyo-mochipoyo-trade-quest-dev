@@ -12,6 +12,7 @@ import { buildWallGates } from './WallGate3D.js';
 import { buildLairGates } from './LairGate3D.js';
 import { buildFurniture81 } from './Furniture81.js';
 import { buildArcades81 } from './Arcade81.js';
+import { buildCrests81 } from './Crest81.js';
 import { dressMob } from '../entities/MobDress76.js';
 import { InteriorBuilder3D, INTERIOR_KINDS } from './InteriorBuilder3D.js';
 import { WorldBuilder3D } from './WorldBuilder3D.js';
@@ -92,6 +93,8 @@ export class MapScene3D {
       try { const lg = buildLairGates(map, { mats: app.mats, group: r.group, heightAt: r.heightAt }); if (lg.n) { lg.lamps.forEach((l) => this.lampSpots.push(l)); lg.animated.forEach((a) => this.animated.push(a)); this.lairGates = lg.n; } } catch (e) { console.warn('lairgate', e); }
       // v8.1 渡り廊下・回廊・側廊（定義の arcades81。world/Arcade81.js）
       try { const ar = buildArcades81(map, { mats: app.mats, group: r.group, heightAt: r.heightAt }); if (ar.n) this.arcades81 = ar.n; } catch (e) { console.warn('arcade81', e); }
+      // v8.1 門や正面の紋章と垂れ幕（定義の crests81。world/Crest81.js）
+      try { const cr = buildCrests81(map, { group: r.group, heightAt: r.heightAt }); if (cr.n) this.crests81 = cr.n; } catch (e) { console.warn('crest81', e); }
       if (slice) await slice();
       await r.finalize();
       if (slice) await slice();

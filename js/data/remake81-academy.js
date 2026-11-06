@@ -75,7 +75,7 @@
       def.events.forEach(function (e) { if (e.v72 || (e.x === 50 && e.y === 9)) e.text = ['【書庫の回廊のそば】', '研究生の下宿・研究者の居住区・学者の家が、北東の塀ぞいに並ぶ。回廊を登ると、観測塔の前の広場へ出る。']; });
       // 3D：渡り廊下（低いアーチの屋根）・書庫の回廊・側廊（js/../Furniture81 ではなく three-src/src/world/Arcade81.js）
       def.arcades81 = [{ x: 21, y: 35, w: 16, h: 2, kind: 'arcade' }, { x: 35, y: 26, w: 9, h: 2, kind: 'cloister' }, { x: 43, y: 22, w: 2, h: 4, kind: 'cloister' }, { x: 40, y: 30, w: 12, h: 2, kind: 'aisle' }];
-      def.crest81 = 'meridian';
+      def.crests81 = [{ x: AX + 1, y: 35.0, face: 's', kind: 'meridian', h: 3.45, size: 1.1, banner: true }];   // 渡り廊下の上：門から見える学院の徽章（天球の目盛りと子午線）
     }
   });
   /* ---------- 屋内（用途ごとの間取り。小さな画面でも、階段・話す人・調べる物が見える配置） ---------- */
