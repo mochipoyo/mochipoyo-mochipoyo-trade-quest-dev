@@ -10,11 +10,11 @@
        World.enterMap が新しい座標に直す。地図の中の物（入口・宝箱・人…）は、ここで新しい座標に書きかえる
    ・地域のないブロック：「外の地図」（w78_<bx>_<by>。陸も海もある。いちばん近い地域のフラグで開く）
    ・セーブ：形は「地図の ID＋ローカル座標」のまま。古いセーブ（旧座標）は World.start で新しい座標へ（主人公・乗り物・アストラ号・探索済み）
-       State.data.remakeVer[地域] = 'e78.1' が「地球の座標」の印。地球を使わない（2D 版・設定「地域ごと」）で読むときは旧座標へ戻す
+       State.data.remakeVer[地域] = 'e78.2'（版）が「地球の座標」の印（前の版 'e78.1' のセーブは、その版の配置 → 旧座標 → いまの配置へ直す）。地球を使わない（2D 版・設定「地域ごと」）で読むときは旧座標へ戻す
    ========================================================= */
 (function (root) {
   'use strict';
-  var E = root.Earth78 = { ready: false, stats: {}, VERSION: 'e78.1' };
+  var E = root.Earth78 = { ready: false, stats: {}, VERSION: 'e78.2' };
   var L = root.EARTH78_LAYOUT; if (!L) { var W0 = root.World76; if (W0 && W0.earth && !W0._init) { W0.earth = false; W0.init(); } return; }   // 配置のデータがなければ、前の版の配置でつなぐ
   var W = L.W, H = L.H, BW = L.BW, BH = L.BH, WB = W / BW, HB = H / BH;
   var VER = L.VERSION; E.VERSION = VER;
@@ -48,6 +48,13 @@
   var XF = {}; E.XF = XF;
   var SIG = 9;   // 補正の届く範囲（旧座標のマス）
   function oldDef(id) { return OLD[id] || null; }
+  // 前の版の配置（L.prev[版][地域].pins）の変換（セーブの引き継ぎだけに使う。いまの XF は変えない）
+  var XFP = {};
+  function fitXfPrev(id, ver) {
+    var key = ver + ':' + id; if (XFP[key]) return XFP[key]; var pv = L.prev && L.prev[ver] && L.prev[ver][id]; if (!pv) return null;
+    var spec = L.regions[id], save = spec.pins, saveXf = XF[id]; spec.pins = pv.pins; var xf = fitXf(id); spec.pins = save; if (saveXf) XF[id] = saveXf; else delete XF[id];
+    XFP[key] = xf; return xf;
+  }
   function fitXf(id) {
     var spec = L.regions[id], o = OLD[id]; if (!spec || !o) return null; var r = L.rectOf(id);
     var xf = { id: id, anchors: [], rect: r };
@@ -442,6 +449,12 @@
     def.rows = function () { return rows; }; def.earth78 = { version: VER, w: g.W, h: g.H };
     var ex = EXACT[id] = {};
     g.locs.forEach(function (l) { if (l.ref) { if (o) ex[l.ref.x + ',' + l.ref.y] = { x: l.x, y: l.y }; l.ref.x = l.x; l.ref.y = l.y; } });
+    // 町・ダンジョンから出る先（旧座標で書いたワープの着地点）：入口（場所）のそばなら、新しい入口から同じ向き・同じ距離へ（入口を地形に合わせて寄せても、いつも入口のすぐ横に出る）
+    if (o) Object.keys(root.MAP_DEFS).forEach(function (mid) { var dd = root.MAP_DEFS[mid]; if (mid === id || !dd || dd.region) return; (dd.warps || []).forEach(function (wp) {
+      if (!wp || wp.to !== id || typeof wp.tx !== 'number') return; var key = wp.tx + ',' + wp.ty; if (ex[key]) return;
+      var best = null; o.locations.forEach(function (ol) { var d0 = Math.abs(ol.x - wp.tx) + Math.abs(ol.y - wp.ty); if (d0 > 0 && d0 <= 3 && (!best || d0 < best.d)) best = { ol: ol, d: d0 }; }); if (!best) return;
+      var nl = null; g.locs.forEach(function (l) { if (l.id === best.ol.id) nl = l; }); if (!nl) return;
+      var q = snap(g.rows, g.W, g.H, nl.x + (wp.tx - best.ol.x), nl.y + (wp.ty - best.ol.y), function (c) { return walkCh(c) && !ICONCH[c]; }, 3); if (q) ex[key] = q; }); });
     (def.warps || []).forEach(function (wp) { var p = g.pos['L:' + wp.locId]; if (p) { wp.x = p.x; wp.y = p.y; } });
     ['chests', 'npcs', 'events'].forEach(function (k, ki) { ((g.objs || {})[k] || []).forEach(function (it, i) { var key = 'CNE'[ki] + ':' + (it.ref && it.ref.id ? it.ref.id : i); var p = g.pos[key]; if (!p || !it.ref) return; if (o) ex[it.x + ',' + it.y] = ex[it.x + ',' + it.y] || { x: p.x, y: p.y }; it.ref.x = p.x; it.ref.y = p.y; }); });
     if (o) {
@@ -467,8 +480,31 @@
   }
 
   /* ---------- セーブ（地球の座標へ／旧座標へ戻す） ---------- */
+  // 前の版（e78.1）の地球の座標のセーブ：配置を変えた地域（L.prev）は、その版の配置 → 旧座標へ戻して印を消す（このあと migrateOn がいまの配置へ）。
+  //   配置を変えていない地域は印だけ新しい版へ
+  function upgradePrev(d, same) {
+    if (!d || !d.remakeVer) return; same = same || function () { return false; };
+    Object.keys(d.remakeVer).forEach(function (id) { var ver = d.remakeVer[id]; if (ver === VER || !L.prev || !L.prev[ver] || !L.regions[id] || L.regions[id].isNew) return;
+      if (!L.prev[ver][id]) { d.remakeVer[id] = VER; return; }
+      snapshotOld(id); var o = OLD[id]; var xf = fitXfPrev(id, ver); if (!o || !xf) return; var r = L.rectOf(id);
+      var back = function (x, y, water) { var p = inv(xf, r.x + x, r.y + y); var q = { x: Math.max(0, Math.min(o.W - 1, Math.round(p.x))), y: Math.max(0, Math.min(o.H - 1, Math.round(p.y))) };
+        return snap(o.rows, o.W, o.H, q.x, q.y, water ? function (c) { return c === '~' || c === 'w'; } : function (c) { return walkCh(c) && !ICONCH[c]; }, 30) || q; };
+      var on = function (m) { return m === id; };
+      if (d.pos && on(d.pos.map) && !same(d.pos)) { var p = back(d.pos.x, d.pos.y, d.aboard && d.aboard !== 'airship'); d.pos.x = p.x; d.pos.y = p.y; }
+      Object.keys(d.vehicles || {}).forEach(function (k) { var s = d.vehicles[k]; if (!s) return; var ship = k !== 'airship';
+        if (s.map && on(s.map) && typeof s.x === 'number' && !same(s)) { var p2 = d.aboard === k && d.pos && d.pos.map === s.map ? { x: d.pos.x, y: d.pos.y } : back(s.x, s.y, ship); s.x = p2.x; s.y = p2.y; }
+        if (s.port && on(s.port.map)) { var p3 = back(s.port.x, s.port.y, ship); s.port.x = p3.x; s.port.y = p3.y; } });
+      var A = d.astra; if (A && on(A.map) && typeof A.x === 'number') { var p4 = back(A.x, A.y, false); A.x = p4.x; A.y = p4.y; }
+      if (A && A.from && on(A.from.map)) { var p6 = back(A.from.x, A.from.y, false); A.from.x = p6.x; A.from.y = p6.y; }
+      if (d.dungeonEntry && on(d.dungeonEntry.map)) { var p5 = back(d.dungeonEntry.x, d.dungeonEntry.y, false); d.dungeonEntry.x = p5.x; d.dungeonEntry.y = p5.y; }
+      var disc = d.mapDiscovery && d.mapDiscovery[id]; if (disc && disc.length) { var has = function (x, y) { var row = disc[y]; return !!(row && ((row[(x / 30) | 0] || 0) & (1 << (x % 30)))); }; var out = [];
+        for (var y = 0; y < o.H; y++) { out[y] = []; for (var x = 0; x < o.W; x++) { var f = fwd(xf, x, y); var X = Math.round(f.x) - r.x, Y = Math.round(f.y) - r.y; if (X >= 0 && Y >= 0 && X < r.w && Y < r.h && has(X, Y)) { var ii = (x / 30) | 0; out[y][ii] = (out[y][ii] || 0) | (1 << (x % 30)); } } }
+        d.mapDiscovery[id] = out; }
+      delete d.remakeVer[id]; (d.e78up = d.e78up || []).push(id + ':' + ver); });
+  }
+  E.upgradePrev = upgradePrev;
   function migrateOn(d) {
-    if (!d) return false; d.remakeVer = d.remakeVer || {}; var changed = false;
+    if (!d) return false; upgradePrev(d); d.remakeVer = d.remakeVer || {}; var changed = false;
     var need = E.ids.filter(function (id) { return OLD[id] && d.remakeVer[id] !== VER; }); if (!need.length) return false;
     var isNeed = function (m) { return need.indexOf(m) >= 0; };
     if (d.pos && isNeed(d.pos.map)) { var p = mapPos(d.pos.map, d.pos.x, d.pos.y); if (d.aboard && d.aboard !== 'airship') { var g = GEN[d.pos.map]; var q = snap(g.rows, g.W, g.H, p.x, p.y, function (c) { return c === '~' || c === 'w' || (d.aboard === 'galleon' && c === '0'); }, 30); if (q) p = q; } d.pos.x = p.x; d.pos.y = p.y; changed = true; }
@@ -491,7 +527,7 @@
   function migrateOff(d) {
     var skip = d && d.e78skip; if (d) delete d.e78skip;   // World76.normalizeSave が旧座標で決めた位置（外の地図・新しい地域にいたセーブ）
     var same = function (o) { return !!skip && !!o && o.map === skip.map && o.x === skip.x && o.y === skip.y; };
-    if (!d || !d.remakeVer) return false; var ids = Object.keys(L.regions).filter(function (id) { return d.remakeVer[id] === VER && root.MAP_DEFS[id] && !L.regions[id].isNew; }); if (!ids.length) return false;
+    if (!d || !d.remakeVer) return false; upgradePrev(d, same); var ids = Object.keys(L.regions).filter(function (id) { return d.remakeVer[id] === VER && root.MAP_DEFS[id] && !L.regions[id].isNew; }); if (!ids.length) return false;
     ids.forEach(function (id) { snapshotOld(id); fitXf(id); });
     var back = function (m, x, y, water) { var o = OLD[m]; var q = mapBack(m, x, y, null); var s = snap(o.rows, o.W, o.H, q.x, q.y, water ? function (c) { return c === '~' || c === 'w'; } : function (c) { return walkCh(c) && !ICONCH[c]; }, 30); return s || q; };
     var isB = function (m) { return ids.indexOf(m) >= 0; };

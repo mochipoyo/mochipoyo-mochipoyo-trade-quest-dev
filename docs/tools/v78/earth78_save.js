@@ -55,4 +55,21 @@ ok(w2.World76.REGIONS.includes(h6.pos.map) && h6.aboard === 'galleon' && gv6.map
 g6.pos = { map: 'neon_town', x: 17, y: 16, dir: 'down' }; g6.aboard = null; w2.State.data = JSON.parse(JSON.stringify(g6)); w2.World.start(); const k6 = w2.State.data;
 ok(k6.pos.map === 'poyo_village' && !k6.aboard && w2.MAP_DEFS[k6.vehicles.galleon.map] && !/nereia/.test(k6.vehicles.galleon.map), '2D 版：錆雨市の町にいた（最後の宿も錆雨市）→ ポヨ村・新しい地域に置いた船は置き場へ（' + k6.vehicles.galleon.map + '）');
 ok(h6.astra.map === 'world_sky' && h6.lastInn.map === 'poyo_village' && !h6.dungeonEntry, '2D 版：アストラ号は空の区画・最後の宿はポヨ村・新しい地域の入口の記録は消す ' + JSON.stringify({ astra: h6.astra.map, inn: h6.lastInn.map }));
+// ---------- 7) 前の版（e78.1）の地球のセーブ → いまの配置（e78.2：町の配置を広げた）／2D 版。前の版のスナップショットで作る（OLD78、なければ飛ばす）
+const OLD78 = process.env.OLD78 || '/home/claude/envsnap_t88/';
+if (require('fs').existsSync(OLD78 + 'js/data/earth78-layout.js') && /e78\.1/.test(require('fs').readFileSync(OLD78 + 'js/data/earth78-layout.js', 'utf8'))) {
+  const V1 = load({ dir: OLD78 }); const w1 = V1.w; w1.State.newGame('t', 'warrior'); const g1 = w1.State.data; g1.flags.ship_ready = true; g1.flags.s3121_new_prologue = true; w1.World.start();
+  const m1 = w1.World.getMap('world'); const poyo1 = m1.def.locations.find((l) => l.id === 'poyo_village'); const mar1 = m1.def.locations.find((l) => l.id === 'harbor');
+  g1.pos = { map: 'world', x: poyo1.x, y: poyo1.y + 1, dir: 'down' }; const sbw = [[0, -1], [-1, 0], [1, 0], [0, 1], [-1, -1], [1, -1]].map(([dx, dy]) => [mar1.x + dx, mar1.y + dy]).find(([x, y]) => w1.Tiles.isWater(m1.tiles[y][x]));
+  g1.vehicles.sailboat = { owned: true, map: 'world', x: sbw[0], y: sbw[1], port: { map: 'world', x: sbw[0], y: sbw[1] } };
+  g1.astra = { owned: true, map: 'world_kalion', x: 40, y: 45, flying: false, e78: true, log: {} }; const v1txt = JSON.stringify(g1);
+  ok(g1.remakeVer.world === 'e78.1', '前の版（e78.1）の地球のセーブを作った（ポヨ村の前・帆船はマリナのそば・アストラ号はカリオン）');
+  w3.State.data = JSON.parse(v1txt); w3.World.start(); const u = w3.State.data; const mw = w3.World.getMap('world'); const poyo2 = mw.def.locations.find((l) => l.id === 'poyo_village'); const mar2 = mw.def.locations.find((l) => l.id === 'harbor');
+  ok(u.remakeVer.world === w3.Earth78.VERSION && u.pos.map === 'world' && Math.abs(u.pos.x - poyo2.x) + Math.abs(u.pos.y - poyo2.y) <= 5 && walk(w3, 'world', u.pos.x, u.pos.y), '→ いまの配置：主人公はポヨ村（広げた配置の場所）のそば（5 マス以内）の歩けるマス ' + JSON.stringify({ pos: u.pos, poyo: [poyo2.x, poyo2.y], ver: u.remakeVer.world }));
+  ok(water(w3, 'world', u.vehicles.sailboat.x, u.vehicles.sailboat.y) && Math.abs(u.vehicles.sailboat.x - mar2.x) + Math.abs(u.vehicles.sailboat.y - mar2.y) <= 8, '→ 帆船は港町マリナ（広げた配置）のそばの海 ' + JSON.stringify({ sb: [u.vehicles.sailboat.x, u.vehicles.sailboat.y], marina: [mar2.x, mar2.y] }));
+  ok(u.astra.map === 'world_kalion' && walk(w3, 'world_kalion', u.astra.x, u.astra.y) && u.remakeVer.world_kalion === w3.Earth78.VERSION && u.remakeVer.world_grania === w3.Earth78.VERSION, '→ アストラ号（カリオン）も直し、配置を変えていない地域は印だけ新しい版 ' + JSON.stringify({ astra: [u.astra.x, u.astra.y], up: u.e78up }));
+  const p7 = JSON.stringify(u.pos); w3.World.start(); ok(JSON.stringify(w3.State.data.pos) === p7, '→ もう一度読んでも動かない');
+  w2.State.data = JSON.parse(v1txt); w2.World.start(); const u2 = w2.State.data;
+  ok(u2.pos.map === 'world' && Math.abs(u2.pos.x - exit.tx) + Math.abs(u2.pos.y - exit.ty) <= 4 && walk(w2, 'world', u2.pos.x, u2.pos.y) && !u2.remakeVer.world, '前の版（e78.1）の地球のセーブ → 2D 版：旧座標のポヨ村の出口の近く ' + JSON.stringify(u2.pos));
+} else console.log('（前の版のスナップショットがないので 7 は飛ばした）');
 console.log(ng.length ? '結果：NG ' + ng.length : '結果：すべて OK'); process.exit(ng.length ? 1 : 0);

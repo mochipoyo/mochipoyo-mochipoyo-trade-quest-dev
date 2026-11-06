@@ -9,17 +9,19 @@
 (function (root) {
   'use strict';
   var L = {
-    VERSION: 'e78.1', W: 1440, H: 840, BW: 40, BH: 30, LON0: -169, LAT_N: 80,
+    VERSION: 'e78.2', W: 1440, H: 840, BW: 40, BH: 30, LON0: -169, LAT_N: 80,
     regions: {
       world: { rect: [15, 5, 3, 5], name: 'アルカディア相場大陸', area: '西ヨーロッパ',
-        pins: { poyo_village: [0.3, 46.6], rivel_castle_town: [2.3, 48.8], lost_forest: [5.4, 47.4], dow_village: [4.8, 45.6], oblivion_cave: [1.0, 43.4], emal_pass: [1.0, 50.3], harbor: [-1.1, 45.4] },
-        hills: [[1.0, 50.6, 1.6, 0.9]] },   // エマール山脈（[経度, 緯度, 半径（度）, 濃さ]）
+        // v7.8 e78.2：町どうしの歩く距離を前の地図と同じくらいに広げた（ポヨ村＝ロワール、リヴェル＝パリの北、港町マリナ＝ビスケー湾の海岸、迷いの森＝黒い森、ダウの村＝リヨンの西、忘却の洞窟＝ピレネーの北東、エマール峠＝フランドルの丘）
+        pins: { poyo_village: [0.1, 47.1], rivel_castle_town: [2.6, 49.0], lost_forest: [7.6, 48.0], dow_village: [4.4, 45.3], oblivion_cave: [2.9, 43.2], emal_pass: [4.2, 50.9], harbor: [-1.1, 44.0] },
+        hills: [[4.2, 51.1, 1.6, 0.9]] },   // エマール山脈（[経度, 緯度, 半径（度）, 濃さ]）
       world_grania: { rect: [18, 7, 4, 2], name: 'グラニア鉱業地方', area: 'イタリア・バルカン', gate: 'ship_ready',
         gateText: 'グラニアへは海から。（港町マリナの船を直してから）',
         pins: { grania_pass_s: [11.6, 45.4], ash_shore: [11.3, 42.5], verum_town: [14.7, 41.0], ash_cave: [13.2, 42.8], iron_mine: [18.4, 44.2], iron_fort: [21.4, 45.0], sunken_reef: [25.4, 36.5], pirate_nest: [12.1, 37.9], ash_cape: [29.2, 43.0] },
         islets: ['sunken_reef', 'pirate_nest', 'ash_cape'], ash: true },
       world_kalion: { rect: [18, 4, 2, 3], name: 'カリオン徴収連邦', area: '中央ヨーロッパ・バルト海', gate: 'kalion_open',
-        pins: { grania_pass_n: [12.2, 49.4], kalion_city: [14.0, 51.0], luxbell: [19.8, 50.2], asana_ruins: [11.9, 52.2], erased_village: [13.6, 53.6], secret_lab: [21.5, 54.2], sentra_capital: [17.4, 54.5] } },
+        // v7.8 e78.2：前の地図の並びのまま広げた（カリオン市＝ポーランド中部、灰の峠の北口＝タトラ山地、セントラ＝バルト海の東岸）
+        pins: { grania_pass_n: [20.6, 49.2], kalion_city: [20.6, 51.9], luxbell: [30.1, 50.4], asana_ruins: [11.6, 52.8], erased_village: [16.6, 54.5], secret_lab: [28.6, 54.1], sentra_capital: [22.9, 57.5] } },
       world_islands: { rect: [13, 8, 2, 3], name: '断裂群島', area: '大西洋・アゾレス', gate: 'galleon_ready', vehicles: ['galleon', 'airship'],
         oldMask: { s: 0.6, cx: 80, cy: 62, gx: 560, gy: 286 } },   // 架空の島々：旧地図の陸の形を縮めて置く（島・小島の分かれ方がそのまま）
       world_desert: { rect: [15, 10, 5, 2], name: 'リシア砂漠', area: 'サハラ', gate: 'yorn_letter_done',
@@ -28,7 +30,7 @@
       world_tempus: { rect: [20, 9, 3, 3], name: '時の神殿領', area: 'エジプト・アラビア・メソポタミア', gate: 'yorn_letter_done',
         pins: { tempus_city: [31.6, 30.2], temple_of_time: [51.0, 34.4], volatilia: [46.7, 24.7], dimension_gate: [55.3, 23.4] } },
       world_magicka: { rect: [23, 9, 3, 4], name: 'マクディア魔導王国', area: 'インド', gate: 'zeromea_choice_done',
-        pins: { magicka_city: [77.6, 17.6], forbidden_archive: [77.2, 23.1], tradia: [74.2, 15.6], origin_lab: [82.6, 20.6] } },
+        pins: { magicka_city: [78.0, 19.0], forbidden_archive: [78.1, 25.6], tradia: [74.9, 13.3], origin_lab: [85.6, 20.3] } },   // v7.8 e78.2：デカン高原・ガンジス平原・カルナータカの海岸・オディシャへ広げた
       world_snow: { rect: [20, 2, 4, 4], name: '忘却の雪原', area: '北ロシア・白海', gate: 'yorn_letter_done',
         pins: { ciel_port: [40.2, 64.7], frost_town: [45.5, 65.5], spirit_forest: [35.5, 67.3], frozen_tower: [62.0, 67.6] } },
       world_dragon: { rect: [26, 12, 5, 3], name: '竜炎火山群島', area: 'インドネシア', gate: 'magicka_arrived',
@@ -51,6 +53,11 @@
     sail: ['world', 'world_grania'],   // 小型帆船で出られる地図（その地域と、いちばん近い地域がそこである外の地図）
     // 浮天城アエリアの影が落ちる海（太平洋の上空。アストラ号で接舷）
     aeria: { lon: -152, lat: 21, r: 7 },
+    // 前の版の配置（セーブの引き継ぎ：その版の地球の座標 → 旧座標 → いまの地球の座標）。ここにない地域は前の版と同じ
+    prev: { 'e78.1': {
+      world: { pins: { poyo_village: [0.3, 46.6], rivel_castle_town: [2.3, 48.8], lost_forest: [5.4, 47.4], dow_village: [4.8, 45.6], oblivion_cave: [1.0, 43.4], emal_pass: [1.0, 50.3], harbor: [-1.1, 45.4] } },
+      world_kalion: { pins: { grania_pass_n: [12.2, 49.4], kalion_city: [14.0, 51.0], luxbell: [19.8, 50.2], asana_ruins: [11.9, 52.2], erased_village: [13.6, 53.6], secret_lab: [21.5, 54.2], sentra_capital: [17.4, 54.5] } },
+      world_magicka: { pins: { magicka_city: [77.6, 17.6], forbidden_archive: [77.2, 23.1], tradia: [74.2, 15.6], origin_lab: [82.6, 20.6] } } } },
     order: ['world', 'world_grania', 'world_kalion', 'world_islands', 'world_nereia', 'world_desert', 'world_tempus', 'world_meridian', 'world_snow', 'world_magicka', 'world_dragon', 'world_neon', 'world_dark']
   };
   var R = L.W / (2 * Math.PI);
