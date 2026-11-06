@@ -24,7 +24,7 @@
   R78.monster = function (id, o) {
     if (!EN || EN[id]) throw new Error('region78: 敵の ID が重複 ' + id);
     var s = statsFor(o.lv, o.arche); Object.keys(s).forEach(function (k) { if (o[k] === undefined) o[k] = s[k]; });
-    if (o.hpMult) o.hp = Math.round(o.hp * o.hpMult); if (o.atkMult) o.atk = Math.round(o.atk * o.atkMult);
+    if (o.hpMult) o.hp = Math.round(o.hp * o.hpMult); if (o.atkMult) o.atk = Math.round(o.atk * o.atkMult); if (o.magMult && o.mag) o.mag = Math.round(o.mag * o.magMult);   // v7.8 ボスの強さ：章の想定レベルでのオート戦闘の勝率から（docs/environment/REPORT.md の 16）
     o.id = id; o.mp = o.mp || 0; o.mag = o.mag || 0; o.resist = o.resist || {}; o.drops = o.drops || []; o.actions = o.actions || [R78.A('attack', 1)]; o.region = 'reachable'; o.v78 = true;
     o.weak = Object.keys(o.resist).filter(function (k) { return o.resist[k] > 1; });
     EN[id] = o; R78.monsters.push(id); return o;
