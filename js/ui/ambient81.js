@@ -45,5 +45,6 @@
     if (lv <= 0.001 && s.src && s.vol <= 0.001 && !A._off) A._off = setTimeout(function () { A._off = null; if (A.state.target <= 0.001) stop(); }, 1500);   // 聞こえない所が続いたら止める
   };
   A.init = function () { if (A._iv) return; A._iv = setInterval(function () { try { A.tick(); } catch (e) { /* 音なしで続ける */ } }, 250); };
-  if (typeof document !== 'undefined' && (root.AudioContext || root.webkitAudioContext)) A.init();   // 音の使えない環境（jsdom の確かめなど）では回さない
+  var jsdom = typeof navigator !== 'undefined' && /jsdom/i.test(navigator.userAgent || '');
+  if (typeof document !== 'undefined' && (root.AudioContext || root.webkitAudioContext) && !jsdom) A.init();   // 音の使えない環境（jsdom の確かめなど）では回さない
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -27,7 +27,8 @@ for (const id of ids) {
   if (def.levels76) { const pr = w.Terrace76.validate(m); ok(!pr.length, id + '：段（擁壁・階段・坂）の決まり ' + pr.slice(0, 4).join(' / ')); }
   // 歩ける（人は通れない扱い：ふさいでいないか）
   m.npcs.forEach((n) => { if (n.hideIf) n.hidden = true; });   /* 条件で消える人（守衛など）は、消えたあとで道を確かめる */
-  const pass = (x, y) => x >= 0 && y >= 0 && x < m.w && y < m.h && m.passable(x, y, d) && !m.npcAt(x, y) && !(m.eventAt(x, y) && m.eventAt(x, y).solid);
+  const gateAt = (x, y) => { const e = m.eventAt(x, y); return !!(e && e.type === 'gate' && e.needFlag); };   /* 条件で開く扉（gate）は開いたあとの道で確かめる */
+  const pass = (x, y) => x >= 0 && y >= 0 && x < m.w && y < m.h && (gateAt(x, y) || (m.passable(x, y, d) && !(m.eventAt(x, y) && m.eventAt(x, y).solid))) && !m.npcAt(x, y);
   let starts = [];
   if (def.open81) {
     const ring = []; for (let x = 0; x < m.w; x++) { ring.push([x, 0]); ring.push([x, m.h - 1]); } for (let y = 1; y < m.h - 1; y++) { ring.push([0, y]); ring.push([m.w - 1, y]); }
