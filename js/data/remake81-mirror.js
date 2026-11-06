@@ -43,6 +43,7 @@
     warps: [GX, GX + 1].map(function (x) { return { x: x, y: H - 1, to: 'world_desert', tx: 86, ty: 35, name: '砂漠へ' }; }),
     anchors: [[15, 20, GX, 22], [16, 20, GX + 1, 22], [15, 19, GX, 21], [16, 19, GX + 1, 21]],
     after: function (def) {
+      def.waterSound81 = [{ x: 27, y: 9, r: 7 }];   // 泉の水音（js/ui/ambient81.js）
       def.events.forEach(function (e) { if (e.x === 38 && e.y === 12) e.text = ['【東の隊商宿通り】', '隊商の道を東へ。物見やぐらと隊商の家。', '泉の広場の屋台は、泉をはさんで左右おなじ形に並んでいる。']; });
       var say = function (name, lines) { return async function (c) { await c.say(name, lines); }; };
       def.npcs.forEach(function (n) {

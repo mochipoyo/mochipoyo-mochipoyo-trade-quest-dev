@@ -45,6 +45,7 @@
     warps: [RX, RX + 1, RX + 2, RX + 3].map(function (x) { return { x: x, y: H - 1, to: 'world_magicka', tx: 80, ty: 60, name: '都の外へ' }; }),
     anchors: [[20, 29, RX, 32], [21, 29, RX + 1, 32], [22, 29, RX + 2, 32], [23, 29, RX + 3, 32], [20, 30, RX, 33], [21, 30, RX + 1, 33], [22, 30, RX + 2, 33], [23, 30, RX + 3, 33]],
     after: function (def) {
+      def.waterSound81 = [{ x: 10, y: 24, r: 6, v: 0.7 }, { x: 32, y: 24, r: 7 }, { x: 54, y: 24, r: 6, v: 0.7 }, { x: 32, y: 18, r: 5, v: 0.6 }];   // 運河と噴水の水音（js/ui/ambient81.js）
       def.events.forEach(function (e) { if (e.x === 47 && e.y === 16) e.text = ['【北東の魔導の筋】', '広場から北東へ光る筋をたどると、魔導教会・魔導士の家・魔導の塔。', '北西の筋は王立学院と魔導具職人の家、書庫へ。']; });
       var say = function (name, lines) { return async function (c) { await c.say(name, lines); }; };
       def.npcs.forEach(function (n) {

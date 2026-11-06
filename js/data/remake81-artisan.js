@@ -56,6 +56,7 @@
     keepWarp: function (w) { return w.to === 'rivel_town'; },   // 西の門（城下町へ）は前と同じ位置
     anchors: [[1, 15, 1, 15], [1, 16, 1, 16], [29, 19, PX + 2, PY + 1]],
     after: function (def) {
+      def.waterSound81 = [{ x: 38, y: 6, r: 5, v: 0.7 }, { x: 38, y: 15, r: 6 }, { x: 38, y: 25, r: 5, v: 0.7 }];   // 水路の水音（js/ui/ambient81.js）
       def.events.forEach(function (e) {
         if (e.x === 22 && e.y === 15) e.text = ['案内板：「職人通り——北：機織りの家・鍛冶屋の工房（裏に細い路地）　南西：庭園　南：倉庫」', '「東：水路の橋の向こうに菜園と新市街　広場の古井戸は立ち入り禁止」'];
         if (e.x === 51 && e.y === 14) e.text = ['【東の新市街】', '騎士の家・見張りの塔・仕立て屋・騎士の詰所。広場にもう一つの井戸と屋台。'];

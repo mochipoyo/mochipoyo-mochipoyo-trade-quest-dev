@@ -1,5 +1,5 @@
 // v8.1 作り直した地図の確かめ（jsdom）：node remake81_check.js [mapId,...] [2d]
-// ・行の長さ・建物どうし／建物と人・出来事・宝箱の重なり・扉の前が歩ける・建物が外枠（いちばん外の 1 マス）にかからない
+// ・行の長さ・建物どうし／建物と人・出来事・宝箱の重なり・扉の前が歩ける・建物が外枠（いちばん外の 1 マス）にかからない・水の音の元（waterSound81）が水のそば
 // ・開いた村：外周（四辺・四隅）がすべて歩けて、一続き。外周のどのマスからも、全部の扉の前・人（となり）・出来事・宝箱・調べる所へ行ける
 // ・開いていない地図：外から着く所（ほかの地図のワープの着地点）から全部へ行ける
 // ・中の地図の出口（建物の中から外へ）の着く所が、その建物の扉の前（MapRemake.pos で写した結果）
@@ -28,6 +28,7 @@ for (const id of ids) {
   fronts.forEach((f) => { if (!m.passable(f[1], f[2], d)) bad.push(f[0] + ' の扉の前 ' + f[1] + ',' + f[2] + ' が歩けない'); if (m.npcAt(f[1], f[2])) bad.push(f[0] + ' の扉の前に人'); });
   ok(!bad.length, id + '：建物 ' + m.buildings.length + '（重なり・扉の前）' + bad.slice(0, 6).join(' / '));
   if (def.levels76) { const pr = w.Terrace76.validate(m); ok(!pr.length, id + '：段（擁壁・階段・坂）の決まり ' + pr.slice(0, 4).join(' / ')); }
+  if (def.waterSound81) { const wet = (t) => /water|shallow|deep|fountain|well|pool|river|canal/.test(t || ''); const far = def.waterSound81.filter((q) => { for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) { const r = m.tiles[q.y + dy]; if (r && wet(r[q.x + dx])) return false; } return true; }); ok(!far.length, id + '：水の音の元 ' + def.waterSound81.length + ' か所が水（水路・泉・噴水・井戸）のそば ' + far.map((q) => q.x + ',' + q.y).join(' ')); }
   // 歩ける（人は通れない扱い：ふさいでいないか）
   m.npcs.forEach((n) => { if (n.hideIf) n.hidden = true; });   /* 条件で消える人（守衛など）は、消えたあとで道を確かめる */
   const gateAt = (x, y) => { const e = m.eventAt(x, y); return !!(e && e.type === 'gate' && e.needFlag); };   /* 条件で開く扉（gate）は開いたあとの道で確かめる */

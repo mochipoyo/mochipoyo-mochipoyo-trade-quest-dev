@@ -48,6 +48,7 @@
     warps: [RX, RX + 1, RX + 2, RX + 3].map(function (x) { return { x: x, y: H - 1, to: 'world_tempus', tx: 58, ty: 64, name: '町の外へ' }; }),
     anchors: [[18, 27, RX, 28], [19, 27, RX + 1, 28], [20, 27, RX + 2, 28], [21, 27, RX + 3, 28], [18, 28, RX, 29], [19, 28, RX + 1, 29], [20, 28, RX + 2, 29], [21, 28, RX + 3, 29]],
     after: function (def) {
+      def.waterSound81 = [{ x: 17, y: 21, r: 5, v: 0.6 }];   // 噴水の水音（js/ui/ambient81.js）
       def.arcades81 = [{ x: RX, y: 16, w: 4, h: 10, kind: 'arcade' }];   // 鐘の回廊
       def.events.forEach(function (e) { if (e.x === 45 && e.y === 8) e.text = ['【歯車通り】', '東の小路に、歯車の台・小さな時計塔・画家のアトリエ。', '北の通りの東に時計工房。']; });
       var say = function (name, lines) { return async function (c) { await c.say(name, lines); }; };
