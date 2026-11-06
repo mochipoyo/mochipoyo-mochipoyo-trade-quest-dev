@@ -1,0 +1,11 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/add35test.js.orig	2026-11-06 16:28:32.909621592 +0900
++++ v75/add35test.js	2026-11-06 16:28:32.924818922 +0900
+@@ -37,7 +37,7 @@
+ 
+   console.log('--- 2. 既存の敵・特殊行動・図鑑の並びを壊していない ---');
+   const changed = [];
+-  Object.keys(old.E).forEach((id) => { const o = old.E[id], e = EN[id]; if (!e) { changed.push(id + ' 消えた'); return; } ['lv', 'hp', 'atk', 'def', 'agi', 'mag', 'exp', 'gold', 'mp', 'area', 'family', 'boss'].forEach((k) => { if (JSON.stringify(o[k]) !== JSON.stringify(k === 'boss' ? !!e.boss : e[k])) changed.push(id + '.' + k); }); if (JSON.stringify(o.drops) !== JSON.stringify(e.drops)) changed.push(id + '.drops'); if (JSON.stringify(o.resist) !== JSON.stringify(e.resist)) changed.push(id + '.resist'); });
++  Object.keys(old.E).forEach((id) => { const o = old.E[id], e = EN[id]; if (!e) { changed.push(id + ' 消えた'); return; } ['lv', 'hp', 'atk', 'def', 'agi', 'mag', 'exp', 'gold', 'mp', 'area', 'family', 'boss'].forEach((k) => { if ((k === 'hp' || k === 'atk' || k === 'mag') && ((w.BOSS64 && w.BOSS64.table[id]) || (w.BOSS79 && w.BOSS79.applied.includes(id)))) return; /* v7.9 MP の底上げに合わせてボスの HP（一部は攻撃・魔力）を上げた（js/data/boss64.js・boss79.js。値は boss64test が調べる） */ if (JSON.stringify(o[k]) !== JSON.stringify(k === 'boss' ? !!e.boss : e[k])) changed.push(id + '.' + k); }); if (JSON.stringify(o.drops) !== JSON.stringify(e.drops)) changed.push(id + '.drops'); if (JSON.stringify(o.resist) !== JSON.stringify(e.resist)) changed.push(id + '.resist'); });
+   ok(!changed.length, '既存の ' + Object.keys(old.E).length + ' 体：レベル・HP・攻撃・守備・素早さ・魔力・経験値・お金・落とす物・耐性・出現場所・種族は前の版と同じ ' + changed.slice(0, 6).join(','));
+   const act0 = (id) => EN[id].actions0 || EN[id].actions;   // v7.6 敵の固有技（js/data/enemyskills76.js）を足す前の行動で比べる
+   const actCh = Object.keys(old.E).filter((id) => JSON.stringify(old.E[id].actions) !== JSON.stringify(act0(id)));
