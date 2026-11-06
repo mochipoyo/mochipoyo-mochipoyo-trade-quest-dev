@@ -179,6 +179,8 @@
     if (spec.levels) def.levels76 = spec.levels(W, H, rows);   // 段（js/rpg/terrace76.js の levels76。3D の高さ。段の縁は擁壁 |、つなぎは階段 /・坂 ;）
     if (spec.open) def.open81 = spec.open === true ? { all: true } : spec.open;
     if (spec.after) spec.after(def, { W: W, H: H, G: G, anchor: anchor });
+    // 豆知識おばさん（js/data/chatter67.js の置き場所）も、作り直した位置にそろえる
+    var C67 = root.CHATTER67 && root.CHATTER67.aunts && root.CHATTER67.aunts[id]; if (C67) { var an = (def.npcs || []).filter(function (n) { return n.id === 'aunt67_' + id; })[0]; if (an) { C67.x = an.x; C67.y = an.y; } }
     var ver = 'r81.' + (spec.version || 1);
     var reg = { version: ver, oldW: oldW, oldH: oldH, newW: W, newH: H, r81: true,
       mapPos: function (x, y) { var p = prevPos(x, y); return mine(p.x, p.y); },

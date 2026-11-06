@@ -1,7 +1,16 @@
 diff --git a/docs/tools/env/interior76_check.js b/docs/tools/env/interior76_check.js
-index ea4c5ab..20598df 100644
+index ea4c5ab..a69fcb3 100644
 --- a/docs/tools/env/interior76_check.js
 +++ b/docs/tools/env/interior76_check.js
+@@ -9,7 +9,7 @@ for (const id of Object.keys(I.maps)) {
+   w.World.maps = {}; const m = w.World.getMap(id); const bad = (s) => ng.push(id + '：' + s);
+   const walk = (x, y) => x >= 0 && y >= 0 && x < m.w && y < m.h && !TL.isSolid(m.tiles[y][x]);
+   // 出口から（動かない人は通れない）
+-  const fixed = {}; m.npcs.forEach((q) => { if (q.wander === 0) fixed[q.x + ',' + q.y] = 1; });
++  const fixed = {}; m.npcs.forEach((q) => { if (q.wander === 0 && !q.hideIf) fixed[q.x + ',' + q.y] = 1; });   /* v8.1 条件で消える人（地下施設の守衛など）は、消えたあとの道で確かめる */
+   const ex = m.warps.find((q) => walk(q.x, q.y)); if (!ex) { bad('歩ける出口がない'); continue; }
+   const seen = new Set([ex.x + ',' + ex.y]); const qu = [[ex.x, ex.y]];
+   while (qu.length) { const [a, b] = qu.pop(); for (const [dx, dy] of N4) { const k = (a + dx) + ',' + (b + dy); if (seen.has(k) || !walk(a + dx, b + dy) || fixed[k]) continue; seen.add(k); qu.push([a + dx, b + dy]); } }
 @@ -23,7 +23,7 @@ for (const id of Object.keys(I.maps)) {
      N4.forEach(([dx, dy]) => { const c0 = old.rows[q0.y + dy] && old.rows[q0.y + dy][q0.x + dx]; if (c0 !== 'T') return; const c1 = def.rows[q1.y + dy] && def.rows[q1.y + dy][q1.x + dx]; if (c1 !== 'T') bad('カウンター越しが切れた ' + q0.id); }); });
    // 元の家具（通れない物）の数が減っていない

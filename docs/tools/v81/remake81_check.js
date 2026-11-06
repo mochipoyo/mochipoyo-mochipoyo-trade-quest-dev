@@ -15,8 +15,9 @@ for (const id of ids) {
   const m = w.World.getMap(id); const def = m.def; const log = R.log[id] || {};
   ok(def.remake81 && def.rows.every((r) => r.length === m.w), id + '：作り直した地図 ' + m.w + '×' + m.h + '（人の自動配置 ' + (log.auto || []).length + '・写せなかった物 ' + (log.unmapped || []).length + '）' + (log.unmapped || []).join(' '));
   // 重なり
-  const occ = {}; const bad = [];
+  const occ = {}; const bad = []; const bad0 = bad;
   m.buildings.forEach((b) => { for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) { const k = x + ',' + y; if (occ[k]) bad.push(b.id + '×' + occ[k] + '@' + k); occ[k] = b.id; } if (b.x < 0 || b.y < 0 || b.x + b.w > m.w || b.y + b.h > m.h) bad.push(b.id + '：地図の外'); });
+  m.npcs.forEach((n) => { if (w.Tiles.isSolid(m.tiles[n.y][n.x]) && !/^bld/.test(m.tiles[n.y][n.x])) bad0.push('人 ' + n.id + ' が通れないマス（' + m.tiles[n.y][n.x] + '）'); });
   const thing = []; m.npcs.forEach((n) => thing.push(['人 ' + n.id, n.x, n.y])); m.events.forEach((e) => thing.push(['出来事 ' + e.x + ',' + e.y, e.x, e.y])); (m.chests || []).forEach((c) => thing.push(['宝箱 ' + c.id, c.x, c.y]));
   const keeper = {}; m.buildings.forEach((b) => { if (b.shape76 === 'stall' && b.keeper76) keeper[(b.x + b.keeper76.x) + ',' + (b.y + b.keeper76.y)] = 1; });   // 露店の店主のマス
   thing.forEach((t) => { const k = t[1] + ',' + t[2]; if (occ[k] && !(keeper[k] && /^人 /.test(t[0]))) bad.push(t[0] + ' が建物 ' + occ[k] + ' の上'); });

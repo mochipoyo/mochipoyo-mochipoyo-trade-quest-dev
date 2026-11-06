@@ -1,0 +1,11 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/savecompat64.js.orig	2026-11-07 01:05:08.897882319 +0900
++++ savecompat64.js	2026-11-07 01:05:08.953384682 +0900
+@@ -44,7 +44,7 @@
+   { const d = S.migrate(JSON.parse(JSON.stringify(made.out['中盤']))); S.data = d; d.settings.textSpeed = 'instant'; World.start(); await sleep(40); clean();
+     ok(w.Follow.members().length === 3 && w.Follow.enabled(), '中盤：仲間3人が隊列に出る');
+     w.Menu.party(); await sleep(60); ok(!!doc.querySelector('.party-screen'), '中盤：なかま画面が開く'); clean();
+-    World.enterMap('rivel_castle', 3, 24, 'left'); await sleep(20); ok(World.map.tile(2, 24) === 'stairs_up' && World.map.warpAt(2, 24).to === 'rivel_castle_2f', '中盤：リヴェル城の新しい階段がある');
++    World.enterMap('rivel_castle', 3, 24, 'left'); await sleep(20); { const st = World.map.warps.find((q) => q.to === 'rivel_castle_2f'); /* v8.1 作り直した城（remake81）は階段の位置が変わる：2 階へのワープのマスが上り階段か */ ok(st && World.map.tile(st.x, st.y) === 'stairs_up', '中盤：リヴェル城の新しい階段がある'); }
+     World.enterMap('rivel_castle_3f', 18, 12, 'right'); await sleep(20); const oc = w.Win.message; w.Win.message = async () => { }; await w.Events.run(World.map.eventAt(19, 12)); w.Win.message = oc;
+     ok(d.flags.rivel_treasury_open, '中盤：第3章を終えたセーブなので、宝物庫の扉が開く（shard_returned）');
+     const s = w.Leverage.newSession('range', 7); ok(s && w.Leverage.account().balance === 100000, '中盤：レバレッジ取引を始められる（仮想資金 100,000）');

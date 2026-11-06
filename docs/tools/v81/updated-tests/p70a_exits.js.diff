@@ -1,0 +1,11 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/p70a_exits.orig.js	2026-11-07 00:53:09.994482020 +0900
++++ p70a_exits.js	2026-11-07 00:53:10.101981182 +0900
+@@ -23,7 +23,7 @@
+   const KEY = { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' }; const bad = []; let n = 0;
+   for (const c of cases) {
+     if (!c.pick) { bad.push(c.id + '：出口 (' + c.wx + ',' + c.wy + ') の手前に立てる場所がない'); console.log('NG ', c.id, 'no approach'); continue; }
+-    await p.evaluate((c) => { World.busy = false; World.enterMap(c.id, c.pick.sx, c.pick.sy, c.pick.dir); }, c);
++    await p.evaluate((c) => { World.busy = false; World.enterMap(c.id, c.pick.sx, c.pick.sy, c.pick.dir, { raw: true }); }, c);   /* v8.1 座標は今の地図（new GameMap）のもの：旧座標の変換をしない */
+     const built = await p.waitForFunction((id) => MTQ3D.current && MTQ3D.current.map && MTQ3D.current.map.id === id && World.map.id === id, c.id, { timeout: 120000 }).then(() => true).catch(() => false);
+     if (!built) { bad.push(c.id + '：3D が組み立たない'); console.log('NG ', c.id, 'not built'); continue; }
+     await p.waitForTimeout(500);

@@ -54,7 +54,7 @@
       x72_hall: { x: 36, y: 36, w: 8, h: 5, doorSide: 'left', doorY: 2 }
     },
     npcs: {
-      sh_gate: [31, 41, 'left', 0], sh_child: [26, 25, 'down', 1], sh_weaver: [45, 13, 'down', 1], sh_old: [27, 20, 'right', 0], aunt67_sahar_city: [33, 24, 'down', 1],
+      sh_gate: [31, 41, 'left', 0], sh_child: [26, 25, 'down', 1], sh_weaver: [45, 13, 'down', 1], sh_old: [27, 20, 'right', 0], aunt67_sahar_city: [35, 22, 'down', 1],
       saharcity_x72_kid: [50, 38, 'down', 1], saharcity_x72_vendor: [42, 13, 'down', 0], saharcity_x72_elder: [45, 31, 'down', 0],
       sahar_city_a73_0: [34, 19, 'down', 2], sahar_city_a73_1: [26, 24, 'down', 2], sahar_city_a73_2: [51, 37, 'down', 1], sahar_city_a73_3: [54, 39, 'down', 1],
       sahar_city_a73_4: [4, 12, 'down', 1], sahar_city_a73_5: [56, 30, 'down', 2], u73_mirage: [56, 9, 'left', 0],
@@ -63,6 +63,7 @@
     events: [[18, 24, 26, 8], [47, 12, 45, 33]],
     chests: { sh1: [58, 9] },
     points: { sp_sahar_city_7_20: [6, 24], sp_sahar_city_29_12: [27, 13], opt_085: [33, 20] },
+    anchors: [[19, 27, 29, 41], [20, 27, 30, 41], [19, 28, 29, 42], [20, 28, 30, 42]],   // 前の南の門の内側 → 新しい南の門の内側
     warps: [{ x: 29, y: H - 1, to: 'world_desert', tx: 50, ty: 35 }, { x: 30, y: H - 1, to: 'world_desert', tx: 50, ty: 35 }],
     after: function (def) {
       def.events.forEach(function (e) {

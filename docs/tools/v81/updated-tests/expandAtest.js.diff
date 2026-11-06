@@ -1,0 +1,11 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/expandAtest.js.orig	2026-11-07 01:05:08.886421526 +0900
++++ expandAtest.js	2026-11-07 01:06:33.780808262 +0900
+@@ -60,7 +60,7 @@
+   const RM71 = (mid) => !!(w.MapRemake && w.MapRemake.isRemade(mid)); const RX71 = (mid, x, y) => (w.MapRemake ? w.MapRemake.pos(mid, x, y) : { x, y }); const OLD71 = (mid, x, y) => (RM71(mid) ? [Math.floor(x / 2), Math.floor(y / 2)] : [x, y]);
+   // 戻りがワープでなく「調べる所」のもの（古井戸・壁のひび）：[行き先マップ, 調べる所の x, y]
+   const PORTAL = { 'rivel_castle_b1>rivel_artisan': [28, 19] };
+-  for (const id of allMaps) { const m = fresh(id); for (const wp of m.warps) { if (wp.dup71) continue; if (PATCHED.includes(id) && (oldDump.maps[id].warps.some(o => o.x === OLD71(id, wp.x, wp.y)[0] && o.y === OLD71(id, wp.x, wp.y)[1]) || oldDump.maps[id].buildings.some(b => b.interior === wp.to))) continue; const to = World.getMap(wp.to);
++  for (const id of allMaps) { const m = fresh(id); for (const wp of m.warps) { if (wp.dup71) continue; if (PATCHED.includes(id) && (oldDump.maps[id].warps.some(o => o.x === OLD71(id, wp.x, wp.y)[0] && o.y === OLD71(id, wp.x, wp.y)[1]) || (M[id].remake81 && oldDump.maps[id].warps.some(o => o.to === wp.to && o.tx === wp.tx && o.ty === wp.ty)) /* v8.1 作り直した町（remake81）で位置だけ動いた前からの出口 */ || oldDump.maps[id].buildings.some(b => b.interior === wp.to))) continue; const to = World.getMap(wp.to);
+       const pt = PORTAL[id + '>' + wp.to]; if (pt) { const ev = to.eventAt(pt[0], pt[1]); if (ev && ev.type === 'script' && Math.abs(pt[0] - wp.tx) + Math.abs(pt[1] - wp.ty) <= 1 && walk(to, wp.tx, wp.ty, {})) pairs++; else bad2.push(id + '→' + wp.to + ' 調べる所なし'); continue; }
+       const tq = RX71(wp.to, wp.tx, wp.ty); const back = to.warps.filter(b => b.to === id && Math.abs(b.x - tq.x) + Math.abs(b.y - tq.y) <= (RM71(wp.to) ? 2 : 1)); const arr = walk(to, tq.x, tq.y, {}) && !to.warpAt(tq.x, tq.y); if (!back.length || !arr || !back.some(b => { const bq = RX71(id, b.tx, b.ty); return Math.abs(bq.x - wp.x) + Math.abs(bq.y - wp.y) <= (RM71(id) ? 2 : 1); })) bad2.push(id + '(' + wp.x + ',' + wp.y + ')→' + wp.to + '(' + wp.tx + ',' + wp.ty + ') back=' + back.length + ' arr=' + arr); else pairs++; } }
+   ok(!bad2.length, '新しい出入口 ' + pairs + 'か所：着いたマスは通れてワープでなく、すぐそばに戻りのワープがある ' + bad2.join(' / '));

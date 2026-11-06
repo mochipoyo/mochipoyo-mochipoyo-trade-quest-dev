@@ -61,7 +61,7 @@
       bread_stall76: { x: 21, y: 30, w: 3, h: 2, doorX: 1 }
     },
     npcs: {
-      va_gatekeeper: [28, 41, 'down', 0], va_student1: [12, 19, 'down', 1], va_student2: [36, 23, 'down', 1], aunt67_volatilia: [26, 22, 'down', 1],
+      va_gatekeeper: [28, 41, 'down', 0], va_student1: [12, 19, 'down', 1], va_student2: [36, 23, 'down', 1], aunt67_volatilia: [26, 21, 'down', 1],
       tmaster_volte: [36, 21, 'down', 0], u73_repeat: [15, 30, 'down', 1], volatilia_bread76: [22, 30, 'down', 0],
       volatilia_x72_kid: [48, 9, 'right', 1], volatilia_x72_vendor: [55, 16, 'down', 0], volatilia_x72_elder: [42, 8, 'left', 0]
     },

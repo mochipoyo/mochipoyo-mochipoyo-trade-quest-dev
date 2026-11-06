@@ -55,7 +55,7 @@
     },
     npcs: {
       sailor: [38, 27, 'down', 0], harbor_fisher: [15, 25, 'down', 2], harbor_vendor: [17, 22, 'up', 0], harbor_guard: [35, 2, 'down', 0],
-      harbor_nagi: [39, 29, 'left', 0], harbor_shipwright: [43, 32, 'up', 0], aunt67_harbor_town: [24, 10, 'down', 1], s3121_harbor_board: [33, 23, 'down', 0],
+      harbor_nagi: [39, 29, 'left', 0], harbor_shipwright: [43, 32, 'up', 0], aunt67_harbor_town: [28, 11, 'down', 1], s3121_harbor_board: [33, 23, 'down', 0],
       harbortown_x72_kid: [70, 33, 'left', 0], harbortown_x72_vendor: [57, 23, 'down', 0], harbortown_x72_elder: [62, 23, 'right', 0],
       harbor_town_a73_0: [30, 11, 'down', 2], harbor_town_a73_1: [48, 9, 'down', 2], harbor_town_a73_2: [6, 26, 'down', 2], harbor_town_a73_3: [26, 19, 'down', 2],
       harbor_town_a73_4: [60, 12, 'down', 2], harbor_town_a73_5: [6, 13, 'down', 2], harbor_town_a73_6: [7, 14, 'down', 2], harbor_town_a73_7: [4, 14, 'down', 1],
@@ -67,16 +67,24 @@
     warps: [].concat(
       [0, 1].map(function (y) { return [36, 37, 38, 39].map(function (x) { return { x: x, y: y, to: 'world', tx: 22, ty: 71 }; }); }).reduce(function (a, b) { return a.concat(b); }, []),
       [24, 25, 26, 27].map(function (y) { return { x: 0, y: y, to: 'world', tx: 19, ty: 73, name: '船着き場へ' }; })),
-    edgeExits: [{ side: 'top', range: [0, 35] }, { side: 'top', range: [40, W - 1] }, { side: 'left', range: [0, 22] }, { side: 'right', range: [0, 25] }],
+    anchors: [[24, 2, 36, 2], [25, 2, 37, 2], [26, 2, 38, 2], [27, 2, 39, 2], [24, 3, 36, 3], [25, 3, 37, 3], [26, 3, 38, 3], [27, 3, 39, 3]],   // 前の北の門の内側の道 → 新しい北の街道（古いセーブ・物語で置く位置）
+    edgeExits: [{ side: 'top', range: [0, 35] }, { side: 'top', range: [40, W - 1] }, { side: 'left', range: [0, LY - 1] }, { side: 'left', range: [LY + 1, 23] }, { side: 'right', range: [0, LY - 1] }, { side: 'right', range: [LY + 1, 25] }],
     after: function (def) {
       def.events.forEach(function (e) {
         if (e.x === 35 && e.y === 5) e.text = ['【立て札】港町マリナ\n高台の通り：宿屋・道具屋・網元の家・酒場（埠頭を見下ろす）\n坂と階段を下りた埠頭：市場・倉庫・荷役場・船乗りの酒場・漁師の家・長い桟橋と修理中の船\n西の浜の先：船着き場（自分の船が泊まっている所）\n陸の出口：北の街道（ポヨ村へ）'];
         if (e.x === 61 && e.y === 23) e.text = ['【荷役場と東の波止場】', '網を干す柵と、積み下ろしを待つ木箱。荷役場の東に船乗りの酒場。', '防波堤の先に小さな灯台がある。'];
       });
       // 船着き場へ：行き先は港の登録（Harbors の marina の land。地球の世界でも 2D 版でも、その世界の船着き場のマス）をそのまま使う
-      def.warps.forEach(function (q) { if (q.name !== '船着き場へ') return; q.raw = true; q.face = 'left'; q.edgeSkip = true;
-        Object.defineProperty(q, 'tx', { configurable: true, enumerable: true, get: function () { var h = root.Harbors && root.Harbors.get('marina'); return h ? h.land.x : 19; } });
-        Object.defineProperty(q, 'ty', { configurable: true, enumerable: true, get: function () { var h = root.Harbors && root.Harbors.get('marina'); return h ? h.land.y : 73; } }); });
+      // 船着き場へ：行き先は港の登録（Harbors の marina の land）。ワープの行き先は旧座標（World が今の世界の座標に直す）なので、
+      // 地球の世界では「直すと land になる旧座標」を近くから探して使う（2D 版は land そのまま）。ほかのワープと同じ扱い（raw にしない）
+      var cache = null; var oldLand = function () {
+        if (cache) return cache; var h = root.Harbors && root.Harbors.get('marina'); var L = h ? h.land : { x: 19, y: 73 }; var MR = root.MapRemake;
+        if (!MR || !MR.maps || !MR.maps.world) return { x: L.x, y: L.y };   /* 2D 版（世界の座標の直しなし）：land そのまま（覚えておかない） */
+        for (var r = 0; r <= 14 && !cache; r++) for (var dy = -r; dy <= r && !cache; dy++) for (var dx = -r; dx <= r && !cache; dx++) { if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue; var p = MR.pos('world', 19 + dx, 73 + dy); if (p.x === L.x && p.y === L.y) cache = { x: 19 + dx, y: 73 + dy }; }
+        return cache || { x: 19, y: 73 }; };
+      def.warps.forEach(function (q) { if (q.name !== '船着き場へ') return; q.face = 'left'; q.edgeSkip = true;
+        Object.defineProperty(q, 'tx', { configurable: true, enumerable: true, get: function () { return oldLand().x; } });
+        Object.defineProperty(q, 'ty', { configurable: true, enumerable: true, get: function () { return oldLand().y; } }); });
       def.events.push({ x: 4, y: 23, type: 'inspect', solid: true, v81: true, text: ['【船着き場】', 'この先、浜の西の端から船着き場へ。自分の船は、港の西の海に泊めてある。', '（浜から海へ向かって進めば乗れる。陸の出口は北の街道）'] });
       var say = function (name, lines) { return async function (c) { await c.say(name, lines); }; };
       def.npcs.forEach(function (n) {

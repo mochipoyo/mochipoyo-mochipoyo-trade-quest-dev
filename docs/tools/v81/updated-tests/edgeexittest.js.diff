@@ -1,0 +1,11 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/edgeexittest.js.orig	2026-11-07 01:05:08.905932739 +0900
++++ v65/edgeexittest.js	2026-11-07 01:15:01.251192498 +0900
+@@ -56,7 +56,7 @@
+   ok(reachFrom(back, r.x, r.y, d).has(L.x + ',' + L.y), '出たところから、歩いて港町マリナの印（' + L.x + ',' + L.y + '）へ戻れる');
+   // フィールドから入り直すと、いつもの入口の位置（不自然な場所に出ない）
+   World.enterMap('world', L.x, L.y - 1, 'down'); await waitIdle(); clearUi(); World.busy = false; World.tryMove('down'); await waitIdle(); clearUi();
+-  ok(World.map.id === 'harbor_town' && World.player.x === L.tx && World.player.y === L.ty && World.map.passable(L.tx, L.ty, d), '外周から出たあと、印から入り直すと、いつもの入口（' + L.tx + ',' + L.ty + '）に出る（' + World.map.id + '@' + World.player.x + ',' + World.player.y + '）');
++  const LQ = w.MapRemake ? w.MapRemake.pos('harbor_town', L.tx, L.ty) : { x: L.tx, y: L.ty }; /* v8.1 作り直した港町（remake81）：いつもの入口の旧座標を新しい座標に直す */ ok(World.map.id === 'harbor_town' && World.player.x === LQ.x && World.player.y === LQ.y && World.map.passable(LQ.x, LQ.y, d), '外周から出たあと、印から入り直すと、いつもの入口（' + L.tx + ',' + L.ty + '）に出る（' + World.map.id + '@' + World.player.x + ',' + World.player.y + '）');
+   d.flags.erased_hint = true;
+   r = await walkOut('erased_village', 11, 0, 'up');
+   ok(r.map === 'world_kalion' && r.y < 44 && Math.abs(r.x - 42) <= 3, '地図から消えた村の北の道の端 → 村の印の北（' + JSON.stringify(r) + '）');

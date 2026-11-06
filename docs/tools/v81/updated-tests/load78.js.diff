@@ -1,0 +1,13 @@
+diff --git a/docs/tools/v78/load78.js b/docs/tools/v78/load78.js
+index b5f06a3..fd2f289 100644
+--- a/docs/tools/v78/load78.js
++++ b/docs/tools/v78/load78.js
+@@ -3,7 +3,7 @@ const { JSDOM } = require(process.env.JSDOM_PATH || (() => { try { return requir
+ module.exports = function load(opts) {
+   opts = opts || {}; const dir = opts.dir || process.env.RPG_DIR || require('path').resolve(__dirname, '../../..') + '/';
+   const html = fs.readFileSync(dir + 'index.html', 'utf8');
+-  const dom = new JSDOM(html, { runScripts: 'outside-only', pretendToBeVisual: true, url: 'https://mochipoyo.github.io/mochipoyo-trade-quest/3d/' }); const w = dom.window;
++  const dom = new JSDOM(html, { runScripts: 'outside-only', pretendToBeVisual: true, url: 'https://mochipoyo.github.io/mochipoyo-trade-quest/3d/' + (opts.query ? '?' + opts.query : '') /* v8.1 opts.query（例 layout=off） */ }); const w = dom.window;
+   const ctxStub = new Proxy({}, { get: (t, k) => k === 'measureText' ? () => ({ width: 10 }) : (k === 'createLinearGradient' || k === 'createRadialGradient' || k === 'createPattern') ? () => ({ addColorStop() {} }) : k === 'getImageData' ? () => ({ data: new Uint8ClampedArray(4) }) : () => {} });
+   w.HTMLCanvasElement.prototype.getContext = function () { return ctxStub; }; w.scrollTo = () => {}; w.HTMLElement.prototype.scrollIntoView = () => {}; w.URL.createObjectURL = () => 'blob:x'; w.AudioContext = function () { return { createGain: () => ({ connect() {}, gain: {} }), destination: {} }; };
+   const errors = []; w.addEventListener('error', (e) => errors.push(e.message));

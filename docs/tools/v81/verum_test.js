@@ -34,7 +34,7 @@ async function walkTo(gx, gy) { const id0 = W.map.id; for (let n = 0; n < 200; n
   while (n++ < 50 && W.map.id === ID) { lv.push(T76.levelAt(m, W.player.x, W.player.y)); await step('up'); }
   const ls = [...new Set(lv)].join('→'); ok(W.map.id !== ID && ls === '0→1→2', '南の門から坂道をまっすぐ北へ ' + n + ' 歩：段 ' + ls + ' → 北の門から ' + W.map.id + ' ' + W.player.x + ',' + W.player.y);
   for (const [sx, sy, label] of [[13, 10, '上の段の西の階段'], [54, 10, '上の段の東の階段'], [13, 20, '中の段の西の階段'], [49, 20, '中の段の東の階段']]) {
-    W.enterMap(ID, sx, sy, 'down', { raw: true }); await flush(); const l0 = T76.levelAt(m, sx, sy); let k = 0; while (k++ < 9) { const y0 = W.player.y; await step('down'); if (W.player.y !== y0 + 1) break; }
+    W.enterMap(ID, sx, sy, 'down', { raw: true }); await flush(); const l0 = T76.levelAt(m, sx, sy); const ty = sy < 12 ? 13 : 27; await walkTo(sx, ty);   /* 歩き回る人をよけて、階段の下の段まで */
     ok(T76.levelAt(m, W.player.x, W.player.y) === l0 - 1, label + '：段 ' + l0 + ' → ' + T76.levelAt(m, W.player.x, W.player.y) + '（' + W.player.x + ',' + W.player.y + '）'); }
   d.flags.verum_liberated = true; W.maps = {}; const m2 = W.getMap(ID);
   for (const b of m2.buildings.filter((q) => q.interior && w.MAP_DEFS[q.interior])) {

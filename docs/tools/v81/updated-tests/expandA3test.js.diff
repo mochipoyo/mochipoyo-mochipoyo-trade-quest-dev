@@ -1,0 +1,19 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/expandA3test.js.orig	2026-11-07 01:05:08.892430370 +0900
++++ expandA3test.js	2026-11-07 01:13:40.234482002 +0900
+@@ -49,14 +49,14 @@
+   let ir = [];
+   for (const h of S3.homes) { const m = new GameMap(M[h.map]); World.applyState(m); const ent = h.building ? [5, 7] : (() => { const wp = Object.keys(M).map(k => (M[k].warps || []).find(x => x.to === h.map)).find(Boolean); return [wp.tx, wp.ty]; })();
+     const s = bfs(m, [ent]); const miss = [].concat(m.npcs.map(n => [n.x, n.y]), m.events.map(e => [e.x, e.y]), sp.filter(p => p.map === h.map).map(p => [p.x, p.y]), m.warps.map(o => [o.x, o.y])).filter(([x, y]) => !near(s, x, y));
+-    const back = m.warps[0]; const to = new GameMap(M[back.to]); World.applyState(to); const arrOk = !solidAt(to, back.tx, back.ty) && !to.warpAt(back.tx, back.ty);
++    const back = m.warps[0]; const to = new GameMap(M[back.to]); World.applyState(to); const bq = (w.MapRemake && w.MapRemake.maps[back.to] && w.MapRemake.maps[back.to].r81) ? w.MapRemake.pos(back.to, back.tx, back.ty) : { x: back.tx, y: back.ty }; /* v8.1 作り直した町：出口の行き先（旧座標）を新しい座標に直して調べる */ const arrOk = !solidAt(to, bq.x, bq.y) && !to.warpAt(bq.x, bq.y);
+     if (miss.length || !arrOk) ir.push(h.map + ' miss=' + JSON.stringify(miss) + ' arr=' + arrOk); }
+   ok(!ir.length, '新しい21の部屋：入口から住人・調べる物・光る場所・出口へ行け、出口から戻った所は通れるマス ' + ir.join(' / '));
+   ok(S3.maps.every(id => sp.some(p => p.map === id && p.kind === 'sparkle')), '新しい21の部屋すべてに光る場所が1つ');
+   ok(S3.maps.every(id => /K/.test(M[id].rows.join(''))), '新しい21の部屋すべてに本棚（読むと「読んだ本」に数える）');
+   // 実際に歩いて入って出る（3つの町）
+   for (const h of S3.homes.filter(h => ['verum_town', 'luxbell', 'frost_town'].includes(h.town))) { const def = M[h.town]; const b = def.buildings.find(x => x.id === h.building); const dx = b.x + b.doorX, dy = b.y + b.h - 1;
+-    World.enterMap(h.town, dx, dy + 1, 'up'); await sleep(20); clean(); World.busy = false; const p = World.player; World.tryMove('up'); for (let i = 0; i < 120 && World.map.id === h.town; i++) await sleep(10); await sleep(400);
++    World.enterMap(h.town, dx, dy + 1, 'up', def.remake81 ? { raw: true } : undefined); await sleep(20); /* v8.1 作り直した町は、今の地図の座標のまま入る */ clean(); World.busy = false; const p = World.player; World.tryMove('up'); for (let i = 0; i < 120 && World.map.id === h.town; i++) await sleep(10); await sleep(400);
+     const inMap = World.map.id; World.busy = false; clean(); World.tryMove('down'); for (let i = 0; i < 120 && World.map.id === inMap; i++) await sleep(10); await sleep(400); clean(); World.busy = false;
+     ok(inMap === h.map && World.map.id === h.town && World.player.x === dx && World.player.y === dy + 1, h.town + '：新しい家の入口から歩いて入り、歩いて出ると入口の前に戻る'); }
+   // 会話（2回ずつ）と贈り物（1回だけ）

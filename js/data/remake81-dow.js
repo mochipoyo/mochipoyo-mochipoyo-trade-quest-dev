@@ -76,7 +76,7 @@
       bread_stall76: { x: 29, y: 13, w: 3, h: 2, doorX: 1 }
     },
     npcs: {
-      dow_hunter: [8, 24, 'down', 2], u73_porchi: [21, 8, 'down', 1], aunt67_dow_village: [20, 15, 'down', 1],
+      dow_hunter: [8, 24, 'down', 2], u73_porchi: [21, 8, 'down', 1], aunt67_dow_village: [21, 15, 'down', 1],
       ev65c_toma: [27, 16, 'down', 0], dow_village_bread76: [30, 13, 'down', 0],
       ev65c_heta: [6, 34, 'right', 0], ev65c_gonza: [7, 34, 'left', 0],
       dow_elder_f: [43, 28, 'down', 1], ev65c_neri: [52, 31, 'left', 0],

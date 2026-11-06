@@ -16,7 +16,7 @@
     var C = canvas(W, H, '=');
     C.frame(0, 0, W, H, 'C'); C.frame(1, 1, W - 2, H - 2, 'C');   // 外の城壁（2 重）
     C.rect(RX, H - 2, 4, 2, 'P');   // 南の楼門
-    C.rect(W - 2, 39, 2, 3, 'r');   // 東門（職人通りへ）
+    C.rect(W - 2, 39, 2, 2, 'r');   // 東門（職人通りへ）
     /* ---------- 城の島・堀・跳ね橋 ---------- */
     C.rect(22, 2, 28, 14, '~'); C.rect(24, 2, 24, 12, '='); C.rect(RX, 14, 4, 2, 'b');
     /* ---------- 内郭の壁（内門・通用門） ---------- */
@@ -44,7 +44,7 @@
     C.set(20, 55, 'e'); C.set(22, 55, 'e'); C.set(26, 54, 'a'); C.set(27, 54, 'a'); C.set(11, 56, '6'); C.set(29, 56, '6');
     C.rect(2, 49, 7, 9, ','); C.set(4, 52, 'j'); C.set(2, 56, '6'); C.set(7, 50, '6');
     /* ---------- 東：職人通りへの小路（王道 → 東門）と通用門への道 ---------- */
-    C.rect(38, 39, W - 38, 3, 'r'); C.rect(59, 27, 3, 12, 'r'); C.rect(38, 48, W - 40, 2, 'r');
+    C.rect(38, 39, W - 38, 3, 'r'); C.rect(59, 27, 3, 12, 'r'); C.rect(38, 48, W - 40, 2, 'r'); C.rect(W - 2, 41, 2, 1, 'C');   /* 東門は 2 マス（職人通りの入口と同じ幅） */
     // 鍛冶の作業場（炉・道具かけ・木箱・樽）
     C.set(65, 35, '('); C.set(67, 34, ')'); C.set(68, 34, ')'); C.set(63, 37, 'z'); C.set(64, 37, 'q'); C.set(68, 37, 'z');
     // アトリエの前の小さな中庭
@@ -74,7 +74,7 @@
     npcs: {
       rivel_guard1: [33, 13, 'down', 0], rivel_guard2: [37, 13, 'down', 0], rivel_gate_e: [69, 38, 'left', 0],
       rivel_woman: [24, 52, 'left', 2], rivel_man: [45, 49, 'down', 2], rivel_child: [28, 40, 'down', 2], rivel_merchant: [19, 53, 'up', 0],
-      rivel_scholar: [55, 29, 'left', 0], rivel_traveler: [39, 45, 'right', 1], aunt67_rivel_town: [30, 39, 'down', 1],
+      rivel_scholar: [55, 29, 'left', 0], rivel_traveler: [39, 45, 'right', 1], aunt67_rivel_town: [27, 39, 'down', 1],
       riveltown_x72_kid: [10, 20, 'right', 1], riveltown_x72_vendor: [61, 46, 'down', 0], riveltown_x72_elder: [56, 43, 'up', 0],
       rivel_town_a73_0: [20, 52, 'left', 2], rivel_town_a73_1: [54, 31, 'down', 2], rivel_town_a73_2: [66, 52, 'left', 2], rivel_town_a73_3: [25, 41, 'down', 2],
       rivel_town_a73_4: [6, 13, 'down', 1], rivel_town_a73_5: [66, 20, 'left', 1], rivel_town_a73_6: [5, 54, 'down', 2], rivel_town_a73_7: [17, 20, 'down', 2],
@@ -85,8 +85,8 @@
     points: { sp_rivel_town_8_22: [4, 51], opt_001: [27, 41] },
     warps: [].concat(
       [56, 57].map(function (y) { return [RX, RX + 1, RX + 2, RX + 3].map(function (x) { return { x: x, y: y + 2, to: 'world', tx: 40, ty: 49 }; }); }).reduce(function (a, b) { return a.concat(b); }, []),
-      [{ x: W - 1, y: 39, to: 'rivel_artisan', tx: 1, ty: 15 }, { x: W - 1, y: 40, to: 'rivel_artisan', tx: 1, ty: 16 }, { x: W - 1, y: 41, to: 'rivel_artisan', tx: 1, ty: 16 }]),
-    anchors: [[86, 20, W - 3, 39], [86, 21, W - 3, 40]],
+      [{ x: W - 1, y: 39, to: 'rivel_artisan', tx: 1, ty: 15 }, { x: W - 1, y: 40, to: 'rivel_artisan', tx: 1, ty: 16 }]),
+    anchors: [[86, 20, W - 3, 39], [86, 21, W - 3, 40]].concat([[30, 52, 34, 56], [31, 52, 35, 56], [32, 52, 36, 56], [33, 52, 37, 56], [30, 53, 34, 57], [31, 53, 35, 57], [32, 53, 36, 57], [33, 53, 37, 57]]),   // 東門の内側・前の南の門の内側 → 新しい南の楼門の内側
     after: function (def) {
       def.events.forEach(function (e) {
         if (e.x === 32 && e.y === 55) e.text = ['【立て札】リヴェル城下町\n北：王道の先に内門と堀・跳ね橋、リヴェル城（城の前庭に騎士の詰所・見張りの塔・波形聖堂）\n西：商店通り（武器屋・道具屋・防具屋・パン屋・花屋・仕立て屋・古道具屋）・教会\n東：冒険者ギルド・銀行・酒場・宿屋。小路の先の東門から職人通りへ'];
