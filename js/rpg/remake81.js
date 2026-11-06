@@ -176,6 +176,7 @@
     def.warps = keepOld.concat(warps);   // 建物の扉のワープは GameMap が作る（定義には書かない）。外への出口は spec.warps（開いた村は外周から出る）
     def.noLayout = true; def.noWiden = true; delete def.auto76; delete def._auto76lv; delete def.levels76; delete def.plan76; delete def.edgeExits;
     if (spec.edgeExits) def.edgeExits = spec.edgeExits;
+    if (spec.levels) def.levels76 = spec.levels(W, H, rows);   // 段（js/rpg/terrace76.js の levels76。3D の高さ。段の縁は擁壁 |、つなぎは階段 /・坂 ;）
     if (spec.open) def.open81 = spec.open === true ? { all: true } : spec.open;
     if (spec.after) spec.after(def, { W: W, H: H, G: G, anchor: anchor });
     var ver = 'r81.' + (spec.version || 1);

@@ -50,7 +50,7 @@
   EdgeExit.baseExit = function (m, seg, x, y) {
     if (seg && seg.dest) return { to: seg.dest.map, tx: seg.dest.x, ty: seg.dest.y, needFlag: seg.needFlag, lockedText: seg.lockedText, name: seg.name || '町の外へ' };
     var D = defs(), best = null, bd = 1e9;
-    (m.warps || []).forEach(function (w) { var td = D[w.to]; if (!td || !(td.kind === 'field' || td.region)) return; var dd = Math.abs(w.x - x) + Math.abs(w.y - y); if (dd < bd) { bd = dd; best = w; } });
+    (m.warps || []).forEach(function (w) { var td = D[w.to]; if (!td || !(td.kind === 'field' || td.region) || w.edgeSkip) return;   /* v8.1 edgeSkip：船着き場など、外周の出口の元にしないワープ */ var dd = Math.abs(w.x - x) + Math.abs(w.y - y); if (dd < bd) { bd = dd; best = w; } });
     if (!best) return null;
     var b = Object.assign({}, best); if (seg && seg.needFlag) { b.needFlag = seg.needFlag; if (seg.lockedText) b.lockedText = seg.lockedText; }
     return b;

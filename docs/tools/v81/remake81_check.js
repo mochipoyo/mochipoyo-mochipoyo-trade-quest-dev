@@ -23,6 +23,7 @@ for (const id of ids) {
   const fronts = m.buildings.filter((b) => b.interior).map((b) => [b.id, b.doorFront.x, b.doorFront.y]);
   fronts.forEach((f) => { if (!m.passable(f[1], f[2], d)) bad.push(f[0] + ' の扉の前 ' + f[1] + ',' + f[2] + ' が歩けない'); if (m.npcAt(f[1], f[2])) bad.push(f[0] + ' の扉の前に人'); });
   ok(!bad.length, id + '：建物 ' + m.buildings.length + '（重なり・扉の前）' + bad.slice(0, 6).join(' / '));
+  if (def.levels76) { const pr = w.Terrace76.validate(m); ok(!pr.length, id + '：段（擁壁・階段・坂）の決まり ' + pr.slice(0, 4).join(' / ')); }
   // 歩ける（人は通れない扱い：ふさいでいないか）
   m.npcs.forEach((n) => { if (n.hideIf) n.hidden = true; });   /* 条件で消える人（守衛など）は、消えたあとで道を確かめる */
   const pass = (x, y) => x >= 0 && y >= 0 && x < m.w && y < m.h && m.passable(x, y, d) && !m.npcAt(x, y) && !(m.eventAt(x, y) && m.eventAt(x, y).solid);
@@ -58,7 +59,8 @@ for (const id of ids) {
   ok(!exitBad.length, id + '：建物から出ると扉の前に着く ' + exitBad.join(' / '));
   // 旧座標 → 新しい位置（人・出来事）
   const pre = def._pre81; const mapBad = []; const reg = w.MapRemake.maps[id]; const P0 = (x, y) => (reg && reg.prev ? reg.fromPrev(x, y) : w.MapRemake.pos(id, x, y));   // _pre81 は前の作り直しのあとの座標
-  pre.npcs.forEach((n) => { const nn = m.npcs.find((x) => x.id === n.id); if (!nn) { mapBad.push('人がいない ' + n.id); return; } const p = P0(n.x, n.y); if (p.x !== nn.x || p.y !== nn.y) mapBad.push(n.id); });
+  const oldFront = {}; (pre.buildings || []).forEach((b) => { const f = w.Remake81.door(b).front; oldFront[f.x + ',' + f.y] = 1; });   /* 旧い扉の前に立っていた人は、その座標が扉の前へ写る（扉の前が先） */
+  pre.npcs.forEach((n) => { const nn = m.npcs.find((x) => x.id === n.id); if (!nn) { mapBad.push('人がいない ' + n.id); return; } if (oldFront[n.x + ',' + n.y]) return; const p = P0(n.x, n.y); if (p.x !== nn.x || p.y !== nn.y) mapBad.push(n.id); });
   pre.events.forEach((e) => { const p = P0(e.x, e.y); if (!m.eventAt(p.x, p.y)) mapBad.push('出来事 ' + e.x + ',' + e.y); });
   ok(!mapBad.length && pre.npcs.length === m.npcs.length && pre.events.length === m.events.filter((e) => !e.v81).length && (pre.chests || []).length === (m.chests || []).length && pre.buildings.length <= m.buildings.length, id + '：人 ' + pre.npcs.length + '・出来事 ' + pre.events.length + '・宝箱・建物 ' + pre.buildings.length + ' を消さずに、旧座標から新しい位置へ写せる ' + mapBad.join(' '));
 }

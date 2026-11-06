@@ -18,7 +18,7 @@ const passAt = (m, x, y) => x >= 0 && y >= 0 && x < m.w && y < m.h && m.passable
 function route(m, sx, sy, gx, gy) {
   const prev = {}; const q = [[sx, sy]]; prev[sx + ',' + sy] = null;
   while (q.length) { const [x, y] = q.shift(); if (x === gx && y === gy) break;
-    for (const k of Object.keys(D4)) { const nx = x + D4[k][0], ny = y + D4[k][1]; const key = nx + ',' + ny; if (key in prev) continue; if (!(nx === gx && ny === gy) && !passAt(m, nx, ny)) continue; if (nx === gx && ny === gy && !(m.passable(nx, ny, d) || m.warpAt && m.warpAt(nx, ny))) { /* 扉のマス */ }
+    for (const k of Object.keys(D4)) { const nx = x + D4[k][0], ny = y + D4[k][1]; const key = nx + ',' + ny; if (key in prev) continue; if (!(nx === gx && ny === gy) && (!passAt(m, nx, ny) || m.warpAt(nx, ny))) continue;   /* 出口（ワープ）のマスは通り道にしない */ if (nx === gx && ny === gy && !(m.passable(nx, ny, d) || m.warpAt && m.warpAt(nx, ny))) { /* 扉のマス */ }
       prev[key] = [x, y, k]; q.push([nx, ny]); } }
   if (!((gx + ',' + gy) in prev)) return null; const dirs = []; let c = gx + ',' + gy; while (prev[c]) { dirs.unshift(prev[c][2]); c = prev[c][0] + ',' + prev[c][1]; } return dirs;
 }
