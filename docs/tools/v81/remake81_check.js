@@ -1,5 +1,5 @@
 // v8.1 作り直した地図の確かめ（jsdom）：node remake81_check.js [mapId,...] [2d]
-// ・行の長さ・建物どうし／建物と人・出来事・宝箱の重なり・扉の前が歩ける
+// ・行の長さ・建物どうし／建物と人・出来事・宝箱の重なり・扉の前が歩ける・建物が外枠（いちばん外の 1 マス）にかからない
 // ・開いた村：外周（四辺・四隅）がすべて歩けて、一続き。外周のどのマスからも、全部の扉の前・人（となり）・出来事・宝箱・調べる所へ行ける
 // ・開いていない地図：外から着く所（ほかの地図のワープの着地点）から全部へ行ける
 // ・中の地図の出口（建物の中から外へ）の着く所が、その建物の扉の前（MapRemake.pos で写した結果）
@@ -12,11 +12,12 @@ const R = w.Remake81; ok(R && !R.off && !R.errors.length, '作り直しの読み
 const ids = ids0.length ? ids0 : Object.keys(R.applied);
 const N4 = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 for (const id of ids) {
-  const m = w.World.getMap(id); const def = m.def; const log = R.log[id] || {};
+  let m = null; try { m = w.World.getMap(id); } catch (e) { if (!ids0.length) { console.log('（この版にない地図：' + id + '）'); continue; } throw e; }
+  const def = m.def; const log = R.log[id] || {};
   ok(def.remake81 && def.rows.every((r) => r.length === m.w), id + '：作り直した地図 ' + m.w + '×' + m.h + '（人の自動配置 ' + (log.auto || []).length + '・写せなかった物 ' + (log.unmapped || []).length + '）' + (log.unmapped || []).join(' '));
   // 重なり
   const occ = {}; const bad = []; const bad0 = bad;
-  m.buildings.forEach((b) => { for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) { const k = x + ',' + y; if (occ[k]) bad.push(b.id + '×' + occ[k] + '@' + k); occ[k] = b.id; } if (b.x < 0 || b.y < 0 || b.x + b.w > m.w || b.y + b.h > m.h) bad.push(b.id + '：地図の外'); });
+  m.buildings.forEach((b) => { for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) { const k = x + ',' + y; if (occ[k]) bad.push(b.id + '×' + occ[k] + '@' + k); occ[k] = b.id; } if (b.x < 0 || b.y < 0 || b.x + b.w > m.w || b.y + b.h > m.h) bad.push(b.id + '：地図の外'); else if (b.x < 1 || b.y < 1 || b.x + b.w > m.w - 1 || b.y + b.h > m.h - 1) bad.push(b.id + '：外枠にかかる'); });
   m.npcs.forEach((n) => { if (w.Tiles.isSolid(m.tiles[n.y][n.x]) && !/^bld/.test(m.tiles[n.y][n.x])) bad0.push('人 ' + n.id + ' が通れないマス（' + m.tiles[n.y][n.x] + '）'); });
   const thing = []; m.npcs.forEach((n) => thing.push(['人 ' + n.id, n.x, n.y])); m.events.forEach((e) => thing.push(['出来事 ' + e.x + ',' + e.y, e.x, e.y])); (m.chests || []).forEach((c) => thing.push(['宝箱 ' + c.id, c.x, c.y]));
   const keeper = {}; m.buildings.forEach((b) => { if (b.shape76 === 'stall' && b.keeper76) keeper[(b.x + b.keeper76.x) + ',' + (b.y + b.keeper76.y)] = 1; });   // 露店の店主のマス
