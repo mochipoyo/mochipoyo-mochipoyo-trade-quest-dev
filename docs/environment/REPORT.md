@@ -810,7 +810,10 @@ GPU のないコンテナ（2 CPU）の jsdom とヘッドレス Chromium（ソ�
 - （回帰の結果は 19-5）
 
 ### 19-5. 回帰
-（2D 版の回帰一式・3D の確認一式を、スナップショットで実行中。結果はこのあと追記する）
+スナップショット（コミット 6dabb72 の直前の内容。そのあとの変更は、船を降りたときの停め直しを「船からとなりの陸へ降りたときだけ」に絞った 1 か所で、ship792_test・ship792_3d・地球の世界の確認ツール 12 本をもう一度動かして OK）で、1 本ずつ順に：
+- **2D 版の回帰一式（regress65 の 52 本＋追加 26 本）**：前からの失敗 3 本（p1test・navsim・entryaudit。失敗の中身も前と同じ）のほかは通った（regress 49 本・追加 26 本が EXIT 0。add35test も 1 回目で通った）。
+- **確認ツール 22 本**（towns76・interior76・bread76・layout・arrival・save_layout・shoptier・enemyskills・mob76・world76、v7.8 の 7 本、v7.9 の earth79_check・carriage79_test・earth79_save、v7.9.2 の ship792_test・earth792_save）→ すべて OK。
+- **3D（ヘッドレス Chromium・低画質）15 本**（ship792・earth79_3d・earth78_ui・earth78_interior・earth78_fx・earth78_smoke・earth78_3d・earth78_regions・earth78_maps・earth78_save3d・join76_save_probe_v76・p69c_reload3d・p71b_dungeon・p72a_towns・p70a_exits）→ すべて OK（p70a_exits は 29 か所中 0 NG）。
 
 ### 19-6. 未完了・未検証（残り）
 - 帆船と遠洋航海船を両方持っているとき、母港では同じマスに 2 そうが重なる（前からの動き。2D 版も同じ。どちらかに乗ると、もう一方が見える）。今回は変えていない。
