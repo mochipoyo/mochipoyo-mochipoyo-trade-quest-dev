@@ -16,8 +16,11 @@ const ng = []; const ok = (c, m) => { if (!c) ng.push(m); console.log((c ? 'OK  
   ok(a.show && /推奨レベル/.test(a.banner) && /グラニア/.test(a.banner) && /^推奨Lv \d/.test(a.hud || '') && a.rect && a.rect[2] > 100, '3D：グラニアに入ると画面の上に「' + a.banner + '」・地名のとなりに「' + a.hud + '」' + JSON.stringify(a.rect));
   await p.waitForTimeout(3600); const a2 = await ui(); ok(!a2.show && /^推奨Lv/.test(a2.hud || ''), '3D：画面の上の表示は数秒で消える・地名のとなりは残る');
   await enter('verum_town'); await p.waitForTimeout(500); const b = await ui(); ok(!b.hud, '3D：町の中では地名のとなりに出さない');
-  await enter('world', 'poyo_village'); await shown(); const c = await ui(); await p.screenshot({ path: SHOT + 'reclevel_arcadia.jpg', type: 'jpeg', quality: 82 });
-  ok(c.show && /アルカディア/.test(c.banner), '3D：アルカディアに戻ると「' + c.banner + '」');
+  // v8.0 最小の更新：重いとき（2 コアで隣の地域を組み立てているあいだ）は、この確かめの待ち（rAF）が遅れて、表示が消えたあとに見ることがある。
+  //   表示が出たこと（show の付いた時刻と文）を MutationObserver で記録して、それでも確かめる（いま出ているか、地図に入ってから出たか）
+  await p.evaluate(() => { window.__recSeen = null; const el = document.getElementById('rec-banner'); if (el) new MutationObserver(() => { if (el.classList.contains('show')) window.__recSeen = el.textContent; }).observe(el, { attributes: true }); });
+  await enter('world', 'poyo_village'); await shown(); const c = await ui(); const seen = await p.evaluate(() => window.__recSeen); await p.screenshot({ path: SHOT + 'reclevel_arcadia.jpg', type: 'jpeg', quality: 82 });
+  ok((c.show && /アルカディア/.test(c.banner)) || /アルカディア/.test(seen || ''), '3D：アルカディアに戻ると「' + (c.show ? c.banner : seen) + '」' + (c.show ? '' : '（確かめたときは消えていたが、入ってから出た）'));
   ok(!errs.length, 'ページのエラーなし ' + errs.slice(0, 3).join(' / '));
   console.log(ng.length ? '結果：NG ' + ng.length : '結果：すべて OK'); await br.close(); process.exit(ng.length ? 1 : 0);
 })().catch((e) => { console.error(e); process.exit(1); });

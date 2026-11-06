@@ -13,6 +13,7 @@ for (const id of ids) { const def = w.MAP_DEFS[id]; if (!def) { ok(false, id + '
   const pass = (x, y) => x >= 0 && y >= 0 && x < m.w && y < m.h && m.passable(x, y, d) && !evSolid[x + ',' + y];
   // 入口：ほかの地図からここへのワープの着く所（tx, ty）
   const starts = []; Object.keys(w.MAP_DEFS).forEach((mid) => { const dd = w.MAP_DEFS[mid]; (dd.warps || []).forEach((wp) => { if (wp.to === id) { const p = w.MapRemake ? w.MapRemake.pos(id, wp.tx, wp.ty) : { x: wp.tx, y: wp.ty }; starts.push([p.x, p.y, mid]); } }); (dd.buildings || []).forEach((b) => { if (b.interior === id && b.entry) starts.push([b.entry.x, b.entry.y, mid + '(建物)']); }); });
+  (def.entries || []).forEach((e) => starts.push([e.x, e.y, (e.from || '') + '(台本)']));   // v8.0 ワープでなく台本で入る地図（異界のボスの間）の着く所
   const bad = starts.filter((s) => !(s[0] >= 0 && s[1] >= 0 && s[0] < m.w && s[1] < m.h && (pass(s[0], s[1]) || m.warpAt(s[0], s[1]))));
   ok(def.kind === 'field' || (starts.length > 0 && !bad.length), id + '：入って来る所 ' + starts.length + ' か所が歩けるマス ' + bad.map((b) => b.join(',')).join(' '));
   const onSolid = (m.npcs || []).filter((n) => { const t = m.tiles[n.y] && m.tiles[n.y][n.x]; return !t || w.Tiles.isSolid(t) || w.Tiles.isWater(t) || !!m.warpAt(n.x, n.y) || (m.chests || []).some((c) => c.x === n.x && c.y === n.y); });

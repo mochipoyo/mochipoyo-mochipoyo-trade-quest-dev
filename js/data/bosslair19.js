@@ -88,6 +88,7 @@
     if (root.DungeonExit && root.DungeonExit.DEFS) root.DungeonExit.DEFS[mapId] = { get map() { return L.map; }, get x() { return outPos().x; }, get y() { return outPos().y; }, label: '異界の門（' + lz.name + '）の前' };
     R.add({ id: mapId, name: lz.name, kind: 'dungeon', bgm: 'boss_area', fallback: lz.st === 'forest' ? 'grass' : lz.st === 'cave' || lz.st === 'ice' ? 'cave_floor' : 'floor_stone', rows: rows(lz.st),
       theme3d: { region: lz.region, place: lz.place }, bgRegion: lz.region, lair19: b.key, recLevel: recOf(b),
+      entries: [{ x: IN.x, y: IN.y, from: b.map }],   // ワープでなく台本（門を調べて「入る」）で着く所。確認ツール（docs/tools/v78/region78_check.js）が入口として使う
       warps: [], npcs: [], chests: [],
       events: [
         { x: EX.x, y: EX.y, type: 'script', solid: false, tile: 'warp', run: async function (c) { var i = await c.choice('魔法陣が光っている。外へ出る？', ['出る', 'やめておく']); if (i === 0) await exitRun(); } },
