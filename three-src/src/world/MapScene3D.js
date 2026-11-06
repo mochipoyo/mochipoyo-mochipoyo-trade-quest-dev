@@ -11,6 +11,7 @@ import { BuildingBuilder3D, bdetailSetting } from './BuildingBuilder3D.js';
 import { buildWallGates } from './WallGate3D.js';
 import { buildLairGates } from './LairGate3D.js';
 import { buildFurniture81 } from './Furniture81.js';
+import { buildArcades81 } from './Arcade81.js';
 import { dressMob } from '../entities/MobDress76.js';
 import { InteriorBuilder3D, INTERIOR_KINDS } from './InteriorBuilder3D.js';
 import { WorldBuilder3D } from './WorldBuilder3D.js';
@@ -89,6 +90,8 @@ export class MapScene3D {
       try { const modernG = modernStyle(window.PLACE_DECOR && window.PLACE_DECOR.forMap ? window.PLACE_DECOR.forMap(map.id) : null); const wg = modernG ? { n: 0 } : buildWallGates(map, { mats: app.mats, theme, group: r.group, put: (id, m, x, z) => wb.put(id, m, x, z) });   /* 近未来・機械の町は石の楼門にしない */ if (wg.n) { (wg.lamps || []).forEach((l) => this.lampSpots.push(l)); this.wallGates = wg.gates; } } catch (e) { console.warn('wallgate', e); }
       // v8.0 異界の門（新しいボス 19 体のボスの間の入口。world/LairGate3D.js）。失敗しても地図は表示する
       try { const lg = buildLairGates(map, { mats: app.mats, group: r.group, heightAt: r.heightAt }); if (lg.n) { lg.lamps.forEach((l) => this.lampSpots.push(l)); lg.animated.forEach((a) => this.animated.push(a)); this.lairGates = lg.n; } } catch (e) { console.warn('lairgate', e); }
+      // v8.1 渡り廊下・回廊・側廊（定義の arcades81。world/Arcade81.js）
+      try { const ar = buildArcades81(map, { mats: app.mats, group: r.group, heightAt: r.heightAt }); if (ar.n) this.arcades81 = ar.n; } catch (e) { console.warn('arcade81', e); }
       if (slice) await slice();
       await r.finalize();
       if (slice) await slice();

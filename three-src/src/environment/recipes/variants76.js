@@ -71,6 +71,36 @@ function roundHouse(b, ctx) {
   return out;
 }
 
+// v8.1 学院の観測塔（shape76 'observatory81'。js/data/remake81-academy.js）：石の円い塔・見晴らしの回廊・青銅のドーム（観測の細い開口と望遠鏡の先）・尖頭アーチの窓
+function observatory81(b, ctx) {
+  const { add, M, out } = ctx; const xl = b.x + 0.2, xr = b.x + b.w - 0.2, zb = b.y + 0.2, zf = b.y + b.h - 0.55;
+  const cx = (xl + xr) / 2, cz = (zb + zf) / 2, r = Math.min(xr - xl, zf - zb) / 2; const base = 0.4, h1 = 4.2, top = base + h1;
+  const stone = M.tinted('stonewall', '#cfc6b4'), dark = M.tinted('stonewall', '#9a907e'), timber = M.get('timber');
+  const bronze = plain('#5e8a6e', { std: { roughness: 0.45, metalness: 0.7 } }), bronzeD = plain('#3e5a48', { std: { roughness: 0.5, metalness: 0.6 } }), slit = plain('#14161c', { std: { roughness: 1 } });
+  const glow = plain('#ffd89a', { emissive: '#ffc070', ei: 1.1, window: true });
+  const cyl = (r0, r1, h, y, seg) => new THREE.CylinderGeometry(r0, r1, h, seg || 32, 1).translate(cx, y, cz);
+  add(dark, cyl(r * 1.06, r * 1.1, base, base / 2), null);
+  add(stone, cyl(r, r, h1, base + h1 / 2), null);
+  for (const yy of [base + 1.5, base + 3.0]) add(dark, cyl(r * 1.03, r * 1.03, 0.16, yy), null);   // 帯石
+  // 見晴らしの回廊（張り出した床と手すり）
+  add(dark, cyl(r * 1.22, r * 1.12, 0.22, top - 0.1), null);
+  for (let i = 0; i < 24; i++) { const a = i / 24 * Math.PI * 2; add(timber, box(0.07, 0.6, 0.07, 1), M4(cx + Math.cos(a) * r * 1.18, top + 0.3, cz + Math.sin(a) * r * 1.18)); }
+  const rail = new THREE.TorusGeometry(r * 1.18, 0.04, 4, 40); rail.rotateX(Math.PI / 2); rail.translate(cx, top + 0.62, cz); add(timber, rail, null);
+  // ドーム（青銅）と開口・望遠鏡の先
+  const dr = r * 0.98; const dome = new THREE.SphereGeometry(dr, 32, 14, 0, Math.PI * 2, 0, Math.PI / 2); dome.translate(cx, top + 0.05, cz); add(bronze, dome, null);
+  for (let k = 0; k < 8; k++) { const a = k / 8 * Math.PI * 2; const mx = new THREE.Matrix4().makeTranslation(cx, top + 0.05, cz).multiply(new THREE.Matrix4().makeRotationY(a)).multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2)); add(bronzeD, new THREE.TorusGeometry(dr * 1.005, 0.035, 4, 24, Math.PI / 2), mx); }
+  add(slit, box(0.5, dr * 0.95, 0.12, 1), M4(cx, top + 0.05 + dr * 0.5, cz + dr * 0.82, 0, -0.62));   // 南へ開いた観測の細い口
+  const tube = new THREE.CylinderGeometry(0.12, 0.17, 1.5, 12); tube.rotateX(Math.PI / 2 - 0.62); tube.translate(cx, top + dr * 0.75, cz + dr * 0.72); add(M.get('iron'), tube, null);
+  add(bronzeD, new THREE.SphereGeometry(0.14, 10, 8).translate(cx, top + 0.05 + dr + 0.08, cz), null);
+  // 尖頭アーチの窓（灯りがともる）
+  for (const a of [0.2, 0.5, 0.8, 1.2, 1.5, 1.8].map((t) => t * Math.PI)) { for (const yy of [base + 2.2, base + 3.6]) { const wx = cx + Math.cos(a) * r * 1.01, wz = cz + Math.sin(a) * r * 1.01; if (wz > cz + r * 0.7 && Math.abs(wx - (b.doorAbs.x + 0.5)) < 0.8) continue; const ry = Math.atan2(Math.cos(a), Math.sin(a)); add(glow, box(0.3, 0.7, 0.04, 1), M4(wx, yy, wz, ry)); add(dark, box(0.12, 0.12, 0.08, 1), M4(wx, yy + 0.42, wz, ry, 0, Math.PI / 4)); } }
+  const dx = b.doorAbs.x + 0.5; const dz = cz + Math.sqrt(Math.max(0, r * r - (dx - cx) * (dx - cx))) + 0.02;
+  doorAt(add, M, out, dx, dz, base, 0, { arch: true });
+  plate(out, b.name, dx, base + 2.55, dz + 0.1, 0);
+  out.lights.push({ pos: new THREE.Vector3(cx, top + 1.0, cz + r), color: 0xffd08a, power: 0.9, dist: 9 });
+  return out;
+}
+
 function octaHouse(b, ctx) {
   const { add, M, out, st, desert } = ctx; const xl = b.x + 0.2, xr = b.x + b.w - 0.2, zb = b.y + 0.2, zf = b.y + b.h - 0.55;
   const cx = (xl + xr) / 2, cz = (zb + zf) / 2; const c = Math.min(xr - xl, zf - zb) * 0.3; const base = 0.32, h1 = 3.0, top = base + h1;
@@ -193,7 +223,7 @@ export function buildVariant76(b, o, R, st, region) {
   const add = Rm ? (m, g, mx) => batch.add(m, g, mx ? Rm.clone().multiply(mx) : Rm) : (m, g, mx) => batch.add(m, g, mx || undefined);
   const ctx = { add, M, out, R, st: st || {}, desert: region === 'desert' };
   const shape = b.shape76;
-  if (shape === 'round') roundHouse(bv, ctx); else if (shape === 'octa') octaHouse(bv, ctx); else if (shape === 'tent') tent(bv, ctx); else if (shape === 'stall') stall(bv, ctx);
+  if (shape === 'round') roundHouse(bv, ctx); else if (shape === 'observatory81') observatory81(bv, ctx); else if (shape === 'octa') octaHouse(bv, ctx); else if (shape === 'tent') tent(bv, ctx); else if (shape === 'stall') stall(bv, ctx);
   else if (side || (o.sample76 && SHOPFRONT[b.type])) { return o.bb.build(bv, o.rnd, { batch: { add, build: () => { } }, design: o.design, theme: o.theme, style: st }).then((r) => { if (o.sample76) shopFront(bv, Object.assign({}, ctx, { out: r })); return finish(r, Rm); }); }
   else return null;
   if (o.sample76 && shape !== 'stall') shopFront(bv, ctx);
