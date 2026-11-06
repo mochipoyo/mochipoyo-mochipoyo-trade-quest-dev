@@ -41,7 +41,8 @@ const isField = (id) => { const t = w.MAP_DEFS[id]; return !!(t && (t.region || 
       W.enterMap(ID, arr[0], arr[1], 'up', { raw: true }); await flush(); if (!route(W.map, W.player.x, W.player.y, q.x, q.y)) { ok(false, ID + '：' + (q.name || q.to) + '（' + q.x + ',' + q.y + '）へ歩いて行けない'); continue; }
       await walkTo(q.x, q.y); for (let i = 0; i < 40 && W.busy; i++) await flush(); const got = W.map.id === q.to; const om = W.map; const gp = [W.player.x, W.player.y];
       const bk = (om.def.warps || []).filter((z) => z.to === ID).sort((a, b) => (Math.abs(a.x - gp[0]) + Math.abs(a.y - gp[1])) - (Math.abs(b.x - gp[0]) + Math.abs(b.y - gp[1])))[0];
-      if (got && bk) { await walkTo(bk.x, bk.y); for (let i = 0; i < 40 && W.busy; i++) await flush(); }
+      if (got && bk) { if (bk.x === gp[0] && bk.y === gp[1]) { const nb = [[1, 0], [-1, 0], [0, 1], [0, -1]].map((o) => [gp[0] + o[0], gp[1] + o[1]]).find((p) => om.passable(p[0], p[1], d) && !om.warpAt(p[0], p[1])); if (nb) { await walkTo(nb[0], nb[1]); for (let i = 0; i < 40 && W.busy; i++) await flush(); } }   /* 戻るワープの上に着いたときは、いちど降りてから乗る */
+        await walkTo(bk.x, bk.y); for (let i = 0; i < 40 && W.busy; i++) await flush(); }
       const near = W.map.id === ID && Math.abs(W.player.x - q.x) + Math.abs(W.player.y - q.y) <= 2;
       ok(got && near, ID + '：' + (q.name || q.to) + '（' + q.x + ',' + q.y + '）に乗る → ' + om.id + ' ' + gp.join(',') + ' → 戻る → ' + W.map.id + ' ' + W.player.x + ',' + W.player.y); }
     // 町の出口（フィールドへ）
