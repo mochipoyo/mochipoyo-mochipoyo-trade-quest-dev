@@ -33,7 +33,7 @@
     // 崩れた祠（時計塔の東）
     C.rect(SX, 3, 1, 4, 'P'); C.set(SX - 1, 2, 'I'); C.set(SX + 1, 2, 'I'); C.set(SX - 1, 1, 'z'); C.set(SX + 1, 4, 'z');
     // 焼け跡と瓦礫の庭
-    [[40, 19], [49, 25], [55, 26], [57, 12], [47, 6], [39, 26]].forEach(function (p) { C.set(p[0], p[1], '8'); }); [[48, 13 - 1], [57, 20], [38, 1]].forEach(function (p) { C.set(p[0], p[1], 'z'); });
+    [[40, 19], [49, 25], [55, 26], [57, 12], [47, 6], [39, 26]].forEach(function (p) { C.set(p[0], p[1], '8'); }); [[48, 12], [57, 20], [38, 1]].forEach(function (p) { C.set(p[0], p[1], 'z'); });
     C.rect(12, 25, 4, 2, 'a'); C.set(16, 27, 'e');
     [[2, 12], [20, 3], [57, 27], [36, 28], [19, 27]].forEach(function (p) { C.set(p[0], p[1], 'q'); });
     return C;
@@ -50,7 +50,7 @@
     },
     npcs: {
       ru_shade: [10, 26, 'down', 1], arunaruins_x72_kid: [48, 10, 'down', 1], arunaruins_x72_vendor: [49, 11, 'down', 0], arunaruins_x72_elder: [50, 19, 'down', 0],
-      aruna_ruins_a73_0: [10, 11, 'down', 2], aruna_ruins_a73_1: [2, 11 - 1, 'down', 2], aruna_ruins_a73_2: [26, 20, 'down', 2], aruna_ruins_a73_3: [17, 25, 'down', 1],
+      aruna_ruins_a73_0: [10, 11, 'down', 2], aruna_ruins_a73_1: [2, 10, 'down', 2], aruna_ruins_a73_2: [26, 20, 'down', 2], aruna_ruins_a73_3: [17, 25, 'down', 1],
       u73_riko: [13, 27, 'down', 1], aruna_ruins_bread76: [35, 10, 'down', 0]
     },
     events: [[8, 10, 25, 10], [30, 19, 34, 18], [36, 3, SX, 3], [5, 6, 5, 5], [4, 21, 7, 28], [24, 22, 25, 28], [34, 22, 43, 28], [36, 12, 53, 12], [49, 17, 39, 10]],

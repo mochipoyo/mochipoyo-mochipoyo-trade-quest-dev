@@ -24,7 +24,7 @@
     // 火祭りの広場（南東）
     C.rect(33, 20, 24, 8, 'P'); [[35, 22], [54, 22], [35, 26], [54, 26]].forEach(function (p) { C.set(p[0], p[1], 'I'); });
     [[GX - 1, 12], [GX + 2, 12], [GX - 1, 15], [GX + 2, 15], [GX + 2, 22], [GX + 2, 25], [44, 23], [46, 23]].forEach(function (p) { C.set(p[0], p[1], 'y'); });
-    [[2, 20], [9, 26], [13, 22], [40, 1], [58, 11]].forEach(function (p) { C.set(p[0], p[1], 'z'); }); [[5, 23], [57, 18 + 1]].forEach(function (p) { C.set(p[0], p[1], 'q'); });
+    [[2, 20], [9, 26], [13, 22], [40, 1], [58, 11]].forEach(function (p) { C.set(p[0], p[1], 'z'); }); [[5, 23], [57, 19]].forEach(function (p) { C.set(p[0], p[1], 'q'); });
     return C;
   }
   R.define('ignas_town', {
