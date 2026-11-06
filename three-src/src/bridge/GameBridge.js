@@ -25,6 +25,7 @@ import { battleLayout, partyStyle } from '../battle/BattleActors3D.js';
 import * as PartyDir from '../battle/PartyDirections.js';
 import { Env } from '../environment/Env.js';
 import { Join76 } from './Join76.js';
+import { Effects78 } from '../world/Effects78.js';
 
 const G = window;
 const WALK = 2.7, RUN = 5.4, RADIUS = 0.28;
@@ -111,6 +112,7 @@ export class App3D {
     const gl = this.renderer.renderer.getContext(); this.webgl2 = (typeof WebGL2RenderingContext !== 'undefined') && gl instanceof WebGL2RenderingContext;
     this.scene = new THREE.Scene();
     this.lighting = new LightingManager(this.scene, this.renderer, this.quality);
+    this.fx78 = new Effects78(this.scene, this.quality);   // v7.8 雨・浮天城アエリアの影・展望室の地球（world/Effects78.js）
     this.renderer.setScene(this.scene, this.camera.camera);
     this.mats = new Materials(this.base, this.renderer.renderer); this.models = new ModelManager(this.base);
     // 戦闘の3D（敵＝絵の立体・味方＝ドット絵）は3Dの素材（GLB）を使わないので、素材の読み込みを待たずに使えるようにする
@@ -612,6 +614,7 @@ export class App3D {
     } else if (this.rideY) { this._rideF = this._rideF || new THREE.Vector3(); this._rideF.copy(this.pos); this._rideF.y += this.rideY; this.camera.follow(this._rideF, dt); }   // v7.1 エレベーター：カメラもついていく
     else this.camera.follow(this.pos, dt);
     this.lighting.update(G.State.data ? G.State.data.timeOfDay : 0.35, this.pos);
+    try { this.fx78.update(dt, t, this.pos, this.current); } catch (e) { /* 表示だけの飾り：失敗しても進める */ }
     this.updateCutout();
     if (L) this.renderer.resize(L.w, L.h);
     if (!this.paused) this.renderer.render();   // paused：自動テストで描画だけ止める（ソフトウェア描画の環境用）

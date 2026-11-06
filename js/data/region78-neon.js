@@ -226,6 +226,7 @@
   R.design('neon_lookout', { architectureStyle: '錆びた鉄骨の灯台', silhouette: 'lighthouse', roofStyle: 'cone', materials: { wall: '#8a8e96', wallD: '#5a5e66', stripe: '#c85a3a', roof: '#3a3a4a', glow: '#5ae0ff' }, decoration: ['lamp'], environment: ['cliff', 'sea'] });
   R.tag(['world_neon'], 'neon', null, 'machine', R.MOOD.rainDusk);
   R.tag(['neon_town'], 'neon', 'machine_city', 'machine', R.MOOD.neonNight);
+  ['world_neon', 'neon_town'].forEach(function (id) { if (root.MAP_DEFS[id]) root.MAP_DEFS[id].rain78 = true; });   // 3D の雨（three-src/src/world/Effects78.js）
   R.tag(['neon_inn', 'neon_shop', 'neon_gear', 'neon_house', 'neon_house2', 'neon_office', 'neon_lighthouse'], 'neon', null, 'machine');
   R.bossSym('neon_works_core', 9, 3, 'boss_archive_warden', function (f) { return f.neon_has_record && f.neon_meter && !f.neon_warden_down; });   // 記録をそろえると、管理室の奥に監督機の気配
   R.tag(['neon_works_1', 'neon_works_2', 'neon_works_core'], 'neon', 'machine_city', 'machine');

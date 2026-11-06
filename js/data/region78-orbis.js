@@ -184,5 +184,7 @@
   /* ---------- 見た目（3D 版のテーマ・戦闘の背景） ---------- */
   R.bossSym('orbis_sat', 8, 2, 'boss_sentinel_orbis', function (f) { return !f.orb_sat; });
   R.tag(['orbis_ring', 'orbis_obs_1', 'orbis_obs_2', 'orbis_sat', 'orbis_lounge'], 'orbis', 'machine_city', 'machine');
+  ['orbis_ring', 'orbis_obs_1', 'orbis_obs_2', 'orbis_sat', 'orbis_lounge'].forEach(function (id) { var df = root.MAP_DEFS[id]; if (df) df.space76 = true; });   // 3D：空を星空に（宇宙の駅）
+  if (root.MAP_DEFS.orbis_lounge) root.MAP_DEFS.orbis_lounge.earthWindow78 = true;   // 3D：窓の外に地球（three-src/src/world/Effects78.js）
   R.look(['orbis_ring', 'orbis_obs_1', 'orbis_obs_2', 'orbis_sat', 'orbis_lounge'], { room: 'cyber', decor: 'tech' });
 })(typeof window !== 'undefined' ? window : globalThis);
