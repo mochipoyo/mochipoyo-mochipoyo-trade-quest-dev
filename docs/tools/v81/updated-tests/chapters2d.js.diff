@@ -1,0 +1,11 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/chapters2d.js.orig	2026-11-07 12:27:10.533467160 +0900
++++ s3121/chapters2d.js	2026-11-07 12:27:10.547759789 +0900
+@@ -17,7 +17,7 @@
+   const tr = w.MAP_DEFS.tradia.buildings.find((b) => b.interior === 'tradia_foundation'); const rv = w.MAP_DEFS.rivel_town.buildings.find((b) => b.interior === 'rivel_wave_temple');
+   ok(tr && rv, '建物：トレディアに「トレード財団 本部」・リヴェル城下町に「波形聖堂」');
+   World.enterMap('rivel_town', 54, 9, 'up'); const wp = World.map.warps.find((x) => x.to === 'rivel_wave_temple'); ok(wp && World.map.passable(wp.x, wp.y + 1, d), '波形聖堂の入口の前に立てる（' + (wp && wp.x + ',' + wp.y) + '）');
+-  World.enterMap('tradia', 40, 38, 'up'); const wf = World.map.warps.find((x) => x.to === 'tradia_foundation'); ok(wf && World.map.passable(40, 38, d) && World.map.warps.some((x) => x.to === 'tradia_inn'), '財団本部の入口・宿屋の入口もふさがない');
++  World.enterMap('tradia', 40, 38, 'up'); /* v8.1 作り直したトレディア：旧座標（40,38）は World.enterMap が今の座標に直すので、着いたマスで調べる */ const wf = World.map.warps.find((x) => x.to === 'tradia_foundation'); ok(wf && World.map.passable(World.player.x, World.player.y, d) && World.map.warps.some((x) => x.to === 'tradia_inn'), '財団本部の入口・宿屋の入口もふさがない');
+   // ---- 波形聖堂：断片その一・試練（学習用のチャート）
+   World.enterMap('rivel_wave_temple', 7, 9, 'up'); LOG.length = 0; ANS.push(1); await talk('wt_abbess');
+   ok(d.quests.s3121_origin_fragments && d.quests.s3121_wave_temple && has('伝承です。確かめられたことではありません'), '聖堂長：伝承は「とされる」で語る・任意クエスト2本');

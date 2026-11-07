@@ -48,7 +48,7 @@
     },
     npcs: {
       nc_drone: [RX + 1, 22, 'down', 2], nc_resident: [24, 33, 'down', 1], nc_defender: [15, 19, 'down', 1], nc_noa: [12, 13, 'down', 0],
-      nc_free1: [32, 34, 'down', 2], nc_job2: [44, 19, 'down', 0], nc_job3: [16, 27, 'down', 1], aunt67_node_city: [25, 8, 'down', 1], s3121_nc_robot: [36, 15, 'down', 0],
+      nc_free1: [32, 34, 'down', 2], nc_job2: [44, 19, 'down', 0], nc_job3: [16, 27, 'down', 1], aunt67_node_city: [25, 4, 'down', 1], s3121_nc_robot: [36, 15, 'down', 0],
       nodecity_x72_kid: [60, 19, 'down', 1], nodecity_x72_vendor: [66, 15, 'down', 0], nodecity_x72_elder: [70, 19, 'down', 0],
       node_city_a73_0: [46, 17, 'down', 2], node_city_a73_1: [19, 30, 'down', 2], node_city_a73_2: [48, 33, 'down', 2], node_city_a73_3: [11, 19, 'down', 1],
       u73_bit: [70, 30, 'down', 0], tmaster_raizen: [23, 18, 'down', 0]

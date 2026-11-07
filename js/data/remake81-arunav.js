@@ -38,7 +38,7 @@
     },
     npcs: {
       av_yorn: [6, 10, 'down', 0], av_child: [14, 16, 'down', 2], av_woman: [23, 22, 'down', 1], av_castaway: [9, 22, 'down', 0], av_merchant: [25, 9, 'down', 0], av_sailor: [44, 21, 'down', 1],
-      av_clockmaker: [27, 22, 'down', 0], aunt67_aruna_village: [19, 13, 'down', 1],
+      av_clockmaker: [27, 22, 'down', 0], aunt67_aruna_village: [15, 13, 'down', 1],
       arunavillage_x72_kid: [46, 21, 'down', 1], arunavillage_x72_vendor: [41, 21, 'down', 0], arunavillage_x72_elder: [34, 12, 'down', 0],
       aruna_village_a73_0: [22, 9, 'down', 2], aruna_village_a73_1: [44, 4, 'down', 2], aruna_village_a73_2: [42, 8, 'down', 2], aruna_village_a73_3: [36, 8, 'down', 2], aruna_village_a73_4: [38, 12, 'down', 2], aruna_village_a73_5: [47, 6, 'down', 1],
       u73_yot: [31, 23, 'down', 0], tmaster_lione: [10, 9, 'down', 0], aruna_village_bread76: [22, 10, 'down', 0]

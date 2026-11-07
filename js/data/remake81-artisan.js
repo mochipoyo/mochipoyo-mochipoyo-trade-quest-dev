@@ -46,7 +46,7 @@
     },
     npcs: {
       ra_kid: [26, 18, 'down', 1], ra_farmer: [46, 14, 'left', 1], ra_gardener: [8, 25, 'down', 1], ra_bridge: [37, 17, 'right', 0], ra_apprentice: [21, 12, 'right', 0], ra_alley: [6, 10, 'down', 1],
-      aunt67_rivel_artisan: [24, 17, 'down', 1], rivelartisan_x72_kid: [56, 17, 'down', 1], rivelartisan_x72_vendor: [59, 11, 'down', 0], rivelartisan_x72_elder: [62, 16, 'down', 0],
+      aunt67_rivel_artisan: [24, 16, 'down', 1], rivelartisan_x72_kid: [56, 17, 'down', 1], rivelartisan_x72_vendor: [59, 11, 'down', 0], rivelartisan_x72_elder: [62, 16, 'down', 0],
       rivel_artisan_a73_0: [54, 26, 'down', 2], rivel_artisan_a73_1: [5, 18, 'down', 2], rivel_artisan_a73_2: [31, 17, 'down', 2], rivel_artisan_a73_3: [25, 11, 'down', 2],
       rivel_artisan_a73_4: [44, 7, 'down', 1], rivel_artisan_a73_5: [44, 17, 'down', 1], rivel_artisan_a73_6: [44, 24, 'down', 2], rivel_artisan_a73_7: [44, 1, 'down', 2],
       u73_gante: [19, 17, 'down', 0], rivel_artisan_bread76: [32, 10, 'down', 0]

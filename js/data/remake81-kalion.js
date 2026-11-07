@@ -41,7 +41,7 @@
     npcs: {
       kc_gate_soldier: [29, 36, 'right', 0], kc_plaza_soldier: [27, 18, 'down', 1], kc_rich: [20, 10, 'down', 1], kc_poor1: [9, 30, 'down', 1], kc_poor2: [26, 34, 'down', 1],
       kc_chaser: [8, 35, 'left', 0], kc_elna_npc: [6, 35, 'right', 0], kc_klaus: [37, 11, 'down', 0], kc_council: [34, 33, 'down', 0], kc_angry: [36, 12, 'down', 1], kc_newmerchant: [38, 28, 'down', 0],
-      kc_doctor: [13, 31, 'down', 0], kc_baker: [39, 27, 'left', 0], aunt67_kalion_city: [20, 11, 'down', 1], s3121_kc_foundation: [25, 27, 'down', 0],
+      kc_doctor: [13, 31, 'down', 0], kc_baker: [39, 27, 'left', 0], aunt67_kalion_city: [19, 11, 'down', 1], s3121_kc_foundation: [25, 27, 'down', 0],
       kalioncity_x72_kid: [60, 10, 'down', 1], kalioncity_x72_vendor: [57, 11, 'down', 0], kalioncity_x72_elder: [50, 11, 'down', 0],
       kalion_city_a73_0: [22, 11, 'down', 2], kalion_city_a73_1: [6, 10, 'down', 2], kalion_city_a73_2: [41, 10, 'down', 2], kalion_city_a73_3: [24, 27, 'down', 2], kalion_city_a73_4: [52, 9, 'down', 1], kalion_city_a73_5: [3, 33, 'down', 2],
       u73_kenta: [26, 18, 'right', 0], kalion_city_bread76: [36, 27, 'down', 0]

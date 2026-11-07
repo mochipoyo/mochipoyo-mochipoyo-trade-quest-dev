@@ -34,7 +34,7 @@
       a3_district_9: { x: 8, y: 15, w: 4, h: 4, doorX: 1 }, x72_tower: { x: 35, y: 13, w: 6, h: 6, doorX: 2 }, x72_hall: { x: 43, y: 14, w: 8, h: 5, doorX: 3 }
     },
     npcs: {
-      sd_man: [9, 9, 'down', 1], sd_woman: [30, 9, 'down', 1], sd_child: [16, 22, 'down', 2], aunt67_scheduled_district: [19, 16, 'down', 1],
+      sd_man: [9, 9, 'down', 1], sd_woman: [30, 9, 'down', 1], sd_child: [16, 22, 'down', 2], aunt67_scheduled_district: [18, 16, 'down', 1],
       scheduleddistrict_x72_kid: [45, 22, 'down', 1], scheduleddistrict_x72_vendor: [46, 10, 'down', 0], scheduleddistrict_x72_elder: [50, 11, 'down', 0],
       scheduled_district_a73_0: [3, 17, 'down', 2], scheduled_district_a73_1: [20, 10, 'down', 2], scheduled_district_a73_2: [11, 23, 'down', 2], scheduled_district_a73_3: [23, 3, 'down', 1],
       u73_rei: [12, 17, 'down', 1]

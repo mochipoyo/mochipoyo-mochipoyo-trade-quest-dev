@@ -49,7 +49,7 @@
       bread_stall76: { x: 32, y: 28, w: 3, h: 2, doorX: 1 }
     },
     npcs: {
-      ig_gate: [44, 34, 'right', 0], ig_kid: [9, 11, 'down', 1], ig_smith: [24, 20, 'down', 1], ig_woman: [39, 22, 'down', 1], aunt67_ignas_town: [33, 9, 'down', 1],
+      ig_gate: [44, 34, 'right', 0], ig_kid: [9, 11, 'down', 1], ig_smith: [24, 20, 'down', 1], ig_woman: [39, 22, 'down', 1], aunt67_ignas_town: [32, 10, 'down', 1],
       ignastown_x72_kid: [50, 21, 'down', 1], ignastown_x72_vendor: [52, 9, 'down', 0], ignastown_x72_elder: [58, 18, 'down', 0],
       ignas_town_a73_0: [41, 1, 'down', 2], ignas_town_a73_1: [42, 14, 'down', 2], ignas_town_a73_2: [4, 13, 'down', 1], ignas_town_a73_3: [12, 26, 'down', 1], ignas_town_a73_4: [57, 27, 'down', 2],
       u73_homura: [41, 3, 'down', 0], ignas_town_bread76: [33, 28, 'down', 0]

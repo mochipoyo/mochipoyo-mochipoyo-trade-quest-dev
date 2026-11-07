@@ -39,7 +39,7 @@
     },
     npcs: {
       sc_guard: [31, 9, 'down', 0], sc_noble: [12, 9, 'down', 1], sc_camp_old: [8, 33, 'down', 0], sc_camp_merchant: [44, 33, 'down', 0], sc_ord: [22, 27, 'left', 0],
-      sc_after1: [39, 31, 'down', 1], sc_dissent: [24, 33, 'down', 0], sc_family: [13, 33, 'down', 1], aunt67_sentra_capital: [28, 21, 'down', 1],
+      sc_after1: [39, 31, 'down', 1], sc_dissent: [24, 33, 'down', 0], sc_family: [13, 33, 'down', 1], aunt67_sentra_capital: [32, 21, 'down', 1],
       sentracapital_x72_kid: [57, 27, 'down', 1], sentracapital_x72_vendor: [54, 22, 'down', 0], sentracapital_x72_elder: [47, 26, 'down', 0],
       sentra_capital_a73_0: [3, 35, 'down', 2], sentra_capital_a73_1: [28, 26, 'down', 2], sentra_capital_a73_2: [50, 10, 'down', 2], sentra_capital_a73_3: [46, 31, 'down', 2], sentra_capital_a73_4: [5, 37, 'down', 1], sentra_capital_a73_5: [50, 35, 'down', 2],
       u73_poire: [42, 10, 'down', 1], tmaster_mirea: [11, 27, 'down', 0], sentra_capital_bread76: [25, 24, 'down', 0]

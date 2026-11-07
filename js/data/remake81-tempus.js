@@ -63,7 +63,7 @@
     version: 2, rows: rows, arrive: [RX + 1, 33], buildings: B,
     npcs: {
       tc_gate: [RX - 1, 34, 'right', 0], tc_victim: [8, 9, 'down', 1], tc_woman: [38, 13, 'down', 1], tc_child: [23, 21, 'down', 2], tc_after: [13, 25, 'down', 1], tc_waveold: [29, 14, 'down', 0],
-      aunt67_tempus_city: [17, 15, 'down', 1], s3121_tc_wave: [32, 13, 'down', 0], tempuscity_x72_kid: [44, 22, 'down', 1], tempuscity_x72_vendor: [58, 9, 'down', 0], tempuscity_x72_elder: [52, 27, 'down', 0],
+      aunt67_tempus_city: [17, 11, 'down', 1], s3121_tc_wave: [32, 13, 'down', 0], tempuscity_x72_kid: [44, 22, 'down', 1], tempuscity_x72_vendor: [58, 9, 'down', 0], tempuscity_x72_elder: [52, 27, 'down', 0],
       tempus_city_a73_0: [62, 12, 'down', 2], tempus_city_a73_1: [4, 23, 'down', 2], tempus_city_a73_2: [40, 24, 'down', 1], tempus_city_a73_3: [64, 9, 'down', 2],
       u73_chikuta: [47, 31, 'down', 1], tmaster_chrono: [36, 9, 'down', 0], tempus_city_bread76: [18, 21, 'down', 0]
     },

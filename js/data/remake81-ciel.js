@@ -33,7 +33,7 @@
       harbor: { x: 13, y: 13, w: 8, h: 5, doorX: 3 }, bread_stall76: { x: 22, y: 14, w: 3, h: 2, doorX: 1 }, x72_hall: { x: 33, y: 13, w: 8, h: 5, doorX: 3 }, x72_tower: { x: 48, y: 12, w: 6, h: 6, doorX: 2 }
     },
     npcs: {
-      ci_sailor: [22, QY, 'down', 0], ci_child: [9, 9, 'down', 1], aunt67_ciel_port: [24, 9, 'down', 1],
+      ci_sailor: [22, QY, 'down', 0], ci_child: [9, 9, 'down', 1], aunt67_ciel_port: [23, 8, 'down', 1],
       cielport_x72_kid: [44, QY + 1, 'down', 1], cielport_x72_vendor: [43, 15, 'down', 0], cielport_x72_elder: [45, 13, 'down', 0],
       ciel_port_a73_0: [19, 8, 'down', 2], ciel_port_a73_1: [12, 9, 'down', 2], ciel_port_a73_2: [9, 15, 'down', 2], ciel_port_a73_3: [33, 9, 'down', 2], ciel_port_a73_4: [12, 3, 'down', 2], ciel_port_a73_5: [36, 9, 'down', 1],
       u73_tundra: [41, 23, 'down', 0], ciel_port_bread76: [23, 14, 'down', 0]
