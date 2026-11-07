@@ -61,7 +61,7 @@ async function lineupCreatures(anim) {
 async function lineupNature() {
   clear(); Nature81.setQuality(q.get('q') === 'low' ? 'low' : 'high'); const lod = q.get('lod') === '1' ? '_lod1' : '';
   scene.background = new THREE.Color(0xb8c4cc); scene.fog = new THREE.Fog(0xb8c4cc, 30, 70); ground.material.color.set(0x8a8f86);
-  const rows = [['tree_oak_a', 'tree_oak_b', 'tree_oak_c', 'tree_palm', 'tree_dead'], ['tree_pine_a', 'tree_pine_b', 'tree_pine_c', 'tree_snowpine', 'bush_a', 'rock_a', 'rock_b']];
+  const rows = [['tree_oak_a', 'tree_oak_b', 'tree_oak_c', 'tree_palm', 'tree_dead', 'tree_winter'], ['tree_pine_a', 'tree_pine_b', 'tree_pine_c', 'tree_snowpine', 'bush_a', 'rock_a', 'rock_b']];
   const info0 = [];
   rows.forEach((ids, r) => { let x = -6; for (const id of ids) { const tid = (lod && MODELS[id + '_lod1']) ? id + '_lod1' : id; const [p] = Nature81.parts(tid); const m = new THREE.Mesh(p.geometry, p.material); m.castShadow = m.receiveShadow = true; m.position.set(x, 0, -r * 3.2); scene.add(m); active.push(m); info0.push(tid + ' ' + Nature81.stats.geos[tid]); x += /rock|bush/.test(id) ? 1.6 : 2.7; } });
   const mt = [{ rock: '#8a8478', grass: '#6a8a4a', snow: false }, { rock: '#8a8a92', grass: '#7a8a6a', snow: true }, { rock: '#c09a6a', grass: '#d2c08a', snow: false, strata: true }];

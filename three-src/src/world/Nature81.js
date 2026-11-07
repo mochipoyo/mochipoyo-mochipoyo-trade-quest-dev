@@ -266,15 +266,15 @@ function randDir(rnd) { const u = rnd() * 2 - 1, a = rnd() * Math.PI * 2, r = Ma
 /* ---------------- 木の種類 ---------------- */
 const PAL = {
   oak: ['#5a8a30', '#73a23a', '#486f2c', '#82ae44'], bush: ['#558430', '#689834', '#466c2a'], pine: ['#3d6e38', '#4b7f40', '#355f37', '#5a8b4a'], palm: ['#5d8c2e', '#77a23a', '#4c7a28'],
-  barkOak: '#6a5038', barkPine: '#6b4a34', barkPalm: '#8c7a5e', barkDead: '#7c746a', snow: '#e9eff4'
+  barkOak: '#6a5038', barkPine: '#6b4a34', barkPalm: '#8c7a5e', barkDead: '#7c746a', barkWinter: '#5e5248', snow: '#e9eff4'
 };
 const SPEC = {
   tree_oak_a: { kind: 'oak', seed: 11, h: 3.4, crown: [1.25, 1.0] }, tree_oak_b: { kind: 'oak', seed: 23, h: 3.1, crown: [1.35, 0.95] }, tree_oak_c: { kind: 'oak', seed: 37, h: 4.4, crown: [1.2, 1.35] },
   tree_pine_a: { kind: 'pine', seed: 5, h: 4.0 }, tree_pine_b: { kind: 'pine', seed: 7, h: 3.6 }, tree_pine_c: { kind: 'pine', seed: 9, h: 4.4 },
-  tree_palm: { kind: 'palm', seed: 3, h: 3.2 }, tree_dead: { kind: 'dead', seed: 13, h: 3.2 }, tree_snowpine: { kind: 'snowpine', seed: 17, h: 2.9 },
+  tree_palm: { kind: 'palm', seed: 3, h: 3.2 }, tree_dead: { kind: 'dead', seed: 13, h: 3.2 }, tree_snowpine: { kind: 'snowpine', seed: 17, h: 2.9 }, tree_winter: { kind: 'winter', seed: 29, h: 3.4 },
   bush_a: { kind: 'bush', seed: 19 }, rock_a: { kind: 'rock', seed: 31 }, rock_b: { kind: 'rock', seed: 43, strata: true }
 };
-['tree_oak_a', 'tree_oak_b', 'tree_oak_c', 'tree_pine_a', 'tree_pine_b', 'tree_pine_c', 'tree_palm', 'tree_dead', 'tree_snowpine'].forEach((id) => { SPEC[id + '_lod1'] = Object.assign({}, SPEC[id], { lod: 1 }); });
+['tree_oak_a', 'tree_oak_b', 'tree_oak_c', 'tree_pine_a', 'tree_pine_b', 'tree_pine_c', 'tree_palm', 'tree_dead', 'tree_snowpine', 'tree_winter'].forEach((id) => { SPEC[id + '_lod1'] = Object.assign({}, SPEC[id], { lod: 1 }); });
 
 function oak(sp) {
   const B = new GB(); const rnd = mulberry(sp.seed * 7 + (sp.lod ? 1 : 0) * 0); const far = !!sp.lod; const bark = LIN(PAL.barkOak);
@@ -358,14 +358,14 @@ function palm(sp) {
   return B.geo();
 }
 function dead(sp) {
-  const B = new GB(); const rnd = mulberry(sp.seed * 3); const far = !!sp.lod; const bark = LIN(PAL.barkDead); const H = sp.h;
+  const B = new GB(); const rnd = mulberry(sp.seed * 3); const far = !!sp.lod; const win = sp.kind === 'winter'; const bark = LIN(win ? PAL.barkWinter : PAL.barkDead); const H = sp.h;   // winter：冬の葉の落ちた広葉樹（雪の地域。小枝の先に霜と雪）
   const tp = [], tr = []; for (let k = 0; k <= (far ? 2 : 5); k++) { const t = k / (far ? 2 : 5); tp.push(V(Math.sin(t * 2.2) * 0.12, H * 0.82 * t, Math.cos(t * 1.7) * 0.06 - 0.06)); tr.push(0.16 - 0.12 * t); }
   tube(B, tp, tr, far ? 4 : 7, bark, { ao: (p) => 0.7 + 0.3 * Math.min(1, p.y / 1.5) });
   const tips = [];
   const branch = (s, d, len, r, depth) => { const e = s.clone().addScaledVector(d, len); const m = s.clone().addScaledVector(d, len * 0.5).add(V((rnd() - 0.5) * 0.12, 0.05, (rnd() - 0.5) * 0.12)); tube(B, [s, m, e], [r, r * 0.7, r * 0.35], far ? 3 : depth ? 3 : 5, bark, { ao: () => 0.9 });
-    if (depth < (far ? 1 : 2)) for (let k = 0; k < 2; k++) { const nd = d.clone().add(V((rnd() - 0.5) * 1.1, 0.35 + rnd() * 0.3, (rnd() - 0.5) * 1.1)).normalize(); branch(e, nd, len * 0.58, r * 0.55, depth + 1); } else tips.push(e); };
+    if (depth < (far ? 1 : win ? 3 : 2)) for (let k = 0; k < 2; k++) { const nd = d.clone().add(V((rnd() - 0.5) * 1.1, 0.35 + rnd() * 0.3, (rnd() - 0.5) * 1.1)).normalize(); branch(e, nd, len * 0.58, r * 0.55, depth + 1); } else tips.push(e); };
   for (let i = 0; i < 4; i++) { const a = i / 4 * Math.PI * 2 + rnd() * 0.7; const y = H * (0.45 + i * 0.1); const s = V(Math.sin((y / (H * 0.82)) * 2.2) * 0.12, y, 0); branch(s, V(Math.cos(a), 0.55 + rnd() * 0.3, Math.sin(a)).normalize(), 0.85 + rnd() * 0.35, 0.065, 0); }
-  if (!far) for (const [ti, t] of tips.entries()) for (const r of (ti % 2 ? [0.8] : [0, 1.57])) { const ax = V(Math.cos(r), 0, Math.sin(r)); card(B, t.clone().add(V(0, 0.14, 0)), ax, UP, 0.34, 0.34, 'twig', (p) => V(p.x, 1, p.z).normalize(), () => bark.clone().multiplyScalar(1.1), () => 0.6); }
+  if (!far) for (const [ti, t] of tips.entries()) for (const r of (ti % 2 ? [0.8] : [0, 1.57])) { const ax = V(Math.cos(r), 0, Math.sin(r)); card(B, t.clone().add(V(0, 0.14, 0)), ax, UP, 0.34, 0.34, 'twig', (p) => V(p.x, 1, p.z).normalize(), () => (win ? LIN(PAL.snow).multiplyScalar(1.35) : bark.clone().multiplyScalar(1.1)), () => 0.6); }
   return B.geo();
 }
 function bush(sp) {
@@ -458,7 +458,7 @@ function makeParts(id) {
   if (sp.kind === 'rock') { geo = rockGeo(sp); mat = rockMaterial(); }
   else {
     mat = treeMaterial();
-    geo = sp.kind === 'oak' ? oak(sp) : sp.kind === 'pine' ? pine(sp, false) : sp.kind === 'snowpine' ? pine(sp, true) : sp.kind === 'palm' ? palm(sp) : sp.kind === 'dead' ? dead(sp) : bush(sp);
+    geo = sp.kind === 'oak' ? oak(sp) : sp.kind === 'pine' ? pine(sp, false) : sp.kind === 'snowpine' ? pine(sp, true) : sp.kind === 'palm' ? palm(sp) : (sp.kind === 'dead' || sp.kind === 'winter') ? dead(sp) : bush(sp);
   }
   Nature81.stats.geos[id] = (geo.index ? geo.index.count : geo.attributes.position.count) / 3;
   PARTS[id] = [{ geometry: geo, material: mat }]; return PARTS[id];

@@ -81,6 +81,7 @@ export const MODELS = {
   tree_palm: LP('tree_palm', 'tree_palm', { lod: 'tree_palm_lod1' }), tree_palm_lod1: LP('tree_palm_lod1', 'tree_palm_lod1'),
   tree_dead: LP('tree_dead', 'tree_dead', { lod: 'tree_dead_lod1' }), tree_dead_lod1: LP('tree_dead_lod1', 'tree_dead_lod1'),
   tree_snowpine: LP('tree_snowpine', 'tree_snowpine', { lod: 'tree_snowpine_lod1' }), tree_snowpine_lod1: LP('tree_snowpine_lod1', 'tree_snowpine_lod1'),
+  tree_winter: LP('tree_winter', 'tree_dead', { lod: 'tree_winter_lod1' }), tree_winter_lod1: LP('tree_winter_lod1', 'tree_dead_lod1'),   // v8.1 冬の葉の落ちた広葉樹（Nature81 の形。?nature=glb では使わない）
   cactus: LP('cactus', 'prop_cactus'),
   // タイルの小物
   torch: LP('torch', 'prop_torch'), fountain: LP('fountain', 'prop_fountain'), stall: LP('stall', 'prop_stall'), stalagmite: LP('stalagmite', 'prop_stalagmite'),

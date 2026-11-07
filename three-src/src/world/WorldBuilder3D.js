@@ -354,7 +354,7 @@ export class WorldBuilder3D {
     const nearLm = (x, z, k) => lmZones.length > 0 && lmZones.some((q) => (x - q.x) * (x - q.x) + (z - q.z) * (z - q.z) < q.r * q.r * (k || 1) * (k || 1));
     // 木（地域テーマ）
     const treeSet = theme.tree || ['pine', 'oak'];
-    const treeIds = { pine: ['tree_pine_a', 'tree_pine_b', 'tree_pine_c'], oak: ['tree_oak_a', 'tree_oak_b', 'tree_oak_c'], palm: ['tree_palm'], dead: ['tree_dead'], snowpine: ['tree_snowpine'] };
+    const treeIds = { pine: ['tree_pine_a', 'tree_pine_b', 'tree_pine_c'], oak: ['tree_oak_a', 'tree_oak_b', 'tree_oak_c'], palm: ['tree_palm'], dead: ['tree_dead'], snowpine: Nature81.on() ? ['tree_snowpine', 'tree_snowpine', 'tree_snowpine', 'tree_winter'] : ['tree_snowpine'] };   // v8.1 雪の地域は 4 本に 1 本、冬の葉の落ちた広葉樹
     const pickTree = () => { const kindT = treeSet[Math.floor(rnd() * treeSet.length)]; const list = treeIds[kindT] || treeIds.pine; return list[Math.floor(rnd() * list.length)]; };
     const tc = new THREE.Color();
     const TSC = field ? 0.78 : outdoorD ? 0.7 : 1.0;   // フィールド・屋外ダンジョンの木は小さめ（道が隠れない）
