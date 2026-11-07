@@ -13,7 +13,7 @@ const OUT = process.env.OUT || '/home/claude/work/p3d/shots/v82/video/'; fs.mkdi
   const out = { mode: MODE };
   const rings = () => p.evaluate(() => { let n = 0; MTQ3D.scene.traverse((o) => { if (/^ticker82/.test(o.name || '') && !/_(inner|outer)$/.test(o.name)) n++; }); return n; });
   if (MODE === 'ticker' || MODE === 'ticker_town') {
-    if (MODE === 'ticker') await enter('tradia_exchange', 12, 9); else await enter('tradia', 36, 18); const t0 = Date.now(); const samples = [];
+    if (MODE === 'ticker') await enter('tradia_exchange', 12, 9); else await enter('tradia', 35, 9);   /* 広場：証券市場の扉の前（帯の真ん中のそば。ふつうのカメラで帯が画面に入る） */ const t0 = Date.now(); const samples = [];
     while (Date.now() - t0 < 12500) { await p.waitForTimeout(1500); samples.push(await p.evaluate(() => MTQ3D.current.ticker82 && MTQ3D.current.ticker82.info())); }
     out.samples = samples; out.ms = Date.now() - t0; out.rings = await rings();
   } else if (MODE === 'ship') {
@@ -27,6 +27,13 @@ const OUT = process.env.OUT || '/home/claude/work/p3d/shots/v82/video/'; fs.mkdi
         for (const x of [b.min.x, b.max.x]) for (const y of [b.min.y, b.max.y]) for (const z of [b.min.z, b.max.z]) { const wy = e[1] * x + e[5] * y + e[9] * z + e[13]; top = Math.max(top, wy); bot = Math.min(bot, wy); } });
       return { top: +top.toFixed(2), bottom: +bot.toFixed(2) }; });
     out.bandBottom = 6 - 2.2 / 2;
+  } else if (MODE === 'aeria' || MODE === 'ring_shot') {
+    // 船の上から：空の城アエリア（経度 −152°・緯度 21°）／大洋のリング（−145°・5°）を、ふつうのカメラで撮る
+    const [lon, lat, dy] = MODE === 'aeria' ? [-152, 21, +(process.env.AERIA_DY || 9)] : [-145, 5, 7];
+    const at = await p.evaluate(([lon, lat, dy]) => { const L = EARTH78_LAYOUT, W = World76, d = State.data; const gx = Math.floor(L.xOf(lon)), gy = Math.floor(L.yOf(lat)) + dy; const id = W.mapsIn(gx, gy, gx + 1, gy + 1)[0]; const o = W.origin(id); d.vehicles = d.vehicles || {}; d.vehicles.galleon = Object.assign(d.vehicles.galleon || {}, { owned: true, map: id, x: gx - o.x, y: gy - o.y }); d.aboard = 'galleon'; return { id, x: gx - o.x, y: gy - o.y, tile: World.getMap(id).tile(gx - o.x, gy - o.y) }; }, [lon, lat, dy]);
+    await enter(at.id, at.x, at.y, 'up'); await p.waitForTimeout(4000);
+    out.at = at; out.info = await p.evaluate(() => { const j = MTQ3D.join; return { aeria: !!j.aeria, aeriaInScene: !!(j.aeria && j.aeria.parent), aeriaDist: j.aeriaDist, ring: j.oceanInfo() }; });
+    await p.screenshot({ path: OUT + MODE + '.jpg', type: 'jpeg', quality: 85 });
   } else if (MODE === 'chunks') {
     // 海のチャンク（160×120 の地図）の境を、リングから 150 マス以内で、北・南・東・西（東西の一周の継ぎ目）から越える。越える前と後で、リングの世界の位置・数・速さ
     await p.evaluate(() => { State.data.flags.magicka_arrived = true; State.data.flags.yorn_letter_done = true; });   /* となりの海の物語の鍵（北・南・西＝マクディアに着いてから、東＝断裂群島の用事）を開けた状態で確かめる */

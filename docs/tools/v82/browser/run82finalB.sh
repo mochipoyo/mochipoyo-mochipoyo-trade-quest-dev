@@ -1,9 +1,9 @@
 #!/bin/bash
-# v8.2 最終：B＝スマホの撮影（390×844）と、回帰の残り（最終のスナップショット /home/claude/envsnap_a82t4）
+# v8.2 最終：B＝スマホの撮影（390×844）と、回帰の残り（最終のスナップショット /home/claude/envsnap_a82t5）
 S=/tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/ao
 R=/home/claude/work/p3d/shots/v82
 cd /home/claude/work/p3d
-python3 -m http.server 8796 --directory /home/claude/envsnap_a82t4 > /dev/null 2>&1 &
+python3 -m http.server 8796 --directory /home/claude/envsnap_a82t5 > /dev/null 2>&1 &
 SRV=$!
 for i in $(seq 1 30); do curl -s -o /dev/null http://localhost:8796/3d/index.html && break; sleep 0.3; done
 echo "B start $(date +%T)" >> $S/final_progress.txt

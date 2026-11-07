@@ -1,7 +1,7 @@
 #!/bin/bash
-# v8.2 回帰の残り（最終のスナップショット /home/claude/envsnap_a82t4）と、前の版との比べ
+# v8.2 回帰の残り（最終のスナップショット /home/claude/envsnap_a82t5）と、前の版との比べ
 OUT=/tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/reg82t3
-T3=/home/claude/envsnap_a82t4
+T3=/home/claude/envsnap_a82t5
 cd /home/claude/work
 for t in ch18test navsim entryaudit ch1316test; do RPG_DIR=$T3/ timeout 1500 node $t.js > $OUT/reg_$t.log 2>&1; echo "EXIT $?" >> $OUT/reg_$t.log; echo "== $t (t3): $(grep -E 'ERRORS|FAILS|RESULT' $OUT/reg_$t.log | tail -1 | cut -c1-160) $(tail -1 $OUT/reg_$t.log)" >> $OUT/summary.txt; done
 for t in ch18test navsim entryaudit; do RPG_DIR=/home/claude/envsnap_a82before/ timeout 1500 node $t.js > $OUT/before_$t.log 2>&1; echo "EXIT $?" >> $OUT/before_$t.log; echo "== $t (before): $(grep -E 'ERRORS|FAILS|RESULT' $OUT/before_$t.log | tail -1 | cut -c1-160) $(tail -1 $OUT/before_$t.log)" >> $OUT/summary.txt; done
