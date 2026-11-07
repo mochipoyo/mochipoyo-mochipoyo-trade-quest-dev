@@ -18,10 +18,10 @@ function mat(hex, o) {
   m.name = 'furn81_' + key; addCutout(m); MAT.set(key, m); return m;   /* 主人公の手前では網目に抜く */
 }
 const KINDS = { target: 1, hearth: 1, rack: 1, armillary: 1, blackboard: 1, instrument: 1, meridian: 1 };
-export function buildFurniture81(map, heightAt) {
+export function buildFurniture81(map, heightAt, skip) {
   const W = map.w, H = map.h; const T = (x, z) => (x < 0 || z < 0 || x >= W || z >= H) ? 'wall' : map.tile(x, z);
   const walk = (x, z) => !window.Tiles.isSolid(T(x, z));
-  let any = false; for (let z = 0; z < H && !any; z++) for (let x = 0; x < W; x++) if (KINDS[T(x, z)]) { any = true; break; }
+  let any = false; for (let z = 0; z < H && !any; z++) for (let x = 0; x < W; x++) if (KINDS[T(x, z)] && !(skip && skip(T(x, z), x, z))) { any = true; break; }
   if (!any) return null;
   const b = new Batch(); const g = new THREE.Group(); g.name = 'furniture81'; const lamps = []; const animated = []; const stats = {};
   const wood = mat('#7a4e26', { rough: 0.85 }), dark = mat('#3a2614', { rough: 0.9 }), straw = mat('#d8c070', { rough: 1 }), red = mat('#c03828', { rough: 0.8 }), cream = mat('#f0e6c8', { rough: 0.9 });
@@ -29,7 +29,7 @@ export function buildFurniture81(map, heightAt) {
   const brass = mat('#c8a050', { rough: 0.35, metal: 0.8 }), brassGlow = mat('#e8c870', { rough: 0.3, metal: 0.6, glow: 0.25 }), board = mat('#26402e', { rough: 0.95 }), chalk = mat('#e8e8e0', { rough: 1 });
   const screen = mat('#5affb0', { glow: 1.1 }), glass = mat('#9ad8ff', { glow: 0.9 }), fur = mat('#8a6a48', { rough: 1 });
   for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
-    const t = T(x, z); if (!KINDS[t]) continue; stats[t] = (stats[t] || 0) + 1;
+    const t = T(x, z); if (!KINDS[t] || (skip && skip(t, x, z))) continue; stats[t] = (stats[t] || 0) + 1;   /* v8.2 レシピ（interior82）が作り直すマスは作らない */
     let yaw = 0; for (const [dx, dz, a] of [[0, 1, 0], [1, 0, Math.PI / 2], [-1, 0, -Math.PI / 2], [0, -1, Math.PI]]) { if (walk(x + dx, z + dz)) { yaw = a; break; } }
     const cx = x + 0.5, cz = z + 0.5, y = heightAt ? heightAt(cx, cz) : 0;
     const base = new THREE.Matrix4().makeTranslation(cx, y, cz).multiply(new THREE.Matrix4().makeRotationY(yaw));

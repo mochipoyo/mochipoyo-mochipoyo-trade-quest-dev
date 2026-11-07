@@ -150,7 +150,7 @@ export class MapScene3D {
     // v7.3 本棚（本が並ぶ）・台所・トイレ（形から作る。js/core/tiles.js の stove / sink / cupboard / toilet）
     try { const fg = buildFurniture73(map, this.heightAt, this.envSkipProp || null); if (fg) { this.root.add(fg); this.furniture = fg.userData.stats; } } catch (e) { console.warn('furniture73', e); }
     // v8.1 作り直した町・村・城・学院の家具（的・炉・道具かけ・天球儀・黒板・計器の台・子午線。world/Furniture81.js）
-    try { const f81 = buildFurniture81(map, this.heightAt); if (f81) { this.root.add(f81); this.furniture81 = f81.userData.stats; (f81.userData.lamps || []).forEach((l) => this.lampSpots.push(l)); (f81.userData.animated || []).forEach((a) => this.animated.push(a)); } } catch (e) { console.warn('furniture81', e); }
+    try { const f81 = buildFurniture81(map, this.heightAt, this.envSkipProp || null); if (f81) { this.root.add(f81); this.furniture81 = f81.userData.stats; (f81.userData.lamps || []).forEach((l) => this.lampSpots.push(l)); (f81.userData.animated || []).forEach((a) => this.animated.push(a)); } } catch (e) { console.warn('furniture81', e); }
     // NPC
     for (const n of map.npcs) {
       const model = fieldModelFor(n.actorArt) || fieldModelFor(n.id) || characterModelFor(n.model3d || n.sprite);   // v7.3 model3d：個性的な町の人（2D は専用の色・3D は共通のモデル）
@@ -280,6 +280,7 @@ export class MapScene3D {
     for (const a of this.animated) {   // v7.1 風車の羽根・池のアヒル
       if (a.kind === 'spin') a.obj.rotation.z = -t * (a.speed || 0.6);
       else if (a.kind === 'spinY') a.obj.rotation.y = t * (a.speed || 0.6);   // v7.6 灯台の光
+      else if (a.kind === 'fn') a.fn(t);   // v8.2 円形ティックテープ・浮く踏み板など（自分で動く物）
       else if (a.kind === 'armillary81') { const fx = window.Remake81Fx; const fast = fx && fx.spinUntil && performance.now() < fx.spinUntil; a.v = (a.v || 0) + ((fast ? 3.2 : a.speed) - (a.v || 0)) * 0.05; a.ang = (a.ang || 0) + a.v * 0.016; a.obj.rotation.y = a.ang; a.obj.children.forEach((c, i) => { if (i < 3) c.rotation.z = 0.4 * i + a.ang * (i + 1) * 0.3; }); }   // v8.1 天球儀（学院の観測室で調べると速く回る）
       else if (a.kind === 'bob') { a.obj.position.y = a.base + Math.sin(t * 1.6 + a.ph) * (a.amp || 0.025); if (!a.amp) a.obj.rotation.z = Math.sin(t * 1.3 + a.ph) * 0.04; }   // v7.6 小舟・光の玉
       else if (a.kind === 'uvscroll') { a.tex.offset.x = (t * a.sx) % 1; a.tex.offset.y = (t * a.sy) % 1; }   // v7.6 魔法の水路の光の粒

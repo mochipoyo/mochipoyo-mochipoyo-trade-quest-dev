@@ -16,6 +16,8 @@ import { fieldKit } from './field_kit.js';
 import { outdoorKit } from './outdoor_kit.js';
 import { recipe as shipDeck, cabinRecipe as shipCabin } from './ship_deck.js';
 import { mapCoverage } from '../../world/coverage.js';
+import { interior82 } from './interior82.js';
+import { Theme82 } from '../theme82.js';
 import { themeFor } from '../../world/themes.js';
 
 export const RECIPES = {
@@ -37,6 +39,11 @@ export function genericRecipe(map) {
   const PD = window.PLACE_DECOR; const key = PD && PD.forMap ? PD.forMap(map.id) : null;
   if (mapCoverage(map) === 'done' && map.kind === 'interior') return poyoInterior;   // ポヨ村の作り込んだ屋内：用途ごとの奥の壁の飾り
   if (mapCoverage(map) !== 'generic') return null;
+  // v8.2 町に属する建物の中：町の作り方（theme82.js）と部屋の用途（js/rpg/layout82.js）。城の部屋は城の作り方（別）
+  if (map.kind === 'interior' && window.Layout82 && window.Layout82.info && window.Layout82.info(map.id) && !/^castle/.test(window.Layout82.info(map.id).role || '')) {
+    const prof82 = (window.MTQ3D_ENV && window.MTQ3D_ENV.profileSync && window.MTQ3D_ENV.profileSync(map.id)) || null; const th82 = Theme82.resolve(map, prof82);
+    if (th82) return generic['i82:' + map.id] || (generic['i82:' + map.id] = interior82(th82));
+  }
   const st78 = map.def && map.def.region78 && map.def.theme3d && REGION_STYLE[map.def.theme3d.region] ? map.def.theme3d.region : null;   // v7.8 地球の世界の新しい地域の町（地域の作り方を直接指定）
   if (map.kind === 'town' && st78) return generic['town:' + map.id] || (generic['town:' + map.id] = townKit(map.id, { style: st78 }));
   if (map.kind === 'town' && !MODERN[key]) return generic['town:' + map.id] || (generic['town:' + map.id] = townKit(map.id));
