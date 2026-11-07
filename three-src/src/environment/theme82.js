@@ -75,7 +75,7 @@ export const TOWN82 = {
   asana_village: { label: '主人公の記憶の村・明るい木と家族の食卓', wall: { kind: 'plank', c1: '#d8b888', c2: '#b8986a' }, floor: { kind: 'plank', c1: '#c8a478', c2: '#a88458' }, win: { kind: 'shutter', frame: '#8a6a44' }, ceil: { kind: 'beams', c: '#9a7a54' }, light: { kind: 'oil_lamp', col: 0xffc888 }, furn: 'family', fire: 'kamado', part: 'plank', rug: { kind: 'woven', c1: '#d88a5a', c2: '#8aa86a' }, props: ['keepsake', 'cloth', 'grain_sack', 'family_table'] },
   asana_rebuilt: { label: '復興の村・古い基礎と新しい材', base: 'asana_village', wall: { kind: 'plank_mixed', c1: '#e4c894', c2: '#8a7058' }, floor: { kind: 'plank_mixed', c1: '#d8b888', c2: '#8a7058' }, win: { kind: 'shutter', frame: '#a8865a' }, ceil: { kind: 'beams', c: '#b8986a' }, light: { kind: 'oil_lamp', col: 0xffd098 }, furn: 'family', fire: 'kamado', part: 'plank', rug: { kind: 'woven', c1: '#e89a6a', c2: '#9ab87a' }, props: ['keepsake', 'new_flowers', 'repair_mark', 'grain_sack'] },
   asana_raid: { label: '襲撃の夜・燃えた梁と壊れた壁', base: 'asana_village', state: 'raid', wall: { kind: 'scorched', c1: '#6a5444', c2: '#2a2420' }, floor: { kind: 'scorched_plank', c1: '#5a4434', c2: '#2a2018' }, win: { kind: 'broken', frame: '#2a2018' }, ceil: { kind: 'broken', c: '#2a2018' }, light: { kind: 'ember', col: 0xff7a3a }, furn: 'rotten', fire: 'cold', part: 'broken', rug: { kind: 'torn', c1: '#5a3a2a', c2: '#2a2018' }, props: ['ash', 'broken_dish', 'rubble'] },
-  asana_ruins: { label: '壊滅後・欠けた屋根と焼けた梁と残された暮らし', base: 'asana_village', state: 'ruins', wall: { kind: 'scorched', c1: '#7a6a5a', c2: '#3a3028' }, floor: { kind: 'scorched_plank', c1: '#6a5848', c2: '#3a3028' }, win: { kind: 'broken', frame: '#3a3028' }, ceil: { kind: 'broken', c: '#3a3028' }, light: { kind: 'daylight', col: 0xd8e0e8 }, furn: 'rotten', fire: 'cold', part: 'broken', rug: { kind: 'torn', c1: '#6a4a3a', c2: '#3a3028' }, props: ['keepsake', 'rubble', 'broken_dish'] },
+  asana_ruins: { label: '壊滅後・欠けた屋根と焼けた梁と残された暮らし', base: 'asana_village', state: 'ruins', wall: { kind: 'scorched', c1: '#7a6a5a', c2: '#3a3028' }, floor: { kind: 'scorched_plank', c1: '#6a5848', c2: '#3a3028' }, win: { kind: 'broken', frame: '#3a3028' }, ceil: { kind: 'poles', c: '#2a2018' }, light: { kind: 'ember', col: 0xd8b090 }, furn: 'rotten', fire: 'cold', part: 'plank', rug: { kind: 'torn', c1: '#6a4a3a', c2: '#3a3028' }, props: ['keepsake', 'rubble', 'broken_dish'] },
   neon_town: { label: '雨と修繕の近未来港・むき出しの配管と補修板', wall: { kind: 'pipes_patch', c1: '#4a5058', c2: '#2a2e34', neon: '#e84a9a' }, floor: { kind: 'wet_concrete', c1: '#4a4e52', c2: '#2e3236' }, win: { kind: 'rain', frame: '#2a2e34' }, ceil: { kind: 'pipes', c: '#3a3e44' }, light: { kind: 'neon', col: 0xff7ad8 }, furn: 'makeshift', fire: 'heater', part: 'patched_metal', rug: null, props: ['parts', 'wet_coat', 'terminal', 'rusty_shelf'] },
   meridian_shelter: { label: '避難と再建・軽い間仕切りと簡易寝台', wall: { kind: 'plywood', c1: '#c8b48c', c2: '#a8946c' }, floor: { kind: 'plywood', c1: '#b8a07a', c2: '#8a7656' }, win: { kind: 'plastic', frame: '#8a8a88' }, ceil: { kind: 'bulb_string', c: '#5a5a58' }, light: { kind: 'bulb_string', col: 0xfff0c0 }, furn: 'shelter', fire: 'none', part: 'light_partition', rug: null, props: ['water_tank', 'dishes', 'ration_board', 'repaired_chair'] },
   nereia_city: { label: '潮と珊瑚の環状都市・明るい石と編んだ家具', wall: { kind: 'coral_stone', c1: '#f0e8dc', c2: '#d8ccb8', band: '#2a8a8a' }, floor: { kind: 'teal_tile', c1: '#4aa0a0', c2: '#e8e0d0' }, win: { kind: 'vent_round', frame: '#c8b898' }, ceil: { kind: 'woven', c: '#c8a870' }, light: { kind: 'shell', col: 0xe8f8ff }, furn: 'woven', fire: 'none', part: 'woven', rug: { kind: 'woven', c1: '#2a8a8a', c2: '#f0e8d4' }, props: ['tide_gauge', 'shells', 'tide_record', 'seaweed_rack'] },
@@ -128,4 +128,23 @@ export const Theme82 = {
     cmp('light', A.light.kind, B.light.kind); cmp('furn', A.furn, B.furn); cmp('fire', A.fire, B.fire); cmp('part', A.part, B.part); cmp('rug', A.rug ? A.rug.kind : '-', B.rug ? B.rug.kind : '-');
     const sp = A.props.filter((p) => B.props.indexOf(p) < 0).length; if (sp >= 2) { n++; keys.push('props'); }
     return { n, keys }; }
+};
+
+// 町の外観（v8.2）：同じ地域の町が同じ家の色・屋根にならないように、町ごとの壁・屋根の色と勾配・木組み・街灯・舗装（town_kit の地域の作り方に重ねる）
+//   brick：煤けた赤煉瓦の壁（マクディア＝古いロンドン風）。stone：石の壁。flat：平屋根
+export const TOWN_EXT82 = {
+  rivel_town: { wall: 'stone', plaster: ['#ddd4c4', '#d2c8b6', '#e4dccc'], frame: false, roofs: ['#a8382a', '#922e22', '#b8483a'], pitch: 0.78, lamp: 'iron' },
+  rivel_artisan: { plaster: ['#e6dcc6', '#d8ccb2'], frame: true, roofs: ['#6a4a32', '#7a5a3a', '#5a3e2a'], pitch: 0.6, lamp: 'oil' },
+  dow_village: { plaster: ['#a8845a', '#9a7a50', '#b08c60'], frame: true, roofs: ['#8a7a4a', '#7a6a3a', '#9a8a5a'], pitch: 0.95, lamp: 'torch' },
+  harbor_town: { plaster: ['#f8f4ea', '#f2ede0'], frame: false, roofs: ['#2e7a8a', '#3a8a9a', '#c87a52'], pitch: 0.45, lamp: 'rope', fence: 'drift' },
+  asana_village: { plaster: ['#e8d0a8', '#dcc49a'], frame: true, roofs: ['#9a6a3a', '#8a5a32'], pitch: 0.7 }, asana_rebuilt: { plaster: ['#f0dcb4', '#d8c090'], frame: true, roofs: ['#a87a4a', '#8a5a32'], pitch: 0.7 },
+  kalion_city: { plaster: ['#d8dade', '#cfd2d6'], roofs: ['#4a4e56', '#3a3e46'], pitch: 0.5, lamp: 'iron' },
+  sentra_capital: { plaster: ['#fbf8f0', '#f4efe2'], roofs: ['#2e5a9a', '#3a6aa8', '#c9a24a'], pitch: 0.45, hip: true },
+  erased_village: { plaster: ['#7a6a5a', '#6a5a4a'], frame: true, roofs: ['#4a4a3a', '#3a3a2e'], pitch: 0.85, lamp: 'torch' },
+  aruna_village: { plaster: ['#b8b0a0', '#a8a090', '#c0b8a8'], frame: false, roofs: ['#6a7a8a', '#7a8a9a', '#5a6a7a'], pitch: 0.4 },
+  volatilia: { wall: 'stone', plaster: ['#d6cfc0', '#cfc6b4'], frame: false, roofs: ['#3a4656', '#2e3a4a'], pitch: 0.9, lamp: 'brass' },
+  magicka_city: { brick: { c1: '#7a3e30', c2: '#2a201c', soot: 0.45 }, plaster: ['#7a3e30', '#6a3428'], frame: false, roofs: ['#2e3a40', '#2e4a3e', '#3a3438'], pitch: 0.85, lamp: 'brass', road: ['#5a5650', '#2e2c2a', 64, 32, 0.16], walk: ['#7a7670', '#4a4846', 64, 64, 0.1] },
+  tradia: { wall: 'stone', plaster: ['#e2d8c4', '#d8ccb4'], roofs: ['#3a6a5a', '#4a7a6a'], pitch: 0.55, lamp: 'brass' },
+  mirror_market: { plaster: ['#d8b888', '#c8a878'], roofs: ['#8a2a5a', '#b84a2a'], flat: true },
+  ciel_port: { plaster: ['#4e5a66', '#5a6672'], frame: true, roofs: ['#8a2a2a', '#2e3a4a'], pitch: 1.0, lamp: 'oil' }
 };

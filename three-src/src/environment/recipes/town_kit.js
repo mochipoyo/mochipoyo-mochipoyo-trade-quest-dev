@@ -15,6 +15,8 @@ import { buildLandmark } from './landmarks.js';
 import { buildVariant76 } from './variants76.js';
 import { bdetailSetting } from '../../world/BuildingBuilder3D.js';
 import { showpieceFor } from './showpiece76.js';
+import { TOWN_EXT82 } from '../theme82.js';
+import { wallTex } from './tex82.js';
 
 // 地域ごとの作り方。road/walk：[石の色, 目地, 幅, 高さ, ばらつき]（キャンバスは 256×256。幅・高さは 256 を割り切る値）
 export const REGION_STYLE = {
@@ -64,9 +66,10 @@ export function townKit(mapId, opt) {
   return {
     id: 'town_kit.v1' + (opt.style ? ':' + opt.style : ''),
     async prepare(ctx) {
-      const map = ctx.map; const prof = ctx.profile || {}; const region = opt.style || (REGION_STYLE[prof.region] ? prof.region : 'arcadia'); const R = REGION_STYLE[region];
+      const map = ctx.map; const prof = ctx.profile || {}; const region = opt.style || (REGION_STYLE[prof.region] ? prof.region : 'arcadia'); const R = TOWN_EXT82[map.id] ? Object.assign({}, REGION_STYLE[region], TOWN_EXT82[map.id]) : REGION_STYLE[region];   // v8.2 町ごとの外観（theme82.js の TOWN_EXT82）
+      const brick82 = R.brick ? wallTex('brick', R.brick.c1, R.brick.c2, { soot: R.brick.soot }) : null; if (TOWN_EXT82[map.id]) ctx.stats.ext82 = map.id;
       const tex = (key, a) => texMat('tk_' + key, canvasTex('tk_' + key, 256, 256, drawSetts(a[0], a[1], a[2], a[3], a[4])), { roughness: 0.88 }, { height: settsHeight(a[2], a[3], a[2] * 7 + a[3]), depth: 3 });   // 高画質：石の形から法線・AO（ProcPBR.js）
-      const K = { R, region, road: tex(region + '_road', R.road), walk: tex(region + '_walk', R.walk) };
+      const rk = TOWN_EXT82[map.id] && TOWN_EXT82[map.id].road ? map.id : region; const K = { R, region, road: tex(rk + '_road', R.road), walk: tex(rk + '_walk', R.walk) };
       const LM = map.envLayout && map.envLayout.landmark; const inLM = (x, z) => !!LM && x >= LM.x && x < LM.x + LM.w && z >= LM.y && z < LM.y + LM.h;   // 町ごとの目印のマス（js/rpg/envlayout.js）
       // v7.6 露店のマス（カウンター・奥）は露店の形が作る（家具のカウンターを置かない）
       const stallCell = new Set(); (map.buildings || []).forEach((b) => { if (b.shape76 !== 'stall') return; for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) stallCell.add(x + ',' + y); });
@@ -79,6 +82,7 @@ export function townKit(mapId, opt) {
       const building = async (b, o) => {
         if (R.modern) return null; const st = townStyle(b, R) || (b.shape76 ? { plaster: R.plaster[0], roofColor: R.roofs[0] } : null); if (!st) return null;
         st.detail76 = true;   // v7.6 建物の作り込み（BuildingBuilder3D.detail76）
+        if (brick82) st.wallMat = brick82;   // v8.2 煉瓦の壁
         if (b.shape76 || b.doorSide === 'left' || b.doorSide === 'right' || /^(weapon|armor|tavern)$/.test(b.type || '')) { const r = await buildVariant76(b, Object.assign({}, o, { sample76: true }), R, st, region); if (r) return r; }   // v7.6 丸い家・八角の家・テント・露店・横の入口（variants76.js）
         return o.bb.build(b, o.rnd, { batch: o.batch, design: o.design, theme: o.theme, style: st });
       };

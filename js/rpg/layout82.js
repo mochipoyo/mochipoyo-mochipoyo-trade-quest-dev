@@ -380,14 +380,19 @@
   }
 
   function freeNearFor(id) {
+    // セーブの立ち位置が、今は家具・壁・人の上のとき：近くの歩けるマスへ。出口から歩いて行けるマスを先に選ぶ（カウンターの奥などに閉じこめない）
     return function (x, y) {
       var def = D[id]; var rows = def.rows; var H = rows.length, W = rows[0].length;
       var busy = {}; [def.npcs, def.chests, def.warps].forEach(function (Lst) { (Lst || []).forEach(function (n) { if (n) busy[n.x + ',' + n.y] = 1; }); });
-      var ok = function (X, Y) { return X >= 0 && Y >= 0 && X < W && Y < H && !solidCh(def, rows[Y][X]) && !busy[X + ',' + Y]; };
-      if (ok(x, y)) return { x: x, y: y };
-      var seen = {}; var q = [[Math.max(0, Math.min(W - 1, x)), Math.max(0, Math.min(H - 1, y))]]; seen[q[0][0] + ',' + q[0][1]] = 1;
-      while (q.length) { var a = q.shift(); if (ok(a[0], a[1])) return { x: a[0], y: a[1] }; [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) { var nx = a[0] + d[0], ny = a[1] + d[1], k = nx + ',' + ny; if (seen[k] || nx < 0 || ny < 0 || nx >= W || ny >= H) return; seen[k] = 1; q.push([nx, ny]); }); }
-      return { x: x, y: y };
+      var walkT = function (X, Y) { return X >= 0 && Y >= 0 && X < W && Y < H && !solidCh(def, rows[Y][X]); };
+      var ok = function (X, Y) { return walkT(X, Y) && !busy[X + ',' + Y]; };
+      var reach = {}; var st = []; (def.warps || []).forEach(function (q) { if (q && walkT(q.x, q.y)) { reach[q.x + ',' + q.y] = 1; st.push([q.x, q.y]); } });
+      while (st.length) { var c = st.pop(); [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) { var nx = c[0] + d[0], ny = c[1] + d[1], k = nx + ',' + ny; if (reach[k] || !walkT(nx, ny)) return; reach[k] = 1; st.push([nx, ny]); }); }
+      var hasReach = Object.keys(reach).length > 0;
+      if (ok(x, y) && (!hasReach || reach[x + ',' + y])) return { x: x, y: y };
+      var seen = {}; var q = [[Math.max(0, Math.min(W - 1, x)), Math.max(0, Math.min(H - 1, y))]]; seen[q[0][0] + ',' + q[0][1]] = 1; var fallback = null;
+      while (q.length) { var a = q.shift(); if (ok(a[0], a[1])) { if (!hasReach || reach[a[0] + ',' + a[1]]) return { x: a[0], y: a[1] }; if (!fallback) fallback = { x: a[0], y: a[1] }; } [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) { var nx = a[0] + d[0], ny = a[1] + d[1], k = nx + ',' + ny; if (seen[k] || nx < 0 || ny < 0 || nx >= W || ny >= H) return; seen[k] = 1; q.push([nx, ny]); }); }
+      return fallback || { x: x, y: y };
     };
   }
 

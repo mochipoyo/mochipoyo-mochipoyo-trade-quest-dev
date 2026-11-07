@@ -44,7 +44,7 @@
       var iw = fy1 + 1; rect(g, 1, iw, W - 2, 1, 'C'); rect(g, cx - 2, iw, 4, 1, 'P');
       // 参道（内門〜南の門）
       rect(g, cx - 2, iw + 1, 4, H - iw - 2, 'P');
-      for (var y = iw + 2; y < H - 2; y += 3) { g[y][cx - 3] = 'y'; g[y][cx + 2] = 'y'; }
+      for (var y = iw + 2; y < H - 4; y += 3) { g[y][cx - 3] = 'y'; g[y][cx + 2] = 'y'; }   // 門のそば（門番の立つ段）には灯りを置かない
       for (var y2 = iw + 3; y2 < H - 2; y2 += 4) { [cx - 7, cx - 11, cx + 6, cx + 10].forEach(function (x, i) { if (g[y2 + (i % 2)] && g[y2 + (i % 2)][x] === ',') g[y2 + (i % 2)][x] = '6'; }); }
       if (L.moat) { var my = iw + 8; rect(g, 1, my, W - 2, 2, '~'); rect(g, cx - 2, my, 4, 2, 'b'); }   // 堀と石橋（リヴェル）
       if (L.terrace) { for (var k = 0; k < 3; k++) { var ty = iw + 3 + k * 4; rect(g, 4, ty, cx - 7, 1, 'a'); rect(g, cx + 3, ty, W - cx - 7, 1, 'a'); } }   // 段丘の植え込み（セントラ）
@@ -58,8 +58,8 @@
         id: L.id, name: L.name, kind: 'town', bgm: town.bgm || 'town', fallback: 'grass', style: 'stone', rows: rows, castle82: { style: L.style, town: L.town, castle: L.castle, cw: L.cw, cd: L.cd, region: L.region },
         buildings: [{ id: 'castle82', type: 'castle', castle82: L.style, name: tb.name, x: bx, y: by, w: L.cw, h: L.cd, doorX: Math.floor(L.cw / 2), interior: L.castle, entry: tb.entry ? { x: tb.entry.x, y: tb.entry.y } : undefined }],
         warps: [0, 1, 2, 3].map(function (i) { return { x: cx - 2 + i, y: H - 1, to: L.town, tx: exitBack.tx, ty: exitBack.ty, name: '城下町へ' }; }),
-        npcs: [{ id: L.id + '_guard_l', x: cx - 3, y: H - 3, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say(L.guard[0], L.guard[1]); } },
-          { id: L.id + '_guard_r', x: cx + 2, y: H - 3, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say(L.guard[0], ['城郭の中では、走らないように。', '……と言っても、旅の方は急いでいるか。気をつけて。']); } }],
+        npcs: [{ id: L.id + '_guard_l', x: cx - 4, y: H - 3, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say(L.guard[0], L.guard[1]); } },
+          { id: L.id + '_guard_r', x: cx + 3, y: H - 3, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say(L.guard[0], ['城郭の中では、走らないように。', '……と言っても、旅の方は急いでいるか。気をつけて。']); } }],
         chests: [], events: []
       };
       D[L.id] = def;

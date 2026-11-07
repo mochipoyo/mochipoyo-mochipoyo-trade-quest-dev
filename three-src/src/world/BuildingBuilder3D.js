@@ -55,7 +55,7 @@ export class BuildingBuilder3D {
       if (!(opts && opts.batch)) batch.build(out.group);
       return out;
     }
-    const plaster = st.wall === 'stone' ? M.tinted('stonewall', st.plaster || '#d8d0c0') : st.plaster ? M.tinted('plaster', st.plaster) : theme && theme.plaster ? M.tinted('plaster', theme.plaster) : M.get('plaster'), timber = M.get('timber'), stone = M.get('stonewall');
+    const plaster = st.wallMat ? st.wallMat : st.wall === 'stone' ? M.tinted('stonewall', st.plaster || '#d8d0c0') : st.plaster ? M.tinted('plaster', st.plaster) : theme && theme.plaster ? M.tinted('plaster', theme.plaster) : M.get('plaster'), timber = M.get('timber'), stone = M.get('stonewall');
     const tb = st.frame === false ? { add() { } } : batch;   // 木組み（柱・梁・間柱・筋かい）。frame:false の建物は描かない
 
     // ---- 土台
