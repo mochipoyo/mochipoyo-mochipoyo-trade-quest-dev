@@ -83,7 +83,7 @@ export class MapScene3D {
           let o = null; if (b.type === 'elevator') { try { o = buildElevatorTower(b, map, textTexture); } catch (e) { o = null; console.warn('elevator', e); } }   // v7.1 空の区画へのエレベーター
           if (!o && b.type === 'watchtower') { try { o = buildTower3D(b); } catch (e) { o = null; console.warn('tower72', e); } }   // v7.2 新しい地区の塔
           if (!o && b.gate82) { try { o = buildGate82(b.gate82, b); } catch (e) { o = null; console.warn('gate82', e); } }
-          if (!o && isAcademy82(map, b)) { try { o = buildAcademyWing82(b); } catch (e) { o = null; console.warn('academy82', e); } }   // v8.2 学院の本校舎の翼棟（Academy82.js）   // v8.2 城下町の側の城門（楼門）：扉の先は城郭区画（js/data/castle82.js）
+          if (!o && isAcademy82(map, b)) { try { o = buildAcademyWing82(b); (this.academyWings82 || (this.academyWings82 = [])).push({ group: o.group, x0: b.x, x1: b.x + b.w, z0: b.y + 0.15 }); } catch (e) { o = null; console.warn('academy82', e); } }   // v8.2 学院の本校舎の翼棟（Academy82.js）   // v8.2 城下町の側の城門（楼門）：扉の先は城郭区画（js/data/castle82.js）
           if (!o && rx && rx.building) { try { o = await rx.building(b, { bb, rnd, batch: bat, design, theme }); } catch (e) { const err = new Error('環境レシピの建物に失敗 ' + map.id + ' ' + b.id + '：' + (e && e.message)); err.envRecipe = true; throw err; } }   // v7.6 レシピの建物（用途・地域ごとの形）。近未来の町の汎用の建物より先
           if (!o && modern) { try { o = buildModernBuilding(b, modern, textTexture); } catch (e) { o = null; console.warn('modern building', e); } }
           if (!o) o = await bb.build(b, rnd, { batch: bat, design, theme }); bgroup.add(o.group);

@@ -25,7 +25,7 @@ const rows = ids.map((id) => {
   const def = D[id]; const info = L.info(id) || {}; const isTown = TOWNS.indexOf(id) >= 0; const field = FIELDS[id];
   const town = isTown ? id : field ? null : (info.town || (def.castle82 ? def.castle82.town : def.academy82 ? 'volatilia' : null));
   const r = after[id] || {}; const rc = r.recipe || '';
-  const themeId = /^interior82:/.test(rc) ? rc.split(':')[1] : def.castle82 ? def.castle82.style + '（城郭区画）' : (isTown && EXT.has(id)) ? 'TOWN_EXT82:' + id : null;
+  const themeId = /^interior82:/.test(rc) ? rc.split(':')[1] : /\|i82$/.test(rc) ? 'rivel_castle_approach' : def.castle82 ? def.castle82.style + '（城郭区画）' : (isTown && EXT.has(id)) ? 'TOWN_EXT82:' + id : null;
   let rt;
   if (!routeScope.has(id)) rt = '-（往復の確かめの対象外：' + (isTown ? '町（楼門・本館の扉は対象）' : field ? '野外' : '—') + '）';
   else if (!route[id]) rt = 'OK';

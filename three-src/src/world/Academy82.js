@@ -67,3 +67,14 @@ export function buildAcademyBridges82(map, group) {
   if (n) { const g = new THREE.Group(); g.name = 'academy82_bridges'; mg.build(g); group.add(g); }
   return n;
 }
+
+// 手前の翼棟を低くする（3 階建ての翼棟は、北の狭い通路にいる主人公と扉をカメラから隠す → その翼棟だけ 1 階ぶんの高さまで下げる。離れると戻す）
+// GameBridge が毎フレーム呼ぶ（pos は主人公の位置：x・z はマス）。翼棟の北の端が主人公の南 8 マスより近く、左右が重なるとき
+export function academyCutaway82(ms, pos) {
+  const W = ms && ms.academyWings82; if (!W || !W.length || !pos) return 0; let n = 0;
+  for (const w of W) {
+    const occ = w.z0 > pos.z - 0.2 && w.z0 - pos.z < 8 && pos.x > w.x0 - 3 && pos.x < w.x1 + 3; const tgt = occ ? 0.3 : 1; const s = w.group.scale.y;
+    if (occ) n++; if (Math.abs(s - tgt) > 0.003) w.group.scale.y = s + (tgt - s) * 0.2; else if (s !== tgt) w.group.scale.y = tgt;
+  }
+  return n;
+}
