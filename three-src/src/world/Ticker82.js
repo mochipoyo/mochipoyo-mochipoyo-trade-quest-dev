@@ -83,7 +83,7 @@ export class TickerRing {
 
 // 地図ごとの置き場所（地図の座標。y は地面からの高さ）
 export const TICKER82_PLACES = {
-  tradia: { x: 36, z: 10.5, y: 8.2, radius: 6.5, band: 1.2, repeat: 4, speed: 0.02 },   // 証券市場前の広場の上（扉 35,7 の正面の広場）
+  tradia: { x: 35.5, z: 13, y: 5.4, radius: 4.6, band: 1.0, repeat: 4, speed: 0.02 },   /* 広場の舗装の円の上。証券市場（z<8）・相場研究所（x≥40, z≥15）にかからない半径。ふつうのカメラで画面に入る高さ（前は高さ 8.2・半径 6.5 で、ふつうのカメラでは画面の上の外だった） */   // 証券市場前の広場の上（扉 35,7 の正面の広場）
   tradia_exchange: { x: 13, z: 6.2, y: 3.0, radius: 4.5, band: 0.8, repeat: 3, speed: 0.025 }   // 中央の取引の床の上
 };
 export function buildTicker82(ms) {
