@@ -3,12 +3,14 @@
    ?model=hero&anim=Walk  … 指定のモデルと動きで開く
    ?lineup=characters     … キャラクターを横に並べる（見た目の比較用）
    ?lineup=props          … 小物・家具・木を並べる
+   ?lineup=nature         … v8.1 木・茂み・岩・岩山（Nature81.js）を並べる。&lod=1 で遠景の形。&q=low で低画質の模様
    ========================================================= */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ModelManager } from './engine/ModelManager.js';
 import { Character3D } from './entities/Character3D.js';
 import { MODELS, ANIMS } from './assets/manifest.js';
+import { Nature81 } from './world/Nature81.js';
 
 const q = new URLSearchParams(location.search);
 const renderer = new THREE.WebGLRenderer({ antialias: true }); renderer.setPixelRatio(Math.min(2, devicePixelRatio)); renderer.setSize(innerWidth, innerHeight);
@@ -55,8 +57,21 @@ async function lineupCreatures(anim) {
   for (const id of ids) { const c = await Character3D.create(models, id, { color: CREATURE_SAMPLE[id] }); c.root.position.x = x; scene.add(c.root); c.play(c.has(anim) ? anim : 'Idle', 0); active.push(c); x += gap; }
   const mid = (ids.length - 1) * gap / 2; ctl.target.set(mid, 0.6, 0); cam.position.set(mid, +(q.get('cy') || 4.2), +(q.get('cz') || 21)); info.textContent = ids.length + '型（' + anim + '）';
 }
+// v8.1 木・茂み・岩・岩山（Nature81）
+async function lineupNature() {
+  clear(); Nature81.setQuality(q.get('q') === 'low' ? 'low' : 'high'); const lod = q.get('lod') === '1' ? '_lod1' : '';
+  scene.background = new THREE.Color(0xb8c4cc); scene.fog = new THREE.Fog(0xb8c4cc, 30, 70); ground.material.color.set(0x8a8f86);
+  const rows = [['tree_oak_a', 'tree_oak_b', 'tree_oak_c', 'tree_palm', 'tree_dead'], ['tree_pine_a', 'tree_pine_b', 'tree_pine_c', 'tree_snowpine', 'bush_a', 'rock_a', 'rock_b']];
+  const info0 = [];
+  rows.forEach((ids, r) => { let x = -6; for (const id of ids) { const tid = (lod && MODELS[id + '_lod1']) ? id + '_lod1' : id; const [p] = Nature81.parts(tid); const m = new THREE.Mesh(p.geometry, p.material); m.castShadow = m.receiveShadow = true; m.position.set(x, 0, -r * 3.2); scene.add(m); active.push(m); info0.push(tid + ' ' + Nature81.stats.geos[tid]); x += /rock|bush/.test(id) ? 1.6 : 2.7; } });
+  const mt = [{ rock: '#8a8478', grass: '#6a8a4a', snow: false }, { rock: '#8a8a92', grass: '#7a8a6a', snow: true }, { rock: '#c09a6a', grass: '#d2c08a', snow: false, strata: true }];
+  mt.forEach((o, i) => { for (let v = 0; v < 3; v++) { const g = Nature81.mountainGeo(o, v, lod ? 1 : 0); const m = new THREE.Mesh(g, Nature81.rockMaterial()); m.scale.set(1.6, 1.0 + v * 0.16, 1.6); m.position.set(-6 + (i * 3 + v) * 2.2, 0, -9); m.castShadow = m.receiveShadow = true; scene.add(m); active.push(m); } });
+  const sc2 = sun.shadow.camera; sc2.left = sc2.bottom = -14; sc2.right = sc2.top = 14; sc2.updateProjectionMatrix(); sun.position.set(6, 10, 8);
+  ctl.target.set(2, 1.0, -4); cam.position.set(+(q.get('cx') || 2), +(q.get('cy') || 7.5), +(q.get('cz') || 9)); info.textContent = info0.join('\n') + '\n岩山（近景/遠景）' + JSON.stringify(Nature81.stats.geos);
+}
 async function lineup(kind) {
   if (kind === 'creatures') return lineupCreatures(q.get('anim') || 'Idle');
+  if (kind === 'nature') return lineupNature();
   clear(); const ids = Object.keys(MODELS).filter((id) => kind === 'characters' ? MODELS[id].kind === 'character' : MODELS[id].kind !== 'character' && MODELS[id].kind !== 'creature');
   const anim = q.get('anim') || 'Idle';
   let x = 0; const gap = kind === 'characters' ? 0.9 : 1.6;

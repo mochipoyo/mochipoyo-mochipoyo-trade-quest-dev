@@ -9,6 +9,7 @@
 import * as THREE from 'three';
 import { box, M4, softTexture } from '../engine/Materials.js';
 import { addCutout } from '../engine/Cutout.js';
+import { Nature81 } from './Nature81.js';
 import { rngFrom } from './TerrainBuilder3D.js';
 
 const TAU = Math.PI * 2;
@@ -75,7 +76,7 @@ function kitMaterials(mats) {
   // 窓：昼は暗い色、夜は灯る（LightingManager.windowMats）。光の色は少数の色にまとめる（マテリアル＝描画回数を増やさない）
   K.win = (hex, base) => { const g = quant(hex, 0xffc070), b = base ? 'face' : 'pane'; const k = g + '/' + b; if (!K._win[k]) { const m = new THREE.MeshStandardMaterial({ color: base ? 0xf0ead8 : 0x2a241c, emissive: g, emissiveIntensity: 0.25, roughness: 0.3 }); m.userData.window = true; m.name = 'lm_win_' + k; addCutout(m); K._win[k] = m; } return K._win[k]; };
   // 光る部品：夜に強まる（LightingManager.glowMats）。色は少数の色にまとめ、強さは共通
-  K.glow = (hex) => { const g = quant(hex, 0xffb04a); if (!K._glow[g]) { const c = new THREE.Color(g); const m = new THREE.MeshStandardMaterial({ color: c, emissive: c, emissiveIntensity: 1.6, roughness: 0.4 }); m.name = 'lm_glow_' + g.toString(16); addCutout(m); K._glow[g] = m; } return K._glow[g]; };
+  K.glow = (hex) => { const g = quant(hex, 0xffb04a); if (!K._glow[g]) { const c = new THREE.Color(g); const m = new THREE.MeshStandardMaterial({ color: c, emissive: c, emissiveIntensity: 1.6, roughness: 0.4 }); m.userData.bld = true; m.name = 'lm_glow_' + g.toString(16); addCutout(m); K._glow[g] = m; } return K._glow[g]; };
   // 町明かりのにじみ：夜だけ見える（LightingManager.nightMats）
   K.halo = (hex) => { const key = quant(hex, 0xffc070); if (!K._halo[key]) { const c = new THREE.Color(key); const m = new THREE.SpriteMaterial({ map: softTexture('rgba(' + Math.round(c.r * 255) + ',' + Math.round(c.g * 255) + ',' + Math.round(c.b * 255) + ',1)', 64), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 }); m.userData.nightGlow = 0.42; K._halo[key] = m; } return K._halo[key]; };
   mats._lmKit = K; return K;
@@ -206,7 +207,7 @@ class Kit {
   }
   // 岩山（洞窟の丘）：rx ry rz・色（rockD→rock→rockL）・雪
   mound(x, z, rx, ry, rz, o) {
-    o = o || {}; const g = rockGeo(2, o.seed || 1, o.amp || 0.32); const p = g.attributes.position; const n = p.count; const col = new Float32Array(n * 3);
+    o = o || {}; const g = Nature81.on() ? Nature81.chunk(o.seed || 1, 2, { amp: 0.2, planes: 7 }) : rockGeo(2, o.seed || 1, o.amp || 0.32); const p = g.attributes.position; const n = p.count; const col = new Float32Array(n * 3);   // v8.1 角ばった塊（Nature81）
     const cD = toColor(o.rockD, 0x5e574e), cM = toColor(o.rock, 0x8c8478), cL = toColor(o.rockL, 0xb4ab9c), cS = toColor(o.snow || 0xf4f6ff), tmp = new THREE.Color();
     for (let i = 0; i < n; i++) { const yy = p.getY(i); if (yy < -0.2) p.setY(i, -0.2); const t = Math.max(0, Math.min(1, (yy + 0.2) / 1.2)); if (o.snow && t > 0.72) tmp.copy(cS); else if (t < 0.5) tmp.copy(cD).lerp(cM, t * 2); else tmp.copy(cM).lerp(cL, (t - 0.5) * 2); col[i * 3] = tmp.r; col[i * 3 + 1] = tmp.g; col[i * 3 + 2] = tmp.b; }
     g.computeVertexNormals(); g.setAttribute('color', new THREE.BufferAttribute(col, 3));
@@ -227,7 +228,9 @@ class Kit {
     this.b.add(this.K.rock, g3, this.O.clone().multiply(M4(x, h / 2 - 0.02, z, o.ry || 0)));
   }
   tree(x, z, s, o) {
-    o = o || {}; const K = this.K; const leaf = hexOf(o.leaf, 0x3f7a34), leafL = hexOf(o.leafL, mixHex(leaf, 0xffffff, 0.18));
+    o = o || {}; const K = this.K;
+    if (Nature81.on() && this.env && this.env.put) { const id = o.pine ? (o.snow ? 'tree_snowpine' : ['tree_pine_a', 'tree_pine_b', 'tree_pine_c'][Math.floor(this.r() * 3)]) : ['tree_oak_a', 'tree_oak_b', 'tree_oak_c'][Math.floor(this.r() * 3)]; this.model(id, x, z, this.r() * 6.28, (o.pine ? 0.25 : 0.27) * s); return; }   // v8.1 フィールドの木と同じ形（Nature81）
+    const leaf = hexOf(o.leaf, 0x3f7a34), leafL = hexOf(o.leafL, mixHex(leaf, 0xffffff, 0.18));
     this.add(K.wood, new THREE.CylinderGeometry(0.035 * s, 0.05 * s, 0.42 * s, 6), M4(x, 0.21 * s, z), hexOf(o.wood, 0x5a3a22));
     if (o.pine) { for (let i = 0; i < 3; i++) this.add(K.rock, new THREE.ConeGeometry((0.3 - i * 0.07) * s, 0.36 * s, 7), M4(x, (0.42 + i * 0.2) * s, z), i === 2 && o.snow ? 0xf0f4ff : i ? leafL : leaf); return; }
     this.add(K.rock, rockGeo(1, x * 7 + z, 0.3), M4(x, 0.55 * s, z, this.r() * 6, 0, 0, 0.3 * s, 0.26 * s, 0.3 * s), leaf);
@@ -251,7 +254,8 @@ class Kit {
   stake(x, z, h, hex) { this.add(this.K.wood, new THREE.ConeGeometry(0.03, h, 5), M4(x, h / 2, z), hexOf(hex, 0x6a4a2e)); }
   boat(x, z, ry, hex) { const K = this.K; const b = M4(x, 0.02, z, ry || 0); const P = (lx, ly, lz, rx, rz, sx, sy, sz) => b.clone().multiply(M4(lx, ly, lz, 0, rx || 0, rz || 0, sx, sy, sz)); this.add(K.wood, new THREE.CylinderGeometry(0.09, 0.05, 0.42, 8, 1, false, 0, Math.PI), P(0, 0.03, 0, Math.PI / 2, 0), hexOf(hex, 0x7a4a2a)); this.add(K.wood, new THREE.CylinderGeometry(0.008, 0.008, 0.36, 4), P(0, 0.2, 0), 0x5a3a22); this.add(K.cloth, box(0.005, 0.22, 0.16), P(0, 0.24, 0.03), 0xf2ead8); }
   pier(x, z, len, ry) { const K = this.K; const b = M4(x, 0, z, ry || 0); this.add(K.wood, box(0.16, 0.025, len), b.clone().multiply(M4(0, 0.03, len / 2)), 0x8a6a42); for (let i = 0; i <= 3; i++) for (const s of [-1, 1]) this.add(K.timber, box(0.025, 0.12, 0.025), b.clone().multiply(M4(s * 0.07, 0.0, i * len / 3)), 0x5a3a22); }
-  stone(x, z, s, hex) { this.add(this.K.rock, rockGeo(1, x * 13 + z * 7, 0.4), M4(x, s * 0.35, z, this.r() * 6, 0, 0, s * 0.6, s * 0.7, s * 0.5), hexOf(hex, 0x8a8478)); }
+  stone(x, z, s, hex) { if (Nature81.on() && this.env && this.env.put) { this.model(this.r() < 0.5 ? 'rock_a' : 'rock_b', x, z, this.r() * 6.28, s * 1.15); return; }   // v8.1 フィールドの岩と同じ形
+    this.add(this.K.rock, rockGeo(1, x * 13 + z * 7, 0.4), M4(x, s * 0.35, z, this.r() * 6, 0, 0, s * 0.6, s * 0.7, s * 0.5), hexOf(hex, 0x8a8478)); }
 }
 
 /* ---------------- 形ごとの組み立て ---------------- */
@@ -265,8 +269,11 @@ function village(k, D) {
   const S = D.silhouette, rs = D.roofStyle; const wall = col(D, 'wall', '#e8d2a6'), roof = col(D, 'roof', '#c8a24e'), roofD = col(D, 'roofD', roof), glow = col(D, 'glow', '#ffc070');
   const faded = S === 'faded_village'; const pale = (h) => faded ? mixHex(h, '#c8c8cc', 0.55) : h;
   if (S === 'tree_village') {   // 巨木と木の家・吊り橋
-    k.add(k.K.wood, new THREE.CylinderGeometry(0.2, 0.32, 1.6, 9), M4(0, 0.8, -0.35), hexOf(col(D, 'wood', '#6a4426')));
-    for (const [x, y, z, s] of [[0, 1.75, -0.35, 0.95], [-0.45, 1.5, -0.2, 0.62], [0.45, 1.55, -0.45, 0.66], [0.05, 1.45, 0.15, 0.6]]) k.add(k.K.rock, rockGeo(1, x * 9 + z, 0.3), M4(x, y, z, k.r() * 6, 0, 0, s, s * 0.62, s), hexOf(col(D, 'roof', '#4f8a3a')));
+    if (Nature81.on() && k.env && k.env.put) k.model('tree_oak_c', 0, -0.35, 0.3, 0.66);   // v8.1 巨木もフィールドの木と同じ形（Nature81）
+    else {
+      k.add(k.K.wood, new THREE.CylinderGeometry(0.2, 0.32, 1.6, 9), M4(0, 0.8, -0.35), hexOf(col(D, 'wood', '#6a4426')));
+      for (const [x, y, z, s] of [[0, 1.75, -0.35, 0.95], [-0.45, 1.5, -0.2, 0.62], [0.45, 1.55, -0.45, 0.66], [0.05, 1.45, 0.15, 0.6]]) k.add(k.K.rock, rockGeo(1, x * 9 + z, 0.3), M4(x, y, z, k.r() * 6, 0, 0, s, s * 0.62, s), hexOf(col(D, 'roof', '#4f8a3a')));
+    }
     k.house(-0.8, 0.15, 0.48, 0.4, 0.36, { wall, roof: col(D, 'roof'), style: 'leaf', glow, ry: 0.4, mat: 'wood', stilts: 0.18 });
     k.house(0.82, 0.05, 0.46, 0.4, 0.34, { wall, roof: col(D, 'roof'), style: 'leaf', glow, ry: -0.35, mat: 'wood', stilts: 0.18 });
     k.house(0, -0.35, 0.36, 0.3, 0.3, { wall, roof: roofD, style: 'leaf', glow, mat: 'wood', y: 0.75, door: false });
@@ -532,7 +539,8 @@ function forest(k, D) {
     k.add(k.K.wood, new THREE.CylinderGeometry(0.07, 0.13, 1.2, 7), M4(s * 0.42, 0.55, 0.3, 0, 0, -s * 0.22), hexOf(wood));
     k.add(k.K.wood, new THREE.CylinderGeometry(0.04, 0.07, 0.6, 6), M4(s * 0.18, 1.12, 0.3, 0, 0, -s * 1.1), hexOf(wood));
   }
-  for (const [x, y, z, s, c] of [[0, 1.3, 0.3, 0.5, leafL], [-0.55, 1.15, 0.15, 0.55, leaf], [0.55, 1.2, 0.1, 0.55, leaf], [-0.3, 1.25, -0.25, 0.5, leafL], [0.35, 1.3, -0.3, 0.5, leaf]]) k.add(k.K.rock, rockGeo(1, x * 9 + z * 3, 0.32), M4(x, y, z, k.r() * 6, 0, 0, s, s * 0.6, s), hexOf(snowy && y > 1.25 ? mixHex(c, '#ffffff', 0.55) : c));
+  if (Nature81.on() && k.env && k.env.put) { for (const [x, z, sc] of [[-0.62, 0.05, 0.42], [0.62, -0.02, 0.44], [-0.3, -0.42, 0.4], [0.36, -0.45, 0.42], [0, -0.1, 0.36]]) k.model(snowy ? 'tree_snowpine' : ['tree_oak_a', 'tree_oak_b', 'tree_oak_c'][Math.floor(k.r() * 3)], x, z, k.r() * 6.28, sc); }   // v8.1 森の入口の木もフィールドの木と同じ形
+  else for (const [x, y, z, s, c] of [[0, 1.3, 0.3, 0.5, leafL], [-0.55, 1.15, 0.15, 0.55, leaf], [0.55, 1.2, 0.1, 0.55, leaf], [-0.3, 1.25, -0.25, 0.5, leafL], [0.35, 1.3, -0.3, 0.5, leaf]]) k.add(k.K.rock, rockGeo(1, x * 9 + z * 3, 0.32), M4(x, y, z, k.r() * 6, 0, 0, s, s * 0.6, s), hexOf(snowy && y > 1.25 ? mixHex(c, '#ffffff', 0.55) : c));
   k.add(k.K.dark, new THREE.CircleGeometry(0.5, 14, 0, Math.PI), M4(0, 0, 0.1, 0, 0, 0, 0.6, 1.5, 1), 0x0e140c);
   for (const [x, z, s] of [[-1.05, -0.55, 1.1], [1.0, -0.7, 1.2], [-0.45, -1.15, 1.0], [0.5, -1.15, 1.05], [-1.25, 0.6, 0.8], [1.25, 0.55, 0.8]]) k.tree(x, z, s, { leaf: k.r() < 0.5 ? leaf : leafL, wood, pine: snowy, snow: snowy });
   // ほたる・精霊の光

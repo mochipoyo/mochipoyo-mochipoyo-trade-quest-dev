@@ -19,6 +19,7 @@ import { terraceInfo, stairFrac, buildTerraces } from './Terrace3D.js';
 import { buildFountains, animateFountain } from './Fountain76.js';
 import { voidMaterial, floatingRocks } from '../environment/Space76.js';
 import { themeFor } from './themes.js';
+import { Nature81 } from './Nature81.js';
 
 function hash2(x, y) { let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
 function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y); const xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf); const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; }
@@ -390,7 +391,8 @@ export class WorldBuilder3D {
       const s = 0.85 + rnd() * 0.5; const h = 1.6 + rnd() * 1.8;
       mountains.push(M4(x + 0.5 + (rnd() - 0.5) * 0.3, heightAt(x + 0.5, z + 0.5) - 0.2, z + 0.5 + (rnd() - 0.5) * 0.3, rnd() * 6.28, 0, 0, s, h, s));
     }
-    if (mountains.length) { const mm = new THREE.InstancedMesh(this.mountainGeometry(snowCap, theme), this.mountainMaterial(), mountains.length); mountains.forEach((m, i) => mm.setMatrixAt(i, m)); mm.castShadow = true; mm.receiveShadow = true; mm.computeBoundingSphere(); mm.name = 'mountains'; group.add(mm); }
+    if (mountains.length && Nature81.on()) this.buildMountains81(group, mountains, snowCap, theme);   // v8.1 角ばった岩の塊を寄せた岩山（Nature81.js）。近景・遠景の 2 段
+    else if (mountains.length) { const mm = new THREE.InstancedMesh(this.mountainGeometry(snowCap, theme), this.mountainMaterial(), mountains.length); mountains.forEach((m, i) => mm.setMatrixAt(i, m)); mm.castShadow = true; mm.receiveShadow = true; mm.computeBoundingSphere(); mm.name = 'mountains'; group.add(mm); }
     this.stats.mountains = mountains.length;
     // 崖の上の岩・洞窟の壁の岩
     for (const [x, z, y] of rockSpots) put(rnd() < 0.5 ? 'rock_a' : 'rock_b', M4(x + (rnd() - 0.5) * 0.3, y, z + (rnd() - 0.5) * 0.3, rnd() * 6.28, 0, 0, 0.6 + rnd() * 0.6), x, z, new THREE.Color(theme.rock));
@@ -512,7 +514,12 @@ export class WorldBuilder3D {
     if (this.treeInst && !(this.treeAt && Math.abs(this.treeAt.x - focus.x) + Math.abs(this.treeAt.z - focus.z) < 1.5)) {
       this.treeAt = { x: focus.x, z: focus.z }; const R = this.quality === 'high' ? 16 : 11; const R2 = R * R;
       for (const t of this.treeInst) { const dx = t.x - focus.x, dz = t.z - focus.z; const want = dx * dx + dz * dz < R2 ? 0 : 1; if (want !== t.lod) { this.treeBatch.setGeometryIdAt(t.iid, want ? t.g.l1 : t.g.l0); t.lod = want; } }
-    } if (this.lodAt && Math.abs(this.lodAt.x - focus.x) + Math.abs(this.lodAt.z - focus.z) < 2) return; this.lodAt = { x: focus.x, z: focus.z };
+    }
+    if (this.mtnInst && !(this.mtnAt && Math.abs(this.mtnAt.x - focus.x) + Math.abs(this.mtnAt.z - focus.z) < 2)) {   // v8.1 岩山の近景・遠景
+      this.mtnAt = { x: focus.x, z: focus.z }; const R = this.quality === 'high' ? 22 : 15; const R2 = R * R;
+      for (const t of this.mtnInst) { const dx = t.x - focus.x, dz = t.z - focus.z; const want = dx * dx + dz * dz < R2 ? 0 : 1; if (want !== t.lod) { this.mtnBatch.setGeometryIdAt(t.iid, want ? t.g.l1 : t.g.l0); t.lod = want; } }
+    }
+    if (this.lodAt && Math.abs(this.lodAt.x - focus.x) + Math.abs(this.lodAt.z - focus.z) < 2) return; this.lodAt = { x: focus.x, z: focus.z };
     const R = this.quality === 'high' ? 30 : 20;
     for (const c of this.lodChunks) {
       if (!c.far) continue; const d = Math.hypot(c.cx - focus.x, c.cz - focus.z); const want = d > R ? 1 : 0;
@@ -586,7 +593,7 @@ export class WorldBuilder3D {
   }
   lavaMaterial() {
     const time = this.time;
-    const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.6, emissive: 0xff5a10, emissiveIntensity: 1.6 }); this.own(m);
+    const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.6, emissive: 0xff5a10, emissiveIntensity: 1.6 }); m.userData.natural = true; this.own(m);
     m.onBeforeCompile = (sh) => {
       sh.uniforms.uTime = time; WorldBuilder3D.withUv(sh);
       sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uTime;')
@@ -603,6 +610,17 @@ export class WorldBuilder3D {
         .replace('#include <color_fragment>', '#include <color_fragment>\n{ vec2 p = vWuv * 6.0 + vec2(uTime * 0.03, uTime * 0.012); float n = sin(p.x * 2.3) * sin(p.y * 1.9) * 0.5 + sin(p.x * 5.1 + p.y * 3.7) * 0.25; diffuseColor.rgb *= 0.86 + n * 0.14; }');
     };
     m.customProgramCacheKey = () => 'world-cloud-v1'; return m;
+  }
+  // v8.1 岩山：形の違う 3 種 × 近景・遠景を 1 つの BatchedMesh に入れる（描画 1 回）。主人公の近くだけ近景の形（updateLod）
+  buildMountains81(group, mats, snowCap, theme) {
+    const o = { rock: theme.rock || '#8a8478', grass: theme.grass || '#6a8a4a', snow: !!snowCap, strata: /desert|canyon|mesa|sand/.test(theme.key || theme.id || '') || (theme.tree || []).indexOf('palm') >= 0 };
+    const G = []; for (let v = 0; v < 3; v++) G.push([Nature81.mountainGeo(o, v, 0), Nature81.mountainGeo(o, v, 1)]);
+    let verts = 0; for (const [a, b] of G) verts += a.attributes.position.count + b.attributes.position.count;
+    const bm = new THREE.BatchedMesh(mats.length, verts, 0, Nature81.rockMaterial()); bm.name = 'mountains81'; bm.castShadow = true; bm.receiveShadow = true; bm.sortObjects = false;
+    const gid = G.map(([a, b]) => ({ l0: bm.addGeometry(a), l1: bm.addGeometry(b) })); const tc = new THREE.Color(); const e = new THREE.Vector3();
+    const shrink = new THREE.Matrix4().makeScale(1, 1 / 2.5, 1);   // 岩山の形は縦 2.5 倍で作ってある
+    this.mtnInst = mats.map((m, i) => { const g = gid[i % 3]; const iid = bm.addInstance(g.l1); bm.setMatrixAt(iid, m.clone().multiply(shrink)); tc.setHSL(0, 0, 0.9 + ((i * 37) % 11) / 55); bm.setColorAt(iid, tc); e.setFromMatrixPosition(m); return { iid, x: e.x, z: e.z, g, lod: 1 }; });
+    bm.computeBoundingSphere(); bm.computeBoundingBox(); group.add(bm); this.mtnBatch = bm; this.stats.mountains81 = mats.length;
   }
   mountainMaterial() { if (!this._mtnMat) { this._mtnMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95, flatShading: true }); addCutout(this._mtnMat); } return this._mtnMat; }
   // 山：雪の帽子つき（地域による）のでこぼこな円錐。高さ1・半径0.95 を基準に、インスタンスの拡大率で変える

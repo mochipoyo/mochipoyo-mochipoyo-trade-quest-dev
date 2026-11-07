@@ -6,6 +6,7 @@
      armillary 星図環（回る）／mirrors 鏡の天蓋／cistern 段状の貯水槽／dome 観測ドーム／bell 金の鈴
    ========================================================= */
 import * as THREE from 'three';
+import { Nature81 } from '../../world/Nature81.js';
 import { kit, plain } from '../EnvKit3D.js';
 import { wbox, cyl } from './geo.js';
 
@@ -34,6 +35,7 @@ export async function buildLandmark(ctx, L, add, g, hAt) {
     }
     case 'well': { add(C.stone, cyl(0.42, 0.45, 0.6, 12, cx, y0 + 0.3, cz)); add(C.dark, cyl(0.34, 0.34, 0.02, 12, cx, y0 + 0.58, cz)); for (const sx of [-1, 1]) add(C.wood, wbox(0.08, 1.4, 0.08, cx + sx * 0.38, y0 + 0.7, cz)); add(C.wood, wbox(0.9, 0.08, 0.08, cx, y0 + 1.4, cz)); add(C.red, new THREE.ConeGeometry(0.62, 0.45, 4).rotateY(Math.PI / 4).translate(cx, y0 + 1.68, cz)); add(C.wood, cyl(0.1, 0.08, 0.16, 8, cx, y0 + 1.0, cz)); break; }
     case 'bigtree': {
+      if (Nature81.on()) { const [pt] = Nature81.parts('tree_oak_c'); const tm = new THREE.Mesh(pt.geometry, pt.material); tm.position.set(cx, y0, cz); tm.scale.setScalar(1.6); tm.castShadow = tm.receiveShadow = true; g.add(tm); break; }   // v8.1 町の巨木も同じ形（Nature81）
       const trunk = new THREE.CylinderGeometry(0.45, 0.7, 3.2, 10); trunk.translate(cx, y0 + 1.6, cz); add(C.bark, trunk);
       for (let i = 0; i < 6; i++) { const a = i * 1.05, r = new THREE.CylinderGeometry(0.05, 0.22, 1.1, 6); r.rotateZ(Math.PI / 2 - 0.15); r.rotateY(-a); r.translate(cx + Math.cos(a) * 0.55, y0 + 0.1, cz + Math.sin(a) * 0.55); add(C.bark, r); }
       for (const [dx, y, dz, rad, m] of [[0, 4.9, 0, 2.1, C.leaf], [1.4, 4.4, 0.5, 1.6, C.leaf2], [-1.4, 4.5, 0.3, 1.7, C.leaf], [0.3, 4.2, -1.4, 1.5, C.leaf2], [-0.4, 4.0, 1.5, 1.4, C.leaf], [0, 5.9, 0, 1.3, C.leaf2]]) { const s = new THREE.IcosahedronGeometry(rad, 1); s.scale(1, 0.8, 1); s.translate(cx + dx, y0 + y, cz + dz); add(m, s); }

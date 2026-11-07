@@ -7,6 +7,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { MODELS } from '../assets/manifest.js';
 import { flattenStatic, flattenCharacter } from './Flatten.js';
+import { Nature81 } from '../world/Nature81.js';
 
 export class ModelManager {
   constructor(base) {
@@ -53,8 +54,10 @@ export class ModelManager {
   // まとめた部品：[{ geometry, material }]（モデル原点基準）
   async partsOf(id) {
     if (this.parts.has(id)) return this.parts.get(id);
+    if (Nature81.has(id)) { const out = Nature81.parts(id); this.parts.set(id, out); return out; }   // v8.1 木・茂み・岩はコードで作る形（?nature=glb で前の GLB）
     const g = await this.load(id); if (!g) return [];
     const out = flattenStatic(g.scene);
+    if (id === 'wall_lantern') out.forEach((p) => { if (p.material && p.material.userData.glow) p.material.userData.bld = true; });   // v8.1 建物の壁のランタンは「建物の光」（夜の強さを 4 割落とす：LightingManager.BLD_LIGHT）
     this.parts.set(id, out); return out;
   }
   // 同じモデルを多数置く：transforms は THREE.Matrix4 の配列

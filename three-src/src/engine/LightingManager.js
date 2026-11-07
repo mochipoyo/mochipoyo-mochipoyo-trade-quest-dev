@@ -15,6 +15,8 @@ const KEYS = [   // t, 太陽の色・強さ, 空（上・地平）, 霧, 半球
   { t: 0.86, sun: 0x8a96d0, si: 0.74, top: 0x16224c, hor: 0x363866, fog: 0x272a4c, hemi: 0x7a8ac0, hi: 0.66, win: 2.6, exp: 1.16 },
   { t: 1.0, sun: 0x8a9ad0, si: 0.72, top: 0x14204a, hor: 0x2c3a64, fog: 0x232c4c, hemi: 0x7a8cc4, hi: 0.66, win: 2.6, exp: 1.16 }
 ];
+// v8.1（2026-11-07 の依頼）建物の光（窓・ランタン・教会の窓・屋内の灯り・町明かりのにじみ・屋内の窓の光の帯）を 4 割落とす
+export const BLD_LIGHT = 0.6;
 const cA = new THREE.Color(), cB = new THREE.Color();
 const UP = new THREE.Vector3(0, 1, 0), vX = new THREE.Vector3(), vY = new THREE.Vector3(), vT = new THREE.Vector3();
 function lerpKey(t) {
@@ -41,7 +43,7 @@ export class LightingManager {
     for (let i = 0; i < n; i++) { const l = new THREE.PointLight(0xffb05a, 0, 9, 1.6); l.castShadow = false; scene.add(l); this.lampLights.push(l); }
     // v6.6 点光源の割り当て（スロットごと：照らしている街灯・明るさ 0..1）。近い街灯が入れ替わるときは、ふっと消えて／ふっと点く（チラつき対策）
     this.slots = this.lampLights.map(() => ({ spot: null, lv: 0 })); this._lampT = 0;
-    this.lampSpots = []; this.windowMats = new Set(); this.glowMats = new Set(); this.nightMats = new Set(); this.dayMats = new Set(); this.night = 0; this.preview = null; this.interior = false;
+    this.lampSpots = []; this.windowMats = new Set(); this.glowMats = new Set(); this.nightMats = new Set(); this.dayMats = new Set(); this.keepMats = new Set(); this.night = 0; this.preview = null; this.interior = false;
   }
   makeSky() {
     const g = new THREE.SphereGeometry(400, 32, 16);
@@ -60,7 +62,7 @@ export class LightingManager {
       (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => {
         if (m.userData && m.userData.nightGlow !== undefined) { this.nightMats.add(m); return; }
         if (m.userData && m.userData.dayGlow !== undefined) { this.dayMats.add(m); return; }   // v7.6 昼だけ（屋内の窓の光の帯・窓のガラス）
-        if (m.userData && m.userData.keepGlow) return;   // v7.0 場所の飾りの光る部分（画面・水晶など）：昼も夜も同じ明るさ   // v6.6 町明かりのにじみ（夜だけ）
+        if (m.userData && m.userData.keepGlow) { if (m.emissiveIntensity > 0) { if (m.userData.keepBase === undefined) m.userData.keepBase = m.emissiveIntensity; this.keepMats.add(m); } return; }   // v8.1 屋内では 4 割落とす（外はそのまま）   // v7.0 場所の飾りの光る部分（画面・水晶など）：昼も夜も同じ明るさ   // v6.6 町明かりのにじみ（夜だけ）
         if (m.userData && m.userData.window) this.windowMats.add(m);
         else if (m.emissive && (m.emissive.r + m.emissive.g + m.emissive.b) > 0.05 && m.emissiveIntensity > 0) { if (m.userData.baseEmissive === undefined) m.userData.baseEmissive = m.emissiveIntensity; this.glowMats.add(m); }
       });
@@ -90,8 +92,8 @@ export class LightingManager {
     const a = Math.round(f.dot(vX) / texel) * texel - f.dot(vX), b = Math.round(f.dot(vY) / texel) * texel - f.dot(vY);
     vT.copy(f).addScaledVector(vX, a).addScaledVector(vY, b);
     this.sun.position.copy(vT).addScaledVector(dir, 50); this.sun.target.position.copy(vT);
-    this.sun.color.setHex(k.sun); this.sun.intensity = this.interior ? k.si * 0.25 : k.si;
-    this.hemi.color.setHex(k.hemi); this.hemi.groundColor.setHex(0x4a4a3a); this.hemi.intensity = this.interior ? Math.max(0.55, k.hi * 0.8) * (this.ambient ? 0.7 + this.ambient * 0.8 : 1) : k.hi;
+    this.sun.color.setHex(k.sun); this.sun.intensity = this.interior ? k.si * 0.25 * (this.church ? BLD_LIGHT : 1) : k.si;
+    this.hemi.color.setHex(k.hemi); this.hemi.groundColor.setHex(0x4a4a3a); this.hemi.intensity = this.interior ? Math.max(0.55, k.hi * 0.8) * (this.ambient ? 0.7 + this.ambient * 0.8 : 1) * (this.church ? BLD_LIGHT : 1) : k.hi;   /* v8.1 教会の中は 4 割落とす */
     this.fog.color.setHex(this.interior ? 0x1a140e : k.fog); this.fog.density = this.interior ? 0.0 : (this.mood && this.mood.fogD ? this.mood.fogD : (0.010 + this.night * 0.004));   // v6.6 夜の霧を薄く（以前は +0.01）
     const th = this.theme; let skyHor = null;
     if (th && !this.interior) {
@@ -106,11 +108,12 @@ export class LightingManager {
     if (this.space && !this.interior) { this.sky.material.uniforms.uT.value = performance.now() / 1000; this.fog.color.setHex(0x120e26); this.fog.density = 0.006; this.hemi.color.lerp(new THREE.Color(0xb8a8ff), 0.35); }   // v7.6 異空間
     this.scene.background = null;
     this.renderer.renderer.toneMappingExposure = k.exp;
-    for (const m of this.windowMats) m.emissiveIntensity = this.interior ? 0.6 : k.win;
-    for (const m of this.glowMats) m.emissiveIntensity = (m.userData.baseEmissive || 1) * (this.interior ? 0.6 : 0.25 + this.night * 0.9);
-    const nk = this.interior ? 0 : Math.max(0, Math.min(1, (this.night - 0.15) / 0.6)); for (const m of this.nightMats) { m.opacity = m.userData.nightGlow * nk * nk * (3 - 2 * nk); m.visible = m.opacity > 0.004; }
+    for (const m of this.windowMats) m.emissiveIntensity = (this.interior ? 0.6 : k.win) * BLD_LIGHT;
+    for (const m of this.glowMats) m.emissiveIntensity = (m.userData.baseEmissive || 1) * (this.interior ? 0.6 * BLD_LIGHT : (0.25 + this.night * 0.9) * (m.userData.natural ? 1 : m.userData.bld ? BLD_LIGHT : 1));
+    for (const m of this.keepMats) m.emissiveIntensity = m.userData.keepBase * (this.interior ? BLD_LIGHT : 1);
+    const nk = this.interior ? 0 : Math.max(0, Math.min(1, (this.night - 0.15) / 0.6)); for (const m of this.nightMats) { m.opacity = m.userData.nightGlow * BLD_LIGHT * nk * nk * (3 - 2 * nk); m.visible = m.opacity > 0.004; }
     this.renderer.setBloom(0.25 + this.night * 0.6);
-    { const day = 1 - this.night; for (const m of this.dayMats) { if (m.userData.dayEmissive !== undefined) { m.emissiveIntensity = m.userData.dayEmissive * (0.12 + 0.88 * day); if (m.color && m.userData.dayCol === undefined) m.userData.dayCol = m.color.getHex(); if (m.color) m.color.setHex(m.userData.dayCol).multiplyScalar(0.35 + 0.65 * day); } else { m.opacity = m.userData.dayGlow * day * day; m.visible = m.opacity > 0.004; } } }   // v7.6 窓の光（昼）
+    { const day = 1 - this.night; for (const m of this.dayMats) { if (m.userData.dayEmissive !== undefined) { m.emissiveIntensity = m.userData.dayEmissive * BLD_LIGHT * (0.12 + 0.88 * day); if (m.color && m.userData.dayCol === undefined) m.userData.dayCol = m.color.getHex(); if (m.color) m.color.setHex(m.userData.dayCol).multiplyScalar(0.35 + 0.65 * day); } else { m.opacity = m.userData.dayGlow * BLD_LIGHT * day * day; m.visible = m.opacity > 0.004; } } }   // v7.6 窓の光（昼）
     if (this.renderer.setFinish) {   // v7.6 画面の仕上げ（Finish76.js）：地域・時間帯・屋内で色の調子とぼかしを変える
       const ti = ((tt % 1) + 1) % 1; const dusk = this.mood ? 0 : Math.max(0, 1 - Math.abs(ti - 0.76) / 0.08) + 0.6 * Math.max(0, 1 - Math.abs(ti - 0.23) / 0.07);
       const kind = this.mapKind === 'interior' ? 'interior' : (this.mapKind || 'town');
@@ -138,7 +141,7 @@ export class LightingManager {
       const sl = this.slots[i]; const s = sl.spot;
       if (!s || lampOn < 0.05 || sl.lv <= 0) { l.intensity = 0; return; }
       const e = sl.lv * sl.lv * (3 - 2 * sl.lv);
-      l.position.copy(s.pos); l.color.setHex(s.color || 0xffb05a); l.intensity = (s.power || 1) * (this.interior ? 6 : 10) * lampOn * e; l.distance = s.dist || 9;
+      l.position.copy(s.pos); l.color.setHex(s.color || 0xffb05a); l.intensity = (s.power || 1) * (this.interior ? 6 * BLD_LIGHT : 10) * lampOn * e;   /* v8.1 屋内の灯りは 4 割落とす */ l.distance = s.dist || 9;
     });
   }
 }

@@ -10,6 +10,7 @@
    ・畑：作物のマスに畝（低い土の盛り上がり。歩ける高さ）
    ========================================================= */
 import * as THREE from 'three';
+import { Nature81 } from '../../world/Nature81.js';
 import { kit, mat, plain, Merge, worldUV, mat4, rng } from '../EnvKit3D.js';
 
 const STYLE = {
@@ -67,7 +68,8 @@ async function build(ctx, b, o) {
   }
   // 樹冠：大きさ・色の違う塊を3層
   const lobes = [[0, 5.4, 0, 2.3, leafA], [1.6, 4.8, 0.6, 1.8, leafB], [-1.5, 4.9, 0.4, 1.9, leafA], [0.4, 4.6, -1.6, 1.7, leafC], [-0.6, 4.4, 1.7, 1.6, leafB], [1.9, 4.1, -1.0, 1.3, leafC], [-1.9, 4.2, -1.2, 1.35, leafB], [0.2, 6.3, 0.2, 1.5, leafB]];
-  for (const [dx, y, dz, rad, m] of lobes) { const ge = new THREE.IcosahedronGeometry(rad, hi ? 2 : 1); const p = ge.attributes.position; for (let i = 0; i < p.count; i++) { const k = 1 + 0.12 * Math.sin(p.getX(i) * 3.1 + p.getY(i) * 2.3) * Math.cos(p.getZ(i) * 2.7); p.setXYZ(i, p.getX(i) * k, p.getY(i) * k * 0.82, p.getZ(i) * k); } ge.computeVertexNormals(); mg.add(m, ge, mat4(cx + dx, y, cz + dz)); }
+  if (Nature81.on()) { const [cg, cm] = Nature81.crown(lobes.map(([dx, y, dz, rad]) => [cx + dx, y, cz + dz, rad * 1.05]), 28); const cr = new THREE.Mesh(cg, cm); cr.castShadow = cr.receiveShadow = true; cr.name = 'poyo_bigtree_crown81'; g.add(cr); }   // v8.1 葉の板の樹冠（Nature81）
+  else for (const [dx, y, dz, rad, m] of lobes) { const ge = new THREE.IcosahedronGeometry(rad, hi ? 2 : 1); const p = ge.attributes.position; for (let i = 0; i < p.count; i++) { const k = 1 + 0.12 * Math.sin(p.getX(i) * 3.1 + p.getY(i) * 2.3) * Math.cos(p.getZ(i) * 2.7); p.setXYZ(i, p.getX(i) * k, p.getY(i) * k * 0.82, p.getZ(i) * k); } ge.computeVertexNormals(); mg.add(m, ge, mat4(cx + dx, y, cz + dz)); }
   // 低い石囲い（木のマスの内側＝半径 0.95）と土
   const ring = new THREE.CylinderGeometry(0.97, 0.99, 0.36, 28, 1, true); worldUV(ring, 1); mg.add(ringStone, ring, mat4(cx, 0.18, cz));
   mg.add(ringStone, new THREE.TorusGeometry(0.97, 0.07, 6, 28), mat4(cx, 0.37, cz, 0, 1, Math.PI / 2));

@@ -7,6 +7,7 @@
    ・論理（タイル）は変えない（フィールドの行は関数で作られる。2D版の地図はそのまま）
    ========================================================= */
 import * as THREE from 'three';
+import { Nature81 } from '../../world/Nature81.js';
 import { kit, plain, rng } from '../EnvKit3D.js';
 import { Batch } from '../../engine/Materials.js';
 import { wbox, cyl } from './geo.js';
@@ -83,7 +84,8 @@ async function build(ctx, F, spots, b) {
     switch (kind) {
       case 'arch': K('arch_round', x, y, z, [0.42, 0.62, 0.9], ry); add(M.stoneD, wbox(0.5, 0.3, 0.4, x + 0.3, y + 0.15, z + 0.2)); break;   // 折れたアーチ（小さく）
       case 'windmill': add(M.white, cyl(0.32, 0.42, 2.6, 10, x, y + 1.3, z)); add(M.red, new THREE.ConeGeometry(0.46, 0.6, 10).translate(x, y + 2.9, z)); { const pv = new THREE.Group(); pv.position.set(x, y + 2.4, z + 0.45); const sp2 = new THREE.Group(); pv.add(sp2); for (let k = 0; k < 4; k++) { const bl = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.6, 0.03), M.cloth); bl.geometry.userData.own = true; bl.rotation.z = k * Math.PI / 2; bl.position.set(Math.sin(k * Math.PI / 2) * 0.8, Math.cos(k * Math.PI / 2) * 0.8, 0); sp2.add(bl); } place(pv); ctx.scene.animated.push({ kind: 'spin', obj: sp2, speed: 0.8 }); } break;
-      case 'bigtree': add(M.wood, cyl(0.3, 0.45, 2.6, 8, x, y + 1.3, z)); for (const [dx, yy, dz, rr] of [[0, 3.4, 0, 1.4], [0.8, 3.0, 0.3, 1.0], [-0.8, 3.1, -0.2, 1.1]]) add(M.leaf, new THREE.IcosahedronGeometry(rr, 1).translate(x + dx, y + yy, z + dz)); break;
+      case 'bigtree': if (Nature81.on()) { const [pt] = Nature81.parts('tree_oak_c'); const tm = new THREE.Mesh(pt.geometry, pt.material); tm.position.set(x, y, z); tm.scale.setScalar(1.15); tm.rotation.y = ry || 0; tm.castShadow = tm.receiveShadow = true; place(tm); break; }   // v8.1 巨木もフィールドの木と同じ形（Nature81）
+        add(M.wood, cyl(0.3, 0.45, 2.6, 8, x, y + 1.3, z)); for (const [dx, yy, dz, rr] of [[0, 3.4, 0, 1.4], [0.8, 3.0, 0.3, 1.0], [-0.8, 3.1, -0.2, 1.1]]) add(M.leaf, new THREE.IcosahedronGeometry(rr, 1).translate(x + dx, y + yy, z + dz)); break;
       case 'headframe': for (const sx of [-1, 1]) add(M.iron, wbox(0.12, 3.4, 0.12, x + sx * 0.35, y + 1.7, z)); add(M.iron, new THREE.TorusGeometry(0.4, 0.05, 6, 18).translate(x, y + 3.4, z)); break;
       case 'chimney': add(M.stoneD, cyl(0.28, 0.4, 4.0, 10, x, y + 2.0, z)); ctx.scene.addSmoke(V(x, y + 4.2, z)); break;
       case 'cart': K('minecart', x, y, z, 0.6, ry); break;

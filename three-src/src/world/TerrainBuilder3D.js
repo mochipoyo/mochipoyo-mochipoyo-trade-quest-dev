@@ -285,15 +285,16 @@ export class TerrainBuilder3D {
   async buildTrees(group) {
     const list = this.trees; if (!list.length) return;
     const ids = [...new Set(list.map((t) => t.id))];
-    const geos = {}; let verts = 0;
+    const geos = {}; let verts = 0, idxN = 0;
     for (const id of ids) {
       const lodId = MODELS[id].lod;
       const g0 = (await this.models.partsOf(id))[0]; const g1 = lodId ? (await this.models.partsOf(lodId))[0] : null;
       if (!g0) continue; geos[id] = { g0: g0.geometry, g1: g1 ? g1.geometry : g0.geometry, mat: g0.material };
       verts += g0.geometry.attributes.position.count + (g1 ? g1.geometry.attributes.position.count : 0);
+      const cnt = (g) => (g.index ? g.index.count : g.attributes.position.count); idxN += cnt(g0.geometry) + (g1 ? cnt(g1.geometry) : 0);   // v8.1 木の形（Nature81）は頂点より添字が多い
     }
     const mat = Object.values(geos)[0].mat;
-    const bm = new THREE.BatchedMesh(list.length, verts, verts * 2, mat); bm.name = 'trees'; bm.castShadow = true; bm.receiveShadow = true; bm.sortObjects = false;
+    const bm = new THREE.BatchedMesh(list.length, verts, Math.max(verts * 2, idxN), mat); bm.name = 'trees'; bm.castShadow = true; bm.receiveShadow = true; bm.sortObjects = false;
     const gid = {}; for (const id of Object.keys(geos)) gid[id] = { l0: bm.addGeometry(geos[id].g0), l1: bm.addGeometry(geos[id].g1) };
     const c = new THREE.Color();
     this.treeInst = [];

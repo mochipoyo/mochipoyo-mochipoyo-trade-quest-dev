@@ -248,7 +248,7 @@ export class App3D {
     if (this.current) this.scene.remove(this.current.root);
     this.scene.add(ms.root); ms.root.position.set(0, 0, 0); this.current = ms; ms.usedAt = performance.now();
     this.ui.setBadge(ms.coverage === 'generic' ? '3D版 開発中：汎用3D（仮3D・自動生成）' : '3D版：専用3D（ポヨ村）');
-    this.lighting.setLampSpots(ms.lampSpots); this.lighting.setInterior(ms.interior || !!ms.dark, ms.ambient);
+    this.lighting.setLampSpots(ms.lampSpots); this.lighting.setInterior(ms.interior || !!ms.dark, ms.ambient); this.lighting.church = !!(ms.interior && ms.map && (/church|chapel|temple|cathedral|shrine/.test(ms.map.id) || /教会|聖堂|礼拝|神殿/.test(ms.map.name || '')));   // v8.1 教会の中の光を落とす（LightingManager）
     if (this.lighting.setTheme) this.lighting.setTheme(ms.theme || null);
     if (this.lighting.setMapKind) this.lighting.setMapKind(ms.interior ? 'interior' : (ms.map && ms.map.kind) || null);   // v7.6 画面の仕上げ
     if (this.lighting.setMood) this.lighting.setMood((ms.map && ms.map.def && ms.map.def.mood3d) || null);   // v6.9 マップ固有の空気

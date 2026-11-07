@@ -31,6 +31,7 @@ import { ctxStats } from '../environment/EnvKit3D.js';
 import { liftBatch } from './Terrace3D.js';
 import { animateFountain } from './Fountain76.js';
 import { setPBRQuality } from '../environment/ProcPBR.js';
+import { Nature81 } from './Nature81.js';
 
 export class MapScene3D {
   constructor(app) { this.app = app; this.root = new THREE.Group(); this.npcs = []; this.chests = []; this.smokes = []; this.sway = []; this.animated = []; this.lampSpots = []; }
@@ -40,6 +41,7 @@ export class MapScene3D {
     this.interior = map.kind === 'interior';   // v7.8 直した：v7.6 で上の行の注釈に入ってしまい、建物の中が外として組み立てられていた
     this.root.name = 'map3d_' + map.id;
     const t0 = performance.now();
+    Nature81.setQuality(app.quality);   // v8.1 木・岩の質感（Nature81.js）。高画質だけ法線の画像
     this.coverage = mapCoverage(map);   // 'done'（専用に作り込んだ3D）／'generic'（汎用の3D＝仮3D）
     // v7.6 環境リデザイン：このマップのレシピ（three-src/src/environment/recipes/）。準備（素材の一覧の読み込み・論理のタイルの確認）ができたら、builder にフックを渡し、最後に作り直した形を足す
     //   レシピの準備・組み立てで失敗したら、例外に envRecipe をつけて投げる → GameBridge.ensure がレシピなしで組み立て直す（Env.errors に記録）
