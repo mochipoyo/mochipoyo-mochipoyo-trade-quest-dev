@@ -14,18 +14,37 @@ import { addCutout } from '../engine/Cutout.js';
 const FALLBACK = () => ({ version: 'demo', demo: true, label: 'DEMO（学習用データなし）', note: '', items: [{ name: 'USD/JPY', price: 150, chg: 0, dec: 3 }] });
 export function quoteSnapshot() { const Q = window.Quote82; try { return Q && Q.snapshot ? Q.snapshot() : FALLBACK(); } catch (e) { return FALLBACK(); } }
 
-function drawStrip(c, snap, big) {
-  const g = c.getContext('2d'); const W = c.width, H = c.height;
+// 帯の文字の並び：「学習用相場」の札 ＋ 銘柄 K 個（page で何番目からか）。値と増減は等幅の数字（値が変わっても文字の幅が急に変わらない）
+function stripParts(snap, K, page) {
+  const parts = [{ t: '◆ ' + snap.label + (snap.demo ? '' : page % 2 ? '（実際の相場ではありません）' : '（ゲーム内の人工データ）') + ' ◆   ', col: snap.demo ? '#ff8a3a' : '#ffd84a' }];   /* 札の注記は組ごとに交互（帯が短くても字をつぶさない） */
+  const items = snap.items || []; const n = items.length; const k = Math.min(K, n);
+  for (let j = 0; j < k; j++) { const it = items[(page * k + j) % n]; const f = window.Quote82 && window.Quote82.fmt ? window.Quote82.fmt(it) : { name: it.name, price: String(it.price), chg: '', up: true };
+    parts.push({ t: f.name + ' ', col: '#e8eef4' }); parts.push({ t: f.price + ' ', col: '#ffffff', mono: true }); parts.push({ t: f.chg + '    ', col: f.up ? '#4aff8a' : '#ff5a5a', mono: true }); }
+  return parts;
+}
+function fonts(H) { const fs = Math.round(H * 0.5); return { FONT: 'bold ' + fs + 'px "Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif', MONO: 'bold ' + fs + 'px "DejaVu Sans Mono","Menlo","Consolas","Noto Sans Mono",monospace' }; }
+function measure(g, parts, F) { return parts.map((p) => { g.font = p.mono ? F.MONO : F.FONT; return g.measureText(p.t).width; }); }
+// 帯の画像の幅と、1 周に入れる銘柄の数を決める（はじめに 1 回）。
+// 字の縦横の比を保つ 1 周の長さ（画素）＝ 2πr ÷ 帯の高さ × 画像の高さ。文字列がそれより長いと、帯の上で字がつぶれる → 銘柄の数を減らし、残りは次の値の更新で順に出す（page）
+function planStrip(c, snap, O) {
+  const g = c.getContext('2d'); const H = c.height; const F = fonts(H); const pxRev = 2 * Math.PI * O.radius / O.band * H; const MAXW = O.big ? 6144 : 4096;   /* 画像の幅の上限（スマホの GPU でも読める大きさ）。高さを抑えて、字の比を保つ 1 周がこの幅に入るようにした */
+  const n = (snap.items || []).length || 1; let K = n; let W = 0;
+  for (; K >= 1; K--) { W = 0; for (let pg = 0; pg < Math.ceil(n / K); pg++) { const w = measure(g, stripParts(snap, K, pg), F).reduce((a, b) => a + b, 0); W = Math.max(W, w); } if ((W <= pxRev * 1.3 && W <= MAXW) || K === 1) break; }
+  W = Math.min(MAXW, Math.ceil(W * 1.08 / 64) * 64);   // 値が変わって少し長くなっても入る余白
+  const repeat = Math.max(1, Math.round(pxRev / W));
+  return { K, W, repeat, pxRev: Math.round(pxRev), squash: +((W * repeat) / pxRev).toFixed(2) };
+}
+// 帯を描く（画像の幅は planStrip で決めたまま。左右の端で途切れないように、余った幅は字の間に配る）
+function drawStrip(c, snap, plan, page) {
+  const g = c.getContext('2d'); const W = c.width, H = c.height; const F = fonts(H);
   g.fillStyle = '#05070a'; g.fillRect(0, 0, W, H);
-  g.fillStyle = '#10161c'; g.fillRect(0, Math.round(H * 0.08), W, Math.round(H * 0.84));
-  const fs = Math.round(H * 0.5); g.font = 'bold ' + fs + 'px "Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif'; g.textBaseline = 'middle';
-  const parts = []; parts.push({ t: '◆ ' + snap.label + (snap.demo ? '' : ' ・' + (snap.note || '')) + ' ◆', col: snap.demo ? '#ff8a3a' : '#ffd84a' });
-  (snap.items || []).forEach((it) => { const f = window.Quote82 && window.Quote82.fmt ? window.Quote82.fmt(it) : { name: it.name, price: String(it.price), chg: '', up: true }; parts.push({ t: f.name + ' ', col: '#e8eef4' }); parts.push({ t: f.price + ' ', col: '#ffffff' }); parts.push({ t: f.chg + '   ', col: f.up ? '#4aff8a' : '#ff5a5a' }); });
-  // 文字の幅に合わせて間をそろえる（左右の端で途切れない）
-  const widths = parts.map((p) => g.measureText(p.t).width); const total = widths.reduce((a, b) => a + b, 0); const gap = Math.max(0, (W - total) / parts.length);
-  let x = gap / 2; parts.forEach((p, i) => { g.fillStyle = p.col; g.fillText(p.t, x, H / 2 + 2); x += widths[i] + gap; });
+  g.fillStyle = '#10161c'; g.fillRect(0, Math.round(H * 0.08), W, Math.round(H * 0.84)); g.textBaseline = 'middle';
+  let K = plan.K, parts, widths, total;
+  for (; K >= 1; K--) { parts = stripParts(snap, K, page); widths = measure(g, parts, F); total = widths.reduce((a, b) => a + b, 0); if (total <= W || K === 1) break; }
+  const gap = Math.max(0, (W - total) / parts.length);
+  let x = gap / 2; parts.forEach((p, i) => { g.font = p.mono ? F.MONO : F.FONT; g.fillStyle = p.col; g.fillText(p.t, x, H / 2 + 2); x += widths[i] + gap; });
   g.fillStyle = '#c8a050'; g.fillRect(0, 0, W, Math.round(H * 0.06)); g.fillRect(0, H - Math.round(H * 0.06), W, Math.round(H * 0.06));
-  return total > W;   // 入り切らない（くり返しの数を減らす）
+  return { K, total: Math.round(total), fits: total <= W };
 }
 
 export class TickerRing {
@@ -33,10 +52,10 @@ export class TickerRing {
   constructor(o) {
     this.o = Object.assign({ radius: 6, band: 1, y: 5, repeat: 3, speed: 0.025, seg: 96, big: false, frame: '#c8a050', cutout: true }, o || {});
     const O = this.o; const g = new THREE.Group(); g.name = 'ticker82'; this.group = g;
-    const c = document.createElement('canvas'); c.width = O.big ? 4096 : 2048; c.height = O.big ? 192 : 128; this.canvas = c;
-    this.snap = quoteSnapshot(); drawStrip(c, this.snap, O.big);
-    const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = THREE.RepeatWrapping; tex.wrapT = THREE.ClampToEdgeWrapping; tex.anisotropy = 4; tex.repeat.set(O.repeat, 1);
-    const texIn = tex.clone(); texIn.repeat.set(-O.repeat, 1); texIn.needsUpdate = true; this.tex = tex; this.texIn = texIn;
+    const c = document.createElement('canvas'); c.width = 64; c.height = O.big ? 160 : 88; this.canvas = c;
+    this.snap = quoteSnapshot(); this.plan = planStrip(c, this.snap, O); c.width = this.plan.W; this.page = 0; this.last = drawStrip(c, this.snap, this.plan, this.page);   /* 画像の幅は 1 回だけ決める（あとで変えると GPU の画像の大きさと合わなくなる） */
+    const rep = this.plan.repeat; const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = THREE.RepeatWrapping; tex.wrapT = THREE.ClampToEdgeWrapping; tex.anisotropy = 4; tex.repeat.set(rep, 1);
+    const texIn = tex.clone(); texIn.repeat.set(-rep, 1); texIn.needsUpdate = true; this.tex = tex; this.texIn = texIn;
     const geo = new THREE.CylinderGeometry(O.radius, O.radius, O.band, O.seg, 1, true); geo.userData.own = true; this.geo = geo;
     const mk = (tx, side) => new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xffffff, emissiveMap: tx, emissiveIntensity: 1.0, roughness: 1, metalness: 0, side, toneMapped: false, fog: O.fog !== false });   // 光る帯（MeshStandard：主人公の手前を抜く Cutout が使える）
     const mo = mk(tex, THREE.FrontSide), mi = mk(texIn, THREE.BackSide);
@@ -50,11 +69,15 @@ export class TickerRing {
     this.t0 = 0; this.lastCheck = 0; this.redraws = 1; this.offset = 0;
   }
   update(t) {
-    const O = this.o; if (!this.t0) this.t0 = t; const dt = Math.min(0.1, Math.max(0, t - (this._t || t))); this._t = t;
-    this.offset = (this.offset + dt * O.speed) % 1; this.tex.offset.x = this.offset; this.texIn.offset.x = -this.offset;   // 外も内も、文字は同じ向き（右から左）へ流れる
-    if (t - this.lastCheck > 1.5) { this.lastCheck = t; const s = quoteSnapshot(); if (s.version !== this.snap.version) { this.snap = s; drawStrip(this.canvas, s, O.big); this.tex.needsUpdate = true; this.texIn.needsUpdate = true; this.redraws++; } }
+    const O = this.o;
+    /* 外も内も、文字は同じ向き（右から左）へ流れる。位置はページの共通の時計から（地図を作り直しても先頭へ戻らない・チャンクを越えても速さが同じ） */
+    this.offset = ((performance.now() / 1000) * O.speed) % 1; this.tex.offset.x = this.offset; this.texIn.offset.x = -this.offset;
+    /* 値の確かめは 1.5 秒ごと。画面が隠れているときはしない。値が変わったときだけ描き直す（銘柄が多いときは次の組へ） */
+    if (t - this.lastCheck <= 1.5 || (typeof document !== 'undefined' && document.hidden)) return;
+    this.lastCheck = t; const s = quoteSnapshot(); if (s.version === this.snap.version) return;
+    this.snap = s; this.page++; this.last = drawStrip(this.canvas, s, this.plan, this.page); this.tex.needsUpdate = true; this.texIn.needsUpdate = true; this.redraws++;
   }
-  info() { return { version: this.snap.version, speed: this.o.speed, demo: !!this.snap.demo, label: this.snap.label, redraws: this.redraws, offset: +this.offset.toFixed(4), first: (this.snap.items || [])[0] }; }
+  info() { return { version: this.snap.version, speed: this.o.speed, plan: this.plan, page: this.page, shown: this.last, demo: !!this.snap.demo, label: this.snap.label, redraws: this.redraws, offset: +this.offset.toFixed(4), first: (this.snap.items || [])[0] }; }
   dispose() { this.geo.dispose(); this.tg.dispose(); this.mats.forEach((m) => m.dispose()); this.tex.dispose(); this.texIn.dispose(); if (this.group.parent) this.group.parent.remove(this.group); this.disposed = true; }
 }
 
