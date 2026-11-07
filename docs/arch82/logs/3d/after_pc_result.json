@@ -1,0 +1,5973 @@
+{
+ "errs": [],
+ "res": [
+  {
+   "id": "a3_aruna_hut",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_aruna_hut.jpg",
+   "tris": 50566,
+   "calls": 101,
+   "recipe": "interior82:aruna_village:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_ciel_lookout",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_ciel_lookout.jpg",
+   "tris": 45592,
+   "calls": 65,
+   "recipe": "interior82:ciel_port:tower",
+   "err": null,
+   "pos": [
+    10,
+    4
+   ]
+  },
+  {
+   "id": "a3_dark_command",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_dark_command.jpg",
+   "tris": 52068,
+   "calls": 78,
+   "recipe": "interior82:dark_camp:weapon",
+   "err": null,
+   "pos": [
+    1,
+    7
+   ]
+  },
+  {
+   "id": "a3_district_9",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_district_9.jpg",
+   "tris": 48914,
+   "calls": 88,
+   "recipe": "interior82:scheduled_district:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_dow_hunter",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_dow_hunter.jpg",
+   "tris": 66384,
+   "calls": 112,
+   "recipe": "interior82:dow_village:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_erased_cellar",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_erased_cellar.jpg",
+   "tris": 46376,
+   "calls": 81,
+   "recipe": "interior82:erased_village:elder",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "a3_frost_keeper",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_frost_keeper.jpg",
+   "tris": 54742,
+   "calls": 125,
+   "recipe": "interior82:frost_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_harbor_net",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_harbor_net.jpg",
+   "tris": 67744,
+   "calls": 108,
+   "recipe": "interior82:harbor_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_ignas_smith_home",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_ignas_smith_home.jpg",
+   "tris": 69052,
+   "calls": 98,
+   "recipe": "interior82:ignas_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_kalion_estate",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_kalion_estate.jpg",
+   "tris": 67036,
+   "calls": 111,
+   "recipe": "interior82:kalion_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_luxbell_dice",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_luxbell_dice.jpg",
+   "tris": 65756,
+   "calls": 99,
+   "recipe": "interior82:luxbell:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_magicka_crafter",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_magicka_crafter.jpg",
+   "tris": 83740,
+   "calls": 117,
+   "recipe": "interior82:magicka_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_mirror_changer",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_mirror_changer.jpg",
+   "tris": 52552,
+   "calls": 102,
+   "recipe": "interior82:mirror_market:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_mirror_changer_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_mirror_changer_x72_2f.jpg",
+   "tris": 32648,
+   "calls": 78,
+   "recipe": "interior82:mirror_market:house",
+   "err": null,
+   "pos": [
+    6,
+    1
+   ]
+  },
+  {
+   "id": "a3_node_family",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_node_family.jpg",
+   "tris": 63592,
+   "calls": 91,
+   "recipe": "interior82:node_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_ruins_keeper",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_ruins_keeper.jpg",
+   "tris": 51170,
+   "calls": 76,
+   "recipe": "interior82:aruna_ruins:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_sahar_water",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_sahar_water.jpg",
+   "tris": 69970,
+   "calls": 123,
+   "recipe": "interior82:sahar_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_sahar_water_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_sahar_water_x72_2f.jpg",
+   "tris": 35592,
+   "calls": 85,
+   "recipe": "interior82:sahar_city:house",
+   "err": null,
+   "pos": [
+    6,
+    1
+   ]
+  },
+  {
+   "id": "a3_sentra_noble",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_sentra_noble.jpg",
+   "tris": 72628,
+   "calls": 116,
+   "recipe": "interior82:sentra_capital:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_star_tent",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_star_tent.jpg",
+   "tris": 49958,
+   "calls": 81,
+   "recipe": "interior82:star_camp:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "a3_star_tent_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_star_tent_x72_2f.jpg",
+   "tris": 31684,
+   "calls": 63,
+   "recipe": "interior82:star_camp:house",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "a3_tempus_clock",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_tempus_clock.jpg",
+   "tris": 74090,
+   "calls": 107,
+   "recipe": "interior82:tempus_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_tempus_clock_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_tempus_clock_x72_2f.jpg",
+   "tris": 39692,
+   "calls": 77,
+   "recipe": "interior82:tempus_city:house",
+   "err": null,
+   "pos": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "a3_verum_row",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_verum_row.jpg",
+   "tris": 61968,
+   "calls": 93,
+   "recipe": "interior82:verum_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_vol_lodging",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_vol_lodging.jpg",
+   "tris": 76826,
+   "calls": 96,
+   "recipe": "interior82:volatilia:study",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "a3_vol_lodging_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_a3_vol_lodging_x72_2f.jpg",
+   "tris": 42872,
+   "calls": 72,
+   "recipe": "interior82:volatilia:study",
+   "err": null,
+   "pos": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "aruna_house_iris",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_house_iris.jpg",
+   "tris": 58596,
+   "calls": 102,
+   "recipe": "interior82:aruna_village:elder",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "aruna_house_yorn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_house_yorn.jpg",
+   "tris": 51162,
+   "calls": 116,
+   "recipe": "interior82:aruna_village:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "aruna_house_yorn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_house_yorn_x72_2f.jpg",
+   "tris": 32516,
+   "calls": 80,
+   "recipe": "interior82:aruna_village:house",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "aruna_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_inn.jpg",
+   "tris": 63186,
+   "calls": 100,
+   "recipe": "interior82:aruna_village:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "aruna_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_inn_x72_2f.jpg",
+   "tris": 31368,
+   "calls": 68,
+   "recipe": "interior82:aruna_village:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "aruna_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_item.jpg",
+   "tris": 70462,
+   "calls": 95,
+   "recipe": "interior82:aruna_village:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "aruna_ruins_1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_ruins_1.jpg",
+   "tris": 100072,
+   "calls": 80,
+   "recipe": "interior82:aruna_ruins:clock",
+   "err": null,
+   "pos": [
+    4,
+    21
+   ]
+  },
+  {
+   "id": "aruna_ruins_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_ruins_x72_ex0.jpg",
+   "tris": 50824,
+   "calls": 98,
+   "recipe": "interior82:aruna_ruins:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "aruna_ruins_x72_ex0_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_ruins_x72_ex0_2f.jpg",
+   "tris": 31204,
+   "calls": 66,
+   "recipe": "interior82:aruna_ruins:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "aruna_ruins_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_ruins_x72_hall.jpg",
+   "tris": 51894,
+   "calls": 77,
+   "recipe": "interior82:aruna_ruins:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "aruna_ruins_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_ruins_x72_house.jpg",
+   "tris": 49850,
+   "calls": 83,
+   "recipe": "interior82:aruna_ruins:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "aruna_ruins_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_ruins_x72_house_2f.jpg",
+   "tris": 31608,
+   "calls": 76,
+   "recipe": "interior82:aruna_ruins:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "aruna_ruins_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_ruins_x72_tower.jpg",
+   "tris": 49548,
+   "calls": 76,
+   "recipe": "interior82:aruna_ruins:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "aruna_ruins_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_ruins_x72_tower_2f.jpg",
+   "tris": 31498,
+   "calls": 61,
+   "recipe": "interior82:aruna_ruins:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "aruna_ruins_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_ruins_x72_tower_3f.jpg",
+   "tris": 44602,
+   "calls": 67,
+   "recipe": "interior82:aruna_ruins:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "aruna_village_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_village_x72_hall.jpg",
+   "tris": 66090,
+   "calls": 89,
+   "recipe": "interior82:aruna_village:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "aruna_village_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_village_x72_house.jpg",
+   "tris": 51758,
+   "calls": 112,
+   "recipe": "interior82:aruna_village:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "aruna_village_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_village_x72_house_2f.jpg",
+   "tris": 33192,
+   "calls": 94,
+   "recipe": "interior82:aruna_village:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "aruna_village_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_village_x72_tower.jpg",
+   "tris": 52188,
+   "calls": 88,
+   "recipe": "interior82:aruna_village:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "aruna_village_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_village_x72_tower_2f.jpg",
+   "tris": 32566,
+   "calls": 75,
+   "recipe": "interior82:aruna_village:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "aruna_village_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_village_x72_tower_3f.jpg",
+   "tris": 45670,
+   "calls": 81,
+   "recipe": "interior82:aruna_village:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "asana_home",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_asana_home.jpg",
+   "tris": 34756,
+   "calls": 76,
+   "recipe": "interior82:asana_village:house",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "ciel_harbor",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_harbor.jpg",
+   "tris": 49072,
+   "calls": 79,
+   "recipe": "interior82:ciel_port:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "ciel_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_inn.jpg",
+   "tris": 64802,
+   "calls": 98,
+   "recipe": "interior82:ciel_port:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ciel_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_inn_x72_2f.jpg",
+   "tris": 31520,
+   "calls": 66,
+   "recipe": "interior82:ciel_port:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "ciel_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_item.jpg",
+   "tris": 74542,
+   "calls": 95,
+   "recipe": "interior82:ciel_port:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ciel_item_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_item_x72_2f.jpg",
+   "tris": 38172,
+   "calls": 62,
+   "recipe": "interior82:ciel_port:item",
+   "err": null,
+   "pos": [
+    8,
+    1
+   ]
+  },
+  {
+   "id": "ciel_port_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_port_x72_hall.jpg",
+   "tris": 70074,
+   "calls": 83,
+   "recipe": "interior82:ciel_port:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ciel_port_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_port_x72_house.jpg",
+   "tris": 51694,
+   "calls": 92,
+   "recipe": "interior82:ciel_port:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "ciel_port_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_port_x72_house_2f.jpg",
+   "tris": 33472,
+   "calls": 82,
+   "recipe": "interior82:ciel_port:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "ciel_port_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_port_x72_tower.jpg",
+   "tris": 54772,
+   "calls": 80,
+   "recipe": "interior82:ciel_port:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ciel_port_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_port_x72_tower_2f.jpg",
+   "tris": 33726,
+   "calls": 65,
+   "recipe": "interior82:ciel_port:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "ciel_port_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_port_x72_tower_3f.jpg",
+   "tris": 46950,
+   "calls": 71,
+   "recipe": "interior82:ciel_port:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "ciel_weapon",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_weapon.jpg",
+   "tris": 57606,
+   "calls": 75,
+   "recipe": "interior82:ciel_port:weapon",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "dark_armory",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_armory.jpg",
+   "tris": 64362,
+   "calls": 86,
+   "recipe": "interior82:dark_camp:weapon",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "dark_camp_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_camp_x72_hall.jpg",
+   "tris": 49642,
+   "calls": 64,
+   "recipe": "interior82:dark_camp:dojo",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "dark_camp_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_camp_x72_house.jpg",
+   "tris": 52846,
+   "calls": 86,
+   "recipe": "interior82:dark_camp:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "dark_camp_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_camp_x72_house_2f.jpg",
+   "tris": 33860,
+   "calls": 75,
+   "recipe": "interior82:dark_camp:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "dark_camp_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_camp_x72_tower.jpg",
+   "tris": 52804,
+   "calls": 77,
+   "recipe": "interior82:dark_camp:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "dark_camp_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_camp_x72_tower_2f.jpg",
+   "tris": 33590,
+   "calls": 72,
+   "recipe": "interior82:dark_camp:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "dark_camp_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_camp_x72_tower_3f.jpg",
+   "tris": 46814,
+   "calls": 78,
+   "recipe": "interior82:dark_camp:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "dark_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_inn.jpg",
+   "tris": 67494,
+   "calls": 86,
+   "recipe": "interior82:dark_camp:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "dark_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_inn_x72_2f.jpg",
+   "tris": 33152,
+   "calls": 65,
+   "recipe": "interior82:dark_camp:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "dark_shop",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_shop.jpg",
+   "tris": 66810,
+   "calls": 84,
+   "recipe": "interior82:dark_camp:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "dark_tent_hald",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_tent_hald.jpg",
+   "tris": 51580,
+   "calls": 79,
+   "recipe": "interior82:dark_camp:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "dark_tent_hald_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_tent_hald_x72_2f.jpg",
+   "tris": 33916,
+   "calls": 61,
+   "recipe": "interior82:dark_camp:house",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "district_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_district_house.jpg",
+   "tris": 46148,
+   "calls": 102,
+   "recipe": "interior82:scheduled_district:house",
+   "err": null,
+   "pos": [
+    4,
+    7
+   ]
+  },
+  {
+   "id": "district_house_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_district_house_x72_2f.jpg",
+   "tris": 32480,
+   "calls": 69,
+   "recipe": "interior82:scheduled_district:house",
+   "err": null,
+   "pos": [
+    8,
+    2
+   ]
+  },
+  {
+   "id": "district_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_district_inn.jpg",
+   "tris": 61978,
+   "calls": 87,
+   "recipe": "interior82:scheduled_district:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "district_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_district_inn_x72_2f.jpg",
+   "tris": 31336,
+   "calls": 59,
+   "recipe": "interior82:scheduled_district:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "district_ration",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_district_ration.jpg",
+   "tris": 64534,
+   "calls": 82,
+   "recipe": "interior82:scheduled_district:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "dow_dojo",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_dojo.jpg",
+   "tris": 70932,
+   "calls": 90,
+   "recipe": "interior82:dow_village:dojo",
+   "err": null,
+   "pos": [
+    10,
+    11
+   ]
+  },
+  {
+   "id": "dow_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_house.jpg",
+   "tris": 56062,
+   "calls": 103,
+   "recipe": "interior82:dow_village:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "dow_house_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_house_x72_2f.jpg",
+   "tris": 32436,
+   "calls": 76,
+   "recipe": "interior82:dow_village:house",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "dow_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_inn.jpg",
+   "tris": 61842,
+   "calls": 102,
+   "recipe": "interior82:dow_village:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "dow_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_inn_x72_2f.jpg",
+   "tris": 31288,
+   "calls": 68,
+   "recipe": "interior82:dow_village:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "dow_village_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_village_x72_ex0.jpg",
+   "tris": 52706,
+   "calls": 93,
+   "recipe": "interior82:dow_village:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "dow_village_x72_ex1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_village_x72_ex1.jpg",
+   "tris": 53792,
+   "calls": 120,
+   "recipe": "interior82:dow_village:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "dow_village_x72_ex1_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_village_x72_ex1_2f.jpg",
+   "tris": 32548,
+   "calls": 80,
+   "recipe": "interior82:dow_village:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "dow_village_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_village_x72_hall.jpg",
+   "tris": 62556,
+   "calls": 94,
+   "recipe": "interior82:dow_village:tavern",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "dow_village_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_village_x72_house.jpg",
+   "tris": 51742,
+   "calls": 97,
+   "recipe": "interior82:dow_village:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "dow_village_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_village_x72_house_2f.jpg",
+   "tris": 32952,
+   "calls": 90,
+   "recipe": "interior82:dow_village:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "dow_village_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_village_x72_tower.jpg",
+   "tris": 49700,
+   "calls": 82,
+   "recipe": "interior82:dow_village:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "dow_village_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_village_x72_tower_2f.jpg",
+   "tris": 31774,
+   "calls": 73,
+   "recipe": "interior82:dow_village:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "dow_village_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_village_x72_tower_3f.jpg",
+   "tris": 44918,
+   "calls": 79,
+   "recipe": "interior82:dow_village:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "dow_weapon_shop",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_weapon_shop.jpg",
+   "tris": 54454,
+   "calls": 80,
+   "recipe": "interior82:dow_village:weapon",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "erased_elder",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_erased_elder.jpg",
+   "tris": 50998,
+   "calls": 100,
+   "recipe": "interior82:erased_village:elder",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "erased_elder_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_erased_elder_x72_2f.jpg",
+   "tris": 34288,
+   "calls": 76,
+   "recipe": "interior82:erased_village:elder",
+   "err": null,
+   "pos": [
+    8,
+    2
+   ]
+  },
+  {
+   "id": "erased_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_erased_house.jpg",
+   "tris": 48502,
+   "calls": 87,
+   "recipe": "interior82:erased_village:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "erased_house_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_erased_house_x72_2f.jpg",
+   "tris": 32420,
+   "calls": 72,
+   "recipe": "interior82:erased_village:house",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "erased_village_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_erased_village_x72_house.jpg",
+   "tris": 51170,
+   "calls": 96,
+   "recipe": "interior82:erased_village:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "erased_village_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_erased_village_x72_house_2f.jpg",
+   "tris": 32824,
+   "calls": 86,
+   "recipe": "interior82:erased_village:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "erased_village_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_erased_village_x72_tower.jpg",
+   "tris": 53964,
+   "calls": 78,
+   "recipe": "interior82:erased_village:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "erased_village_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_erased_village_x72_tower_2f.jpg",
+   "tris": 32982,
+   "calls": 65,
+   "recipe": "interior82:erased_village:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "erased_village_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_erased_village_x72_tower_3f.jpg",
+   "tris": 46238,
+   "calls": 71,
+   "recipe": "interior82:erased_village:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "frost_armor",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_armor.jpg",
+   "tris": 64170,
+   "calls": 80,
+   "recipe": "interior82:frost_town:armor",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "frost_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_house.jpg",
+   "tris": 53066,
+   "calls": 113,
+   "recipe": "interior82:frost_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "frost_house_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_house_x72_2f.jpg",
+   "tris": 33872,
+   "calls": 83,
+   "recipe": "interior82:frost_town:house",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "frost_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_inn.jpg",
+   "tris": 65158,
+   "calls": 118,
+   "recipe": "interior82:frost_town:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "frost_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_inn_x72_2f.jpg",
+   "tris": 31912,
+   "calls": 77,
+   "recipe": "interior82:frost_town:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "frost_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_item.jpg",
+   "tris": 78066,
+   "calls": 104,
+   "recipe": "interior82:frost_town:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "frost_town_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_town_x72_ex0.jpg",
+   "tris": 53840,
+   "calls": 104,
+   "recipe": "interior82:frost_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "frost_town_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_town_x72_hall.jpg",
+   "tris": 65638,
+   "calls": 96,
+   "recipe": "interior82:frost_town:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "frost_town_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_town_x72_house.jpg",
+   "tris": 56242,
+   "calls": 115,
+   "recipe": "interior82:frost_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "frost_town_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_town_x72_house_2f.jpg",
+   "tris": 34356,
+   "calls": 97,
+   "recipe": "interior82:frost_town:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "frost_town_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_town_x72_tower.jpg",
+   "tris": 55864,
+   "calls": 89,
+   "recipe": "interior82:frost_town:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "frost_town_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_town_x72_tower_2f.jpg",
+   "tris": 33894,
+   "calls": 77,
+   "recipe": "interior82:frost_town:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "frost_town_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_town_x72_tower_3f.jpg",
+   "tris": 47118,
+   "calls": 83,
+   "recipe": "interior82:frost_town:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "frost_weapon",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_weapon.jpg",
+   "tris": 58326,
+   "calls": 86,
+   "recipe": "interior82:frost_town:weapon",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "harbor_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_house.jpg",
+   "tris": 54068,
+   "calls": 92,
+   "recipe": "interior82:harbor_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "harbor_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_inn.jpg",
+   "tris": 77198,
+   "calls": 103,
+   "recipe": "interior82:harbor_town:inn",
+   "err": null,
+   "pos": [
+    9,
+    10
+   ]
+  },
+  {
+   "id": "harbor_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_inn_x72_2f.jpg",
+   "tris": 33912,
+   "calls": 77,
+   "recipe": "interior82:harbor_town:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "harbor_item_shop",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_item_shop.jpg",
+   "tris": 76422,
+   "calls": 92,
+   "recipe": "interior82:harbor_town:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "harbor_ship_deck",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_ship_deck.jpg",
+   "tris": 46186,
+   "calls": 61,
+   "recipe": "ship_deck.v1",
+   "err": null,
+   "pos": [
+    14,
+    10
+   ]
+  },
+  {
+   "id": "harbor_tavern",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_tavern.jpg",
+   "tris": 63064,
+   "calls": 99,
+   "recipe": "interior82:harbor_town:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "harbor_tavern_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_tavern_x72_2f.jpg",
+   "tris": 37708,
+   "calls": 73,
+   "recipe": "interior82:harbor_town:tavern",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "harbor_town_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_town_x72_hall.jpg",
+   "tris": 73714,
+   "calls": 90,
+   "recipe": "interior82:harbor_town:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "harbor_town_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_town_x72_house.jpg",
+   "tris": 53398,
+   "calls": 96,
+   "recipe": "interior82:harbor_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "harbor_town_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_town_x72_house_2f.jpg",
+   "tris": 36492,
+   "calls": 95,
+   "recipe": "interior82:harbor_town:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "harbor_town_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_town_x72_tower.jpg",
+   "tris": 58716,
+   "calls": 93,
+   "recipe": "interior82:harbor_town:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "harbor_town_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_town_x72_tower_2f.jpg",
+   "tris": 37006,
+   "calls": 78,
+   "recipe": "interior82:harbor_town:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "harbor_town_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_town_x72_tower_3f.jpg",
+   "tris": 50230,
+   "calls": 84,
+   "recipe": "interior82:harbor_town:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "harbor_warehouse",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_warehouse.jpg",
+   "tris": 64482,
+   "calls": 96,
+   "recipe": "interior82:harbor_town:store",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ignas_armor",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_armor.jpg",
+   "tris": 68470,
+   "calls": 69,
+   "recipe": "interior82:ignas_town:armor",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ignas_forge",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_forge.jpg",
+   "tris": 56518,
+   "calls": 95,
+   "recipe": "interior82:ignas_town:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ignas_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_hall.jpg",
+   "tris": 59326,
+   "calls": 75,
+   "recipe": "interior82:ignas_town:guild",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ignas_house_1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_house_1.jpg",
+   "tris": 54882,
+   "calls": 92,
+   "recipe": "interior82:ignas_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "ignas_house_1_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_house_1_x72_2f.jpg",
+   "tris": 34332,
+   "calls": 62,
+   "recipe": "interior82:ignas_town:house",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "ignas_house_2",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_house_2.jpg",
+   "tris": 54076,
+   "calls": 95,
+   "recipe": "interior82:ignas_town:elder",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "ignas_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_inn.jpg",
+   "tris": 67866,
+   "calls": 95,
+   "recipe": "interior82:ignas_town:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ignas_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_inn_x72_2f.jpg",
+   "tris": 33164,
+   "calls": 60,
+   "recipe": "interior82:ignas_town:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "ignas_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_item.jpg",
+   "tris": 68398,
+   "calls": 79,
+   "recipe": "interior82:ignas_town:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ignas_town_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_town_x72_hall.jpg",
+   "tris": 49558,
+   "calls": 61,
+   "recipe": "interior82:ignas_town:dojo",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ignas_town_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_town_x72_house.jpg",
+   "tris": 56598,
+   "calls": 101,
+   "recipe": "interior82:ignas_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "ignas_town_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_town_x72_house_2f.jpg",
+   "tris": 34932,
+   "calls": 76,
+   "recipe": "interior82:ignas_town:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "ignas_town_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_town_x72_tower.jpg",
+   "tris": 54888,
+   "calls": 68,
+   "recipe": "interior82:ignas_town:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ignas_town_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_town_x72_tower_2f.jpg",
+   "tris": 34302,
+   "calls": 61,
+   "recipe": "interior82:ignas_town:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "ignas_town_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_town_x72_tower_3f.jpg",
+   "tris": 47558,
+   "calls": 67,
+   "recipe": "interior82:ignas_town:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "kalion_armor",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_armor.jpg",
+   "tris": 62006,
+   "calls": 70,
+   "recipe": "interior82:kalion_city:armor",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_church",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_church.jpg",
+   "tris": 50930,
+   "calls": 76,
+   "recipe": "interior82:kalion_city:church",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_city_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_ex0.jpg",
+   "tris": 50288,
+   "calls": 79,
+   "recipe": "interior82:kalion_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "kalion_city_x72_ex1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_ex1.jpg",
+   "tris": 53690,
+   "calls": 110,
+   "recipe": "interior82:kalion_city:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_city_x72_ex2",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_ex2.jpg",
+   "tris": 53432,
+   "calls": 98,
+   "recipe": "interior82:kalion_city:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_city_x72_ex2_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_ex2_2f.jpg",
+   "tris": 32720,
+   "calls": 73,
+   "recipe": "interior82:kalion_city:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "kalion_city_x72_ex3",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_ex3.jpg",
+   "tris": 50534,
+   "calls": 96,
+   "recipe": "interior82:kalion_city:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_city_x72_ex4",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_ex4.jpg",
+   "tris": 55292,
+   "calls": 97,
+   "recipe": "interior82:kalion_city:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_city_x72_ex4_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_ex4_2f.jpg",
+   "tris": 32720,
+   "calls": 73,
+   "recipe": "interior82:kalion_city:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "kalion_city_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_hall.jpg",
+   "tris": 60010,
+   "calls": 75,
+   "recipe": "interior82:kalion_city:bank",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_city_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_house.jpg",
+   "tris": 48446,
+   "calls": 89,
+   "recipe": "interior82:kalion_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "kalion_city_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_house_2f.jpg",
+   "tris": 33128,
+   "calls": 83,
+   "recipe": "interior82:kalion_city:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "kalion_city_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_tower.jpg",
+   "tris": 54548,
+   "calls": 82,
+   "recipe": "interior82:kalion_city:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_city_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_tower_2f.jpg",
+   "tris": 33206,
+   "calls": 71,
+   "recipe": "interior82:kalion_city:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "kalion_city_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city_x72_tower_3f.jpg",
+   "tris": 46462,
+   "calls": 77,
+   "recipe": "interior82:kalion_city:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "kalion_finance",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_finance.jpg",
+   "tris": 72882,
+   "calls": 104,
+   "recipe": "interior82:kalion_city:bank",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "kalion_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_inn.jpg",
+   "tris": 62266,
+   "calls": 97,
+   "recipe": "interior82:kalion_city:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_inn_x72_2f.jpg",
+   "tris": 31408,
+   "calls": 61,
+   "recipe": "interior82:kalion_city:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "kalion_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_item.jpg",
+   "tris": 72358,
+   "calls": 86,
+   "recipe": "interior82:kalion_city:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_tavern",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_tavern.jpg",
+   "tris": 79764,
+   "calls": 95,
+   "recipe": "interior82:kalion_city:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_tavern_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_tavern_x72_2f.jpg",
+   "tris": 33892,
+   "calls": 64,
+   "recipe": "interior82:kalion_city:tavern",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "kalion_tax",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_tax.jpg",
+   "tris": 68456,
+   "calls": 79,
+   "recipe": "interior82:kalion_city:guild",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "kalion_weapon",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_weapon.jpg",
+   "tris": 56134,
+   "calls": 77,
+   "recipe": "interior82:kalion_city:weapon",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "luxbell_casino",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_casino.jpg",
+   "tris": 159772,
+   "calls": 115,
+   "recipe": "interior82:luxbell:casino",
+   "err": null,
+   "pos": [
+    11,
+    12
+   ]
+  },
+  {
+   "id": "luxbell_dining",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_dining.jpg",
+   "tris": 75446,
+   "calls": 91,
+   "recipe": "interior82:luxbell:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "luxbell_dining_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_dining_x72_2f.jpg",
+   "tris": 38140,
+   "calls": 74,
+   "recipe": "interior82:luxbell:tavern",
+   "err": null,
+   "pos": [
+    8,
+    1
+   ]
+  },
+  {
+   "id": "luxbell_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_inn.jpg",
+   "tris": 65550,
+   "calls": 102,
+   "recipe": "interior82:luxbell:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "luxbell_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_inn_x72_2f.jpg",
+   "tris": 33004,
+   "calls": 62,
+   "recipe": "interior82:luxbell:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "luxbell_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_item.jpg",
+   "tris": 95466,
+   "calls": 82,
+   "recipe": "interior82:luxbell:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "luxbell_labs",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_labs.jpg",
+   "tris": 129996,
+   "calls": 87,
+   "recipe": "interior82:luxbell:guild",
+   "err": null,
+   "pos": [
+    9,
+    8
+   ]
+  },
+  {
+   "id": "luxbell_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_x72_ex0.jpg",
+   "tris": 60888,
+   "calls": 116,
+   "recipe": "interior82:luxbell:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "luxbell_x72_ex0_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_x72_ex0_2f.jpg",
+   "tris": 36420,
+   "calls": 86,
+   "recipe": "interior82:luxbell:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "luxbell_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_x72_hall.jpg",
+   "tris": 61566,
+   "calls": 81,
+   "recipe": "interior82:luxbell:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "luxbell_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_x72_house.jpg",
+   "tris": 52250,
+   "calls": 97,
+   "recipe": "interior82:luxbell:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "luxbell_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_x72_house_2f.jpg",
+   "tris": 36824,
+   "calls": 96,
+   "recipe": "interior82:luxbell:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "luxbell_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_x72_tower.jpg",
+   "tris": 56376,
+   "calls": 88,
+   "recipe": "interior82:luxbell:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "luxbell_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_x72_tower_2f.jpg",
+   "tris": 34358,
+   "calls": 69,
+   "recipe": "interior82:luxbell:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "luxbell_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell_x72_tower_3f.jpg",
+   "tris": 47630,
+   "calls": 75,
+   "recipe": "interior82:luxbell:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "magicka_academy",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_academy.jpg",
+   "tris": 136262,
+   "calls": 93,
+   "recipe": "interior82:magicka_city:guild",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "magicka_armor",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_armor.jpg",
+   "tris": 66070,
+   "calls": 68,
+   "recipe": "interior82:magicka_city:armor",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "magicka_church",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_church.jpg",
+   "tris": 52366,
+   "calls": 80,
+   "recipe": "interior82:magicka_city:church",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "magicka_city_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_city_x72_ex0.jpg",
+   "tris": 65800,
+   "calls": 129,
+   "recipe": "interior82:magicka_city:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "magicka_city_x72_ex0_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_city_x72_ex0_2f.jpg",
+   "tris": 40528,
+   "calls": 86,
+   "recipe": "interior82:magicka_city:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "magicka_city_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_city_x72_hall.jpg",
+   "tris": 86586,
+   "calls": 76,
+   "recipe": "interior82:magicka_city:library",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "magicka_city_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_city_x72_house.jpg",
+   "tris": 72414,
+   "calls": 111,
+   "recipe": "interior82:magicka_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "magicka_city_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_city_x72_house_2f.jpg",
+   "tris": 41100,
+   "calls": 96,
+   "recipe": "interior82:magicka_city:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "magicka_city_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_city_x72_tower.jpg",
+   "tris": 64292,
+   "calls": 97,
+   "recipe": "interior82:magicka_city:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "magicka_city_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_city_x72_tower_2f.jpg",
+   "tris": 37350,
+   "calls": 82,
+   "recipe": "interior82:magicka_city:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "magicka_city_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_city_x72_tower_3f.jpg",
+   "tris": 50622,
+   "calls": 88,
+   "recipe": "interior82:magicka_city:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "magicka_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_inn.jpg",
+   "tris": 71770,
+   "calls": 121,
+   "recipe": "interior82:magicka_city:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "magicka_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_inn_x72_2f.jpg",
+   "tris": 34740,
+   "calls": 74,
+   "recipe": "interior82:magicka_city:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "magicka_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_item.jpg",
+   "tris": 110230,
+   "calls": 86,
+   "recipe": "interior82:magicka_city:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "magicka_palace",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_palace.jpg",
+   "tris": 169228,
+   "calls": 168,
+   "recipe": "interior82:magicka_palace_approach:castle",
+   "err": null,
+   "pos": [
+    11,
+    18
+   ]
+  },
+  {
+   "id": "magicka_palace_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_palace_2f.jpg",
+   "tris": 181516,
+   "calls": 120,
+   "recipe": "interior82:magicka_palace_approach:castle",
+   "err": null,
+   "pos": [
+    2,
+    1
+   ]
+  },
+  {
+   "id": "magicka_palace_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_palace_3f.jpg",
+   "tris": 63192,
+   "calls": 108,
+   "recipe": "interior82:magicka_palace_approach:castle",
+   "err": null,
+   "pos": [
+    7,
+    10
+   ]
+  },
+  {
+   "id": "magicka_palace_approach",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_palace_approach.jpg",
+   "tris": 212136,
+   "calls": 141,
+   "recipe": "castle82:magicka",
+   "err": null,
+   "pos": [
+    28,
+    43
+   ]
+  },
+  {
+   "id": "magicka_palace_b1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_palace_b1.jpg",
+   "tris": 86584,
+   "calls": 88,
+   "recipe": "interior82:magicka_palace_approach:castle",
+   "err": null,
+   "pos": [
+    18,
+    1
+   ]
+  },
+  {
+   "id": "magicka_tavern",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_tavern.jpg",
+   "tris": 93268,
+   "calls": 122,
+   "recipe": "interior82:magicka_city:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "magicka_tavern_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_tavern_x72_2f.jpg",
+   "tris": 37060,
+   "calls": 71,
+   "recipe": "interior82:magicka_city:tavern",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "magicka_weapon",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_weapon.jpg",
+   "tris": 60710,
+   "calls": 81,
+   "recipe": "interior82:magicka_city:weapon",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "memory_market",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_memory_market.jpg",
+   "tris": 76138,
+   "calls": 97,
+   "recipe": "interior82:frost_town:guild",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "memory_vault",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_memory_vault.jpg",
+   "tris": 46794,
+   "calls": 75,
+   "recipe": "room_kit.v1:rock",
+   "err": null,
+   "pos": [
+    10,
+    14
+   ]
+  },
+  {
+   "id": "meridian_gear",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_meridian_gear.jpg",
+   "tris": 54514,
+   "calls": 58,
+   "recipe": "interior82:meridian_shelter:armor",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "meridian_hq",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_meridian_hq.jpg",
+   "tris": 47694,
+   "calls": 56,
+   "recipe": "interior82:meridian_shelter:guild",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "meridian_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_meridian_inn.jpg",
+   "tris": 59120,
+   "calls": 71,
+   "recipe": "interior82:meridian_shelter:inn",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "meridian_shop",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_meridian_shop.jpg",
+   "tris": 54702,
+   "calls": 76,
+   "recipe": "interior82:meridian_shelter:item",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "meridian_tent",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_meridian_tent.jpg",
+   "tris": 45614,
+   "calls": 66,
+   "recipe": "interior82:meridian_shelter:house",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "mirror_market_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_mirror_market_x72_house.jpg",
+   "tris": 51918,
+   "calls": 98,
+   "recipe": "interior82:mirror_market:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "mirror_market_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_mirror_market_x72_house_2f.jpg",
+   "tris": 32696,
+   "calls": 90,
+   "recipe": "interior82:mirror_market:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "mirror_market_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_mirror_market_x72_tower.jpg",
+   "tris": 50696,
+   "calls": 80,
+   "recipe": "interior82:mirror_market:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "mirror_market_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_mirror_market_x72_tower_2f.jpg",
+   "tris": 32110,
+   "calls": 67,
+   "recipe": "interior82:mirror_market:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "mirror_market_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_mirror_market_x72_tower_3f.jpg",
+   "tris": 45214,
+   "calls": 75,
+   "recipe": "interior82:mirror_market:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "neon_gear",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_neon_gear.jpg",
+   "tris": 57682,
+   "calls": 60,
+   "recipe": "interior82:neon_town:armor",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "neon_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_neon_house.jpg",
+   "tris": 46610,
+   "calls": 84,
+   "recipe": "interior82:neon_town:house",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "neon_house2",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_neon_house2.jpg",
+   "tris": 44222,
+   "calls": 72,
+   "recipe": "interior82:neon_town:house",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "neon_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_neon_inn.jpg",
+   "tris": 58612,
+   "calls": 67,
+   "recipe": "interior82:neon_town:inn",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "neon_office",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_neon_office.jpg",
+   "tris": 59264,
+   "calls": 63,
+   "recipe": "interior82:neon_town:guild",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "neon_shop",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_neon_shop.jpg",
+   "tris": 56258,
+   "calls": 72,
+   "recipe": "interior82:neon_town:item",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "nereia_archive",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_nereia_archive.jpg",
+   "tris": 39028,
+   "calls": 89,
+   "recipe": "interior82:nereia_old_hi:house",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "nereia_gear",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_nereia_gear.jpg",
+   "tris": 58246,
+   "calls": 77,
+   "recipe": "interior82:nereia_city:armor",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "nereia_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_nereia_hall.jpg",
+   "tris": 43668,
+   "calls": 68,
+   "recipe": "interior82:nereia_city:guild",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "nereia_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_nereia_inn.jpg",
+   "tris": 64912,
+   "calls": 114,
+   "recipe": "interior82:nereia_city:inn",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "nereia_shop",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_nereia_shop.jpg",
+   "tris": 64610,
+   "calls": 79,
+   "recipe": "interior82:nereia_city:item",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "no_failure_school",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_no_failure_school.jpg",
+   "tris": 90198,
+   "calls": 107,
+   "recipe": "interior82:node_city:academy",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "node_armor",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_armor.jpg",
+   "tris": 67202,
+   "calls": 61,
+   "recipe": "interior82:node_city:armor",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "node_city_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_city_x72_ex0.jpg",
+   "tris": 49524,
+   "calls": 71,
+   "recipe": "interior82:node_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "node_city_x72_ex1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_city_x72_ex1.jpg",
+   "tris": 53894,
+   "calls": 98,
+   "recipe": "interior82:node_city:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "node_city_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_city_x72_hall.jpg",
+   "tris": 47218,
+   "calls": 61,
+   "recipe": "interior82:node_city:dojo",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "node_city_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_city_x72_house.jpg",
+   "tris": 49686,
+   "calls": 79,
+   "recipe": "interior82:node_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "node_city_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_city_x72_house_2f.jpg",
+   "tris": 32020,
+   "calls": 74,
+   "recipe": "interior82:node_city:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "node_city_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_city_x72_tower.jpg",
+   "tris": 51408,
+   "calls": 80,
+   "recipe": "interior82:node_city:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "node_city_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_city_x72_tower_2f.jpg",
+   "tris": 32094,
+   "calls": 61,
+   "recipe": "interior82:node_city:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "node_city_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_city_x72_tower_3f.jpg",
+   "tris": 45350,
+   "calls": 67,
+   "recipe": "interior82:node_city:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "node_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_house.jpg",
+   "tris": 47046,
+   "calls": 85,
+   "recipe": "interior82:node_city:house",
+   "err": null,
+   "pos": [
+    5,
+    8
+   ]
+  },
+  {
+   "id": "node_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_inn.jpg",
+   "tris": 62146,
+   "calls": 83,
+   "recipe": "interior82:node_city:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "node_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_inn_x72_2f.jpg",
+   "tris": 30744,
+   "calls": 56,
+   "recipe": "interior82:node_city:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "node_market",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_market.jpg",
+   "tris": 59518,
+   "calls": 81,
+   "recipe": "interior82:node_city:tavern",
+   "err": null,
+   "pos": [
+    7,
+    8
+   ]
+  },
+  {
+   "id": "node_market_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_market_x72_2f.jpg",
+   "tris": 32836,
+   "calls": 58,
+   "recipe": "interior82:node_city:tavern",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "node_ration",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_ration.jpg",
+   "tris": 66618,
+   "calls": 86,
+   "recipe": "interior82:node_city:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "node_registry",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_registry.jpg",
+   "tris": 59390,
+   "calls": 63,
+   "recipe": "interior82:node_city:guild",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "oracle_core_1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_oracle_core_1.jpg",
+   "tris": 47208,
+   "calls": 76,
+   "recipe": "room_kit.v1:panel",
+   "err": null,
+   "pos": [
+    9,
+    12
+   ]
+  },
+  {
+   "id": "poyo_barn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_barn.jpg",
+   "tris": 44410,
+   "calls": 82,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "poyo_barn_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_barn_2f.jpg",
+   "tris": 43380,
+   "calls": 69,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "poyo_church",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_church.jpg",
+   "tris": 72336,
+   "calls": 93,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "poyo_church_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_church_2f.jpg",
+   "tris": 32386,
+   "calls": 104,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "poyo_church_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_church_3f.jpg",
+   "tris": 29086,
+   "calls": 40,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "poyo_dojo",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_dojo.jpg",
+   "tris": 73700,
+   "calls": 101,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "poyo_elder_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_elder_house.jpg",
+   "tris": 56500,
+   "calls": 174,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "poyo_elder_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_elder_house_2f.jpg",
+   "tris": 36506,
+   "calls": 95,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "poyo_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_hall.jpg",
+   "tris": 70832,
+   "calls": 104,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "poyo_hall_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_hall_2f.jpg",
+   "tris": 42578,
+   "calls": 76,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "poyo_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_house.jpg",
+   "tris": 53064,
+   "calls": 163,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "poyo_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_inn.jpg",
+   "tris": 63032,
+   "calls": 83,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "poyo_inn_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_inn_2f.jpg",
+   "tris": 57268,
+   "calls": 91,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "poyo_item_shop",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_item_shop.jpg",
+   "tris": 69224,
+   "calls": 100,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "poyo_mill",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_mill.jpg",
+   "tris": 45544,
+   "calls": 71,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "poyo_watch",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_watch.jpg",
+   "tris": 47818,
+   "calls": 94,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "poyo_watch_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_watch_2f.jpg",
+   "tris": 38042,
+   "calls": 82,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "poyo_watch_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_watch_3f.jpg",
+   "tris": 44712,
+   "calls": 61,
+   "recipe": "poyo_interior.v1",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "rivel_armor_shop",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_armor_shop.jpg",
+   "tris": 65294,
+   "calls": 61,
+   "recipe": "interior82:rivel_town:armor",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_artisan_herbal",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_herbal.jpg",
+   "tris": 52808,
+   "calls": 92,
+   "recipe": "interior82:rivel_artisan:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "rivel_artisan_smith",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_smith.jpg",
+   "tris": 48534,
+   "calls": 93,
+   "recipe": "interior82:rivel_artisan:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "rivel_artisan_smith_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_smith_x72_2f.jpg",
+   "tris": 32852,
+   "calls": 68,
+   "recipe": "interior82:rivel_artisan:house",
+   "err": null,
+   "pos": [
+    5,
+    1
+   ]
+  },
+  {
+   "id": "rivel_artisan_weaver",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_weaver.jpg",
+   "tris": 62288,
+   "calls": 103,
+   "recipe": "interior82:rivel_artisan:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "rivel_artisan_weaver_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_weaver_x72_2f.jpg",
+   "tris": 34272,
+   "calls": 68,
+   "recipe": "interior82:rivel_artisan:house",
+   "err": null,
+   "pos": [
+    8,
+    2
+   ]
+  },
+  {
+   "id": "rivel_artisan_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_x72_ex0.jpg",
+   "tris": 51948,
+   "calls": 92,
+   "recipe": "interior82:rivel_artisan:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_artisan_x72_ex0_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_x72_ex0_2f.jpg",
+   "tris": 32316,
+   "calls": 66,
+   "recipe": "interior82:rivel_artisan:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "rivel_artisan_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_x72_hall.jpg",
+   "tris": 66826,
+   "calls": 61,
+   "recipe": "interior82:rivel_artisan:guild",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_artisan_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_x72_house.jpg",
+   "tris": 48946,
+   "calls": 87,
+   "recipe": "interior82:rivel_artisan:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "rivel_artisan_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_x72_house_2f.jpg",
+   "tris": 32884,
+   "calls": 80,
+   "recipe": "interior82:rivel_artisan:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "rivel_artisan_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_x72_tower.jpg",
+   "tris": 53812,
+   "calls": 74,
+   "recipe": "interior82:rivel_artisan:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_artisan_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_x72_tower_2f.jpg",
+   "tris": 32974,
+   "calls": 61,
+   "recipe": "interior82:rivel_artisan:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "rivel_artisan_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan_x72_tower_3f.jpg",
+   "tris": 46230,
+   "calls": 67,
+   "recipe": "interior82:rivel_artisan:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "rivel_bank",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_bank.jpg",
+   "tris": 63190,
+   "calls": 77,
+   "recipe": "interior82:rivel_town:bank",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_castle",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_castle.jpg",
+   "tris": 249934,
+   "calls": 254,
+   "recipe": "rivel_castle.v1|i82",
+   "err": null,
+   "pos": [
+    16,
+    30
+   ]
+  },
+  {
+   "id": "rivel_castle_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_castle_2f.jpg",
+   "tris": 170128,
+   "calls": 130,
+   "recipe": "interior82:rivel_castle_approach:castle",
+   "err": null,
+   "pos": [
+    2,
+    9
+   ]
+  },
+  {
+   "id": "rivel_castle_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_castle_3f.jpg",
+   "tris": 114444,
+   "calls": 141,
+   "recipe": "interior82:rivel_castle_approach:castle",
+   "err": null,
+   "pos": [
+    14,
+    13
+   ]
+  },
+  {
+   "id": "rivel_castle_4f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_castle_4f.jpg",
+   "tris": 56510,
+   "calls": 99,
+   "recipe": "interior82:rivel_castle_approach:castle",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "rivel_castle_approach",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_castle_approach.jpg",
+   "tris": 209518,
+   "calls": 136,
+   "recipe": "castle82:rivel",
+   "err": null,
+   "pos": [
+    32,
+    47
+   ]
+  },
+  {
+   "id": "rivel_castle_b1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_castle_b1.jpg",
+   "tris": 115614,
+   "calls": 107,
+   "recipe": "interior82:rivel_castle_approach:castle",
+   "err": null,
+   "pos": [
+    27,
+    1
+   ]
+  },
+  {
+   "id": "rivel_castle_library",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_castle_library.jpg",
+   "tris": 67026,
+   "calls": 83,
+   "recipe": "interior82:rivel_castle_approach:castle",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "rivel_church",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_church.jpg",
+   "tris": 50926,
+   "calls": 86,
+   "recipe": "interior82:rivel_town:church",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_guild",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_guild.jpg",
+   "tris": 85064,
+   "calls": 82,
+   "recipe": "interior82:rivel_town:guild",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_inn.jpg",
+   "tris": 68146,
+   "calls": 121,
+   "recipe": "interior82:rivel_town:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_inn_x72_2f.jpg",
+   "tris": 34848,
+   "calls": 78,
+   "recipe": "interior82:rivel_town:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "rivel_item_shop",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_item_shop.jpg",
+   "tris": 84814,
+   "calls": 87,
+   "recipe": "interior82:rivel_town:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_tavern",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_tavern.jpg",
+   "tris": 96032,
+   "calls": 118,
+   "recipe": "interior82:rivel_town:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_tavern_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_tavern_x72_2f.jpg",
+   "tris": 38248,
+   "calls": 72,
+   "recipe": "interior82:rivel_town:tavern",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "rivel_town_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_ex0.jpg",
+   "tris": 59170,
+   "calls": 125,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_town_x72_ex1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_ex1.jpg",
+   "tris": 60188,
+   "calls": 114,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_town_x72_ex1_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_ex1_2f.jpg",
+   "tris": 38676,
+   "calls": 90,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "rivel_town_x72_ex2",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_ex2.jpg",
+   "tris": 71252,
+   "calls": 114,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_town_x72_ex3",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_ex3.jpg",
+   "tris": 60108,
+   "calls": 126,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_town_x72_ex3_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_ex3_2f.jpg",
+   "tris": 38836,
+   "calls": 94,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "rivel_town_x72_ex4",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_ex4.jpg",
+   "tris": 58124,
+   "calls": 120,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_town_x72_ex4_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_ex4_2f.jpg",
+   "tris": 38836,
+   "calls": 94,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "rivel_town_x72_ex5",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_ex5.jpg",
+   "tris": 56236,
+   "calls": 102,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "rivel_town_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_hall.jpg",
+   "tris": 82986,
+   "calls": 73,
+   "recipe": "interior82:rivel_town:guild",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_town_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_house.jpg",
+   "tris": 55086,
+   "calls": 106,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "rivel_town_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_house_2f.jpg",
+   "tris": 39240,
+   "calls": 104,
+   "recipe": "interior82:rivel_town:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "rivel_town_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_tower.jpg",
+   "tris": 60920,
+   "calls": 96,
+   "recipe": "interior82:rivel_town:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_town_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_tower_2f.jpg",
+   "tris": 37338,
+   "calls": 77,
+   "recipe": "interior82:rivel_town:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "rivel_town_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town_x72_tower_3f.jpg",
+   "tris": 50610,
+   "calls": 85,
+   "recipe": "interior82:rivel_town:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "rivel_wave_temple",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_wave_temple.jpg",
+   "tris": 92592,
+   "calls": 109,
+   "recipe": "interior82:rivel_town:church",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "rivel_weapon_shop",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_weapon_shop.jpg",
+   "tris": 59438,
+   "calls": 72,
+   "recipe": "interior82:rivel_town:weapon",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "ruins_post",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ruins_post.jpg",
+   "tris": 41536,
+   "calls": 60,
+   "recipe": "interior82:aruna_ruins:post",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "ruins_post_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ruins_post_x72_2f.jpg",
+   "tris": 33704,
+   "calls": 52,
+   "recipe": "interior82:aruna_ruins:post",
+   "err": null,
+   "pos": [
+    6,
+    1
+   ]
+  },
+  {
+   "id": "ruins_store",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ruins_store.jpg",
+   "tris": 32120,
+   "calls": 60,
+   "recipe": "interior82:aruna_ruins:store",
+   "err": null,
+   "pos": [
+    5,
+    7
+   ]
+  },
+  {
+   "id": "ruins_store_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ruins_store_x72_2f.jpg",
+   "tris": 32936,
+   "calls": 60,
+   "recipe": "interior82:aruna_ruins:store",
+   "err": null,
+   "pos": [
+    6,
+    1
+   ]
+  },
+  {
+   "id": "sahar_armor",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_armor.jpg",
+   "tris": 66398,
+   "calls": 80,
+   "recipe": "interior82:sahar_city:armor",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sahar_church",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_church.jpg",
+   "tris": 51990,
+   "calls": 80,
+   "recipe": "interior82:sahar_city:church",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sahar_city_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_city_x72_ex0.jpg",
+   "tris": 56780,
+   "calls": 109,
+   "recipe": "interior82:sahar_city:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sahar_city_x72_ex0_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_city_x72_ex0_2f.jpg",
+   "tris": 35204,
+   "calls": 85,
+   "recipe": "interior82:sahar_city:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "sahar_city_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_city_x72_hall.jpg",
+   "tris": 61270,
+   "calls": 86,
+   "recipe": "interior82:sahar_city:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sahar_city_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_city_x72_house.jpg",
+   "tris": 55190,
+   "calls": 97,
+   "recipe": "interior82:sahar_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "sahar_city_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_city_x72_house_2f.jpg",
+   "tris": 35856,
+   "calls": 99,
+   "recipe": "interior82:sahar_city:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "sahar_city_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_city_x72_tower.jpg",
+   "tris": 53412,
+   "calls": 93,
+   "recipe": "interior82:sahar_city:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sahar_city_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_city_x72_tower_2f.jpg",
+   "tris": 34822,
+   "calls": 78,
+   "recipe": "interior82:sahar_city:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "sahar_city_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_city_x72_tower_3f.jpg",
+   "tris": 47926,
+   "calls": 84,
+   "recipe": "interior82:sahar_city:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "sahar_guild",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_guild.jpg",
+   "tris": 75668,
+   "calls": 89,
+   "recipe": "interior82:sahar_city:guild",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sahar_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_inn.jpg",
+   "tris": 80310,
+   "calls": 116,
+   "recipe": "interior82:sahar_city:inn",
+   "err": null,
+   "pos": [
+    10,
+    13
+   ]
+  },
+  {
+   "id": "sahar_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_inn_x72_2f.jpg",
+   "tris": 33688,
+   "calls": 71,
+   "recipe": "interior82:sahar_city:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "sahar_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_item.jpg",
+   "tris": 71258,
+   "calls": 100,
+   "recipe": "interior82:sahar_city:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sahar_water_office",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_water_office.jpg",
+   "tris": 55130,
+   "calls": 112,
+   "recipe": "interior82:sahar_city:elder",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sahar_weapon",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_weapon.jpg",
+   "tris": 60146,
+   "calls": 92,
+   "recipe": "interior82:sahar_city:weapon",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "scheduled_district_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_scheduled_district_x72_hall.jpg",
+   "tris": 47518,
+   "calls": 64,
+   "recipe": "interior82:scheduled_district:dojo",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "scheduled_district_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_scheduled_district_x72_house.jpg",
+   "tris": 49090,
+   "calls": 81,
+   "recipe": "interior82:scheduled_district:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "scheduled_district_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_scheduled_district_x72_house_2f.jpg",
+   "tris": 32444,
+   "calls": 79,
+   "recipe": "interior82:scheduled_district:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "scheduled_district_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_scheduled_district_x72_tower.jpg",
+   "tris": 52736,
+   "calls": 82,
+   "recipe": "interior82:scheduled_district:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "scheduled_district_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_scheduled_district_x72_tower_2f.jpg",
+   "tris": 32710,
+   "calls": 61,
+   "recipe": "interior82:scheduled_district:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "scheduled_district_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_scheduled_district_x72_tower_3f.jpg",
+   "tris": 45934,
+   "calls": 67,
+   "recipe": "interior82:scheduled_district:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "school_roof",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_school_roof.jpg",
+   "tris": 73866,
+   "calls": 63,
+   "recipe": "interior82:node_city:academy",
+   "err": null,
+   "pos": [
+    5,
+    6
+   ]
+  },
+  {
+   "id": "sentra_armor",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_armor.jpg",
+   "tris": 66294,
+   "calls": 66,
+   "recipe": "interior82:sentra_capital:armor",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_ex0.jpg",
+   "tris": 59352,
+   "calls": 103,
+   "recipe": "interior82:sentra_capital:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_ex0_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_ex0_2f.jpg",
+   "tris": 40212,
+   "calls": 85,
+   "recipe": "interior82:sentra_capital:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_ex1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_ex1.jpg",
+   "tris": 57282,
+   "calls": 92,
+   "recipe": "interior82:sentra_capital:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_ex2",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_ex2.jpg",
+   "tris": 65392,
+   "calls": 119,
+   "recipe": "interior82:sentra_capital:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_ex2_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_ex2_2f.jpg",
+   "tris": 40372,
+   "calls": 89,
+   "recipe": "interior82:sentra_capital:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_hall.jpg",
+   "tris": 64262,
+   "calls": 70,
+   "recipe": "interior82:sentra_capital:bank",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_house.jpg",
+   "tris": 57526,
+   "calls": 104,
+   "recipe": "interior82:sentra_capital:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_house_2f.jpg",
+   "tris": 40776,
+   "calls": 99,
+   "recipe": "interior82:sentra_capital:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_tower.jpg",
+   "tris": 59020,
+   "calls": 89,
+   "recipe": "interior82:sentra_capital:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_tower_2f.jpg",
+   "tris": 36746,
+   "calls": 68,
+   "recipe": "interior82:sentra_capital:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "sentra_capital_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital_x72_tower_3f.jpg",
+   "tris": 50018,
+   "calls": 74,
+   "recipe": "interior82:sentra_capital:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "sentra_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_inn.jpg",
+   "tris": 68386,
+   "calls": 105,
+   "recipe": "interior82:sentra_capital:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_inn_x72_2f.jpg",
+   "tris": 36356,
+   "calls": 65,
+   "recipe": "interior82:sentra_capital:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "sentra_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_item.jpg",
+   "tris": 98290,
+   "calls": 84,
+   "recipe": "interior82:sentra_capital:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_knights",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_knights.jpg",
+   "tris": 97098,
+   "calls": 93,
+   "recipe": "interior82:sentra_capital:guild",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_office",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_office.jpg",
+   "tris": 62926,
+   "calls": 116,
+   "recipe": "interior82:sentra_capital:elder",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_palace_1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_palace_1.jpg",
+   "tris": 64470,
+   "calls": 79,
+   "recipe": "interior82:sentra_palace_approach:castle",
+   "err": null,
+   "pos": [
+    11,
+    12
+   ]
+  },
+  {
+   "id": "sentra_palace_approach",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_palace_approach.jpg",
+   "tris": 389489,
+   "calls": 134,
+   "recipe": "castle82:sentra",
+   "err": null,
+   "pos": [
+    30,
+    45
+   ]
+  },
+  {
+   "id": "sentra_palace_vault",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_palace_vault.jpg",
+   "tris": 67740,
+   "calls": 64,
+   "recipe": "interior82:sentra_palace_approach:castle",
+   "err": null,
+   "pos": [
+    17,
+    1
+   ]
+  },
+  {
+   "id": "sentra_palace_west",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_palace_west.jpg",
+   "tris": 115958,
+   "calls": 134,
+   "recipe": "interior82:sentra_palace_approach:castle",
+   "err": null,
+   "pos": [
+    23,
+    1
+   ]
+  },
+  {
+   "id": "sentra_palace_west_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_palace_west_3f.jpg",
+   "tris": 75962,
+   "calls": 76,
+   "recipe": "interior82:sentra_palace_approach:castle",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "sentra_tavern",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_tavern.jpg",
+   "tris": 86852,
+   "calls": 109,
+   "recipe": "interior82:sentra_capital:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "sentra_tavern_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_tavern_x72_2f.jpg",
+   "tris": 38832,
+   "calls": 63,
+   "recipe": "interior82:sentra_capital:tavern",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "star_camp_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_star_camp_x72_house.jpg",
+   "tris": 50990,
+   "calls": 82,
+   "recipe": "interior82:star_camp:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "star_camp_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_star_camp_x72_house_2f.jpg",
+   "tris": 32136,
+   "calls": 73,
+   "recipe": "interior82:star_camp:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "star_camp_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_star_camp_x72_tower.jpg",
+   "tris": 52496,
+   "calls": 67,
+   "recipe": "interior82:star_camp:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "star_camp_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_star_camp_x72_tower_2f.jpg",
+   "tris": 32566,
+   "calls": 62,
+   "recipe": "interior82:star_camp:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "star_camp_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_star_camp_x72_tower_3f.jpg",
+   "tris": 45790,
+   "calls": 68,
+   "recipe": "interior82:star_camp:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "tempus_armor",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_armor.jpg",
+   "tris": 66814,
+   "calls": 72,
+   "recipe": "interior82:tempus_city:armor",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tempus_bell",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_bell.jpg",
+   "tris": 63448,
+   "calls": 150,
+   "recipe": "room_kit.v1:ashlar",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tempus_church",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_church.jpg",
+   "tris": 51490,
+   "calls": 76,
+   "recipe": "interior82:tempus_city:church",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tempus_city_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_city_x72_ex0.jpg",
+   "tris": 60208,
+   "calls": 96,
+   "recipe": "interior82:tempus_city:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tempus_city_x72_ex0_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_city_x72_ex0_2f.jpg",
+   "tris": 40032,
+   "calls": 78,
+   "recipe": "interior82:tempus_city:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "tempus_city_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_city_x72_hall.jpg",
+   "tris": 55674,
+   "calls": 78,
+   "recipe": "interior82:tempus_city:dojo",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tempus_city_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_city_x72_house.jpg",
+   "tris": 57770,
+   "calls": 92,
+   "recipe": "interior82:tempus_city:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "tempus_city_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_city_x72_house_2f.jpg",
+   "tris": 40440,
+   "calls": 88,
+   "recipe": "interior82:tempus_city:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "tempus_city_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_city_x72_tower.jpg",
+   "tris": 64824,
+   "calls": 112,
+   "recipe": "interior82:tempus_city:clock",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tempus_city_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_city_x72_tower_2f.jpg",
+   "tris": 44574,
+   "calls": 91,
+   "recipe": "interior82:tempus_city:clock",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "tempus_city_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_city_x72_tower_3f.jpg",
+   "tris": 54078,
+   "calls": 99,
+   "recipe": "interior82:tempus_city:clock",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "tempus_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_inn.jpg",
+   "tris": 69966,
+   "calls": 106,
+   "recipe": "interior82:tempus_city:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tempus_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_inn_x72_2f.jpg",
+   "tris": 34428,
+   "calls": 66,
+   "recipe": "interior82:tempus_city:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "tempus_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_item.jpg",
+   "tris": 103918,
+   "calls": 76,
+   "recipe": "interior82:tempus_city:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tempus_weapon",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_weapon.jpg",
+   "tris": 60790,
+   "calls": 70,
+   "recipe": "interior82:tempus_city:weapon",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "time_bank",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_time_bank.jpg",
+   "tris": 75184,
+   "calls": 87,
+   "recipe": "interior82:tempus_city:bank",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_arena",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_arena.jpg",
+   "tris": 119752,
+   "calls": 107,
+   "recipe": "interior82:tradia:arena",
+   "err": null,
+   "pos": [
+    11,
+    12
+   ]
+  },
+  {
+   "id": "tradia_armor",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_armor.jpg",
+   "tris": 65390,
+   "calls": 64,
+   "recipe": "interior82:tradia:armor",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_bank",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_bank.jpg",
+   "tris": 80012,
+   "calls": 88,
+   "recipe": "interior82:tradia:bank",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_exchange",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_exchange.jpg",
+   "tris": 126372,
+   "calls": 104,
+   "recipe": "interior82:tradia:exchange",
+   "err": null,
+   "pos": [
+    12,
+    10
+   ]
+  },
+  {
+   "id": "tradia_foundation",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_foundation.jpg",
+   "tris": 125210,
+   "calls": 119,
+   "recipe": "interior82:tradia:academy",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_guild",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_guild.jpg",
+   "tris": 118828,
+   "calls": 98,
+   "recipe": "interior82:tradia:guild",
+   "err": null,
+   "pos": [
+    8,
+    8
+   ]
+  },
+  {
+   "id": "tradia_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_house.jpg",
+   "tris": 51904,
+   "calls": 81,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "tradia_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_inn.jpg",
+   "tris": 67654,
+   "calls": 106,
+   "recipe": "interior82:tradia:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_inn_x72_2f.jpg",
+   "tris": 33488,
+   "calls": 71,
+   "recipe": "interior82:tradia:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "tradia_iq73",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_iq73.jpg",
+   "tris": 69668,
+   "calls": 100,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "tradia_item",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_item.jpg",
+   "tris": 85230,
+   "calls": 92,
+   "recipe": "interior82:tradia:item",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_lab",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_lab.jpg",
+   "tris": 126492,
+   "calls": 93,
+   "recipe": "interior82:tradia:study",
+   "err": null,
+   "pos": [
+    9,
+    8
+   ]
+  },
+  {
+   "id": "tradia_levex",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_levex.jpg",
+   "tris": 101842,
+   "calls": 85,
+   "recipe": "interior82:tradia:exchange",
+   "err": null,
+   "pos": [
+    10,
+    10
+   ]
+  },
+  {
+   "id": "tradia_mansion",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_mansion.jpg",
+   "tris": 88206,
+   "calls": 104,
+   "recipe": "interior82:tradia:mansion",
+   "err": null,
+   "pos": [
+    9,
+    10
+   ]
+  },
+  {
+   "id": "tradia_sky_boutique",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_sky_boutique.jpg",
+   "tris": 51566,
+   "calls": 100,
+   "recipe": "interior82:tradia_sky:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_sky_exchange",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_sky_exchange.jpg",
+   "tris": 73324,
+   "calls": 86,
+   "recipe": "interior82:tradia_sky:bank",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_sky_lounge",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_sky_lounge.jpg",
+   "tris": 65098,
+   "calls": 96,
+   "recipe": "interior82:tradia_sky:inn",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_sky_lounge_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_sky_lounge_2f.jpg",
+   "tris": 43938,
+   "calls": 78,
+   "recipe": "interior82:tradia_sky:inn",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "tradia_tavern",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_tavern.jpg",
+   "tris": 138474,
+   "calls": 126,
+   "recipe": "interior82:tradia:tavern",
+   "err": null,
+   "pos": [
+    6,
+    9
+   ]
+  },
+  {
+   "id": "tradia_tavern_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_tavern_x72_2f.jpg",
+   "tris": 37396,
+   "calls": 66,
+   "recipe": "interior82:tradia:tavern",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "tradia_weapon",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_weapon.jpg",
+   "tris": 101948,
+   "calls": 108,
+   "recipe": "interior82:tradia:weapon",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "tradia_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_ex0.jpg",
+   "tris": 56174,
+   "calls": 96,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_x72_ex1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_ex1.jpg",
+   "tris": 61404,
+   "calls": 115,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_x72_ex1_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_ex1_2f.jpg",
+   "tris": 37124,
+   "calls": 85,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "tradia_x72_ex2",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_ex2.jpg",
+   "tris": 57760,
+   "calls": 103,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_x72_ex2_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_ex2_2f.jpg",
+   "tris": 37124,
+   "calls": 85,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "tradia_x72_ex3",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_ex3.jpg",
+   "tris": 56452,
+   "calls": 87,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "tradia_x72_ex4",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_ex4.jpg",
+   "tris": 58814,
+   "calls": 108,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_hall.jpg",
+   "tris": 86554,
+   "calls": 81,
+   "recipe": "interior82:tradia:study",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_house.jpg",
+   "tris": 56434,
+   "calls": 96,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "tradia_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_house_2f.jpg",
+   "tris": 37528,
+   "calls": 95,
+   "recipe": "interior82:tradia:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "tradia_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_tower.jpg",
+   "tris": 61756,
+   "calls": 92,
+   "recipe": "interior82:tradia:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "tradia_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_tower_2f.jpg",
+   "tris": 37574,
+   "calls": 75,
+   "recipe": "interior82:tradia:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "tradia_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_x72_tower_3f.jpg",
+   "tris": 50846,
+   "calls": 81,
+   "recipe": "interior82:tradia:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "verum_dorm",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_dorm.jpg",
+   "tris": 49450,
+   "calls": 92,
+   "recipe": "interior82:verum_town:house",
+   "err": null,
+   "pos": [
+    5,
+    10
+   ]
+  },
+  {
+   "id": "verum_dorm_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_dorm_x72_2f.jpg",
+   "tris": 32036,
+   "calls": 61,
+   "recipe": "interior82:verum_town:house",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "verum_factory",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_factory.jpg",
+   "tris": 98054,
+   "calls": 102,
+   "recipe": "interior82:verum_town:store",
+   "err": null,
+   "pos": [
+    5,
+    10
+   ]
+  },
+  {
+   "id": "verum_inn",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_inn.jpg",
+   "tris": 66398,
+   "calls": 92,
+   "recipe": "interior82:verum_town:inn",
+   "err": null,
+   "pos": [
+    9,
+    10
+   ]
+  },
+  {
+   "id": "verum_inn_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_inn_x72_2f.jpg",
+   "tris": 32024,
+   "calls": 59,
+   "recipe": "interior82:verum_town:inn",
+   "err": null,
+   "pos": [
+    10,
+    1
+   ]
+  },
+  {
+   "id": "verum_overseer_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_overseer_house.jpg",
+   "tris": 55426,
+   "calls": 102,
+   "recipe": "interior82:verum_town:bank",
+   "err": null,
+   "pos": [
+    5,
+    10
+   ]
+  },
+  {
+   "id": "verum_ration",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_ration.jpg",
+   "tris": 57026,
+   "calls": 98,
+   "recipe": "interior82:verum_town:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "verum_school",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_school.jpg",
+   "tris": 70912,
+   "calls": 79,
+   "recipe": "interior82:verum_town:dojo",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "verum_town_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_town_x72_ex0.jpg",
+   "tris": 51988,
+   "calls": 93,
+   "recipe": "interior82:verum_town:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "verum_town_x72_ex0_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_town_x72_ex0_2f.jpg",
+   "tris": 33620,
+   "calls": 73,
+   "recipe": "interior82:verum_town:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "verum_town_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_town_x72_hall.jpg",
+   "tris": 71978,
+   "calls": 76,
+   "recipe": "interior82:verum_town:tavern",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "verum_town_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_town_x72_house.jpg",
+   "tris": 50606,
+   "calls": 95,
+   "recipe": "interior82:verum_town:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "verum_town_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_town_x72_house_2f.jpg",
+   "tris": 34028,
+   "calls": 83,
+   "recipe": "interior82:verum_town:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "verum_town_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_town_x72_tower.jpg",
+   "tris": 53324,
+   "calls": 75,
+   "recipe": "interior82:verum_town:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "verum_town_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_town_x72_tower_2f.jpg",
+   "tris": 33582,
+   "calls": 64,
+   "recipe": "interior82:verum_town:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "verum_town_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_town_x72_tower_3f.jpg",
+   "tris": 46838,
+   "calls": 70,
+   "recipe": "interior82:verum_town:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "vol_ancient",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_ancient.jpg",
+   "tris": 100162,
+   "calls": 114,
+   "recipe": "interior82:volatilia:study",
+   "err": null,
+   "pos": [
+    9,
+    10
+   ]
+  },
+  {
+   "id": "vol_classroom2",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_classroom2.jpg",
+   "tris": 68094,
+   "calls": 86,
+   "recipe": "interior82:volatilia:academy",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "vol_dean",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_dean.jpg",
+   "tris": 82626,
+   "calls": 99,
+   "recipe": "interior82:volatilia:academy",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "vol_dorm",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_dorm.jpg",
+   "tris": 102904,
+   "calls": 116,
+   "recipe": "interior82:volatilia:study",
+   "err": null,
+   "pos": [
+    7,
+    7
+   ]
+  },
+  {
+   "id": "vol_dorm_x72_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_dorm_x72_2f.jpg",
+   "tris": 35640,
+   "calls": 76,
+   "recipe": "interior82:volatilia:study",
+   "err": null,
+   "pos": [
+    10,
+    2
+   ]
+  },
+  {
+   "id": "vol_east_gallery",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_east_gallery.jpg",
+   "tris": 57088,
+   "calls": 73,
+   "recipe": "interior82:volatilia:academy",
+   "err": null,
+   "pos": [
+    1,
+    4
+   ]
+  },
+  {
+   "id": "vol_great_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_great_hall.jpg",
+   "tris": 110382,
+   "calls": 89,
+   "recipe": "interior82:volatilia:academy",
+   "err": null,
+   "pos": [
+    13,
+    14
+   ]
+  },
+  {
+   "id": "vol_lecture",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_lecture.jpg",
+   "tris": 90460,
+   "calls": 96,
+   "recipe": "interior82:volatilia:academy",
+   "err": null,
+   "pos": [
+    8,
+    11
+   ]
+  },
+  {
+   "id": "vol_library",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_library.jpg",
+   "tris": 133334,
+   "calls": 75,
+   "recipe": "interior82:volatilia:academy",
+   "err": null,
+   "pos": [
+    11,
+    13
+   ]
+  },
+  {
+   "id": "vol_main_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_main_hall.jpg",
+   "tris": 82522,
+   "calls": 103,
+   "recipe": "interior82:volatilia:academy",
+   "err": null,
+   "pos": [
+    14,
+    16
+   ]
+  },
+  {
+   "id": "vol_mind",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_mind.jpg",
+   "tris": 57812,
+   "calls": 93,
+   "recipe": "interior82:volatilia:guild",
+   "err": null,
+   "pos": [
+    8,
+    10
+   ]
+  },
+  {
+   "id": "vol_observatory",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_observatory.jpg",
+   "tris": 54722,
+   "calls": 81,
+   "recipe": "interior82:volatilia:academy",
+   "err": null,
+   "pos": [
+    9,
+    13
+   ]
+  },
+  {
+   "id": "vol_quantum",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_quantum.jpg",
+   "tris": 82880,
+   "calls": 89,
+   "recipe": "interior82:volatilia:guild",
+   "err": null,
+   "pos": [
+    9,
+    11
+   ]
+  },
+  {
+   "id": "vol_under_gate",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_under_gate.jpg",
+   "tris": 57370,
+   "calls": 87,
+   "recipe": "interior82:volatilia:store",
+   "err": null,
+   "pos": [
+    6,
+    7
+   ]
+  },
+  {
+   "id": "vol_upper_gallery",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_upper_gallery.jpg",
+   "tris": 64304,
+   "calls": 106,
+   "recipe": "interior82:volatilia:academy",
+   "err": null,
+   "pos": [
+    14,
+    9
+   ]
+  },
+  {
+   "id": "vol_west_gallery",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_vol_west_gallery.jpg",
+   "tris": 57872,
+   "calls": 80,
+   "recipe": "interior82:volatilia:academy",
+   "err": null,
+   "pos": [
+    30,
+    4
+   ]
+  },
+  {
+   "id": "volatilia_x72_ex0",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_volatilia_x72_ex0.jpg",
+   "tris": 54012,
+   "calls": 104,
+   "recipe": "interior82:volatilia:house",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "volatilia_x72_ex0_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_volatilia_x72_ex0_2f.jpg",
+   "tris": 36276,
+   "calls": 82,
+   "recipe": "interior82:volatilia:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "volatilia_x72_ex1",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_volatilia_x72_ex1.jpg",
+   "tris": 53258,
+   "calls": 87,
+   "recipe": "interior82:volatilia:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "volatilia_x72_hall",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_volatilia_x72_hall.jpg",
+   "tris": 75270,
+   "calls": 80,
+   "recipe": "interior82:volatilia:study",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "volatilia_x72_house",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_volatilia_x72_house.jpg",
+   "tris": 53982,
+   "calls": 98,
+   "recipe": "interior82:volatilia:house",
+   "err": null,
+   "pos": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "volatilia_x72_house_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_volatilia_x72_house_2f.jpg",
+   "tris": 35900,
+   "calls": 90,
+   "recipe": "interior82:volatilia:house",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "volatilia_x72_tower",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_volatilia_x72_tower.jpg",
+   "tris": 56236,
+   "calls": 92,
+   "recipe": "interior82:volatilia:tower",
+   "err": null,
+   "pos": [
+    7,
+    9
+   ]
+  },
+  {
+   "id": "volatilia_x72_tower_2f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_volatilia_x72_tower_2f.jpg",
+   "tris": 35538,
+   "calls": 73,
+   "recipe": "interior82:volatilia:tower",
+   "err": null,
+   "pos": [
+    9,
+    1
+   ]
+  },
+  {
+   "id": "volatilia_x72_tower_3f",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_volatilia_x72_tower_3f.jpg",
+   "tris": 48762,
+   "calls": 79,
+   "recipe": "interior82:volatilia:tower",
+   "err": null,
+   "pos": [
+    1,
+    6
+   ]
+  },
+  {
+   "id": "aruna_ruins",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_ruins.jpg",
+   "tris": 302018,
+   "calls": 310,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    29,
+    28
+   ]
+  },
+  {
+   "id": "aruna_village",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aruna_village.jpg",
+   "tris": 396006,
+   "calls": 275,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    16,
+    24
+   ]
+  },
+  {
+   "id": "asana_raid",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_asana_raid.jpg",
+   "tris": 289504,
+   "calls": 225,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    14,
+    19
+   ]
+  },
+  {
+   "id": "asana_rebuilt",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_asana_rebuilt.jpg",
+   "tris": 330088,
+   "calls": 148,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    14,
+    19
+   ]
+  },
+  {
+   "id": "asana_ruins",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_asana_ruins.jpg",
+   "tris": 209800,
+   "calls": 50,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    13,
+    19
+   ]
+  },
+  {
+   "id": "asana_village",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_asana_village.jpg",
+   "tris": 351472,
+   "calls": 162,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    14,
+    19
+   ]
+  },
+  {
+   "id": "ciel_port",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ciel_port.jpg",
+   "tris": 364526,
+   "calls": 324,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    27,
+    1
+   ]
+  },
+  {
+   "id": "dark_camp",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dark_camp.jpg",
+   "tris": 440906,
+   "calls": 286,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    24,
+    28
+   ]
+  },
+  {
+   "id": "dow_village",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_dow_village.jpg",
+   "tris": 351554,
+   "calls": 382,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    28,
+    38
+   ]
+  },
+  {
+   "id": "erased_village",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_erased_village.jpg",
+   "tris": 504636,
+   "calls": 252,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    9,
+    19
+   ]
+  },
+  {
+   "id": "frost_town",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_frost_town.jpg",
+   "tris": 390638,
+   "calls": 323,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    29,
+    34
+   ]
+  },
+  {
+   "id": "harbor_town",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_harbor_town.jpg",
+   "tris": 397630,
+   "calls": 359,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    37,
+    6
+   ]
+  },
+  {
+   "id": "ignas_town",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_ignas_town.jpg",
+   "tris": 424854,
+   "calls": 370,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    46,
+    34
+   ]
+  },
+  {
+   "id": "kalion_city",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_kalion_city.jpg",
+   "tris": 512518,
+   "calls": 365,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    31,
+    36
+   ]
+  },
+  {
+   "id": "luxbell",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_luxbell.jpg",
+   "tris": 323176,
+   "calls": 351,
+   "recipe": "town_kit.v1:casino",
+   "err": null,
+   "pos": [
+    32,
+    38
+   ]
+  },
+  {
+   "id": "magicka_city",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_magicka_city.jpg",
+   "tris": 396142,
+   "calls": 405,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    32,
+    33
+   ]
+  },
+  {
+   "id": "meridian_shelter",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_meridian_shelter.jpg",
+   "tris": 344426,
+   "calls": 181,
+   "recipe": "town_kit.v1:meridian",
+   "err": null,
+   "pos": [
+    14,
+    18
+   ]
+  },
+  {
+   "id": "mirror_market",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_mirror_market.jpg",
+   "tris": 337114,
+   "calls": 364,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    27,
+    22
+   ]
+  },
+  {
+   "id": "neon_town",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_neon_town.jpg",
+   "tris": 246674,
+   "calls": 199,
+   "recipe": "town_kit.v1:neon",
+   "err": null,
+   "pos": [
+    17,
+    17
+   ]
+  },
+  {
+   "id": "nereia_city",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_nereia_city.jpg",
+   "tris": 245888,
+   "calls": 180,
+   "recipe": "town_kit.v1:nereia",
+   "err": null,
+   "pos": [
+    15,
+    18
+   ]
+  },
+  {
+   "id": "nereia_old_hi",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_nereia_old_hi.jpg",
+   "tris": 190166,
+   "calls": 113,
+   "recipe": "town_kit.v1:nereia",
+   "err": null,
+   "pos": [
+    12,
+    14
+   ]
+  },
+  {
+   "id": "nereia_old_lo",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_nereia_old_lo.jpg",
+   "tris": 178284,
+   "calls": 80,
+   "recipe": "town_kit.v1:nereia",
+   "err": null,
+   "pos": [
+    14,
+    13
+   ]
+  },
+  {
+   "id": "node_city",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_node_city.jpg",
+   "tris": 333348,
+   "calls": 249,
+   "recipe": "node_city.v1",
+   "err": null,
+   "pos": [
+    29,
+    38
+   ]
+  },
+  {
+   "id": "poyo_village",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_poyo_village.jpg",
+   "tris": 652638,
+   "calls": 375,
+   "recipe": "poyo_village.v1",
+   "err": null,
+   "pos": [
+    24,
+    32
+   ]
+  },
+  {
+   "id": "rivel_artisan",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_artisan.jpg",
+   "tris": 555924,
+   "calls": 420,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    32,
+    29
+   ]
+  },
+  {
+   "id": "rivel_town",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_rivel_town.jpg",
+   "tris": 487378,
+   "calls": 420,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    35,
+    52
+   ]
+  },
+  {
+   "id": "sahar_city",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sahar_city.jpg",
+   "tris": 338702,
+   "calls": 357,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    29,
+    40
+   ]
+  },
+  {
+   "id": "scheduled_district",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_scheduled_district.jpg",
+   "tris": 280510,
+   "calls": 203,
+   "recipe": "scheduled_district.v1",
+   "err": null,
+   "pos": [
+    26,
+    1
+   ]
+  },
+  {
+   "id": "sentra_capital",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_sentra_capital.jpg",
+   "tris": 440600,
+   "calls": 398,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    33,
+    36
+   ]
+  },
+  {
+   "id": "star_camp",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_star_camp.jpg",
+   "tris": 402732,
+   "calls": 368,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    19,
+    14
+   ]
+  },
+  {
+   "id": "tempus_city",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tempus_city.jpg",
+   "tris": 418996,
+   "calls": 324,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    34,
+    34
+   ]
+  },
+  {
+   "id": "tradia",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia.jpg",
+   "tris": 519426,
+   "calls": 439,
+   "recipe": "tradia.v1",
+   "err": null,
+   "pos": [
+    35,
+    40
+   ],
+   "refix": "86ae17c で撮り直し（広場の帯）"
+  },
+  {
+   "id": "tradia_sky",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_tradia_sky.jpg",
+   "tris": 201632,
+   "calls": 186,
+   "recipe": "town_kit.v1:skyterrace",
+   "err": null,
+   "pos": [
+    19,
+    26
+   ]
+  },
+  {
+   "id": "verum_town",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_verum_town.jpg",
+   "tris": 472556,
+   "calls": 413,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    31,
+    35
+   ]
+  },
+  {
+   "id": "volatilia",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_volatilia.jpg",
+   "tris": 382314,
+   "calls": 392,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    29,
+    39
+   ]
+  },
+  {
+   "id": "world_magicka",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_world_magicka.jpg",
+   "tris": 178388,
+   "calls": 197,
+   "recipe": "field_kit.v1",
+   "err": null,
+   "pos": [
+    68,
+    72
+   ]
+  },
+  {
+   "id": "world_dark",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_world_dark.jpg",
+   "tris": 135314,
+   "calls": 91,
+   "recipe": "field_kit.v1",
+   "err": null,
+   "pos": [
+    68,
+    94
+   ]
+  },
+  {
+   "id": "world_grania",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_world_grania.jpg",
+   "tris": 179902,
+   "calls": 189,
+   "recipe": "field_kit.v1",
+   "err": null,
+   "pos": [
+    46,
+    30
+   ]
+  },
+  {
+   "id": "demon_castle_gate",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_demon_castle_gate.jpg",
+   "tris": 42060,
+   "calls": 65,
+   "recipe": "room_kit.v1:ashlar",
+   "err": null,
+   "pos": [
+    9,
+    13
+   ]
+  },
+  {
+   "id": "iron_fort_gate",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_iron_fort_gate.jpg",
+   "tris": 33182,
+   "calls": 84,
+   "recipe": "room_kit.v1:ashlar",
+   "err": null,
+   "pos": [
+    5,
+    8
+   ]
+  },
+  {
+   "id": "aeria_dock",
+   "file": "/home/claude/work/p3d/shots/v82/after_int/after_pc_aeria_dock.jpg",
+   "tris": 152754,
+   "calls": 90,
+   "recipe": "outdoor_kit.v1:sky",
+   "err": null,
+   "pos": [
+    9,
+    2
+   ]
+  }
+ ],
+ "refix": [
+  "tradia"
+ ]
+}

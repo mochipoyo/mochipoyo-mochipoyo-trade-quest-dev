@@ -1,0 +1,15 @@
+== route82 earth: 部屋・地図 460 確かめ 679 OK 667 NG 12
+== route82 palace_open earth: 部屋・地図 460 確かめ 679 OK 671 NG 8
+== save82 earth: 古いセーブ 31 件。結果：すべて OK
+== switch82 earth: 結果：すべて OK（42 か所）
+== layout82_reach earth: 作り直した部屋 388 確かめ 1408 （人 356） 前も今も行ける 1408 前も今も行けない 0 NG 0
+== layout82_check earth: 部屋 456 作り直し 388 対象外 68 エラー 0 load errors 0
+== route82 2d: 部屋・地図 444 確かめ 663 OK 651 NG 12
+== route82 palace_open 2d: 部屋・地図 444 確かめ 663 OK 655 NG 8
+== save82 2d: 古いセーブ 30 件。結果：すべて OK
+== switch82 2d: 結果：すべて OK（42 か所）
+== layout82_reach 2d: 作り直した部屋 372 確かめ 1371 （人 338） 前も今も行ける 1371 前も今も行けない 0 NG 0
+== layout82_check 2d: 部屋 440 作り直し 372 対象外 68 エラー 0 load errors 0
+== route82 walk: 歩く確かめ NG 0
+== theme82_diff: ちがう町どうしで差が 4 より少ない組 0
+DONE

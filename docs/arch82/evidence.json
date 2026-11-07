@@ -3,7 +3,7 @@
  "shotRoot": "/home/claude/work/p3d/shots/v82",
  "publish": "docs/arch82/shots",
  "routeLog": "docs/arch82/logs/route82_earth.log",
- "routeLogOpen": "docs/arch82/logs/route82_earth_palace_open.log",
+ "routeLogOpen": "docs/arch82/logs/route82_palace_open_earth.log",
  "saveLog": "docs/arch82/logs/save82_earth.log",
  "routePreexisting": [
   "verum_school(7,10)→verum_town：着いた所から戻るワープへ行けない（戻るワープがない）",
@@ -733,5 +733,6 @@
    "notes": "場面に置かれる（記録：aeriaInScene＝true）。ふつうの船のカメラの画像（9・18・28 マス手前）では画面の上の外で、見えなかった → visual_checked にしない"
   }
  ],
- "viewNote": "一覧画像（PC：1 室 320×207 で 36 室ずつ 14 枚、スマホ：195×254 で 55 室ずつ 2 枚）で全部を目で見た。真っ黒・壊れた形・作り方の失敗・町の作り方が出ているかを見た。細部（家具の向き・小物）までは見ていない"
+ "viewNote": "一覧画像（PC：1 室 320×207 で 36 室ずつ 14 枚、スマホ：195×254 で 55 室ずつ 2 枚）で全部を目で見た。真っ黒・壊れた形・作り方の失敗・町の作り方が出ているかを見た。細部（家具の向き・小物）までは見ていない",
+ "town81Log": "docs/arch82/logs/town81_earth.log"
 }

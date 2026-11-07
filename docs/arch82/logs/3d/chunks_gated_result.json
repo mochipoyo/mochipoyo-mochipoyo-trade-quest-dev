@@ -1,0 +1,118 @@
+{
+ "mode": "chunks",
+ "cross": [
+  {
+   "key": "ArrowUp",
+   "before": {
+    "map": "w78_0_12",
+    "px": 96,
+    "py": 363,
+    "ringWX": 96,
+    "ringWZ": 399.94,
+    "dist": 36.4,
+    "built": 1,
+    "inScene": 1,
+    "speed": 0.015,
+    "offset": 0.1188
+   },
+   "after": {
+    "map": "w78_0_12",
+    "px": 96,
+    "py": 360,
+    "ringWX": 96,
+    "ringWZ": 399.94,
+    "dist": 39.4,
+    "built": 1,
+    "inScene": 1,
+    "speed": 0.015,
+    "offset": 0.4693
+   },
+   "crossed": false
+  },
+  {
+   "key": "ArrowDown",
+   "before": {
+    "map": "w78_0_12",
+    "px": 96,
+    "py": 476,
+    "ringWX": 96,
+    "ringWZ": 399.94,
+    "dist": 76.6,
+    "built": 1,
+    "inScene": 1,
+    "speed": 0.015,
+    "offset": 0.5177
+   },
+   "after": {
+    "map": "w78_0_12",
+    "px": 96,
+    "py": 479,
+    "ringWX": 96,
+    "ringWZ": 399.94,
+    "dist": 79.6,
+    "built": 1,
+    "inScene": 1,
+    "speed": 0.015,
+    "offset": 0.8725
+   },
+   "crossed": false
+  },
+  {
+   "key": "ArrowRight",
+   "before": {
+    "map": "w78_0_12",
+    "px": 156,
+    "py": 400,
+    "ringWX": 96,
+    "ringWZ": 399.94,
+    "dist": 60.5,
+    "built": 1,
+    "inScene": 1,
+    "speed": 0.015,
+    "offset": 0.9201
+   },
+   "after": {
+    "map": "w78_0_12",
+    "px": 159,
+    "py": 400,
+    "ringWX": 96,
+    "ringWZ": 399.94,
+    "dist": 63.5,
+    "built": 1,
+    "inScene": 1,
+    "speed": 0.015,
+    "offset": 0.2724
+   },
+   "crossed": false
+  },
+  {
+   "key": "ArrowLeft",
+   "before": {
+    "map": "w78_0_12",
+    "px": 3,
+    "py": 400,
+    "ringWX": 96,
+    "ringWZ": 399.94,
+    "dist": 92.5,
+    "built": 1,
+    "inScene": 1,
+    "speed": 0.015,
+    "offset": 0.3166
+   },
+   "after": {
+    "map": "w78_0_12",
+    "px": 0,
+    "py": 400,
+    "ringWX": 96,
+    "ringWZ": 399.94,
+    "dist": 95.5,
+    "built": 1,
+    "inScene": 1,
+    "speed": 0.015,
+    "offset": 0.674
+   },
+   "crossed": false
+  }
+ ],
+ "errs": []
+}

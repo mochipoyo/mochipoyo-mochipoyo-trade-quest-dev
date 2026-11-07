@@ -1,0 +1,14 @@
+market rumor run -350
+market fundamentals run 330
+battle caravan_raider,caravan_raider,dust_djinn won 477,477,445,260
+battle caravan_raider,caravan_raider,dune_scorpion won 477,477,445,260
+battle boss_storm_chief,caravan_raider won 136,437,445,180
+battle mirage_fox,mirage_fox won 477,477,445,260
+battle mirage_fox,mirage_fox won 477,477,445,260
+battle rumor_mimic,mirage_fox won 477,477,445,260
+battle boss_mirage_lord won 484,484,452,264
+forge before 1 1 38546
+forge after undefined 1 1 35546
+battle boss_magma_wyrm won 484,484,252,0
+ERRORS: []
+EXIT 0

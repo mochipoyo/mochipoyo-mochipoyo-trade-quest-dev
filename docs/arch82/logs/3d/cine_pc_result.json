@@ -1,0 +1,77 @@
+{
+ "errs": [],
+ "res": [
+  {
+   "id": "rivel_castle_approach",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/cine_pc_rivel_castle_approach.jpg",
+   "tris": 285916,
+   "calls": 149,
+   "recipe": "castle82:rivel",
+   "err": null,
+   "pos": [
+    32,
+    47
+   ]
+  },
+  {
+   "id": "sentra_palace_approach",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/cine_pc_sentra_palace_approach.jpg",
+   "tris": 461122,
+   "calls": 141,
+   "recipe": "castle82:sentra",
+   "err": null,
+   "pos": [
+    30,
+    45
+   ]
+  },
+  {
+   "id": "magicka_palace_approach",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/cine_pc_magicka_palace_approach.jpg",
+   "tris": 291906,
+   "calls": 145,
+   "recipe": "castle82:magicka",
+   "err": null,
+   "pos": [
+    28,
+    43
+   ]
+  },
+  {
+   "id": "rivel_town",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/cine_pc_rivel_town.jpg",
+   "tris": 565376,
+   "calls": 555,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    35,
+    52
+   ]
+  },
+  {
+   "id": "sentra_capital",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/cine_pc_sentra_capital.jpg",
+   "tris": 517437,
+   "calls": 542,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    33,
+    36
+   ]
+  },
+  {
+   "id": "magicka_city",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/cine_pc_magicka_city.jpg",
+   "tris": 480058,
+   "calls": 590,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    32,
+    33
+   ]
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+ "errs": [],
+ "res": [
+  {
+   "id": "tradia",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/ticker_sp_tradia.jpg",
+   "tris": 535752,
+   "calls": 401,
+   "recipe": "tradia.v1",
+   "err": null,
+   "pos": [
+    35,
+    9
+   ]
+  },
+  {
+   "id": "tradia_exchange",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/ticker_sp_tradia_exchange.jpg",
+   "tris": 126230,
+   "calls": 99,
+   "recipe": "interior82:tradia:exchange",
+   "err": null,
+   "pos": [
+    12,
+    9
+   ]
+  }
+ ]
+}

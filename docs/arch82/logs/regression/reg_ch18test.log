@@ -1,0 +1,19 @@
+battle boss_memory_keeper won 384,477,319,143
+battle boss_frost_spirit won 354,477,319,130
+tower1 steps 29
+tower3 steps 53
+battle boss_clock_warden won 374,385,318,259
+battle boss_ash_lord won 453,454,310,256
+battle boss_gull_admiral won 484,484,324,263
+battle boss_ghost_captain won 474,396,285,264
+battle boss_old_core won 410,306,324,264
+battle ash_golem,ash_golem won 492,484,508,329
+battle federal_soldier,federal_soldier won 492,484,508,329
+ERRORS: [
+  'ord penance done',
+  'poyo stage 5 done',
+  '5 letters',
+  'letters done',
+  'memorial done'
+]
+EXIT 0

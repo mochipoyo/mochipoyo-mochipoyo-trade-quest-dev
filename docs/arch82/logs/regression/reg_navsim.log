@@ -1,0 +1,7 @@
+entries visited 14 / 168 cleared false
+FAILS 2 [
+  'main_5:verum_overseer_defeated hop on locked warp iron_mine_2',
+  'main_5:verum_overseer_defeated not reached: iron_mine_2@56,28:exit'
+]
+loadErrors []
+EXIT 1

@@ -1,0 +1,89 @@
+{
+ "errs": [],
+ "res": [
+  {
+   "id": "rivel_town",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/gate_sp_rivel_town.jpg",
+   "tris": 488760,
+   "calls": 375,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    35,
+    19
+   ]
+  },
+  {
+   "id": "sentra_capital",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/gate_sp_sentra_capital.jpg",
+   "tris": 457467,
+   "calls": 363,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    33,
+    14
+   ]
+  },
+  {
+   "id": "magicka_city",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/gate_sp_magicka_city.jpg",
+   "tris": 416218,
+   "calls": 445,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    32,
+    13
+   ]
+  },
+  {
+   "id": "rivel_castle_approach",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/gate_sp_rivel_castle_approach.jpg",
+   "tris": 178278,
+   "calls": 119,
+   "recipe": "castle82:rivel",
+   "err": null,
+   "pos": [
+    32,
+    30
+   ]
+  },
+  {
+   "id": "sentra_palace_approach",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/gate_sp_sentra_palace_approach.jpg",
+   "tris": 480321,
+   "calls": 118,
+   "recipe": "castle82:sentra",
+   "err": null,
+   "pos": [
+    30,
+    30
+   ]
+  },
+  {
+   "id": "magicka_palace_approach",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/gate_sp_magicka_palace_approach.jpg",
+   "tris": 179428,
+   "calls": 116,
+   "recipe": "castle82:magicka",
+   "err": null,
+   "pos": [
+    28,
+    30
+   ]
+  },
+  {
+   "id": "volatilia",
+   "file": "/home/claude/work/p3d/shots/v82/after_view/gate_sp_volatilia.jpg",
+   "tris": 369912,
+   "calls": 310,
+   "recipe": "town_kit.v1",
+   "err": null,
+   "pos": [
+    10,
+    29
+   ]
+  }
+ ]
+}

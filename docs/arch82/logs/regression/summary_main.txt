@@ -1,0 +1,33 @@
+== maptest: errors [] fails 0 EXIT 0
+== enemytest: ERRORS: [ EXIT 0
+== assettest: ERRORS: [ EXIT 0
+== tradeeq: ERRORS: [] loadErrors [] EXIT 0
+== tradetest: rank samples: E S ERRORS: [] EXIT 0
+== growthtest: ERRORS: [] EXIT 0
+== learntest: ERRORS: [] EXIT 0
+== playtest: ERRORS: [] EXIT 0
+== ch5test: ERRORS: [] EXIT 0
+== ch67test: ERRORS: [] EXIT 0
+== ch89test: ERRORS: [] EXIT 0
+== ch1012test: ERRORS: [] EXIT 0
+== ch1316test: ERRORS: [ EXIT 0
+== ch17test: ERRORS: [] EXIT 0
+== skill56: ERRORS: [] loadErrors [] EXIT 0
+== ch18test: ERRORS: [ EXIT 0
+== v57test: ERRORS: [] EXIT 0
+== v58test:  EXIT 0
+== v59test:  EXIT 0
+== v60test:  EXIT 0
+== p1test:  EXIT 1
+== p2test:  EXIT 0
+== ptcheck:  EXIT 0
+== potcheck:  EXIT 0
+== ftmenu:  EXIT 0
+== npctest: 結果: 12 OK / 0 NG errors [] EXIT 0
+== navtest:  EXIT 0
+== navsim:  EXIT 1
+== harbortest:  EXIT 0
+== entryaudit:  EXIT 1
+== remake81 : OK  aeria_garden_lo：人 0・出来事 2・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる  結果：すべて OK 
+== pocket81 : OK  dark_camp：行けない歩けるマス 0 結果：すべて OK 
+== route82 : 部屋・地図 460 確かめ 679 OK 667 NG 12

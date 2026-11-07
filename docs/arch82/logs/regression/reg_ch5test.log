@@ -1,0 +1,12 @@
+ship at {"owned":true,"map":"world","x":18,"y":73,"port":{"map":"world","x":18,"y":73}}
+sea dir left
+after sail 15 73 aboard sailboat ship {"owned":true,"map":"world","x":15,"y":73,"port":{"map":"world","x":18,"y":73}}
+after gameover {"owned":true,"map":"world","x":18,"y":73,"port":{"map":"world","x":18,"y":73}} aboard null map poyo_village
+reboard from 18 72 ship 18 73
+reboard result 18 73 sailboat
+captain fight undefined hp 237 flags true
+boss stats 4590 91 34 party atk 96/237 96/237 53/159 84/252
+overseer fight undefined hp 172 flag true map iron_mine_3
+quests after leader: {"main_4":{"state":"done","at":1794038883398},"main_5":{"state":"active","at":1794038884211},"verum_ledger":{"state":"active","at":1794038983860},"verum_supply":{"state":"active","at":1794038983861}} supply_order true ledger 1 errs so far []
+ERRORS: []
+EXIT 0

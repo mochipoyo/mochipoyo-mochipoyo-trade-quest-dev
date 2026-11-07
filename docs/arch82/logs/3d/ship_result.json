@@ -1,0 +1,549 @@
+{
+ "mode": "ship",
+ "start": {
+  "id": "w78_0_12",
+  "x": 96,
+  "y": 51
+ },
+ "track": [
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 49,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 9.6,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.1511,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 47,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 7.6,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.1708,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 46,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 6.1,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.1864,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 44,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 4.1,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.2068,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 42,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 2.1,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.2266,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 40,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 0.5,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.2458,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 38,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 1.5,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.2622,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 36,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 3.5,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.2828,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 35,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 5,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.2978,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 33,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 7,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.3188,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 31,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 9,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.3386,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 29,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 11,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.3579,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  },
+  {
+   "map": "w78_0_12",
+   "x": 96,
+   "y": 27,
+   "aboard": "galleon",
+   "ring": {
+    "x": 96,
+    "z": 39.94,
+    "dist": 12.4,
+    "built": 1,
+    "inScene": true,
+    "version": "2:4",
+    "speed": 0.015,
+    "plan": {
+     "K": 1,
+     "W": 3840,
+     "repeat": 1,
+     "pxRev": 3884,
+     "squash": 0.99
+    },
+    "page": 0,
+    "shown": {
+     "K": 1,
+     "total": 3362,
+     "fits": true
+    },
+    "demo": false,
+    "label": "学習用相場",
+    "redraws": 1,
+    "offset": 0.3739,
+    "first": {
+     "id": "USDJPY",
+     "name": "USD/JPY",
+     "price": 149.574,
+     "chg": -0.169,
+     "pct": -0.11,
+     "dec": 3,
+     "stock": false
+    }
+   }
+  }
+ ],
+ "shipTop": {
+  "top": 2.16,
+  "bottom": -0.33
+ },
+ "bandBottom": 4.9,
+ "errs": []
+}

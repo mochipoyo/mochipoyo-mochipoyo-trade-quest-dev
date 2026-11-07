@@ -1,0 +1,46 @@
+部屋・地図 460 確かめ 679 OK 671 NG 8
+NG  verum_school(7,10)→verum_town：着いた所から戻るワープへ行けない（戻るワープがない）
+NG  aruna_ruins_1(16,20)→aruna_ruins_2：着いたマスがワープの上 (2,9)
+NG  time_bank(8,1)→time_bank_vault_1：着いたマスがワープの上 (1,1)
+NG  no_failure_school(13,1)→school_roof：着いたマスがワープの上 (5,7)
+NG  node_market(7,9)→node_city：着いた所から戻るワープへ行けない（戻るワープがない）
+NG  sentra_palace_1(11,5)→sentra_palace_2：着いたマスがワープの上 (7,10)
+NG  school_roof(5,7)→no_failure_school：戻った所が歩けない／ワープの上 (5,7)
+NG  rivel_castle_b1(1,2)→rivel_artisan：着いた所から戻るワープへ行けない（戻るワープがない）
+OK  rivel_town：楼門 → rivel_castle_approach (32,47)
+OK  rivel_castle_approach：城の大扉 → rivel_castle (16,30)
+OK  rivel_castle：出口 → rivel_castle_approach (31,18)
+OK  rivel_castle_approach：南の門 → rivel_town (35,13)
+OK  城下町へ戻った（rivel_town）
+OK  sentra_capital：楼門 → sentra_palace_approach (30,45)
+OK  sentra_palace_approach：城の大扉 → sentra_palace_1 (11,12)
+OK  sentra_palace_1：出口 → sentra_palace_approach (30,18)
+OK  sentra_palace_approach：南の門 → sentra_capital (33,9)
+OK  城下町へ戻った（sentra_capital）
+OK  magicka_city：楼門 → magicka_palace_approach (28,43)
+OK  magicka_palace_approach：城の大扉 → magicka_palace (11,18)
+OK  magicka_palace：出口 → magicka_palace_approach (28,18)
+OK  magicka_palace_approach：南の門 → magicka_city (32,7)
+OK  城下町へ戻った（magicka_city）
+OK  学院：本館の扉 → vol_main_hall (14,15)
+OK  玄関ホール：大階段 → vol_upper_gallery (14,9)
+OK  上の回廊：学院長室 → vol_dean (7,9)
+OK  学院長室：扉 → vol_upper_gallery (5,1)
+OK  上の回廊：塔の階段 → vol_observatory (2,10)
+OK  天文観測室：回廊へ戻る扉 → vol_upper_gallery (14,2)
+OK  上の回廊：大階段 → vol_main_hall (14,7)
+OK  玄関ホール：大食堂 → vol_great_hall (13,14)
+OK  大食堂：扉 → vol_main_hall (14,1)
+OK  玄関ホール：西翼 → vol_west_gallery (30,4)
+OK  西翼：講義室 → vol_lecture (1,4)
+OK  講義室：回廊へ戻る扉 → vol_west_gallery (6,1)
+OK  西翼：第二教室 → vol_classroom2 (7,9)
+OK  第二教室：扉 → vol_west_gallery (16,1)
+OK  西翼：ホールへ → vol_main_hall (1,9)
+OK  玄関ホール：東翼 → vol_east_gallery (1,4)
+OK  東翼：大図書館 → vol_library (1,12)
+OK  大図書館：回廊へ戻る扉 → vol_east_gallery (6,1)
+OK  東翼：ホールへ → vol_main_hall (28,9)
+OK  玄関ホール：中庭へ → volatilia (10,28)
+OK  学院の中庭へ戻った
+歩く確かめ NG 0

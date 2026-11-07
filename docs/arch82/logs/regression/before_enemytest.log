@@ -1,0 +1,16 @@
+enemies total 273 reachable 244 future(data only) 29 families 23
+reachable but not in any encounter/boss table: []
+distinct art shapes (family+features+size): 142  sprite-only enemies: 16
+summon: [ '群青の潮織獣' ]
+heal_self: hp 10 / 37
+silence: []
+phase: [ 1 ] [ 'リーナは身を守っている', 'hは身を守っている', '欲望のゴーレムの様子が変わった！' ]
+rewards: 22 exp 12 G killed {"群青の潮織獣":1,"蒼葉の雫精":1}
+ERRORS: [
+  'summon event',
+  'summoned slime',
+  'heal_self event',
+  'healed',
+  'sweep hits all got 1',
+  'silence applied'
+]

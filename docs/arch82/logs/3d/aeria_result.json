@@ -1,0 +1,50 @@
+{
+ "mode": "aeria",
+ "at": {
+  "id": "w78_0_8",
+  "x": 68,
+  "y": 103,
+  "tile": "deep"
+ },
+ "info": {
+  "aeria": true,
+  "aeriaInScene": true,
+  "aeriaDist": 8.792613265495103,
+  "ring": {
+   "x": 96,
+   "z": 159.94,
+   "dist": 62.8,
+   "built": 1,
+   "inScene": true,
+   "version": "2:4",
+   "speed": 0.015,
+   "plan": {
+    "K": 1,
+    "W": 3840,
+    "repeat": 1,
+    "pxRev": 3884,
+    "squash": 0.99
+   },
+   "page": 0,
+   "shown": {
+    "K": 1,
+    "total": 3362,
+    "fits": true
+   },
+   "demo": false,
+   "label": "学習用相場",
+   "redraws": 1,
+   "offset": 0.161,
+   "first": {
+    "id": "USDJPY",
+    "name": "USD/JPY",
+    "price": 149.574,
+    "chg": -0.169,
+    "pct": -0.11,
+    "dec": 3,
+    "stock": false
+   }
+  }
+ },
+ "errs": []
+}

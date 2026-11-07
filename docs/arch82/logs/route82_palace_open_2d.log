@@ -1,0 +1,9 @@
+部屋・地図 444 確かめ 663 OK 655 NG 8
+NG  verum_school(7,10)→verum_town：着いた所から戻るワープへ行けない（戻るワープがない）
+NG  aruna_ruins_1(16,20)→aruna_ruins_2：着いたマスがワープの上 (2,9)
+NG  time_bank(8,1)→time_bank_vault_1：着いたマスがワープの上 (1,1)
+NG  no_failure_school(13,1)→school_roof：着いたマスがワープの上 (5,7)
+NG  node_market(7,9)→node_city：着いた所から戻るワープへ行けない（戻るワープがない）
+NG  sentra_palace_1(11,5)→sentra_palace_2：着いたマスがワープの上 (7,10)
+NG  school_roof(5,7)→no_failure_school：戻った所が歩けない／ワープの上 (5,7)
+NG  rivel_castle_b1(1,2)→rivel_artisan：着いた所から戻るワープへ行けない（戻るワープがない）

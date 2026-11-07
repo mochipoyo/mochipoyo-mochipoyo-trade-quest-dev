@@ -1,0 +1,158 @@
+{
+ "mode": "ticker_town",
+ "samples": [
+  {
+   "version": "2:4",
+   "speed": 0.02,
+   "plan": {
+    "K": 2,
+    "W": 3136,
+    "repeat": 1,
+    "pxRev": 2543,
+    "squash": 1.23
+   },
+   "page": 0,
+   "shown": {
+    "K": 2,
+    "total": 2794,
+    "fits": true
+   },
+   "demo": false,
+   "label": "学習用相場",
+   "redraws": 1,
+   "offset": 0.1121,
+   "first": {
+    "id": "USDJPY",
+    "name": "USD/JPY",
+    "price": 149.574,
+    "chg": -0.169,
+    "pct": -0.11,
+    "dec": 3,
+    "stock": false
+   }
+  },
+  {
+   "version": "2:4",
+   "speed": 0.02,
+   "plan": {
+    "K": 2,
+    "W": 3136,
+    "repeat": 1,
+    "pxRev": 2543,
+    "squash": 1.23
+   },
+   "page": 0,
+   "shown": {
+    "K": 2,
+    "total": 2794,
+    "fits": true
+   },
+   "demo": false,
+   "label": "学習用相場",
+   "redraws": 1,
+   "offset": 0.2098,
+   "first": {
+    "id": "USDJPY",
+    "name": "USD/JPY",
+    "price": 149.574,
+    "chg": -0.169,
+    "pct": -0.11,
+    "dec": 3,
+    "stock": false
+   }
+  },
+  {
+   "version": "2:4",
+   "speed": 0.02,
+   "plan": {
+    "K": 2,
+    "W": 3136,
+    "repeat": 1,
+    "pxRev": 2543,
+    "squash": 1.23
+   },
+   "page": 0,
+   "shown": {
+    "K": 2,
+    "total": 2794,
+    "fits": true
+   },
+   "demo": false,
+   "label": "学習用相場",
+   "redraws": 1,
+   "offset": 0.2695,
+   "first": {
+    "id": "USDJPY",
+    "name": "USD/JPY",
+    "price": 149.574,
+    "chg": -0.169,
+    "pct": -0.11,
+    "dec": 3,
+    "stock": false
+   }
+  },
+  {
+   "version": "2:4",
+   "speed": 0.02,
+   "plan": {
+    "K": 2,
+    "W": 3136,
+    "repeat": 1,
+    "pxRev": 2543,
+    "squash": 1.23
+   },
+   "page": 0,
+   "shown": {
+    "K": 2,
+    "total": 2794,
+    "fits": true
+   },
+   "demo": false,
+   "label": "学習用相場",
+   "redraws": 1,
+   "offset": 0.3227,
+   "first": {
+    "id": "USDJPY",
+    "name": "USD/JPY",
+    "price": 149.574,
+    "chg": -0.169,
+    "pct": -0.11,
+    "dec": 3,
+    "stock": false
+   }
+  },
+  {
+   "version": "2:4",
+   "speed": 0.02,
+   "plan": {
+    "K": 2,
+    "W": 3136,
+    "repeat": 1,
+    "pxRev": 2543,
+    "squash": 1.23
+   },
+   "page": 0,
+   "shown": {
+    "K": 2,
+    "total": 2794,
+    "fits": true
+   },
+   "demo": false,
+   "label": "学習用相場",
+   "redraws": 1,
+   "offset": 0.373,
+   "first": {
+    "id": "USDJPY",
+    "name": "USD/JPY",
+    "price": 149.574,
+    "chg": -0.169,
+    "pct": -0.11,
+    "dec": 3,
+    "stock": false
+   }
+  }
+ ],
+ "ms": 13005,
+ "rings": 1,
+ "errs": []
+}

@@ -19,6 +19,8 @@ const after = res('after_int/after_pc_result.json'), afterSp = res('after_sp/aft
 const ngOf = (file) => { const o = {}; if (!file || !fs.existsSync(file)) return o; fs.readFileSync(file, 'utf8').split('\n').forEach((ln) => { const m = /^NG {2}([a-z0-9_]+)\(/.exec(ln); if (m) (o[m[1]] = o[m[1]] || []).push(ln.slice(4)); }); return o; };
 const route = ngOf(E.routeLog), routeOpen = ngOf(E.routeLogOpen); const routeScope = new Set(Object.keys(L.owner).concat(NEW).concat(['rivel_town', 'sentra_capital', 'magicka_city', 'volatilia']));   // route82_test.js と同じ対象
 const preNG = new Set(E.routePreexisting || []);
+// 町を歩く確かめ（docs/tools/v81/town81_test.js）：町ごとの OK・NG の数（行の頭の「町／」）
+const t81 = {}; if (E.town81Log && fs.existsSync(E.town81Log)) fs.readFileSync(E.town81Log, 'utf8').split('\n').forEach((ln) => { const m = /^(OK|NG) {2}([a-z0-9_]+)[／:]/.exec(ln); if (m) { const o = t81[m[2]] = t81[m[2]] || { ok: 0, ng: 0 }; if (m[1] === 'OK') o.ok++; else o.ng++; } });
 const saveMaps = {}; (fs.readFileSync(E.saveLog, 'utf8').split('\n')).forEach((ln) => { const m = /^(OK|NG) {2}.*→ ([a-z0-9_]+) /.exec(ln); if (m) saveMaps[m[2]] = (saveMaps[m[2]] === 'NG' || m[1] === 'NG') ? 'NG' : 'OK'; });
 const viewed = new Set(E.viewedPC || []), viewedSp = new Set(E.viewedSP || []);
 const rows = ids.map((id) => {
@@ -33,13 +35,14 @@ const rows = ids.map((id) => {
   else if (!routeOpen[id] || routeOpen[id].every((s) => preNG.has(s))) rt = 'OK（物語の鍵を開けた状態。開ける前は通れない：' + route[id].filter((s) => !preNG.has(s)).join(' / ') + '）';
   else rt = 'NG：' + route[id].join(' / ');
   if (isTown && (def.buildings || []).some((b) => b.gate82 || b.academy82 || b.id === 'va_main') && routeScope.has(id) && rt === 'OK') rt = 'OK（楼門・本館の扉）';
+  const walked = isTown && t81[id]; if (walked) rt = (walked.ng ? 'NG' : 'OK') + '（town81_test：フィールドから入り、全部の建物へ歩いて出入り・町の出口 ' + walked.ok + ' OK／NG ' + walked.ng + '）' + (/^OK（楼門/.test(rt) ? '・楼門・本館の扉の往復 OK' : '');
   const st = saveMaps[id] || '-';
   const pc = shot('after_int', 'after_pc', id), mob = shot('after_sp', 'after_sp', id);
   const changed = !!(def._l82 || NEW.indexOf(id) >= 0 || /^interior82:/.test(rc) || (isTown && EXT.has(id)) || field || /castle82|i82/.test(rc));
   const impl = changed && !!(r.recipe && !r.err && !r.errs);
   let status = impl ? 'implemented' : 'design_only';
   const vis = impl && pc && viewed.has(id); const game = !/^NG/.test(rt);
-  if (vis) status = 'visual_checked'; if (vis && game && routeScope.has(id)) status = 'gameplay_checked'; if (status === 'gameplay_checked' && mob && viewedSp.has(id)) status = 'verified';
+  if (vis) status = 'visual_checked'; if (vis && game && (routeScope.has(id) || walked)) status = 'gameplay_checked'; if (status === 'gameplay_checked' && mob && viewedSp.has(id)) status = 'verified';
   const notes = [];
   if (def._l82) notes.push('間取り：' + def._l82.role + (def._l82.sub ? '/' + def._l82.sub : '') + '（置いた物 ' + def._l82.pieces + '）'); else if (L.skipped[id]) notes.push('間取りは変えない：' + L.skipped[id]);
   if (NEW.indexOf(id) >= 0) notes.push('v8.2 の新しい地図');

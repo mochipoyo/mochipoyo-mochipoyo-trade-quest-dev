@@ -1,0 +1,4 @@
+learn_dow: done true gold+ 150 exp+ 40 tile grass
+progress: learn_basic:open learn_dow:done learn_ema:done learn_mtf:open learn_rci:open learn_macd:open learn_risk:open learn_record:open learn_review:open learn_overfit:open learn_emotion:open next: learn_basic abilities [ 'dow_eye', 'ema_blessing' ]
+ERRORS: []
+EXIT 0

@@ -1,0 +1,10 @@
+== ch18test (t3): ERRORS: [ EXIT 0
+== navsim (t3): FAILS 2 [ EXIT 1
+== entryaudit (t3):  EXIT 1
+== ch1316test (t3): ERRORS: [ 'camp talk bonds undefined', 'sky record' ] EXIT 0
+== ch18test (before): ERRORS: [ EXIT 0
+== navsim (before): FAILS 2 [ EXIT 1
+== entryaudit (before):  EXIT 1
+== town81 earth: NG 0 OK 116
+== remake81 2d: Node.js v22.23.4
+== pocket81 2d: 結果：すべて OK

@@ -1,0 +1,25 @@
+OK  dow_village：行けない歩けるマス 0
+OK  volatilia：行けない歩けるマス 0
+OK  rivel_town：行けない歩けるマス 83（わけあり：堀の内側の城の島（城の建物の扉からしか出入りしない。前庭から跳ね橋で城の扉へ））
+OK  harbor_town：行けない歩けるマス 3（わけあり：東の端の岸の 3 マス（海と柵のあいだ））
+OK  sahar_city：行けない歩けるマス 0
+OK  verum_town：行けない歩けるマス 5（わけあり：工房の通りの作業台の列のあいだ（両はしに動かない職人がいる））
+OK  tradia：行けない歩けるマス 0
+OK  rivel_artisan：行けない歩けるマス 0
+OK  erased_village：行けない歩けるマス 0
+OK  star_camp：行けない歩けるマス 0
+OK  scheduled_district：行けない歩けるマス 0
+OK  mirror_market：行けない歩けるマス 0
+OK  ciel_port：行けない歩けるマス 0
+OK  aruna_ruins：行けない歩けるマス 0
+OK  aruna_village：行けない歩けるマス 0
+OK  ignas_town：行けない歩けるマス 0
+OK  frost_town：行けない歩けるマス 0
+OK  luxbell：行けない歩けるマス 0
+OK  node_city：行けない歩けるマス 0
+OK  tempus_city：行けない歩けるマス 0
+OK  magicka_city：行けない歩けるマス 0
+OK  sentra_capital：行けない歩けるマス 0
+OK  kalion_city：行けない歩けるマス 0
+OK  dark_camp：行けない歩けるマス 0
+結果：すべて OK
