@@ -401,7 +401,7 @@
       L.role[id] = roleOf(id, def, v.b, parentRole && parentRole.replace(/_up$/, ''));
       var why = null;
       if (EXCLUDE[id]) why = '台本が座標を使う・作り込み済み・専用の部屋'; else if (!def || def.kind !== 'interior') why = '屋内でない'; else if (typeof def.rows === 'function' || !(def.rows && def.rows.length)) why = '行がない・行が関数';
-      else if (def.onStep || def.s3121 || def.remake71) why = '仕掛け・物語・作り直し済み'; else if (MR.LIST && MR.LIST.indexOf(id) >= 0) why = '作り直したダンジョン'; else if (/^poyo_/.test(id)) why = 'ポヨ村の作り込んだ部屋';
+      else if (def.onStep || def.s3121 || def.remake71) why = '仕掛け・物語・作り直し済み'; else if (def.noLayout82) why = 'v8.2 で専用に作った部屋（学院の本校舎など）'; else if (MR.LIST && MR.LIST.indexOf(id) >= 0) why = '作り直したダンジョン'; else if (/^poyo_/.test(id)) why = 'ポヨ村の作り込んだ部屋';
       else if (/^castle/.test(L.role[id].role)) why = '城（別の作り方）'; else if (MR.maps[id] && MR.maps[id].kind !== 'interior76') why = 'ほかの作り直しの地図';
       else if (def.rows[0].length > 30 || def.rows.length > 20) why = '大きい部屋（専用の作り方）';
       if (why) { L.skipped[id] = why; return; }

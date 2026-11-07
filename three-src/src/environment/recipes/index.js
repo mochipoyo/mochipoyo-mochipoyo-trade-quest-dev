@@ -22,8 +22,10 @@ import { buildCastle82 } from '../../world/Castle82.js';
 import { Theme82 } from '../theme82.js';
 import { themeFor } from '../../world/themes.js';
 
+// v8.2 リヴェル城 1 階：前の間取り（30×28・設定「元の間取り」）だけ専用の作り方。作り直した間取りでは城の作り方（interior82）
+const rivelCastle82 = { id: 'rivel_castle.v1|i82', async prepare(ctx) { const m = ctx.map; if (m.w === 30 && m.h === 28) return rivelCastle.prepare(ctx); const g = genericRecipe(m); if (!g) throw new Error('城の作り方がない'); ctx.stats.via = g.id; return g.prepare(ctx); } };
 export const RECIPES = {
-  rivel_castle: rivelCastle,
+  rivel_castle: rivelCastle82,
   iron_mine_1: ironMine1,
   poyo_village: poyoVillage,
   node_city: nodeCity,
@@ -52,7 +54,8 @@ export function genericRecipe(map) {
   if (mapCoverage(map) !== 'generic') return null;
   // v8.2 町に属する建物の中：町の作り方（theme82.js）と部屋の用途（js/rpg/layout82.js）。城の部屋は城の作り方（別）
   const L82 = window.Layout82 && window.Layout82.info ? window.Layout82.info(map.id) : null;
-  if (L82 && ((map.kind === 'interior' && !/^castle/.test(L82.role || '')) || (map.kind === 'dungeon' && L82.role === 'clock'))) {   // 廃墟の街の時計塔（種類はダンジョン）も町の作り方
+  const castle82 = L82 && /^castle/.test(L82.role || '') && /_approach$/.test(L82.town || '');   // v8.2 城郭区画に属する城の部屋：城ごとの作り方（theme82.js の城）
+  if (L82 && ((map.kind === 'interior' && (!/^castle/.test(L82.role || '') || castle82)) || (map.kind === 'dungeon' && (L82.role === 'clock' || castle82)))) {   // 廃墟の街の時計塔（種類はダンジョン）も町の作り方
     const prof82 = (window.MTQ3D_ENV && window.MTQ3D_ENV.profileSync && window.MTQ3D_ENV.profileSync(map.id)) || null; const th82 = Theme82.resolve(map, prof82);
     if (th82) return generic['i82:' + map.id] || (generic['i82:' + map.id] = interior82(th82));
   }

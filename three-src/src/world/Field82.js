@@ -22,17 +22,17 @@ export const FIELD82 = { magicka_city: 'floating', demon_castle: 'demon', iron_f
 export function buildFloating82(cx, y0, cz) {
   const g = new THREE.Group(); g.name = 'floating82_magicka'; const mg = new Merge(); const add = (m, gg) => mg.add(m, gg); const mgNo = new Merge(); const addNo = (m, gg) => mgNo.add(m, gg);
   const lights = [], animated = [];
-  const RX = cx, RZ = cz - 5.5, RY = y0 + 6.2, RR = 5.0;   // 岩盤の中心（入口の北 5.5 マス・高さ 6.2。フィールドのいつものカメラで入口の南から全体が見える高さ）
+  const RX = cx, RZ = cz - 2.5, RY = y0 + 5.6, RR = 4.6;   // 岩盤の中心（入口の北 2.5 マス・高さ 5.6）。フィールドのいつものカメラ（上から斜め）で入口の南から全体が見える所。岩盤の下の先は高さ 2.3 より上（人の頭の上）
   // ---- 地上の発動の陣（入口のマス。地面すれすれ）
   const rune = M('#9ab8ff', { glow: 1.4 }); const ringG = new THREE.RingGeometry(0.75, 0.9, 32); ringG.rotateX(-Math.PI / 2); ringG.translate(cx, y0 + 0.04, cz); addNo(rune, ringG);
   const ring2 = new THREE.RingGeometry(0.4, 0.47, 6); ring2.rotateX(-Math.PI / 2); ring2.translate(cx, y0 + 0.045, cz); addNo(rune, ring2);
   lights.push({ pos: new THREE.Vector3(cx, y0 + 1.2, cz), color: 0x9ab8ff, power: 0.9, dist: 6 });
   // ---- 浮く踏み板（16 段。らせんに上がって岩盤のふちへ）。1 枚ずつ別の物（ゆっくり上下）
   const stepM = M('#8a8078', { r: 0.95 }), stepTop = M('#a8a098', { r: 0.9 }), stepRune = M('#9ab8ff', { glow: 1.2 });
-  const N = 16; const sx0 = cx + 1.6, sz0 = cz - 1.2;
+  const N = 14; const sx0 = cx + 0.9, sz0 = cz + 0.2;
   for (let i = 0; i < N; i++) {
-    const t = i / (N - 1); const ang = -0.6 + t * 3.6; const rad = 3.2 - t * 0.6; const px = RX + Math.cos(ang) * (RR + rad) * (1 - t * 0.25) * 0.75 + (1 - t) * (sx0 - RX) * 0.6, pz = RZ + Math.sin(ang) * (RR + rad) * 0.55 + (1 - t) * (sz0 - RZ) * 0.6;
-    const py = y0 + 0.9 + t * (RY - y0 - 0.6);
+    const t = i / (N - 1); const ang = -0.6 + t * 3.6; const rad = 3.2 - t * 0.6; const px = sx0 + (RX + Math.cos(ang) * (RR + 0.8) - sx0) * t + Math.sin(t * Math.PI) * 1.6, pz = sz0 + (RZ + Math.sin(ang) * (RR + 0.8) * 0.6 - sz0) * t + Math.sin(t * Math.PI) * 0.8;
+    const py = y0 + 2.05 + t * (RY - y0 - 2.15);   // いちばん下の踏み板も人の頭の上（2.05）：陣の上に浮かぶ
     const s = new THREE.Group(); s.position.set(px, py, pz);
     const slab = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.38, 0.32, 7), stepM); slab.geometry.userData.own = true; slab.castShadow = true; s.add(slab);
     const top = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.04, 7), stepTop); top.position.y = 0.17; top.geometry.userData.own = true; s.add(top);
@@ -41,14 +41,14 @@ export function buildFloating82(cx, y0, cz) {
     g.add(s); animated.push({ kind: 'bob', obj: s, base: py, ph: i * 0.7, amp: 0.06 });
   }
   // ---- 浮いた岩盤（下へ尖る。ふちは不ぞろい）
-  const rock = new THREE.ConeGeometry(RR, 7.5, 11, 4); const p = rock.attributes.position; for (let k = 0; k < p.count; k++) { const y = p.getY(k); const f = 1 + (hash(k, 1) - 0.5) * 0.28; p.setX(k, p.getX(k) * f); p.setZ(k, p.getZ(k) * f); if (y > 3.6) p.setY(k, y + (hash(k, 2) - 0.5) * 0.4); }
-  rock.computeVertexNormals(); rock.rotateX(Math.PI); rock.translate(RX, RY - 3.75, RZ); add(M('#6e6458', { r: 1 }), rock);
+  const rock = new THREE.ConeGeometry(RR, 3.2, 11, 3); const p = rock.attributes.position; for (let k = 0; k < p.count; k++) { const y = p.getY(k); const f = 1 + (hash(k, 1) - 0.5) * 0.28; p.setX(k, p.getX(k) * f); p.setZ(k, p.getZ(k) * f); if (y > 1.5) p.setY(k, y + (hash(k, 2) - 0.5) * 0.3); }
+  rock.computeVertexNormals(); rock.rotateX(Math.PI); rock.translate(RX, RY - 1.6, RZ); add(M('#6e6458', { r: 1 }), rock);
   const topDisc = new THREE.CylinderGeometry(RR * 0.98, RR, 0.5, 22); topDisc.translate(RX, RY - 0.25, RZ); add(M('#5e6a4a', { r: 1 }), topDisc);
   // 岩盤の下：垂れた根・光る結晶・紋
-  for (let i = 0; i < 9; i++) { const a = i / 9 * Math.PI * 2, rr = RR * (0.3 + hash(i, 3) * 0.5); add(M('#4a3a2a', { r: 1 }), box(0.08, 1.5 + hash(i, 4) * 2, 0.08, RX + Math.cos(a) * rr, RY - 4 - hash(i, 5) * 2, RZ + Math.sin(a) * rr)); }
-  for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2 + 0.3; addNo(M('#9ab8ff', { glow: 1.6 }), new THREE.OctahedronGeometry(0.35, 0).scale(1, 2, 1).translate(RX + Math.cos(a) * 2.2, RY - 6.2 - (i % 2), RZ + Math.sin(a) * 2.2)); }
-  const under = new THREE.RingGeometry(1.2, 1.5, 24); under.rotateX(Math.PI / 2); under.translate(RX, RY - 7.6, RZ); addNo(M('#9ab8ff', { glow: 1.6, ds: true }), under);
-  lights.push({ pos: new THREE.Vector3(RX, RY - 6.5, RZ), color: 0x9ab8ff, power: 1.1, dist: 9 });
+  for (let i = 0; i < 9; i++) { const a = i / 9 * Math.PI * 2, rr = RR * (0.3 + hash(i, 3) * 0.5); add(M('#4a3a2a', { r: 1 }), box(0.06, 0.5 + hash(i, 4) * 0.5, 0.06, RX + Math.cos(a) * rr * 0.7, RY - 2.4 - hash(i, 5) * 0.3, RZ + Math.sin(a) * rr * 0.7)); }
+  for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2 + 0.3; addNo(M('#9ab8ff', { glow: 1.6 }), new THREE.OctahedronGeometry(0.22, 0).scale(1, 1.8, 1).translate(RX + Math.cos(a) * 1.6, RY - 2.9, RZ + Math.sin(a) * 1.6)); }
+  const under = new THREE.RingGeometry(1.2, 1.5, 24); under.rotateX(Math.PI / 2); under.translate(RX, RY - 3.25, RZ); addNo(M('#9ab8ff', { glow: 1.6, ds: true }), under);
+  lights.push({ pos: new THREE.Vector3(RX, RY - 3.0, RZ), color: 0x9ab8ff, power: 1.1, dist: 9 });
   // ---- 街区（煤けた煉瓦・深緑の屋根・煙突・出窓）：岩盤の南・東・西の 3 つのかたまりと、間の石畳
   const brick = M('#6a3a2e', { r: 0.95 }), brick2 = M('#5a2e26', { r: 0.95 }), roofG = M('#2e4a3e', { r: 0.8 }), chim = M('#3a2a24', { r: 0.9 }), win = M('#2a1a10', { glow: 1.2, gc: '#ffc27a', win: true }), street = M('#8a8478', { r: 0.95 });
   const pave = new THREE.CylinderGeometry(RR * 0.92, RR * 0.92, 0.06, 22); pave.translate(RX, RY + 0.03, RZ); add(street, pave);
@@ -57,13 +57,13 @@ export function buildFloating82(cx, y0, cz) {
     const rf = new THREE.ConeGeometry(Math.hypot(w, d) / 2 + 0.1, h * 0.55, 4); rf.rotateY(Math.PI / 4); rf.scale(w / Math.hypot(w, d) * 1.42, 1, d / Math.hypot(w, d) * 1.42); rf.translate(0, h + h * 0.27, 0); addT(roofG, rf);
     addT(chim, (() => { const c = new THREE.BoxGeometry(0.3, 1.0, 0.3); c.translate(w * 0.3, h + 0.6, 0); return c; })());
     for (let k = 0; k < 2; k++) { const wg = new THREE.BoxGeometry(0.3, 0.42, 0.04); wg.translate(-w * 0.25 + k * w * 0.5, h * 0.55, d / 2 + 0.02); wg.applyMatrix4(m); addNo(win, wg); } };
-  const DIST = [[RX - 2.6, RZ + 1.9], [RX + 2.7, RZ + 1.4], [RX - 2.9, RZ - 1.6], [RX + 0.3, RZ + 3.0]];
+  const DIST = [[RX - 2.3, RZ + 1.7], [RX + 2.4, RZ + 1.2], [RX - 2.6, RZ - 1.4], [RX + 0.3, RZ + 2.7]];
   DIST.forEach(([dx, dz], di) => { for (let k = 0; k < 4; k++) { const a = k * 1.6 + di; house(dx + Math.cos(a) * 1.1, dz + Math.sin(a) * 0.9, 1.0 + hash(di, k) * 0.5, 0.9 + hash(k, di) * 0.4, 1.3 + hash(di + 3, k) * 1.2, a); } });
   // ガス灯
-  for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; const x = RX + Math.cos(a) * 3.8, z = RZ + Math.sin(a) * 3.8; add(M('#2a2a2e', { r: 0.5, m: 0.6 }), box(0.06, 1.2, 0.06, x, RY + 0.6, z)); addNo(M('#ffc27a', { glow: 1.6 }), new THREE.SphereGeometry(0.1, 8, 6).translate(x, RY + 1.25, z)); }
+  for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; const x = RX + Math.cos(a) * 3.5, z = RZ + Math.sin(a) * 3.5; add(M('#2a2a2e', { r: 0.5, m: 0.6 }), box(0.06, 1.2, 0.06, x, RY + 0.6, z)); addNo(M('#ffc27a', { glow: 1.6 }), new THREE.SphereGeometry(0.1, 8, 6).translate(x, RY + 1.25, z)); }
   lights.push({ pos: new THREE.Vector3(RX, RY + 2, RZ + 3), color: 0xffc27a, power: 1.0, dist: 10 });
   // ---- 高い魔導宮殿（岩盤の北の奥。Castle82 の魔導宮殿を小さく）
-  const pal = buildCastle82('magicka', { w: 9, d: 5, doorX: 4, seed: 91 }); pal.group.scale.setScalar(0.62); pal.group.position.set(RX - 2.8, RY, RZ - 3.6); g.add(pal.group);
+  const pal = buildCastle82('magicka', { w: 9, d: 5, doorX: 4, seed: 91 }); pal.group.scale.setScalar(0.62); pal.group.position.set(RX - 2.8, RY, RZ - 3.2); g.add(pal.group);
   mg.build(g); mgNo.build(g, { shadow: false });
   return { group: g, lights, animated, footprint: { x: RX, z: RZ, r: RR + 3 } };
 }
