@@ -8,3 +8,6 @@
 == town81 earth: NG 0 OK 116
 == remake81 2d: Node.js v22.23.4
 == pocket81 2d: 結果：すべて OK
+== town81 2d: NG 1 OK 115
+== route82 earth: 部屋・地図 460 確かめ 679 OK 667 NG 12
+== route82 palace_open earth: 部屋・地図 460 確かめ 679 OK 671 NG 8

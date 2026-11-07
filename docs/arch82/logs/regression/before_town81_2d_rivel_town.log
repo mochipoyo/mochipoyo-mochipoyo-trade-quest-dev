@@ -1,0 +1,25 @@
+OK  rivel_town（リヴェル城下町）：作り直した地図 72×60（2D 版）
+OK  rivel_town：フィールド（world）から歩いて入る → rivel_town 35,52
+OK  rivel_town／castle（リヴェル城）：入る → 中 16,30 → 出る → 扉の前 35,13
+OK  rivel_town／weapon（武器屋）：入る → 中 5,9 → 出る → 扉の前 27,50
+OK  rivel_town／armor（防具屋）：入る → 中 7,9 → 出る → 扉の前 11,32
+OK  rivel_town／item（道具屋）：入る → 中 7,9 → 出る → 扉の前 16,50
+OK  rivel_town／inn（リヴェルの宿屋）：入る → 中 7,9 → 出る → 扉の前 41,53
+OK  rivel_town／church（リヴェル教会）：入る → 中 7,9 → 出る → 扉の前 27,37
+NG  rivel_town／tavern（リヴェル城下町）：入る → 中 45,48 → 出る → 扉の前 
+OK  rivel_town／guild（冒険者ギルド）：入る → 中 7,9 → 出る → 扉の前 39,30
+OK  rivel_town／bank（リヴェル銀行）：入る → 中 7,9 → 出る → 扉の前 45,39
+OK  rivel_town／rv_wave_temple（波形聖堂）：入る → 中 7,9 → 出る → 扉の前 61,8
+OK  rivel_town／x72_tower（見張りの塔 1階）：入る → 中 7,9 → 出る → 扉の前 5,24
+OK  rivel_town／x72_house（騎士の家）：入る → 中 5,9 → 出る → 扉の前 6,8
+OK  rivel_town／x72_hall（騎士の詰所）：入る → 中 7,9 → 出る → 扉の前 15,8
+OK  rivel_town／x72_ex0（花屋）：入る → 中 7,9 → 出る → 扉の前 9,31
+OK  rivel_town／x72_ex1（仕立て屋）：入る → 中 7,9 → 出る → 扉の前 9,38
+OK  rivel_town／x72_ex2（パン屋）：入る → 中 7,9 → 出る → 扉の前 11,39
+OK  rivel_town／x72_ex3（古道具屋）：入る → 中 7,9 → 出る → 扉の前 9,45
+OK  rivel_town／x72_ex4（画家のアトリエ）：入る → 中 7,9 → 出る → 扉の前 59,35
+OK  rivel_town／x72_ex5（学者の家）：入る → 中 5,9 → 出る → 扉の前 62,30
+OK  rivel_town：rivel_artisan（71,39）に乗る → rivel_artisan 1,15 → 戻る → rivel_town 69,39
+OK  rivel_town：出口 34,58 → world,40,49 → 振り返って戻る → rivel_town 35,52
+OK  rivel_town：出口 37,58 → world,40,49 → 振り返って戻る → rivel_town 35,52
+結果：NG 1
