@@ -66,10 +66,10 @@ export function townKit(mapId, opt) {
   return {
     id: 'town_kit.v1' + (opt.style ? ':' + opt.style : ''),
     async prepare(ctx) {
-      const map = ctx.map; const prof = ctx.profile || {}; const region = opt.style || (REGION_STYLE[prof.region] ? prof.region : 'arcadia'); const R = TOWN_EXT82[map.id] ? Object.assign({}, REGION_STYLE[region], TOWN_EXT82[map.id]) : REGION_STYLE[region];   // v8.2 町ごとの外観（theme82.js の TOWN_EXT82）
-      const brick82 = R.brick ? wallTex('brick', R.brick.c1, R.brick.c2, { soot: R.brick.soot }) : null; if (TOWN_EXT82[map.id]) ctx.stats.ext82 = map.id;
+      const map = ctx.map; const prof = ctx.profile || {}; const region = opt.style || (REGION_STYLE[prof.region] ? prof.region : 'arcadia'); const EXT = (window.Layout82 && window.Layout82.off) ? null : TOWN_EXT82[map.id]; const R = EXT ? Object.assign({}, REGION_STYLE[region], EXT) : REGION_STYLE[region];   // v8.2 町ごとの外観（theme82.js の TOWN_EXT82）
+      const brick82 = R.brick ? wallTex('brick', R.brick.c1, R.brick.c2, { soot: R.brick.soot }) : null; if (EXT) ctx.stats.ext82 = map.id;
       const tex = (key, a) => texMat('tk_' + key, canvasTex('tk_' + key, 256, 256, drawSetts(a[0], a[1], a[2], a[3], a[4])), { roughness: 0.88 }, { height: settsHeight(a[2], a[3], a[2] * 7 + a[3]), depth: 3 });   // 高画質：石の形から法線・AO（ProcPBR.js）
-      const rk = TOWN_EXT82[map.id] && TOWN_EXT82[map.id].road ? map.id : region; const K = { R, region, road: tex(rk + '_road', R.road), walk: tex(rk + '_walk', R.walk) };
+      const rk = EXT && EXT.road ? map.id : region; const K = { R, region, road: tex(rk + '_road', R.road), walk: tex(rk + '_walk', R.walk) };
       const LM = map.envLayout && map.envLayout.landmark; const inLM = (x, z) => !!LM && x >= LM.x && x < LM.x + LM.w && z >= LM.y && z < LM.y + LM.h;   // 町ごとの目印のマス（js/rpg/envlayout.js）
       // v7.6 露店のマス（カウンター・奥）は露店の形が作る（家具のカウンターを置かない）
       const stallCell = new Set(); (map.buildings || []).forEach((b) => { if (b.shape76 !== 'stall') return; for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) stallCell.add(x + ',' + y); });

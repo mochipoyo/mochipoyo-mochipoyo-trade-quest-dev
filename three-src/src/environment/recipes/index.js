@@ -53,7 +53,7 @@ export function genericRecipe(map) {
   if (mapCoverage(map) === 'done' && map.kind === 'interior') return poyoInterior;   // ポヨ村の作り込んだ屋内：用途ごとの奥の壁の飾り
   if (mapCoverage(map) !== 'generic') return null;
   // v8.2 町に属する建物の中：町の作り方（theme82.js）と部屋の用途（js/rpg/layout82.js）。城の部屋は城の作り方（別）
-  const L82 = window.Layout82 && window.Layout82.info ? window.Layout82.info(map.id) : null;
+  const L82 = window.Layout82 && window.Layout82.info && !window.Layout82.off ? window.Layout82.info(map.id) : null;   // 設定「元の間取り」（Layout82.off）では前の作り方
   const castle82 = L82 && /^castle/.test(L82.role || '') && /_approach$/.test(L82.town || '');   // v8.2 城郭区画に属する城の部屋：城ごとの作り方（theme82.js の城）
   if (L82 && ((map.kind === 'interior' && (!/^castle/.test(L82.role || '') || castle82)) || (map.kind === 'dungeon' && (L82.role === 'clock' || castle82)))) {   // 廃墟の街の時計塔（種類はダンジョン）も町の作り方
     const prof82 = (window.MTQ3D_ENV && window.MTQ3D_ENV.profileSync && window.MTQ3D_ENV.profileSync(map.id)) || null; const th82 = Theme82.resolve(map, prof82);

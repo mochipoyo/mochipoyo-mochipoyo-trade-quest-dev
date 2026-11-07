@@ -54,7 +54,7 @@ export class TickerRing {
     this.offset = (this.offset + dt * O.speed) % 1; this.tex.offset.x = this.offset; this.texIn.offset.x = -this.offset;   // 外も内も、文字は同じ向き（右から左）へ流れる
     if (t - this.lastCheck > 1.5) { this.lastCheck = t; const s = quoteSnapshot(); if (s.version !== this.snap.version) { this.snap = s; drawStrip(this.canvas, s, O.big); this.tex.needsUpdate = true; this.texIn.needsUpdate = true; this.redraws++; } }
   }
-  info() { return { version: this.snap.version, demo: !!this.snap.demo, label: this.snap.label, redraws: this.redraws, offset: +this.offset.toFixed(4), first: (this.snap.items || [])[0] }; }
+  info() { return { version: this.snap.version, speed: this.o.speed, demo: !!this.snap.demo, label: this.snap.label, redraws: this.redraws, offset: +this.offset.toFixed(4), first: (this.snap.items || [])[0] }; }
   dispose() { this.geo.dispose(); this.tg.dispose(); this.mats.forEach((m) => m.dispose()); this.tex.dispose(); this.texIn.dispose(); if (this.group.parent) this.group.parent.remove(this.group); this.disposed = true; }
 }
 

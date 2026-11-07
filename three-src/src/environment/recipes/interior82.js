@@ -252,7 +252,7 @@ async function build(ctx, th, b) {
   // ---------------- 家具 ----------------
   let fstats = {}; try { const fr = buildFurn82({ map, T, walk, wallAt: isWall, add, theme: th, lamps, animated: scene.animated }); fstats = fr.stats; } catch (e) { ctx.stats.furnError = String(e && e.message || e); console.warn('furn82', e); }
   mg.build(g); mgNo.build(g, { shadow: false });
-  if (!hi) scene.ambient = Math.max(scene.ambient || 0, 0.5);   // 低画質（点の光が 4 つ）：まわりの光を少し上げる
+  if (!hi) scene.ambient = Math.max(scene.ambient || 0, 0.85);   // 低画質（点の光が 4 つ・スマホの既定）：まわりの光を上げる（0.5 では暗い木の床の町がほぼ黒く見えた）
   Object.assign(ctx.stats, { i82: stats, furn82: fstats });
   return g;
 }

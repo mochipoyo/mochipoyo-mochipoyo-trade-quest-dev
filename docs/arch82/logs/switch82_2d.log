@@ -1,0 +1,130 @@
+新しい間取り：Layout82.off false 作り直した部屋 372 ／元の間取り：Layout82.off true 作り直した部屋 0 戻す版の表 385
+OK  保存と読み込みの 2 往復で動かない：magicka_inn 3,1（前は家具・壁） → magicka_inn 3,1 / magicka_inn 3,1 / magicka_inn 3,1
+OK  新 → 元の間取り：magicka_inn 3,1（前は家具・壁）：magicka_inn 3,1 → magicka_inn 2,1（floor_wood）
+OK  元 → 新しい間取り：magicka_inn 3,1（前は家具・壁）：magicka_inn 2,1 → magicka_inn 3,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：magicka_inn 1,3（前は家具・壁） → magicka_inn 1,3 / magicka_inn 1,3 / magicka_inn 1,3
+OK  新 → 元の間取り：magicka_inn 1,3（前は家具・壁）：magicka_inn 1,3 → magicka_inn 2,3（floor_wood）
+OK  元 → 新しい間取り：magicka_inn 1,3（前は家具・壁）：magicka_inn 2,3 → magicka_inn 2,3（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：magicka_inn 7,1（前も今も床） → magicka_inn 7,1 / magicka_inn 7,1 / magicka_inn 7,1
+OK  新 → 元の間取り：magicka_inn 7,1（前も今も床）：magicka_inn 7,1 → magicka_inn 7,1（floor_wood）
+OK  元 → 新しい間取り：magicka_inn 7,1（前も今も床）：magicka_inn 7,1 → magicka_inn 7,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：magicka_tavern 9,1（前は家具・壁） → magicka_tavern 9,1 / magicka_tavern 9,1 / magicka_tavern 9,1
+OK  新 → 元の間取り：magicka_tavern 9,1（前は家具・壁）：magicka_tavern 9,1 → magicka_tavern 8,1（floor_wood）
+OK  元 → 新しい間取り：magicka_tavern 9,1（前は家具・壁）：magicka_tavern 8,1 → magicka_tavern 8,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：magicka_tavern 12,1（前は家具・壁） → magicka_tavern 12,1 / magicka_tavern 12,1 / magicka_tavern 12,1
+OK  新 → 元の間取り：magicka_tavern 12,1（前は家具・壁）：magicka_tavern 12,1 → magicka_tavern 13,1（floor_wood）
+OK  元 → 新しい間取り：magicka_tavern 12,1（前は家具・壁）：magicka_tavern 13,1 → magicka_tavern 13,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：magicka_tavern 8,1（前も今も床） → magicka_tavern 8,1 / magicka_tavern 8,1 / magicka_tavern 8,1
+OK  新 → 元の間取り：magicka_tavern 8,1（前も今も床）：magicka_tavern 8,1 → magicka_tavern 8,1（floor_wood）
+OK  元 → 新しい間取り：magicka_tavern 8,1（前も今も床）：magicka_tavern 8,1 → magicka_tavern 8,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：frost_inn 3,1（前は家具・壁） → frost_inn 3,1 / frost_inn 3,1 / frost_inn 3,1
+OK  新 → 元の間取り：frost_inn 3,1（前は家具・壁）：frost_inn 3,1 → frost_inn 2,1（floor_wood）
+OK  元 → 新しい間取り：frost_inn 3,1（前は家具・壁）：frost_inn 2,1 → frost_inn 3,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：frost_inn 4,1（前は家具・壁） → frost_inn 4,1 / frost_inn 4,1 / frost_inn 4,1
+OK  新 → 元の間取り：frost_inn 4,1（前は家具・壁）：frost_inn 4,1 → frost_inn 5,1（floor_wood）
+OK  元 → 新しい間取り：frost_inn 4,1（前は家具・壁）：frost_inn 5,1 → frost_inn 5,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：frost_inn 5,1（前も今も床） → frost_inn 5,1 / frost_inn 5,1 / frost_inn 5,1
+OK  新 → 元の間取り：frost_inn 5,1（前も今も床）：frost_inn 5,1 → frost_inn 5,1（floor_wood）
+OK  元 → 新しい間取り：frost_inn 5,1（前も今も床）：frost_inn 5,1 → frost_inn 5,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：tradia_bank 1,4（前は家具・壁） → tradia_bank 1,4 / tradia_bank 1,4 / tradia_bank 1,4
+OK  新 → 元の間取り：tradia_bank 1,4（前は家具・壁）：tradia_bank 1,4 → tradia_bank 2,4（floor_stone）
+OK  元 → 新しい間取り：tradia_bank 1,4（前は家具・壁）：tradia_bank 2,4 → tradia_bank 2,4（floor_stone）
+OK  保存と読み込みの 2 往復で動かない：tradia_bank 14,4（前は家具・壁） → tradia_bank 14,4 / tradia_bank 14,4 / tradia_bank 14,4
+OK  新 → 元の間取り：tradia_bank 14,4（前は家具・壁）：tradia_bank 14,4 → tradia_bank 13,4（floor_stone）
+OK  元 → 新しい間取り：tradia_bank 14,4（前は家具・壁）：tradia_bank 13,4 → tradia_bank 13,4（floor_stone）
+OK  保存と読み込みの 2 往復で動かない：tradia_bank 4,1（前も今も床） → tradia_bank 4,1 / tradia_bank 4,1 / tradia_bank 4,1
+OK  新 → 元の間取り：tradia_bank 4,1（前も今も床）：tradia_bank 4,1 → tradia_bank 4,3（floor_stone）
+OK  元 → 新しい間取り：tradia_bank 4,1（前も今も床）：tradia_bank 4,3 → tradia_bank 4,3（floor_stone）
+OK  保存と読み込みの 2 往復で動かない：harbor_tavern 9,1（前は家具・壁） → harbor_tavern 9,1 / harbor_tavern 9,1 / harbor_tavern 9,1
+OK  新 → 元の間取り：harbor_tavern 9,1（前は家具・壁）：harbor_tavern 9,1 → harbor_tavern 8,1（floor_wood）
+OK  元 → 新しい間取り：harbor_tavern 9,1（前は家具・壁）：harbor_tavern 8,1 → harbor_tavern 8,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：harbor_tavern 12,1（前は家具・壁） → harbor_tavern 12,1 / harbor_tavern 12,1 / harbor_tavern 12,1
+OK  新 → 元の間取り：harbor_tavern 12,1（前は家具・壁）：harbor_tavern 12,1 → harbor_tavern 13,1（floor_wood）
+OK  元 → 新しい間取り：harbor_tavern 12,1（前は家具・壁）：harbor_tavern 13,1 → harbor_tavern 13,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：harbor_tavern 8,1（前も今も床） → harbor_tavern 8,1 / harbor_tavern 8,1 / harbor_tavern 8,1
+OK  新 → 元の間取り：harbor_tavern 8,1（前も今も床）：harbor_tavern 8,1 → harbor_tavern 8,1（floor_wood）
+OK  元 → 新しい間取り：harbor_tavern 8,1（前も今も床）：harbor_tavern 8,1 → harbor_tavern 8,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：sahar_city_x72_house 2,1（前は家具・壁） → sahar_city_x72_house 2,1 / sahar_city_x72_house 2,1 / sahar_city_x72_house 2,1
+OK  新 → 元の間取り：sahar_city_x72_house 2,1（前は家具・壁）：sahar_city_x72_house 2,1 → sahar_city_x72_house 2,2（floor_stone）
+OK  元 → 新しい間取り：sahar_city_x72_house 2,1（前は家具・壁）：sahar_city_x72_house 2,2 → sahar_city_x72_house 2,2（floor_stone）
+OK  保存と読み込みの 2 往復で動かない：sahar_city_x72_house 5,1（前は家具・壁） → sahar_city_x72_house 5,1 / sahar_city_x72_house 5,1 / sahar_city_x72_house 5,1
+OK  新 → 元の間取り：sahar_city_x72_house 5,1（前は家具・壁）：sahar_city_x72_house 5,1 → sahar_city_x72_house 6,1（floor_stone）
+OK  元 → 新しい間取り：sahar_city_x72_house 5,1（前は家具・壁）：sahar_city_x72_house 6,1 → sahar_city_x72_house 6,1（floor_stone）
+OK  保存と読み込みの 2 往復で動かない：sahar_city_x72_house 4,1（前も今も床） → sahar_city_x72_house 4,1 / sahar_city_x72_house 4,1 / sahar_city_x72_house 4,1
+OK  新 → 元の間取り：sahar_city_x72_house 4,1（前も今も床）：sahar_city_x72_house 4,1 → sahar_city_x72_house 4,1（floor_stone）
+OK  元 → 新しい間取り：sahar_city_x72_house 4,1（前も今も床）：sahar_city_x72_house 4,1 → sahar_city_x72_house 4,1（floor_stone）
+OK  保存と読み込みの 2 往復で動かない：node_city_x72_house 3,1（前は家具・壁） → node_city_x72_house 3,1 / node_city_x72_house 3,1 / node_city_x72_house 3,1
+OK  新 → 元の間取り：node_city_x72_house 3,1（前は家具・壁）：node_city_x72_house 3,1 → node_city_x72_house 4,1（floor_stone）
+OK  元 → 新しい間取り：node_city_x72_house 3,1（前は家具・壁）：node_city_x72_house 4,1 → node_city_x72_house 4,1（floor_stone）
+OK  保存と読み込みの 2 往復で動かない：node_city_x72_house 5,1（前は家具・壁） → node_city_x72_house 5,1 / node_city_x72_house 5,1 / node_city_x72_house 5,1
+OK  新 → 元の間取り：node_city_x72_house 5,1（前は家具・壁）：node_city_x72_house 5,1 → node_city_x72_house 6,1（floor_stone）
+OK  元 → 新しい間取り：node_city_x72_house 5,1（前は家具・壁）：node_city_x72_house 6,1 → node_city_x72_house 5,1（floor_stone）
+OK  保存と読み込みの 2 往復で動かない：node_city_x72_house 4,1（前も今も床） → node_city_x72_house 4,1 / node_city_x72_house 4,1 / node_city_x72_house 4,1
+OK  新 → 元の間取り：node_city_x72_house 4,1（前も今も床）：node_city_x72_house 4,1 → node_city_x72_house 4,1（floor_stone）
+OK  元 → 新しい間取り：node_city_x72_house 4,1（前も今も床）：node_city_x72_house 4,1 → node_city_x72_house 4,1（floor_stone）
+OK  保存と読み込みの 2 往復で動かない：ruins_post 14,2（前は家具・壁） → ruins_post 14,2 / ruins_post 14,2 / ruins_post 14,2
+OK  新 → 元の間取り：ruins_post 14,2（前は家具・壁）：ruins_post 14,2 → ruins_post 13,2（floor_wood）
+OK  元 → 新しい間取り：ruins_post 14,2（前は家具・壁）：ruins_post 13,2 → ruins_post 13,2（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：ruins_post 14,3（前は家具・壁） → ruins_post 14,3 / ruins_post 14,3 / ruins_post 14,3
+OK  新 → 元の間取り：ruins_post 14,3（前は家具・壁）：ruins_post 14,3 → ruins_post 13,3（floor_wood）
+OK  元 → 新しい間取り：ruins_post 14,3（前は家具・壁）：ruins_post 13,3 → ruins_post 14,3（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：ruins_post 8,1（前も今も床） → ruins_post 8,1 / ruins_post 8,1 / ruins_post 8,1
+OK  新 → 元の間取り：ruins_post 8,1（前も今も床）：ruins_post 8,1 → ruins_post 8,1（floor_wood）
+OK  元 → 新しい間取り：ruins_post 8,1（前も今も床）：ruins_post 8,1 → ruins_post 8,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：a3_ruins_keeper 3,1（前は家具・壁） → a3_ruins_keeper 3,1 / a3_ruins_keeper 3,1 / a3_ruins_keeper 3,1
+OK  新 → 元の間取り：a3_ruins_keeper 3,1（前は家具・壁）：a3_ruins_keeper 3,1 → a3_ruins_keeper 3,2（floor_wood）
+OK  元 → 新しい間取り：a3_ruins_keeper 3,1（前は家具・壁）：a3_ruins_keeper 3,2 → a3_ruins_keeper 3,2（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：a3_ruins_keeper 9,1（前は家具・壁） → a3_ruins_keeper 9,1 / a3_ruins_keeper 9,1 / a3_ruins_keeper 9,1
+OK  新 → 元の間取り：a3_ruins_keeper 9,1（前は家具・壁）：a3_ruins_keeper 9,1 → a3_ruins_keeper 9,2（floor_wood）
+OK  元 → 新しい間取り：a3_ruins_keeper 9,1（前は家具・壁）：a3_ruins_keeper 9,2 → a3_ruins_keeper 9,2（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：a3_ruins_keeper 5,1（前も今も床） → a3_ruins_keeper 5,1 / a3_ruins_keeper 5,1 / a3_ruins_keeper 5,1
+OK  新 → 元の間取り：a3_ruins_keeper 5,1（前も今も床）：a3_ruins_keeper 5,1 → a3_ruins_keeper 5,1（floor_wood）
+OK  元 → 新しい間取り：a3_ruins_keeper 5,1（前も今も床）：a3_ruins_keeper 5,1 → a3_ruins_keeper 5,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：aruna_ruins_x72_hall 9,1（前は家具・壁） → aruna_ruins_x72_hall 9,1 / aruna_ruins_x72_hall 9,1 / aruna_ruins_x72_hall 9,1
+OK  新 → 元の間取り：aruna_ruins_x72_hall 9,1（前は家具・壁）：aruna_ruins_x72_hall 9,1 → aruna_ruins_x72_hall 8,1（floor_wood）
+OK  元 → 新しい間取り：aruna_ruins_x72_hall 9,1（前は家具・壁）：aruna_ruins_x72_hall 8,1 → aruna_ruins_x72_hall 8,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：aruna_ruins_x72_hall 11,1（前は家具・壁） → aruna_ruins_x72_hall 11,1 / aruna_ruins_x72_hall 11,1 / aruna_ruins_x72_hall 11,1
+OK  新 → 元の間取り：aruna_ruins_x72_hall 11,1（前は家具・壁）：aruna_ruins_x72_hall 11,1 → aruna_ruins_x72_hall 11,2（floor_wood）
+OK  元 → 新しい間取り：aruna_ruins_x72_hall 11,1（前は家具・壁）：aruna_ruins_x72_hall 11,2 → aruna_ruins_x72_hall 11,2（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：aruna_ruins_x72_hall 8,1（前も今も床） → aruna_ruins_x72_hall 8,1 / aruna_ruins_x72_hall 8,1 / aruna_ruins_x72_hall 8,1
+OK  新 → 元の間取り：aruna_ruins_x72_hall 8,1（前も今も床）：aruna_ruins_x72_hall 8,1 → aruna_ruins_x72_hall 8,1（floor_wood）
+OK  元 → 新しい間取り：aruna_ruins_x72_hall 8,1（前も今も床）：aruna_ruins_x72_hall 8,1 → aruna_ruins_x72_hall 8,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：kalion_inn 1,3（前は家具・壁） → kalion_inn 1,3 / kalion_inn 1,3 / kalion_inn 1,3
+OK  新 → 元の間取り：kalion_inn 1,3（前は家具・壁）：kalion_inn 1,3 → kalion_inn 2,3（floor_wood）
+OK  元 → 新しい間取り：kalion_inn 1,3（前は家具・壁）：kalion_inn 2,3 → kalion_inn 2,3（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：kalion_inn 14,5（前は家具・壁） → kalion_inn 14,5 / kalion_inn 14,5 / kalion_inn 14,5
+OK  新 → 元の間取り：kalion_inn 14,5（前は家具・壁）：kalion_inn 14,5 → kalion_inn 13,5（carpet）
+OK  元 → 新しい間取り：kalion_inn 14,5（前は家具・壁）：kalion_inn 13,5 → kalion_inn 13,5（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：kalion_inn 11,1（前も今も床） → kalion_inn 11,1 / kalion_inn 11,1 / kalion_inn 11,1
+OK  新 → 元の間取り：kalion_inn 11,1（前も今も床）：kalion_inn 11,1 → kalion_inn 11,1（floor_wood）
+OK  元 → 新しい間取り：kalion_inn 11,1（前も今も床）：kalion_inn 11,1 → kalion_inn 11,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：dow_inn 3,1（前は家具・壁） → dow_inn 3,1 / dow_inn 3,1 / dow_inn 3,1
+OK  新 → 元の間取り：dow_inn 3,1（前は家具・壁）：dow_inn 3,1 → dow_inn 2,1（floor_wood）
+OK  元 → 新しい間取り：dow_inn 3,1（前は家具・壁）：dow_inn 2,1 → dow_inn 3,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：dow_inn 4,1（前は家具・壁） → dow_inn 4,1 / dow_inn 4,1 / dow_inn 4,1
+OK  新 → 元の間取り：dow_inn 4,1（前は家具・壁）：dow_inn 4,1 → dow_inn 5,1（floor_wood）
+OK  元 → 新しい間取り：dow_inn 4,1（前は家具・壁）：dow_inn 5,1 → dow_inn 5,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：dow_inn 5,1（前も今も床） → dow_inn 5,1 / dow_inn 5,1 / dow_inn 5,1
+OK  新 → 元の間取り：dow_inn 5,1（前も今も床）：dow_inn 5,1 → dow_inn 5,1（floor_wood）
+OK  元 → 新しい間取り：dow_inn 5,1（前も今も床）：dow_inn 5,1 → dow_inn 5,1（floor_wood）
+OK  保存と読み込みの 2 往復で動かない：rivel_castle_approach 32,40（v8.2 の新しい地図） → rivel_castle_approach 32,40 / rivel_castle_approach 32,40 / rivel_castle_approach 32,40
+OK  新 → 元の間取り：rivel_castle_approach 32,40（v8.2 の新しい地図）：rivel_castle_approach 32,40 → rivel_castle_approach 32,40（path_stone）
+OK  元 → 新しい間取り：rivel_castle_approach 32,40（v8.2 の新しい地図）：rivel_castle_approach 32,40 → rivel_castle_approach 32,40（path_stone）
+OK  保存と読み込みの 2 往復で動かない：sentra_palace_approach 30,38（v8.2 の新しい地図） → sentra_palace_approach 30,38 / sentra_palace_approach 30,38 / sentra_palace_approach 30,38
+OK  新 → 元の間取り：sentra_palace_approach 30,38（v8.2 の新しい地図）：sentra_palace_approach 30,38 → sentra_palace_approach 30,38（path_stone）
+OK  元 → 新しい間取り：sentra_palace_approach 30,38（v8.2 の新しい地図）：sentra_palace_approach 30,38 → sentra_palace_approach 30,38（path_stone）
+OK  保存と読み込みの 2 往復で動かない：magicka_palace_approach 28,36（v8.2 の新しい地図） → magicka_palace_approach 28,36 / magicka_palace_approach 28,36 / magicka_palace_approach 28,36
+OK  新 → 元の間取り：magicka_palace_approach 28,36（v8.2 の新しい地図）：magicka_palace_approach 28,36 → magicka_palace_approach 28,36（path_stone）
+OK  元 → 新しい間取り：magicka_palace_approach 28,36（v8.2 の新しい地図）：magicka_palace_approach 28,36 → magicka_palace_approach 28,36（path_stone）
+OK  保存と読み込みの 2 往復で動かない：vol_main_hall 14,12（v8.2 の新しい地図） → vol_main_hall 14,12 / vol_main_hall 14,12 / vol_main_hall 14,12
+OK  新 → 元の間取り：vol_main_hall 14,12（v8.2 の新しい地図）：vol_main_hall 14,12 → vol_main_hall 14,12（carpet）
+OK  元 → 新しい間取り：vol_main_hall 14,12（v8.2 の新しい地図）：vol_main_hall 14,12 → vol_main_hall 14,12（carpet）
+OK  保存と読み込みの 2 往復で動かない：vol_upper_gallery 10,6（v8.2 の新しい地図） → vol_upper_gallery 10,6 / vol_upper_gallery 10,6 / vol_upper_gallery 10,6
+OK  新 → 元の間取り：vol_upper_gallery 10,6（v8.2 の新しい地図）：vol_upper_gallery 10,6 → vol_upper_gallery 10,6（floor_stone）
+OK  元 → 新しい間取り：vol_upper_gallery 10,6（v8.2 の新しい地図）：vol_upper_gallery 10,6 → vol_upper_gallery 10,6（floor_stone）
+OK  保存と読み込みの 2 往復で動かない：vol_great_hall 13,10（v8.2 の新しい地図） → vol_great_hall 13,10 / vol_great_hall 13,10 / vol_great_hall 13,10
+OK  新 → 元の間取り：vol_great_hall 13,10（v8.2 の新しい地図）：vol_great_hall 13,10 → vol_great_hall 13,10（floor_stone）
+OK  元 → 新しい間取り：vol_great_hall 13,10（v8.2 の新しい地図）：vol_great_hall 13,10 → vol_great_hall 13,10（floor_stone）
+新しい間取りの窓で書いたキー ["mochipoyo_playlog_v1","mtq-rpg-v2-layout-backup76","mtq-rpg-v2-slot-0","mtq-rpg-v2-slot-1"] ／元の間取りの窓 ["mtq-rpg-v2-slot-0","mtq-rpg-v2-slot-1"]
+OK  切り替えの印（mtq-layout）は、読み込みや保存では書かない（設定の画面で人が切り替えたときだけ）
+結果：すべて OK（42 か所）

@@ -7,12 +7,12 @@ const load = require('../v78/load78.js');
 const args = process.argv.slice(2); const two = args.includes('2d'); const doWalk = args.includes('walk'); const only = (args.find((a) => /,|_/.test(a) && a !== '2d' && a !== 'walk') || '').split(',').filter(Boolean);
 const A = load(two ? { earth: false, join: false } : {}); const w = A.w; const W = w.World, S = w.State;
 w.Win.message = async () => { }; w.Win.toast = () => { }; w.Win.choice = async () => 0; if (w.Win.confirm) w.Win.confirm = async () => true; if (w.Win.ask) w.Win.ask = async () => true;
-S.newGame('t', 'warrior'); const d = S.data; ['s3121_new_prologue', 'ship_ready', 'sevran_fallen'].forEach((f) => d.flags[f] = true); d.flags.s3121_prologue_phase = 'done';
+S.newGame('t', 'warrior'); const d = S.data; ['s3121_new_prologue', 'ship_ready', 'sevran_fallen'].concat((process.env.FLAGS || '').split(',').filter(Boolean)).forEach((f) => d.flags[f] = true); d.flags.s3121_prologue_phase = 'done';   // FLAGS=a,b：物語の鍵（例 palace_open）を開けた状態でも確かめる
 W.start(); W.encounter = () => { };
 const D = w.MAP_DEFS; const ng = []; let okN = 0, checks = 0;
 const NEW = Object.keys(D).filter((k) => D[k].castle82 || D[k].academy82);
 const scope = only.length ? only : Array.from(new Set(Object.keys(w.Layout82.owner).concat(NEW).concat(['rivel_town', 'sentra_capital', 'magicka_city', 'volatilia']))).filter((k) => D[k]);
-const passAt = (m, x, y) => x >= 0 && y >= 0 && x < m.w && y < m.h && m.passable(x, y, d) && !m.npcAt(x, y) && !(m.eventAt(x, y) && m.eventAt(x, y).solid);
+const passAt = (m, x, y) => x >= 0 && y >= 0 && x < m.w && y < m.h && m.passable(x, y, d) && !m.npcAt(x, y);   // 通れない出来事（鍵の扉など）は m.passable が見る（開けた印 doneFlag があれば通れる。ゲームと同じ）
 function reach(m, sx, sy) { const seen = {}; const q = [[sx, sy]]; seen[sx + ',' + sy] = 1; while (q.length) { const [x, y] = q.shift(); for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = x + dx, ny = y + dy, k = nx + ',' + ny; if (seen[k]) continue; const wp = m.warpAt(nx, ny); if (!(wp || passAt(m, nx, ny))) continue; seen[k] = 1; if (!wp) q.push([nx, ny]); } } return seen; }
 function go(q) { if (q.needFlag) d.flags[q.needFlag] = true; W.busy = false; W.enterMap(q.to, q.tx, q.ty, q.face || 'down', q.raw ? { raw: true } : undefined); return { id: W.map.id, x: W.player.x, y: W.player.y }; }
 const isOutside = (id) => { const t = D[id]; return !!(t && (t.region || t.kind === 'field')); };

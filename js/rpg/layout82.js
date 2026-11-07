@@ -17,6 +17,9 @@
   var D = root.MAP_DEFS, TL = root.Tiles, MR = root.MapRemake;
   if (!D || !TL || !MR) return;
   var L = root.Layout82 = { VERSION: 1, maps: {}, skipped: {}, errors: [], owner: {}, role: {}, via: {} };
+  // 設定「元の間取り」（localStorage 'mtq-layout'＝'off'・URL ?layout=off。js/rpg/envlayout.js と同じ切り替え）では、v8.2 の間取りも使わない（部屋の所属・用途だけ調べる）。
+  // そのとき、新しい間取りで書かれたセーブ（remakeVer が 'l82.1' を含む版）は、座標はそのまま（部屋の大きさは同じ）で、元の間取りの歩けるマスへ（rollback）
+  L.off = !!(root.EnvLayout && root.EnvLayout.enabled === false); L.backVer = {};
   var EXCLUDE = { poyo_elder_house: 1, poyo_inn: 1, poyo_church: 1, kalion_finance: 1, sentra_palace_1: 1, ruins_store: 1, aruna_ruins_1: 1, oracle_core_1: 1, memory_vault: 1, rivel_wave_temple: 1, tradia_foundation: 1, asana_home: 1,
     tradia_exchange: 1, tradia_arena: 1, tradia_levex: 1, luxbell_casino: 1 };
   var nameOf = function (def, c) { return TL.byChar[c] || def.fallback || 'grass'; };
@@ -410,6 +413,7 @@
       else if (/^castle/.test(L.role[id].role)) why = '城（別の作り方）'; else if (MR.maps[id] && MR.maps[id].kind !== 'interior76') why = 'ほかの作り直しの地図';
       else if (def.rows[0].length > 30 || def.rows.length > 20) why = '大きい部屋（専用の作り方）';
       if (why) { L.skipped[id] = why; return; }
+      if (L.off) { var pv = MR.maps[id]; L.backVer[id] = { on: (pv ? pv.version + '+' : '') + 'l82.' + L.VERSION, base: pv ? pv.version : undefined }; L.skipped[id] = '元の間取り（設定）'; return; }
       try {
         var flav = FLAVOR[O.own[id]] || {};
         var r = plan(id, def, { role: L.role[id].role, sub: L.role[id].sub, town: O.own[id] }, flav);
@@ -425,5 +429,14 @@
       } catch (e) { L.errors.push(id + '：' + (e && e.message)); }
     });
   };
+  // 元の間取りへ戻したとき：新しい間取りで書かれたセーブを、元の間取りの版へ（MapRemake.migrate の前に）
+  L.rollback = function (d) {
+    if (!d || !d.remakeVer) return 0; var n = 0;
+    Object.keys(L.backVer).forEach(function (id) { var b = L.backVer[id]; if (d.remakeVer[id] !== b.on) return;
+      if (b.base === undefined) delete d.remakeVer[id]; else d.remakeVer[id] = b.base;
+      if (d.pos && d.pos.map === id) { var p = freeNearFor(id)(d.pos.x, d.pos.y); d.pos.x = p.x; d.pos.y = p.y; } n++; });
+    return n;
+  };
   L.apply();
+  if (L.off) { var mig0 = MR.migrate; MR.migrate = function (d) { try { L.rollback(d); } catch (e) { L.errors.push('rollback：' + (e && e.message)); } return mig0.apply(this, arguments); }; }
 })(typeof window !== 'undefined' ? window : globalThis);

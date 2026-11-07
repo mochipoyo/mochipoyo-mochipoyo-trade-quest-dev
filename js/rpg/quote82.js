@@ -37,5 +37,5 @@
     last = { key: key, version: key + (demo ? ':demo' : ''), day: tm.day, sub: tm.sub, demo: demo, label: demo ? Q.DEMO_LABEL : Q.LABEL, note: Q.NOTE, items: items };
     return last;
   };
-  Q.fmt = function (it) { var p = it.price.toFixed(it.dec); var c = (it.chg >= 0 ? '▲' : '▼') + Math.abs(it.chg).toFixed(it.dec); return { name: it.name, price: p, chg: c, up: it.chg >= 0 }; };
+  Q.fmt = function (it) { var p = it.price.toFixed(it.dec); var c = (it.chg >= 0 ? '▲+' : '▼−') + Math.abs(it.chg).toFixed(it.dec);   // 色だけでなく矢印と符号でも上げ下げが分かる return { name: it.name, price: p, chg: c, up: it.chg >= 0 }; };
 })(typeof window !== 'undefined' ? window : globalThis);

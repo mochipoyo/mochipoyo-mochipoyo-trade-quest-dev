@@ -513,7 +513,7 @@
       if (i === 19) { st.ultFx = st.ultFx === 'calm' ? 'normal' : 'calm'; }
       if (i === 20) { st.enemyHpBar = st.enemyHpBar === 'on' ? 'off' : 'on'; Win.toast(st.enemyHpBar === 'on' ? '敵のHPバー：表示する' : '敵のHPバー：表示しない'); }
       if (i === 21 && root.EnvLayout) {   // v7.6 間取りの切り替え：2D版・3D版の両方。マップを作り直すので、再読み込みで反映する
-        var lon = !root.EnvLayout.enabled; var lc = await Win.choice((lon ? '新しい間取り（町の通り・広場、ダンジョンの広間）' : '元の間取り') + 'に切り替える？ 2D版・3D版の両方に効く。ページの再読み込みで反映する（オートセーブから再開できる。立ち位置が塞がっていれば近くの通れる所へ移る）', ['切り替えて再読み込み', 'やめる']);
+        var lon = !root.EnvLayout.enabled; var lc = await Win.choice((lon ? '新しい間取り（町の通り・広場、ダンジョンの広間、建物の中の用途ごとの間取り）' : '元の間取り') + 'に切り替える？ 2D版・3D版の両方に効く。ページの再読み込みで反映する（オートセーブから再開できる。立ち位置が塞がっていれば近くの通れる所へ移る）', ['切り替えて再読み込み', 'やめる']);
         if (lc === 0) { root.EnvLayout.setEnabled(lon); State.autosave(); try { root.location.reload(); } catch (e) { /* 再読み込みできない環境 */ } }
       }
       State.autosave();
