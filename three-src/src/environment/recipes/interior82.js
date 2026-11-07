@@ -40,10 +40,14 @@ async function build(ctx, th, b) {
   const walk = (x, z) => walkish(x, z) && !window.Tiles.isSolid(T(x, z));
   const r = rng(W * 7919 + H * 104729 + th.key.length * 31);
   const scene = ctx.scene; const lamps = scene.lampSpots; const stats = { walls: 0, part: 0, windows: 0, decor: 0, sconce: 0, ceil: 0, rugs: 0 };
-  const broken = /ruin|raid/.test(th.state || '') || th.furn === 'rotten';
+  const broken = (/ruin|raid/.test(th.state || '') || th.furn === 'rotten' || th.key === 'aruna_ruins') && !th.survivor;
   // 部屋の内側の箱（外の壁の内側）
   let ix0 = W, iz0 = H, ix1 = -1, iz1 = -1; for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) if (walkish(x, z) && T(x, z) !== 'door') { if (x < ix0) ix0 = x; if (z < iz0) iz0 = z; if (x > ix1) ix1 = x; if (z > iz1) iz1 = z; }
   const inner = (x, z) => x >= ix0 && x <= ix1 && z >= iz0 && z <= iz1;
+  // 間仕切りとして作る壁：v8.2 の間取りで足した壁と、小さな部屋の中の壁。大きな部屋（迷路の塔など）の中の壁は、ふつうの壁
+  const L82 = map.def && map.def._l82; const small = W <= 18 && H <= 12; const partSet = new Set();
+  if (L82 && L82.old) for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) if (map.def.rows[z][x] === '#' && L82.old[z][x] !== '#') partSet.add(x + ',' + z);
+  const isPart = (x, z) => inner(x, z) && (small || partSet.has(x + ',' + z));
   const WH = th.state === 'raid' || th.state === 'ruins' ? 2.3 : /canvas/.test(th.wall.kind) ? 2.2 : /marble|ashlar_arch|glass_curve/.test(th.wall.kind) ? 2.8 : 2.5;   // 壁の高さ
   const body = wallTex(th.wall.kind, th.wall.c1, th.wall.c2, { pattern: th.wall.pattern, soot: th.wall.soot, lath: th.wall.lath });
   const extM = th.wall.ext ? wallTex(th.wall.ext.kind, th.wall.ext.c1, th.wall.ext.c2, { soot: th.wall.ext.soot }) : null;   // 手前の低い壁（外から見える面）
@@ -62,7 +66,7 @@ async function build(ctx, th, b) {
     if (!isWall(x, z)) continue;
     const nb8 = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]]; if (!nb8.some(([dx, dz]) => walkish(x + dx, z + dz))) continue;
     const cx = x + 0.5, cz = z + 0.5;
-    if (inner(x, z)) { partition(x, z); continue; }
+    if (isPart(x, z)) { partition(x, z); continue; }
     const front = walkish(x, z - 1) && !walkish(x, z + 1);
     let h = front ? 0.7 : WH;
     if (broken && !front) { const k = Math.sin(x * 2.3 + z * 1.7) * 0.5 + 0.5; h = WH - (k > 0.62 ? 0.4 + k * 0.7 : k * 0.25); }
@@ -96,6 +100,10 @@ async function build(ctx, th, b) {
     if (k === 1 && !blocked && th.win.kind !== 'none') { windowAt(cx, fz, h, 'back'); reserved.add(x + ',' + z); return; }
     if (k === 3) { if (sconce(cx, fz + 0.0, 'z', h)) return; }
     if (k === 2 || (k === 3 && blocked)) { wallItem(cx, fz, h, x, blocked); return; }
+    if (th.role === 'clock' && k === 0 && !blocked && (x - ix0) % 8 === 0) {   // 時計塔：止まった大きな文字盤（割れて、針が下がったまま）
+      const gm = M('#6a5a40', { r: 0.55, m: 0.6 }); add(gm, new THREE.TorusGeometry(0.62, 0.06, 6, 28, Math.PI * 1.6).rotateZ(0.4).translate(cx, h - 0.85, fz + 0.06)); add(M('#d8ccb0', { r: 0.9 }), new THREE.CircleGeometry(0.58, 24, 0.5, Math.PI * 1.5).translate(cx, h - 0.85, fz + 0.03));
+      for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; add(M('#2a2420'), B(0.04, 0.1, 0.01, cx + Math.cos(a) * 0.48, h - 0.85 + Math.sin(a) * 0.48, fz + 0.045)); }
+      add(M('#2a2420', { r: 0.5, m: 0.5 }), new THREE.BoxGeometry(0.04, 0.42, 0.02).translate(0, -0.21, 0).rotateZ(0.15).translate(cx, h - 0.85, fz + 0.06)); add(M('#2a2420', { r: 0.5, m: 0.5 }), new THREE.BoxGeometry(0.03, 0.3, 0.02).translate(0, -0.15, 0).rotateZ(-0.4).translate(cx, h - 0.85, fz + 0.065)); stats.decor++; return; }
     if (th.wall.tapestry && k === 0 && !blocked) { add(M(th.wall.tapestry, { r: 0.95, ds: true }), B(0.6, 1.3, 0.015, cx, h - 0.95, fz + 0.012)); add(M('#c8a060', { r: 0.4, m: 0.6 }), B(0.66, 0.04, 0.04, cx, h - 0.28, fz + 0.03)); add(M('#c8a060', { r: 0.6 }), B(0.2, 0.2, 0.017, cx, h - 0.9, fz + 0.02)); stats.decor++; }
   }
   function sideFace(x, z, dx, fx, cz, h) {

@@ -8,6 +8,12 @@
 import * as THREE from 'three';
 import { MapScene3D } from '../world/MapScene3D.js';
 import { Env } from '../environment/Env.js';
+import { TickerRing } from '../world/Ticker82.js';
+import { buildCastle82 } from '../world/Castle82.js';
+// v8.2 浮天城アエリア：アエリアの地域の上の空に、浮く白い城の大きな輪郭（地球全体の座標で 1 つ。海の上から見える）
+export const AERIA82 = { lon: -152, lat: 21, y: 9, w: 20, d: 10, far: 110 };
+// v8.2 アズール大洋の中央の巨大な円形ティックテープ：地球全体の座標で 1 つだけ（地図の区画には入れない＝区画の境で消えない・増えない・飛ばない）。東西の一周はいまの地図から近い側
+export const OCEAN82 = { lon: -145, lat: 5, radius: 8.5, band: 2.2, y: 6, repeat: 3, speed: 0.015, far: 150 };   // 半径：提案の 20〜28 では、船のいつものカメラ（見える範囲は横 約 36・縦 約 24 マス）にリング全体が入らないため 8.5（docs/arch82/REPORT82.md）
 
 const NEAR = 48, DROP = 72, MAXSHOWN = 8, WALL = 44;   // WALL：霧・嵐の壁を出す距離
 let mistTex = null, stormTex = null;
@@ -63,11 +69,33 @@ export class Join76 {
       if (!mesh) { const len = Math.max(Math.abs(w.x1 - w.x0), Math.abs(w.z1 - w.z0)); const hh = w.kind === 'storm' ? 14 : 9; mesh = new THREE.Mesh(new THREE.PlaneGeometry(len, hh, 1, 1), w.kind === 'storm' ? stormMat : mistMat); mesh.renderOrder = 5; mesh.name = 'join76_' + k; mesh.userData.h = hh; if (w.x0 === w.x1) mesh.rotation.y = Math.PI / 2; a.scene.add(mesh); this.walls.set(k, mesh); }
       mesh.position.set((w.x0 + w.x1) / 2 - o0.x, mesh.userData.h * 0.38, (w.z0 + w.z1) / 2 - o0.y); }
   }
-  clear() { const a = this.app; for (const [, e] of this.shown) if (e.ms !== a.current) a.scene.remove(e.ms.root); this.shown.clear(); for (const [, mesh] of this.walls) { a.scene.remove(mesh); mesh.geometry.dispose(); } this.walls.clear(); }
+  // 世界の座標（マス）→ いまの地図の座標。東西の一周は近い側
+  ocean82() {
+    const a = this.app; const W76 = this.W76(); const L = window.EARTH78_LAYOUT; if (!W76 || !L || !W76.earth || !this.active()) { this.oceanOff(); return; }
+    const o0 = W76.origin(a.current.map.id); const gx = L.xOf(OCEAN82.lon), gz = L.yOf(OCEAN82.lat); const dx = W76.dxWrap ? W76.dxWrap(gx - o0.x - a.pos.x) : gx - o0.x - a.pos.x; const rx = a.pos.x + dx, rz = gz - o0.y;
+    const dist = Math.hypot(dx, rz - a.pos.z); if (dist > OCEAN82.far + (this.ocean ? 20 : 0)) { this.oceanOff(); return; }   // 出し入れの境に少し幅（行ったり来たりで作り直さない）
+    if (!this.ocean) { this.ocean = new TickerRing({ radius: OCEAN82.radius, band: OCEAN82.band, y: OCEAN82.y, repeat: OCEAN82.repeat, speed: OCEAN82.speed, seg: 128, big: true, cutout: false }); this.ocean.group.name = 'ticker82_ocean'; this.oceanBuilt = (this.oceanBuilt || 0) + 1; }
+    if (!this.ocean.group.parent) a.scene.add(this.ocean.group);
+    this.ocean.group.position.set(rx, 0, rz); this.ocean.group.children.forEach((c) => { if (c.name === 'ticker82_inner' || c.geometry === this.ocean.tg) c.visible = dist < 90; });   // 遠い：外の帯だけ（遠方の簡略）
+    this.oceanDist = dist;
+  }
+  oceanOff() { if (this.ocean) { this.ocean.dispose(); this.ocean = null; } }
+  aeria82() {
+    const a = this.app; const W76 = this.W76(); const L = window.EARTH78_LAYOUT; if (!W76 || !L || !W76.earth || !this.active()) { this.aeriaOff(); return; }
+    const o0 = W76.origin(a.current.map.id); const gx = L.xOf(AERIA82.lon), gz = L.yOf(AERIA82.lat); const dx = W76.dxWrap ? W76.dxWrap(gx - o0.x - a.pos.x) : gx - o0.x - a.pos.x; const rz = gz - o0.y; const dist = Math.hypot(dx, rz - a.pos.z);
+    if (dist > AERIA82.far + (this.aeria ? 20 : 0)) { this.aeriaOff(); return; }
+    if (!this.aeria) { const c = buildCastle82('aeria', { w: AERIA82.w, d: AERIA82.d, seed: 512 }); this.aeria = c.group; this.aeria.name = 'aeria82_sky'; }
+    if (!this.aeria.parent) a.scene.add(this.aeria);
+    this.aeria.position.set(a.pos.x + dx - AERIA82.w / 2, AERIA82.y + Math.sin(performance.now() / 2400) * 0.3, rz - AERIA82.d / 2); this.aeriaDist = dist;
+  }
+  aeriaOff() { if (this.aeria) { if (this.aeria.parent) this.aeria.parent.remove(this.aeria); this.aeria.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); this.aeria = null; } }
+  oceanInfo() { const o = this.ocean; return o ? Object.assign({ x: +o.group.position.x.toFixed(2), z: +o.group.position.z.toFixed(2), dist: +(this.oceanDist || 0).toFixed(1), built: this.oceanBuilt, inScene: !!o.group.parent }, o.info()) : { none: true, built: this.oceanBuilt || 0 }; }
+  clear() { const a = this.app; this.oceanOff(); this.aeriaOff(); for (const [, e] of this.shown) if (e.ms !== a.current) a.scene.remove(e.ms.root); this.shown.clear(); for (const [, mesh] of this.walls) { a.scene.remove(mesh); mesh.geometry.dispose(); } this.walls.clear(); }
   keeps(id) { return this.shown.has(id) || this.building === id; }
   // 毎フレーム：並べた地図の水面の動き・遠近の切り替え。ときどき：近い地図を組み立てる・遠いものを外す
   update(dt, t, now) {
-    const a = this.app; if (!this.active()) { if (this.shown.size || this.walls.size) this.clear(); return; }
+    const a = this.app; if (!this.active()) { if (this.shown.size || this.walls.size || this.ocean || this.aeria) this.clear(); return; }
+    try { this.ocean82(); if (this.ocean) this.ocean.update(t); this.aeria82(); } catch (e) { if (!this.oceanErr) { this.oceanErr = String(e && e.message || e); console.warn('ocean82', e); } }
     for (const [, e] of this.shown) { const w = e.ms.world; if (w) { w.update(t); if (w.updateLod) w.updateLod({ x: a.pos.x - e.nb.dx, y: a.pos.y, z: a.pos.z - e.nb.dy }); } }
     if (now - this.lastCheck < 700) return; this.lastCheck = now;
     this.layout();

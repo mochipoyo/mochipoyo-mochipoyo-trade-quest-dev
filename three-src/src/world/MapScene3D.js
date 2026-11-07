@@ -11,6 +11,8 @@ import { BuildingBuilder3D, bdetailSetting } from './BuildingBuilder3D.js';
 import { buildWallGates } from './WallGate3D.js';
 import { buildLairGates } from './LairGate3D.js';
 import { buildFurniture81 } from './Furniture81.js';
+import { buildTicker82 } from './Ticker82.js';
+import { buildGate82, buildBackdrop82 } from './Castle82.js';
 import { buildArcades81 } from './Arcade81.js';
 import { buildCrests81 } from './Crest81.js';
 import { dressMob } from '../entities/MobDress76.js';
@@ -79,6 +81,7 @@ export class MapScene3D {
           const dy = bdy(b); const bat = dy ? liftBatch(shared, dy) : shared;
           let o = null; if (b.type === 'elevator') { try { o = buildElevatorTower(b, map, textTexture); } catch (e) { o = null; console.warn('elevator', e); } }   // v7.1 空の区画へのエレベーター
           if (!o && b.type === 'watchtower') { try { o = buildTower3D(b); } catch (e) { o = null; console.warn('tower72', e); } }   // v7.2 新しい地区の塔
+          if (!o && b.gate82) { try { o = buildGate82(b.gate82, b); } catch (e) { o = null; console.warn('gate82', e); } }   // v8.2 城下町の側の城門（楼門）：扉の先は城郭区画（js/data/castle82.js）
           if (!o && rx && rx.building) { try { o = await rx.building(b, { bb, rnd, batch: bat, design, theme }); } catch (e) { const err = new Error('環境レシピの建物に失敗 ' + map.id + ' ' + b.id + '：' + (e && e.message)); err.envRecipe = true; throw err; } }   // v7.6 レシピの建物（用途・地域ごとの形）。近未来の町の汎用の建物より先
           if (!o && modern) { try { o = buildModernBuilding(b, modern, textTexture); } catch (e) { o = null; console.warn('modern building', e); } }
           if (!o) o = await bb.build(b, rnd, { batch: bat, design, theme }); bgroup.add(o.group);
@@ -166,6 +169,8 @@ export class MapScene3D {
       this.placeNpc(ch, 0, true);
     }
     this.addFx(map);   // v6.9 マップの炎・煙（2D のマップ定義 def.fx3d：襲撃の夜のアサナ村）
+    try { buildTicker82(this); } catch (e) { console.warn('ticker82', e); }
+    try { buildBackdrop82(this); } catch (e) { console.warn('backdrop82', e); }   // v8.2 城下町・城の門前から見える大きな城の遠景   // v8.2 円形ティックテープ（トレディアの広場・証券市場）
     app.lighting.registerScene(this.root);
     this.buildMs = Math.round(performance.now() - t0);
     return this;
@@ -447,6 +452,7 @@ export class MapScene3D {
 
   // 使わなくなった場面の解放（共有のモデル形状・マテリアルは残す）
   dispose() {
+    (this.disposers || []).forEach((f) => { try { f(); } catch (e) { /* なし */ } }); this.disposers = [];   // v8.2 円形ティックテープなど（画像・材質）
     this.clearWarpMarks();   // v7.0 出入口の目印（文字の絵・形）
     if (this.quizSyms) this.quizSyms.forEach((o) => { o.texs.forEach((tx) => tx.dispose()); o.qtex.dispose(); o.ring.geometry.dispose(); o.ring.material.dispose(); });
     this.root.traverse((o) => {

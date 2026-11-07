@@ -25,6 +25,7 @@ import { battleLayout, partyStyle } from '../battle/BattleActors3D.js';
 import * as PartyDir from '../battle/PartyDirections.js';
 import { Env } from '../environment/Env.js';
 import { Join76 } from './Join76.js';
+import { cameraZone82 } from '../world/Castle82.js';
 import { Effects78 } from '../world/Effects78.js';
 import { Carriage3D } from '../world/Carriage3D.js';
 
@@ -615,6 +616,7 @@ export class App3D {
     if (!this.aboardNow) this.updateFollowers(dt); else if (this.followers) this.followers.forEach((ent) => { if (ent.ch) ent.ch.root.visible = false; });
     this.current.update(dt, t, this.pos);
     this.join.update(dt, t, now);   // v7.6 となりの地域（水面の動き・先に組み立てる・遠いものを外す）
+    try { this.camera.zone = cameraZone82(this.current, this.pos); } catch (e) { this.camera.zone = null; }   // v8.2 城郭区画・城下町の城門の前：カメラを少し起こして城の輪郭を見せる（Castle82.js）
     if (this.current.interior && this.current.bounds) {   // 屋内：部屋全体が入るよう、部屋の中心寄りに見る
       const b = this.current.bounds; const cx = (b.x0 + b.x1) / 2, cz = (b.z0 + b.z1) / 2 - 0.4;
       this._focus = this._focus || new THREE.Vector3(); this._focus.set(cx + (this.pos.x - cx) * 0.35, 0, cz + (this.pos.z - cz) * 0.35);

@@ -52,6 +52,8 @@
     var t = (b && b.type) || ''; var n = def.name || ''; var sub = null;
     SUBS.some(function (s) { if (s[0].test(n)) { sub = s[1]; return true; } return false; });
     var r;
+    if (/時計塔/.test(n)) return { role: 'clock', sub: 'clock' };
+    if (t === 'exchange' || t === 'levex') return { role: 'exchange', sub: sub }; if (t === 'arena') return { role: 'arena', sub: sub }; if (t === 'casino') return { role: 'casino', sub: sub }; if (t === 'mansion') return { role: 'mansion', sub: sub };   // type:'castle' の時計塔（廃墟の街）を城と取り違えない
     if (def.shop && def.shop.kind) r = def.shop.kind === 'weapon' || def.shop.kind === 'armor' ? def.shop.kind : 'item';
     else if (/酒場|バー|隊商宿の食堂/.test(n) || t === 'tavern') r = 'tavern';
     else if (t === 'inn' || /宿/.test(n) && !/宿舎|下宿/.test(n)) r = 'inn';
@@ -400,7 +402,7 @@
       var why = null;
       if (EXCLUDE[id]) why = '台本が座標を使う・作り込み済み・専用の部屋'; else if (!def || def.kind !== 'interior') why = '屋内でない'; else if (typeof def.rows === 'function' || !(def.rows && def.rows.length)) why = '行がない・行が関数';
       else if (def.onStep || def.s3121 || def.remake71) why = '仕掛け・物語・作り直し済み'; else if (MR.LIST && MR.LIST.indexOf(id) >= 0) why = '作り直したダンジョン'; else if (/^poyo_/.test(id)) why = 'ポヨ村の作り込んだ部屋';
-      else if (L.role[id].role === 'castle') why = '城（別の作り方）'; else if (MR.maps[id] && MR.maps[id].kind !== 'interior76') why = 'ほかの作り直しの地図';
+      else if (/^castle/.test(L.role[id].role)) why = '城（別の作り方）'; else if (MR.maps[id] && MR.maps[id].kind !== 'interior76') why = 'ほかの作り直しの地図';
       else if (def.rows[0].length > 30 || def.rows.length > 20) why = '大きい部屋（専用の作り方）';
       if (why) { L.skipped[id] = why; return; }
       try {

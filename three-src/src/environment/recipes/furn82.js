@@ -18,14 +18,14 @@ const M = (hex, o) => { o = o || {}; return plain(hex, { std: { roughness: o.r !
 export const FURN82_TILES = { table: 1, counter: 1, bed: 1, bookshelf: 1, cupboard: 1, stove: 1, sink: 1, toilet: 1, bench: 1, pillar: 1, barrel: 1, crate: 1, rack: 1, hearth: 1, instrument: 1, flowerbed: 1, well: 1, ledge: 1 };
 
 export function buildFurn82(o) {
-  const { map, T, walk, wallAt, add, theme, lamps, animated } = o; const F = theme.furnSet; const role = theme.role || 'house'; const sub = theme.sub || null;
+  const { map, T, walk, wallAt, add, theme, lamps, animated } = o; const F = theme.furnSet; const role = theme.role === 'exchange' ? 'bank' : theme.role === 'mansion' ? 'house' : (theme.role || 'house'); const sub = theme.sub || null;
   const W = map.w, H = map.h; const stats = {}; let lampN = 0;
   const wood = M(F.wood, { r: 0.75 }), wood2 = M(F.wood2, { r: 0.8 }), fab = M(F.fab, { r: 0.95 }), fab2 = M(F.fab2, { r: 0.95 }), metal = M(F.metal, { r: 0.35, m: 0.7 });
   const iron = M('#2e2e32', { r: 0.6, m: 0.5 }), white = M('#efe9dc', { r: 0.9 }), paper = M('#e8dcc0', { r: 1 }), glass = M('#bcd8e8', { r: 0.1, op: 0.45 }), dark = M('#1e1a16', { r: 0.95 });
   const glowW = M('#ffd890', { glow: 1.3 }), ember = M('#ff7a2a', { glow: 1.6 }), ash = M('#3a3430', { r: 1 }), stone = M('#8a847a', { r: 0.95 }), brick = M('#8a4a34', { r: 0.95 });
   const bottles = ['#6a2a8a', '#2a8a6a', '#a83a2a', '#c8a03a', '#2a5aa8'].map((c) => M(c, { r: 0.15, glow: theme.key === 'magicka_city' ? 0.25 : 0 }));
   const books = ['#6a1e24', '#24402e', '#2a3a6a', '#8a6a2a', '#4a2a4a'].map((c) => M(c, { r: 0.9 }));
-  const rot = theme.furn === 'rotten'; const tint = (m) => m;
+  const rot = theme.furn === 'rotten'; const tint = (m) => m; const clock = role === 'clock';
   const isT = (x, z, t) => T(x, z) === t;
   const nb4 = [[0, 1], [1, 0], [-1, 0], [0, -1]];
   for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
@@ -169,7 +169,7 @@ export function buildFurn82(o) {
     // ---------- 棚 ----------
     function shelf() {
       const h = 1.85, w = 0.9, d = 0.38; const zc = -0.28; let K = F.shelf;
-      if (rot) K = 'broken'; else if (role === 'tavern') K = 'bottles'; else if (role === 'post') K = 'pigeon'; else if (role === 'bank' || hasProp('ledgers')) K = 'ledger'; else if (sub === 'bakery') K = 'bread';
+      if (rot && role !== 'post') K = 'broken'; else if (role === 'tavern') K = 'bottles'; else if (role === 'post') K = 'pigeon'; else if (role === 'bank' || hasProp('ledgers')) K = 'ledger'; else if (sub === 'bakery') K = 'bread';
       else if ((role === 'item' && (F.shelf === 'apothecary' || theme.key === 'magicka_city')) || hasProp('potion_bottles') && role !== 'library') K = 'apothecary'; else if (role === 'library' || role === 'academy' || sub === 'scholar' || sub === 'library') K = 'books';
       if (K === 'broken') { P(wood2, B(w, 0.05, d), 0, 0.5, zc, 0, 0, 0.3); P(wood2, B(0.05, h * 0.8, d), -0.42, h * 0.4, zc, 0, 0, 0.1); P(wood2, B(w, 0.05, d), 0, 1.1, zc, 0, 0, -0.15); for (let i = 0; i < 4; i++) P(books[i % 5], B(0.18, 0.04, 0.12), -0.25 + i * 0.16, 0.03, 0.1 - i * 0.04, i * 0.7); for (let i = 0; i < 3; i++) P(paper, B(0.12, 0.003, 0.09), -0.2 + i * 0.2, 0.004, 0.25, i); return; }
       if (K === 'locker') { const lm = M(F.wood, { r: 0.45, m: 0.5 }); P(lm, B(w, h, d), 0, h / 2, zc); for (let i = 0; i < 3; i++) { P(M(F.wood2, { r: 0.5, m: 0.4 }), B(0.27, h - 0.1, 0.01), -0.3 + i * 0.3, h / 2, zc + d / 2 + 0.005); for (let k = 0; k < 3; k++) P(dark, B(0.14, 0.012, 0.005), -0.3 + i * 0.3, h - 0.2 - k * 0.04, zc + d / 2 + 0.012); } return; }
@@ -189,6 +189,9 @@ export function buildFurn82(o) {
         for (let r2 = 0; r2 < 2; r2++) { P(fm, B(w - 0.08, 0.03, d - 0.04), 0, 1.0 + r2 * 0.4, zc); for (let i = 0; i < 5; i++) P(bottles[(i + r2 + x) % 5], C(0.035, 0.04, 0.18 + (i % 2) * 0.06, 8), -0.32 + i * 0.16, 1.11 + r2 * 0.4 + (i % 2) * 0.03, zc + 0.02); }
         return;
       }
+      if (K === 'pigeon' && rot) {   // 廃墟の郵便局：傾いた仕分け棚と、床に散った手紙
+        const tilt = ((x * 5 + z) % 3 - 1) * 0.12; P(wood2, B(w, h * 0.92, 0.03), 0, h * 0.46, zc - d / 2 + 0.015, 0, 0, tilt); for (let r2 = 0; r2 < 5; r2++) if ((r2 + x) % 4) P(wood2, B(w - 0.1, 0.02, d - 0.06), 0.02 * r2, 0.25 + r2 * 0.32, zc, 0, 0, tilt + (r2 === 2 ? 0.3 : 0)); P(wood2, B(0.04, h * 0.9, d), -w / 2 + 0.05, h * 0.45, zc, 0, 0, tilt);
+        for (let i = 0; i < 9; i++) P(paper, B(0.12, 0.004, 0.09), -0.4 + ((i * 37) % 9) * 0.1, 0.006 + i * 0.0015, 0.05 + ((i * 53) % 7) * 0.06, i * 0.9); for (let i = 0; i < 4; i++) if ((i + z) % 2) P(paper, B(0.1, 0.05 + i * 0.02, 0.14), -0.3 + i * 0.2, 0.3 + i * 0.32, zc, 0.2 * i, 0, tilt); return; }
       if (K === 'pigeon') { for (let r2 = 0; r2 < 6; r2++) P(fm, B(w - 0.08, 0.02, d - 0.04), 0, 0.2 + r2 * 0.28, zc); for (let c2 = 1; c2 < 5; c2++) P(fm, B(0.02, h - 0.2, d - 0.04), -w / 2 + c2 * w / 5, h / 2, zc); for (let r2 = 0; r2 < 6; r2++) for (let c2 = 0; c2 < 5; c2++) if ((r2 * 5 + c2 + x) % 3) P(paper, B(0.12, 0.05 + ((r2 + c2) % 3) * 0.04, 0.16), -w / 2 + (c2 + 0.5) * w / 5, 0.26 + r2 * 0.28, zc, ((r2 + c2) % 2) * 0.2); return; }
       for (let i = 0; i < 4; i++) {
         const yy = 0.15 + i * 0.44;
@@ -263,6 +266,7 @@ export function buildFurn82(o) {
     function crate() {
       const forge = nb4.some(([dx, dz]) => T(x + dx, z + dz) === 'hearth');
       if (forge && (role === 'weapon' || sub === 'smith' || theme.fire === 'forge' || theme.furn === 'smith' || theme.furn === 'workshop')) { P(stone, C(0.18, 0.22, 0.45, 10), 0, 0.225, 0); P(iron, B(0.55, 0.18, 0.22), 0, 0.54, 0); P(iron, C(0.0, 0.11, 0.2, 8), 0.36, 0.56, 0, 0, 0, Math.PI / 2); P(iron, B(0.04, 0.02, 0.4), -0.1, 0.65, 0.05, 0.3); return; }   // 金床
+      if (clock) { const gm = M('#6a5a40', { r: 0.55, m: 0.6 }); const gear = (rr, lx, ly, lz, rx, rz) => { P(gm, C(rr, rr, 0.06, 18), lx, ly, lz, 0, rx, rz); for (let k = 0; k < 10; k++) { const a = k / 10 * Math.PI * 2; P(gm, B(0.07, 0.06, 0.07), lx + Math.cos(a) * (rr + 0.03) * (rz ? 0 : 1), ly + (rz ? Math.cos(a) * (rr + 0.03) : 0), lz + Math.sin(a) * (rr + 0.03), 0, rx, rz); } P(M('#3a3228', { r: 0.6, m: 0.5 }), C(0.05, 0.05, 0.1, 8), lx, ly, lz, 0, rx, rz); }; gear(0.36, 0, 0.05, 0, 0, 0); gear(0.2, 0.2, 0.3, -0.15, 0.6, 0.0); P(wood2, B(0.08, 0.08, 0.9), -0.25, 0.1, 0, 0.6, 0.1); return; }   // 時計塔：崩れて落ちた歯車
       if (rot || theme.furn === 'rotten') { for (let i = 0; i < 7; i++) P(i % 2 ? stone : wood2, B(0.2 + (i % 3) * 0.1, 0.12 + (i % 2) * 0.1, 0.18 + (i % 4) * 0.06), (i % 3 - 1) * 0.22, 0.06 + Math.floor(i / 3) * 0.12, ((i * 7) % 5 - 2) * 0.1, i * 0.7, 0, (i % 2) * 0.3); return; }   // 瓦礫
       if (sub === 'engineer' || hasProp('parts')) { P(M('#5a6a7a', { r: 0.5, m: 0.5 }), B(0.8, 0.4, 0.6), 0, 0.2, 0); for (let i = 0; i < 4; i++) P(metal, i % 2 ? C(0.06, 0.06, 0.03, 10) : B(0.12, 0.06, 0.08), -0.25 + i * 0.17, 0.44, (i % 2) * 0.1); return; }
       if (theme.furn === 'military' || hasProp('supply_crate') || hasProp('relief_crate')) { P(M('#5a6040', { r: 0.9 }), B(0.8, 0.55, 0.6), 0, 0.275, 0); P(M('#e8e0c8', { r: 1 }), B(0.3, 0.12, 0.005), 0, 0.3, 0.3); P(metal, B(0.82, 0.04, 0.04), 0, 0.5, 0.29); return; }

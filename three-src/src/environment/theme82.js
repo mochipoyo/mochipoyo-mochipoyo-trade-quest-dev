@@ -93,6 +93,10 @@ const ROLE82 = {
   library: (t) => ({ light: { kind: t.light.kind === 'led' ? 'led' : 'banker', col: 0xfff0c8 } })
 };
 
+// 部屋ごとの直し（明示）：廃墟の街の生存者の家（仮補修の暮らし）
+const ROOM82 = {
+  a3_ruins_keeper: { label: '廃墟の中の生存者の家・仮補修の暮らし', furn: 'patched', light: { kind: 'lantern', col: 0xffc888 }, fire: 'brazier', win: { kind: 'patched', frame: '#5a4a38' }, ceil: { kind: 'broken', c: '#5a4a38' }, part: 'cloth', survivor: true, props: ['repair_mark', 'letters', 'keepsake', 'old_map'] }
+};
 const cache = new Map();
 export const Theme82 = {
   TOWN82, FURN, missing: {},
@@ -108,8 +112,8 @@ export const Theme82 = {
     if (!townId && profile && REGION82[profile.region]) { townId = REGION82[profile.region]; source = 'region'; }
     if (!townId) { cache.set(id, null); return null; }
     const base = TOWN82[townId]; const role = L ? (L.role || '').replace(/_up$/, '') : null; const upper = L ? /_up$/.test(L.role || '') : false;
-    const mod = role && ROLE82[role] ? ROLE82[role](base) : {};
-    const t = Object.assign({}, base, mod, { key: townId, town: L ? L.town : null, role, sub: L ? L.sub : null, upper, source, furnSet: FURN[base.furn] || FURN.rustic });
+    const mod = Object.assign({}, role && ROLE82[role] ? ROLE82[role](base) : {}, ROOM82[id] || {}); if (ROOM82[id]) source = 'explicit+' + source;
+    const t = Object.assign({}, base, mod, { key: townId, town: L ? L.town : null, role, sub: L ? L.sub : null, upper, source, furnSet: FURN[mod.furn || base.furn] || FURN.rustic });
     cache.set(id, t); return t;
   },
   clear() { cache.clear(); },

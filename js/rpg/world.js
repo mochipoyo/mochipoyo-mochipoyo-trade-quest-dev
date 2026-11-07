@@ -218,6 +218,7 @@
       World.updatePlaceLabel();
     }
     if (root.Minimap) root.Minimap.onStep(m, p);
+    (root.STEP_HOOKS82 || []).forEach(function (f) { try { f(m, p.x, p.y); } catch (e) { /* 見せ場のカメラがなくても続ける */ } });   // v8.2 城下町の城門の前：初めてのときだけ城の上の方を見せる（js/data/castle82.js）
     if (root.BossSymbol) { root.BossSymbol.onStep(m, p); if (root.BossSymbol.stepOn(m, p)) return; }   // v6.5 ボスの気配・ふさがないシンボルは踏むと調べる
     if (root.QuizSymbol) { root.QuizSymbol.onStep(m, p); if (root.QuizSymbol.stepOn(m, p)) return; }   // クイズモンスターの気配・ふさがないシンボルは踏むと触れる
     if (m.kind === 'field') d.timeOfDay = (d.timeOfDay + 0.0025) % 1;

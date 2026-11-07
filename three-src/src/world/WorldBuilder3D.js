@@ -19,6 +19,7 @@ import { terraceInfo, stairFrac, buildTerraces } from './Terrace3D.js';
 import { buildFountains, animateFountain } from './Fountain76.js';
 import { voidMaterial, floatingRocks } from '../environment/Space76.js';
 import { themeFor } from './themes.js';
+import { FIELD82, buildFloating82, buildFieldCastle82 } from './Field82.js';
 import { Nature81 } from './Nature81.js';
 
 function hash2(x, y) { let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
@@ -402,7 +403,7 @@ export class WorldBuilder3D {
     // v6.6 フィールドの町・城・洞窟・塔（LandmarkBuilder3D）：マップ内の全目印を材質ごとにまとめて結合
     const LD = window.LocationDesign; const flags = (window.State && window.State.data && window.State.data.flags) || {};
     const locs = (field && map.def && map.def.locations) || []; const locAt = (x, z) => locs.find((L) => L.x === x && L.y === z) || null;
-    const lmb = new LandmarkBuilder3D(this.mats); const smokes = []; const lmIds = [];
+    const lmb = new LandmarkBuilder3D(this.mats); const smokes = []; const lmIds = []; const anim82 = [];
     const yawFor = (x, z) => { for (const [dx, dz] of [[0, 1], [1, 0], [-1, 0], [0, -1]]) { const n = T(x + dx, z + dz); if (PAVED[n] || n === 'road' || n === 'floor_wood' || n === 'grass' || n === 'cave_floor') return Math.atan2(dx, dz); } return 0; };
     let props = 0;
     for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
@@ -427,7 +428,8 @@ export class WorldBuilder3D {
       if (lm) {
         // v6.6 場所ごとの固有デザイン（LOCATION_DESIGNS）から組み立てる。デザインがない・失敗したときは従来の目印モデル
         let done = null; const Lc = locAt(x, z);
-        if (Lc && LD) {
+        if (Lc && FIELD82[Lc.id]) { try { const f82 = FIELD82[Lc.id] === 'floating' ? buildFloating82(cx, y, cz) : buildFieldCastle82(FIELD82[Lc.id], cx, y, cz); group.add(f82.group); f82.lights.forEach((l) => lampSpots.push(l)); (f82.animated || []).forEach((a) => anim82.push(a)); done = { lights: [], smokes: [], sprites: [] }; this.stats.field82 = (this.stats.field82 || []).concat([Lc.id]); } catch (e) { lmb.stats.failed.push(Lc.id + ': field82 ' + (e && e.message)); } }   // v8.2 浮遊都市マクディア・魔王城・鉄冠将軍の砦（Field82.js）
+        if (!done && Lc && LD) {
           try {
             const r0 = LD.resolve(Lc.id, flags); const wp = map.warpAt(x, z); const face = (LW && LW.landmarkFace && wp) ? LW.landmarkFace(map, wp) : [0, 1];
             const lb = new Batch();
@@ -461,7 +463,7 @@ export class WorldBuilder3D {
     this.stats.buildMs = Math.round(performance.now() - t0);
     if (this.slice) await this.slice();
     // v7.6 噴水（段の水盤・水の柱・落ちる水の幕。つながった噴水マスは1つの大きな噴水）
-    const animated = [];
+    const animated = anim82.slice();
     if (space) { try { const fr = floatingRocks(map, (x, z) => !!WATERY[T(x, z)], hi ? 18 : 10, (x, z) => { let h = (x * 374761393 + z * 668265263) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }); group.add(fr.group); fr.animated.forEach((a) => animated.push(a)); this.stats.space76Rocks = fr.count; } catch (e) { /* 浮かぶ岩がなくても星空のまま */ } }   // v7.6 異空間の浮かぶ岩
     if (!(env && env.skipProp && env.skipProp('fountain', -1, -1))) { try { const fbat = new Batch(); const fr = buildFountains({ map, T, add: (m, g) => fbat.add(m, g), group, lvY }); fbat.build(group); fr.animated.forEach((a) => animated.push(a)); fr.lights.forEach((l) => lampSpots.push(l)); this.stats.fountains = fr.count; } catch (e) { console.warn('fountain76', e); } }
     return { group, heightAt: heightAtWalk, lampSpots, smokes, animated, finalize: () => this.finalize(group) };
