@@ -1118,8 +1118,18 @@ GPU のないコンテナ（2 CPU）の jsdom とヘッドレス Chromium（ソ�
 - 演算都市ノード（中央データ塔・六角の床・配管の壁・制御門）と相場都市トレディア（証券市場の列柱・放射状の広場・板表示・石のアーチの門）の専用の作り方が、§23 で間取りを作り直してから、大きさの確認で外れて使われていなかった。作り直した間取りでも使うようにした（建物は id、床・壁・門はマスの種類で作るため。ノードは環と放射路を金属の道に、光る配線のマスはそのまま）。画像で確認した。
 - リヴェル城 1 階は 23-5 のとおり未対応。
 
-### 24-5. 確かめ（b45acab のスナップショット。jsdom・ヘッドレス Chromium）
-（REGRESSION）
+### 24-5. 確かめ（この環境で実際に動かしたもの。jsdom・ヘッドレス Chromium）
+最後の版のスナップショット（2D と確認ツール＝9f15d45〜eafc988、3D＝176bd35）を、本来の場所に重ねて動かした。
+
+- **2D 版の回帰一式**（regress65 の 52 本＋追加 27 本＋確認ツール 10 本）：
+  - 失敗は前からの 3 本だけ：p1test（ダンジョンの入口 10 か所。前は町も含め 13 か所）・navsim（前と同じ 2 件）・entryaudit（前と同じ種類の 176 件。§22 の時点は 233 件）。
+  - 途中で見つけて直したこと（ゲームの側）：アルナの村の井戸のマスがなく調べる所「井戸の中」が草の上（p2test・ptcheck）／職人通りのパンの屋台の真後ろに灯り（expandAtest）／フロストの「記憶を売らなかった家」の扉（expandA3test。中庭に背を向けた南の扉に）／豆知識おばさんの置き場所 9 町（chatter67test）。
+  - 確かめの道具の最小の更新（作り直した町の旧座標を新しい座標に直すだけ。差分は `docs/tools/v81/updated-tests/`）：expandA2test（魔導王宮）・expandAtest（職人通り）・edgeexittest（消えた村・港町の北の出口）・p1test・entryaudit・s3121/chapters2d。
+- **確認ツール（地球の世界・v7.9・v8.0・v8.1）**：earth78_check・region78_check・region78_flow・earth78_save・earth78_nav・earth78_escape・earth78_sites・earth79_check・carriage79_test・earth79_save・ship792_test・earth792_save・reclevel793_test・boss19_test はすべて OK。v8.1 の確認 9 本 × 2D・地球（remake81_check・dow_open_test・academy_test・rivel_test・marina_test・sahar_test・verum_test・layout81_test・pocket81_check）はすべて OK（rivel_test の 2D は 1 回目に歩き回る人に道をふさがれて 1 件 NG、2 回目は OK）。古いセーブ（前の版 t95 で作った 2 組）× 2D・地球：OK。
+- **作業ブランチの前の版（r81.1）の座標のセーブ**：前の版で立てたマスすべて（2D 版 7056・地球の世界 7054 か所）で、着く所が歩けて出口まで行ける（`r812_migrate_test.js`）。
+- **町の歩く確かめ（town81_test）**：（TOWNS）
+- **3D（ヘッドレス Chromium）19 本**：18 本 OK。p70a_exits は 28 か所中 2 NG → 1 本ずつ動かし直すと消えた村は OK、星見塔の野営地は（STARCAMP）。
+- 骨組みを変えた 6 町の 3D：主人公が画面の中（PC・スマホ相当とも）。画像は §23-4。
 
 ### 24-6. 未完了・未検証
 - 実機（PC の GPU・スマホ）での見え方・速さ：**未検証**。画像はすべてヘッドレス Chromium のソフトウェア描画。
