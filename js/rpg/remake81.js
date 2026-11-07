@@ -187,7 +187,9 @@
     var reg = { version: ver, oldW: oldW, oldH: oldH, newW: W, newH: H, r81: true,
       mapPos: function (x, y) { var p = prevPos(x, y); return mine(p.x, p.y); },
       mapBack: function (x, y) { return back(x, y); },
-      prev: prev, fromPrev: function (x, y) { return mine(x, y); }, backPrev: function (x, y) { return back(x, y); } };
+      prev: prev, fromPrev: function (x, y) { return mine(x, y); }, backPrev: function (x, y) { return back(x, y); },
+      // セーブの位置を写した先が人・宝箱・出口・ふさぐ出来事のマスなら、いちばん近い空いた歩けるマスへ（台本の座標の写し＝mapPos は前のまま）
+      freeNear: function (x, y) { var busy = {}; [def.npcs, def.chests, def.warps].forEach(function (L) { (L || []).forEach(function (n) { busy[n.x + ',' + n.y] = 1; }); }); (def.events || []).forEach(function (e) { if (e.solid) busy[e.x + ',' + e.y] = 1; }); if (!busy[x + ',' + y] && G.walk[y] && G.walk[y][x] && !G.bld[y][x]) return { x: x, y: y }; return nearestWalk(G, x, y, busy); } };
     if (prev && prev.mapBack) { reg.mapBack = function (x, y) { var b = back(x, y); return prev.mapBack(b.x, b.y); }; }
     MR.maps[id] = reg; def.remake81 = { version: ver, oldW: oldW, oldH: oldH, w: W, h: H, anchors: A };
     R.applied[id] = true;

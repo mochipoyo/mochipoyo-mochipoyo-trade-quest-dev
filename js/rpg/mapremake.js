@@ -270,7 +270,7 @@
     Object.keys(MapRemake.maps).forEach(function (id) {
       var r = MapRemake.maps[id]; if (d.remakeVer[id] === r.version) return;
       var fromPrev = !!(r.prev && r.fromPrev && d.remakeVer[id] === r.prev.version);   // v8.1 前の作り直し（広げた屋内など）の座標で書かれたセーブ → その上に重ねた作り直し（js/rpg/remake81.js）の分だけ直す
-      if (d.pos && d.pos.map === id) { var p = fromPrev ? r.fromPrev(d.pos.x, d.pos.y) : MapRemake.pos(id, d.pos.x, d.pos.y); d.pos.x = p.x; d.pos.y = p.y; }
+      if (d.pos && d.pos.map === id) { var p = fromPrev ? r.fromPrev(d.pos.x, d.pos.y) : MapRemake.pos(id, d.pos.x, d.pos.y); if (r.freeNear) p = r.freeNear(p.x, p.y); d.pos.x = p.x; d.pos.y = p.y; }   // v8.1 人の立つマスに着かない
       var disc = d.mapDiscovery && d.mapDiscovery[id];
       var mapBack = fromPrev ? r.backPrev : r.mapBack;
       if (disc && disc.length && mapBack) {   // v7.6 広げた屋内：探索済みの印を新しい座標へ（差し込んだマスは、元になったマスの印を写す）

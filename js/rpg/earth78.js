@@ -335,7 +335,11 @@
     // v7.9.2 場所（町・洞窟など）の入口のそば（3 マス以内）の陸は、新しい入口から同じ向き・同じ距離へ（町のあいだを広げたので、
     //   直線の対応だけでは入口から 5 マスほどずれることがあった：セーブの位置・入口の記録・旧座標で書いた移動先）
     if (o && !water && o.locations && g.locs) { var best = null; o.locations.forEach(function (ol) { var d0 = Math.abs(ol.x - x) + Math.abs(ol.y - y); if (d0 > 0 && d0 <= 3 && (!best || d0 < best.d)) best = { ol: ol, d: d0 }; });
-      if (best) { var nl = null; g.locs.forEach(function (l) { if (l.id === best.ol.id) nl = l; }); if (nl) { var q0 = snap(rows, g.W, g.H, nl.x + (x - best.ol.x), nl.y + (y - best.ol.y), function (c) { return walkCh(c) && !ICONCH[c]; }, 3); if (q0) return q0; } } }
+      if (best) { var nl = null; g.locs.forEach(function (l) { if (l.id === best.ol.id) nl = l; }); if (nl) { var tx0 = nl.x + (x - best.ol.x), ty0 = nl.y + (y - best.ol.y); var okc = function (c) { return walkCh(c) && !ICONCH[c]; };
+        // v8.1 同じ向きのマスが歩けない（地球の地図で入口のその側が海・山）ときは、入口のとなり（4 方向）の歩けるマスのうち、元の向きにいちばん近い所へ（離れた所に着かない）
+        if (best.d === 1 && !(rows[ty0] && okc(rows[ty0][tx0]))) { var nb = [[0, -1], [1, 0], [-1, 0], [0, 1]].map(function (v) { return { x: nl.x + v[0], y: nl.y + v[1] }; }).filter(function (q1) { return rows[q1.y] && okc(rows[q1.y][q1.x]); });
+          nb.sort(function (a1, b1) { return (Math.abs(a1.x - tx0) + Math.abs(a1.y - ty0)) - (Math.abs(b1.x - tx0) + Math.abs(b1.y - ty0)); }); if (nb.length) return nb[0]; }
+        var q0 = snap(rows, g.W, g.H, tx0, ty0, okc, 3); if (q0) return q0; } } }
     var q = snap(rows, g.W, g.H, p.x, p.y, water ? function (c) { return c === '~' || c === 'w'; } : function (c) { return walkCh(c) && !ICONCH[c]; }, 30);
     if (!q && water) q = snap(rows, g.W, g.H, p.x, p.y, function (c) { return !!WATER[c]; }, 30);
     return q || p;

@@ -101,7 +101,8 @@ export const recipe = {
     const map = ctx.map;
     const need = ['core', 'registry', 'school', 'ration', 'inn', 'armor', 'house'];
     const ids = (map.buildings || []).map((b) => b.id); const miss = need.filter((id) => !ids.includes(id)); if (miss.length) throw new Error('建物がない：' + miss.join(','));
-    const core = map.buildings.find((b) => b.id === 'core'); if (core.w !== 10 || core.h !== 6 || map.w !== 64 || map.h !== 30) throw new Error('中央データ塔・地図の大きさが想定と違う');
+    const r81 = !!(map.def && map.def.remake81);   // v8.1 作り直した間取り（js/data/remake81-node.js：同心の環）。大きさは違うが、建物は id で、床・壁・門はマスの種類で作るので同じレシピを使う
+    const core = map.buildings.find((b) => b.id === 'core'); if (core.w !== 10 || core.h !== 6 || (!r81 && (map.w !== 64 || map.h !== 30))) throw new Error('中央データ塔・地図の大きさが想定と違う');
     const K = await makeK(ctx);
     const hooks = {
       skipWall: (t) => t === 'castle_wall' || t === 'roof_blue',
@@ -109,7 +110,7 @@ export const recipe = {
       skipOutTree: (x, z) => z >= map.h - 1 || TOWERS.some(([tx, tz, s]) => (x - tx) ** 2 + (z - tz) ** 2 < (5 * s) ** 2)   // 南（カメラの側）と冷却塔の足元には木を置かない
     };
     const building = async (b, o) => { const f = BUILD[b.id]; if (!f) return null; const out = { group: new THREE.Group(), lights: [], smokes: [], props: [] }; out.group.name = 'building_env_' + b.id; await f(ctx, K, b, o.batch, out); return out; };
-    return { hooks, building, build: (bb) => build(ctx, K, bb, { plazas: [[50, 15.5, 2.3]], lot: 'sealed' }) };
+    return { hooks, building, build: (bb) => build(ctx, K, bb, r81 ? { plazas: [], lot: 'sealed', r81: true } : { plazas: [[50, 15.5, 2.3]], lot: 'sealed' }) };
   }
 };
 
@@ -338,14 +339,15 @@ async function build(ctx, K, b, opt) {
   const covered = new Set(); for (const bd of map.buildings) for (let y = bd.y; y < bd.y + bd.h; y++) for (let x = bd.x; x < bd.x + bd.w; x++) covered.add(x + ',' + y);
   // ---- 床（1マス1枚。道＝金属板、東の石の広場＝暗い六角、ほか＝明るい六角）
   const lists = { road: [], hexD: [], hexL: [] };
-  for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { const t = T(x, z); if (t === 'castle_wall' || t === 'roof_blue' || covered.has(x + ',' + z)) continue; const y = hAt(x + 0.5, z + 0.5) + 0.014; (t === 'road' ? lists.road : t === 'path_stone' ? lists.hexD : lists.hexL).push([x, z, y]); }
+  const isRoad = (t) => t === 'road' || (opt.r81 && t === 'floor_stone');   // v8.1 の間取りは環と放射路が floor_stone
+  for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) { const t = T(x, z); if (t === 'castle_wall' || t === 'roof_blue' || covered.has(x + ',' + z) || (opt.r81 && t === 'meridian')) continue; const y = hAt(x + 0.5, z + 0.5) + 0.014; (isRoad(t) ? lists.road : t === 'path_stone' ? lists.hexD : lists.hexL).push([x, z, y]); }   // v8.1：光る配線（meridian）のマスは汎用の床（光の線）のまま
   const quads = (list, su, sv) => { const pos = [], uv = [], nrm = [], idx = []; let v = 0; for (const [x, z, y] of list) { pos.push(x, y, z, x + 1, y, z, x + 1, y, z + 1, x, y, z + 1); uv.push(x * su, z * sv, (x + 1) * su, z * sv, (x + 1) * su, (z + 1) * sv, x * su, (z + 1) * sv); nrm.push(0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0); idx.push(v, v + 3, v + 2, v, v + 2, v + 1); v += 4; } const gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); gg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); gg.setAttribute('normal', new THREE.Float32BufferAttribute(nrm, 3)); gg.setIndex(idx); return gg; };
   add(K.road, quads(lists.road, 1, 1)); add(K.hexD, quads(lists.hexD, 1 / HEX_SX, 1 / HEX_SZ)); add(K.hexL, quads(lists.hexL, 1 / HEX_SX, 1 / HEX_SZ));
   // 縁石（道と広場の境）
   let curbs = 0; for (const [x, z] of lists.road) for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const n = T(x + dx, z + dz); if (n === 'road' || n === 'castle_wall' || n === '_out' || covered.has((x + dx) + ',' + (z + dz))) continue; const y = hAt(x + 0.5, z + 0.5) + 0.03; add(K.metalD, dx ? wbox(0.06, 0.04, 1.0, x + (dx > 0 ? 1 : 0), y, z + 0.5) : wbox(1.0, 0.04, 0.06, x + 0.5, y, z + (dz > 0 ? 1 : 0))); curbs++; }
   // 光の破線：門→塔の主軸（x=20）と、東西の大通りの中心線
   const dash = (x0, z0, x1, z1) => { const len = Math.hypot(x1 - x0, z1 - z0), n = Math.floor(len); for (let i = 0; i < n; i++) { const t = (i + 0.5) / n; const x = x0 + (x1 - x0) * t, z = z0 + (z1 - z0) * t; if (T(Math.floor(x - 0.01), Math.floor(z - 0.01)) !== 'road' && T(Math.floor(x + 0.01), Math.floor(z + 0.01)) !== 'road') continue; add(K.acc, x1 !== x0 ? wbox(0.55, 0.012, 0.045, x, 0.035, z) : wbox(0.045, 0.012, 0.55, x, 0.035, z)); } };
-  dash(20, 19.5, 20, 29); dash(20, 7, 20, 10.6); dash(1, 10, 38, 10); dash(1, 20, 38, 20); dash(40, 8.5, 63, 8.5); dash(40, 21.5, 63, 21.5);
+  if (!opt.r81) { dash(20, 19.5, 20, 29); dash(20, 7, 20, 10.6); dash(1, 10, 38, 10); dash(1, 20, 38, 20); dash(40, 8.5, 63, 8.5); dash(40, 21.5, 63, 21.5); }   // v8.1 の間取りは光る配線のマスが代わり
   // 六角の広場（噴水のまわり・東の広場）：六角の床と細い光の縁
   const hexPlaza = (cx, cz, R) => {
     const fill = new THREE.CircleGeometry(R, 6); fill.rotateX(-Math.PI / 2); fill.translate(cx, 0.024, cz); const uv = fill.attributes.uv, p = fill.attributes.position; for (let i = 0; i < uv.count; i++) uv.setXY(i, p.getX(i) / HEX_SX, p.getZ(i) / HEX_SZ); add(K.hexP, fill);

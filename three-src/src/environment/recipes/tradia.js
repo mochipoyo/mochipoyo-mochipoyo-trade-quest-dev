@@ -42,8 +42,9 @@ export const recipe = {
     const map = ctx.map;
     const need = ['td_exchange', 'td_bank', 'td_arena', 'td_lab', 'td_tavern'];
     const ids = (map.buildings || []).map((b) => b.id); const miss = need.filter((id) => !ids.includes(id)); if (miss.length) throw new Error('建物がない：' + miss.join(','));
-    const ex = map.buildings.find((b) => b.id === 'td_exchange'); if (ex.w !== 20 || ex.h !== 6 || map.w !== 72 || map.h !== 40) throw new Error('証券市場・地図の大きさが想定と違う');
-    const boards = (map.def && map.def.events || []).filter((e) => e.type === 'script' && e.solid && e.y === ex.y + ex.h);   // 証券市場の前の「大きな板」（左右）
+    const r81 = !!(map.def && map.def.remake81);   // v8.1 作り直した間取り（js/data/remake81-tradia.js）。建物は id、床・柵・門はマスの種類で作るので同じレシピを使う
+    const ex = map.buildings.find((b) => b.id === 'td_exchange'); if (ex.w !== 20 || ex.h !== 6 || (!r81 && (map.w !== 72 || map.h !== 40))) throw new Error('証券市場・地図の大きさが想定と違う');
+    const boards = (map.def && map.def.events || []).filter((e) => e.type === 'script' && e.solid && (e.y === ex.y + ex.h || (r81 && e.y === ex.y + ex.h + 1)));   // v8.1 の間取りは板が 1 マス南   // 証券市場の前の「大きな板」（左右）
     if (boards.length !== 2) throw new Error('証券市場の前の板（イベント）が2つでない：' + boards.length);
     const K = {
       ivory: texMat('tr_ashlar', canvasTex('tr_ashlar', 256, 256, drawSetts('#f3ebdb', '#c9bca4', 128, 64, 0.07)), { roughness: 0.8 }, { height: settsHeight(128, 64, 11), depth: 3 }),

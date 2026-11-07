@@ -433,14 +433,16 @@ function mountainGeo(o, variant, lod) {
   // 結合
   let n = 0; for (const g of parts) n += g.attributes.position.count; const pos = new Float32Array(n * 3); let k = 0; for (const g of parts) { pos.set(g.attributes.position.array, k); k += g.attributes.position.array.length; }
   const mg = new THREE.BufferGeometry(); mg.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  const rock = LIN(o.rock), dark = rock.clone().multiplyScalar(0.78), light = rock.clone().lerp(LIN('#ffffff'), 0.26), snow = LIN('#f2f6fa'), snowS = LIN('#c6d4e2'), grass = LIN(o.grass).multiplyScalar(0.7);
+  const rock = LIN(o.rock), dark = rock.clone().multiplyScalar(0.78), light = rock.clone().lerp(LIN('#ffffff'), 0.26), snow = LIN('#f2f6fa').multiplyScalar(1.85), snowS = LIN('#c6d4e2').multiplyScalar(1.7), grass = LIN(o.grass).multiplyScalar(0.7);   /* 雪：岩肌の模様（灰色）と掛け合わされるので、頂点の色は 1 より明るくして白に見せる */
   const geo = finishRock(mg, (q, nn) => {
     const nz = fbm3(q.x * 4, q.y * 4, q.z * 4, 77 + variant, 3);
     let cc = rock.clone().lerp(nz > 0.5 ? light : dark, Math.abs(nz - 0.5) * 1.4);
     if (o.strata) cc.multiplyScalar(0.86 + 0.18 * (0.5 + 0.5 * Math.sin(q.y * 18 + nz * 3)));
     const yy = q.y / 2.5; cc.multiplyScalar(0.8 + 0.2 * sstep(0.0, 0.35, yy));   // すそを暗く
     if (yy < 0.16 && nn.y > 0.3) cc.lerp(grass, sstep(0.16, 0.04, yy) * sstep(0.3, 0.7, nn.y));
-    if (o.snow) { const s = sstep(-0.12, 0.3, nn.y + (nz - 0.5) * 0.6) * sstep(0.26, 0.5, yy + (nz - 0.5) * 0.15); if (s > 0) cc.lerp(nn.y > 0.35 ? snow : snowS, Math.min(1, s * 1.35)); }
+    if (o.snow) {   // 置いたあとの形（縦を縮め横へ広げる：WorldBuilder3D.buildMountains81）での面の向きで雪を載せる：上を向いた面・棚・高い所ほど白い
+      const ny = nn.y * 2.4, nyE = ny / Math.sqrt(nn.x * nn.x + nn.z * nn.z + ny * ny);
+      const s = sstep(0.18, 0.62, nyE + (nz - 0.5) * 0.5) * sstep(0.12, 0.42, yy + (nz - 0.5) * 0.2); if (s > 0) cc.lerp(nyE > 0.6 ? snow : snowS, Math.min(1, s * 1.5)); }
     return cc;
   }, 2.2);
   geo.setAttribute('wind', new THREE.BufferAttribute(new Float32Array(geo.attributes.position.count), 1));

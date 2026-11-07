@@ -28,8 +28,8 @@
     for (var y2 = by(KX); y2 < H - 1; y2++) C.set(KX, y2, '|');
     C.set(8, 15, '/'); C.set(9, 15, '/'); C.set(KX, 22, '/'); C.set(KX, 23, '/');
     // 崩れた家
-    C.stamp(3, 1, SHELL); C.stamp(3, 9, SHELL2); C.stamp(13, 9, SHELL); C.stamp(41, 9, SHELL2); C.stamp(51, 9, SHELL);
-    C.stamp(33, 16, ['WW=WWW', 'W____W', 'W_z___', 'WWWW=W']); C.stamp(22, 24, SHELL2); C.stamp(41, 24, SHELL); C.stamp(4, 24, SHELL2);
+    C.stamp(3, 1, SHELL); C.set(5, 1, 'W');   /* 北のはしの家は、裏（崖の側）の崩れ口をふさぐ（行けない 1 マスを作らない） */ C.stamp(3, 9, SHELL2); C.stamp(13, 9, SHELL); C.stamp(41, 9, SHELL2); C.stamp(51, 9, SHELL);
+    C.stamp(33, 16, ['WW=WWW', 'W____W', 'W_z___', 'WWWW=W']); C.stamp(22, 24, SHELL2); C.stamp(41, 24, SHELL); C.stamp(4, 24, SHELL2); C.set(25, 26, '_'); C.set(7, 26, '_');   /* 南の 2 軒は、裏の崩れ口から中へ入れる（瓦礫を 1 つずらす） */
     // 崩れた祠（時計塔の東）
     C.rect(SX, 3, 1, 4, 'P'); C.set(SX - 1, 2, 'I'); C.set(SX + 1, 2, 'I'); C.set(SX - 1, 1, 'z'); C.set(SX + 1, 4, 'z');
     // 焼け跡と瓦礫の庭
@@ -53,7 +53,7 @@
       aruna_ruins_a73_0: [10, 11, 'down', 2], aruna_ruins_a73_1: [2, 10, 'down', 2], aruna_ruins_a73_2: [26, 20, 'down', 2], aruna_ruins_a73_3: [17, 25, 'down', 1],
       u73_riko: [13, 27, 'down', 1], aruna_ruins_bread76: [35, 10, 'down', 0]
     },
-    events: [[8, 10, 25, 10], [30, 19, 34, 18], [36, 3, SX, 3], [5, 6, 5, 5], [4, 21, 7, 28], [24, 22, 25, 28], [34, 22, 43, 28], [36, 12, 53, 12], [49, 17, 39, 10]],
+    events: [[8, 10, 25, 10], [30, 19, 34, 18], [36, 3, SX, 3], [5, 6, 5, 5], [4, 21, 7, 28], [24, 22, 26, 28], [34, 22, 43, 28], [36, 12, 53, 12], [49, 17, 39, 10]],
     chests: { ar1: [2, 28], ar2: [36, 27] }, points: { sp_aruna_ruins_17_14: [18, 11], sp_aruna_ruins_21_1: [22, 1] },
     warps: [RX, RX + 1, RX + 2, RX + 3].map(function (x) { return { x: x, y: H - 1, to: 'world_islands', tx: 86, ty: 64, name: '島へ' }; })
       .concat([{ x: SX, y: 2, to: 'aruna_underground_1', tx: 1, ty: 1, needFlag: 'iris_joined', name: '崩れた祠（地下施設）' }]),

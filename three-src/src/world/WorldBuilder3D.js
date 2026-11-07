@@ -618,7 +618,7 @@ export class WorldBuilder3D {
     let verts = 0; for (const [a, b] of G) verts += a.attributes.position.count + b.attributes.position.count;
     const bm = new THREE.BatchedMesh(mats.length, verts, 0, Nature81.rockMaterial()); bm.name = 'mountains81'; bm.castShadow = true; bm.receiveShadow = true; bm.sortObjects = false;
     const gid = G.map(([a, b]) => ({ l0: bm.addGeometry(a), l1: bm.addGeometry(b) })); const tc = new THREE.Color(); const e = new THREE.Vector3();
-    const shrink = new THREE.Matrix4().makeScale(1, 1 / 2.5, 1);   // 岩山の形は縦 2.5 倍で作ってある
+    const shrink = new THREE.Matrix4().makeScale(1.3, 0.74 / 2.5, 1.3);   // 岩山の形は縦 2.5 倍で作ってある。となりの山と裾が重なるように横へ 1.3 倍・縦は 0.74 倍（1 マスずつの細い尖りを並べない：つながった岩の塊）
     this.mtnInst = mats.map((m, i) => { const g = gid[i % 3]; const iid = bm.addInstance(g.l1); bm.setMatrixAt(iid, m.clone().multiply(shrink)); tc.setHSL(0, 0, 0.9 + ((i * 37) % 11) / 55); bm.setColorAt(iid, tc); e.setFromMatrixPosition(m); return { iid, x: e.x, z: e.z, g, lod: 1 }; });
     bm.computeBoundingSphere(); bm.computeBoundingBox(); group.add(bm); this.mtnBatch = bm; this.stats.mountains81 = mats.length;
   }
