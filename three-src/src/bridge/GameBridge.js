@@ -319,7 +319,8 @@ export class App3D {
     this.speed = sp; this.running = run; this.yaw = Math.atan2(ix, iz);
     // 移動（大きく動くときは分割）＋押し出し
     let dist = sp * Math.min(dt, 0.05); const steps = Math.ceil(dist / 0.2); const x0 = this.pos.x, z0 = this.pos.z;
-    for (let i = 0; i < steps; i++) { const d = dist / steps; const r = ms.resolve(this.pos.x + ix * d, this.pos.z + iz * d, RADIUS); this.pos.x = r.x; this.pos.z = r.z; }
+    const vb = this.vehicleBlocks(W.map, p);   // v8.2 止めてある乗り物（陸の飛空艇・アストラ号）のマスは通り抜けない → ぶつかって乗る（2D版と同じ）
+    for (let i = 0; i < steps; i++) { const d = dist / steps; const r = ms.resolve(this.pos.x + ix * d, this.pos.z + iz * d, RADIUS, vb); this.pos.x = r.x; this.pos.z = r.z; }
     if (Math.hypot(this.pos.x - x0, this.pos.z - z0) < dist * 0.35 && this.bump(ix, iz)) { this.speed = 0; return; }
     // v5.7 歩き回る人にぶつかって進めないときは、2D版と同じく横へよけてもらう
     const now = performance.now();
@@ -341,6 +342,16 @@ export class App3D {
     }
   }
 
+  // v8.2 止めてある乗り物のマス（'x,y' の Set）。乗っていないときだけ。いま立っているマスは除く（飛空艇を着陸させた直後は、そのマスに立っている）
+  //  2D版は「乗り物のマスへ進む＝乗る」（World.tryMove → Vehicle.resolveMove・Astra.bump）。3D の自由移動は陸のマスを通り抜けてしまい、
+  //  陸に止めた飛空艇・アストラ号に乗れなかった（水の上の船は水のマスでぶつかるので乗れていた）。ふさいで、ぶつかったときに bump → tryMove で乗る
+  vehicleBlocks(m, p) {
+    const d = G.State.data; if (!m || !p || (d && d.aboard)) return null; let set = null;
+    const add = (x, y) => { if (x === p.x && y === p.y) return; (set || (set = new Set())).add(x + ',' + y); };
+    try { if (G.Vehicle && G.Vehicle.onMap) G.Vehicle.onMap(m.id).forEach((v) => { if (!v.aboard) add(v.x, v.y); }); } catch (e) { /* なし */ }
+    try { const a = G.Astra && G.Astra.parkedOn && G.Astra.parkedOn(m.id); if (a) add(a.x, a.y); } catch (e) { /* なし */ }
+    return set;
+  }
   // 進めない方向へ押し続けたとき：2D版の World.tryMove に任せる（外周からの退出・乗り物に乗る・アストラ号・ボス／クイズのシンボル・NPC に道をあけてもらう）
   // 戻り値 true＝2D版が1歩の移動を始めた（乗船など）→ その1歩は gridMode で2D版が動かす
   bump(ix, iz) {
@@ -350,7 +361,8 @@ export class App3D {
     const along = (this.pos.x - (p.x + 0.5)) * d[0] + (this.pos.z - (p.y + 0.5)) * d[1]; if (along < 0.1) return false;   // そのマスの端まで来ている
     const oob = nx < 0 || ny < 0 || nx >= m.w || ny >= m.h;
     const veh = !oob && G.Vehicle && G.Vehicle.at && G.Vehicle.at(m.id, nx, ny);
-    if (!oob && !veh && m.passable(nx, ny, G.State.data)) return false;
+    const astra = !oob && !G.State.data.aboard && G.Astra && G.Astra.isAt && G.Astra.isAt(m.id, nx, ny);   // v8.2 止めてあるアストラ号（2D版の tryMove が「飛び立つ？」を聞く）
+    if (!oob && !veh && !astra && m.passable(nx, ny, G.State.data)) return false;
     this._bumpAt = now; p.dir = dir;
     const started = W.tryMove(dir);
     if (started) { this.stepping = true; p.px = p.x * E.TS; p.py = p.y * E.TS; this.bumpLog = (this.bumpLog || 0) + 1; return true; }

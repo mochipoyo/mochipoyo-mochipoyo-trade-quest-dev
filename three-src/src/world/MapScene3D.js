@@ -478,13 +478,13 @@ export class MapScene3D {
     if (window.QuizSymbol && window.QuizSymbol.blocks && window.QuizSymbol.blocks(m, x, y)) return true;   // クイズモンスターのシンボル
     return false;
   }
-  // 円（中心 x,z 半径 r）をタイル・NPC から押し出す
-  resolve(x, z, r) {
+  // 円（中心 x,z 半径 r）をタイル・NPC から押し出す。extra：ほかにふさぐマス（'x,y' の Set。止めてある飛空艇・アストラ号など。GameBridge.vehicleBlocks）
+  resolve(x, z, r, extra) {
     for (let it = 0; it < 3; it++) {
       let moved = false;
       const x0 = Math.floor(x - r), x1 = Math.floor(x + r), z0 = Math.floor(z - r), z1 = Math.floor(z + r);
       for (let ty = z0; ty <= z1; ty++) for (let tx = x0; tx <= x1; tx++) {
-        if (!this.tileBlocked(tx, ty)) continue;
+        if (!this.tileBlocked(tx, ty) && !(extra && extra.has(tx + ',' + ty))) continue;
         const cx = Math.max(tx, Math.min(x, tx + 1)), cz = Math.max(ty, Math.min(z, ty + 1));
         let dx = x - cx, dz = z - cz; const d = Math.hypot(dx, dz);
         if (d < r) { if (d < 1e-5) { dx = x - (tx + 0.5); dz = z - (ty + 0.5); const L = Math.hypot(dx, dz) || 1; x += dx / L * r; z += dz / L * r; } else { x += dx / d * (r - d); z += dz / d * (r - d); } moved = true; }

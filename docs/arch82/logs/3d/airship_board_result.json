@@ -1,0 +1,169 @@
+{
+ "cases": [
+  {
+   "case": "歩いて飛空艇へ",
+   "before": {
+    "map": "world_magicka",
+    "x": 93,
+    "y": 71,
+    "aboard": null,
+    "air": {
+     "map": "world_magicka",
+     "x": 93,
+     "y": 73
+    },
+    "carriage": false,
+    "busy": false
+   },
+   "after": {
+    "map": "world_magicka",
+    "x": 93,
+    "y": 73,
+    "aboard": "airship",
+    "air": {
+     "map": "world_magicka",
+     "x": 93,
+     "y": 73
+    },
+    "carriage": false,
+    "busy": false
+   },
+   "ok": true
+  },
+  {
+   "case": "馬車で飛空艇へ",
+   "before": {
+    "map": "world_magicka",
+    "x": 93,
+    "y": 71,
+    "aboard": null,
+    "air": {
+     "map": "world_magicka",
+     "x": 93,
+     "y": 73
+    },
+    "carriage": true,
+    "busy": false
+   },
+   "after": {
+    "map": "world_magicka",
+    "x": 93,
+    "y": 74,
+    "aboard": "airship",
+    "air": {
+     "map": "world_magicka",
+     "x": 93,
+     "y": 74
+    },
+    "carriage": false,
+    "busy": false
+   },
+   "ok": true
+  },
+  {
+   "case": "着陸して降り、1 歩離れてから戻る",
+   "landed": {
+    "map": "world_magicka",
+    "x": 93,
+    "y": 74,
+    "aboard": null,
+    "air": {
+     "map": "world_magicka",
+     "x": 93,
+     "y": 74
+    },
+    "carriage": true,
+    "busy": false
+   },
+   "away": {
+    "map": "world_magicka",
+    "x": 93,
+    "y": 73,
+    "aboard": null,
+    "air": {
+     "map": "world_magicka",
+     "x": 93,
+     "y": 74
+    },
+    "carriage": true,
+    "busy": false
+   },
+   "back": {
+    "map": "world_magicka",
+    "x": 93,
+    "y": 75,
+    "aboard": "airship",
+    "air": {
+     "map": "world_magicka",
+     "x": 93,
+     "y": 75
+    },
+    "carriage": false,
+    "busy": false
+   },
+   "ok": true
+  },
+  {
+   "case": "アストラ号へ歩いてぶつかる",
+   "parked": {
+    "x": 93,
+    "y": 73
+   },
+   "before": {
+    "map": "world_magicka",
+    "x": 93,
+    "y": 71,
+    "aboard": null,
+    "air": {
+     "map": "world",
+     "x": 93,
+     "y": 75
+    },
+    "carriage": false,
+    "busy": false
+   },
+   "after": {
+    "map": "world_magicka",
+    "x": 93,
+    "y": 72,
+    "aboard": null,
+    "air": {
+     "map": "world",
+     "x": 93,
+     "y": 75
+    },
+    "carriage": false,
+    "busy": false
+   },
+   "asked": 4,
+   "ok": true
+  },
+  {
+   "case": "岸から船（水の上）へ",
+   "shore": {
+    "x": 116,
+    "y": 60
+   },
+   "after": {
+    "map": "world_magicka",
+    "x": 118,
+    "y": 60,
+    "aboard": "galleon",
+    "air": {
+     "map": "world",
+     "x": 93,
+     "y": 75
+    },
+    "carriage": false,
+    "busy": false
+   },
+   "ok": true
+  }
+ ],
+ "spot": {
+  "map": "world_magicka",
+  "x": 93,
+  "y": 71
+ },
+ "errs": []
+}
