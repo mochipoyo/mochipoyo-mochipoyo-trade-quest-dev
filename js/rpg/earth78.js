@@ -326,6 +326,13 @@
   function labNear(lab, Wd, Hd, x, y) { for (var r = 0; r <= 1; r++) for (var dy = -r; dy <= r; dy++) for (var dx = -r; dx <= r; dx++) { var xx = x + dx, yy = y + dy; if (xx < 0 || yy < 0 || xx >= Wd || yy >= Hd) continue; var l = lab[yy * Wd + xx]; if (l >= 0) return l; } return -1; }
   E.labels = labels;
 
+  // 入口（場所）のそばの着く所：新しい入口から同じ向き・同じ距離の陸。v8.1 となり（距離 1）の同じ向きが海・浅瀬・山なら、入口のとなり（4 方向）の陸のうち元の向きに近い所へ（2〜3 マス離れた所に着かない）
+  function exitNear(rows, Wd, Hd, nl, tx0, ty0, d0) {
+    var okc = function (c) { return walkCh(c) && !ICONCH[c]; }, land = function (c) { return okc(c) && !WATER[c]; };
+    if (d0 === 1 && !(rows[ty0] && land(rows[ty0][tx0]))) { var nb = [[0, -1], [1, 0], [-1, 0], [0, 1]].map(function (v) { return { x: nl.x + v[0], y: nl.y + v[1] }; }).filter(function (q1) { return q1.x >= 0 && q1.y >= 0 && q1.x < Wd && q1.y < Hd && rows[q1.y] && land(rows[q1.y][q1.x]); });
+      nb.sort(function (a1, b1) { return (Math.abs(a1.x - tx0) + Math.abs(a1.y - ty0)) - (Math.abs(b1.x - tx0) + Math.abs(b1.y - ty0)); }); if (nb.length) return nb[0]; }
+    return snap(rows, Wd, Hd, tx0, ty0, okc, 3);
+  }
   /* ---------- 旧座標 → 新座標（MapRemake の mapPos。データに書かれた旧座標を World.enterMap が直す） ---------- */
   var EXACT = {};   // 地域 → { 'x,y' → { x, y } }（入口・宝箱などの旧座標）
   function mapPos(id, x, y) {
@@ -335,11 +342,7 @@
     // v7.9.2 場所（町・洞窟など）の入口のそば（3 マス以内）の陸は、新しい入口から同じ向き・同じ距離へ（町のあいだを広げたので、
     //   直線の対応だけでは入口から 5 マスほどずれることがあった：セーブの位置・入口の記録・旧座標で書いた移動先）
     if (o && !water && o.locations && g.locs) { var best = null; o.locations.forEach(function (ol) { var d0 = Math.abs(ol.x - x) + Math.abs(ol.y - y); if (d0 > 0 && d0 <= 3 && (!best || d0 < best.d)) best = { ol: ol, d: d0 }; });
-      if (best) { var nl = null; g.locs.forEach(function (l) { if (l.id === best.ol.id) nl = l; }); if (nl) { var tx0 = nl.x + (x - best.ol.x), ty0 = nl.y + (y - best.ol.y); var okc = function (c) { return walkCh(c) && !ICONCH[c]; };
-        // v8.1 同じ向きのマスが歩けない（地球の地図で入口のその側が海・山）ときは、入口のとなり（4 方向）の歩けるマスのうち、元の向きにいちばん近い所へ（離れた所に着かない）
-        if (best.d === 1 && !(rows[ty0] && okc(rows[ty0][tx0]))) { var nb = [[0, -1], [1, 0], [-1, 0], [0, 1]].map(function (v) { return { x: nl.x + v[0], y: nl.y + v[1] }; }).filter(function (q1) { return rows[q1.y] && okc(rows[q1.y][q1.x]); });
-          nb.sort(function (a1, b1) { return (Math.abs(a1.x - tx0) + Math.abs(a1.y - ty0)) - (Math.abs(b1.x - tx0) + Math.abs(b1.y - ty0)); }); if (nb.length) return nb[0]; }
-        var q0 = snap(rows, g.W, g.H, tx0, ty0, okc, 3); if (q0) return q0; } } }
+      if (best) { var nl = null; g.locs.forEach(function (l) { if (l.id === best.ol.id) nl = l; }); if (nl) { var q0 = exitNear(rows, g.W, g.H, nl, nl.x + (x - best.ol.x), nl.y + (y - best.ol.y), best.d); if (q0) return q0; } } }
     var q = snap(rows, g.W, g.H, p.x, p.y, water ? function (c) { return c === '~' || c === 'w'; } : function (c) { return walkCh(c) && !ICONCH[c]; }, 30);
     if (!q && water) q = snap(rows, g.W, g.H, p.x, p.y, function (c) { return !!WATER[c]; }, 30);
     return q || p;
@@ -535,7 +538,7 @@
       if (!wp || wp.to !== id || typeof wp.tx !== 'number') return; var key = wp.tx + ',' + wp.ty; if (ex[key]) return;
       var best = null; o.locations.forEach(function (ol) { var d0 = Math.abs(ol.x - wp.tx) + Math.abs(ol.y - wp.ty); if (d0 > 0 && d0 <= 3 && (!best || d0 < best.d)) best = { ol: ol, d: d0 }; }); if (!best) return;
       var nl = null; g.locs.forEach(function (l) { if (l.id === best.ol.id) nl = l; }); if (!nl) return;
-      var q = snap(g.rows, g.W, g.H, nl.x + (wp.tx - best.ol.x), nl.y + (wp.ty - best.ol.y), function (c) { return walkCh(c) && !ICONCH[c]; }, 3); if (q) ex[key] = q; }); });
+      var q = exitNear(g.rows, g.W, g.H, nl, nl.x + (wp.tx - best.ol.x), nl.y + (wp.ty - best.ol.y), best.d); if (q) ex[key] = q; }); });
     (def.warps || []).forEach(function (wp) { var p = g.pos['L:' + wp.locId]; if (p) { wp.x = p.x; wp.y = p.y; } });
     ['chests', 'npcs', 'events'].forEach(function (k, ki) { ((g.objs || {})[k] || []).forEach(function (it, i) { var key = 'CNE'[ki] + ':' + (it.ref && it.ref.id ? it.ref.id : i); var p = g.pos[key]; if (!p || !it.ref) return; if (o) ex[it.x + ',' + it.y] = ex[it.x + ',' + it.y] || { x: p.x, y: p.y }; it.ref.x = p.x; it.ref.y = p.y; }); });
     if (o) {
