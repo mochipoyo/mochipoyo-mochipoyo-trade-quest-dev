@@ -55,7 +55,7 @@
       (castle.warps || []).forEach(function (w) { if (w && w.to === L.town) { if (!exitBack) exitBack = { tx: w.tx, ty: w.ty }; w.to = L.id; w.tx = bx + Math.floor(L.cw / 2) + (w.x % 2 ? 1 : 0) - 1; w.ty = doorY + 1; w.raw = true; w._c82 = true; } });
       if (!exitBack) exitBack = { tx: tb.doorAbs ? tb.doorAbs.x : tb.x + tb.doorX, ty: tb.y + tb.h };
       var def = {
-        id: L.id, name: L.name, kind: 'town', bgm: town.bgm || 'town', fallback: 'grass', style: 'stone', rows: rows, castle82: { style: L.style, town: L.town, castle: L.castle, cw: L.cw, cd: L.cd, region: L.region },
+        id: L.id, name: L.name, kind: 'town', bgm: town.bgm || 'town', fallback: 'grass', style: 'stone', rows: rows, noLayout: true, noWiden: true,   /* 自動の街路の飾り（茂み）を参道・前庭に置かない */ castle82: { style: L.style, town: L.town, castle: L.castle, cw: L.cw, cd: L.cd, region: L.region },
         buildings: [{ id: 'castle82', type: 'castle', castle82: L.style, name: tb.name, x: bx, y: by, w: L.cw, h: L.cd, doorX: Math.floor(L.cw / 2), interior: L.castle, entry: tb.entry ? { x: tb.entry.x, y: tb.entry.y } : undefined }],
         warps: [0, 1, 2, 3].map(function (i) { return { x: cx - 2 + i, y: H - 1, to: L.town, tx: exitBack.tx, ty: exitBack.ty, name: '城下町へ' }; }),
         npcs: [{ id: L.id + '_guard_l', x: cx - 4, y: H - 3, sprite: 'guard', dir: 'down', wander: 0, talk: async function (c) { await c.say(L.guard[0], L.guard[1]); } },

@@ -27,7 +27,7 @@
     [3, 6, 12, 15].forEach(function (yy) { H1[yy][5] = 'I'; H1[yy][24] = 'I'; });
     H1[1][3] = '}'; H1[1][26] = '}'; H1[1][1] = 'K'; H1[1][28] = 'K'; H1[1][2] = 'K'; H1[1][27] = 'K'; H1[4][9] = '*'; H1[4][20] = '*';
     H1[14][2] = 'e'; H1[14][3] = 'e'; H1[14][26] = 'e'; H1[14][27] = 'e'; H1[16][1] = 'a'; H1[16][28] = 'a'; H1[11][9] = 't'; H1[11][20] = 't';
-    D.vol_main_hall = { id: 'vol_main_hall', name: '学院本校舎・玄関ホール', kind: 'interior', bgm: 'town', rows: rows(H1), noLayout82: true, academy82: 'hall',
+    D.vol_main_hall = { id: 'vol_main_hall', name: '学院本校舎・玄関ホール', kind: 'interior', bgm: 'town', rows: rows(H1), noLayout82: true, noLayout: true, noWiden: true, academy82: 'hall',
       warps: [{ x: 14, y: 17, to: 'volatilia', tx: deanExit.tx, ty: deanExit.ty, name: '中庭へ' }, { x: 15, y: 17, to: 'volatilia', tx: deanExit.tx, ty: deanExit.ty, name: '中庭へ' },
         { x: 14, y: 6, to: 'vol_upper_gallery', tx: 14, ty: 9, raw: true, name: '大階段（上の回廊へ）' }, { x: 15, y: 6, to: 'vol_upper_gallery', tx: 15, ty: 9, raw: true, name: '大階段（上の回廊へ）' },
         { x: 14, y: 0, to: 'vol_great_hall', tx: 13, ty: 14, raw: true, name: '大食堂へ' }, { x: 15, y: 0, to: 'vol_great_hall', tx: 14, ty: 14, raw: true, name: '大食堂へ' },
@@ -40,7 +40,7 @@
       var G = grid(32, 9, ':'); var hx = hallSide === 'east' ? 31 : 0; G[4][hx] = 'D';
       rooms.forEach(function (r) { G[0][r.x] = 'D'; }); for (var x = 3; x < 29; x += 4) { G[7][x] = 'I'; } G[1][1] = 'K'; G[1][30] = 'K'; G[3][hallSide === 'east' ? 1 : 30] = 'a';
       [10, 21].forEach(function (x) { G[1][x] = '}'; }); G[6][9] = 'e'; G[6][10] = 'e'; G[6][21] = 'e'; G[6][22] = 'e';
-      D[id] = { id: id, name: name, kind: 'interior', bgm: 'town', rows: rows(G), noLayout82: true, academy82: 'gallery',
+      D[id] = { id: id, name: name, kind: 'interior', bgm: 'town', rows: rows(G), noLayout82: true, noLayout: true, noWiden: true, academy82: 'gallery',
         warps: [{ x: hx, y: 4, to: 'vol_main_hall', tx: hallSide === 'east' ? 1 : 28, ty: 9, raw: true, name: '玄関ホールへ' }].concat(rooms.map(function (r) { return { x: r.x, y: 0, to: r.to, tx: r.tx, ty: r.ty, raw: true, name: r.name }; })),
         npcs: npc ? [npc] : [], chests: [], events: [] };
     }
@@ -53,7 +53,7 @@
     var U = grid(30, 12, ':'); U[10][14] = '>'; U[10][15] = '>'; U[0][5] = 'D'; U[0][24] = 'D'; U[1][14] = '<'; U[1][15] = '<';
     for (var x2 = 2; x2 <= 27; x2++) if (x2 < 12 || x2 > 17) U[7][x2] = 'I';   // 欄干（ホールの吹き抜けを見下ろす）
     U[1][1] = 'K'; U[1][28] = 'K'; U[1][9] = '}'; U[1][20] = '}'; U[3][2] = 'e'; U[3][27] = 'e'; U[4][12] = '*';
-    D.vol_upper_gallery = { id: 'vol_upper_gallery', name: '学院本校舎・上の回廊', kind: 'interior', bgm: 'town', rows: rows(U), noLayout82: true, academy82: 'upper',
+    D.vol_upper_gallery = { id: 'vol_upper_gallery', name: '学院本校舎・上の回廊', kind: 'interior', bgm: 'town', rows: rows(U), noLayout82: true, noLayout: true, noWiden: true, academy82: 'upper',
       warps: [{ x: 14, y: 10, to: 'vol_main_hall', tx: 14, ty: 7, raw: true, name: '大階段（玄関ホールへ）' }, { x: 15, y: 10, to: 'vol_main_hall', tx: 15, ty: 7, raw: true, name: '大階段（玄関ホールへ）' },
         { x: 5, y: 0, to: 'vol_dean', name: '学院長室' }, { x: 24, y: 0, to: 'vol_dorm', name: '研究者の居住区（談話室）' }, { x: 14, y: 1, to: 'vol_observatory', name: '塔の階段（天文観測室へ）' }, { x: 15, y: 1, to: 'vol_observatory', name: '塔の階段（天文観測室へ）' }],
       npcs: [{ id: 'va82_tutor', x: 22, y: 4, sprite: 'scholar', dir: 'down', wander: 0, talk: say('学院の講師', ['この欄干から、玄関ホールの大階段が見下ろせる。', '学院長室は西の奥。塔の階段を上れば天文観測室。東の扉は研究者の居住区――談話室で議論が絶えない場所さ。']) }], chests: [], events: [] };
@@ -62,7 +62,7 @@
     [4, 7, 10].forEach(function (yy) { for (var x = 3; x <= 11; x++) Gh[yy][x] = 't'; for (var x3 = 16; x3 <= 24; x3++) Gh[yy][x3] = 't'; });
     for (var x4 = 9; x4 <= 18; x4++) Gh[1][x4] = 'T'; Gh[1][2] = '{'; Gh[1][25] = '{'; Gh[7][0] = '#'; Gh[6][1] = '('; Gh[6][26] = '('; Gh[13][1] = 'q'; Gh[13][26] = 'q'; Gh[1][1] = 'K'; Gh[1][26] = 'K';
     for (var y5 = 12; y5 < 15; y5++) { Gh[y5][13] = 'p'; Gh[y5][14] = 'p'; }
-    D.vol_great_hall = { id: 'vol_great_hall', name: '学院本校舎・大食堂', kind: 'interior', bgm: 'town', rows: rows(Gh), noLayout82: true, academy82: 'dining',
+    D.vol_great_hall = { id: 'vol_great_hall', name: '学院本校舎・大食堂', kind: 'interior', bgm: 'town', rows: rows(Gh), noLayout82: true, noLayout: true, noWiden: true, academy82: 'dining',
       warps: [{ x: 13, y: 15, to: 'vol_main_hall', tx: 14, ty: 1, raw: true, name: '玄関ホールへ' }, { x: 14, y: 15, to: 'vol_main_hall', tx: 15, ty: 1, raw: true, name: '玄関ホールへ' }],
       npcs: [{ id: 'va82_cook', x: 13, y: 0 + 2, sprite: 'merchant', dir: 'down', wander: 0, talk: say('食堂の料理人', ['今日の献立は、豆の煮込みと黒パン。観測当番の分は、夜まで取っておくよ。', '長机は学年ごとじゃない。ここでは誰とでも同じ机で食べる決まりさ。']) },
         { id: 'va82_diner1', x: 7, y: 5, sprite: 'scholar', dir: 'up', wander: 0, talk: say('学院生', ['統計の課題、食べながらだと頭に入らない……でも食べないと頭が回らない。']) },
@@ -70,7 +70,7 @@
     // ---------- 第二教室（16×11）：机の列・黒板・教壇
     var Cl = grid(16, 11, '_'); Cl[10][7] = 'D'; for (var x5 = 5; x5 <= 10; x5++) Cl[1][x5] = '}'; Cl[2][7] = 'T'; Cl[2][8] = 'T';
     [4, 6, 8].forEach(function (yy) { [2, 3, 5, 6, 9, 10, 12, 13].forEach(function (x) { Cl[yy][x] = 't'; }); }); Cl[1][1] = 'K'; Cl[1][14] = 'K'; Cl[5][14] = '*';
-    D.vol_classroom2 = { id: 'vol_classroom2', name: '学院本校舎・第二教室', kind: 'interior', bgm: 'town', rows: rows(Cl), noLayout82: true, academy82: 'class',
+    D.vol_classroom2 = { id: 'vol_classroom2', name: '学院本校舎・第二教室', kind: 'interior', bgm: 'town', rows: rows(Cl), noLayout82: true, noLayout: true, noWiden: true, academy82: 'class',
       warps: [{ x: 7, y: 10, to: 'vol_west_gallery', tx: 16, ty: 1, raw: true, name: '西翼の回廊へ' }],
       npcs: [{ id: 'va82_teacher', x: 8, y: 1 + 1, sprite: 'scholar', dir: 'down', wander: 0, talk: say('統計の講師', ['今日は「平均」と「ばらつき」。一回の勝ちより、何回もくり返したときの形を見るんだ。', '黒板の点の散らばりを、目で数えてごらん。']) }], chests: [], events: [] };
     D.vol_classroom2.npcs[0].y = 3;

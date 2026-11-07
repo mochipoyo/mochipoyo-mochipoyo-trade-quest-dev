@@ -1,0 +1,13 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/ch67test.orig.js	2026-11-07 16:35:13.042719478 +0900
++++ ch67test.js	2026-11-07 16:35:13.058421171 +0900
+@@ -92,7 +92,9 @@
+   ok(d.flags.kyle_oath_done && State.hasItem('palace_pass'),'pass obtained'); ok(d.flags.kyle_oath_event && d.quests.kyle_oath && d.quests.kyle_oath.state==='done' && (d.inventory.knight_helm||0)===hm+1,'kyle oath sub quest done');
+   // 王宮の門
+   World.enterMap('sentra_capital',23,8,'up'); await frames(2); r=await interactAt(23,8,'up',[]); ok(d.flags.palace_open,'palace opened with pass');
+-  await walk('up',2); await drive((async()=>{ let g=0; while((World.busy||World.map.id==='sentra_capital') && g++<60) await frames(3); })(),[]); ok(World.map.id==='sentra_palace_1','entered palace got '+World.map.id+' '+World.player.x+','+World.player.y);
++  await walk('up',2); await drive((async()=>{ let g=0; while((World.busy||World.map.id==='sentra_capital') && g++<60) await frames(3); })(),[]);
++  if (World.map.id==='sentra_palace_approach') { /* v8.2 王宮の門の先は宮苑（城郭区画）。参道をまっすぐ北へ歩いて王宮の大扉へ */ for (let i=0;i<40 && World.map.id==='sentra_palace_approach';i++) await walk('up',1); await drive((async()=>{ let g=0; while(World.busy && g++<60) await frames(3); })(),[]); }
++  ok(World.map.id==='sentra_palace_1','entered palace got '+World.map.id+' '+World.player.x+','+World.player.y);
+   healAll(); r=await interactAt(11,10,'up',[]); log('drek fight', r); ok(d.flags.royal_captain_defeated,'drek defeated');
+   World.player.x=11; World.player.y=6; World.player.px=11*32; World.player.py=6*32; await walk('up',1); await drive((async()=>{ let g=0; while((World.busy||World.map.id==='sentra_palace_1') && g++<60) await frames(3); })(),[]); ok(World.map.id==='sentra_palace_2','to palace_2 got '+World.map.id);
+   ok(!World.map.npcs.find(n=>n.id==='sp_sevran' && !n.hidden),'sevran hidden before core');
