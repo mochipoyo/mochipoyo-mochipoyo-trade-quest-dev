@@ -252,7 +252,8 @@ async function build(ctx, th, b) {
   // ---------------- 家具 ----------------
   let fstats = {}; try { const fr = buildFurn82({ map, T, walk, wallAt: isWall, add, theme: th, lamps, animated: scene.animated }); fstats = fr.stats; } catch (e) { ctx.stats.furnError = String(e && e.message || e); console.warn('furn82', e); }
   mg.build(g); mgNo.build(g, { shadow: false });
-  if (!hi) scene.ambient = Math.max(scene.ambient || 0, 0.85);   // 低画質（点の光が 4 つ・スマホの既定）：まわりの光を上げる（0.5 では暗い木の床の町がほぼ黒く見えた）
+  { const lum = (h) => { const c = new THREE.Color(h || '#808080'); return 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b; }; const fl = (lum(th.floor.c1) + lum(th.floor.c2 || th.floor.c1)) / 2;   /* 床の明るさ（線形）で、まわりの光を決める：暗い床の町ほど上げる */
+    const a82 = !hi ? (fl < 0.06 ? 1.45 : fl < 0.15 ? 1.15 : 0.85) : (fl < 0.06 ? 1.0 : 0); if (a82) { scene.ambient82 = a82; scene.ambient = Math.max(scene.ambient || 0, a82); } stats.ambient82 = a82; stats.floorLum = +fl.toFixed(3); }   // 低画質（点の光が 4 つ・スマホの既定）：まわりの光を上げる（0.5 では暗い木の床の町がほぼ黒く見えた）
   Object.assign(ctx.stats, { i82: stats, furn82: fstats });
   return g;
 }

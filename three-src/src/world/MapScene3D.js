@@ -68,7 +68,7 @@ export class MapScene3D {
       this.root.add(r.group); this.heightAt = r.heightAt; this.lampSpots = r.lampSpots.slice();
       (r.animated || []).forEach((a) => this.animated.push(a));   // v7.6 噴水の水
       (r.smokes || []).forEach((sm) => this.addSmoke(sm));   // v6.6 目印の煙突・噴気孔
-      this.dark = this.interior || (map.kind === 'dungeon' && !(theme.placeDef && theme.placeDef.outdoor)); this.ambient = (theme.placeDef && theme.placeDef.light) || null;
+      this.dark = this.interior || (map.kind === 'dungeon' && !(theme.placeDef && theme.placeDef.outdoor)); this.ambient = (theme.placeDef && theme.placeDef.light) || null; if (this.ambient82) this.ambient = Math.max(this.ambient || 0, this.ambient82);   /* v8.2 屋内の作り方（interior82）が低画質で上げるまわりの光（レシピはこの行より先に動くので、別の名前で受け取る） */
       if (map.buildings.length) {
         const bb = new BuildingBuilder3D(app.mats, app.models); const rnd = rngFrom(5150);
         const shared = new Batch(); const bgroup = new THREE.Group(); bgroup.name = 'buildings'; this.root.add(bgroup);
