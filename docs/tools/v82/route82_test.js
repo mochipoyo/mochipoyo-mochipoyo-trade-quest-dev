@@ -5,7 +5,7 @@
 // ・walk：主な道だけ、2D 版の 1 歩ずつの移動で本当に歩いて往復する（城下町→楼門→城郭区画→城→城郭区画→城下町、学院の中庭→玄関ホール→大階段→上の回廊→学院長室…）
 const load = require('../v78/load78.js');
 const args = process.argv.slice(2); const two = args.includes('2d'); const doWalk = args.includes('walk'); const only = (args.find((a) => /,|_/.test(a) && a !== '2d' && a !== 'walk') || '').split(',').filter(Boolean);
-const A = load(two ? { earth: false, join: false } : {}); const w = A.w; const W = w.World, S = w.State;
+const A = load(two ? { earth: false, join: false } : {}); const w = A.w; if (A.errors.length) { console.log('読み込みの失敗（スクリプトの誤り）', A.errors); process.exit(1); } const W = w.World, S = w.State;
 w.Win.message = async () => { }; w.Win.toast = () => { }; w.Win.choice = async () => 0; if (w.Win.confirm) w.Win.confirm = async () => true; if (w.Win.ask) w.Win.ask = async () => true;
 S.newGame('t', 'warrior'); const d = S.data; ['s3121_new_prologue', 'ship_ready', 'sevran_fallen'].concat((process.env.FLAGS || '').split(',').filter(Boolean)).forEach((f) => d.flags[f] = true); d.flags.s3121_prologue_phase = 'done';   // FLAGS=a,b：物語の鍵（例 palace_open）を開けた状態でも確かめる
 W.start(); W.encounter = () => { };

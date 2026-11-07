@@ -5,7 +5,7 @@
 const load = require('../v78/load78.js'); const fs = require('fs'); const path = require('path');
 const BEFORE = process.argv[2]; const two = process.argv.includes('2d'); const outFile = process.argv.find((a) => /\.json$/.test(a));
 const opt = (dir) => Object.assign(two ? { earth: false, join: false } : {}, dir ? { dir: dir.replace(/\/?$/, '/') } : {});
-const A = load(opt(BEFORE)), B = load(opt(null));
+const A = load(opt(BEFORE)), B = load(opt(null)); if (B.errors.length) { console.log('読み込みの失敗（スクリプトの誤り）', B.errors); process.exit(1); }
 for (const X of [A, B]) { const w = X.w; w.Win.message = async () => { }; w.Win.toast = () => { }; w.Win.choice = async () => 0; }
 const out = [];
 // 前の版でセーブを作る

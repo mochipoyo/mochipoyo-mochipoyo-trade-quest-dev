@@ -5,7 +5,7 @@
 // 4) 書いた localStorage のキー（2D 版の保存キーを書き換えていないか）
 const load = require('../v78/load78.js');
 const two = process.argv.includes('2d'); const base = two ? { earth: false, join: false } : {};
-const ON = load(base).w, OFF = load(Object.assign({ query: 'layout=off' }, base)).w;
+const LA = load(base), LB = load(Object.assign({ query: 'layout=off' }, base)); if (LA.errors.length || LB.errors.length) { console.log('読み込みの失敗（スクリプトの誤り）', LA.errors, LB.errors); process.exit(1); } const ON = LA.w, OFF = LB.w;
 for (const w of [ON, OFF]) { w.Win.message = async () => { }; w.Win.toast = () => { }; w.Win.choice = async () => 0; }
 const ng = []; const ok = (c, m) => { if (!c) ng.push(m); console.log((c ? 'OK  ' : 'NG  ') + m); };
 console.log('新しい間取り：Layout82.off', ON.Layout82.off, '作り直した部屋', Object.keys(ON.Layout82.maps).length, '／元の間取り：Layout82.off', OFF.Layout82.off, '作り直した部屋', Object.keys(OFF.Layout82.maps).length, '戻す版の表', Object.keys(OFF.Layout82.backVer).length);

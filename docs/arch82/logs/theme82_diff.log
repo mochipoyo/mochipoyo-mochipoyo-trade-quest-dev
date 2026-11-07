@@ -1,0 +1,21 @@
+町（作り方） 38 組 703 差がいちばん少ない組 {"n":4,"a":"aruna_ruins","b":"asana_raid","keys":["wall","floor","light","props"]}
+ちがう町どうしで差が 4 より少ない組 0
+同じ所の家族の組（城郭区画と城下町・状態の地図ともとの町。数えない） 12
+  rivel_town×rivel_castle_approach 1 part
+  sentra_capital×sentra_palace_approach 0 
+  magicka_city×magicka_palace_approach 3 wall/win/props
+  asana_village×asana_rebuilt 3 wall/floor/props
+  asana_village×asana_raid 10 wall/floor/win/ceil/light/furn/fire/part/rug/props
+  asana_village×asana_ruins 9 wall/floor/win/ceil/light/furn/fire/rug/props
+  asana_rebuilt×asana_raid 10 wall/floor/win/ceil/light/furn/fire/part/rug/props
+  asana_rebuilt×asana_ruins 9 wall/floor/win/ceil/light/furn/fire/rug/props
+  asana_raid×asana_ruins 2 ceil/part
+  nereia_city×nereia_old_hi 3 floor/rug/props
+  nereia_city×nereia_old_lo 3 floor/rug/props
+  nereia_old_hi×nereia_old_lo 0 
+前の共通の作りとの差（最小） 6
+  poyo_village 6 wain/win/furn/fire/part/rug
+  rivel_artisan 8 wall/wain/floor/win/furn/fire/part/rug
+  ciel_port 8 wall/floor/win/light/furn/fire/part/rug
+  asana_village 8 wall/wain/win/light/furn/fire/part/rug
+  rivel_town 9 wall/wain/floor/win/ceil/light/furn/part/rug
