@@ -36,6 +36,9 @@ for (const s of out) {
   while (q.length && !reach) { const [x, y] = q.shift(); for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const X = x + dx, Y = y + dy, k = X + ',' + Y; if (seen.has(k) || X < 0 || Y < 0 || X >= m.w || Y >= m.h) continue; seen.add(k); if (exits.has(k)) { reach = true; break; } if (m.passable(X, Y, d) && !m.npcAt(X, Y)) q.push([X, Y]); } }
   const keep = JSON.stringify(d0.flags) === JSON.stringify(d.flags) && JSON.stringify(d0.quests) === JSON.stringify(d.quests) && JSON.stringify(d0.inventory) === JSON.stringify(d.inventory) && (d0.aboard || null) === (d.aboard || null);
   const rv = w.MapRemake.maps[m.id] ? d.remakeVer[m.id] === w.MapRemake.maps[m.id].version : true;
-  ok(free && reach && keep && rv, s.label + '：' + d0.pos.map + ' ' + d0.pos.x + ',' + d0.pos.y + ' → ' + m.id + ' ' + p.x + ',' + p.y + '（' + m.tile(p.x, p.y) + (ship ? '・船' : '') + (reach ? '・出口へ歩ける' : '・出口へ行けない') + (keep ? '' : '・フラグか持ち物が変わった') + (rv ? '' : '・版が古い') + '）');
+  // 二度目の読み込み（読み込んだ後に保存 → もう一度読む）：同じ安全な位置のまま（漂流しない）
+  W.syncPos(); const again = JSON.parse(JSON.stringify(S.data)); S.newGame('t', 'warrior'); S.data = again; W.start(); W.encounter = () => { }; const same = W.map.id === m.id && W.player.x === p.x && W.player.y === p.y;
+  if (!same) ng.push(s.label + '：二度目の読み込みで位置が変わった ' + W.map.id + ' ' + W.player.x + ',' + W.player.y);
+  ok(free && reach && keep && rv && same, s.label + '：' + d0.pos.map + ' ' + d0.pos.x + ',' + d0.pos.y + ' → ' + m.id + ' ' + p.x + ',' + p.y + '（' + m.tile(p.x, p.y) + (ship ? '・船' : '') + (reach ? '・出口へ歩ける' : '・出口へ行けない') + (keep ? '' : '・フラグか持ち物が変わった') + (rv ? '' : '・版が古い') + (same ? '・二度目の読み込みも同じ' : '・二度目の読み込みで動いた') + '）');
 }
 console.log('古いセーブ', out.length, '件。結果：' + (ng.length ? 'NG ' + ng.length : 'すべて OK')); process.exit(ng.length ? 1 : 0);
