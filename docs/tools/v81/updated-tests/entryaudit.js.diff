@@ -1,0 +1,12 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/entryaudit.js.orig	2026-11-07 11:25:23.648070313 +0900
++++ entryaudit.js	2026-11-07 11:25:23.663591499 +0900
+@@ -11,7 +11,8 @@
+ const problems = [], info = []; let nWarp = 0, nMaps = 0;
+ function maps() { return Object.keys(DEFS); }
+ function exitsOf(m) {   // [{x,y,to,tx,ty,kind,need}]
+-  const out = []; (m.warps || []).forEach(p => out.push({ x: p.x, y: p.y, to: p.to, tx: p.tx, ty: p.ty, kind: m.tiles[p.y] && m.tiles[p.y][p.x] === 'bld_door' ? 'door' : 'warp', need: p.needFlag, hidden: p.hidden }));
++  const R81 = (to, x, y, raw) => (!raw && w.MapRemake && w.MapRemake.maps[to] && w.MapRemake.maps[to].r81 && typeof x === 'number') ? w.MapRemake.pos(to, x, y) : { x, y };   // v8.1 作り直した町：行き先の旧座標を新しい座標に直す（ゲームも World.enterMap で直す）
++  const out = []; (m.warps || []).forEach(p => { const q = R81(p.to, p.tx, p.ty, p.raw); out.push({ x: p.x, y: p.y, to: p.to, tx: q.x, ty: q.y, kind: m.tiles[p.y] && m.tiles[p.y][p.x] === 'bld_door' ? 'door' : 'warp', need: p.needFlag, hidden: p.hidden }); });
+   (m.events || []).forEach(e => { if ((e.type === 'dive' || e.type === 'hole') && e.to) out.push({ x: e.x, y: e.y, to: e.to, tx: e.tx, ty: e.ty, kind: e.type, need: e.needFlag }); });
+   return out;
+ }

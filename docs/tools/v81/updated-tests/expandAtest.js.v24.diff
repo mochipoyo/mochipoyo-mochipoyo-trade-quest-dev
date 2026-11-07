@@ -1,0 +1,27 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/expandAtest.js.orig2	2026-11-07 11:21:04.656881773 +0900
++++ expandAtest.js	2026-11-07 11:21:04.750779447 +0900
+@@ -61,7 +61,7 @@
+   // 戻りがワープでなく「調べる所」のもの（古井戸・壁のひび）：[行き先マップ, 調べる所の x, y]
+   const PORTAL = { 'rivel_castle_b1>rivel_artisan': [28, 19] };
+   for (const id of allMaps) { const m = fresh(id); for (const wp of m.warps) { if (wp.dup71) continue; if (PATCHED.includes(id) && (oldDump.maps[id].warps.some(o => o.x === OLD71(id, wp.x, wp.y)[0] && o.y === OLD71(id, wp.x, wp.y)[1]) || (M[id].remake81 && oldDump.maps[id].warps.some(o => o.to === wp.to && o.tx === wp.tx && o.ty === wp.ty)) /* v8.1 作り直した町（remake81）で位置だけ動いた前からの出口 */ || oldDump.maps[id].buildings.some(b => b.interior === wp.to))) continue; const to = World.getMap(wp.to);
+-      const pt = PORTAL[id + '>' + wp.to]; if (pt) { const ev = to.eventAt(pt[0], pt[1]); if (ev && ev.type === 'script' && Math.abs(pt[0] - wp.tx) + Math.abs(pt[1] - wp.ty) <= 1 && walk(to, wp.tx, wp.ty, {})) pairs++; else bad2.push(id + '→' + wp.to + ' 調べる所なし'); continue; }
++      const pt0 = PORTAL[id + '>' + wp.to]; if (pt0) { const pq = RX71(wp.to, pt0[0], pt0[1]), pt = [pq.x, pq.y], wq = wp.raw ? { x: wp.tx, y: wp.ty } : RX71(wp.to, wp.tx, wp.ty); const ev = to.eventAt(pt[0], pt[1]); if (ev && ev.type === 'script' && Math.abs(pt[0] - wq.x) + Math.abs(pt[1] - wq.y) <= 1 && walk(to, wq.x, wq.y, {})) pairs++; else bad2.push(id + '→' + wp.to + ' 調べる所なし'); continue; }
+       const tq = RX71(wp.to, wp.tx, wp.ty); const back = to.warps.filter(b => b.to === id && Math.abs(b.x - tq.x) + Math.abs(b.y - tq.y) <= (RM71(wp.to) ? 2 : 1)); const arr = walk(to, tq.x, tq.y, {}) && !to.warpAt(tq.x, tq.y); if (!back.length || !arr || !back.some(b => { const bq = RX71(id, b.tx, b.ty); return Math.abs(bq.x - wp.x) + Math.abs(bq.y - wp.y) <= (RM71(id) ? 2 : 1); })) bad2.push(id + '(' + wp.x + ',' + wp.y + ')→' + wp.to + '(' + wp.tx + ',' + wp.ty + ') back=' + back.length + ' arr=' + arr); else pairs++; } }
+   ok(!bad2.length, '新しい出入口 ' + pairs + 'か所：着いたマスは通れてワープでなく、すぐそばに戻りのワープがある ' + bad2.join(' / '));
+   // ④ 到達（BFS）
+@@ -106,11 +106,11 @@
+   w.Ooparts.count = () => 5; await Events.run(World.map.eventAt(26, 11)); w.Ooparts.count = oc;
+   ok(d.flags.rc_ruin_open && World.map.tile(26, 11) === 'door' && World.map.passable(26, 11, d), '遺跡の扉：オーパーツ5つで開く（数の判定は Ooparts.count。テストでは5を返す形に置き換えて確認）');
+   // 古井戸 ↔ 地下の梯子
+-  World.enterMap('rivel_artisan', 28, 20, 'up'); answer = 1; await Events.run(World.map.eventAt(28, 19)); ok(World.map.id === 'rivel_artisan', '古井戸：「やめる」なら降りない');
+-  answer = 0; await Events.run(World.map.eventAt(28, 19)); ok(World.map.id === 'rivel_castle_b1' && World.player.x === 2 && World.player.y === 2 && d.flags.ra_well_found, '古井戸：「降りる」で城の地下（西の梯子の横）へ');
++  World.enterMap('rivel_artisan', 28, 20, 'up'); answer = 1; const WL = RX71('rivel_artisan', 28, 19); await Events.run(World.map.eventAt(WL.x, WL.y));   /* v8.1 作り直した職人通り：旧座標 → 新しい座標 */ ok(World.map.id === 'rivel_artisan', '古井戸：「やめる」なら降りない');
++  answer = 0; await Events.run(World.map.eventAt(WL.x, WL.y)); ok(World.map.id === 'rivel_castle_b1' && World.player.x === 2 && World.player.y === 2 && d.flags.ra_well_found, '古井戸：「降りる」で城の地下（西の梯子の横）へ');
+   // 迷い猫
+-  World.enterMap('rivel_artisan', 36, 13, 'right'); const hs0 = State.itemCount ? State.itemCount('herb_soup') : (d.inventory.herb_soup || 0);
+-  await Events.run(World.map.eventAt(37, 13)); await Events.run(World.map.eventAt(37, 13)); const hs1 = State.itemCount ? State.itemCount('herb_soup') : (d.inventory.herb_soup || 0);
++  World.enterMap('rivel_artisan', 36, 13, 'right'); const CT = RX71('rivel_artisan', 37, 13); const hs0 = State.itemCount ? State.itemCount('herb_soup') : (d.inventory.herb_soup || 0);
++  await Events.run(World.map.eventAt(CT.x, CT.y)); await Events.run(World.map.eventAt(CT.x, CT.y)); const hs1 = State.itemCount ? State.itemCount('herb_soup') : (d.inventory.herb_soup || 0);
+   ok(d.flags.ra_cat_found && hs1 === hs0 + 2, '菜園の迷い猫：見つけると薬草スープ×2（1回だけ）');
+   // 洞窟のひび → 地底湖、レバー2つ → 水門
+   const K6 = w.MapRemake ? w.MapRemake.pos('oblivion_cave_2', 27, 6) : { x: 27, y: 6 };   // v7.1 作り直した洞窟2階：旧座標のひび → 新しい座標

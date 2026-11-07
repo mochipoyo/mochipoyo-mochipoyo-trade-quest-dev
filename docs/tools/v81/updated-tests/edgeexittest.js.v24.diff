@@ -1,0 +1,31 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/edgeexittest.js.orig2	2026-11-07 11:23:24.467324787 +0900
++++ v65/edgeexittest.js	2026-11-07 11:23:24.505743550 +0900
+@@ -44,7 +44,7 @@
+   ok(badDest.length === 0, 'すべての出口のマスで、行き先が条件を満たす（埋まらない・関所などを越えない）' + (badDest.length ? ' NG: ' + badDest.slice(0, 6).join(' ') : ''));
+ 
+   console.log('--- 4. 実際に歩いて出る（World.tryMove → 暗転 → フィールド） ---');
+-  const walkOut = async (id, x, y, dir) => { World.enterMap(id, x, y, dir); await waitIdle(); clearUi(); World.busy = false; World.tryMove(dir); await waitIdle(); return { map: World.map.id, x: World.player.x, y: World.player.y, dir: World.player.dir }; };
++  const walkOut = async (id, x, y, dir, raw) => { World.enterMap(id, x, y, dir, raw ? { raw: true } : undefined);   /* v8.1 raw：作り直した町の今の座標のまま */ await waitIdle(); clearUi(); World.busy = false; World.tryMove(dir); await waitIdle(); return { map: World.map.id, x: World.player.x, y: World.player.y, dir: World.player.dir }; };
+   let r = await walkOut('harbor_town', 0, 12, 'left');
+   ok(r.map === 'world' && r.x < 22 && Math.abs(r.y - 72) <= 2 && r.dir === 'left', '港町マリナの西の外周 → 町の印の西（' + JSON.stringify(r) + '）');
+   r = await walkOut('harbor_town', w.MAP_DEFS.harbor_town.rows[0].length - 1, 20, 'right');   // v7.2 港町マリナは東に新しい地区（東の外周は新しい地区の東の端）
+@@ -58,7 +58,8 @@
+   World.enterMap('world', L.x, L.y - 1, 'down'); await waitIdle(); clearUi(); World.busy = false; World.tryMove('down'); await waitIdle(); clearUi();
+   const LQ = w.MapRemake ? w.MapRemake.pos('harbor_town', L.tx, L.ty) : { x: L.tx, y: L.ty }; /* v8.1 作り直した港町（remake81）：いつもの入口の旧座標を新しい座標に直す */ ok(World.map.id === 'harbor_town' && World.player.x === LQ.x && World.player.y === LQ.y && World.map.passable(LQ.x, LQ.y, d), '外周から出たあと、印から入り直すと、いつもの入口（' + L.tx + ',' + L.ty + '）に出る（' + World.map.id + '@' + World.player.x + ',' + World.player.y + '）');
+   d.flags.erased_hint = true;
+-  r = await walkOut('erased_village', 11, 0, 'up');
++  { const EV81 = w.MAP_DEFS.erased_village.remake81; const ex = EV81 ? [...w.MAP_DEFS.erased_village.rows[0]].findIndex((c) => c === 'r') : 11;   /* v8.1 作り直した消えた村：北の森の出口（いちばん上の行の道）の今の座標 */
++  r = await walkOut('erased_village', ex, 0, 'up', !!EV81); }
+   ok(r.map === 'world_kalion' && r.y < 44 && Math.abs(r.x - 42) <= 3, '地図から消えた村の北の道の端 → 村の印の北（' + JSON.stringify(r) + '）');
+   // 外周でも、区間に入っていない向きや、外周でないマスからは出ない
+   World.enterMap('harbor_town', 0, 12, 'up'); await waitIdle(); clearUi(); World.busy = false; World.tryMove('up'); await waitIdle();
+@@ -69,7 +70,8 @@
+   ok(World.map.id === 'world', '続けて左へ進むと外へ出る');
+ 
+   console.log('--- 5. 今の出口のワープ・閉じた出口・船の上 ---');
+-  World.enterMap('harbor_town', 24, 2, 'up'); await waitIdle(); clearUi(); World.busy = false; World.tryMove('up'); await waitIdle();
++  { const H81 = w.MAP_DEFS.harbor_town.remake81; const nq = H81 ? World.getMap('harbor_town').warps.find((q) => q.y === 0 && q.to === 'world') : null;   /* v8.1 作り直した港町：北の出口の 1 つ内側（今の座標）から。v8.1 §23 で、フィールドから着く所は門から内側へ寄せた */
++  if (nq) World.enterMap('harbor_town', nq.x, 1, 'up', { raw: true }); else World.enterMap('harbor_town', 24, 2, 'up'); } await waitIdle(); clearUi(); World.busy = false; World.tryMove('up'); await waitIdle();
+   ok(World.map.id === 'world' && World.player.x === 22 && World.player.y === 71, '今までの北の出口（24〜27,0〜1）は今までどおり world@22,71（' + World.map.id + '@' + World.player.x + ',' + World.player.y + '）');
+   // 試験用の町：いつもの出口が物語の条件で閉じている
+   D.__edge_test = { id: '__edge_test', name: '試験の村', kind: 'town', fallback: 'grass', rows: ['......', '......', '......', '......', '##EE##'.replace(/E/g, '.')], warps: [{ x: 2, y: 4, to: 'world', tx: 22, ty: 71, needFlag: '__edge_open', lockedText: ['門は閉ざされている。'] }, { x: 3, y: 4, to: 'world', tx: 22, ty: 71, needFlag: '__edge_open', lockedText: ['門は閉ざされている。'] }], edgeExits: [{ side: 'left', range: [0, 1] }] };

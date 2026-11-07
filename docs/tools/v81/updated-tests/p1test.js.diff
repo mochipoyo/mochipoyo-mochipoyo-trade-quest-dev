@@ -1,0 +1,11 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/p1test.js.orig	2026-11-07 11:24:43.122597592 +0900
++++ p1test.js	2026-11-07 11:24:43.154968288 +0900
+@@ -46,7 +46,7 @@
+   const TR=w.Travel; const pts=TR.points();
+   ok(pts.length>=40 && new Set(pts.map(p=>p.id)).size===pts.length, '移動地点 '+pts.length+' か所（地点IDは重複なし）');
+   // すべての地点の入口が通れる
+-  const bad=[]; for(const p of pts){ const m=World.getMap(p.to); if(!m||!m.passable(p.tx,p.ty,State.data)) bad.push(p.id); } ok(bad.length===0, 'すべての移動先の入口が通れる場所'+(bad.length?'：'+bad.join(','):''));
++  const bad=[]; for(const p of pts){ const m=World.getMap(p.to); const q81=(w.MapRemake&&w.MapRemake.maps[p.to]&&w.MapRemake.maps[p.to].r81)?w.MapRemake.pos(p.to,p.tx,p.ty):{x:p.tx,y:p.ty}; /* v8.1 作り直した町：入口の旧座標を新しい座標に直して調べる（ゲームも World.enterMap で直す） */ if(!m||!m.passable(q81.x,q81.y,State.data)) bad.push(p.id); } ok(bad.length===0, 'すべての移動先の入口が通れる場所'+(bad.length?'：'+bad.join(','):''));
+   State.newGame('テスト','warrior'); State.data.settings.textSpeed='instant'; World.enterMap('world',28,60,'down'); await frames(3);
+   ok(!TR.unlocked(TR.get('rivel_castle_town')) , '未訪問のリヴェルは解放されていない');
+   World.enterMap('rivel_town',20,30,'down'); await frames(2); World.enterMap('world',28,60,'down'); await frames(2);

@@ -1,0 +1,51 @@
+--- /tmp/claude-0/-home-claude/d54f6bea-9e8c-5772-8b37-e04c4e3687a5/scratchpad/expandA2test.js.orig	2026-11-07 11:20:22.020055029 +0900
++++ expandA2test.js	2026-11-07 11:20:26.275911998 +0900
+@@ -17,12 +17,14 @@
+ function walkable(m, x, y, flags) { if (x < 0 || y < 0 || x >= m.w || y >= m.h) return false; if (Tiles.isSolid(m.tiles[y][x])) return false; const ev = m.eventAt(x, y); if (ev && ev.solid && !(ev.doneFlag && flags[ev.doneFlag])) return false; if (w.Search && w.Search.solidAt(m, x, y)) return false; if (m.npcs.some(n => !n.hidden && n.wander === 0 && n.x === x && n.y === y)) return false; return true; }
+ function bfs(m, sx, sy, flags) { const seen = new Set([sx + ',' + sy]); const q = [[sx, sy]]; while (q.length) { const [x, y] = q.shift(); if (m.warpAt(x, y) && !(x === sx && y === sy)) continue; for (const [dx, dy] of D4) { const k = (x + dx) + ',' + (y + dy); if (!seen.has(k) && walkable(m, x + dx, y + dy, flags)) { seen.add(k); q.push([x + dx, y + dy]); } } } return seen; }
+ const near = (s, x, y) => s.has(x + ',' + y) || D4.some(([dx, dy]) => s.has((x + dx) + ',' + (y + dy)));
++// v8.1 作り直した地図（js/rpg/remake81.js）：旧座標 → 新しい座標（作り直していない地図はそのまま）
++const RP = (id, x, y) => (w.MapRemake ? w.MapRemake.pos(id, x, y) : { x, y }); const nearR = (s, id, x, y) => { const q = RP(id, x, y); return near(s, q.x, q.y); };
+ function fresh(id) { delete World.maps[id]; return World.getMap(id); }
+ async function walkTo(dir) { const p = World.player; for (let g = 0; g < 60 && p.moving; g++) await frames(1); World.tryMove(dir); for (let g = 0; g < 80 && p.moving; g++) await frames(1); await frames(25); }
+ (async () => {
+   await sleep(60); clean(); State.newGame('テスト', 'warrior'); const d = State.data; d.settings.textSpeed = 'instant'; World.start(); await sleep(60); clean();
+   const M = w.MAP_DEFS;
+-  const reach = (id, sx, sy, flags) => { const keep = Object.assign({}, d.flags); Object.assign(d.flags, flags || {}); const s = bfs(fresh(id), sx, sy, d.flags); d.flags = keep; State.data.flags = keep; fresh(id); return s; };
++  const reach = (id, sx, sy, flags) => { { const q81 = RP(id, sx, sy); sx = q81.x; sy = q81.y; } const keep = Object.assign({}, d.flags); Object.assign(d.flags, flags || {}); const s = bfs(fresh(id), sx, sy, d.flags); d.flags = keep; State.data.flags = keep; fresh(id); return s; };
+   ok(JSON.stringify(w.EXPAND_A.stage2.maps) === JSON.stringify(NEW) && JSON.stringify(w.EXPAND_A.stage2.patched) === JSON.stringify(PATCHED), '第2段階：新しいマップ4枚、既存マップへの追加2枚 ' + w.EXPAND_A.stage2.maps.join(','));
+   for (const id of NEW) { const rows = M[id].rows; const bad = []; rows.forEach((r, y) => { if (r.length !== rows[0].length) bad.push('幅' + y); for (const ch of r) if (!Tiles.byChar[ch]) bad.push(ch); }); ok(!bad.length, id + '：' + rows[0].length + '×' + rows.length + '、行の幅がそろい、知らない文字がない ' + bad.join(',')); }
+   // 既存マップは足しただけ（第1段階の版と比べる）
+@@ -37,13 +39,13 @@
+   ok(JSON.stringify(oldDump.wl) === JSON.stringify(cur.wl) && JSON.stringify(oldDump.sp) === JSON.stringify(cur.sp.slice(0, oldDump.sp.length)), 'ワールドの入口・既存の探索ポイントは変わらない');
+   // 出入口は両方向
+   let pairs = 0, bad2 = [];
+-  for (const id of NEW.concat(PATCHED)) { const m = fresh(id); for (const wp of m.warps) { if (w.MAP_DEFS[wp.to] && w.MAP_DEFS[wp.to].v72) continue;   /* v7.2 町の新しい地区の建物の扉は v72/towns72.js で確かめる */ if (PATCHED.includes(id) && oldDump.maps[id].warps.some(o => o.x === wp.x && o.y === wp.y)) continue; const to = World.getMap(wp.to); const back = to.warps.filter(b => b.to === id && Math.abs(b.x - wp.tx) + Math.abs(b.y - wp.ty) <= 1); const arr = walkable(to, wp.tx, wp.ty, {}) && !to.warpAt(wp.tx, wp.ty); if (back.length && arr && back.some(b => Math.abs(b.tx - wp.x) + Math.abs(b.ty - wp.y) <= 1)) pairs++; else bad2.push(id + '(' + wp.x + ',' + wp.y + ')→' + wp.to); } }
++  for (const id of NEW.concat(PATCHED)) { const m = fresh(id); for (const wp of m.warps) { if (w.MAP_DEFS[wp.to] && w.MAP_DEFS[wp.to].v72) continue;   /* v7.2 町の新しい地区の建物の扉は v72/towns72.js で確かめる */ if (PATCHED.includes(id) && (oldDump.maps[id].warps.some(o => o.x === wp.x && o.y === wp.y) || (M[id].remake81 && oldDump.maps[id].warps.some(o => o.to === wp.to && o.tx === wp.tx && o.ty === wp.ty)))) continue; const to = World.getMap(wp.to); const tq = wp.raw ? { x: wp.tx, y: wp.ty } : RP(wp.to, wp.tx, wp.ty); const back = to.warps.filter(b => b.to === id && Math.abs(b.x - tq.x) + Math.abs(b.y - tq.y) <= 1); const arr = walkable(to, tq.x, tq.y, {}) && !to.warpAt(tq.x, tq.y); if (back.length && arr && back.some(b => { const bq = b.raw ? { x: b.tx, y: b.ty } : RP(id, b.tx, b.ty); return Math.abs(bq.x - wp.x) + Math.abs(bq.y - wp.y) <= 1; })) pairs++; else bad2.push(id + '(' + wp.x + ',' + wp.y + ')→' + wp.to); } }
+   ok(!bad2.length && pairs === 8, '新しい出入口 ' + pairs + 'か所：着いたマスは通れてワープでなく、すぐそばに戻り口 ' + bad2.join(' / '));
+   // 到達
+-  { const ent = M.magicka_city.buildings.filter(b => b.interior === 'magicka_palace')[0]; const s = reach('magicka_palace', ent.entry.x, ent.entry.y); ok(s.has('1,12') && s.has('14,12'), '魔導王宮：入口から左下・右下の階段へ歩ける'); }
++  { const ent = M.magicka_city.buildings.filter(b => b.interior === 'magicka_palace')[0]; const s = reach('magicka_palace', ent.entry.x, ent.entry.y); const st81 = M.magicka_palace.remake81 ? World.getMap('magicka_palace').warps.filter(q => q.to === 'magicka_palace_2f' || q.to === 'magicka_palace_b1') : null; ok(st81 ? (st81.length === 2 && st81.every(q => near(s, q.x, q.y))) : (s.has('1,12') && s.has('14,12')), '魔導王宮：入口から左下・右下の階段へ歩ける'); }   /* v8.1 作り直した王宮は階段が北西・北東（上り・下りの 2 つのワープへ歩けるか） */
+   { const m = World.getMap('magicka_palace_2f'); const s0 = reach('magicka_palace_2f', 2, 7); const office = [[17, 11], [22, 13]];
+-    ok(m.npcs.every(n => near(s0, n.x, n.y)) && near(s0, 6, 3) && near(s0, 8, 11) && near(s0, 1, 13) && near(s0, 17, 9) && office.every(([x, y]) => !near(s0, x, y)), '魔導王宮2階：円卓・書庫・研究室・人へ行ける。大臣の執務室（机・宝箱）は扉が閉じている間は届かない');
+-    const s1 = reach('magicka_palace_2f', 2, 7, { mp_volk_office_open: true }); ok(office.every(([x, y]) => near(s1, x, y)), '魔導王宮2階：執務室の扉が開けば机と宝箱へ'); }
++    ok(m.npcs.every(n => near(s0, n.x, n.y)) && nearR(s0, 'magicka_palace_2f', 6, 3) && nearR(s0, 'magicka_palace_2f', 8, 11) && nearR(s0, 'magicka_palace_2f', 1, 13) && nearR(s0, 'magicka_palace_2f', 17, 9) && office.every(([x, y]) => !nearR(s0, 'magicka_palace_2f', x, y)), '魔導王宮2階：円卓・書庫・研究室・人へ行ける。大臣の執務室（机・宝箱）は扉が閉じている間は届かない');
++    const s1 = reach('magicka_palace_2f', 2, 7, { mp_volk_office_open: true }); ok(office.every(([x, y]) => nearR(s1, 'magicka_palace_2f', x, y)), '魔導王宮2階：執務室の扉が開けば机と宝箱へ'); }
+   { const s0 = reach('magicka_palace_b1', 17, 2); ok(near(s0, 5, 6) && near(s0, 15, 4) && near(s0, 10, 2) && !near(s0, 13, 9) && !near(s0, 15, 8), '魔導王宮地下：魔力炉・封印庫の扉・番人へ行ける。封印庫の中は扉が閉じている間は届かない');
+     const s1 = reach('magicka_palace_b1', 17, 2, { mp_vault_open: true }); ok(near(s1, 13, 9) && near(s1, 15, 8), '魔導王宮地下：封印庫が開けば原本の棚と宝箱へ'); }
+   { const ent = M.sentra_capital.buildings.filter(b => b.interior === 'sentra_palace_1')[0]; const s = reach('sentra_palace_1', ent.entry.x, ent.entry.y); ok(s.has('1,12') && s.has('22,12'), '王宮（セントラ）：入口から2つの階段へ歩ける（入口 ' + ent.entry.x + ',' + ent.entry.y + '）');
+@@ -52,10 +54,10 @@
+   { const m = World.getMap('sentra_palace_vault'); const s = reach('sentra_palace_vault', 17, 1); ok(m.npcs.every(n => near(s, n.x, n.y)) && m.events.every(e => near(s, e.x, e.y)), '王宮地下：記録碑・木箱3つ・係へ行ける'); }
+   // 仕掛け
+   const log = []; const origMsg = Win.message, origChoice = Win.choice; Win.message = async (l) => { log.push([].concat(l).join(' / ')); }; Win.choice = async () => 0;
+-  World.enterMap('magicka_palace_2f', 17, 8, 'down'); log.length = 0; await Events.run(World.map.eventAt(17, 9));
+-  ok(!d.flags.mp_volk_office_open && World.map.tile(17, 9) === 'door_locked' && log.join().includes('解放条件'), '大臣の執務室：ヴォルクを暴く前は開かず、条件を表示');
+-  d.flags.minister_defeated = true; await Events.run(World.map.eventAt(17, 9)); ok(d.flags.mp_volk_office_open && World.map.tile(17, 9) === 'door' && World.map.passable(17, 9, d), '大臣の執務室：minister_defeated の後は開いて通れる');
+-  let g0 = d.gold; await Events.run(World.map.eventAt(17, 11)); await Events.run(World.map.eventAt(17, 11)); ok(d.gold === g0 + 500 && log.join().includes('北の砦'), 'ヴォルクの帳簿：魔王軍との取引の記録。調査の礼500Gは1回だけ');
++  World.enterMap('magicka_palace_2f', 17, 8, 'down'); log.length = 0; const OD = RP('magicka_palace_2f', 17, 9), LB = RP('magicka_palace_2f', 17, 11); await Events.run(World.map.eventAt(OD.x, OD.y));
++  ok(!d.flags.mp_volk_office_open && World.map.tile(OD.x, OD.y) === 'door_locked' && log.join().includes('解放条件'), '大臣の執務室：ヴォルクを暴く前は開かず、条件を表示');
++  d.flags.minister_defeated = true; await Events.run(World.map.eventAt(OD.x, OD.y)); ok(d.flags.mp_volk_office_open && World.map.tile(OD.x, OD.y) === 'door' && World.map.passable(OD.x, OD.y, d), '大臣の執務室：minister_defeated の後は開いて通れる');
++  let g0 = d.gold; await Events.run(World.map.eventAt(LB.x, LB.y)); await Events.run(World.map.eventAt(LB.x, LB.y)); ok(d.gold === g0 + 500 && log.join().includes('北の砦'), 'ヴォルクの帳簿：魔王軍との取引の記録。調査の礼500Gは1回だけ');
+   World.enterMap('magicka_palace_b1', 15, 3, 'down'); log.length = 0; await Events.run(World.map.eventAt(15, 4)); ok(!d.flags.mp_vault_open && log.join().includes('解放条件'), '封印庫：王に答える前は開かず、条件を表示');
+   d.flags.magicka_choice_done = true; d.flags.magicka_choice = 1; await Events.run(World.map.eventAt(15, 4)); ok(d.flags.mp_vault_open && World.map.tile(15, 4) === 'door' && World.map.passable(15, 4, d), '封印庫：王に答えた後は開く');
+   const rec = []; for (const ch of [0, 1, 2]) { d.flags.magicka_choice = ch; log.length = 0; await Events.run(World.map.eventAt(15, 8)); rec.push(log.join()); }
