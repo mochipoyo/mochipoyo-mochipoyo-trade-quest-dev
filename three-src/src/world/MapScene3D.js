@@ -454,8 +454,43 @@ export class MapScene3D {
   bossSymbolInfo() { const out = []; if (this.bossSyms) this.bossSyms.forEach((o, k) => out.push({ key: k, visible: o.g.visible, vol: !!o.vol, x: +o.g.position.x.toFixed(2), z: +o.g.position.z.toFixed(2) })); return out; }
 
   // 使わなくなった場面の解放（共有のモデル形状・マテリアルは残す）
+  // v8.2 GPU の資源の片付け：この場面だけが使っている形（geometry）と画像（texture）を全部捨てる
+  //  前は「自分で作った印（userData.own）」のある形だけ捨てていたため、印のない形（地形・人の帽子などの付け物・小物）と、材質の画像が地図を作り直すたびに残り、
+  //  地図を出入りすると GPU の形・画像の数が増え続けた（同じ 6 地図を 1 周するごとに形 +42・画像 +12）
+  //  ほかの場面（いまの画面・残してある地図・となりの地図・主人公と仲間）や材質の一覧（Materials）が使っている物は捨てない。
+  //  共有の型（人の模型など）も、どこにも使われていなければ捨てる（次に使うときに three.js がもう一度 GPU へ送る）
+  liveResources() {
+    const geo = new Set(), tex = new Set(); const app = this.app; const me = this.root;
+    const addMat = (m) => { if (!m) return; (Array.isArray(m) ? m : [m]).forEach((mm) => { if (!mm) return; for (const k in mm) { const v = mm[k]; if (v && v.isTexture) tex.add(v); } if (mm.uniforms) for (const k in mm.uniforms) { const v = mm.uniforms[k] && mm.uniforms[k].value; if (v && v.isTexture) tex.add(v); } }); };
+    const walk = (root) => { if (!root || root === me) return; root.traverse((o) => { if (o === me) return; if (o.geometry) geo.add(o.geometry); if (o.material) addMat(o.material); }); };
+    const skip = (o) => { let q = o; while (q) { if (q === me) return true; q = q.parent; } return false; };
+    if (app && app.scene) app.scene.traverse((o) => { if (skip(o)) return; if (o.geometry) geo.add(o.geometry); if (o.material) addMat(o.material); });
+    if (app && app.cache) for (const ms of app.cache.values()) if (ms !== this && ms.root) walk(ms.root);
+    if (app && app.mats) { Object.values(app.mats.cache || {}).forEach(addMat); Object.values(app.mats.tex || {}).forEach((t) => { if (t && t.isTexture) tex.add(t); }); }
+    if (app && app.scene && app.scene.background && app.scene.background.isTexture) tex.add(app.scene.background);
+    if (app && app.scene && app.scene.environment && app.scene.environment.isTexture) tex.add(app.scene.environment);
+    return { geo, tex };
+  }
+  disposeGpu() {
+    let live; try { live = this.liveResources(); } catch (e) { return { geo: 0, tex: 0, err: String(e) }; }
+    const gs = new Set(), ts = new Set();
+    this.root.traverse((o) => {
+      if (o.geometry && !live.geo.has(o.geometry)) gs.add(o.geometry);
+      const ms = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : [];
+      ms.forEach((m) => { if (!m) return; for (const k in m) { const v = m[k]; if (v && v.isTexture && !live.tex.has(v)) ts.add(v); } if (m.uniforms) for (const k in m.uniforms) { const v = m.uniforms[k] && m.uniforms[k].value; if (v && v.isTexture && !live.tex.has(v)) ts.add(v); } });
+    });
+    gs.forEach((g) => { try { g.dispose(); } catch (e) { /* なし */ } }); ts.forEach((t) => { try { t.dispose(); } catch (e) { /* なし */ } });
+    // 人物の骨の画像（Skeleton.boneTexture）。ほかの場面が同じ骨を使っていなければ捨てる（使うときは three.js が作り直す）
+    const liveSk = new Set(); const addSk = (root) => root && root.traverse((o) => { if (o.isSkinnedMesh && o.skeleton) liveSk.add(o.skeleton); });
+    const app = this.app; const me = this.root;
+    if (app && app.scene) app.scene.children.forEach((c) => { if (c !== me) addSk(c); });
+    if (app && app.cache) for (const ms of app.cache.values()) if (ms !== this && ms.root) addSk(ms.root);
+    let sk = 0; this.root.traverse((o) => { if (o.isSkinnedMesh && o.skeleton && !liveSk.has(o.skeleton) && o.skeleton.boneTexture) { try { o.skeleton.dispose(); sk++; } catch (e) { /* なし */ } } });
+    return { geo: gs.size, tex: ts.size, skel: sk };
+  }
   dispose() {
     (this.disposers || []).forEach((f) => { try { f(); } catch (e) { /* なし */ } }); this.disposers = [];   // v8.2 円形ティックテープなど（画像・材質）
+    this.gpuFreed = this.disposeGpu();   // v8.2 この場面だけの形・画像を捨てる（上の liveResources）
     this.clearWarpMarks();   // v7.0 出入口の目印（文字の絵・形）
     if (this.quizSyms) this.quizSyms.forEach((o) => { o.texs.forEach((tx) => tx.dispose()); o.qtex.dispose(); o.ring.geometry.dispose(); o.ring.material.dispose(); });
     this.root.traverse((o) => {
@@ -465,6 +500,7 @@ export class MapScene3D {
     });
     if (this.root.parent) this.root.parent.remove(this.root);
     this.npcs.forEach((ch) => ch.mixer.stopAllAction());
+    if (this.terrain && this.terrain.dispose) this.terrain.dispose();   // v8.2 TerrainBuilder3D の地図ごとの画像（塗り分け・ノイズ・石畳の高さ）・地面の材質
     if (this.world && this.world.dispose) this.world.dispose();   // v7.6 地図ごとの画像・マテリアル（地面の塗り分け・水・溶岩・雲海）
   }
 

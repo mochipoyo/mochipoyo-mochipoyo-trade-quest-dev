@@ -56,7 +56,9 @@ const WATER = { water: 1, shallow: 1, deep: 1 };   // v7.1 村の中の川・池
 const TREE_TILES = { tree: 1, forest: 1 };
 
 export class TerrainBuilder3D {
-  constructor(mats, models, quality) { this.mats = mats; this.models = models; this.quality = quality || 'high'; this.noise = noiseTexture(); this.time = { value: 0 }; this.day = { value: 1 }; }
+  constructor(mats, models, quality) { this.mats = mats; this.models = models; this.quality = quality || 'high'; this.noise = noiseTexture(); this.owned82 = [this.noise]; this.time = { value: 0 }; this.day = { value: 1 }; }
+  own(o) { if (o) this.owned82.push(o); return o; }   // v8.2 この地図だけの画像・材質（捨てるときに GPU からも消す）
+  dispose() { (this.owned82 || []).forEach((o) => { try { o.dispose(); } catch (e) { /* なし */ } }); this.owned82 = []; }
 
   // env（v7.6 環境リデザインのレシピのフック）：skipTree(x, z) が true のマスには汎用の木を置かない（レシピが大樹などを作る）
   async build(map, env) {
@@ -143,14 +145,14 @@ export class TerrainBuilder3D {
     const blur = (src, dst, dx, dy, rad) => { for (let j = 0; j < SH; j++) for (let i = 0; i < SW; i++) { for (let c = 0; c < 4; c++) { let s = 0, n = 0; for (let k = -rad; k <= rad; k++) { const ii = Math.min(SW - 1, Math.max(0, i + k * dx)), jj = Math.min(SH - 1, Math.max(0, j + k * dy)); s += src[(jj * SW + ii) * 4 + c]; n++; } dst[(j * SW + i) * 4 + c] = s / n; } } };
     blur(sp, tmp, 1, 0, 2); blur(tmp, sp, 0, 1, 2); blur(sp, tmp, 1, 0, 1); blur(tmp, sp, 0, 1, 1);
     const sp8 = new Uint8Array(sp.length); for (let i = 0; i < sp.length; i++) sp8[i] = Math.round(Math.max(0, Math.min(1, sp[i])) * 255);
-    const splat = new THREE.DataTexture(sp8, SW, SH, THREE.RGBAFormat); splat.magFilter = THREE.LinearFilter; splat.minFilter = THREE.LinearFilter; splat.wrapS = splat.wrapT = THREE.ClampToEdgeWrapping; splat.needsUpdate = true;
+    const splat = this.own(new THREE.DataTexture(sp8, SW, SH, THREE.RGBAFormat)); splat.magFilter = THREE.LinearFilter; splat.minFilter = THREE.LinearFilter; splat.wrapS = splat.wrapT = THREE.ClampToEdgeWrapping; splat.needsUpdate = true;
     this.splatAt = (x, z) => { const i = Math.floor((x - sx0) * SP), j = Math.floor((z - sz0) * SP); if (i < 0 || j < 0 || i >= SW || j >= SH) return [0, 0, 0, 0]; const o = (j * SW + i) * 4; return [sp[o], sp[o + 1], sp[o + 2], sp[o + 3]]; };
 
     // ---- 地面のマテリアル（標準マテリアルを拡張して塗り分け）
     const M = this.mats; const tx = M.tex;
     const cobbleH = await new THREE.TextureLoader().loadAsync(M.base + 'textures/cobble_height.jpg').catch(() => null);
-    if (cobbleH) { cobbleH.wrapS = cobbleH.wrapT = THREE.RepeatWrapping; }
-    const mat = new THREE.MeshStandardMaterial({ map: tx.grass_albedo, normalMap: tx.grass_normal, roughness: 0.95, metalness: 0 });
+    if (cobbleH) { cobbleH.wrapS = cobbleH.wrapT = THREE.RepeatWrapping; this.own(cobbleH); }
+    const mat = this.own(new THREE.MeshStandardMaterial({ map: tx.grass_albedo, normalMap: tx.grass_normal, roughness: 0.95, metalness: 0 }));
     const U = { uSplat: { value: splat }, uSplatOrigin: { value: new THREE.Vector2(sx0, sz0) }, uSplatSize: { value: new THREE.Vector2(SW / SP, SH / SP) }, uNoise: { value: this.noise }, uDirt: { value: tx.dirt_albedo }, uDirtN: { value: tx.dirt_normal }, uCobble: { value: tx.cobble_albedo }, uCobbleN: { value: tx.cobble_normal }, uCobbleH: { value: cobbleH || this.noise }, uTime: this.time, uDay: this.day };
     mat.onBeforeCompile = (sh) => {
       Object.assign(sh.uniforms, U);
