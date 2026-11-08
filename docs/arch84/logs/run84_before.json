@@ -1,0 +1,33 @@
+{
+ "phase": "before",
+ "build": "2026-11-08 12:23 JST",
+ "cases": [
+  {
+   "label": "キーだけ（最初）",
+   "tilesPerGameSec": 6.075,
+   "designSpeed": 6.075,
+   "running": true,
+   "dash": false,
+   "shift": false,
+   "clip": "Run",
+   "timeScale": 1.125
+  },
+  {
+   "label": "Shift を押したまま",
+   "tilesPerGameSec": 3.038,
+   "designSpeed": 3.038,
+   "running": false,
+   "dash": false,
+   "shift": true,
+   "clip": "Walk",
+   "timeScale": 1.125
+  }
+ ],
+ "row": {
+  "id": "poyo_village",
+  "x": 16,
+  "y": 7
+ },
+ "walkSetting": "fast",
+ "pageErrors": []
+}

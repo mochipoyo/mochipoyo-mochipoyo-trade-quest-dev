@@ -32,6 +32,13 @@ import { Carriage3D } from '../world/Carriage3D.js';
 
 const G = window;
 const WALK = 2.7, RUN = 5.4, RADIUS = 0.28;
+// v8.4 走る：いつもの速さ（キーだけ・スティックを大きく倒す＝秒速 RUN×設定）を「歩く」とし、R キー（3D 設定の「走る」ボタン）で「走る」に切り替える
+//  ・走るは歩くの DASH84 倍。Shift を押している間・スティックを少しだけ倒したときの「ゆっくり歩く」（WALK）は今までどおり
+//  ・動きの再生の速さは、歩くの (1 + (DASH84 - 1) × DASH84_ANIM) 倍まで（速さどおり 1.6 倍にすると足の動きがせわしないため。その分、足は少しすべる）
+//  ・馬車に乗っている間は変えない（馬車の速さのまま）。船・飛空艇（マス単位で動く乗り物）も変えない
+//  ・切り替えは 3D 版だけの保存（localStorage の mtq3d-run）に覚える。セーブデータ・2D 版の保存には書かない
+const DASH84 = 1.6, DASH84_ANIM = 0.6;
+function dash84Setting() { try { return localStorage.getItem('mtq3d-run') === 'on'; } catch (e) { return false; } }
 const CACHE_GENERIC = 3;   // 汎用3Dのマップは直近の3枚だけ残す（ポヨ村と屋内は常に残す）
 
 function errText(e, where) { const n = e && e.name && e.name !== 'Error' ? e.name + ': ' : ''; return (n + String((e && (e.message || e)) || '不明')).slice(0, 90) + (where ? '／' + where : ''); }   // 例外の名前と、どの段階か（テストプレイの報告用）
@@ -48,6 +55,7 @@ export class App3D {
     this.ready = false; this.disabled = false; this.cache = new Map(); this.failed = {}; this.current = null; this.building = null;
     this.pos = new THREE.Vector3(); this.yaw = 0; this.speed = 0; this.lastTile = null; this.lastMap = null; this.talkNpc = null;
     this.shift = false; this.fps = 0; this._fc = 0; this._ft = 0; this.stats = {};
+    this.dash84 = dash84Setting(); this.dashing84 = false;   // v8.4 走る（切り替えの状態）・いま走っているか
     this.join = new Join76(this); this._cross = null;   // v7.6 つないだ世界（Join76.js・js/rpg/world76.js）
     this.userPitch = (() => { try { const v = +localStorage.getItem('mtq3d-pitch'); return v >= 30 && v <= 60 ? v : 48; } catch (e) { return 48; } })();
   }
@@ -71,7 +79,13 @@ export class App3D {
         if (i === 3) { await T.data(); }
       }
     };
-    document.addEventListener('keydown', (e) => { if (e.key === 'Shift') this.shift = true; });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Shift') this.shift = true;
+      if ((e.key === 'r' || e.key === 'R') && !e.repeat && !e.ctrlKey && !e.metaKey && !e.altKey) {   // v8.4 R＝走る／歩くの切り替え（探索中だけ。Ctrl＋R の再読み込みはそのまま）
+        const t = e.target; if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+        if (this.canToggleDash84()) { e.preventDefault(); this.toggleDash84(); }
+      }
+    });
     document.addEventListener('keyup', (e) => { if (e.key === 'Shift') this.shift = false; });
     G.addEventListener('blur', () => { this.shift = false; });
   }
@@ -98,6 +112,32 @@ export class App3D {
   }
   mode3D() { const W = G.World; return this.ready && !this.disabled && !!W.map && mapCoverage(W.map) !== '2d' && !this.failed[W.map.id]; }
   gridMode() { const d = G.State.data; return !!(d && d.aboard) || !!this.stepping; }
+  /* ---------- v8.4 走る／歩く ---------- */
+  // R キーで切り替えてよいか：3D の探索中で、会話・メニュー・必殺技のチャート（R＝振り返り）などが開いていないとき
+  canToggleDash84() {
+    const W = G.World, E = G.Engine; if (!this.mode3D() || !W || !W.scene || !E || E.top() !== W.scene || W.busy) return false;
+    if (G.ChartBattleUI && G.ChartBattleUI.isOpen) return false;
+    const ui = document.getElementById('ui'); if (ui && ui.children.length) return false;
+    return true;
+  }
+  setDash84(on, quiet) {
+    this.dash84 = !!on; try { localStorage.setItem('mtq3d-run', this.dash84 ? 'on' : 'off'); } catch (e) { /* 保存できなくても、このページの間は切り替わる */ }
+    if (this.ui && this.ui.refresh) this.ui.refresh();
+    if (!quiet && G.Win && G.Win.toast) G.Win.toast(this.dash84 ? '走る（R キーで歩くに戻す）' : '歩く（R キーで走る）', 1600);
+  }
+  toggleDash84() { this.setDash84(!this.dash84); }
+  // 主人公・仲間の動きの再生の速さ（歩く＝今までと同じ。走る＝DASH84_ANIM の分だけ上げる）
+  animK84() {
+    if (!this.running) return this.speed / WALK;
+    const k = this.speed / RUN; return this.dashing84 ? (k / DASH84) * (1 + (DASH84 - 1) * DASH84_ANIM) : k;
+  }
+  // PC の操作方法（右の欄）に R の行を足す（2D 版の表示は変えない）
+  guide84() {
+    if (this._guide84) return; const g = document.getElementById('guide'); if (!g || !g.querySelector('.gd-title')) return; this._guide84 = true;
+    if (g.querySelector('.gd-run84')) return; const rows = g.querySelectorAll('.gd-row'); const row = document.createElement('div'); row.className = 'gd-row gd-run84';
+    row.innerHTML = '<span class="key">R</span>走る・歩くの切り替え（3D版。右下の「走る」ボタンでも）　<span class="key">Shift</span>押している間はゆっくり歩く';
+    if (rows[0]) rows[0].insertAdjacentElement('afterend', row); else g.appendChild(row);
+  }
   // 仮想スティック → 2D版の方向キー（gridMode のときだけ）
   feedStick() {
     const st = this.ui.stick, K = G.Engine.Input.keys; const want = { up: false, down: false, left: false, right: false };
@@ -303,7 +343,7 @@ export class App3D {
     if (!ms || ms.map !== W.map || !p) return;
     if (this.gridMode()) {   // 乗り物：2D版がマス単位で動かす。3D はその位置を写す
       const TS = E.TS; this.pos.x = p.px / TS + 0.5; this.pos.z = p.py / TS + 0.5; this.pos.y = ms.heightAt(this.pos.x, this.pos.z);
-      this.yaw = DIR_YAW[p.dir] || 0; this.speed = p.moving ? WALK : 0; this.running = false;
+      this.yaw = DIR_YAW[p.dir] || 0; this.speed = p.moving ? WALK : 0; this.running = false; this.dashing84 = false;
       if (G.Follow) G.Follow.update(W.map, this.pos.x, this.pos.z, p.dir);
       this.lastTile = [p.x, p.y]; this.lastMap = W.map;
       if (this.stepping && !p.moving) this.stepping = false;
@@ -318,8 +358,9 @@ export class App3D {
     if (mag < 0.01) { this.speed = 0; return; }
     ix /= mag; iz /= mag;
     const settings = G.State.data && G.State.data.settings; const mul = (W.WALK && W.WALK[settings && settings.walkSpeed]) || 1;
-    const sp = (run ? RUN : WALK) * (0.75 + 0.25 * mul) * ((G.Carriage && G.Carriage.riding()) ? G.Carriage.SPEED : 1);   // v7.9 馬車は速い
-    this.speed = sp; this.running = run; this.yaw = Math.atan2(ix, iz);
+    const riding = !!(G.Carriage && G.Carriage.riding()); const dash = run && this.dash84 && !riding;   // v8.4 走る（馬車に乗っている間は変えない）
+    const sp = (run ? RUN : WALK) * (0.75 + 0.25 * mul) * (dash ? DASH84 : 1) * (riding ? G.Carriage.SPEED : 1);   // v7.9 馬車は速い
+    this.speed = sp; this.running = run; this.dashing84 = dash; this.yaw = Math.atan2(ix, iz);
     // 移動（大きく動くときは分割）＋押し出し
     let dist = sp * Math.min(dt, 0.05); const steps = Math.ceil(dist / 0.2); const x0 = this.pos.x, z0 = this.pos.z;
     const vb = this.vehicleBlocks(W.map, p);   // v8.2 止めてある乗り物（陸の飛空艇・アストラ号）のマスは通り抜けない → ぶつかって乗る（2D版と同じ）
@@ -440,7 +481,7 @@ export class App3D {
       const ch = ent.ch; if (!ch) continue;
       ch.root.visible = true; ch.root.position.set(f.x, this.current.heightAt(f.x, f.y), f.y);
       if (f.vx || f.vy) ch.faceTo(Math.atan2(f.vx, f.vy));
-      if (this.speed > 0.1) { ch.play(this.running ? 'Run' : 'Walk', 0.15); ch.setSpeed(this.running ? this.speed / RUN : this.speed / WALK); } else ch.play('Idle', 0.25);
+      if (this.speed > 0.1) { ch.play(this.running ? 'Run' : 'Walk', 0.15); ch.setSpeed(this.animK84()); } else ch.play('Idle', 0.25);
       const al = f.dead ? 0.45 : 1; if (al !== ent.alpha) { ent.alpha = al; ch.model.traverse((o) => { if (o.isMesh && o.material) [].concat(o.material).forEach((m) => { m.transparent = al < 1; m.opacity = al; m.needsUpdate = true; }); }); }
       ch.update(dt);
     }
@@ -621,6 +662,7 @@ export class App3D {
     const uiOpen = (document.getElementById('ui') || { children: [] }).children.length > 0; const mapOpen = !!(G.Minimap && G.Minimap.open);
     const toolsOn = baseIsWorld && !W.busy && E.top() === W.scene && !uiOpen && !mapOpen;
     this.ui.show(show, !built, toolsOn);
+    if (!this._guide84 && this._fc % 60 === 0) this.guide84();   // v8.4 PC の操作方法に R（走る）の行
     if (this._fc % 30 === 0) { const pn = document.getElementById('g3-panel'); if (pn && pn.classList.contains('show')) this.ui.setDiag(this.diagText()); }   // 3D設定の「状態」（2Dのマップでも更新）
     if (!show || !built) { this.ui.setPrompt(null); return; }
     if (!W.busy) this.talkNpc = null;
@@ -633,7 +675,7 @@ export class App3D {
     try { this.car79.update(dt, riding79, this.pos, this.yaw, this.speed); } catch (e) { /* 表示だけ：失敗しても進める */ }
     if (riding79 && this.car79.g) { this._seat79 = this._seat79 || new THREE.Vector3(); this.car79.seat(this._seat79); h.root.position.copy(this._seat79); h.root.position.y -= 0.42; h.faceTo(this.car79.yaw); }
     if (riding79) { this._emote = null; h.play('Idle', 0.25); }
-    else if (this.speed > 0.1) { this._emote = null; h.play(this.running ? 'Run' : 'Walk', 0.15); h.setSpeed(this.running ? this.speed / RUN : this.speed / WALK); }
+    else if (this.speed > 0.1) { this._emote = null; h.play(this.running ? 'Run' : 'Walk', 0.15); h.setSpeed(this.animK84()); }
     else if (this._emote && t < this._emote.until) h.play(this._emote.name, 0.2);
     else if (!h.onceName) { this._emote = null; h.play('Idle', 0.25); }
     h.update(dt);

@@ -78,7 +78,7 @@ export class UIOverlay {
     this.prompt = mk('g3-prompt');
     this.badge = mk('g3-badge', '3D版 Phase 1（技術プロトタイプ）');
     this.tools = document.createElement('div'); this.tools.id = 'g3-tools'; stage.appendChild(this.tools);
-    this.tools.innerHTML = '<div><button data-a="zin">＋</button> <button data-a="zout">－</button> <button data-a="panel">3D設定</button></div>' +
+    this.tools.innerHTML = '<div><button data-a="run" title="走る／歩くの切り替え（R キーでも）">走る</button> <button data-a="zin">＋</button> <button data-a="zout">－</button> <button data-a="panel">3D設定</button></div>' +   /* v8.4 走る：押すたびに 走る⇄歩く（色が付いている間は走る） */
       '<div id="g3-panel"><div class="row"><span class="lab">カメラ角度</span><button data-cam="38">38°</button><button data-cam="48">48°</button><button data-cam="56">56°</button></div>' +
       '<div class="row"><span class="lab">画質</span><button data-q="high">高（PC）</button><button data-q="low">軽量（スマホ）</button></div>' +
       '<div class="row"><span class="lab">画面の仕上げ</span><button data-fin="on">使う（ジオラマ風のぼかし・色の調子）</button><button data-fin="off">使わない（以前の表示）</button><span class="small" style="color:#aab">高画質のときだけ</span></div>' +
@@ -98,6 +98,7 @@ export class UIOverlay {
     this.stickEl = document.createElement('div'); this.stickEl.id = 'g3-stick'; this.stickEl.innerHTML = '<i></i>'; stage.appendChild(this.stickEl);
     this.tools.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return; e.stopPropagation();
+      if (b.dataset.a === 'run') { app.toggleDash84(); b.blur(); }   // v8.4
       if (b.dataset.a === 'zin') app.camera.zoom(0.85); if (b.dataset.a === 'zout') app.camera.zoom(1.18);
       if (b.dataset.a === 'panel') { const pn = document.getElementById('g3-panel'); pn.classList.toggle('show'); if (pn.classList.contains('show')) try { this.setDiag(this.app.diagText()); } catch (e) { /* なし */ } }
       if (b.dataset.cam) { app.setPitch(+b.dataset.cam); }
@@ -143,6 +144,7 @@ export class UIOverlay {
   stickEnd() { this.stick.x = 0; this.stick.z = 0; this.stick.mag = 0; this.stick.active = false; this.stickEl.style.display = 'none'; }
   refresh() {
     const app = this.app; const deg = Math.round(app.camera.pitch * 180 / Math.PI);
+    this.tools.querySelectorAll('[data-a="run"]').forEach((b) => b.classList.toggle('on', !!app.dash84));   // v8.4 走る
     this.tools.querySelectorAll('[data-cam]').forEach((b) => b.classList.toggle('on', Math.abs(+b.dataset.cam - deg) < 1));
     this.tools.querySelectorAll('[data-q]').forEach((b) => b.classList.toggle('on', b.dataset.q === app.quality));
     const pv = app.lighting ? app.lighting.preview : null;
@@ -162,7 +164,18 @@ export class UIOverlay {
     const g = document.getElementById('game'); if (!g) return null;
     const w = g.clientWidth, h = g.clientHeight; const l = g.offsetLeft + g.clientLeft, t = g.offsetTop + g.clientTop;
     for (const el of [this.canvas, this.veil]) { el.style.left = l + 'px'; el.style.top = t + 'px'; el.style.width = w + 'px'; el.style.height = h + 'px'; }
-    this.tools.style.left = 'auto'; this.tools.style.right = (g.parentElement.clientWidth - (l + w) + 6) + 'px'; this.tools.style.top = (t + h - 26) + 'px'; this.tools.style.transform = 'translateY(-100%)';
+    this.tools.style.left = 'auto'; this.tools.style.right = (g.parentElement.clientWidth - (l + w) + 6) + 'px'; this.tools.style.transform = 'translateY(-100%)';
+    // v8.4 スマホの横画面（左右の余白が狭いとき）は、操作パネルの補助ボタンの並び（.mp-tools：ミニマップ〜全画面）がゲーム画面の下に重なり、
+    //   この並び（走る・＋・－・3D設定）の左側が隠れて押せなかった → 重なるときだけ、補助ボタンの並びのすぐ上へ持ち上げる（3D設定を開いている間は今までの位置）
+    //   位置はいつも「元の位置」から決める（前のコマの位置を使わない＝上下に揺れない）
+    let bottom = t + h - 26; const pn = document.getElementById('g3-panel'); const row = this.tools.firstElementChild;
+    const mp = document.body.classList.contains('mobile') && !(pn && pn.classList.contains('show')) ? document.querySelector('#pad .mp-tools') : null;
+    if (mp && row && this.tools.style.display !== 'none') {   // 操作パネルは画面に固定（position: fixed）なので、見えているかは大きさで見る（offsetParent はいつも null）
+      const sr = g.parentElement.getBoundingClientRect(), mr = mp.getBoundingClientRect(), rr = row.getBoundingClientRect(); const top0 = sr.top + g.parentElement.clientTop;
+      const mTop = mr.top - top0, mBot = mr.bottom - top0;
+      if (mr.width > 0 && rr.width > 0 && mr.left < rr.right && mr.right > rr.left && mTop < bottom && mBot > bottom - rr.height) bottom = Math.max(t + rr.height + 4, mTop - 4);
+    }
+    this.tools.style.top = bottom + 'px';
     this.badge.style.left = (l + 6) + 'px'; this.badge.style.top = (t + h - 18) + 'px';
     return { w, h, l, t };
   }
@@ -170,7 +183,7 @@ export class UIOverlay {
     const d = on ? 'block' : 'none';
     if (this.canvas.style.display !== d) this.canvas.style.display = d;
     const td = toolsOn ? 'flex' : 'none'; if (this.tools.style.display !== td) this.tools.style.display = td; this.badge.style.display = on ? 'block' : 'none';
-    this.tools.querySelectorAll('[data-a="zin"],[data-a="zout"]').forEach((b) => { const v = on ? '' : 'none'; if (b.style.display !== v) b.style.display = v; });   // 2Dのマップではズームは使わない
+    this.tools.querySelectorAll('[data-a="zin"],[data-a="zout"],[data-a="run"]').forEach((b) => { const v = on ? '' : 'none'; if (b.style.display !== v) b.style.display = v; });   // 2Dのマップではズーム・走る（v8.4）は使わない
     this.veil.style.display = on && loading ? 'flex' : 'none';
     if (!on) { this.prompt.style.display = 'none'; this.stickEl.style.display = 'none'; }
   }

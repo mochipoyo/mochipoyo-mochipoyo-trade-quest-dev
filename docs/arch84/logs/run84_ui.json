@@ -1,0 +1,242 @@
+[
+ {
+  "case": "pc",
+  "before": {
+   "shown": true,
+   "on": false,
+   "rect": [
+    773,
+    516,
+    38,
+    23
+   ]
+  },
+  "after": {
+   "shown": true,
+   "on": true,
+   "rect": [
+    773,
+    516,
+    38,
+    23
+   ]
+  },
+  "dash84": true,
+  "tapErr": null,
+  "toolsTop": [
+   {
+    "label": "走る",
+    "rect": [
+     773,
+     516,
+     38,
+     23
+    ],
+    "top": true,
+    "coveredBy": null
+   },
+   {
+    "label": "＋",
+    "rect": [
+     816,
+     516,
+     27,
+     23
+    ],
+    "top": true,
+    "coveredBy": null
+   },
+   {
+    "label": "－",
+    "rect": [
+     847,
+     516,
+     27,
+     23
+    ],
+    "top": true,
+    "coveredBy": null
+   },
+   {
+    "label": "3D設定",
+    "rect": [
+     878,
+     516,
+     52,
+     23
+    ],
+    "top": true,
+    "coveredBy": null
+   }
+  ],
+  "overlap": {
+   "hits": [],
+   "topIsButton": true
+  },
+  "guide": {
+   "text": "R走る・歩くの切り替え（3D版。右下の「走る」ボタンでも）　Shift押している間はゆっくり歩く",
+   "visible": true
+  },
+  "errors": []
+ },
+ {
+  "case": "phone_port",
+  "before": {
+   "shown": true,
+   "on": false,
+   "rect": [
+    248,
+    421,
+    32,
+    19
+   ]
+  },
+  "after": {
+   "shown": true,
+   "on": true,
+   "rect": [
+    248,
+    421,
+    32,
+    19
+   ]
+  },
+  "dash84": true,
+  "tapErr": null,
+  "toolsTop": [
+   {
+    "label": "走る",
+    "rect": [
+     248,
+     421,
+     32,
+     19
+    ],
+    "top": true,
+    "coveredBy": null
+   },
+   {
+    "label": "＋",
+    "rect": [
+     285,
+     421,
+     22,
+     19
+    ],
+    "top": true,
+    "coveredBy": null
+   },
+   {
+    "label": "－",
+    "rect": [
+     311,
+     421,
+     22,
+     19
+    ],
+    "top": true,
+    "coveredBy": null
+   },
+   {
+    "label": "3D設定",
+    "rect": [
+     337,
+     421,
+     45,
+     19
+    ],
+    "top": true,
+    "coveredBy": null
+   }
+  ],
+  "overlap": {
+   "hits": [],
+   "topIsButton": true
+  },
+  "guide": {
+   "text": "R走る・歩くの切り替え（3D版。右下の「走る」ボタンでも）　Shift押している間はゆっくり歩く",
+   "visible": false
+  },
+  "errors": []
+ },
+ {
+  "case": "phone_land",
+  "before": {
+   "shown": true,
+   "on": false,
+   "rect": [
+    473,
+    276,
+    38,
+    23
+   ]
+  },
+  "after": {
+   "shown": true,
+   "on": true,
+   "rect": [
+    473,
+    276,
+    38,
+    23
+   ]
+  },
+  "dash84": true,
+  "tapErr": null,
+  "toolsTop": [
+   {
+    "label": "走る",
+    "rect": [
+     473,
+     276,
+     38,
+     23
+    ],
+    "top": true,
+    "coveredBy": null
+   },
+   {
+    "label": "＋",
+    "rect": [
+     516,
+     276,
+     27,
+     23
+    ],
+    "top": true,
+    "coveredBy": null
+   },
+   {
+    "label": "－",
+    "rect": [
+     547,
+     276,
+     27,
+     23
+    ],
+    "top": true,
+    "coveredBy": null
+   },
+   {
+    "label": "3D設定",
+    "rect": [
+     578,
+     276,
+     52,
+     23
+    ],
+    "top": true,
+    "coveredBy": null
+   }
+  ],
+  "overlap": {
+   "hits": [],
+   "topIsButton": true
+  },
+  "guide": {
+   "text": "R走る・歩くの切り替え（3D版。右下の「走る」ボタンでも）　Shift押している間はゆっくり歩く",
+   "visible": false
+  },
+  "errors": []
+ }
+]

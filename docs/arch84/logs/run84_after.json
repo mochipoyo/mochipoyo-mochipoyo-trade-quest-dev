@@ -1,0 +1,121 @@
+{
+ "phase": "after",
+ "build": "2026-11-08 15:47 JST",
+ "cases": [
+  {
+   "label": "キーだけ（最初）",
+   "tilesPerGameSec": 6.075,
+   "designSpeed": 6.075,
+   "running": true,
+   "dash": false,
+   "shift": false,
+   "clip": "Run",
+   "timeScale": 1.125
+  },
+  {
+   "label": "Shift を押したまま",
+   "tilesPerGameSec": 3.038,
+   "designSpeed": 3.038,
+   "running": false,
+   "dash": false,
+   "shift": true,
+   "clip": "Walk",
+   "timeScale": 1.125
+  },
+  {
+   "label": "R を押したあと（走る）",
+   "tilesPerGameSec": 9.72,
+   "designSpeed": 9.72,
+   "running": true,
+   "dash": true,
+   "shift": false,
+   "clip": "Run",
+   "timeScale": 1.53
+  },
+  {
+   "label": "走る＋Shift を押したまま",
+   "tilesPerGameSec": 3.038,
+   "designSpeed": 3.038,
+   "running": false,
+   "dash": true,
+   "shift": true,
+   "clip": "Walk",
+   "timeScale": 1.125
+  },
+  {
+   "label": "もう一度 R（歩く）",
+   "tilesPerGameSec": 6.075,
+   "designSpeed": 6.075,
+   "running": true,
+   "dash": false,
+   "shift": false,
+   "clip": "Run",
+   "timeScale": 1.125
+  },
+  {
+   "label": "再読み込みのあと（走る のまま）",
+   "tilesPerGameSec": 9.72,
+   "designSpeed": 9.72,
+   "running": true,
+   "dash": true,
+   "shift": false,
+   "clip": "Run",
+   "timeScale": 1.53
+  }
+ ],
+ "row": {
+  "id": "poyo_village",
+  "x": 16,
+  "y": 7
+ },
+ "walkSetting": "fast",
+ "toggleR": {
+  "dash": true,
+  "ls": "on",
+  "toast": "走る（R キーで歩くに戻す）",
+  "btn": "on"
+ },
+ "follow": {
+  "followers": 0,
+  "maxDistEach": []
+ },
+ "toggleR2": {
+  "dash": false,
+  "ls": "off"
+ },
+ "button": {
+  "dash": true,
+  "on": true,
+  "label": "走る"
+ },
+ "guide": "R走る・歩くの切り替え（3D版。右下の「走る」ボタンでも）　Shift押している間はゆっくり歩く",
+ "busy": {
+  "before": true,
+  "after": true,
+  "unchanged": true
+ },
+ "input": {
+  "unchanged": true
+ },
+ "reload": {
+  "dash": true,
+  "ls": "on"
+ },
+ "cross": {
+  "join": "on",
+  "from": {
+   "map": "poyo_village",
+   "x": 29,
+   "y": 7
+  },
+  "to": {
+   "map": "poyo_village",
+   "x": 30,
+   "y": 7,
+   "building": false
+  }
+ },
+ "ls2dBefore": {},
+ "ls2dAfter": {},
+ "pageErrors": []
+}

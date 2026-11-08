@@ -1,0 +1,6 @@
+follow {"walk":{"members":3,"enabled":true,"followers":3,"maxDistAfter20Frames":[1,2,3],"last":[1,2,3],"moved":5.97},"dash":{"members":3,"enabled":true,"followers":3,"maxDistAfter20Frames":[1,2,3],"last":[1,2,3],"moved":9.56},"ok":true}
+townExit {"exit":{"warp":{"x":20,"y":38,"to":"world"},"dir":"down","sx":20,"sy":33},"walk":{"stepsUntilLeave":15,"mapAfter":"world","at":[73,66]},"dash":{"stepsUntilLeave":10,"mapAfter":"world","at":[73,66]},"ok":true}
+carriage {"riding":true,"walk":{"speed":9.72},"dash":{"speed":9.72},"footWalk":{"speed":6.075},"footDash":{"speed":9.72},"ok":true}
+border {"join":true,"from":"world","dir":"up","sx":102,"sy":5,"to":"w78_16_4","after":{"map":"w78_16_4","x":62,"y":29,"cur3d":"w78_16_4"},"ok":true}
+storage {"changedOn":["mtq3d-run"],"changedOff":["mtq3d-run"],"valueOn":"on","valueOff":"off","sentinel2D":"SENTINEL-2D","keysAddedDuringTest":["mochipoyo_playlog_v1","mtq3d-run"],"ok":true}
+errors 0 []
