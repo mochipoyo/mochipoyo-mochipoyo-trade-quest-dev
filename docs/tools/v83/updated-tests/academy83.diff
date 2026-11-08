@@ -1,0 +1,30 @@
+--- v81/academy_test.js	2026-11-07 07:16:10.031628876 +0900
++++ v83/academy83_test.js	2026-11-08 12:04:04.138722387 +0900
+@@ -1,4 +1,5 @@
+-// v8.1 ボラティリティア学院の作り直し（jsdom・2D 版の 1 歩ずつの移動で）：node academy_test.js [2d]
++// v8.3 ボラティリティア学院（広げた版 2：84×60）の確かめ（jsdom・2D 版の 1 歩ずつの移動で）：node academy83_test.js [2d]
++// ・v8.1 の docs/tools/v81/academy_test.js から、地図の大きさ（60×44 → 84×60）と、門から観測塔の前の広場までの歩数・行（y 32〜34 → y 34〜36）だけを変えた（差分は updated-tests/academy83.diff）
+ // ・フィールド（時の神殿領）から正門へ歩いて入る → 門の内側に北向きで着く。正面の道（子午線）を北へ歩くと観測塔の前の広場に出る
+ // ・学院の中の 10 棟：着く所から扉の前まで歩いて入り、中に着き、出口まで歩いて出ると扉の前に戻る
+ // ・地下実験施設の入口：解放前は守衛のマスを通らないと階段に行けない（両わきは柱）。解放後は守衛が消え、階段から 1 階へ。1 階から上ると入口の守衛より手前に着く
+@@ -27,16 +28,16 @@
+ async function walkTo(gx, gy) { const id0 = W.map.id; for (let n = 0; n < 200; n++) { if (W.map.id !== id0) return true; if (W.player.x === gx && W.player.y === gy) return false; const r = route(W.map, W.player.x, W.player.y, gx, gy); if (!r) { await flush(); continue; } await step(r[0]); } return false; }
+ (async () => {
+   const ID = 'volatilia'; const m = W.getMap(ID); const reg = w.MapRemake.maps[ID];
+-  ok(m.def.remake81 && m.w === 60 && m.h === 44, '学院の地図が作り直した形 ' + m.w + '×' + m.h + '（' + (two ? '2D 版' : '地球の世界') + '）');
++  ok(m.def.remake81 && m.w === 84 && m.h === 60, '学院の地図が作り直した形 ' + m.w + '×' + m.h + '（' + (two ? '2D 版' : '地球の世界') + '）');
+   /* ---------- フィールドから正門へ ---------- */
+   const gw = m.def.warps.filter((q) => q.y === m.h - 1); const fieldId = gw[0] && gw[0].to; const fm = W.getMap(fieldId);
+   const into = (fm.def.warps || []).filter((q) => q.to === ID); ok(into.length > 0, 'フィールド ' + fieldId + ' に学院への入口 ' + into.length);
+   if (into.length) { const e = into[0]; let st = null; for (const [dx, dy, k] of [[0, 1, 'up'], [1, 0, 'left'], [-1, 0, 'right'], [0, -1, 'down']]) { if (passAt(fm, e.x + dx, e.y + dy)) { st = [e.x + dx, e.y + dy, k]; break; } }
+     W.enterMap(fieldId, st[0], st[1], st[2], { raw: true }); await flush(); await step(st[2]);
+     ok(W.map.id === ID && W.player.dir === 'up' && W.player.y >= m.h - 7, 'フィールドの入口から歩いて入る → 学院 ' + W.player.x + ',' + W.player.y + '（向き ' + W.player.dir + '）');
+-    // 正面の子午線を北へ：観測塔の前の広場（y 32〜34）まで、門・アーチの下をまっすぐ
+-    let sx = W.player.x, ok2 = true; for (let i = 0; i < 12 && W.player.y > 32; i++) { const y0 = W.player.y; await step('up'); if (W.player.y !== y0 - 1) { ok2 = false; break; } }
+-    ok(ok2 && W.player.y <= 33 && W.player.x === sx, '門からまっすぐ北へ歩いて、アーチの下を通り観測塔の前の広場へ（' + W.player.x + ',' + W.player.y + '・タイル ' + m.tile(W.player.x, W.player.y) + '）');
++    // 正面の子午線を北へ：観測塔の前の広場（y 34〜36）まで、門・アーチの下をまっすぐ
++    let sx = W.player.x, ok2 = true; for (let i = 0; i < 24 && W.player.y > 36; i++) { const y0 = W.player.y; await step('up'); if (W.player.y !== y0 - 1) { ok2 = false; break; } }
++    ok(ok2 && W.player.y <= 36 && W.player.x === sx, '門からまっすぐ北へ歩いて、アーチの下を通り観測塔の前の広場へ（' + W.player.x + ',' + W.player.y + '・タイル ' + m.tile(W.player.x, W.player.y) + '）');
+     msgs.length = 0;
+   }
+   /* ---------- 10 棟：歩いて入り、歩いて出る ---------- */

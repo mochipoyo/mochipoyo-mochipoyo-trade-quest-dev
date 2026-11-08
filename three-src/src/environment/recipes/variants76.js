@@ -46,7 +46,7 @@ const grow = (pts, cx, cz, d) => pts.map((p) => { const dx = p[0] - cx, dz = p[1
 function roundHouse(b, ctx) {
   const { add, M, out, R, st, desert } = ctx; const xl = b.x + 0.25, xr = b.x + b.w - 0.25, zb = b.y + 0.25, zf = b.y + b.h - 0.55;
   const cx = (xl + xr) / 2, cz = (zb + zf) / 2, rx = (xr - xl) / 2, rz = (zf - zb) / 2; const base = 0.3, h1 = desert ? 2.5 : 2.7, top = base + h1;
-  const wall = M.tinted('plaster', st.plaster), stone = M.get('stonewall'), timber = M.get('timber');
+  const wall = st.wallMat || M.tinted('plaster', st.plaster), stone = M.get('stonewall'), timber = M.get('timber');   // v8.3 町の外壁の画像（town_kit の brick82・wall82）があればそれ
   const cylS = (r0, r1, h, y, seg) => { const g = new THREE.CylinderGeometry(r0, r1, h, seg || 28, 1); g.scale(rx, 1, rz); g.translate(cx, y, cz); return g; };
   add(stone, cylS(1.04, 1.06, base, base / 2), null);
   add(wall, cylS(1, 1, h1, base + h1 / 2), null);
@@ -104,7 +104,7 @@ function observatory81(b, ctx) {
 function octaHouse(b, ctx) {
   const { add, M, out, st, desert } = ctx; const xl = b.x + 0.2, xr = b.x + b.w - 0.2, zb = b.y + 0.2, zf = b.y + b.h - 0.55;
   const cx = (xl + xr) / 2, cz = (zb + zf) / 2; const c = Math.min(xr - xl, zf - zb) * 0.3; const base = 0.32, h1 = 3.0, top = base + h1;
-  const P = octPts(xl, xr, zb, zf, c); const stone = M.get('stonewall'), timber = M.get('timber'), wall = desert ? M.tinted('plaster', st.plaster) : M.tinted('plaster', st.plaster);
+  const P = octPts(xl, xr, zb, zf, c); const stone = M.get('stonewall'), timber = M.get('timber'), wall = st.wallMat || M.tinted('plaster', st.plaster);
   add(stone, prism(octPts(xl - 0.08, xr + 0.08, zb - 0.08, zf + 0.08, c), 0, base), null);
   add(wall, prism(P, base, h1), null);
   if (!desert) { P.forEach((p) => add(timber, box(0.18, h1, 0.18, 1), M4(p[0], base + h1 / 2, p[1]))); add(timber, prism(octPts(xl - 0.04, xr + 0.04, zb - 0.04, zf + 0.04, c), top - 0.16, 0.16), null); }

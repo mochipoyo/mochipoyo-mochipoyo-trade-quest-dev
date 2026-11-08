@@ -14,6 +14,7 @@ import { buildFurniture81 } from './Furniture81.js';
 import { buildTicker82 } from './Ticker82.js';
 import { buildGate82, buildBackdrop82 } from './Castle82.js';
 import { dressTradeMaster83 } from '../entities/TradeMaster83.js';
+import { buildAcademyProps83 } from './AcademyProps83.js';
 import { isAcademy82, buildAcademyWing82, buildAcademyBridges82 } from './Academy82.js';
 import { buildArcades81 } from './Arcade81.js';
 import { buildCrests81 } from './Crest81.js';
@@ -158,6 +159,8 @@ export class MapScene3D {
     try { const fg = buildFurniture73(map, this.heightAt, this.envSkipProp || null); if (fg) { this.root.add(fg); this.furniture = fg.userData.stats; } } catch (e) { console.warn('furniture73', e); }
     // v8.1 作り直した町・村・城・学院の家具（的・炉・道具かけ・天球儀・黒板・計器の台・子午線。world/Furniture81.js）
     try { const f81 = buildFurniture81(map, this.heightAt, this.envSkipProp || null); if (f81) { this.root.add(f81); this.furniture81 = f81.userData.stats; (f81.userData.lamps || []).forEach((l) => this.lampSpots.push(l)); (f81.userData.animated || []).forEach((a) => this.animated.push(a)); } } catch (e) { console.warn('furniture81', e); }
+    // v8.3 学院の教材（確率の板書・ゴルトンボード・チャート机）と大図書館の吹き抜け（world/AcademyProps83.js）
+    try { const ap = buildAcademyProps83(map, this); if (ap) { this.root.add(ap); this.academy83 = ap.userData.stats; } } catch (e) { console.warn('academy83', e); }
     // NPC
     for (const n of map.npcs) {
       const model = fieldModelFor(n.actorArt) || fieldModelFor(n.id) || characterModelFor(n.model3d || n.sprite);   // v7.3 model3d：個性的な町の人（2D は専用の色・3D は共通のモデル）

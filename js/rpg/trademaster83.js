@@ -22,12 +22,12 @@
     harbor_town: 2, verum_town: 2, kalion_city: 2, erased_village: 2, sentra_capital: 2, sentra_palace_approach: 2, sentra_palace_west: 2, tradia: 2, tradia_sky: 2, world_grania: 2, world_kalion: 2, world_islands: 2,
     aruna_village: 3, aruna_ruins: 3, tempus_city: 3, node_city: 3, scheduled_district: 3, volatilia: 3, luxbell: 3, sahar_city: 3, mirror_market: 3, world_tempus: 3, world_machine: 3, world_desert: 3,
     magicka_city: 4, magicka_palace_approach: 4, magicka_palace: 4, star_camp: 4, ignas_town: 4, ciel_port: 4, frost_town: 4, world_magicka: 4, world_sky: 4, world_dragon: 4, world_snow: 4,
-    dark_camp: 5, neon_town: 5, meridian_shelter: 5, nereia_city: 5, nereia_old_hi: 5, nereia_old_lo: 5, world_dark: 5
+    dark_camp: 5, neon_town: 5, meridian_shelter: 5, nereia_city: 5, nereia_old_hi: 5, nereia_old_lo: 5, world_dark: 5, world_neon: 5, world_meridian: 5, world_nereia: 5
   };
   // 物語の場面の地図（襲撃の夜）には置かない
   var SKIP = { asana_raid: 1 };
   var CASTLES = { rivel_castle: 1, magicka_palace: 1, sentra_palace_west: 1 };
-  var FIELDS = { world: 1, world_grania: 1, world_kalion: 1, world_islands: 1, world_tempus: 1, world_machine: 1, world_magicka: 1, world_sky: 1, world_dark: 1, world_desert: 1, world_dragon: 1, world_snow: 1 };
+  var FIELDS = { world: 1, world_grania: 1, world_kalion: 1, world_islands: 1, world_tempus: 1, world_machine: 1, world_magicka: 1, world_sky: 1, world_dark: 1, world_desert: 1, world_dragon: 1, world_snow: 1, world_neon: 1, world_meridian: 1, world_nereia: 1 };   // 地球の世界の新しい地域のフィールド（3D 版）も
   TM.TIER = TIER; TM.SKIP = SKIP; TM.CASTLES = CASTLES; TM.FIELDS = FIELDS;
   var TIER_NAME = ['', '駆け出し', '腕利き', '熟練', '凄腕', '伝説'];
   var PRIZE = [0, 60, 150, 320, 600, 1000];   // 1本勝負の賞金（3本勝負は 2.5 倍）
@@ -78,6 +78,19 @@
     var arr = m.def && m.def.remake81 && m.def.remake81.arrive; if (arr && m.passable(arr[0], arr[1], d) && !seen[arr[1] * W + arr[0]]) { seen[arr[1] * W + arr[0]] = 1; q.push(arr[0], arr[1]); }
     for (var qi = 0; qi < q.length; qi += 2) { var cx = q[qi], cy = q[qi + 1]; for (var k = 0; k < 4; k++) { var nx = cx + (k === 0 ? 1 : k === 1 ? -1 : 0), ny = cy + (k === 2 ? 1 : k === 3 ? -1 : 0); if (nx < 0 || ny < 0 || nx >= W || ny >= H || seen[ny * W + nx]) continue; if (!m.passable(nx, ny, d) || m.warpAt(nx, ny)) continue; seen[ny * W + nx] = 1; q.push(nx, ny); } }
     var doors = []; (m.warps || []).forEach(function (w) { doors.push({ x: w.x, y: w.y }); });
+    // 通り道：入口（外への出口のとなり・着く所）から、全部の扉・出入口・人・調べる物までのいちばん短い道。そのマスと、となりのマスには立たない（まっすぐ歩く道をふさがない）
+    var route = new Uint8Array(W * H);
+    (function () {
+      var par = new Int32Array(W * H).fill(-2); var qq = []; var D0 = root.MAP_DEFS || {};
+      var exits = (m.warps || []).filter(function (w) { var t = D0[w.to]; return t && (t.kind === 'field' || t.region || (m.kind !== 'town' && !FIELDS[id])); }); if (!exits.length) exits = m.warps || [];
+      var seed = function (x, y) { if (x >= 0 && y >= 0 && x < W && y < H && seen[y * W + x] && par[y * W + x] === -2) { par[y * W + x] = -1; qq.push(y * W + x); } };
+      exits.forEach(function (w) { seed(w.x + 1, w.y); seed(w.x - 1, w.y); seed(w.x, w.y + 1); seed(w.x, w.y - 1); }); if (arr) seed(arr[0], arr[1]);
+      for (var h = 0; h < qq.length; h++) { var c = qq[h], cx2 = c % W, cy2 = (c / W) | 0; [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (v) { var nx2 = cx2 + v[0], ny2 = cy2 + v[1]; if (nx2 < 0 || ny2 < 0 || nx2 >= W || ny2 >= H) return; var k2 = ny2 * W + nx2; if (par[k2] !== -2 || !seen[k2]) return; par[k2] = c; qq.push(k2); }); }
+      var mark = function (x, y) { var k3 = y * W + x; if (x < 0 || y < 0 || x >= W || y >= H || par[k3] === -2) return; for (var n3 = 0; n3 < W * H && k3 >= 0; n3++) { if (route[k3]) break; route[k3] = 1; k3 = par[k3]; } };
+      var targets = [].concat(m.warps || [], m.npcs || [], m.events || [], chests);
+      targets.forEach(function (o) { if (!o || typeof o.x !== 'number') return; mark(o.x + 1, o.y); mark(o.x - 1, o.y); mark(o.x, o.y + 1); mark(o.x, o.y - 1); });
+    })();
+    var onRoute = function (x, y) { for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < W && yy < H && route[yy * W + xx]) return true; } return false; };
     var field = !!FIELDS[id]; var toTown = field ? (m.warps || []).filter(function (w) { var t = D[w.to]; return t && t.kind === 'town'; }) : [];
     var R = rng(hash('tm83:' + id)); var cand = [];
     for (var y = 1; y < H - 1; y++) for (var x = 1; x < W - 1; x++) {
@@ -85,6 +98,7 @@
       var open = true; for (var dy = -1; dy <= 1 && open; dy++) for (var dx = -1; dx <= 1; dx++) { if (!dx && !dy) continue; if (!m.passable(x + dx, y + dy, d) || m.warpAt(x + dx, y + dy)) { open = false; break; } }
       if (!open) continue;
       if (near(doors, x, y, field ? 2 : 3) || near(m.npcs, x, y, 2) || near(m.events, x, y, 2) || near(chests, x, y, 1)) continue;
+      if (onRoute(x, y)) continue;   // いちばん短い道の上・となりには立たない
       var sc = R() * 2;
       if (field) { var best = 99; toTown.forEach(function (w) { var dd = Math.abs(w.x - x) + Math.abs(w.y - y); if (dd < best) best = dd; }); if (best < 3 || best > 9) continue; sc += 10 - best; }
       else { var road = 0; for (var ry = -2; ry <= 2; ry++) for (var rx = -2; rx <= 2; rx++) { var t = m.tile(x + rx, y + ry); if (/road|path|stone|plaza|bridge|floor|carpet/.test(t || '')) road++; } sc += road * 0.4; }

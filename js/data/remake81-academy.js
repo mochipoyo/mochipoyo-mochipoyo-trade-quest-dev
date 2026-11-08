@@ -78,6 +78,85 @@
       def.crests81 = [{ x: AX + 1, y: 35.0, face: 's', kind: 'meridian', h: 3.45, size: 1.1, banner: true }];   // 渡り廊下の上：門から見える学院の徽章（天球の目盛りと子午線）
     }
   });
+  /* ---------- v8.3 学院の町を広げる（版 2：60×44 → 84×60）。依頼（2026-11-08）「学院：町の地図は広げていない」
+     ・同じ並び（南の門 → 長い参道と渡り廊下 → 観測塔を囲む中庭 → 西の 3 棟（講義室・本館・古代文明研究室）と東の 3 棟（大図書館・量子物理研究室・意識研究所）→ 北の庭（寮・下宿・塔・学者の家））を、
+       広い敷地に置き直す。西と東に並木の遊歩道、東南に研究棟への側廊、門の前に広場。大図書館の棟は大きく（10×6 → 12×8）
+     ・版 1 の上に重ねる（js/rpg/remake81.js：前の版の座標で書かれたセーブは fromPrev、その前のセーブは旧座標から 2 段で写る。建物の扉の前は新しい扉の前）
+     ・建物の id・中の地図・人・出来事・宝箱・調べる所はそのまま（位置だけ） */
+  (function () {
+    var W2 = 84, H2 = 60, AX2 = 41;
+    function rows2(canvas) {
+      var C = canvas(W2, H2, '.');
+      C.frame(0, 0, W2, H2, 'C'); C.set(AX2, H2 - 1, '='); C.set(AX2 + 1, H2 - 1, '=');   // 石の塀と南の門
+      C.rect(33, 52, 18, 6, '='); C.rect(30, 48, 24, 2, '=');   // 門の広場・渡り廊下の下
+      C.rect(AX2 - 1, 34, 4, 18, '='); C.rect(AX2 - 1, H2 - 2, 4, 1, '='); C.path([[AX2, 34], [AX2, H2 - 2]], '-');   // 長い参道と子午線（門 → 観測塔の扉の前）
+      C.frame(27, 16, 30, 30, '='); C.rect(27, 35, 30, 2, '=');   // 中庭のまわりの歩廊・観測塔の前の広場
+      C.rect(AX2 - 1, 17, 3, 9, '='); C.path([[AX2, 17], [AX2, 25]], '-');   // 塔の後ろ（北の中庭）へも子午線
+      // 中庭の芝生：花壇・ベンチ・灯・木・小さな噴水
+      C.blob(29, 18, [[0, 0], [1, 0], [0, 1]], 'a'); C.blob(53, 18, [[0, 0], [1, 0], [1, 1]], 'a'); C.blob(29, 42, [[0, 0], [0, 1], [1, 1]], 'a'); C.blob(53, 42, [[1, 0], [0, 1], [1, 1]], 'a');
+      [[33, 22], [49, 22], [33, 40], [49, 40]].forEach(function (q) { C.set(q[0], q[1], 'e'); });
+      [[28, 17], [55, 17], [28, 44], [55, 44], [39, 40], [44, 40], [39, 46], [44, 46], [39, 50], [44, 50]].forEach(function (q) { C.set(q[0], q[1], 'y'); });
+      [[33, 19], [49, 19], [34, 29], [48, 25]].forEach(function (q) { C.set(q[0], q[1], '6'); }); C.rect(31, 27, 2, 2, 'Q');
+      // 西：並木の遊歩道と、講義室・本館・古代文明研究室への道
+      C.rect(22, 18, 2, 27, '='); C.path([[27, 20], [13, 20]], '='); C.path([[27, 32], [13, 32]], '='); C.path([[27, 42], [13, 42]], '=');
+      [19, 25, 29, 36, 39, 44].forEach(function (y) { C.set(25, y, '6'); }); [22, 28, 35].forEach(function (y) { C.set(20, y + 1, 'y'); });
+      // 東：並木の遊歩道と、大図書館・量子物理研究室・意識研究所・地下実験施設への道。書庫の回廊（観測塔の東の石段 → 東の遊歩道）
+      C.rect(60, 18, 2, 30, '='); C.path([[56, 22], [69, 22]], '='); C.rect(47, 30, 10, 2, '='); C.path([[56, 31], [69, 31]], '='); C.path([[56, 42], [79, 42]], '='); C.set(47, 30, 'P'); C.set(47, 31, 'P');
+      [19, 26, 35, 39].forEach(function (y) { C.set(58, y, '6'); });
+      // 東南：研究棟への側廊（標本の箱・配管・計器が両わきに増えていく）
+      C.rect(57, 47, 22, 2, '='); C.path([[69, 42], [69, 47]], '='); C.path([[78, 42], [78, 47]], '=');
+      for (var x = 58, i = 0; x <= 76; x += 3, i++) { C.set(x, i % 2 ? 49 : 46, ['q', 'z', '?'][i % 3]); }
+      // 北の庭（天文塔・学者の家・研究生の下宿・研究者の居住区）への小道
+      C.path([[7, 10], [79, 10]], '='); C.path([[AX2, 10], [AX2, 16]], '='); C.path([[22, 10], [22, 18]], '='); C.path([[60, 10], [60, 18]], '=');
+      C.path([[7, 9], [7, 10]], '='); C.path([[16, 9], [16, 10]], '='); C.path([[52, 8], [52, 10]], '='); C.path([[66, 8], [66, 10]], '='); C.path([[77, 8], [77, 10]], '=');
+      [[30, 6], [36, 4], [46, 6], [27, 12], [56, 13]].forEach(function (q) { C.set(q[0], q[1], '6'); }); C.blob(38, 7, [[0, 0], [1, 0], [2, 0]], 'a');
+      // 南西・南東の家への道
+      C.path([[9, 53], [33, 53]], '='); C.path([[50, 53], [71, 53]], '=');
+      // 塀ぞいの木
+      [[2, 14], [2, 30], [2, 45], [81, 16], [81, 30], [81, 50], [25, 2], [45, 2], [3, 57], [80, 57], [27, 50], [56, 50], [12, 56], [70, 57]].forEach(function (q) { C.set(q[0], q[1], '6'); });
+      C.set(45, 56, 'S');   // 銘板（門の内側）
+      return C;
+    }
+    R.define('volatilia', {
+      version: 2, rows: rows2, pathChars: '=-',
+      buildings: {
+        va_obs: { x: 37, y: 26, w: 9, h: 8, doorX: 4, shape76: 'observatory81' },
+        va_lecture: { x: 9, y: 15, w: 9, h: 5, doorX: 4 },
+        va_main: { x: 8, y: 24, w: 12, h: 8, doorX: 5 },
+        va_ancient: { x: 9, y: 37, w: 9, h: 5, doorX: 4 },
+        va_library: { x: 64, y: 14, w: 12, h: 8, doorX: 5 },
+        va_quantum: { x: 65, y: 26, w: 9, h: 5, doorX: 4 },
+        va_mind: { x: 64, y: 37, w: 10, h: 5, doorX: 5, shape76: null },
+        va_under: { x: 76, y: 38, w: 5, h: 4, doorX: 2 },
+        va_dorm: { x: 62, y: 3, w: 10, h: 5, doorX: 4 },
+        a3_vol_lodging: { x: 50, y: 3, w: 5, h: 5, doorX: 2 },
+        x72_tower: { x: 4, y: 3, w: 6, h: 6, doorX: 3 },
+        x72_house: { x: 13, y: 3, w: 7, h: 6, doorX: 3 },
+        x72_hall: { x: 3, y: 50, w: 6, h: 5, doorX: 3, doorSide: 'right', doorY: 3 },
+        x72_ex0: { x: 72, y: 52, w: 7, h: 3, doorX: 0, doorSide: 'left', doorY: 1 },
+        x72_ex1: { x: 74, y: 3, w: 7, h: 5, doorX: 3 },
+        bread_stall76: { x: 29, y: 39, w: 3, h: 2, doorX: 1 }
+      },
+      npcs: {
+        va_gatekeeper: [38, 56, 'down', 0], va_student1: [15, 21, 'down', 1], va_student2: [50, 25, 'down', 1], aunt67_volatilia: [35, 23, 'down', 1],
+        tmaster_volte: [52, 27, 'down', 0], u73_repeat: [20, 35, 'down', 1], volatilia_bread76: [30, 39, 'down', 0],
+        volatilia_x72_kid: [58, 9, 'right', 1], volatilia_x72_vendor: [72, 23, 'down', 0], volatilia_x72_elder: [56, 9, 'left', 0],
+        volatilia_a73_0: [24, 33, 'down', 2], volatilia_a73_1: [44, 41, 'down', 2], volatilia_a73_2: [66, 45, 'down', 2], volatilia_a73_3: [62, 20, 'down', 2], volatilia_a73_4: [12, 45, 'down', 2]
+      },
+      events: [[33, 41, 45, 56], [50, 9, 57, 9]],
+      chests: { va1: [80, 2] },
+      warps: [AX2, AX2 + 1].map(function (x) { return { x: x, y: H2 - 1, to: 'world_tempus', tx: 100, ty: 89, name: '学院の外へ' }; }),
+      keepWarp: function () { return false; },
+      arrive: [AX2, H2 - 5],
+      after: function (def) {
+        def.arcades81 = [{ x: 30, y: 48, w: 24, h: 2, kind: 'arcade' }, { x: 48, y: 30, w: 8, h: 2, kind: 'cloister' }, { x: 57, y: 47, w: 21, h: 2, kind: 'aisle' }];
+        def.crests81 = [{ x: AX2 + 1, y: 48.0, face: 's', kind: 'meridian', h: 3.45, size: 1.1, banner: true }];
+        // 調べる所（版 1 で写した所）：広げた地図の上の、同じ学者の家の東の庭へ
+        (root.SEARCH_POINTS || []).forEach(function (p) { if (p && p.map === 'volatilia' && p.id === 'opt_056') { p._o82 = [p.x, p.y]; p.x = 21; p.y = 5; } });
+        def.academy83 = { w: W2, h: H2 };
+      }
+    });
+  })();
   /* ---------- 屋内（用途ごとの間取り。小さな画面でも、階段・話す人・調べる物が見える配置） ---------- */
   // 大図書館：壁いっぱいの高い書架が囲む吹き抜け。真ん中の閲覧席はまわりを一周できる。北の記録の机（カウンター越しに司書）。断片の入った書架は四方に散る
   R.define('vol_library', {
@@ -213,5 +292,5 @@
   });
 
   // 初めて学院に入ったとき（3D）：カメラが門から渡り廊下の上を通って観測塔のドームを映し、4 秒でふだんの追従に戻る（歩くのは止めない。2 回目からはしない）
-  R.firstView('volatilia', 'v81_acad_view', { x: AX + 0.5, y: 5, z: 31, dist: 27, pitch: 30 }, 4000);
+  R.firstView('volatilia', 'v81_acad_view', (root.MAP_DEFS.volatilia && root.MAP_DEFS.volatilia.academy83) ? { x: 41.5, y: 5, z: 44, dist: 30, pitch: 30 } : { x: AX + 0.5, y: 5, z: 31, dist: 27, pitch: 30 }, 4000);   // v8.3 広げた地図（版 2）では門の内側から
 })(typeof window !== 'undefined' ? window : globalThis);
