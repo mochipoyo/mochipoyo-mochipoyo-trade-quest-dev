@@ -1,0 +1,12 @@
+作れない リヴェル城 1 階：出口のそば Cannot read properties of undefined (reading 'x')
+作れない セントラ王宮 1 階：出口のそば Cannot read properties of undefined (reading 'x')
+作れない 魔導王宮 1 階：出口のそば Cannot read properties of undefined (reading 'x')
+作れない 学院長室（前は本館の中）：出口のそば Cannot read properties of undefined (reading 'x')
+OK  リヴェル城下町：城の扉の前（今は楼門）：rivel_town 35,13 → rivel_town 35,13（stone・出口へ歩ける・二度目の読み込みも同じ）
+OK  セントラ王都：王宮の扉の前：sentra_capital 32,8 → sentra_capital 32,7（path_stone・出口へ歩ける・二度目の読み込みも同じ）
+OK  マクディア：魔導王宮の扉の前：magicka_city 32,7 → magicka_city 32,7（road・出口へ歩ける・二度目の読み込みも同じ）
+OK  学院：本館の扉の前：volatilia 10,28 → volatilia 13,32（stone・出口へ歩ける・二度目の読み込みも同じ）
+OK  講義室：中：vol_lecture 8,11 → vol_lecture 8,11（carpet・出口へ歩ける・二度目の読み込みも同じ）
+OK  証券市場：中央：tradia_exchange 12,6 → tradia_exchange 12,6（carpet・出口へ歩ける・二度目の読み込みも同じ）
+OK  アズール大洋：船に乗ったまま（円形ティックテープのそば）：w78_0_12 96,43 → w78_0_12 96,43（deep・船・出口へ歩ける・二度目の読み込みも同じ）
+古いセーブ 7 件。結果：すべて OK

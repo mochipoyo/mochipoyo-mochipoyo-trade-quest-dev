@@ -1,0 +1,29 @@
+== route83_earth: 部屋・地図 460 確かめ 688 OK 680 NG 8  EXIT 0
+== route83_2d: 部屋・地図 444 確かめ 672 OK 664 NG 8  EXIT 0
+== route83_walk_po: 部屋・地図 4 確かめ 13 OK 13 NG 0 歩く確かめ NG 0  EXIT 0
+== route83_walk_po_2d: 部屋・地図 4 確かめ 13 OK 13 NG 0 歩く確かめ NG 0  EXIT 0
+== remake83_earth: OK  aeria_garden_lo：作り直した地図 25×18（人の自動配置 0・写せなかった物 0） 結果：すべて OK  EXIT 0
+== remake83_2d: OK  dark_camp：作り直した地図 50×30（人の自動配置 0・写せなかった物 0） 結果：すべて OK  EXIT 0
+== pocket83_earth: 結果：すべて OK  EXIT 0
+== pocket83_2d: 結果：すべて OK  EXIT 0
+== town81_earth: OK  kalion_city（徴収都市カリオン）：作り直した地図 66×40（地球の世界） 結果：NG 1  EXIT 1
+== town81_2d: OK  kalion_city（徴収都市カリオン）：作り直した地図 66×40（2D 版） 結果：NG 1  EXIT 1
+== academy83_earth: 結果：すべて OK  EXIT 0
+== academy83_2d: 結果：すべて OK  EXIT 0
+== tm83_place_earth: 地図 55 人数 124 NG 0 TM.errors []  EXIT 0
+== tm83_place_2d: 地図 47 人数 105 NG 0 TM.errors []  EXIT 0
+== tm83_logic: 結果：すべて OK  EXIT 0
+== navnew83: 結果：3/3 OK  EXIT 0
+== navnew83_2d: 結果：3/3 OK  EXIT 0
+== vol_migrate: 結果：NG 2／1733  EXIT 0
+== save82_earth: 古いセーブ 31 件。結果：すべて OK  EXIT 0
+== save82_2d: 古いセーブ 30 件。結果：すべて OK  EXIT 0
+== save82_from82: 古いセーブ 7 件。結果：すべて OK  EXIT 0
+== switch82_earth: 新しい間取り：Layout82.off false 作り直した部屋 388 ／元の間取り：Layout82.off true 作り直した部屋 0 戻す版の表 401 結果：すべて OK（42 か所）  EXIT 0
+== layout82_reach_earth: 作り直した部屋 388 確かめ 1408 （人 356） 前も今も行ける 1408 前も今も行けない 0 NG 0  EXIT 0
+== theme82_diff: ちがう町どうしで差が 4 より少ない組 0  EXIT 0
+== reg maptest: errors [] fails 0 EXIT 0
+== reg ch67test: ERRORS: [] EXIT 0
+== reg ch1012test: ERRORS: [] EXIT 0
+== reg navtest:  EXIT 0
+DONE

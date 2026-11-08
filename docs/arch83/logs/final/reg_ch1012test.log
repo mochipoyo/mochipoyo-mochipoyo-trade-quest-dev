@@ -1,0 +1,19 @@
+battle start debt_collector,debt_collector,bell_wraith t:462/462 L58 st={} | ガルド:462/462 L58 st={} | ルシア:431/431 L58 st={} | セリス:252/252 L58 st={}
+battle end won t:462,ガルド:462,ルシア:431,セリス:252
+bank fight undefined
+before guardian temple_of_time_3 false 10 4 {"x":7,"y":6,"type":"boss","solid":false,"doneFlag":"time_guardian_defeated","en
+battle start boss_time_guardian t:462/462 L58 st={} | ガルド:462/462 L58 st={} | ルシア:431/431 L58 st={} | セリス:252/252 L58 st={}
+battle end won t:393,ガルド:385,ルシア:121,セリス:0
+guardian fight undefined temple_of_time_3 false 393 won
+learn_mtf undefined true
+battle start patrol_drone,patrol_drone t:462/462 L58 st={} | ガルド:462/462 L58 st={} | ルシア:431/431 L58 st={} | ソフィア:298/298 L58 st={}
+battle end won t:462,ガルド:462,ルシア:431,ソフィア:298
+drone fight undefined
+battle start boss_drone_swarm t:462/462 L58 st={} | ガルド:462/462 L58 st={} | ルシア:431/431 L58 st={} | ソフィア:298/298 L58 st={}
+battle end won t:462,ガルド:123,ルシア:217,ソフィア:298
+swarm fight undefined
+battle start boss_core_defense t:462/462 L58 st={} | ガルド:462/462 L58 st={} | ルシア:431/431 L58 st={} | ソフィア:298/298 L58 st={}
+battle end won t:418,ガルド:469,ルシア:438,ソフィア:298
+core fight undefined
+learn_overfit undefined true
+ERRORS: []

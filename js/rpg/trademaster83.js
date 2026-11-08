@@ -136,6 +136,14 @@
     var W = root.World; if (!W || !W.getMap || W._tm83) return; W._tm83 = true; var g0 = W.getMap;
     W.getMap = function (id) { var m = g0.apply(this, arguments); try { TM.placeOn(m); } catch (e) { TM.errors.push(id + '：' + (e && e.message)); } return m; };
   };
+  // その地図のトレードマスターの立つマス（セーブの位置を写すとき、人の立つマスに着かないように。js/rpg/remake81.js の freeNear）
+  TM.busyOn = function (id) { var D = root.MAP_DEFS || {}; if (!TM.countFor(D[id], id)) return []; if (!TM.placed[id] && root.World && root.World.getMap) { try { root.World.getMap(id); } catch (e) { return []; } } return (TM.placed[id] || []).map(function (n) { return { x: n.x, y: n.y }; }); };
+  // 地図に入ったとき、主人公がトレードマスターと同じマスにいたら（古いセーブなど）、となりの空いたマスへ
+  (root.MAP_ENTER_HOOKS = root.MAP_ENTER_HOOKS || []).push(function (m) {
+    var W = root.World, d = root.State && root.State.data; var p = W && W.player; if (!m || !p || !m.npcAt) return; var n = m.npcAt(p.x, p.y); if (!n || !n.tradeMaster83) return;
+    var seen = {}; var q = [[p.x, p.y]]; seen[p.x + ',' + p.y] = 1;
+    while (q.length) { var c = q.shift(); var dirs = [[0, 1], [1, 0], [-1, 0], [0, -1]]; for (var i = 0; i < 4; i++) { var x = c[0] + dirs[i][0], y = c[1] + dirs[i][1]; if (seen[x + ',' + y] || Math.abs(x - p.x) + Math.abs(y - p.y) > 6) continue; seen[x + ',' + y] = 1; if (!m.passable(x, y, d) || (m.warpAt && m.warpAt(x, y))) continue; p.x = x; p.y = y; if ('px' in p) { p.px = x * 32; p.py = y * 32; } if (W.syncPos) W.syncPos(); return; } }
+  });
   // 一覧（確かめの道具・図鑑用）：全部の対象の地図を作って置く
   TM.targets = function () { var D = root.MAP_DEFS || {}; return Object.keys(D).filter(function (id) { return TM.countFor(D[id], id) > 0; }); };
 

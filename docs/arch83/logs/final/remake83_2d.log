@@ -1,0 +1,224 @@
+OK  作り直しの読み込み（2D 版）エラーなし []
+OK  dow_village：作り直した地図 56×40（人の自動配置 8・写せなかった物 0）
+OK  dow_village：建物 11（重なり・扉の前）
+OK  dow_village：開いた村の外周 188 マスがすべて歩ける（人・出来事でふさいでいない）
+OK  dow_village：外周を歩いて一周できる（188/188）
+OK  dow_village：外周のどこからでも、扉の前 10・人 22・出来事 3・宝箱 1 へ行ける 
+OK  dow_village：建物から出ると扉の前に着く 
+OK  dow_village：人 20・出来事 3・宝箱・建物 11 を消さずに、旧座標から新しい位置へ写せる 
+OK  dow_dojo：作り直した地図 20×13（人の自動配置 0・写せなかった物 0）
+OK  dow_dojo：建物 0（重なり・扉の前）
+OK  dow_dojo：着く所から、扉の前 0・人 2・出来事 0・宝箱 0 へ行ける 
+OK  dow_dojo：建物から出ると扉の前に着く 
+OK  dow_dojo：人 2・出来事 0・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  dow_house：作り直した地図 17×11（人の自動配置 0・写せなかった物 0）
+OK  dow_house：建物 0（重なり・扉の前）
+OK  dow_house：着く所から、扉の前 0・人 1・出来事 4・宝箱 0 へ行ける 
+OK  dow_house：建物から出ると扉の前に着く 
+OK  dow_house：人 1・出来事 4・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  volatilia：作り直した地図 84×60（人の自動配置 0・写せなかった物 0）
+OK  volatilia：建物 16（重なり・扉の前）
+OK  volatilia：着く所から、扉の前 15・人 18・出来事 2・宝箱 1 へ行ける 
+OK  volatilia：建物から出ると扉の前に着く 
+OK  volatilia：人 15・出来事 2・宝箱・建物 16 を消さずに、旧座標から新しい位置へ写せる 
+OK  vol_library：作り直した地図 22×15（人の自動配置 0・写せなかった物 0）
+OK  vol_library：建物 0（重なり・扉の前）
+OK  vol_library：着く所から、扉の前 0・人 2・出来事 4・宝箱 0 へ行ける 
+OK  vol_library：建物から出ると扉の前に着く 
+OK  vol_library：人 2・出来事 4・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  vol_observatory：作り直した地図 19×15（人の自動配置 0・写せなかった物 0）
+OK  vol_observatory：建物 0（重なり・扉の前）
+OK  vol_observatory：着く所から、扉の前 0・人 1・出来事 5・宝箱 0 へ行ける 
+OK  vol_observatory：建物から出ると扉の前に着く 
+OK  vol_observatory：人 1・出来事 4・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  vol_lecture：作り直した地図 17×13（人の自動配置 0・写せなかった物 0）
+OK  vol_lecture：建物 0（重なり・扉の前）
+OK  vol_lecture：段（擁壁・階段・坂）の決まり 
+OK  vol_lecture：着く所から、扉の前 0・人 2・出来事 1・宝箱 0 へ行ける 
+OK  vol_lecture：建物から出ると扉の前に着く 
+OK  vol_lecture：人 2・出来事 1・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  vol_quantum：作り直した地図 19×13（人の自動配置 0・写せなかった物 0）
+OK  vol_quantum：建物 0（重なり・扉の前）
+OK  vol_quantum：着く所から、扉の前 0・人 2・出来事 2・宝箱 0 へ行ける 
+OK  vol_quantum：建物から出ると扉の前に着く 
+OK  vol_quantum：人 2・出来事 2・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  vol_under_gate：作り直した地図 14×9（人の自動配置 0・写せなかった物 0）
+OK  vol_under_gate：建物 0（重なり・扉の前）
+OK  vol_under_gate：着く所から、扉の前 0・人 1・出来事 0・宝箱 0 へ行ける 
+OK  vol_under_gate：建物から出ると扉の前に着く 
+OK  vol_under_gate：人 1・出来事 0・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  vol_dean：作り直した地図 15×11（人の自動配置 0・写せなかった物 0）
+OK  vol_dean：建物 0（重なり・扉の前）
+OK  vol_dean：着く所から、扉の前 0・人 2・出来事 0・宝箱 0 へ行ける 
+OK  vol_dean：建物から出ると扉の前に着く 
+OK  vol_dean：人 2・出来事 0・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  vol_mind：作り直した地図 17×12（人の自動配置 0・写せなかった物 0）
+OK  vol_mind：建物 0（重なり・扉の前）
+OK  vol_mind：着く所から、扉の前 0・人 1・出来事 1・宝箱 0 へ行ける 
+OK  vol_mind：建物から出ると扉の前に着く 
+OK  vol_mind：人 1・出来事 1・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  vol_ancient：作り直した地図 18×12（人の自動配置 0・写せなかった物 0）
+OK  vol_ancient：建物 0（重なり・扉の前）
+OK  vol_ancient：着く所から、扉の前 0・人 3・出来事 0・宝箱 0 へ行ける 
+OK  vol_ancient：建物から出ると扉の前に着く 
+OK  vol_ancient：人 3・出来事 0・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  rivel_town：作り直した地図 72×60（人の自動配置 0・写せなかった物 0）
+OK  rivel_town：建物 19（重なり・扉の前）
+OK  rivel_town：着く所から、扉の前 18・人 27・出来事 2・宝箱 1 へ行ける 
+OK  rivel_town：建物から出ると扉の前に着く 
+OK  rivel_town：人 24・出来事 2・宝箱・建物 20 を消さずに、旧座標から新しい位置へ写せる 
+OK  rivel_castle：作り直した地図 34×32（人の自動配置 0・写せなかった物 0）
+OK  rivel_castle：建物 0（重なり・扉の前）
+OK  rivel_castle：着く所から、扉の前 0・人 11・出来事 0・宝箱 2 へ行ける 
+OK  rivel_castle：建物から出ると扉の前に着く 
+OK  rivel_castle：人 10・出来事 0・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  harbor_town：作り直した地図 76×40（人の自動配置 0・写せなかった物 0）
+OK  harbor_town：建物 11（重なり・扉の前）
+OK  harbor_town：段（擁壁・階段・坂）の決まり 
+OK  harbor_town：着く所から、扉の前 10・人 25・出来事 3・宝箱 1 へ行ける 
+OK  harbor_town：建物から出ると扉の前に着く 
+OK  harbor_town：人 23・出来事 2・宝箱・建物 11 を消さずに、旧座標から新しい位置へ写せる 
+OK  harbor_inn：作り直した地図 18×12（人の自動配置 0・写せなかった物 0）
+OK  harbor_inn：建物 0（重なり・扉の前）
+OK  harbor_inn：着く所から、扉の前 0・人 2・出来事 0・宝箱 0 へ行ける 
+OK  harbor_inn：建物から出ると扉の前に着く 
+OK  harbor_inn：人 2・出来事 0・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  sahar_city：作り直した地図 60×44（人の自動配置 0・写せなかった物 0）
+OK  sahar_city：建物 15（重なり・扉の前）
+OK  sahar_city：水の音の元 4 か所が水（水路・泉・噴水・井戸）のそば 
+OK  sahar_city：着く所から、扉の前 12・人 20・出来事 2・宝箱 1 へ行ける 
+OK  sahar_city：建物から出ると扉の前に着く 
+OK  sahar_city：人 18・出来事 2・宝箱・建物 15 を消さずに、旧座標から新しい位置へ写せる 
+OK  sahar_inn：作り直した地図 20×15（人の自動配置 0・写せなかった物 0）
+OK  sahar_inn：建物 0（重なり・扉の前）
+OK  sahar_inn：着く所から、扉の前 0・人 2・出来事 0・宝箱 0 へ行ける 
+OK  sahar_inn：建物から出ると扉の前に着く 
+OK  sahar_inn：人 2・出来事 0・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  verum_town：作り直した地図 64×40（人の自動配置 0・写せなかった物 0）
+OK  verum_town：建物 11（重なり・扉の前）
+OK  verum_town：段（擁壁・階段・坂）の決まり 
+OK  verum_town：着く所から、扉の前 10・人 27・出来事 3・宝箱 1 へ行ける 
+OK  verum_town：建物から出ると扉の前に着く 
+OK  verum_town：人 25・出来事 3・宝箱・建物 12 を消さずに、旧座標から新しい位置へ写せる 
+OK  verum_inn：作り直した地図 18×12（人の自動配置 0・写せなかった物 0）
+OK  verum_inn：建物 0（重なり・扉の前）
+OK  verum_inn：着く所から、扉の前 0・人 2・出来事 0・宝箱 0 へ行ける 
+OK  verum_inn：建物から出ると扉の前に着く 
+OK  verum_inn：人 2・出来事 0・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  tradia：作り直した地図 72×44（人の自動配置 0・写せなかった物 0）
+OK  tradia：建物 25（重なり・扉の前）
+OK  tradia：着く所から、扉の前 23・人 24・出来事 5・宝箱 2 へ行ける 
+OK  tradia：建物から出ると扉の前に着く 
+OK  tradia：人 22・出来事 5・宝箱・建物 25 を消さずに、旧座標から新しい位置へ写せる 
+OK  magicka_palace：作り直した地図 24×20（人の自動配置 0・写せなかった物 0）
+OK  magicka_palace：建物 0（重なり・扉の前）
+OK  magicka_palace：着く所から、扉の前 0・人 7・出来事 0・宝箱 0 へ行ける 
+OK  magicka_palace：建物から出ると扉の前に着く 
+OK  magicka_palace：人 6・出来事 0・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  magicka_palace_2f：作り直した地図 26×18（人の自動配置 0・写せなかった物 0）
+OK  magicka_palace_2f：建物 0（重なり・扉の前）
+OK  magicka_palace_2f：着く所から、扉の前 0・人 4・出来事 4・宝箱 2 へ行ける 
+OK  magicka_palace_2f：建物から出ると扉の前に着く 
+OK  magicka_palace_2f：人 4・出来事 4・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  magicka_palace_3f：作り直した地図 15×13（人の自動配置 0・写せなかった物 0）
+OK  magicka_palace_3f：建物 0（重なり・扉の前）
+OK  magicka_palace_3f：着く所から、扉の前 0・人 1・出来事 1・宝箱 1 へ行ける 
+OK  magicka_palace_3f：建物から出ると扉の前に着く 
+OK  magicka_palace_3f：人 1・出来事 1・宝箱・建物 0 を消さずに、旧座標から新しい位置へ写せる 
+OK  rivel_artisan：作り直した地図 66×32（人の自動配置 0・写せなかった物 0）
+OK  rivel_artisan：建物 12（重なり・扉の前）
+OK  rivel_artisan：水の音の元 3 か所が水（水路・泉・噴水・井戸）のそば 
+OK  rivel_artisan：着く所から、扉の前 7・人 22・出来事 4・宝箱 2 へ行ける 
+OK  rivel_artisan：建物から出ると扉の前に着く 
+OK  rivel_artisan：人 20・出来事 4・宝箱・建物 12 を消さずに、旧座標から新しい位置へ写せる 
+OK  erased_village：作り直した地図 46×22（人の自動配置 0・写せなかった物 0）
+OK  erased_village：建物 5（重なり・扉の前）
+OK  erased_village：着く所から、扉の前 4・人 15・出来事 1・宝箱 1 へ行ける 
+OK  erased_village：建物から出ると扉の前に着く 
+OK  erased_village：人 13・出来事 1・宝箱・建物 5 を消さずに、旧座標から新しい位置へ写せる 
+OK  star_camp：作り直した地図 42×16（人の自動配置 0・写せなかった物 0）
+OK  star_camp：建物 4（重なり・扉の前）
+OK  star_camp：着く所から、扉の前 3・人 16・出来事 2・宝箱 1 へ行ける 
+OK  star_camp：建物から出ると扉の前に着く 
+OK  star_camp：人 14・出来事 2・宝箱・建物 4 を消さずに、旧座標から新しい位置へ写せる 
+OK  scheduled_district：作り直した地図 54×26（人の自動配置 0・写せなかった物 0）
+OK  scheduled_district：建物 7（重なり・扉の前）
+OK  scheduled_district：着く所から、扉の前 7・人 14・出来事 2・宝箱 1 へ行ける 
+OK  scheduled_district：建物から出ると扉の前に着く 
+OK  scheduled_district：人 12・出来事 2・宝箱・建物 7 を消さずに、旧座標から新しい位置へ写せる 
+OK  mirror_market：作り直した地図 56×24（人の自動配置 0・写せなかった物 0）
+OK  mirror_market：建物 4（重なり・扉の前）
+OK  mirror_market：水の音の元 1 か所が水（水路・泉・噴水・井戸）のそば 
+OK  mirror_market：着く所から、扉の前 3・人 21・出来事 2・宝箱 1 へ行ける 
+OK  mirror_market：建物から出ると扉の前に着く 
+OK  mirror_market：人 19・出来事 2・宝箱・建物 4 を消さずに、旧座標から新しい位置へ写せる 
+OK  ciel_port：作り直した地図 56×26（人の自動配置 0・写せなかった物 0）
+OK  ciel_port：建物 8（重なり・扉の前）
+OK  ciel_port：段（擁壁・階段・坂）の決まり 
+OK  ciel_port：着く所から、扉の前 7・人 16・出来事 2・宝箱 1 へ行ける 
+OK  ciel_port：建物から出ると扉の前に着く 
+OK  ciel_port：人 14・出来事 2・宝箱・建物 8 を消さずに、旧座標から新しい位置へ写せる 
+OK  aruna_ruins：作り直した地図 60×30（人の自動配置 0・写せなかった物 0）
+OK  aruna_ruins：建物 9（重なり・扉の前）
+OK  aruna_ruins：段（擁壁・階段・坂）の決まり 
+OK  aruna_ruins：着く所から、扉の前 8・人 12・出来事 9・宝箱 2 へ行ける 
+OK  aruna_ruins：建物から出ると扉の前に着く 
+OK  aruna_ruins：人 10・出来事 9・宝箱・建物 9 を消さずに、旧座標から新しい位置へ写せる 
+OK  aruna_village：作り直した地図 56×26（人の自動配置 0・写せなかった物 0）
+OK  aruna_village：建物 9（重なり・扉の前）
+OK  aruna_village：着く所から、扉の前 8・人 22・出来事 2・宝箱 1 へ行ける 
+OK  aruna_village：建物から出ると扉の前に着く 
+OK  aruna_village：人 20・出来事 2・宝箱・建物 9 を消さずに、旧座標から新しい位置へ写せる 
+OK  ignas_town：作り直した地図 62×36（人の自動配置 0・写せなかった物 0）
+OK  ignas_town：建物 12（重なり・扉の前）
+OK  ignas_town：着く所から、扉の前 11・人 17・出来事 2・宝箱 1 へ行ける 
+OK  ignas_town：建物から出ると扉の前に着く 
+OK  ignas_town：人 15・出来事 2・宝箱・建物 12 を消さずに、旧座標から新しい位置へ写せる 
+OK  frost_town：作り直した地図 66×36（人の自動配置 0・写せなかった物 0）
+OK  frost_town：建物 13（重なり・扉の前）
+OK  frost_town：着く所から、扉の前 12・人 17・出来事 2・宝箱 1 へ行ける 
+OK  frost_town：建物から出ると扉の前に着く 
+OK  frost_town：人 15・出来事 2・宝箱・建物 13 を消さずに、旧座標から新しい位置へ写せる 
+OK  luxbell：作り直した地図 64×40（人の自動配置 0・写せなかった物 0）
+OK  luxbell：建物 11（重なり・扉の前）
+OK  luxbell：水の音の元 1 か所が水（水路・泉・噴水・井戸）のそば 
+OK  luxbell：着く所から、扉の前 10・人 16・出来事 2・宝箱 1 へ行ける 
+OK  luxbell：建物から出ると扉の前に着く 
+OK  luxbell：人 14・出来事 2・宝箱・建物 11 を消さずに、旧座標から新しい位置へ写せる 
+OK  node_city：作り直した地図 74×40（人の自動配置 0・写せなかった物 0）
+OK  node_city：建物 13（重なり・扉の前）
+OK  node_city：着く所から、扉の前 13・人 20・出来事 2・宝箱 1 へ行ける 
+OK  node_city：建物から出ると扉の前に着く 
+OK  node_city：人 18・出来事 2・宝箱・建物 14 を消さずに、旧座標から新しい位置へ写せる 
+OK  tempus_city：作り直した地図 70×36（人の自動配置 0・写せなかった物 0）
+OK  tempus_city：建物 13（重なり・扉の前）
+OK  tempus_city：水の音の元 1 か所が水（水路・泉・噴水・井戸）のそば 
+OK  tempus_city：着く所から、扉の前 12・人 20・出来事 2・宝箱 1 へ行ける 
+OK  tempus_city：建物から出ると扉の前に着く 
+OK  tempus_city：人 18・出来事 2・宝箱・建物 13 を消さずに、旧座標から新しい位置へ写せる 
+OK  magicka_city：作り直した地図 66×36（人の自動配置 0・写せなかった物 0）
+OK  magicka_city：建物 13（重なり・扉の前）
+OK  magicka_city：水の音の元 4 か所が水（水路・泉・噴水・井戸）のそば 
+OK  magicka_city：着く所から、扉の前 12・人 20・出来事 2・宝箱 1 へ行ける 
+OK  magicka_city：建物から出ると扉の前に着く 
+OK  magicka_city：人 18・出来事 2・宝箱・建物 14 を消さずに、旧座標から新しい位置へ写せる 
+OK  sentra_capital：作り直した地図 68×40（人の自動配置 0・写せなかった物 0）
+OK  sentra_capital：建物 14（重なり・扉の前）
+OK  sentra_capital：段（擁壁・階段・坂）の決まり 
+OK  sentra_capital：着く所から、扉の前 13・人 23・出来事 6・宝箱 1 へ行ける 
+OK  sentra_capital：建物から出ると扉の前に着く 
+OK  sentra_capital：人 21・出来事 3・宝箱・建物 15 を消さずに、旧座標から新しい位置へ写せる 
+OK  kalion_city：作り直した地図 66×40（人の自動配置 0・写せなかった物 0）
+OK  kalion_city：建物 18（重なり・扉の前）
+OK  kalion_city：段（擁壁・階段・坂）の決まり 
+OK  kalion_city：着く所から、扉の前 17・人 28・出来事 2・宝箱 1 へ行ける 
+OK  kalion_city：建物から出ると扉の前に着く 
+OK  kalion_city：人 26・出来事 2・宝箱・建物 18 を消さずに、旧座標から新しい位置へ写せる 
+OK  dark_camp：作り直した地図 50×30（人の自動配置 0・写せなかった物 0）
+OK  dark_camp：建物 8（重なり・扉の前）
+OK  dark_camp：着く所から、扉の前 7・人 16・出来事 3・宝箱 1 へ行ける 
+OK  dark_camp：建物から出ると扉の前に着く 
+OK  dark_camp：人 14・出来事 3・宝箱・建物 8 を消さずに、旧座標から新しい位置へ写せる 
+（この版にない地図：aeria_garden_hi）
+（この版にない地図：aeria_garden_lo）
+結果：すべて OK

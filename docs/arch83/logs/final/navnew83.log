@@ -1,0 +1,4 @@
+OK  リヴェル王に会う（第1章）：城下町 → 楼門 → 城郭区画 → 城：rivel_town@35,0:exit(リヴェル城・城郭（参道と前庭）へ) → rivel_castle_approach@32,17:exit(リヴェル城の入口) → rivel_castle@16,2:target(話す相手)
+OK  親衛隊長（第7章）：王都 → 楼門 → 宮苑 → 王宮：sentra_capital@33,0:exit(セントラ王宮・宮苑（大階段の前庭）へ) → sentra_palace_approach@30,17:exit(王宮の入口) → sentra_palace_1@11,9:target(強敵の気配)
+OK  魔導王（第13章）：マクディア → 楼門 → 城郭区画 → 魔導王宮：magicka_city@32,0:exit(魔導王宮・旧市街の上の宮殿（参道）へ) → magicka_palace_approach@28,17:exit(魔導王宮の入口) → magicka_palace@11,1:target(話す相手)
+結果：3/3 OK

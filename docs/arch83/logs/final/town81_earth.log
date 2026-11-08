@@ -1,0 +1,99 @@
+OK  rivel_town（リヴェル城下町）：作り直した地図 72×60（地球の世界）
+OK  rivel_town：フィールド（world）から歩いて入る → rivel_town 35,52
+OK  rivel_town／weapon（武器屋）：入る → 中 5,9 → 出る → 扉の前 27,50
+OK  rivel_town／armor（防具屋）：入る → 中 7,9 → 出る → 扉の前 11,32
+OK  rivel_town／item（道具屋）：入る → 中 7,9 → 出る → 扉の前 16,50
+OK  rivel_town／inn（リヴェルの宿屋）：入る → 中 7,9 → 出る → 扉の前 41,53
+OK  rivel_town／church（リヴェル教会）：入る → 中 7,9 → 出る → 扉の前 27,37
+OK  rivel_town／tavern（リヴェルの酒場）：入る → 中 7,9 → 出る → 扉の前 46,48
+OK  rivel_town／guild（冒険者ギルド）：入る → 中 7,9 → 出る → 扉の前 39,30
+OK  rivel_town／bank（リヴェル銀行）：入る → 中 7,9 → 出る → 扉の前 45,39
+OK  rivel_town／rv_wave_temple（波形聖堂）：入る → 中 7,9 → 出る → 扉の前 61,8
+OK  rivel_town／x72_tower（見張りの塔 1階）：入る → 中 7,9 → 出る → 扉の前 5,24
+OK  rivel_town／x72_house（騎士の家）：入る → 中 5,9 → 出る → 扉の前 6,8
+OK  rivel_town／x72_hall（騎士の詰所）：入る → 中 7,9 → 出る → 扉の前 15,8
+OK  rivel_town／x72_ex0（花屋）：入る → 中 7,9 → 出る → 扉の前 9,31
+OK  rivel_town／x72_ex1（仕立て屋）：入る → 中 7,9 → 出る → 扉の前 9,38
+OK  rivel_town／x72_ex2（パン屋）：入る → 中 7,9 → 出る → 扉の前 11,39
+OK  rivel_town／x72_ex3（古道具屋）：入る → 中 7,9 → 出る → 扉の前 9,45
+OK  rivel_town／x72_ex4（画家のアトリエ）：入る → 中 7,9 → 出る → 扉の前 59,35
+OK  rivel_town／x72_ex5（学者の家）：入る → 中 5,9 → 出る → 扉の前 62,30
+OK  rivel_town：rivel_artisan（71,39）に乗る → rivel_artisan 1,15 → 戻る → rivel_town 69,39
+OK  rivel_town：リヴェル城へ（34,0）に乗る → rivel_castle_approach 31,48 → 戻る → rivel_town 35,1
+OK  rivel_town：出口 34,58 → world,90,48 → 振り返って戻る → rivel_town 35,52
+OK  rivel_town：出口 37,58 → world,90,48 → 振り返って戻る → rivel_town 35,52
+OK  sentra_capital（王都セントラ）：作り直した地図 68×40（地球の世界）
+OK  sentra_capital：フィールド（world_kalion）から歩いて入る → sentra_capital 33,36
+OK  sentra_capital／knights（騎士団詰所）：入る → 中 7,9 → 出る → 扉の前 21,25
+OK  sentra_capital／office（監察官の事務所）：入る → 中 7,9 → 出る → 扉の前 37,25
+OK  sentra_capital／inn（王都の宿）：入る → 中 7,9 → 出る → 扉の前 6,21
+OK  sentra_capital／tavern（王都の酒場）：入る → 中 7,9 → 出る → 扉の前 37,18
+OK  sentra_capital／item（王都の道具店）：入る → 中 7,9 → 出る → 扉の前 21,18
+OK  sentra_capital／armor（王都の防具店）：入る → 中 7,9 → 出る → 扉の前 30,18
+OK  sentra_capital／a3_sentra_noble（老貴族の屋敷）：入る → 中 5,9 → 出る → 扉の前 20,7
+OK  sentra_capital／x72_tower（記録の塔 1階）：入る → 中 7,9 → 出る → 扉の前 56,25
+OK  sentra_capital／x72_house（書記官の家）：入る → 中 5,9 → 出る → 扉の前 57,7
+OK  sentra_capital／x72_hall（公文書館）：入る → 中 7,9 → 出る → 扉の前 47,7
+OK  sentra_capital／x72_ex0（仕立て屋）：入る → 中 7,9 → 出る → 扉の前 63,21
+OK  sentra_capital／x72_ex1（パン屋）：入る → 中 7,9 → 出る → 扉の前 51,21
+OK  sentra_capital／x72_ex2（古道具屋）：入る → 中 7,9 → 出る → 扉の前 8,25
+NG  sentra_capital：セントラ王宮へ（32,0）へ歩いて行けない
+OK  sentra_capital：出口 32,39 → world_kalion,47,43 → 振り返って戻る → sentra_capital 33,36
+OK  sentra_capital：出口 35,39 → world_kalion,47,43 → 振り返って戻る → sentra_capital 33,36
+OK  magicka_city（魔導都マクディア）：作り直した地図 66×36（地球の世界）
+OK  magicka_city：フィールド（world_magicka）から歩いて入る → magicka_city 32,33
+OK  magicka_city／academy（王立学院）：入る → 中 7,9 → 出る → 扉の前 8,7
+OK  magicka_city／church（魔導教会）：入る → 中 7,9 → 出る → 扉の前 48,7
+OK  magicka_city／weapon（魔導武具店）：入る → 中 5,9 → 出る → 扉の前 5,30
+OK  magicka_city／armor（魔導防具店）：入る → 中 7,9 → 出る → 扉の前 39,30
+OK  magicka_city／item（魔導具店）：入る → 中 7,9 → 出る → 扉の前 15,30
+OK  magicka_city／inn（星詠みの宿）：入る → 中 7,9 → 出る → 扉の前 49,30
+OK  magicka_city／tavern（魔導士の酒場）：入る → 中 7,9 → 出る → 扉の前 24,30
+OK  magicka_city／a3_magicka_crafter（魔導具職人の家）：入る → 中 5,9 → 出る → 扉の前 18,7
+OK  magicka_city／x72_tower（魔導の塔 1階）：入る → 中 7,9 → 出る → 扉の前 59,17
+OK  magicka_city／x72_house（魔導士の家）：入る → 中 5,9 → 出る → 扉の前 59,7
+OK  magicka_city／x72_hall（魔導書の書庫）：入る → 中 7,9 → 出る → 扉の前 6,16
+OK  magicka_city／x72_ex0（仕立て屋）：入る → 中 7,9 → 出る → 扉の前 59,30
+OK  magicka_city：魔導王宮へ（31,0）に乗る → magicka_palace_approach 27,44 → 戻る → magicka_city 32,1
+OK  magicka_city：出口 31,35 → world_magicka,68,75 → 振り返って戻る → magicka_city 32,33
+OK  magicka_city：出口 34,35 → world_magicka,68,75 → 振り返って戻る → magicka_city 32,33
+OK  volatilia（ボラティリティア学院）：作り直した地図 84×60（地球の世界）
+OK  volatilia：フィールド（world_tempus）から歩いて入る → volatilia 41,55
+OK  volatilia／va_main（学院本校舎・玄関ホール）：入る → 中 14,15 → 出る → 扉の前 13,32
+OK  volatilia／va_lecture（講義室）：入る → 中 8,11 → 出る → 扉の前 13,20
+OK  volatilia／va_obs（天文観測室）：入る → 中 9,13 → 出る → 扉の前 41,34
+OK  volatilia／va_library（大図書館）：入る → 中 11,13 → 出る → 扉の前 69,22
+OK  volatilia／va_quantum（量子物理研究室）：入る → 中 9,11 → 出る → 扉の前 69,31
+OK  volatilia／va_mind（意識研究所）：入る → 中 8,10 → 出る → 扉の前 69,42
+OK  volatilia／va_ancient（古代文明研究室）：入る → 中 9,10 → 出る → 扉の前 13,42
+OK  volatilia／va_dorm（研究者の居住区）：入る → 中 7,7 → 出る → 扉の前 66,8
+OK  volatilia／va_under（地下実験施設の入口）：入る → 中 6,7 → 出る → 扉の前 78,42
+OK  volatilia／a3_vol_lodging（研究生の下宿）：入る → 中 5,9 → 出る → 扉の前 52,8
+OK  volatilia／x72_tower（天文塔 1階）：入る → 中 7,9 → 出る → 扉の前 7,9
+OK  volatilia／x72_house（学生寮）：入る → 中 5,9 → 出る → 扉の前 16,9
+OK  volatilia／x72_hall（学生の自習室）：入る → 中 7,9 → 出る → 扉の前 9,53
+OK  volatilia／x72_ex0（画家のアトリエ）：入る → 中 7,9 → 出る → 扉の前 71,53
+OK  volatilia／x72_ex1（学者の家）：入る → 中 5,9 → 出る → 扉の前 77,8
+OK  volatilia：出口 41,59 → world_tempus,62,50 → 振り返って戻る → volatilia 41,55
+OK  kalion_city（徴収都市カリオン）：作り直した地図 66×40（地球の世界）
+OK  kalion_city：フィールド（world_kalion）から歩いて入る → kalion_city 31,36
+OK  kalion_city／finance（財務局）：入る → 中 5,9 → 出る → 扉の前 15,5
+OK  kalion_city／tax（税務庁舎）：入る → 中 7,9 → 出る → 扉の前 31,7
+OK  kalion_city／weapon（カリオン武器店）：入る → 中 5,9 → 出る → 扉の前 29,21
+OK  kalion_city／armor（カリオン防具店）：入る → 中 7,9 → 出る → 扉の前 34,21
+OK  kalion_city／item（配給商店）：入る → 中 7,9 → 出る → 扉の前 15,24
+OK  kalion_city／inn（徴収都市の宿）：入る → 中 7,9 → 出る → 扉の前 47,24
+OK  kalion_city／tavern（裏通りの酒場）：入る → 中 7,9 → 出る → 扉の前 6,24
+OK  kalion_city／church（カリオン教会）：入る → 中 7,9 → 出る → 扉の前 39,35
+OK  kalion_city／a3_kalion_estate（北区の屋敷）：入る → 中 5,9 → 出る → 扉の前 18,7
+OK  kalion_city／x72_tower（記録の塔 1階）：入る → 中 7,9 → 出る → 扉の前 61,8
+OK  kalion_city／x72_house（書記官の家）：入る → 中 5,9 → 出る → 扉の前 54,7
+OK  kalion_city／x72_hall（公文書館）：入る → 中 7,9 → 出る → 扉の前 45,7
+OK  kalion_city／x72_ex0（学者の家）：入る → 中 5,9 → 出る → 扉の前 45,13
+OK  kalion_city／x72_ex1（花屋）：入る → 中 7,9 → 出る → 扉の前 56,24
+OK  kalion_city／x72_ex2（仕立て屋）：入る → 中 7,9 → 出る → 扉の前 49,35
+OK  kalion_city／x72_ex3（パン屋）：入る → 中 7,9 → 出る → 扉の前 58,35
+OK  kalion_city／x72_ex4（古道具屋）：入る → 中 7,9 → 出る → 扉の前 19,35
+OK  kalion_city：出口 30,39 → world_kalion,38,72 → 振り返って戻る → kalion_city 31,36
+OK  kalion_city：出口 33,39 → world_kalion,38,72 → 振り返って戻る → kalion_city 31,36
+結果：NG 1
