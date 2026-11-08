@@ -640,7 +640,7 @@ export class App3D {
     if (!this.aboardNow) this.updateFollowers(dt); else if (this.followers) this.followers.forEach((ent) => { if (ent.ch) ent.ch.root.visible = false; });
     this.current.update(dt, t, this.pos);
     this.join.update(dt, t, now);   // v7.6 となりの地域（水面の動き・先に組み立てる・遠いものを外す）
-    try { this.camera.zone = cameraZone82(this.current, this.pos); } catch (e) { this.camera.zone = null; }
+    try { this.camera.zone = cameraZone82(this.current, this.pos) || (this.join && this.join.aeriaZone82 ? this.join.aeriaZone82(this.pos) : null); } catch (e) { this.camera.zone = null; }   // v8.3 アエリアに船で近づくとき（Join76.aeriaZone82）
     try { academyCutaway82(this.current, this.pos); } catch (e) { /* 学院の外 */ }   // v8.2 学院：手前の翼棟を低くして主人公と扉を見せる（Academy82.js）   // v8.2 城郭区画・城下町の城門の前：カメラを少し起こして城の輪郭を見せる（Castle82.js）
     if (this.current.interior && this.current.bounds) {   // 屋内：部屋全体が入るよう、部屋の中心寄りに見る
       const b = this.current.bounds; const cx = (b.x0 + b.x1) / 2, cz = (b.z0 + b.z1) / 2 - 0.4;

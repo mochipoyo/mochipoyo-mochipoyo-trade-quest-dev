@@ -24,6 +24,20 @@ function gradTex(c0, c1) {
 }
 function mistTexture() { return mistTex || (mistTex = gradTex('70,74,96', '90,92,118')); }
 function stormTexture() { return stormTex || (stormTex = gradTex('40,44,60', '70,74,92')); }
+// v8.3 浮天城アエリアの影と雲：海面に落ちる大きな影（ふつうの船のカメラで見える）と、城の下にかかる雲（城は雲の上＝物語のとおり）
+function softTex(rgba, size) { const c = document.createElement('canvas'); c.width = c.height = size; const g = c.getContext('2d'); const gr = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2); gr.addColorStop(0, rgba); gr.addColorStop(0.55, rgba.replace(/[\d.]+\)$/, '0.6)')); gr.addColorStop(1, rgba.replace(/[\d.]+\)$/, '0)')); g.fillStyle = gr; g.fillRect(0, 0, size, size); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; }
+function aeriaFx83() {
+  const group = new THREE.Group(); group.name = 'aeria83_fx'; const owned = [];
+  const shTex = softTex('rgba(0,0,0,1)', 128); owned.push(shTex);
+  const shMat = new THREE.MeshBasicMaterial({ map: shTex, transparent: true, opacity: 0.42, depthWrite: false, toneMapped: false }); owned.push(shMat);
+  const shGeo = new THREE.PlaneGeometry(AERIA82.w * 1.5, AERIA82.d * 2.2); shGeo.rotateX(-Math.PI / 2); owned.push(shGeo);
+  const shadow = new THREE.Mesh(shGeo, shMat); shadow.position.y = 0.12; shadow.renderOrder = 1; group.add(shadow);
+  const clTex = softTex('rgba(255,255,255,0.95)', 128); owned.push(clTex); const clouds = [];
+  for (let i = 0; i < 9; i++) { const m = new THREE.SpriteMaterial({ map: clTex, transparent: true, opacity: 0.8, depthWrite: false }); owned.push(m); const sp = new THREE.Sprite(m); const ang = i / 9 * Math.PI * 2; const r = AERIA82.w * (0.42 + (i % 3) * 0.12); sp.userData = { ang, r, h: AERIA82.y - 1.2 + (i % 2) * 0.9, s: 7 + (i % 3) * 2.5 }; sp.scale.set(sp.userData.s, sp.userData.s * 0.42, 1); group.add(sp); clouds.push(sp); }
+  return { group, info: () => ({ clouds: clouds.length }),
+    update(cx, cz, t) { shadow.position.x = cx; shadow.position.z = cz + 1.5; clouds.forEach((c) => { const u = c.userData; const a = u.ang + t * 0.02; c.position.set(cx + Math.cos(a) * u.r, u.h + Math.sin(t * 0.5 + u.ang) * 0.25, cz + Math.sin(a) * u.r * 0.55); }); },
+    dispose() { if (group.parent) group.parent.remove(group); owned.forEach((o) => { try { o.dispose(); } catch (e) { /* なし */ } }); } };
+}
 export class Join76 {
   constructor(app) { this.app = app; this.shown = new Map(); this.building = null; this.buildingMap = null; this.lastCheck = 0; this.walls = new Map(); this.crossings = 0; }
   W76() { const w = window.World76; return w && w.on && w.on() ? w : null; }
@@ -84,11 +98,26 @@ export class Join76 {
     const a = this.app; const W76 = this.W76(); const L = window.EARTH78_LAYOUT; if (!W76 || !L || !W76.earth || !this.active()) { this.aeriaOff(); return; }
     const o0 = W76.origin(a.current.map.id); const gx = L.xOf(AERIA82.lon), gz = L.yOf(AERIA82.lat); const dx = W76.dxWrap ? W76.dxWrap(gx - o0.x - a.pos.x) : gx - o0.x - a.pos.x; const rz = gz - o0.y; const dist = Math.hypot(dx, rz - a.pos.z);
     if (dist > AERIA82.far + (this.aeria ? 20 : 0)) { this.aeriaOff(); return; }
-    if (!this.aeria) { const c = buildCastle82('aeria', { w: AERIA82.w, d: AERIA82.d, seed: 512 }); this.aeria = c.group; this.aeria.name = 'aeria82_sky'; }
-    if (!this.aeria.parent) a.scene.add(this.aeria);
-    this.aeria.position.set(a.pos.x + dx - AERIA82.w / 2, AERIA82.y + Math.sin(performance.now() / 2400) * 0.3, rz - AERIA82.d / 2); this.aeriaDist = dist;
+    if (!this.aeria) { const c = buildCastle82('aeria', { w: AERIA82.w, d: AERIA82.d, seed: 512 }); this.aeria = c.group; this.aeria.name = 'aeria82_sky'; this.aeriaFx = aeriaFx83(); }
+    if (!this.aeria.parent) a.scene.add(this.aeria); if (this.aeriaFx && !this.aeriaFx.group.parent) a.scene.add(this.aeriaFx.group);
+    const cx = a.pos.x + dx, cz = rz; const tt = performance.now() / 1000;
+    this.aeria.position.set(cx - AERIA82.w / 2, AERIA82.y + Math.sin(tt / 2.4) * 0.3, cz - AERIA82.d / 2); this.aeriaDist = dist;
+    if (this.aeriaFx) this.aeriaFx.update(cx, cz, tt);   // v8.3 海に落ちる城の影・城の下の雲
+    // v8.3 船でアエリアの影の海に入ったとき（js/rpg/astra78.js の「空が、急に暗くなった…」と同じ所）：5 秒だけ、空の城を見上げるカメラ。1 分に 1 回まで
+    const S = window.State && State.data; const nowMs = performance.now();
+    if (S && S.aboard && S.aboard !== 'airship' && dist < 12 && a.camera && a.camera.setCine && !a.camera.cine && (!this._aeriaCine || nowMs - this._aeriaCine > 60000)) {
+      this._aeriaCine = nowMs; this.aeriaCineN = (this.aeriaCineN || 0) + 1; const cam = a.camera;
+      try { cam.setCine({ x: cx, y: AERIA82.y + 5, z: cz, dist: 66, pitch: 5 }); } catch (e) { /* なし */ }
+      setTimeout(() => { try { if (cam.cine && cam.cine.y === AERIA82.y + 5) cam.setCine(null); } catch (e) { /* なし */ } }, 5200);
+    }
   }
-  aeriaOff() { if (this.aeria) { if (this.aeria.parent) this.aeria.parent.remove(this.aeria); this.aeria.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); this.aeria = null; } }
+  // v8.3 アエリアの見え方：船・飛空艇でアエリアに近づく（55 マス以内）と、カメラの角度を寝かせて遠くの空を見せる（いつものカメラは真上寄りで、空の城が画面の外だった）
+  aeriaZone82(pos) {
+    const d = this.aeria && this.aeria.parent ? this.aeriaDist : null; if (d === null || d === undefined || d > 55) return null;
+    const S = window.State && State.data; if (!S || !S.aboard) return null;   // 歩いているときは変えない（船着き場の上など）
+    const k = Math.max(0, Math.min(1, (55 - d) / 30)); return { pitch: 40 - 14 * k, dist: 24 + 8 * k };
+  }
+  aeriaOff() { if (this.aeria) { if (this.aeria.parent) this.aeria.parent.remove(this.aeria); this.aeria.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); this.aeria = null; } if (this.aeriaFx) { this.aeriaFx.dispose(); this.aeriaFx = null; } }
   oceanInfo() { const o = this.ocean; return o ? Object.assign({ x: +o.group.position.x.toFixed(2), z: +o.group.position.z.toFixed(2), dist: +(this.oceanDist || 0).toFixed(1), built: this.oceanBuilt, inScene: !!o.group.parent }, o.info()) : { none: true, built: this.oceanBuilt || 0 }; }
   clear() { const a = this.app; this.oceanOff(); this.aeriaOff(); for (const [, e] of this.shown) if (e.ms !== a.current) a.scene.remove(e.ms.root); this.shown.clear(); for (const [, mesh] of this.walls) { a.scene.remove(mesh); mesh.geometry.dispose(); } this.walls.clear(); }
   keeps(id) { return this.shown.has(id) || this.building === id; }
