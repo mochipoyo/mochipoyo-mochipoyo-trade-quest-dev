@@ -895,3 +895,7 @@ html.ui-large .chart-battle { font-size: 15px; } html.ui-large .chart-battle .cb
 .quick-trial .qt-rs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; } .quick-trial .qt-r.on { background: #a08030; } .quick-trial .qt-step.hidden, .quick-trial .qt-result.hidden, .quick-trial .qt-next.hidden { display: none; }
 .quick-trial .qt-act.done .tcmd:not(.on) { opacity: .4; } .quick-trial .qt-res { font-size: 15px; margin: 6px 0; } .quick-trial .qt-res.ok b { color: #8fe08f; } .quick-trial .qt-res.ng b { color: #ff9a8a; }
 @media (max-width: 520px) { .quick-trial .qt-rs { grid-template-columns: 1fr; } }
+.chart-battle .cb-timer { flex-wrap: wrap; row-gap: 4px; } .chart-battle .cb-step { margin-left: auto; }
+@media (max-width: 480px) { .chart-battle .cb-ind { font-size: 10.5px; padding: 1px 6px; min-height: 30px; } .chart-battle .cb-inds { gap: 3px; } }
+@media (max-width: 400px) { .chart-battle .cb-hold { display: none; } }
+@media (max-width: 720px) { .chart-battle.result .cb-inds, .chart-battle.result .cb-indnote { display: none; } }

@@ -26,9 +26,14 @@
   CB.settings = function () {
     var st = (root.State && root.State.data && root.State.data.settings) || {};
     var sec = +st.ultTime; if (!(sec >= 5 && sec <= 60)) sec = 12;
-    return { decideMs: sec * 1000, light: st.ultChart === 'light', calm: st.ultFx === 'calm' || reducedMotion() };
+    var nsec = +st.chartTime; if (CB.NORMAL_OPTIONS.indexOf(nsec) < 0) nsec = 20;   // v8.8 通常バトルの判断時間（20〜30秒。未設定は 20 秒）
+    return { decideMs: sec * 1000, normalMs: nsec * 1000, light: st.ultChart === 'light', calm: st.ultFx === 'calm' || reducedMotion(), large: st.uiScale === 'large' };
   };
   CB.TIME_OPTIONS = [8, 12, 16, 20, 30];
+  CB.NORMAL_OPTIONS = [20, 25, 30];
+  // v8.8 時間の決まり（呼び出し元が opts.timeMode で渡す。渡さないときは今までどおり opts.decideMs か「必殺技の判断時間」）
+  //   'unlimited'＝初心者練習（時間制限なし・自分で足を進める）／'normal'＝通常バトル（20〜30秒）／'expert'＝上級・試験・対人（必殺技の判断時間 8〜12秒など）
+  CB.MODE_NAME = { unlimited: '初心者練習（時間制限なし）', normal: '通常バトル', expert: '上級・試験' };
   function tfName(m) { return m >= 60 ? (m / 60) + '時間足' : m + '分足'; }
   CB.tfName = tfName;
   function fmtPx(v) { return (Math.round(v * 1000) / 1000).toFixed(3); }
@@ -53,11 +58,13 @@
     ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H);
     var bars = v.bars, ind = v.ind, show = v.show; var N = bars.length; if (N < 2) return;
     var n = v.zoom; var end = Math.max(Market.WARM, N - 1 - v.off); var start = Math.max(Market.WARM, end - n + 1);
-    var padR = W < 420 ? 48 : 58, padL = 4, padT = 4;
+    var big = !!v.large; var fsz = (W < 420 ? 11 : 12) + (big ? 2 : 0);   // v8.8 価格の目盛りの文字を大きく（9〜10px → 11〜12px。文字サイズ「大きい」で +2px）。右の余白を広げて重ならないように
+    var padR = (W < 420 ? 54 : 64) + (big ? 10 : 0), padL = 4, padT = 4;
     var subs = []; if (show.rci) subs.push('rci'); if (show.macd) subs.push('macd');
     var subH = subs.length ? Math.max(36, Math.round(H * (subs.length === 2 ? 0.17 : 0.22))) : 0;
     var mainH = H - subs.length * subH - padT; var plotW = W - padR - padL; var bw = plotW / n;
     function xOf(i) { return padL + (i - start + 0.5) * bw; }
+    if (v.geo) { v.geo.start = start; v.geo.end = end; v.geo.padL = padL; v.geo.bw = bw; v.geo.plotW = plotW; v.geo.W = W; v.geo.H = H; }   // v8.8 十字線（長押し・マウス）で足を探すため
     // 価格の範囲
     var lo = Infinity, hi = -Infinity, i, k;
     for (i = start; i <= end; i++) { if (bars[i].l < lo) lo = bars[i].l; if (bars[i].h > hi) hi = bars[i].h; if (show.ema) for (k = 0; k < 3; k++) { var ev0 = ind.ema[k][i]; if (ev0 !== null && ev0 !== undefined) { lo = Math.min(lo, ev0); hi = Math.max(hi, ev0); } } }
@@ -71,7 +78,7 @@
     var pad = (hi - lo) * 0.06 || 0.01; lo -= pad; hi += pad;
     function yP(p) { return padT + 4 + (hi - p) / (hi - lo) * (mainH - 8); }
     // 目盛り
-    ctx.font = (W < 420 ? 9 : 10) + 'px sans-serif'; ctx.textBaseline = 'middle';
+    ctx.font = fsz + 'px sans-serif'; ctx.textBaseline = 'middle';
     ctx.strokeStyle = COL.grid; ctx.lineWidth = 1; ctx.fillStyle = COL.text; ctx.textAlign = 'left';
     for (k = 0; k <= 4; k++) { var gp = lo + (hi - lo) * k / 4; var gy = yP(gp); ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(W - padR, gy); ctx.stroke(); ctx.fillText(fmtPx(gp), W - padR + 4, gy); }
     // レンジの帯（直近60本の高値・安値。上下20%を濃く）
@@ -178,24 +185,29 @@
   // opts: { mode:'battle'|'practice'|'exam', ult, school, ind, tf, scenario, title, sub, prompt, askReason, quitable, decideMs, preview(res)→html, feedback(res)→html, color }
   CB.open = function (opts) {
     opts = opts || {}; var S = CB.settings(); var s = opts.scenario; var mode = opts.mode || 'battle';
-    var decideMs = opts.decideMs || S.decideMs; var barMs = Math.max(850, Math.round(decideMs / 16));
-    var sim = new Market.Sim(s, { decideMs: decideMs, barMs: barMs, postBarMs: S.calm ? 200 : 260 });
+    var timeMode = opts.timeMode || null; var unlimited = timeMode === 'unlimited';
+    var decideMs = timeMode === 'normal' ? (opts.decideMs || S.normalMs) : (opts.decideMs || S.decideMs); var barMs = Math.max(850, Math.round((unlimited ? 12000 : decideMs) / 16));
+    var sim = unlimited ? new Market.StepSim(s, { barMs: barMs, stepMs: 1600, postBarMs: S.calm ? 200 : 260 }) : new Market.Sim(s, { decideMs: decideMs, barMs: barMs, postBarMs: S.calm ? 200 : 260 });
+    var modeLabel = unlimited ? CB.MODE_NAME.unlimited : timeMode ? CB.MODE_NAME[timeMode] + '（' + Math.round(decideMs / 1000) + '秒）' : (mode === 'exam' ? '試験' : mode === 'practice' ? '練習' : '必殺技') + '（' + Math.round(decideMs / 1000) + '秒）';
+    var canToggle = mode === 'practice';   // 練習のときだけ、指標の表示を切り替えられる（試験・必殺技・対人は技の決まった表示のまま）
     var ind = {}; (opts.ind || ['ema']).forEach(function (k) { ind[k] = true; }); ind.ema = true;
     var tf = opts.tf || s.tf || 15; var color = opts.color || '#e8c15a';
     var reasons = root.ULT_REASONS || [];
     var head = '<div class="cb-head"><div class="cb-title"><b style="color:' + esc(color) + '">' + esc(opts.title || '') + '</b>' + (opts.sub ? '<span class="cb-sub">' + esc(opts.sub) + '</span>' : '') + '</div>' +
       '<div class="cb-sim">シミュレーション相場｜架空ペア POYO/MOCHI・' + esc(tfName(tf)) + (opts.quitable ? '<button type="button" class="cb-quit">中断</button>' : '') + '</div></div>' +
       (opts.prompt ? '<div class="cb-prompt">' + esc(opts.prompt) + '</div>' : '') +
-      '<div class="cb-timer"><span class="cb-tbar"><i></i></span><b class="cb-sec"></b></div>' +
+      '<div class="cb-timer"><span class="cb-mode">' + esc(modeLabel) + '</span><span class="cb-tbar"><i></i></span><b class="cb-sec"></b>' + (unlimited ? '<span class="cb-step"><button type="button" class="cb-play" data-play="1" aria-label="再生・停止">▶ 再生</button><button type="button" class="cb-stepbtn" data-step="1" aria-label="次の足へ">次の足へ ▶|<small>N</small></button></span>' : '') + '</div>' +
+      (canToggle ? '<div class="cb-inds">' + ['rci', 'macd', 'mtf', 'levels', 'swings'].map(function (k) { return '<button type="button" class="cb-ind" data-ind="' + k + '">' + esc(IND_NAME[k]) + '</button>'; }).join('') + '</div>' : (mode === 'exam' ? '<div class="cb-indnote">試験では、技で決まっている指標だけを表示します（表示の切り替えはできません）</div>' : '')) +
       (opts.rival ? '<div class="cb-rival"><b>VS ' + esc(opts.rival.name || '相手') + '</b><span class="cb-rv-st">チャートを読んでいる…</span></div>' : '') +   // v8.3 トレードバトル（js/rpg/trademaster83.js）
-      '<div class="cb-chartbox"><canvas class="cb-canvas"></canvas><div class="cb-flash"></div><div class="cb-banner"></div></div>' +
+      '<div class="cb-chartbox"><canvas class="cb-canvas"></canvas><div class="cb-xline hidden"></div><div class="cb-xbox hidden" aria-live="polite"></div><div class="cb-flash"></div><div class="cb-banner"></div></div>' +
       '<div class="cb-row"><div class="cb-info"></div><div class="cb-zoom"><button type="button" data-z="-1" aria-label="縮小">－</button><button type="button" data-z="1" aria-label="拡大">＋</button><button type="button" class="cb-latest" data-latest="1" aria-label="最新の足へ">▶最新</button></div></div>' +
-      '<div class="cb-cmds"><button type="button" class="cb-btn long" data-act="long">ロング（買い）<small>↑ / L</small></button><button type="button" class="cb-btn skip" data-act="skip">見送り<small>X / K</small></button><button type="button" class="cb-btn short" data-act="short">ショート（売り）<small>↓ / S</small></button></div>' +
+      '<div class="cb-cmds"><button type="button" class="cb-btn long" data-act="long">▲ ロング（買い）<small>↑ / L</small></button><button type="button" class="cb-btn skip" data-act="skip">■ 見送り<small>X / K</small></button><button type="button" class="cb-btn short" data-act="short">▼ ショート（売り）<small>↓ / S</small></button></div>' +
+      '<div class="cb-cmdnote">判断は 1 回。見送り＝入らない' + (unlimited ? '（時間切れなし）' : '（時間切れも見送り）') + '<span class="cb-hold">。チャートを長押し（PC はマウスを重ねる）でその足の値</span></div>' +
       (opts.askReason ? '<div class="cb-reasons hidden"><div class="cb-rq">判断の理由は？（数字キーでも選べる）</div>' + reasons.map(function (r, i) { return '<button type="button" class="cb-rs" data-reason="' + esc(r.key) + '">' + (i + 1) + '. ' + esc(r.label) + '</button>'; }).join('') + '</div>' : '') +
-      '<div class="cb-result hidden"></div><div class="cb-nextbox hidden"><button type="button" class="cb-review">振り返り（R）</button><button type="button" class="cb-next">次へ（Enter）</button></div>';
+      '<div class="cb-result hidden"></div><div class="cb-nextbox hidden"><button type="button" class="cb-review">振り返り：判断した時点とその後を並べる（R）</button><button type="button" class="cb-next">次へ（Enter）</button></div>';
     return new Promise(function (resolve) {
       var node = null, canvas = null, ctx = null, closeFn = null, closed = false, raf = null, timer = null, ro = null;
-      var view = { zoom: 48, off: 0 }; var dirty = true, lastDraw = 0, lastKey = '';
+      var view = { zoom: 48, off: 0 }; var dirty = true, lastDraw = 0, lastKey = ''; var geo = {}; var cross = null;
       var decided = false, reason = null, resultShown = false, skipPlay = null, out = null, review = null;
       var cache = { key: '', bars: null, ind: null, upper: null };
       // v8.3 トレードバトルの相手：判断の時間のうち決めた時刻（相手が先に決めないうちにプレイヤーが決めたら、その瞬間）に、そのとき見えている足だけで決める
@@ -227,12 +239,25 @@
       function render() {
         if (!ctx) return; var c = curBars(); var R = sim.result && sim.result.entry ? sim.result : null;
         var exitShown = R && (sim.state === 'settled' || sim.state === 'done');
-        var v = { bars: c.bars, ind: c.ind, upper: c.upper, show: ind, zoom: view.zoom, off: Math.min(view.off, Math.max(0, c.bars.length - Market.WARM - view.zoom)), tf: tf, atr: c.ind.atr[c.bars.length - 2] || c.ind.atr[c.bars.length - 1],
+        var v = { geo: geo, large: S.large, bars: c.bars, ind: c.ind, upper: c.upper, show: ind, zoom: view.zoom, off: Math.min(view.off, Math.max(0, c.bars.length - Market.WARM - view.zoom)), tf: tf, atr: c.ind.atr[c.bars.length - 2] || c.ind.atr[c.bars.length - 1],
           entry: R ? { bar: R.entry.bar, price: R.entry.price, sl: R.sl, tp: R.tp, side: R.side } : null, exit: exitShown ? { bar: R.exit.bar, price: R.exit.price, reason: R.exit.reason } : null,
           rival: rvl && rvl.res && rvl.res.entry ? { bar: rvl.res.entry.bar, price: rvl.res.entry.price, side: rvl.side, label: (opts.rival.short || opts.rival.name || '相手'), exit: resultShown ? { bar: rvl.res.exit.bar, price: rvl.res.exit.price } : null } : null };
         try { ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0); draw(ctx, view.W, view.H, v); } catch (e) { if (root.console) console.warn('chart', e); }
-        lastDraw = now(); dirty = false;
+        lastDraw = now(); dirty = false; if (cross) crossShow(cross.x);
       }
+      // v8.8 十字線：その足の番号（いまの足から何本前）・始値高値安値終値・表示中の指標の値。見えている足（いまの足まで）しか出さない
+      function crossShow(x) {
+        var xl = node.querySelector('.cb-xline'), xb = node.querySelector('.cb-xbox'); if (!xl || !xb || !geo.bw) return;
+        var c = curBars(); var b = c.bars; var i = Math.round(geo.start + (x - geo.padL) / geo.bw - 0.5); i = Math.max(geo.start, Math.min(geo.end, i)); if (!b[i]) return;
+        cross = { x: x, i: i }; var bx = geo.padL + (i - geo.start + 0.5) * geo.bw; xl.style.left = bx + 'px'; xl.classList.remove('hidden');
+        var bar = b[i]; var back = b.length - 1 - i; var f = function (q) { return q === null || q === undefined || isNaN(q) ? '―' : fmtPx(q); };
+        var rows = ['<b>' + (back === 0 ? 'いまの足（形成中）' : back + '本前の足') + '</b>', '始 ' + fmtPx(bar.o) + '　高 ' + fmtPx(bar.h), '安 ' + fmtPx(bar.l) + '　終 ' + fmtPx(bar.c)];
+        if (ind.ema) rows.push('EMA20/30/40 ' + [0, 1, 2].map(function (k) { return f(c.ind.ema[k][i]); }).join('/'));
+        if (ind.rci && c.ind.rci) rows.push('RCI(9) ' + (c.ind.rci[i] === null || c.ind.rci[i] === undefined ? '―' : Math.round(c.ind.rci[i])));
+        if (ind.macd && c.ind.macd) { var mm = c.ind.macd; var ln = mm.line ? mm.line[i] : (mm.macd ? mm.macd[i] : null); var sg = mm.signal ? mm.signal[i] : null; rows.push('MACD ' + (ln === null || ln === undefined ? '―' : (ln / s.pip).toFixed(1)) + '／シグナル ' + (sg === null || sg === undefined ? '―' : (sg / s.pip).toFixed(1)) + '（pips）'); }
+        xb.innerHTML = rows.join('<br>'); xb.classList.remove('hidden'); xb.classList.toggle('right', bx < (geo.W || 400) / 2);
+      }
+      function crossHide() { cross = null; var xl = node && node.querySelector('.cb-xline'), xb = node && node.querySelector('.cb-xbox'); if (xl) xl.classList.add('hidden'); if (xb) xb.classList.add('hidden'); }
       function info() {
         var c = curBars(); var b = c.bars; var px = b[b.length - 1].c; var A = c.ind.atr[b.length - 2] || 0; var P = s.pip;
         var t = '価格 <b>' + fmtPx(px) + '</b>｜ATR <b>' + (A / P).toFixed(1) + 'pips</b>' + (ind.atr ? '（普段の' + (function () { var as = c.ind.atr.slice(Math.max(0, b.length - 60), b.length - 10).filter(function (x) { return x; }).sort(function (x, y) { return x - y; }); var md = as.length ? as[Math.floor(as.length / 2)] : A; return (A / md).toFixed(1); })() + '倍）' : '') + '｜損切り ATR×1.0・利確 ATR×1.8・最大12本';
@@ -244,6 +269,7 @@
       }
       function timerUi(tn) {
         var left = sim.timeLeft(tn); var el = node.querySelector('.cb-sec'); var bar = node.querySelector('.cb-tbar i');
+        if (unlimited && sim.state === 'deciding') { var ut = sim.atEnd ? 'ここまで（判断してください）' : sim.playing ? '再生中' : '停止中'; if (el._t !== ut) { el.textContent = ut; el._t = ut; var pb = node.querySelector('.cb-play'); if (pb) pb.textContent = sim.playing ? '⏸ 停止' : '▶ 再生'; var sb = node.querySelector('.cb-stepbtn'); if (sb) sb.disabled = !!sim.atEnd; if (pb) pb.disabled = !!sim.atEnd; } bar.style.width = '100%'; return; }
         if (sim.state === 'deciding') { var txt = (left / 1000).toFixed(1) + '秒'; if (el._t !== txt) { el.textContent = txt; el._t = txt; } bar.style.width = (left / decideMs * 100).toFixed(1) + '%'; node.classList.toggle('hurry', left < 3000); }
         else { if (el._t !== '済') { el.textContent = sim.decision ? (sim.decision.side === 'skip' ? '見送り' : '決済まで進行中') : ''; el._t = '済'; } bar.style.width = '0%'; node.classList.remove('hurry'); }
       }
@@ -265,18 +291,22 @@
       }
       function showResult() {
         resultShown = true; sim.finish(); var R = sim.result || { outcome: 'skip' }; var dec = sim.decision;
-        out = { mode: mode, side: dec.side, auto: !!dec.auto, decisionMs: Math.round(dec.ms || 0), result: R, assessment: sim.assessment, scenarioId: s.id, cat: s.def.cat, diff: s.def.diff, seed: s.seed, verified: !!s.verified, reason: reason, entryBar: dec.pos.bar, tf: tf };
+        out = { mode: mode, timeMode: timeMode, unlimited: unlimited, steps: dec.steps || 0, side: dec.side, auto: !!dec.auto, decisionMs: Math.round(dec.ms || 0), result: R, assessment: sim.assessment, scenarioId: s.id, cat: s.def.cat, diff: s.def.diff, seed: s.seed, verified: !!s.verified, reason: reason, entryBar: dec.pos.bar, tf: tf };
         if (rvl) { if (!rvl.done) rivalDecide(dec.pos); out.rival = { name: opts.rival.name, side: rvl.side, pos: rvl.pos, result: rvl.res, bias: rvl.a ? rvl.a.bias : null }; }
-        var html = '';
+        // v8.8 結果を 3 つに分けて出す：①判断（買い・売り・見送り）②損益（pips と、損益÷ATR）③判断の過程の評価（判断した瞬間に見えていた根拠と比べる。損益では決めない）
+        var as0 = sim.assessment; var html = ''; var sideName = dec.side === 'long' ? 'ロング（買い）' : dec.side === 'short' ? 'ショート（売り）' : '見送り';
+        var rsl = reason && root.ULT_REASONS ? (root.ULT_REASONS.filter(function (x) { return x.key === reason; })[0] || {}).label : null;
+        html += '<div class="cb-sec3 cb-s1"><div class="cb-sh">① 判断</div><b>' + esc(sideName) + '</b>' + (dec.side === 'skip' ? (dec.auto ? '（時間切れ）' : '（自分で見送り）') : '') + (unlimited ? '<span class="muted small">　時間制限なしの練習・足を ' + (dec.steps || 0) + ' 回進めた</span>' : '<span class="muted small">　' + (Math.round((dec.ms || 0) / 100) / 10) + '秒で判断</span>') + (rsl ? '<div class="small">理由：' + esc(rsl) + '</div>' : '') + '</div>';
         if (R.outcome === 'skip') {
           var p0 = s.ticks[dec.pos.bar][dec.pos.tick]; var pe = skipPlay ? s.ticks[skipPlay.pos.bar][skipPlay.pos.tick] : p0; var mv = (pe - p0) / s.pip;
-          html += '<div class="cb-res skip"><b>' + (dec.auto ? '時間切れ：見送り' : '見送り') + '</b>　その後の12本で ' + fmtPips(mv) + ' 動いた（参考）</div>';
+          html += '<div class="cb-sec3 cb-s2 cb-res skip"><div class="cb-sh">② 損益</div>エントリーしていないので損益はなし。その後の12本で ' + fmtPips(mv) + ' 動いた（参考。見送りの良し悪しはこの値で決めません）</div>';
           banner(dec.auto ? '時間切れ…見送り' : '見送り', 'skip');
         } else {
           var lab = R.outcome === 'profit' ? (R.exit.reason === 'tp' ? '利確！' : '時間切れ決済（利益）') : R.outcome === 'loss' ? (R.exit.reason === 'sl' ? '損切り' : '時間切れ決済（損失）') : 'ほぼ同値で決済';
-          html += '<div class="cb-res ' + R.outcome + '"><b>' + lab + '</b>　' + (R.side === 'long' ? 'ロング' : 'ショート') + ' ' + fmtPx(R.entry.price) + ' → ' + fmtPx(R.exit.price) + '　<b>' + fmtPips(R.pips) + '</b>（損益÷ATR ' + (R.r > 0 ? '+' : '') + R.r.toFixed(2) + '・' + R.bars + '本）<span class="muted small">スプレッド・スリッページ込み</span></div>';
+          html += '<div class="cb-sec3 cb-s2 cb-res ' + R.outcome + '"><div class="cb-sh">② 損益</div><b>' + lab + '</b>　' + (R.side === 'long' ? 'ロング' : 'ショート') + ' ' + fmtPx(R.entry.price) + ' → ' + fmtPx(R.exit.price) + '　<b>' + fmtPips(R.pips) + '</b>（損益÷ATR ' + (R.r > 0 ? '+' : '') + R.r.toFixed(2) + '・' + R.bars + '本）<span class="muted small">スプレッド・スリッページ込み。1 回の損益は運にも左右されます</span></div>';
           banner(lab + ' ' + fmtPips(R.pips), R.outcome);
         }
+        html += '<div class="cb-sec3 cb-s3"><div class="cb-sh">③ 判断の過程の評価</div>' + CB.processText(dec, R, as0) + '</div>';
         if (opts.preview) { try { html += opts.preview(out) || ''; } catch (e) { } }
         if (opts.feedback) { try { html += opts.feedback(out) || ''; } catch (e) { } }
         var as = sim.assessment; if (as && opts.showView !== false) html += '<div class="cb-view"><b>判断した瞬間に見えていた状態（簡易的な見立て。正解ではありません）</b>：' + (as.bias === 'long' ? '上向きの根拠が多め' : as.bias === 'short' ? '下向きの根拠が多め' : 'はっきりしない') + '<br>' + as.reasons.slice(0, 4).map(esc).join('／') + '</div>';
@@ -309,7 +339,7 @@
       function loop() { if (closed) return; tick(); raf = (root.requestAnimationFrame || function (f) { return setTimeout(f, 33); })(loop); }
       var drag = null; function px(e) { return e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX; }
       function down(e) { drag = { x: px(e), off: view.off }; }
-      function move(e) { if (!drag || closed) return; var w = view.W || 600; var dx = px(e) - drag.x; var per = (w - 58) / view.zoom; var c = curBars(); var maxOff = Math.max(0, c.bars.length - Market.WARM - view.zoom); var nOff = Math.max(0, Math.min(maxOff, Math.round(drag.off + dx / per))); if (nOff !== view.off) { view.off = nOff; dirty = true; } if (e.cancelable && e.touches) e.preventDefault(); }
+      function move(e) { if (!drag || closed) return; if (cross && e.touches) return; var w = view.W || 600; var dx = px(e) - drag.x; var per = (w - 58) / view.zoom; var c = curBars(); var maxOff = Math.max(0, c.bars.length - Market.WARM - view.zoom); var nOff = Math.max(0, Math.min(maxOff, Math.round(drag.off + dx / per))); if (nOff !== view.off) { view.off = nOff; dirty = true; } if (e.cancelable && e.touches) e.preventDefault(); }
       function up() { drag = null; }
       function onVis() { var tn = now(); if (document.hidden) sim.pause(tn); else { sim.resume(tn); if (skipPlay && !skipPlay.done) skipPlay.t0 = tn - ((skipPlay.pos.bar * SUB + skipPlay.pos.tick) - skipPlay.abs0) * ((S.calm ? 200 : 260) / SUB); } }
       function zoom(dz) { var z = [30, 40, 48, 60, 80, 100, 120]; var i = z.indexOf(view.zoom); if (i < 0) i = 2; i = Math.max(0, Math.min(z.length - 1, i - dz)); view.zoom = z[i]; dirty = true; }
@@ -317,7 +347,8 @@
         if (closed) return; var t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
         if (Win.layer && Win.layer.lastElementChild !== node) return;   // 上に別の窓（中断の確認など）があるときは何もしない
         var k = e.key; var used = true;
-        if (k === 'l' || k === 'L') decide('long'); else if (k === 'k' || k === 'K') decide('skip'); else if ((k === 'r' || k === 'R') && resultShown) openReview();
+        if ((k === 'n' || k === 'N') && unlimited) { sim.play(false, now()); if (sim.stepBar()) { view.off = 0; dirty = true; } } else if ((k === 'p' || k === 'P') && unlimited) { sim.play(undefined, now()); dirty = true; }
+        else if (k === 'l' || k === 'L') decide('long'); else if (k === 'k' || k === 'K') decide('skip'); else if ((k === 'r' || k === 'R') && resultShown) openReview();
         else if (k === '+' || k === '=' || k === ';') zoom(1); else if (k === '-' || k === '_') zoom(-1);
         else if (/^[1-9]$/.test(k) && opts.askReason && decided && !reason) { var rr = reasons[+k - 1]; if (rr) pickReason(rr.key); }
         else used = false;
@@ -340,6 +371,16 @@
           n.querySelectorAll('[data-act]').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); decide(b.getAttribute('data-act')); }); });
           n.querySelectorAll('[data-z]').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); zoom(+b.getAttribute('data-z')); }); });
           var lt = n.querySelector('[data-latest]'); if (lt) lt.addEventListener('click', function (e) { e.stopPropagation(); view.off = 0; dirty = true; });
+          var pb = n.querySelector('[data-play]'); if (pb) pb.addEventListener('click', function (e) { e.stopPropagation(); sim.play(undefined, now()); dirty = true; });
+          var sb = n.querySelector('[data-step]'); if (sb) sb.addEventListener('click', function (e) { e.stopPropagation(); sim.play(false, now()); if (sim.stepBar()) { view.off = 0; dirty = true; } });
+          n.querySelectorAll('[data-ind]').forEach(function (b) { var k = b.getAttribute('data-ind'); b.classList.toggle('on', !!ind[k]); b.addEventListener('click', function (e) { e.stopPropagation(); ind[k] = !ind[k]; b.classList.toggle('on', !!ind[k]); cache.key = ''; resize(); dirty = true; }); });
+          // 十字線：マウスは重ねる、タッチは長押し（0.45 秒動かさない）。十字線の間はドラッグで履歴を動かさない
+          var lp = null; function cx(e) { var r = canvas.getBoundingClientRect(); var t = e.touches && e.touches[0] ? e.touches[0] : e; return t.clientX - r.left; }
+          canvas.addEventListener('mousemove', function (e) { if (!drag) crossShow(cx(e)); });
+          canvas.addEventListener('mouseleave', function () { crossHide(); });
+          canvas.addEventListener('touchstart', function (e) { var x0 = cx(e); clearTimeout(lp && lp.t); lp = { x: x0, t: setTimeout(function () { lp.on = true; drag = null; crossShow(x0); }, 450) }; }, { passive: true });
+          canvas.addEventListener('touchmove', function (e) { if (!lp) return; var x = cx(e); if (lp.on) { crossShow(x); if (e.cancelable) e.preventDefault(); e.stopPropagation(); } else if (Math.abs(x - lp.x) > 8) { clearTimeout(lp.t); lp = null; } }, { passive: false });
+          canvas.addEventListener('touchend', function () { if (lp) { clearTimeout(lp.t); if (lp.on) setTimeout(crossHide, 1500); } lp = null; });
           n.querySelectorAll('.cb-rs').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); pickReason(b.getAttribute('data-reason')); }); });
           var q = n.querySelector('.cb-quit'); if (q) q.addEventListener('click', function (e) { e.stopPropagation(); quit(); });
           n.addEventListener('click', function (e) { e.stopPropagation(); });
@@ -356,6 +397,23 @@
       // テスト・自動操作用（画面のボタンと同じ処理）
       CB.ctl = { rival: function () { return rvl; }, decide: decide, reason: pickReason, next: function () { if (resultShown) finish(); }, review: function () { openReview(); }, reviewRecord: function () { return review; }, sim: sim, state: function () { return { sim: sim.state, decided: decided, result: resultShown, reason: reason, zoom: view.zoom, off: view.off }; }, quit: function () { finish(true); } };
     });
+  };
+
+  // v8.8 判断の過程の評価（判断した瞬間に見えていた見立て Market.assess と比べる。損益の結果では決めない）
+  CB.processText = function (dec, R, as) {
+    var b = as ? as.bias : 'none'; var t;
+    if (dec.side === 'skip') {
+      if (dec.auto) t = '<b>時間切れの見送り</b>：判断できないまま時間が過ぎた。自分で「見送り」を選んだ場合とは別に記録する。';
+      else if (b === 'none') t = '<b>適切な見送り</b>：判断した時点では根拠がそろっていなかった。入らないのも立派な判断。';
+      else t = '<b>根拠があった場面での見送り</b>：' + (b === 'long' ? '上向き' : '下向き') + 'の根拠が多めに見えていた。慎重すぎた可能性もあるが、迷ったら入らないのも一つの判断。';
+      return t;
+    }
+    var aligned = (dec.side === 'long' && b === 'long') || (dec.side === 'short' && b === 'short'); var against = (dec.side === 'long' && b === 'short') || (dec.side === 'short' && b === 'long');
+    var won = R && R.outcome === 'profit', lost = R && R.outcome === 'loss';
+    if (aligned) t = '<b>根拠に沿った判断</b>' + (lost ? '：今回は損失だったが、判断した時点の根拠には沿っていた。損切りは決めた幅で終わっている（負けても適切な判断）。' : won ? '：根拠に沿って入り、結果も利益だった。' : '：根拠に沿った判断。');
+    else if (against) t = '<b>根拠と逆の判断</b>' + (won ? '：今回は利益だったが、判断した時点の根拠とは逆向き。運の要素が大きい（勝っても見直したい判断）。' : '：判断した時点の根拠とは逆向きだった。');
+    else t = '<b>根拠がそろわないままの判断</b>' + (won ? '：利益は出たが、判断した時点では方向の根拠がはっきりしなかった。' : '：判断した時点では方向の根拠がはっきりしなかった。見送りも有力だった。');
+    return t + '<div class="muted small">※ 見立ては判断した瞬間までの足だけで作った簡易なもの（その後の値動きは使っていない）。正解ではありません。</div>';
   };
 
   /* ---------- 振り返り：エントリーした時点に見えていたチャートと、実際の値動き（決済まで）を並べる ---------- */

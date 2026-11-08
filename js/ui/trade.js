@@ -201,6 +201,58 @@
     });
   };
 
+  /* ---------- v8.8 簡易の相場の試練（通常戦闘から。テンポ重視） ----------
+     ① 買い・売り・見送り → ② 理由を 1 つ（4 択）→ 判定。詳しい 5 つの分析・高値安値の指定・注文は修行場・学院の詳細モードで
+     ・場面と正解は詳細モードと同じ（Scenarios・TradeEval.truth。判断する時点までの足で決まっている。その後の値動きは使わない）
+     ・採点は簡易用（行動 70 点＋理由 30 点。答えていない項目を正解にしない）。詳しい成績（d.trade.stats・ランク）には入れず、d.trade.quick に別に記録
+     ・損益は採点に使わない（「利益＝正解」と覚えないように）。結果は { quick: true, score, actionOk, reasonOk, action, reason, id } */
+  TradeUI.QUICK_ACTION_PTS = 70; TradeUI.QUICK_REASON_PTS = 30;
+  TradeUI.quickStats = function (d) { d = d || State.data; if (!d.trade.quick || typeof d.trade.quick !== 'object') d.trade.quick = { plays: 0, actionOk: 0, reasonOk: 0, log: [] }; return d.trade.quick; };
+  TradeUI.quick = function (scenarioIds, opts) {
+    opts = opts || {}; var d = State.data;
+    var id = opts.scenarioId || scenarioIds[Math.floor(Math.random() * scenarioIds.length)];
+    var scn = Scenarios.build(id, opts.seedOffset !== undefined ? opts.seedOffset : 0); var def = scn.def; var truth = TradeEval.truth(scn);
+    var ro = TradeEval.reasonOptions(scn); var correctR = truth.reason; var others = ro.filter(function (r) { return r[0] !== correctR; }).slice(0, 3); var four = others.concat(ro.filter(function (r) { return r[0] === correctR; }));
+    four.sort(function (a, b) { return ((a[0].charCodeAt(0) * 17 + def.seed) % 89) - ((b[0].charCodeAt(0) * 17 + def.seed) % 89); });
+    var tfs = CONFIG.timeframes.filter(function (t) { return t.id === def.focusTF || t.id === '4h' || t.id === '1d'; });
+    var state = { tf: def.focusTF, action: null, reason: null };
+    var stageEl = document.getElementById('stage'); if (stageEl) stageEl.classList.add('trade-open');
+    var html = '<div class="trade-head"><b>' + esc(opts.title || '相場の試練') + '</b><span class="muted small">　簡易モード（買い・売り・見送り＋理由を 1 つ）。学習用の人工チャート（' + esc(CONFIG.market.pairName) + '）。未来の足は表示しません</span></div>' +
+      '<div class="qt-tfs">' + tfs.map(function (t) { return '<button type="button" class="tf' + (t.id === def.focusTF ? ' on' : '') + '" data-tf="' + t.id + '">' + esc(t.label) + (t.id === def.focusTF ? '（この足で判断）' : '') + '</button>'; }).join('') + '</div>' +
+      '<canvas class="chart qt-chart"></canvas>' +
+      '<div class="qt-step qt-act"><div class="qt-q">① どうする？（上位足のボタンで 4 時間足・日足も見られる）</div><div class="trade-cmds"><button type="button" class="tcmd buy" data-act="buy">▲ 買い</button><button type="button" class="tcmd sell" data-act="sell">▼ 売り</button><button type="button" class="tcmd skip" data-act="skip">■ 見送り</button></div></div>' +
+      '<div class="qt-step qt-reason hidden"><div class="qt-q">② いちばんの理由は？</div><div class="qt-rs">' + four.map(function (r) { return '<button type="button" class="rw-btn qt-r" data-r="' + esc(r[0]) + '">' + esc(r[1]) + '</button>'; }).join('') + '</div></div>' +
+      '<div class="qt-result hidden"></div><div class="qt-next hidden"><div class="rw-btn ok qt-ok" role="button" tabindex="0">次へ（Enter）</div></div>';
+    return new Promise(function (resolve) {
+      var done = false, out = null;
+      Win.panel(html, { cls: 'trade-panel quick-trial', noClose: true, onOk: function () { if (out) fin(); }, setup: function (node, close) {
+        var cv = node.querySelector('.qt-chart');
+        function render() { var tf = CONFIG.timeframes.filter(function (t) { return t.id === state.tf; })[0]; var an = Chart.buildView(Indicators.aggregate(scn.base, tf.factor), []); try { Chart.render(cv, an, { visibleBars: TradeUI.state.visible, showZigzag: d.settings.showZigzag, tfLabel: tf.label, marks: [] }); } catch (e) { } node.querySelectorAll('.tf').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tf') === state.tf); }); }
+        node.querySelectorAll('.tf').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); state.tf = b.getAttribute('data-tf'); render(); }); });
+        node.querySelectorAll('[data-act]').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); if (state.action) return; state.action = b.getAttribute('data-act'); node.querySelectorAll('[data-act]').forEach(function (x) { x.disabled = true; x.classList.toggle('on', x === b); }); node.querySelector('.qt-reason').classList.remove('hidden'); }); });
+        node.querySelectorAll('.qt-r').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); if (!state.action || state.reason) return; state.reason = b.getAttribute('data-r'); node.querySelectorAll('.qt-r').forEach(function (x) { x.classList.toggle('on', x === b); x.classList.add('locked'); }); judge(); }); });
+        node.querySelector('.qt-ok').addEventListener('click', function (e) { e.stopPropagation(); fin(); });
+        node.addEventListener('click', function (e) { e.stopPropagation(); });
+        function judge() {
+          var aOk = state.action === truth.action, rOk = state.reason === correctR; var score = (aOk ? TradeUI.QUICK_ACTION_PTS : 0) + (rOk ? TradeUI.QUICK_REASON_PTS : 0);
+          var AN = { buy: '買い', sell: '売り', skip: '見送り' };
+          var expl = ''; try { expl = TradeEval.explainTruth(scn, truth, truth).replace('分析はすべて正確でした。', ''); } catch (e) { expl = ''; }
+          node.querySelector('.qt-result').innerHTML = '<div class="qt-res ' + (aOk ? 'ok' : 'ng') + '"><b>' + (aOk ? '○ 場面の読みどおり' : '× 場面の読みと違う') + '</b>　あなた：' + AN[state.action] + '／この場面の基本：' + AN[truth.action] + '</div>' +
+            '<div class="small">理由：' + (rOk ? '○ ' : '× ') + esc(TradeEval.reasonLabel(state.reason)) + (rOk ? '' : '（この場面の要点：' + esc(TradeEval.reasonLabel(correctR)) + '）') + '</div>' +
+            '<div class="small">簡易スコア <b>' + score + '</b> 点（行動 ' + TradeUI.QUICK_ACTION_PTS + '＋理由 ' + TradeUI.QUICK_REASON_PTS + '）</div>' +
+            (expl ? '<div class="small muted">判断する時点で見えていたこと：' + esc(expl) + '</div>' : '') +
+            '<div class="small muted">※ 簡易モードは損益で採点しません（勝ち負けではなく、場面の読みを確かめます）。詳しい分析・高値安値・注文の練習は修行場・学院の「詳細モード」で。</div>';
+          node.querySelector('.qt-result').classList.remove('hidden'); node.querySelector('.qt-next').classList.remove('hidden'); node.querySelector('.qt-act').classList.add('done');
+          var q = TradeUI.quickStats(d); q.plays++; if (aOk) q.actionOk++; if (rOk) q.reasonOk++; q.log.push({ t: Date.now(), id: id, a: state.action, r: state.reason, ok: aOk, rok: rOk }); if (q.log.length > 20) q.log = q.log.slice(-20);
+          out = { quick: true, score: score, actionOk: aOk, reasonOk: rOk, action: state.action, reason: state.reason, id: id };
+        }
+        function fin() { if (done || !out) return; done = true; if (stageEl) stageEl.classList.remove('trade-open'); close(0); resolve(out); }
+        render();
+        TradeUI.quickCtl = { act: function (a) { var b = node.querySelector('[data-act="' + a + '"]'); if (b) b.click(); }, reason: function (k) { var b = node.querySelector('.qt-r[data-r="' + k + '"]'); if (b) b.click(); }, reasons: function () { return four.map(function (r) { return r[0]; }); }, truth: truth, next: fin };
+      } });
+    });
+  };
+
   TradeUI.showRecord = function () {
     var st = State.data.trade.stats; var sm = TradeEval.summarizeStats(st);
     var rows = [['判断回数', st.scoreCount], ['トレード回数', sm.trades], ['勝率', sm.winRate.toFixed(0) + '%'], ['平均リスクリワード', sm.avgRR ? '1:' + sm.avgRR.toFixed(2) : '―'], ['最大ドローダウン', sm.maxDrawdown.toFixed(1) + '%'], ['見送り判断', sm.skips + '（正しい見送り ' + sm.correctSkips + '）'], ['ルール違反', sm.violations], ['学習スコア（平均点）', sm.learningScore.toFixed(1)], ['仮想証拠金', Math.round(State.data.trade.capital).toLocaleString() + '円'], ['トレーダーランク', (function () { var r = TradeEval.rank(State.data.trade); return r.letter + '　' + r.title; })()]];

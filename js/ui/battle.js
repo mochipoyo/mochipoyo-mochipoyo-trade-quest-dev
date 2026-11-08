@@ -705,7 +705,9 @@
         var scs = enemy.trialScenarios || ['clear_up', 'clear_down', 'range', 'up_pullback', 'down_rally'];
         // v7.3 場面（シナリオ × シード）を、検証済みのシード（js/data/scenario-seeds.js。1つのシナリオに10）から選ぶ。最近出た場面（12）は避ける
         var pk = root.TradeUI.pickTrial ? root.TradeUI.pickTrial(scs) : null;
-        var res = await root.TradeUI.trial(pk ? [pk.id] : scs, pk ? { title: enemy.name + 'の相場の試練', noQuit: true, scenarioId: pk.id, seedOffset: pk.offset } : { title: enemy.name + 'の相場の試練', noQuit: true });   // v5.8 戦闘中の試練は中断できない
+        // v8.8 通常戦闘（ボスではない）で設定「戦闘中の相場の試練＝簡易」のときは、買い・売り・見送り＋理由の簡易モード（採点・記録は詳細と別。ボス戦は詳細のまま）
+        var quick88 = State.data.settings.battleTrial === 'quick' && !b.boss && !enemy.boss && root.TradeUI.quick;
+        var res = quick88 ? await root.TradeUI.quick(pk ? [pk.id] : scs, pk ? { title: enemy.name + 'の相場の試練', scenarioId: pk.id, seedOffset: pk.offset } : { title: enemy.name + 'の相場の試練' }) : await root.TradeUI.trial(pk ? [pk.id] : scs, pk ? { title: enemy.name + 'の相場の試練', noQuit: true, scenarioId: pk.id, seedOffset: pk.offset } : { title: enemy.name + 'の相場の試練', noQuit: true });   // v5.8 戦闘中の試練は中断できない
         var ev2 = Combat.applyTrialResult(b, e.idx, res ? res.score : 0);
         await playEvents(b, ev2, scene);
       }

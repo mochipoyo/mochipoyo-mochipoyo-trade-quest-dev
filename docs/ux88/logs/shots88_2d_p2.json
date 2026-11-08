@@ -1,0 +1,301 @@
+{
+ "pc": {
+  "chart": {
+   "rect": [
+    379,
+    19,
+    900,
+    727
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "chartres": {
+   "rect": [
+    379,
+    19,
+    900,
+    727
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "quick": {
+   "rect": [
+    449,
+    30,
+    760,
+    704
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": false
+  },
+  "record": {
+   "rect": [
+    529,
+    101,
+    600,
+    562
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": false
+  },
+  "errors": []
+ },
+ "tab": {
+  "chart": {
+   "rect": [
+    8,
+    15,
+    804,
+    954
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "chartres": {
+   "rect": [
+    8,
+    15,
+    804,
+    954
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "quick": {
+   "rect": [
+    30,
+    96,
+    760,
+    793
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "record": {
+   "rect": [
+    110,
+    191,
+    600,
+    601
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "errors": []
+ },
+ "p390": {
+  "chart": {
+   "rect": [
+    2,
+    5,
+    386,
+    497
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "chartres": {
+   "rect": [
+    2,
+    5,
+    386,
+    497
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "quick": {
+   "rect": [
+    12,
+    4,
+    367,
+    499
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "record": {
+   "rect": [
+    8,
+    20,
+    374,
+    466
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "errors": []
+ },
+ "p360": {
+  "chart": {
+   "rect": [
+    2,
+    5,
+    356,
+    459
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "chartres": {
+   "rect": [
+    2,
+    5,
+    356,
+    459
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "quick": {
+   "rect": [
+    11,
+    4,
+    338,
+    460
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "record": {
+   "rect": [
+    7,
+    19,
+    346,
+    431
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "errors": []
+ },
+ "land": {
+  "chart": {
+   "rect": [
+    128,
+    6,
+    588,
+    378
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [
+    "cb-btn long:40",
+    "cb-btn skip:40",
+    "cb-btn short:40"
+   ],
+   "minFont": 10,
+   "mobile": true
+  },
+  "chartres": {
+   "rect": [
+    128,
+    6,
+    588,
+    378
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "quick": {
+   "rect": [
+    140,
+    4,
+    564,
+    382
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "record": {
+   "rect": [
+    146,
+    16,
+    552,
+    359
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "errors": []
+ }
+}

@@ -70,15 +70,18 @@
   async function practice(mid) {
     var m = M(mid), u = U(), d = State.data; var sch = u.school(m.school); var rec = u.master(d, mid); var say = sayAs(mid);
     var lv = await Win.choice('どの難しさで修行する？', ['やさしい（難易度1〜2）', 'ふつう（難易度3）', 'むずかしい（難易度4〜5）', 'やめる']); if (lv < 0 || lv === 3) return;
+    // v8.8 時間の決まりを選ぶ（初心者練習＝時間制限なし・自分で足を進める。試験と必殺技の時間は変えない）
+    var cs = CB().settings(); var tm = await Win.choice('時間の決まりは？', ['初心者練習（時間制限なし・止めて分析できる）', '通常（' + Math.round(cs.normalMs / 1000) + '秒）', '試験と同じ（' + Math.round(cs.decideMs / 1000) + '秒）', 'やめる'], { initial: rec.practice < 3 ? 0 : 1 }); if (tm < 0 || tm === 3) return;
+    var timeMode = ['unlimited', 'normal', 'expert'][tm];
     var diff = [[1, 2], [3, 3], [4, 5]][lv]; var ind = unionInd(m.school); var tf = u.get(u.bySchool(m.school)[0]).tf; var prompts = (root.ULT_EXAM_PROMPTS || {})[sch.id] || [''];
     var q = 0;
     while (true) {
       var s = u.newScenario({ cats: sch.cats, diff: diff, avoid: d.ultimate.recent });
-      var res = await CB().open({ mode: 'practice', title: sch.name + '　修行', sub: '難易度：' + (u.DIFF_NAME[s.def.diff] || s.def.diff), prompt: '観点：' + prompts[q % prompts.length], ind: ind, tf: tf, scenario: s, quitable: true, color: sch.color,
+      var res = await CB().open({ mode: 'practice', timeMode: timeMode, title: sch.name + '　修行', sub: '難易度：' + (u.DIFF_NAME[s.def.diff] || s.def.diff), prompt: '観点：' + prompts[q % prompts.length], ind: ind, tf: tf, scenario: s, quitable: true, color: sch.color,
         feedback: function (out) { return scoreHtml(u.score(out, { school: sch.id }), false); } });
       q++;
       if (!res || res.quit) { await say(['修行はここまでにしよう。']); return; }
-      rec.practice++; u.recordTrade(d, { mode: 'practice', school: sch.id, scenarioId: res.scenarioId, cat: res.cat, seed: res.seed, side: res.side, auto: res.auto, result: res.result });
+      rec.practice++; u.recordTrade(d, { mode: 'practice', timeMode: timeMode, school: sch.id, scenarioId: res.scenarioId, cat: res.cat, seed: res.seed, side: res.side, auto: res.auto, result: res.result });
       var c = await Win.choice('修行を続ける？', ['もう1回', 'やめる']); if (c !== 0) return;
     }
   }

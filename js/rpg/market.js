@@ -479,6 +479,45 @@
   Sim.prototype.price = function () { return this.s.ticks[this.pos.bar][this.pos.tick]; };
   Market.Sim = Sim;
 
+  /* ---------- v8.8 時間制限なしの練習（StepSim） ----------
+     Market.Sim と同じ見え方・同じ決済（Market.settle）。違うのは判断中の時計だけ：
+     ・判断中は、自分で［次の足へ］を押すか［再生］している間だけ足が進む。止めている間は何も進まない（時間切れの見送りはない）
+     ・進める上限（maxBar）：決済に最大 12 本を使うので、シナリオの最後の 13 本より前まで。上限に着いたら止まる（判断はいつでもできる）
+     ・未来の足は見せない（描くのは pos までの足だけ）。判断したあとの決済までの再生は Market.Sim と同じく時間で進む */
+  function StepSim(s, opts) {
+    opts = opts || {}; Sim.call(this, s, Object.assign({}, opts, { decideMs: 1e12 }));
+    this.unlimited = true; this.playing = false; this.stepMs = opts.stepMs || 1600; this.lastT = null; this.acc = 0;
+    this.maxBar = Math.min(s.bars.length - 14, this.bar0 + (opts.maxBars || 24)); this.atEnd = false; this.steps = 0;
+  }
+  StepSim.prototype = Object.create(Sim.prototype); StepSim.prototype.constructor = StepSim;
+  StepSim.prototype.timeLeft = function () { return this.state === 'deciding' ? Infinity : 0; };
+  StepSim.prototype.absPos = function () { return this.pos.bar * SUB + this.pos.tick; };
+  StepSim.prototype.setAbs = function (abs) { var max = this.maxBar * SUB + SUB - 1; if (abs >= max) { abs = max; this.atEnd = true; this.playing = false; } this.pos = { bar: Math.floor(abs / SUB), tick: abs % SUB }; };
+  StepSim.prototype.play = function (on, now) { if (this.state !== 'deciding') return false; this.playing = on === undefined ? !this.playing : !!on; if (this.atEnd) this.playing = false; this.lastT = now; this.acc = 0; return this.playing; };
+  // ［次の足へ］：形成中の足を確定させる。すでに確定していれば次の足を 1 本、確定まで進める
+  StepSim.prototype.stepBar = function () { if (this.state !== 'deciding' || this.atEnd) return false; var p = this.pos; this.steps++; this.setAbs(p.tick < SUB - 1 ? p.bar * SUB + SUB - 1 : (p.bar + 1) * SUB + SUB - 1); return true; };
+  StepSim.prototype.update = function (now) {
+    if (this.state === 'idle' || this.state === 'done') return this.state;
+    if (this.state === 'deciding') {
+      if (this.pauseAt !== null) { this.lastT = now; return this.state; }
+      if (this.playing) { if (this.lastT === null) this.lastT = now; this.acc += Math.max(0, now - this.lastT); this.lastT = now; var per = this.stepMs / SUB; var n = Math.floor(this.acc / per); if (n > 0) { this.acc -= n * per; this.setAbs(this.absPos() + n); } }
+      else this.lastT = now;
+      return this.state;
+    }
+    return Sim.prototype.update.call(this, now);
+  };
+  // 判断：見えている位置（pos）のまま。Market.Sim.decide のように時刻から位置を作り直さない
+  StepSim.prototype.decide = function (side, now, auto) {
+    if (this.state !== 'deciding' || this.decision) return false;
+    this.playing = false; var el = now !== undefined ? this.elapsed(now) : 0;
+    this.decision = { side: side, pos: { bar: this.pos.bar, tick: this.pos.tick }, auto: !!auto, ms: el, steps: this.steps, unlimited: true };
+    this.decidedAt = el; this.assessment = Market.assess(this.visibleBars(true));
+    if (side === 'skip') { this.state = 'done'; this.result = { outcome: 'skip', side: 'skip' }; return true; }
+    this.result = Market.settle(this.s, { bar: this.pos.bar, tick: this.pos.tick, side: side });
+    this.state = 'running'; return true;
+  };
+  Market.StepSim = StepSim;
+
   root.Market = Market;
   if (typeof module !== 'undefined' && module.exports) module.exports = Market;
 })(typeof window !== 'undefined' ? window : globalThis);
