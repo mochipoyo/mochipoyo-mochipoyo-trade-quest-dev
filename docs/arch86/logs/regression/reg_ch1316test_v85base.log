@@ -1,0 +1,12 @@
+battle boss_minister,summoned_chimera won expose undefined 304,547,557,324
+battle boss_sky_guardian won expose undefined 388,597,527,367
+battle boss_zarg_remnant won expose undefined 443,515,557,277
+battle boss_sevran_shadow won expose undefined 486,517,564,406
+battle boss_grote_2 won expose undefined 584,319,423,402
+battle greed_shade,greed_shade,void_beast won expose undefined 604,604,564,486
+battle fear_shade,fear_shade,control_shade won expose undefined 604,604,564,486
+battle control_shade,control_shade,void_beast won expose undefined 612,612,571,486
+battle boss_demon_fear won expose 1 612,256,326,324
+battle boss_demon_greed won expose 1 254,165,0,0
+battle boss_demon_fixed won expose 2 349,357,155,0
+ERRORS: [ 'camp talk bonds undefined', 'sky record' ]

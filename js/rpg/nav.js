@@ -186,7 +186,7 @@
     var plan = Nav.plan(m.id, t.map);
     if (!plan) {
       var vp = Nav.plan(m.id, t.map, true); var need = vp && vp.filter(function (mv) { return mv.type === 'board'; })[0];
-      if (need) { var vn = root.VEHICLES[need.v].name; return { none: true, needVehicle: need.v, reason: vn + 'が近くにない。' + (need.v === 'airship' ? 'メニュー →「ファストトラベル」→「乗り物を母港へ戻す」で母港に戻せる。' : '港町マリナの船乗りに頼むか、メニュー →「ファストトラベル」→「乗り物を母港へ戻す」で呼び戻せる。') }; }
+      if (need) { var vn = root.VEHICLES[need.v].name; return { none: true, needVehicle: need.v, reason: vn + 'が近くにない。' + (need.v === 'airship' ? 'フィールドで F キー（スマホは「飛空艇」ボタン）を押すと、今いる所へ呼べる。' : '港町マリナの船乗りに頼むか、メニュー →「ファストトラベル」→「乗り物を母港へ戻す」で呼び戻せる。') }; }
       return { none: true, reason: 'まだ行き方がない（物語を進めると道が開ける）' };
     }
     var mv0 = plan[0]; if (mv0.type === 'land') plan = plan.slice(1), mv0 = plan[0];

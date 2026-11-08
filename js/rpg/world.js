@@ -75,9 +75,10 @@
   function ExploreScene() { }
   ExploreScene.prototype.enter = function () { World.updateHud(); };
   ExploreScene.prototype.handleInput = function () {
-    if (World.busy) { Input.consume('carriage'); return; }   // v7.9 会話・戦闘中に押した C は捨てる（あとで勝手に乗り降りしない）
+    if (World.busy) { Input.consume('carriage'); if (root.AirshipCall86) root.AirshipCall86.input(true); return; }   // v7.9 会話・戦闘中に押した C は捨てる（あとで勝手に乗り降りしない）。v8.6 F も
     var p = World.player;
     if (Input.consume('carriage')) { if (root.Carriage) root.Carriage.toggle(); return; }   // v7.9 馬車の乗り降り
+    if (root.AirshipCall86 && root.AirshipCall86.input(false, p.moving)) return;   // v8.6 F＝飛空艇を呼ぶ（歩いている途中なら、その 1 歩のあと）
     if (Input.consume('cancel')) { root.Menu.open(); return; }
     if (Input.consume('ok')) { if (!World.justTalked()) World.interact(); return; }   // v6.2 会話を閉じた直後の連打で、同じ人との会話がすぐ始まらないように
     if (!p.moving) {

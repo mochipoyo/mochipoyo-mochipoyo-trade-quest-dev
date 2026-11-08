@@ -1,0 +1,104 @@
+{
+ "port3d": {
+  "case": "port3d",
+  "spot": {
+   "x": 54,
+   "y": 11,
+   "home": {
+    "owned": true,
+    "map": "world_magicka",
+    "x": 94,
+    "y": 72,
+    "port": {
+     "map": "world_magicka",
+     "x": 94,
+     "y": 72
+    }
+   }
+  },
+  "ui": {
+   "shown": true,
+   "carriageShown": true,
+   "rect": [
+    278,
+    484,
+    47,
+    38
+   ],
+   "top": true,
+   "coveredBy": null,
+   "overlaps": [],
+   "buttons": [
+    "走る@248,421",
+    "＋@285,421",
+    "－@311,421",
+    "3D設定@337,421",
+    "ミニマップ@12,484",
+    "全体マップ@65,484",
+    "操作説明@118,484",
+    "セーブ@171,484",
+    "馬車@225,484",
+    "飛空艇@278,484",
+    "全画面@331,484"
+   ]
+  },
+  "tap": {
+   "tapErr": null,
+   "aboard": "airship",
+   "lit": true,
+   "ok": true
+  },
+  "pageErrors": []
+ },
+ "land3d": {
+  "case": "land3d",
+  "spot": {
+   "x": 54,
+   "y": 11,
+   "home": {
+    "owned": true,
+    "map": "world_magicka",
+    "x": 94,
+    "y": 72,
+    "port": {
+     "map": "world_magicka",
+     "x": 94,
+     "y": 72
+    }
+   }
+  },
+  "ui": {
+   "shown": true,
+   "carriageShown": true,
+   "rect": [
+    321,
+    302,
+    51,
+    32
+   ],
+   "top": true,
+   "coveredBy": null,
+   "overlaps": [],
+   "buttons": [
+    "走る@473,238",
+    "＋@516,238",
+    "－@547,238",
+    "3D設定@578,238",
+    "ミニマップ@212,264",
+    "全体マップ@293,264",
+    "操作説明@372,264",
+    "セーブ@440,264",
+    "馬車@498,264",
+    "飛空艇@321,302",
+    "全画面@378,302"
+   ]
+  },
+  "tap": {
+   "tapErr": null,
+   "aboard": "airship",
+   "lit": true,
+   "ok": true
+  },
+  "pageErrors": []
+ }
+}

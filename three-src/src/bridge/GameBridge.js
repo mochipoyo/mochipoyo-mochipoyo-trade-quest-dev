@@ -333,8 +333,9 @@ export class App3D {
   /* ---------- 入力・移動（探索シーンの update から呼ばれる） ---------- */
   handleInput() {
     const W = G.World, I = G.Engine.Input;
-    if (W.busy || !this.current || this.current.map !== W.map) { I.consume('carriage'); return; }   // v7.9 会話・戦闘中に押した C は捨てる
+    if (W.busy || !this.current || this.current.map !== W.map) { I.consume('carriage'); if (G.AirshipCall86) G.AirshipCall86.input(true); return; }   // v7.9 会話・戦闘中に押した C は捨てる。v8.6 F も
     if (I.consume('carriage')) { if (G.Carriage) G.Carriage.toggle(); return; }   // v7.9 馬車の乗り降り（C キー）
+    if (G.AirshipCall86 && G.AirshipCall86.input(false, false)) return;   // v8.6 F＝飛空艇を呼ぶ（3D の自由移動はマスの途中でも呼べる。乗ると 2D 版のマス単位の動きになり、今いるマスの中央へ寄る）
     if (I.consume('cancel')) { G.Menu.open(); return; }
     if (I.consume('ok')) { this.interact(); return; }
   }
@@ -426,6 +427,11 @@ export class App3D {
     const list = []; try { if (V && V.onMap) V.onMap(W.map.id).forEach((v) => list.push({ key: v.id, model: 'veh_' + v.id, x: v.x, y: v.y, aboard: v.aboard, flies: V.flies && V.flies(v.id) })); } catch (e) { /* なし */ }
     try { const ap = A && A.parkedOn && A.parkedOn(W.map.id); if (ap) list.push({ key: 'astra', model: 'veh_airship', x: ap.x, y: ap.y, astra: true }); } catch (e) { /* なし */ }
     if (!this.vehObjs) this.vehObjs = new Map(); const seen = new Set();
+    // v8.6 飛空艇を呼んだ直後（js/rpg/airshipcall86.js の lastCall）：空から 1.4 秒かけて降りてくる見せ方（形だけ。乗る処理は呼んだ瞬間に終わっている）
+    //   降りてくる間は主人公を出したまま（降りきる少し前に乗る＝主人公を隠す）。同じ地図・同じマスで呼んだときだけ
+    const lc86 = G.AirshipCall86 && G.AirshipCall86.lastCall; let call86 = 1;
+    if (lc86 && lc86.map === W.map.id) { const k = (Date.now() - lc86.t) / 1400; if (k >= 0 && k < 1) call86 = k; }
+    this.callK86 = call86;
     for (const v of list) {
       seen.add(v.key); let o = this.vehObjs.get(v.key);
       if (!o) {
@@ -434,7 +440,8 @@ export class App3D {
       }
       o.g.visible = true; const aboard = v.aboard;
       const x = aboard ? this.pos.x : v.x + 0.5, z = aboard ? this.pos.z : v.y + 0.5; const fly = (aboard && v.flies) ? 2.6 : 0;
-      const wy = (v.model === 'veh_airship') ? (this.current.heightAt(x, z) || 0) + fly : -0.22;
+      let wy = (v.model === 'veh_airship') ? (this.current.heightAt(x, z) || 0) + fly : -0.22;
+      if (aboard && v.key === 'airship' && call86 < 1) wy += Math.pow(1 - call86, 3) * 22;   // v8.6 呼んだ直後：空から降りてくる
       o.g.position.set(x, wy + Math.sin(t * 1.6 + (v.x || 0)) * 0.04, z);
       if (aboard) { let dd = this.yaw - (o.yaw || 0); while (dd > Math.PI) dd -= Math.PI * 2; while (dd < -Math.PI) dd += Math.PI * 2; o.yaw = (o.yaw || 0) + dd * Math.min(1, dt * 6); o.g.rotation.y = o.yaw; }
       o.g.scale.setScalar(v.model === 'veh_galleon' ? 1.1 : 1.0);
@@ -669,7 +676,7 @@ export class App3D {
     // 主人公
     this.updateVehicles(dt, t);
     this.updateRide();   // v7.1 エレベーター
-    const h = this.hero; h.root.position.copy(this.pos); if (this.rideY) h.root.position.y += this.rideY; h.faceTo(this.yaw); h.root.visible = !this.aboardNow;
+    const h = this.hero; h.root.position.copy(this.pos); if (this.rideY) h.root.position.y += this.rideY; h.faceTo(this.yaw); h.root.visible = !this.aboardNow || (this.callK86 !== undefined && this.callK86 < 0.9);   // v8.6 呼んだ飛空艇が降りてくる間は主人公を出したまま
     // v7.9 馬車：模型を出して、主人公は御者台に（仲間は馬車の中＝隊列は js/rpg/follow.js が出さない）
     const riding79 = !this.aboardNow && !!(G.Carriage && G.Carriage.riding());
     try { this.car79.update(dt, riding79, this.pos, this.yaw, this.speed); } catch (e) { /* 表示だけ：失敗しても進める */ }
