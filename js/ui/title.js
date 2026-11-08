@@ -57,7 +57,7 @@
     var c = await Win.choice(name + '（' + JOBS[jobs[ji]].name + '）で冒険を始める？', ['始める', 'やり直す']);
     if (c !== 0) return false;
     State.newGame(name, jobs[ji]);
-    State.data.settings.battleTrial = 'quick';   // v8.8 新しく始めたときは、通常戦闘の相場の試練を簡易に（設定で詳細に戻せる。前からのセーブは未設定＝詳細のまま）
+    State.data.settings.battleTrial = 'quick'; State.data.settings.enemyHpBar = 'on';   // v8.8 新しく始めたときは敵のHPバーも表示（設定で消せる。前からのセーブは今の設定のまま）   // v8.8 新しく始めたときは、通常戦闘の相場の試練を簡易に（設定で詳細に戻せる。前からのセーブは未設定＝詳細のまま）
     var legacy = State.legacyInfo();
     if (legacy) { var li = await Win.choice('旧バージョンのデータが見つかった。トレード学習の成績と修了した講義を引き継ぐ？（旧データは消えない）', ['引き継ぐ', '引き継がない']); if (li === 0) { var r = State.importLegacy(); await Win.message(['引き継いだ：' + r.migrated.join('／'), '引き継げない：' + r.skipped.join('／')]); } }
     // v6.9 西暦3121年の新しいプロローグ（アサナ村）。選ばなかった場合・Story3121 がない場合は、これまでの序章のままポヨ村から

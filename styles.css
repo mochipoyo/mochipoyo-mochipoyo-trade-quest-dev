@@ -899,3 +899,9 @@ html.ui-large .chart-battle { font-size: 15px; } html.ui-large .chart-battle .cb
 @media (max-width: 480px) { .chart-battle .cb-ind { font-size: 10.5px; padding: 1px 6px; min-height: 30px; } .chart-battle .cb-inds { gap: 3px; } }
 @media (max-width: 400px) { .chart-battle .cb-hold { display: none; } }
 @media (max-width: 720px) { .chart-battle.result .cb-inds, .chart-battle.result .cb-indnote { display: none; } }
+/* ===== v8.8 通常戦闘：前回と同じ・リザルトの簡易表示と強調・オートの表示 ===== */
+.rw-item.repeat-cmd .r { color: #9fd8ff; }
+.result-victory.result-simple { max-width: 460px; } .rs-title.rs-small { font-size: 1.4rem; }
+.rs-minis { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 6px 0; } .rs-mini small { color: var(--muted); margin-left: 2px; }
+.rs-special { text-align: center; color: #1a1407; background: linear-gradient(90deg, #e8c15a, #ffe9a0, #e8c15a); border-radius: 6px; padding: 3px 8px; margin: 4px 0; font-weight: bold; }
+#auto-battle .ab-keep { display: block; font-size: 9px; line-height: 1; opacity: .85; }

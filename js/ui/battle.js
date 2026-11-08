@@ -407,6 +407,7 @@
     var names = b.enemies.map(function (e) { return e.name; });
     if (opts.boss) { scene.screenShake = 600; if (root.Audio) root.Audio.sfx('crit'); await Win.sleep(1300 + (scene.cutin ? 600 : 0)); }   // v6.3 特殊戦闘のカットインがあるときだけ 0.6 秒長く
     await bmsg(uniq(names).join('、') + 'が現れた！', 700);
+    if (opts.boss && BattleUI.isAuto()) await bmsg('オート戦闘は ON のまま（右上の［オート］か X / Esc で手動に戻せる）', 1100);   // v8.8 ボス戦の始めにオートの状態を知らせる
     var result = null;
     try {
       while (b.state === 'command') {
@@ -429,7 +430,7 @@
       var res = Combat.distribute(b);   // 報酬の確定は1回だけ（再表示しても二重加算しない）
       renderParty(b);
       if (res.members.some(function (m) { return m.levelUp; }) && root.Audio) root.Audio.playJingle('levelup');
-      await showResultPanel(res);
+      await showResultPanel(res, !!opts.boss);
     } else if (result === 'lost') { await bmsg('全滅してしまった……', 900); }
     else if (result === 'escaped') { await Win.sleep(300); }
     else if (result === 'fled') { await bmsg('魔物は逃げてしまった……', 700); }
@@ -446,7 +447,11 @@
 
 
   /* ---------- リザルト画面 ---------- */
-  function showResultPanel(res) {
+  // v8.8 通常の敵だけの勝利（レベルアップ・新しい技・ボス・固有装備なし）は簡単な表示。特別なことがあれば上に強調の帯を出す（報酬の計算・付与は Combat.distribute の 1 回だけで、表示は変えるだけ）
+  function showResultPanel(res, boss) {
+    var lvUp = res.members.some(function (m) { return m.levelUp; }); var newSk = res.members.some(function (m) { return (m.newSkills && m.newSkills.length) || (m.newUlts && m.newUlts.length); }); var gear = !!(res.bossGear && res.bossGear.granted);
+    var special = []; if (boss) special.push('ボスを倒した！'); if (gear) special.push('ボス固有装備を入手'); if (lvUp) special.push('レベルアップ'); if (newSk) special.push('新しい技を覚えた');
+    var simple = !special.length;
     var killed = Object.keys(res.killed).map(function (n) { return esc(n) + ' × ' + res.killed[n]; }).join('、');
     var goldLine = res.merchantBonus ? res.gold + ' G <span class="muted small">（' + res.goldBase + ' G ＋ 商人ボーナス ' + res.merchantBonus + ' G）</span>' : res.gold + ' G';
     var members = res.members.map(function (m, i) {
@@ -461,7 +466,13 @@
         '<div class="rs-bar"><span style="width:' + bPct + '%" data-before="' + bPct + '" data-after="' + aPct + '" data-up="' + (m.levelUp ? 1 : 0) + '"></span></div>' + stat + skills + '</div>';
     }).join('');
     var drops = Object.keys(res.drops); var dropHtml = drops.length ? drops.map(function (id) { return '<div class="rs-item">' + esc(ITEMS[id] ? ITEMS[id].name : id) + ' × ' + res.drops[id] + '</div>'; }).join('') : '<div class="muted">なし</div>';
-    var html = '<div class="rs-title">VICTORY！</div><div class="rs-killed">' + killed + ' を倒した！</div>' +
+    if (simple) {
+      var mline = res.members.map(function (m) { return '<span class="rs-mini">' + esc(m.actor.name) + ' ' + (m.dead ? '戦闘不能' : '+' + m.gained + ' EXP') + '<small>（次まで ' + m.toNext + '）</small></span>'; }).join('');
+      var dl = drops.length ? drops.map(function (id) { return esc(ITEMS[id] ? ITEMS[id].name : id) + ' × ' + res.drops[id]; }).join('、') : 'なし';
+      var stS = document.getElementById('stage'); if (stS) stS.classList.add('result-open');
+      return Win.panel('<div class="rs-title rs-small">VICTORY！</div><div class="rs-killed">' + killed + ' を倒した！</div><div class="rs-rewards"><div>経験値 <b>' + res.exp + ' EXP</b></div><div>ゴールド <b>' + goldLine + '</b></div></div><div class="rs-minis">' + mline + '</div><div class="rs-items small">入手：' + dl + '</div>', { cls: 'result-victory result-simple', closeLabel: '次へ' }).then(function (v) { if (stS) stS.classList.remove('result-open'); return v; });
+    }
+    var html = '<div class="rs-title">VICTORY！</div><div class="rs-special">★ ' + special.map(esc).join('　★ ') + '</div><div class="rs-killed">' + killed + ' を倒した！</div>' +
       '<div class="rs-rewards"><div>獲得経験値 <b>' + res.exp + ' EXP</b></div><div>獲得ゴールド <b>' + goldLine + '</b></div></div>' +
       '<h3>仲間の成長</h3><div class="rs-members">' + members + '</div><h3>入手アイテム</h3><div class="rs-items">' + dropHtml + '</div>' + (root.BossGear && res.bossGear ? root.BossGear.resultHtml(res.bossGear) : '');   // v8.7 ボス固有装備（初回の正規勝利だけ）
     var stg87 = document.getElementById('stage'); if (stg87) stg87.classList.add('result-open');   // v8.7 リザルトの間は戦闘の欄（上のメッセージ・下の仲間）を隠す（長いリザルトの「次へ」が隠れないように）
@@ -510,7 +521,7 @@
     var el = document.getElementById('auto-battle');
     if (!el) { el = document.createElement('button'); el.id = 'auto-battle'; el.type = 'button'; var st = document.getElementById('stage'); if (!st) return; st.appendChild(el); el.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); BattleUI.setAuto(!BattleUI.isAuto()); }); }
     el.classList.toggle('on', show); el.classList.toggle('active', BattleUI.isAuto());
-    el.innerHTML = '<b>オート</b>' + (BattleUI.isAuto() ? 'ON' : 'OFF');
+    el.innerHTML = '<b>オート</b>' + (BattleUI.isAuto() ? 'ON<small class="ab-keep">次の戦闘も続く</small>' : 'OFF'); el.setAttribute('aria-pressed', BattleUI.isAuto() ? 'true' : 'false'); el.setAttribute('aria-label', 'オート戦闘 ' + (BattleUI.isAuto() ? 'オン（次の戦闘も続く）' : 'オフ'));
     var g = document.getElementById('game'), mw = document.getElementById('battle-msg'); if (g && show) { var top = g.offsetTop + g.clientTop + 8; if (mw && mw.offsetHeight) top = Math.max(top, mw.offsetTop + mw.offsetHeight + 6); el.style.top = top + 'px'; el.style.left = (g.offsetLeft + g.clientLeft + g.clientWidth - el.offsetWidth - 10) + 'px'; }   // 上のメッセージ欄の下・右端
   };
   // 戦闘の演出中に X / Esc を押すとオートを解除
@@ -532,46 +543,92 @@
         if (i > 0) { i -= 2; cmds.pop(); continue; } else { i = -1; cmds = []; continue; }
       }
       cmds.push(c);
+      if (c && c.type !== 'ultimate' && c.type !== 'escape') { b._lastCmd88 = b._lastCmd88 || {}; b._lastCmd88[a.id] = JSON.parse(JSON.stringify(c)); }   // v8.8 前回と同じ（この戦闘の中だけ）
     }
     highlight(null);
     return cmds;
   }
   function highlight(id) { document.querySelectorAll('#battle-party .bp').forEach(function (el) { el.classList.toggle('active', el.getAttribute('data-id') === id); }); }
 
+  // v8.8「前回と同じ」：同じ戦闘のその人の前のターンの行動（必殺技・にげるは対象外）。選んだときに使えるかを確かめ直し、使えなければ理由を出して選び直しへ戻る
+  function cmdText(b, a, c) {
+    if (!c) return '';
+    if (c.type === 'attack') return 'たたかう';
+    if (c.type === 'defend') return 'ぼうぎょ';
+    if (c.type === 'skill') return SKILLS[c.skillId] ? SKILLS[c.skillId].name : '特技';
+    if (c.type === 'item') return ITEMS[c.itemId] ? ITEMS[c.itemId].name : '道具';
+    return '';
+  }
+  function skillCostOf(a, sk) { return Combat.skillCost ? Combat.skillCost(a, sk) : a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp; }
+  BattleUI.checkRepeat = function (b, a, c) {
+    if (!c || c.type === 'ultimate' || c.type === 'escape') return { ok: false, why: 'この行動はくり返せない' };
+    var aliveE = function (i) { var e = b.enemies[i]; return e && !e.dead && !e.fled && e.hp > 0; };
+    var t = c.target; var needRetarget = false;
+    if (t && t.side === 'enemy' && !aliveE(t.idx)) needRetarget = true;
+    if (c.type === 'skill') {
+      var sk = SKILLS[c.skillId]; if (!sk || Actors.allSkills(a).indexOf(c.skillId) < 0) return { ok: false, why: 'その技はもう使えない' };
+      if (sk.field) return { ok: false, why: '戦闘中は使えない技' };
+      if (a.mp < skillCostOf(a, sk)) return { ok: false, why: 'MPが足りない（MP' + skillCostOf(a, sk) + '）' };
+      if (sk.gold && State.data.gold < sk.gold) return { ok: false, why: 'ゴールドが足りない' };
+      if (a.status && a.status.silence && sk.kind === 'magic') return { ok: false, why: '沈黙していて呪文を唱えられない' };
+      if (t && t.side === 'party') { var ally = b.party.filter(function (x) { return x.id === t.id; })[0]; if (!ally) return { ok: false, why: '対象がいない' }; if (sk.target === 'dead_ally' ? !ally.dead : ally.dead) return { ok: false, why: '対象の状態が変わった（' + ally.name + '）' }; }
+    }
+    if (c.type === 'item') {
+      if (!(State.data.inventory[c.itemId] > 0)) return { ok: false, why: ITEMS[c.itemId] ? ITEMS[c.itemId].name + 'がもうない' : '道具がない' };
+      if (t && t.side === 'party') { var al = b.party.filter(function (x) { return x.id === t.id; })[0]; var it = ITEMS[c.itemId]; if (!al) return { ok: false, why: '対象がいない' }; if (it && it.effect && it.effect.revive ? !al.dead : al.dead) return { ok: false, why: '対象の状態が変わった（' + al.name + '）' }; }
+    }
+    return { ok: true, retarget: needRetarget };
+  };
   async function commandFor(b, a) {
     while (true) {
       if (BattleUI.isAuto()) return 'auto';
       var skills = Actors.allSkills(a).filter(function (s) { return SKILLS[s]; });
-      var opts = [{ label: 'たたかう' }, { label: 'じゅもん・とくぎ', disabled: !skills.length }, { label: 'どうぐ' }, { label: 'ぼうぎょ' }, { label: 'にげる', disabled: !b.canEscape }, { label: 'オート戦闘', right: '自動' }];
-      // 必殺技（主人公だけ）：「じゅもん・とくぎ」の次に出す。番号で振り分けている既存の項目は、選んだ番号を元の番号に戻してから処理する
+      var last = b._lastCmd88 && b._lastCmd88[a.id];
+      var opts = [{ key: 'attack', label: 'たたかう' }, { key: 'skill', label: 'じゅもん・とくぎ', disabled: !skills.length }, { key: 'item', label: 'どうぐ' }, { key: 'defend', label: 'ぼうぎょ' }, { key: 'escape', label: 'にげる', disabled: !b.canEscape }, { key: 'auto', label: 'オート戦闘', right: '自動' }];
+      if (last) opts.unshift({ key: 'repeat', label: '前回と同じ', right: cmdText(b, a, last), cls: 'repeat-cmd' });   // v8.8
+      // 必殺技（主人公だけ）：「じゅもん・とくぎ」の次に出す
       var ultN = (U && U.isHero(a)) ? U.count(State.data) : -1;
-      if (ultN >= 0) opts.splice(2, 0, { label: '必殺技', right: ultN ? 'チャート' : '', disabled: !ultN, sub: ultN ? null : 'レベル2で最初の必殺技を覚える', cls: 'ult-cmd' });
-      var sel = await Win.list(opts, { title: a.name + 'の行動', cancel: true, cls: 'cmd-list' });
+      if (ultN >= 0) { var si0 = opts.map(function (o) { return o.key; }).indexOf('skill'); opts.splice(si0 + 1, 0, { key: 'ult', label: '必殺技', right: ultN ? 'チャート' : '', disabled: !ultN, sub: ultN ? null : 'レベル2で最初の必殺技を覚える', cls: 'ult-cmd' }); }
+      var sel = await Win.list(opts, { title: a.name + 'の行動', cancel: true, cls: 'cmd-list', initial: last ? 1 : 0 });   // 最初のカーソルは今までどおり「たたかう」
       if (BattleUI.isAuto()) return 'auto';
-      if (ultN >= 0 && sel === 2) { var uc = await ultCommand(b, a); if (uc) return uc; continue; }
-      if (ultN >= 0 && sel > 2) sel -= 1;
-      if (sel === 5) return 'auto';
       if (sel < 0) return 'back';
-      if (sel === 0) { var t = await pickEnemy(b); if (t < 0) continue; return { actorId: a.id, type: 'attack', target: { side: 'enemy', idx: t } }; }
-      if (sel === 1) {
-        var items = skills.map(function (s) { var sk = SKILLS[s]; var cost = Combat.skillCost ? Combat.skillCost(a, sk) : a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp; return { label: sk.name, right: 'MP' + cost + (sk.gold ? '/' + sk.gold + 'G' : ''), sub: sk.field ? '戦闘中は使えない（フィールドのメニューで唱える）' : sk.desc, disabled: a.mp < cost || !!sk.field }; });   // v6.5 帰還の術など、フィールド専用の呪文は選べない
-        var si = await Win.list(items, { title: 'じゅもん・とくぎ' }); if (si < 0) continue;
-        var sk = SKILLS[skills[si]]; var target = null;
+      var key = opts[sel].key;
+      if (key === 'ult') { var uc = await ultCommand(b, a); if (uc) return uc; continue; }
+      if (key === 'auto') return 'auto';
+      if (key === 'repeat') {
+        var chk = BattleUI.checkRepeat(b, a, last); if (!chk.ok) { await Win.message([chk.why + '。行動を選び直してください。']); continue; }
+        var rc = JSON.parse(JSON.stringify(last));
+        if (chk.retarget) { var nt = await pickEnemy(b); if (nt < 0) continue; rc.target = { side: 'enemy', idx: nt }; }
+        return rc;
+      }
+      if (key === 'attack') { var t = await pickEnemy(b); if (t < 0) continue; return { actorId: a.id, type: 'attack', target: { side: 'enemy', idx: t } }; }
+      if (key === 'skill') {
+        // v8.8 お気に入り（★）を先に並べる。［★お気に入り］で印をつける（State.data.ui.favSkills。旧セーブは初期値で補う）
+        var fav = root.Menu && root.Menu.ui ? root.Menu.ui().favSkills : {}; var order = skills.slice().sort(function (x, y) { return (fav[y] ? 1 : 0) - (fav[x] ? 1 : 0); });
+        var items = order.map(function (s) { var sk = SKILLS[s]; var cost = skillCostOf(a, sk); return { label: (fav[s] ? '★ ' : '') + sk.name, right: 'MP' + cost + (sk.gold ? '/' + sk.gold + 'G' : ''), sub: sk.field ? '戦闘中は使えない（フィールドのメニューで使う）' : (a.mp < cost ? 'MPが足りない　' : '') + (sk.desc || ''), disabled: !!sk.field || a.mp < cost }; });
+        var si = await Win.list(items, { title: 'じゅもん・とくぎ', key: 'battle:skills:' + a.id, actions: [{ id: 'fav', label: '★お気に入り' }] });
+        if (si && typeof si === 'object' && si.action === 'fav') { var fk = order[si.index]; if (fav[fk]) delete fav[fk]; else fav[fk] = true; if (Win.toast) Win.toast(SKILLS[fk].name + (fav[fk] ? 'をお気に入りにした' : 'のお気に入りを外した')); continue; }
+        if (si < 0) continue;
+        var sk = SKILLS[order[si]]; var target = null;
         if (sk.target === 'enemy') { var te = await pickEnemy(b); if (te < 0) continue; target = { side: 'enemy', idx: te }; }
         else if (sk.target === 'ally') { var ta = await pickAlly(b, false); if (!ta) continue; target = { side: 'party', id: ta }; }
         else if (sk.target === 'dead_ally') { var td = await pickAlly(b, true); if (!td) continue; target = { side: 'party', id: td }; }
         return { actorId: a.id, type: 'skill', skillId: sk.id, target: target };
       }
-      if (sel === 2) {
+      if (key === 'item') {
         var inv = State.data.inventory; var ids = Object.keys(inv).filter(function (id) { return ITEMS[id] && ITEMS[id].cat === 'consumable' && !ITEMS[id].fieldOnly && !ITEMS[id].growItem; });
         if (!ids.length) { await Win.message(['使える道具がない。']); continue; }
-        var ii = await Win.list(ids.map(function (id) { return { label: ITEMS[id].name, right: '×' + inv[id], sub: ITEMS[id].desc }; }), { title: 'どうぐ' }); if (ii < 0) continue;
+        // v8.8 よく使う道具（最近使った・お気に入り）を先に並べる
+        var mu = root.Menu && root.Menu.ui ? root.Menu.ui() : { recentItems: [], favItems: {} }; var rank = function (id) { var r = mu.recentItems.indexOf(id); return (mu.favItems[id] ? 0 : 100) + (r >= 0 ? r : 50); };
+        ids.sort(function (x, y) { return rank(x) - rank(y); });
+        var ii = await Win.list(ids.map(function (id) { return { label: (mu.favItems[id] ? '★ ' : '') + ITEMS[id].name, right: '×' + inv[id], sub: (mu.recentItems.indexOf(id) >= 0 ? '最近使った　' : '') + ITEMS[id].desc }; }), { title: 'どうぐ' }); if (ii < 0) continue;
         var it = ITEMS[ids[ii]]; var tg = null;
         if (!it.effect.damage && !it.effect.escape) { var tid = await pickAlly(b, !!it.effect.revive); if (!tid) continue; tg = { side: 'party', id: tid }; }   // v6.4 撤退の煙玉は対象なし
+        if (root.Menu && root.Menu.noteItemUse) root.Menu.noteItemUse(it.id);
         return { actorId: a.id, type: 'item', itemId: it.id, target: tg };
       }
-      if (sel === 3) return { actorId: a.id, type: 'defend' };
-      if (sel === 4) return { actorId: a.id, type: 'escape' };
+      if (key === 'defend') return { actorId: a.id, type: 'defend' };
+      if (key === 'escape') return { actorId: a.id, type: 'escape' };
     }
   }
   /* ---------- 必殺技（js/rpg/ultimates.js・js/ui/chartbattle.js） ----------
