@@ -1,0 +1,22 @@
+== 3D 版と同じ読み込み（地球の世界）
+-- 戻るワープがない（と記録されていた）3 件
+  OK  verum_school：入口は物語の鍵（verum_liberated）で開く建物（鍵の前は入れない＝意図どおり）
+  OK  verum_school：鍵を開けた状態では verum_town に入口のワープがある
+  OK  verum_school → verum_town：着いた所から入口へ歩いて行ける
+  OK  node_market：入口は物語の鍵（zeromea_reformed）で開く建物（鍵の前は入れない＝意図どおり）
+  OK  node_market：鍵を開けた状態では node_city に入口のワープがある
+  OK  node_market → node_city：着いた所から入口へ歩いて行ける
+  OK  rivel_castle_b1 → rivel_artisan：地下へは古井戸の出来事で入る（ワープではない＝意図どおり）。出口の先から古井戸へ歩いて行ける（3 か所）
+-- 着いたマスがワープの上（と記録されていた）5 件：歩いて往復
+  OK  aruna_ruins_1 → aruna_ruins_2：歩いて入ると aruna_ruins_2 に着き（ワープの上）、そのまま止まっていても跳ね返らない
+  OK  aruna_ruins_2 → aruna_ruins_1：1 歩離れてから戻るワープへ歩くと、aruna_ruins_1 へ帰れる（aruna_ruins_1）
+    （time_bank のワープは物語の鍵 time_bank_quest で開く。鍵を開けた状態で確かめる）
+  OK  time_bank → time_bank_vault_1：歩いて入ると time_bank_vault_1 に着き（ワープの上）、そのまま止まっていても跳ね返らない
+  OK  time_bank_vault_1 → time_bank：1 歩離れてから戻るワープへ歩くと、time_bank へ帰れる（time_bank）
+  OK  no_failure_school → school_roof：歩いて入ると school_roof に着き（ワープの上）、そのまま止まっていても跳ね返らない
+  OK  school_roof → no_failure_school：1 歩離れてから戻るワープへ歩くと、no_failure_school へ帰れる（no_failure_school）
+  OK  sentra_palace_1 → sentra_palace_2：歩いて入ると sentra_palace_2 に着き（ワープの上）、そのまま止まっていても跳ね返らない
+  OK  sentra_palace_2 → sentra_palace_1：1 歩離れてから戻るワープへ歩くと、sentra_palace_1 へ帰れる（sentra_palace_1）
+  OK  school_roof → no_failure_school：歩いて入ると no_failure_school に着き、そのまま止まっていても跳ね返らない
+  OK  no_failure_school → school_roof：1 歩離れてから戻るワープへ歩くと、school_roof へ帰れる（school_roof）
+結果: 17 OK / 0 NG []　読み込みのエラー 0

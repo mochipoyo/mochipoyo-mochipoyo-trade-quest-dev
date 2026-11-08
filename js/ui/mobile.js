@@ -101,6 +101,7 @@
     var land = vw > vh; document.body.classList.toggle('m-land', land); document.body.classList.toggle('m-port', !land);
     var sl = safe('l'), sr = safe('r'), st = safe('t'), sb = safe('b'); var E = root.Engine;
     var w, h, padH = 0;
+    var fullUi = document.body.classList.contains('m-fullui');   // v8.8 チャート・試練・振り返りを開いている間は、操作パネルを隠して画面の高さいっぱいに使う
     if (land) { E.setView(E.VIEW_W0, E.VIEW_H0); var aspect = canvas.width / canvas.height; h = vh - st - sb; w = Math.min(vw - sl - sr, h * aspect); h = w / aspect; }
     else {
       // 縦画面：横は20マスのまま、縦のマス数を増やしてゲーム画面を下へ広げる（操作パネルの上まで）
@@ -110,6 +111,7 @@
     canvas.style.width = Math.round(w) + 'px'; canvas.style.height = Math.round(h) + 'px';
     document.body.classList.toggle('m-wide', land && (vw - w) / 2 - Math.max(sl, sr) >= 112);   // 横画面で左右の余白に操作パネルが収まるか
     var ui = document.getElementById('ui'); ui.style.width = canvas.style.width; ui.style.height = canvas.style.height;
+    if (fullUi && !land) ui.style.height = Math.max(Math.round(h), Math.round(vh - st - sb - 4)) + 'px';
     document.documentElement.style.setProperty('--m-pad-h', Math.round(padH) + 'px');
     document.documentElement.style.setProperty('--m-game-w', Math.round(w) + 'px');
     var ml = document.getElementById('minimap-layer'); if (ml) { ml.style.width = canvas.style.width; ml.style.height = canvas.style.height; }
@@ -124,8 +126,19 @@
     if (top === W.scene && !W.busy && !uiOpen && !(root.Minimap && root.Minimap.open)) return 'world';
     return 'dialog';
   };
+  // v8.8 全画面で使う学習の画面（チャートバトル・相場の試練・振り返り）が開いているか
+  MobileUI.fullUiOpen = function () { return !!document.querySelector('#ui .chart-battle, #ui .trade-panel, #ui .rv-panel'); };
+  // v8.8 操作パネルの好み（設定 → 操作）：左右の入れ替え・濃さ・大きさ
+  MobileUI.applyPrefs = function () {
+    var s = S() || {}; var key = [s.padSide, s.padOpacity, s.padScale].join('|'); if (key === MobileUI._prefKey) return; MobileUI._prefKey = key;
+    document.body.classList.toggle('m-pad-swap', s.padSide === 'swap');
+    var op = +s.padOpacity; document.documentElement.style.setProperty('--m-pad-op', op >= 0.3 && op <= 1 ? String(op) : '1');
+    var sc = +s.padScale; document.documentElement.style.setProperty('--m-pad-scale', sc >= 0.7 && sc <= 1.3 ? String(sc) : '1');
+  };
   MobileUI.refresh = function () {
     if (!MobileUI.active) return; var c = MobileUI.context(); var mode = padMode();
+    MobileUI.applyPrefs();
+    var full = MobileUI.fullUiOpen(); if (full !== MobileUI._full) { MobileUI._full = full; document.body.classList.toggle('m-fullui', full); try { root.dispatchEvent(new Event('resize')); } catch (e) { } }
     if (c !== MobileUI.ctx) { document.body.classList.remove('mctx-world', 'mctx-dialog', 'mctx-battle', 'mctx-title'); document.body.classList.add('mctx-' + c); MobileUI.ctx = c; if (MobileUI.stickEnd && c !== 'world') MobileUI.stickEnd(); }
     if (mode !== MobileUI.mode) { document.body.classList.toggle('m-dpad', mode === 'dpad'); MobileUI.mode = mode; }
     var mm = MobileUI.pad && MobileUI.pad.querySelector('[data-cmd="minimap"]'); if (mm) mm.classList.toggle('off', !!(root.Minimap && !root.Minimap.isVisible()));

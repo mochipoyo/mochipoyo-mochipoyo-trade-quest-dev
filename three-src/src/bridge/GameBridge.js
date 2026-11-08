@@ -710,8 +710,10 @@ export class App3D {
     if (tg && L) {
       const v = new THREE.Vector3(tg.x, (this.current.heightAt(tg.x, tg.z) || 0) + tg.y, tg.z).project(this.camera.camera);
       const sx = L.l + (v.x * 0.5 + 0.5) * L.w, sy = L.t + (-v.y * 0.5 + 0.5) * L.h;
-      const label = tg.kind === 'npc' ? '話す' : tg.kind === 'chest' ? (W.map.tile(tg.chest.x, tg.chest.y) === 'chest_open' ? '空の宝箱' : '開ける') : '調べる';
-      this.ui.setPrompt('<b>Z</b> ' + label, sx, sy);
+      // v8.8 案内の言葉をそろえる：人＝話す／宝箱＝開ける（空なら空の宝箱）／ボス＝挑む／看板＝読む／ほか＝調べる。スマホは「決定」、PC は「Z」
+      const et = tg.kind === 'event' && tg.ev ? tg.ev.type : '';
+      const label = tg.kind === 'npc' ? '話す' : tg.kind === 'chest' ? (W.map.tile(tg.chest.x, tg.chest.y) === 'chest_open' ? '空の宝箱' : '開ける') : et === 'boss' ? '挑む' : (et === 'sign' || et === 'read') ? '読む' : '調べる';
+      this.ui.setPrompt('<b>' + (document.body.classList.contains('mobile') ? '決定' : 'Z') + '</b> ' + label, sx, sy);
     } else this.ui.setPrompt(null);
     if (this._fc % 20 === 0) { const info = this.renderer.renderer.info.render; this.ui.setFps(this.fps, (info.calls) + ' draw / ' + Math.round(info.triangles / 1000) + 'k tri'); }
   }

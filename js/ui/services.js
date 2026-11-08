@@ -53,7 +53,7 @@
     var d = State.data;
     while (true) {
       var items = stock.map(function (id) { var it = ITEMS[id]; return { label: it.name, right: priceFor(it, true) + 'G', disabled: d.gold < priceFor(it, true), sub: (d.inventory[id] ? '所持' + d.inventory[id] + ' ' : '') + statLine(it) }; });
-      var i = await Win.list(items, { title: '買う（所持金 ' + d.gold + 'G）', info: function (k) { return compareInfo(ITEMS[stock[k]]); } });
+      var i = await Win.list(items, { title: '買う（所持金 ' + d.gold + 'G）', okLabel: '買う', info: function (k) { return compareInfo(ITEMS[stock[k]]); } });
       if (i < 0) return;
       var it = ITEMS[stock[i]]; var p = priceFor(it, true);
       var maxQty = Math.min(9, Math.floor(d.gold / p));
@@ -171,7 +171,7 @@
     var actor = party[pi];
     var jobs = root.JOB_LIST.filter(function (j) { return j !== actor.job; });
     var items = jobs.map(function (j) { var ok = Actors.jobUnlocked(actor, j, d.flags); return { label: JOBS[j].name, right: ok ? ('Lv' + (actor.jobLevels[j] || 1)) : '条件未達', disabled: !ok, sub: JOBS[j].role }; });
-    var ji = await Win.list(items, { title: actor.name + 'の転職先', info: function (k) { var j = JOBS[jobs[k]]; var u = j.unlock; return (root.Assets ? root.Assets.portraitTag('hero_' + jobs[k], 'portrait info-portrait', 120) : '') + '<div>' + esc(j.desc) + '</div><div class="muted small">固有：' + esc(j.trait) + '</div><div class="muted small">武器：' + j.weapons.join('/') + '</div>' + (u ? '<div class="muted small">条件：' + (u.jobsAny ? u.jobsAny.map(function (x) { return JOBS[x].name; }).join('か') + 'でLv' + u.level : (u.flag ? '修行場で「' + (u.flag === 'learned_dow' ? 'ダウ理論' : '資金管理') + '」を修了しLv' + u.level : 'Lv' + u.level)) + '</div>' : ''); } });
+    var ji = await Win.list(items, { title: actor.name + 'の転職先', okLabel: 'この職業にする', info: function (k) { var j = JOBS[jobs[k]]; var u = j.unlock; return (root.Assets ? root.Assets.portraitTag('hero_' + jobs[k], 'portrait info-portrait', 120) : '') + '<div>' + esc(j.desc) + '</div><div class="muted small">固有：' + esc(j.trait) + '</div><div class="muted small">武器：' + j.weapons.join('/') + '</div>' + (u ? '<div class="muted small">条件：' + (u.jobsAny ? u.jobsAny.map(function (x) { return JOBS[x].name; }).join('か') + 'でLv' + u.level : (u.flag ? '修行場で「' + (u.flag === 'learned_dow' ? 'ダウ理論' : '資金管理') + '」を修了しLv' + u.level : 'Lv' + u.level)) + '</div>' : ''); } });
     if (ji < 0) return;
     var job = jobs[ji]; var cost = 100 * actor.level;
     var c = await Win.choice(JOBS[job].name + 'に転職する？（費用' + cost + 'G。レベルは' + (actor.jobLevels[job] || 1) + 'から）', ['転職する', 'やめる']);
@@ -187,7 +187,7 @@
     var d = State.data;
     var ids = Object.keys(QUESTS).filter(function (id) { var q = QUESTS[id]; return !(q.future || q.companion) || d.quests[id]; });   // 未実装の章・仲間専用クエストは受注前は掲示しない
     var items = ids.map(function (id) { var q = QUESTS[id]; var st = d.quests[id]; var locked = !root.Growth.questAvailable(q); var tag = locked ? 'ランク' + root.RANK_UNLOCKS[q.rank].letter + 'で解放' : !st ? '未受注' : st.state === 'done' ? '達成' : '進行中'; var prog = st && st.state === 'active' ? '（' + Events.questProgress(id) + '）' : ''; return { label: (q.main ? '【メイン】' : q.master ? '【師匠】' : '【サブ】') + q.title, right: tag + prog, sub: q.desc, cls: st && st.state === 'done' ? 'done' : '', disabled: locked }; });
-    var i = await Win.list(items, { title: 'クエスト掲示板', info: function (k) { var q = QUESTS[ids[k]]; var r = q.reward || {}; return '<div class="muted small">報酬：' + [r.exp ? '経験値' + r.exp : '', r.gold ? r.gold + 'G' : '', r.item ? ITEMS[r.item].name : ''].filter(Boolean).join('・') + '</div>'; } });
+    var i = await Win.list(items, { title: 'クエスト掲示板', okLabel: '選ぶ', info: function (k) { var q = QUESTS[ids[k]]; var r = q.reward || {}; return '<div class="muted small">報酬：' + [r.exp ? '経験値' + r.exp : '', r.gold ? r.gold + 'G' : '', r.item ? ITEMS[r.item].name : ''].filter(Boolean).join('・') + '</div>'; } });
     if (i < 0) return;
     var id = ids[i]; var q = QUESTS[id];
     if (!d.quests[id] && !q.main) { var a = await Win.choice('「' + q.title + '」を受注する？', ['受注する', 'やめる']); if (a === 0) { Events.questStart(id); await Win.message(['クエストを受注した。進行状況はメニューの「クエスト」で確認できる。']); } }

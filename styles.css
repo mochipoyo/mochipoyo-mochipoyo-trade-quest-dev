@@ -911,3 +911,12 @@ html.ui-large .chart-battle { font-size: 15px; } html.ui-large .chart-battle .cb
 .chart-battle .cb-badge .tm-round { color: var(--muted); font-size: 12px; }
 .duel-cmp { width: 100%; font-size: 12px; margin: 4px 0; } .duel-cmp th, .duel-cmp td { padding: 1px 6px; text-align: left; } .duel-cmp tr th:first-child { color: var(--muted); font-weight: normal; white-space: nowrap; }
 html.ui-large .duel-cmp { font-size: 14px; }
+/* ===== v8.8 スマホの操作パネル：左右の入れ替え・濃さ・大きさ／学習の画面を開いている間は隠す ===== */
+body.mobile #pad.mpad .mp-move, body.mobile #pad.mpad .mp-act { opacity: var(--m-pad-op, 1); }
+body.mobile #pad.mpad .mp-stick, body.mobile #pad.mpad .dpad { transform: scale(var(--m-pad-scale, 1)); transform-origin: bottom left; }
+body.mobile #pad.mpad .mp-act { transform: scale(var(--m-pad-scale, 1)); transform-origin: bottom right; }
+body.mobile.m-port.m-pad-swap #pad.mpad { grid-template-areas: "tools tools tools" "act . move"; }
+body.mobile.m-port.m-pad-swap #pad.mpad .mp-act { flex-direction: row-reverse; transform-origin: bottom left; } body.mobile.m-pad-swap #pad.mpad .mp-stick, body.mobile.m-pad-swap #pad.mpad .dpad { transform-origin: bottom right; }
+body.mobile.m-land.m-pad-swap .mp-move { left: auto; right: calc(env(safe-area-inset-right, 0px) + 10px); }
+body.mobile.m-land.m-pad-swap .mp-act { right: auto; left: calc(env(safe-area-inset-left, 0px) + 10px); }
+body.mobile.m-fullui #pad.mpad { display: none !important; }
