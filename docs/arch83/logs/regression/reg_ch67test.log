@@ -1,0 +1,16 @@
+rescue fight undefined hp 282
+guardian 5330 party t:118 ガルド:118 カイル:104 エルナ:70
+guardian fight undefined hp 149
+hald fight undefined
+valen fight undefined
+drek fight undefined
+core fight undefined
+CRASH TypeError: Cannot read properties of undefined (reading 'hidden')     at /home/claude/work/ch67test.js:104:48 ERRORS so far: [
+  'entered palace got sentra_capital 33,7',
+  'drek defeated',
+  'to palace_2 got sentra_capital',
+  'core stopped',
+  'sevran appears',
+  'sevran resolved'
+]
+EXIT 1

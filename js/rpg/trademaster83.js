@@ -78,6 +78,7 @@
     var arr = m.def && m.def.remake81 && m.def.remake81.arrive; if (arr && m.passable(arr[0], arr[1], d) && !seen[arr[1] * W + arr[0]]) { seen[arr[1] * W + arr[0]] = 1; q.push(arr[0], arr[1]); }
     for (var qi = 0; qi < q.length; qi += 2) { var cx = q[qi], cy = q[qi + 1]; for (var k = 0; k < 4; k++) { var nx = cx + (k === 0 ? 1 : k === 1 ? -1 : 0), ny = cy + (k === 2 ? 1 : k === 3 ? -1 : 0); if (nx < 0 || ny < 0 || nx >= W || ny >= H || seen[ny * W + nx]) continue; if (!m.passable(nx, ny, d) || m.warpAt(nx, ny)) continue; seen[ny * W + nx] = 1; q.push(nx, ny); } }
     var doors = []; (m.warps || []).forEach(function (w) { doors.push({ x: w.x, y: w.y }); });
+    var extra = [].concat(root.QUIZ_MONSTERS || [], root.SEARCH_POINTS || []).filter(function (q) { return q && q.map === id && typeof q.x === 'number'; });
     // 通り道：入口（外への出口のとなり・着く所）から、全部の扉・出入口・人・調べる物までのいちばん短い道。そのマスと、となりのマスには立たない（まっすぐ歩く道をふさがない）
     var route = new Uint8Array(W * H);
     (function () {
@@ -92,22 +93,24 @@
     })();
     var onRoute = function (x, y) { for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < W && yy < H && route[yy * W + xx]) return true; } return false; };
     var field = !!FIELDS[id]; var toTown = field ? (m.warps || []).filter(function (w) { var t = D[w.to]; return t && t.kind === 'town'; }) : [];
-    var R = rng(hash('tm83:' + id)); var cand = [];
+    var R = rng(hash('tm83:' + id)); var cand = [], loose = [];
     for (var y = 1; y < H - 1; y++) for (var x = 1; x < W - 1; x++) {
       if (!seen[y * W + x] || !free(x, y)) continue;
       var open = true; for (var dy = -1; dy <= 1 && open; dy++) for (var dx = -1; dx <= 1; dx++) { if (!dx && !dy) continue; if (!m.passable(x + dx, y + dy, d) || m.warpAt(x + dx, y + dy)) { open = false; break; } }
       if (!open) continue;
       if (near(doors, x, y, field ? 2 : 3) || near(m.npcs, x, y, 2) || near(m.events, x, y, 2) || near(chests, x, y, 1)) continue;
-      if (onRoute(x, y)) continue;   // いちばん短い道の上・となりには立たない
+      var strict = !onRoute(x, y) && !near(extra, x, y, 2);   // いちばん短い道の上・となり、クイズの魔物・調べる所のそばには立たない
+      if (!strict && (route[y * W + x] || near(extra, x, y, 1))) continue;   // 狭い地図で足りないときだけ：道のとなりまでは許す（道の上には立たない）
       var sc = R() * 2;
       if (field) { var best = 99; toTown.forEach(function (w) { var dd = Math.abs(w.x - x) + Math.abs(w.y - y); if (dd < best) best = dd; }); if (best < 3 || best > 9) continue; sc += 10 - best; }
       else { var road = 0; for (var ry = -2; ry <= 2; ry++) for (var rx = -2; rx <= 2; rx++) { var t = m.tile(x + rx, y + ry); if (/road|path|stone|plaza|bridge|floor|carpet/.test(t || '')) road++; } sc += road * 0.4; }
-      cand.push({ x: x, y: y, s: sc });
+      (strict ? cand : loose).push({ x: x, y: y, s: sc });
     }
-    cand.sort(function (a, b) { return b.s - a.s; });
+    cand.sort(function (a, b) { return b.s - a.s; }); loose.sort(function (a, b) { return b.s - a.s; });
     var out = []; var gap = field ? 12 : Math.max(6, Math.min(12, Math.round(Math.min(W, H) / 4)));
     for (var i = 0; i < cand.length && out.length < n; i++) { var c = cand[i]; if (out.some(function (o) { return Math.abs(o.x - c.x) + Math.abs(o.y - c.y) < gap; })) continue; out.push(c); }
     for (var j = 0; j < cand.length && out.length < n; j++) { var c2 = cand[j]; if (out.some(function (o) { return Math.abs(o.x - c2.x) + Math.abs(o.y - c2.y) < 4; })) continue; out.push(c2); }   // 広くない地図：間を詰めて
+    for (var l = 0; l < loose.length && out.length < n; l++) { var c3 = loose[l]; if (out.some(function (o) { return Math.abs(o.x - c3.x) + Math.abs(o.y - c3.y) < 4; })) continue; out.push(c3); }
     return out;
   }
   function makeNpc(id, i, sp, used) {

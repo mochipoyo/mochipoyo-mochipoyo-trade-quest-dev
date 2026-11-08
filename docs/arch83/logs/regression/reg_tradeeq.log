@@ -1,0 +1,20 @@
+ema hits [ 49, 49, 49 ]
+halberd single 97
+macd 1 2
+stoploss 96 123
+rci {"value":-0.25,"turns":1}
+hidden 23 35
+evade tは身を守っている / ストーンゴーレムの攻撃！ / tはひらりとかわした！
+bigHitCut 207 293 252
+defendCut 47 76
+guts 1 false
+lowHpDef 148 132
+defendMp 5 54
+cureAtk {"value":0.2,"turns":1} tは毒消し草を使った！ / tの毒が治った / tは反転の腕輪で攻撃力が上がった / ストーンゴーレムは体を硬くした！
+rr win 5 4 リスクリワードの天秤：HPを失わずに勝ったので報酬 +1G
+immune [ 'confuse', 'sleep', 'silence' ]
+expose 1
+familyBonus golem 227 wolf 142
+trade items 20 missing []
+ERRORS: [] loadErrors []
+EXIT 0

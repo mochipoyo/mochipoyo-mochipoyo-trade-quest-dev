@@ -1,0 +1,8 @@
+rank after 3 trials: E best 1 title チャート初心者 gold+ 350
+progress: ヒントなし正解 3/5　分析5項目すべて正解 2/2
+rank now A best 5 uniq 13 crit {"analysis":0.9444444444444444,"mtf":0.9444444444444444,"action":0.9444444444444444,"risk":1,"noHint":0.9444444444444444,"variety":13,"plays":18,"avgScore":94.88888888888889}
+before walk: busy false running true scene ExploreScene passable true ui 0
+map after door: forest_hidden_room pos 1 4
+achievements: first_trial,first_nohint,analysis_full,perfect,topic_understood,rank_c,variety_7,core_understood,nohint_10,skip_discipline,stoploss_10
+ERRORS: []
+EXIT 0

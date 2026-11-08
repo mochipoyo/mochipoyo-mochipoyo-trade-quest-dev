@@ -1,0 +1,22 @@
+battle boss_minister,summoned_chimera won expose undefined 548,597,358,324
+battle boss_sky_guardian won expose undefined 484,506,471,395
+battle boss_zarg_remnant won expose undefined 604,599,564,364
+battle boss_sevran_shadow won expose undefined 276,470,505,425
+battle boss_grote_2 won expose undefined 548,517,383,434
+battle greed_shade,greed_shade,void_beast won expose undefined 612,612,571,486
+battle fear_shade,fear_shade,control_shade won expose undefined 612,612,571,486
+battle control_shade,control_shade,void_beast won expose undefined 612,612,571,492
+battle boss_demon_fear lost expose 1 0,0,0,0
+battle boss_demon_fear won expose 1 0,291,247,0
+battle boss_demon_greed won expose 1 455,545,0,161
+battle boss_demon_fixed won expose 2 619,599,578,328
+ERRORS: [
+  'camp talk bonds undefined',
+  'sky record',
+  '3 demon stages [null,null,null]',
+  'ending B chosen (zeromea_choice=0 → B available) got undefined',
+  'game cleared',
+  'ended at poyo elder house got poyo_village',
+  'no rewards after clear'
+]
+EXIT 0

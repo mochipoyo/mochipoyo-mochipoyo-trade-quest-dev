@@ -1,0 +1,10 @@
+scene ExploreScene ExploreScene 
+state false 0 true 1 undefined
+walked 43 steps to 30 30
+auto battle won cmdSeen 0
+switch battle won switched true
+lucia heals heal,drop_heal,torrent_heal job priest
+dead -> {"actorId":"lina","type":"skill","skillId":"j76_priest_4","target":null}
+hurt -> {"actorId":"lina","type":"skill","skillId":"torrent_heal","target":{"side":"party","id":"hero"}}
+ERRORS: []
+EXIT 0

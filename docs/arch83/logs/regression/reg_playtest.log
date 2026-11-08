@@ -1,0 +1,28 @@
+title list: true
+game started: map poyo_village pos 24 32 hero テスト warrior
+moved up: 5 steps
+wall blocked: true
+elder talk: undefined met_elder true gold 100 inv {"herb":3} quest {"main_1":{"state":"active","at":1794108599016}}
+lina join: [] party [ 'hero' ]
+shop: gold 80 herb 4
+inn: hp 1 / 34 gold 80 lastInn {"map":"poyo_village","x":24,"y":32}
+battle slime x2: lost hero hp 34 exp 0 gold 54 bestiary [ 'slime' ]
+battle w/ skill: lost hero hp after 34
+chest: {} herb 4
+king: king_quest1 true quests {"main_1":{"state":"done","at":1794108615270},"main_2":{"state":"active","at":1794108615273}} gold 336
+kyle: [ 'hero', 'kyle' ]
+equip: {"weapon":"copper_sword","armor":null,"shield":null,"head":null,"acc":null} atk 22
+trial gate: lf_gate true trade stats count 1 score 100
+forest boss: forest_boss false forest_key undefined hp [ 117, 124 ]
+locked door: false tile door_locked
+save slot1: テスト 12
+load ok: テスト [ 'hero', 'kyle' ] [ 'kyle' ]
+job change: warrior lv 12 jobLevels {"warrior":4}
+tutorial: done true reward gold +100 exp +95 topics 10 rank E
+lecture: learned_dow true
+tutorial replay: gold diff 0 scoreCount 5
+menu training: undefined scoreCount 5 weak [ 'skip' ]
+wipe: lost map poyo_village gold 67 hp 34
+hole: oblivion_cave_3 24 11
+ERRORS: []
+EXIT 0

@@ -1,0 +1,31 @@
+== maptest: errors [] fails 1 EXIT 0
+== enemytest: ERRORS: [ EXIT 0
+== assettest: ERRORS: [ EXIT 0
+== tradeeq: ERRORS: [] loadErrors [] EXIT 0
+== tradetest: rank samples: E S ERRORS: [] EXIT 0
+== growthtest: ERRORS: [] EXIT 0
+== learntest: ERRORS: [] EXIT 0
+== playtest: ERRORS: [] EXIT 0
+== ch5test: ERRORS: [] EXIT 0
+== ch67test: CRASH TypeError: Cannot read properties of undefined (reading 'hidden')     at /home/claude/work/ch67test.js:104:48 ERRORS so far: [ EXIT 1
+== ch89test: ERRORS: [] EXIT 0
+== ch1012test: ERRORS: [] EXIT 0
+== ch1316test: ERRORS: [ EXIT 0
+== ch17test: ERRORS: [] EXIT 0
+== skill56: ERRORS: [] loadErrors [] EXIT 0
+== ch18test: ERRORS: [ EXIT 0
+== v57test: ERRORS: [] EXIT 0
+== v58test:  EXIT 0
+== v59test:  EXIT 0
+== v60test:  EXIT 0
+== p1test:  EXIT 1
+== p2test:  EXIT 0
+== ptcheck:  EXIT 0
+== potcheck:  EXIT 0
+== ftmenu:  EXIT 0
+== npctest: 結果: 12 OK / 0 NG errors [] EXIT 0
+== navtest:  EXIT 0
+== navsim:  EXIT 1
+== harbortest:  EXIT 0
+== entryaudit:  EXIT 1
+DONE

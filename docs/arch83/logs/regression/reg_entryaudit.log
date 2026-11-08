@@ -1,0 +1,200 @@
+maps 608 arrivals 1397
+PROBLEMS 160
+  ✗ world → lost_forest 到着(2,12) が通れないマス（forest）
+  ✗ lost_forest_shrine → lost_forest 到着(15,13) が通れないマス（forest）
+  ✗ a4_lf_glade → lost_forest 到着(17,10) が通れないマス（forest）
+  ✗ lost_forest：world から来た到着(2,12) から、どの出入口にも行けない（閉じ込め）
+  ✗ lost_forest の出入口(34,23)→a4_lf_glade に、どの到着マスからも行けない
+  ✗ lost_forest の出入口(35,23)→a4_lf_glade に、どの到着マスからも行けない
+  ✗ oblivion_cave_2 → oblivion_cave_1 到着(26,1) が通れないマス（cave_wall）
+  ✗ oblivion_cave_1：oblivion_cave_2 から来た到着(26,1) から、どの出入口にも行けない（閉じ込め）
+  ✗ oblivion_cave_1 → oblivion_cave_2 到着(2,1) が通れないマス（cave_wall）
+  ✗ cave_hidden_room → oblivion_cave_2 到着(12,5) が通れないマス（cave_wall）
+  ✗ oblivion_cave_3 → oblivion_cave_2 到着(26,12) が通れないマス（cave_wall）
+  ✗ oblivion_cave_lake → oblivion_cave_2 到着(27,5) が通れないマス（cave_wall）
+  ✗ oblivion_cave_2 の出入口(54,13)→oblivion_cave_lake に、どの到着マスからも行けない
+  ✗ oblivion_cave_2 の出入口(55,13)→oblivion_cave_lake に、どの到着マスからも行けない
+  ✗ oblivion_cave_2 → oblivion_cave_3 到着(1,1) が通れないマス（cave_wall）
+  ✗ oblivion_cave_2 → oblivion_cave_3 到着(12,5) が通れないマス（cave_wall）
+  ✗ oblivion_cave_2 → oblivion_cave_3 到着(12,5) が通れないマス（cave_wall）
+  ✗ oblivion_cave_2 → oblivion_cave_3 到着(12,5) が通れないマス（cave_wall）
+  ✗ oblivion_cave_2 → oblivion_cave_3 到着(12,5) が通れないマス（cave_wall）
+  ✗ oblivion_cave_3：oblivion_cave_2 から来た到着(1,1) から、どの出入口にも行けない（閉じ込め）
+  ✗ world → emal_pass 到着(2,14) が通れないマス（mountain）
+  ✗ bandit_hideout → emal_pass 到着(14,14) が通れないマス（mountain）
+  ✗ a6_em_hut → emal_pass 到着(26,8) が通れないマス（mountain）
+  ✗ emal_pass：world から来た到着(2,14) から、どの出入口にも行けない（閉じ込め）
+  ✗ emal_pass：bandit_hideout から来た到着(14,14) から、どの出入口にも行けない（閉じ込め）
+  ✗ emal_pass：a6_em_hut から来た到着(26,8) から、どの出入口にも行けない（閉じ込め）
+  ✗ emal_pass の出入口(0,28)→world に、どの到着マスからも行けない
+  ✗ emal_pass の出入口(0,29)→world に、どの到着マスからも行けない
+  ✗ emal_pass の出入口(28,28)→bandit_hideout に、どの到着マスからも行けない
+  ✗ emal_pass の出入口(50,16)→a6_em_hut に、どの到着マスからも行けない
+  ✗ emal_pass の出入口(51,16)→a6_em_hut に、どの到着マスからも行けない
+  ✗ emal_pass の出入口(50,17)→a6_em_hut に、どの到着マスからも行けない
+  ✗ emal_pass の出入口(51,17)→a6_em_hut に、どの到着マスからも行けない
+  ✗ iron_mine_1 → iron_mine_2 到着(1,1) が通れないマス（cave_wall）
+  ✗ iron_mine_2：iron_mine_1 から来た到着(1,1) から、どの出入口にも行けない（閉じ込め）
+  ✗ iron_mine_2 の出入口(57,26)→a4_im_old に、どの到着マスからも行けない
+  ✗ world_kalion → grania_pass 到着(7,1) が通れないマス（mountain）
+  ✗ a6_gp_shelter → grania_pass 到着(6,7) が通れないマス（mountain）
+  ✗ grania_pass：world_kalion から来た到着(7,1) から、どの出入口にも行けない（閉じ込め）
+  ✗ grania_pass：a6_gp_shelter から来た到着(6,7) から、どの出入口にも行けない（閉じ込め）
+  ✗ grania_pass の出入口(12,17)→a6_gp_shelter に、どの到着マスからも行けない
+  ✗ grania_pass の出入口(13,17)→a6_gp_shelter に、どの到着マスからも行けない
+  ✗ kalion_finance → kalion_archive_1 到着(1,1) が通れないマス（wall）
+  ✗ a6_ka_ledger → kalion_archive_1 到着(8,10) が通れないマス（wall）
+  ✗ kalion_archive_1：kalion_finance から来た到着(1,1) から、どの出入口にも行けない（閉じ込め）
+  ✗ kalion_archive_1 の出入口(16,23)→a6_ka_ledger に、どの到着マスからも行けない
+  ✗ kalion_archive_1 の出入口(17,23)→a6_ka_ledger に、どの到着マスからも行けない
+  ✗ kalion_archive_1 → kalion_archive_2 到着(1,1) が通れないマス（wall）
+  ✗ kalion_archive_2：kalion_archive_1 から来た到着(1,1) から、どの出入口にも行けない（閉じ込め）
+  ✗ kalion_archive_2 の出入口(2,2)→kalion_archive_1 に、どの到着マスからも行けない
+  ✗ sentra_capital → sentra_office 到着(5,7) が通れないマス（wall）
+  ✗ aruna_ruins_1 の出入口(26,0)→a6_ar_light に、どの到着マスからも行けない
+  ✗ aruna_ruins_1 の出入口(27,0)→a6_ar_light に、どの到着マスからも行けない
+  ✗ aruna_ruins → aruna_underground_1 到着(1,1) が通れないマス（wall）
+  ✗ a4_au_lamps → aruna_underground_1 到着(20,5) が通れないマス（bookshelf）
+  ✗ aruna_underground_1：aruna_ruins から来た到着(1,1) から、どの出入口にも行けない（閉じ込め）
+  ✗ elmina_undersea → memory_library 到着(9,14) が通れないマス（bookshelf）
+  ✗ a4_ml_closed → memory_library 到着(1,7) が通れないマス（castle_wall）
+  ✗ temple_of_time_3 → temple_of_time_2 到着(17,1) が通れないマス（castle_wall）
+  ✗ old_city_2 → old_city_1 到着(25,5) が通れないマス（wall）
+  ✗ a6_oc_vault → old_city_1 到着(11,1) が通れないマス（wall）
+  ✗ old_city_1 の出入口(22,0)→a6_oc_vault に、どの到着マスからも行けない
+  ✗ old_city_1 の出入口(23,0)→a6_oc_vault に、どの到着マスからも行けない
+  ✗ old_city_1 → old_city_2 到着(1,1) が通れないマス（wall）
+  ✗ old_city_2：old_city_1 から来た到着(1,1) から、どの出入口にも行けない（閉じ込め）
+  ✗ world_machine → auto_factory_1 到着(1,1) が通れないマス（wall）
+  ✗ auto_factory_2 → auto_factory_1 到着(21,9) が通れないマス（wall）
+  ✗ a6_af_control → auto_factory_1 到着(16,9) が通れないマス（wall）
+  ✗ auto_factory_1：world_machine から来た到着(1,1) から、どの出入口にも行けない（閉じ込め）
+  ✗ auto_factory_1 の出入口(32,21)→a6_af_control に、どの到着マスからも行けない
+  ✗ auto_factory_1 の出入口(33,21)→a6_af_control に、どの到着マスからも行けない
+  ✗ oracle_core_1 → oracle_core_2 到着(1,1) が通れないマス（castle_wall）
+  ✗ a6_or_lamps → oracle_core_2 到着(7,1) が通れないマス（castle_wall）
+  ✗ oracle_core_2：oracle_core_1 から来た到着(1,1) から、どの出入口にも行けない（閉じ込め）
+  ✗ oracle_core_2 の出入口(14,0)→a6_or_lamps に、どの到着マスからも行けない
+  ✗ oracle_core_2 の出入口(15,0)→a6_or_lamps に、どの到着マスからも行けない
+  ✗ origin_lab_2 → origin_lab_1 到着(21,1) が通れないマス（wall）
+  ✗ origin_lab_1 の出入口(26,0)→a6_ol_mixing に、どの到着マスからも行けない
+  ✗ origin_lab_1 の出入口(27,0)→a6_ol_mixing に、どの到着マスからも行けない
+  ✗ a6_st_rings → star_tower_1 到着(1,1) が通れないマス（castle_wall）
+  ✗ star_tower_1 の出入口(0,2)→a6_st_rings に、どの到着マスからも行けない
+  ✗ star_tower_1 の出入口(0,3)→a6_st_rings に、どの到着マスからも行けない
+  ✗ a6_sk_clouds → sky_temple_1 到着(1,3) が通れないマス（castle_wall）
+  ✗ sky_temple_1：a6_sk_clouds から来た到着(1,3) から、どの出入口にも行けない（閉じ込め）
+  ✗ sky_temple_1 の出入口(0,6)→a6_sk_clouds に、どの到着マスからも行けない
+  ✗ sky_temple_1 の出入口(0,7)→a6_sk_clouds に、どの到着マスからも行けない
+  ✗ world_desert → sandstorm_corridor_1 到着(2,9) が通れないマス（cliff）
+  ✗ sandstorm_corridor_1：world_desert から来た到着(2,9) から、どの出入口にも行けない（閉じ込め）
+  ✗ sandstorm_corridor_1 の出入口(24,14)→a4_sc_shrine に、どの到着マスからも行けない
+  ✗ sandstorm_corridor_1 の出入口(24,15)→a4_sc_shrine に、どの到着マスからも行けない
+  ✗ world_desert → sandstorm_corridor_2 到着(27,9) が通れないマス（cliff）
+  ✗ sandstorm_corridor_1 → sandstorm_corridor_2 到着(2,9) が通れないマス（cliff）
+  ✗ sandstorm_corridor_2：sandstorm_corridor_1 から来た到着(2,9) から、どの出入口にも行けない（閉じ込め）
+  ✗ sandstorm_corridor_2 の出入口(56,18)→world_desert に、どの到着マスからも行けない
+  ✗ world_dragon → crater_altar 到着(9,12) が通れないマス（cave_wall）
+  ✗ a6_ca_forge → crater_altar 到着(7,2) が通れないマス（cave_wall）
+  ✗ crater_altar：world_dragon から来た到着(9,12) から、どの出入口にも行けない（閉じ込め）
+  ✗ crater_altar：a6_ca_forge から来た到着(7,2) から、どの出入口にも行けない（閉じ込め）
+  ✗ crater_altar の出入口(18,26)→world_dragon に、どの到着マスからも行けない
+  ✗ crater_altar の出入口(18,27)→world_dragon に、どの到着マスからも行けない
+  ✗ crater_altar の出入口(19,27)→world_dragon に、どの到着マスからも行けない
+  ✗ crater_altar の出入口(14,2)→a6_ca_forge に、どの到着マスからも行けない
+  ✗ crater_altar の出入口(15,2)→a6_ca_forge に、どの到着マスからも行けない
+  ✗ crater_altar の出入口(14,3)→a6_ca_forge に、どの到着マスからも行けない
+  ✗ crater_altar の出入口(15,3)→a6_ca_forge に、どの到着マスからも行けない
+  ✗ world_dragon → dragon_vein_1 到着(1,14) が通れないマス（cave_wall）
+  ✗ dragon_vein_2 → dragon_vein_1 到着(28,2) が通れないマス（cave_wall）
+  ✗ dragon_vein_1：world_dragon から来た到着(1,14) から、どの出入口にも行けない（閉じ込め）
+  ✗ dragon_vein_1：dragon_vein_2 から来た到着(28,2) から、どの出入口にも行けない（閉じ込め）
+  ✗ dragon_vein_1 の出入口(43,12)→a4_dv_pool に、どの到着マスからも行けない
+  ✗ dragon_vein_1 の出入口(43,13)→a4_dv_pool に、どの到着マスからも行けない
+  ✗ ciel_item_x72_2f → ciel_item 到着(7,2) に NPC ciel_item_keeper
+  ✗ world_snow → spirit_forest_1 到着(1,15) が通れないマス（forest）
+  ✗ spirit_forest_2 → spirit_forest_1 到着(27,2) が通れないマス（forest）
+  ✗ a4_sf_spring → spirit_forest_1 到着(18,10) が通れないマス（forest）
+  ✗ spirit_forest_1：world_snow から来た到着(1,15) から、どの出入口にも行けない（閉じ込め）
+  ✗ spirit_forest_1：spirit_forest_2 から来た到着(27,2) から、どの出入口にも行けない（閉じ込め）
+  ✗ spirit_forest_1：a4_sf_spring から来た到着(18,10) から、どの出入口にも行けない（閉じ込め）
+  ✗ spirit_forest_1 の出入口(0,30)→world_snow に、どの到着マスからも行けない
+  ✗ spirit_forest_1 の出入口(0,31)→world_snow に、どの到着マスからも行けない
+  ✗ spirit_forest_1 の出入口(54,2)→spirit_forest_2 に、どの到着マスからも行けない
+  ✗ spirit_forest_1 の出入口(34,20)→a4_sf_spring に、どの到着マスからも行けない
+  ✗ spirit_forest_1 の出入口(35,20)→a4_sf_spring に、どの到着マスからも行けない
+  ✗ spirit_forest_1 の出入口(34,21)→a4_sf_spring に、どの到着マスからも行けない
+  ✗ spirit_forest_1 の出入口(35,21)→a4_sf_spring に、どの到着マスからも行けない
+  ✗ spirit_forest_1 → spirit_forest_2 到着(2,14) が通れないマス（forest）
+  ✗ spirit_forest_2：spirit_forest_1 から来た到着(2,14) から、どの出入口にも行けない（閉じ込め）
+  ✗ spirit_forest_2 の出入口(2,28)→spirit_forest_1 に、どの到着マスからも行けない
+  ✗ world_grania → ash_cave_1 到着(1,12) が通れないマス（cave_wall）
+  ✗ ash_cave_2 → ash_cave_1 到着(16,11) が通れないマス（cave_wall）
+  ✗ ash_cave_1：world_grania から来た到着(1,12) から、どの出入口にも行けない（閉じ込め）
+  ✗ ash_cave_1：ash_cave_2 から来た到着(16,11) から、どの出入口にも行けない（閉じ込め）
+  ✗ ash_cave_1 の出入口(23,18)→a4_ac_press に、どの到着マスからも行けない
+  ✗ ash_cave_1 の出入口(23,19)→a4_ac_press に、どの到着マスからも行けない
+  ✗ tradia_sky_lounge_2f → tradia_sky_lounge 到着(9,1) が通れないマス（cupboard）
+  ✗ tradia_sky → tradia_sky_boutique 到着(5,7) が通れないマス（wall）
+  ✗ rivel_town_x72_house_2f → rivel_town_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ rivel_artisan_x72_house_2f → rivel_artisan_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ dow_village_x72_house_2f → dow_village_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ harbor_town_x72_house_2f → harbor_town_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ verum_town_x72_house_2f → verum_town_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ kalion_city_x72_house_2f → kalion_city_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ erased_village_x72_house_2f → erased_village_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ sentra_capital_x72_house_2f → sentra_capital_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ aruna_village_x72_house_2f → aruna_village_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ aruna_ruins_x72_house_2f → aruna_ruins_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ tempus_city_x72_house_2f → tempus_city_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ node_city_x72_house_2f → node_city_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ scheduled_district_x72_house_2f → scheduled_district_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ magicka_city_x72_house_2f → magicka_city_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ tradia_x72_house_2f → tradia_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ luxbell_x72_house_2f → luxbell_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ volatilia_x72_house_2f → volatilia_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ star_camp_x72_house_2f → star_camp_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ dark_camp_x72_house_2f → dark_camp_x72_house 到着(9,1) が通れないマス（barrel）
+  ✗ sahar_city_x72_house_2f → sahar_city_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ mirror_market_x72_house_2f → mirror_market_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ ignas_town_x72_house_2f → ignas_town_x72_house 到着(9,1) が通れないマス（bookshelf）
+  ✗ ciel_port_x72_house_2f → ciel_port_x72_house 到着(9,1) が通れないマス（cupboard）
+  ✗ frost_town_x72_house_2f → frost_town_x72_house 到着(9,1) が通れないマス（cupboard）
+INFO 55
+  · lost_forest の出入口(30,26)→lost_forest_shrine は扉・試練の奥
+  · oblivion_cave_1 の出入口(0,20)→world は扉・試練の奥
+  · oblivion_cave_1 の出入口(0,21)→world は扉・試練の奥
+  · oblivion_cave_2 の出入口(27,10)→cave_hidden_room は扉・試練の奥
+  · oblivion_cave_2 の出入口(27,11)→cave_hidden_room は扉・試練の奥
+  · iron_mine_2 の出入口(56,28)→iron_mine_3 は扉・試練の奥
+  · iron_mine_2 の出入口(57,27)→a4_im_old は扉・試練の奥
+  · grania_pass の出入口(14,28)→world_grania は扉・試練の奥
+  · demon_castle_gate の出入口(9,1)→demon_castle_1 は扉・試練の奥
+  · sandstorm_corridor_1 の出入口(2,18)→world_desert は扉・試練の奥
+  · sandstorm_corridor_2：world_desert から来た到着(27,9) から world_desert へ直接は戻れない（別の出口経由）
+  · dragon_vein_2 の出入口(22,4)→dragon_vein_deep_1 は扉・試練の奥
+  · frozen_tower_1 の出入口(19,1)→frozen_tower_2 は扉・試練の奥
+  · frozen_tower_2 の出入口(19,1)→frozen_tower_3 は扉・試練の奥
+  · frozen_tower_3 の出入口(19,1)→frozen_tower_4 は扉・試練の奥
+  · world：陸路の入口なし（船・飛空艇・最初の地域）
+  · world_grania：陸路の入口なし（船・飛空艇・最初の地域）
+  · world_kalion：陸路の入口 grania_pass・asana_rebuilt
+  · world_islands：陸路の入口なし（船・飛空艇・最初の地域）
+  · world_tempus：陸路の入口 world_machine
+  · world_machine：陸路の入口 world_tempus
+  · world_magicka：陸路の入口なし（船・飛空艇・最初の地域）
+  · world_sky：陸路の入口なし（船・飛空艇・最初の地域）
+  · world_dark：陸路の入口なし（船・飛空艇・最初の地域）
+  · world_desert：陸路の入口なし（船・飛空艇・最初の地域）
+  · world_dragon：陸路の入口なし（船・飛空艇・最初の地域）
+  · world_snow：陸路の入口なし（船・飛空艇・最初の地域）
+  ·（到着マスが階段・出入口の上：28件。到着しただけでは移動しないので不具合ではない）
+ISLANDS（施設のない陸地。船で上陸できるもの） 458 （うち面積20マス以上 6 ）
+  ◇ world 23,3 面積444 上陸できる岸117マス 宝箱0 イベント0 → 上陸時の表示「アルカディア相場大陸・北西の無人島（町や施設はない）」
+  ◇ world 70,95 面積523 上陸できる岸163マス 宝箱0 イベント0 → 上陸時の表示「アルカディア相場大陸・南の無人島（町や施設はない）」
+  ◇ world_islands 28,91 面積162 上陸できる岸69マス 宝箱0 イベント0 → 上陸時の表示「断裂群島・南西の無人島（町や施設はない）」
+  ◇ world_magicka 44,27 面積25 上陸できる岸12マス 宝箱0 イベント0 → 上陸時の表示「マクディア魔導王国・北西の無人島（町や施設はない）」
+  ◇ world_dragon 89,16 面積59 上陸できる岸41マス 宝箱0 イベント0 → 上陸時の表示「竜炎火山群島・北の無人島（町や施設はない）」
+  ◇ world_dragon 148,107 面積60 上陸できる岸47マス 宝箱0 イベント0 → 上陸時の表示「竜炎火山群島・南東の無人島（町や施設はない）」
+pier true road true loadErrors []
+EXIT 1

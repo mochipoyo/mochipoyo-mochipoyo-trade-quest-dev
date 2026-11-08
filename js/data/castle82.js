@@ -59,7 +59,7 @@
     // 鍵（王宮の門など）：道の入口の全部の幅を同じ鍵でふさぐ
     if (lock) for (var x4 = x0; x4 <= x1; x4++) if (!(town.events || []).some(function (e) { return e.x === x4 && e.y === yB + 1; })) town.events.push(Object.assign({}, lock, { x: x4, _c82lock: lock.x + ',' + lock.y }));
     // 北の端の出口（城郭区画の南の門の内側へ）
-    town.warps = (town.warps || []).concat([0, 1, 2, 3].map(function (i) { return { x: x0 + i, y: 0, to: L.id, tx: cx - 2 + i, ty: H - 2, raw: true, face: 'up', name: L.name.split('・')[0] + 'へ', _c82road: true }; }));
+    town.warps = (town.warps || []).concat([0, 1, 2, 3].map(function (i) { return { x: x0 + i, y: 0, to: L.id, tx: cx, ty: H - 2, raw: true, face: 'up', name: L.name.split('・')[0] + 'へ', _c82road: true };   /* 着く所は参道の真ん中の列（城の大扉の列。まっすぐ北へ歩けば大扉） */ }));
     town.buildings = (town.buildings || []).filter(function (b) { return b !== tb; });
     // 紋章（v8.1 の crests81）：城の正面の高い紋章は、道の入口の両わきの城壁の正面へ
     if (town.crests81) { var big = town.crests81.filter(function (c) { return c.x >= x0 - 1 && c.x <= x1 + 2 && Math.abs(c.y - (yB + 1)) < 0.6; });
@@ -108,7 +108,12 @@
       D[L.id] = def;
       // v8.3 城下町の北の端へ道を通す（上の carveRoad82）。城郭区画の南の門からは、その道の北の端（2 行目）へ（今の座標のまま＝raw）
       var road = null; try { road = carveRoad82(town, tb, L, cx, H); } catch (e) { C82.errors.push(L.id + '：道 ' + (e && e.message)); road = null; }
-      if (road) def.warps.forEach(function (w, i) { w.tx = road.x0 + i; w.ty = 1; w.raw = true; w.face = 'down'; });
+      if (road) {
+        // 着く所は道の北の端（2 行目）。作り直した町では、ほかの地図からのワープの行き先は旧座標として写される（MapRemake.pos）ので、
+        // 同じ数字の旧座標 → 今の道の北の端、という写しを足す（元の間取りの設定では、写さずにそのまま＝同じ所）。raw にしない（確かめの道具とも同じ読み方）
+        var A81 = town.remake81 && town.remake81.anchors;
+        def.warps.forEach(function (w, i) { w.tx = road.x0 + i; w.ty = 1; w.face = 'down'; if (A81) A81[w.tx + ',' + w.ty] = { x: w.tx, y: w.ty }; });
+      }
       // 道を通せないとき（ほかの建物と重なる等）：v8.2 の作り（城下町の城の建物 → 城門（楼門）。扉の先は城郭区画の南の門の内側）
       else { tb.gate82 = L.style; tb.interior = L.id; tb.entry = { x: cx, y: H - 3 }; tb._c82 = { castle: L.castle }; C82.errors.push(L.id + '：道を通せないので楼門のまま'); }
       // 初めて入ったときだけ（3D）：城の全体が見えるカメラ（4.5 秒）
