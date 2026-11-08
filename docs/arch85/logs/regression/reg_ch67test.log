@@ -1,0 +1,9 @@
+rescue fight undefined hp 282
+guardian 5330 party t:118 ガルド:118 カイル:104 エルナ:70
+guardian fight undefined hp 110
+hald fight undefined
+valen fight undefined
+drek fight undefined
+core fight undefined
+learn_record undefined true
+ERRORS: []

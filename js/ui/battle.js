@@ -8,6 +8,11 @@
   var Engine = root.Engine, Win = root.Win, State = root.State, Combat = root.Combat, SKILLS = root.SKILLS, ITEMS = root.ITEMS, Actors = root.Actors, Sprites = root.Sprites, JOBS = root.JOBS, ENEMIES = root.ENEMIES;
   var esc = Win.esc;
   var U = root.Ultimates || null;   // 必殺技（js/rpg/ultimates.js。なければ必殺技のコマンドを出さない）
+  // v8.5 ボスの名前（敵の絵の上の文字）：最初だけ表示する。登場の演出（暗転・カットイン）の間と、そのあと show ミリ秒は表示し、fade ミリ秒で消す
+  //   戦闘中は表示しない（大きなボスの絵に名前が重なっていた）。弱点露出・状態異常のあるときは、その短い表示（「弱点露出」「［毒］」など）だけ出す
+  //   ボスの名前が変わったとき（変身など）は、また最初から show ミリ秒表示する。ボス以外の敵の名前は今までどおり
+  //   時間は実際の時計（Date.now）で数える。コマンドを選んでいる間も消える
+  var BOSS_NAME85 = { show: 4000, fade: 600 };
 
   var BattleUI = { battle: null, scene: null };
 
@@ -215,6 +220,18 @@
     var stage = null; if (this.bg65 && root.BattleStage3D && !this.no3d) { try { stage = root.BattleStage3D.frame(this, W, H); } catch (e) { stage = null; this.no3d = true; if (root.console) console.warn('3D battle stage', e); } }
     if (stage) ctx.drawImage(stage, 0, 0, W, H); else { ctx.drawImage(this.bg, 0, 0); var bf = this.bgFade; if (bf) { var fa = 1 - (Date.now() - bf.t) / 350; if (fa > 0) { ctx.globalAlpha = fa; ctx.drawImage(bf.from, 0, 0); ctx.globalAlpha = 1; } else this.bgFade = null; } }
     if (this.bg65 && !stage) { try { root.BattleBG65.drawAmbient(ctx, this, W, H); } catch (e) { this.bg65 = null; } }   // v6.5 動く粒・天気・ボスの光（品質「軽量」では描かない）
+    // v8.5 ボス登場の演出・カットインは update（戦闘画面がいちばん上のときだけ動く）で進む。演出の途中で最初のコマンドのメニューが開くと
+    //   （描画の遅い端末・3D 版の最初のコマ。作業環境の 3D 版では 1.4 秒のうち 1.3 秒で開いた）、演出がそこで止まり、
+    //   ボスの名前の帯が半分の濃さで出たままになっていた → 戦闘画面がいちばん上でない間は、ここで実際の時計の分だけ進める（update と同じ進め方。1 回 100ms まで）
+    if ((this.entrance || this.cutin) && Engine.top() !== this) {
+      var nw85 = Date.now();
+      if (this._entLast85) {
+        var d85 = Math.min(100, nw85 - this._entLast85);
+        if (this.cutin) { this.cutin.t += d85; if (this.cutin.t >= this.cutin.dur) this.cutin = null; }
+        if (this.entrance) { if (this.entrance.delay > 0) this.entrance.delay -= d85; else { this.entrance.t += d85; if (this.entrance.t >= this.entrance.dur) this.entrance = null; } }
+      }
+      this._entLast85 = nw85;
+    } else this._entLast85 = 0;
     // ボス登場：暗転からせり上がる
     var ent = this.entrance; var entP = ent ? Math.min(1, ent.t / ent.dur) : 1;
     if (ent) { ctx.fillStyle = 'rgba(0,0,0,' + (0.7 * (1 - entP)) + ')'; ctx.fillRect(0, 0, W, H); }
@@ -261,12 +278,24 @@
       var fk = r.from3d && root.BattleStage3D && root.BattleStage3D.labelScale ? root.BattleStage3D.labelScale(W) : 1;   // 3D版 Phase 2：スマホの縦画面など、画面が縮んで名前が小さくなるときは大きく描く（2D版では 1）
       ctx.fillStyle = '#fff'; ctx.font = (e.boss ? 'bold ' + Math.round(13 * fk) + 'px' : Math.round(12 * fk) + 'px') + ' sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3 * fk; ctx.strokeStyle = 'rgba(0,0,0,0.7)';
       var label = e.name + (ve.ex ? '（弱点露出）' : '') + (st ? '［' + st + '］' : ''); var ly = y - 6;
+      var la = 1;   // v8.5 名前の濃さ（ボスの名前を消していくとき）
+      if (e.boss || (b.boss && i === 0)) {
+        var bl85 = self.bossLab85 || (self.bossLab85 = {}); var rc85 = bl85[i];
+        if (!rc85 || rc85.name !== e.name) rc85 = bl85[i] = { name: e.name, t0: null };
+        var now85 = Date.now(); if (rc85.t0 === null && !ent && !self.cutin) rc85.t0 = now85;   // 登場の演出が終わってから数える
+        var sh85 = rc85.t0 === null ? 0 : now85 - rc85.t0;   // 実際の時計で数える（self.t は戦闘画面がいちばん上のときだけ進み、コマンドを選ぶ間は止まるため）
+        if (sh85 > BOSS_NAME85.show) { la = 1 - (sh85 - BOSS_NAME85.show) / BOSS_NAME85.fade; if (la <= 0) { la = 1; label = (ve.ex ? '弱点露出' : '') + (st ? '［' + st + '］' : ''); } }
+      }
+      if (label) {
       // v7.0 名前が戦闘メッセージ欄（とオートボタン・HP表示など、画面の上に重なる表示）に隠れないように、その下より上には描かない（大きなボスで名前が欄に隠れていた）
       var lx = x + size / 2, lw = ctx.measureText(label).width, fpx = Math.round((e.boss ? 13 : 12) * fk), minLy = fpx + 2;
       self.overlays(W, H).forEach(function (o) { if (o.x1 > lx - lw / 2 - 2 && o.x0 < lx + lw / 2 + 2) minLy = Math.max(minLy, o.bottom + 3 + fpx); });
       if (ly < minLy) ly = minLy;
       if (r.from3d) { var lh = 15 * fk; self._lab = self._lab || []; for (var li = 0; li < 6 && self._lab.some(function (o) { return Math.abs(o.x - lx) < (o.w + lw) / 2 + 4 && Math.abs(o.y - ly) < lh; }); li++) ly = ly - lh >= minLy ? ly - lh : ly + lh; self._lab.push({ x: lx, y: ly, w: lw }); }   // 3D版 Phase 2：名前が重なるときは上へずらす（v7.0 上に場所がなければ下へ）
+      if (la < 1) { ctx.save(); ctx.globalAlpha = la; }
       ctx.strokeText(label, x + size / 2, ly); ctx.fillText(label, x + size / 2, ly);
+      if (la < 1) ctx.restore();
+      }   // v8.5 if (label)
       self.anims.filter(function (a) { return a.side === 'enemy' && a.idx === i && a.type === 'fx'; }).forEach(function (a) { drawFx(ctx, a, x + size / 2, y + hh / 2); });
       var ph = self.anims.filter(function (a) { return a.type === 'phase' && a.idx === i; })[0];
       if (ph) { var pp = ph.t / ph.dur; ctx.strokeStyle = 'rgba(255,80,80,' + (1 - pp) + ')'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + size / 2, y + hh / 2, Math.max(size, hh) * 0.5 + pp * 60, 0, Math.PI * 2); ctx.stroke(); }

@@ -1,0 +1,58 @@
+{
+ "3d": {
+  "page": "3d",
+  "info": {
+   "minion": "slime",
+   "minionName": "蒼葉の雫精",
+   "bossName": "裏切りの大臣ヴォルク"
+  },
+  "ent": {
+   "entranceDur": 1400,
+   "cutin": false
+  },
+  "t0": 1794128676084,
+  "c1_bossNameEarly": true,
+  "c2_bossNameLateHidden": true,
+  "c3_minionAlways": true,
+  "lateTexts": [
+   "蒼葉の雫精"
+  ],
+  "framesEarly": 67,
+  "framesLate": 27,
+  "c4_statusOnly": true,
+  "statusTexts": [
+   "弱点露出［毒］"
+  ],
+  "c5_renamedShownAgain": true,
+  "ok": true,
+  "pageErrors": []
+ },
+ "2d": {
+  "page": "2d",
+  "info": {
+   "minion": "slime",
+   "minionName": "蒼葉の雫精",
+   "bossName": "裏切りの大臣ヴォルク"
+  },
+  "ent": {
+   "entranceDur": 1400,
+   "cutin": false
+  },
+  "t0": 1794128695955,
+  "c1_bossNameEarly": true,
+  "c2_bossNameLateHidden": true,
+  "c3_minionAlways": true,
+  "lateTexts": [
+   "蒼葉の雫精"
+  ],
+  "framesEarly": 183,
+  "framesLate": 78,
+  "c4_statusOnly": true,
+  "statusTexts": [
+   "弱点露出［毒］"
+  ],
+  "c5_renamedShownAgain": true,
+  "ok": true,
+  "pageErrors": []
+ }
+}
