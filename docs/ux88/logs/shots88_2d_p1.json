@@ -1,0 +1,367 @@
+{
+ "pc": {
+  "menu": {
+   "rect": [
+    1073,
+    205,
+    320,
+    355
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "items": {
+   "rect": [
+    569,
+    210,
+    520,
+    345
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "equip": {
+   "rect": [
+    569,
+    184,
+    520,
+    398
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": false
+  },
+  "settings": {
+   "rect": [
+    569,
+    275,
+    520,
+    216
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "prompt": {
+   "rect": [
+    529,
+    310,
+    600,
+    146
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 13,
+   "mobile": false
+  },
+  "errors": []
+ },
+ "tab": {
+  "menu": {
+   "rect": [
+    488,
+    299,
+    320,
+    386
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "items": {
+   "rect": [
+    150,
+    300,
+    520,
+    384
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "equip": {
+   "rect": [
+    150,
+    289,
+    520,
+    406
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "settings": {
+   "rect": [
+    150,
+    373,
+    520,
+    239
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "prompt": {
+   "rect": [
+    110,
+    416,
+    600,
+    152
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 13,
+   "mobile": true
+  },
+  "errors": []
+ },
+ "p390": {
+  "menu": {
+   "rect": [
+    16,
+    67,
+    359,
+    374
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "items": {
+   "rect": [
+    8,
+    61,
+    374,
+    384
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "equip": {
+   "rect": [
+    8,
+    42,
+    374,
+    422
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "settings": {
+   "rect": [
+    8,
+    134,
+    374,
+    239
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "prompt": {
+   "rect": [
+    12,
+    167,
+    367,
+    173
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 13,
+   "mobile": true
+  },
+  "errors": []
+ },
+ "p360": {
+  "menu": {
+   "rect": [
+    14,
+    47,
+    331,
+    374
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "items": {
+   "rect": [
+    7,
+    19,
+    346,
+    431
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "equip": {
+   "rect": [
+    7,
+    19,
+    346,
+    431
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "settings": {
+   "rect": [
+    7,
+    115,
+    346,
+    239
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "prompt": {
+   "rect": [
+    11,
+    148,
+    338,
+    173
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 13,
+   "mobile": true
+  },
+  "errors": []
+ },
+ "land": {
+  "menu": {
+   "rect": [
+    390,
+    16,
+    320,
+    359
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "items": {
+   "rect": [
+    162,
+    16,
+    520,
+    359
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "equip": {
+   "rect": [
+    162,
+    41,
+    520,
+    309
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "settings": {
+   "rect": [
+    162,
+    76,
+    520,
+    239
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "prompt": {
+   "rect": [
+    140,
+    119,
+    564,
+    152
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 13,
+   "mobile": true
+  },
+  "errors": []
+ }
+}

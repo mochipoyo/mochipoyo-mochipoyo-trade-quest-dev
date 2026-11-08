@@ -8,45 +8,78 @@
   var esc = Win.esc;
   var Menu = {};
 
+  // v8.8 メインメニュー：目的別の 5 つの分類（タブ）＋よく使う 4 つ（どうぐ・そうび・目的地・セーブ）は上のボタンから 1 回で開く
+  //   ・まだ手に入れていない乗り物・機能は出さない（今までどおり）。項目の名前は今までと同じ（テスト・説明書と合わせる）
+  //   ・前に開いた分類を覚えておく（この遊んでいる間だけ）
+  var MENU_TABS = [{ id: 'adv', label: '冒険' }, { id: 'party', label: 'パーティ' }, { id: 'item', label: 'どうぐ' }, { id: 'trade', label: 'トレード' }, { id: 'sys', label: 'システム' }];
+  Menu.TABS = MENU_TABS; Menu._tab = 0;
+  Menu.entries = function () {
+    var d = State.data; var E = { adv: [], party: [], item: [], trade: [], sys: [] };
+    E.adv.push({ label: 'クエスト', run: function () { return Menu.quests(); } });
+    E.adv.push({ label: '次の目的地', run: async function () { if (await Menu.objective() === 'map') return 'map'; } });
+    if (root.Minimap && root.Minimap.openBig) E.adv.push({ label: 'ワールドマップ', sub: '全体マップ（N / Tab キーでも開く）', run: function () { return 'map'; } });
+    E.adv.push({ label: 'ファストトラベル', run: async function () { if (await Menu.travel()) return 'close'; } });
+    if (root.Astra && root.Astra.owned()) E.adv.push({ label: 'アストラ号', run: function () { return root.Astra.menu(); } });
+    if (root.Carriage && root.Carriage.owned()) E.adv.push({ label: root.Carriage.wanted() ? '馬車を降りる' : '馬車に乗る', sub: 'C キーでも乗り降り', run: function () { if (root.Carriage.toggle()) return 'close'; } });
+    if (root.AirshipCall86 && root.AirshipCall86.owned() && d.aboard !== 'airship') E.adv.push({ label: '飛空艇を呼ぶ', sub: 'F キーでも呼べる', run: function () { if (root.AirshipCall86.call()) return 'close'; } });
+    E.adv.push({ label: '図鑑', run: function () { return Menu.encyclopedia(); } });
+    E.party.push({ label: 'ステータス', run: function () { return Menu.status(); } });
+    E.party.push({ label: 'なかま', sub: '隊列・入れ替え', run: function () { return Menu.party(); } });
+    E.party.push({ label: 'そうび', run: function () { return Menu.equip(); } });
+    E.party.push({ label: 'じゅもん・とくぎ', run: async function () { if (await Menu.skills() === 'warp') return 'close'; } });
+    E.item.push({ label: 'どうぐ', sub: 'すべての持ち物', run: async function () { if (await Menu.items() === 'warp') return 'close'; } });
+    E.item.push({ label: '回復の道具', sub: 'HP回復の道具だけ', run: async function () { if (await Menu.items({ genre: 'hp' }) === 'warp') return 'close'; } });
+    E.item.push({ label: '最近使った・お気に入り', run: async function () { if (await Menu.items({ fav: true }) === 'warp') return 'close'; } });
+    E.item.push({ label: '重要アイテム', run: async function () { if (await Menu.items({ genre: 'key' }) === 'warp') return 'close'; } });
+    E.trade.push({ label: 'トレード修行', run: function () { return Menu.training(); } });
+    if (root.Ultimates && root.TraderDojo && (root.Ultimates.count(d) > 0 || Object.keys((d.ultimate && d.ultimate.masters) || {}).length)) E.trade.push({ label: '必殺技', run: function () { return root.TraderDojo.menu(); } });
+    E.trade.push({ label: 'トレード成績・振り返り', run: function () { return Menu.tradeRecord ? Menu.tradeRecord() : Menu.rankPanel(); } });
+    E.sys.push({ label: 'セーブ', run: function () { return Menu.save(); } });
+    E.sys.push({ label: '設定', run: async function () { if (await Menu.settings() === 'title') return 'title'; } });
+    E.sys.push({ label: 'データ管理', sub: '書き出し・読み込み・クラウドセーブ・バックアップ', run: function () { return Menu.dataManagement(); } });
+    E.sys.push({ label: 'タイトルに戻る', run: async function () { if (await Menu.toTitle()) return 'title'; } });
+    return E;
+  };
+  var SHORTCUTS = [{ id: 'items', label: 'どうぐ' }, { id: 'equip', label: 'そうび' }, { id: 'goal', label: '目的地' }, { id: 'save', label: 'セーブ' }];
+  Menu.toTitle = async function () { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる'], { initial: 1 }); if (c === 0) { State.autosave(); root.Title.show(); return true; } return false; };
   Menu.open = async function () {
     if (World.busy) return; World.busy = true; var openMap = false;
     try {
       while (true) {
-        var d = State.data;
-        var MENU = ['ステータス', 'どうぐ', 'そうび', 'じゅもん・とくぎ', 'なかま', 'クエスト', '次の目的地', '図鑑', 'トレード修行', 'ファストトラベル', 'セーブ', '設定'];   // v6.2「次の目的地」を追加（項目名で振り分け）
-        if (root.Astra && root.Astra.owned()) MENU.splice(MENU.indexOf('ファストトラベル') + 1, 0, 'アストラ号');   // v6.5 Phase E
-        if (root.Carriage && root.Carriage.owned()) MENU.splice(MENU.indexOf('ファストトラベル') + 1, 0, root.Carriage.wanted() ? '馬車を降りる' : '馬車に乗る');   // v7.9 馬車（C キーと同じ）
-        if (root.AirshipCall86 && root.AirshipCall86.owned() && d.aboard !== 'airship') MENU.splice(MENU.indexOf('ファストトラベル') + 1, 0, '飛空艇を呼ぶ');   // v8.6 飛空艇（F キーと同じ。呼べない場所では理由を出す）
-        if (root.Ultimates && root.TraderDojo && (root.Ultimates.count(d) > 0 || Object.keys((d.ultimate && d.ultimate.masters) || {}).length)) MENU.splice(MENU.indexOf('じゅもん・とくぎ') + 1, 0, '必殺技');   // 必殺技（覚えた技・流派と師匠・成績）
-        var i = await Win.list(MENU.map(function (l) { return { label: l }; }), { title: 'メニュー　' + d.gold + 'G　' + World.map.name, cls: 'main-menu' });
-        if (i < 0) break; var lb = MENU[i];
-        if (lb === 'ステータス') await Menu.status();
-        else if (lb === 'どうぐ') { if (await Menu.items() === 'warp') break; }   // v6.5 帰還の翼・脱出の羽で移動したらメニューを閉じる
-        else if (lb === 'そうび') await Menu.equip();
-        else if (lb === 'じゅもん・とくぎ') { if (await Menu.skills() === 'warp') break; }   // v6.5 帰還の術で移動したらメニューを閉じる
-        else if (lb === '必殺技') await root.TraderDojo.menu();
-        else if (lb === 'なかま') await Menu.party();
-        else if (lb === 'クエスト') await Menu.quests();
-        else if (lb === '次の目的地') { if (await Menu.objective() === 'map') { openMap = true; break; } }
-        else if (lb === '図鑑') await Menu.encyclopedia();
-        else if (lb === 'トレード修行') await Menu.training();
-        else if (lb === 'ファストトラベル') { if (await Menu.travel()) break; }   // v6.1 移動したらメニューを閉じる
-        else if (lb === 'アストラ号') await root.Astra.menu();
-        else if (lb === '馬車に乗る' || lb === '馬車を降りる') { if (root.Carriage.toggle()) break; }   // v7.9 乗り降りしたらメニューを閉じる
-        else if (lb === '飛空艇を呼ぶ') { if (root.AirshipCall86.call()) break; }   // v8.6 乗ったらメニューを閉じる
-        else if (lb === 'セーブ') await Menu.save();
-        else if (lb === '設定') { var r = await Menu.settings(); if (r === 'title') return; }
+        var d = State.data; var E = Menu.entries(); var tid = MENU_TABS[Menu._tab].id; var list = E[tid];
+        var r = await Win.list(list.map(function (e) { return { label: e.label, sub: e.sub, disabled: e.disabled }; }), { title: 'メニュー　' + d.gold + 'G　' + World.map.name, cls: 'main-menu', key: 'main:' + tid,
+          tabs: MENU_TABS.map(function (t) { return { label: t.label, count: E[t.id].length }; }), tab: Menu._tab, tools: SHORTCUTS });
+        if (r === -1) break;
+        var res;
+        if (r && typeof r === 'object') {
+          if (r.tab !== undefined) { Menu._tab = r.tab; continue; }
+          if (r.tool === 'items') res = (await Menu.items()) === 'warp' ? 'close' : null;
+          else if (r.tool === 'equip') res = await Menu.equip();
+          else if (r.tool === 'goal') res = (await Menu.objective()) === 'map' ? 'map' : null;
+          else if (r.tool === 'save') res = await Menu.save();
+        } else if (list[r]) res = await list[r].run();
+        if (res === 'title') return;
+        if (res === 'map') { openMap = true; break; }
+        if (res === 'close') break;
       }
     } catch (e) { root.Engine.onError(e); }
     World.busy = false; World.updateHud(); State.autosave();
-    if (openMap && root.Minimap) root.Minimap.openBig();   // v6.2「次の目的地」→「全体マップで見る」
+    if (openMap && root.Minimap) root.Minimap.openBig();   // v6.2「次の目的地」→「全体マップで見る」／v8.8「ワールドマップ」
   };
 
-  async function pickActor(title, includeDead) {
+  // v8.8 画面の使い勝手の記録（State.data.ui。旧セーブにない時もここで補う）
+  Menu.ui = function () { var d = State.data; if (!d.ui || typeof d.ui !== 'object') d.ui = {}; var u = d.ui; if (!Array.isArray(u.recentItems)) u.recentItems = []; if (!u.favItems || typeof u.favItems !== 'object') u.favItems = {}; if (!u.favSkills || typeof u.favSkills !== 'object') u.favSkills = {}; if (!u.lastCmd || typeof u.lastCmd !== 'object') u.lastCmd = {}; return u; };
+  Menu.noteItemUse = function (id) { var u = Menu.ui(); u.recentItems = [id].concat(u.recentItems.filter(function (x) { return x !== id; })).slice(0, 8); };
+
+  // v8.8 need：'hp' | 'mp' | 'revive' のとき、足りない量を見せて、いちばん必要な人に最初のカーソルを置く（使うかどうかは自分で決める）
+  async function pickActor(title, includeDead, need) {
     var list = State.partyActors().filter(function (a) { return includeDead || !a.dead; });
-    var i = await Win.list(list.map(function (a) { var s = Actors.stats(a); return { label: a.name, right: JOBS[a.job].name + ' Lv' + a.level, sub: 'HP ' + a.hp + '/' + s.maxHp + '  MP ' + a.mp + '/' + s.maxMp + (a.dead ? '  戦闘不能' : '') }; }), { title: title });
+    var init = 0, best = -1;
+    list.forEach(function (a, k) { var s = Actors.stats(a); var v = need === 'revive' ? (a.dead ? 1 : 0) : a.dead ? -1 : need === 'mp' ? (s.maxMp ? 1 - a.mp / s.maxMp : 0) : need === 'hp' ? 1 - a.hp / s.maxHp : 0; if (v > best) { best = v; init = k; } });
+    var i = await Win.list(list.map(function (a) { var s = Actors.stats(a); var lackH = s.maxHp - a.hp, lackM = s.maxMp - a.mp; var lack = a.dead ? '' : need === 'hp' && lackH > 0 ? '　（HP あと' + lackH + '）' : need === 'mp' && lackM > 0 ? '　（MP あと' + lackM + '）' : ''; return { label: a.name, right: JOBS[a.job].name + ' Lv' + a.level, sub: 'HP ' + a.hp + '/' + s.maxHp + '  MP ' + a.mp + '/' + s.maxMp + (a.dead ? '  戦闘不能' : '') + lack }; }), { title: title, initial: need ? init : 0 });
     return i < 0 ? null : list[i];
   }
+  Menu.pickActor = pickActor;
 
   Menu.status = async function () {
     var a = await pickActor('ステータスを見る', true); if (!a) return;
@@ -76,26 +109,41 @@
     } else h += '<div class="muted small">' + (it.subcategory === 'material' ? '素材：鍛冶などで使う。使ったり売ったりはできない' : '重要アイテム：使ったり売ったりはできない') + '</div>';
     return h + '</div>';
   };
-  Menu.items = async function () {
-    var tab = 0, sort = 0, usableOnly = false, initial = 0;
+  // v8.8 opts.genre：最初に開くジャンル（'hp'・'key' など）／opts.fav：最近使った・お気に入りだけ
+  //      行をタップ＝選んで詳細を見る → ［使う・見る］で実行。［★お気に入り］で印をつける（State.data.ui.favItems）
+  Menu.items = async function (opts) {
+    opts = opts || {};
     var IC = root.ItemCat; var G = IC.GENRES;
+    var tab = 0, sort = 0, usableOnly = false, favOnly = !!opts.fav, initial;
+    if (opts.genre) G.forEach(function (g, k) { if (g.id === opts.genre) tab = k; });
     while (true) {
-      var d = State.data; var all = Object.keys(d.inventory).filter(function (id) { return ITEMS[id]; });
+      var d = State.data; var u = Menu.ui(); var all = Object.keys(d.inventory).filter(function (id) { return ITEMS[id]; });
       var order = {}; G.forEach(function (g, i) { order[g.id] = i; });
       var ids = all.filter(function (id) { return G[tab].id === 'all' || IC.of(id) === G[tab].id; });
       if (usableOnly) ids = ids.filter(canUseNow);
       var sid = ITEM_SORTS[sort].id;
       ids.sort(function (a, b) { if (sid === 'name') return ITEMS[a].name.localeCompare(ITEMS[b].name, 'ja'); if (sid === 'count') return (d.inventory[b] || 0) - (d.inventory[a] || 0); return (order[IC.of(a)] - order[IC.of(b)]) || ((ITEMS[a].tier || 0) - (ITEMS[b].tier || 0)); });
-      var rows = ids.map(function (id) { var it = ITEMS[id]; return { label: it.name, right: '×' + d.inventory[id], sub: (it.cat === 'consumable' ? (canUseNow(id) ? '' : '【' + IC.scene(id) + '】') : '') + (it.desc || ''), cls: 'g-' + IC.of(id) + (it.cat === 'key' ? ' key' : '') }; });
-      if (!rows.length) rows = [{ label: usableOnly ? '（いま使えるものはない）' : '（このジャンルの持ち物はない）', disabled: true }];
+      if (favOnly) { var rec = u.recentItems.filter(function (id) { return ids.indexOf(id) >= 0; }); ids = rec.concat(ids.filter(function (id) { return u.favItems[id] && rec.indexOf(id) < 0; })); }
+      var rows = ids.map(function (id) { var it = ITEMS[id]; var tag = (u.favItems[id] ? '★' : '') + (favOnly && u.recentItems.indexOf(id) >= 0 ? '（最近）' : ''); return { label: (tag ? tag + ' ' : '') + it.name, right: '×' + d.inventory[id], sub: (it.cat === 'consumable' ? (canUseNow(id) ? '' : '【' + IC.scene(id) + '】') : '') + (it.desc || ''), cls: 'g-' + IC.of(id) + (it.cat === 'key' ? ' key' : '') }; });
+      if (!rows.length) rows = [{ label: favOnly ? '（最近使った道具・お気に入りはまだない。道具を選んで［★お気に入り］で印をつけられる）' : usableOnly ? '（いま使えるものはない）' : '（このジャンルの持ち物はない）', disabled: true }];
       var counts = G.map(function (g) { return g.id === 'all' ? all.length : all.filter(function (id) { return IC.of(id) === g.id; }).length; });
+      var key = 'items:' + G[tab].id + (favOnly ? ':fav' : '') + (usableOnly ? ':use' : '') + ':' + sort;
       var r = await Win.list(rows, { title: 'どうぐ', cls: 'items-menu', tabs: G.map(function (g, i) { return { label: g.name, count: counts[i] }; }), tab: tab,
-        tools: [{ id: 'sort', label: '並び：' + ITEM_SORTS[sort].name }, { id: 'usable', label: '使えるものだけ', on: usableOnly }],
-        initial: Math.min(initial, Math.max(0, ids.length - 1)), info: function (k) { return ids[k] ? Menu.itemDetail(ids[k]) : ''; } });
+        tools: [{ id: 'sort', label: '並び：' + ITEM_SORTS[sort].name }, { id: 'usable', label: '使えるものだけ', on: usableOnly }, { id: 'fav', label: '★最近・お気に入り', on: favOnly }],
+        key: key, initial: initial !== undefined ? Math.min(initial, Math.max(0, ids.length - 1)) : undefined, info: function (k) { return ids[k] ? Menu.itemDetail(ids[k]) : ''; },
+        okLabel: '使う・見る', actions: ids.length ? [{ id: 'fav', label: '★お気に入り' }] : [] });
+      initial = undefined;
       if (r === -1) return;
-      if (r && typeof r === 'object') { if (r.tab !== undefined) { tab = r.tab; initial = 0; } else if (r.tool === 'sort') sort = (sort + 1) % ITEM_SORTS.length; else if (r.tool === 'usable') usableOnly = !usableOnly; continue; }
+      if (r && typeof r === 'object') {
+        if (r.tab !== undefined) { tab = r.tab; } else if (r.tool === 'sort') sort = (sort + 1) % ITEM_SORTS.length; else if (r.tool === 'usable') usableOnly = !usableOnly; else if (r.tool === 'fav') favOnly = !favOnly;
+        else if (r.action === 'fav' && ids[r.index]) { var fid = ids[r.index]; if (u.favItems[fid]) delete u.favItems[fid]; else u.favItems[fid] = true; Win.toast(ITEMS[fid].name + (u.favItems[fid] ? 'をお気に入りにした' : 'のお気に入りを外した')); initial = r.index; }
+        continue;
+      }
       if (!ids.length) continue; initial = r;
-      if (await Menu.useItem(ids[r]) === 'warp') return 'warp';
+      var used = ids[r]; var before = d.inventory[used] || 0;
+      var res = await Menu.useItem(used);
+      if ((State.data.inventory[used] || 0) < before && ITEMS[used] && ITEMS[used].cat === 'consumable') Menu.noteItemUse(used);   // 実際に使えたときだけ「最近使った」に入れる
+      if (res === 'warp') return 'warp';
     }
   };
   Menu.useItem = async function (id) {
@@ -111,7 +159,7 @@
       if (ef.repel) { State.addItem(it.id, -1); d.counters.repel_steps = Math.max(d.counters.repel_steps || 0, ef.repel); await Win.message(['鐘を鳴らした。魔物の気配に気づきやすくなった（' + ef.repel + '歩のあいだ、陸の敵に出会いにくい）']); return; }   // v6.4 危険察知の鐘
       if (ef.seaRepel) { State.addItem(it.id, -1); d.counters.seacharm_steps = Math.max(d.counters.seacharm_steps || 0, ef.seaRepel); await Win.message(['潮風の護符を掲げた（船に乗っているあいだ' + ef.seaRepel + '歩、海の敵に出会いにくい）']); return; }   // v6.4 潮風の護符
       if (ef.grow && root.Growth73) { var gt = await pickActor(it.name + 'を誰に使う？', true); if (!gt) return; State.addItem(it.id, -1); var gn = root.Growth73.apply(gt, ef.grow); if (root.Audio) root.Audio.sfx('heal'); await Win.message([it.name + 'を使った。', gt.name + 'の' + root.Growth73.STAT_NAME[ef.grow] + 'の最大値が ' + gn + ' 上がった！']); World.updateHud(); return; }   // v7.3
-      var target = await pickActor(it.name + 'を誰に使う？', !!ef.revive); if (!target) return;
+      var target = await pickActor(it.name + 'を誰に使う？', !!ef.revive, ef.revive ? 'revive' : (ef.hp || ef.fullHp) ? 'hp' : (ef.mp || ef.fullMp) ? 'mp' : null); if (!target) return;
       var s = Actors.stats(target); var lines = [];
       if (ef.revive) { if (!target.dead) { await Win.message(['効果がない。']); return; } target.dead = false; target.hp = Math.max(1, Math.round(s.maxHp * ef.revive)); target.status = {}; lines.push(target.name + 'が復活した！'); }
       else if (target.dead) { await Win.message(['倒れている仲間には効果がない。']); return; }
@@ -134,19 +182,68 @@
     else await Win.message([it.desc, it.subcategory === 'material' ? '（素材。使ったり売ったりはできない）' : '（重要アイテム。使ったり売ったりはできない）']);
   };
 
+  // v8.8 そうび：候補を選ぶと「装備する前 → 後」を能力ごとに並べ、属性耐性・状態異常・固有効果・装備できる職業は数値と分けて出す
+  //      ［おすすめ候補］は、攻撃重視・耐久重視・魔法重視のどれかで「持っている中の点数の高い候補」を一覧で見せるだけ（自動では装備しない）
+  var EQ_SLOTS = ['weapon', 'armor', 'shield', 'head', 'acc']; var EQ_NAMES = { weapon: '武器', armor: '鎧', shield: '盾', head: '頭', acc: '装飾' };
+  var STAT_ROWS = [['maxHp', 'HP'], ['maxMp', 'MP'], ['atk', '攻撃'], ['def', '防御'], ['agi', '素早さ'], ['mag', '魔力'], ['mdef', '魔法防御']];
+  var EL_JA = { fire: '炎', ice: '氷', thunder: '雷', wind: '風', light: '光', dark: '闇' };
+  function statsWith(a, slot, id) { var keep = a.equip[slot]; a.equip[slot] = id || null; try { return Actors.stats(a); } finally { a.equip[slot] = keep; } }
+  function fxText(it) {
+    var out = []; var fx = it.fx || {};
+    if (fx.resist) out.push('属性耐性：' + Object.keys(fx.resist).map(function (k) { var v = fx.resist[k]; return (EL_JA[k] || k) + (v === 0 ? '無効' : '受けるダメージ×' + v); }).join('・'));
+    if (it.immune && it.immune.length) out.push('状態異常を防ぐ：' + it.immune.map(function (k) { return (Combat.STATUS_NAME && Combat.STATUS_NAME[k]) || k; }).join('・'));
+    if (fx.statusResist) out.push('状態異常にかかりにくい（' + Math.round(fx.statusResist * 100) + '%）');
+    if (it.element && EL_JA[it.element]) out.push('攻撃の属性：' + EL_JA[it.element]);
+    if (fx.bonusElem) out.push('追加の属性ダメージ：' + (EL_JA[fx.bonusElem.element] || fx.bonusElem.element) + ' +' + Math.round(fx.bonusElem.mult * 100) + '%');
+    if (fx.pierce) out.push('相手の防御の ' + Math.round(fx.pierce * 100) + '% を無視');
+    return out;
+  }
+  Menu.equipCompareHtml = function (a, slot, id) {
+    var before = Actors.stats(a), after = statsWith(a, slot, id); var it = id ? ITEMS[id] : null; var curId = a.equip[slot];
+    var rows = STAT_ROWS.map(function (r) { var b = before[r[0]] || 0, f = after[r[0]] || 0, df = f - b; return '<tr' + (df ? ' class="' + (df > 0 ? 'eq-up' : 'eq-down') + '"' : '') + '><td>' + r[1] + '</td><td>' + b + '</td><td>→</td><td><b>' + f + '</b></td><td>' + (df > 0 ? '▲+' + df : df < 0 ? '▼' + df : '±0') + '</td></tr>'; }).join('');
+    var h = '<div class="eq-cmp"><div class="small muted">' + esc(a.name) + '：' + esc(curId ? ITEMS[curId].name : '（なし）') + ' → <b>' + esc(it ? it.name : '（はずす）') + '</b></div><table class="tbl eq-tbl"><tr><th>能力</th><th>いま</th><th></th><th>装備後</th><th>差</th></tr>' + rows + '</table>';
+    if (it) {
+      var ft = fxText(it); if (ft.length) h += '<div class="eq-fx"><b>数値のほかの効果</b><ul>' + ft.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
+      if (it.bossExclusive && root.BossGear) h += root.BossGear.detailHtml(id);
+      else if (it.desc) h += '<div class="small muted">' + esc(it.desc) + '</div>';
+      if (root.Services && root.Services.equipJobs) h += '<div class="small muted">装備できる職業：' + esc((it.bossExclusive && root.BossGear ? root.BossGear.jobsText(it) : root.Services.equipJobs(it).join('・')) || 'なし') + '</div>';
+    }
+    return h + '</div>';
+  };
+  var FOCUS = [{ id: 'atk', name: '攻撃重視', w: { atk: 1, agi: 0.3, def: 0.15, maxHp: 0.03 } }, { id: 'def', name: '耐久重視', w: { def: 1, mdef: 0.6, maxHp: 0.2, agi: 0.1 } }, { id: 'mag', name: '魔法重視', w: { mag: 1, maxMp: 0.15, mdef: 0.4, def: 0.15 } }];
+  Menu.equipFocus = FOCUS;
+  // 点数（基礎の能力だけ）。固有効果・属性耐性は点数に入れない＝一覧で注意を出す
+  Menu.recommend = function (a, focusId) {
+    var F = FOCUS.filter(function (f) { return f.id === focusId; })[0] || FOCUS[0]; var inv = State.data.inventory;
+    function sc(slot, id) { var st = statsWith(a, slot, id); var base = statsWith(a, slot, null); var v = 0; Object.keys(F.w).forEach(function (k) { v += ((st[k] || 0) - (base[k] || 0)) * F.w[k]; }); return v; }
+    return EQ_SLOTS.map(function (slot) {
+      var cands = Object.keys(inv).filter(function (id) { return inv[id] > 0 && Actors.slotOf(id) === slot && Actors.canEquip(a, id); });
+      var cur = a.equip[slot]; var pool = cur ? cands.concat([cur]) : cands; var best = null, bs = -Infinity;
+      pool.forEach(function (id) { var v = sc(slot, id); if (v > bs + 1e-9) { bs = v; best = id; } });
+      return { slot: slot, cur: cur || null, best: best, better: best && best !== cur && bs > (cur ? sc(slot, cur) : 0) + 1e-9, special: !!(best && (ITEMS[best].bossExclusive || ITEMS[best].fx || ITEMS[best].immune)) || !!(cur && (ITEMS[cur].bossExclusive || ITEMS[cur].fx || ITEMS[cur].immune)) };
+    });
+  };
+  Menu.recommendHtml = function (a, focusId) {
+    var F = FOCUS.filter(function (f) { return f.id === focusId; })[0] || FOCUS[0]; var R = Menu.recommend(a, F.id);
+    return '<div class="rw-title">おすすめ候補（' + esc(F.name) + '）　' + esc(a.name) + '</div><div class="small muted">持っている装備の中で、基礎の能力の点数が高いものを並べただけです。自動では装備しません。属性耐性・状態異常・固有効果は点数に入れていないので、詳しくは各欄の比較で確かめてください。</div><table class="tbl eq-rec"><tr><th>枠</th><th>いま</th><th>候補</th></tr>' +
+      R.map(function (x) { return '<tr><td>' + EQ_NAMES[x.slot] + '</td><td>' + esc(x.cur ? ITEMS[x.cur].name : '―') + '</td><td>' + (x.better ? '<b>' + esc(ITEMS[x.best].name) + '</b>' : '<span class="muted">いまのままが最も高い</span>') + (x.special ? '<div class="small eq-note">※ 特別な効果のある装備が関わる（比較で確認）</div>' : '') + '</td></tr>'; }).join('') + '</table>';
+  };
   Menu.equip = async function () {
     var a = await pickActor('装備を変える', true); if (!a) return;
+    var focus = null;
     while (true) {
-      var slots = ['weapon', 'armor', 'shield', 'head', 'acc']; var names = { weapon: '武器', armor: '鎧', shield: '盾', head: '頭', acc: '装飾' };
-      var s = Actors.stats(a);
-      var i = await Win.list(slots.map(function (sl) { return { label: names[sl], right: a.equip[sl] ? ITEMS[a.equip[sl]].name : '―' }; }), { title: a.name + 'の装備　攻' + s.atk + ' 防' + s.def + ' 速' + s.agi + ' 魔' + s.mag });
+      var s = Actors.stats(a); var rec = focus ? Menu.recommend(a, focus) : null;
+      var rows = EQ_SLOTS.map(function (sl, k) { var r0 = rec && rec[k]; return { label: EQ_NAMES[sl], right: a.equip[sl] ? ITEMS[a.equip[sl]].name : '―', sub: r0 && r0.better ? 'おすすめ候補：' + ITEMS[r0.best].name : undefined }; });
+      rows.push({ label: 'おすすめ候補を見る', sub: '攻撃重視・耐久重視・魔法重視（見るだけ。自動では装備しない）' });
+      var i = await Win.list(rows, { title: a.name + 'の装備　HP' + s.maxHp + ' MP' + s.maxMp + ' 攻' + s.atk + ' 防' + s.def + ' 速' + s.agi + ' 魔' + s.mag, key: 'equip:slots' });
       if (i < 0) return;
-      var slot = slots[i]; var inv = State.data.inventory;
+      if (i === EQ_SLOTS.length) { var fi = await Win.choice('どの考え方で候補を見る？', FOCUS.map(function (f) { return f.name; }).concat(['やめる'])); if (fi >= 0 && fi < FOCUS.length) { focus = FOCUS[fi].id; await Win.panel(Menu.recommendHtml(a, focus), { cls: 'eq-rec-panel' }); } continue; }
+      var slot = EQ_SLOTS[i]; var inv = State.data.inventory; var rb = rec && rec[i] && rec[i].better ? rec[i].best : null;
       var cands = Object.keys(inv).filter(function (id) { return Actors.slotOf(id) === slot && Actors.canEquip(a, id); });
-      var opts = cands.map(function (id) { var it = ITEMS[id]; var key = it.cat === 'weapon' ? 'atk' : 'def'; var cur = a.equip[slot] ? ITEMS[a.equip[slot]][key] || 0 : 0; var diff = (it[key] || 0) - cur; return { label: it.name, right: (diff >= 0 ? '+' : '') + diff, sub: it.bossExclusive && it.uniqueName ? '固有効果【' + it.uniqueName + '】' + it.uniqueText : it.desc }; });   // v8.7 ボス固有装備：右＝基礎値の差、下＝固有効果（分けて出す）
+      var opts = cands.map(function (id) { var it = ITEMS[id]; var key = it.cat === 'weapon' ? 'atk' : 'def'; var cur = a.equip[slot] ? ITEMS[a.equip[slot]][key] || 0 : 0; var diff = (it[key] || 0) - cur; return { label: (id === rb ? '◎ ' : '') + it.name, right: (key === 'atk' ? '攻' : '防') + (diff >= 0 ? '+' : '') + diff, sub: it.bossExclusive && it.uniqueName ? '固有効果【' + it.uniqueName + '】' + it.uniqueText : it.desc }; });   // v8.7 ボス固有装備：右＝基礎値の差、下＝固有効果（分けて出す）
       if (a.equip[slot]) opts.push({ label: 'はずす', right: '' });
       if (!opts.length) { await Win.message(['装備できるものがない。']); continue; }
-      var k = await Win.list(opts, { title: names[slot] + 'を選ぶ', info: root.BossGear && cands.some(function (cid) { return ITEMS[cid].bossExclusive; }) ? function (q) { var cid = cands[q]; return cid && ITEMS[cid].bossExclusive ? root.BossGear.detailHtml(cid) : ''; } : undefined }); if (k < 0) continue;
+      var k = await Win.list(opts, { title: EQ_NAMES[slot] + 'を選ぶ' + (rb ? '（◎＝おすすめ候補）' : ''), cls: 'eq-list', okLabel: '装備する', info: function (q) { return Menu.equipCompareHtml(a, slot, q < cands.length ? cands[q] : null); } }); if (k < 0) continue;
       if (k >= cands.length) { State.addItem(a.equip[slot], 1); a.equip[slot] = null; continue; }
       root.Services.equipItem(a, cands[k]); if (root.Audio) root.Audio.sfx('equip');
     }
@@ -365,6 +462,33 @@
       else if (i === 10) await Services.bookList();   // v5.9
     }
   };
+  // v8.8 トレード成績・振り返り：いまある記録から集計するだけ（記録がない項目は「まだ記録がない」と出す。作り話の数字は出さない）
+  Menu.tradeRecordHtml = function () {
+    var d = State.data; var TE = root.TradeEval; var h = '<div class="rw-title">トレード成績・振り返り</div>';
+    var r = TE && TE.rank ? TE.rank(d.trade) : null; if (r) h += '<div>トレーダーランク <b>' + esc(r.letter) + '</b>　' + esc(r.title || '') + '<span class="muted small">（詳細モードの試練・講義の分野別の正解率から）</span></div>';
+    var sum = TE && TE.topicSummary ? TE.topicSummary(d.trade) : [];
+    var weak = TE && TE.weakTopics ? TE.weakTopics(d.trade).filter(function (t) { return t.plays > 0; }).slice(0, 3) : [];
+    h += '<h3 class="tr-h">苦手そうな分野（3 回以上の挑戦で正解率が低い順）</h3>' + (weak.length ? '<ul class="small">' + weak.map(function (t) { return '<li>' + esc(t.label) + '：正解 ' + t.correct + '/' + t.plays + (t.level ? '（' + esc(t.level) + '）' : '') + '</li>'; }).join('') + '</ul>' : '<div class="small muted">まだ記録が少ない（詳細モードの試練で分野ごとの記録がたまる）</div>');
+    var untried = sum.filter(function (t) { return !t.plays; }).map(function (t) { return t.label; }); if (untried.length) h += '<div class="small muted">まだ挑戦していない分野：' + esc(untried.join('・')) + '</div>';
+    var u = d.ultimate && d.ultimate.stats; if (u) { var nT = u.trades || 0; h += '<h3 class="tr-h">チャートバトル（必殺技・修行・試験・対戦）</h3><div class="small">エントリー ' + nT + ' 回（利益 ' + (u.wins || 0) + '・損失 ' + (u.losses || 0) + '・同値 ' + (u.flats || 0) + '）／自分で見送り ' + Math.max(0, (u.skips || 0) - (u.autoSkips || 0)) + ' 回・時間切れ ' + (u.autoSkips || 0) + ' 回' + (nT ? '／損益÷ATR の合計 ' + (Math.round((u.sumR || 0) * 100) / 100) : '') + '</div><div class="small muted">※ 1 回ごとの損益は運にも左右されます。判断の質は振り返りの「③ 判断の過程の評価」で確かめてください。</div>'; }
+    var q = d.trade && d.trade.quick; h += '<h3 class="tr-h">戦闘中の相場の試練（簡易）</h3>' + (q && q.plays ? '<div class="small">' + q.plays + ' 回　行動が場面の読みどおり ' + q.actionOk + ' 回・理由も合った ' + q.reasonOk + ' 回</div>' : '<div class="small muted">まだ記録がない</div>');
+    // 学習した日（記録に日時が残っているものだけ：チャートの振り返り・簡易の試練）
+    var days = {}; var addT = function (t) { if (!t) return; var dt = new Date(t); days[dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate()] = true; };
+    ((d.ultimate && d.ultimate.reviews) || []).forEach(function (x) { addT(x.t); }); ((q && q.log) || []).forEach(function (x) { addT(x.t); });
+    var nowD = new Date(); var streak = 0; for (var k = 0; k < 60; k++) { var dd = new Date(nowD.getFullYear(), nowD.getMonth(), nowD.getDate() - k); var key = dd.getFullYear() + '-' + (dd.getMonth() + 1) + '-' + dd.getDate(); if (days[key]) streak++; else if (k > 0) break; }
+    h += '<h3 class="tr-h">続けて学習した日</h3><div class="small">' + (Object.keys(days).length ? '記録のある日 ' + Object.keys(days).length + ' 日・いまの連続 ' + streak + ' 日' : 'まだ記録がない') + '<span class="muted">（日時が残る記録＝チャートの振り返り（最近 ' + ((root.Ultimates && root.Ultimates.REVIEW_MAX) || 10) + ' 回分）・簡易の試練（最近 20 回分）だけから数える）</span></div>';
+    if (weak.length) h += '<div class="small">おすすめ：修行場の「復習」で <b>' + esc(weak[0].label) + '</b> を練習する</div>';
+    return h;
+  };
+  Menu.tradeRecord = async function () {
+    while (true) {
+      var d = State.data; var nRev = ((d.ultimate && d.ultimate.reviews) || []).length;
+      var acts = [{ label: '振り返りの一覧（判断した時点とその後を並べる）', right: nRev + '件', disabled: !nRev || !root.TraderDojo, sub: nRev ? undefined : 'チャートバトルをすると増える' }, { label: '詳しい成績（詳細モードの試練）' }, { label: 'トレーダーランク' }, { label: '閉じる' }];
+      var i = await Win.list(acts, { title: 'トレード成績・振り返り', head: Menu.tradeRecordHtml(), cls: 'trade-record' });
+      if (i < 0 || i === 3) return;
+      if (i === 0) await root.TraderDojo.reviews(); else if (i === 1) await root.TradeUI.showRecord(); else if (i === 2) await Menu.rankPanel();
+    }
+  };
   Menu.learnProgress = async function () {
     var P = root.Learning.progress();
     var html = '<div class="rw-title">章ごとの学習イベント</div>' + P.map(function (p) { var e = p.event; var st = p.status === 'done' ? '<span class="ok-text">達成</span>' : p.status === 'open' ? '<span class="gold-text">挑戦できる</span>' : '<span class="muted">未解放の地域</span>'; var place = e.tutorial ? 'ポヨ村の修行場（師匠ハケイ）／メニュー' : e.mapId ? ({ lost_forest: '迷いの森の扉', emal_pass: 'エマール山道の石碑', oblivion_cave_3: '忘却の洞窟 最深部の扉', verum_hideout: '灰鉱町ヴェルム 地下の集会所の石碑（第5章）', kalion_finance: '徴収都市カリオン 財務局の石碑（第6章）', aruna_house_iris: '灰灯島アルナ 測量士の家の石碑（第8章）', temple_of_time_3: '時の神殿 最深部の石碑（第10章）', oracle_core_3: 'オラクル中枢 第3層の石碑（第12章）', forbidden_archive_3: '禁書庫 最深部の石碑（第13章）', demon_castle_gate: '魔王城の門の石碑（第15章）' })[e.mapId] || e.mapId : e.region + '（未実装）'; var pr = p.practices.length ? '<div class="small muted">任意練習：' + p.practices.map(function (x) { return esc(x.title) + (x.done ? '✓' : ''); }).join('・') + '</div>' : ''; var ab = p.ability ? '<div class="small">解放される能力：' + esc(p.ability.name) + (p.abilityOn ? '（習得済み）' : '（達成＋分野の理解で解放）') + '</div>' : ''; return '<div class="learn-row"><div><b>第' + e.chapter + '章 ' + esc(e.title) + '</b>　' + st + '</div><div class="small">' + esc(e.summary || '') + '</div><div class="small muted">場所：' + esc(place) + '</div>' + pr + ab + '</div>'; }).join('');
@@ -405,8 +529,9 @@
 
   Menu.save = async function () {
     var slots = [1, 2, 3].map(function (s) { return root.SaveUI ? root.SaveUI.slotItem(s) : { label: 'スロット' + s }; });   // v6.5 名前・レベル・場所・日時・プレイ時間・クラウドの状態
-    var i = await Win.list(slots, { title: 'セーブ（オートセーブも常時動作）' });
+    var i = await Win.list(slots, { title: 'セーブ（オートセーブも常時動作）', key: 'save:slots' });
     if (i < 0) return;
+    if (State.slotInfo && State.slotInfo(i + 1)) { var cf = await Win.choice('スロット' + (i + 1) + 'のデータに上書きする？（元のデータは消える）', ['上書きする', 'やめる']); if (cf !== 0) return; }   // v8.8 1 回タップで選べるので、上書きの前に確かめる
     var ok = State.save(i + 1);
     await Win.message([ok ? 'スロット' + (i + 1) + 'にセーブした。' : 'セーブに失敗した（ブラウザの保存領域を確認してください）。']);
   };
@@ -479,52 +604,76 @@
     return Win.panel(html, { cls: 'lab-panel' });
   };
 
+  // v8.8 設定：「音」「表示」「操作」「戦闘・トレード」「データ管理」に分け、項目を選ぶと値の一覧から今の値を確かめて選ぶ（押すたびに回る方式をやめた）
+  //      保存する値・名前は今までと同じ（旧セーブの値もそのまま読める）。一覧にない古い値はそのまま一覧に足して出す
+  var SET_TABS = [{ id: 'sound', label: '音' }, { id: 'view', label: '表示' }, { id: 'ctrl', label: '操作' }, { id: 'battle', label: '戦闘・トレード' }, { id: 'data', label: 'データ管理' }];
+  function pct(v) { return Math.round((v || 0) * 100) + '%'; }
+  function volOpts(cur) { var o = []; for (var k = 0; k <= 10; k++) o.push(k / 10); if (o.every(function (x) { return Math.abs(x - cur) > 1e-6; })) o.push(cur); o.sort(function (x, y) { return x - y; }); return o.map(function (v) { return { v: v, l: pct(v) }; }); }
+  Menu.SETTINGS = function () {
+    var st = State.data.settings; var A = root.Audio;
+    var L = [
+      { cat: 'sound', label: '音（BGM・効果音）', key: 'mute', opts: [{ v: false, l: 'ON' }, { v: true, l: 'OFF' }], after: function () { if (A) { A.apply(); if (!st.mute) A.sfx('coin'); } } },
+      { cat: 'sound', label: 'BGM音量', key: 'bgm', opts: volOpts(st.bgm), fmt: pct, after: function () { if (A) A.apply(); } , note: '選ぶとすぐに今の曲の音量が変わる' },
+      { cat: 'sound', label: '効果音音量', key: 'se', opts: volOpts(st.se), fmt: pct, after: function () { if (A) { A.apply(); A.sfx('coin'); } }, note: '選ぶと試しの音を鳴らす' },
+      { cat: 'view', label: '文字の大きさ', key: 'uiScale', def: 'normal', opts: [{ v: 'normal', l: '標準' }, { v: 'large', l: '大きい' }], after: function () { Menu.applyUiScale(); } },
+      { cat: 'view', label: '文字速度', key: 'textSpeed', opts: [{ v: 'normal', l: 'ふつう' }, { v: 'fast', l: 'はやい' }, { v: 'instant', l: '一瞬' }] },
+      { cat: 'view', label: 'ミニマップ', key: 'minimap', def: 'on', opts: [{ v: 'on', l: '表示する' }, { v: 'off', l: '表示しない' }], set: function (v) { if (root.Minimap && root.Minimap.setVisible) root.Minimap.setVisible(v !== 'off', true); else st.minimap = v; } },
+      { cat: 'view', label: 'ミニマップの大きさ', key: 'minimapSize', def: 'normal', opts: [{ v: 'normal', l: 'ふつう' }, { v: 'large', l: '大きい' }], after: function () { if (root.Minimap) root.Minimap.resize(); } },
+      { cat: 'view', label: '目的地ナビ（赤丸）', key: 'nav', def: 'on', opts: [{ v: 'on', l: 'ON' }, { v: 'off', l: 'OFF' }] },
+      { cat: 'view', label: 'ヒント表示', key: 'navHint', def: 'low', opts: [{ v: 'low', l: '控えめ' }, { v: 'detail', l: '詳細' }] },
+      { cat: 'view', label: '仲間の隊列表示（後ろをついて歩く）', key: 'followers', def: 'on', opts: [{ v: 'on', l: '表示する' }, { v: 'off', l: '表示しない' }] },
+      { cat: 'view', label: '戦闘背景の品質', key: 'battleBg', def: 'auto', opts: [{ v: 'auto', l: '自動（スマホは標準）' }, { v: 'high', l: '高' }, { v: 'normal', l: '標準' }, { v: 'low', l: '軽量（動く粒なし）' }], set: function (v) { if (v === 'auto') delete st.battleBg; else st.battleBg = v; } },
+      { cat: 'view', label: '敵のHPバー', key: 'enemyHpBar', def: 'off', opts: [{ v: 'on', l: '表示する' }, { v: 'off', l: '表示しない' }] },
+      { cat: 'view', label: 'マップの間取り（v7.6）', action: 'layout', right: root.EnvLayout ? (root.EnvLayout.enabled ? '新しい間取り' : '元の間取り') : '-', note: '切り替えるとページを再読み込みする（オートセーブしてから）' },
+      { cat: 'ctrl', label: '歩く速度', key: 'walkSpeed', def: 'fast', opts: [{ v: 'normal', l: 'ふつう' }, { v: 'fast', l: 'はやい' }, { v: 'faster', l: 'とてもはやい' }], after: function () { World.applyWalkSpeed(); } },
+      { cat: 'ctrl', label: 'スマホの移動操作', key: 'pad', def: 'stick', opts: [{ v: 'stick', l: 'スティック' }, { v: 'dpad', l: '十字キー' }] },
+      { cat: 'battle', label: '戦闘速度', key: 'battleSpeed', def: 'normal', opts: [{ v: 'normal', l: 'ふつう' }, { v: 'fast', l: 'はやい' }] },
+      { cat: 'battle', label: 'チャート試練のリスク%', key: 'riskPercent', opts: root.CONFIG.risk.riskOptions.map(function (v) { return { v: v, l: v + '%' }; }) },
+      { cat: 'battle', label: 'ZigZag表示', key: 'showZigzag', opts: [{ v: true, l: 'ON' }, { v: false, l: 'OFF' }] },
+      { cat: 'battle', label: '戦闘中の相場の試練', key: 'battleTrial', def: 'detail', opts: [{ v: 'quick', l: '簡易（買い・売り・見送り＋理由）' }, { v: 'detail', l: '詳細（5つの分析・高値安値・注文）' }], note: 'ボス戦・修行場・学院・進行イベントの試練は、いつも詳細' },
+      { cat: 'battle', label: 'チャートバトルの判断時間（通常）', key: 'chartTime', def: 20, opts: [20, 25, 30].map(function (v) { return { v: v, l: v + '秒' }; }), note: '修行の「通常」で使う。試験・必殺技は下の「必殺技の判断時間」' },
+      { cat: 'battle', label: '必殺技の判断時間', key: 'ultTime', def: 12, opts: ((root.ChartBattleUI && root.ChartBattleUI.TIME_OPTIONS) || [8, 12, 16, 20, 30]).map(function (v) { return { v: v, l: v + '秒' }; }) },
+      { cat: 'battle', label: '必殺技のチャートの更新', key: 'ultChart', def: 'normal', opts: [{ v: 'normal', l: '標準' }, { v: 'light', l: '軽量（描画を減らす）' }] },
+      { cat: 'battle', label: '必殺技の演出', key: 'ultFx', def: 'normal', opts: [{ v: 'normal', l: 'ふつう' }, { v: 'calm', l: '控えめ' }] },
+      { cat: 'data', label: 'データ管理（書き出し・読み込み・初期化）', action: 'data' },
+      { cat: 'data', label: 'タイトルに戻る', action: 'title' }
+    ];
+    if (Menu.extraSettings) Menu.extraSettings(L, st);   // 後の段階（チャート・スマホ操作）で足す項目
+    return L;
+  };
+  function setVal(st, S) { var v = st[S.key]; if (v === undefined) v = S.def; return v; }
+  function setLabel(st, S) { if (S.action) return S.right; var v = setVal(st, S); var o = S.opts.filter(function (x) { return x.v === v; })[0]; return o ? o.l : (S.fmt ? S.fmt(v) : String(v)); }
   Menu.settings = async function () {
+    var tab = 0;
     while (true) {
-      var st = State.data.settings;
-      var i = await Win.list([
-        { label: '音（BGM・効果音）', right: st.mute ? 'OFF' : 'ON' }, { label: 'BGM音量', right: Math.round(st.bgm * 100) + '%' }, { label: '効果音音量', right: Math.round(st.se * 100) + '%' },
-        { label: '文字速度', right: ({ normal: 'ふつう', fast: 'はやい', instant: '一瞬' })[st.textSpeed] }, { label: '戦闘速度', right: st.battleSpeed === 'fast' ? 'はやい' : 'ふつう' }, { label: '歩く速度', right: ({ normal: 'ふつう', fast: 'はやい', faster: 'とてもはやい' })[st.walkSpeed] || 'はやい' },
-        { label: 'チャート試練のリスク%', right: st.riskPercent + '%' }, { label: 'ZigZag表示', right: st.showZigzag ? 'ON' : 'OFF' },
-        { label: 'ミニマップ', right: st.minimap === 'off' ? '表示しない' : '表示する' }, { label: 'ミニマップの大きさ', right: st.minimapSize === 'large' ? '大きい' : 'ふつう' },
-        { label: 'スマホの移動操作', right: st.pad === 'dpad' ? '十字キー' : 'スティック' },
-        { label: '目的地ナビ（赤丸）', right: st.nav === 'off' ? 'OFF' : 'ON' }, { label: 'ヒント表示', right: st.navHint === 'detail' ? '詳細' : '控えめ' },
-        { label: '仲間の隊列表示（後ろをついて歩く）', right: st.followers === 'off' ? '表示しない' : '表示する' },
-        { label: 'データ管理（書き出し・読み込み・初期化）' }, { label: 'タイトルに戻る' },
-        { label: '戦闘背景の品質', right: ({ high: '高', normal: '標準', low: '軽量（動く粒なし）' })[st.battleBg] || '自動（スマホは標準）' },
-        { label: '必殺技の判断時間', right: (st.ultTime || 12) + '秒' }, { label: '必殺技のチャートの更新', right: st.ultChart === 'light' ? '軽量（描画を減らす）' : '標準' }, { label: '必殺技の演出', right: st.ultFx === 'calm' ? '控えめ' : 'ふつう' },
-        { label: '敵のHPバー', right: st.enemyHpBar === 'on' ? '表示する' : '表示しない' },   // 初期値は表示しない（未設定＝表示しない）
-        { label: 'マップの間取り（v7.6）', right: root.EnvLayout ? (root.EnvLayout.enabled ? '新しい間取り' : '元の間取り') : '-' }   // 町の通り・ダンジョンの広間の作り直し（js/rpg/envlayout.js）。端末ごと
-      ], { title: '設定' });
-      if (i < 0) return;
-      if (i === 0) { st.mute = !st.mute; if (root.Audio) root.Audio.apply(); }
-      if (i === 1) { st.bgm = Math.round(((st.bgm + 0.25) % 1.25) * 100) / 100; if (st.bgm > 1) st.bgm = 0; if (root.Audio) root.Audio.apply(); }
-      if (i === 2) { st.se = Math.round(((st.se + 0.25) % 1.25) * 100) / 100; if (st.se > 1) st.se = 0; if (root.Audio) root.Audio.apply(); }
-      if (i === 3) { st.textSpeed = ({ normal: 'fast', fast: 'instant', instant: 'normal' })[st.textSpeed]; }
-      if (i === 4) { st.battleSpeed = st.battleSpeed === 'fast' ? 'normal' : 'fast'; }
-      if (i === 5) { st.walkSpeed = ({ normal: 'fast', fast: 'faster', faster: 'normal' })[st.walkSpeed] || 'fast'; World.applyWalkSpeed(); }
-      if (i === 6) { var ro = root.CONFIG.risk.riskOptions; st.riskPercent = ro[(ro.indexOf(st.riskPercent) + 1) % ro.length]; }
-      if (i === 7) { st.showZigzag = !st.showZigzag; }
-      if (i === 8) { if (root.Minimap && root.Minimap.setVisible) root.Minimap.setVisible(st.minimap === 'off', true); else st.minimap = st.minimap === 'off' ? 'on' : 'off'; }
-      if (i === 9) { st.minimapSize = st.minimapSize === 'large' ? 'normal' : 'large'; if (root.Minimap) root.Minimap.resize(); }
-      if (i === 10) { st.pad = st.pad === 'dpad' ? 'stick' : 'dpad'; }   // v6.1
-      if (i === 11) { st.nav = st.nav === 'off' ? 'on' : 'off'; Win.toast(st.nav === 'off' ? '目的地ナビ：OFF（赤丸を出さない）' : '目的地ナビ：ON'); }   // v6.2
-      if (i === 12) { st.navHint = st.navHint === 'detail' ? 'low' : 'detail'; }
-      if (i === 13) { st.followers = st.followers === 'off' ? 'on' : 'off'; Win.toast(st.followers === 'off' ? '仲間の隊列：表示しない' : '仲間の隊列：表示する'); }   // v6.4 Phase F
-      if (i === 14) { await Menu.dataManagement(); }
-      if (i === 15) { var c = await Win.choice('タイトルに戻る？（オートセーブ済み）', ['戻る', 'やめる']); if (c === 0) { State.autosave(); root.Title.show(); return 'title'; } }
-      if (i === 16) { st.battleBg = ({ auto: 'high', high: 'normal', normal: 'low', low: 'auto' })[st.battleBg || 'auto']; if (st.battleBg === 'auto') delete st.battleBg; }   // v6.5 Phase D
-      if (i === 17) { var to = (root.ChartBattleUI && root.ChartBattleUI.TIME_OPTIONS) || [8, 12, 16, 20, 30]; var ti = to.indexOf(st.ultTime || 12); st.ultTime = to[(ti + 1) % to.length]; Win.toast('必殺技の判断時間：' + st.ultTime + '秒'); }   // 必殺技
-      if (i === 18) { st.ultChart = st.ultChart === 'light' ? 'normal' : 'light'; }
-      if (i === 19) { st.ultFx = st.ultFx === 'calm' ? 'normal' : 'calm'; }
-      if (i === 20) { st.enemyHpBar = st.enemyHpBar === 'on' ? 'off' : 'on'; Win.toast(st.enemyHpBar === 'on' ? '敵のHPバー：表示する' : '敵のHPバー：表示しない'); }
-      if (i === 21 && root.EnvLayout) {   // v7.6 間取りの切り替え：2D版・3D版の両方。マップを作り直すので、再読み込みで反映する
-        var lon = !root.EnvLayout.enabled; var lc = await Win.choice((lon ? '新しい間取り（町の通り・広場、ダンジョンの広間、建物の中の用途ごとの間取り）' : '元の間取り') + 'に切り替える？ 2D版・3D版の両方に効く。ページの再読み込みで反映する（オートセーブから再開できる。立ち位置が塞がっていれば近くの通れる所へ移る）', ['切り替えて再読み込み', 'やめる']);
-        if (lc === 0) { root.EnvLayout.setEnabled(lon); State.autosave(); try { root.location.reload(); } catch (e) { /* 再読み込みできない環境 */ } }
+      var st = State.data.settings; var ALL = Menu.SETTINGS(); var L = ALL.filter(function (x) { return x.cat === SET_TABS[tab].id; });
+      var r = await Win.list(L.map(function (S) { return { label: S.label, right: setLabel(st, S), sub: S.note }; }), { title: '設定', cls: 'settings-menu', key: 'settings:' + SET_TABS[tab].id, tabs: SET_TABS.map(function (t) { return { label: t.label, count: ALL.filter(function (x) { return x.cat === t.id; }).length }; }), tab: tab });
+      if (r === -1) return;
+      if (r && typeof r === 'object') { if (r.tab !== undefined) tab = r.tab; continue; }
+      var S = L[r]; if (!S) continue;
+      if (S.action === 'data') { await Menu.dataManagement(); continue; }
+      if (S.action === 'title') { if (await Menu.toTitle()) return 'title'; continue; }
+      if (S.action === 'layout' && root.EnvLayout) {   // v7.6 間取りの切り替え：2D版・3D版の両方。マップを作り直すので、再読み込みで反映する
+        var lon = !root.EnvLayout.enabled; var lc = await Win.choice((lon ? '新しい間取り（町の通り・広場、ダンジョンの広間、建物の中の用途ごとの間取り）' : '元の間取り') + 'に切り替える？ 2D版・3D版の両方に効く。ページの再読み込みで反映する（オートセーブから再開できる。立ち位置が塞がっていれば近くの通れる所へ移る）', ['切り替えて再読み込み', 'やめる'], { initial: 1 });
+        if (lc === 0) { root.EnvLayout.setEnabled(lon); var okSave = State.autosave(); if (okSave === false) { await Win.message(['オートセーブに失敗したため、再読み込みをやめた。セーブ（システム → セーブ）で保存してからもう一度選んでください。']); continue; } try { root.location.reload(); } catch (e) { /* 再読み込みできない環境 */ } }
+        continue;
       }
+      var cur = setVal(st, S); var ci = 0; S.opts.forEach(function (o, k) { if (o.v === cur) ci = k; });
+      var pick = await Win.choice(S.label + '（いま：' + setLabel(st, S) + '）', S.opts.map(function (o) { return (o.v === cur ? '● ' : '　') + o.l; }), { initial: ci });
+      if (pick < 0) continue; var nv = S.opts[pick].v;
+      if (S.set) S.set(nv); else st[S.key] = nv;
+      if (S.after) S.after();
+      Win.toast(S.label + '：' + S.opts[pick].l);
       State.autosave();
     }
   };
+  // v8.8 文字の大きさ：設定（セーブごと）と、この端末の最後の設定（タイトル画面用）
+  Menu.applyUiScale = function () {
+    var st = State.data && State.data.settings; var v = st && st.uiScale; if (!v) { try { v = root.localStorage.getItem('mtq-ui-scale') || 'normal'; } catch (e) { v = 'normal'; } } else { try { root.localStorage.setItem('mtq-ui-scale', v); } catch (e) { } }
+    if (root.document && root.document.documentElement) root.document.documentElement.classList.toggle('ui-large', v === 'large');
+  };
+  try { Menu.applyUiScale(); } catch (e) { }
+  if (World && World.start && !World.start._ux88) { var ws88 = World.start; World.start = function () { var r = ws88.apply(this, arguments); try { Menu.applyUiScale(); } catch (e) { } return r; }; World.start._ux88 = true; }
 
   Menu.dataManagement = async function () {
     while (true) {

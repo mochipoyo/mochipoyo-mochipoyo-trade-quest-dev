@@ -50,13 +50,14 @@
     }
   };
   Title.newGame = async function () {
-    var name = await Win.prompt('主人公の名前（8文字まで）', '勇者', 8); if (!name) name = '勇者';
+    var name = await Win.prompt('主人公の名前（8文字まで。空のまま決定で「勇者」）', '勇者', 8); if (name === null) return false; if (!name) name = '勇者';   // v8.8 やめる／Esc はタイトルへ戻る（勝手に「勇者」で始めない）
     var jobs = root.STARTER_JOBS;
     var ji = await Win.list(jobs.map(function (j) { var J = JOBS[j]; return { label: J.name, right: J.role, sub: J.desc }; }), { title: name + 'の職業を選ぶ（あとで転職できる）', info: function (k) { var J = JOBS[jobs[k]]; return (root.Assets ? root.Assets.portraitTag('hero_' + jobs[k], 'portrait info-portrait', 120) : '') + '<div class="muted small">固有：' + esc(J.trait) + '　武器：' + J.weapons.join('/') + '</div><div class="muted small">HP' + J.stats.hp + ' MP' + J.stats.mp + ' 攻' + J.stats.atk + ' 防' + J.stats.def + ' 速' + J.stats.agi + ' 魔' + J.stats.mag + '</div>'; } });
     if (ji < 0) return false;
     var c = await Win.choice(name + '（' + JOBS[jobs[ji]].name + '）で冒険を始める？', ['始める', 'やり直す']);
     if (c !== 0) return false;
     State.newGame(name, jobs[ji]);
+    State.data.settings.battleTrial = 'quick';   // v8.8 新しく始めたときは、通常戦闘の相場の試練を簡易に（設定で詳細に戻せる。前からのセーブは未設定＝詳細のまま）
     var legacy = State.legacyInfo();
     if (legacy) { var li = await Win.choice('旧バージョンのデータが見つかった。トレード学習の成績と修了した講義を引き継ぐ？（旧データは消えない）', ['引き継ぐ', '引き継がない']); if (li === 0) { var r = State.importLegacy(); await Win.message(['引き継いだ：' + r.migrated.join('／'), '引き継げない：' + r.skipped.join('／')]); } }
     // v6.9 西暦3121年の新しいプロローグ（アサナ村）。選ばなかった場合・Story3121 がない場合は、これまでの序章のままポヨ村から

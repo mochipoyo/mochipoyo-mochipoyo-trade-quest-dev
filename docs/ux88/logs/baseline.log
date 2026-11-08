@@ -1,0 +1,29 @@
+=== maptest
+errors [] fails 0
+=== navtest
+結果: 24 OK / 0 NG []
+=== harbortest
+結果: 23 OK / 0 NG []
+=== ftmenu
+結果: 6 OK / 0 NG []
+=== ch17test
+ERRORS: []
+=== ch67test
+ERRORS: []
+=== ch1012test
+ERRORS: []
+=== v87/rewards87_test.js
+  OK  distribute を 2 回呼んでも 1 回分（同じ結果を返す）
+結果: 72 OK / 0 NG []
+=== v87/rewards87_test.js 2d
+  OK  distribute を 2 回呼んでも 1 回分（同じ結果を返す）
+結果: 68 OK / 0 NG []
+=== v87/effects87_test.js
+結果: 152 OK / 0 NG []
+=== v86/airship86_test.js
+結果: 32 OK / 0 NG []
+=== v83/academy83_test.js
+結果：すべて OK
+=== v83/tm83_duel_logic.js
+結果：すべて OK
+done

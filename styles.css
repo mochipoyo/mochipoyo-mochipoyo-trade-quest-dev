@@ -829,3 +829,69 @@ body.astra-flying #minimap-layer, body.astra-flying #place-label, body.astra-fly
 .rw-item.bu-got .l { color: #ffe08a; }
 /* v8.7 リザルトの間は戦闘の欄を隠す（長いリザルトの下の「次へ」・上の VICTORY が戦闘の欄に隠れないように） */
 #stage.result-open #battle-party, #stage.result-open #battle-msg, #stage.result-open #auto-battle { visibility: hidden !important; pointer-events: none !important; }
+/* ===== v8.8 共通UI：タップの決まり・詳細を見てから決める一覧・文字サイズ ===== */
+.rw-actbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 6px; }
+.rw-ok, .rw-act { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; padding: 4px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; user-select: none; }
+.rw-ok { background: linear-gradient(180deg, #e8c15a, #b8902e); color: #1a1407; border: 1px solid #fff0b0; font-weight: bold; flex: 1 1 auto; }
+.rw-ok small { font-weight: normal; margin-left: 4px; opacity: .75; font-size: 11px; }
+.rw-ok.disabled { opacity: .4; cursor: default; }
+.rw-act { border: 1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.06); }
+.rw-hint { width: 100%; color: var(--muted); font-size: 11px; }
+.rw-tools { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0 4px; }
+.rw-btn.cancel { background: #2a2a40; }
+.rw-tab.disabled { opacity: .35; cursor: default; }
+.rw-item .s { white-space: normal; }
+body.mobile .rw-item, body.mobile .rw-opt { min-height: 44px; }
+body.mobile .rw-tab { min-height: 36px; display: inline-flex; align-items: center; }
+body.mobile .rw-ok, body.mobile .rw-act, body.mobile .rw-btn, body.mobile .rw-panel-close, body.mobile .rw-panel-quit, body.mobile .rw-tool { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+body.mobile .rw-close { min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; top: 0; right: 0; }
+.rw-list, .rw-panel, .rw-choice { padding-bottom: max(8px, env(safe-area-inset-bottom)); }
+/* 文字サイズ「大きい」（設定 → 表示）。2D 版・3D 版の共通の窓に効く */
+html.ui-large .rw-msg { font-size: 18px; }
+html.ui-large .rw-name, html.ui-large .rw-prompt, html.ui-large .rw-title { font-size: 16px; }
+html.ui-large .rw-opt, html.ui-large .rw-item { font-size: 16.5px; }
+html.ui-large .rw-item .r { font-size: 15px; } html.ui-large .rw-item .s { font-size: 13.5px; }
+html.ui-large .rw-info, html.ui-large .rw-panel { font-size: 15.5px; }
+html.ui-large .rw-panel .small, html.ui-large .rw-info .small, html.ui-large .muted.small { font-size: 13px; }
+html.ui-large .rw-tab { font-size: 14px; } html.ui-large .rw-hint { font-size: 13px; }
+html.ui-large #hud { font-size: 13px; } html.ui-large .bp { font-size: 13px; }
+/* メインメニュー：分類のタブ＋よく使うボタン。項目数で窓の大きさが揺れないよう、行の場所を確保する */
+.rw-list.main-menu { width: 320px; }
+.rw-list.main-menu .rw-items { min-height: 236px; }
+@media (max-width: 720px) { .rw-list.main-menu { width: 92%; left: 4%; right: auto; } .rw-list.main-menu .rw-items { min-height: 200px; } }
+.eq-tbl { width: 100%; font-size: 12.5px; } .eq-tbl td, .eq-tbl th { padding: 1px 4px; text-align: right; } .eq-tbl td:first-child, .eq-tbl th:first-child { text-align: left; }
+.eq-tbl tr.eq-up td:last-child { color: #8fe08f; } .eq-tbl tr.eq-down td:last-child { color: #ff9a8a; }
+.eq-fx ul { margin: 2px 0 4px 18px; padding: 0; font-size: 12.5px; } .eq-note { color: #ffd27a; }
+.rw-list .rw-info .eq-cmp { max-height: none; }
+.eq-rec td, .eq-rec th { padding: 2px 6px; }
+html.ui-large .eq-tbl, html.ui-large .eq-fx ul { font-size: 14.5px; }
+.rw-list.eq-list .rw-info, .rw-list.items-menu .rw-info { max-height: 42vh; }
+@media (max-height: 460px) { .rw-list.eq-list .rw-info, .rw-list.items-menu .rw-info { max-height: 34vh; } }
+.rw-list.main-menu .rw-tabs, .rw-list.settings-menu .rw-tabs { flex-wrap: wrap; overflow-x: visible; }
+/* ===== v8.8 チャートバトル：モード表示・足送り・指標の切り替え・十字線・結果の 3 区分 ===== */
+.chart-battle .cb-mode { flex: 0 0 auto; font-size: 11px; color: #1a1407; background: #e8c15a; border-radius: 10px; padding: 1px 8px; white-space: nowrap; }
+.chart-battle .cb-step { display: inline-flex; gap: 4px; flex: 0 0 auto; }
+.chart-battle .cb-step button { min-height: 32px; padding: 2px 10px; border-radius: 6px; border: 1px solid #8fa8ff; background: #16224a; color: #fff; cursor: pointer; font-size: 13px; }
+.chart-battle .cb-step button small { margin-left: 4px; opacity: .7; font-size: 10px; } .chart-battle .cb-step button:disabled { opacity: .4; }
+.chart-battle .cb-inds { display: flex; flex-wrap: wrap; gap: 4px; flex: 0 0 auto; }
+.chart-battle .cb-ind { font-size: 11px; padding: 2px 8px; border-radius: 10px; border: 1px solid rgba(255,255,255,.35); background: transparent; color: #c9d2e8; cursor: pointer; min-height: 26px; }
+.chart-battle .cb-ind.on { background: #5ab0ff; color: #08122a; border-color: #5ab0ff; font-weight: bold; }
+.chart-battle .cb-ind.on::before { content: '✓ '; }
+.chart-battle .cb-indnote, .chart-battle .cb-cmdnote { font-size: 11px; color: var(--muted); flex: 0 0 auto; }
+.chart-battle.decided .cb-cmdnote, .chart-battle.result .cb-cmdnote, .chart-battle.decided .cb-step { display: none; }
+.chart-battle .cb-chartbox { position: relative; }
+.chart-battle .cb-xline { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,.55); pointer-events: none; }
+.chart-battle .cb-xbox { position: absolute; top: 4px; left: 6px; background: rgba(8,14,32,.92); border: 1px solid rgba(255,255,255,.35); border-radius: 6px; padding: 4px 8px; font-size: 12px; line-height: 1.45; pointer-events: none; max-width: 70%; }
+.chart-battle .cb-xbox.right { left: auto; right: 70px; }
+.chart-battle .cb-xline.hidden, .chart-battle .cb-xbox.hidden { display: none; }
+.chart-battle .cb-info { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; line-height: 1.45; }
+.chart-battle .cb-sec3 { border: 1px solid rgba(255,255,255,.18); border-radius: 6px; padding: 4px 8px; margin: 4px 0; }
+.chart-battle .cb-sh { font-size: 11px; color: var(--gold); font-weight: bold; }
+.chart-battle .cb-nextbox .cb-review { font-weight: bold; border-color: #ffd24a !important; }
+html.ui-large .chart-battle { font-size: 15px; } html.ui-large .chart-battle .cb-info { font-size: 14px; } html.ui-large .chart-battle .cb-xbox { font-size: 14px; } html.ui-large .chart-battle .cb-cmdnote, html.ui-large .chart-battle .cb-indnote, html.ui-large .chart-battle .cb-mode { font-size: 13px; }
+@media (max-width: 720px) { .chart-battle .cb-cmdnote { font-size: 10.5px; } .chart-battle .cb-step button { min-height: 40px; } .chart-battle .cb-ind { min-height: 32px; } }
+.rw-list.trade-record { max-width: 600px; } .rw-list.trade-record .rw-head { max-height: 46vh; overflow-y: auto; } .tr-h { font-size: 13px; color: var(--gold); margin: 8px 0 2px; }
+.quick-trial .qt-tfs { display: flex; gap: 4px; flex-wrap: wrap; } .quick-trial .qt-q { font-size: 13px; color: var(--gold); margin: 6px 0 4px; }
+.quick-trial .qt-rs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; } .quick-trial .qt-r.on { background: #a08030; } .quick-trial .qt-step.hidden, .quick-trial .qt-result.hidden, .quick-trial .qt-next.hidden { display: none; }
+.quick-trial .qt-act.done .tcmd:not(.on) { opacity: .4; } .quick-trial .qt-res { font-size: 15px; margin: 6px 0; } .quick-trial .qt-res.ok b { color: #8fe08f; } .quick-trial .qt-res.ng b { color: #ff9a8a; }
+@media (max-width: 520px) { .quick-trial .qt-rs { grid-template-columns: 1fr; } }
