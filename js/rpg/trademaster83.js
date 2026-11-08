@@ -182,10 +182,20 @@
   function outJa(R) { if (!R || R.outcome === 'skip') return '見送り（0pips）'; var why = R.exit && R.exit.reason === 'tp' ? '利確' : R.exit && R.exit.reason === 'sl' ? '損切り' : '時間切れ決済'; return sideJa(R.side) + ' → ' + why + ' ' + fmtPips(R.pips); }
   TM.judge = function (me, op) { var a = pipsOf(me), b = pipsOf(op); return a - b >= 0.1 ? 1 : b - a >= 0.1 ? -1 : 0; };
   function esc(s) { return root.Win && root.Win.esc ? root.Win.esc(s) : String(s); }
+  // v8.8 あなたと相手を並べて比べる：判断・入った時刻（判断の時間が始まってから何本目の足か）・価格・判断した時点の見立て・結果
   TM.duelHtml = function (out, name) {
-    var me = out.result, op = out.rival && out.rival.result; var j = TM.judge(me, op);
-    return '<div class="cb-duel ' + (j > 0 ? 'win' : j < 0 ? 'lose' : 'draw') + '"><b>' + (j > 0 ? 'この勝負：あなたの勝ち' : j < 0 ? 'この勝負：' + esc(name) + 'の勝ち' : 'この勝負：引き分け') + '</b><br>' +
-      'あなた：' + esc(outJa(me)) + '<br>' + esc(name) + '：' + esc(outJa(op)) + '</div>';
+    var me = out.result, op = out.rival && out.rival.result; var j = TM.judge(me, op); var rv = out.rival || {};
+    var SIDE = { long: 'ロング（買い）', short: 'ショート（売り）', skip: '見送り' }; var BIAS = { long: '上向きの根拠が多め', short: '下向きの根拠が多め', none: 'はっきりしない' };
+    var when = function (pos) { if (!pos || out.bar0 === undefined) return '―'; return (pos.bar - out.bar0 + 1) + '本目' + (pos.tick < 7 ? '（形成中）' : ''); };
+    var px = function (r) { return r && r.entry ? (Math.round(r.entry.price * 1000) / 1000).toFixed(3) : '―'; };
+    var myBias = out.assessment ? BIAS[out.assessment.bias] || '' : '―';
+    var row = function (k, a, b) { return '<tr><th>' + k + '</th><td>' + a + '</td><td>' + b + '</td></tr>'; };
+    return '<div class="cb-duel ' + (j > 0 ? 'win' : j < 0 ? 'lose' : 'draw') + '"><b>' + (j > 0 ? 'この勝負：あなたの勝ち' : j < 0 ? 'この勝負：' + esc(name) + 'の勝ち' : 'この勝負：引き分け') + '</b>' +
+      '<table class="tbl duel-cmp"><tr><th></th><th>あなた</th><th>' + esc(name) + '</th></tr>' +
+      row('判断', esc(SIDE[out.side] || out.side) + (out.auto ? '（時間切れ）' : ''), esc(SIDE[rv.side] || rv.side || '―')) +
+      row('入った時刻', esc(when(out.myPos)), esc(when(rv.pos))) + row('入った価格', px(me), px(op)) +
+      row('その時点の見立て', esc(myBias), esc(BIAS[rv.bias] || '―')) + row('結果', esc(outJa(me)), esc(outJa(op))) + '</table>' +
+      '<div class="muted small">相手は、決めておいた時刻（あなたの判断とは関係なく）に、その時点までに見えている足だけで判断する。勝敗は取った pips で決める（今までどおり）。</div></div>';
   };
   TM.rules = function (info) {
     return ['【トレードバトルのルール】', '必殺技と同じ「いま動くチャート」で、相手と同じ相場をトレードする。チャートが動き出したら、ロング（買い）・ショート（売り）・見送りのどれかを選ぶ。' + Math.round(((root.ChartBattleUI && root.ChartBattleUI.settings().decideMs) || 12000) / 1000) + '秒たつと見送りになる。',
@@ -218,8 +228,9 @@
       var scn = U.newScenario({ cats: info.cats || undefined, diff: info.diff, avoid: t.recent.slice(-20) });
       t.recent.push(scn.id); if (t.recent.length > 40) t.recent = t.recent.slice(-40);
       var label = rounds > 1 ? '第' + r + '戦（' + me + '勝' + op + '敗）' : '1本勝負';
-      var res = await CB.open({ mode: 'duel', title: 'トレードバトル', sub: npc.name + '（' + TIER_NAME[info.tier] + '・' + info.styleName + '派）｜' + label, ind: info.ind, tf: info.tf, scenario: scn, color: '#e8c15a',
-        prompt: '相手より多く pips を取れば勝ち（見送りは 0pips）', rival: { name: npc.name, short: info.short, skill: info.skill, atFrac: 0.3 + R() * 0.5, seed: (info.seed + r * 977) >>> 0 },
+      var badge = rounds > 1 ? '<span class="tm-score">あなた <b>' + me + '</b> － <b>' + op + '</b> ' + esc(info.short) + '</span><span class="tm-round">第' + r + '戦／2本先取（最大3戦）</span>' : '<span class="tm-round">1本勝負</span>';   // v8.8 スコアを常に出す
+      var res = await CB.open({ mode: 'duel', title: 'トレードバトル', sub: npc.name + '（' + TIER_NAME[info.tier] + '・' + info.styleName + '派）｜' + label, badge: badge, ind: info.ind, tf: info.tf, scenario: scn, color: '#e8c15a',
+        prompt: '相手より多く pips を取れば勝ち（見送りは 0pips）', rival: { name: npc.name, short: info.short, skill: info.skill, atFrac: 0.3 + R() * 0.5, seed: (info.seed + r * 977) >>> 0, independent: true },
         feedback: function (out) { return TM.duelHtml(out, info.short); } });
       if (!res || res.quit) break;
       var j = TM.judge(res.result, res.rival && res.rival.result); if (j > 0) me++; else if (j < 0) op++;
@@ -227,14 +238,18 @@
       if (hooks && hooks.round) hooks.round(res, j);
     }
     var win = me > op, lose = op > me; var gold = 0;
+    // v8.8 記録（実績の表示だけ。賞金・報酬は増やさない）：初勝利・連勝・3本勝負の初勝利・相手ごとの初勝利
+    var ach = []; var done = log.length > 0;
+    if (done) { if (!t.beat || typeof t.beat !== 'object') t.beat = {}; if (win) { t.streak = (t.streak || 0) + 1; t.bestStreak = Math.max(t.bestStreak || 0, t.streak); if (!t.wins) ach.push('はじめての勝利！'); if (rounds > 1 && !t.win3) { t.win3 = 1; ach.push('3本勝負ではじめての勝利！'); } if (!t.beat[npc.id]) { t.beat[npc.id] = 1; ach.push(info.short + 'に初勝利（勝った相手 ' + Object.keys(t.beat).length + '人）'); } if (t.streak >= 2) ach.push(t.streak + '連勝中（最高 ' + t.bestStreak + '連勝）'); } else t.streak = 0; }
     if (win) { t.wins++; if (paid) { gold = TM.prize(info.tier, rounds); d.gold = (d.gold || 0) + gold; t.gold = (t.gold || 0) + gold; t.paid[npc.id] = d.steps || 0; } }
     else if (lose) t.losses++; else t.draws++;
     var pt = TM.face(info); var say = function (lines) { return Win.message(lines, { name: npc.name, portrait: pt }); };
     var score = rounds > 1 ? '（' + me + '勝' + op + '敗' + (log.length - me - op ? log.length - me - op + '分' : '') + '）' : '';
     if (win) { if (root.Audio) root.Audio.sfx('coin'); await say(['……やるな。今回は俺の負けだ' + score + '。'].concat(gold ? ['賞金 ' + gold + 'G を受け取った！'] : ['（賞金はさっき受け取ったので、今回はなし）'])); }
+    if (ach.length && root.Win) await root.Win.message(['【トレードバトルの記録】'].concat(ach).concat(['（通算 ' + t.wins + '勝 ' + t.losses + '敗 ' + t.draws + '分）']));
     else if (lose) await say(['今回は俺の勝ちだ' + score + '。', '根拠がそろうまで待つのも、立派な判断だぞ。']);
     else await say(['引き分けか' + score + '。いい読みだ。']);
-    return { win: win, lose: lose, me: me, op: op, rounds: log, gold: gold };
+    return { win: win, lose: lose, me: me, op: op, rounds: log, gold: gold, achievements: ach };
   };
 
   /* ---------- 2D 版の見た目：足元の金の輪・頭の上のシルクハット・ローソク足の札（近くでは名前） ---------- */

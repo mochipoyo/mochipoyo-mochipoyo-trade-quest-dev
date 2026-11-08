@@ -905,3 +905,9 @@ html.ui-large .chart-battle { font-size: 15px; } html.ui-large .chart-battle .cb
 .rs-minis { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 6px 0; } .rs-mini small { color: var(--muted); margin-left: 2px; }
 .rs-special { text-align: center; color: #1a1407; background: linear-gradient(90deg, #e8c15a, #ffe9a0, #e8c15a); border-radius: 6px; padding: 3px 8px; margin: 4px 0; font-weight: bold; }
 #auto-battle .ab-keep { display: block; font-size: 9px; line-height: 1; opacity: .85; }
+/* ===== v8.8 トレードバトル：スコア・比べる表 ===== */
+.chart-battle .cb-badge { display: flex; gap: 10px; align-items: center; flex: 0 0 auto; font-size: 13px; }
+.chart-battle .cb-badge .tm-score { background: #16224a; border: 1px solid #e8c15a; border-radius: 6px; padding: 1px 10px; } .chart-battle .cb-badge .tm-score b { color: #ffd24a; font-size: 15px; }
+.chart-battle .cb-badge .tm-round { color: var(--muted); font-size: 12px; }
+.duel-cmp { width: 100%; font-size: 12px; margin: 4px 0; } .duel-cmp th, .duel-cmp td { padding: 1px 6px; text-align: left; } .duel-cmp tr th:first-child { color: var(--muted); font-weight: normal; white-space: nowrap; }
+html.ui-large .duel-cmp { font-size: 14px; }
