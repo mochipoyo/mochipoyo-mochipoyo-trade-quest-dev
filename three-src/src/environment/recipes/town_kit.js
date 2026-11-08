@@ -67,7 +67,7 @@ export function townKit(mapId, opt) {
     id: 'town_kit.v1' + (opt.style ? ':' + opt.style : ''),
     async prepare(ctx) {
       const map = ctx.map; const prof = ctx.profile || {}; const region = opt.style || (REGION_STYLE[prof.region] ? prof.region : 'arcadia'); const EXT = (window.Layout82 && window.Layout82.off) ? null : TOWN_EXT82[map.id]; const R = EXT ? Object.assign({}, REGION_STYLE[region], EXT) : REGION_STYLE[region];   // v8.2 町ごとの外観（theme82.js の TOWN_EXT82）
-      const brick82 = R.brick ? wallTex('brick', R.brick.c1, R.brick.c2, { soot: R.brick.soot }) : null; if (EXT) ctx.stats.ext82 = map.id;
+      const brick82 = R.brick ? wallTex('brick', R.brick.c1, R.brick.c2, { soot: R.brick.soot }) : R.wall82 ? wallTex(R.wall82.kind, R.wall82.c1, R.wall82.c2, R.wall82.opt || {}) : null;   // v8.3 煉瓦以外の外壁（日干し煉瓦・玄武岩・帆布など） if (EXT) ctx.stats.ext82 = map.id;
       const tex = (key, a) => texMat('tk_' + key, canvasTex('tk_' + key, 256, 256, drawSetts(a[0], a[1], a[2], a[3], a[4])), { roughness: 0.88 }, { height: settsHeight(a[2], a[3], a[2] * 7 + a[3]), depth: 3 });   // 高画質：石の形から法線・AO（ProcPBR.js）
       const rk = EXT && EXT.road ? map.id : region; const K = { R, region, road: tex(rk + '_road', R.road), walk: tex(rk + '_walk', R.walk) };
       const LM = map.envLayout && map.envLayout.landmark; const inLM = (x, z) => !!LM && x >= LM.x && x < LM.x + LM.w && z >= LM.y && z < LM.y + LM.h;   // 町ごとの目印のマス（js/rpg/envlayout.js）

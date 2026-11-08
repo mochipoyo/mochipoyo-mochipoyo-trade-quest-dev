@@ -637,6 +637,14 @@ body.astra-flying #minimap-layer, body.astra-flying #place-label, body.astra-fly
 .chart-battle .cb-quit { background: #16224a; color: #c9c9d6; border: 1px solid #6a6a80; border-radius: 3px; font-size: 11px; padding: 1px 8px; cursor: pointer; font-family: inherit; }
 .chart-battle .cb-prompt { font-size: 12px; color: #cfe3ff; background: rgba(90,176,255,.1); border-left: 3px solid #5ab0ff; padding: 2px 6px; flex: 0 0 auto; }
 .chart-battle .cb-timer { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.chart-battle .cb-rival { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; font-size: 12px; padding: 2px 8px; border: 1px solid rgba(201,154,255,0.55); border-radius: 6px; background: rgba(60,30,90,0.35); color: #e8dcff; }   /* v8.3 トレードバトルの相手 */
+.chart-battle .cb-rival b { color: #c99aff; white-space: nowrap; }
+.chart-battle .cb-rv-st { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chart-battle .cb-rv-st.long { color: #4cc38a; font-weight: bold; } .chart-battle .cb-rv-st.short { color: #e5484d; font-weight: bold; } .chart-battle .cb-rv-st.skip { color: #c9d2e8; }
+.chart-battle.rival-in .cb-rival { animation: cbRivalIn 0.6s ease-out; }
+@keyframes cbRivalIn { 0% { background: rgba(201,154,255,0.65); } 100% { background: rgba(60,30,90,0.35); } }
+.chart-battle .cb-duel { margin: 6px 0; padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(232,193,90,0.6); background: rgba(232,193,90,0.08); line-height: 1.6; }
+.chart-battle .cb-duel.win b { color: #ffd24a; } .chart-battle .cb-duel.lose b { color: #c99aff; } .chart-battle .cb-duel.draw b { color: #c9d2e8; }
 .chart-battle .cb-tbar { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
 .chart-battle .cb-tbar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #4cc38a, #e8c15a); }
 .chart-battle.hurry .cb-tbar i { background: #e5484d; }

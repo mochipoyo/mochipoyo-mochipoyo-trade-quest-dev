@@ -13,6 +13,7 @@ import { buildLairGates } from './LairGate3D.js';
 import { buildFurniture81 } from './Furniture81.js';
 import { buildTicker82 } from './Ticker82.js';
 import { buildGate82, buildBackdrop82 } from './Castle82.js';
+import { dressTradeMaster83 } from '../entities/TradeMaster83.js';
 import { isAcademy82, buildAcademyWing82, buildAcademyBridges82 } from './Academy82.js';
 import { buildArcades81 } from './Arcade81.js';
 import { buildCrests81 } from './Crest81.js';
@@ -167,7 +168,8 @@ export class MapScene3D {
       }
       const ch = cr ? (await Character3D.create(app.models, cr.model, { color: cr.color, accent: cr.accent, scale: cr.scale }) || await Character3D.create(app.models, model)) : await Character3D.create(app.models, model);
       if (!ch) continue; ch.npc = n; this.root.add(ch.root); this.npcs.push(ch);
-      if (!cr && window.Mob76 && bdetailSetting() !== 'off') { try { const dk = window.Mob76.kindFor(map, n); if (dk && dressMob(ch, dk)) this.dressed76 = (this.dressed76 || 0) + 1; } catch (e) { /* 装いがなくても NPC は出す */ } }   // v7.6 町の人の装い（js/data/mob76.js・MobDress76.js）
+      if (n.tradeMaster83) { try { if (dressTradeMaster83(ch, n.tradeMaster83, this.animated)) this.tradeMasters83 = (this.tradeMasters83 || 0) + 1; } catch (e) { console.warn('tm83', e); } }   // v8.3 トレードマスターの見た目（entities/TradeMaster83.js）
+      else if (!cr && window.Mob76 && bdetailSetting() !== 'off') { try { const dk = window.Mob76.kindFor(map, n); if (dk && dressMob(ch, dk)) this.dressed76 = (this.dressed76 || 0) + 1; } catch (e) { /* 装いがなくても NPC は出す */ } }   // v7.6 町の人の装い（js/data/mob76.js・MobDress76.js）
       ch.yaw = ch.wantYaw = DIR_YAW[n.dir] || 0;
       this.placeNpc(ch, 0, true);
     }

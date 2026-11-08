@@ -252,6 +252,9 @@ export class App3D {
     this.ui.setBadge(ms.coverage === 'generic' ? '3D版 開発中：汎用3D（仮3D・自動生成）' : '3D版：専用3D（ポヨ村）');
     this.lighting.setLampSpots(ms.lampSpots); this.lighting.setInterior(ms.interior || !!ms.dark, ms.ambient); this.lighting.church = !!(ms.interior && ms.map && (/church|chapel|temple|cathedral|shrine/.test(ms.map.id) || /教会|聖堂|礼拝|神殿/.test(ms.map.name || '')));   // v8.1 教会の中の光を落とす（LightingManager）
     if (this.lighting.setTheme) this.lighting.setTheme(ms.theme || null);
+    // v8.3 低画質の屋内：画面の明るさを測って露出を上げる（暗い壁・床の町の屋内がほぼ黒く見えたため）。一度測った地図は覚えておく
+    { const low = this.quality === 'low'; const id = ms.map && ms.map.id; const memo = (this._expoMemo82 = this._expoMemo82 || new Map()); const m0 = low && ms.interior ? memo.get(id) : null;
+      this.lighting.expMul82 = m0 || 1; this.expo82 = { id, frames: 0, iter: 0, log: [], done: !(low && ms.interior) || !!m0, mul: m0 || 1 }; }
     if (this.lighting.setMapKind) this.lighting.setMapKind(ms.interior ? 'interior' : (ms.map && ms.map.kind) || null);   // v7.6 画面の仕上げ
     if (this.lighting.setMood) this.lighting.setMood((ms.map && ms.map.def && ms.map.def.mood3d) || null);   // v6.9 マップ固有の空気
     if (this.lighting.setSpace) this.lighting.setSpace(!!(ms.map && ms.map.def && ms.map.def.space76 && !ms.interior));   // v7.6 異空間（ゼロメア）の星空
@@ -345,6 +348,14 @@ export class App3D {
   // v8.2 止めてある乗り物のマス（'x,y' の Set）。乗っていないときだけ。いま立っているマスは除く（飛空艇を着陸させた直後は、そのマスに立っている）
   //  2D版は「乗り物のマスへ進む＝乗る」（World.tryMove → Vehicle.resolveMove・Astra.bump）。3D の自由移動は陸のマスを通り抜けてしまい、
   //  陸に止めた飛空艇・アストラ号に乗れなかった（水の上の船は水のマスでぶつかるので乗れていた）。ふさいで、ぶつかったときに bump → tryMove で乗る
+  // v8.3 低画質の屋内の露出：描いた直後の画面（中央の 7 割）の明るさを測り、暗ければ露出を上げる（最大 3 倍・3 回まで）。明るい部屋は変えない
+  autoExpo82() {
+    const E = this.expo82; const ms = this.current; if (!ms || !ms.map || ms.map.id !== E.id || this.building || this.camera.cine) return;
+    E.frames++; if (E.frames < (E.iter ? 4 : 12)) return; E.frames = 0;
+    const y = this.renderer.meanLuma82(); if (y === null) { E.done = true; return; } E.log.push(Math.round(y));
+    const T = 66; if (y >= T - 4 || E.iter >= 3 || E.mul >= 3) { E.done = true; this._expoMemo82.set(E.id, E.mul); return; }
+    E.mul = Math.min(3, E.mul * Math.min(2.2, Math.pow(T / Math.max(4, y), 1.7))); this.lighting.expMul82 = E.mul; E.iter++;
+  }
   vehicleBlocks(m, p) {
     const d = G.State.data; if (!m || !p || (d && d.aboard)) return null; let set = null;
     const add = (x, y) => { if (x === p.x && y === p.y) return; (set || (set = new Set())).add(x + ',' + y); };
@@ -642,6 +653,7 @@ export class App3D {
     this.updateCutout();
     if (L) this.renderer.resize(L.w, L.h);
     if (!this.paused) this.renderer.render();   // paused：自動テストで描画だけ止める（ソフトウェア描画の環境用）
+    if (!this.paused && this.expo82 && !this.expo82.done) { try { this.autoExpo82(); } catch (e) { this.expo82.done = true; this.expo82.err = String(e && e.message || e); } }   // v8.3 低画質の屋内の露出（描いた直後に測る）
     this.updateNavRing(t);
     // 「話す・調べる」の案内
     const tg = (!W.busy && E.top() === W.scene) ? this.findTarget() : null;

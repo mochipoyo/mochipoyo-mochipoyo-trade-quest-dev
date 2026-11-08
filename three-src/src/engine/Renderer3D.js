@@ -49,6 +49,15 @@ export class Renderer3D {
     if (this.camera) { this.camera.aspect = w / h; this.camera.updateProjectionMatrix(); }
   }
   render() { if (!this.scene) return; this.renderer.info.reset(); if (this.composer) this.composer.render(); else this.renderer.render(this.scene, this.camera); }
+  // v8.3 描いた直後の画面の中央（横 7 割・縦 7.6 割）の明るさ（0〜255、Rec.709）。描いたのと同じ処理の中で呼ぶ（preserveDrawingBuffer なしでも読める）
+  meanLuma82() {
+    const gl = this.renderer.getContext(); const W = gl.drawingBufferWidth, H = gl.drawingBufferHeight; if (!W || !H) return null;
+    const x0 = Math.floor(W * 0.15), y0 = Math.floor(H * 0.12), w = Math.max(1, Math.floor(W * 0.7)), h = Math.max(1, Math.floor(H * 0.76));
+    const buf = this._luma82 && this._luma82.length === w * h * 4 ? this._luma82 : (this._luma82 = new Uint8Array(w * h * 4));
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.readPixels(x0, y0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+    let s = 0, n = 0; for (let i = 0; i < buf.length; i += 4 * 7) { s += 0.2126 * buf[i] + 0.7152 * buf[i + 1] + 0.0722 * buf[i + 2]; n++; }
+    return n ? s / n : null;
+  }
   setBloom(strength) { if (this.bloom) this.bloom.strength = strength; }
   setFinish(o) { if (this.finish) this.finish.update(o); }
   setFinishEnabled(on) { if (this.finish) this.finish.setEnabled(on); }

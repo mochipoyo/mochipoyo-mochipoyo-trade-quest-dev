@@ -107,7 +107,7 @@ export class LightingManager {
     this.sky.material.uniforms.space.value = this.space && !this.interior ? 1 : 0;
     if (this.space && !this.interior) { this.sky.material.uniforms.uT.value = performance.now() / 1000; this.fog.color.setHex(0x120e26); this.fog.density = 0.006; this.hemi.color.lerp(new THREE.Color(0xb8a8ff), 0.35); }   // v7.6 異空間
     this.scene.background = null;
-    this.renderer.renderer.toneMappingExposure = k.exp;
+    this.renderer.renderer.toneMappingExposure = k.exp * (this.interior && this.expMul82 ? this.expMul82 : 1);   // v8.3 低画質の屋内の露出（GameBridge.autoExpo82）
     for (const m of this.windowMats) m.emissiveIntensity = (this.interior ? 0.6 : k.win) * BLD_LIGHT;
     for (const m of this.glowMats) m.emissiveIntensity = (m.userData.baseEmissive || 1) * (this.interior ? 0.6 * BLD_LIGHT : (0.25 + this.night * 0.9) * (m.userData.natural ? 1 : m.userData.bld ? BLD_LIGHT : 1));
     for (const m of this.keepMats) m.emissiveIntensity = m.userData.keepBase * (this.interior ? BLD_LIGHT : 1);

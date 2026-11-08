@@ -15,7 +15,7 @@ const WALLT = { castle_wall: 1 };
 export function findWallGates(map) {
   const W = map.w, H = map.h; const T = (x, y) => (x < 0 || y < 0 || x >= W || y >= H ? '_out' : map.tile(x, y));
   const defs = window.MAP_DEFS || {}; const out = [];
-  const exits = (map.def && map.def.warps || []).filter((w) => { const d = defs[w.to]; return d && (d.kind === 'field' || d.region); });
+  const exits = (map.def && map.def.warps || []).filter((w) => { const d = defs[w.to]; return d && (d.kind === 'field' || d.region || d.castle82); });   // v8.3 城郭区画への道（js/data/castle82.js の carveRoad82）も町の門
   const sides = { S: [], N: [], E: [], W: [] };
   exits.forEach((w) => { if (w.y >= H - 2) sides.S.push(w); else if (w.y <= 1) sides.N.push(w); else if (w.x >= W - 2) sides.E.push(w); else if (w.x <= 1) sides.W.push(w); });
   for (const side of ['S', 'N', 'E', 'W']) {
@@ -24,7 +24,8 @@ export function findWallGates(map) {
     const runs = []; let s0 = along[0], p = along[0]; for (let i = 1; i <= along.length; i++) { if (i < along.length && along[i] === p + 1) { p = along[i]; continue; } runs.push([s0, p]); if (i < along.length) { s0 = along[i]; p = along[i]; } }
     for (const [a0, a1] of runs) {
       const vs = []; for (let k = 0; k < 4; k++) { const v = side === 'S' ? H - 1 - k : side === 'N' ? k : side === 'E' ? W - 1 - k : k; const t0 = horiz ? T(a0 - 1, v) : T(v, a0 - 1), t1 = horiz ? T(a1 + 1, v) : T(v, a1 + 1); if (WALLT[t0] && WALLT[t1]) vs.push(v); else if (vs.length) break; }
-      if (!vs.length || a1 - a0 + 1 > 8) continue; out.push({ side, a0, a1, v0: Math.min(...vs), v1: Math.max(...vs) });
+      if (!vs.length || a1 - a0 + 1 > 8) continue; const w0 = sides[side].find((w) => (horiz ? w.x : w.y) === a0); const dd = w0 && defs[w0.to];
+      out.push({ side, a0, a1, v0: Math.min(...vs), v1: Math.max(...vs), to: w0 && w0.to, name: dd && dd.castle82 ? String(dd.name || '').split('・')[0] : null });   // v8.3 城への門の額は行き先（リヴェル城など）
     }
   }
   return out;
@@ -85,7 +86,7 @@ export function buildWallGates(map, ctx) {
       for (const zf of [ts / 2 + 0.01, -ts / 2 - 0.01]) for (const y of [th * 0.32, th * 0.66]) b.add(dark, box(0.1, 0.55, 0.04, 1), P(tx, y, zf));   // 矢狭間
     }
     // 額（町の名）・旗・門灯（外側と内側）
-    const name = (map.name || '').replace(/（.*?）/g, '');
+    const name = (g.name || map.name || '').replace(/（.*?）/g, '');
     for (const s of [1, -1]) {
       const plate = new THREE.Mesh(new THREE.PlaneGeometry(Math.min(ow + 0.4, 3.2), 0.6), addCutout(new THREE.MeshStandardMaterial({ map: textTexture(name || '城門'), roughness: 0.8 })));
       const pp = new THREE.Vector3(0, apex + 0.75, s * (D / 2 + 0.04)).applyMatrix4(base); plate.position.copy(pp); plate.rotation.y = ry + (s < 0 ? Math.PI : 0); ctx.group.add(plate);

@@ -127,6 +127,8 @@ export function buildBackdrop82(ms) {
 export function cameraZone82(ms, pos) {
   const map = ms && ms.map; if (!map || !map.def) return null;
   if (map.def.castle82) return { pitch: 33, dist: 27 };
+  const R = map.def.castleRoad82;   // v8.3 城郭区画へ出る道（北の端の門）：道の中と、道の入口の南 14 マスまで
+  if (R) { const dz = pos.z - (R.yB + 1), dx = Math.abs(pos.x - R.cx); if (dz < -(R.yB + 2) || dz > 14 || dx > 16) return null; return { pitch: 34 + Math.max(0, dz - 8) * 1.5, dist: 26 }; }
   const g = map.buildings && map.buildings.find((b) => b.gate82); if (!g || !g.doorAbs) return null;
   const dz = pos.z - (g.doorAbs.y + 1), dx = Math.abs(pos.x - (g.doorAbs.x + 0.5)); if (dz < -1 || dz > 14 || dx > 16) return null;
   return { pitch: 34 + Math.max(0, dz - 8) * 1.5, dist: 26 };

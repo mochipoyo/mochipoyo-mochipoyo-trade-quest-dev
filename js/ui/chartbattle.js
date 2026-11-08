@@ -120,6 +120,14 @@
         if (v.exit && v.exit.bar <= end) { var xx2 = xOf(v.exit.bar), yy2 = yP(v.exit.price); ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(xx2, yy2, 5, 0, Math.PI * 2); ctx.stroke(); }
       }
     }
+    // v8.3 トレードバトルの相手（トレードマスター）の建玉：紫の三角と名前。決済のあとは決済の印
+    if (v.rival && v.rival.bar >= start && v.rival.bar <= end) {
+      var rvC = '#c99aff'; var xr = xOf(v.rival.bar), yr = yP(v.rival.price); ctx.fillStyle = rvC; ctx.beginPath();
+      if (v.rival.side === 'long') { ctx.moveTo(xr, yr + 2); ctx.lineTo(xr - 6, yr + 11); ctx.lineTo(xr + 6, yr + 11); } else { ctx.moveTo(xr, yr - 2); ctx.lineTo(xr - 6, yr - 11); ctx.lineTo(xr + 6, yr - 11); } ctx.fill();
+      ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(201,154,255,0.75)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(xr, yr); ctx.lineTo(v.rival.exit && v.rival.exit.bar <= end ? xOf(v.rival.exit.bar) : W - padR, yr); ctx.stroke(); ctx.setLineDash([]);
+      ctx.textAlign = 'left'; ctx.fillStyle = rvC; ctx.fillText(v.rival.label || '相手', xr + 8, v.rival.side === 'long' ? yr + 16 : yr - 14);
+      if (v.rival.exit && v.rival.exit.bar <= end) { ctx.strokeStyle = rvC; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(xOf(v.rival.exit.bar), yP(v.rival.exit.price), 5, 0, Math.PI * 2); ctx.stroke(); }
+    }
     // 印（振り返り：判断した時点など）
     (v.marks || []).forEach(function (mk) { if (mk.bar < start || mk.bar > end) return; var xm = xOf(mk.bar); ctx.setLineDash([4, 3]); ctx.strokeStyle = mk.color || '#ffd24a'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(xm, padT); ctx.lineTo(xm, mainH); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = mk.color || '#ffd24a'; ctx.textAlign = xm > W * 0.6 ? 'right' : 'left'; ctx.fillText(mk.label, xm + (xm > W * 0.6 ? -4 : 4), padT + 9 + (mk.row || 0) * 12); });
     // いまの価格
@@ -179,6 +187,7 @@
       '<div class="cb-sim">シミュレーション相場｜架空ペア POYO/MOCHI・' + esc(tfName(tf)) + (opts.quitable ? '<button type="button" class="cb-quit">中断</button>' : '') + '</div></div>' +
       (opts.prompt ? '<div class="cb-prompt">' + esc(opts.prompt) + '</div>' : '') +
       '<div class="cb-timer"><span class="cb-tbar"><i></i></span><b class="cb-sec"></b></div>' +
+      (opts.rival ? '<div class="cb-rival"><b>VS ' + esc(opts.rival.name || '相手') + '</b><span class="cb-rv-st">チャートを読んでいる…</span></div>' : '') +   // v8.3 トレードバトル（js/rpg/trademaster83.js）
       '<div class="cb-chartbox"><canvas class="cb-canvas"></canvas><div class="cb-flash"></div><div class="cb-banner"></div></div>' +
       '<div class="cb-row"><div class="cb-info"></div><div class="cb-zoom"><button type="button" data-z="-1" aria-label="縮小">－</button><button type="button" data-z="1" aria-label="拡大">＋</button><button type="button" class="cb-latest" data-latest="1" aria-label="最新の足へ">▶最新</button></div></div>' +
       '<div class="cb-cmds"><button type="button" class="cb-btn long" data-act="long">ロング（買い）<small>↑ / L</small></button><button type="button" class="cb-btn skip" data-act="skip">見送り<small>X / K</small></button><button type="button" class="cb-btn short" data-act="short">ショート（売り）<small>↓ / S</small></button></div>' +
@@ -189,6 +198,20 @@
       var view = { zoom: 48, off: 0 }; var dirty = true, lastDraw = 0, lastKey = '';
       var decided = false, reason = null, resultShown = false, skipPlay = null, out = null, review = null;
       var cache = { key: '', bars: null, ind: null, upper: null };
+      // v8.3 トレードバトルの相手：判断の時間のうち決めた時刻（相手が先に決めないうちにプレイヤーが決めたら、その瞬間）に、そのとき見えている足だけで決める
+      //   方向は Market.assess の見立て（根拠の向き）＋相手の腕前（skill）。同じシナリオ・シードなら同じ判断。結果は Market.settle（プレイヤーと同じ決まり）
+      var rvl = opts.rival ? { done: false, side: null, pos: null, res: null, a: null } : null;   // 名前は rvl（showResult の中の rv（振り返りのボタン）と重ならないように）
+      function rivalDecide(pos) {
+        var rv = rvl; if (!rv || rv.done) return; rv.done = true; var R0 = opts.rival; var bars = barsAt(s, pos.bar, pos.tick); var a = null; try { a = Market.assess(bars); } catch (e) { a = { bias: 'none', score: 0 }; }
+        var h = ((s.seed >>> 0) ^ Math.imul((R0.seed >>> 0) || 7, 2654435761)) >>> 0; var rnd = function () { h = (h + 0x6D2B79F5) >>> 0; var t = h; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+        var sk = Math.max(0, Math.min(1, R0.skill === undefined ? 0.5 : R0.skill)); var side;
+        if (a.bias === 'long' || a.bias === 'short') side = rnd() < sk ? a.bias : (rnd() < 0.5 ? (a.bias === 'long' ? 'short' : 'long') : 'skip');
+        else side = Math.abs(a.score || 0) >= 0.8 && rnd() < sk * 0.7 ? (a.score > 0 ? 'long' : 'short') : rnd() < 0.25 * (1 - sk) ? (rnd() < 0.5 ? 'long' : 'short') : 'skip';
+        rv.side = side; rv.pos = { bar: pos.bar, tick: pos.tick }; rv.a = a;
+        rv.res = side === 'skip' ? { outcome: 'skip', side: 'skip', pips: 0, r: 0 } : Market.settle(s, { bar: pos.bar, tick: pos.tick, side: side });
+        var st = node && node.querySelector('.cb-rv-st'); if (st) { st.textContent = side === 'long' ? 'ロング（買い）で入った！' : side === 'short' ? 'ショート（売り）で入った！' : '見送った'; st.className = 'cb-rv-st ' + side; }
+        if (node) node.classList.add('rival-in'); dirty = true;
+      }
       function setDecided() { decided = true; node.classList.add('decided'); }
       function curBars() {
         var p = skipPlay ? skipPlay.pos : sim.pos; var key = p.bar + ':' + p.tick;
@@ -205,7 +228,8 @@
         if (!ctx) return; var c = curBars(); var R = sim.result && sim.result.entry ? sim.result : null;
         var exitShown = R && (sim.state === 'settled' || sim.state === 'done');
         var v = { bars: c.bars, ind: c.ind, upper: c.upper, show: ind, zoom: view.zoom, off: Math.min(view.off, Math.max(0, c.bars.length - Market.WARM - view.zoom)), tf: tf, atr: c.ind.atr[c.bars.length - 2] || c.ind.atr[c.bars.length - 1],
-          entry: R ? { bar: R.entry.bar, price: R.entry.price, sl: R.sl, tp: R.tp, side: R.side } : null, exit: exitShown ? { bar: R.exit.bar, price: R.exit.price, reason: R.exit.reason } : null };
+          entry: R ? { bar: R.entry.bar, price: R.entry.price, sl: R.sl, tp: R.tp, side: R.side } : null, exit: exitShown ? { bar: R.exit.bar, price: R.exit.price, reason: R.exit.reason } : null,
+          rival: rvl && rvl.res && rvl.res.entry ? { bar: rvl.res.entry.bar, price: rvl.res.entry.price, side: rvl.side, label: (opts.rival.short || opts.rival.name || '相手'), exit: resultShown ? { bar: rvl.res.exit.bar, price: rvl.res.exit.price } : null } : null };
         try { ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0); draw(ctx, view.W, view.H, v); } catch (e) { if (root.console) console.warn('chart', e); }
         lastDraw = now(); dirty = false;
       }
@@ -242,6 +266,7 @@
       function showResult() {
         resultShown = true; sim.finish(); var R = sim.result || { outcome: 'skip' }; var dec = sim.decision;
         out = { mode: mode, side: dec.side, auto: !!dec.auto, decisionMs: Math.round(dec.ms || 0), result: R, assessment: sim.assessment, scenarioId: s.id, cat: s.def.cat, diff: s.def.diff, seed: s.seed, verified: !!s.verified, reason: reason, entryBar: dec.pos.bar, tf: tf };
+        if (rvl) { if (!rvl.done) rivalDecide(dec.pos); out.rival = { name: opts.rival.name, side: rvl.side, pos: rvl.pos, result: rvl.res, bias: rvl.a ? rvl.a.bias : null }; }
         var html = '';
         if (R.outcome === 'skip') {
           var p0 = s.ticks[dec.pos.bar][dec.pos.tick]; var pe = skipPlay ? s.ticks[skipPlay.pos.bar][skipPlay.pos.tick] : p0; var mv = (pe - p0) / s.pip;
@@ -273,6 +298,7 @@
         if (closed) return; var tn = now(); var before = sim.state;
         sim.update(tn);
         if (before === 'deciding' && sim.state !== 'deciding' && !decided) { setDecided(); flash('skip'); afterDecide(); }   // 時間切れ（見送り）
+        if (rvl && !rvl.done) { if (decided && sim.decision) rivalDecide(sim.decision.pos); else if (sim.state === 'deciding' && sim.elapsed(tn) >= (opts.rival.atFrac || 0.5) * decideMs) rivalDecide(sim.pos); }   // v8.3 相手の判断
         if (skipPlay && !skipPlay.done) { var abs = Math.min(skipPlay.end, skipPlay.abs0 + Math.floor((tn - skipPlay.t0) / ((S.calm ? 200 : 260) / SUB))); skipPlay.pos = { bar: Math.floor(abs / SUB), tick: abs % SUB }; if (abs >= skipPlay.end) skipPlay.done = true; }
         var p = skipPlay ? skipPlay.pos : sim.pos; var key = p.bar + ':' + p.tick + ':' + sim.state;
         if (key !== lastKey) { lastKey = key; dirty = true; }
@@ -328,7 +354,7 @@
           loop();
         } });
       // テスト・自動操作用（画面のボタンと同じ処理）
-      CB.ctl = { decide: decide, reason: pickReason, next: function () { if (resultShown) finish(); }, review: function () { openReview(); }, reviewRecord: function () { return review; }, sim: sim, state: function () { return { sim: sim.state, decided: decided, result: resultShown, reason: reason, zoom: view.zoom, off: view.off }; }, quit: function () { finish(true); } };
+      CB.ctl = { rival: function () { return rvl; }, decide: decide, reason: pickReason, next: function () { if (resultShown) finish(); }, review: function () { openReview(); }, reviewRecord: function () { return review; }, sim: sim, state: function () { return { sim: sim.state, decided: decided, result: resultShown, reason: reason, zoom: view.zoom, off: view.off }; }, quit: function () { finish(true); } };
     });
   };
 
