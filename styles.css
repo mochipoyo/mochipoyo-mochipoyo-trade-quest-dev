@@ -920,3 +920,4 @@ body.mobile.m-port.m-pad-swap #pad.mpad .mp-act { flex-direction: row-reverse; t
 body.mobile.m-land.m-pad-swap .mp-move { left: auto; right: calc(env(safe-area-inset-right, 0px) + 10px); }
 body.mobile.m-land.m-pad-swap .mp-act { right: auto; left: calc(env(safe-area-inset-left, 0px) + 10px); }
 body.mobile.m-fullui #pad.mpad { display: none !important; }
+@media (max-height: 460px) { .chart-battle .cb-btn { min-height: 44px; } }   /* v8.8 横向きのスマホでも判断のボタンは 44px（前は 40px） */

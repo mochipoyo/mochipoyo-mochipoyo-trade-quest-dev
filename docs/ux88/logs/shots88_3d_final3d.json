@@ -1,0 +1,572 @@
+{
+ "pc": {
+  "fieldnorm": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 9,
+   "mobile": false
+  },
+  "field": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 9,
+   "mobile": false
+  },
+  "menu": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    1073,
+    190,
+    320,
+    385
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "items": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    569,
+    210,
+    520,
+    345
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "equip": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    569,
+    184,
+    520,
+    398
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": false
+  },
+  "settings": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    569,
+    275,
+    520,
+    216
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "prompt": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    529,
+    310,
+    600,
+    146
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 13,
+   "mobile": false
+  },
+  "chart": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    379,
+    19,
+    900,
+    727
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "chartres": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    379,
+    19,
+    900,
+    727
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "quick": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    449,
+    30,
+    760,
+    704
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": false
+  },
+  "record": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    529,
+    101,
+    600,
+    562
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": false
+  },
+  "errors": []
+ },
+ "tab": {
+  "fieldnorm": {
+   "padVisible": true,
+   "uiH": 984,
+   "vh": 1180,
+   "rect": [
+    0,
+    994,
+    820,
+    186
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 9,
+   "mobile": true
+  },
+  "field": {
+   "padVisible": true,
+   "uiH": 984,
+   "vh": 1180,
+   "rect": [
+    0,
+    994,
+    820,
+    186
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 9,
+   "mobile": true
+  },
+  "menu": {
+   "padVisible": true,
+   "uiH": 984,
+   "vh": 1180,
+   "rect": [
+    488,
+    279,
+    320,
+    426
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "items": {
+   "padVisible": true,
+   "uiH": 984,
+   "vh": 1180,
+   "rect": [
+    150,
+    300,
+    520,
+    384
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "equip": {
+   "padVisible": true,
+   "uiH": 984,
+   "vh": 1180,
+   "rect": [
+    150,
+    289,
+    520,
+    406
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "settings": {
+   "padVisible": true,
+   "uiH": 984,
+   "vh": 1180,
+   "rect": [
+    150,
+    373,
+    520,
+    239
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "prompt": {
+   "padVisible": true,
+   "uiH": 984,
+   "vh": 1180,
+   "rect": [
+    110,
+    416,
+    600,
+    152
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 13,
+   "mobile": true
+  },
+  "chart": {
+   "padVisible": false,
+   "uiH": 1176,
+   "vh": 1180,
+   "rect": [
+    8,
+    18,
+    804,
+    1141
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "chartres": {
+   "padVisible": false,
+   "uiH": 1176,
+   "vh": 1180,
+   "rect": [
+    8,
+    18,
+    804,
+    1141
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "quick": {
+   "padVisible": false,
+   "uiH": 1176,
+   "vh": 1180,
+   "rect": [
+    30,
+    192,
+    760,
+    793
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "record": {
+   "padVisible": true,
+   "uiH": 984,
+   "vh": 1180,
+   "rect": [
+    110,
+    191,
+    600,
+    601
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "errors": []
+ },
+ "land": {
+  "fieldnorm": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    0,
+    0,
+    844,
+    390
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 9,
+   "mobile": true
+  },
+  "field": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    0,
+    0,
+    844,
+    390
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 9,
+   "mobile": true
+  },
+  "menu": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    390,
+    16,
+    320,
+    359
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "items": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    162,
+    16,
+    520,
+    359
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "equip": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    162,
+    41,
+    520,
+    309
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "settings": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    162,
+    76,
+    520,
+    239
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "prompt": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    140,
+    119,
+    564,
+    152
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 13,
+   "mobile": true
+  },
+  "chart": {
+   "padVisible": false,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    128,
+    6,
+    588,
+    378
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "chartres": {
+   "padVisible": false,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    128,
+    6,
+    588,
+    378
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "quick": {
+   "padVisible": false,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    140,
+    4,
+    564,
+    382
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "record": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    146,
+    16,
+    552,
+    359
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "errors": []
+ }
+}

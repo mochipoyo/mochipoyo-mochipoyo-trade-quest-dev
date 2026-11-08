@@ -1,0 +1,39 @@
+{
+ "land": {
+  "chart": {
+   "padVisible": false,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    128,
+    6,
+    588,
+    378
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "chartres": {
+   "padVisible": false,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    128,
+    6,
+    588,
+    378
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "errors": []
+ }
+}

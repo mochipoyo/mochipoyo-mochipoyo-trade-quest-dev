@@ -15,7 +15,8 @@ const SETUP = require('./scenes88.js');
     if (VER === '3d') await p.waitForFunction(() => window.MTQ3D && MTQ3D.ready, null, { timeout: 240000 }); else await p.waitForFunction(() => window.World && window.State && window.Engine && Engine.scenes.length, null, { timeout: 120000 });
     await p.evaluate(() => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay); State.newGame('もち', 'warrior'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; d.settings.textSpeed = 'instant'; World.start(); World.encounter = () => { }; });
     if (VER === '3d') await p.waitForFunction(() => MTQ3D.current && MTQ3D.current.map && !MTQ3D.building, null, { timeout: 240000 });
-    await p.waitForTimeout(800); await p.evaluate(() => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay); World.busy = false; });
+    await p.waitForTimeout(800); if (VER === '3d') { await p.waitForTimeout(2500); await p.evaluate(() => { MTQ3D.paused = true; }); }   // 3D：一度描いたあと描画だけ止める（ソフトウェア描画で大きな画面だと、撮影・クリックが待たされるため。写しは止める前の 3D の絵）
+    await p.evaluate(() => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay); World.busy = false; });
     const res = {};
     for (const sc of SCENES) {
       try {
