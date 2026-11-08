@@ -59,7 +59,7 @@
     // 鍵（王宮の門など）：道の入口の全部の幅を同じ鍵でふさぐ
     if (lock) for (var x4 = x0; x4 <= x1; x4++) if (!(town.events || []).some(function (e) { return e.x === x4 && e.y === yB + 1; })) town.events.push(Object.assign({}, lock, { x: x4, _c82lock: lock.x + ',' + lock.y }));
     // 北の端の出口（城郭区画の南の門の内側へ）
-    town.warps = (town.warps || []).concat([0, 1, 2, 3].map(function (i) { return { x: x0 + i, y: 0, to: L.id, tx: cx, ty: H - 2, raw: true, face: 'up', name: L.name.split('・')[0] + 'へ', _c82road: true };   /* 着く所は参道の真ん中の列（城の大扉の列。まっすぐ北へ歩けば大扉） */ }));
+    town.warps = (town.warps || []).concat([0, 1, 2, 3].map(function (i) { return { x: x0 + i, y: 0, to: L.id, tx: cx - 1 + i, ty: H - 2, raw: true, face: 'up', name: L.name.split('・')[0] + 'へ', _c82road: true };   /* 着く所：道の列をそのまま参道へ（前の城の扉の列 x0+1 → 城の大扉の列 cx。まっすぐ北へ歩けば大扉）。戻ると乗った所のとなり */ }));
     town.buildings = (town.buildings || []).filter(function (b) { return b !== tb; });
     // 紋章（v8.1 の crests81）：城の正面の高い紋章は、道の入口の両わきの城壁の正面へ
     if (town.crests81) { var big = town.crests81.filter(function (c) { return c.x >= x0 - 1 && c.x <= x1 + 2 && Math.abs(c.y - (yB + 1)) < 0.6; });
