@@ -13,6 +13,7 @@
   Combat.STATUS_NAME = STATUS_NAME;
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
+  function UG() { return root.BossGear || null; }   // v8.7 ボス固有装備の固有効果（js/rpg/boss-unique-gear.js）。なければ従来どおり
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
 
   function makeEnemy(id, i) {
@@ -57,7 +58,9 @@
     party.forEach(function (a) { a.buffs = {}; a.cover = false; a.counter = false; a.defending = false; a._gutsUsed = false; a._atkTurn = -9; a._defTurn = -9; a._supTurn = -9; a._firstHit = false; a._turn = 0; a.counterMult = 1; });
     if (root.Meal76) root.Meal76.beforeBattle(party);   // v7.6 パンの効果（次の戦闘3回まで。js/rpg/meal76.js）
     var pet = opts.pet === false ? null : Combat.petFor(party);   // v6.8 神聖犬ポン太（4人とは別枠）
-    return { pet: pet, enemies: enemies, party: party, turn: 0, state: 'command', scale: (opts.scale && !opts.boss) ? opts.scale : null, boss: !!opts.boss, canEscape: opts.canEscape !== false && !opts.boss, log: [], trialCount: 0, result: null, maxEnemies: opts.maxEnemies || MAX_ENEMIES };
+    var bt = { pet: pet, enemies: enemies, party: party, turn: 0, state: 'command', scale: (opts.scale && !opts.boss) ? opts.scale : null, boss: !!opts.boss, canEscape: opts.canEscape !== false && !opts.boss, log: [], trialCount: 0, result: null, maxEnemies: opts.maxEnemies || MAX_ENEMIES };
+    if (UG()) UG().initBattle(bt, opts);   // v8.7 戦闘ごとの固有効果の状態・正規のボス戦の鍵（opts.bossRewardKey）
+    return bt;
   };
 
   /* ---------- 計算 ---------- */
@@ -78,19 +81,22 @@
   function partyResist(a, element) {
     if (!a || !a.equip || !element || element === 'none') return 1;
     var m = 1; Object.keys(a.equip).forEach(function (sl) { var it = a.equip[sl] && ITEMS[a.equip[sl]]; if (!it || !it.fx) return; if (it.fx.resist && it.fx.resist[element] !== undefined) m *= it.fx.resist[element]; if (it.fx.resistAll) m *= it.fx.resistAll; });
+    if (UG()) m *= UG().dynResist(a, element);   // v8.7 中枢防衛装甲【適応防壁】（最後に受けた属性を次のターンの終わりまで軽減）
     var fl = (root.FX_CAP && root.FX_CAP.resistFloor) || 0.4; return Math.max(fl, m);
   }
   Combat.partyResist = partyResist;
   function pstats(a) { var s = Actors.stats(a); if (a.defending) { s.def = Math.round(s.def * 2); s.mdef = Math.round(s.mdef * 1.5); } var lh = fx(a, 'lowHpDef'); if (lh && a.hp <= s.maxHp * lh.below) s.def = Math.round(s.def * (1 + lh.mult)); var rd = fx(a, 'rampDef'); if (rd && a._turn > 1) s.def = Math.round(s.def * (1 + Math.min(rd.max, rd.per * (a._turn - 1)))); return s; }   // v6.4 分割利確の指輪：長引くほど防御+
   // v5.5 味方が受けるダメージの最終調整：大きな一撃の軽減（資金管理の鎧）、防御中の追加軽減（見送りの首飾り）、くいしばり（損切りのお守り）
-  function partyTakes(b, t, dmg, ev) {
+  function partyTakes(b, t, dmg, ev, hit) {   // v8.7 hit：{ kind:'phys'|'magic', aoe, element, enemy, proc }（敵の直接攻撃のときだけ）
     dmg = early(t, 'take', dmg);   // v5.8 序盤補正（下の EARLY）
     var gd = buffOf(t, 'guard'); if (gd > 0 && dmg > 0) dmg = Math.max(1, Math.round(dmg * (1 - Math.min(0.5, gd))));   // v6.4 損失限定結界・規律の防壁（被ダメージ軽減。上限50%）
     var st = Actors.stats(t);
-    var bh = fx(t, 'bigHitCut'); if (bh && dmg > st.maxHp * bh.over) { dmg = Math.round(dmg * (1 - bh.cut)); ev.push({ type: 'msg', text: t.name + 'の資金管理の鎧が大きな損失を抑えた' }); }
+    var bh = fx(t, 'bigHitCut'); if (bh && dmg > st.maxHp * bh.over) { dmg = Math.round(dmg * (1 - bh.cut)); ev.push({ type: 'msg', text: t.name + 'の' + ((UG() && UG().fxSrc(t, 'bigHitCut')) || '資金管理の鎧') + 'が大きな損失を抑えた' }); }   // v8.7 実際に発動した装備名
     var dc = fx(t, 'defendCut'); if (dc && t.defending) dmg = Math.round(dmg * (1 - dc));
+    if (UG() && hit) dmg = UG().takeDirect(b, t, dmg, hit, ev);   // v8.7 ボス固有装備の直接被ダメージ軽減（一般 40% まで・1戦1回の軽減は別）
     if (dmg > 0 && b) b.partyDamaged = true;
     if (buffOf(t, 'endure') && t.hp - dmg <= 0 && t.hp > 1) { delete t.buffs.endure; ev.push({ type: 'msg', text: t.name + 'は崩壊阻止で踏みとどまった！' }); return t.hp - 1; }   // v6.4 崩壊阻止
+    if (UG() && hit) { var ls87 = UG().lethalSave(b, t, dmg, hit, ev); if (ls87 !== null) return ls87; }   // v8.7 恐怖を越える大盾【損失限定】（軽減のあとの最終的な致死判定。くいしばりより先）
     var g = fxSum(t, 'guts'); if (g && t.hp - dmg <= 0 && t.hp > 1 && !t._gutsUsed && Math.random() < g) { t._gutsUsed = true; ev.push({ type: 'msg', text: t.name + 'は踏みとどまった！（くいしばり）' }); return t.hp - 1; }
     return dmg;
   }
@@ -99,19 +105,20 @@
   var DEBUFF_NAME = { atk: '攻撃力', def: '守備力', agi: '素早さ', mag: '魔力', mdef: '魔法防御' };
   function debuffActor(t, sp, say) {
     t.buffs = t.buffs || {};
-    Object.keys(sp.debuff).forEach(function (k) { var cur = t.buffs[k]; var v = (cur && cur.turns > 0 ? cur.value : 0) + sp.debuff[k]; t.buffs[k] = { value: Math.max(-0.5, v), turns: Math.max(cur && cur.turns > 0 ? cur.turns : 0, sp.turns || 3) }; });
-    var names = Object.keys(sp.debuff).map(function (k) { return DEBUFF_NAME[k] || k; }).join('・');
-    if (say) say(t.name + 'の' + names + 'が下がった');
+    var f87 = UG() ? UG().debuffFilter(t, sp, say) : null; if (f87 && f87.block) return;   // v8.7 中枢照合の指輪【誤記訂正】（最初の 1 回を打ち消す）
+    Object.keys(sp.debuff).forEach(function (k) { var cur = t.buffs[k]; var m87 = f87 && f87.mult && f87.mult[k] !== undefined ? f87.mult[k] : 1; if (m87 === 0) { if (say) say(t.name + 'の' + (DEBUFF_NAME[k] || k) + 'は下がらなかった'); return; } var v = (cur && cur.turns > 0 ? cur.value : 0) + sp.debuff[k] * m87;   /* v8.7 能力低下の無効・強さの軽減 */ t.buffs[k] = { value: Math.max(-0.5, v), turns: Math.max(cur && cur.turns > 0 ? cur.turns : 0, sp.turns || 3) }; });
+    var names = Object.keys(sp.debuff).filter(function (k) { return !(f87 && f87.mult && f87.mult[k] === 0); }).map(function (k) { return DEBUFF_NAME[k] || k; }).join('・');
+    if (say && names) say(t.name + 'の' + names + 'が下がった' + (f87 && f87.mult && Object.keys(f87.mult).some(function (k) { return f87.mult[k] > 0 && f87.mult[k] < 1; }) ? '（装備で弱めた）' : ''));
   }
   Combat.buffOf = buffOf;
-  function cureBonus(t, ev) { var cb = fx(t, 'cureAtk'); if (cb && !t.dead) { t.buffs.atk = { value: cb.atk, turns: cb.turns }; ev.push({ type: 'msg', text: t.name + 'は反転の腕輪で攻撃力が上がった' }); } }
+  function cureBonus(t, ev) { var cb = fx(t, 'cureAtk'); if (cb && !t.dead) { t.buffs.atk = { value: cb.atk, turns: cb.turns }; ev.push({ type: 'msg', text: t.name + 'は反転の腕輪で攻撃力が上がった' }); } if (UG()) UG().onCured(t, ev); }   // v8.7 残鎖を断つ手甲【解放の反撃】
   function resistOf(e, element) { if (!element || element === 'none') return (e.resist && e.resist.none !== undefined) ? e.resist.none : 1; var r = e.resist ? e.resist[element] : undefined; return r === undefined ? 1 : r; }
 
   function physDamage(atk, def, power, opts) {
     opts = opts || {};
     var effDef = def * (1 - (opts.pierce || 0));
     var base = atk * power - effDef * 0.5;
-    var v = base * rnd(opts.steady ? 1.0 : 0.88, 1.12);   // v6.4 steady：下振れなし
+    var v = base * (opts.fixed ? 1.0 : rnd(opts.steady ? 1.0 : 0.88, 1.12));   // v6.4 steady：下振れなし。v8.7 fixed（零誤差の弓【誤差を扱う】）：振れ幅なし
     if (opts.crit) v = atk * power * 1.5;
     v *= (opts.mult || 1);
     return Math.max(1, Math.round(v));
@@ -139,7 +146,8 @@
     if (target.dead) return false;
     if (isActor) { var s = Actors.stats(target); if (s.immune.indexOf(id) >= 0) return false; if (target.job === 'master' && Math.random() < 0.5) return false; var sr = fxSum(target, 'statusResist'); if (sr && Math.random() < sr) return false; }   // v6.4 状態異常耐性（装備の合計・上限60%）
     else if (target.boss && Math.random() < 0.6) return false;
-    if (Math.random() > (chance === undefined ? status.chance : chance)) return false;
+    var ch87 = chance === undefined ? status.chance : chance; if (isActor && UG()) ch87 *= UG().statusMult(target, id);   // v8.7 付与成功率の軽減（耐性の判定の前の成功率に掛ける）
+    if (Math.random() > ch87) return false;
     if (target.status[id]) return false;
     target.status[id] = { turns: id === 'poison' ? 99 : (id === 'silence' ? 4 : 3) };
     return true;
@@ -169,6 +177,7 @@
   // commands: [{ actorId, type:'attack'|'skill'|'item'|'defend'|'escape', skillId, itemId, target:{side:'enemy'|'party', idx} }]
   Combat.runTurn = function (b, commands) {
     var ev = evList(b); b.turn += 1; endGroup();
+    if (UG()) UG().turnStart(b, ev);   // v8.7 群れの呼吸・選択の契約の知らせ
     function msg(t) { ev.push({ type: 'msg', text: t }); }
     b.party.forEach(function (a) { a._turn = b.turn; });
     // v6.4 オラクル解析杖・観測者のレンズ：戦闘の始めに敵の弱点と耐性を表示（1回だけ）
@@ -200,7 +209,9 @@
       // 状態異常による行動制限
       if (a.status.sleep) { if (Math.random() < 0.4) { delete a.status.sleep; msg(a.name + 'は目を覚ました！'); } else { msg(a.name + 'は眠っている……'); continue; } }
       if (a.status.paralyze && Math.random() < 0.5) { msg(a.name + 'は体がしびれて動けない！'); continue; }
+      if (UG()) UG().beginAction(b, x.side, a, x.cmd);   // v8.7 行動の始め（行動の種類・行動を始めたときの HP）
       if (x.side === 'party') execParty(b, x, ev); else if (x.side === 'pet') execPet(b, a, ev); else execEnemy(b, a, ev);
+      if (UG()) UG().endAction(b, ev);   // v8.7 行動の終わり（追撃・回復・1 行動 1 回の効果・復旧点など）
       checkEnd(b, ev);
       if (b.state !== 'command') break;
     }
@@ -247,16 +258,17 @@
     if (cmd.type === 'ultimate') { if (isUlt) root.Ultimates.execute(b, a, cmd, ev, ULT_K); else msg('しかし何も起こらなかった'); return; }   // 必殺技（js/rpg/ultimates.js）：判断はコマンド入力で済んでいるので、混乱などで行動が変わらないようにここで先に実行
     // 混乱：ランダム行動
     if (a.status.confuse && Math.random() < 0.6) {
-      var all = aliveParty(b).concat(aliveEnemies(b)); var t = pickRandom(all); msg(a.name + 'は混乱している！');
+      var all = aliveParty(b).concat(aliveEnemies(b)); var t = pickRandom(all); msg(a.name + 'は混乱している！'); if (b.ug && b.ug.act && b.ug.act.a === a) b.ug.act.cat = 'confused';   /* v8.7 混乱の行動には固有効果の倍率を使わない */
       if (b.party.indexOf(t) >= 0) { var dmg = physDamage(s.atk, pstats(t).def, 1.0); t.hp = Math.max(0, t.hp - dmg); ev.push({ type: 'damage', side: 'party', id: t.id, value: dmg, anim: 'hit' }); msg(a.name + 'は' + t.name + 'を攻撃！ ' + dmg + 'のダメージ'); if (t.hp <= 0) killActor(t, ev); }
       else attackEnemy(b, a, t, 1.0, {}, ev);
       return;
     }
-    if (cmd.type === 'defend') { a.defending = true; a._defTurn = b.turn; msg(a.name + 'は身を守っている'); ev.push({ type: 'anim', side: 'party', id: a.id, anim: 'buff' }); var dm = fx(a, 'defendMp'); if (dm) { var mx = Actors.stats(a).maxMp; var g0 = a.mp; a.mp = Math.min(mx, a.mp + Math.max(1, Math.round(mx * dm))); if (a.mp > g0) msg(a.name + 'は見送りの法衣でMPを' + (a.mp - g0) + '回復した'); } return; }
+    if (cmd.type === 'defend') { a.defending = true; a._defTurn = b.turn; msg(a.name + 'は身を守っている'); ev.push({ type: 'anim', side: 'party', id: a.id, anim: 'buff' }); var dm = fx(a, 'defendMp'); var dm87 = UG() ? UG().defendMp(a, dm) : (dm ? { v: dm, src: '見送りの法衣' } : null); if (dm87) { var mx = Actors.stats(a).maxMp; var g0 = a.mp; a.mp = Math.min(mx, a.mp + Math.max(1, Math.round(mx * dm87.v))); if (a.mp > g0) msg(a.name + 'は' + (dm87.src || '見送りの法衣') + 'でMPを' + (a.mp - g0) + '回復した'); }   // v8.7 同じ意味の効果は大きいほう・実際の装備名
+      if (UG()) UG().onDefend(b, a, ev); return; }   // v8.7 防御の固有効果
     if (cmd.type === 'attack') {
       var target = b.enemies[cmd.target.idx]; if (!target || target.dead) target = pickRandom(aliveEnemies(b)); if (!target) return;
       msg(a.name + 'の攻撃！');
-      var pw = 1.0; var ad = fx(a, 'afterDefend'); if (ad && a._defTurn === b.turn - 1) { pw *= 1 + ad; msg('損切りの短剣：守った次の一撃！'); }
+      var pw = 1.0; var ad = UG() ? UG().fxMax(a, 'afterDefend') : fx(a, 'afterDefend'); if (ad && a._defTurn === b.turn - 1 && !(UG() && UG().afterDefendOver(b, a, ad))) { pw *= 1 + ad; msg(((UG() && UG().fxSrc(a, 'afterDefend')) || '損切りの短剣') + '：守った次の一撃！'); }   // v8.7 実際の装備名。固有効果の同じ意味の値が大きいときはそちら（attackEnemy）だけ
       var mh = fx(a, 'multiHit');
       if (mh) { for (var hi = 0; hi < mh.n; hi++) { if (target.dead) { target = pickRandom(aliveEnemies(b)); if (!target) break; } attackEnemy(b, a, target, pw * mh.mult, { element: s.element, normal: true }, ev); } }
       else attackEnemy(b, a, target, pw, { element: s.element, normal: true }, ev);
@@ -270,9 +282,10 @@
       var sk = SKILLS[cmd.skillId]; if (!sk) return;
       if (a.status.silence && sk.mp > 0) { msg(a.name + 'は沈黙していて' + sk.name + 'が使えない！'); return; }
       var mpCost = skillCost(a, sk);   // v6.8 賢者 -20%・トレード呪文の軽減（Combat.skillCost）
+      if (UG()) mpCost = UG().mpCost(b, a, sk, mpCost);   // v8.7 ボス固有装備の消費MP軽減（職業・人物の軽減のあと。合わせて 25% まで・1 以上）
       if (a.mp < mpCost) { msg(a.name + 'はMPが足りない！'); return; }
       if (sk.gold) { if (root.State.data.gold < sk.gold) { msg('ゴールドが足りない！'); return; } root.State.data.gold -= sk.gold; }
-      a.mp -= mpCost;
+      a.mp -= mpCost; if (UG()) UG().paidMp(b, a, mpCost, sk, cmd.target);
       msg(a.name + 'は' + sk.name + 'を使った！');
       ev.push({ type: 'anim', side: 'party', id: a.id, anim: sk.anim || 'buff', target: sk.target });
       applySkill(b, a, sk, cmd.target, ev);
@@ -281,7 +294,8 @@
 
   function attackEnemy(b, a, target, power, opts, ev) {
     var s = pstats(a); var es = estats(target);
-    var critRate = (a.job === 'monk' ? 2 : 1) / 16 + (opts.crit || 0) + fxSum(a, 'critUp');   // v6.1 確率の剣などの会心率アップ（v6.4 装備の合計・上限+25%）
+    var ux = UG() ? UG().outPhys(b, a, target, opts, opts.element) : { mult: 1, critAdd: 0, fixed: false, suppress: {} };   // v8.7 ボス固有装備の条件つき倍率（合わせて ×1.75 まで）・会心・振れ幅
+    var critRate = (a.job === 'monk' ? 2 : 1) / 16 + (opts.crit || 0) + Math.min((root.FX_CAP && root.FX_CAP.critUp) || 0.25, fxSum(a, 'critUp') + ux.critAdd);   // v6.1 確率の剣などの会心率アップ（v6.4 装備の合計・上限+25%。v8.7 固有効果の通常攻撃の会心率も上限の内側）
     var crit = Math.random() < critRate;
     var mult = resistOf(target, opts.element);
     if (a.job === 'magicknight' && opts.element && opts.element !== 'none') mult *= 1.15;
@@ -293,19 +307,22 @@
       if ((w = fx(a, 'pierce'))) pierce = Math.max(pierce, w);                                                  // ブレイクアウトダガーなど：防御を一部無視
       if ((w = fx(a, 'reversal'))) mult *= 1 + (1 - target.hp / target.maxHp) * w;                              // 逆張りの刃：HPが減った敵ほど
       if ((w = fx(a, 'cycle')) && b.turn % w.n === 0) { mult *= w.mult; ev.push({ type: 'msg', text: '星の周期！' }); }   // 星周期の槍
-      if ((w = fx(a, 'highHp')) && a.hp >= Actors.stats(a).maxHp * w.above) mult *= 1 + w.mult;                 // マージンハンマー
-      if ((w = fx(a, 'firstStrike')) && !a._firstHit) mult *= 1 + w;                                             // ブレイク確認の弓
+      if ((w = fx(a, 'highHp')) && a.hp >= Actors.stats(a).maxHp * w.above && !ux.suppress.highHp) mult *= 1 + w.mult;   // マージンハンマー（v8.7 同じ意味の固有効果が大きいときはそちらだけ）
+      if ((w = fx(a, 'firstStrike')) && !a._firstHit && !ux.suppress.firstStrike) mult *= 1 + w;                 // ブレイク確認の弓・王手の駒（最初の通常攻撃。先手の確率ではない）
     }
-    if ((w = fx(a, 'momentum')) && a._atkTurn === b.turn - 1) mult *= 1 + w;                                     // モメンタムアックス（特技でも）
+    if ((w = fx(a, 'momentum')) && a._atkTurn === b.turn - 1 && !ux.suppress.momentum) mult *= 1 + w;           // モメンタムアックス（特技でも）
+    mult *= ux.mult;   // v8.7 ボス固有装備の条件つき倍率
     // v6.4 特技の効果（js/data/skills64.js）
     if (opts.execute && target.hp <= target.maxHp * opts.execute.below) mult *= opts.execute.mult;              // 損益確定
     if (opts.fastBonus && es.agi >= s.agi * 0.8) mult *= opts.fastBonus;                                          // 安値刈り矢
     if (opts.steady) steady = true;                                                                               // レンジ狙撃
     if ((w = buffOf(a, 'charge'))) { mult *= 1 + w; delete a.buffs.charge; ev.push({ type: 'msg', text: '上位足照準！' }); }   // 次の物理攻撃1回だけ
     if ((w = fx(a, 'familyMult')) && w.families.indexOf(target.family) >= 0) mult *= w.mult;                     // 暴落粉砕斧
-    var dmg = early(a, 'deal', physDamage(s.atk, es.def, power, { crit: crit, pierce: pierce, mult: mult, steady: steady }));
+    var dmg = early(a, 'deal', physDamage(s.atk, es.def, power, { crit: crit, pierce: pierce, mult: mult, steady: steady, fixed: ux.fixed }));
     if (mult === 0) dmg = 0;
+    var hp087 = target.hp;   // v8.7 当たる前の HP（吸収で倒しすぎた分を数えない）
     target.hp = Math.max(0, target.hp - dmg);
+    if (UG()) UG().afterPhysHit(b, a, target, dmg, crit, opts, hp087, ev);
     ev.push({ type: 'damage', side: 'enemy', idx: target.idx, value: dmg, crit: crit, anim: opts.anim || 'slash', weak: mult > 1, resist: mult < 1 });
     ev.push({ type: 'msg', text: (crit ? '会心の一撃！ ' : '') + target.name + 'に' + dmg + 'のダメージ' + (mult > 1 ? '（効果は抜群だ）' : mult === 0 ? '（効かない）' : mult < 1 ? '（効果はいまひとつ）' : '') });
     if (target.status.sleep && dmg > 0 && Math.random() < 0.7) { delete target.status.sleep; ev.push({ type: 'msg', text: target.name + 'は目を覚ました' }); }
@@ -314,14 +331,14 @@
     var oh = fx(a, 'onHit'); if (oh && dmg > 0 && target.hp > 0) { target.buffs.agi = { value: oh.agi, turns: oh.turns }; ev.push({ type: 'msg', text: target.name + 'の素早さが下がった' }); }
     // v6.4 当たったときの効果
     var od = fx(a, 'onHitDef'); if (od && dmg > 0 && target.hp > 0) { target.buffs.def = { value: od.def, turns: od.turns }; ev.push({ type: 'msg', text: target.name + 'の防御が下がった' }); }
-    var os = fx(a, 'onHitStatus'); if (os && dmg > 0 && target.hp > 0 && addStatus(target, os)) ev.push({ type: 'msg', text: target.name + 'は' + STATUS_NAME[os.id] + '状態になった' });
+    var os = fx(a, 'onHitStatus'); if (os && dmg > 0 && target.hp > 0 && (!UG() || UG().rollOnce(b, a, 'onHitStatus')) && addStatus(target, os)) ev.push({ type: 'msg', text: target.name + 'は' + STATUS_NAME[os.id] + '状態になった' });   // v8.7 ボス固有装備は 1 行動 1 回の判定
     var be = opts.normal ? fx(a, 'bonusElem') : null;
-    if (be && dmg > 0 && target.hp > 0) { var bm = resistOf(target, be.element); var bd = Math.round(dmg * be.mult * bm); if (bd > 0) { target.hp = Math.max(0, target.hp - bd); ev.push({ type: 'damage', side: 'enemy', idx: target.idx, value: bd, anim: be.element === 'fire' ? 'fire' : be.element === 'light' ? 'light' : 'hit' }); ev.push({ type: 'msg', text: '追加の' + elName(be.element) + 'ダメージ！ ' + target.name + 'に' + bd }); } }
-    if (target.hp > 0 && target.counter && !target.counter.used && opts.normal && dmg > 0 && !a.dead) { target.counter.used = true; ev.push({ type: 'msg', text: target.name + 'の逆張り！ 攻撃に合わせて反撃してきた！' }); hitActor(b, target, a, target.counter.power, {}, ev); }   // v7.5 逆張りバット
-    if (target.hp <= 0) { killEnemy(b, target, ev); onKill(a, ev); }
+    if (be && dmg > 0 && target.hp > 0) { var bm = resistOf(target, be.element); if (be.floorResist && bm < be.floorResist) bm = be.floorResist; /* v8.7 竜脈の剣：追加分だけ耐性を 1 とみなす */ var bd = Math.round(dmg * be.mult * bm); if (UG() && UG().isBossItemFx(a, 'bonusElem')) { bd = Math.min(bd, UG().extraRoom(b, a, dmg)); UG().noteExtra(b, a, bd); } /* v8.7 追加のダメージはその行動の実ダメージの 50% まで */ if (bd > 0) { target.hp = Math.max(0, target.hp - bd); ev.push({ type: 'damage', side: 'enemy', idx: target.idx, value: bd, anim: be.element === 'fire' ? 'fire' : be.element === 'light' ? 'light' : 'hit' }); ev.push({ type: 'msg', text: '追加の' + elName(be.element) + 'ダメージ！ ' + target.name + 'に' + bd }); } }
+    if (target.hp > 0 && target.counter && !target.counter.used && opts.normal && dmg > 0 && !a.dead) { target.counter.used = true; ev.push({ type: 'msg', text: target.name + 'の逆張り！ 攻撃に合わせて反撃してきた！' }); hitActor(b, target, a, target.counter.power, { proc: true }, ev); }   // v7.5 逆張りバット（v8.7 proc：反撃に反射・反撃を重ねない）
+    if (target.hp <= 0) { killEnemy(b, target, ev); onKill(a, ev, b); }
   }
   // v6.4 利確の三叉槍：倒すとMP回復
-  function onKill(a, ev) { var km = fx(a, 'killMp'); if (!km || a.dead) return; var mx = Actors.stats(a).maxMp; var g = Math.max(1, Math.round(mx * km)); var b0 = a.mp; a.mp = Math.min(mx, a.mp + g); if (a.mp > b0) ev.push({ type: 'msg', text: a.name + 'のMPが' + (a.mp - b0) + '回復した（利確）' }); }
+  function onKill(a, ev, b) { if (UG() && b) UG().onKill(b, a); var km = fx(a, 'killMp'); if (!km || a.dead) return; if (UG() && b && UG().suppressKillMp(b, a)) return;   /* v8.7 同じ意味の固有効果（1 行動 1 回）が大きいときはそちら */ var mx = Actors.stats(a).maxMp; var g = Math.max(1, Math.round(mx * km)); var b0 = a.mp; a.mp = Math.min(mx, a.mp + g); if (a.mp > b0) ev.push({ type: 'msg', text: a.name + 'のMPが' + (a.mp - b0) + '回復した（利確）' }); }
 
   function applySkill(b, a, sk, tgt, ev) {
     function msg(t) { ev.push({ type: 'msg', text: t }); }
@@ -349,13 +366,15 @@
     } else if (sk.kind === 'magic') {
       if (targets.length > 1) beginGroup('enemy');
       targets.forEach(function (t) {
-        var es = estats(t); var mult = resistOf(t, sk.element); if (a.job === 'mage') mult *= 1.1; var sb = fx(a, 'supportBoost'); if (sb && a._supTurn === b.turn - 1) mult *= sb; var spm = fx(a, 'spellMult'); if (spm) mult *= spm;   // v6.4 統計の魔杖など
+        var es = estats(t); var mult = resistOf(t, sk.element); var rs87 = mult; if (a.job === 'mage') mult *= 1.1; var sb = fx(a, 'supportBoost'); if (sb && a._supTurn === b.turn - 1) mult *= sb; var spm = fx(a, 'spellMult'); if (spm) mult *= spm;   // v6.4 統計の魔杖など
         if (sk.element === 'light' && t.family === 'アンデッド系') mult *= 1.5;
+        if (UG() && mult > 0) mult *= UG().outSpell(b, a, t, sk, rs87);   // v8.7 ボス固有装備の攻撃呪文の条件つき倍率（×1.75 まで）
         var dmg = mult === 0 ? 0 : early(a, 'deal', magDamage(s.mag, es.mdef, sk.power, mult));
         t.hp = Math.max(0, t.hp - dmg);
+        if (UG()) UG().afterSpellHit(b, a, t, dmg, sk, rs87, targets.length, ev);
         ev.push({ type: 'damage', side: 'enemy', idx: t.idx, value: dmg, anim: sk.anim, weak: mult > 1, resist: mult < 1 });
         msg(t.name + 'に' + dmg + 'のダメージ' + (mult > 1 ? '（効果は抜群だ）' : mult === 0 ? '（効かない）' : mult < 1 ? '（効果はいまひとつ）' : ''));
-        if (t.hp <= 0) { killEnemy(b, t, ev); onKill(a, ev); }
+        if (t.hp <= 0) { killEnemy(b, t, ev); onKill(a, ev, b); }
         else if (sk.status && mult > 0 && addStatus(t, sk.status)) msg(t.name + 'は' + STATUS_NAME[sk.status.id] + '状態になった');   // v7.6 状態異常つきの呪文（js/data/skills76.js）
       });
       endGroup();
@@ -364,12 +383,13 @@
       targets.forEach(function (t) { var st = Actors.stats(t); var v = Math.round(sk.power + s.mag * 0.3); var before = t.mp; t.mp = Math.min(st.maxMp, t.mp + v); msg(t.name + 'のMPが' + (t.mp - before) + '回復した'); });
     } else if (sk.kind === 'heal') {
       var hm = fx(a, 'healMult') || 1;   // v6.4 天秤の聖槌
+      if (UG()) hm = UG().healBase(a, hm);   // v8.7 名を取り戻す氷霊衣（同じ意味は大きいほう）
       if (targets.length > 1) beginGroup('party');
-      targets.forEach(function (t) { var st = Actors.stats(t); var v = Math.round((sk.power + s.mag * 0.8) * (a.job === 'priest' ? 1.15 : 1) * hm * rnd(0.9, 1.1)); var before = t.hp; t.hp = Math.min(st.maxHp, t.hp + v); ev.push({ type: 'heal', side: 'party', id: t.id, value: t.hp - before }); msg(t.name + 'のHPが' + (t.hp - before) + '回復した'); }); endGroup();
+      targets.forEach(function (t) { var st = Actors.stats(t); var v = Math.round((sk.power + s.mag * 0.8) * (a.job === 'priest' ? 1.15 : 1) * hm * (UG() ? UG().healTarget(b, a, t, sk) : 1) * rnd(0.9, 1.1)); var before = t.hp; t.hp = Math.min(st.maxHp, t.hp + v); ev.push({ type: 'heal', side: 'party', id: t.id, value: t.hp - before }); msg(t.name + 'のHPが' + (t.hp - before) + '回復した'); if (UG()) UG().afterHeal(b, a, t, t.hp - before, sk, ev); }); endGroup();   // v8.7 対象ごとの回復の固有効果（回復する前の HP で判定）
     } else if (sk.kind === 'cure') {
       targets.forEach(function (t) { var cured = []; sk.cures.forEach(function (c) { if (t.status[c]) { delete t.status[c]; cured.push(STATUS_NAME[c]); } }); msg(cured.length ? t.name + 'の' + cured.join('・') + 'が治った' : 'しかし何も起こらなかった'); if (cured.length) cureBonus(t, ev); });
     } else if (sk.kind === 'revive') {
-      targets.forEach(function (t) { var st = Actors.stats(t); t.dead = false; t.hp = Math.max(1, Math.round(st.maxHp * sk.power)); t.status = {}; ev.push({ type: 'revive', id: t.id }); msg(t.name + 'が復活した！'); if (sk.regen) { t.buffs.regen = { value: sk.regen.value, turns: sk.regen.turns + 1 }; msg(t.name + 'の体に再生の力が宿った'); } });
+      targets.forEach(function (t) { var st = Actors.stats(t); t.dead = false; t.hp = Math.max(1, Math.round(st.maxHp * sk.power)); t.status = {}; ev.push({ type: 'revive', id: t.id }); msg(t.name + 'が復活した！'); if (sk.regen) { t.buffs.regen = { value: sk.regen.value, turns: sk.regen.turns + 1 }; msg(t.name + 'の体に再生の力が宿った'); } if (UG()) UG().afterRevive(b, a, t, sk, ev); });   // v8.7 魂守りの灯【灯をつなぐ】
     } else if (sk.kind === 'buff' || sk.kind === 'debuff') {
       targets.forEach(function (t) { Object.keys(sk.buff).forEach(function (k) { t.buffs[k] = { value: sk.buff[k], turns: sk.turns || 3 }; }); var what = Object.keys(sk.buff).map(function (k) { return ({ atk: '攻撃力', def: '防御力', agi: '素早さ', mdef: '魔法防御', mag: '魔力', mres: '魔法への耐性', guard: '守り（被ダメージ軽減）', evade: '回避', charge: '次の一撃', endure: '踏みとどまる力', regen: '自然回復' })[k] + (sk.buff[k] > 0 ? (k === 'charge' ? 'に力がこもった' : 'が上がった') : 'が下がった'); }).join('、'); msg(t.name + 'の' + what); });
     } else if (sk.kind === 'status') {
@@ -448,8 +468,8 @@
     if (chosen.type === 'attack') { var t = pickTarget(); msg(e.name + 'の攻撃！'); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: 'lunge' }); hitActor(b, e, t, 1.0, {}, ev); return; }
     if (chosen.type === 'skill') {
       var sk = SKILLS[chosen.id]; e.mp -= sk.mp; msg(e.name + 'は' + sk.name + 'を使った！'); ev.push({ type: 'anim', side: 'enemy', idx: e.idx, anim: sk.anim });
-      if (sk.kind === 'attack') { var tgs = sk.target === 'enemies' ? living : [pickTarget()]; var hits = sk.hits || 1; for (var h = 0; h < hits; h++) { if (tgs.length > 1) beginGroup('party'); tgs.forEach(function (t2) { if (!t2.dead) hitActor(b, e, t2, sk.power, { element: sk.element, status: sk.status, crit: sk.crit, pierce: sk.pierce }, ev); }); endGroup(); } }
-      else if (sk.kind === 'magic') { var tg2 = sk.target === 'enemies' ? living : [pickTarget()]; if (tg2.length > 1) beginGroup('party'); tg2.forEach(function (t3) { var ps = pstats(t3); var dmg = magDamage(es.mag, ps.mdef, sk.power, sk.mult);   /* v7.6 敵の固有の全体呪文は mult で弱める（js/data/enemyskills76.js） */ if (t3.job === 'spirit_warden' && ['ice', 'fire', 'thunder'].indexOf(sk.element) >= 0) dmg = Math.round(dmg * 0.85); /* v5.6 精霊守の加護 */ if (t3.buffs && t3.buffs.mres && t3.buffs.mres.turns > 0) dmg = Math.max(1, Math.round(dmg * (1 - t3.buffs.mres.value))); /* v5.6 精霊の盾・精霊の守り */ dmg = Math.max(1, Math.round(dmg * partyResist(t3, sk.element))); /* v6.4 防具の属性耐性 */ dmg = partyTakes(b, t3, dmg, ev); t3.hp = Math.max(0, t3.hp - dmg); ev.push({ type: 'damage', side: 'party', id: t3.id, value: dmg, anim: sk.anim }); msg(t3.name + 'に' + dmg + 'のダメージ'); if (t3.hp <= 0) killActor(t3, ev); else if (sk.status && addStatus(t3, sk.status, undefined, true)) msg(t3.name + 'は' + STATUS_NAME[sk.status.id] + '状態になった'); }); endGroup(); }
+      if (sk.kind === 'attack') { var tgs = sk.target === 'enemies' ? living : [pickTarget()]; var hits = sk.hits || 1; for (var h = 0; h < hits; h++) { if (tgs.length > 1) beginGroup('party'); tgs.forEach(function (t2) { if (!t2.dead) hitActor(b, e, t2, sk.power, { element: sk.element, status: sk.status, crit: sk.crit, pierce: sk.pierce, aoe: sk.target === 'enemies' }, ev); }); endGroup(); } }   // v8.7 aoe：全体攻撃の印（固有効果だけが読む）
+      else if (sk.kind === 'magic') { var tg2 = sk.target === 'enemies' ? living : [pickTarget()]; if (tg2.length > 1) beginGroup('party'); tg2.forEach(function (t3) { var ps = pstats(t3); var dmg = magDamage(es.mag, ps.mdef, sk.power, sk.mult);   /* v7.6 敵の固有の全体呪文は mult で弱める（js/data/enemyskills76.js） */ if (t3.job === 'spirit_warden' && ['ice', 'fire', 'thunder'].indexOf(sk.element) >= 0) dmg = Math.round(dmg * 0.85); /* v5.6 精霊守の加護 */ if (t3.buffs && t3.buffs.mres && t3.buffs.mres.turns > 0) dmg = Math.max(1, Math.round(dmg * (1 - t3.buffs.mres.value))); /* v5.6 精霊の盾・精霊の守り */ dmg = Math.max(1, Math.round(dmg * partyResist(t3, sk.element))); /* v6.4 防具の属性耐性 */ var hit87 = { kind: 'magic', aoe: sk.target === 'enemies', element: sk.element, enemy: e }; dmg = partyTakes(b, t3, dmg, ev, hit87); t3.hp = Math.max(0, t3.hp - dmg); ev.push({ type: 'damage', side: 'party', id: t3.id, value: dmg, anim: sk.anim }); msg(t3.name + 'に' + dmg + 'のダメージ'); if (UG()) UG().afterTaken(b, t3, e, dmg, hit87, ev); /* v8.7 */ if (t3.hp <= 0) killActor(t3, ev); else if (sk.status && addStatus(t3, sk.status, undefined, true)) msg(t3.name + 'は' + STATUS_NAME[sk.status.id] + '状態になった'); }); endGroup(); }
       else if (sk.kind === 'status') { var tg3 = sk.target === 'enemies' ? living : [pickTarget()]; tg3.forEach(function (t4) { if (addStatus(t4, sk.status, undefined, true)) msg(t4.name + 'は' + STATUS_NAME[sk.status.id] + '状態になった'); else msg(t4.name + 'には効かなかった'); }); }
       else if (sk.kind === 'buff') { Object.keys(sk.buff).forEach(function (k) { e.buffs[k] = { value: sk.buff[k], turns: sk.turns || 3 }; }); msg(e.name + 'の能力が上がった'); }
       return;
@@ -473,7 +493,7 @@
       if (sp.power) {
         // v6.5 攻撃のあとに状態異常・弱体化（毒の牙・しびれ針・絶望の波動など）：当たった相手だけ
         var after = function (t8) { if (!t8 || t8.dead) return; if (sp.status && addStatus(t8, sp.status, undefined, true)) msg(t8.name + 'は' + STATUS_NAME[sp.status.id] + '状態になった'); if (sp.debuff) debuffActor(t8, sp, msg); };
-        if (sp.all) { beginGroup('party'); var hitList = []; living.forEach(function (t7) { if (!t7.dead && hitActor(b, e, t7, sp.power, {}, ev) > 0) hitList.push(t7); }); endGroup(); hitList.forEach(after); return; }
+        if (sp.all) { beginGroup('party'); var hitList = []; living.forEach(function (t7) { if (!t7.dead && hitActor(b, e, t7, sp.power, { aoe: true }, ev) > 0) hitList.push(t7); }); endGroup(); hitList.forEach(after); return; }   // v8.7 aoe：全体攻撃の印
         var hits2 = sp.hits || 1;
         for (var h2 = 0; h2 < hits2; h2++) { if (!aliveParty(b).length) break; var t5 = pickTarget(); if (!t5 || t5.dead) t5 = pickRandom(aliveParty(b)); var dm = hitActor(b, e, t5, sp.power, {}, ev); if (sp.steal && dm > 0) stealGold(b, e, sp.steal, ev); if (sp.drain && dm > 0) { e.hp = Math.min(e.maxHp, e.hp + Math.round(dm * 0.5)); msg(e.name + 'は体力を吸い取った'); } if (dm > 0) after(t5); }
         if (sp.selfAfter) { Object.keys(sp.selfAfter).forEach(function (k) { e.buffs[k] = { value: sp.selfAfter[k], turns: sp.selfTurns || 2 }; }); if (sp.afterMsg) msg(e.name + sp.afterMsg); }   // v7.5 フルレバの一撃のあとの隙
@@ -486,17 +506,19 @@
 
   function hitActor(b, e, t, power, opts, ev) {
     var es = estats(e); var ps = pstats(t);
-    var evd = Math.min(0.6, fxSum(t, 'evade') + buffOf(t, 'evade')); if (evd && !opts.all && Math.random() < evd) { ev.push({ type: 'msg', text: t.name + 'はひらりとかわした！' }); return 0; }   // v6.4 装備の合計・上限25%
+    var evd = Math.min(0.6, Math.min((root.FX_CAP && root.FX_CAP.evade) || 0.25, fxSum(t, 'evade') + (UG() ? UG().evadeAdd(t, opts) : 0)) + buffOf(t, 'evade')); if (evd && !opts.all && Math.random() < evd) { ev.push({ type: 'msg', text: t.name + 'はひらりとかわした！' }); return 0; }   // v6.4 装備の合計・上限25%（v8.7 蜃気楼のヴェールの単体の物理攻撃の回避も上限の内側）
     var dmg = physDamage(es.atk, ps.def, power, { crit: Math.random() < 1 / 24 + (opts.crit || 0), pierce: opts.pierce || 0 });   /* v7.6 敵の固有技：会心・貫通 */
     if (t.job === 'warrior') dmg = Math.round(dmg * 0.95);
     if (opts.element && opts.element !== 'none' && Actors.stats(t).mdef) dmg = Math.round(dmg * 0.9);
     if (opts.element && opts.element !== 'none') dmg = Math.max(1, Math.round(dmg * partyResist(t, opts.element)));   // v6.4 防具の属性耐性
     // v5.1 装備の受動効果：dmgReduce（単体攻撃の軽減）、cover 中の誓約騎士は -20%
     var red = 0; Object.keys(t.equip || {}).forEach(function (sl) { var it = t.equip[sl] && ITEMS[t.equip[sl]]; if (it && it.dmgReduce && !opts.all) red = Math.max(red, it.dmgReduce); }); if (t.cover && t.job === 'oath_knight') red = Math.max(red, 0.2); var cc = fx(t, 'coverCut'); if (t.cover && cc) red = Math.max(red, cc); if (red) dmg = Math.round(dmg * (1 - red));   // v6.4 誓いの鎖
-    dmg = partyTakes(b, t, dmg, ev);
+    var hit87 = { kind: 'phys', aoe: !!opts.aoe, element: opts.element, enemy: e, proc: !!opts.proc };   // v8.7 固有効果の被ダメージの判定に使う
+    dmg = partyTakes(b, t, dmg, ev, hit87);
     t.hp = Math.max(0, t.hp - dmg);
     ev.push({ type: 'damage', side: 'party', id: t.id, value: dmg, anim: 'hit' });
     ev.push({ type: 'msg', text: t.name + 'に' + dmg + 'のダメージ' });
+    if (UG()) UG().afterTaken(b, t, e, dmg, hit87, ev);   // v8.7 適応防壁・溶岩の皮膜・沈黙の城壁の反撃など
     if (t.status.sleep && Math.random() < 0.7) { delete t.status.sleep; ev.push({ type: 'msg', text: t.name + 'は目を覚ました' }); }
     if (opts.status && addStatus(t, opts.status, undefined, true)) ev.push({ type: 'msg', text: t.name + 'は' + STATUS_NAME[opts.status.id] + '状態になった' });
     if (t.hp <= 0) killActor(t, ev);
@@ -508,6 +530,7 @@
   var ULT_K = { attackEnemy: function (b, a, t, p, o, ev) { return attackEnemy(b, a, t, p, o, ev); }, addStatus: function (t, st) { return addStatus(t, st, st.chance, false); }, aliveEnemies: aliveEnemies, aliveParty: aliveParty,
     beginGroup: beginGroup, endGroup: endGroup, maxMp: function (a) { return Actors.stats(a).maxMp; }, maxHp: function (a) { return Actors.stats(a).maxHp; }, atkOf: function (a) { return pstats(a).atk; }, defOf: function (e) { return estats(e).def; }, statusName: function (id) { return STATUS_NAME[id] || id; } };
   Combat._ultK = ULT_K;
+  Combat._ugK = { physDamage: physDamage, estats: estats, pstats: pstats, killEnemy: function (b, e, ev) { return killEnemy(b, e, ev); }, addStatus: addStatus, early: early, resistOf: resistOf };   // v8.7 js/rpg/boss-unique-gear.js が使う内部の関数
   function killEnemy(b, e, ev) { e.dead = true; ev.push({ type: 'enemy_dead', idx: e.idx }); ev.push({ type: 'msg', text: e.name + 'を倒した！' }); if (e.stolen > 0 && root.State && root.State.data) { root.State.data.gold = (root.State.data.gold || 0) + e.stolen; ev.push({ type: 'msg', text: '奪われた' + e.stolen + 'Gを取り返した！' }); e.stolen = 0; } }
   /* v7.5 敵がお金を奪う（js/data/enemies-add35.js の steal：{ rate, cap, battleCap }）
      ・対象は所持金（State.data.gold）だけ。1回で「所持金 × rate」と cap の小さいほう。1回の戦闘で奪われるのは合わせて battleCap（なければ cap の2倍）まで
@@ -516,6 +539,7 @@
     var d = root.State && root.State.data; if (!d || !st) return 0;
     var room = Math.max(0, (st.battleCap || st.cap * 2) - (b.stolenTotal || 0));
     var amt = Math.max(0, Math.min(Math.floor((d.gold || 0) * st.rate), st.cap, room));
+    if (UG()) amt = UG().stealAdjust(b, amt, ev);   // v8.7 徴税隊長の監査徽章【不正な徴収を防ぐ】（パーティで 1 つ分）
     if (amt <= 0) { ev.push({ type: 'msg', text: (room <= 0 ? e.name + 'はもう奪えるお金を探している……' : e.name + 'は財布を探ったが、何も取れなかった') }); return 0; }
     d.gold -= amt; e.stolen = (e.stolen || 0) + amt; b.stolenTotal = (b.stolenTotal || 0) + amt;
     ev.push({ type: 'msg', text: e.name + 'は' + amt + 'Gを奪った！（この戦闘で倒せば取り返せる）' });
@@ -534,6 +558,7 @@
       ['paralyze', 'confuse', 'sleep', 'silence'].forEach(function (k) { if (a.status[k]) { a.status[k].turns--; if (a.status[k].turns <= 0) { delete a.status[k]; msg(a.name + 'の' + STATUS_NAME[k] + 'が治った'); cureBonus(a, ev); } } });
       Object.keys(a.buffs).forEach(function (k) { if (a.buffs[k]) { a.buffs[k].turns--; if (a.buffs[k].turns <= 0) delete a.buffs[k]; } });
     });
+    if (UG()) UG().endTurn(b, ev);   // v8.7 不安の鎮静・自分で決める・満ち足りる器
     b.enemies.forEach(function (e) {
       if (e.dead) return;
       if (e.status.poison) { var d = Math.max(1, Math.round(e.maxHp / 10)); e.hp = Math.max(0, e.hp - d); ev.push({ type: 'damage', side: 'enemy', idx: e.idx, value: d, anim: 'poison' }); msg(e.name + 'は毒で' + d + 'のダメージ'); if (e.hp <= 0) killEnemy(b, e, ev); }
@@ -604,10 +629,11 @@
     root.State.data.gold += r.gold;
     var dropCounts = {};
     r.drops.forEach(function (d) { root.State.addItem(d, 1); dropCounts[d] = (dropCounts[d] || 0) + 1; });
+    var bossGear = (UG() && b.bossRewardKey && b.state === 'won') ? UG().grantForBattle(b) : null;   // v8.7 ボス固有装備（正規のボス戦の初回勝利で 1 個。台帳で 2 回目以降は 0 個）
     b.party.forEach(Actors.clearBattleState);
     // 倒した敵の集計
     var killed = {}; b.enemies.forEach(function (e) { if (e.fled) return; var nm = e.name.replace(/[A-H]$/, ''); killed[nm] = (killed[nm] || 0) + 1; });
-    b.distributed = { exp: r.exp, gold: r.gold, goldBase: goldBase, merchantBonus: r.merchantBonus || 0, drops: dropCounts, killed: killed, members: members };
+    b.distributed = { exp: r.exp, gold: r.gold, goldBase: goldBase, merchantBonus: r.merchantBonus || 0, drops: dropCounts, killed: killed, members: members, bossGear: bossGear };
     return b.distributed;
   };
 

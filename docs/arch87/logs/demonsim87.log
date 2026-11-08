@@ -1,0 +1,4 @@
+node docs/tools/v87/demonsim87.js <dir> 300（ch1316test と同じ条件：LV76・TEST_GEAR・主人公/ガルド/ルシア/セリス・オート・各 300 戦）
+v8.6（33eca51 を git archive で取り出した物）: {"boss_demon_fear":{"win":0.867,"turns":7.2},"boss_demon_greed":{"win":0.963,"turns":7.2},"boss_demon_fixed":{"win":0.97,"turns":6.4}}
+v8.7 作業中                              : {"boss_demon_fear":{"win":0.907,"turns":7},"boss_demon_greed":{"win":0.983,"turns":7.3},"boss_demon_fixed":{"win":0.963,"turns":6.6}}
+3 形態を続けて勝つ確率（積）：v8.6 約 0.81／v8.7 約 0.86。ch1316test の「魔王で負けたあとの流れ」は、どちらの版でもこの確率で失敗する（テストは負けたあとの再挑戦を想定していない）

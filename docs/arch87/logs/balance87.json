@@ -1,0 +1,1717 @@
+{
+ "N": 60,
+ "base": [
+  {
+   "no": 1,
+   "key": "boss_lost_trend",
+   "item": "迷い晴らしの羅針盤",
+   "status": "new",
+   "lv": 6.4,
+   "how": "章2の想定",
+   "ch": 2,
+   "slot": "acc",
+   "best": {
+    "job": "warrior",
+    "mine": 3.3,
+    "shop": 4.6,
+    "shopItem": "命のお守り",
+    "ratio": 0.72
+   }
+  },
+  {
+   "no": 2,
+   "key": "boss_greed_golem",
+   "item": "黄金結晶の戒め鎧",
+   "status": "new",
+   "lv": 10.1,
+   "how": "章3の想定",
+   "ch": 3,
+   "slot": "armor",
+   "best": {
+    "job": "knight",
+    "mine": 13.5,
+    "shop": 11.8,
+    "shopItem": "潮風の革鎧",
+    "ratio": 1.14
+   }
+  },
+  {
+   "no": 3,
+   "key": "boss_bandit_chief",
+   "item": "ガロンの戦利斧",
+   "status": "new",
+   "lv": 10.1,
+   "how": "章3の想定",
+   "ch": 3,
+   "slot": "weapon",
+   "best": {
+    "job": "warrior",
+    "mine": 23,
+    "shop": 20,
+    "shopItem": "モメンタムアックス",
+    "ratio": 1.15
+   }
+  },
+  {
+   "no": 4,
+   "key": "boss_tide_serpent",
+   "item": "潮牙槍ウルガ",
+   "status": "new",
+   "lv": 10.8,
+   "how": "章4の想定",
+   "ch": 4,
+   "slot": "weapon",
+   "best": {
+    "job": "knight",
+    "mine": 22.6,
+    "shop": 20,
+    "shopItem": "押し目の長槍",
+    "ratio": 1.13
+   }
+  },
+  {
+   "no": 5,
+   "key": "boss_overseer",
+   "item": "解放の断鎖斧",
+   "status": "new",
+   "lv": 23.4,
+   "how": "章5の想定",
+   "ch": 5,
+   "slot": "weapon",
+   "best": {
+    "job": "warrior",
+    "mine": 34,
+    "shop": 30,
+    "shopItem": "騎士の剣",
+    "ratio": 1.13
+   }
+  },
+  {
+   "no": 6,
+   "key": "boss_ledger_guardian",
+   "item": "黒帳の監査盾",
+   "status": "new",
+   "lv": 26.2,
+   "how": "章6の想定",
+   "ch": 6,
+   "slot": "shield",
+   "best": {
+    "job": "warrior",
+    "mine": 11.6,
+    "shop": 10.4,
+    "shopItem": "押し目の盾",
+    "ratio": 1.12
+   }
+  },
+  {
+   "no": 7,
+   "key": "boss_valen",
+   "item": "ヴァレンの誓約剣",
+   "status": "new",
+   "lv": 28.1,
+   "how": "章7の想定",
+   "ch": 7,
+   "slot": "weapon",
+   "best": {
+    "job": "warrior",
+    "mine": 34.4,
+    "shop": 30,
+    "shopItem": "騎士の剣",
+    "ratio": 1.15
+   }
+  },
+  {
+   "no": 8,
+   "key": "boss_royal_captain",
+   "item": "ドレクの王宮大盾",
+   "status": "new",
+   "lv": 28.1,
+   "how": "章7の想定",
+   "ch": 7,
+   "slot": "shield",
+   "best": {
+    "job": "knight",
+    "mine": 11.9,
+    "shop": 10.4,
+    "shopItem": "押し目の盾",
+    "ratio": 1.14
+   }
+  },
+  {
+   "no": 9,
+   "key": "boss_ledger_core",
+   "item": "中枢照合の指輪",
+   "status": "new",
+   "lv": 28.1,
+   "how": "章7の想定",
+   "ch": 7,
+   "slot": "acc",
+   "best": {
+    "job": "priest",
+    "mine": 10.5,
+    "shop": 9.3,
+    "shopItem": "資金配分の腕輪",
+    "ratio": 1.13
+   }
+  },
+  {
+   "no": 10,
+   "key": "boss_ruin_memory",
+   "item": "七時四十二分の外套",
+   "status": "new",
+   "lv": 36,
+   "how": "章8の想定",
+   "ch": 8,
+   "slot": "armor",
+   "best": {
+    "job": "knight",
+    "mine": 26.4,
+    "shop": 25.6,
+    "shopItem": "珊瑚の鎧",
+    "ratio": 1.03
+   }
+  },
+  {
+   "no": 11,
+   "key": "boss_library_guardian",
+   "item": "万巻記録の書杖",
+   "status": "new",
+   "lv": 39.4,
+   "how": "章9の想定",
+   "ch": 9,
+   "slot": "weapon",
+   "best": {
+    "job": "mage",
+    "mine": 21.3,
+    "shop": 18.2,
+    "shopItem": "統計の魔杖",
+    "ratio": 1.17
+   }
+  },
+  {
+   "no": 12,
+   "key": "boss_storm_chief",
+   "item": "砂嵐を裂く弓",
+   "status": "new",
+   "lv": 39.4,
+   "how": "章9の想定",
+   "ch": 9,
+   "slot": "weapon",
+   "best": {
+    "job": "thief",
+    "mine": 44.5,
+    "shop": 41.6,
+    "shopItem": "凍星の弓",
+    "ratio": 1.07
+   }
+  },
+  {
+   "no": 13,
+   "key": "boss_mirage_lord",
+   "item": "蜃気楼のヴェール",
+   "status": "existing",
+   "lv": 39.4,
+   "how": "章9の想定",
+   "ch": 9,
+   "slot": "armor",
+   "best": {
+    "job": "mage",
+    "mine": 25.2,
+    "shop": 34.5,
+    "shopItem": "時詠みの礼装",
+    "ratio": 0.73
+   }
+  },
+  {
+   "no": 14,
+   "key": "boss_time_guardian",
+   "item": "時守りの懐中時計",
+   "status": "new",
+   "lv": 43.7,
+   "how": "章10の想定",
+   "ch": 10,
+   "slot": "acc",
+   "best": {
+    "job": "priest",
+    "mine": 7,
+    "shop": 9.6,
+    "shopItem": "MACDの護符",
+    "ratio": 0.73
+   }
+  },
+  {
+   "no": 15,
+   "key": "boss_frost_spirit",
+   "item": "名を取り戻す氷霊衣",
+   "status": "new",
+   "lv": 43.7,
+   "how": "章10の想定",
+   "ch": 10,
+   "slot": "armor",
+   "best": {
+    "job": "mage",
+    "mine": 38.4,
+    "shop": 34.5,
+    "shopItem": "時詠みの礼装",
+    "ratio": 1.11
+   }
+  },
+  {
+   "no": 16,
+   "key": "boss_memory_keeper",
+   "item": "追憶封じの冠",
+   "status": "new",
+   "lv": 43.7,
+   "how": "章10の想定",
+   "ch": 10,
+   "slot": "head",
+   "best": {
+    "job": "mage",
+    "mine": 19.2,
+    "shop": 15.6,
+    "shopItem": "氷晶の頭巾",
+    "ratio": 1.23
+   }
+  },
+  {
+   "no": 17,
+   "key": "boss_drone_swarm",
+   "item": "群眼の追尾弓",
+   "status": "new",
+   "lv": 49.1,
+   "how": "章11の想定",
+   "ch": 11,
+   "slot": "weapon",
+   "best": {
+    "job": "thief",
+    "mine": 47.5,
+    "shop": 49.2,
+    "shopItem": "蒼天の長弓",
+    "ratio": 0.97
+   }
+  },
+  {
+   "no": 18,
+   "key": "boss_core_defense",
+   "item": "中枢防衛装甲",
+   "status": "new",
+   "lv": 50.5,
+   "how": "章12の想定",
+   "ch": 12,
+   "slot": "armor",
+   "best": {
+    "job": "knight",
+    "mine": 43.7,
+    "shop": 34.6,
+    "shopItem": "暁光の鎧",
+    "ratio": 1.26
+   }
+  },
+  {
+   "no": 19,
+   "key": "boss_minister",
+   "item": "禁書大臣の魔導杖",
+   "status": "new",
+   "lv": 56.7,
+   "how": "章13の想定",
+   "ch": 13,
+   "slot": "weapon",
+   "best": {
+    "job": "priest",
+    "mine": 26.6,
+    "shop": 23.4,
+    "shopItem": "オラクル解析杖",
+    "ratio": 1.14
+   }
+  },
+  {
+   "no": 20,
+   "key": "boss_magma_wyrm",
+   "item": "溶岩番竜の重鱗鎧",
+   "status": "new",
+   "lv": 56.7,
+   "how": "章13の想定",
+   "ch": 13,
+   "slot": "armor",
+   "best": {
+    "job": "warrior",
+    "mine": 42.1,
+    "shop": 34.6,
+    "shopItem": "暁光の鎧",
+    "ratio": 1.22
+   }
+  },
+  {
+   "no": 21,
+   "key": "boss_sky_guardian",
+   "item": "天穹審判の槍",
+   "status": "new",
+   "lv": 59.6,
+   "how": "章14の想定",
+   "ch": 14,
+   "slot": "weapon",
+   "best": {
+    "job": "knight",
+    "mine": 56.5,
+    "shop": 56,
+    "shopItem": "暁光の剣",
+    "ratio": 1.01
+   }
+  },
+  {
+   "no": 22,
+   "key": "boss_zarg_remnant",
+   "item": "残鎖を断つ手甲",
+   "status": "new",
+   "lv": 62.7,
+   "how": "章15の想定",
+   "ch": 15,
+   "slot": "weapon",
+   "best": {
+    "job": "monk",
+    "mine": 59.8,
+    "shop": 54.2,
+    "shopItem": "暁光の槌",
+    "ratio": 1.1
+   }
+  },
+  {
+   "no": 23,
+   "key": "boss_sevran_shadow",
+   "item": "白紙の宰相衣",
+   "status": "new",
+   "lv": 62.7,
+   "how": "章15の想定",
+   "ch": 15,
+   "slot": "armor",
+   "best": {
+    "job": "mage",
+    "mine": 45.2,
+    "shop": 35.8,
+    "shopItem": "暁光の法衣",
+    "ratio": 1.26
+   }
+  },
+  {
+   "no": 24,
+   "key": "boss_grote_2",
+   "item": "鉄の冠",
+   "status": "existing",
+   "lv": 62.7,
+   "how": "章15の想定",
+   "ch": 15,
+   "slot": "acc",
+   "best": {
+    "job": "knight",
+    "mine": 12.4,
+    "shop": 9.3,
+    "shopItem": "資金配分の腕輪",
+    "ratio": 1.33
+   }
+  },
+  {
+   "no": 25,
+   "key": "boss_demon_fear",
+   "item": "恐怖を越える大盾",
+   "status": "new",
+   "lv": 65.4,
+   "how": "章16の想定",
+   "ch": 16,
+   "slot": "shield",
+   "best": {
+    "job": "knight",
+    "mine": 33.3,
+    "shop": 26.4,
+    "shopItem": "暁光の盾",
+    "ratio": 1.26
+   }
+  },
+  {
+   "no": 26,
+   "key": "boss_demon_greed",
+   "item": "欲望を律する爪",
+   "status": "new",
+   "lv": 65.4,
+   "how": "章16の想定",
+   "ch": 16,
+   "slot": "weapon",
+   "best": {
+    "job": "monk",
+    "mine": 67.1,
+    "shop": 54.2,
+    "shopItem": "暁光の槌",
+    "ratio": 1.24
+   }
+  },
+  {
+   "no": 27,
+   "key": "boss_demon_fixed",
+   "item": "未来を選ぶ聖剣",
+   "status": "new",
+   "lv": 65.4,
+   "how": "章16の想定",
+   "ch": 16,
+   "slot": "weapon",
+   "best": {
+    "job": "knight",
+    "mine": 72.4,
+    "shop": 56,
+    "shopItem": "暁光の剣",
+    "ratio": 1.29
+   }
+  },
+  {
+   "no": 28,
+   "key": "wolf_king",
+   "item": "白銀狼王の爪",
+   "status": "new",
+   "lv": 6,
+   "how": "近くの出現地帯（推定）",
+   "ch": 2,
+   "slot": "weapon",
+   "best": {
+    "job": "monk",
+    "mine": 21.5,
+    "shop": 18.9,
+    "shopItem": "逆行の爪",
+    "ratio": 1.14
+   }
+  },
+  {
+   "no": 29,
+   "key": "crystal_golem",
+   "item": "結晶共鳴の杖",
+   "status": "new",
+   "lv": 10,
+   "how": "近くの出現地帯（推定）",
+   "ch": 2,
+   "slot": "weapon",
+   "best": {
+    "job": "mage",
+    "mine": 11.9,
+    "shop": 10.4,
+    "shopItem": "複利の杖",
+    "ratio": 1.14
+   }
+  },
+  {
+   "no": 30,
+   "key": "boss_gull_admiral",
+   "item": "海賊カモメの提督帽",
+   "status": "new",
+   "lv": 17,
+   "how": "近くの出現地帯（推定）",
+   "ch": 4,
+   "slot": "head",
+   "best": {
+    "job": "mage",
+    "mine": 6.5,
+    "shop": 5.8,
+    "shopItem": "高値安値の帽子",
+    "ratio": 1.12
+   }
+  },
+  {
+   "no": 31,
+   "key": "boss_ash_lord",
+   "item": "灰鉄の大槌",
+   "status": "existing",
+   "lv": 31,
+   "how": "近くの出現地帯（推定）",
+   "ch": 7,
+   "slot": "weapon",
+   "best": {
+    "job": "priest",
+    "mine": 10.2,
+    "shop": 18.2,
+    "shopItem": "統計の魔杖",
+    "ratio": 0.56
+   }
+  },
+  {
+   "no": 32,
+   "key": "boss_ghost_captain",
+   "item": "船長のサーベル",
+   "status": "existing",
+   "lv": 33,
+   "how": "近くの出現地帯（推定）",
+   "ch": 7,
+   "slot": "weapon",
+   "best": {
+    "job": "knight",
+    "mine": 36,
+    "shop": 38.2,
+    "shopItem": "レジスタンスブレード",
+    "ratio": 0.94
+   }
+  },
+  {
+   "no": 33,
+   "key": "observer_echo",
+   "item": "観測者のレンズ",
+   "status": "new",
+   "lv": 45,
+   "how": "近くの出現地帯（推定）",
+   "ch": 10,
+   "slot": "acc",
+   "best": {
+    "job": "priest",
+    "mine": 11.6,
+    "shop": 9.6,
+    "shopItem": "MACDの護符",
+    "ratio": 1.21
+   }
+  },
+  {
+   "no": 34,
+   "key": "soul_warden",
+   "item": "魂守りの灯",
+   "status": "new",
+   "lv": 50,
+   "how": "近くの出現地帯（推定）",
+   "ch": 11,
+   "slot": "acc",
+   "best": {
+    "job": "priest",
+    "mine": 11.3,
+    "shop": 9.6,
+    "shopItem": "MACDの護符",
+    "ratio": 1.18
+   }
+  },
+  {
+   "no": 35,
+   "key": "zero_echo",
+   "item": "零点共鳴杖",
+   "status": "new",
+   "lv": 50,
+   "how": "近くの出現地帯（推定）",
+   "ch": 11,
+   "slot": "weapon",
+   "best": {
+    "job": "mage",
+    "mine": 29.5,
+    "shop": 23.4,
+    "shopItem": "オラクル解析杖",
+    "ratio": 1.26
+   }
+  },
+  {
+   "no": 36,
+   "key": "boss_primal_flame",
+   "item": "竜脈の剣",
+   "status": "existing",
+   "lv": 63,
+   "how": "近くの出現地帯（推定）",
+   "ch": 15,
+   "slot": "weapon",
+   "best": {
+    "job": "knight",
+    "mine": 60,
+    "shop": 56,
+    "shopItem": "暁光の剣",
+    "ratio": 1.07
+   }
+  },
+  {
+   "no": 37,
+   "key": "boss_clock_warden",
+   "item": "時計の針の槍",
+   "status": "existing",
+   "lv": 63,
+   "how": "近くの出現地帯（推定）",
+   "ch": 15,
+   "slot": "weapon",
+   "best": {
+    "job": "knight",
+    "mine": 56,
+    "shop": 56,
+    "shopItem": "暁光の剣",
+    "ratio": 1
+   }
+  },
+  {
+   "no": 38,
+   "key": "boss_old_core",
+   "item": "零誤差の弓",
+   "status": "existing",
+   "lv": 66,
+   "how": "近くの出現地帯（推定）",
+   "ch": 16,
+   "slot": "weapon",
+   "best": {
+    "job": "thief",
+    "mine": 58,
+    "shop": 56,
+    "shopItem": "暁光の剣",
+    "ratio": 1.04
+   }
+  },
+  {
+   "no": 39,
+   "key": "boss_tides",
+   "item": "大潮王の珊瑚三叉槍",
+   "status": "new",
+   "lv": 45,
+   "how": "近くの出現地帯（推定）",
+   "ch": 10,
+   "slot": "weapon",
+   "best": {
+    "job": "knight",
+    "mine": 49.4,
+    "shop": 46,
+    "shopItem": "ルーンブレード",
+    "ratio": 1.07
+   }
+  },
+  {
+   "no": 40,
+   "key": "boss_block_signal",
+   "item": "閉塞解除の信号盾",
+   "status": "new",
+   "lv": 51,
+   "how": "近くの出現地帯（推定）",
+   "ch": 12,
+   "slot": "shield",
+   "best": {
+    "job": "warrior",
+    "mine": 22.4,
+    "shop": 26.4,
+    "shopItem": "暁光の盾",
+    "ratio": 0.85
+   }
+  },
+  {
+   "no": 41,
+   "key": "boss_archive_warden",
+   "item": "アーカイブ復旧装甲",
+   "status": "new",
+   "lv": 57,
+   "how": "近くの出現地帯（推定）",
+   "ch": 13,
+   "slot": "armor",
+   "best": {
+    "job": "warrior",
+    "mine": 44.5,
+    "shop": 34.6,
+    "shopItem": "暁光の鎧",
+    "ratio": 1.29
+   }
+  },
+  {
+   "no": 42,
+   "key": "boss_sentinel_orbis",
+   "item": "周回軌道の監視弓",
+   "status": "new",
+   "lv": 66,
+   "how": "近くの出現地帯（推定）",
+   "ch": 16,
+   "slot": "weapon",
+   "best": {
+    "job": "thief",
+    "mine": 70.1,
+    "shop": 56,
+    "shopItem": "暁光の剣",
+    "ratio": 1.25
+   }
+  },
+  {
+   "no": 43,
+   "key": "boss_anchor_core",
+   "item": "重力錨の蒼穹兜",
+   "status": "new",
+   "lv": 73,
+   "how": "近くの出現地帯（推定）",
+   "ch": 16,
+   "slot": "head",
+   "best": {
+    "job": "warrior",
+    "mine": 18.3,
+    "shop": 14.4,
+    "shopItem": "暁光の兜",
+    "ratio": 1.27
+   }
+  },
+  {
+   "no": 44,
+   "key": "tq_boss_deluxe_mochiko",
+   "item": "黄金の餅つき杵",
+   "status": "existing",
+   "lv": 57,
+   "how": "地図の推奨の上",
+   "ch": 13,
+   "slot": "weapon",
+   "best": {
+    "job": "priest",
+    "mine": 17.4,
+    "shop": 23.4,
+    "shopItem": "オラクル解析杖",
+    "ratio": 0.74
+   }
+  },
+  {
+   "no": 45,
+   "key": "tq_boss_apostle_of_anxiety",
+   "item": "静寂の鈴",
+   "status": "existing",
+   "lv": 16,
+   "how": "地図の推奨の上",
+   "ch": 4,
+   "slot": "acc",
+   "best": {
+    "job": "warrior",
+    "mine": 7.2,
+    "shop": 4.6,
+    "shopItem": "命のお守り",
+    "ratio": 1.57
+   }
+  },
+  {
+   "no": 46,
+   "key": "tq_boss_princess_mesaki",
+   "item": "今を見る宝刃",
+   "status": "existing",
+   "lv": 18,
+   "how": "地図の推奨の上",
+   "ch": 4,
+   "slot": "weapon",
+   "best": {
+    "job": "mage",
+    "mine": 9,
+    "shop": 18.2,
+    "shopItem": "統計の魔杖",
+    "ratio": 0.49
+   }
+  },
+  {
+   "no": 47,
+   "key": "tq_boss_dark_matter_lifeform_x",
+   "item": "暗黒物質の衣",
+   "status": "existing",
+   "lv": 69,
+   "how": "地図の推奨の上",
+   "ch": 16,
+   "slot": "armor",
+   "best": {
+    "job": "mage",
+    "mine": 45.2,
+    "shop": 35.8,
+    "shopItem": "暁光の法衣",
+    "ratio": 1.26
+   }
+  },
+  {
+   "no": 48,
+   "key": "tq_boss_missionary_of_betrayal",
+   "item": "表裏の短剣",
+   "status": "existing",
+   "lv": 53,
+   "how": "地図の推奨の上",
+   "ch": 12,
+   "slot": "weapon",
+   "best": {
+    "job": "mage",
+    "mine": 15,
+    "shop": 23.4,
+    "shopItem": "オラクル解析杖",
+    "ratio": 0.64
+   }
+  },
+  {
+   "no": 49,
+   "key": "tq_boss_enduring_human_desire",
+   "item": "青銅の欲望鎧",
+   "status": "existing",
+   "lv": 46,
+   "how": "地図の推奨の上",
+   "ch": 10,
+   "slot": "armor",
+   "best": {
+    "job": "warrior",
+    "mine": 37.3,
+    "shop": 31.4,
+    "shopItem": "竜牙の鎧",
+    "ratio": 1.19
+   }
+  },
+  {
+   "no": 50,
+   "key": "tq_boss_averaging_prince",
+   "item": "踏みとどまる皇子の槍",
+   "status": "existing",
+   "lv": 23,
+   "how": "地図の推奨の上",
+   "ch": 4,
+   "slot": "weapon",
+   "best": {
+    "job": "warrior",
+    "mine": 35.4,
+    "shop": 30,
+    "shopItem": "騎士の剣",
+    "ratio": 1.18
+   }
+  },
+  {
+   "no": 51,
+   "key": "tq_boss_former_sauron_consciousness",
+   "item": "残り火の石板杖",
+   "status": "existing",
+   "lv": 53,
+   "how": "地図の推奨の上",
+   "ch": 12,
+   "slot": "weapon",
+   "best": {
+    "job": "priest",
+    "mine": 23.6,
+    "shop": 23.4,
+    "shopItem": "オラクル解析杖",
+    "ratio": 1.01
+   }
+  },
+  {
+   "no": 52,
+   "key": "tq_boss_unsmiling_greatshield",
+   "item": "笑わぬ大盾",
+   "status": "existing",
+   "lv": 53,
+   "how": "地図の推奨の上",
+   "ch": 12,
+   "slot": "shield",
+   "best": {
+    "job": "warrior",
+    "mine": 23.2,
+    "shop": 26.4,
+    "shopItem": "暁光の盾",
+    "ratio": 0.88
+   }
+  },
+  {
+   "no": 53,
+   "key": "tq_boss_game_master",
+   "item": "王手の駒",
+   "status": "existing",
+   "lv": 56,
+   "how": "地図の推奨の上",
+   "ch": 12,
+   "slot": "acc",
+   "best": {
+    "job": "warrior",
+    "mine": 5,
+    "shop": 9.3,
+    "shopItem": "資金配分の腕輪",
+    "ratio": 0.54
+   }
+  },
+  {
+   "no": 54,
+   "key": "tq_boss_fallen_angel_manjaro",
+   "item": "白磁の羽衣",
+   "status": "existing",
+   "lv": 48,
+   "how": "地図の推奨の上",
+   "ch": 10,
+   "slot": "armor",
+   "best": {
+    "job": "mage",
+    "mine": 35.6,
+    "shop": 34.5,
+    "shopItem": "時詠みの礼装",
+    "ratio": 1.03
+   }
+  },
+  {
+   "no": 55,
+   "key": "tq_boss_rate_warden_fomsy",
+   "item": "金利計の兜",
+   "status": "existing",
+   "lv": 56,
+   "how": "地図の推奨の上",
+   "ch": 12,
+   "slot": "head",
+   "best": {
+    "job": "warrior",
+    "mine": 16.8,
+    "shop": 14.4,
+    "shopItem": "暁光の兜",
+    "ratio": 1.17
+   }
+  },
+  {
+   "no": 56,
+   "key": "tq_boss_justice_guardian_cybern",
+   "item": "電子封印の正義剣",
+   "status": "existing",
+   "lv": 60,
+   "how": "地図の推奨の上",
+   "ch": 14,
+   "slot": "weapon",
+   "best": {
+    "job": "knight",
+    "mine": 62,
+    "shop": 56,
+    "shopItem": "暁光の剣",
+    "ratio": 1.11
+   }
+  },
+  {
+   "no": 57,
+   "key": "tq_boss_ubud_of_remembrance",
+   "item": "琥珀の追憶弓",
+   "status": "existing",
+   "lv": 37,
+   "how": "地図の推奨の上",
+   "ch": 8,
+   "slot": "weapon",
+   "best": {
+    "job": "thief",
+    "mine": 37.9,
+    "shop": 38.2,
+    "shopItem": "レジスタンスブレード",
+    "ratio": 0.99
+   }
+  },
+  {
+   "no": 58,
+   "key": "tq_boss_fallen_angel_lookism",
+   "item": "素顔の外套",
+   "status": "existing",
+   "lv": 46,
+   "how": "地図の推奨の上",
+   "ch": 10,
+   "slot": "armor",
+   "best": {
+    "job": "warrior",
+    "mine": 29.2,
+    "shop": 31.4,
+    "shopItem": "竜牙の鎧",
+    "ratio": 0.93
+   }
+  },
+  {
+   "no": 59,
+   "key": "tq_boss_pleasure_djinn_velo",
+   "item": "酔わずの鉤爪",
+   "status": "existing",
+   "lv": 51,
+   "how": "地図の推奨の上",
+   "ch": 12,
+   "slot": "weapon",
+   "best": {
+    "job": "monk",
+    "mine": 48.2,
+    "shop": 54.2,
+    "shopItem": "暁光の槌",
+    "ratio": 0.89
+   }
+  },
+  {
+   "no": 60,
+   "key": "tq_boss_avatar_of_probability",
+   "item": "期待値の斧",
+   "status": "existing",
+   "lv": 51,
+   "how": "地図の推奨の上",
+   "ch": 12,
+   "slot": "weapon",
+   "best": {
+    "job": "warrior",
+    "mine": 52,
+    "shop": 58,
+    "shopItem": "暁光の戦斧",
+    "ratio": 0.9
+   }
+  },
+  {
+   "no": 61,
+   "key": "tq_boss_gravitational_balance",
+   "item": "星の天秤章",
+   "status": "existing",
+   "lv": 67,
+   "how": "地図の推奨の上",
+   "ch": 16,
+   "slot": "acc",
+   "best": {
+    "job": "warrior",
+    "mine": 15.5,
+    "shop": 9.3,
+    "shopItem": "資金配分の腕輪",
+    "ratio": 1.67
+   }
+  },
+  {
+   "no": 62,
+   "key": "tq_boss_crossroads_devil",
+   "item": "分かれ道の魔剣",
+   "status": "existing",
+   "lv": 46,
+   "how": "地図の推奨の上",
+   "ch": 10,
+   "slot": "weapon",
+   "best": {
+    "job": "warrior",
+    "mine": 51,
+    "shop": 46,
+    "shopItem": "ルーンブレード",
+    "ratio": 1.11
+   }
+  },
+  {
+   "no": 63,
+   "key": "enc_mine_captain",
+   "item": "看守長の断鎖兜",
+   "status": "new",
+   "lv": 17,
+   "how": "近くの出現地帯（推定）",
+   "ch": 4,
+   "slot": "head",
+   "best": {
+    "job": "knight",
+    "mine": 6.4,
+    "shop": 5.6,
+    "shopItem": "燻銀の兜",
+    "ratio": 1.13
+   }
+  },
+  {
+   "no": 64,
+   "key": "enc_hald_guards",
+   "item": "徴税隊長の監査徽章",
+   "status": "new",
+   "lv": 24,
+   "how": "近くの出現地帯（推定）",
+   "ch": 5,
+   "slot": "acc",
+   "best": {
+    "job": "warrior",
+    "mine": 6.4,
+    "shop": 9.3,
+    "shopItem": "資金配分の腕輪",
+    "ratio": 0.69
+   }
+  },
+  {
+   "no": 65,
+   "key": "enc_quantum_shades",
+   "item": "もつれ相関の指輪",
+   "status": "new",
+   "lv": 42,
+   "how": "近くの出現地帯（推定）",
+   "ch": 9,
+   "slot": "acc",
+   "best": {
+    "job": "priest",
+    "mine": 10.5,
+    "shop": 9.3,
+    "shopItem": "資金配分の腕輪",
+    "ratio": 1.13
+   }
+  },
+  {
+   "no": 66,
+   "key": "enc_castle_seal_1",
+   "item": "欲望封じの腕輪",
+   "status": "new",
+   "lv": 65,
+   "how": "近くの出現地帯（推定）",
+   "ch": 15,
+   "slot": "acc",
+   "best": {
+    "job": "warrior",
+    "mine": 11.6,
+    "shop": 9.3,
+    "shopItem": "資金配分の腕輪",
+    "ratio": 1.25
+   }
+  },
+  {
+   "no": 67,
+   "key": "enc_castle_seal_2",
+   "item": "恐怖を照らすランタン",
+   "status": "new",
+   "lv": 65,
+   "how": "近くの出現地帯（推定）",
+   "ch": 15,
+   "slot": "acc",
+   "best": {
+    "job": "warrior",
+    "mine": 8.8,
+    "shop": 9.3,
+    "shopItem": "資金配分の腕輪",
+    "ratio": 0.95
+   }
+  },
+  {
+   "no": 68,
+   "key": "enc_castle_seal_3",
+   "item": "支配断ちの額環",
+   "status": "new",
+   "lv": 65,
+   "how": "近くの出現地帯（推定）",
+   "ch": 15,
+   "slot": "head",
+   "best": {
+    "job": "priest",
+    "mine": 22.4,
+    "shop": 17.4,
+    "shopItem": "暁光の帽子",
+    "ratio": 1.29
+   }
+  }
+ ],
+ "battles": [
+  {
+   "key": "boss_lost_trend",
+   "name": "トレンド迷子",
+   "lv": 6.4,
+   "how": "章2の想定",
+   "gearCh": 2,
+   "ugAvailable": 1,
+   "none": {
+    "win": 1,
+    "turns": 2.7,
+    "maxHit": 66,
+    "mpLeft": 0.8
+   },
+   "withUG": {
+    "win": 1,
+    "turns": 2.6,
+    "maxHit": 66,
+    "mpLeft": 0.8,
+    "who": {}
+   },
+   "sec": 0
+  },
+  {
+   "key": "boss_greed_golem",
+   "name": "欲望のゴーレム",
+   "lv": 10.1,
+   "how": "章3の想定",
+   "gearCh": 3,
+   "ugAvailable": 3,
+   "none": {
+    "win": 1,
+    "turns": 3.8,
+    "maxHit": 141,
+    "mpLeft": 0.73
+   },
+   "withUG": {
+    "win": 1,
+    "turns": 3.6,
+    "maxHit": 113,
+    "mpLeft": 0.72,
+    "who": {
+     "リーナ": [
+      "結晶共鳴の杖"
+     ]
+    }
+   },
+   "sec": 0
+  },
+  {
+   "key": "wolf_king",
+   "name": "森の狼王",
+   "lv": 6,
+   "how": "近くの出現地帯（推定）",
+   "gearCh": 2,
+   "ugAvailable": 0,
+   "none": {
+    "win": 1,
+    "turns": 1,
+    "maxHit": 0,
+    "mpLeft": 0.91
+   },
+   "withUG": {
+    "win": 1,
+    "turns": 1,
+    "maxHit": 0,
+    "mpLeft": 0.91,
+    "who": {}
+   },
+   "sec": 0
+  },
+  {
+   "key": "boss_ash_lord",
+   "name": "灰の王",
+   "lv": 31,
+   "how": "近くの出現地帯（推定）",
+   "gearCh": 7,
+   "ugAvailable": 17,
+   "none": {
+    "win": 1,
+    "turns": 6.9,
+    "maxHit": 199,
+    "mpLeft": 0.39
+   },
+   "withUG": {
+    "win": 1,
+    "turns": 6.8,
+    "maxHit": 221,
+    "mpLeft": 0.4,
+    "who": {
+     "t": [
+      "踏みとどまる皇子の槍",
+      "ドレクの王宮大盾",
+      "看守長の断鎖兜"
+     ],
+     "リーナ": [
+      "黒帳の監査盾",
+      "海賊カモメの提督帽",
+      "中枢照合の指輪"
+     ],
+     "カイル": [
+      "ヴァレンの誓約剣"
+     ]
+    }
+   },
+   "sec": 1
+  },
+  {
+   "key": "zero_echo",
+   "name": "ゼロポイントの残響",
+   "lv": 50,
+   "how": "近くの出現地帯（推定）",
+   "gearCh": 11,
+   "ugAvailable": 35,
+   "none": {
+    "win": 1,
+    "turns": 4.8,
+    "maxHit": 118,
+    "mpLeft": 0.66
+   },
+   "withUG": {
+    "win": 1,
+    "turns": 4.6,
+    "maxHit": 115,
+    "mpLeft": 0.69,
+    "who": {
+     "t": [
+      "分かれ道の魔剣",
+      "青銅の欲望鎧"
+     ],
+     "リーナ": [
+      "万巻記録の書杖",
+      "名を取り戻す氷霊衣",
+      "追憶封じの冠",
+      "観測者のレンズ"
+     ],
+     "カイル": [
+      "大潮王の珊瑚三叉槍"
+     ],
+     "セリス": [
+      "白磁の羽衣",
+      "中枢照合の指輪"
+     ]
+    }
+   },
+   "sec": 1
+  },
+  {
+   "key": "boss_grote_2",
+   "name": "鉄冠将軍グロート",
+   "lv": 62.7,
+   "how": "章15の想定",
+   "gearCh": 15,
+   "ugAvailable": 52,
+   "none": {
+    "win": 1,
+    "turns": 11.1,
+    "maxHit": 422,
+    "mpLeft": 0.37
+   },
+   "withUG": {
+    "win": 1,
+    "turns": 9.6,
+    "maxHit": 422,
+    "mpLeft": 0.45,
+    "who": {
+     "t": [
+      "電子封印の正義剣",
+      "アーカイブ復旧装甲",
+      "笑わぬ大盾",
+      "金利計の兜",
+      "魂守りの灯"
+     ],
+     "リーナ": [
+      "零点共鳴杖",
+      "名を取り戻す氷霊衣",
+      "追憶封じの冠",
+      "観測者のレンズ"
+     ],
+     "カイル": [
+      "天穹審判の槍",
+      "中枢防衛装甲"
+     ],
+     "セリス": [
+      "禁書大臣の魔導杖",
+      "白磁の羽衣",
+      "中枢照合の指輪"
+     ]
+    }
+   },
+   "sec": 1
+  },
+  {
+   "key": "boss_demon_fear",
+   "name": "相場魔王〈恐怖〉",
+   "lv": 65.4,
+   "how": "章16の想定",
+   "gearCh": 16,
+   "ugAvailable": 60,
+   "none": {
+    "win": 0.9,
+    "turns": 9.8,
+    "maxHit": 297,
+    "mpLeft": 0.49
+   },
+   "withUG": {
+    "win": 0.98,
+    "turns": 8.6,
+    "maxHit": 297,
+    "mpLeft": 0.54,
+    "who": {
+     "t": [
+      "電子封印の正義剣",
+      "アーカイブ復旧装甲",
+      "笑わぬ大盾",
+      "金利計の兜",
+      "鉄の冠"
+     ],
+     "リーナ": [
+      "零点共鳴杖",
+      "白紙の宰相衣",
+      "支配断ちの額環",
+      "観測者のレンズ"
+     ],
+     "カイル": [
+      "竜脈の剣",
+      "中枢防衛装甲",
+      "欲望封じの腕輪"
+     ],
+     "セリス": [
+      "禁書大臣の魔導杖",
+      "名を取り戻す氷霊衣",
+      "追憶封じの冠",
+      "魂守りの灯"
+     ]
+    }
+   },
+   "sec": 1
+  },
+  {
+   "key": "boss_demon_greed",
+   "name": "相場魔王〈欲望〉",
+   "lv": 65.4,
+   "how": "章16の想定",
+   "gearCh": 16,
+   "ugAvailable": 60,
+   "none": {
+    "win": 0.93,
+    "turns": 10.7,
+    "maxHit": 805,
+    "mpLeft": 0.46
+   },
+   "withUG": {
+    "win": 0.98,
+    "turns": 8.1,
+    "maxHit": 805,
+    "mpLeft": 0.52,
+    "who": {
+     "t": [
+      "電子封印の正義剣",
+      "アーカイブ復旧装甲",
+      "笑わぬ大盾",
+      "金利計の兜",
+      "鉄の冠"
+     ],
+     "リーナ": [
+      "零点共鳴杖",
+      "白紙の宰相衣",
+      "支配断ちの額環",
+      "観測者のレンズ"
+     ],
+     "カイル": [
+      "竜脈の剣",
+      "中枢防衛装甲",
+      "欲望封じの腕輪"
+     ],
+     "セリス": [
+      "禁書大臣の魔導杖",
+      "名を取り戻す氷霊衣",
+      "追憶封じの冠",
+      "魂守りの灯"
+     ]
+    }
+   },
+   "sec": 1
+  },
+  {
+   "key": "boss_demon_fixed",
+   "name": "相場魔王〈固定〉",
+   "lv": 65.4,
+   "how": "章16の想定",
+   "gearCh": 16,
+   "ugAvailable": 60,
+   "none": {
+    "win": 0.97,
+    "turns": 9.4,
+    "maxHit": 346,
+    "mpLeft": 0.5
+   },
+   "withUG": {
+    "win": 0.97,
+    "turns": 8.3,
+    "maxHit": 346,
+    "mpLeft": 0.55,
+    "who": {
+     "t": [
+      "電子封印の正義剣",
+      "アーカイブ復旧装甲",
+      "笑わぬ大盾",
+      "金利計の兜",
+      "鉄の冠"
+     ],
+     "リーナ": [
+      "零点共鳴杖",
+      "白紙の宰相衣",
+      "支配断ちの額環",
+      "観測者のレンズ"
+     ],
+     "カイル": [
+      "竜脈の剣",
+      "中枢防衛装甲",
+      "欲望封じの腕輪"
+     ],
+     "セリス": [
+      "禁書大臣の魔導杖",
+      "名を取り戻す氷霊衣",
+      "追憶封じの冠",
+      "魂守りの灯"
+     ]
+    }
+   },
+   "sec": 1
+  },
+  {
+   "key": "tq_boss_apostle_of_anxiety",
+   "name": "不安の伝道師",
+   "lv": 16,
+   "how": "地図の推奨の上",
+   "gearCh": 4,
+   "ugAvailable": 6,
+   "none": {
+    "win": 1,
+    "turns": 7.4,
+    "maxHit": 79,
+    "mpLeft": 0.45
+   },
+   "withUG": {
+    "win": 1,
+    "turns": 6.8,
+    "maxHit": 77,
+    "mpLeft": 0.41,
+    "who": {
+     "t": [
+      "ガロンの戦利斧",
+      "黄金結晶の戒め鎧"
+     ],
+     "リーナ": [
+      "結晶共鳴の杖"
+     ],
+     "カイル": [
+      "潮牙槍ウルガ"
+     ]
+    }
+   },
+   "sec": 0
+  },
+  {
+   "key": "tq_boss_deluxe_mochiko",
+   "name": "デラックス・モチコ",
+   "lv": 57,
+   "how": "地図の推奨の上",
+   "gearCh": 13,
+   "ugAvailable": 48,
+   "none": {
+    "win": 0.9,
+    "turns": 12,
+    "maxHit": 816,
+    "mpLeft": 0.34
+   },
+   "withUG": {
+    "win": 0.98,
+    "turns": 10,
+    "maxHit": 545,
+    "mpLeft": 0.42,
+    "who": {
+     "t": [
+      "期待値の斧",
+      "中枢防衛装甲",
+      "笑わぬ大盾",
+      "金利計の兜",
+      "魂守りの灯"
+     ],
+     "リーナ": [
+      "零点共鳴杖",
+      "名を取り戻す氷霊衣",
+      "追憶封じの冠",
+      "観測者のレンズ"
+     ],
+     "カイル": [
+      "分かれ道の魔剣",
+      "溶岩番竜の重鱗鎧"
+     ],
+     "セリス": [
+      "禁書大臣の魔導杖",
+      "白磁の羽衣",
+      "中枢照合の指輪"
+     ]
+    }
+   },
+   "sec": 1
+  },
+  {
+   "key": "tq_boss_dark_matter_lifeform_x",
+   "name": "ダークマター生命体X",
+   "lv": 69,
+   "how": "地図の推奨の上",
+   "gearCh": 16,
+   "ugAvailable": 66,
+   "none": {
+    "win": 0.87,
+    "turns": 22.1,
+    "maxHit": 360,
+    "mpLeft": 0.29
+   },
+   "withUG": {
+    "win": 1,
+    "turns": 13.4,
+    "maxHit": 360,
+    "mpLeft": 0.41,
+    "who": {
+     "t": [
+      "未来を選ぶ聖剣",
+      "アーカイブ復旧装甲",
+      "恐怖を越える大盾",
+      "金利計の兜",
+      "星の天秤章"
+     ],
+     "リーナ": [
+      "零点共鳴杖",
+      "白紙の宰相衣",
+      "笑わぬ大盾",
+      "支配断ちの額環",
+      "鉄の冠"
+     ],
+     "カイル": [
+      "電子封印の正義剣",
+      "中枢防衛装甲",
+      "欲望封じの腕輪"
+     ],
+     "セリス": [
+      "禁書大臣の魔導杖",
+      "名を取り戻す氷霊衣",
+      "追憶封じの冠",
+      "観測者のレンズ"
+     ]
+    }
+   },
+   "sec": 2
+  },
+  {
+   "key": "tq_boss_gravitational_balance",
+   "name": "重力の天秤",
+   "lv": 67,
+   "how": "地図の推奨の上",
+   "gearCh": 16,
+   "ugAvailable": 65,
+   "none": {
+    "win": 0.9,
+    "turns": 27.1,
+    "maxHit": 331,
+    "mpLeft": 0.37
+   },
+   "withUG": {
+    "win": 1,
+    "turns": 20.4,
+    "maxHit": 331,
+    "mpLeft": 0.24,
+    "who": {
+     "t": [
+      "未来を選ぶ聖剣",
+      "アーカイブ復旧装甲",
+      "恐怖を越える大盾",
+      "金利計の兜",
+      "鉄の冠"
+     ],
+     "リーナ": [
+      "零点共鳴杖",
+      "白紙の宰相衣",
+      "笑わぬ大盾",
+      "支配断ちの額環",
+      "観測者のレンズ"
+     ],
+     "カイル": [
+      "電子封印の正義剣",
+      "中枢防衛装甲",
+      "欲望封じの腕輪"
+     ],
+     "セリス": [
+      "禁書大臣の魔導杖",
+      "名を取り戻す氷霊衣",
+      "追憶封じの冠",
+      "魂守りの灯"
+     ]
+    }
+   },
+   "sec": 2
+  },
+  {
+   "key": "boss_anchor_core",
+   "name": "暴走炉心アンカー・コア",
+   "lv": 73,
+   "how": "近くの出現地帯（推定）",
+   "gearCh": 16,
+   "ugAvailable": 67,
+   "none": {
+    "win": 1,
+    "turns": 9,
+    "maxHit": 487,
+    "mpLeft": 0.48
+   },
+   "withUG": {
+    "win": 1,
+    "turns": 7.3,
+    "maxHit": 487,
+    "mpLeft": 0.61,
+    "who": {
+     "t": [
+      "未来を選ぶ聖剣",
+      "アーカイブ復旧装甲",
+      "恐怖を越える大盾",
+      "金利計の兜",
+      "星の天秤章"
+     ],
+     "リーナ": [
+      "零点共鳴杖",
+      "白紙の宰相衣",
+      "笑わぬ大盾",
+      "支配断ちの額環",
+      "鉄の冠"
+     ],
+     "カイル": [
+      "電子封印の正義剣",
+      "中枢防衛装甲",
+      "欲望封じの腕輪"
+     ],
+     "セリス": [
+      "禁書大臣の魔導杖",
+      "暗黒物質の衣",
+      "追憶封じの冠",
+      "観測者のレンズ"
+     ]
+    }
+   },
+   "sec": 1
+  }
+ ]
+}

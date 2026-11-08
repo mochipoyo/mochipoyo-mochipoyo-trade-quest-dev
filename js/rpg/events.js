@@ -49,7 +49,7 @@
       msg: function (lines) { return Win.message(lines); },
       choice: function (prompt, options) { return Win.choice(prompt, options); },
       flag: function (k) { return !!d.flags[k]; }, setFlag: function (k, v) { d.flags[k] = v === undefined ? true : v; },
-      has: function (id) { return State.hasItem(id); }, give: function (id, q) { State.addItem(id, q || 1); }, take: function (id, q) { State.addItem(id, -(q || 1)); },
+      has: function (id) { return State.hasItem(id); }, give: function (id, q) { State.addItem(id, q || 1); }, take: function (id, q) { if (root.BossGear && root.BossGear.locked(id)) { if (root.console) console.warn('ボス固有装備は渡せない', id); return; } State.addItem(id, -(q || 1)); },   // v8.7 ボス固有装備は取り上げない
       get gold() { return d.gold; }, addGold: function (g) { d.gold += g; },
       hasCompanion: function (id) { return !!d.companions[id]; }, join: function (id) { State.joinCompanion(id); World.applyState(World.map); },
       questStart: Events.questStart, questComplete: Events.questComplete, questActive: function (id) { return d.quests[id] && d.quests[id].state === 'active'; }, questDone: function (id) { return d.quests[id] && d.quests[id].state === 'done'; },
@@ -61,7 +61,7 @@
       bank: function () { return root.Services.bank(); },
       dojo: function (where) { return root.Services.dojo(where); },
       trial: function (scenarios, opts) { return root.TradeUI.trial(scenarios, Object.assign({ vary: true }, opts || {})); },   // v7.3 クエストの試練も場面（シード）を変える
-      battle: async function (ids, opts) { if (opts && opts.boss && root.BossSymbol) await root.BossSymbol.introIfShown(ids); return root.BattleUI.start(ids, opts); },   // v6.5 シンボルが見えているボスは導入の演出から
+      battle: async function (ids, opts) { opts = Object.assign({}, opts || {}); if (root.BossGear && !opts.bossRewardKey) { var k87 = root.BossGear.keyForScript(ids, opts); if (k87) opts.bossRewardKey = k87; } /* v8.7 正規のボス戦の鍵（ボス固有装備） */ if (opts.boss && root.BossSymbol) await root.BossSymbol.introIfShown(ids); return root.BattleUI.start(ids, opts); },   // v6.5 シンボルが見えているボスは導入の演出から
       warp: function (map, x, y) { World.enterMap(map, x, y, 'down'); },
       heal: function () { State.partyActors().forEach(root.Actors.fullHeal); World.updateHud(); },
       party: function () { return State.partyActors(); },
@@ -124,7 +124,7 @@
         else {
           if (ev.intro) await Win.message(ev.intro);
           if (ev.optional) { var go = await Win.choice('強敵の気配がする。戦いますか？', ['戦う', 'やめておく']); if (go !== 0) { World.busy = false; World.updateHud(); return; } }
-          var bopts = { boss: true };
+          var bopts = { boss: true }; if (root.BossGear) { var k87 = root.BossGear.keyForEvent(ev); if (k87) bopts.bossRewardKey = k87; }   // v8.7 正規のボス戦の鍵（設計表の撃破フラグ＝doneFlag で決まる）
           if (root.BossSymbol) await root.BossSymbol.intro(ev);   // v6.5 ボス戦への導入（赤い光・揺れ・うなり声）
           if (root.Learning && root.Learning.hasAbility('dow_eye')) { bopts.exposeFirst = 3; await Win.message(['ダウの眼が魔物の波形を見抜いた！ 最初の3ターン、敵の防御が崩れる。']); }   // 学習能力とボス戦の連動
           var result = await root.BattleUI.start(ev.enemies || [ev.enemy], bopts);

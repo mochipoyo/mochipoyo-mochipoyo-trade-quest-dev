@@ -244,7 +244,7 @@
       if (c.flag('acad_e_shade')) { await c.msg(['装置は静かに動いている。']); return; }
       if (!c.flag('acad_e_puzzle')) { var ok = await entanglePuzzle(c); if (!ok) return; c.setFlag('acad_e_puzzle', true); }
       await tri(c, 'もつれ測定装置', ['……装置の奥から、黒い影がにじみ出してきた！', ['lore', '学院の装置は、ときどき「観測の余り」を影として吐き出す。']]);
-      var r = await c.battle(['quantum_shade', 'quantum_shade'], { boss: true }); if (r === 'lost') { await gameOver(); return; } if (r !== 'won') return;
+      var r = await c.battle(['quantum_shade', 'quantum_shade'], { boss: true, bossRewardKey: 'enc_quantum_shades' });   // v8.7 イベントの中ボス if (r === 'lost') { await gameOver(); return; } if (r !== 'won') return;
       c.setFlag('acad_e_shade', true); await c.msg(['影は消えた。ハイゼに報告しよう。']);
     } }; }),
     npcs: [

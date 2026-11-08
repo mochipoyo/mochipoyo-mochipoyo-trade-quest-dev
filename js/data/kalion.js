@@ -132,7 +132,7 @@
       { id: 'kf_hald', x: 8, y: 2, sprite: 'king', dir: 'down', wander: 0, hideIf: 'hald_confronted', talk: async function (c) {
         if ((root.State.data.inventory.ledger_record || 0) < 3) { await c.say('財務局長ハルド', ['私はハルド、財務局長だ。納税は義務であり、復興は希望だ。……用がないなら帰りたまえ。', (c.flag('elna_rescued') ? 'エルナ……君が逃げた帳簿は、どうせ誰にも読めん。' : '')].filter(Boolean)); return; }
         await c.say('財務局長ハルド', ['……三つの記録を揃えたか。存在しない復興事業、鉱山の魔物への送金、研究施設への支出。', '認めよう。だがそれは大宰相の命令だ。私はただ、国を守るための帳簿を書いた。', '衛兵！ この者たちを拘束しろ！']);
-        var r = await c.battle(['federal_captain', 'federal_soldier', 'federal_soldier'], { boss: true }); if (r === 'lost') { await root.World.gameOver(); return; } if (r !== 'won') return;
+        var r = await c.battle(['federal_captain', 'federal_soldier', 'federal_soldier'], { boss: true, bossRewardKey: 'enc_hald_guards' });   // v8.7 イベントの中ボス（通常の敵の出現とは別） if (r === 'lost') { await root.World.gameOver(); return; } if (r !== 'won') return;
         await c.msg(['ハルドは混乱に乗じて窓から逃げた。「王都へ……大宰相殿に……」']);
         c.setFlag('hald_confronted', true); c.setFlag('lab_known', true);
         await c.say('エルナ', ['逃げたわね。王都セントラ、大宰相セヴランのもとへ。', '記録は揃った。……問題は、これをどう使うか。一度に公開すれば、南区は暴動になる。監察官リーヴに託せば時間がかかる。被害者に直接返せば、政府は記録ごと消しに来る。']);

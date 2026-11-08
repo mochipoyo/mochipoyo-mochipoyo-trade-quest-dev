@@ -66,12 +66,13 @@
     var it = ITEMS[id]; if (!it) return ''; var IC = root.ItemCat; var S = root.Services; var d = State.data;
     var g = IC ? IC.GENRES.filter(function (x) { return x.id === IC.of(id); })[0] : null;
     var h = '<div class="it-detail"><div class="it-name">' + esc(it.name) + ' <span class="muted small">' + esc(g ? g.name : '') + '　所持 ' + (d.inventory[id] || 0) + '</span></div>';
-    h += '<div>' + esc(it.desc || '') + '</div>';
+    h += '<div>' + esc(it.bossExclusive && it.lore ? it.lore : (it.desc || '')) + '</div>';   // v8.7 ボス固有装備は由来だけ（固有効果は下の欄に出すので二重にしない）
     if (it.cat === 'consumable') h += '<div class="muted small">使える場面：' + esc(IC.scene(id)) + '　対象：' + esc(itemTarget(it)) + (it.price ? '　値段 ' + it.price + 'G' : '') + '</div>';
     else if (it.cat === 'weapon' || it.cat === 'armor') {
       if (S && S.statLine) h += '<div class="small">' + esc(S.statLine(it)) + '</div>';
-      if (S && S.equipJobs) h += '<div class="muted small">装備できる職業：' + esc(S.equipJobs(it).join('・') || 'なし') + '</div>';
+      if (S && S.equipJobs) h += '<div class="muted small">装備できる職業：' + esc((it.bossExclusive && root.BossGear ? root.BossGear.jobsText(it) : S.equipJobs(it).join('・')) || 'なし') + '</div>';
       if (S && S.compareInfo) h += '<div class="it-cmp small">' + S.compareInfo(it).replace(/^<div class="muted">[\s\S]*?<\/div>(<div>[\s\S]*?<\/div>)?/, '') + '</div>';
+      if (root.BossGear) h += root.BossGear.detailHtml(id);   // v8.7 ボス固有装備：固有効果・入手先・非売品（基礎値の比較とは別の欄）
     } else h += '<div class="muted small">' + (it.subcategory === 'material' ? '素材：鍛冶などで使う。使ったり売ったりはできない' : '重要アイテム：使ったり売ったりはできない') + '</div>';
     return h + '</div>';
   };
@@ -124,6 +125,7 @@
       State.addItem(it.id, -1); if (root.Audio) root.Audio.sfx('heal');
       await Win.message(lines); World.updateHud();
     } else if (it.cat === 'weapon' || it.cat === 'armor') {
+      if (id === 'b19_crossroads_blade' && root.BossGear) { var cc87 = await Win.choice(it.name + 'をどうする？', ['装備する', '契約を選ぶ（いま：' + (root.BossGear.contractMode() === 'attack' ? '攻勢' : '守勢') + '）', 'やめる']); if (cc87 === 1) { await root.BossGear.contractChoose(); return; } if (cc87 !== 0) return; }   // v8.7 選択の契約
       var cands = State.partyActors().filter(function (x) { return Actors.canEquip(x, it.id); });
       if (!cands.length) { await Win.message(['誰も装備できない。（装備できる職業：' + ((root.Services.equipJobs && root.Services.equipJobs(it).join('・')) || 'なし') + '）']); return; }
       var ci = await Win.choice(it.name + 'を誰が装備する？', cands.map(function (x) { return x.name; }).concat(['やめる'])); if (ci < 0 || ci >= cands.length) return;
@@ -141,10 +143,10 @@
       if (i < 0) return;
       var slot = slots[i]; var inv = State.data.inventory;
       var cands = Object.keys(inv).filter(function (id) { return Actors.slotOf(id) === slot && Actors.canEquip(a, id); });
-      var opts = cands.map(function (id) { var it = ITEMS[id]; var key = it.cat === 'weapon' ? 'atk' : 'def'; var cur = a.equip[slot] ? ITEMS[a.equip[slot]][key] || 0 : 0; var diff = (it[key] || 0) - cur; return { label: it.name, right: (diff >= 0 ? '+' : '') + diff, sub: it.desc }; });
+      var opts = cands.map(function (id) { var it = ITEMS[id]; var key = it.cat === 'weapon' ? 'atk' : 'def'; var cur = a.equip[slot] ? ITEMS[a.equip[slot]][key] || 0 : 0; var diff = (it[key] || 0) - cur; return { label: it.name, right: (diff >= 0 ? '+' : '') + diff, sub: it.bossExclusive && it.uniqueName ? '固有効果【' + it.uniqueName + '】' + it.uniqueText : it.desc }; });   // v8.7 ボス固有装備：右＝基礎値の差、下＝固有効果（分けて出す）
       if (a.equip[slot]) opts.push({ label: 'はずす', right: '' });
       if (!opts.length) { await Win.message(['装備できるものがない。']); continue; }
-      var k = await Win.list(opts, { title: names[slot] + 'を選ぶ' }); if (k < 0) continue;
+      var k = await Win.list(opts, { title: names[slot] + 'を選ぶ', info: root.BossGear && cands.some(function (cid) { return ITEMS[cid].bossExclusive; }) ? function (q) { var cid = cands[q]; return cid && ITEMS[cid].bossExclusive ? root.BossGear.detailHtml(cid) : ''; } : undefined }); if (k < 0) continue;
       if (k >= cands.length) { State.addItem(a.equip[slot], 1); a.equip[slot] = null; continue; }
       root.Services.equipItem(a, cands[k]); if (root.Audio) root.Audio.sfx('equip');
     }
@@ -386,8 +388,10 @@
 
   Menu.encyclopedia = async function () {
     while (true) {
-      var i = await Win.choice('図鑑', ['モンスター図鑑', 'アイテム図鑑', '職業一覧', '冒険の記録', 'オーパーツ（' + (root.Ooparts ? root.Ooparts.count() + '/' + root.Ooparts.total() : '0') + '）', 'カジノ・学院の記録', 'クイズモンスター図鑑', 'やめる']);
-      if (i < 0 || i === 7) return;
+      var bg87 = root.BossGear ? root.BossGear.collection() : [];
+      var i = await Win.choice('図鑑', ['モンスター図鑑', 'アイテム図鑑', '職業一覧', '冒険の記録', 'オーパーツ（' + (root.Ooparts ? root.Ooparts.count() + '/' + root.Ooparts.total() : '0') + '）', 'カジノ・学院の記録', 'クイズモンスター図鑑', 'ボス固有装備（' + bg87.filter(function (x) { return x.claimed || x.owned; }).length + '/' + bg87.length + '）', 'やめる']);
+      if (i < 0 || i === 8) return;
+      if (i === 7) { if (root.BossGear) await root.BossGear.listPanel(); continue; }   // v8.7 ボス固有装備の一覧（分母はいま遊べるボスだけ）
       if (i === 6) { if (root.QuizBattleUI) await root.QuizBattleUI.bestiary(); continue; }   // トレードクイズモンスター5体
       if (i === 4) { if (root.OopartsUI) await root.OopartsUI.list(); continue; }   // v6.1
       if (i === 5) { await Menu.studyRecord(); continue; }   // v6.1

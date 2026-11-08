@@ -399,7 +399,7 @@
     var scene = new BattleScene(b, mapKind, opts); BattleUI.battle = b; BattleUI.scene = scene;
     Engine.push(scene);
     if (root.Audio) root.Audio.playBgm(opts.boss ? 'boss' : 'battle');
-    var pw = document.getElementById('battle-party'); pw.classList.add('on');
+    var pw = document.getElementById('battle-party'); pw.classList.add('on'); var stg0 = document.getElementById('stage'); if (stg0) stg0.classList.remove('result-open');   // v8.7 前のリザルトの印が残っていても戦闘の欄を出す
     var mw = document.getElementById('battle-msg'); mw.classList.add('on'); mw.textContent = '';
     BattleUI.autoButton(true);   // v5.7 オート戦闘ボタン
     renderParty(b);
@@ -436,10 +436,10 @@
     if (root.PlayLog) root.PlayLog.add('battle', { result: result, boss: !!opts.boss, turns: b.turn || 0, enemies: (b.enemies || []).map(function (e) { return e.defId || e.id; }), party: (b.party || []).map(function (a) { var mh = 0; try { mh = Actors.stats(a).maxHp; } catch (e) { } return { id: a.id, lv: a.level, hp: mh ? Math.round(a.hp / mh * 100) : null, dead: !!a.dead }; }) });   // プレイ記録（バランス調整用）
     if (root.Meal76) root.Meal76.afterBattle(b.party, result);   // v7.6 パンの効果の残りを減らす
     b.party.forEach(Actors.clearBattleState);
-    pw.classList.remove('on'); mw.classList.remove('on'); BattleUI.autoButton(false);
+    pw.classList.remove('on'); mw.classList.remove('on'); BattleUI.autoButton(false); var stg1 = document.getElementById('stage'); if (stg1) stg1.classList.remove('result-open');
     Engine.pop();
     if (root.Audio) root.Audio.playBgm(root.World.map ? (root.World.map.def.bgm || 'field') : 'field');
-    if (result !== 'lost') State.autosave();   // 全滅のときは、宿で回復したあと（World.gameOver → enterMap）に保存する。ここで保存すると、全員倒れたままのセーブが残る
+    if (result !== 'lost') { var sv87 = State.autosave(); if (sv87 === false && b.ugGrant && b.ugGrant.granted && Win.toast) Win.toast('ボス固有装備を受け取りましたが、保存に失敗しました。メニューの「セーブ」でもう一度保存してください', 6000); }   // 全滅のときは、宿で回復したあと（World.gameOver → enterMap）に保存する。ここで保存すると、全員倒れたままのセーブが残る（v8.7 保存の失敗を知らせる）
     return result;
   };
   function uniq(a) { return a.filter(function (x, i) { return a.indexOf(x) === i; }).map(function (x) { return x.replace(/[A-H]$/, ''); }).filter(function (x, i, arr) { return arr.indexOf(x) === i; }); }
@@ -463,12 +463,13 @@
     var drops = Object.keys(res.drops); var dropHtml = drops.length ? drops.map(function (id) { return '<div class="rs-item">' + esc(ITEMS[id] ? ITEMS[id].name : id) + ' × ' + res.drops[id] + '</div>'; }).join('') : '<div class="muted">なし</div>';
     var html = '<div class="rs-title">VICTORY！</div><div class="rs-killed">' + killed + ' を倒した！</div>' +
       '<div class="rs-rewards"><div>獲得経験値 <b>' + res.exp + ' EXP</b></div><div>獲得ゴールド <b>' + goldLine + '</b></div></div>' +
-      '<h3>仲間の成長</h3><div class="rs-members">' + members + '</div><h3>入手アイテム</h3><div class="rs-items">' + dropHtml + '</div>';
+      '<h3>仲間の成長</h3><div class="rs-members">' + members + '</div><h3>入手アイテム</h3><div class="rs-items">' + dropHtml + '</div>' + (root.BossGear && res.bossGear ? root.BossGear.resultHtml(res.bossGear) : '');   // v8.7 ボス固有装備（初回の正規勝利だけ）
+    var stg87 = document.getElementById('stage'); if (stg87) stg87.classList.add('result-open');   // v8.7 リザルトの間は戦闘の欄（上のメッセージ・下の仲間）を隠す（長いリザルトの「次へ」が隠れないように）
     return Win.panel(html, { cls: 'result-victory', closeLabel: '次へ', setup: function (node) {
       // 経験値バーの演出（計算はしない。確定済みの値へ動かすだけ）
       var bars = node.querySelectorAll('.rs-bar span');
       setTimeout(function () { bars.forEach(function (bar) { var up = bar.getAttribute('data-up') === '1'; var after = bar.getAttribute('data-after'); if (up) { bar.style.width = '100%'; setTimeout(function () { bar.classList.add('reset'); bar.style.width = '0%'; setTimeout(function () { bar.classList.remove('reset'); bar.style.width = after + '%'; }, 60); }, 650); } else bar.style.width = after + '%'; }); }, 120);
-    } });
+    } }).then(function (v) { if (stg87) stg87.classList.remove('result-open'); return v; });
   }
 
   // v6.5 味方の欄：view（いま再生しているイベントの時点の状態）があればそれで表示。欄は作り直さずに中身だけ更新する（揺れ・行動中の印が消えないように）

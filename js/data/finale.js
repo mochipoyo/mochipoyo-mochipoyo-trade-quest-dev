@@ -190,7 +190,7 @@
     def.events.push({ x: 9, y: 4, type: 'script', solid: true, run: async function (c) { var d = D();
       if (d.flags[nextFlag]) { await c.msg(['【' + title + '】封印は解かれている。']); return; }
       await c.msg(['【' + title + '】'].concat(text));
-      var r = await c.battle(foes, { boss: true }); if (r === 'lost') { await root.World.gameOver(); return; } if (r !== 'won') return;
+      var r = await c.battle(foes, { boss: true, bossRewardKey: 'enc_castle_seal_' + n }); if (r === 'lost') { await root.World.gameOver(); return; } if (r !== 'won') return;   // v8.7 封印の戦い（イベントの中ボス）
       d.flags[nextFlag] = true; root.World.applyState(root.World.map); await c.msg(['封印が解けた。上の階への階段が光っている。（封印 ' + ['castle_seal_1', 'castle_seal_2', 'castle_seal_3'].filter(function (f) { return d.flags[f]; }).length + '/3）']);
       if (n === 1) await c.remark('gald', ['「全部つぎ込め」……鉱山でも、同じ声を聞いた。', '欲しいものは、自分の手で運べる分だけでいい。'], 'gald_remark_seal1');
       if (n === 2) await c.remark('mina', ['「損切りしたら負けが確定する」……父さんは、確定させて、残る方を選んだ。', '確定させる勇気、か。'], 'mina_remark_seal2');

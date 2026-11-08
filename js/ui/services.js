@@ -83,7 +83,7 @@
   async function sellLoop() {
     var d = State.data;
     while (true) {
-      var ids = Object.keys(d.inventory).filter(function (id) { return ITEMS[id] && ITEMS[id].price > 0; });
+      var ids = Object.keys(d.inventory).filter(function (id) { return ITEMS[id] && ITEMS[id].price > 0 && !(root.BossGear && root.BossGear.locked(id)); });   // v8.7 ボス固有装備は売れない（値段 0 だけに頼らない）
       if (!ids.length) { await Win.message(['売れるものを持っていない。']); return; }
       var items = ids.map(function (id) { var it = ITEMS[id]; return { label: it.name + ' ×' + d.inventory[id], right: priceFor(it, false) + 'G', sub: it.desc || statLine(it) }; });
       var i = await Win.list(items, { title: '売る（所持金 ' + d.gold + 'G）' });

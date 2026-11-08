@@ -1,0 +1,21 @@
+=== v86/airship86_test.js
+exit 0
+結果: 32 OK / 0 NG []
+=== v86/airship86_test.js 2d
+exit 0
+結果: 32 OK / 0 NG []
+=== v83/academy83_test.js
+exit 0
+結果：すべて OK
+=== v83/academy83_test.js 2d
+exit 0
+結果：すべて OK
+=== v83/tm83_duel_logic.js
+exit 0
+結果：すべて OK
+=== v83/vol83_migrate_test.js
+exit 1
+node:internal/errors:540
+TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string or an instance of Buffer or URL. Received undefined
+  code: 'ERR_INVALID_ARG_TYPE'
+done

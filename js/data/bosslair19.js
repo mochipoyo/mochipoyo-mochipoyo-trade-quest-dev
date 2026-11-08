@@ -98,7 +98,11 @@
           after: [nameOf(b.id) + 'を倒した！'],
           onWin: async function (c) {
             var d = D(); var eq = BB.reward[b.key]; var lines = [];
-            if (eq && root.ITEMS[eq]) { c.give(eq, 1); lines.push('【' + root.ITEMS[eq].name + '】を手に入れた！'); }
+            if (eq && root.ITEMS[eq]) {   // v8.7 ボスの装備はボス固有装備の台帳で 1 回だけ（戦闘の報酬の画面で渡したあとは、ここでは何もしない）
+              var BG = root.BossGear, row87 = BG && BG.rowOfItem(eq);
+              if (!BG || !row87) { c.give(eq, 1); lines.push('【' + root.ITEMS[eq].name + '】を手に入れた！'); }
+              else { var gr87 = BG.grantOnce(row87.key, { via: 'onWin' }); if (gr87.granted) lines.push('【' + root.ITEMS[eq].name + '】を手に入れた！'); }
+            }
             if (b.grow && root.ITEMS[b.grow]) { c.give(b.grow, 2); lines.push(root.ITEMS[b.grow].name + 'を 2 つ手に入れた！'); }
             var g = b.lv * 150; c.addGold(g); lines.push(g + 'G を手に入れた！');
             var n = countWon(); lines.push('（異界の門のボス ' + n + '/' + BB.bosses.length + '）');

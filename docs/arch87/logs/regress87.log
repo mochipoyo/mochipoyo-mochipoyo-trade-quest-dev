@@ -1,0 +1,41 @@
+=== maptest
+vol_upper_gallery      30x12 reach 255 ok
+vol_great_hall         28x16 reach 294 ok
+vol_classroom2         16x11 reach 92 ok
+errors [] fails 0
+=== navtest
+  OK  船を別の地域に置いてきた：赤丸は出さず「呼び戻し方」を表示（小型帆船が近くにない。港町マリナの船乗りに頼むか、メニュー …）
+  OK  時の神殿領への航路（yorn_letter_done が必要）が開く前は、時の神殿領への経路を作らない
+  OK  条件を満たすと、遠洋航海船の航路で案内
+結果: 24 OK / 0 NG []
+=== harbortest
+  OK  ヒント表示「詳細」なら、開く条件（クエストのステップ）も表示
+  OK  隠された場所（条件未達）では何も表示しない（地図から消えた村）
+  OK  古いセーブで桟橋のマスに停まっていた船は、近くの海へ移る（22,51）
+結果: 23 OK / 0 NG []
+=== ftmenu
+  OK  選ぶ → 確認 →「移動する」でリヴェル城下町へ移動し、メニューは閉じる（rivel_town）
+  OK  ダンジョンの中では理由を表示して使えない
+  OK  PC のサイドバーにも「ファストトラベル」
+結果: 6 OK / 0 NG []
+=== ch1316test
+  'game cleared',
+  'ended at poyo elder house got poyo_village',
+  'no rewards after clear'
+]
+=== ch17test
+forge before 1 1 38722
+forge after undefined 1 1 35722
+battle boss_magma_wyrm won 230,324,328,264
+ERRORS: []
+=== ch67test
+drek fight undefined
+core fight undefined
+learn_record undefined true
+ERRORS: []
+=== ch1012test
+battle end won t:143,ガルド:384,ルシア:357,ソフィア:0
+core fight undefined
+learn_overfit undefined true
+ERRORS: []
+done

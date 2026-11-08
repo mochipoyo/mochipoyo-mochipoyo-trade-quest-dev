@@ -1,0 +1,1300 @@
+{
+ "mode": "2d",
+ "bossDefs": [
+  {
+   "id": "boss_lost_trend",
+   "name": "トレンド迷子",
+   "region": "reachable",
+   "area": "迷いの森",
+   "drops": ""
+  },
+  {
+   "id": "boss_greed_golem",
+   "name": "欲望のゴーレム",
+   "region": "reachable",
+   "area": "忘却の洞窟",
+   "drops": ""
+  },
+  {
+   "id": "boss_bandit_chief",
+   "name": "山賊の頭目ガロン",
+   "region": "reachable",
+   "area": "エマール山脈",
+   "drops": "battle_axe@1"
+  },
+  {
+   "id": "boss_greed_demon",
+   "name": "欲望の魔人",
+   "region": "future",
+   "area": "王家の地下通路",
+   "drops": ""
+  },
+  {
+   "id": "wolf_king",
+   "name": "森の狼王",
+   "region": "reachable",
+   "area": "迷いの森（隠しボス）",
+   "lv": 9,
+   "drops": "tiger_claw@1"
+  },
+  {
+   "id": "crystal_golem",
+   "name": "クリスタルゴーレム",
+   "region": "reachable",
+   "area": "忘却の洞窟（隠しボス）",
+   "lv": 11,
+   "drops": "sage_staff@1"
+  },
+  {
+   "id": "boss_tide_serpent",
+   "name": "潮の大蛇ウルガ",
+   "region": "reachable",
+   "area": "港町マリナ",
+   "lv": 10,
+   "drops": "ring_guard@1"
+  },
+  {
+   "id": "boss_overseer",
+   "name": "監督官ザルグ",
+   "region": "reachable",
+   "area": "鉄鎖鉱山（最深部）",
+   "lv": 13,
+   "drops": "knight_armor@1"
+  },
+  {
+   "id": "boss_grote",
+   "name": "鉄冠将軍グロート",
+   "region": "future",
+   "area": "鉄冠将軍の砦",
+   "lv": 20,
+   "drops": ""
+  },
+  {
+   "id": "boss_ledger_guardian",
+   "name": "帳簿の守護者",
+   "region": "reachable",
+   "area": "地下記録庫（最深部）",
+   "lv": 15,
+   "drops": "ring_guard@1"
+  },
+  {
+   "id": "boss_valen",
+   "name": "騎士団長ヴァレン",
+   "region": "reachable",
+   "area": "王都セントラ",
+   "lv": 17,
+   "drops": "knight_sword@1"
+  },
+  {
+   "id": "boss_royal_captain",
+   "name": "親衛隊長ドレク",
+   "region": "reachable",
+   "area": "王宮",
+   "lv": 17,
+   "drops": "knight_shield@1"
+  },
+  {
+   "id": "boss_ledger_core",
+   "name": "帳簿中枢の守護機構",
+   "region": "reachable",
+   "area": "王宮・帳簿中枢",
+   "lv": 18,
+   "drops": "elixir@1"
+  },
+  {
+   "id": "boss_ruin_memory",
+   "name": "廃墟の記憶",
+   "region": "reachable",
+   "area": "廃墟の街（時計塔）",
+   "lv": 20,
+   "drops": "amulet_mind@1"
+  },
+  {
+   "id": "boss_library_guardian",
+   "name": "図書館の守護機構",
+   "region": "reachable",
+   "area": "記憶の図書館・封印区画",
+   "lv": 21,
+   "drops": "ring_guard@1"
+  },
+  {
+   "id": "boss_time_guardian",
+   "name": "時の守護者",
+   "region": "reachable",
+   "area": "時の神殿・最深部",
+   "lv": 24,
+   "drops": "amulet_mind@1"
+  },
+  {
+   "id": "boss_drone_swarm",
+   "name": "監視ドローン群",
+   "region": "reachable",
+   "area": "旧都市・最深部",
+   "lv": 25,
+   "drops": "ring_speed@1"
+  },
+  {
+   "id": "boss_core_defense",
+   "name": "中枢防衛機構",
+   "region": "reachable",
+   "area": "オラクル中枢・第3層",
+   "lv": 27,
+   "drops": "elixir@1"
+  },
+  {
+   "id": "boss_minister",
+   "name": "裏切りの大臣ヴォルク",
+   "region": "reachable",
+   "area": "禁書庫・最深部",
+   "lv": 30,
+   "drops": "arcane_hat@1"
+  },
+  {
+   "id": "boss_sky_guardian",
+   "name": "天空の守護者",
+   "region": "reachable",
+   "area": "天空神殿",
+   "lv": 33,
+   "drops": "ring_guard@1"
+  },
+  {
+   "id": "boss_zarg_remnant",
+   "name": "ザルグの残滓",
+   "region": "reachable",
+   "area": "虚無の荒野",
+   "lv": 34,
+   "drops": "hi_ether@1"
+  },
+  {
+   "id": "boss_sevran_shadow",
+   "name": "セヴランの影",
+   "region": "reachable",
+   "area": "虚無の荒野・深部",
+   "lv": 35,
+   "drops": "amulet_mind@1"
+  },
+  {
+   "id": "boss_grote_2",
+   "name": "鉄冠将軍グロート",
+   "region": "reachable",
+   "area": "魔王城の門",
+   "lv": 36,
+   "drops": "iron_crown@1"
+  },
+  {
+   "id": "boss_demon_fear",
+   "name": "相場魔王〈恐怖〉",
+   "region": "reachable",
+   "area": "魔王城・玉座",
+   "lv": 37,
+   "drops": ""
+  },
+  {
+   "id": "boss_demon_greed",
+   "name": "相場魔王〈欲望〉",
+   "region": "reachable",
+   "area": "魔王城・玉座",
+   "lv": 38,
+   "drops": ""
+  },
+  {
+   "id": "boss_demon_fixed",
+   "name": "相場魔王〈固定〉",
+   "region": "reachable",
+   "area": "魔王城・玉座",
+   "lv": 40,
+   "drops": ""
+  },
+  {
+   "id": "sphinx",
+   "name": "スフィンクス像",
+   "region": "future",
+   "area": "リシア砂漠",
+   "lv": 14,
+   "drops": ""
+  },
+  {
+   "id": "kraken",
+   "name": "クラーケン",
+   "region": "future",
+   "area": "波形の海洋群島",
+   "lv": 16,
+   "drops": ""
+  },
+  {
+   "id": "dragon_red",
+   "name": "レッドドラゴン",
+   "region": "future",
+   "area": "暗黒大陸",
+   "lv": 18,
+   "drops": ""
+  },
+  {
+   "id": "demon_lord",
+   "name": "相場魔王",
+   "region": "future",
+   "area": "魔王城",
+   "lv": 25,
+   "drops": ""
+  },
+  {
+   "id": "boss_storm_chief",
+   "name": "砂嵐の頭目ザイード",
+   "region": "reachable",
+   "area": "砂嵐の回廊・出口",
+   "lv": 24,
+   "drops": "ring_speed@1"
+  },
+  {
+   "id": "boss_mirage_lord",
+   "name": "蜃気楼の主",
+   "region": "reachable",
+   "area": "蜃気楼神殿・最奥",
+   "lv": 25,
+   "drops": "mirage_veil@1"
+  },
+  {
+   "id": "boss_magma_wyrm",
+   "name": "溶岩の番竜",
+   "region": "reachable",
+   "area": "竜脈洞窟・奥",
+   "lv": 32,
+   "drops": "dragon_scale@1"
+  },
+  {
+   "id": "boss_primal_flame",
+   "name": "原初の炎竜",
+   "region": "reachable",
+   "area": "竜脈の最深部",
+   "lv": 42,
+   "drops": "ryumyaku_blade@1"
+  },
+  {
+   "id": "boss_frost_spirit",
+   "name": "凍てついた大精霊",
+   "region": "reachable",
+   "area": "精霊の森・奥",
+   "lv": 27,
+   "drops": "amulet_mind@1"
+  },
+  {
+   "id": "boss_memory_keeper",
+   "name": "記憶庫の番人",
+   "region": "reachable",
+   "area": "記憶庫",
+   "lv": 27,
+   "drops": "hi_ether@1"
+  },
+  {
+   "id": "boss_clock_warden",
+   "name": "凍結の時計守",
+   "region": "reachable",
+   "area": "凍結時計塔・最上階",
+   "lv": 41,
+   "drops": "clock_hand_spear@1"
+  },
+  {
+   "id": "boss_ash_lord",
+   "name": "灰の王",
+   "region": "reachable",
+   "area": "灰の洞窟・奥",
+   "lv": 21,
+   "drops": "ash_hammer@1"
+  },
+  {
+   "id": "boss_ghost_captain",
+   "name": "幽霊船長",
+   "region": "reachable",
+   "area": "沈没船・船長室",
+   "lv": 21,
+   "drops": "captain_saber@1"
+  },
+  {
+   "id": "boss_old_core",
+   "name": "旧都市の演算核",
+   "region": "reachable",
+   "area": "旧都市 深層・演算核",
+   "lv": 43,
+   "drops": "zero_bow@1"
+  },
+  {
+   "id": "boss_gull_admiral",
+   "name": "海賊カモメの頭",
+   "region": "reachable",
+   "area": "海賊カモメの巣",
+   "lv": 13,
+   "drops": "hi_potion@1"
+  },
+  {
+   "id": "observer_echo",
+   "name": "観測者の残響",
+   "region": "reachable",
+   "area": "学院の地下実験施設",
+   "lv": 25,
+   "drops": "hi_ether@1"
+  },
+  {
+   "id": "soul_warden",
+   "name": "魂の番人",
+   "region": "reachable",
+   "area": "学院の地下実験施設",
+   "lv": 26,
+   "drops": "phoenix_feather@1"
+  },
+  {
+   "id": "zero_echo",
+   "name": "ゼロポイントの残響",
+   "region": "reachable",
+   "area": "学院の地下実験施設 最深部",
+   "lv": 29,
+   "drops": "elixir@1"
+  }
+ ],
+ "bossEvents": [
+  {
+   "map": "lost_forest_shrine",
+   "x": 7,
+   "y": 5,
+   "enemies": "boss_lost_trend",
+   "doneFlag": "forest_boss",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "forest_key",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "lost_forest_treasure",
+   "x": 4,
+   "y": 4,
+   "enemies": "wolf_king,wolf",
+   "doneFlag": "forest_hidden_boss",
+   "requireFlag": "forest_boss",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "oblivion_cave_3",
+   "x": 32,
+   "y": 20,
+   "enemies": "crystal_golem",
+   "doneFlag": "cave_hidden_boss",
+   "requireFlag": "cave_boss",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "oblivion_cave_3",
+   "x": 33,
+   "y": 20,
+   "enemies": "crystal_golem",
+   "doneFlag": "cave_hidden_boss",
+   "requireFlag": "cave_boss",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "oblivion_cave_3",
+   "x": 32,
+   "y": 21,
+   "enemies": "crystal_golem",
+   "doneFlag": "cave_hidden_boss",
+   "requireFlag": "cave_boss",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "oblivion_cave_3",
+   "x": 33,
+   "y": 21,
+   "enemies": "crystal_golem",
+   "doneFlag": "cave_hidden_boss",
+   "requireFlag": "cave_boss",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "oblivion_cave_3",
+   "x": 24,
+   "y": 22,
+   "enemies": "boss_greed_golem",
+   "doneFlag": "cave_boss",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "crystal_shard",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "oblivion_cave_3",
+   "x": 25,
+   "y": 22,
+   "enemies": "boss_greed_golem",
+   "doneFlag": "cave_boss",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "crystal_shard",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "oblivion_cave_3",
+   "x": 24,
+   "y": 23,
+   "enemies": "boss_greed_golem",
+   "doneFlag": "cave_boss",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "crystal_shard",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "oblivion_cave_3",
+   "x": 25,
+   "y": 23,
+   "enemies": "boss_greed_golem",
+   "doneFlag": "cave_boss",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "crystal_shard",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "bandit_hideout",
+   "x": 5,
+   "y": 2,
+   "enemies": "boss_bandit_chief",
+   "doneFlag": "bandit_boss",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "sub_bandit"
+  },
+  {
+   "map": "iron_mine_2",
+   "x": 34,
+   "y": 14,
+   "enemies": "chain_warden,chain_warden,mine_imp",
+   "doneFlag": "mine_captain",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "mine_key",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "iron_mine_2",
+   "x": 35,
+   "y": 14,
+   "enemies": "chain_warden,chain_warden,mine_imp",
+   "doneFlag": "mine_captain",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "mine_key",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "iron_mine_2",
+   "x": 34,
+   "y": 15,
+   "enemies": "chain_warden,chain_warden,mine_imp",
+   "doneFlag": "mine_captain",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "mine_key",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "iron_mine_2",
+   "x": 35,
+   "y": 15,
+   "enemies": "chain_warden,chain_warden,mine_imp",
+   "doneFlag": "mine_captain",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "mine_key",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "iron_mine_3",
+   "x": 12,
+   "y": 8,
+   "enemies": "boss_overseer",
+   "doneFlag": "verum_overseer_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "overseer_seal",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "kalion_archive_2",
+   "x": 22,
+   "y": 14,
+   "enemies": "boss_ledger_guardian",
+   "doneFlag": "ledger_3",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "ledger_record",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "kalion_archive_2",
+   "x": 23,
+   "y": 14,
+   "enemies": "boss_ledger_guardian",
+   "doneFlag": "ledger_3",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "ledger_record",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "kalion_archive_2",
+   "x": 22,
+   "y": 15,
+   "enemies": "boss_ledger_guardian",
+   "doneFlag": "ledger_3",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "ledger_record",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "kalion_archive_2",
+   "x": 23,
+   "y": 15,
+   "enemies": "boss_ledger_guardian",
+   "doneFlag": "ledger_3",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "ledger_record",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "sentra_palace_1",
+   "x": 11,
+   "y": 9,
+   "enemies": "boss_royal_captain,royal_guard",
+   "doneFlag": "royal_captain_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "sentra_palace_2",
+   "x": 7,
+   "y": 5,
+   "enemies": "boss_ledger_core",
+   "doneFlag": "ledger_core_stopped",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "aruna_ruins_2",
+   "x": 6,
+   "y": 3,
+   "enemies": "boss_ruin_memory",
+   "doneFlag": "ruin_memory_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "memory_library_seal",
+   "x": 6,
+   "y": 6,
+   "enemies": "boss_library_guardian",
+   "doneFlag": "library_guardian_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "temple_of_time_3",
+   "x": 7,
+   "y": 6,
+   "enemies": "boss_time_guardian",
+   "doneFlag": "time_guardian_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "old_city_2",
+   "x": 8,
+   "y": 14,
+   "enemies": "boss_drone_swarm",
+   "doneFlag": "drone_swarm_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "old_city_2",
+   "x": 9,
+   "y": 14,
+   "enemies": "boss_drone_swarm",
+   "doneFlag": "drone_swarm_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "old_city_2",
+   "x": 8,
+   "y": 15,
+   "enemies": "boss_drone_swarm",
+   "doneFlag": "drone_swarm_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "old_city_2",
+   "x": 9,
+   "y": 15,
+   "enemies": "boss_drone_swarm",
+   "doneFlag": "drone_swarm_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "oracle_core_3",
+   "x": 7,
+   "y": 8,
+   "enemies": "boss_core_defense",
+   "doneFlag": "core_3",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "forbidden_archive_3",
+   "x": 8,
+   "y": 5,
+   "enemies": "boss_minister,summoned_chimera",
+   "doneFlag": "minister_defeated",
+   "requireFlag": "tome_3",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "sky_temple_2",
+   "x": 7,
+   "y": 7,
+   "enemies": "boss_sky_guardian",
+   "doneFlag": "sky_guardian_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "void_wasteland_1",
+   "x": 17,
+   "y": 8,
+   "enemies": "boss_zarg_remnant",
+   "doneFlag": "zarg_remnant",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "void_wasteland_2",
+   "x": 10,
+   "y": 6,
+   "enemies": "boss_sevran_shadow",
+   "doneFlag": "sevran_shadow",
+   "requireFlag": "zarg_remnant",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "demon_castle_gate",
+   "x": 9,
+   "y": 10,
+   "enemies": "boss_grote_2",
+   "doneFlag": "grote_rematch",
+   "requireFlag": "sevran_shadow",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "sandstorm_corridor_2",
+   "x": 46,
+   "y": 18,
+   "enemies": "boss_storm_chief,caravan_raider",
+   "doneFlag": "caravan_done",
+   "requireFlag": "caravan_ambush_2",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "sahar_caravan"
+  },
+  {
+   "map": "sandstorm_corridor_2",
+   "x": 47,
+   "y": 18,
+   "enemies": "boss_storm_chief,caravan_raider",
+   "doneFlag": "caravan_done",
+   "requireFlag": "caravan_ambush_2",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "sahar_caravan"
+  },
+  {
+   "map": "sandstorm_corridor_2",
+   "x": 46,
+   "y": 19,
+   "enemies": "boss_storm_chief,caravan_raider",
+   "doneFlag": "caravan_done",
+   "requireFlag": "caravan_ambush_2",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "sahar_caravan"
+  },
+  {
+   "map": "sandstorm_corridor_2",
+   "x": 47,
+   "y": 19,
+   "enemies": "boss_storm_chief,caravan_raider",
+   "doneFlag": "caravan_done",
+   "requireFlag": "caravan_ambush_2",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "sahar_caravan"
+  },
+  {
+   "map": "mirage_temple_4",
+   "x": 7,
+   "y": 6,
+   "enemies": "boss_mirage_lord",
+   "doneFlag": "mirage_lord",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "dragon_vein_2",
+   "x": 10,
+   "y": 8,
+   "enemies": "boss_magma_wyrm",
+   "doneFlag": "magma_wyrm_defeated",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "dragon_vein_deep_2",
+   "x": 8,
+   "y": 5,
+   "enemies": "boss_primal_flame",
+   "doneFlag": "primal_flame_defeated",
+   "requireFlag": "",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "hidden_dragon_vein"
+  },
+  {
+   "map": "memory_vault",
+   "x": 11,
+   "y": 3,
+   "enemies": "boss_memory_keeper",
+   "doneFlag": "memory_keeper_defeated",
+   "requireFlag": "memory_town_started",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "spirit_forest_2",
+   "x": 24,
+   "y": 14,
+   "enemies": "boss_frost_spirit",
+   "doneFlag": "frost_spirit_freed",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "spirit_forest_2",
+   "x": 25,
+   "y": 14,
+   "enemies": "boss_frost_spirit",
+   "doneFlag": "frost_spirit_freed",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "spirit_forest_2",
+   "x": 24,
+   "y": 15,
+   "enemies": "boss_frost_spirit",
+   "doneFlag": "frost_spirit_freed",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "spirit_forest_2",
+   "x": 25,
+   "y": 15,
+   "enemies": "boss_frost_spirit",
+   "doneFlag": "frost_spirit_freed",
+   "requireFlag": "",
+   "optional": false,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "frozen_tower_4",
+   "x": 10,
+   "y": 7,
+   "enemies": "boss_clock_warden",
+   "doneFlag": "clock_warden_defeated",
+   "requireFlag": "",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "hidden_frozen_tower"
+  },
+  {
+   "map": "ash_cave_2",
+   "x": 9,
+   "y": 4,
+   "enemies": "boss_ash_lord",
+   "doneFlag": "ash_lord_defeated",
+   "requireFlag": "",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "hidden_grania_cave"
+  },
+  {
+   "map": "sunken_reef_2",
+   "x": 7,
+   "y": 4,
+   "enemies": "boss_ghost_captain",
+   "doneFlag": "ghost_captain_defeated",
+   "requireFlag": "",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "hidden_sea_reef"
+  },
+  {
+   "map": "old_city_deep_2",
+   "x": 8,
+   "y": 6,
+   "enemies": "boss_old_core",
+   "doneFlag": "old_core_defeated",
+   "requireFlag": "",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "hidden_old_city"
+  },
+  {
+   "map": "pirate_nest",
+   "x": 8,
+   "y": 3,
+   "enemies": "boss_gull_admiral",
+   "doneFlag": "gull_admiral_defeated",
+   "requireFlag": "pirates_quest",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": "grania_sea_pirates"
+  },
+  {
+   "map": "vol_under_1",
+   "x": 12,
+   "y": 3,
+   "enemies": "observer_echo",
+   "doneFlag": "acad_c_echo",
+   "requireFlag": "acad_c_records",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "vol_under_2",
+   "x": 20,
+   "y": 3,
+   "enemies": "soul_warden",
+   "doneFlag": "acad_s_warden",
+   "requireFlag": "acad_s_views",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  },
+  {
+   "map": "vol_under_2",
+   "x": 12,
+   "y": 7,
+   "enemies": "zero_echo",
+   "doneFlag": "acad_z_boss",
+   "requireFlag": "acad_z_devices",
+   "optional": true,
+   "reward": "",
+   "onWin": false,
+   "questComplete": ""
+  }
+ ],
+ "scriptBattles": [
+  {
+   "file": "js/data/towns.js",
+   "line": 452,
+   "ids": "['boss_tide_serpent']",
+   "opts": "{ boss: true }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/grania.js",
+   "line": 92,
+   "ids": "['chain_warden', 'mine_imp']",
+   "opts": "{}",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/grania.js",
+   "line": 252,
+   "ids": "['chain_warden']",
+   "opts": "{}",
+   "flagsAfter": "rescued_1"
+  },
+  {
+   "file": "js/data/grania.js",
+   "line": 253,
+   "ids": "['chain_warden', 'ore_bat']",
+   "opts": "{}",
+   "flagsAfter": "rescued_2"
+  },
+  {
+   "file": "js/data/grania.js",
+   "line": 254,
+   "ids": "['chain_warden', 'mine_imp', 'mine_imp']",
+   "opts": "{}",
+   "flagsAfter": "rescued_3"
+  },
+  {
+   "file": "js/data/kalion.js",
+   "line": 87,
+   "ids": "['federal_soldier', 'federal_soldier', 'tax_hound']",
+   "opts": "{}",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/kalion.js",
+   "line": 135,
+   "ids": "['federal_captain', 'federal_soldier', 'federal_soldier']",
+   "opts": "{ boss: true }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/kalion.js",
+   "line": 377,
+   "ids": "['boss_valen']",
+   "opts": "{ boss: true }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/tempus.js",
+   "line": 115,
+   "ids": "['debt_collector', 'debt_collector', 'bell_wraith']",
+   "opts": "{}",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/tempus.js",
+   "line": 252,
+   "ids": "['patrol_drone', 'patrol_drone']",
+   "opts": "{}",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/finale.js",
+   "line": 193,
+   "ids": "foes",
+   "opts": "{ boss: true }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/finale.js",
+   "line": 236,
+   "ids": "['boss_demon_fear']",
+   "opts": "{ boss: true, exposeFirst: expose }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/finale.js",
+   "line": 242,
+   "ids": "['boss_demon_greed']",
+   "opts": "{ boss: true, exposeFirst: expose }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/finale.js",
+   "line": 254,
+   "ids": "['boss_demon_fixed']",
+   "opts": "{ boss: true, exposeFirst: expose + bonus }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/desert.js",
+   "line": 314,
+   "ids": "enemies",
+   "opts": "{}",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/sidequests2.js",
+   "line": 65,
+   "ids": "['ash_golem', 'ash_golem']",
+   "opts": "{}",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/sidequests2.js",
+   "line": 97,
+   "ids": "['federal_soldier', 'federal_soldier']",
+   "opts": "{}",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/academy.js",
+   "line": 247,
+   "ids": "['quantum_shade', 'quantum_shade']",
+   "opts": "{ boss: true }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/academy.js",
+   "line": 402,
+   "ids": "['zero_wisp', 'zero_wisp']",
+   "opts": "{}",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/expand-a6.js",
+   "line": 133,
+   "ids": "['chain_warden', 'chain_warden', 'mine_imp']",
+   "opts": "{}",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/story3121.js",
+   "line": 731,
+   "ids": "ids",
+   "opts": "opts",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/region78-neon.js",
+   "line": 215,
+   "ids": "['boss_archive_warden']",
+   "opts": "{ boss: true }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/region78-meridian.js",
+   "line": 217,
+   "ids": "['boss_block_signal']",
+   "opts": "{ boss: true }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/region78-nereia.js",
+   "line": 217,
+   "ids": "['boss_tides']",
+   "opts": "{ boss: true }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/region78-orbis.js",
+   "line": 147,
+   "ids": "['boss_sentinel_orbis']",
+   "opts": "{ boss: true }",
+   "flagsAfter": ""
+  },
+  {
+   "file": "js/data/region78-aeria.js",
+   "line": 152,
+   "ids": "['boss_anchor_core']",
+   "opts": "{ boss: true }",
+   "flagsAfter": ""
+  }
+ ],
+ "symbols": [
+  "0",
+  "1"
+ ],
+ "b19": [
+  {
+   "id": "tq_boss_deluxe_mochiko",
+   "key": "mochiko",
+   "reward": "b19_golden_kine"
+  },
+  {
+   "id": "tq_boss_apostle_of_anxiety",
+   "key": "anxiety",
+   "reward": "b19_silent_bell"
+  },
+  {
+   "id": "tq_boss_princess_mesaki",
+   "key": "mesaki",
+   "reward": "b19_present_jewel_blade"
+  },
+  {
+   "id": "tq_boss_dark_matter_lifeform_x",
+   "key": "darkmatter",
+   "reward": "b19_dark_matter_veil"
+  },
+  {
+   "id": "tq_boss_missionary_of_betrayal",
+   "key": "betrayal",
+   "reward": "b19_two_faced_dagger"
+  },
+  {
+   "id": "tq_boss_enduring_human_desire",
+   "key": "desire",
+   "reward": "b19_bronze_desire_mail"
+  },
+  {
+   "id": "tq_boss_averaging_prince",
+   "key": "nanpin",
+   "reward": "b19_hold_fast_lance"
+  },
+  {
+   "id": "tq_boss_former_sauron_consciousness",
+   "key": "remnant",
+   "reward": "b19_ember_tablet_staff"
+  },
+  {
+   "id": "tq_boss_unsmiling_greatshield",
+   "key": "shield",
+   "reward": "b19_unsmiling_aegis"
+  },
+  {
+   "id": "tq_boss_game_master",
+   "key": "gamemaster",
+   "reward": "b19_check_piece"
+  },
+  {
+   "id": "tq_boss_fallen_angel_manjaro",
+   "key": "manjaro",
+   "reward": "b19_porcelain_robe"
+  },
+  {
+   "id": "tq_boss_rate_warden_fomsy",
+   "key": "fomsy",
+   "reward": "b19_rate_gauge_helm"
+  },
+  {
+   "id": "tq_boss_justice_guardian_cybern",
+   "key": "cybern",
+   "reward": "b19_seal_justice_sword"
+  },
+  {
+   "id": "tq_boss_ubud_of_remembrance",
+   "key": "ubud",
+   "reward": "b19_amber_memory_bow"
+  },
+  {
+   "id": "tq_boss_fallen_angel_lookism",
+   "key": "lookism",
+   "reward": "b19_bare_face_cloak"
+  },
+  {
+   "id": "tq_boss_pleasure_djinn_velo",
+   "key": "velo",
+   "reward": "b19_sober_claw"
+  },
+  {
+   "id": "tq_boss_avatar_of_probability",
+   "key": "probability",
+   "reward": "b19_expected_value_axe"
+  },
+  {
+   "id": "tq_boss_gravitational_balance",
+   "key": "balance",
+   "reward": "b19_balance_star"
+  },
+  {
+   "id": "tq_boss_crossroads_devil",
+   "key": "crossroads",
+   "reward": "b19_crossroads_blade"
+  }
+ ]
+}
