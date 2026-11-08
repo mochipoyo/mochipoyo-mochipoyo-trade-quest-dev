@@ -1,0 +1,26 @@
+--- v81/remake81_check.js	2026-11-07 08:47:02.416981619 +0900
++++ v83/remake81_check83.js	2026-11-08 13:31:26.153486547 +0900
+@@ -1,3 +1,6 @@
++// v8.3 版：v8.1 の remake81_check.js から、v8.3 で意図して足した・変えた物を数えないようにしただけ（差分 updated-tests/remake81_check83.diff）
++//   ・トレードマスター（npc.tradeMaster83：地図を作るときに足す人）は人の数に入れない ・王宮の門の鍵を道の幅に並べた出来事（e._c82lock）は出来事の数に入れない
++//   ・城下町の城の建物（楼門）を北の道に変えた町（def.castleRoad82）は建物が 1 つ少なくてよい ・王宮の門の鍵の奥の北の道の出口（_c82road。物語の通行証で開く）は「着く所から行ける」の対象外
+ // v8.1 作り直した地図の確かめ（jsdom）：node remake81_check.js [mapId,...] [2d]
+ // ・行の長さ・建物どうし／建物と人・出来事・宝箱の重なり・扉の前が歩ける・建物が外枠（いちばん外の 1 マス）にかからない・水の音の元（waterSound81）が水のそば
+ // ・開いた村：外周（四辺・四隅）がすべて歩けて、一続き。外周のどのマスからも、全部の扉の前・人（となり）・出来事・宝箱・調べる所へ行ける
+@@ -57,7 +60,7 @@
+   m.npcs.forEach((n) => { if (!n.hidden && !talk(n)) miss.push('人 ' + n.id); });
+   m.events.forEach((e) => { if (!reach(e.x, e.y)) miss.push('出来事 ' + e.x + ',' + e.y); }); (m.chests || []).forEach((c) => { if (!reach(c.x, c.y)) miss.push('宝箱 ' + c.id); });
+   (w.SEARCH_POINTS || []).forEach((sp) => { if (sp.map === id && !reach(sp.x, sp.y)) miss.push('調べる所 ' + sp.id); });
+-  (m.warps || []).forEach((q2) => { if (!reach(q2.x, q2.y) && !m.buildings.some((b) => lockedB.includes(b.id) && b.doorAbs && b.doorAbs.x === q2.x && b.doorAbs.y === q2.y)) miss.push('出口 ' + q2.to); });
++  (m.warps || []).forEach((q2) => { if (q2._c82road && (m.events || []).some((e) => e._c82lock)) return; if (!reach(q2.x, q2.y) && !m.buildings.some((b) => lockedB.includes(b.id) && b.doorAbs && b.doorAbs.x === q2.x && b.doorAbs.y === q2.y)) miss.push('出口 ' + q2.to); });
+   if (def.open81) starts.forEach((p) => { if (pass(p[0], p[1]) && !seen.has(p.join(','))) miss.push('外周 ' + p.join(',')); });
+   ok(!miss.length, id + '：' + (def.open81 ? '外周のどこからでも' : '着く所から') + '、扉の前 ' + fronts.length + '・人 ' + m.npcs.length + '・出来事 ' + m.events.length + '・宝箱 ' + (m.chests || []).length + ' へ行ける ' + miss.slice(0, 8).join(' / '));
+   // 中の地図から出たときの着く所 = 扉の前
+@@ -68,6 +71,6 @@
+   const oldFront = {}; (pre.buildings || []).forEach((b) => { const f = w.Remake81.door(b).front; oldFront[f.x + ',' + f.y] = 1; });   /* 旧い扉の前に立っていた人は、その座標が扉の前へ写る（扉の前が先） */
+   pre.npcs.forEach((n) => { const nn = m.npcs.find((x) => x.id === n.id); if (!nn) { mapBad.push('人がいない ' + n.id); return; } if (oldFront[n.x + ',' + n.y]) return; const p = P0(n.x, n.y); if (p.x !== nn.x || p.y !== nn.y) mapBad.push(n.id); });
+   pre.events.forEach((e) => { const p = P0(e.x, e.y); if (!m.eventAt(p.x, p.y)) mapBad.push('出来事 ' + e.x + ',' + e.y); });
+-  ok(!mapBad.length && pre.npcs.length === m.npcs.length && pre.events.length === m.events.filter((e) => !e.v81).length && (pre.chests || []).length === (m.chests || []).length && pre.buildings.length <= def.buildings.length, id + '：人 ' + pre.npcs.length + '・出来事 ' + pre.events.length + '・宝箱・建物 ' + pre.buildings.length + ' を消さずに、旧座標から新しい位置へ写せる ' + mapBad.join(' '));
++  ok(!mapBad.length && pre.npcs.length === m.npcs.filter((n) => !n.tradeMaster83).length && pre.events.length === m.events.filter((e) => !e.v81 && !e._c82lock).length && (pre.chests || []).length === (m.chests || []).length && pre.buildings.length <= def.buildings.length + (def.castleRoad82 ? 1 : 0), id + '：人 ' + pre.npcs.length + '・出来事 ' + pre.events.length + '・宝箱・建物 ' + pre.buildings.length + ' を消さずに、旧座標から新しい位置へ写せる ' + mapBad.join(' '));
+ }
+ console.log(ng.length ? '結果：NG ' + ng.length : '結果：すべて OK'); process.exit(ng.length ? 1 : 0);

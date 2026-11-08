@@ -72,7 +72,7 @@
       tavern: { x: 42, y: 42, w: 10, h: 6, doorX: 4 }, inn: { x: 42, y: 50, w: 12, h: 6, doorSide: 'left', doorY: 3 }
     },
     npcs: {
-      rivel_guard1: [33, 13, 'down', 0], rivel_guard2: [37, 13, 'down', 0], rivel_gate_e: [69, 38, 'left', 0],
+      rivel_guard1: [34, 12, 'down', 0], rivel_guard2: [37, 12, 'down', 0],   /* v8.3 城への北の道（4 マス：34〜37）の門の内側の両はし（島の庭へも行けるように、島の前の段には立たない） */ rivel_gate_e: [69, 38, 'left', 0],
       rivel_woman: [24, 52, 'left', 2], rivel_man: [45, 49, 'down', 2], rivel_child: [28, 40, 'down', 2], rivel_merchant: [19, 53, 'up', 0],
       rivel_scholar: [55, 29, 'left', 0], rivel_traveler: [39, 45, 'right', 1], aunt67_rivel_town: [27, 39, 'down', 1],
       riveltown_x72_kid: [10, 20, 'right', 1], riveltown_x72_vendor: [61, 46, 'down', 0], riveltown_x72_elder: [56, 43, 'up', 0],

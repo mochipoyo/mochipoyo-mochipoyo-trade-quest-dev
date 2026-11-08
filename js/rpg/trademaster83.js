@@ -7,7 +7,7 @@
      1 回の勝負：多く pips を取ったほうが勝ち（見送りは 0pips・差が 0.1pips 未満は引き分け）。1本勝負と 3本勝負（2本先取）
    ・賞金：場所の段階（序盤〜終盤）で決まる。同じトレードマスターの賞金は、受け取ってから 400 歩あるくまで出ない（勝負はできる。連続で稼ぎ続けないため）
    ・相場はすべて架空のシミュレーション（ChartBattleUI が「シミュレーション相場」と出す）。実在の銘柄・実際の値動きではない
-   ・置く場所：その地図を初めて作るとき（World.getMap）に、地図の形から決める（同じ地図ならいつも同じ所。乱数は地図の ID から）
+   ・置く場所：その地図を初めて作るとき（World.getMap）に、地図の形から決める（同じ地図ならいつも同じ所。乱数は地図の ID から）。地図のデータ（def.npcs）には書かず、作った地図（m.npcs）にだけ足す
        入口から歩いて行ける・まわり 8 マスが通れる（置いても道をふさがない）・出入口や扉や人や出来事から離れた所。町は通りの近く、フィールドは町の入口の近く
    ・見た目：2D 版は足元の金の輪・頭の上のシルクハット・ローソク足の札（MAP_DRAW_LAYERS）。3D 版は金の帯のシルクハット・足元の金の輪・ローソク足の札（three-src の TradeMaster83.js）
    ・セーブ：State.data.tm83（なければ作る。古いセーブはそのまま読める）。トレードマスターは地図のデータには書かない（毎回同じ所に置く）
@@ -126,9 +126,8 @@
     if (!m || !m.def || m._tm83) return; m._tm83 = true; var id = m.id; var def = m.def; var n = TM.countFor(def, id); if (!n) return;
     try {
       if (!TM.placed[id]) { var sp = spots(m, id, n); var used = {}; TM.placed[id] = sp.map(function (s, i) { return makeNpc(id, i, s, used); }); if (sp.length < n) TM.errors.push(id + '：置ける所が ' + sp.length + '／' + n); }
-      def.npcs = def.npcs || [];
+      // 地図のデータ（def.npcs）には書かない（作り直しの確かめ・ほかの道具が見る人の数を変えない）。地図を作るたびに、その地図（m.npcs）にだけ足す
       TM.placed[id].forEach(function (npc) {
-        if (!def.npcs.some(function (o) { return o.id === npc.id; })) def.npcs.push(npc);
         if (!m.npcs.some(function (o) { return o.id === npc.id; })) m.npcs.push(Object.assign({ dir: 'down', frame: 0, moveTimer: 0, ox: npc.x, oy: npc.y, wander: 0 }, npc));
       });
     } catch (e) { TM.errors.push(id + '：' + (e && e.message)); }
