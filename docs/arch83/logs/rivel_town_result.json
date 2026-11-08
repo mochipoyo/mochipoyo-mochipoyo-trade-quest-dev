@@ -1,0 +1,75 @@
+{
+ "map": "rivel_town",
+ "master": {
+  "id": "tmb83_rivel_town_0",
+  "x": 36,
+  "y": 41,
+  "name": "トレードマスター・シズ",
+  "info": {
+   "tier": 1,
+   "style": "trend",
+   "styleName": "順張り",
+   "skill": 0.35,
+   "diff": [
+    1,
+    2
+   ],
+   "ind": [
+    "ema",
+    "mtf"
+   ],
+   "cats": [
+    "trend_up",
+    "trend_down",
+    "pullback_up",
+    "rally_down"
+   ],
+   "tf": 60,
+   "seed": 2755328759,
+   "color": "#f0d27a",
+   "short": "シズ",
+   "map": "rivel_town",
+   "word": "トレンドに逆らうな。流れに乗る者が勝つ。"
+  }
+ },
+ "look": {
+  "tm3d": 3
+ },
+ "rival": {
+  "done": true,
+  "side": "short",
+  "pos": {
+   "bar": 311,
+   "tick": 1
+  }
+ },
+ "last": {
+  "side": "long",
+  "me": {
+   "outcome": "loss",
+   "pips": -8.5
+  },
+  "op": {
+   "side": "short",
+   "outcome": "loss",
+   "pips": -8.1
+  }
+ },
+ "judge": -1,
+ "gold0": 100,
+ "after": {
+  "gold": 100,
+  "tm83": {
+   "wins": 0,
+   "losses": 1,
+   "draws": 0,
+   "paid": {},
+   "gold": 0
+  },
+  "busy": true,
+  "open": true
+ },
+ "prize": 60,
+ "goldOk": true,
+ "errs": []
+}

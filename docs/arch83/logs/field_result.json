@@ -1,0 +1,75 @@
+{
+ "map": "world_kalion",
+ "master": {
+  "id": "tmb83_world_kalion_0",
+  "x": 38,
+  "y": 73,
+  "name": "トレードマスター・オト",
+  "info": {
+   "tier": 2,
+   "style": "break",
+   "styleName": "ブレイク",
+   "skill": 0.5,
+   "diff": [
+    1,
+    3
+   ],
+   "ind": [
+    "ema",
+    "levels",
+    "swings"
+   ],
+   "cats": [
+    "range_break",
+    "fakeout",
+    "trend_up",
+    "trend_down"
+   ],
+   "tf": 15,
+   "seed": 2109135013,
+   "color": "#d8a83a",
+   "short": "オト",
+   "map": "world_kalion",
+   "word": "高値と安値の線を抜けた瞬間が勝負だ。ダマシには気をつけな。"
+  }
+ },
+ "look": {
+  "tm3d": 3
+ },
+ "rival": {
+  "done": true,
+  "side": "skip",
+  "pos": {
+   "bar": 313,
+   "tick": 4
+  }
+ },
+ "last": {
+  "side": "skip",
+  "me": {
+   "outcome": "skip"
+  },
+  "op": {
+   "side": "skip",
+   "outcome": "skip",
+   "pips": 0
+  }
+ },
+ "judge": 0,
+ "gold0": 100,
+ "after": {
+  "gold": 100,
+  "tm83": {
+   "wins": 0,
+   "losses": 0,
+   "draws": 1,
+   "paid": {},
+   "gold": 0
+  },
+  "busy": true,
+  "open": true
+ },
+ "prize": 150,
+ "goldOk": true,
+ "errs": []
+}

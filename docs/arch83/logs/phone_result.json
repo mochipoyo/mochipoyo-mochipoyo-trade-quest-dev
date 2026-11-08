@@ -1,0 +1,75 @@
+{
+ "map": "sentra_capital",
+ "master": {
+  "id": "tmb83_sentra_capital_0",
+  "x": 18,
+  "y": 11,
+  "name": "トレードマスター・イオ",
+  "info": {
+   "tier": 2,
+   "style": "trend",
+   "styleName": "順張り",
+   "skill": 0.5,
+   "diff": [
+    1,
+    3
+   ],
+   "ind": [
+    "ema",
+    "mtf"
+   ],
+   "cats": [
+    "trend_up",
+    "trend_down",
+    "pullback_up",
+    "rally_down"
+   ],
+   "tf": 60,
+   "seed": 1584802590,
+   "color": "#d8a83a",
+   "short": "イオ",
+   "map": "sentra_capital",
+   "word": "トレンドに逆らうな。流れに乗る者が勝つ。"
+  }
+ },
+ "look": {
+  "tm3d": 2
+ },
+ "rival": {
+  "done": true,
+  "side": "short",
+  "pos": {
+   "bar": 308,
+   "tick": 3
+  }
+ },
+ "last": {
+  "side": "long",
+  "me": {
+   "outcome": "loss",
+   "pips": -19.3
+  },
+  "op": {
+   "side": "short",
+   "outcome": "loss",
+   "pips": -15.8
+  }
+ },
+ "judge": -1,
+ "gold0": 100,
+ "after": {
+  "gold": 100,
+  "tm83": {
+   "wins": 0,
+   "losses": 1,
+   "draws": 0,
+   "paid": {},
+   "gold": 0
+  },
+  "busy": true,
+  "open": true
+ },
+ "prize": 150,
+ "goldOk": true,
+ "errs": []
+}

@@ -31,7 +31,12 @@ const OUT = process.env.OUT || '/home/claude/work/p3d/shots/v82/video/'; fs.mkdi
     // 船の上から：空の城アエリア（経度 −152°・緯度 21°）／大洋のリング（−145°・5°）を、ふつうのカメラで撮る
     const [lon, lat, dy] = MODE === 'aeria' ? [-152, 21, +(process.env.AERIA_DY || 9)] : [-145, 5, 7];
     const at = await p.evaluate(([lon, lat, dy]) => { const L = EARTH78_LAYOUT, W = World76, d = State.data; const gx = Math.floor(L.xOf(lon)), gy = Math.floor(L.yOf(lat)) + dy; const id = W.mapsIn(gx, gy, gx + 1, gy + 1)[0]; const o = W.origin(id); d.vehicles = d.vehicles || {}; d.vehicles.galleon = Object.assign(d.vehicles.galleon || {}, { owned: true, map: id, x: gx - o.x, y: gy - o.y }); d.aboard = 'galleon'; return { id, x: gx - o.x, y: gy - o.y, tile: World.getMap(id).tile(gx - o.x, gy - o.y) }; }, [lon, lat, dy]);
-    await enter(at.id, at.x, at.y, 'up'); await p.waitForTimeout(4000);
+    await enter(at.id, at.x, at.y, 'up');
+    if (process.env.AERIA_HOLD) { await p.waitForTimeout(600); const c0 = await p.evaluate(() => { const a = MTQ3D.join.aeria; if (!a) return null; return { x: a.position.x + 10, y: 14, z: a.position.z + 5, dist: 66, pitch: 5 }; }); await p.evaluate((c) => { if (c) { MTQ3D.camera.setCine(c); window.__holdCine = c; } }, c0);
+      await p.waitForFunction(() => { const c = window.__holdCine; if (!c) return true; if (!MTQ3D.camera.cine) MTQ3D.camera.setCine(c); const t = MTQ3D.camera.target; return Math.hypot(t.x - c.x, t.z - c.z) < 0.8; }, null, { timeout: 60000 }).catch(() => { });
+      console.log('hold', JSON.stringify(c0)); await p.screenshot({ path: OUT + MODE + '_hold.jpg', type: 'jpeg', quality: 85 }); }
+    if (process.env.AERIA_SEQ) { for (const ms of [800, 1800, 3000, 4500, 7000]) { await p.waitForTimeout(ms === 800 ? 800 : 1200); const cs = await p.evaluate(() => { const c = MTQ3D.camera; return { cine: c.cine, pitch: +(c.pitchNow || 0).toFixed(3), dist: +(c.distNow || c.dist || 0).toFixed(1), n: MTQ3D.join.aeriaCineN || 0, fx: !!MTQ3D.join.aeriaFx }; }); console.log('t', ms, JSON.stringify(cs)); await p.screenshot({ path: OUT + MODE + '_t' + ms + '.jpg', type: 'jpeg', quality: 80 }); } }
+    else await p.waitForTimeout(4000);
     out.at = at; out.info = await p.evaluate(() => { const j = MTQ3D.join; return { aeria: !!j.aeria, aeriaInScene: !!(j.aeria && j.aeria.parent), aeriaDist: j.aeriaDist, ring: j.oceanInfo() }; });
     await p.screenshot({ path: OUT + MODE + '.jpg', type: 'jpeg', quality: 85 });
   } else if (MODE === 'chunks') {

@@ -1,0 +1,35 @@
+{
+ "at": {
+  "x": 64,
+  "y": 48,
+  "name": "トレードマスター・シズ",
+  "tier": 1
+ },
+ "dec": {
+  "ok": true
+ },
+ "last": {
+  "me": {
+   "outcome": "profit",
+   "pips": 15.1
+  },
+  "op": {
+   "side": "skip",
+   "outcome": "skip",
+   "pips": 0
+  }
+ },
+ "after": {
+  "gold": 160,
+  "tm83": {
+   "wins": 1,
+   "losses": 0,
+   "draws": 0
+  },
+  "open": true,
+  "busy": true
+ },
+ "j": 1,
+ "goldOk": true,
+ "errs": []
+}
