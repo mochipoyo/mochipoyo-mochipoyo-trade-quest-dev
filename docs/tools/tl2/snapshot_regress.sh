@@ -5,7 +5,8 @@
 #  ・作業用のテスト（/home/claude/work）は RPG_DIR で写しに向ける
 L=${1:?log}; SNAP=${2:-/home/claude/snap_adv}
 case "$SNAP" in /home/claude/snap*) ;; *) echo "写しの場所は /home/claude/snap で始める"; exit 1;; esac
-SRC=$(cd "$(dirname "$0")/../../.." && pwd)
+SRC=${SRC:-$(cd "$(dirname "$0")/../../.." && pwd)}   # 写して別の場所から動かすときは SRC=リポジトリ を付ける
+[ -f "$SRC/index.html" ] && [ -f "$SRC/js/practice.js" ] || { echo "SRC がリポジトリではない：$SRC"; exit 1; }
 [ -d "$SNAP" ] && rm -rf -- "$SNAP"
 mkdir -p "$SNAP/docs" && cd "$SRC" && tar --exclude=./.git --exclude=./three-src --exclude=./docs -cf - . | tar -xf - -C "$SNAP" && cp -r docs/tools "$SNAP/docs/" && mkdir -p "$SNAP/docs/ux88/logs" "$SNAP/docs/perf89/logs" && cp -r docs/ux88/logs/. "$SNAP/docs/ux88/logs/" 2>/dev/null
 grep -rl '/home/claude/envwork' "$SNAP/docs/tools" | xargs sed -i "s#/home/claude/envwork#$SNAP#g"

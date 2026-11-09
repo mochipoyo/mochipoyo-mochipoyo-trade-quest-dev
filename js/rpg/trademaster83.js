@@ -93,12 +93,15 @@
     })();
     var onRoute = function (x, y) { for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < W && yy < H && route[yy * W + xx]) return true; } return false; };
     var field = !!FIELDS[id]; var toTown = field ? (m.warps || []).filter(function (w) { var t = D[w.to]; return t && t.kind === 'town'; }) : [];
+    // v9.1 開いた村・町（入口の範囲が広い印）：入口の範囲のマスから 2 マス以内には立たない（範囲のすぐ外に立つと、村から出てすぐ戻る・横から入る道をふさいでいた。dow_open_test の NG の原因）
+    var nearFoot = new Uint8Array(W * H); if (field && root.World && root.World.landmarkFoot) { var foot = null; try { foot = root.World.landmarkFoot(m); } catch (e) { foot = null; }
+      if (foot) Object.keys(foot).forEach(function (k) { var a = k.split(','), fx = +a[0], fy = +a[1]; for (var by = -2; by <= 2; by++) for (var bx = -2; bx <= 2; bx++) { var xx = fx + bx, yy = fy + by; if (xx >= 0 && yy >= 0 && xx < W && yy < H) nearFoot[yy * W + xx] = 1; } }); }
     var R = rng(hash('tm83:' + id)); var cand = [], loose = [];
     for (var y = 1; y < H - 1; y++) for (var x = 1; x < W - 1; x++) {
       if (!seen[y * W + x] || !free(x, y)) continue;
       var open = true; for (var dy = -1; dy <= 1 && open; dy++) for (var dx = -1; dx <= 1; dx++) { if (!dx && !dy) continue; if (!m.passable(x + dx, y + dy, d) || m.warpAt(x + dx, y + dy)) { open = false; break; } }
       if (!open) continue;
-      if (near(doors, x, y, field ? 2 : 3) || near(m.npcs, x, y, 2) || near(m.events, x, y, 2) || near(chests, x, y, 1)) continue;
+      if (near(doors, x, y, field ? 2 : 3) || nearFoot[y * W + x] || near(m.npcs, x, y, 2) || near(m.events, x, y, 2) || near(chests, x, y, 1)) continue;
       var strict = !onRoute(x, y) && !near(extra, x, y, 2);   // いちばん短い道の上・となり、クイズの魔物・調べる所のそばには立たない
       if (!strict && (route[y * W + x] || near(extra, x, y, 1))) continue;   // 狭い地図で足りないときだけ：道のとなりまでは許す（道の上には立たない）
       var sc = R() * 2;
