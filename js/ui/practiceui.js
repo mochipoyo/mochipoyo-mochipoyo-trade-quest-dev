@@ -65,7 +65,7 @@
       var st = TC().stats(p.history, { capital: p.historyWindowStartCapital });
       var M = [
         { label: 'コースを選んで練習', right: 'Lv' + p.level, sub: 'Lv1〜Lv7：学習用の問題（いろいろな型。答えの型は振り返りまで出ない）', run: async function () { var lv = await Win.list(PUI.LEVELS.slice(0, 7).map(function (L) { return { label: L.name, right: L.lv === p.level ? '前回' : '' }; }), { title: 'コースを選ぶ', cancel: true }); if (lv < 0) return; p.level = lv + 1; await PUI.loop(PUI.LEVELS[lv]); } },
-        { label: '未知の問題の連続演習（Lv8）', right: p.series ? (p.series.done + '/' + p.series.n) : '30問', sub: '学習用とは別の問題。途中でやめても、解いた問題の記録は残る', run: function () { return PUI.series(); } },
+        { label: '初見チャートの認定試験（Lv8・v2）', right: p.series ? (p.series.done + '/' + p.series.n) : '30問', sub: '学習用とは別の生成系列の問題。試験の間は型・結果・ヒントを出さない。中断しても続きから受けられる', run: function () { return PUI.series(); } },
         { label: '上級ポジション管理の練習', right: p.advanced ? '設定 ON' : '', sub: '保有中に 早めの決済・建値・部分決済・トレーリング。発注の前に決めた計画と比べて採点（結果の良し悪しでは決めない）', run: function () { return PUI.loop(PUI.LEVELS[5], { advanced: true }); } }
       ].concat(PUI.extraModes ? PUI.extraModes(p) : []).concat([
         { label: '成績・分析', right: st.trades + '取引', sub: '勝率・期待値R・PF（円／R）・最大DD（金額／割合）・連敗・見送り率・ルール遵守率・根拠別（定義つき）', run: function () { return PUI.stats(); } },
@@ -95,7 +95,8 @@
     opts = opts || {}; var d = State.data; var p = PUI.ensure(d); var P = prof(p); var lvDef = opts.lvDef || PUI.LEVELS[(opts.level || 1) - 1];
     var pick = opts.pick || PUI.pick(p, lvDef); if (!pick) { return Win.message(['問題のデータ（js/data/practice-seeds.js）が読み込めていない。']).then(function () { return null; }); }
     var advanced = opts.advanced !== undefined ? !!opts.advanced : !!p.advanced;
-    var play = PE().start(pick, { profile: p.profile, level: lvDef.lv, hints: p.hints, advanced: advanced }); play.overrides = p.overrides; PE().markStart(play, P);
+    var hintsOn = opts.hints !== undefined ? !!opts.hints : p.hints;   // 初見の認定試験ではヒントを出さない
+    var play = PE().start(pick, { profile: p.profile, level: lvDef.lv, hints: hintsOn, advanced: advanced, exam: !!opts.exam }); play.overrides = p.overrides; PE().markStart(play, P);
     var g = PE().game(play); var Q = PE().focusQuestions(lvDef.lv, PE().snap(play)); var doPick = lvDef.lv === 1 || lvDef.lv === 4;
     var view = { tf: play.entryTF, visible: 72, zig: true, end: null, cross: null, pick: null, line: null, snap: null, count: 0 }; var timer = null; var stageEl = document.getElementById('stage'); if (stageEl) stageEl.classList.add('trade-open');
     if (document.body) document.body.classList.add('pd-chart-open');   // スマホ：チャートの操作のあいだ RPG の十字キーを隠す
@@ -107,7 +108,7 @@
         Q.map(function (q, i) { return '<div class="aq" data-fq="' + q.key + '"><div class="aq-t"><span class="aq-n">' + (i + 3) + '</span>' + esc(q.title) + '</div><div class="aq-o">' + q.options.map(function (o) { return '<button class="aopt" data-fq="' + q.key + '" data-v="' + o[0] + '">' + esc(o[1]) + '</button>'; }).join('') + '</div></div>'; }).join('') +
         (doPick ? '<div class="aq pd-pickq"><div class="aq-t">チャートで、いま表示している足の「直近の確定した高値・安値」を指定（参考の練習。点には入れない）</div><div class="aq-o"><button class="aopt" data-pick="high">高値をタップで指定</button><button class="aopt" data-pick="low">安値をタップで指定</button></div><div class="small" id="pd-pickres"></div></div>' : '');
       var EVK = P.evidence.filter(function (k) { return ['htf', 'ema', 'dow', 'rci', 'div'].indexOf(k) >= 0 || p.profile === 'general'; });
-      var html = '<div class="trade-head"><b>もちぽよ実践トレード道場</b>' + (opts.seriesNo ? '　<span class="gold-text">未知の問題 ' + opts.seriesNo + '/' + (opts.seriesN || 30) + '</span>' : '　<span class="muted small">' + esc(lvDef.name) + '</span>') + (advanced ? '　<span class="gold-text small">上級のポジション管理 ON</span>' : '') + '　<span class="pd-phase" id="pd-phase"></span>' +
+      var html = '<div class="trade-head"><b>もちぽよ実践トレード道場</b>' + (opts.seriesNo ? '　<span class="gold-text">' + (opts.exam ? '初見チャートの認定試験 ' : '未知の問題 ') + opts.seriesNo + '/' + (opts.seriesN || 30) + '</span>' : '　<span class="muted small">' + esc(lvDef.name) + '</span>') + (advanced ? '　<span class="gold-text small">上級のポジション管理 ON</span>' : '') + '　<span class="pd-phase" id="pd-phase"></span>' +
           '<div class="muted small">' + esc(PE().PAIR) + '。表示している足より先は、決済・振り返りまで見せない。採点：' + esc(SPF().PROFILES[p.profile].name) + '</div></div>' +
         '<div class="trade-chartwrap"><div class="chart-tools"><div class="tfs">' + tfs + '</div><div class="ctl"><button class="mini" data-zoom="in" aria-label="拡大">＋</button><button class="mini" data-zoom="out" aria-label="縮小">－</button><button class="mini" data-cmd="vreset">最新へ</button><button class="mini" data-cmd="cross">十字線</button><button class="mini" data-zig="1">ZigZag</button><button class="mini" data-cmd="quit">やめる</button></div></div>' +
           '<div class="pd-phasebar small"><span class="pd-phase" id="pd-phase2"></span> <span class="muted" id="pd-steps2"></span> <label class="pd-stepl">進める時間<select id="pd-stepmin">' + PE().STEP_MINS.map(function (m) { return '<option value="' + m + '"' + (m === play.stepMin ? ' selected' : '') + '>' + m + '分ずつ</option>'; }).join('') + '</select></label></div>' +
@@ -122,11 +123,11 @@
           '<button class="tcmd" data-cmd="hyp">仮説を登録して足を進める</button></div>' +
         '<div class="pd-sec hidden" id="pd-C"><div class="an-title">C 足を進める（<span id="pd-steps"></span>）</div><div class="trade-cmds ready pd-cmds"><button class="tcmd" data-cmd="step">進める</button><button class="tcmd" data-cmd="play">再生</button><button class="tcmd" data-cmd="stop">停止</button><button class="tcmd buy" data-cmd="check">エントリーを検討</button><button class="tcmd skip" data-cmd="skip">見送って終える</button></div></div>' +
         '<div class="pd-sec hidden" id="pd-D"><div class="an-title">D 条件の確認：いまの足で「ある」と思う根拠を選ぶ</div><div class="pd-ev">' + EVK.map(function (k) { return '<label class="pd-chk"><input type="checkbox" data-ev="' + k + '"> ' + esc(SPF().evidenceLabel(k)) + '</label>'; }).join('') + '</div>' +
-          '<div class="muted small">条件の項目数が多くても、必須の条件・妨げ（上位足と逆・飛び乗り・レンジの中ほど）があれば発注の条件にはならない。' + (p.hints ? '' : '（ヒントなしの設定）') + '</div>' + (p.hints ? '<button class="mini" data-cmd="hint">ヒント：いまの足の数値を見る</button><div class="pd-hint small" id="pd-hint"></div>' : '') +
+          '<div class="muted small">条件の項目数が多くても、必須の条件・妨げ（上位足と逆・飛び乗り・レンジの中ほど）があれば発注の条件にはならない。' + (hintsOn ? '' : '（ヒントなし）') + '</div>' + (hintsOn ? '<button class="mini" data-cmd="hint">ヒント：いまの足の数値を見る</button><div class="pd-hint small" id="pd-hint"></div>' : '') +
           '<div class="trade-cmds ready"><button class="tcmd skip" data-cmd="wait">待つ（足送りに戻る）</button><button class="tcmd buy" data-cmd="long">ロング</button><button class="tcmd sell" data-cmd="short">ショート</button></div></div>' +
         '<div class="pd-sec hidden" id="pd-E"><div class="an-title">E 注文（<span id="pd-side"></span>）：損切りは必須</div><div class="order-grid"><label>損切り<input type="number" step="0.001" id="pd-sl" inputmode="decimal"></label><label>利確<input type="number" step="0.001" id="pd-tp" inputmode="decimal"></label><label>許容損失（資金の%）<select id="pd-risk">' + [0.5, 1, 2, 5].map(function (r) { return '<option value="' + r + '"' + (r === 1 ? ' selected' : '') + '>' + r + '%' + (r > P.maxRiskPercent ? '（上限超え）' : '') + '</option>'; }).join('') + '</select></label>' +
           (advanced ? '<label>決済管理の計画<select id="pd-plan">' + PUI.PLANS.map(function (x) { return '<option value="' + x[0] + '">' + esc(x[1]) + '</option>'; }).join('') + '</select></label>' : '') + '</div>' +
-          '<div class="rw-row"><button class="mini" data-cmd="slpick">チャートで損切りを指定</button><button class="mini" data-cmd="tppick">チャートで利確を指定</button>' + (p.hints ? '<button class="mini" data-cmd="slhelp">損切り：確定した山谷の外側（＋' + P.slBufferPips + 'pips）</button><button class="mini" data-cmd="tphelp">利確：RR 1:2</button>' : '') + '</div><div class="muted small">チャートの損切り・利確の線は、上下にドラッグしても動かせる（入力欄と同じ検証をする）。</div>' +
+          '<div class="rw-row"><button class="mini" data-cmd="slpick">チャートで損切りを指定</button><button class="mini" data-cmd="tppick">チャートで利確を指定</button>' + (hintsOn ? '<button class="mini" data-cmd="slhelp">損切り：確定した山谷の外側（＋' + P.slBufferPips + 'pips）</button><button class="mini" data-cmd="tphelp">利確：RR 1:2</button>' : '') + '</div><div class="muted small">チャートの損切り・利確の線は、上下にドラッグしても動かせる（入力欄と同じ検証をする）。</div>' +
           '<div class="calc" id="pd-calc"></div><div class="calc o-err" id="pd-err" role="alert"></div><div class="trade-cmds ready"><button class="tcmd buy" data-cmd="order">発注する</button><button class="tcmd" data-cmd="back">戻る</button></div></div>' +
         '<div class="pd-sec hidden" id="pd-F"><div class="an-title">F 保有中' + (advanced ? '：上級のポジション管理（足が確定した後に決める）' : '：当初の損切り・利確は動かさない') + '</div><div class="small" id="pd-pos"></div><div class="trade-cmds ready"><button class="tcmd" data-cmd="hstep">進める</button><button class="tcmd" data-cmd="hplay">' + (advanced ? '再生' : '決済まで進める') + '</button>' + (advanced ? '<button class="tcmd" data-cmd="stop">停止</button>' : '') + '</div>' +
           (advanced ? '<div class="trade-cmds ready pd-adv"><button class="tcmd" data-cmd="m-be">損切りを建値へ</button><button class="tcmd" data-cmd="m-p25">25%決済</button><button class="tcmd" data-cmd="m-p50">50%決済</button><button class="tcmd" data-cmd="m-p75">75%決済</button>' +
@@ -227,6 +228,7 @@
         function manage(a) { var r = PE().manage(play, a); var m = $('#pd-mmsg'); if (m) m.textContent = r.ok ? '✓ ' + (r.note || '受け付けた') : '✗ ' + r.error; holdInfo(); render(); return r; }
         // 終わり
         function finish() { if (done) return; done = true; stopPlay(); var last = p.last || {}; var gr = PE().grade(play, { prevLoss: !!last.loss, prevRiskPercent: last.riskPercent || 0 }, P); var rec = PE().record(play, gr, p.capital);
+          if (opts.seriesId) rec.seriesId = opts.seriesId;
           if (play.picks) rec.picks = { high: play.picks.high ? play.picks.high.ok : null, low: play.picks.low ? play.picks.low.ok : null };
           PUI.pushHistory(p, rec);
           if (rec.kind === 'trade' && isFinite(rec.pnl)) { p.capital = rec.capitalAfter; p.last = { loss: rec.riskR < 0, riskPercent: rec.riskPercent, t: rec.t }; }
@@ -276,7 +278,7 @@
       } }).then(function (res) {
         stopPlay(); if (PUI._cleanup) { PUI._cleanup(); PUI._cleanup = null; PUI.listeners = Math.max(0, (PUI.listeners || 1) - 1); } if (stageEl) stageEl.classList.remove('trade-open'); if (document.body) document.body.classList.remove('pd-chart-open');
         if (!res) { resolve(null); return; }
-        PUI.review(res).then(function (next) { resolve({ record: res.record, grade: res.grade, next: next }); });
+        (opts.exam && PUI.examAfter ? PUI.examAfter(res.record) : PUI.review(res)).then(function (next) { resolve({ record: res.record, grade: res.grade, next: next }); });
       });
       function stopPlay() { if (timer) { clearInterval(timer); timer = null; } }
     });
@@ -320,7 +322,7 @@
     var proc = function (L) { var a = L.filter(function (x) { return isFinite(x.process); }); return a.length ? Math.round(a.reduce(function (s, x) { return s + x.process; }, 0) / a.length) + '点（' + a.length + '）' : '―'; };
     var v = function (x, unit, d) { return x === null || x === undefined ? '―' : (unit === 'R' ? sgn(x, d === undefined ? 2 : d) + 'R' : unit === '%' ? x.toFixed(1) + '%' : String(x)); };
     var pf = function (val, inf) { return inf ? '∞（負けなし）' : v(val); };
-    var SEG = [['すべて', function () { return true; }], ['学習用の問題', function (x) { return x.set !== 'exam'; }], ['未知の問題（Lv8）', function (x) { return x.set === 'exam'; }], ['上位足を見て判断', function (x) { return x.viewedHtf; }], ['上位足を見ずに判断', function (x) { return !x.viewedHtf; }],
+    var SEG = [['すべて', function () { return true; }], ['学習用の問題', function (x) { return x.set !== 'exam' && x.set !== 'exam_review'; }], ['未知の問題（Lv8）', function (x) { return x.set === 'exam'; }], ['試験の復習（認定に使わない）', function (x) { return x.set === 'exam_review'; }], ['上位足を見て判断', function (x) { return x.viewedHtf; }], ['上位足を見ずに判断', function (x) { return !x.viewedHtf; }],
       ['もちぽよ（仮設定）', function (x) { return x.profile === 'mochipoyo'; }], ['一般FX学習', function (x) { return x.profile === 'general'; }], ['上級の管理を使った', function (x) { return !!x.advanced; }]];
     var rows = SEG.map(function (sg) { var L = H.filter(sg[1]); var st = TC().stats(L, { capital: cap0 }); if (!L.length) return ''; return '<tr><td>' + esc(sg[0]) + '</td><td>' + L.length + '</td><td>' + st.trades + (st.small ? '<span class="bad">＊</span>' : '') + '</td><td>' + v(st.winRate, '%') + '</td><td>' + v(st.expectancyR, 'R') + '</td><td>' + pf(st.profitFactorYen, st.pfYenInfinite) + '</td><td>' + pf(st.profitFactorR, st.pfRInfinite) + '</td><td>' + v(st.skipRate, '%') + '</td><td>' + proc(L) + '</td></tr>'; }).join('');
     var html = '<div class="rw-title">実践トレード道場の成績・分析</div>' +
@@ -388,6 +390,9 @@
       '点は「判断の過程」（環境認識・セットアップ・トリガー・執行と資金管理・規律）で付け、結果（pips・R）は別に出す。条件がそろわないときに待つ・見送るのも正しい判断。',
       '確定している基準：上位足 日足・4H／エントリー足 5分・15分／EMA 20・30・40／RCI 9（±70 付近からの反転）／MACD 6・13・4（通常・ヒドゥン）／確定した高値・安値／複数の根拠／損切り必須／RR 1:1.5〜1:3 の目安。',
       '※ 反転の確認の本数・RCI とダイバの両方が必須か・上位足が食い違うとき・損切りの余裕・リスク%の上限などは「推奨仮設定」で、設定で変えられる（もちぽよ公式の機械売買ルールではない）。',
+      'チャート：ドラッグで過去へ・ピンチ／ホイールで拡大縮小・長押し（マウスは動かすだけ）で十字線（その足の OHLC と指標）。損切り・利確の線はドラッグでも動かせる。エントリー足は 5分足・15分足から選べる（同じ時刻のまま）。決済は 5分足で判定する。',
+      'v9.1 の演習：上級ポジション管理（建値・部分決済・トレーリング・早めの決済。発注の前の計画と比べて採点）／同じ相場・3判断比較／思い込みを見抜く／資金管理・連敗耐性試験／初見チャートの認定試験（v2）。どれも任意で、ゲームのお金・報酬は使わない。',
+      '損切りは「その価格で必ず止まる」約束ではない（窓や急変では、損切りを越えて約定することがある）。',
       '架空の相場の練習なので、実際の売買での利益を保証するものではない。'], { name: '実践トレード道場' });
   };
 

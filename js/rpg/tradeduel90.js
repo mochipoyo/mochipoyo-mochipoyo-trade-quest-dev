@@ -60,8 +60,8 @@
   };
   D9.explain = function (op, info) {
     var f = op.facts || {}; var base = '日足 ' + f.d1 + '・4時間足 ' + f.h4 + '・EMA ' + f.ema + '・ダウ ' + f.dow + '・RCI ' + f.rci + '・ダイバージェンス ' + f.div;
-    if (op.kind === 'trade') return ['開始から ' + op.atMin + '分の確定足で' + (op.side === 'buy' ? 'ロング' : 'ショート') + '（' + op.why + '）。', 'その時点の事実：' + base + '。', f.ok && f.ok.length ? 'もちぽよの推奨仮設定で成り立っていた条件：' + f.ok.join('・') + (f.met ? '（条件はそろっていた）' : '（そろってはいない：' + (f.missing || []).slice(0, 2).join('／') + '）') : ''];
-    return ['最後まで ' + ((info && info.styleName) || '自分の流派') + 'の合図が出ず、開始から ' + op.atMin + '分で見送った。', 'その時点の事実：' + base + '。'];
+    if (op.kind === 'trade') return ['開始から ' + op.atMin + '分の確定足で' + (op.side === 'buy' ? 'ロング' : 'ショート') + '（' + op.why + '）。', 'その時点の事実：' + base + '。', f.ok && f.ok.length ? 'もちぽよの推奨仮設定で成り立っていた条件：' + f.ok.join('・') + (f.met ? '（条件はそろっていた）' : '（そろってはいない：' + (f.missing || []).slice(0, 2).join('／') + '）') : '', '流派（やり方）が違えば、別の判断も合理的なことがある。結果の R だけでなく、それぞれの決まりに沿っていたかを比べよう。'];
+    return ['最後まで ' + ((info && info.styleName) || '自分の流派') + 'の合図が出ず、開始から ' + op.atMin + '分で見送った。', 'その時点の事実：' + base + '。', '流派（やり方）が違えば、別の判断も合理的なことがある。どちらの判断が、それぞれの決まりに沿っていたかを比べよう。'];
   };
   // 判断の過程を並べる表（環境認識・シグナル・見送り／発注・注文・決済管理・判断の点）。賞金・報酬は出さない
   D9.compareRows = function (me, op, pick) {
@@ -86,7 +86,10 @@
   // 画面：トレードマスターに話しかけたとき（js/rpg/trademaster83.js から呼ぶ）
   D9.talk = async function (npc, info, say) {
     var Win = root.Win, State = root.State, PUI = root.PracticeUI; if (!PUI || !PE()) { await Win.message(['（実践トレード道場が使えない）']); return; }
-    var c = await Win.choice('上級の対戦（賞金なし・記録だけ）：どちらで勝負する？', ['リスクR対戦（決めた損切りに対して、いくつ R を取ったか）', '規律対戦（判断の過程の点：環境認識・待つ・注文・規律）', 'やめる']); if (c !== 0 && c !== 1) return;
+    var opt = ['リスクR対戦（決めた損切りに対して、いくつ R を取ったか）', '規律対戦（判断の過程の点：環境認識・待つ・注文・規律）']; if (PUI.spot) opt.push('思い込みを見抜く（相手の解説の誤りを探す・記録だけ）'); opt.push('やめる');
+    var c = await Win.choice('上級の対戦（賞金なし・記録だけ）：どちらで勝負する？', opt);
+    if (PUI.spot && c === 2) { await say(['俺の解説に、チャートの事実と合わないところがあれば言ってみな。正しいことも言うぜ。']); await PUI.spot(); return; }   // v9.1 学習追加 B への入口（報酬なし）
+    if (c !== 0 && c !== 1) return;
     var rule = c === 0 ? 'riskR' : 'discipline'; var p = PUI.ensure(); var pick = PUI.pick(p, { lv: 6, cats: null, set: 'learn' }); if (!pick) return;
     var style = (info && info.style) || 'all'; if (!D9.STYLES[style]) style = 'all';
     await say(['同じチャートで勝負だ。俺は' + (info.styleName || '万能') + 'のやり方で、その時点までの足だけを見て決める。', D9.RULE_NAME[rule] + '。']);

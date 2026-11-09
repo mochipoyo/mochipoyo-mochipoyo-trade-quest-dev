@@ -53,18 +53,37 @@
   function future(r, dir) { var f = []; var k = Math.floor(r() * 4); var d1 = k === 0 ? dir : k === 1 ? -dir : k === 2 ? dir : 0;
     f.push(seg(H1 * U(r, 2, 6), d1 * U(r, 20, 90) + U(r, -20, 20), { amp: U(r, 12, 25), period: H1 * U(r, 2, 4) })); f.push(seg(DAY * PE.FUT_DAYS, U(r, -150, 150), { amp: U(r, 15, 30), period: H1 * U(r, 3, 5) })); return f; }
 
+  /* ---------- v9.1 初見の認定試験（Lv8 v2）用の、別の生成系列 B ----------
+     学習用（系列 A）と同じ形を覚えただけで高い点にならないように、判断の開始までの最後の部分の形（パターン群）を A とは別にした。
+     型の群（familyId）：B の型の名前＋向き。A の型（FAM）とは重ならない。背景のうねりの幅・周期も A と別の範囲 */
+  var FAM_B = ['double', 'channel', 'vrev', 'flag', 'gapnews', 'chop', 'stair'];
+  function tailB(fam, r, dir) {
+    var t = [];
+    if (fam === 'double') { t.push(seg(H4 * U(r, 3, 5), dir * U(r, 120, 220), { amp: U(r, 14, 24), period: H1 * U(r, 2, 3) })); t.push(seg(H1 * U(r, 3, 5), -dir * U(r, 50, 90), null, 1.6)); t.push(seg(H1 * U(r, 3, 5), dir * U(r, 45, 95), null, 1.5)); t.push(seg(M15 * U(r, 3, 8), -dir * U(r, 10, 35), null, 1.7)); }
+    else if (fam === 'channel') { for (var i = 0; i < 3; i++) { t.push(seg(H1 * U(r, 3, 5), dir * U(r, 50, 90), null, 1.3)); t.push(seg(H1 * U(r, 1.5, 3), -dir * U(r, 25, 45), null, 1.4)); } t.push(seg(M15 * U(r, 2, 6), dir * U(r, 0, 20), null, 1.5)); }
+    else if (fam === 'vrev') { t.push(seg(H4 * U(r, 2, 4), -dir * U(r, 140, 240), { amp: 15, period: H1 * 2 })); t.push(seg(H1 * U(r, 2, 4), dir * U(r, 90, 170), null, 2.4)); t.push(seg(M15 * U(r, 2, 6), -dir * U(r, 5, 30), null, 1.8)); }
+    else if (fam === 'flag') { t.push(seg(H1 * U(r, 3, 6), dir * U(r, 120, 210), null, 2.2)); t.push(seg(H1 * U(r, 4, 8), -dir * U(r, 15, 45), { amp: U(r, 6, 12), period: H1 }, 1.1)); }
+    else if (fam === 'gapnews') { t.push(seg(H4 * U(r, 3, 6), dir * U(r, -40, 60), { amp: 16, period: H1 * 3 })); t.push(seg(2, dir * U(r, 60, 120), null, 6)); t.push(seg(H1 * U(r, 2, 5), -dir * U(r, 10, 50), null, 2)); }
+    else if (fam === 'chop') { for (var k = 0; k < 4; k++) t.push(seg(H1 * U(r, 1.5, 3), (k % 2 ? -1 : 1) * dir * U(r, 40, 80), null, 2.6)); t.push(seg(M15 * U(r, 2, 6), dir * U(r, 10, 40), null, 2)); }
+    else { for (var j = 0; j < 3; j++) { t.push(seg(H1 * U(r, 2, 4), dir * U(r, 40, 80), null, 1.4)); t.push(seg(H1 * U(r, 3, 6), dir * U(r, -10, 10), { amp: 8, period: H1 * 2 }, 1.2)); } }
+    return t;
+  }
+  PE.FAM_B = FAM_B; PE.FAM_A = FAM.filter(function (x, i) { return FAM.indexOf(x) === i; });
   /* ---------- 相場を作る ---------- */
-  // seed から決まる（同じ seed なら同じチャート）。返り値：{ seed, base（5分足）, S（判断の開始の足の番号）, entryTF, days, fam, dir }
+  // seed から決まる（同じ seed なら同じチャート）。返り値：{ seed, base（5分足）, S（判断の開始の足の番号）, entryTF, days, fam, dir, gen, familyId }
+  // opts.gen：'A'（学習用・検証用。v9.0 と同じ）／'B'（初見の認定試験 v2）。A は v9.0 と同じ乱数の使い方のまま（同じ seed なら同じチャート）
   var cache = {}, order = [];
-  PE.generate = function (seed) {
-    seed = seed >>> 0; if (cache[seed]) return cache[seed];
-    var r = rng(seed ^ 0x5bd1e995); var dir = r() < 0.5 ? 1 : -1; var fam = FAM[Math.floor(r() * FAM.length)]; var days = r() < 0.1 ? 30 : 60; var entryTF = r() < 0.7 ? '15m' : '5m';
-    var tl = tail(fam, r, dir); var tb = tl.reduce(function (a, s) { return a + s.bars; }, 0); var total = days * DAY;
-    var bgDrift = U(r, -1, 1) * U(r, 300, 2600); var bg = seg(total - tb, bgDrift, { amp: U(r, 90, 220), period: DAY * U(r, 5, 9) });
+  PE.generate = function (seed, opts) {
+    seed = seed >>> 0; var gen = opts && opts.gen === 'B' ? 'B' : 'A'; var key = gen + seed; if (cache[key]) return cache[key];
+    var r, dir, fam, days, entryTF, tl, bgAmp, bgPer;
+    if (gen === 'A') { r = rng(seed ^ 0x5bd1e995); dir = r() < 0.5 ? 1 : -1; fam = FAM[Math.floor(r() * FAM.length)]; days = r() < 0.1 ? 30 : 60; entryTF = r() < 0.7 ? '15m' : '5m'; tl = tail(fam, r, dir); }
+    else { r = rng(seed ^ 0x2c1b3c6d); dir = r() < 0.5 ? 1 : -1; fam = FAM_B[Math.floor(r() * FAM_B.length)]; days = r() < 0.15 ? 30 : 60; entryTF = r() < 0.5 ? '15m' : '5m'; tl = tailB(fam, r, dir); }
+    var tb = tl.reduce(function (a, s) { return a + s.bars; }, 0); var total = days * DAY;
+    var bgDrift = U(r, -1, 1) * U(r, 300, 2600); var bg = gen === 'A' ? seg(total - tb, bgDrift, { amp: U(r, 90, 220), period: DAY * U(r, 5, 9) }) : seg(total - tb, bgDrift, { amp: U(r, 60, 260), period: DAY * U(r, 3, 11) });
     var fu = future(r, dir); var segs = [bg].concat(tl, fu);
-    var all = root.Scenarios._internal.buildCandles(segs, seed, CONFIG.market.basePrice, CONFIG.market.pip);
-    var g = { seed: seed, base: all, S: total - 1, entryTF: entryTF, days: days, fam: fam, dir: dir, pip: CONFIG.market.pip };
-    cache[seed] = g; order.push(seed); while (order.length > 6) delete cache[order.shift()];
+    var all = root.Scenarios._internal.buildCandles(segs, gen === 'A' ? seed : (seed ^ 0x6a09e667) >>> 0, CONFIG.market.basePrice, CONFIG.market.pip);
+    var g = { seed: seed, base: all, S: total - 1, entryTF: entryTF, days: days, fam: fam, dir: dir, pip: CONFIG.market.pip, gen: gen, familyId: gen + ':' + fam + ':' + (dir > 0 ? 'up' : 'down') };
+    cache[key] = g; order.push(key); while (order.length > 6) delete cache[order.shift()];
     return g;
   };
 
@@ -151,8 +170,8 @@
   /* ---------- 1回のプレイ（問題）：公開してよい情報だけを持つ ---------- */
   // pick：{ seed, cat, set }（js/data/practice-seeds.js から）。cat・set はプレイの記録（振り返り）まで画面に出さない
   PE.start = function (pick, opts) {
-    opts = opts || {}; var g = PE.generate(pick.seed); var tf = opts.entryTF || g.entryTF; var sm = PE.STEP_MINS.indexOf(opts.stepMin) >= 0 ? opts.stepMin : PE.tfMin(tf);
-    return { seed: g.seed, set: pick.set || 'learn', cat: pick.cat || null, entryTF: tf, suggestedTF: g.entryTF, stepMin: sm, step: sm / 5, S: g.S, asOf: g.S, steps: 0, maxSteps: Math.round(PE.WAIT_MIN / sm), waitBars: PE.WAIT_MIN / 5, holdBars: PE.HOLD_MIN / 5, pip: g.pip, days: g.days,
+    opts = opts || {}; var gen = pick.gen === 'B' ? 'B' : 'A'; var g = PE.generate(pick.seed, { gen: gen }); var tf = opts.entryTF || g.entryTF; var sm = PE.STEP_MINS.indexOf(opts.stepMin) >= 0 ? opts.stepMin : PE.tfMin(tf);
+    return { seed: g.seed, gen: gen, familyId: g.familyId, scenarioVersion: gen === 'B' ? 2 : 1, set: pick.set || 'learn', cat: pick.cat || null, exam: !!opts.exam, entryTF: tf, suggestedTF: g.entryTF, stepMin: sm, step: sm / 5, S: g.S, asOf: g.S, steps: 0, maxSteps: Math.round(PE.WAIT_MIN / sm), waitBars: PE.WAIT_MIN / 5, holdBars: PE.HOLD_MIN / 5, pip: g.pip, days: g.days,
       profile: opts.profile || 'mochipoyo', level: opts.level || 1, hints: opts.hints !== false, advanced: !!opts.advanced, phase: 'analysis', events: [], viewed: {}, answers: {}, hypothesis: null, claims: null, entry: null, settle: null, metAt: [], tfLog: [], startedAt: Date.now() };
   };
   // v9.1 エントリー足の選択（5分足・15分足）：同じ問題・同じ時刻（asOf は 5分足の番号）のまま、どちらの足で判断するかを選ぶ。仮説を登録する前だけ変えられる。記録に残す
@@ -160,7 +179,7 @@
   // v9.1 1回に進める時間（5分・15分）：エントリー足とは別。待ち・保有の上限は分で決まっているので、進め方を変えても上限は同じ
   PE.setStep = function (play, min) { if (PE.STEP_MINS.indexOf(min) < 0 || (play.phase !== 'analysis' && play.phase !== 'waiting' && play.phase !== 'holding')) return false; play.stepMin = min; play.step = min / 5; play.maxSteps = play.steps + Math.ceil(Math.max(0, play.S + play.waitBars - play.asOf) / play.step); play.events.push({ kind: 'stepMin', min: min, asOf: play.asOf, at: Date.now() }); return true; };
   PE.waitLeftMin = function (play) { return Math.max(0, (play.S + play.waitBars - play.asOf) * 5); };
-  PE.game = function (play) { return PE.generate(play.seed); };
+  PE.game = function (play) { return PE.generate(play.seed, { gen: play.gen }); };
   PE.snap = function (play) { var s = PE.snapshot(PE.game(play), play.asOf, play.entryTF); s.pip0 = play.pip; return s; };
   // 足を1本（エントリー足で）進める。進めたら、その時点で条件がそろったか（両方の向き）を記録する（採点の「条件がそろった足」）
   PE.advance = function (play, prof) {
@@ -240,9 +259,9 @@
     if (level === 1) { Q.push({ key: 'ema', title: 'エントリー足の EMA20/30/40 の並びは？', options: [['up', '上昇の並び（20＞30＞40）'], ['down', '下降の並び（20＜30＜40）'], ['mixed', '絡み合っている']], truth: [e.emaOrder] });
       Q.push({ key: 'dow', title: 'エントリー足の確定した高値・安値（ダウ）は？', options: [['up', '切り上げ（上昇）'], ['down', '切り下げ（下降）'], ['range', 'そろっていない（レンジ）'], ['unknown', '確定した山谷が足りない']], truth: [e.dow] }); }
     if (level === 2 && e.rci) { var st = e.rci.state; var t = /^(neutral|overbought|oversold|turning_up|turning_down)$/.test(st) ? st : 'after'; Q.push({ key: 'rci', title: 'RCI(9) の状態は？（いまの足で確認できること）', options: RCI_OPT, truth: [t] }); }
-    if (level === 3) { var conf = (e.divSignals || []).filter(function (x) { return x.status === 'confirmed'; }).map(function (x) { return x.type; }); var tr = conf.length ? conf : (e.divForming || []).length ? ['forming'] : (e.divSignals || []).some(function (x) { return x.status === 'expired'; }) ? ['expired'] : ['none'];
+    if (level === 3 || level === 8) { var conf = (e.divSignals || []).filter(function (x) { return x.status === 'confirmed'; }).map(function (x) { return x.type; }); var tr = conf.length ? conf : (e.divForming || []).length ? ['forming'] : (e.divSignals || []).some(function (x) { return x.status === 'expired'; }) ? ['expired'] : ['none'];
       Q.push({ key: 'div', title: 'MACD のダイバージェンス（確定した山谷・期限内）は？', options: DIV_OPT, truth: tr }); }
-    if (level === 4) { var h = snap.htf || {}; var a = h['1d'] && !h['1d'].insufficient ? h['1d'].dir : null, b = h['4h'] && !h['4h'].insufficient ? h['4h'].dir : null;
+    if (level === 4 || level === 8) { var h = snap.htf || {}; var a = h['1d'] && !h['1d'].insufficient ? h['1d'].dir : null, b = h['4h'] && !h['4h'].insufficient ? h['4h'].dir : null;
       var m = !a || !b || a === 'range' || b === 'range' ? 'unclear' : a === b ? 'same' : 'diff'; Q.push({ key: 'mtf', title: '日足と4時間足の向きは？', options: [['same', '一致している'], ['diff', '食い違っている'], ['unclear', 'どちらかがレンジ・不明瞭・履歴不足']], truth: [m] });
       var pv = e.pivots || { confirmed: [], forming: [] }; var lc = pv.confirmed.length ? pv.confirmed[pv.confirmed.length - 1].index : -1; var lf = pv.forming.length ? pv.forming[pv.forming.length - 1].index : -1;
       Q.push({ key: 'pivot', title: 'エントリー足の最後の山・谷（ZigZag の最後の点）は確定している？', options: [['confirmed', '確定している（右に4本以上の足がある）'], ['forming', 'まだ確定していない（右の足が足りない）']], truth: [lf > lc ? 'forming' : 'confirmed'] }); }
@@ -293,8 +312,9 @@
     var ev = play.entry ? play.entry.check.evidence.filter(function (x) { return x.ok; }).map(function (x) { return x.key; }) : [];
     var prof = SPFn().values(play.profile, play.overrides); var snapP = {}; Object.keys(prof).forEach(function (k) { if (k !== 'name') snapP[k] = prof[k]; });
     var st2 = play.settle; var adv = !!(play.pos && st2 && st2.advanced);
-    var decided = play.entry ? play.entry.asOf : play.asOf;
-    return { v: 3, answers: { '1d': play.answers['1d'] || null, '4h': play.answers['4h'] || null }, decidedMin: (decided - play.S) * 5, tfSuggested: play.suggestedTF || null, tfLog: (play.tfLog || []).map(function (x) { return x.tf; }), stepMin: play.stepMin || null, advanced: adv, plan: play.entry ? play.entry.plan : null, actions: adv ? st2.actions : null, fills: adv ? st2.fills.map(function (f) { return [f.kind, f.index, f.lots, f.pips]; }) : null, maeR: adv ? st2.maeR : null, mfeR: adv ? st2.mfeR : null, worstOpenYen: adv ? st2.worstOpenYen : null,
+    var decided = play.entry ? play.entry.asOf : play.asOf; var fz = {}; (grade.items || []).forEach(function (it) { var m = /^読み取り：(.*)$/.exec(it.name); if (m) fz[m[1]] = it.ok; });
+    var htfRight = (grade.items || []).filter(function (it) { return /の方向$/.test(it.name) && it.cat === 'env'; }); var divQ = Object.keys(fz).filter(function (k) { return /ダイバージェンス/.test(k); })[0];
+    return { v: 3, familyId: play.familyId || null, examV: play.exam ? (root.Trainer91 ? root.Trainer91.EXAM_VERSION : 2) : null, htfRight: htfRight.filter(function (x) { return x.ok; }).length, htfN: htfRight.length, divOk: divQ ? fz[divQ] : null, answers: { '1d': play.answers['1d'] || null, '4h': play.answers['4h'] || null }, decidedMin: (decided - play.S) * 5, tfSuggested: play.suggestedTF || null, tfLog: (play.tfLog || []).map(function (x) { return x.tf; }), stepMin: play.stepMin || null, advanced: adv, plan: play.entry ? play.entry.plan : null, actions: adv ? st2.actions : null, fills: adv ? st2.fills.map(function (f) { return [f.kind, f.index, f.lots, f.pips]; }) : null, maeR: adv ? st2.maeR : null, mfeR: adv ? st2.mfeR : null, worstOpenYen: adv ? st2.worstOpenYen : null,
       engineVersion: PE.ENGINE_VERSION, scenarioVersion: play.scenarioVersion || PE.SCENARIO_VERSION, gen: play.gen || 'A', checksum: PE.checksum(PE.game(play)), profileSnap: snapP, grossR: tr ? st.grossR : null, grossPips: tr ? st.grossPips : null, commissionYen: tr ? st.commissionYen : null, ifTpFirstR: tr && st.ifTpFirst ? st.ifTpFirst.riskR : null,
       t: Date.now(), seed: play.seed, set: play.set, cat: play.cat, tf: play.entryTF, profile: play.profile, level: play.level, kind: grade.kind, process: grade.process,
       side: play.entry ? play.entry.side : null, sl: play.entry ? play.entry.order.sl : null, tp: play.entry ? play.entry.order.tp : null, lots: play.entry && play.entry.sizing ? play.entry.sizing.lots : null,
