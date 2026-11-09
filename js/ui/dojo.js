@@ -46,6 +46,7 @@
         { key: 'advanced', label: '上級試験（10問）', right: rec.advanced.passed ? '合格済み' : rec.advanced.attempts ? '最高' + rec.advanced.best + '点' : ra.ok ? '受けられる' : '条件あり', sub: '合格で「' + ta.name + '」を習得' + (ra.ok ? '' : '（' + ra.why + '）') },
         { key: 'techs', label: '流派の技（5つ）' },
         { key: 'record', label: '成績を見る' },
+        { key: 'mochipoyo', label: 'もちぽよ実践トレード道場', sub: '日足・4時間足から足送りで待ち、注文・決済・振り返りまで（別の練習。技の習得とは関係しない）' },   // v9.0
         { key: 'bye', label: '立ち去る' }
       ];
       var i = await Win.list(items, { title: m.name + '　' + sch.name, cls: 'dojo-list' });
@@ -57,6 +58,7 @@
       else if (k === 'beginner' || k === 'advanced') await exam(mid, k);
       else if (k === 'techs') await TD.schoolTechs(m.school);
       else if (k === 'record') await TD.records(mid);
+      else if (k === 'mochipoyo' && root.PracticeUI) await root.PracticeUI.menu();   // v9.0 もちぽよ実践トレード道場
     }
   }
   function greet(m, rec) {

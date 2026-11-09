@@ -32,6 +32,7 @@
     E.item.push({ label: '最近使った・お気に入り', run: async function () { if (await Menu.items({ fav: true }) === 'warp') return 'close'; } });
     E.item.push({ label: '重要アイテム', run: async function () { if (await Menu.items({ genre: 'key' }) === 'warp') return 'close'; } });
     E.trade.push({ label: 'トレード修行', run: function () { return Menu.training(); } });
+    if (root.PracticeUI) E.trade.push({ label: 'もちぽよ実践トレード道場', sub: '環境認識→待つ→条件の確認→注文→管理→振り返り（架空の相場）', run: function () { return root.PracticeUI.menu(); } });   // v9.0
     if (root.Ultimates && root.TraderDojo && (root.Ultimates.count(d) > 0 || Object.keys((d.ultimate && d.ultimate.masters) || {}).length)) E.trade.push({ label: '必殺技', run: function () { return root.TraderDojo.menu(); } });
     E.trade.push({ label: 'トレード成績・振り返り', run: function () { return Menu.tradeRecord ? Menu.tradeRecord() : Menu.rankPanel(); } });
     E.sys.push({ label: 'セーブ', run: function () { return Menu.save(); } });

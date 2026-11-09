@@ -989,3 +989,25 @@ body.mobile.m-fullui #pad.mpad { display: none !important; }
 }
 /* 振り返り（判断した時点とその後を並べる）：チャートバトルの上に重ねて出すので、下の文字が透けて読みにくかった → この窓だけ透かさない */
 .rw-panel.rv-panel { background: linear-gradient(180deg, #121a38, #080c1e); }
+
+/* v9.0 もちぽよ実践トレード道場（js/ui/practiceui.js）。チャートの枠・高さは試練（.trade-panel）と同じ決まりを使う */
+.practice-panel .pd-sec { margin: 6px 0; } .practice-panel .pd-sec.hidden { display: none; }
+.practice-panel .pd-phase { color: var(--gold); font-weight: bold; }
+.practice-panel .pd-phasebar { margin: 2px 0; min-height: 1.3em; }
+.practice-panel .pd-forming { margin: 2px 0 0; min-height: 1.2em; }
+.practice-panel .pd-sel { width: 100%; margin: 6px 0; padding: 6px; background: #111a3a; color: #e8eefc; border: 1px solid #34406e; border-radius: 4px; font-size: 13px; }
+.practice-panel .pd-ev { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 4px 0; }
+.practice-panel .pd-chk { font-size: 13px; display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding: 0 6px; background: rgba(255,255,255,.04); border-radius: 4px; }
+.practice-panel .pd-chk input { width: 18px; height: 18px; }
+.practice-panel .pd-hint { background: rgba(90,176,255,.08); border-radius: 4px; padding: 4px 6px; margin: 4px 0; line-height: 1.5; }
+.practice-panel .pd-hint:empty { display: none; }
+.practice-panel .pd-cmds { flex-wrap: wrap; }
+.o-err:empty { display: none; } .o-err { border: 1px solid rgba(229,72,77,.45); }
+.pd-review .pd-rv { display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 6px; } .pd-review .pd-rv .tbl { min-width: 150px; }
+.pd-review .rv-chart { height: 220px; } .pd-stats-panel .pd-curve { height: 120px; width: 100%; display: block; }
+.pd-stats-panel .pd-stats td, .pd-stats-panel .pd-stats th { padding: 2px 4px; font-size: 12px; white-space: nowrap; }
+.pd-stats-panel { overflow-x: auto; }
+@media (max-width: 720px) {
+  .pd-review .rv-chart { height: clamp(170px, 30svh, 240px); }
+  .practice-panel .pd-chk { font-size: 12px; }
+}

@@ -154,7 +154,9 @@
           else return;
         }
       } },
-      { id: 'va_listener', x: 4, y: 6, sprite: 'villager_m', dir: 'down', wander: 1, talk: async function (c) { await c.say('聴講生', ['僕はトレーダー見習いなんだ。統計学の講義で、勝率60%でも負ける手法があるって知って驚いたよ。']); } }
+      { id: 'va_listener', x: 4, y: 6, sprite: 'villager_m', dir: 'down', wander: 1, talk: async function (c) { await c.say('聴講生', ['僕はトレーダー見習いなんだ。統計学の講義で、勝率60%でも負ける手法があるって知って驚いたよ。']);
+        // v9.0 学院からの入口：実習「もちぽよ実践トレード道場」（講師の講義の選択肢は今までどおり）
+        if (root.PracticeUI) { var a = await c.choice('聴講生「学院では、実践の実習もできるんだ。やってみる？」', ['実習「もちぽよ実践トレード道場」を開く', 'やめる']); if (a === 0) await root.PracticeUI.menu(); } } }
     ] });
   async function debate(c) {
     if (c.flag('acad_o_debate')) { await c.say('アルマ講師', ['討論会の記録は天文観測室のリゲルに渡してある。']); return; }
