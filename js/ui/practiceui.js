@@ -277,6 +277,7 @@
         var onRz = function () { if (!done && document.getElementById('pd-chart')) render(); }; root.addEventListener('resize', onRz); PUI._cleanup = function () { root.removeEventListener('resize', onRz); stopPlay(); if (ctl) ctl.detach(); }; PUI.listeners = (PUI.listeners || 0) + 1;
       } }).then(function (res) {
         stopPlay(); if (PUI._cleanup) { PUI._cleanup(); PUI._cleanup = null; PUI.listeners = Math.max(0, (PUI.listeners || 1) - 1); } if (stageEl) stageEl.classList.remove('trade-open'); if (document.body) document.body.classList.remove('pd-chart-open');
+        if (PUI.current) PUI.current.ctl = null;   // v9.1 閉じた画面（DOM）への参照を残さない（前は最後の画面が PUI.current.ctl.node からたどれて、メモリに残っていた）
         if (!res) { resolve(null); return; }
         (opts.exam && PUI.examAfter ? PUI.examAfter(res.record) : PUI.review(res)).then(function (next) { resolve({ record: res.record, grade: res.grade, next: next }); });
       });
