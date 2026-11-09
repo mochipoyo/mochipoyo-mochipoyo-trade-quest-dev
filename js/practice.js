@@ -188,6 +188,28 @@
   PE.holdStep = function (play) { if (play.phase !== 'holding') return false; var g = PE.game(play); var next = Math.min(play.entry.exitAsOf, play.asOf + play.step); if (next >= g.base.length) next = g.base.length - 1; play.asOf = next; play.holdShown++; if (play.asOf >= play.entry.exitAsOf) { play.phase = 'closed'; play.events.push({ kind: 'exit', asOf: play.asOf, reason: play.settle.reason, at: Date.now() }); } return true; };
   PE.skip = function (play, claims) { play.phase = 'skipped'; play.claims = claims || play.claims || null; play.events.push({ kind: 'skip', asOf: play.asOf, at: Date.now() }); };
 
+  /* ---------- レベルごとの読み取りの設問（判断の開始の時点の事実で採点。答えは振り返りまで出さない） ---------- */
+  var RCI_OPT = [['neutral', '中立（±70圏の外・有効な反転なし）'], ['overbought', '+70以上（買われすぎ圏）'], ['oversold', '−70以下（売られすぎ圏）'], ['turning_up', '−70圏から上向きに反転（継続中）'], ['turning_down', '+70圏から下向きに反転（継続中）'], ['after', '反転のあと止まった・逆へ再逆行・古い反転']];
+  var DIV_OPT = [['none', 'なし'], ['regular_bull', '通常の強気'], ['regular_bear', '通常の弱気'], ['hidden_bull', 'ヒドゥンの強気'], ['hidden_bear', 'ヒドゥンの弱気'], ['forming', '形成中のものだけ（まだ数えない）'], ['expired', '期限切れのものだけ']];
+  PE.focusQuestions = function (level, snap) {
+    var e = snap.entry || {}; var Q = [];
+    if (level === 1) { Q.push({ key: 'ema', title: 'エントリー足の EMA20/30/40 の並びは？', options: [['up', '上昇の並び（20＞30＞40）'], ['down', '下降の並び（20＜30＜40）'], ['mixed', '絡み合っている']], truth: [e.emaOrder] });
+      Q.push({ key: 'dow', title: 'エントリー足の確定した高値・安値（ダウ）は？', options: [['up', '切り上げ（上昇）'], ['down', '切り下げ（下降）'], ['range', 'そろっていない（レンジ）'], ['unknown', '確定した山谷が足りない']], truth: [e.dow] }); }
+    if (level === 2 && e.rci) { var st = e.rci.state; var t = /^(neutral|overbought|oversold|turning_up|turning_down)$/.test(st) ? st : 'after'; Q.push({ key: 'rci', title: 'RCI(9) の状態は？（いまの足で確認できること）', options: RCI_OPT, truth: [t] }); }
+    if (level === 3) { var conf = (e.divSignals || []).filter(function (x) { return x.status === 'confirmed'; }).map(function (x) { return x.type; }); var tr = conf.length ? conf : (e.divForming || []).length ? ['forming'] : (e.divSignals || []).some(function (x) { return x.status === 'expired'; }) ? ['expired'] : ['none'];
+      Q.push({ key: 'div', title: 'MACD のダイバージェンス（確定した山谷・期限内）は？', options: DIV_OPT, truth: tr }); }
+    if (level === 4) { var h = snap.htf || {}; var a = h['1d'] && !h['1d'].insufficient ? h['1d'].dir : null, b = h['4h'] && !h['4h'].insufficient ? h['4h'].dir : null;
+      var m = !a || !b || a === 'range' || b === 'range' ? 'unclear' : a === b ? 'same' : 'diff'; Q.push({ key: 'mtf', title: '日足と4時間足の向きは？', options: [['same', '一致している'], ['diff', '食い違っている'], ['unclear', 'どちらかがレンジ・不明瞭・履歴不足']], truth: [m] });
+      var pv = e.pivots || { confirmed: [], forming: [] }; var lc = pv.confirmed.length ? pv.confirmed[pv.confirmed.length - 1].index : -1; var lf = pv.forming.length ? pv.forming[pv.forming.length - 1].index : -1;
+      Q.push({ key: 'pivot', title: 'エントリー足の最後の山・谷（ZigZag の最後の点）は確定している？', options: [['confirmed', '確定している（右に4本以上の足がある）'], ['forming', 'まだ確定していない（右の足が足りない）']], truth: [lf > lc ? 'forming' : 'confirmed'] }); }
+    return Q;
+  };
+  PE.focusItems = function (play, snap) {
+    return PE.focusQuestions(play.level, snap).map(function (q) { var a = (play.focus || {})[q.key]; var okA = q.truth.indexOf(a) >= 0; var lab = function (k) { for (var i = 0; i < q.options.length; i++) if (q.options[i][0] === k) return q.options[i][1]; return k; };
+      return { cat: 'setup', name: '読み取り：' + q.title.replace(/は？.*$/, ''), got: okA ? 6 : 0, max: 6, note: (okA ? '正解：' : (a ? 'あなた：' + lab(a) + ' → 実際：' : '未回答 → 実際：')) + q.truth.map(lab).join('／') }; });
+  };
+  PE.wait = function (play) { play.waits = (play.waits || 0) + 1; play.events.push({ kind: 'wait', asOf: play.asOf, at: Date.now() }); };
+
   /* ---------- 採点・記録 ---------- */
   PE.grade = function (play, context, prof) {
     prof = prof || SPFn().values(play.profile, play.overrides); var g = PE.game(play); var start = PE.snapshot(g, play.S, play.entryTF); start.pip0 = play.pip;
@@ -195,7 +217,7 @@
     var claimSide = play.entry ? play.entry.side : (play.hypothesis && play.hypothesis.bias === 'sell' ? 'sell' : 'buy');
     var claimCheck = play.entry ? play.entry.check : SPFn().evaluateEntry(PE.snap(play), claimSide, prof);
     var pnl = null; if (kind === 'trade' && play.settle && play.settle.ok && play.entry.sizing) pnl = Math.round(play.settle.netPips * play.entry.sizing.lots * root.TradeCore.spec().pipValue);
-    var res = SPFn().grade({ profile: prof, facts: start, answers: play.answers, viewedHtf: !!(play.viewed['1d'] && play.viewed['4h']), claims: play.claims || {}, claimCheck: play.claims ? claimCheck : null, outcomeKind: kind, entry: play.entry, metAt: play.metAt, settle: play.settle, pnl: pnl, context: context || {} });
+    var res = SPFn().grade({ profile: prof, facts: start, extraItems: PE.focusItems(play, start), answers: play.answers, viewedHtf: !!(play.viewed['1d'] && play.viewed['4h']), claims: play.claims || {}, claimCheck: play.claims ? claimCheck : null, outcomeKind: kind, entry: play.entry, metAt: play.metAt, settle: play.settle, pnl: pnl, context: context || {} });
     res.kind = kind; res.pnl = pnl; return res;
   };
   // 記録の1行（セーブの practice.history に入れる。チャートは保存しない：seed から作り直せる）
@@ -206,7 +228,7 @@
       side: play.entry ? play.entry.side : null, sl: play.entry ? play.entry.order.sl : null, tp: play.entry ? play.entry.order.tp : null, lots: play.entry && play.entry.sizing ? play.entry.sizing.lots : null,
       riskPercent: play.entry ? play.entry.riskPercent : null, maxLoss: play.entry && play.entry.sizing ? Math.round(play.entry.sizing.actualRisk) : null, plannedRR: play.entry ? play.entry.order.rr : null,
       netPips: tr ? st.netPips : null, riskR: tr ? st.riskR : null, costPips: tr ? st.costPips : null, mae: tr ? st.maePips : null, mfe: tr ? st.mfePips : null, reason: tr ? st.reason : null, ambiguous: tr ? st.ambiguous : false,
-      pnl: grade.pnl, capitalAfter: tr && isFinite(grade.pnl) ? Math.max(0, capitalBefore + grade.pnl) : capitalBefore, evidence: ev, compliant: grade.compliant, violations: grade.violations, viewedHtf: !!(play.viewed['1d'] && play.viewed['4h']), steps: play.steps };
+      pnl: grade.pnl, capitalAfter: tr && isFinite(grade.pnl) ? Math.max(0, capitalBefore + grade.pnl) : capitalBefore, evidence: ev, compliant: grade.compliant, violations: grade.violations, viewedHtf: !!(play.viewed['1d'] && play.viewed['4h']), steps: play.steps, waits: play.waits || 0, hints: play.hintsUsed || 0, cats: (function () { var o = {}; Object.keys(grade.cats).forEach(function (k) { o[k] = [grade.cats[k].got, grade.cats[k].max]; }); return o; })() };
   };
 
   root.PracticeEngine = PE;

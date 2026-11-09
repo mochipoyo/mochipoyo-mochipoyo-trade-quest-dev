@@ -181,7 +181,7 @@
       winRate: n ? r2(wins.length / n * 100) : null, avgWinR: wins.length ? r2(gw / wins.length) : null, avgLossR: losses.length ? r2(-gl / losses.length) : null,
       expectancyR: n ? r2(sum(trades, 'riskR') / n) : null, profitFactor: gl > 0 ? r2(gw / gl) : (gw > 0 ? null : null), pfInfinite: gl === 0 && gw > 0,
       avgPlannedRR: rrs.length ? r2(sum(rrs, 'plannedRR') / rrs.length) : null, maxLosingStreak: maxStreak, drawdown: TC.maxDrawdown(curve), curve: curve,
-      decisions: decisions.length, skips: H.filter(function (x) { return x.kind === 'skip'; }).length, waits: H.filter(function (x) { return x.kind === 'wait'; }).length, timeouts: H.filter(function (x) { return x.kind === 'timeout'; }).length,
+      decisions: decisions.length, skips: H.filter(function (x) { return x.kind === 'skip'; }).length, waits: H.reduce(function (a, x) { return a + (x.kind === 'wait' ? 1 : 0) + (isFinite(x.waits) ? x.waits : 0); }, 0), timeouts: H.filter(function (x) { return x.kind === 'timeout'; }).length,
       skipRate: decisions.length ? r2(H.filter(function (x) { return x.kind === 'skip'; }).length / decisions.length * 100) : null,
       complianceRate: rated.length ? r2(rated.filter(function (x) { return x.compliant; }).length / rated.length * 100) : null, rated: rated.length, invalidOrders: H.filter(function (x) { return x.kind === 'invalid'; }).length,
       byEvidence: byEv
