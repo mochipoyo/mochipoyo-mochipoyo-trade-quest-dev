@@ -1,0 +1,51 @@
+{
+ "frames": 2238,
+ "fps": 56,
+ "p50": 16.7,
+ "p90": 16.7,
+ "p99": 33.4,
+ "max": 300,
+ "over33": 20,
+ "over50": 10,
+ "over100": 2,
+ "longTasks": 14,
+ "longMax": 345,
+ "longList": [
+  68,
+  85,
+  115,
+  345,
+  68,
+  87,
+  53,
+  278,
+  55,
+  56,
+  61,
+  60,
+  91,
+  266
+ ],
+ "maps": [
+  "world",
+  "poyo_village"
+ ],
+ "built": {
+  "build_world_grania": 4980,
+  "slice_world_grania": 1224,
+  "build_world_kalion": 1377,
+  "slice_world_kalion": 264,
+  "build_poyo_item_shop": 71,
+  "build_poyo_inn": 69
+ },
+ "pos": [
+  9,
+  10,
+  "poyo_village"
+ ],
+ "errors": [],
+ "start": {
+  "x": 73,
+  "y": 66
+ }
+}
