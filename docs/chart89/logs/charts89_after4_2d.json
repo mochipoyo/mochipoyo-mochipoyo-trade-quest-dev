@@ -1,0 +1,27 @@
+{
+ "land": {
+  "cbattle": {
+   "w": 482,
+   "h": 312,
+   "price": null,
+   "top": 14,
+   "visible": 312,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "cbres": {
+   "w": 482,
+   "h": 312,
+   "price": null,
+   "top": 14,
+   "visible": 312,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "errors": []
+ }
+}

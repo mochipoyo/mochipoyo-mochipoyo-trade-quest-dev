@@ -921,3 +921,61 @@ body.mobile.m-land.m-pad-swap .mp-move { left: auto; right: calc(env(safe-area-i
 body.mobile.m-land.m-pad-swap .mp-act { right: auto; left: calc(env(safe-area-inset-left, 0px) + 10px); }
 body.mobile.m-fullui #pad.mpad { display: none !important; }
 @media (max-height: 460px) { .chart-battle .cb-btn { min-height: 44px; } }   /* v8.8 横向きのスマホでも判断のボタンは 44px（前は 40px） */
+/* =========================================================
+   v8.9 チャートの高さ（スマホ）：チャートが要る画面で、チャートが上下につぶれて見づらかった（縦画面の試練のチャートは 160px で、ローソク足の段は約 80px）
+   ・縦画面：画面の高さに合わせて大きく（svh＝ブラウザのバーを除いた高さ。使えない端末は vh）。試練では、時間足のボタンとチャートを上に残したまま、下の問題をスクロールできる
+   ・横画面：チャートの画面は横幅いっぱい（js/ui/mobile.js）。チャートを左、問題・ボタンを右に並べる
+   ・PC（広い画面）は今までと同じ
+   ========================================================= */
+@media (max-width: 720px) and (orientation: portrait) {
+  .trade-panel .chart { height: clamp(220px, 40vh, 380px); height: clamp(220px, 40svh, 380px); }
+  .trade-panel .trade-chartwrap { position: sticky; top: 0; z-index: 3; margin: 0 -10px; padding: 4px 10px 6px; background: #0f1736; box-shadow: 0 6px 8px -6px rgba(0,0,0,.7); }
+  .mini-chart { height: clamp(200px, 32vh, 280px); height: clamp(200px, 32svh, 280px); }
+  .chart.lev-chart { height: clamp(220px, 36vh, 320px); height: clamp(220px, 36svh, 320px); }
+}
+@media (max-width: 640px) and (orientation: portrait) { .rv-panel .rv-box { height: clamp(190px, 30vh, 260px); height: clamp(190px, 30svh, 260px); } }
+@media (max-width: 520px) and (orientation: portrait) {
+  .quiz-battle .qb-chartbox { height: clamp(150px, 24vh, 220px); height: clamp(150px, 24svh, 220px); }
+  .quiz-battle .qb-chartbox.tall { height: clamp(180px, 30vh, 260px); height: clamp(180px, 30svh, 260px); }
+}
+/* チャートバトル（必殺技・修行・試験・トレードバトル）：縦画面では、指標の切り替えを 1 行に（横にスクロール）。チャートの最低の高さを決め、入りきらないときはパネルをスクロール */
+@media (max-width: 720px) and (orientation: portrait) {
+  .rw-panel.chart-battle { overflow-y: auto; }
+  .chart-battle .cb-chartbox { flex: 1 0 auto; min-height: clamp(190px, 34vh, 320px); min-height: clamp(190px, 34svh, 320px); }
+  .chart-battle.result .cb-chartbox { min-height: clamp(150px, 26vh, 240px); min-height: clamp(150px, 26svh, 240px); }
+  .chart-battle .cb-inds { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; flex-shrink: 0; }
+  .chart-battle .cb-inds::-webkit-scrollbar { display: none; }
+  .chart-battle .cb-ind { flex: 0 0 auto; white-space: nowrap; }
+}
+/* 横画面のスマホ（高さが低い）：チャートを左、ほかを右に */
+@media (orientation: landscape) and (max-height: 500px) {
+  .rw-panel.chart-battle { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(240px, 1fr); grid-template-rows: repeat(12, min-content) minmax(0, 1fr); column-gap: 8px; row-gap: 3px; align-content: stretch; overflow-y: auto; max-width: none; }
+  .rw-panel.chart-battle > * { grid-column: 2; min-width: 0; }
+  .rw-panel.chart-battle > .cb-chartbox { grid-column: 1; grid-row: 1 / -1; min-height: 0; align-self: start; position: sticky; top: 0; height: calc(97vh - 18px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); height: calc(97svh - 18px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); }
+  .chart-battle.result .cb-chartbox { min-height: 0; }
+  .chart-battle .cb-cmds { grid-template-columns: 1fr 1fr 1fr; }
+  .chart-battle .cb-btn { white-space: normal; font-size: 13px; line-height: 1.2; }
+  .chart-battle .cb-btn small { display: none; }
+  .chart-battle .cb-inds { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; min-height: 36px; align-items: center; }
+  .chart-battle .cb-inds::-webkit-scrollbar { display: none; }
+  .chart-battle .cb-ind { flex: 0 0 auto; white-space: nowrap; }
+  .chart-battle .cb-cmdnote { font-size: 10.5px; }
+  .chart-battle .cb-cmdnote .cb-hold { display: none; }
+  .chart-battle .cb-head { gap: 2px; }
+  .chart-battle .cb-sim { font-size: 10.5px; }
+  .chart-battle .cb-info { font-size: 11px; line-height: 1.35; }
+  .chart-battle .cb-reasons { max-height: none; }
+  .chart-battle .cb-result { max-height: none; }
+  .rw-panel.trade-panel { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); column-gap: 10px; align-items: start; width: 99%; max-width: none; }
+  .rw-panel.trade-panel > * { grid-column: 2; min-width: 0; }
+  .rw-panel.trade-panel > .trade-head { grid-column: 1 / -1; }
+  .rw-panel.trade-panel > .trade-chartwrap { grid-column: 1; grid-row: 2 / span 40; position: sticky; top: 0; z-index: 3; align-self: start; padding-top: 2px; }
+  .trade-panel .chart { height: clamp(170px, calc(100vh - 104px), 330px); height: clamp(170px, calc(100svh - 104px), 330px); }
+  .trade-panel .trade-head .muted { display: none; }
+  .trade-panel .aq-t { min-width: 100%; }
+  .mini-chart { height: clamp(150px, calc(100vh - 150px), 240px); height: clamp(150px, calc(100svh - 150px), 240px); }
+  .rv-panel .rv-box { height: clamp(150px, calc(100vh - 150px), 240px); height: clamp(150px, calc(100svh - 150px), 240px); }
+  .chart.lev-chart { height: clamp(180px, calc(100vh - 120px), 300px); height: clamp(180px, calc(100svh - 120px), 300px); }
+}
+/* 振り返り（判断した時点とその後を並べる）：チャートバトルの上に重ねて出すので、下の文字が透けて読みにくかった → この窓だけ透かさない */
+.rw-panel.rv-panel { background: linear-gradient(180deg, #121a38, #080c1e); }

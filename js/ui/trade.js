@@ -58,8 +58,8 @@
       var tfs = CONFIG.timeframes.map(function (t) { return '<button class="tf" data-tf="' + t.id + '">' + esc(t.label) + '</button>'; }).join('');
       var qhtml = Q.map(function (q, i) { return '<div class="aq" data-q="' + q.key + '"><div class="aq-t"><span class="aq-n">' + (i + 1) + '</span>' + esc(TradeEval.qTitle(q, scn)) + '</div><div class="aq-o">' + q.options.map(function (o) { return '<button class="aopt" data-q="' + q.key + '" data-v="' + o[0] + '">' + esc(o[1]) + '</button>'; }).join('') + '</div></div>'; }).join('');
       var html = '<div class="trade-head"><b>' + esc(opts.title || 'チャートの試練') + '</b><span class="muted small">　学習用の人工チャート（' + esc(CONFIG.market.pairName) + '）。未来の足は判断後に表示されます</span></div>' +
-        '<div class="chart-tools"><div class="tfs">' + tfs + '</div><div class="ctl"><button class="mini" data-zoom="in">＋</button><button class="mini" data-zoom="out">－</button><button class="mini" data-zig="1">ZigZag</button><button class="mini hintbtn" data-cmd="hint">ヒント</button>' + (canQuit ? '<button class="mini quitbtn" data-cmd="quit" title="この試練をやめて戻る（記録されない）">中断</button>' : '') + '</div></div>' +
-        '<canvas class="chart" id="trial-chart"></canvas>' +
+        '<div class="trade-chartwrap"><div class="chart-tools"><div class="tfs">' + tfs + '</div><div class="ctl"><button class="mini" data-zoom="in">＋</button><button class="mini" data-zoom="out">－</button><button class="mini" data-zig="1">ZigZag</button><button class="mini hintbtn" data-cmd="hint">ヒント</button>' + (canQuit ? '<button class="mini quitbtn" data-cmd="quit" title="この試練をやめて戻る（記録されない）">中断</button>' : '') + '</div></div>' +
+        '<canvas class="chart" id="trial-chart"></canvas></div>' +   // v8.9 時間足のボタンとチャートをひとまとめに（スマホの縦：問題を見ている間もチャートを上に残す／横：チャートを左・問題を右）
         '<div class="trade-msg" id="trial-msg"></div>' +
         '<div class="analysis" id="trial-analysis"><div class="an-title">① チャートを分析する（時間足ボタンで上位足も確認できる）</div>' + qhtml + '</div>' +
         '<div class="swing-pick" id="trial-swing"><div class="an-title">② ' + esc(focusLabel) + 'の「直近の確定した高値・安値」をチャートでタップして指定</div><div class="sp-row"><button class="pickbtn" data-pick="high">高値を指定</button><button class="pickbtn" data-pick="low">安値を指定</button><span class="small" id="swing-st">未指定</span></div></div>' +
@@ -218,8 +218,8 @@
     var state = { tf: def.focusTF, action: null, reason: null };
     var stageEl = document.getElementById('stage'); if (stageEl) stageEl.classList.add('trade-open');
     var html = '<div class="trade-head"><b>' + esc(opts.title || '相場の試練') + '</b><span class="muted small">　簡易モード（買い・売り・見送り＋理由を 1 つ）。学習用の人工チャート（' + esc(CONFIG.market.pairName) + '）。未来の足は表示しません</span></div>' +
-      '<div class="qt-tfs">' + tfs.map(function (t) { return '<button type="button" class="tf' + (t.id === def.focusTF ? ' on' : '') + '" data-tf="' + t.id + '">' + esc(t.label) + (t.id === def.focusTF ? '（この足で判断）' : '') + '</button>'; }).join('') + '</div>' +
-      '<canvas class="chart qt-chart"></canvas>' +
+      '<div class="trade-chartwrap"><div class="qt-tfs">' + tfs.map(function (t) { return '<button type="button" class="tf' + (t.id === def.focusTF ? ' on' : '') + '" data-tf="' + t.id + '">' + esc(t.label) + (t.id === def.focusTF ? '（この足で判断）' : '') + '</button>'; }).join('') + '</div>' +
+      '<canvas class="chart qt-chart"></canvas></div>' +   // v8.9 時間足のボタンとチャートをひとまとめに
       '<div class="qt-step qt-act"><div class="qt-q">① どうする？（上位足のボタンで 4 時間足・日足も見られる）</div><div class="trade-cmds"><button type="button" class="tcmd buy" data-act="buy">▲ 買い</button><button type="button" class="tcmd sell" data-act="sell">▼ 売り</button><button type="button" class="tcmd skip" data-act="skip">■ 見送り</button></div></div>' +
       '<div class="qt-step qt-reason hidden"><div class="qt-q">② いちばんの理由は？</div><div class="qt-rs">' + four.map(function (r) { return '<button type="button" class="rw-btn qt-r" data-r="' + esc(r[0]) + '">' + esc(r[1]) + '</button>'; }).join('') + '</div></div>' +
       '<div class="qt-result hidden"></div><div class="qt-next hidden"><div class="rw-btn ok qt-ok" role="button" tabindex="0">次へ（Enter）</div></div>';

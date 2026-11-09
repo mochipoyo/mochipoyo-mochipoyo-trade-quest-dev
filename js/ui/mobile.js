@@ -112,6 +112,7 @@
     document.body.classList.toggle('m-wide', land && (vw - w) / 2 - Math.max(sl, sr) >= 112);   // 横画面で左右の余白に操作パネルが収まるか
     var ui = document.getElementById('ui'); ui.style.width = canvas.style.width; ui.style.height = canvas.style.height;
     if (fullUi && !land) ui.style.height = Math.max(Math.round(h), Math.round(vh - st - sb - 4)) + 'px';
+    if (fullUi && land) ui.style.width = Math.max(Math.round(w), Math.round(vw - sl - sr - 4)) + 'px';   // v8.9 横画面：チャートの画面は横幅いっぱいに使う（左右の操作パネルは隠れている）
     document.documentElement.style.setProperty('--m-pad-h', Math.round(padH) + 'px');
     document.documentElement.style.setProperty('--m-game-w', Math.round(w) + 'px');
     var ml = document.getElementById('minimap-layer'); if (ml) { ml.style.width = canvas.style.width; ml.style.height = canvas.style.height; }
@@ -127,7 +128,8 @@
     return 'dialog';
   };
   // v8.8 全画面で使う学習の画面（チャートバトル・相場の試練・振り返り）が開いているか
-  MobileUI.fullUiOpen = function () { return !!document.querySelector('#ui .chart-battle, #ui .trade-panel, #ui .rv-panel'); };
+  // v8.9 クイズモンスター（チャートの問題）・トレーディアのレバレッジの画面も、チャートを大きく見せるため同じ扱い
+  MobileUI.fullUiOpen = function () { return !!document.querySelector('#ui .chart-battle, #ui .trade-panel, #ui .rv-panel, #ui .quiz-battle, #ui .lev-panel'); };
   // v8.8 操作パネルの好み（設定 → 操作）：左右の入れ替え・濃さ・大きさ
   MobileUI.applyPrefs = function () {
     var s = S() || {}; var key = [s.padSide, s.padOpacity, s.padScale].join('|'); if (key === MobileUI._prefKey) return; MobileUI._prefKey = key;

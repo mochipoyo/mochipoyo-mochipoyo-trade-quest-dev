@@ -1,0 +1,212 @@
+{
+ "i14": {
+  "quiz": {
+   "w": 362,
+   "h": 140,
+   "price": null,
+   "top": 191,
+   "visible": 140,
+   "vh": 664,
+   "panelH": 454,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 526,
+    "panelBottom": 461,
+    "inView": false,
+    "scroll": false
+   }
+  },
+  "lev": {
+   "w": 360,
+   "h": 220,
+   "price": 117,
+   "top": 18,
+   "visible": 220,
+   "vh": 664,
+   "panelH": 454,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "order": {
+   "w": 333,
+   "h": 150,
+   "price": 77,
+   "top": 158,
+   "visible": 150,
+   "vh": 664,
+   "panelH": 652,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "errors": []
+ },
+ "se": {
+  "quiz": {
+   "w": 348,
+   "h": 140,
+   "price": null,
+   "top": 189,
+   "visible": 140,
+   "vh": 553,
+   "panelH": 345,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 524,
+    "panelBottom": 351,
+    "inView": false,
+    "scroll": false
+   }
+  },
+  "lev": {
+   "w": 345,
+   "h": 220,
+   "price": 117,
+   "top": 16,
+   "visible": 220,
+   "vh": 553,
+   "panelH": 345,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "order": {
+   "w": 319,
+   "h": 150,
+   "price": 77,
+   "top": 158,
+   "visible": 150,
+   "vh": 553,
+   "panelH": 541,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "errors": []
+ },
+ "p390": {
+  "quiz": {
+   "w": 362,
+   "h": 140,
+   "price": null,
+   "top": 191,
+   "visible": 140,
+   "vh": 844,
+   "panelH": 492,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 526,
+    "panelBottom": 499,
+    "inView": false,
+    "scroll": false
+   }
+  },
+  "lev": {
+   "w": 360,
+   "h": 220,
+   "price": 117,
+   "top": 19,
+   "visible": 220,
+   "vh": 844,
+   "panelH": 492,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "order": {
+   "w": 333,
+   "h": 150,
+   "price": 77,
+   "top": 229,
+   "visible": 150,
+   "vh": 844,
+   "panelH": 691,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "errors": []
+ },
+ "land": {
+  "quiz": {
+   "w": 487,
+   "h": 130,
+   "price": null,
+   "top": 172,
+   "visible": 130,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 404,
+    "panelBottom": 335,
+    "inView": false,
+    "scroll": false
+   }
+  },
+  "lev": {
+   "w": 481,
+   "h": 300,
+   "price": 164,
+   "top": 20,
+   "visible": 300,
+   "vh": 340,
+   "panelH": 323,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "order": {
+   "w": 458,
+   "h": 190,
+   "price": 100,
+   "top": 158,
+   "visible": 182,
+   "vh": 340,
+   "panelH": 332,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "errors": []
+ },
+ "pc": {
+  "quiz": {
+   "w": 734,
+   "h": 170,
+   "price": null,
+   "top": 205,
+   "visible": 170,
+   "vh": 720,
+   "panelH": 526,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 477,
+    "panelBottom": 542,
+    "inView": true,
+    "scroll": false
+   }
+  },
+  "lev": {
+   "w": 783,
+   "h": 300,
+   "price": 164,
+   "top": 33,
+   "visible": 300,
+   "vh": 720,
+   "panelH": 515,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "order": {
+   "w": 566,
+   "h": 190,
+   "price": 100,
+   "top": 175,
+   "visible": 190,
+   "vh": 720,
+   "panelH": 509,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "errors": []
+ }
+}

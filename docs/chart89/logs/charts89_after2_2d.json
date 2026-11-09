@@ -1,0 +1,108 @@
+{
+ "i14": {
+  "trialscroll": {
+   "w": 341,
+   "h": 266,
+   "price": 144,
+   "top": 73,
+   "visible": 266,
+   "vh": 664,
+   "panelH": 652,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "cbattle": {
+   "w": 370,
+   "h": 338,
+   "price": null,
+   "top": 194,
+   "visible": 338,
+   "vh": 664,
+   "panelH": 647,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "cbres": {
+   "w": 370,
+   "h": 219,
+   "price": null,
+   "top": 39,
+   "visible": 219,
+   "vh": 664,
+   "panelH": 647,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "quiz": {
+   "w": 362,
+   "h": 159,
+   "price": null,
+   "top": 193,
+   "visible": 159,
+   "vh": 664,
+   "panelH": 640,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 548,
+    "panelBottom": 650,
+    "inView": true,
+    "scroll": false
+   }
+  },
+  "errors": []
+ },
+ "land": {
+  "trialscroll": {
+   "w": 450,
+   "h": 236,
+   "price": 126,
+   "top": 71,
+   "visible": 236,
+   "vh": 340,
+   "panelH": 332,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "cbattle": {
+   "w": 482,
+   "h": 327,
+   "price": null,
+   "top": 14,
+   "visible": 326,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "cbres": {
+   "w": 482,
+   "h": 312,
+   "price": null,
+   "top": 14,
+   "visible": 312,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "quiz": {
+   "w": 734,
+   "h": 130,
+   "price": null,
+   "top": 172,
+   "visible": 130,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 404,
+    "panelBottom": 335,
+    "inView": false,
+    "scroll": false
+   }
+  },
+  "errors": []
+ }
+}
