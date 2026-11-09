@@ -365,26 +365,32 @@
     var entryPx = mid0 + sg * (half + slip);
     var sl = entryPx - sg * rules.slAtr * atr, tp = entryPx + sg * rules.tpAtr * atr;
     var lastBar = Math.min(bars.length - 1, entry.bar + rules.maxBars);
-    var exit = null; var pm = mid0;
+    var exit = null; var pm = mid0; var mae = 0, mfe = 0;
     for (var b = entry.bar; b <= lastBar && !exit; b++) {
       for (var k = (b === entry.bar ? entry.tick + 1 : 0); k < SUB; k++) {
         var m = ticks[b][k]; var px = m - sg * half;   // 決済に使う側の価格（ロング＝bid、ショート＝ask）
         var jump = Math.abs(m - pm) > (rules.gapAtr || 1.0) * atr; pm = m;
         if (sg * (px - sl) <= 0) { var gap = jump && sg * (sl - px) > rules.stopSlipPips * P; exit = { bar: b, tick: k, reason: 'sl', price: gap ? px : sl - sg * rules.stopSlipPips * P, gap: gap }; break; }
         if (sg * (px - tp) >= 0) { exit = { bar: b, tick: k, reason: 'tp', price: tp }; break; }
+        var ex = sg * (px - entryPx); if (ex < mae) mae = ex; if (ex > mfe) mfe = ex;
       }
     }
     if (!exit) { var lb = lastBar; exit = { bar: lb, tick: SUB - 1, reason: 'time', price: ticks[lb][SUB - 1] - sg * half }; }
     var pnl = sg * (exit.price - entryPx); var pips = pnl / P; var r = atr > 0 ? pnl / atr : 0;
+    if (pnl < mae) mae = pnl; if (pnl > mfe) mfe = pnl;
     var outcome = Math.abs(r) < rules.flatAtr ? 'flat' : r > 0 ? 'profit' : 'loss';
-    return { side: side, entry: { bar: entry.bar, tick: entry.tick, price: entryPx, mid: mid0 }, sl: sl, tp: tp, atr: atr, atrPips: atr / P, exit: exit, pnl: pnl, pips: Math.round(pips * 10) / 10, r: Math.round(r * 100) / 100, outcome: outcome, bars: exit.bar - entry.bar, rules: rules };
+    // v9.0 トレード学習：r（損益÷ATR）は今までどおり（必殺技の威力・記録が使う）。atrMultiple は r と同じ値の別名。
+    //   riskR＝損益÷初期リスク（約定価格〜損切りの距離）。既定の損切り（ATR×1.0）では r と数値が同じになるが、意味は別（損切りを ATR×1.5 にすると違う値）
+    var initRisk = Math.abs(entryPx - sl); var riskR = initRisk > 0 ? pnl / initRisk : null;
+    return { side: side, entry: { bar: entry.bar, tick: entry.tick, price: entryPx, mid: mid0 }, sl: sl, tp: tp, atr: atr, atrPips: atr / P, exit: exit, pnl: pnl, pips: Math.round(pips * 10) / 10, r: Math.round(r * 100) / 100, outcome: outcome, bars: exit.bar - entry.bar, rules: rules,
+      atrMultiple: Math.round(r * 100) / 100, initialRisk: initRisk, initialRiskPips: initRisk / P, riskR: riskR === null ? null : Math.round(riskR * 100) / 100, maePips: Math.round(mae / P * 10) / 10, mfePips: Math.round(mfe / P * 10) / 10 };
   };
   // ティックがない（OHLC だけの）ときの判定：同じ足で損切りと利確の両方に届いたら損切り（保守的）。足の中は始値から入ったものとみなす
   Market.settleOHLC = function (bars, entryBar, entryPx, side, atr, rules, pip) {
     rules = Object.assign({}, Market.RULES, rules || {}); pip = pip || Market.PIP; var sg = side === 'long' ? 1 : -1; var half = rules.spreadPips * pip / 2;
     var sl = entryPx - sg * rules.slAtr * atr, tp = entryPx + sg * rules.tpAtr * atr; var last = Math.min(bars.length - 1, entryBar + rules.maxBars);
     for (var b = entryBar + 1; b <= last; b++) { var hiPx = bars[b].h - sg * half, loPx = bars[b].l - sg * half; var hitSl = sg > 0 ? loPx <= sl : hiPx >= sl; var hitTp = sg > 0 ? hiPx >= tp : loPx <= tp;
-      if (hitSl) return { reason: 'sl', bar: b, price: sl - sg * rules.stopSlipPips * pip, both: hitTp }; if (hitTp) return { reason: 'tp', bar: b, price: tp }; }
+      if (hitSl) return { reason: 'sl', bar: b, price: sl - sg * rules.stopSlipPips * pip, both: hitTp, ambiguous: hitTp, assumption: hitTp ? '同じ足で損切りと利確の両方に届いた（先後不明）。損切りが先とみなした（保守的な仮定）' : null }; if (hitTp) return { reason: 'tp', bar: b, price: tp }; }
     return { reason: 'time', bar: last, price: bars[last].c - sg * half };
   };
 

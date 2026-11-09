@@ -1,0 +1,18 @@
+== 読み込み：3D 版と同じ　errors 0
+  OK  新しいゲーム：trade.stats.noStopTrades＝0
+  OK  古いセーブ：noStopTrades を 0 で補い、取引回数・勝ち・資金はそのまま
+  OK  古いセーブ：必殺技の記録（sumR＝損益÷ATR の合計）・ゴールドはそのまま（意味を変えない）
+  OK  セーブのキー：["mtq-rpg-v2-slot-1"]（State.keyPrefix の枠だけ。3D 版の mtq-3d-slot-* はビルドした 3D 版のページが決める：ブラウザの確かめ tl_browser.js で見る）
+  OK  保存したセーブを読み込める
+  OK  2D 版の別のセーブの中身は変わらない
+  OK  読み込みのエラーなし []
+結果: 7 OK / 0 NG
+== 読み込み：2D 版　errors 0
+  OK  新しいゲーム：trade.stats.noStopTrades＝0
+  OK  古いセーブ：noStopTrades を 0 で補い、取引回数・勝ち・資金はそのまま
+  OK  古いセーブ：必殺技の記録（sumR＝損益÷ATR の合計）・ゴールドはそのまま（意味を変えない）
+  OK  セーブのキー：["mtq-rpg-v2-slot-1"]（State.keyPrefix の枠だけ。3D 版の mtq-3d-slot-* はビルドした 3D 版のページが決める：ブラウザの確かめ tl_browser.js で見る）
+  OK  保存したセーブを読み込める
+  OK  2D 版の別のセーブの中身は変わらない
+  OK  読み込みのエラーなし []
+結果: 7 OK / 0 NG

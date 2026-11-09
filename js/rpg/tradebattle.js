@@ -104,24 +104,29 @@
   // 取引中に最も不利だった値動き（pips）。損切りのない取引は、判断した期間（96本）の最悪値
   function maeOf(trade, sim) { var w = 0; (sim.path || []).forEach(function (c) { var d = trade.action === 'buy' ? (c.l - trade.entry) : (trade.entry - c.h); if (d < w) w = d; }); return w / CONFIG.market.pip; }
   TB.score = function (ev, sim) {
-    var t = ev.trade; var judgment = Math.round(ev.score * 0.6); var outcome, R = null, mae = null, pips = null, overRisk = false;
+    var t = ev.trade; var judgment = Math.round(ev.score * 0.6); var outcome, R = null, mae = null, pips = null, overRisk = false, dd = null;
     if (t) {
       pips = sim.pips; var unit = t.riskPips > 0 ? t.riskPips : 30;   // 損切りなしは30pipsを1単位として扱う
       R = pips / unit; outcome = Math.round((Math.max(-1.5, Math.min(3, R)) + 1.5) / 4.5 * 25);
       mae = maeOf(t, sim); overRisk = t.riskPercent > TB.MAX_SAFE() || t.sl === null || t.sl === undefined || isNaN(t.sl);
+      // v9.0 口座の最大DD（この取引の間・含み損込み）：MAE（pips）とは別の値。資金は学習用の 100万円、1pip の損益＝許容損失÷損切りpips（損切りなしは 0.5万通貨＝50円/pip）
+      var cap = CONFIG.risk.capital; var perPip = t.riskPips > 0 ? cap * t.riskPercent / 100 / t.riskPips : 50;
+      dd = root.TradeCore ? root.TradeCore.tradeDrawdown(cap, perPip, mae, pips) : null;
     } else outcome = ev.actionOk ? 15 : 8;
     var discipline = Math.max(0, 15 - 5 * ev.violations.length);
     var total = judgment + outcome + discipline; var capped = false;
     if (overRisk && total > 40) { total = 40; capped = true; }
-    return { judgment: judgment, outcome: outcome, discipline: discipline, total: total, capped: capped, overRisk: overRisk, R: R, pips: pips, mae: mae };
+    return { judgment: judgment, outcome: outcome, discipline: discipline, total: total, capped: capped, overRisk: overRisk, R: R, pips: pips, mae: mae, accountDD: dd };
   };
   // 1人分の採点（evaluateFull → simulate → score）
   TB.judge = function (scn, decision) {
     var ev = root.TradeEval.evaluateFull(scn, decision); var sim = ev.trade ? root.TradeEval.simulate(scn, ev.trade, 96) : null;
     return { ev: ev, sim: sim, sc: TB.score(ev, sim) };
   };
-  // 表で並べる11項目（指示の評価項目）
-  TB.ITEMS = ['上位足の環境認識', '高値・安値の分析', 'EMAの並び', 'RCIの状態', 'MACDの状態', 'エントリータイミング', '損切り位置', 'リスクリワード', '許容損失率', '最終損益', '最大ドローダウン'];
+  // 表で並べる11項目（指示の評価項目）。v9.0：最後の項目は「最大ドローダウン」と書いていたが、中身は取引中の最大逆行幅（MAE）なので名前を直した。
+  //   口座の最大DD（資金の下げ。含み損込み）は別の計算（TB.score の accountDD）で、表の下に別の行として出す（js/ui/tradia.js）
+  TB.ITEMS = ['上位足の環境認識', '高値・安値の分析', 'EMAの並び', 'RCIの状態', 'MACDの状態', 'エントリータイミング', '損切り位置', 'リスクリワード', '許容損失率', '最終損益', 'MAE（最大逆行幅）'];
+  TB.ddText = function (j) { var x = j && j.sc && j.sc.accountDD; return x ? '−' + x.amount.toLocaleString() + '円（' + x.pct.toFixed(2) + '%）' : '―'; };
   TB.rows = function (j) {
     var ev = j.ev, sc = j.sc; function it(re) { return ev.items.filter(function (x) { return re.test(x.name); })[0]; }
     function okv(x) { return x ? (x.ok ? '○' : '×') : '―'; }

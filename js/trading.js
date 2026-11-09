@@ -8,6 +8,7 @@
   'use strict';
 
   var CONFIG = root.CONFIG || require('./config.js');
+  var TC = root.TradeCore || (typeof require === 'function' ? require('./tradecore.js') : null);   // 注文の検証・ロット計算の共通部品（js/tradecore.js）
 
   var TradeEval = {};
 
@@ -36,12 +37,12 @@
   function r(v) { return Math.round(v * 1000) / 1000; }
 
   /* ---------- ロット計算 ---------- */
-  // 1pip = 0.01、1万通貨あたり 1pip = 100円 と仮定（学習用の簡略化）
+  // 1pip = 0.01、1万通貨あたり 1pip = 100円 と仮定（学習用の簡略化。架空ペア POYO/MOCHI の仕様＝TradeCore.INSTRUMENTS.POYO_MOCHI）
+  // v9.0 トレード学習：最小ロット（0.01）を強制しない。必要なロットが最小ロットに届かない（＝最小でも許容損失を超える）・入力が正しくないときは 0 を返す
+  //   ロットは 0.01 刻みへ切り下げる（切り上げると許容損失を超えるため）。理由まで知りたいときは TradeEval.sizeFor
+  TradeEval.sizeFor = function (capital, riskPercent, riskPips) { return TC.sizePosition({ capital: capital, riskPercent: riskPercent, riskPips: riskPips }); };
   TradeEval.lotFor = function (capital, riskPercent, riskPips) {
-    if (!riskPips || riskPips <= 0) return 0;
-    var riskYen = capital * riskPercent / 100;
-    var units10k = riskYen / (riskPips * 100);
-    return Math.max(0.01, Math.round(units10k * 100) / 100); // 万通貨単位（小数2桁）
+    var s = TradeEval.sizeFor(capital, riskPercent, riskPips); return s.ok ? s.lots : 0;   // 万通貨単位（小数2桁）
   };
 
   /* ---------- 判断プロセスの評価 ---------- */
@@ -164,34 +165,44 @@
 
   /* ---------- エントリー後の値動き再生（未来の足を1本ずつ進める） ---------- */
   // 同一足で利確と損切りの両方に到達した場合は、約定順序が確定できないため「損切り扱い（保守的）」にする
+  // v9.0：関数だけでも不正な注文を受け付けない（損切り・利確が逆側・同値・数値でない → outcome 'invalid'、損益 0）。損切りなし（sl が null）は学習用の「損切りなし」として扱い、含み損の最大（worstPips）を必ず記録
+  //   MAE／MFE（保有中の最大逆行・最大順行。pips）も返す。OHLC だけなので、決済した足の中の順序は分からない：損切りで終わった足の不利な値は損切りの価格まで、利確の足は利確の価格までで数える
   TradeEval.simulate = function (scn, trade, maxBars) {
     var fut = scn.states[scn.def.focusTF].future;
     maxBars = maxBars || fut.length;
     var pip = CONFIG.market.pip;
     var path = [];
-    var result = { outcome: 'open', bars: 0, pips: 0, exitPrice: null, ambiguous: false };
+    var result = { outcome: 'open', bars: 0, pips: 0, exitPrice: null, ambiguous: false, mae: 0, mfe: 0 };
+    var side = trade && (trade.action === 'buy' || trade.action === 'sell') ? trade.action : null; var entry = trade ? +trade.entry : NaN;
+    var sl = trade && trade.sl !== null && trade.sl !== undefined ? +trade.sl : null, tp = trade && trade.tp !== null && trade.tp !== undefined ? +trade.tp : null;
+    var sg = side === 'buy' ? 1 : -1;
+    if (!side || !isFinite(entry) || (sl !== null && (!isFinite(sl) || sg * (entry - sl) <= 0)) || (tp !== null && (!isFinite(tp) || sg * (tp - entry) <= 0))) {
+      return { outcome: 'invalid', invalid: true, bars: 0, pips: 0, exitPrice: null, ambiguous: false, mae: 0, mfe: 0, path: [], note: '注文の値が正しくない（損切り・利確の向き・数値）ため、取引として扱わない' };
+    }
+    var mae = 0, mfe = 0;
     for (var i = 0; i < Math.min(maxBars, fut.length); i++) {
       var c = fut[i];
       path.push(c);
       var hitTp = false, hitSl = false;
-      if (trade.action === 'buy') { hitTp = trade.tp !== null && c.h >= trade.tp; hitSl = trade.sl !== null && c.l <= trade.sl; }
-      else { hitTp = trade.tp !== null && c.l <= trade.tp; hitSl = trade.sl !== null && c.h >= trade.sl; }
-      if (hitTp && hitSl) { result.outcome = 'sl'; result.ambiguous = true; result.exitPrice = trade.sl; result.bars = i + 1; break; }
-      if (hitSl) { result.outcome = 'sl'; result.exitPrice = trade.sl; result.bars = i + 1; break; }
-      if (hitTp) { result.outcome = 'tp'; result.exitPrice = trade.tp; result.bars = i + 1; break; }
+      if (side === 'buy') { hitTp = tp !== null && c.h >= tp; hitSl = sl !== null && c.l <= sl; }
+      else { hitTp = tp !== null && c.l <= tp; hitSl = sl !== null && c.h >= sl; }
+      var adv = side === 'buy' ? c.l : c.h, fav = side === 'buy' ? c.h : c.l;
+      if (hitSl) adv = sl; if (hitTp && !hitSl) fav = tp; if (hitTp && hitSl) fav = tp;
+      mae = Math.min(mae, sg * (adv - entry)); mfe = Math.max(mfe, sg * (fav - entry));
+      if (hitTp && hitSl) { result.outcome = 'sl'; result.ambiguous = true; result.exitPrice = sl; result.bars = i + 1; break; }
+      if (hitSl) { result.outcome = 'sl'; result.exitPrice = sl; result.bars = i + 1; break; }
+      if (hitTp) { result.outcome = 'tp'; result.exitPrice = tp; result.bars = i + 1; break; }
     }
     if (result.outcome === 'open') {
       // 期間内に決着しなかった場合は最終足の終値で決済
       var last = path[path.length - 1];
       result.exitPrice = last.c; result.bars = path.length; result.outcome = 'time';
     }
-    if (trade.sl === null && result.outcome === 'time') {
-      // 損切りなしの場合、含み損の最大値も記録（教育用）
-      var worst = 0;
-      path.forEach(function (c) { var d = trade.action === 'buy' ? (c.l - trade.entry) : (trade.entry - c.h); if (d < worst) worst = d; });
-      result.worstPips = worst / pip;
-    }
-    result.pips = (trade.action === 'buy' ? result.exitPrice - trade.entry : trade.entry - result.exitPrice) / pip;
+    result.mae = mae / pip; result.mfe = mfe / pip;
+    if (sl === null) result.worstPips = mae / pip;   // 損切りなし：含み損の最大（教育用）
+    if (result.ambiguous) result.assumption = '同じ足で利確と損切りの両方に触れた（OHLC だけでは順序が分からない）。損切りが先とみなした（保守的な仮定）';
+    result.pips = (side === 'buy' ? result.exitPrice - entry : entry - result.exitPrice) / pip;
+    result.riskR = trade.riskPips > 0 ? result.pips / trade.riskPips : null;   // 初期リスクに対する R（損切りなしは null）
     result.path = path;
     return result;
   };
@@ -199,11 +210,13 @@
   /* ---------- 成績の集計 ---------- */
   TradeEval.emptyStats = function () {
     return { trades: 0, wins: 0, losses: 0, grossProfit: 0, grossLoss: 0, rrSum: 0, skips: 0, correctSkips: 0, violations: 0,
-      scoreSum: 0, scoreCount: 0, peakCapital: CONFIG.risk.capital, maxDrawdown: 0, byScenario: {} };
+      scoreSum: 0, scoreCount: 0, peakCapital: CONFIG.risk.capital, maxDrawdown: 0, byScenario: {}, noStopTrades: 0 };   // v9.0 noStopTrades：損切りなしの取引の数（旧セーブは State.migrate が 0 で補う）
   };
 
   // 戦闘1ラウンドの結果を成績に反映し、資金を更新する
+  // v9.0：不正な注文（evalRes.invalid・sim.invalid）は成績・資金・取引回数に入れない。損益は必ず有限の数（NaN にしない）
   TradeEval.applyResult = function (stats, state, evalRes, sim) {
+    if (!evalRes || evalRes.invalid || (evalRes.trade && (!sim || sim.invalid))) return { pnl: 0, invalid: true };
     stats.scoreSum += evalRes.score; stats.scoreCount += 1;
     stats.violations += evalRes.violations.length;
     var sc = evalRes.scenarioId;
@@ -215,11 +228,12 @@
     var t = evalRes.trade;
     stats.trades += 1;
     if (t.rr > 0) stats.rrSum += t.rr;
-    var riskYen = state.capital * t.riskPercent / 100;
+    var cap = isFinite(state.capital) && state.capital > 0 ? state.capital : 0;
+    var riskYen = cap * t.riskPercent / 100;
     var pnl = 0;
     if (t.riskPips > 0) pnl = riskYen * (sim.pips / t.riskPips);
-    else pnl = sim.pips * 100 * 0.5; // 損切りなし：0.5万通貨固定扱い（学習用の簡略化）
-    pnl = Math.round(pnl);
+    else { pnl = cap > 0 ? sim.pips * 100 * 0.5 : 0; stats.noStopTrades = (stats.noStopTrades || 0) + 1; }   // 損切りなし：0.5万通貨固定扱い（学習用の簡略化。資金 0 なら損益 0）
+    pnl = isFinite(pnl) ? Math.round(pnl) : 0;
     if (pnl >= 0) { stats.wins += 1; stats.grossProfit += pnl; } else { stats.losses += 1; stats.grossLoss += -pnl; }
     state.capital = Math.max(0, state.capital + pnl);
     if (state.capital > stats.peakCapital) stats.peakCapital = state.capital;
@@ -344,7 +358,14 @@
     // 4. 損切り・リスクリワード・資金管理（20点）／見送り判断（20点）
     var trade = null, entry = st.close;
     if (action === 'buy' || action === 'sell') {
-      var sl = decision.sl, tp = decision.tp; var riskPct = decision.riskPercent === undefined ? CONFIG.risk.defaultRiskPercent : decision.riskPercent; var riskPips = 0, rewardPips = 0;
+      // v9.0 注文の検証（比べる基準：判断した足の終値＝この試練のエントリー価格。スプレッドは含めない簡易の計算）。
+      //   損切り・利確が逆側・同値・数値でない・異常な値、許容損失%が正しくない → 取引にしない（不正注文の解説だけを返す。成績・資金・報酬に入れない）
+      //   損切りなし（sl が null）は、この試練では「損切りなしの危険を学ぶ」選択として今までどおり受け付ける（採点で0点・違反）
+      var vo = TC.validateOrder({ side: action, entry: entry, sl: decision.sl, tp: decision.tp, requireSL: false, requireTP: false, basis: '判断した足の終値' });
+      var rp0 = decision.riskPercent === undefined ? CONFIG.risk.defaultRiskPercent : +decision.riskPercent;
+      if (!(isFinite(rp0) && rp0 > 0 && rp0 <= 100)) vo = Object.assign({}, vo, { ok: false, errors: vo.errors.concat([{ code: 'risk', field: 'risk', msg: '許容損失（資金の%）が正しくない（' + decision.riskPercent + '）' }]) });
+      if (!vo.ok) return TradeEval.invalidResult(scn, decision, vo, truth);
+      var sl = vo.sl, tp = vo.tp; var riskPct = rp0; var riskPips = 0, rewardPips = 0;
       if (sl === null || sl === undefined || isNaN(sl)) { item('損切り位置', false, '損切りが設定されていない。損切りなしは致命傷につながる最も危険な行動', 10, 'risk'); violations.push('損切りなし'); }
       else {
         riskPips = (action === 'buy' ? entry - sl : sl - entry) / pip;
@@ -362,7 +383,7 @@
         else { item('リスクリワード', false, '1 : ' + rr.toFixed(2) + '。利益より損失の方が大きい設定', 6, 'risk'); violations.push('リスクリワードの悪いトレード'); } }
       if (riskPct <= CONFIG.risk.maxSafeRiskPercent) item('資金管理（リスク%）', true, '1トレードのリスクを資金の' + riskPct + '%に抑えた', 4, 'risk');
       else { item('資金管理（リスク%）', false, '1トレードのリスクが資金の' + riskPct + '%。連敗で致命傷になるロット過大', 4, 'risk'); violations.push('ロット過大'); }
-      trade = { action: action, entry: entry, sl: sl, tp: tp, riskPips: riskPips, rewardPips: rewardPips, riskPercent: riskPct, rr: riskPips > 0 ? rewardPips / riskPips : 0 };
+      trade = { action: action, entry: entry, sl: sl, tp: tp, riskPips: riskPips, rewardPips: rewardPips, riskPercent: riskPct, rr: riskPips > 0 ? rewardPips / riskPips : 0, noStop: sl === null, noTarget: tp === null };
       if (!actionOk) { var mgmt = items.filter(function (it) { return it.topic === 'risk' && it.ok; }).reduce(function (a, it) { return a + it.points; }, 0); score -= Math.round(mgmt / 2); }   // 方向が誤りのトレードは、注文管理の点を半分に
     } else {
       if (correct === 'skip') item('見送り判断', true, '優位性が不十分な場面で無理にトレードしなかった', 20, 'skip');
@@ -371,6 +392,13 @@
     score = Math.max(0, Math.min(100, Math.round(score)));
     var summary = TradeEval.explainTruth(scn, truth, an);
     return { score: score, items: items, violations: violations, actionOk: actionOk, trade: trade, skill: pickSkill(def, action, actionOk, trade), correct: correct, correctLabel: ACTION_LABEL[correct], chosenLabel: ACTION_LABEL[action], summary: summary, truth: truth, topics: topics, hintLevel: decision.hintLevel || 0, reasonOk: reasonOk, swingOk: sw.ok, analysisOk: TradeEval.ANALYSIS.filter(function (q) { return an[q.key] === truth[q.key]; }).length, analysisTotal: TradeEval.ANALYSIS.length, full: true };
+  };
+  // v9.0 不正な注文の結果：取引にしない・点にしない（学習用の解説だけ）。呼ぶ側は applyResult・報酬・記録に回さない（回しても applyResult が無視する）
+  TradeEval.invalidResult = function (scn, decision, vo, truth) {
+    var def = scn.def; var msgs = vo.errors.map(function (e) { return e.msg; });
+    return { invalid: true, learningOnly: true, invalidOrder: { errors: vo.errors, warnings: vo.warnings }, score: 0, items: [{ name: '注文の検証', ok: false, note: msgs.join('／'), points: 0, topic: null }], violations: [], actionOk: false, trade: null,
+      skill: { name: '注文の確認', effect: 'none' }, correct: def.correct, correctLabel: ACTION_LABEL[def.correct], chosenLabel: ACTION_LABEL[decision.action], summary: '注文の値が正しくないため、取引として扱わない（不正注文の解説）：' + msgs.join('／'),
+      truth: truth || TradeEval.truth(scn), topics: {}, hintLevel: decision.hintLevel || 0, reasonOk: false, swingOk: false, analysisOk: 0, analysisTotal: TradeEval.ANALYSIS.length, full: true };
   };
   // 解説文（実際のチャート状態から組み立て、間違えた項目を指摘）
   TradeEval.explainTruth = function (scn, truth, an) {

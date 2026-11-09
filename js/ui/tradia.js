@@ -80,6 +80,7 @@
     var html = '<div class="rw-title">' + esc(t.name) + 'とのトレードバトル：' + head + '</div>' +
       '<div class="muted small">場面：' + esc(P.scn.def.title) + '（シナリオ ' + esc(P.scenarioId) + '・データ ' + P.seedOffset + '）。NPC はこの場面の判断の時点までの足だけを見て決めています。</div>' +
       '<table class="tbl tb-table"><tr><th>評価項目</th><th>あなた（' + act(pj) + '）</th><th>' + esc(t.name) + '（' + act(nj) + '）</th></tr>' + rows +
+      '<tr class="tb-dd"><td>口座の最大DD<div class="muted small">資金100万円として・この取引の間（含み損込み）。MAE とは別の計算</div></td><td>' + esc(TB.ddText(pj)) + '</td><td>' + esc(TB.ddText(nj)) + '</td></tr>' +
       '<tr class="tb-sum"><td>合計</td><td><b>' + pj.sc.total + '点</b><div class="muted small">' + sum(pj) + '</div></td><td><b>' + nj.sc.total + '点</b><div class="muted small">' + sum(nj) + '</div></td></tr></table>' +
       '<div class="small">' + esc(npcWhy) + '</div>' +
       '<div class="small tb-voice">' + esc(t.name) + '「' + esc((verdict === 'win' ? t.win : t.lose).join('')) + '」</div>' +
