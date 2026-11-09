@@ -1011,3 +1011,14 @@ body.mobile.m-fullui #pad.mpad { display: none !important; }
   .pd-review .rv-chart { height: clamp(170px, 30svh, 240px); }
   .practice-panel .pd-chk { font-size: 12px; }
 }
+/* v9.1 チャートの操作（十字線・ピンチ・ドラッグ）。touch-action はチャートの canvas だけ（ページの他の所のスクロールは変えない） */
+canvas.chart.chart-ctl { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; cursor: crosshair; outline: none; }
+canvas.chart.chart-ctl:focus-visible { box-shadow: 0 0 0 2px var(--gold, #ffd24a); }
+.practice-panel .pd-cross { min-height: 2.6em; margin: 2px 0; padding: 2px 6px; background: rgba(255,255,255,.04); border-radius: 4px; line-height: 1.35; font-variant-numeric: tabular-nums; }
+.practice-panel .pd-cross:empty { background: none; }
+.practice-panel .pd-howto { margin: 1px 0 0; }
+.practice-panel .pd-stepl { margin-left: 6px; white-space: nowrap; } .practice-panel .pd-stepl select, .practice-panel .pd-sel2 { min-height: 32px; background: #111a3a; color: #e8eefc; border: 1px solid #34406e; border-radius: 4px; font-size: 12px; margin-left: 4px; }
+.practice-panel .pd-etf { align-items: center; margin: 4px 0; }
+.practice-panel .pd-adv { flex-wrap: wrap; margin-top: 4px; }
+body.pd-chart-open #pad { display: none !important; }   /* スマホ：チャートの操作のあいだ RPG の十字キーを隠す */
+@media (pointer: coarse) { .practice-panel .mini, .practice-panel .tf, .practice-panel .aopt, .practice-panel .tcmd { min-height: 44px; } .practice-panel .chart-tools .mini { min-width: 44px; } }

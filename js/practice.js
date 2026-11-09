@@ -18,12 +18,16 @@
   PE.tfLabel = function (id) { for (var i = 0; i < PE.TFS.length; i++) if (PE.TFS[i].id === id) return PE.TFS[i].label; return id; };
   PE.WINDOW = 420;         // エントリー足の指標を計算する本数（決まった本数なので、同じ asOf なら同じ値）
   PE.HTF_NEED = 45;        // 上位足の向きを判定するのに必要な確定足の本数（EMA40 ＋ 傾き 5本）
-  PE.MAX_STEPS = 36;       // 判断を待てるエントリー足の本数（これを過ぎると時間切れ）
-  PE.HOLD_MAX = 96;        // 保有の最大（エントリー足の本数。過ぎたら時間切れの決済）
+  PE.MAX_STEPS = 36;       // （v9.0 の名前を残す）15分足で待てる本数。v9.1 からは分で決める：PE.WAIT_MIN
+  PE.HOLD_MAX = 96;        // （v9.0 の名前を残す）15分足で保有できる本数。v9.1 からは分で決める：PE.HOLD_MIN
+  PE.WAIT_MIN = 540;       // v9.1 判断を待てる時間（分）。エントリー足が 5分足でも 15分足でも同じ（9時間）
+  PE.HOLD_MIN = 1440;      // v9.1 保有できる時間（分）。過ぎたら時間切れの決済（24時間）
+  PE.STEP_MINS = [5, 15];  // v9.1 1回に進める時間（分）。エントリー足とは別に選べる
   PE.FUT_DAYS = 2;         // 判断の開始より後に作る足（5分足で 2日分）
   PE.PAIR = '学習用仮想ペア POYO/MOCHI（架空の相場）';
   // v9.1 記録の版：計算の決まり（ENGINE_VERSION）と相場の作り方（SCENARIO_VERSION）。振り返りで作り直すときに、記録した checksum と比べて違えば「再現できない」と出す
-  PE.ENGINE_VERSION = 2; PE.SCENARIO_VERSION = 1; PE.STRESS_ATR = [1, 2]; PE.LOW_CAPITAL = 0.7;   // LOW_CAPITAL：資金が初期のこの割合を下回ったら注意（教材の仮設定）
+  // ENGINE_VERSION 3：決済を 5分足（もとの足）で判定・待ち／保有の上限を分で（v9.1 Phase 7）。2：コストの定義（Phase 6）
+  PE.ENGINE_VERSION = 3; PE.SCENARIO_VERSION = 1; PE.STRESS_ATR = [1, 2]; PE.LOW_CAPITAL = 0.7;   // LOW_CAPITAL：資金が初期のこの割合を下回ったら注意（教材の仮設定）
   PE.checksum = function (g) { var b = g.base; var pick = [0, g.S, Math.min(b.length - 1, g.S + 1), b.length - 1]; var str = pick.map(function (i) { return b[i].o + ',' + b[i].h + ',' + b[i].l + ',' + b[i].c; }).join('|') + '|' + b.length;
     var h = 2166136261 >>> 0; for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return ('0000000' + h.toString(16)).slice(-8); };
 
@@ -82,7 +86,7 @@
   /* ---------- 判断の時点の事実（asOf まで） ---------- */
   PE.snapshot = function (g, asOf, entryTF) {
     entryTF = entryTF || g.entryTF; var cut = { seed: g.seed, base: g.base.slice(0, asOf + 1), entryTF: g.entryTF, pip: g.pip };   // 未来の足を渡さない
-    var out = { asOf: asOf, entryTF: entryTF, htf: {}, entry: null };
+    var lb = g.base[asOf]; var out = { asOf: asOf, entryTF: entryTF, htf: {}, entry: null, price: lb ? lb.c : null, last: lb ? { o: lb.o, h: lb.h, l: lb.l, c: lb.c } : null };   // price：いまの価格（最後の 5分足の終値。エントリー足が形成中でも、いま分かる価格）
     ['1d', '4h'].forEach(function (tf) { var v = PE.view(cut, tf, asOf); var en = SE.enough(v.confirmedCount, PE.HTF_NEED);
       if (!en.ok || !v.an) { out.htf[tf] = { insufficient: true, msg: en.msg, dir: null, have: v.confirmedCount, forming: !!v.forming }; return; }
       var a = v.an; var d = dirOf(a); out.htf[tf] = { insufficient: false, dir: d, emaOrder: a.emaOrder, dow: a.dow.trend, have: v.confirmedCount, forming: !!v.forming,
@@ -147,17 +151,23 @@
   /* ---------- 1回のプレイ（問題）：公開してよい情報だけを持つ ---------- */
   // pick：{ seed, cat, set }（js/data/practice-seeds.js から）。cat・set はプレイの記録（振り返り）まで画面に出さない
   PE.start = function (pick, opts) {
-    opts = opts || {}; var g = PE.generate(pick.seed); var tf = opts.entryTF || g.entryTF; var step = PE.tfMin(tf) / 5;
-    return { seed: g.seed, set: pick.set || 'learn', cat: pick.cat || null, entryTF: tf, step: step, S: g.S, asOf: g.S, steps: 0, maxSteps: PE.MAX_STEPS, pip: g.pip, days: g.days,
-      profile: opts.profile || 'mochipoyo', level: opts.level || 1, hints: opts.hints !== false, phase: 'analysis', events: [], viewed: {}, answers: {}, hypothesis: null, claims: null, entry: null, settle: null, metAt: [], startedAt: Date.now() };
+    opts = opts || {}; var g = PE.generate(pick.seed); var tf = opts.entryTF || g.entryTF; var sm = PE.STEP_MINS.indexOf(opts.stepMin) >= 0 ? opts.stepMin : PE.tfMin(tf);
+    return { seed: g.seed, set: pick.set || 'learn', cat: pick.cat || null, entryTF: tf, suggestedTF: g.entryTF, stepMin: sm, step: sm / 5, S: g.S, asOf: g.S, steps: 0, maxSteps: Math.round(PE.WAIT_MIN / sm), waitBars: PE.WAIT_MIN / 5, holdBars: PE.HOLD_MIN / 5, pip: g.pip, days: g.days,
+      profile: opts.profile || 'mochipoyo', level: opts.level || 1, hints: opts.hints !== false, advanced: !!opts.advanced, phase: 'analysis', events: [], viewed: {}, answers: {}, hypothesis: null, claims: null, entry: null, settle: null, metAt: [], tfLog: [], startedAt: Date.now() };
   };
+  // v9.1 エントリー足の選択（5分足・15分足）：同じ問題・同じ時刻（asOf は 5分足の番号）のまま、どちらの足で判断するかを選ぶ。仮説を登録する前だけ変えられる。記録に残す
+  PE.setEntryTF = function (play, tf) { if (play.phase !== 'analysis' || play.hypothesis || (tf !== '5m' && tf !== '15m')) return false; if (play.entryTF === tf) return true; play.entryTF = tf; play.tfLog.push({ tf: tf, asOf: play.asOf, at: Date.now() }); play.events.push({ kind: 'tf', tf: tf, asOf: play.asOf, at: Date.now() }); return true; };
+  // v9.1 1回に進める時間（5分・15分）：エントリー足とは別。待ち・保有の上限は分で決まっているので、進め方を変えても上限は同じ
+  PE.setStep = function (play, min) { if (PE.STEP_MINS.indexOf(min) < 0 || (play.phase !== 'analysis' && play.phase !== 'waiting' && play.phase !== 'holding')) return false; play.stepMin = min; play.step = min / 5; play.maxSteps = play.steps + Math.ceil(Math.max(0, play.S + play.waitBars - play.asOf) / play.step); play.events.push({ kind: 'stepMin', min: min, asOf: play.asOf, at: Date.now() }); return true; };
+  PE.waitLeftMin = function (play) { return Math.max(0, (play.S + play.waitBars - play.asOf) * 5); };
   PE.game = function (play) { return PE.generate(play.seed); };
   PE.snap = function (play) { var s = PE.snapshot(PE.game(play), play.asOf, play.entryTF); s.pip0 = play.pip; return s; };
   // 足を1本（エントリー足で）進める。進めたら、その時点で条件がそろったか（両方の向き）を記録する（採点の「条件がそろった足」）
   PE.advance = function (play, prof) {
     var g = PE.game(play); if (play.phase !== 'waiting' && play.phase !== 'analysis') return false;
-    if (play.steps >= play.maxSteps || play.asOf + play.step >= g.base.length) { play.phase = 'timeout'; play.events.push({ kind: 'timeout', asOf: play.asOf, at: Date.now() }); return false; }
-    play.asOf += play.step; play.steps++; play.phase = 'waiting';
+    var limit = play.S + (play.waitBars || PE.WAIT_MIN / 5);
+    if (play.asOf >= limit || play.asOf + 1 >= g.base.length) { play.phase = 'timeout'; play.events.push({ kind: 'timeout', asOf: play.asOf, at: Date.now() }); return false; }
+    play.asOf = Math.min(play.asOf + play.step, limit, g.base.length - 1); play.steps++; play.phase = 'waiting';
     var sn = PE.snap(play); prof = prof || SPFn().values(play.profile, play.overrides);
     ['buy', 'sell'].forEach(function (s) { var ch = SPFn().evaluateEntry(sn, s, prof); if (ch.met) play.metAt.push({ asOf: play.asOf, side: s, label: play.steps + '本目（' + (s === 'buy' ? '買い' : '売り') + '）' }); });
     play.events.push({ kind: 'step', asOf: play.asOf, at: Date.now() });
@@ -170,7 +180,7 @@
      o：{ side, sl, tp, riskPercent }。約定の予定価格：買い＝いまの終値＋スプレッド/2、売り＝終値−スプレッド/2（入口のスリッページは決済で足す）
      返り値：{ ok, validation, sizing, entryMid, entryPx, maxLoss, rr, breakeven, errors（画面に出す文） } */
   PE.preview = function (play, o, capital, prof) {
-    var TC = root.TradeCore; prof = prof || SPFn().values(play.profile, play.overrides); var sn = PE.snap(play); var mid = sn.entry.close; var side = TC.sideOf(o.side);
+    var TC = root.TradeCore; prof = prof || SPFn().values(play.profile, play.overrides); var sn = PE.snap(play); var mid = isFinite(sn.price) ? sn.price : sn.entry.close; var side = TC.sideOf(o.side);   // v9.1 約定の予定はいまの価格（最後の 5分足の終値）から
     var half = TC.COSTS.spreadPips * play.pip / 2; var px = side === 'buy' ? mid + half : mid - half;
     var v = TC.validateOrder({ side: side, entry: px, sl: o.sl, tp: o.tp, requireSL: prof.slRequired, requireTP: prof.tpRequired, spreadPips: TC.COSTS.spreadPips, basis: '約定の予定価格（' + (side === 'buy' ? '買値' : '売値') + '）' });
     // ロット：損切りで終わったときの損失（約定の予定価格→損切り＋入口の滑り＋損切りの滑り）が許容損失を超えないように
@@ -191,14 +201,35 @@
     if (play.entry || (play.phase !== 'waiting' && play.phase !== 'analysis')) return { ok: false, duplicate: true, preview: { errors: ['この問題ではもう発注・決定している（二重の発注はしない）'] } };   // v9.1 二重発注の防止
     prof = prof || SPFn().values(play.profile, play.overrides); var pv = PE.preview(play, o, capital, prof); if (!pv.ok) return { ok: false, preview: pv };
     var sn = pv.snap; var side = root.TradeCore.sideOf(o.side); var check = SPFn().evaluateEntry(sn, side, prof);
-    var g = PE.game(play); var bars = SE.confirmed(SE.aggregate(g.base, PE.tfMin(play.entryTF), g.base.length - 1)); var ei = -1; for (var i = bars.length - 1; i >= 0; i--) if (bars[i].to === play.asOf) { ei = i; break; }
-    var st = root.TradeCore.settleBars(bars, ei, { side: side, entry: pv.entryMid, sl: pv.validation.sl, tp: pv.validation.tp }, { maxBars: PE.HOLD_MAX, atr: sn.entry.atr, lots: pv.sizing.lots });
-    play.entry = { side: side, asOf: play.asOf, order: pv.validation, sizing: pv.sizing, riskPercent: o.riskPercent, check: check, swing: sn.entry.swing, pip: play.pip, snap: { htf: sn.htf }, entryIndex: ei, exitAsOf: st.ok ? bars[st.exitIndex].to : null };
-    play.settle = st; play.claims = claims || play.claims || {}; play.claimCheck = check; play.phase = 'holding'; play.holdShown = 0; play.events.push({ kind: 'enter', asOf: play.asOf, side: side, at: Date.now() });
+    // v9.1 決済は 5分足（もとの足）で判定する（エントリー足が 15分足でも、同じ時刻の同じ値動きで決まる）。約定はいまの 5分足の終値（＋スプレッド・滑り）、判定は次の 5分足から
+    var g = PE.game(play); var ei = play.asOf; var hold = play.holdBars || PE.HOLD_MIN / 5; var st = null, pos = null;
+    if (play.advanced && root.PositionEngine) { pos = root.PositionEngine.open({ side: side, entryMid: pv.entryMid, sl: pv.validation.sl, tp: pv.validation.tp, lots: pv.sizing.lots, entryIndex: ei, maxBars: hold });
+      if (!pos.ok) return { ok: false, preview: { errors: pos.errors } }; }
+    else st = root.TradeCore.settleBars(g.base, ei, { side: side, entry: pv.entryMid, sl: pv.validation.sl, tp: pv.validation.tp }, { maxBars: hold, atr: sn.entry.atr, lots: pv.sizing.lots });
+    play.entry = { side: side, asOf: play.asOf, order: pv.validation, sizing: pv.sizing, riskPercent: o.riskPercent, check: check, swing: sn.entry.swing, pip: play.pip, snap: { htf: sn.htf }, entryIndex: ei, entryPrice: pos ? pos.entryFill : st.entryPrice, exitAsOf: st && st.ok ? st.exitIndex : null, plan: o.plan || null, atr: sn.entry.atr };
+    play.settle = st; play.pos = pos; play.claims = claims || play.claims || {}; play.claimCheck = check; play.phase = 'holding'; play.holdShown = 0; play.events.push({ kind: 'enter', asOf: play.asOf, side: side, at: Date.now() });
     return { ok: true, preview: pv, check: check };
   };
   // 保有中の足送り（当初の損切り・利確は動かさない）。決済の足まで来たら終わり
-  PE.holdStep = function (play) { if (play.phase !== 'holding') return false; var g = PE.game(play); var next = Math.min(play.entry.exitAsOf, play.asOf + play.step); if (next >= g.base.length) next = g.base.length - 1; play.asOf = next; play.holdShown++; if (play.asOf >= play.entry.exitAsOf) { play.phase = 'closed'; play.events.push({ kind: 'exit', asOf: play.asOf, reason: play.settle.reason, at: Date.now() }); } return true; };
+  PE.holdStep = function (play) {
+    if (play.phase !== 'holding') return false; var g = PE.game(play);
+    if (play.pos) {   // 上級の管理：5分足を 1 本ずつ、出来事で進める（見えている足より先は使わない）
+      var PS = root.PositionEngine; var tgt = Math.min(g.base.length - 1, play.asOf + play.step);
+      while (play.asOf < tgt && !play.pos.closed) { play.asOf++; PS.step(play.pos, g.base, play.asOf); }
+      if (!play.pos.closed && play.asOf >= g.base.length - 1) PS.finish(play.pos, g.base);
+      play.holdShown++; if (play.pos.closed) { play.settle = PS.summary(play.pos); play.entry.exitAsOf = play.pos.exitIndex; play.phase = 'closed'; play.events.push({ kind: 'exit', asOf: play.asOf, reason: play.settle.reason, at: Date.now() }); }
+      return true; }
+    var next = Math.min(play.entry.exitAsOf, play.asOf + play.step); if (next >= g.base.length) next = g.base.length - 1; play.asOf = next; play.holdShown++; if (play.asOf >= play.entry.exitAsOf) { play.phase = 'closed'; play.events.push({ kind: 'exit', asOf: play.asOf, reason: play.settle.reason, at: Date.now() }); } return true; };
+  // v9.1 上級のポジション管理（play.advanced のときだけ）：a＝{ type:'fullClose'|'be'|'modifySL'|'partialClose'|'trail', … , why（早めの決済の理由） }。いまの足（asOf）が確定した後の判断
+  PE.manage = function (play, a) {
+    if (play.phase !== 'holding' || !play.pos) return { ok: false, error: '上級の管理は、上級のポジション管理を ON にして保有しているときだけ' };
+    var sn = PE.snap(play); var r = root.PositionEngine.act(play.pos, a, { bars: PE.game(play).base, atr: sn.entry && sn.entry.atr });
+    if (r.ok) { var ev = { kind: 'manage', type: a.type, asOf: play.asOf, at: Date.now() }; if (a.why) ev.why = a.why; if (a.fraction) ev.fraction = a.fraction; ev.facts = PE.mgmtFacts(sn, play.entry.side); ev.mfeR = play.pos.riskPips0 ? Math.round(play.pos.mfe / play.pip / play.pos.riskPips0 * 100) / 100 : null; play.events.push(ev); }
+    return r;
+  };
+  // その時点の事実（早めの決済などの理由が、チャートの事実と合っているかを振り返りで比べる）
+  PE.mgmtFacts = function (sn, side) { var d = side === 'buy' ? 'up' : 'down', o = d === 'up' ? 'down' : 'up'; var e = sn.entry || {}; var h4 = sn.htf && sn.htf['4h'];
+    return { rciAgainst: !!(e.rci && e.rci.signal === o), emaAgainst: e.emaOrder === o, dowAgainst: e.dow === o, h4Against: !!(h4 && !h4.insufficient && h4.dir === o), divAgainst: (e.divSignals || []).some(function (s) { return s.status === 'confirmed' && s.direction === (o === 'up' ? 'bull' : 'bear'); }) }; };
   PE.skip = function (play, claims) { if (play.entry || (play.phase !== 'waiting' && play.phase !== 'analysis')) return false; play.phase = 'skipped'; play.claims = claims || play.claims || null; play.events.push({ kind: 'skip', asOf: play.asOf, at: Date.now() }); return true; };
 
   /* ---------- レベルごとの読み取りの設問（判断の開始の時点の事実で採点。答えは振り返りまで出さない） ---------- */
@@ -223,6 +254,29 @@
   };
   PE.wait = function (play) { play.waits = (play.waits || 0) + 1; play.events.push({ kind: 'wait', asOf: play.asOf, at: Date.now() }); };
 
+  /* ---------- 上級のポジション管理の採点（計画と実際の管理を比べる。利確・損切りという結果では点を決めない） ----------
+     plan：hold（当初のまま）／be1r（+1R で建値）／partial1r（+1R で半分）／trail（トレーリング）
+     ・計画を決めたか（執行 3 点）・計画に沿った管理か（規律 6 点）・早めの決済の理由が、その時点のチャートの事実と合っているか（規律 6 点。早めの決済をしたときだけ） */
+  PE.REASON_FACT = { rci: 'rciAgainst', ema: 'emaAgainst', dow: 'dowAgainst', h4: 'h4Against', div: 'divAgainst' };
+  PE.REASON_LABEL = { rci: 'RCI が逆向きに反転', ema: 'EMA の並びが逆', dow: 'ダウが逆', h4: '4時間足の向きが逆', div: '逆向きのダイバージェンスの確定', time: '予定した時間・区切り', emotion: '怖くなった・利益を早く確保したくなった' };
+  PE.mgmtItems = function (play) {
+    if (!play.advanced || !play.entry || !play.pos) return []; var out = []; var plan = play.entry.plan; var M = play.events.filter(function (e) { return e.kind === 'manage'; });
+    var PL = { hold: '当初の損切り・利確のまま', be1r: '+1R で建値へ', partial1r: '+1R で半分を決済', trail: 'トレーリング' };
+    out.push({ cat: 'execution', name: '決済管理の計画', got: plan && PL[plan] ? 3 : 0, max: 3, note: plan && PL[plan] ? '発注の前に決めた：' + PL[plan] : '計画を決めずに発注した' });
+    var be = M.filter(function (e) { return e.type === 'be'; }), part = M.filter(function (e) { return e.type === 'partialClose'; }), tr = M.filter(function (e) { return e.type === 'trail'; }), cl = M.filter(function (e) { return e.type === 'fullClose'; }), mod = M.filter(function (e) { return e.type === 'modifySL'; });
+    var mfeR = play.pos.riskPips0 ? play.pos.mfe / play.pip / play.pos.riskPips0 : 0; var got = 6, notes = [];
+    if (plan === 'hold') { if (be.length || part.length || tr.length || mod.length) { got -= 3; notes.push('計画は「当初のまま」だったが、途中で損切り・ロットを変えた'); } }
+    else if (plan === 'be1r') { var early = be.filter(function (e) { return e.mfeR !== null && e.mfeR < 1; }); if (early.length) { got -= 2; notes.push('+1R に届く前（その時点の最大順行 ' + early[0].mfeR.toFixed(2) + 'R）に建値へ動かした（ふつうの押し戻りで止まりやすい）'); } if (!be.length && mfeR >= 1) { got -= 3; notes.push('+1R（最大順行 ' + mfeR.toFixed(2) + 'R）に届いたのに、計画した建値への移動をしなかった'); } if (part.length || tr.length) { got -= 1; notes.push('計画にない管理（部分決済・トレーリング）もした'); } }
+    else if (plan === 'partial1r') { var ep = part.filter(function (e) { return e.mfeR !== null && e.mfeR < 1; }); if (ep.length) { got -= 2; notes.push('+1R に届く前に部分決済した'); } if (!part.length && mfeR >= 1) { got -= 3; notes.push('+1R（最大順行 ' + mfeR.toFixed(2) + 'R）に届いたのに、計画した部分決済をしなかった'); } }
+    else if (plan === 'trail') { if (!tr.length) { got -= 3; notes.push('計画したトレーリングを設定しなかった'); } }
+    out.push({ cat: 'discipline', name: '計画と実際の管理', got: Math.max(0, got), max: 6, note: notes.length ? notes.join('／') : (M.length ? '計画どおりに管理した' : '計画どおり、当初の注文のまま見届けた') + '（結果の良し悪しでは点を決めない）' });
+    cl.forEach(function (e) { var k = PE.REASON_FACT[e.why]; var lab = PE.REASON_LABEL[e.why] || '理由なし';
+      if (k) out.push({ cat: 'discipline', name: '早めの決済の理由', got: e.facts && e.facts[k] ? 6 : 0, max: 6, note: '理由「' + lab + '」：' + (e.facts && e.facts[k] ? 'その時点のチャートで確認できた（計画の外でも、根拠のある判断）' : 'その時点のチャートでは起きていなかった（事実と合わない理由での決済）') });
+      else if (e.why === 'time') out.push({ cat: 'discipline', name: '早めの決済の理由', got: 4, max: 6, note: '理由「予定した時間・区切り」：計画に書いておくと、なお良い' });
+      else out.push({ cat: 'discipline', name: '早めの決済の理由', got: 1, max: 6, note: '理由「' + lab + '」：計画にない、気持ちによる決済。正直に選べたのは良い。次は発注の前の計画で決めておく' }); });
+    return out;
+  };
+
   /* ---------- 採点・記録 ---------- */
   PE.grade = function (play, context, prof) {
     prof = prof || SPFn().values(play.profile, play.overrides); var g = PE.game(play); var start = PE.snapshot(g, play.S, play.entryTF); start.pip0 = play.pip;
@@ -230,7 +284,7 @@
     var claimSide = play.entry ? play.entry.side : (play.hypothesis && play.hypothesis.bias === 'sell' ? 'sell' : 'buy');
     var claimCheck = play.entry ? play.entry.check : SPFn().evaluateEntry(PE.snap(play), claimSide, prof);
     var pnl = null; if (kind === 'trade' && play.settle && play.settle.ok && play.entry.sizing) pnl = isFinite(play.settle.pnlYenAfterCommission) ? play.settle.pnlYenAfterCommission : Math.round(play.settle.netPips * play.entry.sizing.lots * root.TradeCore.spec().pipValue);
-    var res = SPFn().grade({ profile: prof, facts: start, extraItems: PE.focusItems(play, start), answers: play.answers, viewedHtf: !!(play.viewed['1d'] && play.viewed['4h']), claims: play.claims || {}, claimCheck: play.claims ? claimCheck : null, outcomeKind: kind, entry: play.entry, metAt: play.metAt, settle: play.settle, pnl: pnl, context: context || {} });
+    var res = SPFn().grade({ profile: prof, facts: start, extraItems: PE.focusItems(play, start).concat(PE.mgmtItems(play)), answers: play.answers, viewedHtf: !!(play.viewed['1d'] && play.viewed['4h']), claims: play.claims || {}, claimCheck: play.claims ? claimCheck : null, outcomeKind: kind, entry: play.entry, metAt: play.metAt, settle: play.settle, pnl: pnl, context: context || {} });
     res.kind = kind; res.pnl = pnl; return res;
   };
   // 記録の1行（セーブの practice.history に入れる。チャートは保存しない：seed から作り直せる）
@@ -238,7 +292,10 @@
     var st = play.settle; var tr = grade.kind === 'trade' && st && st.ok;
     var ev = play.entry ? play.entry.check.evidence.filter(function (x) { return x.ok; }).map(function (x) { return x.key; }) : [];
     var prof = SPFn().values(play.profile, play.overrides); var snapP = {}; Object.keys(prof).forEach(function (k) { if (k !== 'name') snapP[k] = prof[k]; });
-    return { v: 2, engineVersion: PE.ENGINE_VERSION, scenarioVersion: play.scenarioVersion || PE.SCENARIO_VERSION, gen: play.gen || 'A', checksum: PE.checksum(PE.game(play)), profileSnap: snapP, grossR: tr ? st.grossR : null, grossPips: tr ? st.grossPips : null, commissionYen: tr ? st.commissionYen : null, ifTpFirstR: tr && st.ifTpFirst ? st.ifTpFirst.riskR : null,
+    var st2 = play.settle; var adv = !!(play.pos && st2 && st2.advanced);
+    var decided = play.entry ? play.entry.asOf : play.asOf;
+    return { v: 3, answers: { '1d': play.answers['1d'] || null, '4h': play.answers['4h'] || null }, decidedMin: (decided - play.S) * 5, tfSuggested: play.suggestedTF || null, tfLog: (play.tfLog || []).map(function (x) { return x.tf; }), stepMin: play.stepMin || null, advanced: adv, plan: play.entry ? play.entry.plan : null, actions: adv ? st2.actions : null, fills: adv ? st2.fills.map(function (f) { return [f.kind, f.index, f.lots, f.pips]; }) : null, maeR: adv ? st2.maeR : null, mfeR: adv ? st2.mfeR : null, worstOpenYen: adv ? st2.worstOpenYen : null,
+      engineVersion: PE.ENGINE_VERSION, scenarioVersion: play.scenarioVersion || PE.SCENARIO_VERSION, gen: play.gen || 'A', checksum: PE.checksum(PE.game(play)), profileSnap: snapP, grossR: tr ? st.grossR : null, grossPips: tr ? st.grossPips : null, commissionYen: tr ? st.commissionYen : null, ifTpFirstR: tr && st.ifTpFirst ? st.ifTpFirst.riskR : null,
       t: Date.now(), seed: play.seed, set: play.set, cat: play.cat, tf: play.entryTF, profile: play.profile, level: play.level, kind: grade.kind, process: grade.process,
       side: play.entry ? play.entry.side : null, sl: play.entry ? play.entry.order.sl : null, tp: play.entry ? play.entry.order.tp : null, lots: play.entry && play.entry.sizing ? play.entry.sizing.lots : null,
       riskPercent: play.entry ? play.entry.riskPercent : null, maxLoss: play.entry && play.entry.sizing ? Math.round(play.entry.sizing.actualRisk) : null, plannedRR: play.entry ? play.entry.order.rr : null,

@@ -56,8 +56,9 @@
     if (over && typeof over === 'object') Object.keys(over).forEach(function (k) { if (pr.params[k] && over[k] !== undefined && over[k] !== null && typeof over[k] === typeof pr.params[k].value) o[k] = over[k]; });
     return o;
   };
+  SP.VALUE_LABEL = { block: '入らない（止める）', warn: '注意だけ', all_known: '判定できる上位足がすべて同じ向き', h4_priority: '4時間足を優先（判定できなければ日足）', both_required: '日足・4時間足の両方が同じ向き（厳しめ）' };
   SP.describe = function (id, over) { var pr = SP.PROFILES[id] || SP.PROFILES.mochipoyo; var v = SP.values(id, over);
-    return Object.keys(pr.params).map(function (k) { var p = pr.params[k]; var val = v[k]; var s = Array.isArray(val) ? val.join('・') : typeof val === 'boolean' ? (val ? 'する' : 'しない') : String(val); return { key: k, label: p.label, value: s, provisional: p.provisional, changed: !!(over && over[k] !== undefined && over[k] !== p.value) }; }); };
+    return Object.keys(pr.params).map(function (k) { var p = pr.params[k]; var val = v[k]; var s = Array.isArray(val) ? val.join('・') : typeof val === 'boolean' ? (val ? 'する' : 'しない') : String(SP.VALUE_LABEL[val] || val); return { key: k, label: p.label, value: s, provisional: p.provisional, changed: !!(over && over[k] !== undefined && over[k] !== p.value) }; }); };
 
   /* ---------- エントリーの条件の確認（見えている事実だけ） ----------
      snap：PracticeEngine.snapshot の結果（判断した時点まで）。side：'buy'|'sell'

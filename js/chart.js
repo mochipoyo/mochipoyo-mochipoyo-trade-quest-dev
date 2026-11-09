@@ -30,6 +30,9 @@
 
   /* opts:
        visibleBars, showZigzag(bool), sl, tp, entry, tfLabel, title, zoomHint
+       v9.1：endIndex（右端に描く足の番号。省略＝最新。過去へのスクロール）, pivots（ZigZag に使う山谷の一覧。省略＝an.pivots）,
+             crosshair（{ index, y }：十字線）, zigLegend（確定・未確定の凡例）, activeLine（'sl'|'tp'：ドラッグ中の線を太く）, snap（{ index, price }：指定の候補の印）
+       ※ 描くのは渡された足（an.candles）だけ。右へスクロールしても、渡された最新の足より先は描かない
   */
   Chart.render = function (canvas, an, opts) {
     opts = opts || {};
@@ -46,7 +49,8 @@
     var candles = an.candles;
     var n = candles.length;
     var vis = Math.min(n, opts.visibleBars || CONFIG.chart.visibleBars);
-    var start = n - vis;
+    var end = isFinite(opts.endIndex) ? Math.max(vis - 1, Math.min(n - 1, Math.round(opts.endIndex))) : n - 1;
+    var start = end - vis + 1; var lim = end + 1;   // 描く範囲：start〜end（lim＝end＋1）
     var padR = 54, padL = 6, padT = 18;
     var small = W < 480;
     if (small) padR = 46;
@@ -60,16 +64,16 @@
 
     // ---- 価格レンジ ----
     var pMin = Infinity, pMax = -Infinity;
-    for (var i = start; i < n; i++) { if (candles[i].l < pMin) pMin = candles[i].l; if (candles[i].h > pMax) pMax = candles[i].h; }
-    an.emas.forEach(function (e) { for (var j = start; j < n; j++) { if (e[j] !== null) { if (e[j] < pMin) pMin = e[j]; if (e[j] > pMax) pMax = e[j]; } } });
+    for (var i = start; i < lim; i++) { if (candles[i].l < pMin) pMin = candles[i].l; if (candles[i].h > pMax) pMax = candles[i].h; }
+    an.emas.forEach(function (e) { for (var j = start; j < lim; j++) { if (e[j] !== null) { if (e[j] < pMin) pMin = e[j]; if (e[j] > pMax) pMax = e[j]; } } });
     [opts.sl, opts.tp, opts.entry].forEach(function (v) { if (v !== null && v !== undefined && !isNaN(v)) { if (v < pMin) pMin = v; if (v > pMax) pMax = v; } });
     var range = (pMax - pMin) || 1; pMin -= range * 0.06; pMax += range * 0.06; range = pMax - pMin;
     function yP(v) { return yPrice0 + 8 + (hPrice - 16) * (1 - (v - pMin) / range); }
 
     // ---- 背景（未来足の領域） ----
     if (an.revealedCount) {
-      var fx = xOf(n - an.revealedCount) - slot / 2;
-      ctx.fillStyle = COLORS.future; ctx.fillRect(fx, yPrice0, W - padR - fx, H - yPrice0);
+      var fx = Math.max(padL, xOf(n - an.revealedCount) - slot / 2);
+      if (fx < W - padR) { ctx.fillStyle = COLORS.future; ctx.fillRect(fx, yPrice0, W - padR - fx, H - yPrice0); }
     }
 
     // ---- グリッド・価格目盛 ----
@@ -94,7 +98,7 @@
 
     // ---- ZigZag ----
     if (opts.showZigzag) {
-      var piv = an.pivots.filter(function (p) { return p.index >= start - 1; });
+      var piv = (opts.pivots || an.pivots).filter(function (p) { return p.index >= start - 1 && p.index <= end + 1; });
       if (piv.length > 1) {
         ctx.lineWidth = 1.5;
         for (var z = 1; z < piv.length; z++) {
@@ -112,7 +116,7 @@
     }
 
     // ---- ローソク足 ----
-    for (var c = start; c < n; c++) {
+    for (var c = start; c < lim; c++) {
       var cd = candles[c];
       var up = cd.c >= cd.o;
       ctx.strokeStyle = ctx.fillStyle = up ? COLORS.up : COLORS.down;
@@ -128,21 +132,21 @@
     var emaCols = [COLORS.ema20, COLORS.ema30, COLORS.ema40];
     an.emas.forEach(function (e, k) {
       ctx.strokeStyle = emaCols[k]; ctx.lineWidth = 1.4; ctx.beginPath(); var started = false;
-      for (var j = start; j < n; j++) { if (e[j] === null) continue; var yy = yP(e[j]); if (!started) { ctx.moveTo(xOf(j), yy); started = true; } else ctx.lineTo(xOf(j), yy); }
+      for (var j = start; j < lim; j++) { if (e[j] === null) continue; var yy = yP(e[j]); if (!started) { ctx.moveTo(xOf(j), yy); started = true; } else ctx.lineTo(xOf(j), yy); }
       ctx.stroke();
     });
 
     // ---- 損切り・利確・エントリー ----
-    function hline(v, col, label) {
+    function hline(v, col, label, active) {
       if (v === null || v === undefined || isNaN(v)) return;
       var y = yP(v);
-      ctx.setLineDash([6, 4]); ctx.strokeStyle = col; ctx.lineWidth = 1.5;
+      ctx.setLineDash(active ? [] : [6, 4]); ctx.strokeStyle = col; ctx.lineWidth = active ? 3 : 1.5;
       ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke(); ctx.setLineDash([]);
       ctx.fillStyle = col; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left';
       ctx.fillText(label + ' ' + v.toFixed(3), padL + 4, y - 3);
     }
-    hline(opts.sl, COLORS.sl, '損切り');
-    hline(opts.tp, COLORS.tp, '利確');
+    hline(opts.sl, COLORS.sl, '損切り', opts.activeLine === 'sl');
+    hline(opts.tp, COLORS.tp, '利確', opts.activeLine === 'tp');
     hline(opts.entry, COLORS.entry, 'エントリー');
     // v6.4 追加の水平線（レバレッジ取引のロスカットの価格など）。表示範囲の外なら、上下の端に矢印と価格だけを出す（縮尺は変えない）
     (opts.lines || []).forEach(function (L) {
@@ -154,7 +158,7 @@
 
     // ---- v4.3: プレイヤーが指定した高値・安値の印 ----
     (opts.marks || []).forEach(function (m) {
-      if (!m || m.index === undefined || m.index < start || m.index >= n) return;
+      if (!m || m.index === undefined || m.index < start || m.index > end) return;
       var mx = xOf(m.index), my = yP(m.price); var isHigh = m.type === 'high'; var col = isHigh ? '#ffd24a' : '#7fd4ff';
       ctx.fillStyle = col; ctx.beginPath();
       if (isHigh) { ctx.moveTo(mx, my - 4); ctx.lineTo(mx - 6, my - 14); ctx.lineTo(mx + 6, my - 14); } else { ctx.moveTo(mx, my + 4); ctx.lineTo(mx - 6, my + 14); ctx.lineTo(mx + 6, my + 14); }
@@ -162,8 +166,10 @@
       ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(isHigh ? '高値' : '安値', mx, isHigh ? my - 17 : my + 24);
     });
     if (opts.pickMode) { ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fillRect(padL, yPrice0, plotW, hPrice); ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(opts.pickMode === 'high' ? 'タップして「直近の確定した高値」を指定' : opts.pickMode === 'low' ? 'タップして「直近の確定した安値」を指定' : opts.pickMode === 'sl' ? 'タップして損切り価格を指定' : 'タップして利確価格を指定', padL + plotW / 2, yPrice0 + 14); }
+    if (opts.snap && opts.snap.index >= start && opts.snap.index <= end) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(xOf(opts.snap.index), yP(opts.snap.price), 7, 0, Math.PI * 2); ctx.stroke(); }
     // 座標 → 足番号・価格（クリック／タップ操作用）
-    canvas._map = { start: start, n: n, slot: slot, padL: padL, xToIndex: function (x) { return Math.max(start, Math.min(n - 1, start + Math.floor((x - padL) / slot))); }, yToPrice: function (y) { return pMin + range * (1 - (y - (yPrice0 + 8)) / (hPrice - 16)); }, inPrice: function (y) { return y >= yPrice0 && y <= yPrice0 + hPrice; } };
+    canvas._map = { start: start, end: end, n: n, vis: vis, slot: slot, padL: padL, padR: padR, plotW: plotW, W: W, H: H, yPrice0: yPrice0, hPrice: hPrice, an: an, pivots: opts.pivots || an.pivots,
+      xToIndex: function (x) { return Math.max(start, Math.min(end, start + Math.floor((x - padL) / slot))); }, xOf: xOf, yOf: yP, yToPrice: function (y) { return pMin + range * (1 - (y - (yPrice0 + 8)) / (hPrice - 16)); }, inPrice: function (y) { return y >= yPrice0 && y <= yPrice0 + hPrice; } };
 
     // ---- 凡例 ----
     ctx.font = (small ? 9 : 11) + 'px sans-serif'; ctx.textAlign = 'left';
@@ -172,6 +178,8 @@
     legend(opts.tfLabel || '', COLORS.text);
     legend('EMA20', COLORS.ema20); legend('EMA30', COLORS.ema30); legend('EMA40', COLORS.ema40);
     if (!small) legend('※学習用人工データ', 'rgba(201,210,232,0.6)');
+    if (opts.showZigzag && opts.zigLegend) { ctx.textAlign = 'right'; var zx = W - padR - 4; ctx.fillStyle = COLORS.zigUnconfirmed; ctx.fillText('┅ 未確定の山谷', zx, yPrice0 + 12); ctx.fillStyle = COLORS.zig; ctx.fillText('━ 確定した山谷', zx, yPrice0 + 24); ctx.textAlign = 'left'; }
+    if (end < n - 1) { ctx.textAlign = 'right'; ctx.fillStyle = '#ffd24a'; ctx.fillText('過去を表示中（最新から ' + (n - 1 - end) + ' 本前まで）', W - padR - 4, H - 4); ctx.textAlign = 'left'; }
 
     // ---- RCI ----
     ctx.fillStyle = 'rgba(255,255,255,0.03)'; ctx.fillRect(padL, yRci0, plotW, hRci);
@@ -182,7 +190,7 @@
     ctx.fillStyle = COLORS.text; ctx.font = (small ? 9 : 10) + 'px monospace';
     ctx.fillText('+' + CONFIG.rci.hot, W - padR + 4, yR(CONFIG.rci.hot) + 3); ctx.fillText('-' + CONFIG.rci.hot, W - padR + 4, yR(-CONFIG.rci.hot) + 3);
     ctx.strokeStyle = COLORS.rci; ctx.lineWidth = 1.6; ctx.beginPath(); var rs = false;
-    for (var q = start; q < n; q++) { if (an.rci[q] === null) continue; var yy2 = yR(an.rci[q]); if (!rs) { ctx.moveTo(xOf(q), yy2); rs = true; } else ctx.lineTo(xOf(q), yy2); }
+    for (var q = start; q < lim; q++) { if (an.rci[q] === null) continue; var yy2 = yR(an.rci[q]); if (!rs) { ctx.moveTo(xOf(q), yy2); rs = true; } else ctx.lineTo(xOf(q), yy2); }
     ctx.stroke();
     ctx.fillStyle = COLORS.rci; ctx.font = (small ? 9 : 11) + 'px sans-serif';
     ctx.fillText('RCI(' + CONFIG.rci.period + ')' + (an.rciNow !== null && an.rciNow !== undefined ? ' ' + an.rciNow.toFixed(0) : ''), padL + 4, yRci0 + 11);
@@ -190,11 +198,11 @@
     // ---- MACD ----
     ctx.fillStyle = 'rgba(255,255,255,0.02)'; ctx.fillRect(padL, yMacd0, plotW, hMacd);
     var mMax = 0;
-    for (var m = start; m < n; m++) { ['line', 'signal', 'hist'].forEach(function (k) { var v2 = an.macd[k][m]; if (v2 !== null && Math.abs(v2) > mMax) mMax = Math.abs(v2); }); }
+    for (var m = start; m < lim; m++) { ['line', 'signal', 'hist'].forEach(function (k) { var v2 = an.macd[k][m]; if (v2 !== null && Math.abs(v2) > mMax) mMax = Math.abs(v2); }); }
     if (mMax === 0) mMax = 1;
     function yM(v) { return yMacd0 + 6 + (hMacd - 12) * (1 - (v + mMax) / (2 * mMax)); }
     ctx.strokeStyle = COLORS.grid; ctx.beginPath(); ctx.moveTo(padL, yM(0)); ctx.lineTo(W - padR, yM(0)); ctx.stroke();
-    for (var hb = start; hb < n; hb++) {
+    for (var hb = start; hb < lim; hb++) {
       var hv = an.macd.hist[hb]; if (hv === null) continue;
       ctx.fillStyle = hv >= 0 ? COLORS.histUp : COLORS.histDown;
       var y0 = yM(0), y1 = yM(hv);
@@ -202,11 +210,16 @@
     }
     [['line', COLORS.macd], ['signal', COLORS.signal]].forEach(function (pair) {
       ctx.strokeStyle = pair[1]; ctx.lineWidth = 1.4; ctx.beginPath(); var st2 = false;
-      for (var j2 = start; j2 < n; j2++) { var v3 = an.macd[pair[0]][j2]; if (v3 === null) continue; var yy3 = yM(v3); if (!st2) { ctx.moveTo(xOf(j2), yy3); st2 = true; } else ctx.lineTo(xOf(j2), yy3); }
+      for (var j2 = start; j2 < lim; j2++) { var v3 = an.macd[pair[0]][j2]; if (v3 === null) continue; var yy3 = yM(v3); if (!st2) { ctx.moveTo(xOf(j2), yy3); st2 = true; } else ctx.lineTo(xOf(j2), yy3); }
       ctx.stroke();
     });
     ctx.fillStyle = COLORS.macd; ctx.font = (small ? 9 : 11) + 'px sans-serif';
     ctx.fillText('MACD(' + CONFIG.macd.fast + ',' + CONFIG.macd.slow + ',' + CONFIG.macd.signal + ')', padL + 4, yMacd0 + 11);
+    // v9.1 十字線（判断の時点までの足の上だけ）
+    if (opts.crosshair && opts.crosshair.index >= start && opts.crosshair.index <= end) { var chx = xOf(opts.crosshair.index); ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(chx, yPrice0); ctx.lineTo(chx, H); ctx.stroke(); var chy = opts.crosshair.y;
+      if (chy >= yPrice0 && chy <= yPrice0 + hPrice) { ctx.beginPath(); ctx.moveTo(padL, chy); ctx.lineTo(W - padR, chy); ctx.stroke(); var cpv = pMin + range * (1 - (chy - (yPrice0 + 8)) / (hPrice - 16)); ctx.setLineDash([]); ctx.fillStyle = '#2a3558'; ctx.fillRect(W - padR + 1, chy - 7, padR - 2, 14); ctx.fillStyle = '#fff'; ctx.font = (small ? 9 : 10) + 'px monospace'; ctx.fillText(cpv.toFixed(3), W - padR + 3, chy + 3); }
+      ctx.setLineDash([]); }
 
     // ---- ダイバージェンスの補助線（確定ピボット間） ----
     if (opts.showDivergence && an.div.detail) {
