@@ -73,7 +73,15 @@ const q = (s) => doc.querySelector('#ui .practice-panel ' + s);
   click(stp && stp.querySelector('.rw-panel-close')); await sp;
   T(Array.isArray(w.PRACTICE_PSYCH) && w.PRACTICE_PSYCH.length >= 9 && w.PRACTICE_PSYCH.every((x) => x.options[x.best].tag === 'rule'), 'トレード心理の演習：' + w.PRACTICE_PSYCH.length + '問（ルールに沿った行動が答え。利益を取ることが答えではない）');
   T(/医療的/.test(require('fs').readFileSync(path.resolve(__dirname, '../../../js/ui/practiceui.js'), 'utf8')), '心理の結果は医療的な診断として扱わないと書く');
-  State.data = State.migrate(JSON.parse(JSON.stringify(d))); T(State.data.practice.history.length === 3, 'セーブとして書き出して読み込んでも道場の記録が残る');
+  // ---- 上級の対戦（トレードマスター）：リスクR対戦を 1 回（見送りで終える） ----
+  if (w.TradeDuel90) { clean(); const msgs = []; const om = w.Win.message, oc = w.Win.choice; let ci = 0; w.Win.message = async (L) => { msgs.push([].concat(L).join(' ')); }; w.Win.choice = async () => (ci++ === 0 ? 0 : 1);
+    const info = { short: 'テスト', styleName: '万能', style: 'all', skill: 0.6, seed: 99 }; let fin = false; const gold0 = d.gold; const pt = w.TradeDuel90.talk({ name: 'トレードマスター・テスト' }, info, async (L) => { msgs.push([].concat(L).join(' ')); }); pt.then(() => { fin = true; });
+    for (let i = 0; i < 60 && !doc.querySelector('#ui .practice-panel'); i++) await frames(2);
+    const pl5 = PUI.current.play; pl5.answers = { '1d': 'up', '4h': 'up' }; pl5.bias = 'neutral'; click(q('[data-cmd="hyp"]')); await frames(1); click(q('[data-cmd="skip"]'));
+    for (let i = 0; i < 60 && !doc.querySelector('#ui .pd-review'); i++) await frames(2); click(doc.querySelector('#ui .pd-review [data-cmd="end"]')); for (let i = 0; i < 120 && !fin; i++) await frames(2);
+    w.Win.message = om; w.Win.choice = oc; const t = w.TradeMaster83.ensure(d);
+    T(fin && msgs.some((m) => /上級の対戦：/.test(m) && /賞金はない/.test(m)) && d.gold === gold0 && (t.adv90.riskR.w + t.adv90.riskR.l + t.adv90.riskR.d) === 1, '上級の対戦（リスクR対戦）：同じ問題で相手と比べ、記録だけ残る（賞金なし。ゴールドは変わらない）'); }
+  State.data = State.migrate(JSON.parse(JSON.stringify(d))); T(State.data.practice.history.length >= 3, 'セーブとして書き出して読み込んでも道場の記録が残る（' + State.data.practice.history.length + '件）');
   T(!A.errors.length, '読み込みのエラーなし ' + JSON.stringify(A.errors.slice(0, 3)));
   console.log('結果: ' + okN + ' OK / ' + ng.length + ' NG'); process.exit(ng.length ? 1 : 0);
 })().catch((e) => { console.error('FAIL', e); process.exit(1); });

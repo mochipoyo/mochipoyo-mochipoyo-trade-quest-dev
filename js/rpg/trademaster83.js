@@ -211,8 +211,11 @@
     while (true) {
       var cool = TM.coolLeft(d, npc.id); var p1 = TM.prize(info.tier, 1), p3 = TM.prize(info.tier, 3);
       var tag = function (p) { return cool > 0 ? '（賞金なし：あと' + cool + '歩）' : '（勝てば ' + p + 'G）'; };
-      var c = await Win.choice(info.short + '：「' + (cool > 0 ? '賞金はさっき渡したばかりだ。腕試しなら受けて立つ。' : '勝負の形を選びな。') + '」', ['1本勝負' + tag(p1), '3本勝負・2本先取' + tag(p3), 'ルールを聞く', 'やめる']);
+      var opts = ['1本勝負' + tag(p1), '3本勝負・2本先取' + tag(p3), 'ルールを聞く']; var adv = root.TradeDuel90 && root.PracticeUI ? opts.length : -1; if (adv >= 0) opts.push('上級の対戦（リスクR・規律。賞金なし）');   // v9.0 上級の対戦（js/rpg/tradeduel90.js）。pips 対戦・賞金・400歩は今までどおり
+      opts.push('やめる');
+      var c = await Win.choice(info.short + '：「' + (cool > 0 ? '賞金はさっき渡したばかりだ。腕試しなら受けて立つ。' : '勝負の形を選びな。') + '」', opts);
       if (c === 2) { await Win.message(TM.rules(info)); continue; }
+      if (adv >= 0 && c === adv) { TM.busy = true; try { await root.TradeDuel90.talk(npc, info, say); } finally { TM.busy = false; } continue; }
       if (c !== 0 && c !== 1) { await say(['気が向いたらまた来な。相場はいつでも動いている。']); return; }
       TM.busy = true;
       try { await TM.duel(npc, c === 0 ? 1 : 3, cool <= 0); } finally { TM.busy = false; }
