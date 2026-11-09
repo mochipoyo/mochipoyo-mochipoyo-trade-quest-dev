@@ -1,0 +1,149 @@
+版 62d3b6b
+##### v8.9 一式
+=== maptest
+errors [] fails 0
+=== navtest
+結果: 24 OK / 0 NG []
+=== harbortest
+結果: 23 OK / 0 NG []
+=== ch17test
+ERRORS: []
+=== ch67test
+CRASH TypeError: Cannot read properties of undefined (reading 'hidden')     at /home/claude/work/ch67test.js:104:48 ERRORS so far: [
+=== ch1012test
+ERRORS: []
+=== /home/claude/envwork/docs/tools/v88/updated-tests/ftmenu
+結果: 6 OK / 0 NG []
+=== v88/ui88_test.js
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v87/rewards87_test.js
+  OK  マップのボスのイベント 74 か所すべてで鍵が決まる
+  OK  distribute を 2 回呼んでも 1 回分（同じ結果を返す）
+結果: 72 OK / 0 NG []
+=== v87/rewards87_test.js 2d
+  OK  マップのボスのイベント 55 か所すべてで鍵が決まる
+  OK  distribute を 2 回呼んでも 1 回分（同じ結果を返す）
+結果: 68 OK / 0 NG []
+=== v87/effects87_test.js
+== 読み込み：3D 版と同じ　errors 0
+結果: 152 OK / 0 NG []
+=== v86/airship86_test.js
+結果: 32 OK / 0 NG []
+=== v86/airship86_test.js 2d
+結果: 32 OK / 0 NG []
+=== v79/carriage79_test.js
+結果：すべて OK
+=== v83/academy83_test.js
+結果：すべて OK
+=== v83/tm83_duel_logic.js
+結果：すべて OK
+=== v88/chart88_test.js
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/chart88_test.js 2d
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js
+  OK  経験値が入る（6→1・Lv1→2・結果 won）
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js 2d
+  OK  経験値が入る（6→1・Lv1→2・結果 won）
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v88/updated-tests/layout_menu_test.js
+OK  ページのエラーなし []
+結果：すべて OK
+done
+=== v88/route88_test.js
+結果: 17 OK / 0 NG []　読み込みのエラー 0
+=== v88/route88_test.js 2d
+結果: 17 OK / 0 NG []　読み込みのエラー 0
+=== v88/tm88_test.js
+  OK  結果の比べる表：判断・入った時刻・価格・その時点の見立て・結果
+結果: 13 OK / 0 NG []　ページのエラー 0
+=== v89/logic89_test.js
+  OK  案内：1800 歩で、省略ありと毎回調べ直しの案内がすべて同じ（違い 0 []）
+結果: 9 OK / 0 NG []　読み込みのエラー 0
+=== v89/logic89_test.js 2d
+  OK  案内：1800 歩で、省略ありと毎回調べ直しの案内がすべて同じ（違い 0 []）
+結果: 9 OK / 0 NG []　読み込みのエラー 0
+=== v81/dow_open_test.js
+OK  外周のすべてのマス・外向きの向き 192 通りで、出た先が同じ側に決まる 
+結果：すべて OK
+=== v81/dow_open_test.js 2d
+OK  外周のすべてのマス・外向きの向き 192 通りで、出た先が同じ側に決まる 
+結果：すべて OK
+=== v79/earth79_check.js
+OK  闇の空路のあとは、飛空艇でニヴェリスの陸の地図すべてへ行ける
+OK  陸のある外の地図すべてに、実在する敵の出現表 {"cold":15,"ice":2,"mountain":1,"temperate":9,"tropical":3,"dry":7,"desert":2,"antarctic":16} 
+結果：すべて OK
+=== v89/smooth89_test.mjs
+結果: 8 OK / 0 NG []
+=== navsim
+=== ult/quiz_place_test
+  quiz_monster_011 三本線の山羊エマール → emal_pass（エマール山道）(34,8) 地形 hill・入口から行けるマス 437
+  quiz_monster_015 峠の霧ガラス・ジカンアシ → grania_pass（灰の峠）(20,14) 地形 grass・入口から行けるマス 187
+結果: 923 OK / 0 NG
+done
+##### v9.0 の tl（tl_ui は更新版）
+=== tl/tl_p1_test.js
+結果: 64 OK / 0 NG
+=== tl/tl_p2_test.js
+結果: 49 OK / 0 NG
+=== tl/tl_p3_test.js
+結果: 37 OK / 0 NG
+=== tl/tl_p4_test.js
+結果: 9 OK / 0 NG
+=== tl/tl_p5_test.js
+結果: 10 OK / 0 NG
+=== tl/tl_save_test.js
+結果: 9 OK / 0 NG
+=== tl/tl_save_test.js 2d
+結果: 9 OK / 0 NG
+=== tl2/updated-tests/tl_ui_test.js
+結果: 39 OK / 0 NG
+=== tl2/updated-tests/tl_ui_test.js 2d
+結果: 39 OK / 0 NG
+##### トレード関係（作業用のテスト。tradiatest・learntest・dojo_test は更新版）
+=== tradetest
+rank samples: E S ERRORS: []
+=== ult/market_test
+結果: 31 OK / 0 NG
+=== ult/ult_logic_test
+結果: 1758 OK / 0 NG
+=== ult/quiz_test
+pass 26264 / fail 0
+=== savecompat64
+結果: 37 OK / 0 NG
+=== tradeeq
+ERRORS: [] loadErrors []
+=== tl2/updated-tests/tradiatest
+  OK  合計＝判断（60）＋結果（25）＋規律（15）
+  OK  終えると結果（5回未満の指標は算出不可）
+結果: 63 OK / 0 NG
+ERRORS: []
+=== tl2/updated-tests/learntest
+ERRORS: []
+=== tl2/updated-tests/dojo_test
+ALL OK
+##### v9.1 の新しいテスト
+=== tl2/tl6_test.js
+結果: 59 OK / 0 NG
+=== tl2/tl7_test.js
+結果: 25 OK / 0 NG
+=== tl2/tl7_ui_test.js
+結果: 55 OK / 0 NG
+=== tl2/tl7_ui_test.js 2d
+結果: 55 OK / 0 NG
+=== tl2/tl8_test.js
+結果: 37 OK / 0 NG
+=== tl2/tl9_test.js
+結果: 42 OK / 0 NG
+=== tl2/tl9_ui_test.js
+結果: 31 OK / 0 NG
+=== tl2/tl9_ui_test.js 2d
+結果: 31 OK / 0 NG
+done
