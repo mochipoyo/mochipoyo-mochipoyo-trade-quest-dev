@@ -1,0 +1,97 @@
+{
+ "world_grania": {
+  "id": "world_grania",
+  "total": 1252,
+  "build": 1062,
+  "maxSlice": 294,
+  "longTasks": 8,
+  "longMax": 294,
+  "longSum": 925,
+  "longList": [
+   81,
+   179,
+   97,
+   83,
+   294,
+   53,
+   59,
+   79
+  ],
+  "worstFrames": [
+   306,
+   192,
+   110,
+   96,
+   94,
+   92,
+   78,
+   72
+  ],
+  "failed": false,
+  "long": [],
+  "compileSync": 59,
+  "textures": 26
+ },
+ "world_kalion": {
+  "id": "world_kalion",
+  "total": 746,
+  "build": 723,
+  "maxSlice": 173,
+  "longTasks": 4,
+  "longMax": 172,
+  "longSum": 480,
+  "longList": [
+   112,
+   58,
+   138,
+   172
+  ],
+  "worstFrames": [
+   184,
+   149,
+   128,
+   109,
+   71,
+   47,
+   24,
+   15
+  ],
+  "failed": false,
+  "long": [],
+  "compileSync": 13,
+  "textures": 21
+ },
+ "world_islands": {
+  "id": "world_islands",
+  "total": 2197,
+  "build": 1140,
+  "maxSlice": 213,
+  "longTasks": 7,
+  "longMax": 234,
+  "longSum": 727,
+  "longList": [
+   57,
+   104,
+   143,
+   82,
+   51,
+   234,
+   56
+  ],
+  "worstFrames": [
+   1111,
+   324,
+   156,
+   116,
+   97,
+   71,
+   70,
+   66
+  ],
+  "failed": false,
+  "long": [],
+  "compileSync": 213,
+  "textures": 25
+ },
+ "errors": []
+}
