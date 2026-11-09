@@ -5,3 +5,53 @@ errors [] fails 0
 === harbortest
 結果: 23 OK / 0 NG []
 === ch17test
+ERRORS: []
+=== ch67test
+ERRORS: []
+=== ch1012test
+ERRORS: []
+=== /home/claude/envwork/docs/tools/v88/updated-tests/ftmenu
+結果: 6 OK / 0 NG []
+=== v88/ui88_test.js
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v87/rewards87_test.js
+  OK  マップのボスのイベント 74 か所すべてで鍵が決まる
+  OK  distribute を 2 回呼んでも 1 回分（同じ結果を返す）
+結果: 72 OK / 0 NG []
+=== v87/rewards87_test.js 2d
+  OK  マップのボスのイベント 55 か所すべてで鍵が決まる
+  OK  distribute を 2 回呼んでも 1 回分（同じ結果を返す）
+結果: 68 OK / 0 NG []
+=== v87/effects87_test.js
+== 読み込み：3D 版と同じ　errors 0
+結果: 152 OK / 0 NG []
+=== v86/airship86_test.js
+結果: 32 OK / 0 NG []
+=== v86/airship86_test.js 2d
+結果: 32 OK / 0 NG []
+=== v79/carriage79_test.js
+結果：すべて OK
+=== v83/academy83_test.js
+結果：すべて OK
+=== v83/tm83_duel_logic.js
+結果：すべて OK
+=== v88/chart88_test.js
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/chart88_test.js 2d
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js
+  OK  経験値が入る（6→1・Lv1→2・結果 won）
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js 2d
+  OK  経験値が入る（6→1・Lv1→2・結果 won）
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v88/updated-tests/layout_menu_test.js
+OK  ページのエラーなし []
+結果：すべて OK
+done
