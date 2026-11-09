@@ -89,6 +89,7 @@
 
   /* ---------- 1問 ---------- */
   // opts：{ level, lvDef, seriesNo, pick（テスト用）, advanced（上級のポジション管理） }。返り値：{ record, next:'again'|'quit' } または null（中断）
+  function CLK(min) { return root.ChartCtl ? root.ChartCtl.clock(min) : ''; }   // 架空の相場の時刻（N日目 HH:MM）
   PUI.REASONS = [['rci', 'RCI が逆向きに反転した'], ['ema', 'EMA の並びが逆になった'], ['dow', 'ダウ（確定した高値・安値）が逆になった'], ['h4', '4時間足の向きが逆になった'], ['div', '逆向きのダイバージェンスが確定した'], ['time', '予定した時間・区切りになった'], ['emotion', '怖くなった・利益を早く確保したくなった（計画にない）']];
   PUI.PLANS = [['hold', '当初の損切り・利確のまま'], ['be1r', '+1R まで伸びたら損切りを建値へ'], ['partial1r', '+1R で半分を決済'], ['trail', 'トレーリング（足の確定ごとに損切りを追いかける）']];
   PUI.play = function (opts) {
@@ -146,8 +147,10 @@
           var f = pv.forming.filter(function (x) { return x.index > lc; }); if (f.length) { var fx = f[f.length - 1]; L.push({ index: fx.index, price: fx.price, type: fx.type, confirmed: false }); } return { list: L, raw: pv }; }
         function curLines() { if (play.entry && view.tf === play.entryTF) return { entry: play.entry.entryPrice, sl: play.pos ? play.pos.sl : play.entry.order.sl, tp: play.pos ? play.pos.tp : play.entry.order.tp };
           if (side && view.tf === play.entryTF) { var sl = parseFloat($('#pd-sl').value), tp = parseFloat($('#pd-tp').value); return { sl: isNaN(sl) ? null : sl, tp: isNaN(tp) ? null : tp }; } return {}; }
+        var vc = { key: null };   // v9.1 同じ時間足・同じ時刻なら、相場の集計・指標・山谷を計算し直さない（ドラッグ・ピンチ・十字線の間は描くだけ）
         function render() {
-          var asOf = play.asOf; var v = PE().view(g, view.tf, asOf); if (!v.an) return; lastV = v; view.count = v.candles.length; var pl = pivList(v.candles); lastPiv = pl;
+          var asOf = play.asOf; var key = view.tf + '|' + asOf; if (vc.key !== key) { var v0 = PE().view(g, view.tf, asOf); vc = { key: key, v: v0, pl: v0.an ? pivList(v0.candles) : null }; }
+          var v = vc.v; if (!v.an) return; lastV = v; view.count = v.candles.length; var pl = vc.pl; lastPiv = pl;
           var o = { visibleBars: view.visible, showZigzag: view.zig, zigLegend: true, pivots: pl.list, endIndex: view.end === null ? undefined : view.end, crosshair: view.cross, activeLine: view.line, snap: view.snap, pickMode: view.pick, tfLabel: tfJa(view.tf) + (view.tf === play.entryTF ? '（エントリー足）' : '') };
           var ln = curLines(); o.entry = ln.entry; o.sl = ln.sl; o.tp = ln.tp;
           Chart.render(canvas, v.an, o);
@@ -156,11 +159,11 @@
           node.querySelector('[data-zig]').classList.toggle('on', view.zig); var cb = node.querySelector('[data-cmd="cross"]'); if (cb) cb.classList.toggle('on', !!view.cross);
           node.querySelectorAll('[data-etf]').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-etf') === play.entryTF); });
           var left = PE().waitLeftMin(play); var se = $('#pd-steps'); if (se) se.textContent = 'エントリー足 ' + tfJa(play.entryTF) + '・開始から ' + (play.asOf - play.S) * 5 + '分・待てるのはあと ' + left + '分（' + Math.ceil(left / play.stepMin) + '回）';
-          var se2 = $('#pd-steps2'); if (se2) se2.textContent = play.phase === 'analysis' ? '' : play.entry ? '保有 ' + (play.asOf - play.entry.asOf) * 5 + '分' : '開始から ' + (play.asOf - play.S) * 5 + '分・あと ' + left + '分';
+          var clk = CLK((play.asOf + 1) * 5); var se2 = $('#pd-steps2'); if (se2) se2.textContent = 'いま ' + clk + '（架空）' + (play.phase === 'analysis' ? '' : play.entry ? '・保有 ' + (play.asOf - play.entry.asOf) * 5 + '分' : '・開始から ' + (play.asOf - play.S) * 5 + '分・あと ' + left + '分');
         }
         function crossText(x) { var el = $('#pd-cross'); if (!el) return; if (!x) { el.textContent = ''; return; }
           var e = x.ema.map(function (v) { return v === null ? '―' : fmt(v); }); var pv = x.pivot ? (x.pivot.confirmed ? '確定した' : '未確定の') + (x.pivot.type === 'high' ? '高値' : '安値') : 'なし';
-          el.innerHTML = '<b>' + (x.fromEnd ? x.fromEnd + '本前' : '最新') + 'の確定足</b>　始 ' + fmt(x.o) + '・高 ' + fmt(x.h) + '・安 ' + fmt(x.l) + '・終 ' + fmt(x.c) + (x.price !== null ? '　<span class="muted">十字線 ' + fmt(x.price) + '</span>' : '') +
+          el.innerHTML = '<b>' + (x.fromEnd ? x.fromEnd + '本前' : '最新') + 'の確定足</b>' + (isFinite(x.t) ? '（' + CLK(x.t) + ' 始まり・架空の時刻）' : '') + '　始 ' + fmt(x.o) + '・高 ' + fmt(x.h) + '・安 ' + fmt(x.l) + '・終 ' + fmt(x.c) + (x.price !== null ? '　<span class="muted">十字線 ' + fmt(x.price) + '</span>' : '') +
             '<br>EMA20 ' + e[0] + '・30 ' + e[1] + '・40 ' + e[2] + '　RCI ' + (x.rci === null || x.rci === undefined ? '―' : x.rci.toFixed(0)) + '　MACD ' + (x.macd === null || x.macd === undefined ? '―' : x.macd.toFixed(4)) + '／シグナル ' + (x.signal === null || x.signal === undefined ? '―' : x.signal.toFixed(4)) + '　山谷：' + pv; }
         function answeredA() { return !!(play.answers['1d'] && play.answers['4h']) && Q.every(function (q) { return play.focus && play.focus[q.key]; }); }
         function refresh() {
@@ -208,9 +211,14 @@
           if (k === 'high' || k === 'low') { var q = nearestPivot(x, y, mp, k); var res = $('#pd-pickres');
             if (!q) { res.textContent = '近くに' + (k === 'high' ? '高値の山' : '安値の谷') + 'がない。山（谷）の先の近くをタップしよう。'; return; }
             if (!q.confirmed) { res.textContent = 'その' + (k === 'high' ? '山' : '谷') + 'はまだ確定していない（右側に ' + CONFIG.zigzag.depth + ' 本の足がそろっていない）。確定したものを選ぼう。'; view.snap = { index: q.index, price: q.price }; render(); return; }
-            var lastC = lastPiv.raw.confirmed.filter(function (z) { return z.type === k; }).slice(-1)[0]; var right = !!lastC && lastC.index === q.index;
-            play.picks = play.picks || {}; play.picks[k] = { tf: view.tf, index: q.index, price: q.price, ok: right, truth: lastC ? lastC.price : null, asOf: play.asOf };
-            res.textContent = (k === 'high' ? '高値' : '安値') + ' ' + fmt(q.price) + '（' + tfJa(view.tf) + '）：' + (right ? '直近の確定した' + (k === 'high' ? '高値' : '安値') + 'で合っている' : 'もっと新しい確定した' + (k === 'high' ? '高値' : '安値') + '（' + fmt(lastC && lastC.price) + '）がある');
+            var lastC = lastPiv.raw.confirmed.filter(function (z) { return z.type === k; }).slice(-1)[0]; var exact = !!lastC && lastC.index === q.index;
+            // 許す範囲：直近の確定した山谷と「ほぼ同じ高さ」（直近 14 本の平均の値幅の 1/4 以内）の確定した山谷も正しいとする（二番天井・二番底など。1px の違いで不正解にしない）
+            var cs = lastV.candles.slice(-14); var rng = cs.reduce(function (s2, c2) { return s2 + (c2.h - c2.l); }, 0) / Math.max(1, cs.length); var tol = rng / 4;
+            var near = !exact && !!lastC && Math.abs(q.price - lastC.price) <= tol && lastC.index - q.index <= 60; var right = exact || near; var cq = lastV.candles[q.index];
+            play.picks = play.picks || {}; play.picks[k] = { tf: view.tf, index: q.index, price: q.price, ok: right, near: near, truth: lastC ? lastC.price : null, tol: Math.round(tol / play.pip * 10) / 10, asOf: play.asOf };
+            res.innerHTML = '<b>' + (k === 'high' ? '高値' : '安値') + ' ' + fmt(q.price) + '</b>（' + esc(tfJa(view.tf)) + '・' + (lastV.candles.length - 1 - q.index) + '本前の足' + (cq && isFinite(cq.t) ? '・' + CLK(cq.t) : '') + '：始 ' + fmt(cq && cq.o) + ' 高 ' + fmt(cq && cq.h) + ' 安 ' + fmt(cq && cq.l) + ' 終 ' + fmt(cq && cq.c) + '）<br>' +
+              (exact ? '直近の確定した' + (k === 'high' ? '高値' : '安値') + 'で合っている' : near ? '直近の確定した' + (k === 'high' ? '高値' : '安値') + '（' + fmt(lastC.price) + '）とほぼ同じ高さ（差 ' + (Math.abs(q.price - lastC.price) / play.pip).toFixed(1) + 'pips・許す範囲 ' + (tol / play.pip).toFixed(1) + 'pips）なので正しいとする' : 'もっと新しい確定した' + (k === 'high' ? '高値' : '安値') + '（' + fmt(lastC && lastC.price) + '）がある') +
+              '<span class="muted">（許す範囲：直近 14 本の平均の値幅の 1/4 以内）</span>';
             view.pick = null; view.snap = { index: q.index, price: q.price }; render(); return; }
           if (k === 'sl' || k === 'tp') { var price = mp.yToPrice(y); if (k === 'sl') { var q2 = nearestPivot(x, y, mp, side === 'buy' ? 'low' : 'high'); if (q2 && q2.confirmed && Math.abs(mp.yOf(q2.price) - y) <= 24) price = side === 'buy' ? q2.price - P.slBufferPips * play.pip : q2.price + P.slBufferPips * play.pip; }
             $(k === 'sl' ? '#pd-sl' : '#pd-tp').value = fmt(price); view.pick = null; recalc(); msg((k === 'sl' ? '損切り' : '利確') + 'を ' + fmt(price) + ' にした' + (k === 'sl' ? '（近くの確定した山谷があれば、その外側に余裕をとった）' : '') + '。'); }

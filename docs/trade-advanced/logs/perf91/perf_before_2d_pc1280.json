@@ -1,0 +1,79 @@
+{
+ "kind": "2d",
+ "view": "pc1280",
+ "dpr": 1,
+ "canvas": {
+  "x": 142,
+  "y": 152.890625,
+  "w": 734,
+  "h": 300
+ },
+ "renderMs": {
+  "tfSwitch": {
+   "n": 20,
+   "avg": 1.9,
+   "p95": 4.8,
+   "max": 4.8
+  },
+  "pinch": null,
+  "crosshair": {
+   "n": 58,
+   "avg": 2.4,
+   "p95": 3.4,
+   "max": 3.8
+  }
+ },
+ "timers": {
+  "before": {
+   "timeouts": 1,
+   "intervals": 6,
+   "intervalSrc": [
+    "at http://localhost:8820/js/core/update-check.js?v=a1d36ddb7e:36:10",
+    "at A.init (http://localhost:8820/js/ui/ambient81.js?v=db1fd0267f:47:53)",
+    "at Minimap.init (http://localhost:8820/js/ui/minimap.js?v=2d4293f8e3:268:5)",
+    "at Sidebar.init (http://localhost:8820/js/ui/sidebar.js?v=ab3d757cbd:29:40)",
+    "at Saves.startClock (http://localhost:8820/js/rpg/saves.js?v=4967d09747:109:129)",
+    "at Cloud.init (http://localhost:8820/js/rpg/cloud.js?v=d44f695419:163:54)"
+   ]
+  },
+  "open": {
+   "timeouts": 1,
+   "intervals": 6,
+   "intervalSrc": [
+    "at http://localhost:8820/js/core/update-check.js?v=a1d36ddb7e:36:10",
+    "at A.init (http://localhost:8820/js/ui/ambient81.js?v=db1fd0267f:47:53)",
+    "at Minimap.init (http://localhost:8820/js/ui/minimap.js?v=2d4293f8e3:268:5)",
+    "at Sidebar.init (http://localhost:8820/js/ui/sidebar.js?v=ab3d757cbd:29:40)",
+    "at Saves.startClock (http://localhost:8820/js/rpg/saves.js?v=4967d09747:109:129)",
+    "at Cloud.init (http://localhost:8820/js/rpg/cloud.js?v=d44f695419:163:54)"
+   ]
+  },
+  "playing": {
+   "timeouts": 1,
+   "intervals": 7,
+   "intervalSrc": [
+    "at http://localhost:8820/js/core/update-check.js?v=a1d36ddb7e:36:10",
+    "at A.init (http://localhost:8820/js/ui/ambient81.js?v=db1fd0267f:47:53)",
+    "at Minimap.init (http://localhost:8820/js/ui/minimap.js?v=2d4293f8e3:268:5)",
+    "at Sidebar.init (http://localhost:8820/js/ui/sidebar.js?v=ab3d757cbd:29:40)",
+    "at Saves.startClock (http://localhost:8820/js/rpg/saves.js?v=4967d09747:109:129)",
+    "at Cloud.init (http://localhost:8820/js/rpg/cloud.js?v=d44f695419:163:54)",
+    "at HTMLDivElement.<anonymous> (http://localhost:8820/js/ui/practiceui.js?v=b122e60e0d:251:"
+   ]
+  },
+  "after": {
+   "timeouts": 1,
+   "intervals": 6,
+   "intervalSrc": [
+    "at http://localhost:8820/js/core/update-check.js?v=a1d36ddb7e:36:10",
+    "at A.init (http://localhost:8820/js/ui/ambient81.js?v=db1fd0267f:47:53)",
+    "at Minimap.init (http://localhost:8820/js/ui/minimap.js?v=2d4293f8e3:268:5)",
+    "at Sidebar.init (http://localhost:8820/js/ui/sidebar.js?v=ab3d757cbd:29:40)",
+    "at Saves.startClock (http://localhost:8820/js/rpg/saves.js?v=4967d09747:109:129)",
+    "at Cloud.init (http://localhost:8820/js/rpg/cloud.js?v=d44f695419:163:54)"
+   ]
+  }
+ },
+ "chartCtlActive": 0,
+ "practiceListeners": 0
+}

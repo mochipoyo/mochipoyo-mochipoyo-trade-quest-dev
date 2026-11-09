@@ -23,7 +23,10 @@
     function norm() { var N = n(); st.visible = clamp(Math.round(st.visible), Math.min(MIN, N), Math.max(Math.min(MAX, N), Math.min(MIN, N))); if (st.end !== null && st.end !== undefined) { st.end = clamp(Math.round(st.end), Math.min(N - 1, st.visible - 1), N - 1); if (st.end >= N - 1) st.end = null; } }
     function map() { return canvas._map || null; }
     function pos(e) { var r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
-    function redraw() { norm(); o.render(); }
+    // v9.1 描き直しは 12ms に 1 回まで（ピンチの 2 本の指・速いマウスの動きで、同じ画面を何度も描かない）。間に合わなかった分は最後の状態で 1 回描く
+    var lastR = 0, pendR = null;
+    function redraw() { norm(); var now = Date.now(); if (!pendR && now - lastR >= 12) { lastR = now; o.render(); return; }
+      if (!pendR) pendR = setTimeout(function () { pendR = null; if (dead) return; lastR = Date.now(); norm(); o.render(); }, 16); }
     function setCross(x, y) { var mp = map(); if (!mp) return; var i = mp.xToIndex(x); st.cross = { index: i, y: y }; redraw(); if (o.onCross) o.onCross(CC.info(mp, st.cross)); }
     function clearCross() { if (!st.cross) return; st.cross = null; redraw(); if (o.onCross) o.onCross(null); }
     // 拡大縮小：ax（canvas の x）の下の足が、拡大のあとも同じ x に来るように
@@ -72,6 +75,7 @@
       if (mode !== 'cross') mode = null; else if (!Object.keys(ptrs).length) mode = null;
     }
     function cancel(e) { delete ptrs[e.pointerId]; clearTimeout(longT); if (!Object.keys(ptrs).length) mode = null; }
+    function resetPtrs() { ptrs = {}; clearTimeout(longT); mode = null; g = null; }   // 画面の切り替え・ほかの窓へ移ったとき：指・ボタンの状態を残さない
     function leave(e) { if (e.pointerType === 'mouse' && !Object.keys(ptrs).length) clearCross(); }
     function wheel(e) { if (dead) return; e.preventDefault(); var p = pos(e); if (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) { var mp = map(); var dd = e.shiftKey ? e.deltaY : e.deltaX; pan(Math.round(dd / ((mp && mp.slot) || 8))); return; } zoom(e.deltaY > 0 ? 1.15 : 1 / 1.15, p.x); }
     function dbl(e) { e.preventDefault(); }   // ダブルクリックは pointerup の 2 回で扱う（拡大・元に戻す）
@@ -88,13 +92,18 @@
     }
     function ctx(e) { e.preventDefault(); }
     canvas.classList.add('chart-ctl'); if (!canvas.hasAttribute('tabindex')) canvas.setAttribute('tabindex', '0'); canvas.setAttribute('aria-label', 'チャート（ドラッグ：スクロール・ピンチ／ホイール：拡大縮小・長押し／マウス：十字線・キー：← → ＋ − 0 Esc）');
-    var L = [['pointerdown', down], ['pointermove', move], ['pointerup', up], ['pointercancel', cancel], ['pointerleave', leave], ['wheel', wheel, { passive: false }], ['dblclick', dbl], ['keydown', key], ['contextmenu', ctx]];
+    function lost(e) { if (ptrs[e.pointerId] && mode !== 'pinch' && mode !== 'cross') { delete ptrs[e.pointerId]; if (!Object.keys(ptrs).length) mode = null; } }
+    var L = [['pointerdown', down], ['pointermove', move], ['pointerup', up], ['pointercancel', cancel], ['pointerleave', leave], ['lostpointercapture', lost], ['wheel', wheel, { passive: false }], ['dblclick', dbl], ['keydown', key], ['contextmenu', ctx]];
     L.forEach(function (x) { canvas.addEventListener(x[0], x[1], x[2] || false); }); CC.active++;
+    // （resize では消さない：スマホはアドレスバーの出入りでドラッグ中にも resize が来る）
+    var W2 = [['blur', resetPtrs]]; W2.forEach(function (x) { root.addEventListener(x[0], x[1]); }); var vis = function () { if (document.hidden) resetPtrs(); }; document.addEventListener('visibilitychange', vis);
     var api = { st: st, zoom: zoom, pan: pan, reset: reset, clearCross: clearCross, setCrossAt: setCross,
-      detach: function () { if (dead) return; dead = true; clearTimeout(longT); L.forEach(function (x) { canvas.removeEventListener(x[0], x[1], x[2] || false); }); CC.active = Math.max(0, CC.active - 1); } };
+      detach: function () { if (dead) return; dead = true; clearTimeout(longT); clearTimeout(pendR); L.forEach(function (x) { canvas.removeEventListener(x[0], x[1], x[2] || false); }); W2.forEach(function (x) { root.removeEventListener(x[0], x[1]); }); document.removeEventListener('visibilitychange', vis); CC.active = Math.max(0, CC.active - 1); } };
     return api;
   };
   // 十字線の位置の値（足の OHLC・指標）。an は描いた解析結果（判断の時点までの確定足だけ）
+  // 架空の相場の時刻（分）→「N日目 HH:MM」。足の t は相場の始まりからの分
+  CC.clock = function (min) { if (!isFinite(min)) return ''; var d = Math.floor(min / 1440), m = Math.round(min - d * 1440); var hh = Math.floor(m / 60), mm = m % 60; return (d + 1) + '日目 ' + (hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm; };
   CC.info = function (mp, cr) {
     if (!mp || !cr || !mp.an) return null; var an = mp.an; var i = clamp(cr.index, 0, an.candles.length - 1); var c = an.candles[i]; var e = function (k) { var v = an.emas[k][i]; return v === null || v === undefined ? null : v; };
     var piv = (mp.pivots || []).filter(function (p) { return p.index === i; })[0] || null;

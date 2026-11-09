@@ -59,13 +59,14 @@ console.log('--- 未来の足を使わない（その時刻より後の足を変
 console.log('--- チャートの描く範囲（スクロール・十字線）：渡した足より先は描かない ---');
 { const ctx = new Proxy({}, { get: (t, k) => k === 'measureText' ? () => ({ width: 10 }) : () => { } , set: () => true }); const cv = { clientWidth: 640, clientHeight: 300, getContext: () => ctx }; globalThis.devicePixelRatio = 1;
   const Chart = (require(R + '/js/chart.js'), globalThis.Chart); const g = PE.generate(seeds[0]); const v = PE.view(g, '15m', g.S); const n = v.candles.length;
+  globalThis.devicePixelRatio = 3; Chart.render(cv, v.an, { visibleBars: 60 }); ok(cv.width === 640 * 2 && cv.height === 300 * 2, '画面の密度が 3 倍の端末でも、チャートは 2 倍の密度で描く（描画の負荷を抑える：' + cv.width + '×' + cv.height + '）'); globalThis.devicePixelRatio = 1;
   Chart.render(cv, v.an, { visibleBars: 60 }); ok(cv._map.end === n - 1 && cv._map.start === n - 60, '既定：右端は判断の時点の最新の確定足（' + cv._map.end + '）');
   Chart.render(cv, v.an, { visibleBars: 60, endIndex: n + 50 }); ok(cv._map.end === n - 1, '右へスクロールしても、最新の足より先は描かない（endIndex を大きくしても ' + cv._map.end + '）');
   Chart.render(cv, v.an, { visibleBars: 60, endIndex: 100 }); ok(cv._map.end === 100 && cv._map.start === 41, '過去へスクロール：41〜100 本目を描く');
   Chart.render(cv, v.an, { visibleBars: 60, endIndex: 10 }); ok(cv._map.start === 0 && cv._map.end === 59, 'いちばん古い所より前には行かない（0〜59）');
   Chart.render(cv, v.an, { visibleBars: 60, endIndex: 100 }); const x = cv._map.xOf(80); ok(cv._map.xToIndex(x) === 80 && Math.abs(cv._map.yToPrice(cv._map.yOf(150.123)) - 150.123) < 1e-9, '座標と足の番号・価格の対応（x→80 本目・y→価格）');
   Chart.render(cv, v.an, { visibleBars: 60, crosshair: { index: n - 3, y: 100 } }); ok(true, '十字線を描ける（例外なし）');
-  const CC = require(R + '/js/ui/chartctl.js'); const inf = CC.info(cv._map, { index: n - 3, y: 100 }); ok(inf && inf.fromEnd === 2 && inf.c === v.candles[n - 3].c && inf.ema[0] === v.an.emas[0][n - 3] && !inf.future, '十字線の値：その足の OHLC・EMA・RCI・MACD（判断の時点までの足）');
+  const CC = require(R + '/js/ui/chartctl.js'); ok(CC.clock(0) === '1日目 00:00' && CC.clock(1439) === '1日目 23:59' && CC.clock(86385) === '60日目 23:45', '架空の時刻の表示（分 → N日目 HH:MM）'); const inf = CC.info(cv._map, { index: n - 3, y: 100 }); ok(inf && inf.fromEnd === 2 && inf.c === v.candles[n - 3].c && inf.ema[0] === v.an.emas[0][n - 3] && !inf.future, '十字線の値：その足の OHLC・EMA・RCI・MACD（判断の時点までの足）');
   const pv = SignalEngine.pivots(v.candles, CONFIG.zigzag.depth, n - 1); ok(pv.confirmed.every((p) => p.confirmedAt <= n - 1) && pv.forming.every((p) => p.index + CONFIG.zigzag.depth > n - 1), 'ZigZag：確定した山谷は右に ' + CONFIG.zigzag.depth + ' 本そろったもの・未確定は区別して描く（採点と同じ計算）'); }
 
 console.log('\n結果: ' + pass + ' OK / ' + fail + ' NG'); process.exit(fail ? 1 : 0);

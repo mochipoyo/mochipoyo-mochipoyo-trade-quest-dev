@@ -47,6 +47,13 @@ function key(el, k, shift) { el.dispatchEvent(new w.KeyboardEvent('keydown', { k
   ptr(cv, 'pointerdown', 300, 60, 40, 'touch'); await sleep(450); const c1 = V.cross && V.cross.index; ptr(cv, 'pointermove', 360, 60, 40, 'touch'); const c2 = V.cross && V.cross.index; ptr(cv, 'pointerup', 360, 60, 40, 'touch'); await frames(1);
   T(c1 !== null && c1 !== undefined && c2 > c1 && /本前|最新/.test(q('#pd-cross').textContent) && /EMA20/.test(q('#pd-cross').textContent) && /RCI/.test(q('#pd-cross').textContent), '長押し → 十字線・指を動かすと動く（' + c1 + '→' + c2 + '）・OHLC と指標の値を出す');
   T(V.cross.index <= N - 1, '十字線は判断の時点までの足の上だけ');
+  T(/\d+日目 \d\d:\d\d 始まり・架空の時刻/.test(q('#pd-cross').textContent), '十字線の足の時刻（架空の相場の「N日目 HH:MM」）を出す：' + (q('#pd-cross').textContent.match(/（[^）]*架空の時刻）/) || [''])[0]);
+  // 速い動き：描き直しは 12ms に 1 回まで（最後の状態で 1 回描く）
+  { let rn = 0; const R0 = w.Chart.render; w.Chart.render = function () { rn++; return R0.apply(this, arguments); }; await sleep(30);
+    ptr(cv, 'pointerdown', 100, 80, 45, 'mouse'); for (let k = 1; k <= 12; k++) ptr(cv, 'pointermove', 100 + k * 8, 80, 45, 'mouse'); ptr(cv, 'pointerup', 196, 80, 45, 'mouse'); const rnSync = rn; await frames(2);
+    T(rnSync <= 2 && rn <= 3 && mp().end === V.end, '速いドラッグ（12 回の移動）：すぐの描き直し ' + rnSync + ' 回＋最後の状態で 1 回（計 ' + rn + ' 回）・描いた範囲は最後の状態'); w.Chart.render = R0; click(q('[data-cmd="vreset"]')); await frames(2); }
+  // ほかの窓へ移ったら、指・ボタンの状態を残さない
+  ptr(cv, 'pointerdown', 200, 80, 46, 'mouse'); w.dispatchEvent(new w.Event('blur')); const e0 = V.end; ptr(cv, 'pointermove', 320, 80, 46, 'mouse'); await frames(2); T(V.end === e0, 'ドラッグの途中でほかの窓へ移る（blur）→ 戻っても勝手にスクロールしない'); ptr(cv, 'pointerup', 320, 80, 46, 'mouse');
   // マウス：動かすだけで十字線・外へ出ると消える
   ptr(cv, 'pointermove', 200, 70, 50, 'mouse', 0); T(V.cross && V.cross.index === mp().xToIndex(200), 'マウスを動かす → 十字線'); const le = new w.MouseEvent('pointerleave', { bubbles: false }); Object.defineProperty(le, 'pointerType', { value: 'mouse' }); Object.defineProperty(le, 'pointerId', { value: 50 }); cv.dispatchEvent(le); T(!V.cross && q('#pd-cross').textContent === '', 'チャートの外へ → 十字線を消す');
   // キー
@@ -60,6 +67,7 @@ function key(el, k, shift) { el.dispatchEvent(new w.KeyboardEvent('keydown', { k
   const v = PE.view(PE.game(play), V.tf, play.asOf); const pv = w.SignalEngine.pivots(v.candles, w.CONFIG.zigzag.depth, v.candles.length - 1); const lastH = pv.confirmed.filter((x) => x.type === 'high').slice(-1)[0];
   const M = mp(); ptr(cv, 'pointerdown', M.xOf(lastH.index) + 4, M.yOf(lastH.price) + 6, 60, 'mouse'); ptr(cv, 'pointerup', M.xOf(lastH.index) + 4, M.yOf(lastH.price) + 6, 60, 'mouse'); await frames(1);
   T(play.picks && play.picks.high && play.picks.high.ok && play.picks.high.price === lastH.price && /合っている/.test(q('#pd-pickres').textContent), '直近の確定した高値の近くをタップ → 吸い付いて「合っている」（' + lastH.price + '）');
+  T(/本前の足/.test(q('#pd-pickres').textContent) && /始 \d/.test(q('#pd-pickres').textContent) && /許す範囲/.test(q('#pd-pickres').textContent), '指定した山の足の番号（N本前）・時刻・OHLC と、正しいとする範囲（許す範囲）を出す');
   const lastL = pv.confirmed.filter((x) => x.type === 'low').slice(-2)[0]; click(q('.aopt[data-pick="low"]')); await frames(1); const M2 = mp();
   if (lastL && lastL.index >= M2.start) { ptr(cv, 'pointerdown', M2.xOf(lastL.index), M2.yOf(lastL.price) + 3, 61, 'mouse'); ptr(cv, 'pointerup', M2.xOf(lastL.index), M2.yOf(lastL.price) + 3, 61, 'mouse'); await frames(1);
     T(play.picks.low && (play.picks.low.ok === (lastL === pv.confirmed.filter((x) => x.type === 'low').slice(-1)[0])), '古い方の安値を選ぶと「もっと新しい確定した安値がある」：' + q('#pd-pickres').textContent.slice(0, 40)); } else T(true, '（表示の範囲に 2 つ前の安値がない）');
@@ -81,6 +89,7 @@ function key(el, k, shift) { el.dispatchEvent(new w.KeyboardEvent('keydown', { k
   click(q('[data-cmd="hplay"]')); for (let i = 0; i < 400 && !doc.querySelector('#ui .pd-review'); i++) await frames(2);
   const rv = doc.querySelector('#ui .pd-review'); T(rv && /エントリー足：/.test(rv.textContent) && /進める時間 15分/.test(rv.textContent) && /高値・安値の指定/.test(rv.textContent), '振り返り：選んだエントリー足・進める時間・高値安値の指定の結果');
   click(rv && rv.querySelector('[data-cmd="end"]')); for (let i = 0; i < 100 && !res; i++) await frames(2);
+  T(res && res.record.tfLogAt && res.record.tfLogAt.length === 1 && res.record.tfLogAt[0].tf === other && res.record.tfLogAt[0].min === 0, '記録：いつ（開始から何分）どの時間足を選んだか（' + JSON.stringify(res && res.record.tfLogAt) + '）');
   T(res && res.record.tf === other && res.record.tfLog.length === 1 && res.record.picks && res.record.picks.high === true && res.record.engineVersion === 3, '記録：エントリー足（' + (res && res.record.tf) + '）・選び直し・指定の結果・engineVersion 3');
   T(w.ChartCtl.active === L0 && PUI.listeners === 0 && !doc.body.classList.contains('pd-chart-open'), '閉じた後：チャートの操作のイベントを外した（' + w.ChartCtl.active + '）・十字キーの印を戻した');
   // ---- 2問目：上級のポジション管理 ----

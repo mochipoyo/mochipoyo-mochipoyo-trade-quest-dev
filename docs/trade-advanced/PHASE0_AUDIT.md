@@ -34,6 +34,18 @@
 
 ※ v9.1 の表示名の変更（「予想最大損失」→「通常約定時の推定損失」。指示書 6.2）で、v9.0 の `tl/tl_ui_test.js` の 1 項目（文言の確かめ）が NG になる。これは仕様どおりの変更なので、文言だけを新しい名前に合わせた更新版 `updated-tests/tl_ui_test.js`（39 OK）を置いた。元のテストは消していない（元のまま動かすと 38 OK / 1 NG：その 1 件は文言だけ）。
 
+### 再現方法と影響範囲
+
+| テスト | 再現方法（リポジトリの直下で） | 影響範囲 |
+|---|---|---|
+| dow_open_test | `node docs/tools/v81/dow_open_test.js`（3D 相当）・`node docs/tools/v81/dow_open_test.js 2d`。修正の前の版（例：`4f4f6e3`）で NG、`bda86ac` 以後は すべて OK | プレイヤーへの影響あり（修正済み）：ダウの村から北へ出てすぐ戻る 1 歩（2D）・右の 1 つの並びから村へ入る道（3D）が、トレードマスターの NPC にふさがれていた。遠回りすれば入れたので、進行が止まることはなかった。修正でトレードマスターの立つ場所が変わる（セーブには位置を保存していないので、旧セーブへの影響なし） |
+| tradiatest | `cd /home/claude/work && RPG_DIR=<リポジトリ>/ node tradiatest.js`（元：62 OK / 1 NG）・`RPG_DIR=<リポジトリ>/ node <リポジトリ>/docs/tools/tl2/updated-tests/tradiatest.js`（更新版：63 OK） | テストだけ（ゲームは正しく動く） |
+| learntest | `cd /home/claude/work && RPG_DIR=<リポジトリ>/ node learntest.js` をくり返す（ときどき「practice no double reward」）・更新版は `docs/tools/tl2/updated-tests/learntest.js` | テストだけ（二重の報酬は出ていない） |
+| ult/dojo_test | `cd /home/claude/work && RPG_DIR=<リポジトリ>/ node ult/dojo_test.js`（元：FAIL 4 件）・更新版 `docs/tools/tl2/updated-tests/dojo_test.js`（ALL OK） | テストだけ |
+| tl/tl_ui_test（v9.1 の仕様変更） | `node docs/tools/tl/tl_ui_test.js`（元：38 OK / 1 NG）・`node docs/tools/tl2/updated-tests/tl_ui_test.js`（39 OK） | テストだけ（表示名を仕様どおりに変えたため） |
+
+更新版に置き換えて全体を動かすスクリプト：`docs/tools/tl2/regress_v91.sh`（v8.8 で ftmenu・layout_menu を更新版に置き換えたのと同じ考え方。元のテストは消していない）。
+
 ## 5. Phase 6 で見つけて直した不具合（v9.0 のコード）
 
 - `StrategyProfiles.evaluateEntry`：上位足と逆（htf_against）を「注意だけ」にした設定で、`else` のせいで日足と 4 時間足の食い違い（htf_conflict）の妨げが判定されなかった → 2 つを別々に判定

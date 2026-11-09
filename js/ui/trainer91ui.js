@@ -37,11 +37,12 @@
   // チャートを 1 枚描いて操作を付ける（A・B の画面で使う）。返り値：{ render, detach, view }
   function chartBox(node, sel, g, getAsOf, extra) {
     var canvas = node.querySelector(sel); var view = { tf: g.entryTF, visible: 72, zig: true, end: null, cross: null, count: 0 }; var info = node.querySelector(sel + '-x');
-    function render() { var v = PE().view(g, view.tf, getAsOf()); if (!v.an) return; view.count = v.candles.length; if (extra && extra.reveal) v.an.revealedCount = extra.reveal(view.tf, v);
-      var pv = SE().pivots(v.candles, CONFIG.zigzag.depth, v.candles.length - 1); var L = pv.confirmed.map(function (x) { return { index: x.index, price: x.price, type: x.type, confirmed: true }; });
+    var vc = { key: null };   // 同じ時間足・同じ時刻なら計算し直さない（ドラッグ・ピンチの間は描くだけ）
+    function render() { var key = view.tf + '|' + getAsOf(); if (vc.key !== key) { var v0 = PE().view(g, view.tf, getAsOf()); var pv0 = v0.an ? SE().pivots(v0.candles, CONFIG.zigzag.depth, v0.candles.length - 1) : null; vc = { key: key, v: v0, L: pv0 ? pv0.confirmed.map(function (x) { return { index: x.index, price: x.price, type: x.type, confirmed: true }; }) : [] }; }
+      var v = vc.v; if (!v.an) return; view.count = v.candles.length; if (extra && extra.reveal) v.an.revealedCount = extra.reveal(view.tf, v); var L = vc.L;
       var o = { visibleBars: view.visible, showZigzag: view.zig, zigLegend: true, pivots: L, endIndex: view.end === null ? undefined : view.end, crosshair: view.cross, tfLabel: PE().tfLabel(view.tf) }; if (extra && extra.opts) Object.assign(o, extra.opts(view.tf, v));
       Chart.render(canvas, v.an, o); node.querySelectorAll(sel + '-tfs .tf').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tf') === view.tf); }); }
-    var ctl = root.ChartCtl ? root.ChartCtl.attach(canvas, { st: view, defVisible: 72, count: function () { return view.count || 1; }, render: render, onCross: function (x) { if (!info) return; info.textContent = x ? (x.fromEnd ? x.fromEnd + '本前' : '最新') + '：始 ' + fmt(x.o) + ' 高 ' + fmt(x.h) + ' 安 ' + fmt(x.l) + ' 終 ' + fmt(x.c) + '・RCI ' + (isFinite(x.rci) ? x.rci.toFixed(0) : '―') + '・MACD ' + (isFinite(x.macd) ? x.macd.toFixed(4) : '―') : ''; } }) : null;
+    var ctl = root.ChartCtl ? root.ChartCtl.attach(canvas, { st: view, defVisible: 72, count: function () { return view.count || 1; }, render: render, onCross: function (x) { if (!info) return; info.textContent = x ? (x.fromEnd ? x.fromEnd + '本前' : '最新') + (isFinite(x.t) && root.ChartCtl ? '（' + root.ChartCtl.clock(x.t) + '・架空）' : '') + '：始 ' + fmt(x.o) + ' 高 ' + fmt(x.h) + ' 安 ' + fmt(x.l) + ' 終 ' + fmt(x.c) + '・RCI ' + (isFinite(x.rci) ? x.rci.toFixed(0) : '―') + '・MACD ' + (isFinite(x.macd) ? x.macd.toFixed(4) : '―') : ''; } }) : null;
     node.querySelectorAll(sel + '-tfs .tf').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); view.tf = b.getAttribute('data-tf'); view.end = null; view.cross = null; render(); }); });
     setTimeout(render, 20); return { render: render, view: view, detach: function () { if (ctl) ctl.detach(); } };
   }

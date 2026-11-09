@@ -36,12 +36,14 @@
   */
   Chart.render = function (canvas, an, opts) {
     opts = opts || {};
-    var dpr = (root.devicePixelRatio || 1);
+    var dpr = Math.min(2, root.devicePixelRatio || 1);   // v9.1 描画の負荷を抑えるため、密度は 2 倍まで（3 倍の端末でも 2 倍で描く）
     var cssW = canvas.clientWidth || 600, cssH = canvas.clientHeight || 380;
     if (cssW < 50) cssW = 600;
     if (cssH < 50) cssH = 380;
-    canvas.width = Math.floor(cssW * dpr); canvas.height = Math.floor(cssH * dpr);
-    var ctx = canvas.getContext('2d');
+    var bw = Math.floor(cssW * dpr), bh = Math.floor(cssH * dpr); var ctx;
+    // v9.1 大きさが同じなら、描画の領域を作り直さずに初期化（ドラッグ・ピンチの間の描き直しを軽く）。reset が使えないブラウザは今までどおり
+    if (canvas.width === bw && canvas.height === bh && (ctx = canvas.getContext('2d')) && typeof ctx.reset === 'function') ctx.reset();
+    else { canvas.width = bw; canvas.height = bh; ctx = canvas.getContext('2d'); }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     var W = cssW, H = cssH;
     ctx.fillStyle = COLORS.bg; ctx.fillRect(0, 0, W, H);
