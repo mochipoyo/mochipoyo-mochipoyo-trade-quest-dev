@@ -1,0 +1,30 @@
+{
+ "frames": 2396,
+ "fps": 59.9,
+ "p50": 16.7,
+ "p90": 16.7,
+ "p99": 16.8,
+ "max": 16.8,
+ "over33": 0,
+ "over50": 0,
+ "over100": 0,
+ "longTasks": 0,
+ "longMax": 0,
+ "longList": [],
+ "maps": [
+  "poyo_village"
+ ],
+ "built": {
+  "build_poyo_church": 149
+ },
+ "pos": [
+  31,
+  11,
+  "poyo_village"
+ ],
+ "errors": [],
+ "start": {
+  "x": 24,
+  "y": 32
+ }
+}
