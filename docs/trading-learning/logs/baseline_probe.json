@@ -1,0 +1,92 @@
+[
+ [
+  "1 買い・損切りが上（逆側）：注文が成立するか",
+  true
+ ],
+ [
+  "1 その結果",
+  {
+   "outcome": "sl",
+   "pips": 30,
+   "bars": 1
+  }
+ ],
+ [
+  "1 成績・資金に反映されるか（pnl・取引回数）",
+  {
+   "pnl": 1500,
+   "trades": 1
+  }
+ ],
+ [
+  "2 買い・利確が下（逆側）：成立するか／結果",
+  {
+   "trade": true,
+   "outcome": "tp",
+   "pips": -10
+  }
+ ],
+ [
+  "3 lotFor(資金1万円, 0.5%, 損切り200pips)",
+  "0.01 万通貨（許容損失 50円。0.01万通貨×200pips×100円 ＝ 200円）"
+ ],
+ [
+  "3 lotFor(NaN, 1, 30)",
+  "NaN"
+ ],
+ [
+  "3 lotFor(1000000, -1, 30)",
+  "0.01"
+ ],
+ [
+  "4 損切り NaN：成立するか／含み損の最大（worstPips）",
+  {
+   "trade": true,
+   "sl": "NaN",
+   "outcome": "tp"
+  }
+ ],
+ [
+  "5 TradeEval.simulate 同じ足で両方",
+  {
+   "outcome": "sl",
+   "ambiguous": true
+  }
+ ],
+ [
+  "6 Market.settle（既定 slAtr=1.0）",
+  {
+   "r": -1.03,
+   "pnlOverInitialRisk": -1.03,
+   "hasRiskR": false,
+   "hasAtrMultiple": false
+  }
+ ],
+ [
+  "6 Market.settle（slAtr=1.5）：r と 損益÷初期リスク",
+  {
+   "r": 0.57,
+   "pnlOverInitialRisk": 0.38
+  }
+ ],
+ [
+  "7 RCI -93→-78→-65→-80（変更前の判定式）",
+  "oversold_reversal"
+ ],
+ [
+  "8 設問「上位足（4時間足）の方向は？」なのに日足で採点する場面",
+  "0/34 "
+ ],
+ [
+  "8 設問の文",
+  "上位足（4時間足）の方向は？"
+ ],
+ [
+  "9 truth.macd の優先順（regular で始まる ID なら通常を先に）",
+  "TradeEval.truth の order は def.id.indexOf(\"regular\")===0 で決まる（js/trading.js）"
+ ],
+ [
+  "10 トレードバトルの表の項目名",
+  "「最大ドローダウン」（計算は maeOf＝取引中の最大逆行幅 pips）"
+ ]
+]
