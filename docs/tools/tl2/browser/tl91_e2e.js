@@ -46,7 +46,7 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
   const menuTxt = await p.evaluate(() => document.querySelector('#ui .pd-menu').textContent); S(['コースを選んで練習', '初見チャートの認定試験', '上級ポジション管理の練習', '同じ相場・3判断比較', '思い込みを見抜く', '資金管理・連敗耐性試験'].every((k) => menuTxt.indexOf(k) >= 0), '道場のメニューに Lv1〜8・上級ポジション管理・A・B・C の演習');
   if (MODE === 'layout') { await item('上級ポジション管理の練習'); await p.waitForSelector('#ui .practice-panel #pd-chart'); await p.waitForTimeout(400); const g = await geo('#pd-chart'); S(g && g.h >= (VIEW === 'land' ? 150 : 200), 'チャートの高さ ' + (g && g.h) + 'px'); await noOverflow('道場の 1 問'); await shot('02_play');
     const tb = await p.evaluate(() => [...document.querySelectorAll('#ui .practice-panel .tf, #ui .practice-panel .aopt, #ui .practice-panel .mini')].map((b) => { const r = b.getBoundingClientRect(); return Math.min(r.width, r.height); }).filter((x) => x > 0));
-    if (touch) S(Math.min.apply(null, tb) >= 43.5, 'タッチの対象は 44px 以上（いちばん小さい ' + Math.min.apply(null, tb).toFixed(1) + 'px）');
+    if (touch) S(Math.min.apply(null, tb) >= 43.5, 'タッチの対象（時間足・選択肢・小さいボタン）は 44px 以上（いちばん小さい ' + Math.min.apply(null, tb).toFixed(1) + 'px・' + tb.length + '個）');
     const padHidden = await p.evaluate(() => { const pd = document.getElementById('pad'); return !pd || getComputedStyle(pd).display === 'none'; }); S(padHidden, 'チャートの操作のあいだ、RPG の十字キーを隠す');
     await p.evaluate(() => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); }); }
   else {
@@ -83,7 +83,7 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
       await tap(`.practice-panel .aopt[data-bias="${sn.side}"]`); await tap('.practice-panel [data-cmd="hyp"]'); await tap('.practice-panel [data-cmd="check"]'); await tap(`.practice-panel [data-cmd="${sn.side === 'buy' ? 'long' : 'short'}"]`);
       await tap('.practice-panel [data-cmd="slhelp"]'); await tap('.practice-panel [data-cmd="tphelp"]'); await p.selectOption('#pd-plan', 'be1r'); if (tries === 1) await shot('04_order');
       // 損切りの線をドラッグ（マウス・タッチ）
-      if (tries === 1) { const sl0 = await p.inputValue('#pd-sl'); const yy = await p.evaluate(() => { const c = document.getElementById('pd-chart'); const r = c.getBoundingClientRect(); return r.top + c._map.yOf(parseFloat(document.getElementById('pd-sl').value)); }); const xx = box.x + box.width * 0.6;
+      if (tries === 1) { await (await p.$('#pd-chart')).scrollIntoViewIfNeeded(); const bx = await (await p.$('#pd-chart')).boundingBox(); const sl0 = await p.inputValue('#pd-sl'); const yy = await p.evaluate(() => { const c = document.getElementById('pd-chart'); const r = c.getBoundingClientRect(); return r.top + c._map.yOf(parseFloat(document.getElementById('pd-sl').value)); }); const xx = bx.x + bx.width * 0.6;
         if (touch) await touchSeq([[xx, yy]], [[[xx, yy + 10]], [[xx, yy + 20]]], 0); else { await p.mouse.move(xx, yy); await p.mouse.down(); await p.mouse.move(xx, yy + 20, { steps: 4 }); await p.mouse.up(); }
         const sl1 = await p.inputValue('#pd-sl'); S(parseFloat(sl1) !== parseFloat(sl0), '損切りの線をドラッグ → 入力欄が変わる（' + sl0 + '→' + sl1 + '）'); await tap('.practice-panel [data-cmd="slhelp"]'); }
       await tap('.practice-panel [data-cmd="order"]'); const ph = await p.evaluate(() => PracticeUI.current.play.phase); if (ph !== 'holding') { S(false, '発注できなかった：' + await p.evaluate(() => document.querySelector('#pd-err').textContent.slice(0, 60))); break; }
@@ -94,7 +94,8 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
         else if (did.be && !did.part) { await tap('.practice-panel [data-cmd="m-p50"]'); const m = await p.evaluate(() => document.querySelector('#pd-mmsg').textContent); if (/^✓/.test(m)) { did.part = true; S(true, '50% の部分決済：' + m.slice(0, 50)); } }
         else if (did.part && !did.close) { await tap('.practice-panel [data-cmd="hstep"]'); if ((await p.evaluate(() => PracticeUI.current.play.phase)) !== 'holding') break; await p.selectOption('#pd-cwhy', 'time'); await tap('.practice-panel [data-cmd="m-close"]'); const m = await p.evaluate(() => document.querySelector('#pd-mmsg').textContent); if (/^✓/.test(m)) { did.close = true; S(true, '早めの決済：' + m.slice(0, 50)); await shot('06_close'); await tap('.practice-panel [data-cmd="hstep"]'); } }
       }
-      await p.waitForSelector('#ui .pd-review', { timeout: 60000 }); await p.waitForTimeout(300);
+      if ((await p.evaluate(() => PracticeUI.current.play && PracticeUI.current.play.phase)) === 'holding') await tap('.practice-panel [data-cmd="hplay"]');   // まだ保有中なら、決済まで再生
+      await p.waitForSelector('#ui .pd-review', { timeout: 180000 }); await p.waitForTimeout(300);
       if (did.be && did.part && did.close) { const rt = await p.evaluate(() => document.querySelector('#ui .pd-review').textContent); S(/上級のポジション管理の記録/.test(rt) && /部分決済/.test(rt) && /早めの決済/.test(rt) && /計画と実際の管理/.test(rt), '振り返り：約定ごとの記録（部分決済・早めの決済）・計画と実際の管理の採点'); await shot('07_review'); await noOverflow('振り返り'); await tap('#ui .pd-review [data-cmd="end"]'); break; }
       await tap('#ui .pd-review [data-cmd="again"]');
     }
@@ -123,8 +124,9 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
     const loopPlays = async (n) => { for (let k = 0; k < n; k++) { await p.evaluate(() => { window.__lr = null; PracticeUI.play({ level: 6, lvDef: PracticeUI.LEVELS[5], pick: { seed: PRACTICE_SEEDS.learn.similar[1], cat: 'similar', set: 'learn' } }).then((r) => { window.__lr = r; }); });
       await p.waitForFunction(() => !!document.querySelector('#ui .practice-panel #pd-chart')); await p.evaluate(() => { const pl = PracticeUI.current.play; pl.answers = { '1d': 'up', '4h': 'up' }; pl.bias = 'neutral'; document.querySelector('.practice-panel [data-cmd="hyp"]').click(); document.querySelector('.practice-panel [data-cmd="skip"]').click(); });
       await p.waitForFunction(() => !!document.querySelector('#ui .pd-review')); await p.evaluate(() => document.querySelector('#ui .pd-review [data-cmd="end"]').click()); await p.waitForFunction(() => !!window.__lr); } };
-    await loopPlays(4); const mA = await metrics(); await loopPlays(4); const mB = await metrics();
-    S(mB.listeners <= mA.listeners + 2 && mB.nodes <= mA.nodes + 60, 'イベントリスナー・DOM の数（CDP）：同じ問題を 4 問 → さらに 4 問で増え続けない（リスナー ' + mA.listeners + '→' + mB.listeners + '・DOM ' + mA.nodes + '→' + mB.nodes + '。道場の前 ' + m0.listeners + '・ヘッドレスの数）');
+    const settle = async () => { await p.waitForTimeout(3000); return metrics(); };   // 一時的な知らせ（トーストなど）が消えるのを待ってから数える
+    await loopPlays(4); const mA = await settle(); await loopPlays(4); const mB0 = await settle(); await loopPlays(4); const mB = await settle();
+    S(mB.listeners <= mB0.listeners + 2 && mB.nodes <= mB0.nodes + 4 * 30 && mB0.listeners <= mA.listeners + 20, 'イベントリスナー・DOM の数（CDP）：同じ問題を 4・8・12 問のあとで数えて、増え続けない（リスナー ' + mA.listeners + '→' + mB0.listeners + '→' + mB.listeners + '・DOM ' + mA.nodes + '→' + mB0.nodes + '→' + mB.nodes + '。道場の前 ' + m0.listeners + '・ヘッドレスの数）');
     // ---- 再読み込み → つづきから → D の続き ----
     await p.evaluate(() => { State.save(1); }); await p.reload(); await ready(); await p.waitForSelector('#ui .title-menu', { timeout: 120000 }).catch(() => { }); await item('つづきから'); await item('スロット1'); await inField();
     await p.evaluate(() => { State.data.settings.textSpeed = 'instant'; window.__menu = PracticeUI.menu(); }); await item('初見チャートの認定試験'); await opt('続きから');

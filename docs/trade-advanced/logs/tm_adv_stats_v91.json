@@ -1,0 +1,289 @@
+{
+ "generated": "2026-11-09T08:24:41.089Z",
+ "problems": 120,
+ "skill": 1,
+ "ms": 208809,
+ "note": "架空の相場での統計。少ない問題数では結果がぶれる。実際の売買の成績を表すものではない",
+ "summary": {
+  "trend": {
+   "problems": 120,
+   "tradeRate": 75.8,
+   "winRate": 36.26,
+   "expectancyR": -0.07,
+   "avgProcess": 84.5,
+   "skips": 29,
+   "timeouts": 0
+  },
+  "contra": {
+   "problems": 120,
+   "tradeRate": 100,
+   "winRate": 28.33,
+   "expectancyR": -0.26,
+   "avgProcess": 51,
+   "skips": 0,
+   "timeouts": 0
+  },
+  "break": {
+   "problems": 120,
+   "tradeRate": 75.8,
+   "winRate": 40.66,
+   "expectancyR": -0.19,
+   "avgProcess": 47.3,
+   "skips": 29,
+   "timeouts": 0
+  },
+  "momentum": {
+   "problems": 120,
+   "tradeRate": 100,
+   "winRate": 40.83,
+   "expectancyR": -0.01,
+   "avgProcess": 50.8,
+   "skips": 0,
+   "timeouts": 0
+  },
+  "all": {
+   "problems": 120,
+   "tradeRate": 73.3,
+   "winRate": 42.05,
+   "expectancyR": 0.08,
+   "avgProcess": 100,
+   "skips": 32,
+   "timeouts": 0
+  }
+ },
+ "h2h": {
+  "riskR": {
+   "trend": {
+    "contra": {
+     "w": 64,
+     "d": 28,
+     "l": 28
+    },
+    "break": {
+     "w": 36,
+     "d": 43,
+     "l": 41
+    },
+    "momentum": {
+     "w": 34,
+     "d": 44,
+     "l": 42
+    },
+    "all": {
+     "w": 39,
+     "d": 43,
+     "l": 38
+    }
+   },
+   "contra": {
+    "trend": {
+     "w": 28,
+     "d": 28,
+     "l": 64
+    },
+    "break": {
+     "w": 34,
+     "d": 15,
+     "l": 71
+    },
+    "momentum": {
+     "w": 31,
+     "d": 20,
+     "l": 69
+    },
+    "all": {
+     "w": 25,
+     "d": 30,
+     "l": 65
+    }
+   },
+   "break": {
+    "trend": {
+     "w": 41,
+     "d": 43,
+     "l": 36
+    },
+    "contra": {
+     "w": 71,
+     "d": 15,
+     "l": 34
+    },
+    "momentum": {
+     "w": 31,
+     "d": 51,
+     "l": 38
+    },
+    "all": {
+     "w": 48,
+     "d": 28,
+     "l": 44
+    }
+   },
+   "momentum": {
+    "trend": {
+     "w": 42,
+     "d": 44,
+     "l": 34
+    },
+    "contra": {
+     "w": 69,
+     "d": 20,
+     "l": 31
+    },
+    "break": {
+     "w": 38,
+     "d": 51,
+     "l": 31
+    },
+    "all": {
+     "w": 44,
+     "d": 32,
+     "l": 44
+    }
+   },
+   "all": {
+    "trend": {
+     "w": 38,
+     "d": 43,
+     "l": 39
+    },
+    "contra": {
+     "w": 65,
+     "d": 30,
+     "l": 25
+    },
+    "break": {
+     "w": 44,
+     "d": 28,
+     "l": 48
+    },
+    "momentum": {
+     "w": 44,
+     "d": 32,
+     "l": 44
+    }
+   }
+  },
+  "discipline": {
+   "trend": {
+    "contra": {
+     "w": 120,
+     "d": 0,
+     "l": 0
+    },
+    "break": {
+     "w": 118,
+     "d": 1,
+     "l": 1
+    },
+    "momentum": {
+     "w": 118,
+     "d": 1,
+     "l": 1
+    },
+    "all": {
+     "w": 0,
+     "d": 19,
+     "l": 101
+    }
+   },
+   "contra": {
+    "trend": {
+     "w": 0,
+     "d": 0,
+     "l": 120
+    },
+    "break": {
+     "w": 66,
+     "d": 25,
+     "l": 29
+    },
+    "momentum": {
+     "w": 46,
+     "d": 39,
+     "l": 35
+    },
+    "all": {
+     "w": 0,
+     "d": 0,
+     "l": 120
+    }
+   },
+   "break": {
+    "trend": {
+     "w": 1,
+     "d": 1,
+     "l": 118
+    },
+    "contra": {
+     "w": 29,
+     "d": 25,
+     "l": 66
+    },
+    "momentum": {
+     "w": 23,
+     "d": 43,
+     "l": 54
+    },
+    "all": {
+     "w": 0,
+     "d": 0,
+     "l": 120
+    }
+   },
+   "momentum": {
+    "trend": {
+     "w": 1,
+     "d": 1,
+     "l": 118
+    },
+    "contra": {
+     "w": 35,
+     "d": 39,
+     "l": 46
+    },
+    "break": {
+     "w": 54,
+     "d": 43,
+     "l": 23
+    },
+    "all": {
+     "w": 0,
+     "d": 0,
+     "l": 120
+    }
+   },
+   "all": {
+    "trend": {
+     "w": 101,
+     "d": 19,
+     "l": 0
+    },
+    "contra": {
+     "w": 120,
+     "d": 0,
+     "l": 0
+    },
+    "break": {
+     "w": 120,
+     "d": 0,
+     "l": 0
+    },
+    "momentum": {
+     "w": 120,
+     "d": 0,
+     "l": 0
+    }
+   }
+  }
+ },
+ "extremes": [
+  "discipline:trend>contra 120-0",
+  "discipline:trend>break 118-1",
+  "discipline:trend>momentum 118-1",
+  "discipline:all>trend 101-0",
+  "discipline:all>contra 120-0",
+  "discipline:all>break 120-0",
+  "discipline:all>momentum 120-0"
+ ]
+}

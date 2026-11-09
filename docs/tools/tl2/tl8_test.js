@@ -84,6 +84,8 @@ console.log('--- 8.2 上級の対戦：判断の過程の比べ・相手の説�
   ok(J(f2) === J(op.facts), '決めた時刻より後の足を変えても、相手の説明の事実は同じ');
   const me = { record: Object.assign({}, op.record, { process: 70 }), answers: { '1d': 'up', '4h': 'down' }, atMin: 15 }; const rows = D9.compareRows(me, op, pick);
   ok(rows.length === 10 && ['環境認識（日足）', 'シグナル・決めた時刻', '見送り／発注', '注文', '決済と管理（結果は運にも左右される）', '判断の過程の点（合計）'].every((k) => rows.some((r) => r[0] === k)), '比べる表：環境認識・シグナル（時刻）・見送り／発注・注文・決済と管理・判断の点');
+  { let nTO = 0, nn = 0; const sds = Object.keys(S.learn).map((k) => S.learn[k][1]); for (const sd of sds) for (const st of ['trend', 'break', 'all']) { nn++; const r = D9.npcRun({ seed: sd, set: 'learn' }, st, { skill: 1, seed: 1 }); if (r.kind === 'timeout') nTO++; }
+    ok(nTO === 0, '相手は合図が出なければ、待てる時間の終わりに自分から見送る（時間切れにしない。v9.0 と同じ ' + (nn - nTO) + '/' + nn + '）'); }
   const src = fs.readFileSync(R + '/js/rpg/tradeduel90.js', 'utf8'); ok(!/d\.gold|gold\s*[+-]?=|addGold|prize/i.test(src.replace(/賞金/g, '')), '上級の対戦は賞金・ゴールドを出さない（新しい報酬の抜け穴なし）'); }
 
 console.log('\n結果: ' + pass + ' OK / ' + fail + ' NG'); process.exit(fail ? 1 : 0);

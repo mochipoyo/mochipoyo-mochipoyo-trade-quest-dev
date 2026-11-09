@@ -41,6 +41,7 @@
         var ch = SPF().evaluateEntry(sn, dec.side, prof); var claims = {}; ch.evidence.forEach(function (x) { claims[x.key] = miss() ? !x.ok : x.ok; });
         var r = PE().enter(play, { side: dec.side, sl: Math.round(sl * 1000) / 1000, tp: Math.round(tp * 1000) / 1000, riskPercent: style === 'all' ? 0.5 : 1 }, cap, claims, prof);
         if (r.ok) { entered = dec; break; } }
+      if (play.asOf >= play.S + (play.waitBars || PE().WAIT_MIN / 5)) break;   // v9.1 待てる時間の終わり：時間切れにせず、次で自分から見送る（v9.0 と同じ）
       if (!PE().advance(play, prof)) break;
     }
     if (!entered) PE().skip(play, null);   // 相手は、合図が出なければ最後に自分で見送る（時間切れにはしない）
