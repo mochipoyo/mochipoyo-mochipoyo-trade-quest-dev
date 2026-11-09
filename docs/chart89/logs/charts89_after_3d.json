@@ -244,28 +244,28 @@
    "docScroll": false
   },
   "quiz": {
-   "w": 734,
-   "h": 130,
+   "w": 403,
+   "h": 190,
    "price": null,
-   "top": 172,
-   "visible": 130,
+   "top": 86,
+   "visible": 190,
    "vh": 340,
    "panelH": 330,
    "panelScroll": false,
    "docScroll": false,
    "choices": {
-    "bottom": 404,
+    "bottom": 274,
     "panelBottom": 335,
-    "inView": false,
+    "inView": true,
     "scroll": false
    }
   },
   "lev": {
    "w": 789,
-   "h": 220,
-   "price": 117,
+   "h": 300,
+   "price": 164,
    "top": 20,
-   "visible": 220,
+   "visible": 300,
    "vh": 340,
    "panelH": 323,
    "panelScroll": false,

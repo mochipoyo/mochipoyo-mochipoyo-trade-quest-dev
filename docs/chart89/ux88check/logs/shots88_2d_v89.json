@@ -1,0 +1,422 @@
+{
+ "p390": {
+  "chart": {
+   "padVisible": false,
+   "uiH": 840,
+   "vh": 844,
+   "rect": [
+    2,
+    8,
+    386,
+    823
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "chartres": {
+   "padVisible": false,
+   "uiH": 840,
+   "vh": 844,
+   "rect": [
+    2,
+    8,
+    386,
+    823
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "quick": {
+   "padVisible": false,
+   "uiH": 840,
+   "vh": 844,
+   "rect": [
+    12,
+    4,
+    367,
+    832
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "record": {
+   "padVisible": true,
+   "uiH": 507,
+   "vh": 844,
+   "rect": [
+    8,
+    20,
+    374,
+    466
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "menu": {
+   "padVisible": true,
+   "uiH": 507,
+   "vh": 844,
+   "rect": [
+    16,
+    47,
+    359,
+    414
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "settings": {
+   "padVisible": true,
+   "uiH": 507,
+   "vh": 844,
+   "rect": [
+    8,
+    114,
+    374,
+    279
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "errors": []
+ },
+ "p360": {
+  "chart": {
+   "padVisible": false,
+   "uiH": 796,
+   "vh": 800,
+   "rect": [
+    2,
+    8,
+    356,
+    780
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "chartres": {
+   "padVisible": false,
+   "uiH": 796,
+   "vh": 800,
+   "rect": [
+    2,
+    8,
+    356,
+    780
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "quick": {
+   "padVisible": false,
+   "uiH": 796,
+   "vh": 800,
+   "rect": [
+    11,
+    4,
+    338,
+    788
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "record": {
+   "padVisible": true,
+   "uiH": 468,
+   "vh": 800,
+   "rect": [
+    7,
+    19,
+    346,
+    431
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "menu": {
+   "padVisible": true,
+   "uiH": 468,
+   "vh": 800,
+   "rect": [
+    14,
+    27,
+    331,
+    414
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "settings": {
+   "padVisible": true,
+   "uiH": 468,
+   "vh": 800,
+   "rect": [
+    7,
+    95,
+    346,
+    279
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "errors": []
+ },
+ "land": {
+  "chart": {
+   "padVisible": false,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    10,
+    6,
+    823,
+    378
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "chartres": {
+   "padVisible": false,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    10,
+    6,
+    823,
+    378
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "quick": {
+   "padVisible": false,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    6,
+    4,
+    832,
+    382
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "record": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    146,
+    16,
+    552,
+    359
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": true
+  },
+  "menu": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    390,
+    16,
+    320,
+    359
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "settings": {
+   "padVisible": true,
+   "uiH": 390,
+   "vh": 390,
+   "rect": [
+    162,
+    76,
+    520,
+    239
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": true
+  },
+  "errors": []
+ },
+ "pc": {
+  "chart": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    379,
+    19,
+    900,
+    727
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "chartres": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    379,
+    19,
+    900,
+    727
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "quick": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    449,
+    30,
+    760,
+    704
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": false
+  },
+  "record": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    529,
+    101,
+    600,
+    562
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 11,
+   "mobile": false
+  },
+  "menu": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    1073,
+    190,
+    320,
+    385
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "settings": {
+   "padVisible": false,
+   "uiH": 749,
+   "vh": 1080,
+   "rect": [
+    569,
+    275,
+    520,
+    216
+   ],
+   "inside": true,
+   "docScroll": false,
+   "clipped": [],
+   "small": [],
+   "minFont": 10,
+   "mobile": false
+  },
+  "errors": []
+ }
+}
