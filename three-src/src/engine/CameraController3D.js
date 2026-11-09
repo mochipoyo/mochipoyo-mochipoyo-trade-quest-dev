@@ -27,13 +27,13 @@ export class CameraController3D {
     if (this.debug) { this.camera.position.set(this.debug.pos[0], this.debug.pos[1], this.debug.pos[2]); this.camera.lookAt(this.debug.target[0], this.debug.target[1], this.debug.target[2]); return; }
     const c = this.cine; const jump = snap || this.first;
     const k = jump ? 1 : 1 - Math.pow(c || this._cineBack ? 0.08 : 0.0015, dt);
-    this.target.lerp(c ? new THREE.Vector3(c.x, (c.y || 0) + 0.8, c.z) : new THREE.Vector3(p.x, p.y + 0.8, p.z), k);
+    const want = this._want89 || (this._want89 = new THREE.Vector3()); this.target.lerp(c ? want.set(c.x, (c.y || 0) + 0.8, c.z) : want.set(p.x, p.y + 0.8, p.z), k);   // v8.9 毎コマ新しい点を作らない（スマホでのこまかな止まり＝ごみ集めを減らす）
     const z = !c && this.zone && !this.isInterior ? this.zone : null;   // v8.2 場所ごとの見え方（城郭区画）：ふだんの追従のまま、角度と距離だけゆっくり変える
     const wantD = c && c.dist ? c.dist : z ? Math.max(this.wantDist, z.dist) : this.wantDist; const wantP = c && c.pitch ? THREE.MathUtils.degToRad(c.pitch) : z ? THREE.MathUtils.degToRad(z.pitch) : this.pitch;
     if (this.pitchNow === undefined || jump) this.pitchNow = wantP; else this.pitchNow += (wantP - this.pitchNow) * (1 - Math.pow(0.05, dt));
     this._cineBack = !c && !z && Math.abs(this.pitchNow - this.pitch) > 0.01;
     this.dist += (wantD - this.dist) * (jump ? 1 : 1 - Math.pow(c ? 0.05 : z ? 0.15 : 0.002, dt));
-    const off = new THREE.Vector3(0, Math.sin(this.pitchNow) * this.dist, Math.cos(this.pitchNow) * this.dist);
+    const off = (this._off89 || (this._off89 = new THREE.Vector3())).set(0, Math.sin(this.pitchNow) * this.dist, Math.cos(this.pitchNow) * this.dist);
     this.camera.position.copy(this.target).add(off);
     this.camera.lookAt(this.target); this.first = false;
   }

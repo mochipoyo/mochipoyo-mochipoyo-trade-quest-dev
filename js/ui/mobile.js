@@ -142,7 +142,7 @@
     if (c !== MobileUI.ctx) { document.body.classList.remove('mctx-world', 'mctx-dialog', 'mctx-battle', 'mctx-title'); document.body.classList.add('mctx-' + c); MobileUI.ctx = c; if (MobileUI.stickEnd && c !== 'world') MobileUI.stickEnd(); }
     if (mode !== MobileUI.mode) { document.body.classList.toggle('m-dpad', mode === 'dpad'); MobileUI.mode = mode; }
     var mm = MobileUI.pad && MobileUI.pad.querySelector('[data-cmd="minimap"]'); if (mm) mm.classList.toggle('off', !!(root.Minimap && !root.Minimap.isVisible()));
-    var fs = MobileUI.pad && MobileUI.pad.querySelector('[data-cmd="fullscreen"]'); if (fs) fs.textContent = document.fullscreenElement ? '全画面を解除' : '全画面';
+    var fs = MobileUI.pad && MobileUI.pad.querySelector('[data-cmd="fullscreen"]'); if (fs) { var fst = document.fullscreenElement ? '全画面を解除' : '全画面'; if (fs.textContent !== fst) fs.textContent = fst; }   // v8.9 変わったときだけ書く（毎コマ書くと、画面全体の配置の計算が毎コマやり直しになり、スマホで重かった）
   };
   MobileUI.init = function () {
     MobileUI.active = MobileUI.detect(); document.body.classList.toggle('mobile', MobileUI.active);

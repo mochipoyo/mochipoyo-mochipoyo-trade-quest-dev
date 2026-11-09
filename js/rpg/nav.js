@@ -231,24 +231,40 @@
     }
     var key = m.id + ':' + p.x + ',' + p.y + '>' + hop.x + ',' + hop.y + ':' + flagCount();
     if (Nav._refKey === key) return Nav._refVal || hop;
+    // v8.9 1 歩だけ動いたとき：同じ地図・同じ行き先・同じ旗で、前のマスから行き先へ（扉などを通らずに）行けていて、前のマスへ戻れる（入れるマス）なら、
+    //   いまのマスからも行ける（前のマスを通ればよい）。結果は道を調べ直したときと同じなので、歩くたびの調べ直し（町ではスマホで 1 歩ごとに数ミリ秒）を省く。5 秒ごとには調べ直す
+    var base = m.id + '>' + hop.x + ',' + hop.y + ':' + flagCount(); var R0 = Nav._reach89; var now = Date.now();
+    if (R0 && R0.map === m && R0.base === base && now - R0.at < 5000 && Math.abs(R0.x - p.x) + Math.abs(R0.y - p.y) === 1 && enterable(m, R0.x, R0.y, hop.x, hop.y)) { R0.x = p.x; R0.y = p.y; Nav._refKey = key; Nav._refVal = hop; return hop; }
     var res = hop; var r1 = reach(m, p.x, p.y, hop.x, hop.y, false);
+    Nav._reach89 = r1 ? { map: m, base: base, x: p.x, y: p.y, at: now } : null;
     if (!r1) { var r2 = reach(m, p.x, p.y, hop.x, hop.y, true); if (r2 && r2.blocker) { var be = r2.blocker; res = { x: be.x, y: be.y, kind: 'blocker', label: BLOCK[be.type] || '扉', ev: be, after: hop }; } }
     Nav._refKey = key; Nav._refVal = res; return res;
   }
   function flagCount() { var d = D(); var n = 0; for (var k in d.flags) if (d.flags[k]) n++; return n + ':' + Object.keys(d.chests).length; }
   function blockerAt(m, x, y) { var e = m.eventAt(x, y); if (!e || !e.solid || !BLOCK[e.type]) return null; if (e.doneFlag && D().flags[e.doneFlag]) return null; return e; }
+  // v8.9 reach（through なし）で、となりからそのマスへ進めるか（reach の中の決まりと同じ）
+  function enterable(m, x, y, tx, ty) {
+    if (x < 0 || y < 0 || x >= m.w || y >= m.h) return false; var d = D(); var t = m.tiles[y][x];
+    if (blockerAt(m, x, y)) return false; if (root.Tiles.isSolid(t)) return false;
+    var ev = m.eventAt(x, y); if (ev && ev.solid && !(ev.doneFlag && d.flags[ev.doneFlag]) && !(x === tx && y === ty)) return false;
+    if (root.Search && root.Search.solidAt(m, x, y)) return false; return true;
+  }
   function reach(m, sx, sy, tx, ty, through) {
     var Wd = m.w, Hh = m.h; var prev = new Int32Array(Wd * Hh).fill(-2); var q = [sy * Wd + sx]; prev[sy * Wd + sx] = -1; var head = 0; var T = root.Tiles; var d = D();
+    // v8.9 出来事をマスの番号で引く表（m.eventAt と同じく、同じマスに複数あれば先のもの）。以前はマスを 1 つ調べるたびに出来事の一覧を 2 回なめていた（町では歩くたびに重かった）
+    var EVI = new Map(); (m.events || []).forEach(function (e) { var k0 = e.y * Wd + e.x; if (e.x >= 0 && e.y >= 0 && e.x < Wd && e.y < Hh && !EVI.has(k0)) EVI.set(k0, e); });
+    function evAt(x, y) { return EVI.get(y * Wd + x) || null; }
+    function blockAt(x, y) { var e = evAt(x, y); if (!e || !e.solid || !BLOCK[e.type]) return null; if (e.doneFlag && d.flags[e.doneFlag]) return null; return e; }
+    var nb = [[1, 0], [-1, 0], [0, 1], [0, -1]];
     function goal(x, y) { var dd = Math.abs(x - tx) + Math.abs(y - ty); if (dd <= 1) return true; if (dd === 2 && (x === tx || y === ty)) { var mx = (x + tx) >> 1, my = (y + ty) >> 1; return m.tiles[my][mx] === 'counter'; } return false; }
     while (head < q.length) {
       var c = q[head++]; var cx = c % Wd, cy = (c / Wd) | 0;
-      if (goal(cx, cy)) { if (!through) return { ok: true }; var bl = null; for (var k = c; k >= 0; k = prev[k]) { var kx = k % Wd, ky = (k / Wd) | 0; var b = blockerAt(m, kx, ky); if (b) bl = b; } return { ok: true, blocker: bl }; }
-      var nb = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+      if (goal(cx, cy)) { if (!through) return { ok: true }; var bl = null; for (var k = c; k >= 0; k = prev[k]) { var kx = k % Wd, ky = (k / Wd) | 0; var b = blockAt(kx, ky); if (b) bl = b; } return { ok: true, blocker: bl }; }
       for (var i = 0; i < 4; i++) {
         var nx = cx + nb[i][0], ny = cy + nb[i][1]; if (nx < 0 || ny < 0 || nx >= Wd || ny >= Hh) continue; var kk = ny * Wd + nx; if (prev[kk] !== -2) continue;
-        var t = m.tiles[ny][nx]; var be = blockerAt(m, nx, ny);
+        var t = m.tiles[ny][nx]; var be = blockAt(nx, ny);
         if (be) { if (!through) continue; }
-        else { if (T.isSolid(t) && !(through && (t === 'door_locked' || t === 'gate' || t === 'fence'))) continue; var ev = m.eventAt(nx, ny); if (ev && ev.solid && !(ev.doneFlag && d.flags[ev.doneFlag]) && !(nx === tx && ny === ty)) continue; if (root.Search && root.Search.solidAt(m, nx, ny)) continue; }
+        else { if (T.isSolid(t) && !(through && (t === 'door_locked' || t === 'gate' || t === 'fence'))) continue; var ev = evAt(nx, ny); if (ev && ev.solid && !(ev.doneFlag && d.flags[ev.doneFlag]) && !(nx === tx && ny === ty)) continue; if (root.Search && root.Search.solidAt(m, nx, ny)) continue; }
         prev[kk] = c; q.push(kk);
       }
     }

@@ -19,6 +19,25 @@ const KEYS = [   // t, 太陽の色・強さ, 空（上・地平）, 霧, 半球
 export const BLD_LIGHT = 0.6;
 const cA = new THREE.Color(), cB = new THREE.Color();
 const UP = new THREE.Vector3(0, 1, 0), vX = new THREE.Vector3(), vY = new THREE.Vector3(), vT = new THREE.Vector3();
+const vD89 = new THREE.Vector3(), vR89 = new THREE.Vector3(), vO89 = new THREE.Vector3(), vF89 = new THREE.Vector3();
+const NDC89 = [[-1, -1], [1, -1], [1, 1], [-1, 1], [0, 1], [0, -1]];
+// v8.9 軽量（スマホ）の影の範囲：画面に映る地面（四隅と上下の中央から出した視線が地面の高さに当たる所。地平より上を向く視線は 60 マス先まで）を、
+//   光の向きから見た縦横に写して、その外接の四角（＋背の高い物のぶん 3 マス）だけを影の範囲にする。以前は主人公を中心に 44×44 マスで、
+//   画面の外（主人公の後ろ・横）の家・木・人まで影を描いていた（ポヨ村で影の描画 約 280 回／画面の描画 約 110 回）
+//   戻り値：{ cx, cy }＝光の向きから見た縦横での中心、half＝半分の幅（2 マス刻み・8〜22）
+function fitView89(cam, f, vx, vy) {
+  cam.updateMatrixWorld(); const o = vO89.setFromMatrixPosition(cam.matrixWorld); const gy = f.y || 0;
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  for (const [nx, ny] of NDC89) {
+    vR89.set(nx, ny, 0.5).unproject(cam).sub(o).normalize();
+    let t = vR89.y < -0.02 ? (gy - o.y) / vR89.y : Infinity; const hz = Math.hypot(vR89.x, vR89.z) || 1e-6;
+    t = Math.min(t, 60 / hz); vD89.copy(o).addScaledVector(vR89, t); vD89.y = gy;
+    const a = vD89.dot(vx), b = vD89.dot(vy); if (a < x0) x0 = a; if (a > x1) x1 = a; if (b < y0) y0 = b; if (b > y1) y1 = b;
+  }
+  vF89.copy(f); const fa = vF89.dot(vx), fb = vF89.dot(vy); x0 = Math.min(x0, fa); x1 = Math.max(x1, fa); y0 = Math.min(y0, fb); y1 = Math.max(y1, fb);   // 主人公はいつも入れる
+  const M = 3; const half = Math.max(8, Math.min(22, Math.ceil((Math.max(x1 - x0, y1 - y0) / 2 + M) / 2) * 2));
+  return { cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, half };
+}
 function lerpKey(t) {
   let i = 0; while (i < KEYS.length - 2 && KEYS[i + 1].t < t) i++;
   const a = KEYS[i], b = KEYS[i + 1]; const k = Math.max(0, Math.min(1, (t - a.t) / Math.max(1e-6, b.t - a.t)));
@@ -77,19 +96,22 @@ export class LightingManager {
   setMood(m) { this.mood = m || null; }
   // v7.6 異空間（ゼロメア）のフィールド：空を星空に・霧を暗い紫に（Space76.js）
   setSpace(on) { this.space = !!on; }
-  update(t, focus) {
+  update(t, focus, view) {
     const tt = this.preview !== null ? this.preview : (t === undefined ? 0.35 : t);
     const k = lerpKey(((tt % 1) + 1) % 1);
     if (this.mood && !this.interior) Object.assign(k, this.mood);
     this.night = Math.max(0, Math.min(1, (k.win - 0.3) / 2.2));
     // 太陽の向き：朝は東、夕は西、夜は月（青白い弱い光）
     const ang = (tt - 0.25) * Math.PI * 2; const el = Math.max(0.35, Math.sin((tt - 0.25) * Math.PI * 2 + Math.PI / 2) * 0.9 + 0.2);
-    const dir = new THREE.Vector3(Math.cos(ang) * 0.8 + 0.25, Math.max(0.45, el), 0.55).normalize();
-    const f = focus || new THREE.Vector3();
+    const dir = (this._dir89 || (this._dir89 = new THREE.Vector3())).set(Math.cos(ang) * 0.8 + 0.25, Math.max(0.45, el), 0.55).normalize();   // v8.9 毎コマ新しい点を作らない
+    const f = focus || (this._f89 || (this._f89 = new THREE.Vector3()));
     // v6.6 影の映る範囲を、影のテクスチャの1画素ぶんずつ動かす（光の向きから見た縦横で丸める。歩くたびに影のふちがチラチラしないように）
-    const texel = 44 / this.sun.shadow.mapSize.x;
     vX.crossVectors(UP, dir).normalize(); vY.crossVectors(dir, vX);
-    const a = Math.round(f.dot(vX) / texel) * texel - f.dot(vX), b = Math.round(f.dot(vY) / texel) * texel - f.dot(vY);
+    let half = 22, cx = f.dot(vX), cy = f.dot(vY);
+    if (view && this.quality === 'low' && this.fit89 !== false) { try { const r = fitView89(view, f, vX, vY); half = r.half; cx = r.cx; cy = r.cy; } catch (e) { half = 22; cx = f.dot(vX); cy = f.dot(vY); } }   // v8.9 軽量：影の範囲を画面に合わせる
+    const sc = this.sun.shadow.camera; if (sc.right !== half) { sc.left = -half; sc.right = half; sc.top = half; sc.bottom = -half; sc.updateProjectionMatrix(); } this.shadowHalf89 = half;
+    const texel = half * 2 / this.sun.shadow.mapSize.x;
+    const a = Math.round(cx / texel) * texel - f.dot(vX), b = Math.round(cy / texel) * texel - f.dot(vY);
     vT.copy(f).addScaledVector(vX, a).addScaledVector(vY, b);
     this.sun.position.copy(vT).addScaledVector(dir, 50); this.sun.target.position.copy(vT);
     this.sun.color.setHex(k.sun); this.sun.intensity = this.interior ? k.si * 0.25 * (this.church ? BLD_LIGHT : 1) : k.si;

@@ -49,7 +49,8 @@ const SPEC = {
 };
 
 export class Animal3D {
-  static create(sprite, opts) { const p = parseAnimal(sprite); if (!p) return null; return new Animal3D(p, opts || {}); }
+  // v8.9 軽量（スマホ）の画質では、動物は形の影を落とさない（足元の丸い影はそのまま）。1 匹 10 個ほどの部品が、影を描くたびに 1 回ずつ描かれていた（GameBridge が設定）
+  static create(sprite, opts) { const p = parseAnimal(sprite); if (!p) return null; const a = new Animal3D(p, opts || {}); if (Animal3D.noCast89) a.root.traverse((o) => { if (o.isMesh) o.castShadow = false; }); return a; }
   constructor(p, opts) {
     this.kind = p.kind; this.def = { modelId: 'animal_' + p.key, kind: 'animal' }; this.isAnimal = true;
     const S = SPEC[p.kind], C = p.pal; this.spec = S;

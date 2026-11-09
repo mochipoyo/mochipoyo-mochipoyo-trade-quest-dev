@@ -14,7 +14,14 @@
   var QS = { away: {}, declined: {}, near: {}, cache: {}, t0: Date.now() };
   function D() { return root.State && root.State.data; }
   function MONS() { return root.QUIZ_MONSTERS || []; }
-  function rec(mid) { var d = D(); return d && root.Quiz ? root.Quiz.rec(d, mid) : null; }
+  // v8.9 討伐の記録：すでに正しい形の記録があれば、それをそのまま読む（以前は読むたびに Quiz.ensure が 55 体分の記録を全部確かめ直していた。
+  //   マスが通れるか（map.passable）を調べるたびに呼ばれ、クイズモンスターのいるフィールドでは、歩くたびに重くなっていた）。形が崩れているときだけ今までどおり直す
+  function rec(mid) {
+    var d = D(); if (!d || !root.Quiz) return null;
+    var q = d.quizMon, r = q && typeof q === 'object' && q.mon && typeof q.mon === 'object' ? q.mon[mid] : null;
+    if (r && typeof r === 'object' && !Array.isArray(r) && typeof r.defeated === 'boolean' && typeof r.attempts === 'number' && isFinite(r.attempts) && typeof r.seen === 'boolean') return r;
+    return root.Quiz.rec(d, mid);
+  }
 
   QS.list = function (m) {
     if (!m || !root.Quiz) return []; var out = [];

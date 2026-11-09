@@ -1,0 +1,114 @@
+{
+ "world_grania": {
+  "id": "world_grania",
+  "total": 963,
+  "build": 870,
+  "maxSlice": 167,
+  "longTasks": 6,
+  "longMax": 167,
+  "longSum": 602,
+  "longList": [
+   72,
+   87,
+   87,
+   118,
+   167,
+   71
+  ],
+  "worstFrames": [
+   174,
+   124,
+   103,
+   92,
+   80,
+   76,
+   44,
+   42
+  ],
+  "failed": false,
+  "long": [
+   {
+    "ms": 73,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14272:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14357:30"
+   },
+   {
+    "ms": 87,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14357:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14525:30"
+   },
+   {
+    "ms": 86,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14591:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14821:30"
+   },
+   {
+    "ms": 118,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14821:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:15322:30"
+   },
+   {
+    "ms": 167,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:15322:30",
+    "to": "MapScene3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:34659:21"
+   },
+   {
+    "ms": 70,
+    "from": "main-ChWtueUp.js:40394:10",
+    "to": "main-ChWtueUp.js:40438:13"
+   }
+  ],
+  "compileSync": 37,
+  "textures": 26
+ },
+ "world_kalion": {
+  "id": "world_kalion",
+  "total": 640,
+  "build": 592,
+  "maxSlice": 160,
+  "longTasks": 3,
+  "longMax": 160,
+  "longSum": 328,
+  "longList": [
+   63,
+   160,
+   105
+  ],
+  "worstFrames": [
+   169,
+   113,
+   90,
+   68,
+   49,
+   47,
+   35,
+   16
+  ],
+  "failed": false,
+  "long": [
+   {
+    "ms": 84,
+    "from": "start",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14357:30"
+   },
+   {
+    "ms": 63,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14575:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14821:30"
+   },
+   {
+    "ms": 160,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:14821:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:15322:30"
+   },
+   {
+    "ms": 105,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:15322:30",
+    "to": "MapScene3D.build (http://localhost:8794/3d/assets/main-ChWtueUp.js:34659:21"
+   }
+  ],
+  "compileSync": 7,
+  "textures": 21
+ },
+ "errors": []
+}

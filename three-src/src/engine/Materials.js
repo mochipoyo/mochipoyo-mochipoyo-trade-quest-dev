@@ -84,10 +84,21 @@ export function rbox(w, h, d, uvScale, r) {
   return g;
 }
 // 材質ごとに形状を集めて、最後に1メッシュへ結合（描画回数を減らす）
+function copyAttrs89(src) {
+  const g = new THREE.BufferGeometry();
+  for (const k of ['position', 'normal', 'uv', 'color']) { const a = src.attributes[k]; if (a) g.setAttribute(k, a.clone()); }
+  return g;
+}
 export class Batch {
   constructor() { this.lists = new Map(); }
   add(material, geometry, matrix) {
-    const g = geometry.index ? geometry.toNonIndexed() : geometry.clone();
+    // v8.9 索引のない形は、使う属性（位置・法線・UV・色）だけを写す。以前の geometry.clone() は、多面体（PolyhedronGeometry）などで
+    //   写すたびに同じ種類の既定の形をもう 1 つ作ってから中身を上書きしていて、飾りの多い地図の組み立てが長く止まる原因の 1 つだった（できる形は同じ）
+    //   使い回しの形（userData.shared89：DecorBuilder3D の geo89）は、索引をほどいた形も 1 回だけ作って使い回す
+    let g;
+    if (!geometry.index) g = copyAttrs89(geometry);
+    else if (geometry.userData && geometry.userData.shared89) g = copyAttrs89(geometry.userData.ni89 || (geometry.userData.ni89 = geometry.toNonIndexed()));
+    else g = geometry.toNonIndexed();
     if (matrix) g.applyMatrix4(matrix);
     for (const k of Object.keys(g.attributes)) if (!['position', 'normal', 'uv', 'color'].includes(k)) g.deleteAttribute(k);
     if (!g.attributes.uv) g.setAttribute('uv', new THREE.Float32BufferAttribute(new Float32Array(g.attributes.position.count * 2), 2));

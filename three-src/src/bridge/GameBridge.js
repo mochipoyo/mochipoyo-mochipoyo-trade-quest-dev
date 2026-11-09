@@ -29,6 +29,8 @@ import { cameraZone82 } from '../world/Castle82.js';
 import { academyCutaway82 } from '../world/Academy82.js';
 import { Effects78 } from '../world/Effects78.js';
 import { Carriage3D } from '../world/Carriage3D.js';
+import { Animal3D } from '../entities/Animal3D.js';
+import { Smooth89, smoothSetting } from '../engine/Smooth89.js';
 
 const G = window;
 const WALK = 2.7, RUN = 5.4, RADIUS = 0.28;
@@ -155,6 +157,8 @@ export class App3D {
     const gl = this.renderer.renderer.getContext(); this.webgl2 = (typeof WebGL2RenderingContext !== 'undefined') && gl instanceof WebGL2RenderingContext;
     this.scene = new THREE.Scene();
     this.lighting = new LightingManager(this.scene, this.renderer, this.quality);
+    Animal3D.noCast89 = this.quality === 'low';   // v8.9 軽量（スマホ）：動物は形の影を落とさない（足元の丸い影はそのまま）
+    if (this.quality === 'low') { const b = this.renderer.pixelRatio; this.smooth89 = new Smooth89(b, b >= 1.2 ? 0.9 : b * 0.85); this.smoothOn89 = smoothSetting() === 'auto'; }   // v8.9 なめらかさ優先（Smooth89.js）
     this.fx78 = new Effects78(this.scene, this.quality);   // v7.8 雨・浮天城アエリアの影・展望室の地球（world/Effects78.js）
     this.car79 = new Carriage3D(this.scene);   // v7.9 馬車の模型（world/Carriage3D.js）
     this.renderer.setScene(this.scene, this.camera.camera);
@@ -205,7 +209,7 @@ export class App3D {
     const ac = this.battle && this.battle.actors; const part = ac && ac.why ? '／一部2D（' + ac.why + '）' : ''; const bk = this.battle && this.battle.backWhy ? '／' + this.battle.backWhy : '';
     const rs = readableStats(); const rd = rs.loading + rs.tainted + rs.error + rs.ok ? '／画像の読み直し ' + rs.ok + '件成功・' + (rs.tainted + rs.error) + '件失敗' : '';
     const vv = G.visualViewport; const scr = '／画面 ' + innerWidth + '×' + innerHeight + (vv ? '（見える ' + Math.round(vv.width) + '×' + Math.round(vv.height) + '・上 ' + Math.round(vv.offsetTop) + '）' : '') + '・スクロール ' + Math.round(scrollY);
-    return '3D：' + st3d + '／戦闘：' + stB + part + bk + rd + '／' + ver + '・' + gpu + '・画質 ' + this.quality + (this.renderer && this.renderer.finish ? '・仕上げ ' + (this.renderer.finish.enabled() ? '入' : '切') : '') + miss + scr + '／版 ' + (G.MTQ3D_BUILD || '-');
+    return '3D：' + st3d + '／戦闘：' + stB + part + bk + rd + '／' + ver + '・' + gpu + '・画質 ' + this.quality + (this.renderer ? '・解像度 ' + this.renderer.pixelRatio.toFixed(2) + (this.smooth89 ? (this.smoothOn89 ? '（なめらかさ：自動' + (this.smooth89.log.length ? '・' + this.smooth89.log.slice(-2).join('・') : '') + '）' : '（なめらかさ：使わない）') : '') + (this.lighting && this.lighting.shadowHalf89 && this.quality === 'low' ? '・影の範囲 ' + this.lighting.shadowHalf89 * 2 + 'マス' : '') : '') + (this.renderer && this.renderer.finish ? '・仕上げ ' + (this.renderer.finish.enabled() ? '入' : '切') : '') + miss + scr + '／版 ' + (G.MTQ3D_BUILD || '-');
   }
   installBattleStage() {
     const app = this;
@@ -251,6 +255,7 @@ export class App3D {
     this.building = map; const t0 = performance.now();
     const ms = new MapScene3D(this);
     ms.build(map).then(() => {
+      try { if (map.kind === 'field' && G.World.landmarkFoot) G.World.landmarkFoot(map); } catch (e) { /* 最初の 1 歩でも計算できる */ }   // v8.9 フィールドの入口のまわりの計算を、組み立て中（読み込みの画面）に済ませる（以前は最初の 1 歩で止まっていた）
       this.cache.set(map.id, ms); this.stats['build_' + map.id] = Math.round(performance.now() - t0); ms.usedAt = performance.now();
       if (ms.world) this.stats['world_' + map.id] = Object.assign({}, ms.world.stats);
       if (this.building === map) this.building = null;
@@ -269,14 +274,31 @@ export class App3D {
     while (gen.length > CACHE_GENERIC - 1) { const [id, ms] = gen.shift(); try { ms.dispose(); } catch (e) { console.warn(e); } this.cache.delete(id); }
   }
   // 村の中の屋内は先に作っておく（出入りを待たせない）
+  // v8.9 ポヨ村（とその屋内）にいる間だけ作る（以前は世界のどこにいても、始めてすぐに 19 部屋を続けて作っていて、フィールドを歩き始めたところで何度も止まっていた）。
+  //   軽量（スマホ）では、立ち止まっている（または会話・メニューの）間だけ 1 部屋ずつ作り、作るときも途中で画面へ返す（となりの地域の組み立てと同じ）
   prebuild() {
     if (this._pre || this.building) return; const W = G.World;
+    if (!W.map || MAPS_DONE.indexOf(W.map.id) < 0) { this._preWait = false; return; }   // 村の外：作らない（村へ戻ったときに続きを作る）
     const next = MAPS_DONE.find((id) => { const c = this.cache.get(id); return !this.failed[id] && !(c && W.maps[id] && c.map === W.maps[id]); });
     if (!next) return;
+    if (this.quality === 'low' && !this.idle89()) { if (!this._preWait) { this._preWait = true; setTimeout(() => { this._preWait = false; this.prebuild(); }, 400); } return; }
     let m; try { m = W.getMap(next); } catch (e) { this.failed[next] = true; return; }
     this._pre = true; const ms = new MapScene3D(this); const t0 = performance.now();
-    ms.build(m).then(() => { this.cache.set(next, ms); this.stats['build_' + next] = Math.round(performance.now() - t0); this._pre = false; setTimeout(() => this.prebuild(), 30); if (W.map === m && this.current !== ms) this.activate(ms); })
+    let opts; if (this.quality === 'low') { let last = performance.now(); opts = { slice: () => { if (performance.now() - last < 12) return Promise.resolve(); return new Promise((r) => requestAnimationFrame(() => setTimeout(() => { last = performance.now(); r(); }, 0))); } }; }
+    ms.build(m, opts).then(() => { this.cache.set(next, ms); this.stats['build_' + next] = Math.round(performance.now() - t0); this._pre = false; setTimeout(() => this.prebuild(), 30); if (W.map === m && this.current !== ms) this.activate(ms); })
       .catch((e) => { console.error('prebuild failed', next, e); this.failed[next] = true; this._pre = false; });
+  }
+  // v8.9 なめらかさ優先の入・切（3D設定）。切ったら元の解像度へ戻す
+  setSmooth89(on) {
+    this.smoothOn89 = !!on; const s = this.smooth89; if (!s) return;
+    if (!on) { s.pr = s.base; s.reset(); this.renderer.setPixelRatio89(s.base); }
+  }
+  // v8.9 いま重い処理をしてよいか：3D の探索中に主人公が 0.5 秒以上止まっている、または会話・メニューなどの最中
+  idle89() {
+    const W = G.World, E = G.Engine; if (!W || !W.scene) return true;
+    if (W.busy || (E && E.top && E.top() !== W.scene)) return true;
+    const now = performance.now(); if (this.speed > 0.05) { this._moveAt89 = now; return false; }
+    return now - (this._moveAt89 || 0) > 500;
   }
   // v6.8 道・壁・境界線の丸み（Organic.js）の設定を変えたとき：汎用3Dのマップを作り直す（今いるマップも。専用3Dのポヨ村は変わらない）
   rebuildGeneric() {
@@ -289,6 +311,8 @@ export class App3D {
     const cross = this._cross && ms.map && this._cross.to === ms.map.id && this.current && this.current.map && this.current.map.id === this._cross.from ? this._cross : null; this._cross = null;   // v7.6 つないだ世界：となりの地域へ移った
     if (this.current) this.scene.remove(this.current.root);
     this.scene.add(ms.root); ms.root.position.set(0, 0, 0); this.current = ms; ms.usedAt = performance.now();
+    if (ms.map && MAPS_DONE.indexOf(ms.map.id) >= 0) setTimeout(() => this.prebuild(), 0);   // v8.9 ポヨ村へ戻ったら、まだの屋内の先読みを続ける
+    if (this.smooth89) this.smooth89.reset();   // v8.9 地図が変わったら、なめらかさ優先を確かめ直す
     this.ui.setBadge(ms.coverage === 'generic' ? '3D版 開発中：汎用3D（仮3D・自動生成）' : '3D版：専用3D（ポヨ村）');
     this.lighting.setLampSpots(ms.lampSpots); this.lighting.setInterior(ms.interior || !!ms.dark, ms.ambient); this.lighting.church = !!(ms.interior && ms.map && (/church|chapel|temple|cathedral|shrine/.test(ms.map.id) || /教会|聖堂|礼拝|神殿/.test(ms.map.name || '')));   // v8.1 教会の中の光を落とす（LightingManager）
     if (this.lighting.setTheme) this.lighting.setTheme(ms.theme || null);
@@ -646,6 +670,7 @@ export class App3D {
     } catch (e) { /* 先読みの失敗は戦闘の始まりでもう一度 */ }
   }
   frame(now) {
+    const raw89 = this._last ? now - this._last : 0;   // v8.9 コマの間隔（なめらかさ優先が見る）
     const dt = Math.min(0.05, (now - (this._last || now)) / 1000); this._last = now; const t = now / 1000;
     this._fc++; if (now - this._ft > 1000) { this.fps = Math.round(this._fc * 1000 / (now - this._ft)); this._fc = 0; this._ft = now; }
     const W = G.World, E = G.Engine;
@@ -697,11 +722,12 @@ export class App3D {
       this.camera.follow(this._focus, dt);
     } else if (this.rideY) { this._rideF = this._rideF || new THREE.Vector3(); this._rideF.copy(this.pos); this._rideF.y += this.rideY; this.camera.follow(this._rideF, dt); }   // v7.1 エレベーター：カメラもついていく
     else this.camera.follow(this.pos, dt);
-    this.lighting.update(G.State.data ? G.State.data.timeOfDay : 0.35, this.pos);
+    this.lighting.update(G.State.data ? G.State.data.timeOfDay : 0.35, this.pos, this.camera.camera);   // v8.9 軽量（スマホ）は影の範囲を画面に合わせる（LightingManager.fitView89）
     try { this.fx78.update(dt, t, this.pos, this.current); } catch (e) { /* 表示だけの飾り：失敗しても進める */ }
     this.updateCutout();
     if (L) this.renderer.resize(L.w, L.h);
     if (!this.paused) this.renderer.render();   // paused：自動テストで描画だけ止める（ソフトウェア描画の環境用）
+    if (this.smooth89 && this.smoothOn89 && !this.paused && !this.building && !(this.join && this.join.building) && !this._pre && document.visibilityState !== 'hidden') { const pr = this.smooth89.feed(raw89); if (pr !== null) this.renderer.setPixelRatio89(pr); }   // v8.9 なめらかさ優先：重いときだけ解像度を下げる（組み立て中は数えない）
     if (!this.paused && this.expo82 && !this.expo82.done) { try { this.autoExpo82(); } catch (e) { this.expo82.done = true; this.expo82.err = String(e && e.message || e); } }   // v8.3 低画質の屋内の露出（描いた直後に測る）
     this.updateNavRing(t);
     // 「話す・調べる」の案内

@@ -140,10 +140,13 @@ export class Join76 {
     const a = this.app; let m; try { m = window.World.getMap(id); } catch (e) { a.failed[id] = true; return; }
     this.building = id; this.buildingMap = m; const ms = new MapScene3D(a); const t0 = performance.now();
     const st = { id, n: 0, max: 0, sum: 0, compileMs: null }; this.sliceStats = st; let last = performance.now();
-    const mark = () => { const d = performance.now() - last; st.n++; st.sum += d; if (d > st.max) st.max = d; };
+    // v8.9 長かった区切り（50ms 以上）の場所も残す（確かめ用：sliceStats.long。どこで画面へ返したか＝区切りの終わりの呼び出し元）
+    let from89 = 'start'; const site89 = () => { try { const L = String(new Error().stack || '').split('\n').map((x) => x.trim()).filter((x) => /^at /.test(x)); const q = L.find((x, i) => i >= 2 && !/slice|mark|Promise/.test(x)) || L[2] || ''; return q.replace(/^at /, '').replace(/\(?(https?:\/\/[^)]*\/)?/, '').replace(/\)$/, '').slice(0, 90); } catch (e) { return '?'; } };
+    const mark = () => { const d = performance.now() - last; st.n++; st.sum += d; if (d > st.max) st.max = d; const to = site89(); if (d > 50) (st.long = st.long || []).push({ ms: Math.round(d), from: from89, to }); from89 = to; };
     const slice = () => { if (performance.now() - last < 24) return Promise.resolve(); mark(); return new Promise((r) => requestAnimationFrame(() => setTimeout(() => { last = performance.now(); r(); }, 0))); };   // 24ms 以上続けて動いたときだけ画面へ返す
     ms.build(m, { slice }).then(async () => {
       await slice();
+      try { if (m.kind === 'field' && window.World && window.World.landmarkFoot) { window.World.landmarkFoot(m); await slice(); } } catch (e) { /* 入口のまわりの計算は、最初の 1 歩でもできる */ }   // v8.9 フィールドの入口のまわり（最初の 1 歩で計算していたもの）も先に
       const R = a.renderer && a.renderer.renderer; const cam = a.camera && a.camera.camera;
       if (R && R.compileAsync && cam) {
         const tc = performance.now(); let pr = null; try { pr = R.compileAsync(ms.root, cam, a.scene); } catch (e) { pr = null; }

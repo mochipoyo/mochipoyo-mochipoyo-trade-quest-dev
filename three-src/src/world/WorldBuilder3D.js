@@ -110,7 +110,7 @@ export class WorldBuilder3D {
       for (let i = 0; i < q0.length; i += 2) { const x = q0[i], z = q0[i + 1], d = hdep[z * W + x]; for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = x + dx, nz = z + dz; if (nx < 0 || nz < 0 || nx >= W || nz >= H || hdep[nz * W + nx] >= 0) continue; hdep[nz * W + nx] = d + 1; q0.push(nx, nz); } } }
     const depAt = (x, z) => (hdep && x >= 0 && z >= 0 && x < W && z < H ? Math.max(0, hdep[z * W + x]) : 0);
     const vertexF = TFLD ? (x, z) => { const h = vertexH(x, z); const fx = Math.floor(x), fz = Math.floor(z); const xs = Math.abs(x - fx) < 1e-6 ? [fx - 1, fx] : [fx], zs = Math.abs(z - fz) < 1e-6 ? [fz - 1, fz] : [fz]; let hh = 0, dsum = 0, dn = 0; for (const tz of zs) for (const tx of xs) { dn++; if (hillT[Tg(tx, tz)]) { hh++; dsum += Math.min(4, depAt(tx, tz)); } } if (!hh) return h; const k = hh / dn; return terr(h + k * (0.5 + (dsum / hh) * 0.32)); } : vertexH;   // 丘のマスは 0.5＋奥行き×0.32 だけ高く（段に丸める）
-    for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) hgrid[j * NX + i] = vertexF(gx0 + i / S, gz0 + j / S);
+    for (let j = 0; j < NZ; j++) { for (let i = 0; i < NX; i++) hgrid[j * NX + i] = vertexF(gx0 + i / S, gz0 + j / S); if (this.slice && (j & 15) === 15) await this.slice(); }   // v8.9 裏で組み立てるときは 16 行ごとに（時間がたっていれば）画面へ返す
     this.stats.heightMs = Math.round(performance.now() - tHgt);
     const heightAt = (x, z) => {
       const fx = (x - gx0) * S, fz = (z - gz0) * S; const i = Math.max(0, Math.min(NX - 2, Math.floor(fx))), j = Math.max(0, Math.min(NZ - 2, Math.floor(fz)));
@@ -162,13 +162,14 @@ export class WorldBuilder3D {
         let cc = colCache[t]; if (!cc) { if (L[1]) col.set(L[1]); else col.copy(grassC); if (dungeon && !L[1] && P.floor) col.set(P.floor); else if (kind === 'interior' && !L[1]) col.set('#8a7660');   /* v8.1 屋内で色の決まっていない家具の下（机・黒板など）が草の色にならないように */ cc = colCache[t] = [col.r, col.g, col.b]; }
         for (let jj = 0; jj < SP; jj++) { let o = (tz * SP + jj) * SW + tx * SP; for (let ii = 0; ii < SP; ii++, o++) { sp[o * 4] = L[0][0]; sp[o * 4 + 1] = L[0][1]; sp[o * 4 + 2] = L[0][2]; sp[o * 4 + 3] = L[0][3]; tn[o * 3] = cc[0]; tn[o * 3 + 1] = cc[1]; tn[o * 3 + 2] = cc[2]; } }
       }
-    } else for (let j = 0; j < SH; j++) for (let i = 0; i < SW; i++) {
+    } else for (let j = 0; j < SH; j++) { for (let i = 0; i < SW; i++) {
       const tx = Math.floor(gx0 + (i + 0.5) / SP), tz = Math.floor(gz0 + (j + 0.5) / SP); const t = Tg(tx, tz);
       const L = lookCache[t] || (lookCache[t] = tileLook(t)); const o = (j * SW + i);
       sp[o * 4] = L[0][0]; sp[o * 4 + 1] = L[0][1]; sp[o * 4 + 2] = L[0][2]; sp[o * 4 + 3] = L[0][3];
       if (L[1]) col.set(L[1]); else col.copy(grassC); if (dungeon && !L[1] && P.floor) col.set(P.floor); else if (kind === 'interior' && !L[1]) col.set('#8a7660');   /* v8.1 屋内で色の決まっていない家具の下（机・黒板など）が草の色にならないように */
       tn[o * 3] = col.r; tn[o * 3 + 1] = col.g; tn[o * 3 + 2] = col.b;
-    }
+    } if (this.slice && (j & 31) === 31) await this.slice(); }   // v8.9 裏で組み立てるときは 32 行ごとに（時間がたっていれば）画面へ返す
+    if (this.slice) await this.slice();   // v8.9 裏で組み立てるとき：塗り分け・ぼかしの間でも画面へ返す（となりの地域の組み立てで止まる時間を短く）
     const blur = (arr, ch, rad) => { const tmp = new Float32Array(arr.length); for (const [dx, dy] of [[1, 0], [0, 1]]) { const src = dx ? arr : tmp, dst = dx ? tmp : arr; for (let j = 0; j < SH; j++) for (let i = 0; i < SW; i++) for (let c = 0; c < ch; c++) { let s = 0, n = 0; for (let k = -rad; k <= rad; k++) { const ii = Math.min(SW - 1, Math.max(0, i + k * dx)), jj = Math.min(SH - 1, Math.max(0, j + k * dy)); s += src[(jj * SW + ii) * ch + c]; n++; } dst[(j * SW + i) * ch + c] = s / n; } } };
     // v6.8 丸み：テクセルが4倍になるので、ぼかしは移動和（1テクセルあたり定数回）で計算する（結果は上の blur と同じ箱フィルタ）
     const blurFast = (arr, ch, rad) => {
@@ -176,7 +177,8 @@ export class WorldBuilder3D {
       for (let j = 0; j < SH; j++) { const row = j * SW; for (let c = 0; c < ch; c++) { let s = 0; for (let k = -rad; k <= rad; k++) s += arr[(row + Math.min(SW - 1, Math.max(0, k))) * ch + c]; for (let i = 0; i < SW; i++) { tmp[(row + i) * ch + c] = s * inv; s += arr[(row + Math.min(SW - 1, i + rad + 1)) * ch + c] - arr[(row + Math.max(0, i - rad)) * ch + c]; } } }
       for (let i = 0; i < SW; i++) for (let c = 0; c < ch; c++) { let s = 0; for (let k = -rad; k <= rad; k++) s += tmp[(Math.min(SH - 1, Math.max(0, k)) * SW + i) * ch + c]; for (let j = 0; j < SH; j++) { arr[(j * SW + i) * ch + c] = s * inv; s += tmp[(Math.min(SH - 1, j + rad + 1) * SW + i) * ch + c] - tmp[(Math.max(0, j - rad) * SW + i) * ch + c]; } }
     };
-    if (round) { blurFast(sp, 4, 2); blurFast(sp, 4, 1); blurFast(tn, 3, 2); blurFast(tn, 3, 1); } else { blur(sp, 4, 1); blur(tn, 3, 1); }
+    if (round) { blurFast(sp, 4, 2); blurFast(sp, 4, 1); if (this.slice) await this.slice(); blurFast(tn, 3, 2); blurFast(tn, 3, 1); } else { blur(sp, 4, 1); if (this.slice) await this.slice(); blur(tn, 3, 1); }
+    if (this.slice) await this.slice();
     const toTex = (arr, ch) => { const n = SW * SH; const d = new Uint8Array(n * 4); for (let k = 0; k < n; k++) { for (let c = 0; c < 4; c++) d[k * 4 + c] = c < ch ? Math.round(Math.max(0, Math.min(1, ch === 3 ? Math.pow(arr[k * 3 + c], 1 / 2.2) : arr[k * ch + c])) * 255) : 255; } const t = new THREE.DataTexture(d, SW, SH, THREE.RGBAFormat); t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearFilter; t.needsUpdate = true; return t; };
     const splat = toTex(sp, 4), tint = toTex(tn, 3); this.own(splat); this.own(tint);   // v7.6 地図ごとの画像（捨てるときに GPU からも消す）
     this.stats.splatMs = Math.round(performance.now() - tSplat);
@@ -186,6 +188,7 @@ export class WorldBuilder3D {
     const chunkRanges = (a0, a1) => { const out = []; for (let a = a0; a < a1; a += CH) out.push([a, Math.min(a1, a + CH)]); return out; };
     let groundTris = 0;
     for (const [cz0, cz1] of chunkRanges(gz0, gz1)) for (const [cx0, cx1] of chunkRanges(gx0, gx1)) {
+      if (this.slice) await this.slice();   // v8.9 裏で組み立てるときは区画ごとに（時間がたっていれば）画面へ返す
       if (voidOut) { let any = false; for (let z = cz0; z < cz1 && !any; z++) for (let x = cx0; x < cx1 && !any; x++) if (inside(x, z)) any = true; if (!any) continue; }
       const nx = (cx1 - cx0) * S + 1, nz = (cz1 - cz0) * S + 1;
       const pos = new Float32Array(nx * nz * 3), uv = new Float32Array(nx * nz * 2);
@@ -243,7 +246,9 @@ export class WorldBuilder3D {
     const nearWater = (x, z) => { for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) if (WATERY[Tg(x + dx, z + dz)]) return true; return false; };
     if (space) { spaceRim = (cx, cz) => { let n = 0; for (const [dx, dz] of [[-1, -1], [0, -1], [-1, 0], [0, 0]]) if (!WATERY[Tg(cx + dx, cz + dz)]) n++; return [n / 4, 0, 0]; }; surf((t, x, z) => !!WATERY[t] || (t !== 'lava' && t !== 'cloud' && !WALL_TILES[t] && t !== '_void' && nearWater(x, z)), -0.2, voidMaterial(this.time), 'space76_void', true); spaceRim = null; }
     else surf((t, x, z) => !!WATERY[t] || (round && t !== 'lava' && t !== 'cloud' && !WALL_TILES[t] && t !== '_void' && nearWater(x, z)), -0.2, this.waterMaterial(), 'water', !dungeon);
+    if (this.slice) await this.slice();   // v8.9 水面・溶岩・雲海の間でも
     surf((t) => t === 'lava', -0.16, this.lavaMaterial(), 'lava', !dungeon);
+    if (this.slice) await this.slice();
     surf((t) => t === 'cloud', -0.95, this.cloudMaterial(), 'cloudsea', !dungeon);
 
     if (this.slice) await this.slice();
@@ -441,6 +446,7 @@ export class WorldBuilder3D {
         if (done) { done.lights.forEach((l) => lampSpots.push(l)); done.smokes.forEach((sm) => smokes.push(sm)); done.sprites.forEach((sp) => group.add(sp)); lmIds.push(Lc.id); }
         else put(lm, M4(cx, y, cz, 0, 0, 0, t === 'castle_icon' ? 3.4 : t === 'tower_icon' ? 2.6 : 3.0), cx, cz);
         props++;
+        if (this.slice) await this.slice();   // v8.9 裏で組み立てるとき：目印（町・城・洞窟・塔）を 1 つ作るごとに、時間がたっていれば画面へ返す
       }
       if (t === 'ship') { put('veh_sailboat', M4(cx, -0.1, cz, 0, 0, 0, 0.9), cx, cz); props++; }
       // ダンジョン・洞窟の飾り

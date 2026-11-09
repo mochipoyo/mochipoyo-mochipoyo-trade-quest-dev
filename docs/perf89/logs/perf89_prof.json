@@ -1,0 +1,686 @@
+{
+ "env": {
+  "quality": "low",
+  "pixelRatio": 1.25,
+  "coarse": true,
+  "dpr": 3,
+  "mobile": true,
+  "build": null
+ },
+ "throttle": 4,
+ "frames": 400,
+ "cases": {
+  "world": {
+   "map": {
+    "id": "world",
+    "w": 120,
+    "h": 150,
+    "kind": "field",
+    "x": 73,
+    "y": 66,
+    "from": "poyo_village"
+   },
+   "A": {
+    "casters": {
+     "n": 89,
+     "small035": 21,
+     "small06": 58,
+     "small1": 71,
+     "triSmall06": 3888,
+     "noCull": 14,
+     "top": [
+      "BufferGeometry:44/2184tri/r3.3",
+      "body_merged:8/53146tri/r0.8",
+      "rigid_merged:6/1536tri/r0.6",
+      "tm83_hat:6/448tri/r0.3",
+      "landmark_poyo_village:5/1202tri/r3.4",
+      "landmark_rivel_castle_to:4/2800tri/r4.7",
+      "landmark_dow_village:4/528tri/r2.6",
+      "landmark_harbor:4/528tri/r2.7",
+      "mob76_straw:3/208tri/r0.5",
+      "world3d_world:2/36tri/r0.7",
+      "landmark_oblivion_cave:2/824tri/r3.3",
+      "landmark_lost_forest:1/118tri/r1.5"
+     ],
+     "topTri": [
+      "body_merged:8/53146tri",
+      "landmark_rivel_castle_to:4/2800tri",
+      "BufferGeometry:44/2184tri",
+      "rigid_merged:6/1536tri",
+      "landmark_poyo_village:5/1202tri",
+      "landmark_oblivion_cave:2/824tri",
+      "landmark_dow_village:4/528tri",
+      "landmark_harbor:4/528tri"
+     ]
+    },
+    "calls": 204,
+    "shadowCalls": 115,
+    "mainCalls": 89,
+    "tri": 308066,
+    "mainTri": 178930,
+    "meshes": 220,
+    "visibleMeshes": 210,
+    "castShadowAll": 130,
+    "castShadowVisible": 120,
+    "instanced": 15,
+    "batched": 2,
+    "sprites": 55,
+    "lights": 14,
+    "pointLights": 12,
+    "transparentMatsUses": 21,
+    "alphaTestUses": 13,
+    "materialsVisible": 79,
+    "programs": 63,
+    "geometries": 251,
+    "textures": 70,
+    "buffer": [
+     482,
+     628
+    ],
+    "shadowMap": 1024,
+    "joinShown": 0
+   },
+   "B": {
+    "frames": 400,
+    "wall": 1202,
+    "mean": 2.97,
+    "p50": 2.8,
+    "p90": 6.1,
+    "p99": 9.1,
+    "max": 71.4,
+    "over16": 2,
+    "over33": 1,
+    "tilesVisited": 13,
+    "moved": [
+     "73,66",
+     "74,66"
+    ],
+    "map": "world",
+    "parts": {
+     "map.update": {
+      "n": 400,
+      "avg": 0.767,
+      "max": 6.2
+     },
+     "updateLogic": {
+      "n": 400,
+      "avg": 0.713,
+      "max": 64.6
+     },
+     "ui.layout": {
+      "n": 400,
+      "avg": 0.536,
+      "max": 6.4
+     },
+     "World.onStep": {
+      "n": 23,
+      "avg": 0.256,
+      "max": 63.6
+     },
+     "lighting.update": {
+      "n": 400,
+      "avg": 0.099,
+      "max": 5.2
+     },
+     "updateNavRing": {
+      "n": 400,
+      "avg": 0.093,
+      "max": 3.5
+     },
+     "hero.update": {
+      "n": 400,
+      "avg": 0.057,
+      "max": 3
+     },
+     "camera.follow": {
+      "n": 400,
+      "avg": 0.052,
+      "max": 3.2
+     },
+     "join.update": {
+      "n": 400,
+      "avg": 0.051,
+      "max": 4.4
+     },
+     "ui.show": {
+      "n": 400,
+      "avg": 0.046,
+      "max": 3
+     },
+     "findTarget": {
+      "n": 237,
+      "avg": 0.035,
+      "max": 5.2
+     },
+     "updateCutout": {
+      "n": 400,
+      "avg": 0.023,
+      "max": 1
+     },
+     "updateVehicles": {
+      "n": 400,
+      "avg": 0.012,
+      "max": 0.9
+     },
+     "ui.setPrompt": {
+      "n": 400,
+      "avg": 0.009,
+      "max": 1.1
+     },
+     "fx78.update": {
+      "n": 400,
+      "avg": 0.008,
+      "max": 0.7
+     },
+     "updateFollowers": {
+      "n": 400,
+      "avg": 0.007,
+      "max": 0.5
+     },
+     "updatePlaceLabel": {
+      "n": 45,
+      "avg": 0.004,
+      "max": 0.9
+     },
+     "car79.update": {
+      "n": 400,
+      "avg": 0.001,
+      "max": 0.3
+     },
+     "Minimap.onStep": {
+      "n": 23,
+      "avg": 0.001,
+      "max": 0.2
+     },
+     "Minimap.reveal": {
+      "n": 23,
+      "avg": 0,
+      "max": 0.1
+     }
+    },
+    "spikes": [
+     {
+      "i": 0,
+      "ms": 27.4,
+      "parts": {
+       "updateLogic": 12.9,
+       "ui.layout": 2,
+       "hero.update": 1.8,
+       "map.update": 4,
+       "lighting.update": 0.9,
+       "updateNavRing": 1.5
+      }
+     },
+     {
+      "i": 1,
+      "ms": 8.6,
+      "parts": {
+       "updateLogic": 0.9,
+       "ui.layout": 2.2,
+       "map.update": 2.1,
+       "updateCutout": 0.8
+      }
+     },
+     {
+      "i": 4,
+      "ms": 71.4,
+      "parts": {
+       "World.onStep": 63.6,
+       "updateLogic": 64.6,
+       "ui.layout": 1.9,
+       "updateNavRing": 3.5
+      }
+     },
+     {
+      "i": 24,
+      "ms": 8.7,
+      "parts": {
+       "World.onStep": 3.3,
+       "updateLogic": 3.4,
+       "map.update": 2.7,
+       "updateNavRing": 0.9
+      }
+     },
+     {
+      "i": 33,
+      "ms": 8.9,
+      "parts": {
+       "ui.layout": 6.4,
+       "map.update": 1.9
+      }
+     },
+     {
+      "i": 34,
+      "ms": 8.2,
+      "parts": {
+       "updatePlaceLabel": 1,
+       "World.onStep": 2.7,
+       "updateLogic": 2.9,
+       "ui.layout": 2,
+       "map.update": 1.3,
+       "updateNavRing": 0.9
+      }
+     },
+     {
+      "i": 42,
+      "ms": 8.3,
+      "parts": {
+       "updateLogic": 1.7,
+       "ui.layout": 1,
+       "join.update": 4.4
+      }
+     },
+     {
+      "i": 44,
+      "ms": 9,
+      "parts": {
+       "World.onStep": 2.2,
+       "updateLogic": 4.2,
+       "ui.layout": 1.6,
+       "map.update": 1.9,
+       "updateNavRing": 0.6
+      }
+     },
+     {
+      "i": 54,
+      "ms": 9.1,
+      "parts": {
+       "World.onStep": 1.9,
+       "updateLogic": 3.6,
+       "ui.layout": 2.3,
+       "map.update": 0.9,
+       "updateNavRing": 2.1
+      }
+     },
+     {
+      "i": 64,
+      "ms": 15.5,
+      "parts": {
+       "World.onStep": 4.2,
+       "updateLogic": 5.2,
+       "ui.layout": 2.8,
+       "map.update": 0.9,
+       "lighting.update": 5.2
+      }
+     },
+     {
+      "i": 83,
+      "ms": 8.4,
+      "parts": {
+       "World.onStep": 2.9,
+       "updateLogic": 3.7,
+       "ui.layout": 1.8,
+       "map.update": 1.1,
+       "lighting.update": 0.7,
+       "updateNavRing": 0.9
+      }
+     },
+     {
+      "i": 145,
+      "ms": 8.7,
+      "parts": {
+       "updateLogic": 0.8,
+       "map.update": 5.1,
+       "lighting.update": 2
+      }
+     },
+     {
+      "i": 208,
+      "ms": 8.5,
+      "parts": {
+       "World.onStep": 1.6,
+       "updateLogic": 2.6,
+       "ui.layout": 1.5,
+       "map.update": 1.2,
+       "camera.follow": 0.8,
+       "updateNavRing": 1
+      }
+     }
+    ]
+   },
+   "C": {
+    "renderMed": 31.7,
+    "renderNoShadowMed": 12.5,
+    "renderMax": 221.3
+   }
+  },
+  "poyo_village": {
+   "map": {
+    "id": "poyo_village",
+    "w": 76,
+    "h": 40,
+    "kind": "town",
+    "x": 24,
+    "y": 32,
+    "from": "world"
+   },
+   "A": {
+    "casters": {
+     "n": 240,
+     "small035": 160,
+     "small06": 173,
+     "small1": 187,
+     "triSmall06": 30828,
+     "noCull": 24,
+     "top": [
+      "part:124/5808tri/r0.4",
+      "buildings:25/20320tri/r38.8",
+      "body_merged:16/101364tri/r0.8",
+      "village_decor:16/42744tri/r37.5",
+      "duck:14/1392tri/r0.2",
+      "rigid_merged:8/4052tri/r0.3",
+      "tm83_hat:6/448tri/r0.3",
+      "env_poyo_village:5/3292tri/r16.0",
+      "BufferGeometry:5/204tri/r0.5",
+      "body:4/48tri/r0.5",
+      "head:4/48tri/r0.2",
+      "terrain:3/120tri/r3.3",
+      "mob76_straw:3/208tri/r0.5",
+      "bridges_docks:2/792tri/r14.6",
+      "building_dojo:2/24tri/r1.0",
+      "mob76_kerchief:2/290tri/r0.3"
+     ],
+     "topTri": [
+      "body_merged:16/101364tri",
+      "village_decor:16/42744tri",
+      "buildings:25/20320tri",
+      "part:124/5808tri",
+      "rigid_merged:8/4052tri",
+      "env_poyo_village:5/3292tri",
+      "duck:14/1392tri",
+      "bridges_docks:2/792tri"
+     ]
+    },
+    "calls": 408,
+    "shadowCalls": 276,
+    "mainCalls": 132,
+    "tri": 666354,
+    "mainTri": 314998,
+    "meshes": 483,
+    "visibleMeshes": 479,
+    "castShadowAll": 400,
+    "castShadowVisible": 398,
+    "instanced": 58,
+    "batched": 1,
+    "sprites": 46,
+    "lights": 8,
+    "pointLights": 6,
+    "transparentMatsUses": 31,
+    "alphaTestUses": 34,
+    "materialsVisible": 174,
+    "programs": 95,
+    "geometries": 253,
+    "textures": 84,
+    "buffer": [
+     482,
+     628
+    ],
+    "shadowMap": 1024,
+    "joinShown": 0
+   },
+   "B": {
+    "frames": 400,
+    "wall": 1386,
+    "mean": 3.43,
+    "p50": 3,
+    "p90": 5.9,
+    "p99": 11,
+    "max": 13.3,
+    "over16": 0,
+    "over33": 0,
+    "tilesVisited": 29,
+    "moved": [
+     "24,32",
+     "14,22"
+    ],
+    "map": "poyo_village",
+    "parts": {
+     "ui.layout": {
+      "n": 400,
+      "avg": 0.847,
+      "max": 7.7
+     },
+     "map.update": {
+      "n": 400,
+      "avg": 0.814,
+      "max": 8.5
+     },
+     "updateNavRing": {
+      "n": 400,
+      "avg": 0.285,
+      "max": 7.6
+     },
+     "updateLogic": {
+      "n": 400,
+      "avg": 0.172,
+      "max": 2.6
+     },
+     "lighting.update": {
+      "n": 400,
+      "avg": 0.118,
+      "max": 2.9
+     },
+     "hero.update": {
+      "n": 400,
+      "avg": 0.07,
+      "max": 2.7
+     },
+     "World.onStep": {
+      "n": 36,
+      "avg": 0.061,
+      "max": 2.6
+     },
+     "ui.show": {
+      "n": 400,
+      "avg": 0.056,
+      "max": 1.2
+     },
+     "findTarget": {
+      "n": 400,
+      "avg": 0.055,
+      "max": 1.7
+     },
+     "camera.follow": {
+      "n": 400,
+      "avg": 0.046,
+      "max": 3.7
+     },
+     "updateCutout": {
+      "n": 400,
+      "avg": 0.043,
+      "max": 1.1
+     },
+     "updateVehicles": {
+      "n": 400,
+      "avg": 0.026,
+      "max": 1.7
+     },
+     "ui.setPrompt": {
+      "n": 400,
+      "avg": 0.021,
+      "max": 1
+     },
+     "fx78.update": {
+      "n": 400,
+      "avg": 0.011,
+      "max": 0.8
+     },
+     "Minimap.onStep": {
+      "n": 36,
+      "avg": 0.008,
+      "max": 0.9
+     },
+     "updateFollowers": {
+      "n": 400,
+      "avg": 0.007,
+      "max": 0.7
+     },
+     "join.update": {
+      "n": 400,
+      "avg": 0.007,
+      "max": 0.8
+     },
+     "car79.update": {
+      "n": 400,
+      "avg": 0.002,
+      "max": 0.7
+     },
+     "updatePlaceLabel": {
+      "n": 72,
+      "avg": 0.002,
+      "max": 0.1
+     },
+     "Minimap.reveal": {
+      "n": 36,
+      "avg": 0,
+      "max": 0
+     }
+    },
+    "spikes": [
+     {
+      "i": 1,
+      "ms": 8.5,
+      "parts": {
+       "map.update": 7.8
+      }
+     },
+     {
+      "i": 4,
+      "ms": 13.3,
+      "parts": {
+       "World.onStep": 1.3,
+       "updateLogic": 1.3,
+       "ui.layout": 1.8,
+       "map.update": 0.7,
+       "updateNavRing": 7.6
+      }
+     },
+     {
+      "i": 14,
+      "ms": 9.2,
+      "parts": {
+       "World.onStep": 1.3,
+       "updateLogic": 1.3,
+       "ui.layout": 1.8,
+       "map.update": 1.8,
+       "updateNavRing": 3.2
+      }
+     },
+     {
+      "i": 148,
+      "ms": 9.4,
+      "parts": {
+       "ui.layout": 4.6,
+       "updateNavRing": 4
+      }
+     },
+     {
+      "i": 167,
+      "ms": 9.4,
+      "parts": {
+       "updateLogic": 0.6,
+       "ui.layout": 2.9,
+       "map.update": 1.6,
+       "updateNavRing": 2.4
+      }
+     },
+     {
+      "i": 187,
+      "ms": 8.1,
+      "parts": {
+       "ui.layout": 3.3,
+       "updateNavRing": 2.6
+      }
+     },
+     {
+      "i": 227,
+      "ms": 8.1,
+      "parts": {
+       "World.onStep": 2.6,
+       "updateLogic": 2.6,
+       "ui.layout": 1.2,
+       "map.update": 0.8,
+       "updateNavRing": 1.9
+      }
+     },
+     {
+      "i": 247,
+      "ms": 8.5,
+      "parts": {
+       "Minimap.onStep": 0.7,
+       "World.onStep": 1,
+       "updateLogic": 1,
+       "ui.layout": 2.2,
+       "map.update": 2.1,
+       "lighting.update": 0.8,
+       "updateNavRing": 1.8
+      }
+     },
+     {
+      "i": 257,
+      "ms": 10.6,
+      "parts": {
+       "ui.layout": 3.8,
+       "map.update": 1.2,
+       "updateNavRing": 3.7
+      }
+     },
+     {
+      "i": 321,
+      "ms": 12.2,
+      "parts": {
+       "ui.layout": 7.7,
+       "map.update": 1.4,
+       "findTarget": 0.7
+      }
+     },
+     {
+      "i": 333,
+      "ms": 11.4,
+      "parts": {
+       "ui.layout": 1,
+       "map.update": 8.5,
+       "camera.follow": 0.7
+      }
+     },
+     {
+      "i": 345,
+      "ms": 11,
+      "parts": {
+       "ui.layout": 1.6,
+       "map.update": 8.2,
+       "lighting.update": 0.7
+      }
+     },
+     {
+      "i": 346,
+      "ms": 10.7,
+      "parts": {
+       "World.onStep": 0.9,
+       "updateLogic": 0.9,
+       "ui.layout": 2.5,
+       "ui.show": 0.7,
+       "updateNavRing": 1.8
+      }
+     },
+     {
+      "i": 388,
+      "ms": 8.1,
+      "parts": {
+       "updateLogic": 2.5,
+       "ui.layout": 1.9,
+       "map.update": 0.8,
+       "updateNavRing": 1.7
+      }
+     }
+    ]
+   },
+   "C": {
+    "renderMed": 20.5,
+    "renderNoShadowMed": 12.8,
+    "renderMax": 49.7
+   }
+  }
+ },
+ "errors": []
+}

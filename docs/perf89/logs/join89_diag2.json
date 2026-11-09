@@ -1,0 +1,120 @@
+{
+ "world_grania": {
+  "id": "world_grania",
+  "total": 1015,
+  "build": 917,
+  "maxSlice": 204,
+  "longTasks": 6,
+  "longMax": 204,
+  "longSum": 701,
+  "longList": [
+   60,
+   162,
+   99,
+   79,
+   204,
+   97
+  ],
+  "worstFrames": [
+   211,
+   169,
+   105,
+   105,
+   89,
+   69,
+   51,
+   39
+  ],
+  "failed": false,
+  "long": [
+   {
+    "ms": 59,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14272:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14357:30"
+   },
+   {
+    "ms": 162,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14357:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14587:30"
+   },
+   {
+    "ms": 99,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14643:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14817:30"
+   },
+   {
+    "ms": 79,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14817:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:15318:30"
+   },
+   {
+    "ms": 204,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:15318:30",
+    "to": "MapScene3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:34655:21"
+   },
+   {
+    "ms": 95,
+    "from": "main-Cti6ZMt2.js:40390:10",
+    "to": "main-Cti6ZMt2.js:40434:13"
+   }
+  ],
+  "compileSync": 26,
+  "textures": 26
+ },
+ "world_kalion": {
+  "id": "world_kalion",
+  "total": 768,
+  "build": 737,
+  "maxSlice": 167,
+  "longTasks": 4,
+  "longMax": 167,
+  "longSum": 546,
+  "longList": [
+   135,
+   102,
+   167,
+   142
+  ],
+  "worstFrames": [
+   174,
+   150,
+   143,
+   110,
+   88,
+   39,
+   18,
+   13
+  ],
+  "failed": false,
+  "long": [
+   {
+    "ms": 84,
+    "from": "start",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14357:30"
+   },
+   {
+    "ms": 136,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14357:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14587:30"
+   },
+   {
+    "ms": 102,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14587:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14817:30"
+   },
+   {
+    "ms": 167,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:14817:30",
+    "to": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:15318:30"
+   },
+   {
+    "ms": 143,
+    "from": "WorldBuilder3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:15318:30",
+    "to": "MapScene3D.build (http://localhost:8794/3d/assets/main-Cti6ZMt2.js:34655:21"
+   }
+  ],
+  "compileSync": 12,
+  "textures": 21
+ },
+ "errors": []
+}

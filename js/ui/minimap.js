@@ -307,12 +307,15 @@
     else if (Input.consume('map') && !W.busy && root.Engine.top() === W.scene && !(document.getElementById('ui').children.length)) Minimap.openBig();
     var show = Minimap.shouldShow();
     Minimap.box.classList.toggle('on', show);
-    if (show) Minimap.drawMini();
+    if (show) {   // v8.9 スマホ：主人公が動いていない（位置・向き・地図が同じ）コマは 2 コマに 1 回だけ描き直す（点滅の印は 30 回／秒でも見え方は同じ。CPU を空ける）
+      var pl = W.player; var sig = W.map && pl ? W.map.id + '|' + pl.px + ',' + pl.py + '|' + pl.dir : ''; Minimap._mmN = (Minimap._mmN || 0) + 1;
+      if (sig !== Minimap._mmSig || (Minimap._mmN & 1) === 0 || !document.body.classList.contains('mobile')) { Minimap._mmSig = sig; Minimap.drawMini(); }
+    }
     if (Minimap.open) Minimap.drawBig();
   };
   Minimap.drawMini = function () {
     var W = root.World, m = W.map, p = W.player; var ctx = Minimap.canvas.getContext('2d'); var dpr = Minimap.dpr, w = Minimap.mmW, h = Minimap.mmH;
-    Minimap.titleEl.textContent = m.name;
+    if (Minimap.titleEl.textContent !== m.name) Minimap.titleEl.textContent = m.name;   // v8.9 変わったときだけ書く（毎コマ書くと画面の配置の計算が毎コマやり直しになっていた）
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
     var t = getTerrain(m, false); var cell = t.cell; var TS = root.Engine.TS;
     // プレイヤー（補間座標）を中心に。端では補正

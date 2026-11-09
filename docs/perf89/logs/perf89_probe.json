@@ -1,0 +1,253 @@
+{
+ "env": {
+  "quality": "low",
+  "pixelRatio": 1.25,
+  "coarse": true,
+  "dpr": 3,
+  "mobile": true,
+  "build": null
+ },
+ "throttle": 4,
+ "frames": 300,
+ "cases": {
+  "poyo_village": {
+   "map": {
+    "id": "poyo_village",
+    "w": 76,
+    "h": 40,
+    "kind": "town",
+    "x": 24,
+    "y": 32,
+    "from": "world"
+   },
+   "A": {
+    "calls": 386,
+    "shadowCalls": 278,
+    "mainCalls": 108,
+    "tri": 656704,
+    "mainTri": 307826,
+    "meshes": 483,
+    "visibleMeshes": 479,
+    "castShadowAll": 400,
+    "castShadowVisible": 398,
+    "instanced": 58,
+    "batched": 1,
+    "sprites": 46,
+    "lights": 8,
+    "pointLights": 6,
+    "transparentMatsUses": 31,
+    "alphaTestUses": 34,
+    "materialsVisible": 174,
+    "programs": 32,
+    "geometries": 132,
+    "textures": 48,
+    "buffer": [
+     482,
+     628
+    ],
+    "shadowMap": 1024,
+    "joinShown": 0
+   },
+   "B": {
+    "frames": 300,
+    "wall": 955,
+    "mean": 3.14,
+    "p50": 2.8,
+    "p90": 5.2,
+    "p99": 13,
+    "max": 16.5,
+    "over16": 0,
+    "over33": 0,
+    "tilesVisited": 24,
+    "moved": [
+     "24,32",
+     "14,24"
+    ],
+    "map": "poyo_village",
+    "parts": {
+     "map.update": {
+      "n": 300,
+      "avg": 0.795,
+      "max": 11.6
+     },
+     "ui.layout": {
+      "n": 300,
+      "avg": 0.643,
+      "max": 3.3
+     },
+     "updateNavRing": {
+      "n": 300,
+      "avg": 0.247,
+      "max": 7.7
+     },
+     "updateLogic": {
+      "n": 300,
+      "avg": 0.198,
+      "max": 5.3
+     },
+     "lighting.update": {
+      "n": 300,
+      "avg": 0.107,
+      "max": 1.3
+     },
+     "findTarget": {
+      "n": 300,
+      "avg": 0.076,
+      "max": 3
+     },
+     "World.onStep": {
+      "n": 28,
+      "avg": 0.074,
+      "max": 4.4
+     },
+     "hero.update": {
+      "n": 300,
+      "avg": 0.062,
+      "max": 1.1
+     },
+     "camera.follow": {
+      "n": 300,
+      "avg": 0.058,
+      "max": 2
+     },
+     "ui.show": {
+      "n": 300,
+      "avg": 0.057,
+      "max": 3.2
+     },
+     "updateCutout": {
+      "n": 300,
+      "avg": 0.031,
+      "max": 2
+     },
+     "updateFollowers": {
+      "n": 300,
+      "avg": 0.026,
+      "max": 1
+     },
+     "join.update": {
+      "n": 300,
+      "avg": 0.016,
+      "max": 0.9
+     },
+     "ui.setPrompt": {
+      "n": 300,
+      "avg": 0.014,
+      "max": 0.8
+     },
+     "fx78.update": {
+      "n": 300,
+      "avg": 0.013,
+      "max": 0.7
+     },
+     "updateVehicles": {
+      "n": 300,
+      "avg": 0.012,
+      "max": 0.8
+     },
+     "updatePlaceLabel": {
+      "n": 56,
+      "avg": 0.005,
+      "max": 0.7
+     },
+     "Minimap.onStep": {
+      "n": 28,
+      "avg": 0.005,
+      "max": 0.5
+     },
+     "car79.update": {
+      "n": 300,
+      "avg": 0.002,
+      "max": 0.7
+     },
+     "Minimap.reveal": {
+      "n": 28,
+      "avg": 0,
+      "max": 0
+     }
+    },
+    "spikes": [
+     {
+      "i": 0,
+      "ms": 16.5,
+      "parts": {
+       "updateLogic": 5.3,
+       "ui.layout": 1.3,
+       "hero.update": 0.9,
+       "map.update": 5.3,
+       "lighting.update": 0.6
+      }
+     },
+     {
+      "i": 4,
+      "ms": 14.3,
+      "parts": {
+       "World.onStep": 1,
+       "updateLogic": 1.1,
+       "map.update": 4.1,
+       "updateCutout": 0.6,
+       "updateNavRing": 7.7
+      }
+     },
+     {
+      "i": 14,
+      "ms": 13,
+      "parts": {
+       "World.onStep": 0.9,
+       "updateLogic": 1.2,
+       "ui.layout": 2.4,
+       "map.update": 1.3,
+       "updateNavRing": 5.9
+      }
+     },
+     {
+      "i": 24,
+      "ms": 9,
+      "parts": {
+       "World.onStep": 1.3,
+       "updateLogic": 1.4,
+       "ui.layout": 1.5,
+       "lighting.update": 0.8,
+       "updateNavRing": 3.7
+      }
+     },
+     {
+      "i": 34,
+      "ms": 8.5,
+      "parts": {
+       "World.onStep": 1.5,
+       "updateLogic": 1.5,
+       "ui.layout": 1.7,
+       "map.update": 1.4,
+       "updateNavRing": 3.1
+      }
+     },
+     {
+      "i": 103,
+      "ms": 11.9,
+      "parts": {
+       "map.update": 11.6
+      }
+     },
+     {
+      "i": 108,
+      "ms": 12.2,
+      "parts": {
+       "World.onStep": 4.4,
+       "updateLogic": 4.4,
+       "ui.layout": 3.3,
+       "map.update": 1.2,
+       "updateNavRing": 3
+      }
+     }
+    ]
+   },
+   "C": {
+    "renderMed": 26.8,
+    "renderNoShadowMed": 11.9,
+    "renderMax": 58.7
+   }
+  }
+ },
+ "errors": []
+}

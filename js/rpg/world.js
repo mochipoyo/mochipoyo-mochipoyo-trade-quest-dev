@@ -285,26 +285,41 @@
     if (m._lmFoot) return m._lmFoot;
     var foot = {}, stats = { full: 0, part: 0, none: 0 }, W = m.w, H = m.h;
     var walk = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H && !Tiles.isSolid(m.tiles[y][x]); };
+    // v8.9 出入口・出来事・宝箱のあるマス（m.warpAt / eventAt / chestAt と同じ判定）をマスの番号の表に。以前は 1 マス調べるたびに一覧をなめていて、
+    //   フィールドの最初の 1 歩でこの計算が走り、スマホでは歩き出しが一瞬止まっていた
+    var THING = new Set(); [m.warps, m.events, m.chests].forEach(function (L) { (L || []).forEach(function (o) { if (o && typeof o.x === 'number' && typeof o.y === 'number' && o.x >= 0 && o.y >= 0 && o.x < W && o.y < H) THING.add(o.y * W + o.x); }); });
+    var thingAt = function (x, y) { return x >= 0 && y >= 0 && x < W && y < H && THING.has(y * W + x); };
     // 窓（入口から半径 R）の中で、block を通らずにつながる成分の番号
     var R = 12;
-    var label = function (w, block) {   // lab：マス→成分の番号、info：成分ごとの広さ・窓の端に届くか・中に出入口などがあるか
-      var lab = {}, info = {}, id = 0;
-      for (var y0 = w.y - R; y0 <= w.y + R; y0++) for (var x0 = w.x - R; x0 <= w.x + R; x0++) {
-        var k0 = x0 + ',' + y0; if (lab[k0] !== undefined || !walk(x0, y0) || block[k0]) continue;
-        id++; lab[k0] = id; var q = [[x0, y0]]; var inf = info[id] = { n: 0, open: false, thing: false };
-        while (q.length) { var c = q.pop(); var nb = [[1, 0], [-1, 0], [0, 1], [0, -1]]; inf.n++;
-          if (Math.abs(c[0] - w.x) >= R || Math.abs(c[1] - w.y) >= R) inf.open = true;
-          if (m.warpAt(c[0], c[1]) || m.eventAt(c[0], c[1]) || (m.chestAt && m.chestAt(c[0], c[1]))) inf.thing = true;
-          for (var i = 0; i < 4; i++) { var nx = c[0] + nb[i][0], ny = c[1] + nb[i][1]; if (Math.abs(nx - w.x) > R || Math.abs(ny - w.y) > R) continue; var k = nx + ',' + ny; if (lab[k] !== undefined || !walk(nx, ny) || block[k]) continue; lab[k] = id; q.push([nx, ny]); } }
+    // v8.9 窓の中のマスを番号（(y - w.y + R) * S + (x - w.x + R)）で扱う（以前は 'x,y' の文字列で、フィールドの最初の 1 歩で数十ミリ秒かかっていた）。結果は以前と同じ
+    var S = 2 * R + 1, WIN = new Map();
+    var winOf = function (w) {   // その入口の窓：歩けるマス・出入口などがあるマス
+      var v = WIN.get(w); if (v) return v; var ok = new Uint8Array(S * S), th = new Uint8Array(S * S);
+      for (var j = 0; j < S; j++) for (var i = 0; i < S; i++) { var x = w.x - R + i, y = w.y - R + j; if (walk(x, y)) ok[j * S + i] = 1; if (thingAt(x, y)) th[j * S + i] = 1; }
+      v = { ok: ok, th: th }; WIN.set(w, v); return v;
+    };
+    var label = function (w, block) {   // lab：マス→成分の番号（0＝なし）、info：成分ごとの広さ・窓の端に届くか・中に出入口などがあるか
+      var win = winOf(w), ok = win.ok, lab = new Int32Array(S * S), info = [null], id = 0, st = [];
+      for (var k0 = 0; k0 < S * S; k0++) {
+        if (lab[k0] || !ok[k0] || block[k0]) continue;
+        id++; lab[k0] = id; st.length = 0; st.push(k0); var inf = info[id] = { n: 0, open: false, thing: false };
+        while (st.length) { var c = st.pop(); var ci = c % S, cj = (c / S) | 0; inf.n++;
+          if (ci === 0 || cj === 0 || ci === S - 1 || cj === S - 1) inf.open = true;
+          if (win.th[c]) inf.thing = true;
+          var nk;
+          if (ci + 1 < S) { nk = c + 1; if (!lab[nk] && ok[nk] && !block[nk]) { lab[nk] = id; st.push(nk); } }
+          if (ci > 0) { nk = c - 1; if (!lab[nk] && ok[nk] && !block[nk]) { lab[nk] = id; st.push(nk); } }
+          if (cj + 1 < S) { nk = c + S; if (!lab[nk] && ok[nk] && !block[nk]) { lab[nk] = id; st.push(nk); } }
+          if (cj > 0) { nk = c - S; if (!lab[nk] && ok[nk] && !block[nk]) { lab[nk] = id; st.push(nk); } } }
       }
       return { lab: lab, info: info };
     };
     var cuts = function (w, cand) {   // true＝道をふさぐ（行き止まりの小さなすき間（10マス以下・何もない）が切り離されるだけなら気にしない）
-      var b0 = {}; b0[w.x + ',' + w.y] = 1; var b1 = { }; b1[w.x + ',' + w.y] = 1; cand.forEach(function (c) { b1[c[0] + ',' + c[1]] = 1; });
-      var L0 = label(w, b0), L1 = label(w, b1), l0 = L0.lab, l1 = L1.lab; var edge = [];
+      var C = R * S + R; var b0 = new Uint8Array(S * S); b0[C] = 1; var b1 = new Uint8Array(S * S); b1[C] = 1; cand.forEach(function (c) { b1[(c[1] - w.y + R) * S + (c[0] - w.x + R)] = 1; });
+      var L0 = label(w, b0), L1 = label(w, b1), l0 = L0.lab, l1 = L1.lab, ok = winOf(w).ok; var edge = [];
       var minor = function (k) { var f = L1.info[l1[k]]; return f && !f.open && !f.thing && f.n <= 10; };
-      for (var y = w.y - 3; y <= w.y + 3; y++) for (var x = w.x - 3; x <= w.x + 3; x++) { var k = x + ',' + y; if (b1[k] || !walk(x, y)) continue; var near = b1[(x + 1) + ',' + y] || b1[(x - 1) + ',' + y] || b1[x + ',' + (y + 1)] || b1[x + ',' + (y - 1)]; if (near && !minor(k)) edge.push(k); }
-      for (var i = 0; i < edge.length; i++) for (var j = i + 1; j < edge.length; j++) if (l0[edge[i]] === l0[edge[j]] && l1[edge[i]] !== l1[edge[j]]) return true;
+      for (var j = R - 3; j <= R + 3; j++) for (var i = R - 3; i <= R + 3; i++) { var k = j * S + i; if (b1[k] || !ok[k]) continue; var near = b1[k + 1] || b1[k - 1] || b1[k + S] || b1[k - S]; if (near && !minor(k)) edge.push(k); }
+      for (var a = 0; a < edge.length; a++) for (var b = a + 1; b < edge.length; b++) if (l0[edge[a]] === l0[edge[b]] && l1[edge[a]] !== l1[edge[b]]) return true;
       return false;
     };
     m.warps.forEach(function (w) {
@@ -314,7 +329,7 @@
       for (var v = -2; v <= (open81 ? 2 : 1); v++) for (var u = -half; u <= half; u++) {   // u：横、v：正面方向（+1＝出てくる側）
         if (!u && !v) continue; if (half === 2 && Math.abs(u) === 2 && (open81 ? Math.abs(v) === 2 : (v === -2 || v === 1))) continue;
         var dx = f[0] * v - f[1] * u, dy = f[1] * v + f[0] * u; var x = w.x + dx, y = w.y + dy;
-        if (!walk(x, y) || m.warpAt(x, y) || m.eventAt(x, y) || (m.chestAt && m.chestAt(x, y)) || foot[x + ',' + y]) continue;
+        if (!walk(x, y) || thingAt(x, y) || foot[x + ',' + y]) continue;
         cand.push([x, y]);
       }
       var use = cand, kind = 'full';

@@ -7,6 +7,7 @@ import { scope3D, setScope3D } from '../world/coverage.js';
 import { roundSetting, setRoundSetting } from '../world/Organic.js';
 import { finishSetting, setFinishSetting } from '../engine/Finish76.js';
 import { bdetailSetting, setBdetailSetting } from '../world/BuildingBuilder3D.js';
+import { smoothSetting, setSmoothSetting } from '../engine/Smooth89.js';
 const G3B = () => window.BattleStage3D;
 export class UIOverlay {
   constructor(app) {
@@ -81,6 +82,7 @@ export class UIOverlay {
     this.tools.innerHTML = '<div><button data-a="run" title="走る／歩くの切り替え（R キーでも）">走る</button> <button data-a="zin">＋</button> <button data-a="zout">－</button> <button data-a="panel">3D設定</button></div>' +   /* v8.4 走る：押すたびに 走る⇄歩く（色が付いている間は走る） */
       '<div id="g3-panel"><div class="row"><span class="lab">カメラ角度</span><button data-cam="38">38°</button><button data-cam="48">48°</button><button data-cam="56">56°</button></div>' +
       '<div class="row"><span class="lab">画質</span><button data-q="high">高（PC）</button><button data-q="low">軽量（スマホ）</button></div>' +
+      '<div class="row"><span class="lab">なめらかさ</span><button data-sm="auto">自動（重いときは解像度を下げる）</button><button data-sm="off">使わない（解像度は固定）</button><span class="small" style="color:#aab">軽量（スマホ）のときだけ</span></div>' +   /* v8.9 Smooth89 */
       '<div class="row"><span class="lab">画面の仕上げ</span><button data-fin="on">使う（ジオラマ風のぼかし・色の調子）</button><button data-fin="off">使わない（以前の表示）</button><span class="small" style="color:#aab">高画質のときだけ</span></div>' +
       '<div class="row"><span class="lab">建物の作り込み</span><button data-bd="on">使う（厚い屋根・汚れ・日よけ・小物・町の目玉・部屋の暖炉と窓）</button><button data-bd="off">使わない（以前の形）</button></div>' +
       '<div class="row"><span class="lab">世界のつながり</span><button data-join="on">つなぐ（3121年の地球・地上の地域と海を1枚に・境目で画面を切り替えない）</button><button data-join="v76">つなぐ（v7.6 の配置）</button><button data-join="off">地域ごと（以前のつながり）</button></div>' +
@@ -109,6 +111,7 @@ export class UIOverlay {
       if (b.dataset.ba && G3B()) G3B().setActors(b.dataset.ba === 'on');   // Phase 2：次の戦闘から
       if (b.dataset.bl) { try { localStorage.setItem('mtq3d-battle-layout', b.dataset.bl); } catch (e) { /* なし */ } }   // 戦闘の並び：次の戦闘から
       if (b.dataset.bb) { try { localStorage.setItem('mtq3d-battle-bg', b.dataset.bb); } catch (e) { /* なし */ } }   // v6.6 前後の並びの背景：すぐ反映（戦闘中でも）
+      if (b.dataset.sm) { setSmoothSetting(b.dataset.sm); if (app.setSmooth89) app.setSmooth89(b.dataset.sm === 'auto'); }   // v8.9 なめらかさ：すぐ反映
       if (b.dataset.fin) { setFinishSetting(b.dataset.fin); if (app.renderer && app.renderer.setFinishEnabled) app.renderer.setFinishEnabled(b.dataset.fin !== 'off'); }   // v7.6 画面の仕上げ：すぐ反映
       if (b.dataset.bd && b.dataset.bd !== bdetailSetting()) { setBdetailSetting(b.dataset.bd); app.rebuildGeneric(); }
       if (b.dataset.join && window.World76 && b.dataset.join !== window.World76.setting()) { try { localStorage.setItem('mtq3d-join', b.dataset.join); } catch (e) { /* なし */ } const Win = window.Win; if (Win && Win.choice) Win.choice('世界のつながりの変更は、ページの再読み込みで反映される。今すぐ再読み込みする？（オートセーブから再開できる）', ['再読み込み', 'あとで']).then((c) => { if (c === 0) { try { window.State.autosave(); } catch (e) { /* なし */ } location.reload(); } }); }   // v7.6 世界のつながり（js/rpg/world76.js）   // v7.6 建物の作り込み：汎用3Dのマップを作り直す
@@ -154,6 +157,7 @@ export class UIOverlay {
     let bbg = 'photo'; try { bbg = localStorage.getItem('mtq3d-battle-bg') === '3d' ? '3d' : 'photo'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-bb]').forEach((b) => b.classList.toggle('on', b.dataset.bb === bbg));
     let ba = true; try { ba = localStorage.getItem('mtq3d-battle-actors') !== 'off'; } catch (e) { /* なし */ } this.tools.querySelectorAll('[data-ba]').forEach((b) => b.classList.toggle('on', (b.dataset.ba === 'on') === ba));
     const fin = (app.renderer && app.renderer.finish) ? (app.renderer.finish.enabled() ? 'on' : 'off') : finishSetting(); this.tools.querySelectorAll('[data-fin]').forEach((b) => { b.classList.toggle('on', b.dataset.fin === fin); b.disabled = !(app.renderer && app.renderer.finish); });
+    const sm = smoothSetting(); this.tools.querySelectorAll('[data-sm]').forEach((b) => { b.classList.toggle('on', b.dataset.sm === sm); b.disabled = app.quality !== 'low'; });   // v8.9
     const bd = bdetailSetting(); this.tools.querySelectorAll('[data-bd]').forEach((b) => b.classList.toggle('on', b.dataset.bd === bd));
     const jn = window.World76 ? window.World76.setting() : 'off'; this.tools.querySelectorAll('[data-join]').forEach((b) => b.classList.toggle('on', b.dataset.join === jn));
     const sc = scope3D(); this.tools.querySelectorAll('[data-sc]').forEach((b) => b.classList.toggle('on', b.dataset.sc === sc));

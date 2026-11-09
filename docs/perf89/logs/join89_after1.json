@@ -1,0 +1,57 @@
+{
+ "world_grania": {
+  "id": "world_grania",
+  "total": 1378,
+  "build": 1279,
+  "maxSlice": 420,
+  "longTasks": 5,
+  "longMax": 420,
+  "longSum": 1041,
+  "longList": [
+   109,
+   226,
+   117,
+   169,
+   420
+  ],
+  "worstFrames": [
+   428,
+   246,
+   178,
+   126,
+   116,
+   56,
+   44,
+   36
+  ],
+  "failed": false
+ },
+ "world_kalion": {
+  "id": "world_kalion",
+  "total": 728,
+  "build": 699,
+  "maxSlice": 172,
+  "longTasks": 5,
+  "longMax": 172,
+  "longSum": 558,
+  "longList": [
+   86,
+   80,
+   56,
+   164,
+   172
+  ],
+  "worstFrames": [
+   184,
+   170,
+   94,
+   82,
+   66,
+   43,
+   32,
+   20
+  ],
+  "failed": false
+ },
+ "errors": []
+}
