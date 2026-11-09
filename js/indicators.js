@@ -7,6 +7,8 @@
   'use strict';
 
   var Indicators = {};
+  // v9.0 判定の共通エンジン（js/signals.js）。Node では require で読む。なければ今までの式だけで動く
+  function SE() { return root.SignalEngine || (typeof require === 'function' ? (function () { try { return require('./signals.js'); } catch (e) { return null; } })() : null); }
 
   /* ---------- 基本集計 ---------- */
 
@@ -146,7 +148,7 @@
 
   /* ---------- ダイバージェンス ---------- */
   // 直近2つの確定済み安値（高値）で価格とMACDラインを比較する。未確定ピボットは使わない。
-  Indicators.divergence = function (pivots, macdLine) {
+  Indicators.divergenceLegacy = function (pivots, macdLine) {
     var res = { regularBull: false, regularBear: false, hiddenBull: false, hiddenBear: false, detail: {} };
     var lows = pivots.filter(function (p) { return p.type === 'low' && p.confirmed; });
     var highs = pivots.filter(function (p) { return p.type === 'high' && p.confirmed; });
@@ -181,6 +183,15 @@
   };
 
   /* ---------- 総合分析（1つの時間足の状態をまとめる） ---------- */
+  // v9.0：比べ方は共通エンジン（SignalEngine.divergence）。入力（このファイルの ZigZag の確定ピボット・MACD の山谷を ±2 本で探す）は今までと同じなので、
+  //   返す印（regularBull など）は今までの式（divergenceLegacy）と同じ。4 種類を別々のシグナル（signals：種類・ピボット・確定した足・経過・根拠）としても返す
+  Indicators.divergence = function (pivots, macdLine) {
+    var E = SE(); if (!E) return Indicators.divergenceLegacy(pivots, macdLine);
+    var conf = pivots.filter(function (p) { return p.confirmed; }).map(function (p) { return { index: p.index, price: p.price, type: p.type }; });
+    var r = E.divergence({ pivots: conf, macd: macdLine, asOf: macdLine.length - 1, before: 2, after: 2, maxAgeBars: Infinity, legacyAll: true });
+    return { regularBull: r.flags.regularBull, regularBear: r.flags.regularBear, hiddenBull: r.flags.hiddenBull, hiddenBear: r.flags.hiddenBear, detail: r.detail, signals: r.signals };
+  };
+
   Indicators.analyze = function (candles, cfg) {
     var closes = candles.map(function (c) { return c.c; });
     var emas = cfg.ema.periods.map(function (p) { return Indicators.ema(closes, p); });
@@ -214,13 +225,18 @@
     var rciNow = rci[n];
     var rciMin = Infinity, rciMax = -Infinity;
     for (var k = Math.max(0, n - 8); k <= n; k++) { if (rci[k] === null) continue; if (rci[k] < rciMin) rciMin = rci[k]; if (rci[k] > rciMax) rciMax = rci[k]; }
-    var rciState = 'neutral';
+    var rciStateLegacy = 'neutral';   // 変更前の式（過去8本の極値から10戻れば反転。いま逆へ動いていても反転とした）。比べるためだけに残す
     if (rciNow !== null) {
-      if (rciMin <= -cfg.rci.hot && rciNow > rciMin + 10 && rciNow < cfg.rci.hot) rciState = 'oversold_reversal';
-      else if (rciMax >= cfg.rci.hot && rciNow < rciMax - 10 && rciNow > -cfg.rci.hot) rciState = 'overbought_reversal';
-      else if (rciNow >= cfg.rci.hot) rciState = 'overbought';
-      else if (rciNow <= -cfg.rci.hot) rciState = 'oversold';
+      if (rciMin <= -cfg.rci.hot && rciNow > rciMin + 10 && rciNow < cfg.rci.hot) rciStateLegacy = 'oversold_reversal';
+      else if (rciMax >= cfg.rci.hot && rciNow < rciMax - 10 && rciNow > -cfg.rci.hot) rciStateLegacy = 'overbought_reversal';
+      else if (rciNow >= cfg.rci.hot) rciStateLegacy = 'overbought';
+      else if (rciNow <= -cfg.rci.hot) rciStateLegacy = 'oversold';
     }
+    // v9.0 RCI の状態は共通エンジン（SignalEngine.rciState）：±70圏に触れたあと、反転を確認し「いまも反転の向きに動いている」ときだけ反転とする。
+    //   反転したあと逆へ戻っている（再逆行）・止まっている・古い反転は、いまの水準（±70 以上なら買われすぎ／売られすぎ圏、なければ中立）で答える
+    //   反転の確認の幅・本数などは教材の仮設定（SignalEngine.RCI_RULES）。詳しい状態は rciInfo
+    var E0 = SE(); var rciInfo = E0 ? E0.rciState(rci, n, { zone: cfg.rci.hot }) : null;
+    var rciState = rciInfo ? rciInfo.legacy : rciStateLegacy;
 
     var hist = macd.hist[n];
     var macdState = 'neutral';
@@ -247,7 +263,7 @@
     return {
       candles: candles, closes: closes, emas: emas, rci: rci, macd: macd, pivots: pivots,
       dow: dow, div: div, emaOrder: emaOrder, emaSlope: emaSlope, pricePos: pricePos,
-      emaValues: e, rciNow: rciNow, rciState: rciState, macdState: macdState,
+      emaValues: e, rciNow: rciNow, rciState: rciState, rciStateLegacy: rciStateLegacy, rciInfo: rciInfo, macdState: macdState,
       lastLow: lastLowPiv ? lastLowPiv.price : recentLow, lastHigh: lastHighPiv ? lastHighPiv.price : recentHigh,
       recentHigh: recentHigh, recentLow: recentLow, close: close, surge: surge, distFromEma20: distFromEma20
     };

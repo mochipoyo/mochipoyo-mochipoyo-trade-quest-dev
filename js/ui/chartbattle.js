@@ -192,7 +192,7 @@
     var canToggle = mode === 'practice';   // 練習のときだけ、指標の表示を切り替えられる（試験・必殺技・対人は技の決まった表示のまま）
     var ind = {}; (opts.ind || ['ema']).forEach(function (k) { ind[k] = true; }); ind.ema = true;
     var tf = opts.tf || s.tf || 15; var color = opts.color || '#e8c15a';
-    var reasons = root.ULT_REASONS || [];
+    var reasons = (root.ULT_REASONS || []).filter(function (r) { return !r.legacy; });   // v9.0 以前の選択肢（legacy）は出さない
     var head = '<div class="cb-head"><div class="cb-title"><b style="color:' + esc(color) + '">' + esc(opts.title || '') + '</b>' + (opts.sub ? '<span class="cb-sub">' + esc(opts.sub) + '</span>' : '') + '</div>' +
       '<div class="cb-sim">シミュレーション相場｜架空ペア POYO/MOCHI・' + esc(tfName(tf)) + (opts.quitable ? '<button type="button" class="cb-quit">中断</button>' : '') + '</div></div>' +
       (opts.badge ? '<div class="cb-badge">' + opts.badge + '</div>' : '') +   // v8.8 3本勝負のスコアなど（呼び出し元が作る HTML）

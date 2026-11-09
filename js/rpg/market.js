@@ -412,9 +412,18 @@
     var brk = c > hi40 + 0.3 * A ? 1 : c < lo40 - 0.3 * A ? -1 : 0;
     var rci = ind.rci[i], rciPrev = ind.rci[Math.max(0, i - 2)]; var rciTurnUp = rci !== null && rciPrev !== null && rciPrev < -70 && rci > rciPrev + 10; var rciTurnDown = rci !== null && rciPrev !== null && rciPrev > 70 && rci < rciPrev - 10;
     var mh = ind.macd.hist[i], ml = ind.macd.line[i], ms = ind.macd.signal[i];
-    var div = { bear: false, bull: false };
-    if (hs.length >= 2) { var a1 = hs[hs.length - 2], a2 = hs[hs.length - 1]; if (bars[a2].h > bars[a1].h && ind.macd.line[a2] < ind.macd.line[a1]) div.bear = true; }
-    if (ls.length >= 2) { var b1 = ls[ls.length - 2], b2 = ls[ls.length - 1]; if (bars[b2].l < bars[b1].l && ind.macd.line[b2] > ind.macd.line[b1]) div.bull = true; }
+    var div = { bear: false, bull: false }; var divSignals = [];
+    var SEg = root.SignalEngine;
+    if (SEg) {
+      // v9.0 比べ方は共通エンジン（SignalEngine.divergence）。ピボット（左右3本）と MACD をその足の値で比べる入力は今までと同じなので、
+      //   bear・bull（通常のダイバージェンス）の印は以前と同じ。4 種類のシグナル（divSignals）は参考の表示用（必殺技の威力の式には使わない）
+      var pv = []; sw.hs.forEach(function (k) { pv.push({ index: k, price: bars[k].h, type: 'high', confirmedAt: k + 3 }); }); sw.ls.forEach(function (k) { pv.push({ index: k, price: bars[k].l, type: 'low', confirmedAt: k + 3 }); }); pv.sort(function (x, y) { return x.index - y.index; });
+      var dr = SEg.divergence({ pivots: pv, macd: ind.macd.line, asOf: i, before: 0, after: 0, legacyAll: true }); div.bear = dr.flags.regularBear; div.bull = dr.flags.regularBull; divSignals = dr.signals;
+    } else {
+      if (hs.length >= 2) { var a1 = hs[hs.length - 2], a2 = hs[hs.length - 1]; if (bars[a2].h > bars[a1].h && ind.macd.line[a2] < ind.macd.line[a1]) div.bear = true; }
+      if (ls.length >= 2) { var b1 = ls[ls.length - 2], b2 = ls[ls.length - 1]; if (bars[b2].l < bars[b1].l && ind.macd.line[b2] > ind.macd.line[b1]) div.bull = true; }
+    }
+    var rciInfo = SEg ? SEg.rciState(ind.rci, i) : null;   // 参考：RCI の状態（形成中の足を含めて計算。必殺技の rciTurnUp/Down は今までの式のまま）
     var med = ind.atr.slice(Math.max(0, i - 60), i - 10).filter(function (x) { return x; }).sort(function (x, y) { return x - y; }); var medA = med.length ? med[Math.floor(med.length / 2)] : A; var volRatio = A / medA;
     var up = Market.aggregate(bars.slice(Math.max(0, n - 4 * 60)), 4); var ue = Indicators.ema(up.map(function (b) { return b.c; }), 20); var uDir = 0; var ui = up.length - 1; if (ue[ui] !== null && ue[Math.max(0, ui - 3)] !== null) uDir = up[ui].c > ue[ui] && ue[ui] > ue[ui - 3] ? 1 : up[ui].c < ue[ui] && ue[ui] < ue[ui - 3] ? -1 : 0;
     var dist = (c - e[0]) / A; var chase = Math.abs(dist) > 2.2;   // EMA20 から ATR の2.2倍以上離れている＝飛び乗り
@@ -435,7 +444,7 @@
     var clarity = Math.max(0, Math.min(1, Math.abs(sc) / 4 - (volRatio >= 2.2 ? 0.2 : 0) - (chase ? 0.15 : 0)));
     if (bias === 'none') reasons.push('根拠がそろっていない（見送りも有力）');
     return { score: sc, bias: bias, clarity: clarity, order: order, slope: slope, slope40: slope40, crosses: cross, dow: dow, upperDir: uDir, inRange: inRange, rangePos: pos, rangeWidth: width, breakout: brk, rci: rci, rciTurnUp: rciTurnUp, rciTurnDown: rciTurnDown,
-      macd: { line: ml, signal: ms, hist: mh }, div: div, volRatio: volRatio, chase: chase, nearEma: nearEma, distEma: dist, atr: A, price: c, reasons: reasons };
+      macd: { line: ml, signal: ms, hist: mh }, div: div, divSignals: divSignals, rciInfo: rciInfo, volRatio: volRatio, chase: chase, nearEma: nearEma, distEma: dist, atr: A, price: c, reasons: reasons };
   };
 
   /* ---------- いま動くチャート（ChartSimulationEngine） ----------

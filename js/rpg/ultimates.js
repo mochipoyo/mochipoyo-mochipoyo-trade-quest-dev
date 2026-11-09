@@ -345,7 +345,9 @@
       case 'pullback': return !!dir && c.pullback;
       case 'breakout': return !!dir && (c.breakout || c.fade);
       case 'range': return !!dir && c.rangeEdge;
-      case 'divergence': return !!dir && (c.divergence || c.rciTurn);
+      case 'divergence': return !!dir && (c.divergence || c.rciTurn);   // 以前の選択肢（昔の記録のため。新しい問いには出さない）
+      case 'macdDiv': return !!dir && c.divergence;   // v9.0：MACD のダイバージェンスだけ（RCI の反転では代わりにしない）
+      case 'rciTurn': return !!dir && c.rciTurn;      // v9.0：RCI の反転は別の理由
       case 'mtf': return !!dir && c.mtf;
       case 'unclear': return !dir && U.appropriateSkip(as);
     }

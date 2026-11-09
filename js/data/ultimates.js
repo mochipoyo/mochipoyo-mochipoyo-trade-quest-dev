@@ -241,8 +241,10 @@
   // 判断の理由の選択肢（上級試験）：key は Ultimates.reasonMatch で判断時点の見立てと照らし合わせる
   var REASONS = [
     { key: 'trend', label: 'トレンド（EMAの並び・波形）の向き' }, { key: 'pullback', label: '押し目・戻り（EMA付近まで戻った）' }, { key: 'breakout', label: '高値・安値の突破' },
-    { key: 'range', label: 'レンジの端からの反転' }, { key: 'divergence', label: 'ダイバージェンス・RCIの反転' }, { key: 'mtf', label: '上位足の向き' },
-    { key: 'unclear', label: '根拠がそろわない・急変動・飛び乗りになる（見送り）' }
+    { key: 'range', label: 'レンジの端からの反転' }, { key: 'macdDiv', label: 'MACD のダイバージェンス（価格と MACD の逆行）' }, { key: 'rciTurn', label: 'RCI の±70圏からの反転' }, { key: 'mtf', label: '上位足の向き' },
+    { key: 'unclear', label: '根拠がそろわない・急変動・飛び乗りになる（見送り）' },
+    // v9.0 以前の選択肢（ダイバージェンスと RCI の反転を 1 つにまとめていた）。新しい問いには出さない（legacy）。昔の記録の名前を出すためだけに残す
+    { key: 'divergence', label: 'ダイバージェンス・RCIの反転（以前の選択肢）', legacy: true }
   ];
 
   root.ULTIMATE_SCHOOLS = SCHOOLS; root.ULTIMATES = ULTIMATES; root.ULTIMATE_LIST = LIST; root.TRADER_MASTERS = MASTERS; root.ULT_EXAM_PROMPTS = EXAM_PROMPTS; root.ULT_REASONS = REASONS;

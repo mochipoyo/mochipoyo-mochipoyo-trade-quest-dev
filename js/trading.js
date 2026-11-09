@@ -275,14 +275,17 @@
   TradeEval.truth = function (scn) {
     var def = scn.def; var h4 = scn.states['4h'], d1 = scn.states['1d'], f = scn.states[def.focusTF];
     function dir(a) { if (a.emaOrder === 'up' || a.emaOrder === 'down') return a.emaOrder; if (a.dow.trend === 'up' || a.dow.trend === 'down') return a.dow.trend; return 'range'; }
-    // ダイバージェンスが複数検出される場合は、その場面のテーマ（def.id）に合うものを優先し、なければ検出順
+    // v9.0 ダイバージェンス：見えているチャートの事実だけで決める（以前はシナリオ ID の名前で優先順を決めていた）。
+    //   安値側・高値側の両方に出ているときは、2つ目の山谷が新しい（右にある）ほうを代表の答えにし、どちらを答えても正解（macdAll）
     var flags = { hidden_bull: f.div.hiddenBull, hidden_bear: f.div.hiddenBear, regular_bull: f.div.regularBull, regular_bear: f.div.regularBear };
-    var order = (def.id.indexOf('regular') === 0 ? ['regular_bull', 'regular_bear', 'hidden_bull', 'hidden_bear'] : ['hidden_bull', 'hidden_bear', 'regular_bull', 'regular_bear']);
-    var div = 'none'; for (var i = 0; i < order.length; i++) if (flags[order[i]]) { div = order[i]; break; }
-    // 上位足の方向：4時間足が明確ならそれ、不明瞭なら日足
-    var htf = dir(h4) !== 'range' ? dir(h4) : dir(d1);
+    var all = ['regular_bull', 'regular_bear', 'hidden_bull', 'hidden_bear'].filter(function (k) { return flags[k]; });
+    var dt = f.div.detail || {}; var recent = function (k) { var x = /bull/.test(k) ? dt.lows : dt.highs; return x ? x.i2 : -1; };
+    var div = all.length ? all.slice().sort(function (a, b) { return recent(b) - recent(a); })[0] : 'none';
+    // 上位足の方向：4時間足が明確ならそれ、不明瞭なら日足（設問の文にもこの決まりを書く。どちらで決めたかは htfBasis）
+    var h4d = dir(h4), d1d = dir(d1);
+    var htf = h4d !== 'range' ? h4d : d1d; var htfBasis = h4d !== 'range' ? '4h' : d1d !== 'range' ? '1d' : 'both_unclear';
     var swing = TradeEval.swingTruth(f);
-    return { swing: swing, htf: htf, d1: dir(d1), trend: (f.dow.trend === 'up' || f.dow.trend === 'down') ? f.dow.trend : 'range', ema: f.emaOrder, rci: f.rciState, macd: div, macdSide: f.macdState, action: def.correct, reason: REASON_OF[def.id] || 'align' };
+    return { swing: swing, htf: htf, htfBasis: htfBasis, h4: h4d, d1: d1d, trend: (f.dow.trend === 'up' || f.dow.trend === 'down') ? f.dow.trend : 'range', ema: f.emaOrder, rci: f.rciState, rciInfo: f.rciInfo || null, macd: div, macdAll: all, macdSide: f.macdState, action: def.correct, reason: REASON_OF[def.id] || 'align' };
   };
   // 直近の「確定した」高値・安値（ZigZag の未確定ピボットは採点根拠にしない）
   TradeEval.swingTruth = function (f) { var hi = null, lo = null; for (var q = f.pivots.length - 1; q >= 0; q--) { var p = f.pivots[q]; if (!p.confirmed) continue; if (!hi && p.type === 'high') hi = p; if (!lo && p.type === 'low') lo = p; if (hi && lo) break; } return { high: hi ? { index: hi.index, price: hi.price } : null, low: lo ? { index: lo.index, price: lo.price } : null }; };
@@ -290,12 +293,14 @@
   TradeEval.swingCheck = function (truthSwing, picked) { var r = {}; ['high', 'low'].forEach(function (k) { var t = truthSwing && truthSwing[k], p = picked && picked[k]; r[k] = !!(t && p && Math.abs(p.index - t.index) <= TradeEval.SWING_TOL); }); r.ok = r.high && r.low; r.count = (r.high ? 1 : 0) + (r.low ? 1 : 0); return r; };
   // 分析の設問（答えは truth のキーと一致）
   TradeEval.ANALYSIS = [
-    { key: 'htf', topic: 'mtf', title: '上位足（4時間足）の方向は？', points: 9, options: [['up', '上昇'], ['down', '下降'], ['range', 'レンジ・不明瞭']], hint: '4時間足に切り替えて、高値・安値の切り上げ／切り下げと、EMAの並びを見よう。' },
+    { key: 'htf', topic: 'mtf', title: '上位足の方向は？（4時間足。はっきりしないときは日足）', points: 9, options: [['up', '上昇'], ['down', '下降'], ['range', 'レンジ・不明瞭']], hint: '4時間足に切り替えて、高値・安値の切り上げ／切り下げと、EMAの並びを見よう。4時間足がレンジ・不明瞭なら、日足の向きで答える（この試練の決まり）。' },
     { key: 'trend', topic: 'dow', title: '{tf}の波形（ダウ理論）は？', points: 6, options: [['up', '高値・安値の切り上げ（上昇）'], ['down', '高値・安値の切り下げ（下降）'], ['range', '揃っていない（レンジ）']], hint: '直近の確定した高値と安値が、前の高値・安値より上か下かを比べよう。ZigZagの最後の未確定の波は根拠にしない。' },
     { key: 'ema', topic: 'ema', title: 'EMA20/30/40の並びは？', points: 6, options: [['up', '20＞30＞40（上昇配列）'], ['down', '20＜30＜40（下降配列）'], ['mixed', '絡み合っている']], hint: '3本の線が上から20・30・40の順なら上昇配列、逆なら下降配列。交差して絡んでいれば方向感なし。' },
-    { key: 'rci', topic: 'rci', title: 'RCI(9)の状態は？', points: 7, options: [['overbought', '+70以上（買われすぎ圏）'], ['oversold', '−70以下（売られすぎ圏）'], ['overbought_reversal', '+70圏から反転して下がり始めた'], ['oversold_reversal', '−70圏から反転して上がり始めた'], ['neutral', '中立（±70に達していない）']], hint: 'RCIは±70到達「だけ」では根拠にならない。到達後に反転したか、トレンド方向と合っているかを見る。' },
+    { key: 'rci', topic: 'rci', title: 'RCI(9)の状態は？', points: 7, options: [['overbought', '+70以上（買われすぎ圏）'], ['oversold', '−70以下（売られすぎ圏）'], ['overbought_reversal', '+70圏から反転して下がり始めた'], ['oversold_reversal', '−70圏から反転して上がり始めた'], ['neutral', '中立（±70圏の外で、いま有効な反転もない）']], hint: 'RCIは±70到達「だけ」では根拠にならない。到達後に反転したか、トレンド方向と合っているかを見る。' },
     { key: 'macd', topic: 'macd', title: 'MACD(6,13,4)のダイバージェンスは？', points: 7, options: [['none', 'なし'], ['regular_bull', '通常ダイバージェンス（強気：安値切り下げ／MACD切り上げ）'], ['regular_bear', '通常ダイバージェンス（弱気：高値切り上げ／MACD切り下げ）'], ['hidden_bull', 'ヒドゥン（強気：安値切り上げ／MACD切り下げ）'], ['hidden_bear', 'ヒドゥン（弱気：高値切り下げ／MACD切り上げ）']], hint: '確定した直近2つの安値（または高値）とMACDラインの山谷を比べる。価格とMACDの向きが逆ならダイバージェンス。' }
   ];
+  // 設問の正誤：ダイバージェンスは見えている種類のどれでも正解（macdAll）。ほかは truth と同じ値
+  TradeEval.answerOk = function (key, ans, truth) { if (!ans) return false; if (key === 'macd' && truth.macdAll && truth.macdAll.length) return truth.macdAll.indexOf(ans) >= 0; return ans === truth[key]; };
   TradeEval.qTitle = function (q, scn) { var tf = CONFIG.timeframes.filter(function (t) { return t.id === scn.def.focusTF; })[0]; return q.title.replace('{tf}', tf ? tf.label : '15分足'); };
   TradeEval.ANALYSIS_LABEL = {};
   TradeEval.ANALYSIS.forEach(function (q) { q.options.forEach(function (o) { TradeEval.ANALYSIS_LABEL[q.key + ':' + o[0]] = o[1]; }); });
@@ -329,8 +334,10 @@
     var an = decision.analysis || {};
     // 1. 分析プロセス（40点）
     TradeEval.ANALYSIS.forEach(function (q) {
-      var ans = an[q.key]; var t = truth[q.key]; var ok = ans === t;
+      var ans = an[q.key]; var t = truth[q.key]; var ok = TradeEval.answerOk(q.key, ans, truth); if (ok) t = ans;
       var note = ok ? '正解：' + TradeEval.ANALYSIS_LABEL[q.key + ':' + t] : (ans ? 'あなた：' + TradeEval.ANALYSIS_LABEL[q.key + ':' + ans] + ' → 実際：' + TradeEval.ANALYSIS_LABEL[q.key + ':' + t] : '未判断 → 実際：' + TradeEval.ANALYSIS_LABEL[q.key + ':' + t]);
+      if (q.key === 'macd' && truth.macdAll && truth.macdAll.length > 1) note += '（安値側・高値側の両方に出ている：' + truth.macdAll.map(function (k) { return TradeEval.ANALYSIS_LABEL['macd:' + k]; }).join('／') + '。どちらも正解）';
+      if (q.key === 'htf' && truth.htfBasis === '1d') note += '（4時間足はレンジ・不明瞭なので、日足の向きで判定）';
       item(TradeEval.qTitle(q, scn).replace('は？', ''), ok, note, q.points, q.topic);
     });
     // 1b. 重要な高値・安値の指定（5点。片方だけ正解は2点）
@@ -391,7 +398,7 @@
     }
     score = Math.max(0, Math.min(100, Math.round(score)));
     var summary = TradeEval.explainTruth(scn, truth, an);
-    return { score: score, items: items, violations: violations, actionOk: actionOk, trade: trade, skill: pickSkill(def, action, actionOk, trade), correct: correct, correctLabel: ACTION_LABEL[correct], chosenLabel: ACTION_LABEL[action], summary: summary, truth: truth, topics: topics, hintLevel: decision.hintLevel || 0, reasonOk: reasonOk, swingOk: sw.ok, analysisOk: TradeEval.ANALYSIS.filter(function (q) { return an[q.key] === truth[q.key]; }).length, analysisTotal: TradeEval.ANALYSIS.length, full: true };
+    return { score: score, items: items, violations: violations, actionOk: actionOk, trade: trade, skill: pickSkill(def, action, actionOk, trade), correct: correct, correctLabel: ACTION_LABEL[correct], chosenLabel: ACTION_LABEL[action], summary: summary, truth: truth, topics: topics, hintLevel: decision.hintLevel || 0, reasonOk: reasonOk, swingOk: sw.ok, analysisOk: TradeEval.ANALYSIS.filter(function (q) { return TradeEval.answerOk(q.key, an[q.key], truth); }).length, analysisTotal: TradeEval.ANALYSIS.length, full: true };
   };
   // v9.0 不正な注文の結果：取引にしない・点にしない（学習用の解説だけ）。呼ぶ側は applyResult・報酬・記録に回さない（回しても applyResult が無視する）
   TradeEval.invalidResult = function (scn, decision, vo, truth) {
@@ -404,8 +411,9 @@
   TradeEval.explainTruth = function (scn, truth, an) {
     var tfL = { '15m': '15分足', '5m': '5分足', '1h': '1時間足' }[scn.def.focusTF] || scn.def.focusTF;
     var D = { up: '上昇', down: '下降', range: 'レンジ', mixed: '絡み合い' };
-    var s = '4時間足は' + D[truth.htf] + '方向（日足は' + D[truth.d1] + '）。' + tfL + 'の波形は' + D[truth.trend] + '、EMAは' + (truth.ema === 'mixed' ? '絡み合い' : D[truth.ema] + '配列') + '。RCIは' + TradeEval.ANALYSIS_LABEL['rci:' + truth.rci] + '、MACDは' + (truth.macd === 'none' ? 'ダイバージェンスなし' : TradeEval.ANALYSIS_LABEL['macd:' + truth.macd]) + '。';
-    var miss = TradeEval.ANALYSIS.filter(function (q) { return an[q.key] !== truth[q.key]; }).map(function (q) { return TradeEval.qTitle(q, scn).replace('は？', ''); });
+    var h4w = truth.h4 || truth.htf;   // v9.0：4時間足の向きそのもの（以前は「上位足の答え」を4時間足の向きとして書いていた）
+    var s = '4時間足は' + D[h4w] + (h4w === 'range' ? '・不明瞭' : '方向') + '（日足は' + D[truth.d1] + '）。' + (truth.htfBasis === '1d' ? '4時間足がはっきりしないので、上位足の方向は日足の' + D[truth.d1] + 'で判断。' : '') + tfL + 'の波形は' + D[truth.trend] + '、EMAは' + (truth.ema === 'mixed' ? '絡み合い' : D[truth.ema] + '配列') + '。RCIは' + TradeEval.ANALYSIS_LABEL['rci:' + truth.rci] + '、MACDは' + (truth.macd === 'none' ? 'ダイバージェンスなし' : TradeEval.ANALYSIS_LABEL['macd:' + truth.macd]) + '。';
+    var miss = TradeEval.ANALYSIS.filter(function (q) { return !TradeEval.answerOk(q.key, an[q.key], truth); }).map(function (q) { return TradeEval.qTitle(q, scn).replace('は？', ''); });
     s += miss.length ? '確認が不足していた項目：' + miss.join('・') + '。' : '分析はすべて正確でした。';
     s += ' ' + (scn.def.explain[truth.action] || '');
     return s;
