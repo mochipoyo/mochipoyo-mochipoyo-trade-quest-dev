@@ -1,0 +1,221 @@
+{
+ "env": {
+  "quality": "low",
+  "pixelRatio": 1.25,
+  "coarse": true,
+  "dpr": 3,
+  "mobile": true,
+  "build": null
+ },
+ "throttle": 4,
+ "frames": 300,
+ "cases": {
+  "world": {
+   "map": {
+    "id": "world",
+    "w": 120,
+    "h": 150,
+    "kind": "field",
+    "x": 73,
+    "y": 66,
+    "from": "poyo_village"
+   },
+   "A": {
+    "casters": {
+     "n": 64,
+     "small035": 14,
+     "small06": 47,
+     "small1": 56,
+     "triSmall06": 3236,
+     "noCull": 14,
+     "top": [
+      "BufferGeometry:37/1920tri/r3.3",
+      "body_merged:8/53146tri/r0.8",
+      "rigid_merged:6/1536tri/r0.6",
+      "landmark_poyo_village:5/1202tri/r3.4",
+      "landmark_dow_village:3/468tri/r2.6",
+      "mob76_straw:3/208tri/r0.5",
+      "landmark_oblivion_cave:2/824tri/r3.3"
+     ],
+     "topTri": [
+      "body_merged:8/53146tri",
+      "BufferGeometry:37/1920tri",
+      "rigid_merged:6/1536tri",
+      "landmark_poyo_village:5/1202tri",
+      "landmark_oblivion_cave:2/824tri",
+      "landmark_dow_village:3/468tri",
+      "mob76_straw:3/208tri"
+     ]
+    },
+    "calls": 175,
+    "shadowCalls": 86,
+    "mainCalls": 89,
+    "tri": 274018,
+    "mainTri": 178930,
+    "meshes": 220,
+    "visibleMeshes": 210,
+    "castShadowAll": 130,
+    "castShadowVisible": 120,
+    "instanced": 15,
+    "batched": 2,
+    "sprites": 55,
+    "lights": 14,
+    "pointLights": 12,
+    "transparentMatsUses": 21,
+    "alphaTestUses": 13,
+    "materialsVisible": 79,
+    "programs": 62,
+    "geometries": 200,
+    "textures": 70,
+    "buffer": [
+     482,
+     628
+    ],
+    "shadowMap": 1024,
+    "joinShown": 0,
+    "shadowHalf": 16,
+    "camDist": 24,
+    "pixelRatio": 1.25
+   },
+   "B": {
+    "frames": 300,
+    "wall": 431,
+    "mean": 1.41,
+    "p50": 1.1,
+    "p90": 3.7,
+    "p99": 7.1,
+    "max": 8.9,
+    "over16": 0,
+    "over33": 0,
+    "tilesVisited": 13,
+    "moved": [
+     "73,66",
+     "74,66"
+    ],
+    "map": "world",
+    "parts": {
+     "map.update": {
+      "n": 300,
+      "avg": 0.311,
+      "max": 3.6
+     },
+     "updateLogic": {
+      "n": 300,
+      "avg": 0.182,
+      "max": 5
+     },
+     "ui.layout": {
+      "n": 300,
+      "avg": 0.169,
+      "max": 2.9
+     },
+     "World.onStep": {
+      "n": 23,
+      "avg": 0.069,
+      "max": 4.4
+     },
+     "updateNavRing": {
+      "n": 300,
+      "avg": 0.066,
+      "max": 2.9
+     },
+     "lighting.update": {
+      "n": 300,
+      "avg": 0.062,
+      "max": 1.4
+     },
+     "join.update": {
+      "n": 300,
+      "avg": 0.054,
+      "max": 6.7
+     },
+     "ui.show": {
+      "n": 300,
+      "avg": 0.047,
+      "max": 3.2
+     },
+     "hero.update": {
+      "n": 300,
+      "avg": 0.046,
+      "max": 3
+     },
+     "fx78.update": {
+      "n": 300,
+      "avg": 0.029,
+      "max": 2.4
+     },
+     "findTarget": {
+      "n": 237,
+      "avg": 0.028,
+      "max": 2.4
+     },
+     "updateCutout": {
+      "n": 300,
+      "avg": 0.027,
+      "max": 3
+     },
+     "camera.follow": {
+      "n": 300,
+      "avg": 0.026,
+      "max": 2.2
+     },
+     "car79.update": {
+      "n": 300,
+      "avg": 0.011,
+      "max": 3.1
+     },
+     "updateVehicles": {
+      "n": 300,
+      "avg": 0.007,
+      "max": 1.1
+     },
+     "updateFollowers": {
+      "n": 300,
+      "avg": 0.007,
+      "max": 0.9
+     },
+     "ui.setPrompt": {
+      "n": 300,
+      "avg": 0.005,
+      "max": 0.7
+     },
+     "updatePlaceLabel": {
+      "n": 45,
+      "avg": 0.004,
+      "max": 0.6
+     },
+     "Minimap.onStep": {
+      "n": 23,
+      "avg": 0.001,
+      "max": 0.2
+     },
+     "Minimap.reveal": {
+      "n": 23,
+      "avg": 0,
+      "max": 0
+     }
+    },
+    "spikes": [
+     {
+      "i": 4,
+      "ms": 8.9,
+      "parts": {
+       "World.onStep": 4.4,
+       "updateLogic": 5,
+       "ui.layout": 1.2,
+       "hero.update": 0.9,
+       "map.update": 0.7,
+       "updateNavRing": 0.9
+      }
+     }
+    ]
+   },
+   "C": {
+    "renderMed": 18.7,
+    "renderNoShadowMed": 11.1,
+    "renderMax": 29.3
+   }
+  }
+ },
+ "errors": []
+}

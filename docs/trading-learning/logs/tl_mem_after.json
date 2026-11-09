@@ -1,0 +1,55 @@
+{
+ "tag": "after",
+ "base": "http://localhost:8794",
+ "runs": [
+  {
+   "tReady": 3225,
+   "scripts": 248,
+   "atField": {
+    "heapMB": 40.9,
+    "nodes": 1232,
+    "scriptMs": 3456
+   },
+   "afterDojo": {
+    "heapMB": 41.3,
+    "nodes": 1471,
+    "scriptMs": 3563
+   }
+  },
+  {
+   "tReady": 3239,
+   "scripts": 248,
+   "atField": {
+    "heapMB": 40.4,
+    "nodes": 1203,
+    "scriptMs": 3410
+   },
+   "afterDojo": {
+    "heapMB": 41,
+    "nodes": 1466,
+    "scriptMs": 3514
+   }
+  },
+  {
+   "tReady": 3221,
+   "scripts": 248,
+   "atField": {
+    "heapMB": 56.2,
+    "nodes": 1208,
+    "scriptMs": 3444
+   },
+   "afterDojo": {
+    "heapMB": 41,
+    "nodes": 1471,
+    "scriptMs": 3545
+   }
+  }
+ ],
+ "median": {
+  "tReady": 3225,
+  "heapMB": 40.9,
+  "scripts": 248,
+  "heapAfterDojoMB": 41
+ },
+ "note": "ヘッドレス Chromium（ソフトウェア描画）。実機の数ではない"
+}

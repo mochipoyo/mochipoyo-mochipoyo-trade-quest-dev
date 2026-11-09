@@ -225,9 +225,11 @@
       '<br><span class="small">MAE（最大逆行）' + sgn(r.maePips) + 'pips・MFE（最大順行）' + sgn(r.mfePips) + 'pips・保有 ' + r.bars + '本' + (r.gap ? '・窓で損切りを飛び越えた（損切り価格より不利に約定）' : '') + '</span>' + (r.ambiguous ? '<br><span class="muted small">※同じ足で損切りと利確の両方に届いた（ローソク足だけでは先後が分からない）。損切りが先と仮定した</span>' : '') + '<div class="muted small">' + esc(r.note) + '</div></div>';
     else resHtml = '<div class="outcome"><b>取引なし（' + (gr.kind === 'skip' ? '自分で見送った' : '時間切れ（決めないまま）') + '）</b>　その後の値動きはチャートで確認できる</div>';
     var mets = (play.metAt || []).slice(0, 6).map(function (m) { return m.label; }).join('・');
+    var hy = play.hypothesis; var WHY = { rci: 'RCI の反転を待つ', div: 'ダイバージェンスの確定を待つ', pullback: '押し目・戻り目を待つ', htf: '上位足の向きがそろうのを待つ', none: '根拠がそろわなければ見送る' };
+    var hyHtml = hy ? '<div class="small">あなたの仮説（開始の時点で登録）：' + ({ buy: '買い目線', sell: '売り目線', neutral: '中立' })[hy.bias] + (hy.why ? '・' + WHY[hy.why] : '') + '　→　' + (gr.kind === 'trade' ? (play.entry.side === 'buy' ? 'ロング' : 'ショート') + '（' + (play.events.filter(function (e) { return e.kind === 'enter'; })[0] ? '開始から ' + play.steps + '本目' : '') + '）' : gr.kind === 'skip' ? '見送り（' + play.steps + '本目）' : '時間切れ') + (play.waits ? '・「待つ」' + play.waits + '回' : '') + '</div>' : '';
     var html = '<div class="rw-title">振り返り：判断の過程 ' + gr.process + '点</div>' +
       '<div class="pd-rv"><table class="tbl">' + catRows + '</table><div class="small">' + esc(cat ? '問題の型：' + cat.title : '') + '（' + (play.set === 'exam' ? '未知の問題' : '学習用の問題') + '）<br><b>学ぶこと</b>：' + esc(cat ? cat.lesson : '') + '</div></div>' +
-      resHtml + '<canvas class="chart rv-chart" id="pd-rv-chart"></canvas><div class="muted small">チャート：判断を始めた足から先（色の付いた部分）が、判断のときには見えていなかった値動き。' + (mets ? 'この設定で条件がそろった足：' + esc(mets) : 'この設定で条件がそろった足は、見ていた間にはなかった') + '</div>' +
+      hyHtml + resHtml + '<canvas class="chart rv-chart" id="pd-rv-chart"></canvas><div class="muted small">チャート：判断を始めた足から先（色の付いた部分）が、判断のときには見えていなかった値動き。' + (mets ? 'この設定で条件がそろった足：' + esc(mets) : 'この設定で条件がそろった足は、見ていた間にはなかった') + '</div>' +
       '<ul class="score-items">' + items + '</ul>' + (gr.violations.length ? '<div class="bad small">規律の違反：' + esc(gr.violations.join('・')) + '</div>' : '') +
       '<div class="muted small">採点の設定：' + esc(SPF().PROFILES[p.profile].name) + '（※は推奨仮設定。メニューの「設定」で変えられる）。架空の相場の練習で、実際の売買の成績を保証するものではない。</div>' +
       '<div class="trade-cmds ready"><button class="tcmd buy" data-cmd="again">次の問題</button><button class="tcmd" data-cmd="end">終える</button></div>';

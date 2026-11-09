@@ -47,6 +47,7 @@ const q = (s) => doc.querySelector('#ui .practice-panel ' + s);
   click(q('[data-cmd="hplay"]')); for (let i = 0; i < 400 && !res; i++) await frames(2);
   const rv = doc.querySelector('#ui .pd-review'); T(!!rv && /判断の過程/.test(rv.textContent) && /結果（判断の点とは別）/.test(rv.textContent), '決済まで進む → G 振り返り（判断の過程の点と、結果は別の欄）');
   T(rv && rv.textContent.indexOf(cat.title) >= 0 && /学習用の問題/.test(rv.textContent), '振り返りで問題の型と「学習用の問題」を出す');
+  T(rv && /あなたの仮説（開始の時点で登録）：買い目線/.test(rv.textContent), '振り返りに、登録した仮説（目線）と実際の判断を並べる');
   T(rv && ['環境認識', 'セットアップ', 'トリガー', '執行・資金管理', '規律'].every((k) => rv.textContent.indexOf(k) >= 0), '採点の内訳：環境認識・セットアップ・トリガー・執行・資金管理・規律');
   click(rv && rv.querySelector('[data-cmd="end"]')); for (let i = 0; i < 100 && !res; i++) await frames(2);
   T(res && res.record && res.record.kind === 'trade' && d.practice.history.length === 1 && isFinite(res.record.riskR) && res.next === 'quit', '記録：取引 1（riskR ' + (res && res.record.riskR) + '・判断 ' + (res && res.record.process) + '点）');
