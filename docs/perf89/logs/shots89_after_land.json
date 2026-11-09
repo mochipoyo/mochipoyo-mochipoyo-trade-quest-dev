@@ -1,0 +1,41 @@
+{
+ "info": {
+  "poyo": {
+   "calls": 256,
+   "tri": 646680,
+   "half": 18,
+   "pr": 1.25
+  },
+  "world": {
+   "calls": 202,
+   "tri": 305754,
+   "half": 18,
+   "pr": 1.25
+  },
+  "rivel": {
+   "calls": 381,
+   "tri": 506936,
+   "half": 22,
+   "pr": 1.25
+  },
+  "inn": {
+   "calls": 83,
+   "tri": 63032,
+   "half": 18,
+   "pr": 1.25
+  },
+  "zoomout": {
+   "calls": 433,
+   "tri": 722266,
+   "half": 22,
+   "pr": 1.25
+  },
+  "night": {
+   "calls": 233,
+   "tri": 628598,
+   "half": 18,
+   "pr": 1.25
+  }
+ },
+ "errs": []
+}
