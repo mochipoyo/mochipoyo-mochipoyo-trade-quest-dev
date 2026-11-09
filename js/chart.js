@@ -137,13 +137,15 @@
     });
 
     // ---- 損切り・利確・エントリー ----
+    var labX = [];   // v9.1 同じ高さの線（建値へ動かした損切りとエントリーなど）のラベルが重ならないように、横にずらす
     function hline(v, col, label, active) {
       if (v === null || v === undefined || isNaN(v)) return;
       var y = yP(v);
       ctx.setLineDash(active ? [] : [6, 4]); ctx.strokeStyle = col; ctx.lineWidth = active ? 3 : 1.5;
       ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke(); ctx.setLineDash([]);
       ctx.fillStyle = col; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left';
-      ctx.fillText(label + ' ' + v.toFixed(3), padL + 4, y - 3);
+      var txt = label + ' ' + v.toFixed(3); var x0 = padL + 4; labX.forEach(function (q) { if (Math.abs(q.y - y) < 12 && x0 < q.x1 + 6) x0 = q.x1 + 6; });
+      var tw = ctx.measureText ? ctx.measureText(txt).width : txt.length * 6; ctx.fillText(txt, x0, y - 3); labX.push({ y: y, x1: x0 + (isFinite(tw) ? tw : txt.length * 6) });
     }
     hline(opts.sl, COLORS.sl, '損切り', opts.activeLine === 'sl');
     hline(opts.tp, COLORS.tp, '利確', opts.activeLine === 'tp');

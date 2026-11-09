@@ -1022,3 +1022,5 @@ canvas.chart.chart-ctl:focus-visible { box-shadow: 0 0 0 2px var(--gold, #ffd24a
 .practice-panel .pd-adv { flex-wrap: wrap; margin-top: 4px; }
 body.pd-chart-open #pad { display: none !important; }   /* スマホ：チャートの操作のあいだ RPG の十字キーを隠す */
 @media (pointer: coarse) { .practice-panel .mini, .practice-panel .tf, .practice-panel .aopt, .practice-panel .tcmd { min-height: 44px; min-width: 44px; } .practice-panel .pd-chk { min-height: 44px; } .practice-panel select, .practice-panel input[type=number], .practice-panel input[type=text] { min-height: 44px; } }
+.c3-wrap { overflow-x: auto; } .c3-tbl th { white-space: nowrap; font-size: 12px; } .c3-tbl td:first-child { white-space: nowrap; font-size: 11px; color: var(--muted, #9aa6c8); } .c3-tbl td { font-variant-numeric: tabular-nums; }
+@media (max-width: 480px) { .c3-tbl td, .c3-tbl th { padding: 2px 3px; } .c3-tbl td:first-child { white-space: normal; min-width: 4.5em; } }
