@@ -1,0 +1,227 @@
+写し：/home/claude/snap_final（元 /home/claude/envwork・28d7d14＋作業中の変更）
+##### v8.9 一式（regress89.sh）
+=== maptest
+errors [] fails 0
+=== navtest
+結果: 24 OK / 0 NG []
+=== harbortest
+結果: 23 OK / 0 NG []
+=== ch17test
+ERRORS: []
+=== ch67test
+ERRORS: []
+=== ch1012test
+ERRORS: []
+=== /home/claude/snap_final/docs/tools/v88/updated-tests/ftmenu
+結果: 6 OK / 0 NG []
+=== v88/ui88_test.js
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v87/rewards87_test.js
+  OK  マップのボスのイベント 74 か所すべてで鍵が決まる
+  OK  distribute を 2 回呼んでも 1 回分（同じ結果を返す）
+結果: 72 OK / 0 NG []
+=== v87/rewards87_test.js 2d
+  OK  マップのボスのイベント 55 か所すべてで鍵が決まる
+  OK  distribute を 2 回呼んでも 1 回分（同じ結果を返す）
+結果: 68 OK / 0 NG []
+=== v87/effects87_test.js
+== 読み込み：3D 版と同じ　errors 0
+結果: 152 OK / 0 NG []
+=== v86/airship86_test.js
+結果: 32 OK / 0 NG []
+=== v86/airship86_test.js 2d
+結果: 32 OK / 0 NG []
+=== v79/carriage79_test.js
+結果：すべて OK
+=== v83/academy83_test.js
+結果：すべて OK
+=== v83/tm83_duel_logic.js
+結果：すべて OK
+=== v88/chart88_test.js
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/chart88_test.js 2d
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js
+  OK  経験値が入る（6→1・Lv1→2・結果 won）
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js 2d
+  OK  経験値が入る（6→1・Lv1→2・結果 won）
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v88/updated-tests/layout_menu_test.js
+OK  ページのエラーなし []
+結果：すべて OK
+done
+=== v88/route88_test.js
+結果: 17 OK / 0 NG []　読み込みのエラー 0
+=== v88/route88_test.js 2d
+結果: 17 OK / 0 NG []　読み込みのエラー 0
+=== v88/tm88_test.js
+  OK  結果の比べる表：判断・入った時刻・価格・その時点の見立て・結果
+結果: 13 OK / 0 NG []　ページのエラー 0
+=== v89/logic89_test.js
+  OK  案内：1800 歩で、省略ありと毎回調べ直しの案内がすべて同じ（違い 0 []）
+結果: 9 OK / 0 NG []　読み込みのエラー 0
+=== v89/logic89_test.js 2d
+  OK  案内：1800 歩で、省略ありと毎回調べ直しの案内がすべて同じ（違い 0 []）
+結果: 9 OK / 0 NG []　読み込みのエラー 0
+=== v81/dow_open_test.js
+OK  外周のすべてのマス・外向きの向き 192 通りで、出た先が同じ側に決まる 
+結果：すべて OK
+=== v81/dow_open_test.js 2d
+OK  外周のすべてのマス・外向きの向き 192 通りで、出た先が同じ側に決まる 
+結果：すべて OK
+=== v79/earth79_check.js
+OK  闇の空路のあとは、飛空艇でニヴェリスの陸の地図すべてへ行ける
+OK  陸のある外の地図すべてに、実在する敵の出現表 {"cold":15,"ice":2,"mountain":1,"temperate":9,"tropical":3,"dry":7,"desert":2,"antarctic":16} 
+結果：すべて OK
+=== v89/smooth89_test.mjs
+結果: 8 OK / 0 NG []
+=== navsim
+=== ult/quiz_place_test
+  quiz_monster_011 三本線の山羊エマール → emal_pass（エマール山道）(34,8) 地形 hill・入口から行けるマス 437
+  quiz_monster_015 峠の霧ガラス・ジカンアシ → grania_pass（灰の峠）(20,14) 地形 grass・入口から行けるマス 187
+結果: 923 OK / 0 NG
+done
+##### v9.0 一式（regress_tl.sh）
+=== tl/tl_p1_test.js
+結果: 64 OK / 0 NG
+=== tl/tl_p2_test.js
+--- 未来を使わない（先頭 N 本の結果は、N＋1 本以降を足しても変わらない） ---
+  OK  ダイバージェンス：全部の足の MACD を渡しても、asOf までの足だけで計算した結果と同じ
+  OK  旧 Indicators.divergence と同じ結果（680/680 の時間足）。比べ方は共通エンジン（SignalEngine.divergence）
+結果: 49 OK / 0 NG
+=== tl/tl_p3_test.js
+--- 判断の過程の採点（結果は別の欄） ---
+  OK  結果（R・pips・MAE/MFE）は別の欄。判断の点には入れない
+結果: 37 OK / 0 NG
+=== tl/tl_p4_test.js
+結果: 9 OK / 0 NG
+=== tl/tl_p5_test.js
+  OK  同じ問題・同じ相手なら同じ結果（腕前の読み違いも問題と相手のシードで決まる）
+  OK  相手の結果：取引か見送り・R（見送りは 0R）・判断の点
+結果: 10 OK / 0 NG
+=== tl/tl_save_test.js
+結果: 9 OK / 0 NG
+=== tl/tl_save_test.js 2d
+結果: 9 OK / 0 NG
+=== tl/tl_ui_test.js
+  NG  損切り（確定した安値の外側）・利確（RR 1:2）：予想最大損失・RR・損益分岐の勝率を出す
+  OK  決済まで進む → G 振り返り（判断の過程の点と、結果は別の欄）
+  OK  心理の結果は医療的な診断として扱わないと書く
+結果: 38 OK / 1 NG
+=== tl/tl_ui_test.js 2d
+  NG  損切り（確定した安値の外側）・利確（RR 1:2）：予想最大損失・RR・損益分岐の勝率を出す
+  OK  決済まで進む → G 振り返り（判断の過程の点と、結果は別の欄）
+  OK  心理の結果は医療的な診断として扱わないと書く
+結果: 38 OK / 1 NG
+=== tradetest
+exit 0
+rank samples: E S ERRORS: []
+=== tradiatest
+exit 0
+  OK  画面で行った取引も履歴に残る
+  OK  セーブとロードでトレディアの記録が残る
+  OK  旧セーブ（tradia なし）でも空の記録で始まる
+  OK  エラーなし []
+結果: 62 OK / 1 NG
+ERRORS: [1 NG]
+=== ult/market_test
+exit 0
+  OK  タブの切り替えなどで一時停止：止めている間はチャートも判断時間も進まない
+  OK  判断時間が終わると、自動で見送り
+  OK  フレームの間隔（16・33・50ms）が違っても、同じ時刻なら同じ足・ティック（描画の速さで判定が変わらない）
+  OK  見立て（見えている足だけ）：強い上昇トレンド→ロング有利 19/20、強い下降→ショート有利 20/20、レンジ中央→どちらでもない 19/20
+  OK  強い上昇トレンドでロングしても、勝ち 100・負け 99（200回）：必ず利益が出る相場にはしていない
+結果: 31 OK / 0 NG
+=== ult/ult_logic_test
+exit 0
+結果: 1758 OK / 0 NG
+=== ult/dojo_test
+exit 0
+OK 10 questions advanced
+seiran reckless {"passed":false,"best":42,"last":42,"attempts":1,"lastAt":1794214639379}
+OK reckless exam recorded
+OK reckless result: passed=false
+OK ultimate menu navigates
+OK main menu has 必殺技
+=== ult/quiz_test
+exit 0
+pass 26264 / fail 0
+=== learntest
+exit 0
+ERRORS: [ 'practice no double reward' ]
+=== savecompat64
+exit 0
+  OK  中盤：第3章を終えたセーブなので、宝物庫の扉が開く（shard_returned）
+  OK  中盤：レバレッジ取引を始められる（仮想資金 100,000）
+  OK  中盤：トレディアの町に入れる
+  OK  中盤：戦闘ができる（スライムに勝つ）
+  OK  エラーなし []
+結果: 37 OK / 0 NG
+=== tradeeq
+exit 0
+ERRORS: [] loadErrors []
+done
+=== v88/ui88_test.js
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/chart88_test.js
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/chart88_test.js 2d
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/tm88_test.js
+  OK  結果の比べる表：判断・入った時刻・価格・その時点の見立て・結果
+結果: 13 OK / 0 NG []　ページのエラー 0
+=== v83/tm83_duel_logic.js
+結果：すべて OK
+=== v83/academy83_test.js
+結果：すべて OK
+=== /home/claude/snap_final/docs/tools/v88/updated-tests/ftmenu
+結果: 6 OK / 0 NG []
+=== v88/updated-tests/layout_menu_test.js
+OK  ページのエラーなし []
+結果：すべて OK
+done
+##### tl2 の更新版（既知の NG の分類：docs/trade-advanced/PHASE0_AUDIT.md）
+=== tl2/updated-tests/tradiatest
+  OK  合計＝判断（60）＋結果（25）＋規律（15）
+  OK  終えると結果（5回未満の指標は算出不可）
+結果: 63 OK / 0 NG
+ERRORS: []
+=== tl2/updated-tests/learntest
+ERRORS: []
+=== tl2/updated-tests/dojo_test
+ALL OK
+=== tl2/updated-tests/tl_ui_test.js
+結果: 39 OK / 0 NG
+=== tl2/updated-tests/tl_ui_test.js 2d
+結果: 39 OK / 0 NG
+##### tl2 の新しいテスト
+=== docs/tools/tl2/tl6_test.js 
+結果: 59 OK / 0 NG
+=== docs/tools/tl2/tl7_test.js 
+結果: 23 OK / 0 NG
+=== docs/tools/tl2/tl7_ui_test.js 
+結果: 50 OK / 0 NG
+=== docs/tools/tl2/tl7_ui_test.js 2d
+結果: 50 OK / 0 NG
+=== docs/tools/tl2/tl8_test.js 
+結果: 37 OK / 0 NG
+=== docs/tools/tl2/tl9_test.js 
+結果: 42 OK / 0 NG
+=== docs/tools/tl2/tl9_ui_test.js 
+結果: 31 OK / 0 NG
+=== docs/tools/tl2/tl9_ui_test.js 2d
+結果: 31 OK / 0 NG
+done
