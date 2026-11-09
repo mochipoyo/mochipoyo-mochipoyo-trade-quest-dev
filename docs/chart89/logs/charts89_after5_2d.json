@@ -1,0 +1,64 @@
+{
+ "land": {
+  "quiz": {
+   "w": 403,
+   "h": 190,
+   "price": null,
+   "top": 144,
+   "visible": 190,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 346,
+    "panelBottom": 335,
+    "inView": false,
+    "scroll": false
+   }
+  },
+  "lev": {
+   "w": 789,
+   "h": 300,
+   "price": 164,
+   "top": 20,
+   "visible": 300,
+   "vh": 340,
+   "panelH": 323,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "errors": []
+ },
+ "i14": {
+  "quiz": {
+   "w": 362,
+   "h": 159,
+   "price": null,
+   "top": 193,
+   "visible": 159,
+   "vh": 664,
+   "panelH": 640,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 548,
+    "panelBottom": 650,
+    "inView": true,
+    "scroll": false
+   }
+  },
+  "lev": {
+   "w": 360,
+   "h": 239,
+   "price": 128,
+   "top": 21,
+   "visible": 239,
+   "vh": 664,
+   "panelH": 640,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "errors": []
+ }
+}

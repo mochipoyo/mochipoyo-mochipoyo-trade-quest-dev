@@ -175,6 +175,7 @@
         var cb = $('.qb-chartbox'), dt = $('.qb-data');
         if (qq.chart) { cb.classList.remove('hidden'); dt.classList.remove('hidden'); $('.qb-data-in').innerHTML = QB.chartText(qq.chart); cb.classList.toggle('tall', qq.chart.type === 'lines' || qq.chart.type === 'divergence'); }
         else { cb.classList.add('hidden'); dt.classList.add('hidden'); }
+        if (node) node.classList.toggle('qb-haschart', !!qq.chart);   // v8.9 チャートのある問題（横向きのスマホでは、チャートを左・選択肢を右に並べる：styles.css）
         var help = Quiz.help(d, qq); var sch = help.school; var ms = masterOf(help.cat.school);
         var hh = '';
         if (help.hint) hh += '<div class="qb-hint"><b>師匠の教え</b>' + (ms ? '（' + esc(ms.name) + '）' : '') + '：' + esc(help.hint) + '</div>';

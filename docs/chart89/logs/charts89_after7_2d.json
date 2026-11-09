@@ -1,0 +1,22 @@
+{
+ "land": {
+  "quiz": {
+   "w": 403,
+   "h": 190,
+   "price": null,
+   "top": 86,
+   "visible": 190,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 274,
+    "panelBottom": 335,
+    "inView": true,
+    "scroll": false
+   }
+  },
+  "errors": []
+ }
+}

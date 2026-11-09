@@ -975,7 +975,17 @@ body.mobile.m-fullui #pad.mpad { display: none !important; }
   .trade-panel .aq-t { min-width: 100%; }
   .mini-chart { height: clamp(150px, calc(100vh - 150px), 240px); height: clamp(150px, calc(100svh - 150px), 240px); }
   .rv-panel .rv-box { height: clamp(150px, calc(100vh - 150px), 240px); height: clamp(150px, calc(100svh - 150px), 240px); }
-  .chart.lev-chart { height: clamp(180px, calc(100vh - 120px), 300px); height: clamp(180px, calc(100svh - 120px), 300px); }
+}
+/* クイズモンスターのチャートの問題：横向きのスマホでは、問題文を上、チャートを左、選択肢を右に（以前はチャートが 130px で、選択肢はスクロールの下に隠れていた） */
+@media (orientation: landscape) and (max-height: 500px) {
+  .quiz-battle.qb-haschart.st-quiz .qb-quiz { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); column-gap: 8px; align-items: start; }
+  .quiz-battle.qb-haschart.st-quiz .qb-quiz > * { grid-column: 1 / -1; min-width: 0; }
+  .quiz-battle.qb-haschart.st-quiz .qb-quiz > .qb-chartbox { grid-column: 1; grid-row: 2 / span 2; height: clamp(150px, calc(100vh - 150px), 260px); height: clamp(150px, calc(100svh - 150px), 260px); margin-bottom: 0; }
+  .quiz-battle.qb-haschart.st-quiz .qb-quiz > .qb-choices { grid-column: 2; grid-row: 2; grid-template-columns: 1fr; gap: 4px; }
+  .quiz-battle.qb-haschart.st-quiz .qb-ch { min-height: 44px; padding: 3px 8px; font-size: 13px; }
+  .quiz-battle.qb-haschart.st-quiz .qb-quiz > .qb-help { grid-column: 2; grid-row: 3; }
+  .quiz-battle.qb-haschart.st-quiz .qb-q { font-size: 13px; margin-bottom: 4px; }
+  .quiz-battle.qb-haschart.st-quiz .qb-scene { display: none; }   /* 問題を解いている間だけ、モンスターの絵の帯を隠してチャートに高さを回す（名前は上に出ている） */
 }
 /* 振り返り（判断した時点とその後を並べる）：チャートバトルの上に重ねて出すので、下の文字が透けて読みにくかった → この窓だけ透かさない */
 .rw-panel.rv-panel { background: linear-gradient(180deg, #121a38, #080c1e); }

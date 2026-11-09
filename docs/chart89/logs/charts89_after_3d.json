@@ -1,0 +1,276 @@
+{
+ "i14": {
+  "trial": {
+   "w": 341,
+   "h": 266,
+   "price": 144,
+   "top": 116,
+   "visible": 266,
+   "vh": 664,
+   "panelH": 652,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "trialscroll": {
+   "w": 341,
+   "h": 266,
+   "price": 144,
+   "top": 73,
+   "visible": 266,
+   "vh": 664,
+   "panelH": 652,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "order": {
+   "w": 333,
+   "h": 212,
+   "price": 113,
+   "top": 158,
+   "visible": 212,
+   "vh": 664,
+   "panelH": 652,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "quick": {
+   "w": 341,
+   "h": 266,
+   "price": 144,
+   "top": 196,
+   "visible": 266,
+   "vh": 664,
+   "panelH": 470,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "cbattle": {
+   "w": 370,
+   "h": 338,
+   "price": null,
+   "top": 194,
+   "visible": 338,
+   "vh": 664,
+   "panelH": 647,
+   "panelScroll": false,
+   "docScroll": false,
+   "cmds": true
+  },
+  "cbres": {
+   "w": 370,
+   "h": 219,
+   "price": null,
+   "top": 39,
+   "visible": 219,
+   "vh": 664,
+   "panelH": 647,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "exam": {
+   "w": 370,
+   "h": 342,
+   "price": null,
+   "top": 101,
+   "visible": 342,
+   "vh": 664,
+   "panelH": 647,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 646,
+    "inView": true
+   },
+   "cmds": false
+  },
+  "duel": {
+   "w": 370,
+   "h": 368,
+   "price": null,
+   "top": 164,
+   "visible": 368,
+   "vh": 664,
+   "panelH": 647,
+   "panelScroll": false,
+   "docScroll": false,
+   "cmds": true
+  },
+  "review": {
+   "w": 356,
+   "h": 199,
+   "price": null,
+   "top": 133,
+   "visible": 199,
+   "vh": 664,
+   "panelH": 652,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "quiz": {
+   "w": 362,
+   "h": 159,
+   "price": null,
+   "top": 193,
+   "visible": 159,
+   "vh": 664,
+   "panelH": 640,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 548,
+    "panelBottom": 650,
+    "inView": true,
+    "scroll": false
+   }
+  },
+  "lev": {
+   "w": 360,
+   "h": 239,
+   "price": 128,
+   "top": 21,
+   "visible": 239,
+   "vh": 664,
+   "panelH": 640,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "errors": []
+ },
+ "land": {
+  "trial": {
+   "w": 450,
+   "h": 236,
+   "price": 126,
+   "top": 95,
+   "visible": 236,
+   "vh": 340,
+   "panelH": 332,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "trialscroll": {
+   "w": 450,
+   "h": 236,
+   "price": 126,
+   "top": 71,
+   "visible": 236,
+   "vh": 340,
+   "panelH": 332,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "order": {
+   "w": 566,
+   "h": 190,
+   "price": 100,
+   "top": 158,
+   "visible": 182,
+   "vh": 340,
+   "panelH": 332,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "quick": {
+   "w": 450,
+   "h": 236,
+   "price": 126,
+   "top": 76,
+   "visible": 236,
+   "vh": 340,
+   "panelH": 307,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "cbattle": {
+   "w": 482,
+   "h": 312,
+   "price": null,
+   "top": 14,
+   "visible": 312,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": false,
+   "docScroll": false,
+   "cmds": true
+  },
+  "cbres": {
+   "w": 482,
+   "h": 312,
+   "price": null,
+   "top": 14,
+   "visible": 312,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "exam": {
+   "w": 482,
+   "h": 312,
+   "price": null,
+   "top": 14,
+   "visible": 312,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": true,
+   "docScroll": false,
+   "choices": {
+    "bottom": 332,
+    "inView": true
+   },
+   "cmds": false
+  },
+  "duel": {
+   "w": 482,
+   "h": 312,
+   "price": null,
+   "top": 14,
+   "visible": 312,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": false,
+   "docScroll": false,
+   "cmds": true
+  },
+  "review": {
+   "w": 395,
+   "h": 190,
+   "price": null,
+   "top": 113,
+   "visible": 190,
+   "vh": 340,
+   "panelH": 332,
+   "panelScroll": true,
+   "docScroll": false
+  },
+  "quiz": {
+   "w": 734,
+   "h": 130,
+   "price": null,
+   "top": 172,
+   "visible": 130,
+   "vh": 340,
+   "panelH": 330,
+   "panelScroll": false,
+   "docScroll": false,
+   "choices": {
+    "bottom": 404,
+    "panelBottom": 335,
+    "inView": false,
+    "scroll": false
+   }
+  },
+  "lev": {
+   "w": 789,
+   "h": 220,
+   "price": 117,
+   "top": 20,
+   "visible": 220,
+   "vh": 340,
+   "panelH": 323,
+   "panelScroll": false,
+   "docScroll": false
+  },
+  "errors": []
+ }
+}
