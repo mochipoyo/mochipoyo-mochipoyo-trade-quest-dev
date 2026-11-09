@@ -118,4 +118,10 @@
 
 ## 8. 開発版の URL
 
-（確認した URL を次のコミットで書く）
+コミット `903cf05`（Phase 7。コードはこの報告の版と同じ）：
+- 3D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/903cf05721091337ea14364c5760a339500ae82c/3d/index.html
+- 2D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/903cf05721091337ea14364c5760a339500ae82c/index.html
+
+確認したこと：この URL の配信元から、このコミットのファイル（`js/ui/practiceui.js`）が取得できた。GitHub 上の `3d/index.html` に追加したスクリプト 8 本が入っている。
+確認していないこと：**この URL を開いてゲームを動かすことは、作業環境から外へのブラウザの接続ができないため、していない**（同じ中身を作業環境の中で配信して、ヘッドレス Chromium で確認した）。
+入口：メニュー →「トレード」→「もちぽよ実践トレード道場」（師匠の修行場・学院の聴講生・トレードマスターの「上級の対戦」からも）。
