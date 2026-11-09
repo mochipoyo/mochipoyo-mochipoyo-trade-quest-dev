@@ -147,3 +147,9 @@
 - となりの地域の組み立てで、まだ 1 回 110〜170ms（スマホ相当）の止まりが残っています（地形・飾りをまとめて作る所）。地図の切り替え（建物の出入り）の読み込みも同じくらい止まります（読み込みの画面が出る所）。
 - 人の体の三角形の数（1 人 約 6,300）は減らしていません（素材の作り直しが必要）。
 - 夜の街灯の点光源（軽量で 4 つ）はそのままです（減らすと見た目が変わり、切り替えのたびにシェーダーの作り直しで止まるため）。
+
+## 7. 確かめられる開発版の URL（dev リポジトリ・ブランチ feature/perf-mobile-20261109・コミット 9284c1d）
+- 3D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/9284c1df862e98d9fab6aa9ca3cfd2e58b4e820e/3d/index.html
+- 2D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/9284c1df862e98d9fab6aa9ca3cfd2e58b4e820e/index.html
+
+スマホで確かめるときの目安：3D 版で「3D設定」→「状態」に、画質（low）・解像度・なめらかさ・影の範囲・fps と描画の回数（「表示」の行）が出ます。「なめらかさ：使わない」にすると、以前と同じ固定の解像度で比べられます。
