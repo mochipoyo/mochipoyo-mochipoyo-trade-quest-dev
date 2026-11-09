@@ -22,6 +22,10 @@
   PE.HOLD_MAX = 96;        // 保有の最大（エントリー足の本数。過ぎたら時間切れの決済）
   PE.FUT_DAYS = 2;         // 判断の開始より後に作る足（5分足で 2日分）
   PE.PAIR = '学習用仮想ペア POYO/MOCHI（架空の相場）';
+  // v9.1 記録の版：計算の決まり（ENGINE_VERSION）と相場の作り方（SCENARIO_VERSION）。振り返りで作り直すときに、記録した checksum と比べて違えば「再現できない」と出す
+  PE.ENGINE_VERSION = 2; PE.SCENARIO_VERSION = 1; PE.STRESS_ATR = [1, 2]; PE.LOW_CAPITAL = 0.7;   // LOW_CAPITAL：資金が初期のこの割合を下回ったら注意（教材の仮設定）
+  PE.checksum = function (g) { var b = g.base; var pick = [0, g.S, Math.min(b.length - 1, g.S + 1), b.length - 1]; var str = pick.map(function (i) { return b[i].o + ',' + b[i].h + ',' + b[i].l + ',' + b[i].c; }).join('|') + '|' + b.length;
+    var h = 2166136261 >>> 0; for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return ('0000000' + h.toString(16)).slice(-8); };
 
   function rng(seed) { return root.Scenarios._internal.mulberry32(seed >>> 0); }
   function seg(bars, drift, wave, noise) { return { bars: Math.max(1, Math.round(bars)), drift: drift, wave: wave || null, noise: noise }; }
@@ -169,24 +173,33 @@
     var TC = root.TradeCore; prof = prof || SPFn().values(play.profile, play.overrides); var sn = PE.snap(play); var mid = sn.entry.close; var side = TC.sideOf(o.side);
     var half = TC.COSTS.spreadPips * play.pip / 2; var px = side === 'buy' ? mid + half : mid - half;
     var v = TC.validateOrder({ side: side, entry: px, sl: o.sl, tp: o.tp, requireSL: prof.slRequired, requireTP: prof.tpRequired, spreadPips: TC.COSTS.spreadPips, basis: '約定の予定価格（' + (side === 'buy' ? '買値' : '売値') + '）' });
-    var sz = v.ok ? TC.sizePosition({ capital: capital, riskPercent: o.riskPercent, riskPips: v.riskPips + TC.COSTS.stopSlipPips + TC.COSTS.entrySlipPips }) : null;
+    // ロット：損切りで終わったときの損失（約定の予定価格→損切り＋入口の滑り＋損切りの滑り）が許容損失を超えないように
+    var lossPips = v.ok ? v.riskPips + TC.COSTS.stopSlipPips + TC.COSTS.entrySlipPips : null;
+    var sz = v.ok ? TC.sizePosition({ capital: capital, riskPercent: o.riskPercent, riskPips: lossPips }) : null;
     var errs = v.errors.map(function (e) { return e.msg; }); if (sz && !sz.ok) errs = errs.concat(sz.errors.map(function (e) { return e.msg; }));
+    if (!(isFinite(capital) && capital > 0)) errs.push('仮想資金が0円以下のため、新しい注文は出せない（成績・設定から資金を戻せる）');
     if (v.ok && o.riskPercent > prof.maxRiskPercent) v.warnings.push({ code: 'risk_over', msg: '許容損失 ' + o.riskPercent + '% はこのプロファイルの上限（' + prof.maxRiskPercent + '%）を超える' });
-    return { ok: v.ok && !!sz && sz.ok, validation: v, sizing: sz, entryMid: mid, entryPx: px, maxLoss: sz && sz.ok ? sz.actualRisk : null, rr: v.rr, breakeven: v.rr ? TC.breakevenWinRate(v.rr) : null, errors: errs, warnings: v.warnings.map(function (w) { return w.msg; }), snap: sn };
+    var init = (root.CONFIG && root.CONFIG.risk && root.CONFIG.risk.capital) || 1000000; if (isFinite(capital) && capital > 0 && capital < init * PE.LOW_CAPITAL) v.warnings.push({ code: 'low_capital', msg: '仮想資金が初期の' + Math.round(PE.LOW_CAPITAL * 100) + '%を下回っている（連敗の後など）。許容損失%を下げる・いったん休むことも考える（教材の仮設定の目安）' });
+    var ok = v.ok && !!sz && sz.ok && isFinite(capital) && capital > 0; var pv = TC.spec().pipValue;
+    // 通常約定時の推定損失（損切りで終わったとき）と、窓で損切りを越えたときのストレス例（仮定。保証・予測ではない）
+    var est = ok ? sz.actualRisk : null; var atrPips = sn.entry.atrPips;
+    var stress = ok ? PE.STRESS_ATR.map(function (k) { var loss = sz.lots * pv * (v.riskPips + TC.COSTS.entrySlipPips + k * atrPips); return { atr: k, pips: Math.round((v.riskPips + TC.COSTS.entrySlipPips + k * atrPips) * 10) / 10, loss: Math.round(loss), pct: Math.round(loss / capital * 10000) / 100 }; }) : [];
+    return { ok: ok, validation: v, sizing: sz, entryMid: mid, entryPx: px, estLoss: est, maxLoss: est, estLossPct: est !== null ? Math.round(est / capital * 10000) / 100 : null, lossPips: lossPips, stress: stress, rr: v.rr, breakeven: v.rr ? TC.breakevenWinRate(v.rr) : null, errors: errs, warnings: v.warnings.map(function (w) { return w.msg; }), snap: sn };
   };
   // 発注（検証に通ったときだけ）。決済は、エントリー足の確定足で TradeCore.settleBars（未来の足は、足送りで1本ずつ見せる）
   PE.enter = function (play, o, capital, claims, prof) {
+    if (play.entry || (play.phase !== 'waiting' && play.phase !== 'analysis')) return { ok: false, duplicate: true, preview: { errors: ['この問題ではもう発注・決定している（二重の発注はしない）'] } };   // v9.1 二重発注の防止
     prof = prof || SPFn().values(play.profile, play.overrides); var pv = PE.preview(play, o, capital, prof); if (!pv.ok) return { ok: false, preview: pv };
     var sn = pv.snap; var side = root.TradeCore.sideOf(o.side); var check = SPFn().evaluateEntry(sn, side, prof);
     var g = PE.game(play); var bars = SE.confirmed(SE.aggregate(g.base, PE.tfMin(play.entryTF), g.base.length - 1)); var ei = -1; for (var i = bars.length - 1; i >= 0; i--) if (bars[i].to === play.asOf) { ei = i; break; }
-    var st = root.TradeCore.settleBars(bars, ei, { side: side, entry: pv.entryMid, sl: pv.validation.sl, tp: pv.validation.tp }, { maxBars: PE.HOLD_MAX });
+    var st = root.TradeCore.settleBars(bars, ei, { side: side, entry: pv.entryMid, sl: pv.validation.sl, tp: pv.validation.tp }, { maxBars: PE.HOLD_MAX, atr: sn.entry.atr, lots: pv.sizing.lots });
     play.entry = { side: side, asOf: play.asOf, order: pv.validation, sizing: pv.sizing, riskPercent: o.riskPercent, check: check, swing: sn.entry.swing, pip: play.pip, snap: { htf: sn.htf }, entryIndex: ei, exitAsOf: st.ok ? bars[st.exitIndex].to : null };
     play.settle = st; play.claims = claims || play.claims || {}; play.claimCheck = check; play.phase = 'holding'; play.holdShown = 0; play.events.push({ kind: 'enter', asOf: play.asOf, side: side, at: Date.now() });
     return { ok: true, preview: pv, check: check };
   };
   // 保有中の足送り（当初の損切り・利確は動かさない）。決済の足まで来たら終わり
   PE.holdStep = function (play) { if (play.phase !== 'holding') return false; var g = PE.game(play); var next = Math.min(play.entry.exitAsOf, play.asOf + play.step); if (next >= g.base.length) next = g.base.length - 1; play.asOf = next; play.holdShown++; if (play.asOf >= play.entry.exitAsOf) { play.phase = 'closed'; play.events.push({ kind: 'exit', asOf: play.asOf, reason: play.settle.reason, at: Date.now() }); } return true; };
-  PE.skip = function (play, claims) { play.phase = 'skipped'; play.claims = claims || play.claims || null; play.events.push({ kind: 'skip', asOf: play.asOf, at: Date.now() }); };
+  PE.skip = function (play, claims) { if (play.entry || (play.phase !== 'waiting' && play.phase !== 'analysis')) return false; play.phase = 'skipped'; play.claims = claims || play.claims || null; play.events.push({ kind: 'skip', asOf: play.asOf, at: Date.now() }); return true; };
 
   /* ---------- レベルごとの読み取りの設問（判断の開始の時点の事実で採点。答えは振り返りまで出さない） ---------- */
   var RCI_OPT = [['neutral', '中立（±70圏の外・有効な反転なし）'], ['overbought', '+70以上（買われすぎ圏）'], ['oversold', '−70以下（売られすぎ圏）'], ['turning_up', '−70圏から上向きに反転（継続中）'], ['turning_down', '+70圏から下向きに反転（継続中）'], ['after', '反転のあと止まった・逆へ再逆行・古い反転']];
@@ -216,7 +229,7 @@
     var kind = play.phase === 'holding' || play.phase === 'closed' ? 'trade' : play.phase === 'skipped' ? 'skip' : 'timeout';
     var claimSide = play.entry ? play.entry.side : (play.hypothesis && play.hypothesis.bias === 'sell' ? 'sell' : 'buy');
     var claimCheck = play.entry ? play.entry.check : SPFn().evaluateEntry(PE.snap(play), claimSide, prof);
-    var pnl = null; if (kind === 'trade' && play.settle && play.settle.ok && play.entry.sizing) pnl = Math.round(play.settle.netPips * play.entry.sizing.lots * root.TradeCore.spec().pipValue);
+    var pnl = null; if (kind === 'trade' && play.settle && play.settle.ok && play.entry.sizing) pnl = isFinite(play.settle.pnlYenAfterCommission) ? play.settle.pnlYenAfterCommission : Math.round(play.settle.netPips * play.entry.sizing.lots * root.TradeCore.spec().pipValue);
     var res = SPFn().grade({ profile: prof, facts: start, extraItems: PE.focusItems(play, start), answers: play.answers, viewedHtf: !!(play.viewed['1d'] && play.viewed['4h']), claims: play.claims || {}, claimCheck: play.claims ? claimCheck : null, outcomeKind: kind, entry: play.entry, metAt: play.metAt, settle: play.settle, pnl: pnl, context: context || {} });
     res.kind = kind; res.pnl = pnl; return res;
   };
@@ -224,7 +237,9 @@
   PE.record = function (play, grade, capitalBefore) {
     var st = play.settle; var tr = grade.kind === 'trade' && st && st.ok;
     var ev = play.entry ? play.entry.check.evidence.filter(function (x) { return x.ok; }).map(function (x) { return x.key; }) : [];
-    return { v: 1, t: Date.now(), seed: play.seed, set: play.set, cat: play.cat, tf: play.entryTF, profile: play.profile, level: play.level, kind: grade.kind, process: grade.process,
+    var prof = SPFn().values(play.profile, play.overrides); var snapP = {}; Object.keys(prof).forEach(function (k) { if (k !== 'name') snapP[k] = prof[k]; });
+    return { v: 2, engineVersion: PE.ENGINE_VERSION, scenarioVersion: play.scenarioVersion || PE.SCENARIO_VERSION, gen: play.gen || 'A', checksum: PE.checksum(PE.game(play)), profileSnap: snapP, grossR: tr ? st.grossR : null, grossPips: tr ? st.grossPips : null, commissionYen: tr ? st.commissionYen : null, ifTpFirstR: tr && st.ifTpFirst ? st.ifTpFirst.riskR : null,
+      t: Date.now(), seed: play.seed, set: play.set, cat: play.cat, tf: play.entryTF, profile: play.profile, level: play.level, kind: grade.kind, process: grade.process,
       side: play.entry ? play.entry.side : null, sl: play.entry ? play.entry.order.sl : null, tp: play.entry ? play.entry.order.tp : null, lots: play.entry && play.entry.sizing ? play.entry.sizing.lots : null,
       riskPercent: play.entry ? play.entry.riskPercent : null, maxLoss: play.entry && play.entry.sizing ? Math.round(play.entry.sizing.actualRisk) : null, plannedRR: play.entry ? play.entry.order.rr : null,
       netPips: tr ? st.netPips : null, riskR: tr ? st.riskR : null, costPips: tr ? st.costPips : null, mae: tr ? st.maePips : null, mfe: tr ? st.mfePips : null, reason: tr ? st.reason : null, ambiguous: tr ? st.ambiguous : false,

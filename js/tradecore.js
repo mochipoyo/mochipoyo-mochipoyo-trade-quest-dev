@@ -32,7 +32,7 @@
   TC.usable = function (id) { var s = TC.INSTRUMENTS[id]; return !!(s && s.pip && s.pipValue && s.minLot && s.lotStep); };
 
   // 取引のコスト（実践道場の既定。ゲームの仮定で、実在の業者の数字ではない）
-  TC.COSTS = { spreadPips: 0.6, entrySlipPips: 0.1, stopSlipPips: 0.3, note: '架空の相場の仮定（実在の業者・口座の条件ではない）' };
+  TC.COSTS = { spreadPips: 0.6, entrySlipPips: 0.1, stopSlipPips: 0.3, commissionPerLotYen: 0, note: '架空の相場の仮定（実在の業者・口座の条件ではない）' };
 
   function num(v) { if (typeof v === 'number') return v; if (typeof v === 'string' && v.trim() !== '') return Number(v); return NaN; }
   function missing(v) { return v === null || v === undefined || (typeof v === 'string' && v.trim() === ''); }
@@ -72,6 +72,10 @@
       else if (rewardPips < 0) E('tp_wrong_side', 'tp', sideJa + 'の利確はエントリー価格（' + fmt(entry) + '）より' + tpWord + 'に置く（いま ' + fmt(tp) + '）');
       else if (rewardPips > maxPips * 3 || Math.abs(tp / entry - 1) > 0.5) E('tp_abnormal', 'tp', '利確が遠すぎる（' + rewardPips.toFixed(0) + 'pips）。桁の入力を確かめる');
     }
+    // v9.1 価格の刻み（tick）に合わない値：入力の誤りの目安として注文できない（浮動小数の誤差は許す）
+    var offTick = function (v) { return spec.tick && isFinite(v) && Math.abs(v / spec.tick - Math.round(v / spec.tick)) > 1e-6; };
+    if (sl !== null && isFinite(sl) && offTick(sl) && !errors.some(function (e) { return e.field === 'sl'; })) E('sl_tick', 'sl', '損切りの価格が刻み（' + spec.tick + '）に合わない（' + sl + '）');
+    if (tp !== null && isFinite(tp) && offTick(tp) && !errors.some(function (e) { return e.field === 'tp'; })) E('tp_tick', 'tp', '利確の価格が刻み（' + spec.tick + '）に合わない（' + tp + '）');
     var okRisk = riskPips !== null && riskPips > 0 && !errors.some(function (e) { return e.field === 'sl'; });
     var okRew = rewardPips !== null && rewardPips > 0 && !errors.some(function (e) { return e.field === 'tp'; });
     var spread = (o.spreadPips === undefined ? 0 : o.spreadPips);
@@ -106,53 +110,74 @@
   TC.riskR = function (pnlPips, riskPips) { return isFinite(pnlPips) && isFinite(riskPips) && riskPips > 0 ? pnlPips / riskPips : null; };
   TC.atrMultiple = function (pnl, atr) { return isFinite(pnl) && isFinite(atr) && atr > 0 ? pnl / atr : null; };
 
-  /* ---------- 決済（OHLC の足だけで判定する共通の決済） ----------
-     bars：足の配列（{o,h,l,c}）。entryIndex：約定した足（その足の終値で約定したとみなす。判定は次の足から）
-     order：{ side, entry（中値）, sl, tp }。opts：{ spreadPips, entrySlipPips, stopSlipPips, maxBars, spec, sameBar:'sl_first' }
-     ・約定価格：買い＝中値＋スプレッド/2＋入口のスリッページ、売り＝その逆。決済は売値（買い）／買値（売り）で判定
-     ・窓（ギャップ）：足の始値が損切りを越えていたら、始値で約定（損切り価格より不利）。利確を越えていたら利確価格（指値なので有利にはしない）
-     ・同じ足で損切りと利確の両方に届いた：OHLC だけでは順序が分からない（先後不明）。既定は「損切りが先」とみなす（保守的な仮定）。ambiguous:true
-     ・maxBars 本たっても決まらない、または足がなくなった：その足の終値で決済（time / open）
-     返り値：{ ok, side, entryIndex, entryPrice, sl, tp, exitIndex, exitPrice, reason:'sl'|'tp'|'time'|'end', ambiguous, gap, grossPips, costPips, netPips, riskPips, riskR, maePips, mfePips, bars } */
+  /* ---------- 決済（OHLC の足だけで判定する共通の決済）v9.1 コストの定義を整理 ----------
+     bars：足の配列（{o,h,l,c}：中値）。entryIndex：約定した足（その足の終値で約定。判定は次の足から）
+     order：{ side, entry（エントリーの中値）, sl, tp }
+     opts：{ spreadEntryPips, spreadExitPips（省略時 spreadPips）, entrySlipPips, exitSlipPips（損切り・成行の決済の滑り。省略時 stopSlipPips）,
+             commissionPerLotYen（1ロット・片道の手数料。既定 0）, lots, atr（エントリーの時点で確定していた ATR・価格）, maxBars, spec }
+     ・買いは買値（中値＋スプレッド/2）で入り、売値（中値−スプレッド/2）で出る。売りはその逆
+     ・約定：エントリー＝入口の価格＋入口の滑り。損切り（逆指値）＝損切り価格−決済の滑り。利確（指値）＝利確価格（滑りなし・価格の改善もなしと仮定）。
+             時間切れ・足の終わり（成行）＝終値の出口の価格−決済の滑り
+     ・窓：始値の時点で損切りを越えていたら、始値の出口の価格で約定（決済の滑りは足さない。窓の分は gapSlippagePips に別に記録）
+     ・同じ足で損切りと利確の両方：OHLC では順序が分からない（先後不明）。既定は損切りが先（保守的な仮定）。利確が先だった場合（ifTpFirst）も並べて返す
+     ・定義：grossPips＝エントリーの中値 → 決済の中値の値動き。netPips＝実際の約定価格どうし。costPips＝grossPips−netPips（スプレッド・滑りの合計。内訳つき）
+             riskR＝netPips ÷ 初期リスク（約定価格から損切り価格までの pips）。atrMultiple＝実現損益 ÷ ATR。plannedRR＝利確の幅 ÷ 損切りの幅（約定価格から。計画の値）
+             手数料（円）は pips に入れず、手数料の前後の損益（円）を別に返す */
+  function costOpt(o, k, alt, d) { var v = o[k] !== undefined ? o[k] : (alt && o[alt] !== undefined ? o[alt] : d); return v; }
   TC.settleBars = function (bars, entryIndex, order, opts) {
-    opts = opts || {}; var spec = opts.spec || TC.spec(); var pip = spec.pip; var side = sideOf(order.side); var sg = side === 'buy' ? 1 : -1;
-    var half = (opts.spreadPips === undefined ? TC.COSTS.spreadPips : opts.spreadPips) * pip / 2; var eslip = (opts.entrySlipPips === undefined ? TC.COSTS.entrySlipPips : opts.entrySlipPips) * pip; var sslip = (opts.stopSlipPips === undefined ? TC.COSTS.stopSlipPips : opts.stopSlipPips) * pip;
+    opts = opts || {}; var spec = opts.spec || TC.spec(); var pip = spec.pip; var side = sideOf(order && order.side); var sg = side === 'buy' ? 1 : -1;
+    var C = { spreadEntry: costOpt(opts, 'spreadEntryPips', 'spreadPips', TC.COSTS.spreadPips), spreadExit: costOpt(opts, 'spreadExitPips', 'spreadPips', TC.COSTS.spreadPips), entrySlip: costOpt(opts, 'entrySlipPips', null, TC.COSTS.entrySlipPips), exitSlip: costOpt(opts, 'exitSlipPips', 'stopSlipPips', TC.COSTS.stopSlipPips), commission: costOpt(opts, 'commissionPerLotYen', null, TC.COSTS.commissionPerLotYen || 0) };
+    var bad = Object.keys(C).filter(function (k) { return !(isFinite(C[k]) && C[k] >= 0); }); if (bad.length) return { ok: false, reason: 'invalid', errors: ['コストの値が正しくない（' + bad.join('・') + '）'] };
+    if (!bars || !bars.length || !(entryIndex >= 0 && entryIndex < bars.length)) return { ok: false, reason: 'invalid', errors: ['足のデータ・約定した足の番号が正しくない'] };
     var mid0 = num(order.entry); if (!side || !isFinite(mid0)) return { ok: false, reason: 'invalid', errors: ['向きまたはエントリー価格が正しくない'] };
-    var fill = mid0 + sg * (half + eslip); var sl = missing(order.sl) ? null : num(order.sl), tp = missing(order.tp) ? null : num(order.tp);
+    var hE = C.spreadEntry * pip / 2, hX = C.spreadExit * pip / 2, eS = C.entrySlip * pip, xS = C.exitSlip * pip;
+    var fill = mid0 + sg * (hE + eS); var sl = missing(order.sl) ? null : num(order.sl), tp = missing(order.tp) ? null : num(order.tp);
     if (sl !== null && (!isFinite(sl) || sg * (fill - sl) <= 0)) return { ok: false, reason: 'invalid', errors: ['損切りが約定価格の正しい側にない'] };
     if (tp !== null && (!isFinite(tp) || sg * (tp - fill) <= 0)) return { ok: false, reason: 'invalid', errors: ['利確が約定価格の正しい側にない'] };
-    var maxBars = opts.maxBars || Infinity; var last = Math.min(bars.length - 1, entryIndex + maxBars); var exit = null; var mae = 0, mfe = 0;
+    var maxBars = opts.maxBars || Infinity; var last = Math.min(bars.length - 1, entryIndex + maxBars); var exit = null; var mae = 0, mfe = 0; var alt = null;
+    var tpExit = function (i, gap) { return { i: i, fill: tp, mid: tp + sg * hX, reason: 'tp', gap: !!gap, exitSlip: 0 }; };
+    var slExit = function (i) { return { i: i, fill: sl - sg * xS, mid: sl + sg * hX, reason: 'sl', exitSlip: C.exitSlip }; };
     for (var i = entryIndex + 1; i <= last && !exit; i++) {
-      var b = bars[i]; var oPx = b.o - sg * half, hiPx = b.h - sg * half, loPx = b.l - sg * half;   // 決済に使う側の価格
+      var b = bars[i]; var oPx = b.o - sg * hX, hiPx = b.h - sg * hX, loPx = b.l - sg * hX;   // 決済に使う側（出口）の価格
       var adv = sg > 0 ? loPx : hiPx, fav = sg > 0 ? hiPx : loPx;
-      // 窓：始値の時点で損切り・利確を越えている
-      if (sl !== null && sg * (oPx - sl) <= 0) { exit = { i: i, price: oPx, reason: 'sl', gap: true }; mae = Math.min(mae, sg * (oPx - fill)); break; }
-      if (tp !== null && sg * (oPx - tp) >= 0) { exit = { i: i, price: tp, reason: 'tp', gap: true }; mfe = Math.max(mfe, sg * (tp - fill)); break; }
+      if (sl !== null && sg * (oPx - sl) <= 0) { exit = { i: i, fill: oPx, mid: b.o, reason: 'sl', gap: true, exitSlip: 0 }; mae = Math.min(mae, sg * (oPx - fill)); break; }   // 窓で損切りを飛び越えた
+      if (tp !== null && sg * (oPx - tp) >= 0) { exit = tpExit(i, true); mfe = Math.max(mfe, sg * (tp - fill)); break; }
       var hitSl = sl !== null && sg * (adv - sl) <= 0, hitTp = tp !== null && sg * (fav - tp) >= 0;
-      if (hitSl && hitTp) { exit = { i: i, price: sl - sg * sslip, reason: 'sl', ambiguous: true }; mae = Math.min(mae, sg * (sl - fill)); mfe = Math.max(mfe, sg * (tp - fill)); break; }
-      if (hitSl) { exit = { i: i, price: sl - sg * sslip, reason: 'sl' }; mae = Math.min(mae, sg * (sl - fill)); mfe = Math.max(mfe, sg * (fav - fill)); break; }
-      if (hitTp) { exit = { i: i, price: tp, reason: 'tp' }; mfe = Math.max(mfe, sg * (tp - fill)); mae = Math.min(mae, sg * (adv - fill)); break; }
+      if (hitSl && hitTp) { exit = slExit(i); exit.ambiguous = true; alt = tpExit(i); mae = Math.min(mae, sg * (sl - fill)); mfe = Math.max(mfe, sg * (tp - fill)); break; }
+      if (hitSl) { exit = slExit(i); mae = Math.min(mae, sg * (sl - fill)); mfe = Math.max(mfe, sg * (fav - fill)); break; }
+      if (hitTp) { exit = tpExit(i); mfe = Math.max(mfe, sg * (tp - fill)); mae = Math.min(mae, sg * (adv - fill)); break; }
       mae = Math.min(mae, sg * (adv - fill)); mfe = Math.max(mfe, sg * (fav - fill));
     }
-    if (!exit) { var li = Math.max(entryIndex, last); exit = { i: li, price: bars[li].c - sg * half, reason: li >= entryIndex + maxBars ? 'time' : 'end' }; }
-    var grossPips = sg * (exit.price - mid0) / pip;   // 中値から見た値動き（コストを含まない）
-    var netPips = sg * (exit.price - fill) / pip;     // 実際の約定価格どうし（スプレッド・スリッページ込み）
-    var riskPips = sl !== null ? sg * (fill - sl) / pip : null;
-    return { ok: true, side: side, entryIndex: entryIndex, entryMid: mid0, entryPrice: fill, sl: sl, tp: tp, exitIndex: exit.i, exitPrice: exit.price, reason: exit.reason, ambiguous: !!exit.ambiguous, gap: !!exit.gap,
-      grossPips: r1(grossPips), costPips: r1(grossPips - netPips + sg * 0), netPips: r1(netPips), riskPips: riskPips === null ? null : r1(riskPips), riskR: riskPips ? r2(netPips / riskPips) : null,
+    if (!exit) { var li = Math.max(entryIndex, last); exit = { i: li, fill: bars[li].c - sg * (hX + xS), mid: bars[li].c, reason: li >= entryIndex + maxBars ? 'time' : 'end', exitSlip: C.exitSlip }; }
+    var grossPips = r1(sg * (exit.mid - mid0) / pip);      // 中値 → 中値（コストを含まない）
+    var netPips = r1(sg * (exit.fill - fill) / pip);       // 約定価格どうし（スプレッド・滑り込み）
+    var costPips = r1(grossPips - netPips);                // ＝スプレッド（入口・出口の半分ずつ）＋入口の滑り＋決済の滑り
+    var riskPips = sl !== null ? sg * (fill - sl) / pip : null; var rewardPips = tp !== null ? sg * (tp - fill) / pip : null;
+    var lots = isFinite(opts.lots) && opts.lots > 0 ? opts.lots : null; var pnlYen = lots ? netPips * spec.pipValue * lots : null; var commYen = lots ? C.commission * lots * 2 : 0;
+    var res = { ok: true, side: side, entryIndex: entryIndex, entryMid: mid0, entryPrice: fill, sl: sl, tp: tp, exitIndex: exit.i, exitPrice: exit.fill, exitMid: exit.mid, reason: exit.reason, ambiguous: !!exit.ambiguous, gap: !!exit.gap,
+      grossPips: grossPips, costPips: costPips, netPips: netPips,
+      costs: { spreadEntryPips: C.spreadEntry / 2, spreadExitPips: C.spreadExit / 2, entrySlipPips: C.entrySlip, exitSlipPips: exit.exitSlip, totalPips: costPips },
+      gapSlippagePips: exit.gap && exit.reason === 'sl' ? r1(sg * (sl - exit.fill) / pip) : 0,
+      riskPips: riskPips === null ? null : r1(riskPips), riskR: riskPips ? r2(netPips / riskPips) : null, grossR: riskPips ? r2(grossPips / riskPips) : null, plannedRR: riskPips && rewardPips ? r2(rewardPips / riskPips) : null,
+      atrMultiple: isFinite(opts.atr) && opts.atr > 0 ? r2(netPips * pip / opts.atr) : null,
+      lots: lots, pnlYen: pnlYen === null ? null : Math.round(pnlYen), commissionYen: Math.round(commYen), pnlYenAfterCommission: pnlYen === null ? null : Math.round(pnlYen - commYen),
       maePips: r1(mae / pip), mfePips: r1(mfe / pip), bars: exit.i - entryIndex,
-      assumption: exit.ambiguous ? '同じ足で損切りと利確の両方に届いた（OHLC だけでは順序が分からない）。損切りが先とみなした（保守的な仮定）' : null };
+      assumption: exit.ambiguous ? '同じ足で損切りと利確の両方に届いた（OHLC だけでは順序が分からない）。損切りが先と仮定した（事実として損切りが先だったとは言えない）' : exit.reason === 'tp' ? '利確は指値：利確の価格ちょうどで約定と仮定（滑り・価格の改善なし）' : null };
+    if (alt) { var an = r1(sg * (alt.fill - fill) / pip); res.ifTpFirst = { reason: 'tp', netPips: an, riskR: riskPips ? r2(an / riskPips) : null }; }
+    return res;
   };
   function r1(v) { return Math.round(v * 10) / 10; }
   function r2(v) { return Math.round(v * 100) / 100; }
   TC.r1 = r1; TC.r2 = r2;
 
-  /* ---------- 口座の最大DD ---------- */
-  // curve：資金の推移（数の配列）。返り値：{ amount, pct（最高値に対する%）, peakIndex, troughIndex }
+  /* ---------- 口座の最大DD ----------
+     curve：資金の推移（数の配列）。v9.1：金額の最大と割合の最大を別々に求める（同じ区間とは限らない）
+     返り値：{ amount（最大の下げ幅）, amountPct（その区間の割合）, pct（最大の下げ率）, pctAmount（その区間の額）, peakIndex, troughIndex（金額の区間）, pctPeakIndex, pctTroughIndex } */
   TC.maxDrawdown = function (curve) {
-    var peak = -Infinity, pi = 0, best = { amount: 0, pct: 0, peakIndex: 0, troughIndex: 0 };
-    (curve || []).forEach(function (v, i) { if (!isFinite(v)) return; if (v > peak) { peak = v; pi = i; } var dd = peak - v; if (dd > best.amount) best = { amount: dd, pct: peak > 0 ? dd / peak * 100 : 0, peakIndex: pi, troughIndex: i }; });
-    best.amount = Math.round(best.amount * 100) / 100; best.pct = r2(best.pct); return best;
+    var peak = -Infinity, pi = 0; var A = { amount: 0, pct: 0, peakIndex: 0, troughIndex: 0 }, P = { pct: 0, amount: 0, peakIndex: 0, troughIndex: 0 };
+    (curve || []).forEach(function (v, i) { if (!isFinite(v)) return; if (v > peak) { peak = v; pi = i; } var dd = peak - v; var pc = peak > 0 ? dd / peak * 100 : 0;
+      if (dd > A.amount) A = { amount: dd, pct: pc, peakIndex: pi, troughIndex: i }; if (pc > P.pct) P = { pct: pc, amount: dd, peakIndex: pi, troughIndex: i }; });
+    return { amount: Math.round(A.amount * 100) / 100, amountPct: r2(A.pct), peakIndex: A.peakIndex, troughIndex: A.troughIndex, pct: r2(P.pct), pctAmount: Math.round(P.amount * 100) / 100, pctPeakIndex: P.peakIndex, pctTroughIndex: P.troughIndex };
   };
   // 1回の取引の間の口座の最大DD（含み損込み）：資金 capital、1pip あたりの損益 perPip（円）、保有中の最大逆行 maePips（≤0）、決済の損益 pnlPips
   TC.tradeDrawdown = function (capital, perPip, maePips, pnlPips) {
@@ -161,37 +186,55 @@
   };
 
   /* ---------- 成績の統計 ----------
-     history：[{ kind:'trade'|'skip'|'wait'|'timeout'|'invalid', riskR, netPips, pnl, plannedRR, compliant, violations:[], evidence:[…], capitalAfter }]
-     返り値の各値には分母（n）を付ける。サンプルが少ない（取引 30 回未満）ときは small:true（勝率・期待値は不安定） */
+     history：[{ kind:'trade'|'skip'|'wait'|'timeout'|'invalid', riskR, grossR, netPips, pnl（円）, plannedRR, mae（pips）, lots, compliant, violations:[], evidence:[…], capitalAfter }]
+     opts：{ capital（この記録の範囲の最初の資金）, pipValue }
+     返り値の各値には分母（n）を付ける。サンプルが少ない（取引 30 回未満）ときは small:true（勝率・期待値は不安定）
+     v9.1：PF を円（ふつうの意味）と R（教育用）に分けた。資金曲線は「確定損益」と「各取引の MAE（足の高安）から見積もった含み損込み」を分けた */
   TC.SMALL_SAMPLE = 30;
   TC.stats = function (history, opts) {
     opts = opts || {}; var H = (history || []).filter(function (x) { return x && x.kind; }); var trades = H.filter(function (x) { return x.kind === 'trade' && isFinite(x.riskR); });
     var wins = trades.filter(function (x) { return x.riskR > 0; }), losses = trades.filter(function (x) { return x.riskR < 0; });
     var sum = function (a, k) { return a.reduce(function (s, x) { return s + (isFinite(x[k]) ? x[k] : 0); }, 0); };
     var n = trades.length; var gw = sum(wins, 'riskR'), gl = -sum(losses, 'riskR');
+    var yen = trades.filter(function (x) { return isFinite(x.pnl); }); var yw = yen.filter(function (x) { return x.pnl > 0; }).reduce(function (a, x) { return a + x.pnl; }, 0), yl = -yen.filter(function (x) { return x.pnl < 0; }).reduce(function (a, x) { return a + x.pnl; }, 0);
     var streak = 0, maxStreak = 0; trades.forEach(function (x) { if (x.riskR < 0) { streak++; if (streak > maxStreak) maxStreak = streak; } else streak = 0; });
-    var cap0 = opts.capital || (CONFIG && CONFIG.risk && CONFIG.risk.capital) || 1000000; var curve = [cap0]; H.forEach(function (x) { if (x.kind === 'trade' && isFinite(x.capitalAfter)) curve.push(x.capitalAfter); });
+    var cap0 = isFinite(opts.capital) ? opts.capital : ((CONFIG && CONFIG.risk && CONFIG.risk.capital) || 1000000); var pv = opts.pipValue || TC.spec().pipValue;
+    var curve = [cap0], curveIntra = [cap0]; var cur = cap0;
+    H.forEach(function (x) { if (x.kind !== 'trade' || !isFinite(x.capitalAfter)) return; var before = isFinite(x.pnl) ? x.capitalAfter - x.pnl : cur;
+      if (isFinite(x.mae) && x.mae < 0 && isFinite(x.lots) && x.lots > 0) curveIntra.push(before + x.mae * pv * x.lots);   // 保有中の最悪（足の高安から見積もり）
+      curve.push(x.capitalAfter); curveIntra.push(x.capitalAfter); cur = x.capitalAfter; });
     var decisions = H.filter(function (x) { return x.kind === 'trade' || x.kind === 'skip' || x.kind === 'timeout'; });
     var rated = H.filter(function (x) { return typeof x.compliant === 'boolean'; });
     var byEv = {}; trades.forEach(function (x) { (x.evidence || []).forEach(function (k) { var b = byEv[k] || (byEv[k] = { n: 0, wins: 0, sumR: 0 }); b.n++; if (x.riskR > 0) b.wins++; b.sumR += x.riskR; }); });
     Object.keys(byEv).forEach(function (k) { var b = byEv[k]; b.avgR = r2(b.sumR / b.n); b.winRate = r2(b.wins / b.n * 100); b.small = b.n < TC.SMALL_SAMPLE; });
-    var rrs = trades.filter(function (x) { return isFinite(x.plannedRR) && x.plannedRR > 0; });
+    var rrs = trades.filter(function (x) { return isFinite(x.plannedRR) && x.plannedRR > 0; }); var gr = trades.filter(function (x) { return isFinite(x.grossR); });
     return {
       trades: n, wins: wins.length, losses: losses.length, small: n < TC.SMALL_SAMPLE,
       winRate: n ? r2(wins.length / n * 100) : null, avgWinR: wins.length ? r2(gw / wins.length) : null, avgLossR: losses.length ? r2(-gl / losses.length) : null,
-      expectancyR: n ? r2(sum(trades, 'riskR') / n) : null, profitFactor: gl > 0 ? r2(gw / gl) : (gw > 0 ? null : null), pfInfinite: gl === 0 && gw > 0,
-      avgPlannedRR: rrs.length ? r2(sum(rrs, 'plannedRR') / rrs.length) : null, maxLosingStreak: maxStreak, drawdown: TC.maxDrawdown(curve), curve: curve,
+      expectancyR: n ? r2(sum(trades, 'riskR') / n) : null, expectancyGrossR: gr.length ? r2(sum(gr, 'grossR') / gr.length) : null, grossRn: gr.length, avgPnlYen: yen.length ? Math.round(yw / Math.max(1, yen.length) - yl / Math.max(1, yen.length)) : null, yenN: yen.length,
+      profitFactorR: gl > 0 ? r2(gw / gl) : null, pfRInfinite: gl === 0 && gw > 0, profitFactor: gl > 0 ? r2(gw / gl) : null, pfInfinite: gl === 0 && gw > 0,
+      profitFactorYen: yl > 0 ? r2(yw / yl) : null, pfYenInfinite: yl === 0 && yw > 0, grossProfitYen: Math.round(yw), grossLossYen: Math.round(yl),
+      avgPlannedRR: rrs.length ? r2(sum(rrs, 'plannedRR') / rrs.length) : null, maxLosingStreak: maxStreak, drawdown: TC.maxDrawdown(curve), drawdownIntra: TC.maxDrawdown(curveIntra), curve: curve, curveIntra: curveIntra, startCapital: cap0,
       decisions: decisions.length, skips: H.filter(function (x) { return x.kind === 'skip'; }).length, waits: H.reduce(function (a, x) { return a + (x.kind === 'wait' ? 1 : 0) + (isFinite(x.waits) ? x.waits : 0); }, 0), timeouts: H.filter(function (x) { return x.kind === 'timeout'; }).length,
       skipRate: decisions.length ? r2(H.filter(function (x) { return x.kind === 'skip'; }).length / decisions.length * 100) : null,
       complianceRate: rated.length ? r2(rated.filter(function (x) { return x.compliant; }).length / rated.length * 100) : null, rated: rated.length, invalidOrders: H.filter(function (x) { return x.kind === 'invalid'; }).length,
       byEvidence: byEv
     };
   };
+  // 記録の上限を超えた分をまとめる（全期間の集計を失わないように）。archive：{ count, trades, wins, losses, sumR, pnlYen, peakCapital, firstT, lastT, lastCapital }
+  TC.archiveAdd = function (archive, recs) {
+    var a = archive && typeof archive === 'object' ? archive : { count: 0, trades: 0, wins: 0, losses: 0, sumR: 0, pnlYen: 0, peakCapital: null, firstT: null, lastT: null, lastCapital: null };
+    (recs || []).forEach(function (x) { if (!x) return; a.count++; if (x.kind === 'trade' && isFinite(x.riskR)) { a.trades++; if (x.riskR > 0) a.wins++; else if (x.riskR < 0) a.losses++; a.sumR = r2(a.sumR + x.riskR); }
+      if (isFinite(x.pnl)) a.pnlYen += x.pnl; if (isFinite(x.capitalAfter)) { a.lastCapital = x.capitalAfter; a.peakCapital = a.peakCapital === null ? x.capitalAfter : Math.max(a.peakCapital, x.capitalAfter); } if (x.t) { a.firstT = a.firstT || x.t; a.lastT = x.t; } });
+    return a;
+  };
   TC.DEFINITIONS = [
-    ['勝率', '利益（+0R より大きい）で終わった取引 ÷ 取引の数'], ['平均利益R・平均損失R', '勝ち（負け）の取引の riskR の平均'], ['期待値R', 'すべての取引の riskR の平均（1回あたりに見込める R）'],
-    ['プロフィットファクター（PF）', '勝ちの riskR の合計 ÷ 負けの riskR の合計（の絶対値）。負けがないときは計算できない'], ['平均RR', '注文のときに決めた 利確の幅 ÷ 損切りの幅 の平均（計画の値）'],
-    ['最大DD', '資金の推移（決済ごと）で、それまでの最高値からいちばん大きく下げた額と%'], ['連敗', '損失で終わった取引が続いた最大の回数'], ['見送り率', '見送り ÷（取引＋見送り＋時間切れ）'],
-    ['ルール遵守率', '採点したプレイのうち、選んだ戦略プロファイルのルール違反がなかった割合'], ['R（riskR）', '損益 ÷ 初期リスク（エントリーから損切りまで）。損切りちょうどで −1R']
+    ['勝率', '利益（+0R より大きい）で終わった取引 ÷ 取引の数'], ['平均利益R・平均損失R', '勝ち（負け）の取引の riskR の平均'], ['期待値R（コスト込み）', 'すべての取引の riskR（約定価格どうしの損益 ÷ 初期リスク）の平均'], ['期待値R（コスト抜き）', '中値どうしの値動き ÷ 初期リスク の平均（スプレッド・滑りを除いた参考値）'],
+    ['PF（円）', '勝ちの損益（円）の合計 ÷ 負けの損益（円）の合計の絶対値。ふつうの意味のプロフィットファクター'], ['PF（R）', '勝ちの R の合計 ÷ 負けの R の合計の絶対値（損切りの幅が違う取引をそろえて見る、教育用の別の指標）'],
+    ['平均RR', '注文のときに決めた 利確の幅 ÷ 損切りの幅 の平均（計画の値）'],
+    ['最大DD（確定損益）', '決済ごとの資金の推移で、それまでの最高値からの下げ。金額の最大と割合の最大は別々に求める（同じ区間とは限らない）'], ['最大DD（含み損込み・見積もり）', '各取引の保有中の最悪（MAE：足の高安）を資金の推移に入れた見積もり。ティックの順序は分からないので目安'],
+    ['連敗', '損失で終わった取引が続いた最大の回数'], ['見送り率', '見送り ÷（取引＋見送り＋時間切れ）'],
+    ['ルール遵守率', '採点したプレイのうち、選んだ戦略プロファイルのルール違反がなかった割合'], ['R（riskR）', '損益 ÷ 初期リスク（約定価格から損切り価格まで）。損切りで終わると、決済の滑りの分だけ −1R より少し大きい損失になる']
   ];
 
   root.TradeCore = TC;

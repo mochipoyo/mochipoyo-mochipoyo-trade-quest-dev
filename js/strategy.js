@@ -28,7 +28,8 @@
         htfTFs: P(['1d', '4h'], false, '上位足（環境認識）'), entryTFs: P(['15m', '5m'], false, 'エントリー足'),
         evidence: P(['htf', 'ema', 'dow', 'rci', 'div'], false, '数える根拠'),
         requireRci: P(true, true, 'RCI(9) の反転（確認済み）を必須にする'), requireDiv: P(false, true, 'MACD ダイバージェンスを必須にする（必須にしないときも根拠として数える）'),
-        minEvidence: P(2, true, 'エントリーに必要な根拠の数'), htfAgainst: P('block', true, 'エントリーの向きが上位足と逆のとき', { options: ['block', 'warn'] }),
+        minEvidence: P(2, true, 'エントリーに必要な条件の項目数（独立した証拠の数ではない）'), htfAgainst: P('block', true, 'エントリーの向きが上位足と逆のとき', { options: ['block', 'warn'] }),
+        htfMode: P('all_known', true, '上位足の向きの見方', { options: ['all_known', 'h4_priority', 'both_required'] }),
         htfConflict: P('block', true, '日足と4時間足の向きが食い違うとき', { options: ['block', 'warn'] }),
         emaAlone: P(false, false, 'EMA の並びだけで入らない'), rciTouchAlone: P(false, false, 'RCI の±70 到達だけで入らない'),
         slRequired: P(true, false, '損切りは必須'), tpRequired: P(true, true, '利確を必ず決める'),
@@ -42,7 +43,7 @@
         htfTFs: P(['4h'], true, '上位足（環境認識）'), entryTFs: P(['15m', '5m'], true, 'エントリー足'),
         evidence: P(['htf', 'ema', 'dow', 'rci', 'div', 'pullback', 'breakout', 'rangeEdge'], true, '数える根拠'),
         requireRci: P(false, true, 'RCI の反転を必須にする'), requireDiv: P(false, true, 'ダイバージェンスを必須にする'),
-        minEvidence: P(2, true, 'エントリーに必要な根拠の数'), htfAgainst: P('warn', true, '上位足と逆のとき', { options: ['block', 'warn'] }), htfConflict: P('warn', true, '上位足どうしが食い違うとき', { options: ['block', 'warn'] }),
+        minEvidence: P(2, true, 'エントリーに必要な条件の項目数'), htfMode: P('h4_priority', true, '上位足の向きの見方', { options: ['all_known', 'h4_priority', 'both_required'] }), htfAgainst: P('warn', true, '上位足と逆のとき', { options: ['block', 'warn'] }), htfConflict: P('warn', true, '上位足どうしが食い違うとき', { options: ['block', 'warn'] }),
         emaAlone: P(false, true, 'EMA の並びだけで入らない'), rciTouchAlone: P(false, true, 'RCI の水準だけで入らない'),
         slRequired: P(true, true, '損切りは必須'), tpRequired: P(true, true, '利確を必ず決める'), rrMin: P(1.5, true, 'RR の目安（下限）'), rrMax: P(3, true, 'RR の目安（上限）'),
         maxRiskPercent: P(2, true, '1回の許容損失の上限（%）'), slBufferPips: P(3, true, '損切りの余裕（pips）'), chaseAtr: P(2.2, true, '飛び乗りの距離（ATR）'), avoidRangeMiddle: P(true, true, 'レンジの中ほどで入らない')
@@ -67,10 +68,17 @@
     prof = prof && prof.id ? prof : SP.values(prof || 'mochipoyo'); var d = dirOfSide(side); var e = snap.entry || {}; var out = { side: side, evidence: [], count: 0, met: false, blockers: [], warnings: [], missing: [], profile: prof.id };
     if (!d) return out;
     var chaseDir = isFinite(e.distEmaAtr) && Math.abs(e.distEmaAtr) > prof.chaseAtr ? (e.distEmaAtr > 0 ? 'up' : 'down') : null;   // 飛び乗り：EMA20 から ATR の chaseAtr 倍より離れている（仮設定）
-    var htfDirs = prof.htfTFs.map(function (t) { var h = (snap.htf || {})[t]; return h && !h.insufficient ? h.dir : null; }).filter(function (x) { return x; });
-    var known = htfDirs.filter(function (x) { return x === 'up' || x === 'down'; }); var against = known.some(function (x) { return x !== d; }); var conflict = known.length >= 2 && known.some(function (x) { return x !== known[0]; });
+    // v9.1 上位足：時間足ごとに 上昇／下降／レンジ・不明瞭／履歴不足（判定不可）を分けて持つ。履歴不足はレンジと同じ扱いにしない
+    var H = prof.htfTFs.map(function (t) { var h = (snap.htf || {})[t]; return { tf: t, state: !h ? 'none' : h.insufficient ? 'insufficient' : h.dir }; });
+    var known = H.filter(function (x) { return x.state === 'up' || x.state === 'down'; }).map(function (x) { return x.state; }); var unknownTf = H.filter(function (x) { return x.state === 'insufficient' || x.state === 'none'; });
+    var mode = prof.htfMode || 'all_known';   // 仮設定：all_known＝判定できる上位足がすべて同じ向き／h4_priority＝4時間足を優先（4H が判定できなければ日足）／both_required＝日足・4H の両方が同じ向き
+    var htfOk;
+    if (mode === 'both_required') htfOk = H.length >= 2 && H.every(function (x) { return x.state === d; });
+    else if (mode === 'h4_priority') { var h4s = H.filter(function (x) { return x.tf === '4h'; })[0], d1s = H.filter(function (x) { return x.tf === '1d'; })[0]; var lead = h4s && (h4s.state === 'up' || h4s.state === 'down') ? h4s : d1s; htfOk = !!lead && lead.state === d; }
+    else htfOk = known.length > 0 && known.every(function (x) { return x === d; });
+    var against = known.some(function (x) { return x !== d; }); var conflict = known.length >= 2 && known.some(function (x) { return x !== known[0]; });   // 逆行と食い違いは別々に判定（両方当てはまることもある）
     var ev = {
-      htf: { ok: known.length > 0 && known.every(function (x) { return x === d; }), detail: prof.htfTFs.map(function (t) { var h = (snap.htf || {})[t]; return tfJa(t) + '：' + (h ? (h.insufficient ? '履歴不足' : dirJa(h.dir)) : '―'); }).join('・') },
+      htf: { ok: htfOk, detail: prof.htfTFs.map(function (t) { var h = (snap.htf || {})[t]; return tfJa(t) + '：' + (h ? (h.insufficient ? '履歴不足' : dirJa(h.dir)) : '―'); }).join('・') },
       ema: { ok: e.emaOrder === d, detail: 'EMA ' + ({ up: '上昇の並び', down: '下降の並び', mixed: '絡み合い' })[e.emaOrder] },
       dow: { ok: e.dow === d, detail: '波形 ' + dirJa(e.dow) },
       rci: { ok: !!(e.rci && e.rci.signal === d), detail: e.rci ? (root.SignalEngine ? root.SignalEngine.RCI_STATE_LABEL[e.rci.state] || e.rci.state : e.rci.state) + '（' + (isFinite(e.rci.value) ? Math.round(e.rci.value) : '―') + '）' : '―' },
@@ -82,16 +90,18 @@
     prof.evidence.forEach(function (k) { var x = ev[k]; if (!x) return; out.evidence.push({ key: k, label: SP.evidenceLabel(k), ok: x.ok, detail: x.detail }); if (x.ok) out.count++; });
     if (prof.requireRci && !ev.rci.ok) out.missing.push('RCI(9) の反転（' + (d === 'up' ? '−70圏から上向き' : '+70圏から下向き') + '・確認済み）がまだない');
     if (prof.requireDiv && !ev.div.ok) out.missing.push('同じ向きの MACD ダイバージェンス（期限内）がない');
-    if (out.count < prof.minEvidence) out.missing.push('根拠が ' + out.count + ' つ（この設定では ' + prof.minEvidence + ' つ以上）');
+    if (out.count < prof.minEvidence) out.missing.push('成り立った条件が ' + out.count + ' 項目（この設定では ' + prof.minEvidence + ' 項目以上）。EMA の並びとダウの向きのように互いに関係の深い項目もあり、独立した証拠の数ではない');
+    if (mode === 'both_required' && unknownTf.length) out.missing.push(unknownTf.map(function (x) { return tfJa(x.tf); }).join('・') + 'は履歴不足で判定不可（この設定では日足・4H の両方が必要）');
+    unknownTf.forEach(function (x) { out.warnings.push(tfJa(x.tf) + '：履歴不足のため判定不可（レンジとは別）'); });
     if (!prof.emaAlone && out.count === 1 && ev.ema.ok) out.missing.push('EMA の並びだけでは入らない');
     if (!prof.rciTouchAlone && e.rci && ((d === 'down' && e.rci.zone === 'overbought') || (d === 'up' && e.rci.zone === 'oversold')) && !ev.rci.ok) out.warnings.push('RCI が' + (d === 'down' ? '+70' : '−70') + 'に届いただけ（反転は確認できていない）。水準だけでは逆張りの根拠にならない');
     var B = function (code, msg, soft) { if (soft) out.warnings.push(msg); else out.blockers.push({ code: code, msg: msg }); };
     if (against) B('htf_against', '上位足（' + prof.htfTFs.map(tfJa).join('・') + '）の向きと逆のエントリー', prof.htfAgainst === 'warn');
-    else if (conflict) B('htf_conflict', '日足と4時間足の向きが食い違っている', prof.htfConflict === 'warn');
+    if (conflict) B('htf_conflict', '日足と4時間足の向きが食い違っている', prof.htfConflict === 'warn');   // v9.1 else を外した（逆行が「注意だけ」の設定でも、食い違いの妨げが抜けないように）
     if (chaseDir === d) B('chase', '価格が EMA20 から ATR の ' + (e.distEmaAtr !== undefined ? Math.abs(e.distEmaAtr).toFixed(1) : '?') + ' 倍離れている（飛び乗り）');
     if (prof.avoidRangeMiddle && e.inRange && e.rangePos > 0.25 && e.rangePos < 0.75 && !ev.breakout.ok) B('range_middle', 'レンジの中ほど（方向感がない）');
     out.met = !out.missing.length && !out.blockers.length;
-    out.htfKnown = known.length; out.htfAgainst = against; out.htfConflict = conflict;
+    out.htfKnown = known.length; out.htfAgainst = against; out.htfConflict = conflict; out.htfMode = mode; out.htfStates = H;
     return out;
   };
   function tfJa(t) { return ({ '1d': '日足', '4h': '4時間足', '1h': '1時間足', '15m': '15分足', '5m': '5分足' })[t] || t; }
