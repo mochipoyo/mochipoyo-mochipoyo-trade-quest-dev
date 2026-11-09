@@ -1,0 +1,50 @@
+{
+ "frames": 2373,
+ "fps": 59.3,
+ "p50": 16.7,
+ "p90": 16.7,
+ "p99": 16.8,
+ "max": 50,
+ "over33": 3,
+ "over50": 0,
+ "over100": 0,
+ "longTasks": 5,
+ "longMax": 90,
+ "longList": [
+  50,
+  90,
+  53,
+  60,
+  51
+ ],
+ "maps": [
+  "poyo_village"
+ ],
+ "built": {
+  "build_poyo_church": 111,
+  "build_poyo_dojo": 87,
+  "build_poyo_house": 53,
+  "build_poyo_mill": 17,
+  "build_poyo_watch": 103,
+  "build_poyo_watch_2f": 40,
+  "build_poyo_watch_3f": 22,
+  "build_poyo_barn": 12,
+  "build_poyo_barn_2f": 18,
+  "build_poyo_hall": 38,
+  "build_poyo_hall_2f": 51,
+  "build_poyo_elder_house_2f": 34,
+  "build_poyo_inn_2f": 20,
+  "build_poyo_church_2f": 20,
+  "build_poyo_church_3f": 13
+ },
+ "pos": [
+  45,
+  22,
+  "poyo_village"
+ ],
+ "errors": [],
+ "start": {
+  "x": 24,
+  "y": 32
+ }
+}
