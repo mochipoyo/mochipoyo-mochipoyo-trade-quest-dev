@@ -73,7 +73,7 @@
       try { var node = Audio.ctx.createMediaElementSource(el); g = Audio.ctx.createGain(); g.gain.value = 0; node.connect(g); g.connect(Audio.bgmGain); } catch (e) { g = null; }
       (function (el) { el.addEventListener('error', function () { var id = el._id; if (!id || !el.getAttribute('src') || el.getAttribute('src') === SILENT) return; FILE.failed[id] = true; if (FILE.cur === id) { var k = Audio.lastKey; FILE.cur = null; Audio.current = null; retroPlay(k); } }); })(el);
       FILE.els.push(el); FILE.gains.push(g);
-      try { el.src = SILENT; var pr = el.play(); if (pr && pr.then) pr.then(function () { }, function () { }); } catch (e) { }   // 最初のタップの中で一度鳴らす（無音）
+      try { el.src = SILENT; var pr = el.play(); if (pr && pr.then) (function (el) { pr.then(function () { if (el.getAttribute('src') === SILENT) try { el.pause(); } catch (e) { } }, function () { }); })(el); } catch (e) { }   // 最初のタップの中で一度鳴らす（無音。鳴らせたら止める＝無音をくり返し再生し続けない）
     }
   }
   var LOUD = 3.2;   // 曲（MP3）の音量の倍率：BGM の音量（設定）× 0.25 × 3.2 ＝ 設定 × 0.8

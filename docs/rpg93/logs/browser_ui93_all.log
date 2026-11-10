@@ -1,35 +1,7 @@
-=== ui93 2d pc1280 13:35:17
+=== ui93 2d pc1280 13:42:15
   OK  タイトル：音の切り替え（最初は OFF：♪ 音：OFF）
   OK  タイトル：ON にすると端末に覚える（♪ 音：ON・on）
-  OK  タイトルの曲が鳴る（calm_before_the_storm・[{"src":"0ad-calm-before-the-storm.mp3","paused":false,"t":2.69},{"src":"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=","paused":false,"t":0.04}]）
-  OK  タイトル：OFF に戻すと曲が止まる
-  OK  音を消している間は曲を読み込まない（読み込み 0 件）
-  OK  音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 2.99秒）
-  OK  戦闘の曲へ切り替わる（taiko_2）
-  OK  戦闘のあとは町の曲の続きから（4.8秒。サーバーが範囲指定 Range に答えるとき）
-  OK  同じ曲をもう一度鳴らしても、重ねて鳴らさない（鳴っている再生器 1）
-  OK  音を消すと曲が止まる
-  OK  弱点のある敵（cloud_slime・主人公の呪文の属性 fire）
-  OK  戦闘のコマンドに「さくせん」（8 行・画面の中 {"ok":true,"t":125,"b":458,"l":104,"r":324,"vw":1280,"vh":720}）
-  OK  作戦の窓：仲間の一覧（もちバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／リーナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／カイルバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／ミナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／みんな同じ作戦にする戦闘メンバー全員の作戦をまとめて変える）
-  OK  仲間ごとに作戦を変えられる（リーナ → 回復重視）
-  OK  作戦の窓を閉じるとコマンドへ戻る
-  OK  呪文の一覧に効き目（火球MP4◎ばつぐん：雲帆の浮航獣 火の玉を放つ）
-  OK  対象の一覧にも「◎ばつぐん」（雲帆の浮航獣A◎ばつぐん HP 303/303）
-  OK  戦闘速度「とてもはやい」：1 ターンの再生 4919ms → 1531ms（全員ぼうぎょ・敵の行動つき）
-  OK  会話の窓に［履歴］
-  OK  会話の履歴の窓（画面の中・話した言葉 {"ok":true,"t":41,"b":517,"l":169,"r":849,"vw":1280,"vh":720}）
-  OK  ✕で閉じる
-  OK  まんたん：全員の HP が満タン（まんたん：足りないHPは合計 363。どうやって回復する？／→ 呪文と道具で回復する／リーナは癒しの滴を9回唱えた（MP−18）／生きている仲間のHPが満タンになった！）
-  OK  設定（戦闘）：戦闘速度・戦闘の演出・効き目の表示（戦闘速度ふつう／戦闘の演出自動（はなやか。端末の「動きを減らす」のときは控えめ）呪文・特技の光・粒・魔法陣・画面の揺れ。控えめは画面の揺れ・画面全体の光をなくし、粒を減らす／呪文・特技の効き目の表示表示する技・対象を選ぶときに「ばつぐん／いまいち／きかない」を出す／必殺技の演出ふつう）
-  OK  設定（音）：BGM の種類・サウンドテスト・クレジット
-  OK  ページのエラーなし
-結果 2d pc1280：OK 25 / NG 0
-rc=0
-=== ui93 2d m390 13:35:55
-  OK  タイトル：音の切り替え（最初は OFF：♪ 音：OFF）
-  OK  タイトル：ON にすると端末に覚える（♪ 音：ON・on）
-  OK  タイトルの曲が鳴る（calm_before_the_storm・[{"src":"0ad-calm-before-the-storm.mp3","paused":false,"t":2.66},{"src":"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=","paused":false,"t":0.02}]）
+  OK  タイトルの曲が鳴る（calm_before_the_storm・[{"src":"0ad-calm-before-the-storm.mp3","paused":false,"t":2.69},{"src":"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=","paused":false,"t":0.06}]）
   OK  タイトル：OFF に戻すと曲が止まる
   OK  音を消している間は曲を読み込まない（読み込み 0 件）
   OK  音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 3秒）
@@ -38,13 +10,43 @@ rc=0
   OK  同じ曲をもう一度鳴らしても、重ねて鳴らさない（鳴っている再生器 1）
   OK  音を消すと曲が止まる
   OK  弱点のある敵（cloud_slime・主人公の呪文の属性 fire）
-  OK  戦闘のコマンドに「さくせん」（8 行・画面の中 {"ok":true,"t":50,"b":407,"l":12,"r":182,"vw":390,"vh":844}）
+  OK  戦闘のコマンドに「さくせん」（8 行・画面の中 {"ok":true,"t":158,"b":458,"l":104,"r":324,"vw":1280,"vh":720}）
+  NG  コマンドの窓が味方の欄に重ならない（{"overlap":9,"list":[158,458],"hudTop":449,"lastItemVisible":true}）
   OK  作戦の窓：仲間の一覧（もちバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／リーナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／カイルバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／ミナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／みんな同じ作戦にする戦闘メンバー全員の作戦をまとめて変える）
   OK  仲間ごとに作戦を変えられる（リーナ → 回復重視）
   OK  作戦の窓を閉じるとコマンドへ戻る
   OK  呪文の一覧に効き目（火球MP4◎ばつぐん：雲帆の浮航獣 火の玉を放つ）
   OK  対象の一覧にも「◎ばつぐん」（雲帆の浮航獣A◎ばつぐん HP 303/303）
-  OK  戦闘速度「とてもはやい」：1 ターンの再生 5597ms → 1275ms（全員ぼうぎょ・敵の行動つき）
+  OK  戦闘速度「とてもはやい」：1 ターンの再生 4878ms → 1522ms（全員ぼうぎょ・敵の行動つき）
+  OK  会話の窓に［履歴］
+  OK  会話の履歴の窓（画面の中・話した言葉 {"ok":true,"t":41,"b":517,"l":169,"r":849,"vw":1280,"vh":720}）
+  OK  ✕で閉じる
+  OK  まんたん：全員の HP が満タン（まんたん：足りないHPは合計 363。どうやって回復する？／→ 呪文と道具で回復する／リーナは癒しの滴を9回唱えた（MP−18）／生きている仲間のHPが満タンになった！）
+  OK  設定（戦闘）：戦闘速度・戦闘の演出・効き目の表示（戦闘速度ふつう／戦闘の演出自動（はなやか。端末の「動きを減らす」のときは控えめ）呪文・特技の光・粒・魔法陣・画面の揺れ。控えめは画面の揺れ・画面全体の光をなくし、粒を減らす／呪文・特技の効き目の表示表示する技・対象を選ぶときに「ばつぐん／いまいち／きかない」を出す／必殺技の演出ふつう）
+  OK  設定（音）：BGM の種類・サウンドテスト・クレジット
+  OK  ページのエラーなし
+結果 2d pc1280：OK 25 / NG 1
+rc=1
+=== ui93 2d m390 13:42:53
+  OK  タイトル：音の切り替え（最初は OFF：♪ 音：OFF）
+  OK  タイトル：ON にすると端末に覚える（♪ 音：ON・on）
+  OK  タイトルの曲が鳴る（calm_before_the_storm・[{"src":"0ad-calm-before-the-storm.mp3","paused":false,"t":2.68},{"src":"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=","paused":false,"t":0.03}]）
+  OK  タイトル：OFF に戻すと曲が止まる
+  OK  音を消している間は曲を読み込まない（読み込み 0 件）
+  OK  音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 2.99秒）
+  OK  戦闘の曲へ切り替わる（taiko_2）
+  OK  戦闘のあとは町の曲の続きから（4.8秒。サーバーが範囲指定 Range に答えるとき）
+  OK  同じ曲をもう一度鳴らしても、重ねて鳴らさない（鳴っている再生器 1）
+  OK  音を消すと曲が止まる
+  OK  弱点のある敵（cloud_slime・主人公の呪文の属性 fire）
+  OK  戦闘のコマンドに「さくせん」（8 行・画面の中 {"ok":true,"t":65,"b":375,"l":12,"r":212,"vw":390,"vh":844}）
+  OK  コマンドの窓が味方の欄に重ならない（{"overlap":0,"list":[65,375],"hudTop":385,"lastItemVisible":true}）
+  OK  作戦の窓：仲間の一覧（もちバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／リーナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／カイルバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／ミナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／みんな同じ作戦にする戦闘メンバー全員の作戦をまとめて変える）
+  OK  仲間ごとに作戦を変えられる（リーナ → 回復重視）
+  OK  作戦の窓を閉じるとコマンドへ戻る
+  OK  呪文の一覧に効き目（火球MP4◎ばつぐん：雲帆の浮航獣 火の玉を放つ）
+  OK  対象の一覧にも「◎ばつぐん」（雲帆の浮航獣A◎ばつぐん HP 303/303）
+  OK  戦闘速度「とてもはやい」：1 ターンの再生 4886ms → 1468ms（全員ぼうぎょ・敵の行動つき）
   OK  会話の窓に［履歴］
   OK  会話の履歴の窓（画面の中・話した言葉 {"ok":true,"t":39,"b":613,"l":12,"r":378,"vw":390,"vh":844}）
   OK  ✕で閉じる
@@ -52,12 +54,12 @@ rc=0
   OK  設定（戦闘）：戦闘速度・戦闘の演出・効き目の表示（戦闘速度ふつう／戦闘の演出自動（はなやか。端末の「動きを減らす」のときは控えめ）呪文・特技の光・粒・魔法陣・画面の揺れ。控えめは画面の揺れ・画面全体の光をなくし、粒を減らす／呪文・特技の効き目の表示表示する技・対象を選ぶときに「ばつぐん／いまいち／きかない」を出す／必殺技の演出ふつう）
   OK  設定（音）：BGM の種類・サウンドテスト・クレジット
   OK  ページのエラーなし
-結果 2d m390：OK 25 / NG 0
+結果 2d m390：OK 26 / NG 0
 rc=0
-=== ui93 2d land 13:36:35
+=== ui93 2d land 13:43:31
   OK  タイトル：音の切り替え（最初は OFF：♪ 音：OFF）
   OK  タイトル：ON にすると端末に覚える（♪ 音：ON・on）
-  OK  タイトルの曲が鳴る（calm_before_the_storm・[{"src":"0ad-calm-before-the-storm.mp3","paused":false,"t":2.67},{"src":"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=","paused":false,"t":0.05}]）
+  OK  タイトルの曲が鳴る（calm_before_the_storm・[{"src":"0ad-calm-before-the-storm.mp3","paused":false,"t":2.69},{"src":"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=","paused":false,"t":0.06}]）
   OK  タイトル：OFF に戻すと曲が止まる
   OK  音を消している間は曲を読み込まない（読み込み 0 件）
   OK  音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 3秒）
@@ -67,12 +69,13 @@ rc=0
   OK  音を消すと曲が止まる
   OK  弱点のある敵（cloud_slime・主人公の呪文の属性 fire）
   OK  戦闘のコマンドに「さくせん」（8 行・画面の中 {"ok":true,"t":12,"b":298,"l":134,"r":354,"vw":844,"vh":390}）
+  NG  コマンドの窓が味方の欄に重ならない（{"overlap":9,"list":[12,298],"hudTop":289,"lastItemVisible":false}。窓の中でスクロールして最後の行へ）
   OK  作戦の窓：仲間の一覧（もちバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／リーナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／カイルバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／ミナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／みんな同じ作戦にする戦闘メンバー全員の作戦をまとめて変える）
   OK  仲間ごとに作戦を変えられる（リーナ → 回復重視）
   OK  作戦の窓を閉じるとコマンドへ戻る
   OK  呪文の一覧に効き目（火球MP4◎ばつぐん：雲帆の浮航獣 火の玉を放つ）
   OK  対象の一覧にも「◎ばつぐん」（雲帆の浮航獣A◎ばつぐん HP 303/303）
-  OK  戦闘速度「とてもはやい」：1 ターンの再生 5604ms → 1079ms（全員ぼうぎょ・敵の行動つき）
+  OK  戦闘速度「とてもはやい」：1 ターンの再生 4880ms → 1286ms（全員ぼうぎょ・敵の行動つき）
   OK  会話の窓に［履歴］
   OK  会話の履歴の窓（画面の中・話した言葉 {"ok":true,"t":23,"b":367,"l":140,"r":704,"vw":844,"vh":390}）
   OK  ✕で閉じる
@@ -80,12 +83,116 @@ rc=0
   OK  設定（戦闘）：戦闘速度・戦闘の演出・効き目の表示（戦闘速度ふつう／戦闘の演出自動（はなやか。端末の「動きを減らす」のときは控えめ）呪文・特技の光・粒・魔法陣・画面の揺れ。控えめは画面の揺れ・画面全体の光をなくし、粒を減らす／呪文・特技の効き目の表示表示する技・対象を選ぶときに「ばつぐん／いまいち／きかない」を出す／必殺技の演出ふつう）
   OK  設定（音）：BGM の種類・サウンドテスト・クレジット
   OK  ページのエラーなし
-結果 2d land：OK 25 / NG 0
-rc=0
-=== ui93 3d pc1280 13:37:14
-  NG  タイトル：音の切り替え（最初は OFF：）
-FAIL page.waitForFunction: Target page, context or browser has been closed
-    at item (/home/claude/work/p3d/ui93_browser_run_8801.js:24:58)
-    at /home/claude/work/p3d/ui93_browser_run_8801.js:33:9 {
-  log: []
+結果 2d land：OK 25 / NG 1
+rc=1
+=== ui93 3d pc1280 13:44:08
+  OK  タイトル：音の切り替え（最初は OFF：♪ 音：OFF）
+  OK  タイトル：ON にすると端末に覚える（♪ 音：ON・on）
+  OK  タイトルの曲が鳴る（calm_before_the_storm・[{"src":"0ad-calm-before-the-storm.mp3","paused":false,"t":2.7},{"src":"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=","paused":false,"t":0.05}]）
+  OK  タイトル：OFF に戻すと曲が止まる
+  OK  音を消している間は曲を読み込まない（読み込み 0 件）
+  NG  音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 0秒）
+  NG  戦闘の曲へ切り替わる（taiko_2）
+  NG  戦闘のあとは町の曲の続きから（0.0秒。サーバーが範囲指定 Range に答えるとき）
+  OK  同じ曲をもう一度鳴らしても、重ねて鳴らさない（鳴っている再生器 1）
+  OK  音を消すと曲が止まる
+  OK  弱点のある敵（cloud_slime・主人公の呪文の属性 fire）
+  OK  戦闘のコマンドに「さくせん」（8 行・画面の中 {"ok":true,"t":274,"b":540,"l":102,"r":254,"vw":1280,"vh":720}）
+  OK  コマンドの窓が味方の欄に重ならない（{"overlap":0,"list":[274,540],"hudTop":353,"lastItemVisible":true}）
+  OK  作戦の窓：仲間の一覧（もちバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／リーナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／カイルバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／ミナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／みんな同じ作戦にする戦闘メンバー全員の作戦をまとめて変える）
+  OK  仲間ごとに作戦を変えられる（リーナ → 回復重視）
+  OK  作戦の窓を閉じるとコマンドへ戻る
+  OK  呪文の一覧に効き目（火球MP4◎ばつぐん：雲帆の浮航獣 火の玉を放つ）
+  OK  対象の一覧にも「◎ばつぐん」（雲帆の浮航獣A◎ばつぐん HP 303/303）
+  OK  戦闘速度「とてもはやい」：1 ターンの再生 8762ms → 6233ms（全員ぼうぎょ・敵の行動つき）
+FAIL page.screenshot: Timeout 30000ms exceeded.
+Call log:
+[2m  - taking page screenshot[22m
+[2m  - waiting for fonts to load...[22m
+[2m  - fonts loaded[22m
+
+    at shot (/home/claude/work/p3d/ui93_browser_run_8801.js:21:42)
+    at /home/claude/work/p3d/ui93_browser_run_8801.js:101:9 {
+  log: [
+    '  - taking page screenshot',
+    '  - waiting for fonts to load...',
+    '  - fonts loaded'
+  ],
+  name: 'TimeoutError'
 }
+rc=2
+=== ui93 3d m390 13:48:26
+  OK  タイトル：音の切り替え（最初は OFF：♪ 音：OFF）
+  OK  タイトル：ON にすると端末に覚える（♪ 音：ON・on）
+  OK  タイトルの曲が鳴る（calm_before_the_storm・[{"src":"0ad-calm-before-the-storm.mp3","paused":false,"t":2.68},{"src":"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=","paused":false,"t":0.03}]）
+  OK  タイトル：OFF に戻すと曲が止まる
+  OK  音を消している間は曲を読み込まない（読み込み 0 件）
+  NG  音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 0秒）
+  NG  戦闘の曲へ切り替わる（taiko_2）
+  OK  戦闘のあとは町の曲の続きから（2.1秒。サーバーが範囲指定 Range に答えるとき）
+  OK  同じ曲をもう一度鳴らしても、重ねて鳴らさない（鳴っている再生器 1）
+  OK  音を消すと曲が止まる
+  OK  弱点のある敵（cloud_slime・主人公の呪文の属性 fire）
+  OK  戦闘のコマンドに「さくせん」（8 行・画面の中 {"ok":true,"t":225,"b":443,"l":4,"r":124,"vw":390,"vh":844}）
+  OK  コマンドの窓が味方の欄に重ならない（{"overlap":0,"list":[225,443],"hudTop":447,"lastItemVisible":true}）
+  OK  作戦の窓：仲間の一覧（もちバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／リーナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／カイルバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／ミナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／みんな同じ作戦にする戦闘メンバー全員の作戦をまとめて変える）
+  OK  仲間ごとに作戦を変えられる（リーナ → 回復重視）
+  OK  作戦の窓を閉じるとコマンドへ戻る
+  OK  呪文の一覧に効き目（火球MP4◎ばつぐん：雲帆の浮航獣 火の玉を放つ）
+  OK  対象の一覧にも「◎ばつぐん」（雲帆の浮航獣A◎ばつぐん HP 303/303）
+  OK  戦闘速度「とてもはやい」：1 ターンの再生 6688ms → 3681ms（全員ぼうぎょ・敵の行動つき）
+  OK  会話の窓に［履歴］
+  OK  会話の履歴の窓（画面の中・話した言葉 {"ok":true,"t":39,"b":613,"l":12,"r":378,"vw":390,"vh":844}）
+  OK  ✕で閉じる
+  OK  まんたん：全員の HP が満タン（まんたん：足りないHPは合計 363。どうやって回復する？／→ 呪文と道具で回復する／リーナは癒しの滴を9回唱えた（MP−18）／生きている仲間のHPが満タンになった！）
+  OK  設定（戦闘）：戦闘速度・戦闘の演出・効き目の表示（戦闘速度ふつう／戦闘の演出自動（はなやか。端末の「動きを減らす」のときは控えめ）呪文・特技の光・粒・魔法陣・画面の揺れ。控えめは画面の揺れ・画面全体の光をなくし、粒を減らす／呪文・特技の効き目の表示表示する技・対象を選ぶときに「ばつぐん／いまいち／きかない」を出す／必殺技の演出ふつう）
+  OK  設定（音）：BGM の種類・サウンドテスト・クレジット
+  OK  ページのエラーなし
+結果 3d m390：OK 24 / NG 2
+rc=1
+=== ui93 3d land 13:53:12
+  OK  タイトル：音の切り替え（最初は OFF：♪ 音：OFF）
+  OK  タイトル：ON にすると端末に覚える（♪ 音：ON・on）
+  OK  タイトルの曲が鳴る（calm_before_the_storm・[{"src":"0ad-calm-before-the-storm.mp3","paused":false,"t":2.69},{"src":"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=","paused":false,"t":0.08}]）
+  OK  タイトル：OFF に戻すと曲が止まる
+  OK  音を消している間は曲を読み込まない（読み込み 0 件）
+  NG  音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 0秒）
+  NG  戦闘の曲へ切り替わる（taiko_2）
+  OK  戦闘のあとは町の曲の続きから（3.1秒。サーバーが範囲指定 Range に答えるとき）
+  OK  同じ曲をもう一度鳴らしても、重ねて鳴らさない（鳴っている再生器 1）
+  OK  音を消すと曲が止まる
+  OK  弱点のある敵（cloud_slime・主人公の呪文の属性 fire）
+  OK  戦闘のコマンドに「さくせん」（8 行・画面の中 {"ok":true,"t":59,"b":339,"l":126,"r":258,"vw":844,"vh":390}）
+  OK  コマンドの行が味方の欄に隠れない（{"hiddenRows":0,"visibleRows":8,"rows":8,"list":[59,339],"hudTop":343}）
+  OK  作戦の窓：仲間の一覧（もちバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／リーナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／カイルバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／ミナバランスよく蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）／みんな同じ作戦にする戦闘メンバー全員の作戦をまとめて変える）
+  OK  仲間ごとに作戦を変えられる（リーナ → 回復重視）
+  OK  作戦の窓を閉じるとコマンドへ戻る
+  OK  呪文の一覧に効き目（火球MP4◎ばつぐん：雲帆の浮航獣 火の玉を放つ）
+  OK  対象の一覧にも「◎ばつぐん」（雲帆の浮航獣A◎ばつぐん HP 303/303）
+  OK  戦闘速度「とてもはやい」：1 ターンの再生 6155ms → 2235ms（全員ぼうぎょ・敵の行動つき）
+  OK  会話の窓に［履歴］
+FAIL elementHandle.tap: Timeout 30000ms exceeded.
+Call log:
+[2m  - attempting tap action[22m
+[2m    - waiting for element to be visible, enabled and stable[22m
+[2m    - element is visible, enabled and stable[22m
+[2m    - scrolling into view if needed[22m
+[2m    - done scrolling[22m
+[2m    - performing tap action[22m
+
+    at tapEl (/home/claude/work/p3d/ui93_browser_run_8801.js:23:102)
+    at async /home/claude/work/p3d/ui93_browser_run_8801.js:105:100 {
+  log: [
+    '  - attempting tap action',
+    '    - waiting for element to be visible, enabled and stable',
+    '    - element is visible, enabled and stable',
+    '    - scrolling into view if needed',
+    '    - done scrolling',
+    '    - performing tap action'
+  ],
+  name: 'TimeoutError'
+}
+rc=2
+=== fx93 2d,3d 13:55:36
+fx rc=0
+ALLDONE

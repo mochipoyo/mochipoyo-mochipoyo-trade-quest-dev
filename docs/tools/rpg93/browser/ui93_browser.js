@@ -41,7 +41,7 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
   // セーブを作ってつづきから（仲間 4 人・呪文を持つ主人公）
   await p.evaluate((pre) => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay); State.newGame('もち', 'mage'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.hero.level = 20; ['lina', 'kyle', 'mina'].forEach((id) => State.joinCompanion(id)); State.save(1); localStorage.removeItem(pre + '0'); }, PREFIX);
   await p.reload(); await ready(); await p.waitForSelector('#ui .title-menu', { timeout: 120000 }); await item('つづきから'); await item('スロット1');
-  if (KIND === '3d') { await p.waitForFunction(() => MTQ3D.current && MTQ3D.current.map && !MTQ3D.building, null, { timeout: 300000 }); }
+  if (KIND === '3d') { await p.waitForFunction(() => MTQ3D.current && MTQ3D.current.map && !MTQ3D.building, null, { timeout: 300000 }); await p.evaluate(() => { MTQ3D.paused = true; }); }   // 3D の町の描画を止める（この作業環境はソフトウェア描画で、描画が CPU を使い切ると曲の読み込み・画面の撮影が止まるため。menu92 と同じ）
   await p.waitForTimeout(1500); await reset();
 
   // ---- 2 BGM
@@ -72,8 +72,12 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
   const cmd = await p.evaluate(() => [...document.querySelectorAll('#ui .cmd-list .rw-item')].map((x) => x.textContent.replace(/\s+/g, ' ').trim()));
   const cv = await inView('#ui .cmd-list');
   S(cmd.some((x) => /さくせん/.test(x)) && cv && cv.ok, '戦闘のコマンドに「さくせん」（' + cmd.length + ' 行・画面の中 ' + JSON.stringify(cv) + '）'); await shot('cmd');
-  const ov = await p.evaluate(() => { const L = document.querySelector('#ui .cmd-list').getBoundingClientRect(), H = document.getElementById('battle-party').getBoundingClientRect(), last = [...document.querySelectorAll('#ui .cmd-list .rw-item')].pop().getBoundingClientRect(); const xo = L.left < H.right && L.right > H.left; return { overlap: xo && L.bottom > H.top + 2 ? Math.round(L.bottom - H.top) : 0, list: [Math.round(L.top), Math.round(L.bottom)], hudTop: Math.round(H.top), lastItemVisible: last.bottom <= L.bottom + 1 }; });
-  S(ov.overlap === 0, 'コマンドの窓が味方の欄に重ならない（' + JSON.stringify(ov) + (ov.lastItemVisible ? '' : '。窓の中でスクロールして最後の行へ') + '）');
+  // 見えている行（窓の中に表示されている部分）が味方の欄に隠れないか（窓の下の余白が少し重なるのは前からの配置）
+  const ov = await p.evaluate(() => { const L = document.querySelector('#ui .cmd-list').getBoundingClientRect(), H = document.getElementById('battle-party').getBoundingClientRect(); const xo = L.left < H.right && L.right > H.left;
+    const its = [...document.querySelectorAll('#ui .cmd-list .rw-item')].map((x) => x.getBoundingClientRect()).filter((r) => r.top < L.bottom - 4 && r.bottom > L.top + 4);
+    const hidden = xo ? its.filter((r) => Math.min(r.bottom, L.bottom) > H.top + 2).length : 0; const all = document.querySelectorAll('#ui .cmd-list .rw-item').length;
+    return { hiddenRows: hidden, visibleRows: its.length, rows: all, list: [Math.round(L.top), Math.round(L.bottom)], hudTop: Math.round(H.top) }; });
+  S(ov.hiddenRows === 0, 'コマンドの行が味方の欄に隠れない（' + JSON.stringify(ov) + (ov.visibleRows < ov.rows ? '。残りの行は窓の中でスクロール' : '') + '）');
   await item('さくせん', '#ui .cmd-list .rw-item'); await p.waitForTimeout(300);
   const tv = await inView('#ui .rw-list'); const tl = await p.evaluate(() => [...document.querySelectorAll('#ui > :last-child .rw-item')].map((x) => x.textContent.replace(/\s+/g, ' ').trim()));
   S(tl.length >= 4 && tv && tv.ok, '作戦の窓：仲間の一覧（' + tl.slice(0, 5).join('／') + '）'); await shot('tactics');

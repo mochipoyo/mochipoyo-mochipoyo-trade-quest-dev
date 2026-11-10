@@ -2,7 +2,7 @@
  "kind": "2d",
  "view": "pc1280",
  "ok": 25,
- "ng": 0,
+ "ng": 1,
  "steps": [
   {
    "ok": true,
@@ -14,7 +14,7 @@
   },
   {
    "ok": true,
-   "m": "タイトルの曲が鳴る（calm_before_the_storm・[{\"src\":\"0ad-calm-before-the-storm.mp3\",\"paused\":false,\"t\":2.69},{\"src\":\"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=\",\"paused\":false,\"t\":0.04}]）"
+   "m": "タイトルの曲が鳴る（calm_before_the_storm・[{\"src\":\"0ad-calm-before-the-storm.mp3\",\"paused\":false,\"t\":2.69},{\"src\":\"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=\",\"paused\":false,\"t\":0.06}]）"
   },
   {
    "ok": true,
@@ -26,7 +26,7 @@
   },
   {
    "ok": true,
-   "m": "音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 2.99秒）"
+   "m": "音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 3秒）"
   },
   {
    "ok": true,
@@ -50,7 +50,11 @@
   },
   {
    "ok": true,
-   "m": "戦闘のコマンドに「さくせん」（8 行・画面の中 {\"ok\":true,\"t\":125,\"b\":458,\"l\":104,\"r\":324,\"vw\":1280,\"vh\":720}）"
+   "m": "戦闘のコマンドに「さくせん」（8 行・画面の中 {\"ok\":true,\"t\":158,\"b\":458,\"l\":104,\"r\":324,\"vw\":1280,\"vh\":720}）"
+  },
+  {
+   "ok": false,
+   "m": "コマンドの窓が味方の欄に重ならない（{\"overlap\":9,\"list\":[158,458],\"hudTop\":449,\"lastItemVisible\":true}）"
   },
   {
    "ok": true,
@@ -74,7 +78,7 @@
   },
   {
    "ok": true,
-   "m": "戦闘速度「とてもはやい」：1 ターンの再生 4919ms → 1531ms（全員ぼうぎょ・敵の行動つき）"
+   "m": "戦闘速度「とてもはやい」：1 ターンの再生 4878ms → 1522ms（全員ぼうぎょ・敵の行動つき）"
   },
   {
    "ok": true,
@@ -107,15 +111,15 @@
  ],
  "music": [
   {
-   "t": 1794285320735,
+   "t": 1794285739015,
    "u": "0ad-calm-before-the-storm.mp3"
   },
   {
-   "t": 1794285329840,
+   "t": 1794285747948,
    "u": "0ad-the-fledgling-kingdom.mp3"
   },
   {
-   "t": 1794285332853,
+   "t": 1794285750954,
    "u": "0ad-taiko-2.mp3"
   }
  ],
