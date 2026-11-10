@@ -97,12 +97,12 @@
 
 - **JS を 1 つのファイルにまとめる**：今まで 2D 版は 252 個の JS を 1 つずつ読んでいた（3D 版も同じ 252 個＋3D の部分）。`tools/stamp-version.js` が版の印を付けるときに、同じ順番で 1 つにまとめて縮めた `dist/mtq.min.js`（esbuild。中身の処理は同じ）を作る。ページはまずこれを読み、**読めなかったときは今までどおり 252 個のファイルを読む**（`index.html` の `<template id="mtq-src">` が元の一覧。テストもこの一覧を使う）。元のファイルはそのまま
 - **画像を WebP に**：効果のある 144 枚（PNG・JPEG。合計 13.2MB）に、WebP（非可逆の圧縮・品質 90。透明の部分は品質 100。合計 3.7MB）を並べて置いた。非可逆なので元の画像とまったく同じではない（見た目の差は細かく確かめていない）。WebP を表示できるブラウザは WebP、できないブラウザ・読めなかったときは元の画像（元の画像は消していない）。最初に読む画像（172 枚）は 4.11MB → 1.55MB。ワールドマップの画像・小さい画像（20KB 未満）・あまり縮まないもの（20% 未満）はそのまま（`tools/make-webp.py`）
-- **Service Worker**（`sw.js`。https のときだけ。URL に `?nosw` で止められる）：2 回目から、版の印つきのファイルは通信せずに端末の保存を使う。ページ・`version.json` は毎回まず通信して最新を確かめる。版が変わると古い保存は消す。曲（MP3）は扱わない（ブラウザの通常のキャッシュ）。**セーブ（LocalStorage）には触らない**
+- **Service Worker**（`sw.js`。https のときだけ。URL に `?nosw` で止められる）：初めて開いたとき、読み込みが終わって 3 秒後に、そのとき読み込んだファイル（曲を除く）を端末に保存する。2 回目から、版の印つきのファイルは通信せずに端末の保存を使う。通信を切っても、保存したものでタイトルまで開ける（https の確かめ用サーバーで確かめた）。ページ・`version.json` は毎回まず通信して最新を確かめる。版が変わると古い保存は消す。曲（MP3）は扱わない（ブラウザの通常のキャッシュ）。**セーブ（LocalStorage）には触らない**
 - 3D 版：`three-src/vite.config.js` が 2D と同じ仕組み（まとめた JS・切り替え・Service Worker）を `3d/index.html` に入れる。作り直しの前後で `3d/` のファイルは 179 個で、変わったのは `main-*.js` の名前だけ（消えたファイルなし）
 
-### 8.2 測った値（ヘッドレス Chromium・回線のまね・確かめ用の HTTP/2＋gzip のサーバー〈GitHub Pages と同じ max-age=600〉。**実機・実回線ではない**。1 回ずつの値で、ばらつきは測っていない）
+### 8.2 測った値（ヘッドレス Chromium・回線のまね・確かめ用の HTTP/2＋gzip のサーバー〈キャッシュは max-age=600。GitHub Pages で一般に使われている値に合わせたが、公開先では確かめていない〉。**実機・実回線ではない**。1 回ずつの値で、ばらつきは測っていない）
 
-回線のまね：4g＝遅延 60ms・下り 9Mbps／slow＝遅延 150ms・下り 1.6Mbps。変更前＝`52915d6`、変更後＝今回の版。
+回線のまね：4g＝遅延 60ms・下り 9Mbps／slow＝遅延 150ms・下り 1.6Mbps。変更前＝`52915d6`、変更後＝`b87cd33`（このあとの「初めて開いたときの保存」の追加の前。1 回目の速さには関係しない）。
 
 | 測ったもの | 変更前 | 変更後 |
 |---|---|---|
@@ -132,19 +132,21 @@
 | 新しいブラウザの確かめ `browser/ui93_browser.js`（2D・3D × PC 1280・スマホ縦 390・スマホ横）：タイトルの音・曲が鳴って進む・戦闘の曲・戦闘のあと続きから・同じ曲を重ねない・音を消すと止まる・コマンドの「さくせん」・コマンドの行が味方の欄に隠れない・作戦を変える・効き目（呪文と対象）・とてもはやい・会話の履歴・まんたん・設定・ページのエラー | 6 通りすべて 26 OK／NG 0 | `logs/browser_ui93_all.log`・`logs/ui93_*.json`・`shots/ui93_*` |
 | 新しいブラウザの確かめ `browser/fx93_browser.js`（2D・3D）：オート戦闘で、味方の欄の動き・当たった光・敵の動き・反動・描画の失敗 0・ページのエラー 0。2D は代表 31 の技の見本の一覧と描く時間 | 2D・3D とも OK | `logs/browser_fx93.log`・`logs/fx93_browser.json`・`shots/fx93_*` |
 | 前の作業のテスト `menu92/menu92_test.js`（メニューの使い勝手） | 3D 相当 89 OK／2D 89 OK | `logs/tests_rpg93_menu92.log` |
-| 既存の回帰の一式（v8.8〜v9.1。写しで実行：`docs/tools/tl2/snapshot_regress.sh`） | 前回（`docs/menu92/logs/regress_menu92.log`）と同じ。新しい NG なし。既知の NG（元のままの `tl_ui_test`・`tradiatest`。理由は `docs/trade-advanced/PHASE0_AUDIT.md`）も前回と同じで、更新版はすべて OK。前回ときどき落ちた `learntest` は今回 OK | `logs/regress_rpg93.log` |
+| 既存の回帰の一式（v8.8〜v9.1。13:35 時点の作業中の版の写しで実行：`docs/tools/tl2/snapshot_regress.sh`） | 前回（`docs/menu92/logs/regress_menu92.log`）と同じ。新しい NG なし。既知の NG（元のままの `tl_ui_test`・`tradiatest`。理由は `docs/trade-advanced/PHASE0_AUDIT.md`）も前回と同じで、更新版はすべて OK。前回ときどき落ちた `learntest` は今回 OK | `logs/regress_rpg93.log` |
 | 回帰の一式のあとに変えたところ（3D のタイトル・スマホのコマンドの窓・BGM の準備）に関係するテストの再実行：`ui88_test`・`battle88_test`（2D・3D 相当）・`layout_menu_test`・`smooth89_test` | すべて OK | `logs/regress_rpg93_after.log` |
+| 最後の変更（Service Worker の保存。https のときだけ動く）のあとの再実行：rpg93_test（2D・3D 相当）・ui93（2D・3D の PC） | 71 OK／71 OK・26 OK／26 OK | `logs/tests_rpg93_menu92.log`・`logs/browser_ui93_all.log` の最後 |
+| 新しいブラウザの確かめ `browser/sw93_browser.js`（2D・3D。https の確かめ用サーバー）：登録・1 回目のうちに保存（2D 176 件・3D 244 件）・1 回目のあと通信を切って開き直してもタイトルまで出る・2 回目は Service Worker が全部を返す・ページのエラー 0 | 2D・3D とも 7 OK／NG 0 | `logs/browser_sw93.log`・`logs/sw93_*.json` |
 | 既存のブラウザの通し：`v89/flow89_browser`（2D・3D × PC・スマホ縦：メニュー → どうぐ → そうび → セーブ）・`v87/ui87_browser` | flow89 4 通り 14 OK／NG 0、ui87 4/4 OK | `logs/browser_old_flows.log` |
 
 - 3D 版のブラウザの確かめでは、BGM を確かめる間は 3D の町の描画を止めている（`MTQ3D.paused`）。この作業環境はソフトウェア描画で、3D の描画が CPU を使い切ると、曲（MP3）の読み込みが進まず、画面の撮影も止まった。描画を止めると曲は普通に鳴って進んだ。**実機（GPU のある端末）で、3D の画面を動かしながら曲が途切れないかは未検証**
-- 「戦闘のあとは町の曲の続きから」は、サーバーが範囲指定（Range）に答えるときの動き（GitHub Pages は答える）。確かめは Range に答える確かめ用のサーバー（`docs/tools/rpg93/rangeserver.js`）で動かした。Range に答えないサーバーでは頭からになる
+- 「戦闘のあとは町の曲の続きから」は、サーバーが範囲指定（Range）に答えるときの動き（GitHub Pages も答えると考えているが、公開先では確かめていない）。確かめは Range に答える確かめ用のサーバー（`docs/tools/rpg93/rangeserver.js`）で動かした。Range に答えないサーバーでは頭からになる
 
-## 10. 開発版の URL（未公開。開発用のリポジトリ `dev` のコード `b87cd33`）
+## 10. 開発版の URL（未公開。開発用のリポジトリ `dev` のコード `370d4ff`）
 
-- 3D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/b87cd336da5ad1e825e81b98ed8ddfda642c7f5a/3d/index.html
-- 2D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/b87cd336da5ad1e825e81b98ed8ddfda642c7f5a/index.html
+- 3D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/370d4ffc34d19b7b182622bf5e7512090ad865af/3d/index.html
+- 2D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/370d4ffc34d19b7b182622bf5e7512090ad865af/index.html
 
-（このあとのコミットは報告書と記録だけで、ゲームのコードは `b87cd33` と同じ。raw.githack は Range に答えるかどうか・Service Worker が登録されるかを確かめていない）
+（このあとのコミットは報告書と記録だけで、ゲームのコードは `370d4ff` と同じ。raw.githack は Range に答えるかどうか・Service Worker が登録されるかを確かめていない）
 
 ### 変えたファイル（主なもの）
 
@@ -152,7 +154,7 @@
 - メニュー・画面：`js/ui/menu.js`（さくせん・まんたん・会話の履歴・設定・サウンドテスト・クレジット）・`js/ui/windows.js`（会話の履歴）・`js/ui/title.js`・`three-src/src/bridge/GameBridge.js`（タイトルの音）・`styles.css`
 - 音：`js/ui/audio.js`（曲の再生）・`js/data/bgm93.js`（曲の割り当て）・`assets/music/`（36 曲・CREDITS.md）・`js/rpg/state.js`（新しいゲームの音の初期値）
 - 読み込み：`index.html`・`three-src/index.html`・`three-src/vite.config.js`・`3d/index.html`（作り直し）・`dist/mtq.min.js`（作ったもの）・`sw.js`・`js/core/assets.js`（WebP）・`js/data/asset-webp.js`・画像の `*.webp`（144）・`tools/stamp-version.js`・`tools/bundle.js`・`tools/package.json`・`tools/make-webp.py`
-- 確かめ：`docs/tools/rpg93/`（rpg93_test・browser/ui93・fx93・load93・h2server・rangeserver）
+- 確かめ：`docs/tools/rpg93/`（rpg93_test・browser/ui93・fx93・sw93・load93・h2server・rangeserver）
 
 ### JS を書き換えたあとの手順（大事）
 
@@ -165,7 +167,7 @@
 - **iPhone（Safari）・Android の音の制限**：最初のタップで鳴らす準備をする作りにしたが、実機では未検証
 - **GPU のある環境での 3D 版の表示・演出の重さ・フレームレート**：未検証（ソフトウェア描画だけ）。PC 60fps／スマホ 30fps は目標で、達成したとは言えない
 - **実際の回線での読み込みの速さ**：回線のまね（8 章）の値で、実際の 4G・Wi-Fi・GitHub Pages では測っていない
-- **Service Worker の実際の公開先での動き**：https の確かめ用サーバーでだけ確かめた。公開先（GitHub Pages など）で、更新のあと新しい版にきちんと替わるかは未検証。画像・3D のモデルは「保存したものをすぐ使い、裏で新しいものを取りに行く」ので、同じ名前のまま中身を替えた画像は、次に開いたときに新しくなる（1 回遅れる）
+- **Service Worker の実際の公開先での動き**：https の確かめ用サーバー（自己署名の証明書）でだけ確かめた。公開先（GitHub Pages など）で、更新のあと新しい版にきちんと替わるかは未検証。画像・3D のモデルは「保存したものをすぐ使い、裏で新しいものを取りに行く」ので、同じ名前のまま中身を替えた画像は、次に開いたときに新しくなる（1 回遅れる）
 - **WebP にした画像の見た目**：元の画像との差を、画面ごとに細かく比べてはいない（要確認。気になる画像は `js/data/asset-webp.js` から外せば元の画像に戻る）
 - **開発版の URL を外のブラウザで開くこと**：作業環境から外へのブラウザの接続ができないため未検証
 - BGM のライセンス（CC BY-SA 3.0）：クレジットの表示は入れたが、公開するときの最終的な判断（表示の場所・方法で足りるか）は、ご確認ください（法律の専門家の確認ではない）
