@@ -1,0 +1,16 @@
+最後の変更（3D のタイトル・スマホのコマンドの窓・BGM の準備）のあとに、影響しうるテストだけ動かし直した（7a3d07f＋作業中）
+=== v88/ui88_test.js
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js
+  OK  経験値が入る（6→1・Lv1→2・結果 won）
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js 2d
+  OK  経験値が入る（6→1・Lv1→2・結果 won）
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v89/smooth89_test.mjs
+結果: 8 OK / 0 NG []
+=== v88/updated-tests/layout_menu_test.js
+OK  ページのエラーなし []
+結果：すべて OK

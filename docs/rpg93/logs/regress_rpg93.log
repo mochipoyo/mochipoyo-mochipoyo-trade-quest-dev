@@ -211,3 +211,17 @@ ALL OK
 === docs/tools/tl2/tl6_test.js 
 結果: 59 OK / 0 NG
 === docs/tools/tl2/tl7_test.js 
+結果: 25 OK / 0 NG
+=== docs/tools/tl2/tl7_ui_test.js 
+結果: 55 OK / 0 NG
+=== docs/tools/tl2/tl7_ui_test.js 2d
+結果: 55 OK / 0 NG
+=== docs/tools/tl2/tl8_test.js 
+結果: 37 OK / 0 NG
+=== docs/tools/tl2/tl9_test.js 
+結果: 42 OK / 0 NG
+=== docs/tools/tl2/tl9_ui_test.js 
+結果: 31 OK / 0 NG
+=== docs/tools/tl2/tl9_ui_test.js 2d
+結果: 31 OK / 0 NG
+done
