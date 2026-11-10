@@ -1,0 +1,106 @@
+=== tl/tl_p1_test.js
+結果: 64 OK / 0 NG
+=== tl/tl_p2_test.js
+--- 未来を使わない（先頭 N 本の結果は、N＋1 本以降を足しても変わらない） ---
+  OK  ダイバージェンス：全部の足の MACD を渡しても、asOf までの足だけで計算した結果と同じ
+  OK  旧 Indicators.divergence と同じ結果（680/680 の時間足）。比べ方は共通エンジン（SignalEngine.divergence）
+結果: 49 OK / 0 NG
+=== tl/tl_p3_test.js
+--- 判断の過程の採点（結果は別の欄） ---
+  OK  結果（R・pips・MAE/MFE）は別の欄。判断の点には入れない
+結果: 37 OK / 0 NG
+=== tl/tl_p4_test.js
+結果: 9 OK / 0 NG
+=== tl/tl_p5_test.js
+  OK  同じ問題・同じ相手なら同じ結果（腕前の読み違いも問題と相手のシードで決まる）
+  OK  相手の結果：取引か見送り・R（見送りは 0R）・判断の点
+結果: 10 OK / 0 NG
+=== tl/tl_save_test.js
+結果: 9 OK / 0 NG
+=== tl/tl_save_test.js 2d
+結果: 9 OK / 0 NG
+=== tl/tl_ui_test.js
+  NG  損切り（確定した安値の外側）・利確（RR 1:2）：予想最大損失・RR・損益分岐の勝率を出す
+  OK  決済まで進む → G 振り返り（判断の過程の点と、結果は別の欄）
+  OK  心理の結果は医療的な診断として扱わないと書く
+結果: 38 OK / 1 NG
+=== tl/tl_ui_test.js 2d
+  NG  損切り（確定した安値の外側）・利確（RR 1:2）：予想最大損失・RR・損益分岐の勝率を出す
+  OK  決済まで進む → G 振り返り（判断の過程の点と、結果は別の欄）
+  OK  心理の結果は医療的な診断として扱わないと書く
+結果: 38 OK / 1 NG
+=== tradetest
+exit 0
+rank samples: E S ERRORS: []
+=== tradiatest
+exit 0
+  OK  画面で行った取引も履歴に残る
+  OK  セーブとロードでトレディアの記録が残る
+  OK  旧セーブ（tradia なし）でも空の記録で始まる
+  OK  エラーなし []
+結果: 62 OK / 1 NG
+ERRORS: [1 NG]
+=== ult/market_test
+exit 0
+  OK  タブの切り替えなどで一時停止：止めている間はチャートも判断時間も進まない
+  OK  判断時間が終わると、自動で見送り
+  OK  フレームの間隔（16・33・50ms）が違っても、同じ時刻なら同じ足・ティック（描画の速さで判定が変わらない）
+  OK  見立て（見えている足だけ）：強い上昇トレンド→ロング有利 19/20、強い下降→ショート有利 20/20、レンジ中央→どちらでもない 19/20
+  OK  強い上昇トレンドでロングしても、勝ち 100・負け 99（200回）：必ず利益が出る相場にはしていない
+結果: 31 OK / 0 NG
+=== ult/ult_logic_test
+exit 0
+結果: 1758 OK / 0 NG
+=== ult/dojo_test
+exit 0
+OK 10 questions advanced
+seiran reckless {"passed":false,"best":31,"last":31,"attempts":1,"lastAt":1794317820690}
+OK reckless exam recorded
+OK reckless result: passed=false
+OK ultimate menu navigates
+OK main menu has 必殺技
+=== ult/quiz_test
+exit 0
+pass 26264 / fail 0
+=== learntest
+exit 0
+ERRORS: [ 'practice no double reward' ]
+=== savecompat64
+exit 0
+  OK  中盤：第3章を終えたセーブなので、宝物庫の扉が開く（shard_returned）
+  OK  中盤：レバレッジ取引を始められる（仮想資金 100,000）
+  OK  中盤：トレディアの町に入れる
+  OK  中盤：戦闘ができる（スライムに勝つ）
+  OK  エラーなし []
+結果: 37 OK / 0 NG
+=== tradeeq
+exit 0
+ERRORS: [] loadErrors []
+done
+=== v88/ui88_test.js
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/chart88_test.js
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/chart88_test.js 2d
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/tm88_test.js
+  OK  結果の比べる表：判断・入った時刻・価格・その時点の見立て・結果
+結果: 13 OK / 0 NG []　ページのエラー 0
+=== v83/tm83_duel_logic.js
+結果：すべて OK
+=== v83/academy83_test.js
+結果：すべて OK
+=== /home/claude/envwork/docs/tools/v88/updated-tests/ftmenu
+結果: 6 OK / 0 NG []
+=== v88/updated-tests/layout_menu_test.js
+OK  ページのエラーなし []
+結果：すべて OK
+done
+
+（注）tl_ui_test の 1 NG（損切り・利確の表示）と tradiatest の 1 NG（建物から出たときの位置）は、基準コミット 6b4d2a9 でも同じ NG（作業用の別の場所に基準コミットを取り出して実行して確認。今回の変更とは関係しない）

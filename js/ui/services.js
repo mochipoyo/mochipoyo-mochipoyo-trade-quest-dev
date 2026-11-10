@@ -113,6 +113,7 @@
     World.updateHud();
     await Win.message(['おはよう！ ぐっすり眠れたかい？ HPとMPが回復した。', '（戦闘不能の仲間は教会で治してもらおう）']);
     State.autosave();
+    if (root.BondsUI) await root.BondsUI.afterInn();   // v9.4 新しい話がある仲間がいれば一言（「そのまま出発する」も選べる）
   };
 
   /* ---------- 教会 ---------- */
@@ -145,7 +146,8 @@
       var ids = Object.keys(d.companions);
       if (!ids.length) { await Win.message(['酒場へようこそ。仲間ができたら、ここで編成を変えられるよ。']); return; }
       var items = ['hero'].concat(ids).map(function (id) { var a = State.actor(id); var inP = d.party.indexOf(id) >= 0; return { label: (inP ? '● ' : '○ ') + a.name, right: JOBS[a.job].name + ' Lv' + a.level, sub: inP ? '戦闘メンバー' : '待機中', disabled: id === 'hero' }; });
-      var i = await Win.list(items, { title: 'パーティー編成（最大4人）', info: function (k) { var id = ['hero'].concat(ids)[k]; var c = COMPANIONS[id]; var pt = root.Assets ? root.Assets.portraitTagFor(State.actor(id), 'portrait info-portrait', 120) : ''; return pt + (c ? '<div class="muted">' + esc(c.bio) + '</div><div class="muted small">' + esc(c.background) + '</div>' : '<div class="muted">主人公は外せない</div>'); } });
+      var i = await Win.list(items, { title: 'パーティー編成（最大4人）', tools: root.BondsUI ? [{ id: 'talk', label: '仲間と話す' }] : undefined, info: function (k) { var id = ['hero'].concat(ids)[k]; var c = COMPANIONS[id]; var pt = root.Assets ? root.Assets.portraitTagFor(State.actor(id), 'portrait info-portrait', 120) : ''; return pt + (c ? '<div class="muted">' + esc(c.bio) + '</div><div class="muted small">' + esc(c.background) + '</div>' : '<div class="muted">主人公は外せない</div>'); } });
+      if (i && typeof i === 'object' && i.tool === 'talk') { await root.BondsUI.talk({}); continue; }   // v9.4 仲間の絆：酒場で仲間と話す
       if (i < 0) return;
       var id = ['hero'].concat(ids)[i];
       if (d.party.indexOf(id) >= 0) { if (d.party.length <= 1) continue; d.party.splice(d.party.indexOf(id), 1); await Win.message([State.actor(id).name + 'は待機メンバーになった。']); }

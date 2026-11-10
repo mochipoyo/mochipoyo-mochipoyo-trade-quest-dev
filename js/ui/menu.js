@@ -30,6 +30,11 @@
     E.party.push({ label: 'じゅもん・とくぎ', run: async function () { if (await Menu.skills() === 'warp') return 'close'; } });
     E.party.push({ label: 'さくせん', sub: 'オート戦闘での仲間ごとの考え方', run: function () { return Menu.tactics(); } });   // v9.3
     E.party.push({ label: 'まんたん', sub: '回復の呪文・道具で全員のHPを満タンに', run: function () { return Menu.fullHeal(); } });   // v9.3
+    if (root.BondsUI && root.Bonds) {   // v9.4 仲間の絆（js/rpg/bonds94.js・js/ui/bonds94ui.js）
+      var bn = root.Bonds.talkable().filter(function (id) { return root.Bonds.hasNew(id); }).length + (root.Bonds.readyEpisodes('hero').length ? 1 : 0);
+      E.party.push({ label: '仲間と話す', sub: bn ? '新しい話あり（' + bn + '人）' : '町・宿屋・酒場・野営地で、加入した仲間と話す', run: function () { return root.BondsUI.talk({ fromMenu: true }); } });
+      E.party.push({ label: '仲間の思い出', sub: '人物の記録・選んだこと・記念品・思い出の再生', run: function () { return root.BondsUI.notebook(); } });
+    }
     E.item.push({ label: 'どうぐ', sub: 'すべての持ち物', run: async function () { if (await Menu.items() === 'warp') return 'close'; } });
     E.item.push({ label: '回復の道具', sub: 'HP回復の道具だけ', run: async function () { if (await Menu.items({ genre: 'hp' }) === 'warp') return 'close'; } });
     E.item.push({ label: '最近使った・お気に入り', run: async function () { if (await Menu.items({ fav: true }) === 'warp') return 'close'; } });
@@ -67,6 +72,7 @@
         if (res === 'close') break;
       }
     } catch (e) { root.Engine.onError(e); }
+    if (Menu._afterClose) { var af = Menu._afterClose; Menu._afterClose = null; try { await af(); } catch (e2) { root.Engine.onError(e2); } }   // v9.4 メニューを閉じてからする事（仲間と話す：3D のカメラが見えるように）
     World.busy = false; World.updateHud(); State.autosave();
     if (openMap && root.Minimap) root.Minimap.openBig();   // v6.2「次の目的地」→「全体マップで見る」／v8.8「ワールドマップ」
   };
@@ -200,7 +206,7 @@
       if (ef.warpTown) { var a0 = await Win.choice(it.name + 'を使って最後に泊まった町へ戻る？', ['使う', 'やめる']); if (a0 === 0) { State.addItem(it.id, -1); var li = d.lastInn; await Win.message(['翼が光り、体がふわりと浮いた……']); World.enterMap(li.map, li.x, li.y, 'down'); return 'warp'; } return; }
       if (ef.dungeonExit) return await Menu.dungeonExit(it.name, function () { State.addItem(it.id, -1); }, ['羽がふわりと舞い上がり、光の道が入口へ伸びた……']);   // v6.5 脱出の羽
       if (it.fieldOnly && inTown()) { await Win.message(['ここでは使えない（フィールドやダンジョンで使う）。']); return; }
-      if (ef.all) { State.addItem(it.id, -1); State.partyActors().forEach(function (a) { if (!a.dead) { var s = Actors.stats(a); a.hp = s.maxHp; a.mp = s.maxMp; } }); await Win.message(['テントを張って休んだ。全員のHPとMPが回復した！']); return; }
+      if (ef.all) { State.addItem(it.id, -1); State.partyActors().forEach(function (a) { if (!a.dead) { var s = Actors.stats(a); a.hp = s.maxHp; a.mp = s.maxMp; } }); await Win.message(['テントを張って休んだ。全員のHPとMPが回復した！']); if (root.Bonds) { root.Bonds.markCamp(); if (root.Bonds.anyNew()) await Win.message(['（焚き火のそばで、仲間と話せる。メニューの「パーティ」→「仲間と話す」）']); } return; }   // v9.4 テントの場所は少しのあいだ「話せる場所」
       if (ef.partyHeal) { State.addItem(it.id, -1); var hl = []; State.partyActors().forEach(function (a) { if (a.dead) return; var s = Actors.stats(a); var h0 = a.hp, m0 = a.mp; a.hp = Math.min(s.maxHp, a.hp + Math.round(s.maxHp * ef.partyHeal)); a.mp = Math.min(s.maxMp, a.mp + Math.round(s.maxMp * ef.partyHeal)); hl.push(a.name + '：HP+' + (a.hp - h0) + '　MP+' + (a.mp - m0)); }); if (root.Audio) root.Audio.sfx('heal'); await Win.message(['宿営セットを広げて一息ついた。'].concat(hl)); World.updateHud(); return; }   // v6.4 携帯宿営セット
       if (ef.repel) { State.addItem(it.id, -1); d.counters.repel_steps = Math.max(d.counters.repel_steps || 0, ef.repel); await Win.message(['鐘を鳴らした。魔物の気配に気づきやすくなった（' + ef.repel + '歩のあいだ、陸の敵に出会いにくい）']); return; }   // v6.4 危険察知の鐘
       if (ef.seaRepel) { State.addItem(it.id, -1); d.counters.seacharm_steps = Math.max(d.counters.seacharm_steps || 0, ef.seaRepel); await Win.message(['潮風の護符を掲げた（船に乗っているあいだ' + ef.seaRepel + '歩、海の敵に出会いにくい）']); return; }   // v6.4 潮風の護符

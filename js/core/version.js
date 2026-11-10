@@ -1,2 +1,2 @@
 /* 自動生成（tools/stamp-version.js）。手で書き換えない */
-window.MTQ_VERSION = '79b1233314';
+window.MTQ_VERSION = 'f59ccc8b3c';

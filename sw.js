@@ -7,7 +7,7 @@
    ・曲（assets/music/ の MP3）・範囲指定（Range）の読み込みは、ここでは扱わない（ブラウザの通常のキャッシュ）
    ・止めたいとき：URL に ?nosw を付けて開く（登録しない）。セーブ（localStorage）には触らない
    ========================================================= */
-const VERSION = '79b1233314';   // tools/stamp-version.js が書き換える（手で書き換えない）
+const VERSION = 'f59ccc8b3c';   // tools/stamp-version.js が書き換える（手で書き換えない）
 const CACHE = 'mtq-' + VERSION;
 self.addEventListener('install', (e) => { self.skipWaiting(); });
 self.addEventListener('activate', (e) => {

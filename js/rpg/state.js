@@ -38,7 +38,9 @@
       // v8.8 画面の使い勝手の記録（旧セーブは State.migrate がこの初期値で補う。なくても動く）：最近使った道具・お気に入りの道具／呪文・特技・戦闘の前回の行動
       ui: { recentItems: [], favItems: {}, favSkills: {}, lastCmd: {} },
       // v9.0 もちぽよ実践トレード道場（js/ui/practiceui.js の PracticeUI.defaults と同じ形。旧セーブは State.migrate がこの初期値で補い、PracticeUI.ensure が壊れた値を直す）
-      practice: { v: 1, capital: CONFIG.risk.capital, history: [], profile: 'mochipoyo', overrides: {}, hints: true, level: 1, recent: [], series: null, last: null, psych: { answers: {}, log: [] }, seen: false }
+      practice: { v: 1, capital: CONFIG.risk.capital, history: [], profile: 'mochipoyo', overrides: {}, hints: true, level: 1, recent: [], series: null, last: null, psych: { answers: {}, log: [] }, seen: false },
+      // v9.4 仲間の絆（js/rpg/bonds94.js の Bonds.defaults と同じ形。旧セーブは State.migrate がこの初期値で補い、Bonds.ensure が壊れた値を直す）
+      bonds: { v: 1, seen: {}, later: {}, mem: {}, last: {}, hist: {}, keep: {}, chat: {}, camp: null }
     };
     if (root.Skills76) root.Skills76.sync(d);   // v7.6 職業・キャラの全体攻撃の技：いまのレベルまでに覚える技だけを足す（ほかの技は変えない）
     if (root.Quiz) root.Quiz.ensure(d);   // 5体分の記録（新しいゲームでも、読み込んだセーブと同じ形にする）
@@ -104,7 +106,8 @@
     if (root.DUNGEON_RETURN_LEARN) [d.hero].concat(Object.keys(d.companions).map(function (k) { return d.companions[k]; })).forEach(function (a) { var lv = root.DUNGEON_RETURN_LEARN[a.job]; if (lv && a.level >= lv && a.skills && a.skills.indexOf('dungeon_return') < 0) a.skills.push('dungeon_return'); });
     if (root.Nav && root.Nav.repairFlags) root.Nav.repairFlags(d);   // v6.2 到着フラグ（zeromea_arrived・sky_arrived）の補正
     if (root.Quiz) root.Quiz.ensure(d);   // トレードクイズモンスター：5体分の記録をそろえ、壊れた値を直す（ほかの項目は変えない）
-    if (root.Ultimates) { root.Ultimates.ensure(d); root.Ultimates.sync(d); }   // 必殺技：壊れた値を直し、いまのレベルまでに覚える技をそろえる（主人公だけ。ほかの項目は変えない）
+    if (root.Ultimates) { root.Ultimates.ensure(d); root.Ultimates.sync(d); }
+    if (root.Bonds) root.Bonds.ensure(d);   // v9.4 仲間の絆：壊れた値を直す（ほかの項目は変えない）   // 必殺技：壊れた値を直し、いまのレベルまでに覚える技をそろえる（主人公だけ。ほかの項目は変えない）
     // v7.0 仲間の表示名の変更（もちぽよ → 謎のタイムトラベラーM）：旧セーブに残っている古い名前だけを今の名前に置きかえる（ID・ほかの項目は変えない。名前を変えていた場合はそのまま）
     var RN = root.COMPANION_RENAMES || {}; Object.keys(RN).forEach(function (id) { var a = d.companions && d.companions[id]; var cp = root.COMPANIONS && root.COMPANIONS[id]; if (a && cp && RN[id].indexOf(a.name) >= 0) a.name = cp.name; });
     d.version = SAVE_VERSION;

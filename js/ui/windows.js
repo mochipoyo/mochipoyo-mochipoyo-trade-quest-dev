@@ -81,7 +81,8 @@
     return new Promise(function (resolve) {
       var idx = 0, typing = null, full = '', done = false;
       var pt = opts.portrait ? '<img class="rw-portrait" src="' + opts.portrait + '" alt="" draggable="false">' : '';
-      var node = el('<div class="rw-msg' + (pt ? ' has-portrait' : '') + '">' + pt + '<div class="rw-msg-body"><div class="rw-name' + (opts.name ? '' : ' hidden') + '">' + esc(opts.name || '') + '</div><div class="rw-text"></div></div><div class="rw-next">▼</div><span class="rw-logbtn" role="button" tabindex="0" aria-label="会話の履歴">履歴</span></div>');   // v9.3 会話の履歴のボタン
+      var emo = opts.emo && /^[a-z]+$/.test(opts.emo) ? ' emo-' + opts.emo : '';   // v9.4 仲間の絆：気持ち（立ち絵の動き。js/rpg/bonds94.js）
+      var node = el('<div class="rw-msg' + (pt ? ' has-portrait' : '') + emo + '">' + pt + '<div class="rw-msg-body"><div class="rw-name' + (opts.name ? '' : ' hidden') + '">' + esc(opts.name || '') + '</div><div class="rw-text"></div></div><div class="rw-next">▼</div><span class="rw-logbtn" role="button" tabindex="0" aria-label="会話の履歴">履歴</span></div>');   // v9.3 会話の履歴のボタン
       var textEl = node.querySelector('.rw-text');
       var speed = (root.State && root.State.data && root.State.data.settings.textSpeed) || 'normal';
       function typeLine() {
