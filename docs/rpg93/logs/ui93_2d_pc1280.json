@@ -1,24 +1,32 @@
 {
  "kind": "2d",
  "view": "pc1280",
- "ok": 26,
+ "ok": 28,
  "ng": 0,
  "steps": [
   {
    "ok": true,
-   "m": "タイトル：音の切り替え（最初は OFF：♪ 音：OFF）"
+   "m": "タイトル：最初は音 ON（♪ 音：ON）。操作の前は鳴らさない（ブラウザの決まり）"
   },
   {
    "ok": true,
-   "m": "タイトル：ON にすると端末に覚える（♪ 音：ON・on）"
+   "m": "最初のクリック／タップでタイトルの曲が鳴り、時間が進む（{\"cur\":\"calm_before_the_storm\",\"ctx\":\"running\",\"src\":\"0ad-calm-before-the-storm.mp3\",\"t\":2.71}）"
   },
   {
    "ok": true,
-   "m": "タイトルの曲が鳴る（calm_before_the_storm・[{\"src\":\"0ad-calm-before-the-storm.mp3\",\"paused\":false,\"t\":2.69},{\"src\":\"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=\",\"paused\":true,\"t\":0}]）"
+   "m": "タイトル：OFF にすると曲が止まり、端末に覚える（off）"
   },
   {
    "ok": true,
-   "m": "タイトル：OFF に戻すと曲が止まる"
+   "m": "タイトル：ON に戻すとまた鳴る（5.48秒）"
+  },
+  {
+   "ok": true,
+   "m": "音を消しているセーブを読むと「音を出す／音なしのまま」を聞く"
+  },
+  {
+   "ok": true,
+   "m": "「音なしのまま」：音を消したまま、聞いたことを覚える"
   },
   {
    "ok": true,
@@ -26,7 +34,7 @@
   },
   {
    "ok": true,
-   "m": "音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 2.98秒）"
+   "m": "音を出すと場所の曲が鳴り、時間が進む（poyo_village → the_fledgling_kingdom・0ad-the-fledgling-kingdom.mp3 2.99秒）"
   },
   {
    "ok": true,
@@ -78,7 +86,7 @@
   },
   {
    "ok": true,
-   "m": "戦闘速度「とてもはやい」：1 ターンの再生 4885ms → 1286ms（全員ぼうぎょ・敵の行動つき）"
+   "m": "戦闘速度「とてもはやい」：1 ターンの再生 4888ms → 1536ms（全員ぼうぎょ・敵の行動つき）"
   },
   {
    "ok": true,
@@ -111,15 +119,19 @@
  ],
  "music": [
   {
-   "t": 1794288721136,
+   "t": 1794292416040,
    "u": "0ad-calm-before-the-storm.mp3"
   },
   {
-   "t": 1794288730138,
+   "t": 1794292419705,
+   "u": "0ad-taiko-2.mp3"
+  },
+  {
+   "t": 1794292429810,
    "u": "0ad-the-fledgling-kingdom.mp3"
   },
   {
-   "t": 1794288730138,
+   "t": 1794292429814,
    "u": "0ad-taiko-2.mp3"
   }
  ],
