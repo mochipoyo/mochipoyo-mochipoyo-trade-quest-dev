@@ -113,12 +113,23 @@
     var ui = document.getElementById('ui'); ui.style.width = canvas.style.width; ui.style.height = canvas.style.height;
     if (fullUi && !land) ui.style.height = Math.max(Math.round(h), Math.round(vh - st - sb - 4)) + 'px';
     if (fullUi && land) ui.style.width = Math.max(Math.round(w), Math.round(vw - sl - sr - 4)) + 'px';   // v8.9 横画面：チャートの画面は横幅いっぱいに使う（左右の操作パネルは隠れている）
+    MobileUI._lay = { h: Math.round(h), tallH: Math.round(vh - st - sb - padH - 6), land: land, fullUi: fullUi }; MobileUI.syncTall(true);   // v9.2 大きさが一律の窓を開いている間は、縦画面で操作パネルの上まで広げる
     document.documentElement.style.setProperty('--m-pad-h', Math.round(padH) + 'px');
     document.documentElement.style.setProperty('--m-game-w', Math.round(w) + 'px');
     var ml = document.getElementById('minimap-layer'); if (ml) { ml.style.width = canvas.style.width; ml.style.height = canvas.style.height; }
     return { w: w, h: h };
   };
 
+  // v9.2 どうぐ・そうびの候補・じゅもん（.rw-fixed：項目の数で大きさが変わらない窓）・ステータス・なかま（.rw-tall）を開いている間、縦画面では窓を置ける高さを
+  //   ゲーム画面の下の空き（操作パネルの上まで）へ広げる。キャンバス・3D の描画の大きさは変えない（#ui の高さだけ。resize の通知も出さない）
+  //   開いたとき（js/ui/windows.js の open）と毎コマ（refresh）に呼ぶ。force：fit の直後（#ui の高さをいま書き直した）
+  MobileUI.syncTall = function (force) {
+    if (!MobileUI.active) return; var ui = document.getElementById('ui'); var L = MobileUI._lay; if (!ui || !L) return;
+    var tall = !!ui.querySelector('.rw-fixed, .rw-tall'); if (tall === MobileUI._tall && !force) return; MobileUI._tall = tall;
+    document.body.classList.toggle('m-tallui', tall && !L.land && !L.fullUi);
+    if (L.land || L.fullUi) return;
+    var v = (tall ? Math.max(L.h, L.tallH) : L.h) + 'px'; if (ui.style.height !== v) ui.style.height = v;
+  };
   /* ---------- 状況に応じたボタンの切り替え ---------- */
   MobileUI.context = function () {
     var W = root.World, E = root.Engine; if (!W || !W.scene || !root.State.data) return 'title';
@@ -141,6 +152,7 @@
     if (!MobileUI.active) return; var c = MobileUI.context(); var mode = padMode();
     MobileUI.applyPrefs();
     var full = MobileUI.fullUiOpen(); if (full !== MobileUI._full) { MobileUI._full = full; document.body.classList.toggle('m-fullui', full); try { root.dispatchEvent(new Event('resize')); } catch (e) { } }
+    MobileUI.syncTall();
     if (c !== MobileUI.ctx) { document.body.classList.remove('mctx-world', 'mctx-dialog', 'mctx-battle', 'mctx-title'); document.body.classList.add('mctx-' + c); MobileUI.ctx = c; if (MobileUI.stickEnd && c !== 'world') MobileUI.stickEnd(); }
     if (mode !== MobileUI.mode) { document.body.classList.toggle('m-dpad', mode === 'dpad'); MobileUI.mode = mode; }
     var mm = MobileUI.pad && MobileUI.pad.querySelector('[data-cmd="minimap"]'); if (mm) mm.classList.toggle('off', !!(root.Minimap && !root.Minimap.isVisible()));

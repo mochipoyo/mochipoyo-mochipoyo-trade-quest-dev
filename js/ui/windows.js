@@ -24,12 +24,15 @@
     else if (Input.consume('down') && h.down) h.down();
     else if (Input.consume('left') && h.left) h.left();
     else if (Input.consume('right') && h.right) h.right();
+    else if (Input.consume('prev') && h.prev) h.prev();     // v9.2 Q：前の仲間（js/core/engine.js の入力の表）
+    else if (Input.consume('next') && h.next) h.next();     // v9.2 E：次の仲間
   };
   ModalScene.prototype.draw = function () { };
 
   function open(node, handlers) {
     if (node.setAttribute) { node.setAttribute('role', node.getAttribute('role') || 'dialog'); node.setAttribute('aria-modal', 'true'); }   // v8.8 読み上げ用の役割
     Win.layer.appendChild(node);
+    if (root.MobileUI && root.MobileUI.syncTall) root.MobileUI.syncTall();   // v9.2 スマホの縦画面：大きさが一律の窓（.rw-fixed）・ステータス・なかま（.rw-tall）は、開いたその場で操作パネルの上まで広げる
     var scene = new ModalScene(handlers); Engine.push(scene);
     var h = { node: node, scene: scene, closed: false, close: function () { h.closed = true; if (node.parentNode) node.parentNode.removeChild(node); var i = Engine.scenes.indexOf(scene); if (i >= 0) { Engine.scenes.splice(i, 1); } Input.clear(); } };
     return h;
@@ -109,15 +112,34 @@
   //   ・disabled の行はタップ・Enter でも実行しない（選んで理由を読むことはできる）
   //   ・opts.actions：[{ id, label }] 下に並べるボタン。押すと { action: id, index: 今の行 } を返す（例：お気に入り）
   //   ・opts.key：同じ key の一覧を次に開いたとき、カーソル位置とスクロール位置を戻す（opts.initial があればそちらが先）
+  //   ・v9.2 opts.members：仲間を切り替える帯 { list: [{ label, sub, dead }], cur: 今の番号, arrows: true/false }（2 人以上のときだけ出す）
+  //     名前のタップ・◀▶・Q／E で { member: 番号, index: 今の行 } を返す。arrows のときは ←→ でも切り替える（タブ・列のない一覧だけ）
   var MEM = {}; Win._listMem = MEM;
+  Win.memberBarHtml = function (M) {
+    if (!M || !M.list || M.list.length < 2) return '';
+    var keys = (M.arrows ? '←→ / ' : '') + 'Q・E';
+    return '<div class="rw-members" role="tablist" aria-label="仲間の切り替え"><span class="rw-mem-nav" role="button" tabindex="0" data-mnav="-1" aria-label="前の仲間">◀</span><div class="rw-mem-chips">' +
+      M.list.map(function (m, i) { return '<span class="rw-mem' + (i === M.cur ? ' cur' : '') + (m.dead ? ' dead' : '') + '" role="tab" tabindex="-1" aria-selected="' + (i === M.cur ? 'true' : 'false') + '" data-m="' + i + '">' + esc(m.label) + (m.sub ? '<small>' + esc(m.sub) + '</small>' : '') + '</span>'; }).join('') +
+      '</div><span class="rw-mem-nav" role="button" tabindex="0" data-mnav="1" aria-label="次の仲間">▶</span><span class="rw-mem-key">' + esc(keys) + '</span></div>';
+  };
+  // 帯のタップを受ける：go(番号) を呼ぶ。check() が false の間（上に別の窓があるときなど）は何もしない
+  Win.bindMemberBar = function (node, M, go, check) {
+    if (!M || !M.list || M.list.length < 2) return;
+    var n = M.list.length; function ok() { return !check || check(); }
+    node.querySelectorAll('.rw-mem').forEach(function (t) { t.addEventListener('click', function (e) { e.stopPropagation(); if (!ok()) return; var i = parseInt(t.getAttribute('data-m'), 10); if (i !== M.cur) go(i); }); });
+    node.querySelectorAll('.rw-mem-nav').forEach(function (t) { t.addEventListener('click', function (e) { e.stopPropagation(); if (!ok()) return; go(((M.cur + parseInt(t.getAttribute('data-mnav'), 10)) % n + n) % n); }); });
+    var c = node.querySelector('.rw-mem.cur'); if (c && c.scrollIntoView) try { c.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) { }
+  };
   Win.list = function (items, opts) {
     opts = opts || {};
+    var MB = opts.members && opts.members.list && opts.members.list.length > 1 ? opts.members : null;
     if (opts.tabs) {
       var tb = '<div class="rw-tabs" role="tablist">' + opts.tabs.map(function (t, i) { return '<span class="rw-tab' + (i === opts.tab ? ' cur' : '') + (t.count === 0 ? ' empty' : '') + (t.disabled ? ' disabled' : '') + '" role="tab" tabindex="-1" aria-selected="' + (i === opts.tab ? 'true' : 'false') + '" data-tab="' + i + '">' + esc(t.label) + (t.count !== undefined ? '<small>' + t.count + '</small>' : '') + '</span>'; }).join('') + '</div>';
       opts = Object.assign({}, opts, { head: tb + (opts.head || '') });
     }
     var tl = opts.tools ? '<div class="rw-tools">' + opts.tools.map(function (t) { return '<span class="rw-tool' + (t.on ? ' on' : '') + '" role="button" tabindex="0" data-tool="' + esc(t.id) + '">' + esc(t.label) + '</span>'; }).join('') + '</div>' : '';
     if (tl) opts = Object.assign({}, opts, { head: (opts.tabs ? opts.head.replace(/^(<div class="rw-tabs"[\s\S]*?<\/div>)/, '$1' + tl) : tl + (opts.head || '')) });
+    if (MB) opts = Object.assign({}, opts, { head: Win.memberBarHtml(MB) + (opts.head || '') });   // 仲間の帯はタイトルのすぐ下（タブ・ボタンより上）
     var preview = opts.preview !== undefined ? !!opts.preview : !!opts.info;
     return new Promise(function (resolve) {
       var mem = opts.key ? MEM[opts.key] : null;
@@ -133,14 +155,19 @@
       function render(noScroll) { itemEls.forEach(function (o, i) { o.classList.toggle('cur', i === cur); o.setAttribute('aria-selected', i === cur ? 'true' : 'false'); }); if (infoEl && items.length) infoEl.innerHTML = opts.info(cur) || ''; if (okEl) okEl.classList.toggle('disabled', !items.length || !!(items[cur] && items[cur].disabled)); var c = itemEls[cur]; if (!noScroll && c && c.scrollIntoView) c.scrollIntoView({ block: 'nearest' }); }
       function finish(v) { remember(); h.close(); resolve(v); }
       function choose() { if (!items.length) return; if (items[cur].disabled) return; finish(cur); }
+      function member(i) { var n = MB.list.length; finish({ member: ((i % n) + n) % n, index: cur }); }
+      var memArrows = !!(MB && MB.arrows && !opts.tabs && !opts.columns);
       var h = open(node, {
         ok: choose,
         cancel: function () { if (opts.cancel === false) return; finish(-1); },
         up: function () { if (!items.length) return; cur = (cur + items.length - 1) % items.length; armed = cur; render(); },
         down: function () { if (!items.length) return; cur = (cur + 1) % items.length; armed = cur; render(); },
-        left: function () { if (opts.tabs) { finish({ tab: (opts.tab + opts.tabs.length - 1) % opts.tabs.length }); return; } if (opts.columns && items.length) { cur = Math.max(0, cur - opts.columns); render(); } },
-        right: function () { if (opts.tabs) { finish({ tab: (opts.tab + 1) % opts.tabs.length }); return; } if (opts.columns && items.length) { cur = Math.min(items.length - 1, cur + opts.columns); render(); } }
+        left: function () { if (opts.tabs) { finish({ tab: (opts.tab + opts.tabs.length - 1) % opts.tabs.length }); return; } if (memArrows) { member(MB.cur - 1); return; } if (opts.columns && items.length) { cur = Math.max(0, cur - opts.columns); render(); } },
+        right: function () { if (opts.tabs) { finish({ tab: (opts.tab + 1) % opts.tabs.length }); return; } if (memArrows) { member(MB.cur + 1); return; } if (opts.columns && items.length) { cur = Math.min(items.length - 1, cur + opts.columns); render(); } },
+        prev: MB ? function () { member(MB.cur - 1); } : null,
+        next: MB ? function () { member(MB.cur + 1); } : null
       });
+      if (MB) Win.bindMemberBar(node, MB, member, function () { return isTop(h); });
       if (opts.tabs) {
         node.querySelectorAll('.rw-tab').forEach(function (t) { tap(h, t, function () { var ti = parseInt(t.getAttribute('data-tab'), 10); if (t.classList.contains('disabled')) return; finish({ tab: ti }); }); });
         var ct = node.querySelector('.rw-tab.cur'); if (ct && ct.scrollIntoView) try { ct.scrollIntoView({ block: 'nearest', inline: 'center' }); } catch (e) { }
@@ -160,6 +187,7 @@
   /* ---------- 情報パネル（静的、閉じるまで表示） ---------- */
   // opts.quit（v5.8）：「中断」ボタンを付ける（true なら「中断する」、文字列ならその表記）。押すか Esc で 'quit' を返す
   // opts.onCancel（v5.8）：noClose のパネルで Esc を押したときに呼ぶ
+  // opts.onPage（v9.2）：noClose のパネルで Q（-1）／E（+1）を押したときに呼ぶ（onKey には渡さない：既存の画面の動きを変えない）
   Win.panel = function (html, opts) {
     opts = opts || {};
     return new Promise(function (resolve) {
@@ -167,7 +195,7 @@
         ? '<div class="rw-panel-foot"><div class="rw-panel-close">' + esc(opts.closeLabel || '閉じる') + '（Enter）</div><div class="rw-panel-quit">' + esc(opts.quit === true ? '中断する' : opts.quit) + '（Esc）</div></div>'
         : '<div class="rw-panel-close">' + esc(opts.closeLabel || '閉じる') + '（Enter / ✕）</div>';
       var node = el('<div class="rw-panel ' + (opts.cls || '') + '">' + html + foot + '</div>');
-      var hd = opts.noClose ? (function () { var o = {}; if (opts.onCancel) o.cancel = function () { opts.onCancel(); }; if (opts.onOk) o.ok = function () { opts.onOk(); }; if (opts.onKey) ['up', 'down', 'left', 'right'].forEach(function (k) { o[k] = function () { opts.onKey(k); }; }); return o; })() : { ok: function () { h.close(); resolve(0); }, cancel: function () { h.close(); resolve(opts.quit ? 'quit' : -1); } };
+      var hd = opts.noClose ? (function () { var o = {}; if (opts.onCancel) o.cancel = function () { opts.onCancel(); }; if (opts.onOk) o.ok = function () { opts.onOk(); }; if (opts.onKey) ['up', 'down', 'left', 'right'].forEach(function (k) { o[k] = function () { opts.onKey(k); }; }); if (opts.onPage) { o.prev = function () { opts.onPage(-1); }; o.next = function () { opts.onPage(1); }; } return o; })() : { ok: function () { h.close(); resolve(0); }, cancel: function () { h.close(); resolve(opts.quit ? 'quit' : -1); } };
       var h = open(node, hd);
       var c = node.querySelector('.rw-panel-close'); if (c) { c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); tap(h, c, function () { h.close(); resolve(0); }); }
       var q = node.querySelector('.rw-panel-quit'); if (q) { q.setAttribute('role', 'button'); q.setAttribute('tabindex', '0'); tap(h, q, function () { h.close(); resolve('quit'); }); }

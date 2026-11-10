@@ -23,7 +23,7 @@
     if (root.Carriage && root.Carriage.owned()) E.adv.push({ label: root.Carriage.wanted() ? '馬車を降りる' : '馬車に乗る', sub: 'C キーでも乗り降り', run: function () { if (root.Carriage.toggle()) return 'close'; } });
     if (root.AirshipCall86 && root.AirshipCall86.owned() && d.aboard !== 'airship') E.adv.push({ label: '飛空艇を呼ぶ', sub: 'F キーでも呼べる', run: function () { if (root.AirshipCall86.call()) return 'close'; } });
     E.adv.push({ label: '図鑑', run: function () { return Menu.encyclopedia(); } });
-    E.party.push({ label: 'ステータス', run: function () { return Menu.status(); } });
+    E.party.push({ label: 'ステータス', run: async function () { if (await Menu.status() === 'warp') return 'close'; } });   // v9.2 ステータスから［じゅもん・とくぎ］→ 帰還の術で移動したとき
     E.party.push({ label: 'なかま', sub: '隊列・入れ替え', run: function () { return Menu.party(); } });
     E.party.push({ label: 'そうび', run: function () { return Menu.equip(); } });
     E.party.push({ label: 'じゅもん・とくぎ', run: async function () { if (await Menu.skills() === 'warp') return 'close'; } });
@@ -72,22 +72,64 @@
   Menu.ui = function () { var d = State.data; if (!d.ui || typeof d.ui !== 'object') d.ui = {}; var u = d.ui; if (!Array.isArray(u.recentItems)) u.recentItems = []; if (!u.favItems || typeof u.favItems !== 'object') u.favItems = {}; if (!u.favSkills || typeof u.favSkills !== 'object') u.favSkills = {}; if (!u.lastCmd || typeof u.lastCmd !== 'object') u.lastCmd = {}; return u; };
   Menu.noteItemUse = function (id) { var u = Menu.ui(); u.recentItems = [id].concat(u.recentItems.filter(function (x) { return x !== id; })).slice(0, 8); };
 
+  // v9.2 ステータス・そうび・じゅもん・とくぎの「仲間の切り替え」（戦闘メンバー。戦闘不能の仲間も含む）
+  //   Menu._member：最後に見ていた仲間の id（この遊んでいる間だけ。セーブには入れない）。仲間を選ぶ一覧の最初のカーソルに使う
+  function members() { return State.partyActors(); }
+  function memberBar(list, a, arrows) { return { list: list.map(function (x) { return { label: x.name, sub: 'Lv' + x.level, dead: !!x.dead }; }), cur: Math.max(0, list.indexOf(a)), arrows: !!arrows }; }
+  Menu.memberBar = memberBar;
+  function noteMember(a) { if (a) Menu._member = a.id; return a; }
+  function lastMember(a) { var L = members(); for (var i = 0; i < L.length; i++) if (L[i].id === Menu._member) return L[i]; return a; }
+
   // v8.8 need：'hp' | 'mp' | 'revive' のとき、足りない量を見せて、いちばん必要な人に最初のカーソルを置く（使うかどうかは自分で決める）
-  async function pickActor(title, includeDead, need) {
+  // v9.2 remember：最後に見ていた仲間に最初のカーソルを置き、選んだ仲間を覚える（ステータス・そうび・じゅもん・とくぎ）
+  async function pickActor(title, includeDead, need, remember) {
     var list = State.partyActors().filter(function (a) { return includeDead || !a.dead; });
     var init = 0, best = -1;
-    list.forEach(function (a, k) { var s = Actors.stats(a); var v = need === 'revive' ? (a.dead ? 1 : 0) : a.dead ? -1 : need === 'mp' ? (s.maxMp ? 1 - a.mp / s.maxMp : 0) : need === 'hp' ? 1 - a.hp / s.maxHp : 0; if (v > best) { best = v; init = k; } });
-    var i = await Win.list(list.map(function (a) { var s = Actors.stats(a); var lackH = s.maxHp - a.hp, lackM = s.maxMp - a.mp; var lack = a.dead ? '' : need === 'hp' && lackH > 0 ? '　（HP あと' + lackH + '）' : need === 'mp' && lackM > 0 ? '　（MP あと' + lackM + '）' : ''; return { label: a.name, right: JOBS[a.job].name + ' Lv' + a.level, sub: 'HP ' + a.hp + '/' + s.maxHp + '  MP ' + a.mp + '/' + s.maxMp + (a.dead ? '  戦闘不能' : '') + lack }; }), { title: title, initial: need ? init : 0 });
-    return i < 0 ? null : list[i];
+    if (need) list.forEach(function (a, k) { var s = Actors.stats(a); var v = need === 'revive' ? (a.dead ? 1 : 0) : a.dead ? -1 : need === 'mp' ? (s.maxMp ? 1 - a.mp / s.maxMp : 0) : need === 'hp' ? 1 - a.hp / s.maxHp : 0; if (v > best) { best = v; init = k; } });
+    else if (remember) { var li = list.map(function (a) { return a.id; }).indexOf(Menu._member); if (li >= 0) init = li; }
+    var i = await Win.list(list.map(function (a) { var s = Actors.stats(a); var lackH = s.maxHp - a.hp, lackM = s.maxMp - a.mp; var lack = a.dead ? '' : need === 'hp' && lackH > 0 ? '　（HP あと' + lackH + '）' : need === 'mp' && lackM > 0 ? '　（MP あと' + lackM + '）' : ''; return { label: a.name, right: JOBS[a.job].name + ' Lv' + a.level, sub: 'HP ' + a.hp + '/' + s.maxHp + '  MP ' + a.mp + '/' + s.maxMp + (a.dead ? '  戦闘不能' : '') + lack }; }), { title: title, initial: init });
+    return i < 0 ? null : remember ? noteMember(list[i]) : list[i];
   }
   Menu.pickActor = pickActor;
 
-  Menu.status = async function () {
-    var a = await pickActor('ステータスを見る', true); if (!a) return;
+  Menu.statusHtml = function (a) {
     var s = Actors.stats(a); var j = JOBS[a.job];
     var eq = Object.keys(a.equip).map(function (slot) { return ({ weapon: '武器', armor: '鎧', shield: '盾', head: '頭', acc: '装飾' })[slot] + '：' + (a.equip[slot] ? ITEMS[a.equip[slot]].name : '―'); }).join('<br>');
     var jl = Object.keys(a.jobLevels).map(function (k) { return JOBS[k].name + 'Lv' + a.jobLevels[k]; }).join('・');
-    await Win.panel('<div class="rw-title">' + esc(a.name) + '　' + esc(j.name) + ' Lv' + a.level + (a.id === 'hero' && root.Growth ? '　<span class="title-badge">' + esc(root.Growth.title()) + '</span>' : '') + '</div>' + (root.Assets ? root.Assets.portraitTagFor(a, 'portrait status-portrait', 150) : '') + '<div class="stat-grid"><div>HP<b>' + a.hp + '/' + s.maxHp + '</b></div><div>MP<b>' + a.mp + '/' + s.maxMp + '</b></div><div>攻撃<b>' + s.atk + '</b></div><div>防御<b>' + s.def + '</b></div><div>素早さ<b>' + s.agi + '</b></div><div>魔力<b>' + s.mag + '</b></div></div><div class="muted small">次のレベルまで ' + (Actors.expForLevel(a.level) - a.exp) + '　状態：' + (a.dead ? '戦闘不能' : Object.keys(a.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join('・') || '正常') + '</div><div class="muted small">固有：' + esc(j.trait) + '　役割：' + esc(j.role) + '</div><h3>装備</h3><div>' + eq + '</div>' + (root.Meal76 && root.Meal76.status(a) ? '<div class="small">食べ物の効果：' + esc(root.Meal76.status(a)) + '</div>' : '') + '<div class="muted small">職業レベル：' + jl + '</div>');
+    return '<div class="rw-title">' + esc(a.name) + '　' + esc(j.name) + ' Lv' + a.level + (a.id === 'hero' && root.Growth ? '　<span class="title-badge">' + esc(root.Growth.title()) + '</span>' : '') + '</div>' + (root.Assets ? root.Assets.portraitTagFor(a, 'portrait status-portrait', 150) : '') + '<div class="stat-grid"><div>HP<b>' + a.hp + '/' + s.maxHp + '</b></div><div>MP<b>' + a.mp + '/' + s.maxMp + '</b></div><div>攻撃<b>' + s.atk + '</b></div><div>防御<b>' + s.def + '</b></div><div>素早さ<b>' + s.agi + '</b></div><div>魔力<b>' + s.mag + '</b></div></div><div class="muted small">次のレベルまで ' + (Actors.expForLevel(a.level) - a.exp) + '　状態：' + (a.dead ? '戦闘不能' : Object.keys(a.status).map(function (k) { return Combat.STATUS_NAME[k]; }).join('・') || '正常') + '</div><div class="muted small">固有：' + esc(j.trait) + '　役割：' + esc(j.role) + '</div><h3>装備</h3><div>' + eq + '</div>' + (root.Meal76 && root.Meal76.status(a) ? '<div class="small">食べ物の効果：' + esc(root.Meal76.status(a)) + '</div>' : '') + '<div class="muted small">職業レベル：' + jl + '</div>';
+  };
+  // v9.2 ステータス：画面を閉じずに仲間を切り替える（←→・Q／E・上の名前のタップ）。
+  //   ［そうびを変える］［じゅもん・とくぎ］で、いま見ている仲間のその画面へ。閉じるとステータスへ戻る（そちらで切り替えた仲間のまま）
+  function statusScreen(a) {
+    var list = members(); var idx = Math.max(0, list.indexOf(a)); var node = null;
+    function draw() {
+      if (!node) return; a = noteMember(list[idx]); var M = memberBar(list, a, true); var mb = node.querySelector('.st-mem');
+      mb.innerHTML = Win.memberBarHtml(M); Win.bindMemberBar(mb, M, go);
+      node.querySelector('.st-body').innerHTML = Menu.statusHtml(a);
+    }
+    function go(i) { var n = list.length; if (n < 2) return; idx = ((i % n) + n) % n; draw(); }
+    var html = '<div class="st-mem"></div><div class="st-body"></div><div class="st-foot"><span class="rw-act" role="button" tabindex="0" data-go="equip">そうびを変える</span><span class="rw-act" role="button" tabindex="0" data-go="skills">じゅもん・とくぎ</span><span class="rw-panel-close" role="button" tabindex="0">閉じる（Enter / ✕）</span></div>';
+    var fin = null;
+    return Win.panel(html, { cls: 'status-panel rw-tall', noClose: true,
+      onOk: function () { if (fin) fin(0); }, onCancel: function () { if (fin) fin(-1); },
+      onKey: function (k) { if (k === 'left') go(idx - 1); else if (k === 'right') go(idx + 1); else if (node && (k === 'up' || k === 'down')) node.scrollTop += k === 'down' ? 60 : -60; },
+      onPage: function (d) { go(idx + d); },
+      setup: function (n, close) {
+        node = n; fin = close;
+        n.querySelectorAll('[data-go]').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); close(b.getAttribute('data-go')); }); });
+        var x = document.createElement('div'); x.className = 'rw-close'; x.setAttribute('role', 'button'); x.setAttribute('tabindex', '0'); x.setAttribute('aria-label', '閉じる'); x.textContent = '✕'; n.appendChild(x);
+        x.addEventListener('click', function (e) { e.stopPropagation(); close(-1); });
+        draw();
+      } });
+  }
+  Menu.status = async function (a0) {
+    var a = a0 ? noteMember(a0) : await pickActor('ステータスを見る', true, null, true); if (!a) return;
+    while (true) {
+      var r = await statusScreen(a); a = lastMember(a);
+      if (r === 'equip') { await Menu.equip(a); a = lastMember(a); continue; }
+      if (r === 'skills') { if (await Menu.skills(a) === 'warp') return 'warp'; a = lastMember(a); continue; }
+      return;
+    }
   };
 
   /* ---------- どうぐ（v6.4 ジャンル別・並び替え・使えるものだけ・詳細と装備比較） ---------- */
@@ -129,7 +171,7 @@
       if (!rows.length) rows = [{ label: favOnly ? '（最近使った道具・お気に入りはまだない。道具を選んで［★お気に入り］で印をつけられる）' : usableOnly ? '（いま使えるものはない）' : '（このジャンルの持ち物はない）', disabled: true }];
       var counts = G.map(function (g) { return g.id === 'all' ? all.length : all.filter(function (id) { return IC.of(id) === g.id; }).length; });
       var key = 'items:' + G[tab].id + (favOnly ? ':fav' : '') + (usableOnly ? ':use' : '') + ':' + sort;
-      var r = await Win.list(rows, { title: 'どうぐ', cls: 'items-menu', tabs: G.map(function (g, i) { return { label: g.name, count: counts[i] }; }), tab: tab,
+      var r = await Win.list(rows, { title: 'どうぐ', cls: 'items-menu rw-fixed', tabs: G.map(function (g, i) { return { label: g.name, count: counts[i] }; }), tab: tab,
         tools: [{ id: 'sort', label: '並び：' + ITEM_SORTS[sort].name }, { id: 'usable', label: '使えるものだけ', on: usableOnly }, { id: 'fav', label: '★最近・お気に入り', on: favOnly }],
         key: key, initial: initial !== undefined ? Math.min(initial, Math.max(0, ids.length - 1)) : undefined, info: function (k) { return ids[k] ? Menu.itemDetail(ids[k]) : ''; },
         okLabel: '使う・見る', actions: ids.length ? [{ id: 'fav', label: '★お気に入り' }] : [] });
@@ -229,24 +271,40 @@
     return '<div class="rw-title">おすすめ候補（' + esc(F.name) + '）　' + esc(a.name) + '</div><div class="small muted">持っている装備の中で、基礎の能力の点数が高いものを並べただけです。自動では装備しません。属性耐性・状態異常・固有効果は点数に入れていないので、詳しくは各欄の比較で確かめてください。</div><table class="tbl eq-rec"><tr><th>枠</th><th>いま</th><th>候補</th></tr>' +
       R.map(function (x) { return '<tr><td>' + EQ_NAMES[x.slot] + '</td><td>' + esc(x.cur ? ITEMS[x.cur].name : '―') + '</td><td>' + (x.better ? '<b>' + esc(ITEMS[x.best].name) + '</b>' : '<span class="muted">いまのままが最も高い</span>') + (x.special ? '<div class="small eq-note">※ 特別な効果のある装備が関わる（比較で確認）</div>' : '') + '</td></tr>'; }).join('') + '</table>';
   };
-  Menu.equip = async function () {
-    var a = await pickActor('装備を変える', true); if (!a) return;
+  // v9.2 そうび：画面を閉じずに仲間を切り替える（←→・Q／E・上の名前のタップ）。枠の一覧はカーソルの枠のまま、候補の一覧は同じ枠のまま切り替わる
+  Menu.equip = async function (a0) {
+    var a = a0 ? noteMember(a0) : await pickActor('装備を変える', true, null, true); if (!a) return;
     var focus = null;
     while (true) {
+      var mem = members(); if (mem.indexOf(a) < 0) return;
       var s = Actors.stats(a); var rec = focus ? Menu.recommend(a, focus) : null;
       var rows = EQ_SLOTS.map(function (sl, k) { var r0 = rec && rec[k]; return { label: EQ_NAMES[sl], right: a.equip[sl] ? ITEMS[a.equip[sl]].name : '―', sub: r0 && r0.better ? 'おすすめ候補：' + ITEMS[r0.best].name : undefined }; });
       rows.push({ label: 'おすすめ候補を見る', sub: '攻撃重視・耐久重視・魔法重視（見るだけ。自動では装備しない）' });
-      var i = await Win.list(rows, { title: a.name + 'の装備　HP' + s.maxHp + ' MP' + s.maxMp + ' 攻' + s.atk + ' 防' + s.def + ' 速' + s.agi + ' 魔' + s.mag, key: 'equip:slots' });
+      var i = await Win.list(rows, { title: a.name + 'の装備　HP' + s.maxHp + ' MP' + s.maxMp + ' 攻' + s.atk + ' 防' + s.def + ' 速' + s.agi + ' 魔' + s.mag, cls: 'equip-menu', key: 'equip:slots', members: memberBar(mem, a, true) });
+      if (i && typeof i === 'object') { if (i.member !== undefined && mem[i.member]) a = noteMember(mem[i.member]); continue; }   // 枠のカーソルは key で覚えている
       if (i < 0) return;
       if (i === EQ_SLOTS.length) { var fi = await Win.choice('どの考え方で候補を見る？', FOCUS.map(function (f) { return f.name; }).concat(['やめる'])); if (fi >= 0 && fi < FOCUS.length) { focus = FOCUS[fi].id; await Win.panel(Menu.recommendHtml(a, focus), { cls: 'eq-rec-panel' }); } continue; }
-      var slot = EQ_SLOTS[i]; var inv = State.data.inventory; var rb = rec && rec[i] && rec[i].better ? rec[i].best : null;
+      a = await Menu.equipSlot(a, EQ_SLOTS[i], focus) || a;
+    }
+  };
+  // 1 つの枠の候補の一覧（比較つき）。仲間を切り替えると、同じ枠・同じ装備（その仲間も装備できれば）にカーソルを置く。戻り値：最後に見ていた仲間
+  Menu.equipSlot = async function (a, slot, focus) {
+    var keep = null; var si = EQ_SLOTS.indexOf(slot);
+    while (true) {
+      var mem = members(); var inv = State.data.inventory;
+      var rec = focus ? Menu.recommend(a, focus) : null; var rb = rec && rec[si] && rec[si].better ? rec[si].best : null;
       var cands = Object.keys(inv).filter(function (id) { return Actors.slotOf(id) === slot && Actors.canEquip(a, id); });
       var opts = cands.map(function (id) { var it = ITEMS[id]; var key = it.cat === 'weapon' ? 'atk' : 'def'; var cur = a.equip[slot] ? ITEMS[a.equip[slot]][key] || 0 : 0; var diff = (it[key] || 0) - cur; return { label: (id === rb ? '◎ ' : '') + it.name, right: (key === 'atk' ? '攻' : '防') + (diff >= 0 ? '+' : '') + diff, sub: it.bossExclusive && it.uniqueName ? '固有効果【' + it.uniqueName + '】' + it.uniqueText : it.desc }; });   // v8.7 ボス固有装備：右＝基礎値の差、下＝固有効果（分けて出す）
       if (a.equip[slot]) opts.push({ label: 'はずす', right: '' });
-      if (!opts.length) { await Win.message(['装備できるものがない。']); continue; }
-      var k = await Win.list(opts, { title: EQ_NAMES[slot] + 'を選ぶ' + (rb ? '（◎＝おすすめ候補）' : ''), cls: 'eq-list', okLabel: '装備する', info: function (q) { return Menu.equipCompareHtml(a, slot, q < cands.length ? cands[q] : null); } }); if (k < 0) continue;
-      if (k >= cands.length) { State.addItem(a.equip[slot], 1); a.equip[slot] = null; continue; }
+      var none = !opts.length; if (none) opts.push({ label: '（' + a.name + 'が' + EQ_NAMES[slot] + 'に装備できるものを持っていない）', disabled: true });
+      var init = keep === null ? 0 : keep === '' ? (a.equip[slot] ? cands.length : 0) : Math.max(0, cands.indexOf(keep));
+      var k = await Win.list(opts, { title: a.name + 'の' + EQ_NAMES[slot] + 'を選ぶ' + (rb ? '（◎＝おすすめ候補）' : ''), cls: 'eq-list rw-fixed', okLabel: '装備する', initial: init, members: memberBar(mem, a, true),
+        info: function (q) { return none ? '<div class="muted">持っている装備の中に、' + esc(a.name) + '（' + esc(JOBS[a.job].name) + '）が' + EQ_NAMES[slot] + 'に装備できるものはない。上の名前で、ほかの仲間に切り替えられる。</div>' : Menu.equipCompareHtml(a, slot, q < cands.length ? cands[q] : null); } });
+      if (k && typeof k === 'object') { if (k.member !== undefined && mem[k.member]) { keep = k.index < cands.length ? cands[k.index] : ''; a = noteMember(mem[k.member]); } continue; }
+      if (k < 0 || none) return a;
+      if (k >= cands.length) { State.addItem(a.equip[slot], 1); a.equip[slot] = null; return a; }
       root.Services.equipItem(a, cands[k]); if (root.Audio) root.Audio.sfx('equip');
+      return a;
     }
   };
 
@@ -256,19 +314,20 @@
   Menu.skillGroup = function (id) { return SKILLS[id] ? skillGroup(SKILLS[id]) : 'support'; };
   var SK_TARGET = { enemy: '敵1体', enemies: '敵全体', ally: '味方1人', allies: '味方全体', self: '自分', dead_ally: '戦闘不能の味方' };
   var EL_NAME = { fire: '炎', ice: '氷', thunder: '雷', wind: '風', light: '光', dark: '闇' };
-  Menu.skills = async function () {
-    var a = await pickActor('じゅもん・とくぎを見る', true); if (!a) return;
-    var list = root.Actors.allSkills(a).filter(function (s) { return SKILLS[s]; });
-    if (!list.length) { await Win.message([a.name + 'はまだ特技を覚えていない。']); return; }
+  // v9.2 じゅもん・とくぎ：画面を閉じずに仲間を切り替える（Q／E・上の名前のタップ。←→ は今までどおり分類のタブ）
+  Menu.skills = async function (a0) {
+    var a = a0 ? noteMember(a0) : await pickActor('じゅもん・とくぎを見る', true, null, true); if (!a) return;
     var tab = 0;
     while (true) {
+      var mem = members(); var cur = a;
+      var list = root.Actors.allSkills(a).filter(function (s) { return SKILLS[s]; });
       var ids = list.filter(function (s) { return SKILL_GROUPS[tab].id === 'all' || skillGroup(SKILLS[s]) === SKILL_GROUPS[tab].id; });
-      var rows = ids.map(function (s) { var sk = SKILLS[s]; return { label: sk.name, right: 'MP' + (root.Combat && root.Combat.skillCost ? root.Combat.skillCost(a, sk) : a.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp), sub: (SK_TARGET[sk.target] || '') + (sk.element && EL_NAME[sk.element] ? '・' + EL_NAME[sk.element] : '') + '　' + sk.desc }; });
-      if (!rows.length) rows = [{ label: '（この分類の特技はない）', disabled: true }];
+      var rows = ids.map(function (s) { var sk = SKILLS[s]; return { label: sk.name, right: 'MP' + (root.Combat && root.Combat.skillCost ? root.Combat.skillCost(cur, sk) : cur.job === 'sage' ? Math.ceil(sk.mp * 0.8) : sk.mp), sub: (SK_TARGET[sk.target] || '') + (sk.element && EL_NAME[sk.element] ? '・' + EL_NAME[sk.element] : '') + '　' + sk.desc }; });
+      if (!rows.length) rows = [{ label: list.length ? '（この分類の特技はない）' : '（' + a.name + 'はまだ呪文・特技を覚えていない）', disabled: true }];
       var counts = SKILL_GROUPS.map(function (g) { return g.id === 'all' ? list.length : list.filter(function (s) { return skillGroup(SKILLS[s]) === g.id; }).length; });
-      var r = await Win.list(rows, { title: a.name + 'の特技', tabs: SKILL_GROUPS.map(function (g, i) { return { label: g.name, count: counts[i] }; }), tab: tab });
+      var r = await Win.list(rows, { title: a.name + 'の特技', cls: 'skills-menu rw-fixed', tabs: SKILL_GROUPS.map(function (g, i) { return { label: g.name, count: counts[i] }; }), tab: tab, members: memberBar(mem, a, false) });
       if (r === -1) return;
-      if (r && typeof r === 'object' && r.tab !== undefined) { tab = r.tab; continue; }
+      if (r && typeof r === 'object') { if (r.tab !== undefined) tab = r.tab; else if (r.member !== undefined && mem[r.member]) a = noteMember(mem[r.member]); continue; }
       var fsk = typeof r === 'number' && ids[r] && SKILLS[ids[r]];   // v6.5 フィールドで使う呪文（帰還の術）
       if (fsk && fsk.field === 'dungeon_exit') { var res = await Menu.castField(a, fsk); if (res === 'warp') return 'warp'; }
     }
@@ -340,19 +399,26 @@
       node.querySelectorAll('.pt-tab').forEach(function (t, i) { t.classList.toggle('cur', i === tab); });
       node.querySelector('.pt-body').innerHTML = tab === 0 ? Menu.partyHtml.status(a) : tab === 1 ? Menu.partyHtml.equip(a) : Menu.partyHtml.skills(a);
       var pos = d.party.indexOf(a.id); var canMove = pos >= 1;
-      node.querySelector('.pt-acts').innerHTML = canMove ? '<span class="pt-btn" data-mv="-1"' + (pos <= 1 ? ' data-off="1"' : '') + '>▲ 隊列で前へ</span><span class="pt-btn" data-mv="1"' + (pos >= d.party.length - 1 ? ' data-off="1"' : '') + '>▼ 隊列で後ろへ</span>' : '<span class="muted small">' + (a.id === 'hero' ? '主人公は隊列の先頭です' : '待機メンバーとの入れ替えは酒場で行えます') + '</span>';
-      node.querySelectorAll('.pt-row').forEach(function (r) { r.addEventListener('click', function (e) { e.stopPropagation(); var i = order.indexOf(r.getAttribute('data-id')); if (i >= 0) { sel = i; render(); } }); });
-      node.querySelectorAll('.pt-btn').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); if (b.getAttribute('data-off')) return; move(parseInt(b.getAttribute('data-mv'), 10)); }); });
+      node.querySelector('.pt-acts').innerHTML = (canMove ? '<span class="pt-btn" data-mv="-1"' + (pos <= 1 ? ' data-off="1"' : '') + '>▲ 隊列で前へ</span><span class="pt-btn" data-mv="1"' + (pos >= d.party.length - 1 ? ' data-off="1"' : '') + '>▼ 隊列で後ろへ</span>' : '<span class="muted small">' + (a.id === 'hero' ? '主人公は隊列の先頭です' : '待機メンバーとの入れ替えは酒場で行えます') + '</span>') +
+        (pos >= 0 ? '<span class="pt-btn pt-go" data-go="equip">そうびを変える</span>' : '');   // v9.2 この仲間の装備の画面へ（閉じると、なかまの画面へ戻る）
+      node.querySelectorAll('.pt-row').forEach(function (r) { r.addEventListener('click', function (e) { e.stopPropagation(); if (busy) return; var i = order.indexOf(r.getAttribute('data-id')); if (i >= 0) { sel = i; render(); } }); });
+      node.querySelectorAll('.pt-btn').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); if (busy || b.getAttribute('data-off')) return; if (b.getAttribute('data-go')) { if (done) done({ go: b.getAttribute('data-go') }); return; } move(parseInt(b.getAttribute('data-mv'), 10)); }); });   // v9.2 隊列の確認（小さい窓）を開いている間は、後ろの画面を押しても動かない
       var cr = node.querySelector('.pt-row.cur'); if (cr && cr.scrollIntoView) try { cr.scrollIntoView({ block: 'nearest' }); } catch (e) { }
     }
     function move(delta) { var a = cur(); if (a && Menu.moveInParty(a.id, delta)) { order = Menu.partyOrder(); sel = order.indexOf(a.id); render(); if (root.World && root.World.updateHud) root.World.updateHud(); } }
     var busy = false;
     async function formation() { var a = cur(); if (!a || d.party.indexOf(a.id) < 1 || busy) return; busy = true; var c = await Win.choice(a.name + 'の隊列', ['前へ', '後ろへ', 'やめる']); busy = false; if (c === 0) move(-1); else if (c === 1) move(1); }
-    var html = '<div class="pt-wrap"><div class="pt-list"></div><div class="pt-art"></div><div class="pt-side"><div class="pt-tabs">' + PT_TABS.map(function (t, i) { return '<span class="pt-tab" data-t="' + i + '">' + esc(t) + '</span>'; }).join('') + '</div><div class="pt-body"></div><div class="pt-acts"></div></div></div><div class="pt-foot"><span class="muted small">↑↓ 仲間　←→ タブ　Enter 隊列の変更　Esc 閉じる</span><span class="pt-close">閉じる</span></div>';
-    await Win.panel(html, { cls: 'party-screen', noClose: true,
-      onCancel: function () { if (!busy && done) done(-1); }, onOk: function () { formation(); },
-      onKey: function (k) { if (busy) return; if (k === 'up') { sel = (sel + order.length - 1) % order.length; render(); } else if (k === 'down') { sel = (sel + 1) % order.length; render(); } else if (k === 'left') { tab = (tab + PT_TABS.length - 1) % PT_TABS.length; render(); } else if (k === 'right') { tab = (tab + 1) % PT_TABS.length; render(); } },
-      setup: function (n, fin) { node = n; done = fin; n.querySelectorAll('.pt-tab').forEach(function (t) { t.addEventListener('click', function (e) { e.stopPropagation(); tab = parseInt(t.getAttribute('data-t'), 10); render(); }); }); n.querySelector('.pt-close').addEventListener('click', function (e) { e.stopPropagation(); fin(-1); }); render(); } });
+    var html = '<div class="pt-wrap"><div class="pt-list"></div><div class="pt-art"></div><div class="pt-side"><div class="pt-tabs">' + PT_TABS.map(function (t, i) { return '<span class="pt-tab" data-t="' + i + '">' + esc(t) + '</span>'; }).join('') + '</div><div class="pt-body"></div><div class="pt-acts"></div></div></div><div class="pt-foot"><span class="muted small">↑↓（Q・E）仲間　←→ タブ　Enter 隊列の変更　Esc 閉じる</span><span class="pt-close">閉じる</span></div>';
+    while (true) {
+      node = null; done = null;
+      var res = await Win.panel(html, { cls: 'party-screen rw-tall', noClose: true,
+        onCancel: function () { if (!busy && done) done(-1); }, onOk: function () { formation(); },
+        onKey: function (k) { if (busy) return; if (k === 'up') { sel = (sel + order.length - 1) % order.length; render(); } else if (k === 'down') { sel = (sel + 1) % order.length; render(); } else if (k === 'left') { tab = (tab + PT_TABS.length - 1) % PT_TABS.length; render(); } else if (k === 'right') { tab = (tab + 1) % PT_TABS.length; render(); } },
+        onPage: function (dd) { if (busy) return; sel = (sel + dd + order.length) % order.length; render(); },   // v9.2 Q・E でも仲間を切り替える（ほかの画面とそろえる）
+        setup: function (n, fin) { node = n; done = fin; n.querySelectorAll('.pt-tab').forEach(function (t) { t.addEventListener('click', function (e) { e.stopPropagation(); if (busy) return; tab = parseInt(t.getAttribute('data-t'), 10); render(); }); }); n.querySelector('.pt-close').addEventListener('click', function (e) { e.stopPropagation(); if (busy) return; fin(-1); }); render(); } });
+      if (res && res.go === 'equip') { var ea = cur(); if (ea && d.party.indexOf(ea.id) >= 0) { await Menu.equip(ea); order = Menu.partyOrder(); var si = order.indexOf(Menu._member); if (si >= 0) sel = si; } continue; }   // v9.2 装備の画面で切り替えた仲間のまま戻る
+      return;
+    }
   };
 
   Menu.quests = async function () {

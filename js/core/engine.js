@@ -19,10 +19,10 @@
     keys: {}, pressed: {}, dirHeld: null, _queue: [],
     init: function () {
       var map = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right',
-        Enter: 'ok', z: 'ok', Z: 'ok', ' ': 'ok', Escape: 'cancel', x: 'cancel', X: 'cancel', Backspace: 'cancel', m: 'minimap', M: 'minimap', n: 'map', N: 'map', Tab: 'map', c: 'carriage', C: 'carriage', f: 'airship', F: 'airship' };   /* v7.9 C＝馬車の乗り降り（js/rpg/carriage79.js） */   // v6.1 M＝ミニマップの表示切替、N（Tab）＝全体マップ
+        Enter: 'ok', z: 'ok', Z: 'ok', ' ': 'ok', Escape: 'cancel', x: 'cancel', X: 'cancel', Backspace: 'cancel', m: 'minimap', M: 'minimap', n: 'map', N: 'map', Tab: 'map', c: 'carriage', C: 'carriage', f: 'airship', F: 'airship', q: 'prev', Q: 'prev', e: 'next', E: 'next' };   /* v9.2 Q・E＝メニューで前／次の仲間（js/ui/windows.js の opts.members）。探索中は何もしない */   /* v7.9 C＝馬車の乗り降り（js/rpg/carriage79.js） */   // v6.1 M＝ミニマップの表示切替、N（Tab）＝全体マップ
       document.addEventListener('keydown', function (e) {
         var k = map[e.key]; if (!k) return;
-        if (k === 'airship' && (e.ctrlKey || e.metaKey || e.altKey)) return;   // v8.6 F＝飛空艇を呼ぶ（js/rpg/airshipcall86.js）。Ctrl＋F（ページ内検索）などはそのまま
+        if ((k === 'airship' || k === 'prev' || k === 'next') && (e.ctrlKey || e.metaKey || e.altKey)) return;   // v8.6 F＝飛空艇を呼ぶ（js/rpg/airshipcall86.js）。Ctrl＋F（ページ内検索）などはそのまま
         if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA')) return;
         e.preventDefault();
         if (!Input.keys[k]) Input.press(k);
