@@ -29,3 +29,76 @@
   OK  決済まで進む → G 振り返り（判断の過程の点と、結果は別の欄）
   OK  心理の結果は医療的な診断として扱わないと書く
 結果: 38 OK / 1 NG
+=== tradetest
+exit 0
+rank samples: E S ERRORS: []
+=== tradiatest
+exit 0
+  OK  画面で行った取引も履歴に残る
+  OK  セーブとロードでトレディアの記録が残る
+  OK  旧セーブ（tradia なし）でも空の記録で始まる
+  OK  エラーなし []
+結果: 62 OK / 1 NG
+ERRORS: [1 NG]
+=== ult/market_test
+exit 0
+  OK  タブの切り替えなどで一時停止：止めている間はチャートも判断時間も進まない
+  OK  判断時間が終わると、自動で見送り
+  OK  フレームの間隔（16・33・50ms）が違っても、同じ時刻なら同じ足・ティック（描画の速さで判定が変わらない）
+  OK  見立て（見えている足だけ）：強い上昇トレンド→ロング有利 19/20、強い下降→ショート有利 20/20、レンジ中央→どちらでもない 19/20
+  OK  強い上昇トレンドでロングしても、勝ち 100・負け 99（200回）：必ず利益が出る相場にはしていない
+結果: 31 OK / 0 NG
+=== ult/ult_logic_test
+exit 0
+結果: 1758 OK / 0 NG
+=== ult/dojo_test
+exit 0
+OK 10 questions advanced
+seiran reckless {"passed":false,"best":35,"last":35,"attempts":1,"lastAt":1794286857443}
+OK reckless exam recorded
+OK reckless result: passed=false
+OK ultimate menu navigates
+OK main menu has 必殺技
+=== ult/quiz_test
+exit 0
+pass 26264 / fail 0
+=== learntest
+exit 0
+ERRORS: []
+=== savecompat64
+exit 0
+  OK  中盤：第3章を終えたセーブなので、宝物庫の扉が開く（shard_returned）
+  OK  中盤：レバレッジ取引を始められる（仮想資金 100,000）
+  OK  中盤：トレディアの町に入れる
+  OK  中盤：戦闘ができる（スライムに勝つ）
+  OK  エラーなし []
+結果: 37 OK / 0 NG
+=== tradeeq
+exit 0
+ERRORS: [] loadErrors []
+done
+=== v88/ui88_test.js
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/chart88_test.js
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/chart88_test.js 2d
+  OK  結果は「① 判断／② 損益／③ 判断の過程の評価」に分けて出す
+  OK  結果に unlimited・timeMode を入れる（記録で区別できる）
+結果: 46 OK / 0 NG []　ページのエラー 0
+=== v88/tm88_test.js
+  OK  結果の比べる表：判断・入った時刻・価格・その時点の見立て・結果
+結果: 13 OK / 0 NG []　ページのエラー 0
+=== v83/tm83_duel_logic.js
+結果：すべて OK
+=== v83/academy83_test.js
+結果：すべて OK
+=== /home/claude/snap_rpg93/docs/tools/v88/updated-tests/ftmenu
+結果: 6 OK / 0 NG []
+=== v88/updated-tests/layout_menu_test.js
+OK  ページのエラーなし []
+結果：すべて OK
+done

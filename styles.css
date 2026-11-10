@@ -1122,3 +1122,6 @@ body.g3-front:not(.mobile) #battle-party .bp.mo-guard { animation-name: mo-glow3
 /* v9.3 スマホ縦：戦闘のコマンド（「さくせん」を足して 8 行）を、スクロールなしで味方の欄の上に収める（行を少し詰め、幅を広げて「じゅもん・とくぎ」を 1 行に） */
 body.mobile.m-port .rw-list.cmd-list { width: 200px; bottom: 132px; }   /* 味方の欄（下から約 122px）に重ならない高さ */
 body.mobile.m-port .rw-list.cmd-list .rw-item { min-height: 36px; padding-top: 3px; padding-bottom: 3px; }
+/* v9.3 スマホ横：コマンドの行を詰めて多く見せ、窓を味方の欄（下から約 100px）の上に（残りの行は今までどおり窓の中でスクロール） */
+body.mobile.m-land .rw-list.cmd-list { bottom: 106px; max-height: calc(100% - 118px); }
+body.mobile.m-land .rw-list.cmd-list .rw-item { min-height: 36px; padding-top: 3px; padding-bottom: 3px; }

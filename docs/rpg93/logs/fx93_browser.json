@@ -44,25 +44,25 @@
    ],
    "drawMs": {
     "none": 0.1,
-    "heavy": 0.8
+    "heavy": 0.5
    },
    "fx2dErrors": 0
   },
   "battle": {
    "mo": {
-    "mo-punch": 180,
+    "mo-punch": 165,
     "mo-pray": 15
    },
    "flash": {
-    "healed": 6,
-    "hurt": 35
+    "hurt": 21,
+    "healed": 7
    },
-   "emo": 133,
-   "recoil": 83,
-   "fxStarts": 18,
+   "emo": 109,
+   "recoil": 76,
+   "fxStarts": 16,
    "hits": 2,
    "fx2dErrors": 0,
-   "turn": 4,
+   "turn": 3,
    "state": "won",
    "shots": 5
   },
@@ -88,16 +88,16 @@
   "battle": {
    "mo": {
     "mo-punch": 180,
-    "mo-pray": 36
+    "mo-pray": 15
    },
    "flash": {
-    "hurt": 36,
-    "healed": 13
+    "hurt": 35,
+    "healed": 6
    },
-   "emo": 54,
-   "recoil": 28,
-   "fxStarts": 20,
-   "hits": 0,
+   "emo": 48,
+   "recoil": 29,
+   "fxStarts": 18,
+   "hits": 1,
    "fx2dErrors": 0,
    "turn": 4,
    "state": "won",
