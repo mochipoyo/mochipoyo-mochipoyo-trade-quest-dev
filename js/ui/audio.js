@@ -82,6 +82,11 @@
   function filePlay(id, restart) {
     if (!FILE.els.length) primeFiles(); if (!FILE.els.length) return false;
     var url = root.BGM93.url(id); if (!url) return false;
+    if (FILE.cur === id) {   // 同じ曲をもう一度（タイトルで音を ON にしたときなど）：もう 1 つの再生器で重ねて鳴らさない。今の再生器のまま（戦闘・ボスは頭から）
+      var ce = FILE.els[FILE.act]; if (restart) { try { ce.currentTime = 0; } catch (e) { } }
+      ramp(FILE.act, LOUD, 0.3); if (ce.paused) { try { var pp = ce.play(); if (pp && pp.catch) pp.catch(function () { }); } catch (e) { return false; } }
+      return true;
+    }
     var prev = FILE.act, cur = FILE.els[prev];
     if (FILE.cur) { try { FILE.pos[FILE.cur] = cur.currentTime; } catch (e) { } }
     var nx = FILE.cur ? 1 - prev : prev; var el = FILE.els[nx];
