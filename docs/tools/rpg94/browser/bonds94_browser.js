@@ -12,7 +12,8 @@ const VP = { pc: { viewport: { width: 1280, height: 720 } }, m390: { viewport: {
 (async () => {
   const br = await chromium.launch(); const ctx = await br.newContext(VP); const p = await ctx.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message.slice(0, 160)));
   const shot = (n) => p.screenshot({ path: `${OUT}shots/bonds94_${KIND}_${VIEW}_${n}.jpg`, type: 'jpeg', quality: 72, timeout: TO });
-  const tapEl = async (h) => { try { await h.scrollIntoViewIfNeeded({ timeout: 3000 }); } catch (e) { } const b = await h.boundingBox(); if (!b) return false; if (VIEW === 'pc') await p.mouse.click(b.x + b.width / 2, b.y + b.height / 2); else await p.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); await p.waitForTimeout(220); return true; };
+  // 画面の外・スクロールする枠の外（枠に隠れている）の行は、まず見える所へ（scrollIntoView。行の位置が窓の中でも、枠の外なら隠れているため毎回する）
+  const tapEl = async (h) => { try { await h.evaluate((el) => el.scrollIntoView({ block: 'nearest' })); await p.waitForTimeout(300); } catch (e) { } const b = await h.boundingBox(); if (!b) return false; if (VIEW === 'pc') await p.mouse.click(b.x + b.width / 2, b.y + b.height / 2); else await p.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); await p.waitForTimeout(220); return true; };
   const find = (sel, text) => p.waitForFunction(([s, t]) => [...document.querySelectorAll(s)].reverse().find((x) => x.offsetParent && (!t || x.textContent.indexOf(t) >= 0)) || null, [sel, text], { timeout: TO, polling: 250 }).then((h) => h.asElement());
   const item = async (text) => { const h = await find('#ui .rw-item, #ui .rw-opt', text); await tapEl(h); if (await p.evaluate((t) => { const o = [...document.querySelectorAll('#ui .rw-item.cur')].reverse()[0]; return !!(o && o.offsetParent && o.textContent.indexOf(t) >= 0 && o.closest('.rw-preview')); }, text)) await tapEl(h); };
   await p.goto(URL); if (KIND === '3d') await p.waitForFunction(() => window.MTQ3D && MTQ3D.ready, null, { timeout: 300000 }); await p.waitForSelector('#ui .title-menu', { timeout: 300000 });
@@ -30,14 +31,18 @@ const VP = { pc: { viewport: { width: 1280, height: 720 } }, m390: { viewport: {
   const info = await p.evaluate(() => ({ map: World.map.id, kind: World.map.def.kind, safe: Bonds.safeHere(), ready: Bonds.readyEpisodes('lina').map((e) => e.id) }));
   S(info.safe && info.ready[0] === 'lina_1', '町（' + info.map + '）では話せる・リーナの新しい話は第1話（' + JSON.stringify(info) + '）');
   // メニュー → パーティ → 仲間と話す
+  const MOBILE3D = KIND === '3d' && VIEW !== 'pc';   // スマホの 3D：この作業環境のソフトウェア描画ではタップが間に合わないため、メニューの操作の間だけ描画を止める（話の再生中は動かす）
+  if (MOBILE3D) await p.evaluate(() => { MTQ3D.paused = true; });
   p.evaluate(() => { Menu._tab = 1; Menu.open(); });
-  await item('仲間と話す'); await p.waitForFunction(() => !!document.querySelector('#ui .bond-list'), null, { timeout: TO, polling: 250 });
+  await item('仲間と話す');
+  try { await p.waitForFunction(() => !!document.querySelector('#ui .bond-list'), null, { timeout: TO, polling: 250 }); }
+  catch (e) { await shot('0_fail'); console.log('    #ui：' + await p.evaluate(() => [...document.querySelectorAll('#ui > *')].map((n) => n.className + '［' + n.textContent.slice(0, 80) + '］').join(' / '))); throw e; }
   const lst = await p.evaluate(() => { const n = document.querySelector('#ui .bond-list'); return { rows: [...n.querySelectorAll('.rw-item')].map((x) => x.textContent), info: (n.querySelector('.rw-info') || {}).textContent || '', img: !!n.querySelector('.rw-info img'), fit: (() => { const r = n.getBoundingClientRect(); return r.left >= -1 && r.right <= innerWidth + 1 && document.documentElement.scrollWidth <= innerWidth + 1; })() }; });
   S(lst.rows.length >= 5 && /リーナ/.test(lst.rows[0]) && /新しい話/.test(lst.rows[0]) && /ポン太/.test(lst.rows.join('')), '一覧に加入済みの仲間とポン太（' + lst.rows.length + '行）。新しい話のある人に印');
   S(/絆/.test(lst.info) && /思い出0／3話/.test(lst.info.replace(/\s/g, '')) && /新しい話あり/.test(lst.info.replace(/\s/g, '')) && /最後に選んだこと/.test(lst.info) && lst.img, '右の欄：立ち絵・絆・思い出 0／3話・新しい話：あり・最後に選んだこと');
   S(lst.fit, '一覧が画面からはみ出さない（横スクロールなし）');
   await shot('1_talklist');
-  await item('リーナ'); await item('新しい話');
+  await item('リーナ'); await item('新しい話'); if (MOBILE3D) await p.evaluate(() => { MTQ3D.paused = false; });
   // 話の再生：メッセージをクリックで進め、選択肢は最初のものを選ぶ（「今日はやめておく」は選ばない）
   let n = 0, sawPortrait = false, midShot = false;
   while (n++ < 240) {
