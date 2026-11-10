@@ -44,14 +44,32 @@
 - 効果の欄に入りきらないとき（装備品の比較など）は、欄の中でスクロールする
 - そうびの候補・じゅもん・とくぎの窓も同じく一律（仲間を切り替えても、PC 1920 で 689px のまま。`menu92_*.json` の equip・skills）
 - スマホ縦画面は、窓を置ける高さをゲーム画面の下の空きまで広げた（360×800 で 468px → 608px。操作パネルの上 620px より上で止まり、パネルには重ならない）
-- 変更前の測り方：`BEFORE=1` で同じ確かめ（`docs/tools/menu92/browser/menu92_browser.js`）を変更前の版に向けた（2D。3D は同じ CSS を読む）。記録 `docs/menu92/logs/before_2d_*.json`
+- 変更前の測り方：`BEFORE=1` で同じ確かめ（`docs/tools/menu92/browser/menu92_browser.js`）を変更前の版に向けた。記録 `docs/menu92/logs/before_2d_*.json`。**3D 版の変更前は測っていない**（3D 版も同じ `styles.css`・同じ画面の部品を読むので、同じ傾向だったと推測）
+- 画像：`docs/menu92/shots/`（変更前 `before_*`・変更後。すべてヘッドレス Chromium の画面）
 
-## 4. 確かめ
+## 4. 確かめ（自動。実機ではない）
 
-（記入）
+| 確かめ | 結果 | 記録 |
+|---|---|---|
+| 新しいテスト（jsdom）`docs/tools/menu92/menu92_test.js`：Q／E の入力・仲間の帯・そうび（枠の一覧／候補の一覧で切り替え、同じ枠・同じ装備にカーソル、装備できるものがない枠）・ステータス（切り替え・そうび／じゅもんへ行って戻る）・じゅもん・とくぎ・なかま（［そうびを変える］、隊列の窓の間は後ろが動かない）・どうぐの窓の CSS・スマホ縦の高さ・セーブに項目が増えない・メインメニューの［そうび］が今までどおり | 3D 相当 89 OK／2D 89 OK（NG 0） | `logs/regress_menu92.log` の最後 |
+| 新しいブラウザの確かめ `docs/tools/menu92/browser/menu92_browser.js`（2D・3D × PC 1920・PC 1280・スマホ縦 390・スマホ縦 360・スマホ横）：窓の高さが一定・効果の欄の高さ・画面の中・操作パネルに重ならない・タップ／キー（↓・E・→・Q）で切り替え・候補の窓が仲間で変わらない・ステータス → そうび → 戻る・じゅもん・なかま・ページのエラーなし | 10 通りすべて NG 0（26〜29 OK） | `logs/browser_menu92_all.log`・`logs/menu92_*.json` |
+| 既存の回帰の一式（v8.8〜v9.1。写しで実行：`docs/tools/tl2/snapshot_regress.sh`） | 前回（`docs/trade-advanced/logs/regress_final_28d7d14.log`）と同じ結果。新しい NG なし。既知の NG（元のままの `tl_ui_test`・`tradiatest`・`learntest`。理由は `docs/trade-advanced/PHASE0_AUDIT.md`）も前回と同じで、更新版はすべて OK。前回ときどき落ちた `ch67test` は今回 OK | `logs/regress_menu92.log` |
+| 既存のメニューを使うテスト：`v88/ui88_test`（どうぐ・そうびの比較・おすすめ）・`v88/updated-tests/layout_menu_test`・`ftmenu` | すべて OK | `logs/regress_menu92.log` |
+| 既存のブラウザの通しの確かめ：`v89/flow89_browser`（2D・3D × PC・スマホ縦：メニュー → どうぐ → そうび → セーブ）・`v87/ui87_browser`（そうびの候補の比較・固有効果など 4 通り） | flow89 4 通り 14 OK／NG 0、ui87 4/4 OK | `logs/browser_old_flows.log` |
 
-## 5. 確かめていないこと（未検証）
+- 上の 10 通りは、最後のコメントの書き直しと版の印（`?v=`）の更新の前に動かした。そのあと最後のコード `c3f6b4d` で 3 通り（2D PC 1280・3D スマホ縦 390・2D スマホ横）を動かし直し、すべて NG 0（`logs/browser_menu92_final_c3f6b4d.log`）。既存の通しの確かめ（flow89・ui87）と回帰の一式は最後のコードで動かした
+- ブラウザの確かめでは、キーを 1 回ずつ間をあけて押している。1 コマ（約 16ms）の間に同じキーを 2 回押すと 1 回に数えるのは、前からのゲームの入力の作り（今回は変えていない）
+- コンテナの再起動で回帰の一式が `tl7_ui_test.js 2d` の途中で止まったため、そこから後を同じ写しで動かし直した（記録に書いてある）
+
+## 5. 開発版の URL（未公開。開発用のリポジトリ `dev` のコード `c3f6b4d`）
+
+- 3D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/c3f6b4de536e9fef8b919875450194a606ae38cf/3d/index.html
+- 2D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/c3f6b4de536e9fef8b919875450194a606ae38cf/index.html
+
+（このあとのコミットは報告書と記録だけで、ゲームのコードは `c3f6b4d` と同じ）
+
+## 6. 確かめていないこと（未検証）
 
 - 実機（スマホ・タブレット）での操作・見え方：作業環境に実機がないため未検証（ヘッドレス Chromium のスマホのまね＝360×800・390×844・844×390 のタッチだけ）
 - GPU のある環境での 3D 版の表示：未検証（ソフトウェア描画だけ）
-- 開発版の URL を外のブラウザで開くこと：作業環境から外へのブラウザの接続ができないため未検証
+- 開発版の URL（5 章）を外のブラウザで開くこと：作業環境から外へのブラウザの接続ができないため未検証
