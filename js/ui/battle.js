@@ -143,7 +143,7 @@
     if (this.screenShake > 0) this.screenShake -= dt;
     if (this.cutin) { this.cutin.t += dt; if (this.cutin.t >= this.cutin.dur) this.cutin = null; }
     // v6.3 ボス画像が開始に間に合わず従来の絵で始めたとき：登場演出（暗転からせり上がる）の間に読み込めたら新画像に切り替える。演出が終わったあとは切り替えない
-    if (this.entrance && root.BossArt) { var BA = root.BossArt; this.b.enemies.forEach(function (e) { if (e._vis && e._vis.source !== 'bossart' && BA.wants(e.defId) && BA.get(e.defId)) { delete e._vis; delete e._sil; } }); }
+    if (this.entrance && root.BossArt) { var BA = root.BossArt; this.b.enemies.forEach(function (e) { if (e._vis && e._vis.source !== 'bossart' && BA.wants(e.defId) && BA.get(e.defId)) { delete e._vis; delete e._sil; delete e._tint; } }); }
     if (this.entrance) { if (this.entrance.delay > 0) this.entrance.delay -= dt; else { this.entrance.t += dt; if (this.entrance.t >= this.entrance.dur) this.entrance = null; } }
     if (this.victory >= 0) { this.victory += dt; if (Math.random() < 0.5) this.particles.push({ x: Math.random() * 640, y: -10, vx: (Math.random() - 0.5) * 40, vy: 60 + Math.random() * 80, c: ['#ffd24a', '#ff8ab0', '#7fe3a5', '#9fd4ff', '#fff'][Math.floor(Math.random() * 5)], t: 0 }); }
     this.particles = this.particles.filter(function (p) { p.t += dt; p.x += p.vx * dt / 1000; p.y += p.vy * dt / 1000; return p.t < 4000; });
@@ -194,6 +194,12 @@
     var S3p = root.BattleStage3D; if (this._stage3d && S3p && S3p.partyPos) { var pp3 = S3p.partyPos(this, pid, W, H); if (pp3) return pp3; }   // 3D版 Phase 2：3Dの味方の位置
     return { x: (W / (b.party.length + 1)) * (pi + 1), y: H * 0.7 };   // 味方の欄（画面の下）に隠れない高さ
   };
+  // v9.3 足もとの位置（魔法陣を描く場所）：敵＝絵の足もと（地面の線）、味方・ポン太＝位置の少し下
+  BattleScene.prototype.footOf = function (k, W, H) {
+    var m = /^e:(\d+)$/.exec(k || '');
+    if (m) { var i = +m[1]; if (!this.b.enemies[i] || !this.view.e[i]) return null; var r = this.enemyRect(i, W, H); return { x: r.x + r.w / 2, y: r.from3d ? r.y + r.h : r.y + r.h + (r.lift || 0) - (r.foot || 0) }; }
+    var p = this.posOf(k, W, H); return p ? { x: p.x, y: p.y + (this._stage3d ? 18 : 30) } : null;
+  };
   // v6.8 神聖犬ポン太（4人とは別枠）：2D版では画面の右下（味方の欄の上）に小さく立つ。3D版で3Dの舞台に描いているときは描かない
   BattleScene.prototype.petRect = function (W, H) {
     if (!this.b || !this.b.pet) return null; var img = root.Assets && root.Assets.image ? root.Assets.image('companions', this.b.pet.id) : null;
@@ -215,7 +221,7 @@
     if (!this.bg && this.bg65) { try { this.bg = root.BattleBG65.render(this.bg65, W, H); } catch (e) { this.bg = null; this.bg65 = null; } if (!this.bg) this.bg65 = null; }
     if (!this.bg) this.bg = BattleBG.render(this.theme, W, H, root.State.data ? root.State.data.timeOfDay : undefined);
     ctx.save();
-    if (this.screenShake > 0) ctx.translate(Math.round((Math.random() - 0.5) * 10), Math.round((Math.random() - 0.5) * 6));
+    if (this.screenShake > 0) { var ssa = Math.min(1, this.screenShake / 220); ctx.translate(Math.round((Math.random() - 0.5) * 10 * ssa), Math.round((Math.random() - 0.5) * 6 * ssa)); }   // v9.3 揺れの終わりは小さく
     // v6.5 Phase D 3D版：3Dの戦闘の舞台（BattleStage3D。3D版のページだけにある）が描けたら、それを背景にする。描けなければ2Dの背景
     var stage = null; if (this.bg65 && root.BattleStage3D && !this.no3d) { try { stage = root.BattleStage3D.frame(this, W, H); } catch (e) { stage = null; this.no3d = true; if (root.console) console.warn('3D battle stage', e); } }
     if (stage) ctx.drawImage(stage, 0, 0, W, H); else { ctx.drawImage(this.bg, 0, 0); var bf = this.bgFade; if (bf) { var fa = 1 - (Date.now() - bf.t) / 350; if (fa > 0) { ctx.globalAlpha = fa; ctx.drawImage(bf.from, 0, 0); ctx.globalAlpha = 1; } else this.bgFade = null; } }
@@ -244,9 +250,20 @@
       var r = self.enemyRect(i, W, H); var x = r.x, y = r.y, size = r.w, hh = r.h;
       var sh = self.shake[i]; if (sh && sh > 0) { x += Math.sin(sh / 20) * 6; self.shake[i] = sh - 16; }
       var lunge = self.anims.filter(function (a) { return a.type === 'lunge' && a.idx === i; })[0];
-      if (lunge) { var lp = lunge.t / lunge.dur; y += Math.sin(lp * Math.PI) * 34; }
+      var mScale = 1;   // v9.3 動きによる大きさ（踏み込み＝近づいて大きく、構え＝少し小さく、雄たけび＝ふくらむ）
+      if (lunge) { var lp = lunge.t / lunge.dur; y += Math.sin(lp * Math.PI) * 34; mScale *= 1 + 0.14 * Math.sin(lp * Math.PI); }
+      // v9.3 敵の行動の動き（演出のデータの motion）：呪文・祈り＝浮いて体が光る／雄たけび＝ふくらんで光る／そのほか（攻撃）＝構えで少し引く
+      var mo = self.emo && self.emo[i], mk = mo ? self.t - mo.t0 : 0, glowA = 0;
+      if (mo && mk > mo.total + 240) { delete self.emo[i]; mo = null; }
+      if (mo) {
+        if (mo.m === 'cast' || mo.m === 'pray') { glowA = Math.min(1, mk / 150) * (mk < mo.hit ? 1 : Math.max(0, 1 - (mk - mo.hit) / 240)); y -= 6 * glowA; }
+        else if (mo.m === 'shout') { var sq93 = Math.min(1, mk / Math.max(1, mo.hit)); mScale *= 1 + 0.12 * Math.sin(sq93 * Math.PI); glowA = 0.7 * Math.sin(sq93 * Math.PI); }
+        else if (mk < mo.windup) { var wq93 = mk / Math.max(1, mo.windup); y -= 8 * wq93; mScale *= 1 - 0.04 * wq93; }
+      }
+      var rc = self.anims.filter(function (a) { return a.type === 'recoil' && a.idx === i; })[0];   // v9.3 当たった反動（会心は大きく）
+      if (rc) { var rs = Math.sin(rc.t / rc.dur * Math.PI); y -= rs * (rc.crit ? 12 : 6); mScale *= 1 - rs * (rc.crit ? 0.08 : 0.04); }
       var appear = self.anims.filter(function (a) { return a.type === 'appear' && a.idx === i; })[0];
-      var bob = Math.sin(self.t / 500 + i) * 2; var breathe = 1 + Math.sin(self.t / 600 + i) * 0.015;
+      var bob = Math.sin(self.t / 500 + i) * 2; var breathe = (1 + Math.sin(self.t / 600 + i) * 0.015) * mScale;
       if (ent) { var ease = 1 - Math.pow(1 - entP, 3); y += (1 - ease) * 120; breathe = 1 + (1 - ease) * 0.6; }
       var by3d = !!(self._stage3d && root.BattleStage3D && root.BattleStage3D.drawn && root.BattleStage3D.drawn(self, i));   // 3D版 Phase 2：3Dのモデルで描いている敵は、2Dの絵・影を描かない（HPバー・名前・演出は描く）
       if (by3d && dying) return;
@@ -265,6 +282,7 @@
         var lf = r.lift || 0; ctx.fillStyle = lf ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(cx, y + hh + 2 + lf - (r.foot || 0), size * (lf ? 0.28 : 0.38), lf ? 4 : 6, 0, 0, Math.PI * 2); ctx.fill();
         ctx.imageSmoothingEnabled = !!r.smooth; if (r.smooth) ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(img, Math.round(x), Math.round(y + bob), size, hh);
+        if (glowA > 0.02 && mo && mo.col) { var tc93 = enemyTint(e, mo.col); if (tc93) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = alpha * glowA * (0.42 + 0.14 * Math.sin(self.t / 70)); ctx.drawImage(tc93, Math.round(x), Math.round(y + bob), size, hh); ctx.restore(); } }   // v9.3 体が光る
         var hf = self.anims.filter(function (a) { return a.type === 'hitflash' && a.idx === i; })[0];
         if (hf) { ctx.globalAlpha = alpha * (1 - hf.t / hf.dur) * 0.9; ctx.drawImage(enemySilhouette(e), Math.round(x), Math.round(y + bob), size, hh); }
       }
@@ -364,6 +382,11 @@
   function enemySilhouette(e) {
     if (e._sil) return e._sil; var v = enemyVisual(e);
     var c = document.createElement('canvas'); c.width = v.w; c.height = v.h; var x = c.getContext('2d'); x.imageSmoothingEnabled = !!v.smooth; x.drawImage(v.img, 0, 0, v.w, v.h); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); e._sil = c; return c;
+  }
+  // v9.3 敵の絵を 1 色に塗ったもの（呪文・雄たけびで体が光るとき）。色が変わったら作り直す
+  function enemyTint(e, col) {
+    var v = enemyVisual(e); if (!v || !v.img) return null; if (e._tint && e._tint.col === col && e._tint.img === v.img) return e._tint.c;   // 絵が差し替わったら作り直す
+    try { var c = document.createElement('canvas'); c.width = v.w; c.height = v.h; var x = c.getContext('2d'); if (!x) return null; x.imageSmoothingEnabled = !!v.smooth; x.drawImage(v.img, 0, 0, v.w, v.h); x.globalCompositeOperation = 'source-in'; x.fillStyle = col; x.fillRect(0, 0, c.width, c.height); e._tint = { col: col, img: v.img, c: c }; return c; } catch (err) { return null; }
   }
   BattleUI.enemyVisual = enemyVisual;
   function drawFx(ctx, a, cx, cy) {
@@ -695,15 +718,17 @@
   function showHit(scene, b, e, shakeIds) {
     if (e.type === 'damage' && e.side === 'enemy') {
       scene.shake[e.idx] = 240; if (!scene.fxOn) scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim || 'hit', t: 0, dur: 420 }); if (e.value > 0) scene.anims.push({ type: 'hitflash', idx: e.idx, t: 0, dur: 160 });
+      if (e.value > 0) { scene.anims.push({ type: 'recoil', idx: e.idx, crit: !!e.crit, t: 0, dur: e.crit ? 300 : 200 }); if ((e.crit || e.weak) && root.FX2D && root.FX2D.hit) root.FX2D.hit(scene, 'e:' + e.idx, { crit: e.crit, weak: e.weak }); }   // v9.3 反動・会心／弱点の光
       scene.pops.push({ side: 'enemy', idx: e.idx, text: e.value === 0 ? 'MISS' : String(e.value), color: e.crit ? '#ffd24a' : e.weak ? '#ff8a3a' : '#fff', crit: e.crit, t: 0 });
       if (root.Audio) root.Audio.sfx(e.crit ? 'crit' : 'hit');
     } else if (e.type === 'damage') {
       var idx = b.party.map(function (p) { return p.id; }).indexOf(e.id); scene.pops.push({ side: 'party', idx: idx, text: String(e.value), color: '#ffb0b0', t: 0 }); scene.flash = 120;
       if (!scene.fxOn) scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim || 'hit', t: 0, dur: 400 }); if (root.Audio) root.Audio.sfx('hurt'); shakeIds.push(e.id);
+      if (e.value > 0) { cardFlash(e.id, e.crit ? 'hurt-big' : 'hurt', e.crit ? 520 : 380); if (e.crit && root.FX2D && root.FX2D.hit) root.FX2D.hit(scene, 'p:' + e.id, { crit: true }); }   // v9.3 欄が赤く光る
     } else if (e.type === 'heal' && e.side === 'enemy') {
       scene.pops.push({ side: 'enemy', idx: e.idx, text: '+' + e.value, color: '#7fe3a5', t: 0 }); if (!scene.fxOn) scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal');
     } else if (e.type === 'heal') {
-      var hi = b.party.map(function (p) { return p.id; }).indexOf(e.id); scene.pops.push({ side: 'party', idx: hi, text: '+' + e.value, color: '#7fe3a5', t: 0 }); if (!scene.fxOn) scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal');
+      var hi = b.party.map(function (p) { return p.id; }).indexOf(e.id); cardFlash(e.id, 'healed', 520); scene.pops.push({ side: 'party', idx: hi, text: '+' + e.value, color: '#7fe3a5', t: 0 }); if (!scene.fxOn) scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'heal', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal');
     }
   }
   // v6.5 Phase C：行動ごとの演出を始める。演出のデータ（js/data/fx65.js）と時刻表で、2D の描画（js/ui/fx2d.js）と 3D の描画（Phase D）が同じ時刻に合わせる
@@ -728,6 +753,28 @@
       return { tl: tl, start: Date.now(), k: 0, def: def };
     } catch (err) { if (root.console) console.warn('FX', err); return null; }
   }
+  // v9.3 使う人の動き：味方＝欄が技の動き（振る・突く・振り下ろす・射る・唱える・祈る・殴る・ひっかく・駆ける・投げる・構える・叫ぶ）で動く
+  //   敵＝絵が動く（呪文・祈り＝浮いて光る、雄たけび＝ふくらむ、攻撃＝構えで引いてから踏み込む）。動きの山は命中の瞬間（時刻表）に合わせる
+  var MOTIONS = { swing: 1, thrust: 1, chop: 1, shoot: 1, cast: 1, pray: 1, punch: 1, claw: 1, dash: 1, throw: 1, guard: 1, shout: 1, bash: 1 };
+  var MOT_CLS = Object.keys(MOTIONS).map(function (k) { return 'mo-' + k; });
+  function actorMotion(scene, e, fx) {
+    var def = fx.def || {}, tl = fx.tl, col = def.color && def.color !== '#ffffff' ? def.color : (def.color2 || '#ffd24a');
+    if (e.side === 'enemy') { scene.emo = scene.emo || {}; scene.emo[e.idx] = { m: def.motion || 'lunge', col: col, t0: scene.t, windup: tl.windup, hit: tl.hitAt, total: tl.total }; return; }
+    if (e.side !== 'party') return;
+    var el = document.querySelector('#battle-party .bp[data-id="' + e.id + '"]'); if (!el) return;
+    var m = MOTIONS[def.motion] ? def.motion : 'swing';
+    MOT_CLS.forEach(function (c) { el.classList.remove(c); }); void el.offsetWidth;
+    el.style.setProperty('--fx-col', col); el.style.setProperty('--fx-dur', Math.max(160, Math.round(tl.total)) + 'ms');
+    el.classList.add('mo-' + m);
+    clearTimeout(el._mo93); el._mo93 = setTimeout(function () { el.classList.remove('mo-' + m); }, Math.round(tl.total) + 60);
+  }
+  // v9.3 味方の欄が光る（当たった＝赤、会心で当たった＝赤く大きく、回復＝緑、生き返る＝金）
+  function cardFlash(id, cls, ms) {
+    var el = document.querySelector('#battle-party .bp[data-id="' + id + '"]'); if (!el) return;
+    if (cls === 'hurt-big' && root.FX2D && root.FX2D.Rich && root.FX2D.Rich.level() === 'calm') cls = 'hurt';   // 控えめ：大きく揺らさない
+    ['hurt', 'hurt-big', 'healed', 'revived'].forEach(function (c) { el.classList.remove(c); }); void el.offsetWidth; el.classList.add(cls);
+    clearTimeout(el._fl93); el._fl93 = setTimeout(function () { el.classList.remove(cls); }, ms || 420);
+  }
   function hitAhead(ev, i) { for (var j = i + 1; j < ev.length && ev[j].type !== 'act'; j++) if (ev[j].type === 'damage' || ev[j].type === 'heal') return true; return false; }
   async function waitUntil(ms) { var dt = ms - Date.now(); if (dt > 0) await Win.sleep(dt); }
   async function playEvents(b, ev, scene) {
@@ -743,6 +790,7 @@
         if (e.side === 'pet') scene.petActT = Date.now();   // v6.8 ポン太が跳ねる（2D）
         if (e.side === 'party' && e.kind === 'ultimate' && root.ChartBattleUI && U) { try { await root.ChartBattleUI.cutin(U.get(e.ultId), e.ultOutcome); } catch (err) { /* 演出だけ */ } }   // 必殺技の名前の帯
         fxs = startFx(b, ev, i, e, scene, fast); scene.fxOn = !!fxs;
+        if (fxs) actorMotion(scene, e, fxs);   // v9.3 使う人の動き（味方の欄・敵の絵）
         if (fxs) { if (BattleUI.timeline) BattleUI.timeline.push({ type: 'fx', fx: fxs.def.fx, hitAt: fxs.tl.hitAt, impacts: fxs.tl.impacts.slice(), total: fxs.tl.total, t: fxs.start, to: (scene.fx65 && scene.fx65.length ? scene.fx65[scene.fx65.length - 1].to.length : 0) }); await waitUntil(fxs.start + fxs.tl.windup); }   // 構え（使う人の動き）
         else if (e.side === 'party') await Win.sleep(sp(150, 70));
         continue;
@@ -770,7 +818,7 @@
         if (isBoss) { scene.screenShake = 900; scene.flash = 300; } if (root.Audio) root.Audio.sfx('die'); await Win.sleep(sp(dur, Math.round(dur * 0.5)));
       }
       else if (e.type === 'actor_dead') { setView(scene, e, b); await Win.sleep(sp(300, 150)); }
-      else if (e.type === 'revive') { setView(scene, e, b); scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'light', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal'); await Win.sleep(sp(320, 150)); }
+      else if (e.type === 'revive') { setView(scene, e, b); if (e.id) cardFlash(e.id, 'revived', 700); scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'light', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal'); await Win.sleep(sp(320, 150)); }
       else if (e.type === 'trial') {
         setView(scene, e, b);
         var enemy = b.enemies[e.idx];
@@ -791,7 +839,7 @@
     actingCard(null);
     scene.view = Combat.snapshot(b); renderParty(b, scene.view);   // 再生し終えたら計算上の最終状態と一致させる
   }
-  BattleUI.playEvents = playEvents;
+  BattleUI.playEvents = playEvents; BattleUI._actorMotion = actorMotion;   // v9.3 確かめ用（docs/tools/rpg93/browser/fx93_browser.js）
 
   root.BattleUI = BattleUI;
 })(typeof window !== 'undefined' ? window : globalThis);

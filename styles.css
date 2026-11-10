@@ -1083,3 +1083,39 @@ body.mobile .rw-logbtn { top: -34px; padding: 6px 14px; font-size: 12px; }
 .bl-foot { margin-top: 6px; }
 body.mobile .bl-foot { display: none; }
 .rw-item.eff-weak .r { color: #ffb05a; font-weight: bold; } .rw-item.eff-resist .r { color: #9fb8d8; } .rw-item.eff-immune .r { color: #ff8a8a; }
+/* ===== v9.3 戦闘の演出：味方の欄の動き（技の動きごと。山は命中の瞬間ごろ。長さ＝演出の時刻表 --fx-dur）・当たった／回復した光 ===== */
+.bp { --fx-col: #ffd24a; --fx-dur: 600ms; }
+.bp.mo-swing { animation: mo-swing var(--fx-dur) ease-out; }
+@keyframes mo-swing { 0% { transform: translateY(-6px); } 30% { transform: translate(-5px,-10px) rotate(-4deg); } 48% { transform: translate(7px,-15px) rotate(5deg); } 70% { transform: translate(2px,-8px) rotate(1deg); } 100% { transform: translateY(-6px); } }
+.bp.mo-thrust, .bp.mo-dash, .bp.mo-bash { animation: mo-thrust var(--fx-dur) cubic-bezier(.2,.8,.3,1); }
+@keyframes mo-thrust { 0% { transform: translateY(-6px); } 30% { transform: translateY(-2px) scale(.97); } 46% { transform: translateY(-20px) scale(1.05); } 70% { transform: translateY(-10px); } 100% { transform: translateY(-6px); } }
+.bp.mo-chop { animation: mo-chop var(--fx-dur) ease-in; }
+@keyframes mo-chop { 0% { transform: translateY(-6px); } 35% { transform: translateY(-18px) rotate(-3deg); } 48% { transform: translateY(2px) rotate(2deg) scale(1.03); } 62% { transform: translateY(-4px); } 100% { transform: translateY(-6px); } }
+.bp.mo-shoot, .bp.mo-throw { animation: mo-shoot var(--fx-dur) ease-out; }
+@keyframes mo-shoot { 0% { transform: translateY(-6px); } 30% { transform: translateY(-1px) scale(.97); } 42% { transform: translateY(-14px) scale(1.03); } 100% { transform: translateY(-6px); } }
+.bp.mo-punch, .bp.mo-claw { animation: mo-punch var(--fx-dur) linear; }
+@keyframes mo-punch { 0% { transform: translateY(-6px); } 20% { transform: translate(-3px,-12px); } 30% { transform: translate(3px,-4px); } 42% { transform: translate(-3px,-13px); } 54% { transform: translate(3px,-4px); } 66% { transform: translate(-2px,-12px); } 100% { transform: translateY(-6px); } }
+.bp.mo-cast, .bp.mo-pray { animation: mo-cast var(--fx-dur) ease-in-out; }
+@keyframes mo-cast { 0% { transform: translateY(-6px); box-shadow: 0 0 10px rgba(232,193,90,.55); } 45% { transform: translateY(-12px); box-shadow: 0 0 16px 4px var(--fx-col); } 100% { transform: translateY(-6px); box-shadow: 0 0 10px rgba(232,193,90,.55); } }
+.bp.mo-shout { animation: mo-shout var(--fx-dur) ease-out; }
+@keyframes mo-shout { 0% { transform: translateY(-6px); } 40% { transform: translateY(-10px) scale(1.08); box-shadow: 0 0 18px 4px var(--fx-col); } 100% { transform: translateY(-6px); } }
+.bp.mo-guard { animation: mo-guard var(--fx-dur) ease-out; }
+@keyframes mo-guard { 0% { transform: translateY(-6px); } 40% { transform: translateY(-8px) scale(1.03); box-shadow: 0 0 0 2px var(--fx-col), 0 0 16px 2px var(--fx-col); } 100% { transform: translateY(-6px); } }
+.bp::before, .bp::after { content: ''; position: absolute; inset: 0; border-radius: 4px; pointer-events: none; opacity: 0; }
+.bp::after { background: radial-gradient(ellipse at 50% 115%, var(--fx-col), transparent 70%); mix-blend-mode: screen; }
+.bp.mo-cast::after, .bp.mo-pray::after, .bp.mo-shout::after, .bp.mo-guard::after { animation: mo-veil var(--fx-dur) ease-out; }
+@keyframes mo-veil { 0% { opacity: 0; } 40% { opacity: .85; } 100% { opacity: 0; } }
+.bp.hurt::before { background: rgba(255,60,60,.5); animation: bp-flash .38s ease-out; }
+.bp.hurt-big::before { background: rgba(255,40,40,.65); animation: bp-flash .52s ease-out; }
+.bp.shake.hurt-big { animation: shake-big .45s; }
+.bp.healed::before { background: rgba(127,227,165,.5); animation: bp-flash .5s ease-out; }
+.bp.revived::before { background: rgba(255,214,90,.6); animation: bp-flash .7s ease-out; }
+@keyframes bp-flash { 0% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes shake-big { 0%,100% { transform: translateX(0); } 20% { transform: translate(-9px,2px); } 40% { transform: translate(8px,-2px); } 60% { transform: translate(-6px,1px); } 80% { transform: translate(4px,0); } }
+@media (prefers-reduced-motion: reduce) { .bp.mo-swing, .bp.mo-thrust, .bp.mo-dash, .bp.mo-bash, .bp.mo-chop, .bp.mo-shoot, .bp.mo-throw, .bp.mo-punch, .bp.mo-claw, .bp.mo-cast, .bp.mo-pray, .bp.mo-shout, .bp.mo-guard, .bp.shake.hurt-big { animation: none; } }
+/* 3D 版（PC。味方は 3D の体が動くので、右下の小さな一覧は光るだけにする） */
+body.g3-front:not(.mobile) #battle-party .bp.mo-swing, body.g3-front:not(.mobile) #battle-party .bp.mo-thrust, body.g3-front:not(.mobile) #battle-party .bp.mo-dash, body.g3-front:not(.mobile) #battle-party .bp.mo-bash,
+body.g3-front:not(.mobile) #battle-party .bp.mo-chop, body.g3-front:not(.mobile) #battle-party .bp.mo-shoot, body.g3-front:not(.mobile) #battle-party .bp.mo-throw, body.g3-front:not(.mobile) #battle-party .bp.mo-punch,
+body.g3-front:not(.mobile) #battle-party .bp.mo-claw, body.g3-front:not(.mobile) #battle-party .bp.mo-cast, body.g3-front:not(.mobile) #battle-party .bp.mo-pray, body.g3-front:not(.mobile) #battle-party .bp.mo-shout,
+body.g3-front:not(.mobile) #battle-party .bp.mo-guard { animation-name: mo-glow3; }
+@keyframes mo-glow3 { 0%, 100% { box-shadow: 0 0 10px rgba(232,193,90,.55); } 45% { box-shadow: 0 0 14px 3px var(--fx-col); } }

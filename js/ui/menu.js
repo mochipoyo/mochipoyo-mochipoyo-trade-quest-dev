@@ -790,6 +790,7 @@
       { cat: 'ctrl', label: 'スマホの操作ボタンの濃さ', key: 'padOpacity', def: 1, opts: [{ v: 1, l: 'ふつう' }, { v: 0.75, l: 'うすい' }, { v: 0.5, l: 'とてもうすい' }] },
       { cat: 'ctrl', label: 'スマホの操作ボタンの大きさ', key: 'padScale', def: 1, opts: [{ v: 0.85, l: '小さい' }, { v: 1, l: 'ふつう' }, { v: 1.15, l: '大きい' }] },
       { cat: 'battle', label: '戦闘速度', key: 'battleSpeed', def: 'normal', opts: [{ v: 'normal', l: 'ふつう' }, { v: 'fast', l: 'はやい' }, { v: 'veryfast', l: 'とてもはやい' }] },   // v9.3 とてもはやい
+      { cat: 'battle', label: '戦闘の演出', key: 'battleFx', def: 'auto', opts: [{ v: 'auto', l: '自動（はなやか。端末の「動きを減らす」のときは控えめ）' }, { v: 'rich', l: 'はなやか' }, { v: 'calm', l: '控えめ（画面の揺れ・光を抑える）' }], set: function (v) { if (v === 'auto') delete st.battleFx; else st.battleFx = v; }, note: '呪文・特技の光・粒・魔法陣・画面の揺れ。控えめは画面の揺れ・画面全体の光をなくし、粒を減らす' },   // v9.3
       { cat: 'battle', label: '呪文・特技の効き目の表示', key: 'effHint', def: 'on', opts: [{ v: 'on', l: '表示する' }, { v: 'off', l: '表示しない' }], note: '技・対象を選ぶときに「ばつぐん／いまいち／きかない」を出す' },   // v9.3
       { cat: 'battle', label: 'チャート試練のリスク%', key: 'riskPercent', opts: root.CONFIG.risk.riskOptions.map(function (v) { return { v: v, l: v + '%' }; }) },
       { cat: 'battle', label: 'ZigZag表示', key: 'showZigzag', opts: [{ v: true, l: 'ON' }, { v: false, l: 'OFF' }] },
