@@ -802,6 +802,8 @@
       { cat: 'data', label: 'データ管理（書き出し・読み込み・初期化）', action: 'data' },
       { cat: 'data', label: 'タイトルに戻る', action: 'title' }
     ];
+    // v9.3 iPhone・iPad の Safari（音の扱いを選べるブラウザだけ表示）：マナーモード（消音）のとき、このゲームの音（WebAudio）は鳴らない。ON にすると動画と同じように鳴らす
+    if (root.navigator && root.navigator.audioSession) { var si = L.map(function (x) { return x.cat; }).lastIndexOf('sound'); L.splice(si + 1, 0, { cat: 'sound', label: 'マナーモード（消音）でも鳴らす', key: 'silentPlay', def: 'off', opts: [{ v: 'off', l: 'OFF（消音なら鳴らさない）' }, { v: 'on', l: 'ON（動画と同じように鳴らす）' }], after: function () { if (A) A.apply(); }, note: 'iPhone・iPad の Safari 向け。ON のとき、ほかのアプリの音楽は止まることがある' }); }
     if (Menu.extraSettings) Menu.extraSettings(L, st);   // 後の段階（チャート・スマホ操作）で足す項目
     return L;
   };

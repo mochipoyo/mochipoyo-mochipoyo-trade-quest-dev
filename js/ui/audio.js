@@ -34,24 +34,28 @@
   function parse(s) { var t = s.trim().split(/\s+/); var out = []; for (var i = 0; i < t.length; i += 2) out.push([t[i], parseFloat(t[i + 1])]); return out; }
 
   Audio.init = function () {
-    document.addEventListener('pointerdown', Audio.unlock, { once: false });
-    document.addEventListener('keydown', Audio.unlock, { once: false });
+    // v9.3 スマホ（タッチ）では、指を置いた瞬間（pointerdown）は「操作」に数えられず、音を出す許可が下りない（指を離したとき＝pointerup・touchend・click が操作）。
+    //   そのため、どれでも呼ぶ（許可が下りるまで、毎回もう一度試す）
+    ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach(function (ev) { document.addEventListener(ev, Audio.unlock, { passive: true }); });
   };
   Audio.unlock = function () {
     try {
       if (!Audio.ctx) { Audio.ctx = new (root.AudioContext || root.webkitAudioContext)(); Audio.master = Audio.ctx.createGain(); Audio.master.connect(Audio.ctx.destination); Audio.bgmGain = Audio.ctx.createGain(); Audio.bgmGain.connect(Audio.master); Audio.seGain = Audio.ctx.createGain(); Audio.seGain.connect(Audio.master); }
-      if (Audio.ctx.state === 'suspended') Audio.ctx.resume();
+      if (Audio.ctx.state !== 'running' && Audio.ctx.resume) { var rs = Audio.ctx.resume(); if (rs && rs.catch) rs.catch(function () { }); }
       Audio.unlocked = true; primeFiles(); Audio.apply();
       if (Audio.pending) { var p = Audio.pending; Audio.pending = null; Audio.playBgm(p); }
+      else if (FILE.cur) { var ce = FILE.els[FILE.act]; if (ce && ce.paused) { try { var pr = ce.play(); if (pr && pr.catch) pr.catch(function () { }); } catch (e2) { } } }   // v9.3 前に許可が下りずに止まっていた曲を、この操作でもう一度
     } catch (e) { /* 音なしで続行 */ }
   };
   // v9.3 タイトル画面の［♪ 音］：セーブを読む前（タイトル）の音の ON／OFF。この端末に覚える（localStorage 'mtq-title-sound'）。新しいゲームの初期値にもなる
-  Audio.titleSound = function () { try { return root.localStorage && root.localStorage.getItem('mtq-title-sound') === 'on'; } catch (e) { return false; } };
+  //   v9.3 修正：まだ選んでいない（記録がない）ときは ON（最初のクリック・タップから BGM が鳴る。［♪ 音］で OFF にできる）
+  Audio.titleSound = function () { try { return !root.localStorage || root.localStorage.getItem('mtq-title-sound') !== 'off'; } catch (e) { return true; } };
   Audio.setTitleSound = function (on) { try { root.localStorage.setItem('mtq-title-sound', on ? 'on' : 'off'); } catch (e) { } Audio.apply(); if (on && Audio.lastKey) { var k = Audio.lastKey; Audio.current = null; Audio.playBgm(k); } };
   Audio.settings = function () { return (root.State && root.State.data) ? root.State.data.settings : { mute: !Audio.titleSound(), bgm: 0.5, se: 0.5 }; };
   Audio.apply = function () {
     if (!Audio.ctx) return; var s = Audio.settings();
     Audio.master.gain.value = s.mute ? 0 : 1; Audio.bgmGain.gain.value = s.bgm * 0.25; Audio.seGain.gain.value = s.se * 0.5;
+    try { var AS = root.navigator && root.navigator.audioSession; if (AS) AS.type = s.silentPlay === 'on' && !s.mute ? 'playback' : 'auto'; } catch (e) { }   // v9.3 iPhone・iPad の Safari：設定「マナーモードでも鳴らす」
     if (s.mute && FILE.cur) { var k0 = Audio.lastKey; fileStop(); Audio.current = null; Audio.pending = k0; }   // v9.3 音を消したら曲の読み込み・再生も止める（次に音を出したときに続きから）
     if (!s.mute && !Audio.current && Audio.pending) { var p = Audio.pending; Audio.pending = null; Audio.playBgm(p); }
   };
@@ -66,14 +70,20 @@
   var FILE = { els: [], gains: [], act: 0, cur: null, pos: {}, failed: {}, primed: false };
   Audio.FILE = FILE;
   Audio.fileMode = function () { var s = Audio.settings(); return !!root.BGM93 && s.bgmKind !== 'retro' && !Audio.noFile; };
+  // 無音を一度鳴らす（その再生器に、あとで曲を流す許可をもらう）。許可が下りなかったら、次の操作でもう一度
+  function primeOne(el) {
+    if (el._ok) return; if (el.getAttribute('src') !== SILENT) { el._ok = true; return; }
+    try { var pr = el.play(); if (pr && pr.then) pr.then(function () { el._ok = true; if (el.getAttribute('src') === SILENT) try { el.pause(); } catch (e) { } }, function () { }); else el._ok = true; } catch (e) { }
+  }
   function primeFiles() {
-    if (FILE.els.length || !root.document) return;
+    if (!root.document) return;
+    if (FILE.els.length) { FILE.els.forEach(primeOne); return; }
     for (var i = 0; i < 2; i++) {
       var el = document.createElement('audio'); el.preload = 'auto'; el.loop = true; var g = null;
       try { var node = Audio.ctx.createMediaElementSource(el); g = Audio.ctx.createGain(); g.gain.value = 0; node.connect(g); g.connect(Audio.bgmGain); } catch (e) { g = null; }
       (function (el) { el.addEventListener('error', function () { var id = el._id; if (!id || !el.getAttribute('src') || el.getAttribute('src') === SILENT) return; FILE.failed[id] = true; if (FILE.cur === id) { var k = Audio.lastKey; FILE.cur = null; Audio.current = null; retroPlay(k); } }); })(el);
       FILE.els.push(el); FILE.gains.push(g);
-      try { el.src = SILENT; var pr = el.play(); if (pr && pr.then) (function (el) { pr.then(function () { if (el.getAttribute('src') === SILENT) try { el.pause(); } catch (e) { } }, function () { }); })(el); } catch (e) { }   // 最初のタップの中で一度鳴らす（無音。鳴らせたら止める＝無音をくり返し再生し続けない）
+      try { el.src = SILENT; primeOne(el); } catch (e) { }   // 最初のタップの中で一度鳴らす（無音。鳴らせたら止める＝無音をくり返し再生し続けない）
     }
   }
   var LOUD = 3.2;   // 曲（MP3）の音量の倍率：BGM の音量（設定）× 0.25 × 3.2 ＝ 設定 × 0.8

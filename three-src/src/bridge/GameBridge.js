@@ -104,6 +104,7 @@ export class App3D {
     if (S.slotInfo(k + 1)) { const c = await Win.choice('3D版のスロット' + (k + 1) + 'を上書きする？（2D版のセーブは変わらない）', ['上書きする', 'やめる']); if (c !== 0) return false; }
     S.data = d; S.save(k + 1);
     await Win.message(['2D版のセーブを3D版のスロット' + (k + 1) + 'にコピーした。', '2D版のセーブデータはそのまま残っている。']);
+    if (G.Title && G.Title.soundAsk93) await G.Title.soundAsk93();   // v9.3 音を消しているセーブなら、1 回だけ音を出すか聞く（js/ui/title.js）
     G.World.start(); return true;
   }
   attach(scene) {

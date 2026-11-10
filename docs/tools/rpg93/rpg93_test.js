@@ -1,6 +1,6 @@
 // v9.3 RPG の快適さの確かめ（jsdom。実機・実ブラウザではない。見た目・音・読み込みの速さは browser/ の確かめ・測り方で）
 //   node docs/tools/rpg93/rpg93_test.js [2d]
-//   A 戦闘のテンポ（とてもはやい）  B 仲間ごとの作戦  C まんたん  D 効き目の表示  E 会話の履歴  F BGM  G 戦闘の演出  H 読み込み  I セーブの互換
+//   A 戦闘のテンポ（とてもはやい）  B 仲間ごとの作戦  C まんたん  D 効き目の表示  E 会話の履歴  F BGM  G 戦闘の演出  H 読み込み  I セーブの互換  J 音の出だし
 const path = require('path'); const fs = require('fs'); const cp = require('child_process'); const load = require(path.resolve(__dirname, '../v78/load78.js'));
 const ROOT = path.resolve(__dirname, '../../..') + '/';
 const two = process.argv.includes('2d'); const A = load(two ? { earth: false, join: false } : {}); const w = A.w; const doc = w.document;
@@ -164,6 +164,21 @@ function clean() { doc.querySelectorAll('#ui > *').forEach((n) => n.remove()); E
   T(!!okLoad && State.data && State.partyActors().every((a) => Combat.tacticOf(a) === 'balance') && w.FX2D.Rich.level() === 'rich' && w.BattleUI.speed() === 'normal', '前の版のセーブ（作戦・新しい設定なし）を読み込める（作戦＝バランスよく・演出＝はなやか）');
   T(!!k3 && (two ? /^mtq-rpg-v2-slot-3$/.test(k3) : /slot-3$/.test(k3)), 'セーブの場所（LocalStorage のキー）は今までどおり（' + k3 + '）');
   T(!Object.keys(w.localStorage).some((k) => /mtq-title-sound/.test(k)), 'タイトルの音の設定は、切り替えたときだけ保存する');
+
+  console.log('-- J 音の出だし（v9.3 修正：「BGM が流れない」）');
+  const AU = w.Audio; w.localStorage.removeItem('mtq-title-sound');
+  T(AU.titleSound() === true, 'タイトルの音：まだ選んでいないときは ON（最初のクリック・タップから鳴る）');
+  w.localStorage.setItem('mtq-title-sound', 'off'); T(AU.titleSound() === false, 'タイトルで OFF にしたら OFF のまま'); w.localStorage.removeItem('mtq-title-sound');
+  const sv = State.data; State.data = null; State.newGame('音', 'warrior'); T(State.data.settings.mute === false, '新しいゲームは音あり（タイトルの音が ON のとき）'); State.data = sv;
+  const asrc = src('js/ui/audio.js'); T(/'pointerup', 'touchend', 'click'/.test(asrc), 'スマホ：指を離したとき（pointerup・touchend・click）にも音の許可をもらう');
+  // 音を消しているセーブを読んだとき：1 回だけ聞く
+  clean(); State.data.settings.mute = true; delete State.data.settings.soundAsk93;
+  const q1 = settle(w.Title.soundAsk93()); await frames(3);
+  const chTxt = top() ? top().textContent : ''; T(/音を出す/.test(chTxt) && /音なしのまま/.test(chTxt), '音を消しているセーブ：「音を出す／音なしのまま」を聞く');
+  await press('ok'); await frames(4); T(q1.done && State.data.settings.mute === false && State.data.settings.soundAsk93 === true, '「音を出す」で音が出る設定になり、聞いたことを覚える');
+  State.data.settings.mute = true; const q2 = settle(w.Title.soundAsk93()); await frames(3); T(q2.done && !(top() && /音を出す/.test(top().textContent)), '2 回目は聞かない（音なしのままを選んだ人にくり返し聞かない）');
+  State.data.settings.mute = false; delete State.data.settings.soundAsk93; const q3 = settle(w.Title.soundAsk93()); await frames(3); T(q3.done && !State.data.settings.soundAsk93, '音が出る設定のセーブには聞かない');
+  clean();
 
   console.log('\n結果：OK ' + okN + ' / NG ' + ng.length + (ng.length ? '\n' + ng.map((x) => '  - ' + x).join('\n') : ''));
   process.exit(ng.length ? 1 : 0);

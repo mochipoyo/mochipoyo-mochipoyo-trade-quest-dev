@@ -1,0 +1,24 @@
+{
+ "KIND": "2d",
+ "VIEW": "m390",
+ "ok": 4,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "操作の前は鳴らない（ブラウザの決まり）（{\"ctx\":\"none\",\"mute\":false,\"cur\":null,\"src\":null,\"t\":0}）"
+  },
+  {
+   "ok": true,
+   "m": "最初のタップでタイトルの曲が鳴る（{\"ctx\":\"running\",\"mute\":false,\"cur\":\"calm_before_the_storm\",\"src\":\"0ad-calm-before-the-storm.mp3\",\"t\":3.28}）"
+  },
+  {
+   "ok": true,
+   "m": "音を消していたセーブで「音を出す」→ 町の曲が鳴る（{\"ctx\":\"running\",\"mute\":false,\"cur\":\"the_fledgling_kingdom\",\"src\":\"0ad-the-fledgling-kingdom.mp3\",\"t\":4.26}）"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  }
+ ]
+}

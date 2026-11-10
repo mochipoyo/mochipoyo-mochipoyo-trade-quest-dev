@@ -27,6 +27,7 @@ const URL = `https://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'i
     const before = Object.keys(reqs).length; const c0 = Date.now();
     const item = async (label) => { const h = await p.waitForFunction((l) => [...document.querySelectorAll('#ui .rw-item')].reverse().find((x) => x.textContent.indexOf(l) >= 0) || null, label, { timeout: 120000 }); await h.asElement().click(); };
     await item('つづきから'); await item('スロット1');
+    await p.waitForFunction(() => [...document.querySelectorAll('#ui .rw-choice div, #ui .rw-item')].find((x) => /音なしのまま/.test(x.textContent)), null, { timeout: 4000 }).then((h) => h.asElement().click()).catch(() => { });   // v9.3 音を消しているセーブで 1 回だけ聞かれる（測るときは今の設定のまま）
     if (KIND === '3d') await p.waitForFunction(() => MTQ3D.current && MTQ3D.current.map && !MTQ3D.building, null, { timeout: 600000 }); else await p.waitForFunction(() => window.World && World.map && !document.querySelector('#ui .title-menu'), null, { timeout: 120000 });
     const tCont = Date.now() - c0; await p.waitForTimeout(1500);
     const L = Object.values(reqs).slice(before); cont = { ms: tCont, n: L.length, kb: Math.round(L.reduce((t, r) => t + (r.bytes || 0), 0) / 1024) };

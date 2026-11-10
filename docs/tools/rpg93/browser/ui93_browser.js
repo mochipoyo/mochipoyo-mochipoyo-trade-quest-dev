@@ -1,6 +1,8 @@
 // v9.3 RPG の快適さ：ブラウザでの確かめ（ヘッドレス Chromium・ソフトウェア描画。自動の操作で、実機ではない。音は「鳴らした・進んだ」を数えるだけで、耳では聞いていない）
 //   KIND=2d|3d  VIEW=pc1280|m390|land  PORT=…  OUT=docs/rpg93/
-//   1 タイトル：音の ON/OFF（最初は OFF。切り替えると端末に覚える）
+//   1 タイトル：音の ON/OFF（v9.3 修正で最初は ON：最初のクリック／タップで曲が鳴る。切り替えると端末に覚える）
+//     自動再生の許可（--autoplay-policy=no-user-gesture-required）は付けない＝Chrome のふつうの決まり（ページを操作したあとだけ音を出せる）で確かめる
+//   1b 音を消しているセーブを読む：1 回だけ「音を出す／音なしのまま」を聞く
 //   2 BGM：音を消している間は曲を読み込まない → 音を出すと町の曲（assets/music の MP3）が鳴り、時間が進む → 戦闘の曲へ切り替え（重ねて切り替え）
 //   3 戦闘のコマンド：「さくせん」の行（画面の中）→ 仲間の作戦を変える → 戻る
 //   4 効き目の表示：呪文の一覧と対象の一覧に「ばつぐん／いまいち／きかない」
@@ -15,7 +17,7 @@ const VP = VPS[VIEW]; const touch = !!VP.hasTouch; const steps = []; const S = (
 fs.mkdirSync(OUT + 'shots', { recursive: true }); fs.mkdirSync(OUT + 'logs', { recursive: true });
 const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'index.html') + '?nosw'; const PREFIX = KIND === '3d' ? 'mtq-3d-slot-' : 'mtq-rpg-v2-slot-';
 (async () => {
-  const br = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] }); const ctx = await br.newContext(VP); const p = await ctx.newPage(); const errs = []; const music = [];
+  const br = await chromium.launch({ args: ['--autoplay-policy=document-user-activation-required'] }); const ctx = await br.newContext(VP); const p = await ctx.newPage(); const errs = []; const music = [];
   p.on('pageerror', (e) => errs.push(e.message.slice(0, 200))); p.on('console', (m) => { if (m.type() === 'error' && !/favicon|404/.test(m.text())) errs.push('console: ' + m.text().slice(0, 160)); });
   p.on('request', (r) => { if (/assets\/music\//.test(r.url())) music.push({ t: Date.now(), u: r.url().replace(/^.*assets\/music\//, '') }); });
   const shot = async (name) => { await p.screenshot({ path: `${OUT}shots/ui93_${KIND}_${VIEW}_${name}.jpg`, type: 'jpeg', quality: 72 }); };
@@ -28,19 +30,24 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
   // ---- 1 タイトル：音
   await p.goto(URL); await ready();
   await p.waitForSelector('#ui .title-menu', { timeout: 120000 });
-  const t1 = await p.evaluate(() => ({ chip: [...document.querySelectorAll('#ui .rw-tool')].map((x) => x.textContent).join('|'), snd: Audio.titleSound() }));
-  S(/音：OFF/.test(t1.chip) && t1.snd === false, 'タイトル：音の切り替え（最初は OFF：' + t1.chip + '）'); await shot('title');
-  await item('音：OFF'); const t2 = await p.evaluate(() => ({ chip: [...document.querySelectorAll('#ui .rw-tool')].map((x) => x.textContent).join('|'), ls: localStorage.getItem('mtq-title-sound'), file: Audio.FILE.cur }));
-  S(/音：ON/.test(t2.chip) && t2.ls === 'on', 'タイトル：ON にすると端末に覚える（' + t2.chip + '・' + t2.ls + '）');
-  await p.waitForTimeout(2500); const t3 = await p.evaluate(() => ({ cur: Audio.FILE.cur, el: Audio.FILE.els.map((e) => ({ src: (e.getAttribute('src') || '').replace(/^.*\//, ''), paused: e.paused, t: +e.currentTime.toFixed(2) })) }));
-  S(t3.cur === BGM93Title() || t3.cur, 'タイトルの曲が鳴る（' + t3.cur + '・' + JSON.stringify(t3.el) + '）');
-  function BGM93Title() { return 'calm_before_the_storm'; }
-  await item('音：ON'); await p.waitForTimeout(400); const t4 = await p.evaluate(() => ({ ls: localStorage.getItem('mtq-title-sound'), cur: Audio.FILE.cur }));
-  S(t4.ls === 'off' && !t4.cur, 'タイトル：OFF に戻すと曲が止まる');
+  const playingEl = () => p.evaluate(() => { const e = Audio.FILE.els.find((x) => !x.paused && /0ad-/.test(x.getAttribute('src') || '')); return { cur: Audio.FILE.cur, ctx: Audio.ctx ? Audio.ctx.state : 'none', src: e ? e.getAttribute('src').replace(/^.*\//, '') : null, t: e ? +e.currentTime.toFixed(2) : 0 }; });
+  const t1 = await p.evaluate(() => ({ chip: [...document.querySelectorAll('#ui .rw-tool')].map((x) => x.textContent).join('|'), snd: Audio.titleSound(), ls: localStorage.getItem('mtq-title-sound'), cur: Audio.FILE.cur }));
+  S(/音：ON/.test(t1.chip) && t1.snd === true && t1.ls === null && !t1.cur, 'タイトル：最初は音 ON（' + t1.chip + '）。操作の前は鳴らさない（ブラウザの決まり）'); await shot('title');
+  await tapEl(await p.$('#ui .title-menu .rw-title')); await p.waitForTimeout(2500);
+  const t2 = await playingEl(); S(t2.cur === 'calm_before_the_storm' && t2.t > 0.5 && t2.ctx === 'running', '最初のクリック／タップでタイトルの曲が鳴り、時間が進む（' + JSON.stringify(t2) + '）');
+  await item('音：ON'); await p.waitForTimeout(600); const t3 = await p.evaluate(() => ({ chip: [...document.querySelectorAll('#ui .rw-tool')].map((x) => x.textContent).join('|'), ls: localStorage.getItem('mtq-title-sound'), cur: Audio.FILE.cur }));
+  S(/音：OFF/.test(t3.chip) && t3.ls === 'off' && !t3.cur, 'タイトル：OFF にすると曲が止まり、端末に覚える（' + t3.ls + '）');
+  await item('音：OFF'); await p.waitForTimeout(2500); const t4 = await playingEl();
+  S(t4.cur === 'calm_before_the_storm' && t4.t > 0.5, 'タイトル：ON に戻すとまた鳴る（' + t4.t + '秒）');
+  await item('音：ON'); await p.waitForTimeout(400);   // このあとの確かめのため OFF に（端末に 'off' を覚える）
 
   // セーブを作ってつづきから（仲間 4 人・呪文を持つ主人公）
   await p.evaluate((pre) => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay); State.newGame('もち', 'mage'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.hero.level = 20; ['lina', 'kyle', 'mina'].forEach((id) => State.joinCompanion(id)); State.save(1); localStorage.removeItem(pre + '0'); }, PREFIX);
   await p.reload(); await ready(); await p.waitForSelector('#ui .title-menu', { timeout: 120000 }); await item('つづきから'); await item('スロット1');
+  // 1b 音を消しているセーブ：1 回だけ聞く（ここでは「音なしのまま」を選び、このあと 2 で音を出す）
+  const ask = await p.waitForFunction(() => [...document.querySelectorAll('#ui .rw-choice, #ui .rw-list')].some((x) => /音なしのまま/.test(x.textContent)), null, { timeout: 60000 }).then(() => true).catch(() => false);
+  S(ask, '音を消しているセーブを読むと「音を出す／音なしのまま」を聞く'); if (ask) { await shot('sound_ask'); await item('音なしのまま'); }
+  S(await p.evaluate(() => State.data.settings.mute === true && State.data.settings.soundAsk93 === true), '「音なしのまま」：音を消したまま、聞いたことを覚える');
   if (KIND === '3d') { await p.waitForFunction(() => MTQ3D.current && MTQ3D.current.map && !MTQ3D.building, null, { timeout: 300000 }); await p.evaluate(() => { MTQ3D.paused = true; }); }   // 3D の町の描画を止める（この作業環境はソフトウェア描画で、描画が CPU を使い切ると曲の読み込み・画面の撮影が止まるため。menu92 と同じ）
   await p.waitForTimeout(1500); await reset();
 

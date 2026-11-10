@@ -76,7 +76,14 @@
     var i = await Win.list(slots, { title: 'つづきから' });
     if (i < 0) return false;
     var d = State.load(i); if (!d) { await Win.message(['読み込めなかった。']); return false; }
-    State.data = d; World.start(); return true;
+    State.data = d; await Title.soundAsk93(); World.start(); return true;
+  };
+  // v9.3 BGM（フリー音源の曲）を足した版で、音を消しているセーブを初めて読んだとき：1 回だけ「音を出すか」を聞く（答えはセーブの設定に覚える。あとで 設定 → 音 でも変えられる）
+  Title.soundAsk93 = async function () {
+    var st = State.data && State.data.settings; if (!st || !st.mute || st.soundAsk93) return;
+    st.soundAsk93 = true;
+    var c = await Win.choice('このセーブは音を消している（音：OFF）。BGM（新しく足した曲）と効果音を出す？（あとで 設定 → 音 でも変えられる）', ['音を出す', '音なしのまま']);
+    if (c === 0) { st.mute = false; if (root.Audio) { if (root.Audio.unlock) root.Audio.unlock(); root.Audio.apply(); } }
   };
   Title.data = async function () {
     var i = await Win.choice('データ管理', ['JSONを読み込んで再開', 'スロットを削除', 'やめる', 'クラウドセーブ（PC・スマホで共有）', 'バックアップ・ファイル']);
