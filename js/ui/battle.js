@@ -505,7 +505,11 @@
     });
   }
   function actingCard(id) { document.querySelectorAll('#battle-party .bp').forEach(function (el) { el.classList.toggle('acting', !!id && el.getAttribute('data-id') === id); }); }
-  function bmsg(text, ms) { var mw = document.getElementById('battle-msg'); mw.textContent = text; var speed = State.data.settings.battleSpeed; return Win.sleep(speed === 'fast' ? Math.round((ms || 500) * 0.45) : (ms || 500)); }
+  // v9.3 戦闘速度：'normal'（ふつう）・'fast'（はやい）・'veryfast'（とてもはやい）。とてもはやい＝はやいの待ち時間の約 55%（ふつう・はやいの時間は今までどおり）
+  function bspeed() { var s = State.data && State.data.settings && State.data.settings.battleSpeed; return s === 'fast' || s === 'veryfast' ? s : 'normal'; }
+  function sp(normalMs, fastMs) { var s = bspeed(); return s === 'normal' ? normalMs : s === 'fast' ? fastMs : Math.max(10, Math.round(fastMs * 0.55)); }
+  BattleUI.speed = bspeed; BattleUI.sp = sp;
+  function bmsg(text, ms) { var mw = document.getElementById('battle-msg'); mw.textContent = text; return Win.sleep(sp(ms || 500, Math.round((ms || 500) * 0.45))); }
 
   /* ---------- v5.7 オート戦闘 ----------
      ・画面右上の「オート」ボタン、またはコマンドの「オート戦闘」で開始。もう一度押すか X / Esc で解除
@@ -536,7 +540,7 @@
       highlight(a.id);
       var c = BattleUI.isAuto() ? 'auto' : await commandFor(b, a);
       if (c === 'back' && BattleUI.isAuto()) c = 'auto';   // 入力中にオートへ切り替えた
-      if (c === 'auto') { if (!BattleUI.isAuto()) BattleUI.setAuto(true); await Win.sleep(State.data.settings.battleSpeed === 'fast' ? 60 : 140); cmds.push(Combat.autoCommand(b, a)); continue; }
+      if (c === 'auto') { if (!BattleUI.isAuto()) BattleUI.setAuto(true); await Win.sleep(sp(140, 60)); cmds.push(Combat.autoCommand(b, a)); continue; }
       if (c === 'back') {
         // 必殺技のチャートで決めた行動は取り消せない（同じターンにチャートを引き直せないように）。その人より前には戻らない
         var prev = cmds[cmds.length - 1]; if (prev && prev.type === 'ultimate') { if (Win.toast) Win.toast('必殺技の判断は取り消せない'); i -= 1; continue; }
@@ -584,7 +588,7 @@
       if (BattleUI.isAuto()) return 'auto';
       var skills = Actors.allSkills(a).filter(function (s) { return SKILLS[s]; });
       var last = b._lastCmd88 && b._lastCmd88[a.id];
-      var opts = [{ key: 'attack', label: 'たたかう' }, { key: 'skill', label: 'じゅもん・とくぎ', disabled: !skills.length }, { key: 'item', label: 'どうぐ' }, { key: 'defend', label: 'ぼうぎょ' }, { key: 'escape', label: 'にげる', disabled: !b.canEscape }, { key: 'auto', label: 'オート戦闘', right: '自動' }];
+      var opts = [{ key: 'attack', label: 'たたかう' }, { key: 'skill', label: 'じゅもん・とくぎ', disabled: !skills.length }, { key: 'item', label: 'どうぐ' }, { key: 'defend', label: 'ぼうぎょ' }, { key: 'escape', label: 'にげる', disabled: !b.canEscape }, { key: 'auto', label: 'オート戦闘', right: '自動' }, { key: 'tactics', label: 'さくせん', right: Combat.tacticName ? Combat.tacticName(a) : '', sub: 'オート戦闘での仲間ごとの考え方' }];   // v9.3 さくせん
       if (last) opts.unshift({ key: 'repeat', label: '前回と同じ', right: cmdText(b, a, last), cls: 'repeat-cmd' });   // v8.8
       // 必殺技（主人公だけ）：「じゅもん・とくぎ」の次に出す
       var ultN = (U && U.isHero(a)) ? U.count(State.data) : -1;
@@ -595,22 +599,23 @@
       var key = opts[sel].key;
       if (key === 'ult') { var uc = await ultCommand(b, a); if (uc) return uc; continue; }
       if (key === 'auto') return 'auto';
+      if (key === 'tactics') { if (root.Menu && root.Menu.tactics) await root.Menu.tactics(); continue; }   // v9.3 作戦を変えて、行動の選択へ戻る
       if (key === 'repeat') {
         var chk = BattleUI.checkRepeat(b, a, last); if (!chk.ok) { await Win.message([chk.why + '。行動を選び直してください。']); continue; }
         var rc = JSON.parse(JSON.stringify(last));
         if (chk.retarget) { var nt = await pickEnemy(b); if (nt < 0) continue; rc.target = { side: 'enemy', idx: nt }; }
         return rc;
       }
-      if (key === 'attack') { var t = await pickEnemy(b); if (t < 0) continue; return { actorId: a.id, type: 'attack', target: { side: 'enemy', idx: t } }; }
+      if (key === 'attack') { var t = await pickEnemy(b, a, 'attack'); if (t < 0) continue; return { actorId: a.id, type: 'attack', target: { side: 'enemy', idx: t } }; }
       if (key === 'skill') {
         // v8.8 お気に入り（★）を先に並べる。［★お気に入り］で印をつける（State.data.ui.favSkills。旧セーブは初期値で補う）
         var fav = root.Menu && root.Menu.ui ? root.Menu.ui().favSkills : {}; var order = skills.slice().sort(function (x, y) { return (fav[y] ? 1 : 0) - (fav[x] ? 1 : 0); });
-        var items = order.map(function (s) { var sk = SKILLS[s]; var cost = skillCostOf(a, sk); return { label: (fav[s] ? '★ ' : '') + sk.name, right: 'MP' + cost + (sk.gold ? '/' + sk.gold + 'G' : ''), sub: sk.field ? '戦闘中は使えない（フィールドのメニューで使う）' : (a.mp < cost ? 'MPが足りない　' : '') + (sk.desc || ''), disabled: !!sk.field || a.mp < cost }; });
+        var items = order.map(function (s) { var sk = SKILLS[s]; var cost = skillCostOf(a, sk); var eh = effSummary(b, a, sk); return { label: (fav[s] ? '★ ' : '') + sk.name, right: 'MP' + cost + (sk.gold ? '/' + sk.gold + 'G' : ''), sub: sk.field ? '戦闘中は使えない（フィールドのメニューで使う）' : (a.mp < cost ? 'MPが足りない　' : '') + (eh ? eh + '　' : '') + (sk.desc || ''), disabled: !!sk.field || a.mp < cost, cls: eh ? 'has-eff' : '' }; });   // v9.3 効き目
         var si = await Win.list(items, { title: 'じゅもん・とくぎ', key: 'battle:skills:' + a.id, actions: [{ id: 'fav', label: '★お気に入り' }] });
         if (si && typeof si === 'object' && si.action === 'fav') { var fk = order[si.index]; if (fav[fk]) delete fav[fk]; else fav[fk] = true; if (Win.toast) Win.toast(SKILLS[fk].name + (fav[fk] ? 'をお気に入りにした' : 'のお気に入りを外した')); continue; }
         if (si < 0) continue;
         var sk = SKILLS[order[si]]; var target = null;
-        if (sk.target === 'enemy') { var te = await pickEnemy(b); if (te < 0) continue; target = { side: 'enemy', idx: te }; }
+        if (sk.target === 'enemy') { var te = await pickEnemy(b, a, sk); if (te < 0) continue; target = { side: 'enemy', idx: te }; }
         else if (sk.target === 'ally') { var ta = await pickAlly(b, false); if (!ta) continue; target = { side: 'party', id: ta }; }
         else if (sk.target === 'dead_ally') { var td = await pickAlly(b, true); if (!td) continue; target = { side: 'party', id: td }; }
         return { actorId: a.id, type: 'skill', skillId: sk.id, target: target };
@@ -658,10 +663,21 @@
     }
   }
   BattleUI.ultCommand = ultCommand;
-  async function pickEnemy(b) {
+  // v9.3 効き目の表示（設定「呪文・特技の効き目の表示」。js/rpg/combat.js の Combat.effectOn）
+  function effOn() { return !(State.data && State.data.settings && State.data.settings.effHint === 'off') && Combat.effectOn; }
+  var EFF_MARK = { weak: '◎ばつぐん', resist: '△いまいち', immune: '×きかない' };
+  function baseName(n) { return String(n || '').replace(/[A-HＡ-Ｈ]$/, ''); }
+  // 技の行の説明に「◎ばつぐん：スライム　×きかない：ゴースト」（ふつうの相手は書かない）
+  function effSummary(b, a, sk) {
+    if (!effOn() || !b) return ''; var by = {};
+    b.enemies.forEach(function (e) { var r = Combat.effectOn(a, sk, e); if (!r || r === 'normal') return; var nm = baseName(e.name); by[r] = by[r] || []; if (by[r].indexOf(nm) < 0) by[r].push(nm); });
+    return ['weak', 'resist', 'immune'].filter(function (k) { return by[k]; }).map(function (k) { return EFF_MARK[k] + '：' + by[k].join('・'); }).join('　');
+  }
+  BattleUI.effSummary = effSummary;
+  async function pickEnemy(b, a, sk) {
     var alive = b.enemies.filter(function (e) { return !e.dead; });
     if (alive.length === 1) return alive[0].idx;
-    var i = await Win.list(alive.map(function (e) { return { label: e.name, right: 'HP ' + e.hp + '/' + e.maxHp }; }), { title: '対象' });
+    var i = await Win.list(alive.map(function (e) { var r = a && sk && effOn() ? Combat.effectOn(a, sk, e) : null; return { label: e.name, right: (r && r !== 'normal' ? EFF_MARK[r] + '　' : '') + 'HP ' + e.hp + '/' + e.maxHp, cls: r && r !== 'normal' ? 'eff-' + r : '' }; }), { title: '対象' + (a && sk && sk !== 'attack' ? '（' + sk.name + '）' : '') });
     return i < 0 ? -1 : alive[i].idx;
   }
   async function pickAlly(b, dead) {
@@ -706,7 +722,7 @@
         if (x.type === 'damage' || x.type === 'heal') key = x.side === 'enemy' ? 'e:' + x.idx : 'p:' + x.id; else if (x.type === 'revive' && x.id) key = 'p:' + x.id; else if (x.type === 'anim' && x.side !== 'enemy' && x.id && x.anim !== 'lunge') key = 'p:' + x.id;
         if (!key) continue; if (!firstKey) firstKey = key; if (key === firstKey && x.type === 'damage') hits++; if (tg.indexOf(key) < 0) tg.push(key); }
       if (!tg.length) tg = [from];
-      var tl = F.timeline(def, { fast: fast, hits: Math.max(1, hits || def.hits || 1) });
+      var tl = F.timeline(def, { fast: fast, speed: bspeed(), hits: Math.max(1, hits || def.hits || 1) });
       if (root.FX2D) root.FX2D.start(scene, def, tl, from, tg);
       F.emit('play', { def: def, tl: tl, from: from, to: tg, side: e.side });
       return { tl: tl, start: Date.now(), k: 0, def: def };
@@ -715,7 +731,7 @@
   function hitAhead(ev, i) { for (var j = i + 1; j < ev.length && ev[j].type !== 'act'; j++) if (ev[j].type === 'damage' || ev[j].type === 'heal') return true; return false; }
   async function waitUntil(ms) { var dt = ms - Date.now(); if (dt > 0) await Win.sleep(dt); }
   async function playEvents(b, ev, scene) {
-    var fast = State.data.settings.battleSpeed === 'fast'; var played = {}; var fxs = null;
+    var fast = bspeed() !== 'normal'; var played = {}; var fxs = null;
     if (BattleUI.timeline) BattleUI.timeline.length = 0;
     for (var i = 0; i < ev.length; i++) {
       if (played[i]) continue;
@@ -728,7 +744,7 @@
         if (e.side === 'party' && e.kind === 'ultimate' && root.ChartBattleUI && U) { try { await root.ChartBattleUI.cutin(U.get(e.ultId), e.ultOutcome); } catch (err) { /* 演出だけ */ } }   // 必殺技の名前の帯
         fxs = startFx(b, ev, i, e, scene, fast); scene.fxOn = !!fxs;
         if (fxs) { if (BattleUI.timeline) BattleUI.timeline.push({ type: 'fx', fx: fxs.def.fx, hitAt: fxs.tl.hitAt, impacts: fxs.tl.impacts.slice(), total: fxs.tl.total, t: fxs.start, to: (scene.fx65 && scene.fx65.length ? scene.fx65[scene.fx65.length - 1].to.length : 0) }); await waitUntil(fxs.start + fxs.tl.windup); }   // 構え（使う人の動き）
-        else if (e.side === 'party') await Win.sleep(fast ? 70 : 150);
+        else if (e.side === 'party') await Win.sleep(sp(150, 70));
         continue;
       }
       var preHit = fxs && fxs.k === 0 && hitAhead(ev, i);   // v6.5 この行動の命中（数字・HP）がまだ後にある：演出の時刻表で待つので、ここでは待たない
@@ -742,19 +758,19 @@
         setView(scene, group[group.length - 1], b);                        // 同じ瞬間に HP（数字とバー）を当たった後の値へ
         shakeIds.forEach(function (id) { var el = document.querySelector('#battle-party .bp[data-id="' + id + '"]'); if (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); } });
         if (BattleUI.timeline) BattleUI.timeline.push({ type: 'hit', n: group.length, t: Date.now() });
-        await Win.sleep(fxs ? (fast ? 40 : 90) : (fast ? 130 : 280));   // v6.5 演出があるときの余韻は、演出の終わり（次の行動の前）で待つ
+        await Win.sleep(fxs ? (sp(90, 40)) : (sp(280, 130)));   // v6.5 演出があるときの余韻は、演出の終わり（次の行動の前）で待つ
       }
-      else if (e.type === 'anim' && e.side === 'enemy' && e.anim === 'lunge') { setView(scene, e, b); scene.anims.push({ type: 'lunge', idx: e.idx, t: 0, dur: 260 }); if (!preHit) await Win.sleep(fast ? 80 : 140); }
-      else if (e.type === 'summon') { setView(scene, e, b); var se = b.enemies[e.idx]; if (se) State.data.bestiary[se.defId] = Object.assign(State.data.bestiary[se.defId] || {}, { seen: true }); scene.anims.push({ type: 'appear', idx: e.idx, t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('magic'); await Win.sleep(fast ? 200 : 500); }
-      else if (e.type === 'phase') { setView(scene, e, b); scene.anims.push({ type: 'phase', idx: e.idx, t: 0, dur: 700 }); scene.screenShake = 350; if (root.Audio) root.Audio.sfx('crit'); await Win.sleep(fast ? 250 : 600); }
-      else if (e.type === 'anim') { setView(scene, e, b); if (!scene.fxOn) { if (e.side === 'enemy') scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim, t: 0, dur: 450 }); else if (e.target === 'self' || e.target === 'ally' || e.target === 'allies' || e.target === 'dead_ally') scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim, t: 0, dur: 450 }); } if (root.Audio) root.Audio.sfx('magic'); if (!preHit) await Win.sleep(fast ? 100 : 220); }
+      else if (e.type === 'anim' && e.side === 'enemy' && e.anim === 'lunge') { setView(scene, e, b); scene.anims.push({ type: 'lunge', idx: e.idx, t: 0, dur: 260 }); if (!preHit) await Win.sleep(sp(140, 80)); }
+      else if (e.type === 'summon') { setView(scene, e, b); var se = b.enemies[e.idx]; if (se) State.data.bestiary[se.defId] = Object.assign(State.data.bestiary[se.defId] || {}, { seen: true }); scene.anims.push({ type: 'appear', idx: e.idx, t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('magic'); await Win.sleep(sp(500, 200)); }
+      else if (e.type === 'phase') { setView(scene, e, b); scene.anims.push({ type: 'phase', idx: e.idx, t: 0, dur: 700 }); scene.screenShake = 350; if (root.Audio) root.Audio.sfx('crit'); await Win.sleep(sp(600, 250)); }
+      else if (e.type === 'anim') { setView(scene, e, b); if (!scene.fxOn) { if (e.side === 'enemy') scene.anims.push({ type: 'fx', side: 'enemy', idx: e.idx, anim: e.anim, t: 0, dur: 450 }); else if (e.target === 'self' || e.target === 'ally' || e.target === 'allies' || e.target === 'dead_ally') scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: e.anim, t: 0, dur: 450 }); } if (root.Audio) root.Audio.sfx('magic'); if (!preHit) await Win.sleep(sp(220, 100)); }
       else if (e.type === 'enemy_dead' || e.type === 'flee') {   // 倒れる演出を最後まで再生してから次へ
         setView(scene, e, b); scene.gone[e.idx] = true;
-        var isBoss = b.enemies[e.idx] && b.enemies[e.idx].boss; var dur = e.type === 'flee' ? 400 : isBoss ? 1400 : 550; scene.anims.push({ type: 'die', idx: e.idx, t: 0, dur: fast ? Math.round(dur * 0.5) : dur });
-        if (isBoss) { scene.screenShake = 900; scene.flash = 300; } if (root.Audio) root.Audio.sfx('die'); await Win.sleep(fast ? Math.round(dur * 0.5) : dur);
+        var isBoss = b.enemies[e.idx] && b.enemies[e.idx].boss; var dur = e.type === 'flee' ? 400 : isBoss ? 1400 : 550; scene.anims.push({ type: 'die', idx: e.idx, t: 0, dur: sp(dur, Math.round(dur * 0.5)) });
+        if (isBoss) { scene.screenShake = 900; scene.flash = 300; } if (root.Audio) root.Audio.sfx('die'); await Win.sleep(sp(dur, Math.round(dur * 0.5)));
       }
-      else if (e.type === 'actor_dead') { setView(scene, e, b); await Win.sleep(fast ? 150 : 300); }
-      else if (e.type === 'revive') { setView(scene, e, b); scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'light', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal'); await Win.sleep(fast ? 150 : 320); }
+      else if (e.type === 'actor_dead') { setView(scene, e, b); await Win.sleep(sp(300, 150)); }
+      else if (e.type === 'revive') { setView(scene, e, b); scene.anims.push({ type: 'fx', side: 'party', id: e.id, anim: 'light', t: 0, dur: 500 }); if (root.Audio) root.Audio.sfx('heal'); await Win.sleep(sp(320, 150)); }
       else if (e.type === 'trial') {
         setView(scene, e, b);
         var enemy = b.enemies[e.idx];

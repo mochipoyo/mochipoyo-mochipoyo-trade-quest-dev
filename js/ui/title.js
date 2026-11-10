@@ -41,7 +41,9 @@
       var opts = [{ label: 'はじめから' }, { label: 'つづきから', disabled: !hasAny }, { label: 'データ管理' }];
       if (legacy) opts.push({ label: '旧バージョンのデータを確認' });
       var cloudOn = root.Cloud && root.Cloud.configured(); if (cloudOn) opts.push({ label: 'クラウドセーブ（PC・スマホで共有）', sub: root.Cloud.status === 'signedin' ? 'ログイン中' : 'ログインすると、ほかの端末のセーブを読み込めます' });   // v6.5
-      var i = await Win.list(opts, { title: 'タイトル', cancel: false, cls: 'title-menu' });
+      var snd = root.Audio && root.Audio.titleSound ? root.Audio.titleSound() : false;
+      var i = await Win.list(opts, { title: 'タイトル', cancel: false, cls: 'title-menu', tools: root.Audio && root.Audio.setTitleSound && !State.data ? [{ id: 'sound', label: '♪ 音：' + (snd ? 'ON' : 'OFF'), on: snd }] : null });   // v9.3 タイトルで音の ON／OFF（BGM を聞いてから始められる）
+      if (i && typeof i === 'object') { if (i.tool === 'sound') { root.Audio.unlock && root.Audio.unlock(); root.Audio.setTitleSound(!snd); } continue; }
       if (cloudOn && i === opts.length - 1) { await root.SaveUI.cloud(); continue; }
       if (i === 0) { var ok = await Title.newGame(); if (ok) return; }
       if (i === 1) { var ld = await Title.load(); if (ld) return; }

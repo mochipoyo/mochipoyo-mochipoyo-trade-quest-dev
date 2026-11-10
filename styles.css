@@ -1070,3 +1070,16 @@ body.m-land .rw-list.rw-fixed.rw-preview > .rw-actbar { flex-wrap: nowrap; }
 body.m-land .rw-list.rw-fixed.rw-preview > .rw-actbar .rw-ok { flex: 1 1 0; min-width: 0; }
 body.m-land .rw-list.rw-fixed.rw-preview > .rw-actbar .rw-ok small, body.m-land .rw-list.rw-fixed.rw-preview > .rw-actbar .rw-hint { display: none; }
 body.m-land .rw-list.rw-fixed.rw-preview > .rw-actbar .rw-act { flex: none; }
+/* ===== v9.3 会話の履歴・効き目の表示・作戦 ===== */
+.rw-logbtn { position: absolute; left: 10px; top: -24px; padding: 2px 10px; font-size: 11px; line-height: 1.6; border: 1px solid rgba(255,255,255,.55); border-radius: 10px; background: rgba(12,20,40,.92); color: #cfe2ff; cursor: pointer; user-select: none; }
+.rw-logbtn:hover { background: rgba(40,60,110,.95); }
+body.mobile .rw-logbtn { top: -34px; padding: 6px 14px; font-size: 12px; }
+.rw-panel.backlog-panel { width: min(94%, 680px); max-width: none; height: min(88%, 720px); max-height: 94%; display: flex; flex-direction: column; overflow: hidden; }
+.backlog-panel .bl-list { flex: 1 1 auto; overflow-y: auto; min-height: 0; padding-right: 4px; }
+.bl-row { padding: 4px 2px; border-bottom: 1px dashed rgba(255,255,255,.12); line-height: 1.55; font-size: 13px; white-space: pre-wrap; }
+.bl-name { display: inline-block; color: var(--gold); margin-right: 8px; font-weight: bold; }
+.bl-ask .bl-text { color: #cfe2ff; } .bl-answer .bl-text { color: #9fe3b5; }
+.bl-place { text-align: center; color: var(--muted); font-size: 11px; margin: 10px 0 2px; }
+.bl-foot { margin-top: 6px; }
+body.mobile .bl-foot { display: none; }
+.rw-item.eff-weak .r { color: #ffb05a; font-weight: bold; } .rw-item.eff-resist .r { color: #9fb8d8; } .rw-item.eff-immune .r { color: #ff8a8a; }

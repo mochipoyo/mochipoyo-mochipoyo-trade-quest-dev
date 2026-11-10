@@ -16,9 +16,11 @@ function legacy2D() {
         if (!html.includes('<!--APP_DOM-->')) return html;
         const src = readFileSync(resolve(__dirname, '../index.html'), 'utf8');
         const dom = (src.match(/<div id="app">[\s\S]*?\n<\/div>\n/) || [''])[0];
-        const scripts = [...src.matchAll(/<script src="(js\/[^"]+)"><\/script>/g)].map((m) => '<script src="../' + m[1] + '"></script>').join('\n');
+        // v9.3 スクリプトは 2D 版と同じ形：<template id="mtq-src">（一覧）＋まとめたファイル（../dist/mtq.min.js）＋読めないときに一覧を読む処理
+        const blk = (src.match(/<!-- v9\.3 読み込みを速くする[\s\S]*?<template id="mtq-src">[\s\S]*?<\/template>\n<script src="dist\/mtq\.min\.js[^"]*"><\/script>\n<script>[\s\S]*?<\/script>/) || [''])[0];
+        const scripts = blk.replace(/src="js\//g, 'src="../js/').replace(/src="dist\//g, 'src="../dist/').replace(/(src="[^"?]+)\?v=[0-9a-f]+"/g, '$1"');
         const css = [...src.matchAll(/<link rel="stylesheet" href="([^"]+)">/g)].map((m) => '<link rel="stylesheet" href="../' + m[1] + '">').join('\n');
-        if (!dom || !scripts) throw new Error('2D版 index.html の解析に失敗');
+        if (!dom || !scripts || !/mtq\.min\.js/.test(scripts)) throw new Error('2D版 index.html の解析に失敗');
         return html.replace('<!--APP_DOM-->', dom).replace('<!--LEGACY_SCRIPTS-->', scripts).replace('<!--LEGACY_CSS-->', css);
       }
     }

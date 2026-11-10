@@ -485,7 +485,7 @@
     var el = document.createElement('div'); var sch = root.Ultimates ? root.Ultimates.school(def.school) : null;
     el.className = 'ult-cutin ' + (outcome || '') + (S.calm ? ' calm' : '');
     el.innerHTML = '<span class="uc-school">' + esc(sch ? sch.name : '必殺技') + '</span><b style="color:' + esc(def.color || '#fff') + '">' + esc(def.name) + '</b><span class="uc-out">' + (outcome === 'profit' ? '利益の一撃' : outcome === 'loss' ? '損失…威力は小さい' : outcome === 'flat' ? 'ほぼ同値' : '見送り（防御）') + '</span>';
-    st.appendChild(el); var fast = root.State && root.State.data && root.State.data.settings.battleSpeed === 'fast'; var ms = S.calm ? 450 : fast ? 650 : 1000;
+    st.appendChild(el); var fast = root.State && root.State.data && (root.State.data.settings.battleSpeed === 'fast' || root.State.data.settings.battleSpeed === 'veryfast');   // v9.3 とてもはやいも、はやいと同じ var ms = S.calm ? 450 : fast ? 650 : 1000;
     return new Promise(function (r) { setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); r(); }, ms); });
   };
 

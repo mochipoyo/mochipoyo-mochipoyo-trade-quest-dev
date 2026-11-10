@@ -23,10 +23,13 @@
     if (root.Carriage && root.Carriage.owned()) E.adv.push({ label: root.Carriage.wanted() ? '馬車を降りる' : '馬車に乗る', sub: 'C キーでも乗り降り', run: function () { if (root.Carriage.toggle()) return 'close'; } });
     if (root.AirshipCall86 && root.AirshipCall86.owned() && d.aboard !== 'airship') E.adv.push({ label: '飛空艇を呼ぶ', sub: 'F キーでも呼べる', run: function () { if (root.AirshipCall86.call()) return 'close'; } });
     E.adv.push({ label: '図鑑', run: function () { return Menu.encyclopedia(); } });
+    if (Win.backlog) E.adv.push({ label: '会話の履歴', sub: '読み飛ばした会話・説明を読み返す（メッセージ中は ↑ キーでも）', run: function () { return Win.backlog(); } });   // v9.3
     E.party.push({ label: 'ステータス', run: async function () { if (await Menu.status() === 'warp') return 'close'; } });   // v9.2 ステータスから［じゅもん・とくぎ］→ 帰還の術で移動したとき
     E.party.push({ label: 'なかま', sub: '隊列・入れ替え', run: function () { return Menu.party(); } });
     E.party.push({ label: 'そうび', run: function () { return Menu.equip(); } });
     E.party.push({ label: 'じゅもん・とくぎ', run: async function () { if (await Menu.skills() === 'warp') return 'close'; } });
+    E.party.push({ label: 'さくせん', sub: 'オート戦闘での仲間ごとの考え方', run: function () { return Menu.tactics(); } });   // v9.3
+    E.party.push({ label: 'まんたん', sub: '回復の呪文・道具で全員のHPを満タンに', run: function () { return Menu.fullHeal(); } });   // v9.3
     E.item.push({ label: 'どうぐ', sub: 'すべての持ち物', run: async function () { if (await Menu.items() === 'warp') return 'close'; } });
     E.item.push({ label: '回復の道具', sub: 'HP回復の道具だけ', run: async function () { if (await Menu.items({ genre: 'hp' }) === 'warp') return 'close'; } });
     E.item.push({ label: '最近使った・お気に入り', run: async function () { if (await Menu.items({ fav: true }) === 'warp') return 'close'; } });
@@ -314,6 +317,92 @@
   Menu.skillGroup = function (id) { return SKILLS[id] ? skillGroup(SKILLS[id]) : 'support'; };
   var SK_TARGET = { enemy: '敵1体', enemies: '敵全体', ally: '味方1人', allies: '味方全体', self: '自分', dead_ally: '戦闘不能の味方' };
   var EL_NAME = { fire: '炎', ice: '氷', thunder: '雷', wind: '風', light: '光', dark: '闇' };
+  /* ---------- v9.3 サウンドテスト：BGM（js/data/bgm93.js の曲）を選んで聞く。閉じると元の曲に戻す ---------- */
+  Menu.soundTest = async function () {
+    var A = root.Audio, B = root.BGM93; if (!A || !B) return;
+    var back = A.lastKey; var ids = Object.keys(B.TRACKS); var where = {};
+    Object.keys(B.SCENE).forEach(function (k) { var id = B.SCENE[k]; (where[id] = where[id] || []).push({ title: 'タイトル', ending: 'エンディング', battle: '戦闘', battle_late: '戦闘（後半の地方）', boss: 'ボス戦', boss_area: 'ボスの近く', church: '教会', tavern: '酒場', castle: '城', sea: '船', sky: '飛空艇' }[k] || k); });
+    Object.keys(B.TOWN).forEach(function (k) { var m = root.MAP_DEFS && root.MAP_DEFS[k]; if (m) (where[B.TOWN[k]] = where[B.TOWN[k]] || []).push(m.name); });
+    Object.keys(B.FIELD).forEach(function (k) { var m = root.MAP_DEFS && root.MAP_DEFS[k]; if (m) (where[B.FIELD[k]] = where[B.FIELD[k]] || []).push(m.name); });
+    B.DUNGEON_POOL.forEach(function (id) { (where[id] = where[id] || []).push('ダンジョン'); });
+    var st = State.data.settings; var cur = 0;
+    if (st.mute) await Win.message(['音が OFF になっている。設定の「音（BGM・効果音）」を ON にすると聞ける。']);
+    while (true) {
+      var i = await Win.list(ids.map(function (id) { var w = where[id] || []; return { label: B.TRACKS[id].title, right: A.bgmFile === id ? '♪ 再生中' : '', sub: w.length ? w.slice(0, 4).join('・') + (w.length > 4 ? ' ほか' : '') : '' }; }), { title: 'BGM を聞く（' + ids.length + ' 曲・0 A.D.）', cls: 'soundtest', initial: cur, key: 'soundtest' });
+      if (i < 0 || typeof i !== 'number') break;
+      cur = i; A.playFile && A.playFile(ids[i]);
+    }
+    if (A.stopBgm) { A.stopBgm(); if (back) A.playBgm(back); }
+  };
+
+  /* ---------- v9.3 さくせん（仲間ごとのオート戦闘の考え方。js/rpg/combat.js の Combat.TACTICS） ---------- */
+  Menu.tactics = async function () {
+    var T = Combat.TACTICS;
+    while (true) {
+      var L = State.partyActors();
+      var rows = L.map(function (a) { var t = Combat.tacticOf(a); return { label: a.name, right: Combat.tacticName(a), sub: T.filter(function (x) { return x.id === t; })[0].desc }; });
+      rows.push({ label: 'みんな同じ作戦にする', sub: '戦闘メンバー全員の作戦をまとめて変える' });
+      var i = await Win.list(rows, { title: 'さくせん（オート戦闘での考え方）', cls: 'tactics-menu', key: 'tactics' });
+      if (i < 0 || typeof i !== 'number') return;
+      var who = i < L.length ? [L[i]] : L; var curT = i < L.length ? Combat.tacticOf(L[i]) : null;
+      var ti = await Win.list(T.map(function (x) { return { label: x.name, right: x.id === curT ? '今の作戦' : '', sub: x.desc }; }), { title: (i < L.length ? L[i].name + 'の作戦' : 'みんなの作戦'), initial: Math.max(0, T.map(function (x) { return x.id; }).indexOf(curT || 'balance')) });
+      if (ti >= 0 && ti < T.length) { who.forEach(function (a) { a.tactic = T[ti].id; }); if (Win.toast) Win.toast((i < L.length ? L[i].name : 'みんな') + '：' + T[ti].name); }
+    }
+  };
+  /* ---------- v9.3 まんたん：回復の呪文（MPあたりの回復が大きい順）と、選べば回復の道具で、生きている仲間のHPを満タンにする ----------
+     ・道具は HP だけを回復するもの（MP も回復する・食事の効果・全回復（999）・蘇生の道具は使わない）。足りない量にいちばん近いものから
+     ・戦闘不能の仲間は回復しない（教会か蘇生の呪文で）。最初に確かめる */
+  function lackHp(x) { return Math.max(0, Actors.stats(x).maxHp - x.hp); }
+  Menu.fullHealItem = function (id) { var it = ITEMS[id]; var ef = it && it.effect; return !!(it && it.cat === 'consumable' && ef && ef.hp > 0 && ef.hp < 999 && !ef.mp && !ef.meal && !ef.revive && !ef.all && !ef.buff && !ef.cure && !ef.partyHeal && !ef.fullHp && !it.battleOnly && !it.fieldOnly); };
+  Menu.fullHeal = async function () {
+    var party = State.partyActors(); var alive = party.filter(function (a) { return !a.dead; }); var dead = party.filter(function (a) { return a.dead; });
+    var need = alive.reduce(function (t, a) { return t + lackHp(a); }, 0);
+    if (!need) { await Win.message(['みんなのHPは満タンだ。' + (dead.length ? '（戦闘不能：' + dead.map(function (a) { return a.name; }).join('・') + '。教会か蘇生の呪文で）' : '')]); return; }
+    var c = await Win.choice('まんたん：足りないHPは合計 ' + need + '。どうやって回復する？', ['呪文と道具で回復する', '呪文だけで回復する', 'やめる']);
+    if (c !== 0 && c !== 1) return;
+    var res = Menu.fullHealRun(c === 0);
+    if (root.Audio && (res.spells.length || res.items.length)) root.Audio.sfx('heal');
+    await Win.message(res.lines); if (World.updateHud) World.updateHud();
+  };
+  // 実行（画面なし。テストからも呼ぶ）。戻り値 { spells, items, lines, full }
+  Menu.fullHealRun = function (useItems) {
+    var party = State.partyActors(); var alive = party.filter(function (a) { return !a.dead; }); var dead = party.filter(function (a) { return a.dead; });
+    var cost = function (a, sk) { return Combat.skillCost ? Combat.skillCost(a, sk) : sk.mp; };
+    var spellLog = {}, itemLog = {}, order = [];
+    for (var n = 0; n < 300; n++) {
+      var hurt = alive.filter(function (x) { return lackHp(x) > 0; }).sort(function (p, q) { return lackHp(q) - lackHp(p); }); if (!hurt.length) break;
+      var best = null;
+      alive.forEach(function (ca) {
+        if (ca.status && ca.status.silence) return;
+        Actors.allSkills(ca).forEach(function (id) {
+          var sk = SKILLS[id]; if (!sk || sk.kind !== 'heal' || (sk.target !== 'ally' && sk.target !== 'allies')) return; var mp = cost(ca, sk); if (mp > ca.mp) return;
+          var ex = Combat.fieldHealExpect(ca, sk); var eff = sk.target === 'allies' ? alive.reduce(function (t, x) { return t + Math.min(ex, lackHp(x)); }, 0) : Math.min(ex, lackHp(hurt[0]));
+          var score = eff / Math.max(1, mp); if (!best || score > best.score + 1e-9 || (Math.abs(score - best.score) < 1e-9 && mp < best.mp)) best = { ca: ca, sk: sk, mp: mp, score: score };
+        });
+      });
+      if (best) {
+        best.ca.mp -= best.mp; var tg = best.sk.target === 'allies' ? alive : [hurt[0]];
+        tg.forEach(function (t) { var st = Actors.stats(t); t.hp = Math.min(st.maxHp, t.hp + Combat.fieldHealAmount(best.ca, best.sk)); });
+        var k = best.ca.id + '|' + best.sk.id; if (!spellLog[k]) { spellLog[k] = { a: best.ca, sk: best.sk, n: 0, mp: 0 }; order.push(['s', k]); } spellLog[k].n++; spellLog[k].mp += best.mp; continue;
+      }
+      if (!useItems) break;
+      var inv = State.data.inventory; var t0 = hurt[0], L0 = lackHp(t0);
+      var ids = Object.keys(inv).filter(function (id) { return inv[id] > 0 && Menu.fullHealItem(id); });
+      if (!ids.length) break;
+      var enough = ids.filter(function (id) { return ITEMS[id].effect.hp >= L0; }).sort(function (p, q) { return ITEMS[p].effect.hp - ITEMS[q].effect.hp || (ITEMS[p].price || 0) - (ITEMS[q].price || 0); });
+      var pick = enough.length ? enough[0] : ids.sort(function (p, q) { return ITEMS[q].effect.hp - ITEMS[p].effect.hp; })[0];
+      var stt = Actors.stats(t0); t0.hp = Math.min(stt.maxHp, t0.hp + ITEMS[pick].effect.hp); State.addItem(pick, -1);
+      if (!itemLog[pick]) { itemLog[pick] = 0; order.push(['i', pick]); } itemLog[pick]++;
+    }
+    var lines = [], spells = [], items = [];
+    order.forEach(function (o) { if (o[0] === 's') { var L = spellLog[o[1]]; spells.push({ actorId: L.a.id, skillId: L.sk.id, n: L.n, mp: L.mp }); lines.push(L.a.name + 'は' + L.sk.name + 'を' + L.n + '回唱えた（MP−' + L.mp + '）'); } else { items.push({ id: o[1], n: itemLog[o[1]] }); lines.push(ITEMS[o[1]].name + 'を' + itemLog[o[1]] + '個使った'); } });
+    var left = alive.filter(function (x) { return lackHp(x) > 0; });
+    if (!left.length) lines.push('生きている仲間のHPが満タンになった！');
+    else lines.push((spells.length || items.length ? '' : '回復の呪文を使える仲間・MP' + (useItems ? '・道具' : '') + 'がない。') + '満タンにできなかった：' + left.map(function (x) { return x.name + ' HP' + x.hp + '/' + Actors.stats(x).maxHp; }).join('　'));
+    if (dead.length) lines.push('戦闘不能の仲間（' + dead.map(function (a) { return a.name; }).join('・') + '）は回復できない（教会か蘇生の呪文で）。');
+    return { spells: spells, items: items, lines: lines, full: !left.length };
+  };
+
   // v9.2 じゅもん・とくぎ：画面を閉じずに仲間を切り替える（Q／E・上の名前のタップ。←→ は今までどおり分類のタブ）
   Menu.skills = async function (a0) {
     var a = a0 ? noteMember(a0) : await pickActor('じゅもん・とくぎを見る', true, null, true); if (!a) return;
@@ -682,6 +771,9 @@
       { cat: 'sound', label: '音（BGM・効果音）', key: 'mute', opts: [{ v: false, l: 'ON' }, { v: true, l: 'OFF' }], after: function () { if (A) { A.apply(); if (!st.mute) A.sfx('coin'); } } },
       { cat: 'sound', label: 'BGM音量', key: 'bgm', opts: volOpts(st.bgm), fmt: pct, after: function () { if (A) A.apply(); } , note: '選ぶとすぐに今の曲の音量が変わる' },
       { cat: 'sound', label: '効果音音量', key: 'se', opts: volOpts(st.se), fmt: pct, after: function () { if (A) { A.apply(); A.sfx('coin'); } }, note: '選ぶと試しの音を鳴らす' },
+      { cat: 'sound', label: 'BGM の種類', key: 'bgmKind', def: 'file', opts: [{ v: 'file', l: 'フリー音源の曲（0 A.D.）' }, { v: 'retro', l: 'レトロ（自作の電子音）' }], after: function () { if (A && A.lastKey) { var k = A.lastKey; A.stopBgm(); A.playBgm(k); } }, note: '曲は場所（町・フィールド・ダンジョン）と戦闘で変わる。読めないときは自作の曲になる' },   // v9.3
+      { cat: 'sound', label: 'BGM を聞く（サウンドテスト）', action: 'soundtest', right: '' },   // v9.3
+      { cat: 'sound', label: 'BGM のクレジット', action: 'bgmcredit', right: 'CC BY-SA 3.0' },   // v9.3
       { cat: 'view', label: '文字の大きさ', key: 'uiScale', def: 'normal', opts: [{ v: 'normal', l: '標準' }, { v: 'large', l: '大きい' }], after: function () { Menu.applyUiScale(); } },
       { cat: 'view', label: '文字速度', key: 'textSpeed', opts: [{ v: 'normal', l: 'ふつう' }, { v: 'fast', l: 'はやい' }, { v: 'instant', l: '一瞬' }] },
       { cat: 'view', label: 'ミニマップ', key: 'minimap', def: 'on', opts: [{ v: 'on', l: '表示する' }, { v: 'off', l: '表示しない' }], set: function (v) { if (root.Minimap && root.Minimap.setVisible) root.Minimap.setVisible(v !== 'off', true); else st.minimap = v; } },
@@ -697,7 +789,8 @@
       { cat: 'ctrl', label: 'スマホの操作ボタンの位置', key: 'padSide', def: 'normal', opts: [{ v: 'normal', l: '移動を左・決定を右' }, { v: 'swap', l: '移動を右・決定を左' }] },
       { cat: 'ctrl', label: 'スマホの操作ボタンの濃さ', key: 'padOpacity', def: 1, opts: [{ v: 1, l: 'ふつう' }, { v: 0.75, l: 'うすい' }, { v: 0.5, l: 'とてもうすい' }] },
       { cat: 'ctrl', label: 'スマホの操作ボタンの大きさ', key: 'padScale', def: 1, opts: [{ v: 0.85, l: '小さい' }, { v: 1, l: 'ふつう' }, { v: 1.15, l: '大きい' }] },
-      { cat: 'battle', label: '戦闘速度', key: 'battleSpeed', def: 'normal', opts: [{ v: 'normal', l: 'ふつう' }, { v: 'fast', l: 'はやい' }] },
+      { cat: 'battle', label: '戦闘速度', key: 'battleSpeed', def: 'normal', opts: [{ v: 'normal', l: 'ふつう' }, { v: 'fast', l: 'はやい' }, { v: 'veryfast', l: 'とてもはやい' }] },   // v9.3 とてもはやい
+      { cat: 'battle', label: '呪文・特技の効き目の表示', key: 'effHint', def: 'on', opts: [{ v: 'on', l: '表示する' }, { v: 'off', l: '表示しない' }], note: '技・対象を選ぶときに「ばつぐん／いまいち／きかない」を出す' },   // v9.3
       { cat: 'battle', label: 'チャート試練のリスク%', key: 'riskPercent', opts: root.CONFIG.risk.riskOptions.map(function (v) { return { v: v, l: v + '%' }; }) },
       { cat: 'battle', label: 'ZigZag表示', key: 'showZigzag', opts: [{ v: true, l: 'ON' }, { v: false, l: 'OFF' }] },
       { cat: 'battle', label: '戦闘中の相場の試練', key: 'battleTrial', def: 'detail', opts: [{ v: 'quick', l: '簡易（買い・売り・見送り＋理由）' }, { v: 'detail', l: '詳細（5つの分析・高値安値・注文）' }], note: 'ボス戦・修行場・学院・進行イベントの試練は、いつも詳細' },
@@ -722,6 +815,8 @@
       if (r && typeof r === 'object') { if (r.tab !== undefined) tab = r.tab; continue; }
       var S = L[r]; if (!S) continue;
       if (S.action === 'data') { await Menu.dataManagement(); continue; }
+      if (S.action === 'soundtest') { await Menu.soundTest(); continue; }   // v9.3
+      if (S.action === 'bgmcredit' && root.BGM93) { await Win.panel(root.BGM93.creditsHtml(), { cls: 'bgm-credit' }); continue; }   // v9.3
       if (S.action === 'title') { if (await Menu.toTitle()) return 'title'; continue; }
       if (S.action === 'layout' && root.EnvLayout) {   // v7.6 間取りの切り替え：2D版・3D版の両方。マップを作り直すので、再読み込みで反映する
         var lon = !root.EnvLayout.enabled; var lc = await Win.choice((lon ? '新しい間取り（町の通り・広場、ダンジョンの広間、建物の中の用途ごとの間取り）' : '元の間取り') + 'に切り替える？ 2D版・3D版の両方に効く。ページの再読み込みで反映する（オートセーブから再開できる。立ち位置が塞がっていれば近くの通れる所へ移る）', ['切り替えて再読み込み', 'やめる'], { initial: 1 });

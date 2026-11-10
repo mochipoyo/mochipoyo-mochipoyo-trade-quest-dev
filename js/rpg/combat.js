@@ -648,10 +648,19 @@
     return c;
   }
   Combat.skillCost = skillCost;
+  // v9.3 仲間ごとの作戦（オート戦闘での考え方）。a.tactic に保存（旧セーブ・未設定は 'balance'＝今までのオートと同じ動き）
+  Combat.TACTICS = [
+    { id: 'balance', name: 'バランスよく', desc: '蘇生・回復・治療と攻撃を状況で選ぶ（今までのオート戦闘と同じ）' },
+    { id: 'gangan', name: 'ガンガン行く', desc: 'MPを惜しまず強い攻撃・全体攻撃。回復はピンチ（HP25%未満）のときだけ' },
+    { id: 'heal', name: '回復重視', desc: '仲間のHPを高く保つ（HP70%未満で回復）。攻撃にはMPを使わない' },
+    { id: 'nomp', name: 'MPを使わない', desc: 'MPを使う呪文・特技は使わない（通常攻撃とMP0の技だけ）' }
+  ];
+  Combat.tacticOf = function (a) { var t = a && a.tactic; return t === 'gangan' || t === 'heal' || t === 'nomp' ? t : 'balance'; };
+  Combat.tacticName = function (a) { var t = Combat.tacticOf(a); return Combat.TACTICS.filter(function (x) { return x.id === t; })[0].name; };
   Combat.autoCommand = function (b, a) {
-    var s = Actors.stats(a);
+    var s = Actors.stats(a); var T = Combat.tacticOf(a);
     var known = Actors.allSkills(a).filter(function (id) { return SKILLS[id]; });
-    var usable = known.filter(function (id) { var sk = SKILLS[id]; return !sk.gold && !sk.escape && !sk.scan && !sk.field && a.mp >= skillCost(a, sk); });
+    var usable = known.filter(function (id) { var sk = SKILLS[id]; return !sk.gold && !sk.escape && !sk.scan && !sk.field && a.mp >= skillCost(a, sk) && (T !== 'nomp' || skillCost(a, sk) === 0); });
     var allies = b.party.filter(function (x) { return !x.dead; }), dead = b.party.filter(function (x) { return x.dead; });
     var foes = aliveEnemies(b).filter(function (e) { return !e.fled; });
     if (!foes.length) return { actorId: a.id, type: 'defend' };
@@ -660,7 +669,7 @@
     // 1) 蘇生
     if (dead.length) { var rv = usable.filter(function (id) { return SKILLS[id].kind === 'revive'; })[0]; if (rv) return cmd(rv, { side: 'party', id: dead[0].id }); }
     // 2) 回復
-    var hurt = allies.filter(function (x) { return ratio(x) < 0.45; }).sort(function (p, q) { return ratio(p) - ratio(q); });
+    var hurt = allies.filter(function (x) { return ratio(x) < (T === 'heal' ? 0.7 : T === 'gangan' ? 0.25 : 0.45); }).sort(function (p, q) { return ratio(p) - ratio(q); });
     if (hurt.length) {
       var heals = usable.filter(function (id) { return SKILLS[id].kind === 'heal'; }).sort(function (p, q) { return (SKILLS[q].power || 0) - (SKILLS[p].power || 0); });
       var all = heals.filter(function (id) { return SKILLS[id].target === 'allies'; }), one = heals.filter(function (id) { return SKILLS[id].target === 'ally'; });
@@ -670,23 +679,46 @@
     }
     // 3) 状態異常の治療
     var sick = allies.filter(function (x) { return x.status && (x.status.poison || x.status.paralyze || x.status.sleep || x.status.confuse || x.status.silence); })[0];
-    if (sick) { var cu = usable.filter(function (id) { return SKILLS[id].kind === 'cure'; })[0]; if (cu) return cmd(cu, SKILLS[cu].target === 'ally' ? { side: 'party', id: sick.id } : null); }
+    if (sick && T !== 'gangan') { var cu = usable.filter(function (id) { return SKILLS[id].kind === 'cure'; })[0]; if (cu) return cmd(cu, SKILLS[cu].target === 'ally' ? { side: 'party', id: sick.id } : null); }
     // 4) 攻撃：HP の少ない敵から倒す
     var target = foes.slice().sort(function (p, q) { return p.hp - q.hp; })[0]; var es = estats(target);
     var normal = Math.max(1, s.atk - es.def * 0.5) * resistOf(target, s.element);
     var healer = known.some(function (id) { return SKILLS[id].kind === 'heal'; });
-    var reserve = healer ? 0.5 : 0.25; var mpRatio = a.mp / Math.max(1, s.maxMp);
-    var best = null, bestScore = normal * 1.3;
-    if (mpRatio > reserve) usable.forEach(function (id) {
+    var reserve = T === 'gangan' || T === 'nomp' ? 0 : healer ? 0.5 : 0.25; var mpRatio = a.mp / Math.max(1, s.maxMp);
+    var best = null, bestScore = normal * (T === 'gangan' ? 1.1 : 1.3);
+    if (mpRatio > reserve && T !== 'heal') usable.forEach(function (id) {   // v9.3 回復重視は攻撃に MP を使わない
       var sk = SKILLS[id]; if (sk.target !== 'enemy' && sk.target !== 'enemies') return; if (sk.kind !== 'attack' && sk.kind !== 'magic') return;
       var n = sk.target === 'enemies' ? foes.length : 1; var r = resistOf(target, sk.element);
       var est = sk.kind === 'attack' ? Math.max(1, s.atk * (sk.power || 1) - es.def * 0.5 * (1 - (sk.pierce || 0))) * (sk.hits || 1) : Math.max(1, (sk.power || 0) + s.mag * 1.2 - es.mdef * 0.5);
-      var score = est * r * (n > 1 ? n * (sk.v76 ? 0.6 : 0.85) : (sk.v76 ? 0.6 : 1));   // v7.6 全体攻撃の技（js/data/skills76.js）は、自動戦闘では選びにくくする（0.6 倍で比べる。MP の使いすぎで勝率が下がったため）
+      var score = T === 'gangan' ? est * r * (n > 1 ? n * 0.95 : 1) : est * r * (n > 1 ? n * (sk.v76 ? 0.6 : 0.85) : (sk.v76 ? 0.6 : 1));   // v7.6 全体攻撃の技（js/data/skills76.js）は、自動戦闘では選びにくくする（0.6 倍で比べる。MP の使いすぎで勝率が下がったため）。v9.3 ガンガン行くは全体攻撃も遠慮しない
       if (score > bestScore) { bestScore = score; best = id; }
     });
     if (best) return cmd(best, SKILLS[best].target === 'enemy' ? { side: 'enemy', idx: target.idx } : null);
     return { actorId: a.id, type: 'attack', target: { side: 'enemy', idx: target.idx } };
   };
+
+  // v9.3 効き目の表示（技・対象を選ぶとき。js/ui/battle.js）。sk：技（SKILLS の値）か 'attack'（通常攻撃）。e：敵
+  //   戻り値：'weak'（ばつぐん：倍率 >1）・'resist'（いまいち：0<倍率<1）・'immune'（きかない：倍率 0）・'normal'・null（表示しない技）
+  //   倍率は実際のダメージの計算と同じ resistOf（敵の属性の耐性）。状態異常・弱体の技は、ボスに効きにくい（60%で防がれる）ので「いまいち」
+  Combat.effectOn = function (a, sk, e) {
+    if (!e || e.dead || e.fled) return null; var r;
+    if (sk === 'attack') r = resistOf(e, Actors.stats(a).element);
+    else if (!sk || (sk.target !== 'enemy' && sk.target !== 'enemies')) return null;
+    else if (sk.kind === 'attack' || sk.kind === 'magic') r = resistOf(e, sk.element);
+    else if (sk.kind === 'status' || sk.kind === 'debuff') return e.boss ? 'resist' : 'normal';
+    else return null;
+    return r === 0 ? 'immune' : r > 1 ? 'weak' : r < 1 ? 'resist' : 'normal';
+  };
+  Combat.EFFECT_NAME = { weak: 'ばつぐん', resist: 'いまいち', immune: 'きかない', normal: 'ふつう' };
+
+  // v9.3 まんたん（js/ui/menu.js の Menu.fullHeal）：フィールドで回復の呪文を唱えたときの回復量。戦闘中と同じ式
+  //   （(威力＋魔力×0.8)×僧侶1.15×装備の回復の倍率×0.9〜1.1）。戦闘だけの効果（対象ごとの倍率・回復のあとの追加効果）は入れない
+  Combat.fieldHealAmount = function (a, sk) {
+    var s = Actors.stats(a); var hm = fx(a, 'healMult') || 1; if (UG()) hm = UG().healBase(a, hm);
+    return Math.max(1, Math.round((sk.power + s.mag * 0.8) * (a.job === 'priest' ? 1.15 : 1) * hm * rnd(0.9, 1.1)));
+  };
+  // 期待値（乱数なし。どの呪文が MP あたりよく回復するかを比べるため）
+  Combat.fieldHealExpect = function (a, sk) { var s = Actors.stats(a); var hm = fx(a, 'healMult') || 1; if (UG()) hm = UG().healBase(a, hm); return (sk.power + s.mag * 0.8) * (a.job === 'priest' ? 1.15 : 1) * hm; };
 
   root.Combat = Combat;
 })(typeof window !== 'undefined' ? window : globalThis);

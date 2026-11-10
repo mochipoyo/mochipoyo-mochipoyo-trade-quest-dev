@@ -43,6 +43,37 @@
   // タップ・クリックの受け口：一番上の窓のときだけ fn を呼ぶ
   function tap(h, elm, fn) { elm.addEventListener('click', function (e) { e.stopPropagation(); if (!isTop(h)) return; fn(e); }); }
 
+  /* ---------- v9.3 会話の履歴（読み飛ばした会話・説明を読み返す） ----------
+     ・メッセージの各行（話す人の名前つき）と、選択肢の問いかけ・選んだ答えを、表示した順に覚える（新しい 300 件まで）
+     ・この遊んでいる間だけ（セーブには入れない）。メッセージの窓の［履歴］・↑ キー、メニューの「会話の履歴」で開く */
+  Win.LOG_MAX = 300; Win.log = [];
+  function placeName() { try { var W = root.World; var m = W && W.map; return (m && (m.name || (m.def && m.def.name))) || ''; } catch (e) { return ''; } }
+  Win.logLine = function (name, text, kind) {
+    text = String(text == null ? '' : text); if (!text) return; var L = Win.log; var place = placeName();
+    var last = L[L.length - 1]; if (last && last.text === text && last.name === (name || '') && last.kind === (kind || 'say')) return;   // 同じ行を続けて覚えない
+    L.push({ name: name || '', text: text, kind: kind || 'say', place: place }); if (L.length > Win.LOG_MAX) L.splice(0, L.length - Win.LOG_MAX);
+  };
+  var logOpen = false;
+  Win.backlog = function () {
+    if (logOpen) return Promise.resolve(); logOpen = true;
+    var L = Win.log; var html = '<div class="rw-title">会話の履歴（新しい ' + Win.LOG_MAX + ' 件まで）</div><div class="bl-list">';
+    if (!L.length) html += '<div class="muted">まだ会話がない。</div>';
+    var lastPlace = null;
+    L.forEach(function (x) {
+      if (x.place && x.place !== lastPlace) { html += '<div class="bl-place">― ' + esc(x.place) + ' ―</div>'; lastPlace = x.place; }
+      html += '<div class="bl-row bl-' + x.kind + '">' + (x.name ? '<span class="bl-name">' + esc(x.name) + '</span>' : '') + '<span class="bl-text">' + esc(x.text) + '</span></div>';
+    });
+    html += '</div><div class="bl-foot muted small">↑↓ でスクロール　Enter／Esc で閉じる</div>';
+    return Win.panel(html, { cls: 'backlog-panel rw-tall', noClose: true,
+      onOk: function () { fin(0); }, onCancel: function () { fin(-1); },
+      onKey: function (k) { var b = node && node.querySelector('.bl-list'); if (!b) return; if (k === 'up') b.scrollTop -= 60; else if (k === 'down') b.scrollTop += 60; },
+      setup: function (n, close) { node = n; fin = function (v) { logOpen = false; close(v); };
+        var x = document.createElement('div'); x.className = 'rw-close'; x.setAttribute('role', 'button'); x.setAttribute('tabindex', '0'); x.setAttribute('aria-label', '閉じる'); x.textContent = '✕'; n.appendChild(x);
+        x.addEventListener('click', function (e) { e.stopPropagation(); fin(-1); });
+        var b = n.querySelector('.bl-list'); if (b) b.scrollTop = b.scrollHeight; } });
+    var node = null, fin = function () { };
+  };
+
   /* ---------- メッセージ ---------- */
   Win.message = function (lines, opts) {
     opts = opts || {};
@@ -50,11 +81,11 @@
     return new Promise(function (resolve) {
       var idx = 0, typing = null, full = '', done = false;
       var pt = opts.portrait ? '<img class="rw-portrait" src="' + opts.portrait + '" alt="" draggable="false">' : '';
-      var node = el('<div class="rw-msg' + (pt ? ' has-portrait' : '') + '">' + pt + '<div class="rw-msg-body"><div class="rw-name' + (opts.name ? '' : ' hidden') + '">' + esc(opts.name || '') + '</div><div class="rw-text"></div></div><div class="rw-next">▼</div></div>');
+      var node = el('<div class="rw-msg' + (pt ? ' has-portrait' : '') + '">' + pt + '<div class="rw-msg-body"><div class="rw-name' + (opts.name ? '' : ' hidden') + '">' + esc(opts.name || '') + '</div><div class="rw-text"></div></div><div class="rw-next">▼</div><span class="rw-logbtn" role="button" tabindex="0" aria-label="会話の履歴">履歴</span></div>');   // v9.3 会話の履歴のボタン
       var textEl = node.querySelector('.rw-text');
       var speed = (root.State && root.State.data && root.State.data.settings.textSpeed) || 'normal';
       function typeLine() {
-        full = lines[idx] || ''; textEl.textContent = ''; clearInterval(typing); done = false;
+        full = lines[idx] || ''; textEl.textContent = ''; clearInterval(typing); done = false; Win.logLine(opts.name, full, 'say');
         if (speed === 'instant') { textEl.textContent = full; done = true; return; }
         var i = 0, ms = speed === 'fast' ? 10 : 24;
         typing = setInterval(function () { i++; textEl.textContent = full.slice(0, i); if (i >= full.length) { clearInterval(typing); done = true; } }, ms);
@@ -64,7 +95,9 @@
         idx++;
         if (idx >= lines.length) { h.close(); resolve(); } else typeLine();
       }
-      var h = open(node, { ok: advance, cancel: advance });
+      function showLog() { if (!isTop(h)) return; Win.backlog(); }
+      var h = open(node, { ok: advance, cancel: advance, up: showLog });   // v9.3 ↑ キーで会話の履歴
+      var lb = node.querySelector('.rw-logbtn'); if (lb) tap(h, lb, function () { showLog(); });
       tap(h, node, function () { advance(); });
       typeLine();
     });
@@ -88,13 +121,15 @@
       var node = el('<div class="rw-choice"><div class="rw-prompt' + (prompt ? '' : ' hidden') + '">' + esc(prompt || '') + '</div><div class="rw-opts" role="listbox">' + options.map(function (o, i) { return '<div class="rw-opt" role="option" tabindex="-1" data-i="' + i + '">' + esc(o) + '</div>'; }).join('') + '</div></div>');
       var optEls = node.querySelectorAll('.rw-opt');
       function render() { optEls.forEach(function (o, i) { o.classList.toggle('cur', i === cur); o.setAttribute('aria-selected', i === cur ? 'true' : 'false'); }); if (node._scroll && optEls[cur] && optEls[cur].scrollIntoView) optEls[cur].scrollIntoView({ block: 'nearest' }); }
+      if (prompt) Win.logLine('', prompt, 'ask');   // v9.3 会話の履歴：問いかけと、選んだ答え
+      function pick(i) { h.close(); if (i >= 0 && options[i] !== undefined) Win.logLine('', '→ ' + options[i], 'answer'); resolve(i); }
       var h = open(node, {
-        ok: function () { h.close(); resolve(cur); },
+        ok: function () { pick(cur); },
         cancel: function () { if (opts.cancel === false) return; h.close(); resolve(-1); },
         up: function () { cur = (cur + options.length - 1) % options.length; render(); },
         down: function () { cur = (cur + 1) % options.length; render(); }
       });
-      optEls.forEach(function (o) { tap(h, o, function () { cur = parseInt(o.getAttribute('data-i'), 10); h.close(); resolve(cur); }); });
+      optEls.forEach(function (o) { tap(h, o, function () { cur = parseInt(o.getAttribute('data-i'), 10); pick(cur); }); });
       tap(h, node, function () { });   // 窓の余白のタップで下の窓が反応しないように
       fitChoice(node);
       render();

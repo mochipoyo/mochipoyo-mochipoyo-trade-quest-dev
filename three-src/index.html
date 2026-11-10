@@ -26,6 +26,8 @@
     function showError(msg) { var box = document.getElementById('fatal'); if (!box) return; box.style.display = 'block'; box.querySelector('.msg').textContent = String(msg); }
     window.addEventListener('error', function (e) { if (e && e.filename && /three|assets\/main/.test(e.filename)) return; showError(e.message || e); });
     window.addEventListener('unhandledrejection', function (e) { console.error(e.reason); });
+    // v9.3 2回目から速く開く：Service Worker（../sw.js。2D 版と同じ）。https のときだけ・?nosw で止める
+    try { if ('serviceWorker' in navigator && location.protocol === 'https:' && !/[?&]nosw/.test(location.search)) window.addEventListener('load', function () { navigator.serviceWorker.register('../sw.js', { scope: '../' }).catch(function () { }); }); } catch (e) { }
     var booted = false;
     // 安全装置：2D版のセーブ枠（mtq-rpg-v2-slot-*）へ書き込む状態では起動しない（js/rpg/state.js が古い場合）
     function savesSafe() { return !!(window.State && /^mtq-3d-/.test(window.State.keyPrefix || '')); }

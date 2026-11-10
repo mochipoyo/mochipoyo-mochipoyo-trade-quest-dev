@@ -1,0 +1,3 @@
+// v9.3 画像の一覧（ASSET_MANIFEST）を JSON に書き出す（tools/make-webp.py が使う）：node docs/tools/rpg93/dump-manifest.js 出力.json
+const path = require('path'); const load = require(path.resolve(__dirname, '../v78/load78.js')); const A = load({}); const w = A.w; const fs = require('fs');
+setTimeout(() => { const M = w.ASSET_MANIFEST; const out = []; Object.keys(M).forEach((k) => { if (typeof M[k] !== 'object' || !M[k]) return; Object.keys(M[k]).forEach((id) => { const e = M[k][id]; if (e && e.path && e.use !== false) out.push({ kind: k, id, path: e.path, lazy: !!e.lazy }); }); }); fs.writeFileSync(process.argv[2], JSON.stringify(out)); console.log(out.length + ' 件'); process.exit(0); }, 1500);

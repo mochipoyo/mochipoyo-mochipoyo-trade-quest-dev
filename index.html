@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="description" content="もちぽよFXクエスト ～波形の勇者と相場の魔王～：2DトップビューJRPGを冒険しながらFXトレードの判断を学ぶブラウザゲーム（学習用人工データ）">
 <title>もちぽよFXクエスト ～波形の勇者と相場の魔王～</title>
-<link rel="stylesheet" href="styles.css?v=61c8de563f">
+<link rel="stylesheet" href="styles.css?v=9f7422f7ca">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230b1226'/%3E%3Crect x='3' y='9' width='2' height='4' fill='%234cc38a'/%3E%3Crect x='7' y='5' width='2' height='8' fill='%23e5484d'/%3E%3Crect x='11' y='2' width='2' height='9' fill='%23ffd24a'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -31,7 +31,10 @@
 </div>
 <noscript><div class="rw-panel" style="margin:2rem">このゲームはJavaScriptが必要です。</div></noscript>
 
-<!-- 通常のscript読み込み（ビルド・fetch不要・相対パス） -->
+<!-- v9.3 読み込みを速くする：下の <template> の中が、ゲームの中身のスクリプトの一覧（この順に読む・ここに足す）。
+     ブラウザは、tools/stamp-version.js がこの一覧を 1 つにまとめて縮めた dist/mtq.min.js を読む（通信の回数と量が減る）。
+     まとめたファイルが読めないとき（ファイルがない・通信の失敗）は、一覧のスクリプトを 1 つずつ読む -->
+<template id="mtq-src">
 <script src="js/config.js?v=34eba7246f"></script>
 <script src="js/cloud-config.js?v=ceefacd1a5"></script>
 <script src="js/signals.js?v=e14b0f957e"></script>
@@ -122,7 +125,7 @@
 <script src="js/data/monsters65.js?v=a820988e9e"></script>
 <script src="js/data/enemies-add35.js?v=e1dcad110f"></script>
 <script src="js/data/events65.js?v=6a91b1e4d7"></script>
-<script src="js/data/fx65.js?v=c55a7ce6ac"></script>
+<script src="js/data/fx65.js?v=12b2864c9a"></script>
 <script src="js/data/battlebg39.js?v=76cf98f55d"></script>
 <script src="js/data/astra65.js?v=60171960d4"></script>
 <script src="js/data/market-seeds.js?v=c710a207ba"></script>
@@ -133,6 +136,7 @@
 <script src="js/data/companions67.js?v=c3b0305a63"></script>
 <script src="js/data/chatter67.js?v=05a16b1bee"></script>
 <script src="js/data/asset-manifest.js?v=6761fa73b7"></script>
+<script src="js/data/asset-webp.js?v=eb7d85a771"></script>
 <script src="js/data/boss-redesign.js?v=8112073c30"></script>
 <script src="js/data/bosses19.js?v=279d288e55"></script>
 <script src="js/data/companions68.js?v=0df91559e3"></script>
@@ -147,8 +151,8 @@
 <script src="js/data/homes73.js?v=18e01cc09f"></script>
 <script src="js/data/iq73.js?v=ad9ec70fe6"></script>
 <script src="js/data/townlife73.js?v=91dad97dce"></script>
-<script src="js/core/assets.js?v=6cde47728f"></script>
-<script src="js/core/version.js?v=eb24059e83"></script>
+<script src="js/core/assets.js?v=374ab66aae"></script>
+<script src="js/core/version.js?v=9bc67f83b4"></script>
 <script src="js/core/update-check.js?v=a1d36ddb7e"></script>
 <script src="js/core/bossart.js?v=b3be73da9f"></script>
 <script src="js/data/enemy-redesign.js?v=deb935de9e"></script>
@@ -158,15 +162,15 @@
 <script src="js/data/skills76.js?v=16740bd74a"></script>
 <script src="js/data/enemyskills76.js?v=df1d8438d9"></script>
 <script src="js/rpg/actors.js?v=9ae0ea3d88"></script>
-<script src="js/rpg/state.js?v=615d24cb0d"></script>
+<script src="js/rpg/state.js?v=ff79613a23"></script>
 <script src="js/rpg/saves.js?v=4967d09747"></script>
 <script src="js/rpg/cloud.js?v=d44f695419"></script>
-<script src="js/rpg/combat.js?v=0e753fa07d"></script>
+<script src="js/rpg/combat.js?v=0699457953"></script>
 <script src="js/rpg/market.js?v=2e0971c811"></script>
 <script src="js/rpg/ultimates.js?v=42cfd4199b"></script>
 <script src="js/rpg/quiz.js?v=996fdaf0d5"></script>
 <script src="js/rpg/playlog.js?v=f7c35a3fb7"></script>
-<script src="js/ui/windows.js?v=bdd8ffcf6f"></script>
+<script src="js/ui/windows.js?v=4341a882db"></script>
 <script src="js/rpg/follow.js?v=82e8acf89c"></script>
 <script src="js/rpg/leverage.js?v=77f76dd2a5"></script>
 <script src="js/rpg/tradebattle.js?v=fb3b665332"></script>
@@ -198,20 +202,21 @@
 <script src="js/rpg/labsim.js?v=249d3ec679"></script>
 <script src="js/rpg/ooparts.js?v=50e7f0664c"></script>
   <script src="js/rpg/growth.js?v=4a5605b35c"></script>
-<script src="js/ui/audio.js?v=b8a57a76e0"></script>
+<script src="js/ui/audio.js?v=eb45bac5bc"></script>
+<script src="js/data/bgm93.js?v=8188efa657"></script>
 <script src="js/ui/ambient81.js?v=db1fd0267f"></script>
 <script src="js/rpg/shoptier76.js?v=55e4d90476"></script>
 <script src="js/ui/services.js?v=16aaf3888c"></script>
 <script src="js/ui/trade.js?v=938b74319a"></script>
 <script src="js/ui/practiceui.js?v=5211a2fe82"></script>
 <script src="js/ui/trainer91ui.js?v=e8bf8af9d0"></script>
-<script src="js/ui/chartbattle.js?v=3146202d83"></script>
+<script src="js/ui/chartbattle.js?v=35f639c767"></script>
 <script src="js/ui/quizbattle.js?v=ce9c3ec29f"></script>
 <script src="js/ui/dojo.js?v=8d6f0c7007"></script>
 <script src="js/ui/fx2d.js?v=7408406dfb"></script>
 <script src="js/ui/battlebg65.js?v=f9ae2cb96c"></script>
-<script src="js/ui/battle.js?v=331c223822"></script>
-<script src="js/ui/menu.js?v=a8e478b39c"></script>
+<script src="js/ui/battle.js?v=b9caf82bbb"></script>
+<script src="js/ui/menu.js?v=8468eb7be3"></script>
 <script src="js/ui/vehicleart.js?v=6bf851b39b"></script>
 <script src="js/ui/minimap.js?v=2d4293f8e3"></script>
 <script src="js/ui/worldmap.js?v=727ea38401"></script>
@@ -224,7 +229,7 @@
 <script src="js/ui/mobile.js?v=b93a50f97d"></script>
 <script src="js/ui/debug.js?v=a643c7d6fb"></script>
 <script src="js/ui/saveui.js?v=86a2bb9393"></script>
-<script src="js/ui/title.js?v=0510244e4b"></script>
+<script src="js/ui/title.js?v=d759eb7890"></script>
 <script src="js/data/env76.js?v=dc2f8acb83"></script>
 <script src="js/data/ship76.js?v=c2c880afc2"></script>
 <script src="js/rpg/terrace76.js?v=ca0285ed39"></script>
@@ -282,11 +287,19 @@
 <script src="js/data/boss-unique-gear.js?v=6772f5f4ce"></script>
 <script src="js/rpg/boss-unique-gear.js?v=8a3bb8dc8a"></script>
 <script src="js/main.js?v=5d31a7230c"></script>
+</template>
+<script src="dist/mtq.min.js?v=e1313a4836"></script>
+<script>
+  // まとめたファイルが読めなかったとき（ファイルがない・通信の失敗）：一覧のスクリプトを、この場所に順に書き込んで読む（同期的に読むので、後の起動の処理はそのまま）
+  if (!window.MochiQuest) document.write(document.getElementById('mtq-src').innerHTML);
+</script>
 <script>
   (function () {
     function showError(msg) { var box = document.getElementById('fatal'); if (!box) return; box.style.display = 'block'; box.querySelector('.msg').textContent = String(msg); }
     window.addEventListener('error', function (e) { showError(e.message || e); });
     window.addEventListener('unhandledrejection', function (e) { showError((e.reason && e.reason.stack) || e.reason || e); });
+    // v9.3 2回目から速く開く：Service Worker（sw.js）。https のときだけ・?nosw で止める。ページの読み込みが終わってから登録する
+    try { if ('serviceWorker' in navigator && location.protocol === 'https:' && !/[?&]nosw/.test(location.search)) window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js', { scope: './' }).catch(function () { }); }); } catch (e) { }
     try {
       if (!window.MochiQuest) throw new Error('スクリプトの読み込みに失敗しました（js/ フォルダがリポジトリ直下にあるか確認してください）');
       window.MochiQuest.boot();

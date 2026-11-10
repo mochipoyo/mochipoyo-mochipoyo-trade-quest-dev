@@ -1,0 +1,8 @@
+{
+  "name": "mtq-tools",
+  "private": true,
+  "description": "もちぽよFXクエストの作業用の道具（tools/stamp-version.js が使う esbuild）。cd tools && npm install",
+  "devDependencies": {
+    "esbuild": "0.24.2"
+  }
+}

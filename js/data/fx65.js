@@ -161,9 +161,9 @@
   };
 
   /* ---------- 時刻表（2D・3D 共通） ---------- */
-  // opts: { fast: 速い戦闘, hits: 命中の回数 }。windup＝構え（使う人の動き）、hitAt＝最初の命中、impacts＝各命中、total＝全体
+  // opts: { fast: 速い戦闘, speed: 'veryfast'（v9.3 とてもはやい）, hits: 命中の回数 }。windup＝構え（使う人の動き）、hitAt＝最初の命中、impacts＝各命中、total＝全体
   FX.timeline = function (def, opts) {
-    opts = opts || {}; var k = K[def && def.fx] || K.slash; var sc = opts.fast ? 0.55 : 1; if (def && def.big) sc *= 1.15;
+    opts = opts || {}; var k = K[def && def.fx] || K.slash; var sc = opts.speed === 'veryfast' ? 0.32 : opts.fast ? 0.55 : 1; if (def && def.big) sc *= 1.15;
     var hits = Math.max(1, Math.min(6, opts.hits || (def && def.hits) || 1)); var gap = Math.round((k.gap || 130) * sc);
     var windup = Math.round(Math.min(k.hit, 180) * sc); var hitAt = Math.round(k.hit * sc);
     var impacts = []; for (var i = 0; i < hits; i++) impacts.push(hitAt + i * gap);
