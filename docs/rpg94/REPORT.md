@@ -72,4 +72,7 @@
 
 ## 6. URL（開発用のリポジトリ `dev`。未公開）
 
-（URL）
+- 3D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/b7237cbdc592c30782ed7b30ed060ec8d4906f89/3d/index.html
+- 2D 版：https://raw.githack.com/mochipoyo/mochipoyo-mochipoyo-trade-quest-dev/b7237cbdc592c30782ed7b30ed060ec8d4906f89/index.html
+
+コード `b7237cb`（ブランチ `feature/companion-bonds`）。このあとのコミットは報告書だけ。
