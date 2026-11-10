@@ -1,7 +1,7 @@
 // v9.3 戦闘の演出（呪文・特技の光・粒・魔法陣・衝撃・動き）の確かめ（ヘッドレス Chromium。実機・GPU ではない）
 //  A) 見本の一覧（2D 版のみ）：代表の技（味方の物理・属性の呪文・回復・補助・弱体・チャートの技・敵の攻撃と呪文）を、
 //     時刻表どおりの 4 つの瞬間（命中の直前の構え・命中・命中の後・最後の命中の後）で戦闘画面に描き、画像に並べる
-//     → shots/fx93_sheet_*.png（目で見る用）。描画の失敗（FX2D.errors）が 0 か
+//     → shots/fx93_sheet_*.jpg（目で見る用）。描画の失敗（FX2D.errors）が 0 か
 //  B) 本物の戦闘（2D・3D）：仲間 4 人でオート戦闘を数ターン。味方の欄の動き（mo-*）・当たった光（hurt/healed）・敵の動き（emo）・反動（recoil）が
 //     起きたか、ページのエラー・描画の失敗が 0 か。途中の画面を shots/fx93_battle_*.jpg に
 //  C) 重さ（2D・この作業環境のソフトウェア描画）：戦闘画面 1 枚を描く時間を、演出なし／重い演出（全体の大きな呪文の命中の瞬間）で比べる
@@ -62,7 +62,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         const out = []; let sheet = null, sctx = null; const c = document.createElement('canvas'); c.width = W; c.height = H; const cx = c.getContext('2d');
         const base0 = { anims: S.anims.slice(), fx65: S.fx65, fxHits: S.fxHits, emo: S.emo, t: S.t, shake: S.screenShake };
         list.forEach((x, r) => {
-          if (r % rowsPer === 0) { if (sheet) out.push(sheet.toDataURL('image/png')); sheet = document.createElement('canvas'); sheet.width = cw * cols; sheet.height = ch * Math.min(rowsPer, list.length - r); sctx = sheet.getContext('2d'); sctx.fillStyle = '#111'; sctx.fillRect(0, 0, sheet.width, sheet.height); }
+          if (r % rowsPer === 0) { if (sheet) out.push(sheet.toDataURL('image/jpeg', 0.84)); sheet = document.createElement('canvas'); sheet.width = cw * cols; sheet.height = ch * Math.min(rowsPer, list.length - r); sctx = sheet.getContext('2d'); sctx.fillStyle = '#111'; sctx.fillRect(0, 0, sheet.width, sheet.height); }
           const tl = F.timeline(x.def, { speed: 'normal', hits: x.def.hits || 1 });
           const last = tl.impacts[tl.impacts.length - 1];
           const times = [Math.max(tl.windup, tl.hitAt - 40), tl.hitAt + 30, tl.hitAt + 140, Math.max(tl.hitAt + 220, last + 90)];
@@ -75,7 +75,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
             sctx.fillStyle = '#ddd'; sctx.font = '12px sans-serif'; sctx.fillText((k === 0 ? x.label + '　' : '') + tt + 'ms', k * cw + 4, (r % rowsPer) * ch + 13);
           });
         });
-        if (sheet) out.push(sheet.toDataURL('image/png'));
+        if (sheet) out.push(sheet.toDataURL('image/jpeg', 0.84));
         // C) 重さ：演出なし／重い演出（全体の大きな呪文の命中の瞬間）で、1 枚を描く時間
         const timeDraw = (setup) => { const ts = []; for (let i = 0; i < 25; i++) { setup(); const a = performance.now(); S.draw(cx); ts.push(performance.now() - a); } ts.sort((a, b) => a - b); return +ts[Math.floor(ts.length / 2)].toFixed(2); };
         const none = timeDraw(() => { S.fx65 = []; S.fxHits = []; S.emo = {}; S.t = 200000; });
@@ -84,7 +84,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         S.anims = base0.anims; S.fx65 = []; S.fxHits = []; S.emo = {}; S.t = base0.t;
         return { sheets: out, n: list.length, labels: list.map((x) => x.label), drawMs: { none, heavy }, errors: FX2D.errors };
       });
-      if (sheets.sheets) sheets.sheets.forEach((u, i) => fs.writeFileSync(`${OUT}shots/fx93_sheet_${i + 1}.png`, Buffer.from(u.split(',')[1], 'base64')));
+      if (sheets.sheets) sheets.sheets.forEach((u, i) => fs.writeFileSync(`${OUT}shots/fx93_sheet_${i + 1}.jpg`, Buffer.from(u.split(',')[1], 'base64')));
       res.sheet = { n: sheets.n, files: sheets.sheets ? sheets.sheets.length : 0, labels: sheets.labels, drawMs: sheets.drawMs, fx2dErrors: sheets.errors, err: sheets.err };
     }
     await p.evaluate(() => { window.__seen = { mo: {}, flash: {}, emo: 0, recoil: 0, fxStarts: 0, hits: 0 }; BattleUI.setAuto(true); });   // ここからオート（見本の一覧の分は数えない）

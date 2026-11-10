@@ -202,3 +202,12 @@ ERRORS: []
 === tl2/updated-tests/learntest
 ERRORS: []
 === tl2/updated-tests/dojo_test
+ALL OK
+=== tl2/updated-tests/tl_ui_test.js
+結果: 39 OK / 0 NG
+=== tl2/updated-tests/tl_ui_test.js 2d
+結果: 39 OK / 0 NG
+##### tl2 の新しいテスト
+=== docs/tools/tl2/tl6_test.js 
+結果: 59 OK / 0 NG
+=== docs/tools/tl2/tl7_test.js 
