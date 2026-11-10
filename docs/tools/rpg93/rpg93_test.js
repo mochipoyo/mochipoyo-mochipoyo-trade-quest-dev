@@ -184,6 +184,15 @@ function clean() { doc.querySelectorAll('#ui > *').forEach((n) => n.remove()); E
   State.data.settings.mute = false; delete State.data.settings.soundAsk93; const q3 = settle(w.Title.soundAsk93()); await frames(3); T(q3.done && !State.data.settings.soundAsk93, '音が出る設定のセーブには聞かない');
   clean();
 
+  console.log('-- K 勝利・レベルアップのファンファーレ（v9.3：短く・質の高い音に。レベルアップは勝利のあとに重ならず鳴る）');
+  const bsrc = src('js/ui/battle.js');
+  T(typeof AU.fanfareTo === 'function' && typeof AU.fanfareKeys === 'function' && AU.fanfareKeys().join(',') === 'victory,levelup', 'ファンファーレ（勝利・レベルアップ）を合成する部品');
+  T(/root\.Audio\.stopBgm\(\); root\.Audio\.playJingle\('victory'\)/.test(bsrc), '勝ったら戦闘の BGM を止めてから勝利のファンファーレ');
+  T(/lvMs = root\.Audio\.playJingle\('levelup'\)/.test(bsrc) && /showResultPanel\(res, !!opts\.boss, lvMs\)/.test(bsrc) && /rs-lv-go/.test(bsrc) && /\.rs-levelup\.rs-lv-go/.test(src('styles.css')), 'レベルアップのファンファーレの鳴り始めに合わせて「LEVEL UP!」を光らせる');
+  T(/Audio\.jingleUntil = t0 \+ r\.len/.test(asrc) && /Math\.max\(c\.currentTime \+ 0\.03, Audio\.jingleUntil \|\| 0\)/.test(asrc), '続けて鳴らすときは前のファンファーレが終わってから（重ならない）');
+  { const c0 = AU.ctx; AU.ctx = null; T(AU.playJingle('victory') === -1 && AU.playJingle('levelup') === -1, '音の準備（ユーザーの操作）の前は鳴らさない（-1 を返す）'); AU.ctx = c0; }   // この確かめの環境の音の部品は簡単な代わりなので、ここでは「準備の前」だけ確かめる（鳴らす確かめはブラウザの fanfare93）
+  T(['inn', 'chest', 'victory', 'levelup'].every((k) => new RegExp('\\b' + k + ': \\{ bpm').test(asrc)), '今までの音（宿・宝箱、合成できないブラウザ用の勝利・レベルアップ）は残している');
+
   console.log('\n結果：OK ' + okN + ' / NG ' + ng.length + (ng.length ? '\n' + ng.map((x) => '  - ' + x).join('\n') : ''));
   process.exit(ng.length ? 1 : 0);
 })().catch((e) => { console.error('CRASH', e && e.stack || e); process.exit(2); });

@@ -25,6 +25,7 @@
     ending: { bpm: 88, wave: 'triangle', mel: 'E4 2 G4 2 A4 4 B4 2 A4 2 G4 4 E4 2 G4 2 B4 2 D5 2 C5 4 B4 4 A4 2 B4 2 C5 2 D5 2 E5 8', bass: 'C3 4 C3 4 A2 4 A2 4 F2 4 F2 4 G2 4 C3 4' }
   };
   var JINGLES = {
+    // v9.3 勝利・レベルアップは下の FANFARE（金管・ベルなどの合成）で鳴らす。次の 2 つは、合成に使う部品がないブラウザのときだけ使う（今までの音）
     victory: { bpm: 140, wave: 'square', mel: 'C5 1 C5 1 C5 1 C5 2 G4 2 A4 2 C5 2 - 1 A4 1 C5 4' },
     levelup: { bpm: 160, wave: 'square', mel: 'G4 1 B4 1 D5 1 G5 2 D5 1 G5 3' },
     inn: { bpm: 100, wave: 'triangle', mel: 'C5 1 E5 1 G5 1 C6 2 G5 1 E5 1 C5 2' },
@@ -217,10 +218,104 @@
     }
     loop();
   }
+  /* v9.3 勝利・レベルアップのファンファーレ（自作の短い曲。ほかのゲームの曲の写しではない）
+     ・WebAudio で金管（のこぎり波 2 つ＋フィルター）・ベル・ティンパニ・シンバル・弦・ベースを合成し、残響（自作のインパルス応答）とコンプレッサーを通す
+     ・勝利 約 2.1 秒、レベルアップ 約 2.0 秒（＋余韻）。続けて鳴らすときは前のファンファーレが終わってから鳴る（重ならない）
+     ・鳴っている間は BGM を小さくする（戦闘の勝利では、戦闘の BGM を止めてから鳴らす：battle.js）
+     ・書き方：[楽器, 音名（空白区切りで和音）, 始まり（拍）, 長さ（拍）, 大きさ] */
+  var FANFARE = {
+    victory: { bpm: 160, ev: [
+      ['lead', 'G4', 0, 0.17, 0.10], ['lead', 'A4', 0.17, 0.17, 0.11], ['lead', 'B4', 0.33, 0.17, 0.12],
+      ['lead', 'C5', 0.5, 0.9, 0.15], ['brass', 'E4 G4', 0.5, 0.9, 0.06], ['bass', 'C3', 0.5, 0.9, 0.22], ['timp', 'C2', 0.5, 1, 0.5], ['crash', '-', 0.5, 1.6, 0.05],
+      ['lead', 'G4', 1.5, 0.45, 0.12], ['brass', 'E4', 1.5, 0.45, 0.05], ['bass', 'C3', 1.5, 0.45, 0.18],
+      ['lead', 'C5', 2.0, 0.45, 0.13], ['brass', 'F4 A4', 2.0, 0.45, 0.055], ['bass', 'F2', 2.0, 0.45, 0.2],
+      ['lead', 'D5', 2.5, 0.45, 0.14], ['brass', 'G4 B4', 2.5, 0.45, 0.055], ['bass', 'G2', 2.5, 0.45, 0.2], ['timp', 'G2', 2.5, 1, 0.35],
+      ['lead', 'E5', 3.0, 2.5, 0.15], ['brass', 'G4 C5', 3.0, 2.5, 0.06], ['pad', 'C4 E4 G4', 3.0, 2.5, 0.035], ['bass', 'C2 C3', 3.0, 2.5, 0.18], ['timp', 'C2', 3.0, 1, 0.55], ['crash', '-', 3.0, 2.2, 0.07],
+      ['bell', 'C6', 3.0, 1.6, 0.09], ['bell', 'E6', 3.12, 1.5, 0.08], ['bell', 'G6', 3.25, 1.4, 0.07], ['bell', 'C7', 3.37, 1.6, 0.06]
+    ] },
+    levelup: { bpm: 168, gain: 0.8, ev: [
+      ['lead', 'D4', 0, 0.25, 0.10], ['lead', 'E4', 0.25, 0.25, 0.11], ['lead', 'F#4', 0.5, 0.25, 0.12],
+      ['lead', 'A4', 0.75, 0.7, 0.15], ['brass', 'D4 F#4', 0.75, 0.7, 0.055], ['bass', 'D3', 0.75, 0.7, 0.2], ['timp', 'D2', 0.75, 1, 0.4], ['bell', 'A5', 0.75, 1.0, 0.08],
+      ['lead', 'E4', 1.5, 0.25, 0.11], ['lead', 'F#4', 1.75, 0.25, 0.12], ['lead', 'G#4', 2.0, 0.25, 0.13],
+      ['lead', 'B4', 2.25, 0.7, 0.15], ['brass', 'E4 G#4', 2.25, 0.7, 0.055], ['bass', 'E3', 2.25, 0.7, 0.2], ['timp', 'E2', 2.25, 1, 0.4], ['bell', 'B5', 2.25, 1.0, 0.08],
+      ['lead', 'C#5', 3.0, 0.25, 0.13], ['lead', 'D5', 3.25, 0.25, 0.14],
+      ['lead', 'E5', 3.5, 2.0, 0.15], ['brass', 'A4 C#5', 3.5, 2.0, 0.06], ['pad', 'A3 C#4 E4', 3.5, 2.0, 0.035], ['bass', 'A2 A1', 3.5, 2.0, 0.18], ['timp', 'A1', 3.5, 1, 0.55], ['crash', '-', 3.5, 2.0, 0.07],
+      ['bell', 'A5', 3.5, 1.5, 0.08], ['bell', 'C#6', 3.62, 1.4, 0.075], ['bell', 'E6', 3.75, 1.4, 0.07], ['bell', 'A6', 3.87, 1.6, 0.06]
+    ] }
+  };
+  function noiseBuf(c) { if (c._mtqNoise) return c._mtqNoise; var n = Math.floor(c.sampleRate * 1.5), b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0); for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1; c._mtqNoise = b; return b; }
+  function irBuf(c) {   // 残響：だんだん小さくなる雑音（左右で別）＝小さめのホール
+    if (c._mtqIR) return c._mtqIR; var sr = c.sampleRate, n = Math.floor(sr * 1.6), b = c.createBuffer(2, n, sr), fade = Math.floor(sr * 0.01);
+    for (var ch = 0; ch < 2; ch++) { var d = b.getChannelData(ch); for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3.5) * (i < fade ? i / fade : 1); }
+    c._mtqIR = b; return b;
+  }
+  function adsr(g, t, a, peak, d, sus, end, rel) {   // end（離す時）は t + a + d より後
+    var s0 = Math.max(0.0001, peak * sus); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(s0, t + a + d); g.gain.exponentialRampToValueAtTime(end - t > 0.6 ? s0 * 0.6 : s0, end); g.gain.exponentialRampToValueAtTime(0.0001, end + rel);   // 長くのばす音は少しずつ小さく
+  }
+  function vib(c, o, t, end) { var l = c.createOscillator(), lg = c.createGain(); l.frequency.value = 5.6; lg.gain.setValueAtTime(0, t); lg.gain.linearRampToValueAtTime(10, t + 0.35); l.connect(lg); lg.connect(o.detune); l.start(t); l.stop(end + 0.2); }
+  function fBrass(c, out, f, t, dur, vol, bright) {   // 金管：少しずらした 2 つののこぎり波 → 開いていくフィルター
+    var sh = dur < 0.15, a = sh ? 0.008 : 0.025, dk = sh ? 0.04 : 0.12, g = c.createGain(), lp = c.createBiquadFilter(), top = Math.min(8000, f * bright), end = Math.max(t + dur, t + a + dk + 0.005);   // 短い音（速い上がり）は立ち上がり・消えを短く
+    lp.type = 'lowpass'; lp.Q.value = 0.8; lp.frequency.setValueAtTime(f * 1.3, t); lp.frequency.exponentialRampToValueAtTime(top, t + 0.05); lp.frequency.exponentialRampToValueAtTime(Math.max(f * 2, top * 0.6), t + 0.3);
+    lp.connect(g); g.connect(out); adsr(g, t, a, vol, dk, 0.75, end, sh ? 0.05 : dur > 0.5 ? 0.4 : 0.12);   // 最後の長い音は自然に消える
+    [-8, 8].forEach(function (ct) { var o = c.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.detune.value = ct; if (dur > 0.5) vib(c, o, t + 0.2, end); o.connect(lp); o.start(t); o.stop(end + 0.45); });
+  }
+  function fBell(c, out, f, t, vol, len) {   // ベル（グロッケン）：倍音が少しずれた正弦波
+    [[1, 1], [2.76, 0.3], [5.4, 0.1]].forEach(function (p) { var o = c.createOscillator(), g = c.createGain(), l = Math.max(0.15, len / Math.sqrt(p[0])); o.type = 'sine'; o.frequency.value = f * p[0]; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol * p[1], t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + l); o.connect(g); g.connect(out); o.start(t); o.stop(t + l + 0.05); });
+  }
+  function fTimp(c, out, f, t, vol) {   // ティンパニ：音程が少し下がる低い音（小さいスピーカーでも聞こえるよう 2 倍の音も）＋打つ音
+    [[1, 1], [2, 0.35]].forEach(function (p) { var o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(f * p[0] * 1.5, t); o.frequency.exponentialRampToValueAtTime(f * p[0], t + 0.06); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol * p[1], t + 0.006); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9); o.connect(g); g.connect(out); o.start(t); o.stop(t + 0.95); });
+    var n = c.createBufferSource(), nf = c.createBiquadFilter(), ng = c.createGain(); n.buffer = noiseBuf(c); nf.type = 'lowpass'; nf.frequency.value = 900; ng.gain.setValueAtTime(vol * 0.4, t); ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.08); n.connect(nf); nf.connect(ng); ng.connect(out); n.start(t); n.stop(t + 0.1);
+  }
+  function fCrash(c, out, t, vol, len) {   // シンバル：高い雑音がゆっくり消える
+    var n = c.createBufferSource(), hp = c.createBiquadFilter(), g = c.createGain(); n.buffer = noiseBuf(c); n.loop = true; hp.type = 'highpass'; hp.frequency.value = 5500;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + len); n.connect(hp); hp.connect(g); g.connect(out); n.start(t); n.stop(t + len + 0.05);
+  }
+  function fPad(c, out, f, t, dur, vol) {   // 弦：やわらかいのこぎり波の和音
+    var g = c.createGain(), lp = c.createBiquadFilter(), end = t + Math.max(dur, 0.3); lp.type = 'lowpass'; lp.frequency.value = Math.min(2400, f * 5); lp.connect(g); g.connect(out); adsr(g, t, 0.09, vol, 0.2, 0.85, end, 0.45);
+    [-10, 10].forEach(function (ct) { var o = c.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.detune.value = ct; o.connect(lp); o.start(t); o.stop(end + 0.5); });
+  }
+  function fBass(c, out, f, t, dur, vol) {   // ベース：三角波＋少しだけ明るさ（小さいスピーカー用）
+    var g = c.createGain(), lp = c.createBiquadFilter(), end = Math.max(t + dur, t + 0.17); lp.type = 'lowpass'; lp.frequency.value = Math.min(1200, f * 6); lp.connect(g); g.connect(out); adsr(g, t, 0.012, vol, 0.15, 0.7, end, 0.1);
+    var o1 = c.createOscillator(), o2 = c.createOscillator(), g2 = c.createGain(); o1.type = 'triangle'; o1.frequency.value = f; o2.type = 'sawtooth'; o2.frequency.value = f; g2.gain.value = 0.25; o1.connect(lp); o2.connect(g2); g2.connect(lp); o1.start(t); o2.start(t); o1.stop(end + 0.15); o2.stop(end + 0.15);
+  }
+  function canFanfare(c) { return !!(c && c.createOscillator && c.createConvolver && c.createDynamicsCompressor && c.createBiquadFilter && c.createBuffer); }
+  // c（音の準備）の dest へ、t0 から key のファンファーレを鳴らす。戻り値：{ len: 曲の長さ（秒。余韻を除く）, out: 最後の出口 }
+  function fanfareTo(c, dest, key, t0) {
+    var F = FANFARE[key]; if (!F || !canFanfare(c)) return null; var beat = 60 / F.bpm, len = 0;
+    var bus = c.createGain(), comp = c.createDynamicsCompressor(), conv = c.createConvolver(), wet = c.createGain();
+    comp.threshold.value = -16; comp.knee.value = 10; comp.ratio.value = 4; comp.attack.value = 0.003; comp.release.value = 0.2;
+    conv.buffer = irBuf(c); wet.gain.value = 0.28; bus.gain.value = F.gain || 1;
+    bus.connect(comp); bus.connect(conv); conv.connect(wet); wet.connect(comp); comp.connect(dest);
+    F.ev.forEach(function (e) {
+      var inst = e[0], t = t0 + e[2] * beat, d = e[3] * beat, v = e[4]; len = Math.max(len, e[2] + e[3]);
+      if (inst === 'crash') { fCrash(c, bus, t, v, d); return; }
+      e[1].split(' ').forEach(function (n) {
+        var f = freq(n); if (!f) return;
+        if (inst === 'lead') fBrass(c, bus, f, t, d, v, 7); else if (inst === 'brass') fBrass(c, bus, f, t, d, v, 4); else if (inst === 'bell') fBell(c, bus, f, t, v, d);
+        else if (inst === 'timp') fTimp(c, bus, f, t, v); else if (inst === 'pad') fPad(c, bus, f, t, d, v); else if (inst === 'bass') fBass(c, bus, f, t, d, v);
+      });
+    });
+    return { len: len * beat, out: comp };
+  }
+  Audio.fanfareTo = fanfareTo;   // 確かめ用（OfflineAudioContext で書き出して、長さ・大きさ・音割れを調べる）
+  Audio.fanfareKeys = function () { return Object.keys(FANFARE); };
+  function duck(t0, len) {   // ファンファーレの間、BGM を小さくする
+    var c = Audio.ctx, g = Audio.bgmGain; if (!c || !g) return; var base = Audio.settings().bgm * 0.25, now = c.currentTime;
+    try { g.gain.cancelScheduledValues(now); g.gain.setValueAtTime(g.gain.value, now); g.gain.linearRampToValueAtTime(base * 0.15, Math.max(now + 0.06, t0)); g.gain.setValueAtTime(base * 0.15, t0 + len); g.gain.linearRampToValueAtTime(base, t0 + len + 0.6); } catch (e) { }
+  }
+  // 鳴らす。戻り値：鳴り始めるまでのミリ秒（鳴らないときは -1）
   Audio.playJingle = function (key) {
-    if (!Audio.ctx || !Audio.unlocked) return; var j = JINGLES[key]; if (!j) return;
+    if (!Audio.ctx || !Audio.unlocked) return -1; var c = Audio.ctx;
+    if (FANFARE[key] && canFanfare(c)) {
+      var t0 = Math.max(c.currentTime + 0.03, Audio.jingleUntil || 0), r = fanfareTo(c, Audio.seGain, key, t0); if (!r) return -1;
+      Audio.jingleUntil = t0 + r.len + 0.1; duck(t0, r.len + 0.3);
+      setTimeout(function () { try { r.out.disconnect(); } catch (e) { } }, Math.round((t0 - c.currentTime + r.len + 3) * 1000));   // 鳴り終わったら外す
+      return Math.round((t0 - c.currentTime) * 1000);
+    }
+    var j = JINGLES[key]; if (!j) return -1;
     var mel = parse(j.mel); var beat = 60 / j.bpm; var t = Audio.ctx.currentTime + 0.02; var total = 0;
     mel.forEach(function (n) { if (n[0] !== '-') tone(freq(n[0]), t + total * beat, n[1] * beat * 0.9, j.wave, Audio.seGain, 0.6); total += n[1]; });
+    return 0;
   };
   function tone(f, start, dur, wave, dest, vol) {
     if (!f) return; var c = Audio.ctx; var o = c.createOscillator(), g = c.createGain(); o.type = wave; o.frequency.value = f;

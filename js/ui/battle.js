@@ -447,13 +447,13 @@
     }
     result = b.state;
     if (result === 'won') {
-      if (root.Audio) root.Audio.playJingle('victory');
+      if (root.Audio) { root.Audio.stopBgm(); root.Audio.playJingle('victory'); }   // v9.3 戦闘の BGM を止めてから、短い勝利のファンファーレ
       scene.victory = 0;
       await bmsg('戦いに勝利した！', 700);
       var res = Combat.distribute(b);   // 報酬の確定は1回だけ（再表示しても二重加算しない）
       renderParty(b);
-      if (res.members.some(function (m) { return m.levelUp; }) && root.Audio) root.Audio.playJingle('levelup');
-      await showResultPanel(res, !!opts.boss);
+      var lvMs = -1; if (res.members.some(function (m) { return m.levelUp; }) && root.Audio) lvMs = root.Audio.playJingle('levelup');   // v9.3 勝利のファンファーレが終わってから鳴る（重ならない）
+      await showResultPanel(res, !!opts.boss, lvMs);
     } else if (result === 'lost') { await bmsg('全滅してしまった……', 900); }
     else if (result === 'escaped') { await Win.sleep(300); }
     else if (result === 'fled') { await bmsg('魔物は逃げてしまった……', 700); }
@@ -471,7 +471,7 @@
 
   /* ---------- リザルト画面 ---------- */
   // v8.8 通常の敵だけの勝利（レベルアップ・新しい技・ボス・固有装備なし）は簡単な表示。特別なことがあれば上に強調の帯を出す（報酬の計算・付与は Combat.distribute の 1 回だけで、表示は変えるだけ）
-  function showResultPanel(res, boss) {
+  function showResultPanel(res, boss, lvMs) {
     var lvUp = res.members.some(function (m) { return m.levelUp; }); var newSk = res.members.some(function (m) { return (m.newSkills && m.newSkills.length) || (m.newUlts && m.newUlts.length); }); var gear = !!(res.bossGear && res.bossGear.granted);
     var special = []; if (boss) special.push('ボスを倒した！'); if (gear) special.push('ボス固有装備を入手'); if (lvUp) special.push('レベルアップ'); if (newSk) special.push('新しい技を覚えた');
     var simple = !special.length;
@@ -501,6 +501,7 @@
     var stg87 = document.getElementById('stage'); if (stg87) stg87.classList.add('result-open');   // v8.7 リザルトの間は戦闘の欄（上のメッセージ・下の仲間）を隠す（長いリザルトの「次へ」が隠れないように）
     return Win.panel(html, { cls: 'result-victory', closeLabel: '次へ', setup: function (node) {
       // 経験値バーの演出（計算はしない。確定済みの値へ動かすだけ）
+      if (lvMs >= 0) setTimeout(function () { node.querySelectorAll('.rs-levelup').forEach(function (x) { x.classList.add('rs-lv-go'); }); }, lvMs);   // v9.3 レベルアップのファンファーレに合わせて「LEVEL UP!」を光らせる
       var bars = node.querySelectorAll('.rs-bar span');
       setTimeout(function () { bars.forEach(function (bar) { var up = bar.getAttribute('data-up') === '1'; var after = bar.getAttribute('data-after'); if (up) { bar.style.width = '100%'; setTimeout(function () { bar.classList.add('reset'); bar.style.width = '0%'; setTimeout(function () { bar.classList.remove('reset'); bar.style.width = after + '%'; }, 60); }, 650); } else bar.style.width = after + '%'; }); }, 120);
     } }).then(function (v) { if (stg87) stg87.classList.remove('result-open'); return v; });

@@ -1,0 +1,22 @@
+勝利・レベルアップのファンファーレ（短く・合成の金管など）のあと（版 79b1233314）
+=== rpg93/rpg93_test.js 
+結果：OK 89 / NG 0
+=== rpg93/rpg93_test.js 2d
+結果：OK 89 / NG 0
+=== menu92/menu92_test.js 
+結果：OK 89 / NG 0
+=== menu92/menu92_test.js 2d
+結果：OK 89 / NG 0
+=== v88/ui88_test.js 
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js 
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js 2d
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v89/smooth89_test.mjs
+結果: 8 OK / 0 NG []
+=== v88/updated-tests/layout_menu_test.js（RPG_DIR=このリポジトリ）
+OK  ページのエラーなし []
+結果：すべて OK

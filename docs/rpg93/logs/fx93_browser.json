@@ -50,21 +50,21 @@
   },
   "battle": {
    "mo": {
-    "mo-punch": 165,
+    "mo-punch": 180,
     "mo-pray": 15
    },
    "flash": {
-    "hurt": 21,
-    "healed": 7
+    "hurt": 35,
+    "healed": 6
    },
-   "emo": 109,
-   "recoil": 76,
-   "fxStarts": 16,
-   "hits": 2,
+   "emo": 168,
+   "recoil": 82,
+   "fxStarts": 19,
+   "hits": 1,
    "fx2dErrors": 0,
-   "turn": 3,
+   "turn": 4,
    "state": "won",
-   "shots": 5
+   "shots": 6
   },
   "pageErrors": [],
   "checks": {
@@ -87,21 +87,21 @@
   ],
   "battle": {
    "mo": {
-    "mo-punch": 180,
+    "mo-punch": 195,
     "mo-pray": 15
    },
    "flash": {
-    "hurt": 35,
-    "healed": 6
+    "healed": 6,
+    "hurt": 42
    },
-   "emo": 48,
-   "recoil": 29,
-   "fxStarts": 18,
-   "hits": 1,
+   "emo": 61,
+   "recoil": 23,
+   "fxStarts": 20,
+   "hits": 0,
    "fx2dErrors": 0,
    "turn": 4,
    "state": "won",
-   "shots": 4
+   "shots": 3
   },
   "pageErrors": [],
   "checks": {
