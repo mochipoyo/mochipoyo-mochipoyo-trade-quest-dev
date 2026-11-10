@@ -56,7 +56,7 @@
     if (!Audio.ctx) return; var s = Audio.settings();
     Audio.master.gain.value = s.mute ? 0 : 1; Audio.bgmGain.gain.value = s.bgm * 0.25; Audio.seGain.gain.value = s.se * 0.5;
     try { var AS = root.navigator && root.navigator.audioSession; if (AS) AS.type = s.silentPlay === 'on' && !s.mute ? 'playback' : 'auto'; } catch (e) { }   // v9.3 iPhone・iPad の Safari：設定「マナーモードでも鳴らす」
-    if (s.mute && FILE.cur) { var k0 = Audio.lastKey; fileStop(); Audio.current = null; Audio.pending = k0; }   // v9.3 音を消したら曲の読み込み・再生も止める（次に音を出したときに続きから）
+    if (s.mute && bgmCur()) { var k0 = Audio.lastKey; bgmStopFile(); Audio.current = null; Audio.pending = k0; }   // v9.3 音を消したら曲の読み込み・再生も止める（次に音を出したときに続きから）
     if (!s.mute && !Audio.current && Audio.pending) { var p = Audio.pending; Audio.pending = null; Audio.playBgm(p); }
   };
 
@@ -110,26 +110,97 @@
     return true;
   }
   // 戦闘の曲を先に読み込んでおく（フィールドに入ったとき。音を出しているときだけ）
-  Audio.prefetch = function (id) { if (!Audio.fileMode() || Audio.settings().mute || !id || FILE.failed[id] || !FILE.els.length) return; var other = FILE.els[1 - FILE.act]; if (!other || (FILE.cur && FILE.els.indexOf(other) === FILE.act)) return; var url = root.BGM93.url(id); if (other.getAttribute('src') !== url && other.paused) { other._id = id; other.src = url; other.preload = 'auto'; try { other.load(); } catch (e) { } } };
+  Audio.prefetch = function (id) {
+    if (Audio.ctx && useBuf()) { if (!Audio.fileMode() || Audio.settings().mute || !id || BUF.failed[id]) return; BUF.keep = id; bufLoad(id).catch(function () { }); return; }   // 読み込んでから鳴らす：戦闘の曲を先に読み込んでおく
+    if (!Audio.fileMode() || Audio.settings().mute || !id || FILE.failed[id] || !FILE.els.length) return; var other = FILE.els[1 - FILE.act]; if (!other || (FILE.cur && FILE.els.indexOf(other) === FILE.act)) return; var url = root.BGM93.url(id); if (other.getAttribute('src') !== url && other.paused) { other._id = id; other.src = url; other.preload = 'auto'; try { other.load(); } catch (e) { } } };
+  /* ---------- v9.3 修正：BGM の鳴らし方「読み込んでから鳴らす」（buffer。PC の初期値） ----------
+     ・Windows の Chrome の 3D 版で、<audio> の曲だけが鳴らなかった（効果音は鳴る）とのご報告。原因は確かめられていないが、
+       効果音と同じ WebAudio の仕組みで鳴らせば、<audio> の再生の仕組みを通らない
+     ・曲のファイルを全部読み込み（fetch）、音の形に直して（decodeAudioData。22.05kHz に下げてメモリを抑える）、AudioBufferSourceNode でくり返し鳴らす
+     ・読み込みが終わるまで鳴らない（1 曲 0.8〜2.4MB）。覚えておく曲は最大 3 曲（今の曲・戦闘の曲・前の曲。1 曲 最大 約 55MB）
+     ・設定「BGM の鳴らし方」：自動（PC＝読み込んでから・スマホ＝流しながら）／読み込んでから鳴らす／流しながら鳴らす（<audio>。今までの作り） */
+  var BUF = { cache: {}, order: [], cur: null, node: null, gain: null, t0: 0, off: 0, dur: 0, pos: {}, failed: {}, keep: null, state: '', err: '' };
+  Audio.BUF = BUF;
+  var RATE = 22050, KEEP = 3;
+  Audio.bgmEngine = function () {
+    var s = Audio.settings(); if (s.bgmEngine === 'stream' || s.bgmEngine === 'buffer') return s.bgmEngine === 'buffer' && !canBuf() ? 'stream' : s.bgmEngine;
+    if (!canBuf()) return 'stream';
+    try { if (root.matchMedia && root.matchMedia('(pointer: coarse)').matches && !root.matchMedia('(pointer: fine)').matches) return 'stream'; } catch (e) { }   // スマホ・タブレット（指だけ）は流しながら（メモリを使わない）
+    return 'buffer';
+  };
+  function canBuf() { return !!(root.fetch && root.Promise && Audio.ctx && Audio.ctx.decodeAudioData && Audio.ctx.createBufferSource); }
+  function useBuf() { return Audio.bgmEngine() === 'buffer'; }
+  function bufTouch(id) { var i = BUF.order.indexOf(id); if (i >= 0) BUF.order.splice(i, 1); BUF.order.push(id); }
+  function bufTrim() { while (BUF.order.length > KEEP) { var old = null; for (var i = 0; i < BUF.order.length; i++) { var k = BUF.order[i]; if (k !== BUF.cur && k !== BUF.keep) { old = k; break; } } if (!old) break; BUF.order.splice(BUF.order.indexOf(old), 1); delete BUF.cache[old]; } }
+  function bufDecode(ab) {
+    return new Promise(function (res, rej) {
+      var OAC = root.OfflineAudioContext || root.webkitOfflineAudioContext, dc = Audio.ctx;
+      try { if (OAC) dc = new OAC(2, 1, RATE); } catch (e) { dc = Audio.ctx; }
+      try { var pr = dc.decodeAudioData(ab, res, rej); if (pr && pr.then) pr.then(res, rej); } catch (e) { rej(e); }
+    });
+  }
+  function bufLoad(id) {
+    var c = BUF.cache[id]; if (c) { bufTouch(id); return c.p; }
+    var url = root.BGM93.url(id); c = BUF.cache[id] = { p: null, buf: null };
+    c.p = root.fetch(url).then(function (r) { if (!r.ok) throw new Error('通信 ' + r.status); return r.arrayBuffer(); }).then(bufDecode).then(function (b) { c.buf = b; return b; });
+    c.p.catch(function () { if (BUF.cache[id] === c) { delete BUF.cache[id]; var i = BUF.order.indexOf(id); if (i >= 0) BUF.order.splice(i, 1); } });
+    bufTouch(id); bufTrim(); return c.p;
+  }
+  function bufPos() { if (!BUF.node || !BUF.dur) return BUF.off || 0; return (BUF.off + (Audio.ctx.currentTime - BUF.t0)) % BUF.dur; }
+  function bufStopNode(fade) {
+    var n = BUF.node, g = BUF.gain; BUF.node = null; BUF.gain = null; if (!n) return;
+    try { var t = Audio.ctx.currentTime; g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value, t); g.gain.linearRampToValueAtTime(0, t + fade); n.stop(t + fade + 0.05); } catch (e) { try { n.stop(); } catch (e2) { } }
+  }
+  function bufStart(id, b, off) {
+    var c = Audio.ctx, n = c.createBufferSource(), g = c.createGain(); n.buffer = b; n.loop = true; g.gain.value = 0; n.connect(g); g.connect(Audio.bgmGain);
+    off = b.duration ? (off % b.duration) : 0; n.start(0, off || 0); var t = c.currentTime; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(LOUD, t + 0.8);
+    BUF.node = n; BUF.gain = g; BUF.t0 = t; BUF.off = off || 0; BUF.dur = b.duration; BUF.state = 'playing';
+  }
+  function bufPlay(id, restart) {
+    if (BUF.cur === id) { if (restart && BUF.node) { var b0 = BUF.node.buffer; bufStopNode(0.05); bufStart(id, b0, 0); } return true; }
+    if (BUF.cur) BUF.pos[BUF.cur] = bufPos();
+    bufStopNode(0.8); BUF.cur = id; BUF.state = 'loading'; BUF.err = '';
+    var start = restart ? 0 : (BUF.pos[id] || 0);
+    bufLoad(id).then(function (b) { if (BUF.cur !== id || BUF.node) return; if (Audio.settings().mute) return; bufStart(id, b, start); },
+      function (e) { BUF.err = String((e && e.message) || e); if (BUF.cur !== id) return; BUF.failed[id] = true; FILE.failed[id] = true; BUF.cur = null; BUF.state = 'error'; var k = Audio.lastKey; Audio.current = null; retroPlay(k); });
+    return true;
+  }
+  function bufStop() { if (BUF.cur) BUF.pos[BUF.cur] = bufPos(); BUF.cur = null; BUF.state = ''; bufStopNode(0.3); }
+  // 2 つの鳴らし方をまとめる
+  function bgmPlayFile(id, restart) { if (useBuf()) { if (FILE.cur) fileStop(); return bufPlay(id, restart); } if (BUF.cur) bufStop(); return filePlay(id, restart); }
+  function bgmStopFile() { bufStop(); fileStop(); }
+  function bgmCur() { return BUF.cur || FILE.cur; }
+  // 今の BGM の様子（設定の「BGM の状態」・確かめ用）
+  Audio.bgmState = function () {
+    var eng = Audio.ctx ? Audio.bgmEngine() : '';
+    if (BUF.cur || (eng === 'buffer' && !FILE.cur)) return { engine: 'buffer', cur: BUF.cur, state: BUF.state, playing: !!BUF.node, t: BUF.node ? +bufPos().toFixed(2) : 0, err: BUF.err, cached: Object.keys(BUF.cache) };
+    var e = FILE.els[FILE.act]; return { engine: 'stream', cur: FILE.cur, state: e ? 'readyState ' + e.readyState : '', playing: !!(e && FILE.cur && !e.paused && e.readyState >= 3), t: e ? +e.currentTime.toFixed(2) : 0, err: e && e.error ? 'MEDIA_ERR ' + e.error.code : '' };
+  };
+  // BGM の音の大きさ（実際に出ている音。0〜1 の RMS）。設定の「BGM の状態」と確かめで使う
+  Audio.bgmLevel = function () {
+    if (!Audio.ctx || !Audio.bgmGain) return 0;
+    if (!Audio._an) { try { Audio._an = Audio.ctx.createAnalyser(); Audio._an.fftSize = 2048; Audio.bgmGain.connect(Audio._an); } catch (e) { return 0; } }
+    var b = new Float32Array(Audio._an.fftSize); Audio._an.getFloatTimeDomainData(b); var s = 0; for (var i = 0; i < b.length; i++) s += b[i] * b[i]; return Math.sqrt(s / b.length);
+  };
   // サウンドテスト用：曲を id で直接流す（js/ui/menu.js の Menu.soundTest）
-  Audio.playFile = function (id) { if (!Audio.ctx || !Audio.unlocked || !root.BGM93 || !root.BGM93.TRACKS[id]) return false; clearTimeout(Audio.timer); Audio.timer = null; if (filePlay(id, true)) { Audio.current = 'file:' + id; Audio.bgmFile = id; return true; } return false; };
-  Audio.stopBgm = function () { clearTimeout(Audio.timer); Audio.timer = null; Audio.current = null; fileStop(); };
+  Audio.playFile = function (id) { if (!Audio.ctx || !Audio.unlocked || !root.BGM93 || !root.BGM93.TRACKS[id]) return false; clearTimeout(Audio.timer); Audio.timer = null; if (bgmPlayFile(id, true)) { Audio.current = 'file:' + id; Audio.bgmFile = id; return true; } return false; };
+  Audio.stopBgm = function () { clearTimeout(Audio.timer); Audio.timer = null; Audio.current = null; bgmStopFile(); };
   Audio.playBgm = function (key) {
     Audio.lastKey = key;
     var id = null;
-    if (Audio.fileMode()) { try { id = root.BGM93.pick(key, root.World && root.World.map, root.State && root.State.data); } catch (e) { id = null; } if (id && FILE.failed[id]) id = null; }
+    if (Audio.fileMode()) { try { id = root.BGM93.pick(key, root.World && root.World.map, root.State && root.State.data); } catch (e) { id = null; } if (id && (FILE.failed[id] || BUF.failed[id])) id = null; }
     var curKey = id ? 'file:' + id : key;
     if (Audio.current === curKey) return;
     if (!Audio.ctx || !Audio.unlocked) { Audio.pending = key; return; }
     if (id) {
       if (Audio.settings().mute) { Audio.pending = key; return; }   // 音を消している間は読み込まない
       clearTimeout(Audio.timer); Audio.timer = null;
-      if (filePlay(id, key === 'battle' || key === 'boss')) { Audio.current = curKey; Audio.bgmFile = id; if (key !== 'battle' && key !== 'boss') Audio.prefetch(root.BGM93.pick('battle', null, null)); return; }
+      if (bgmPlayFile(id, key === 'battle' || key === 'boss')) { Audio.current = curKey; Audio.bgmFile = id; if (key !== 'battle' && key !== 'boss') Audio.prefetch(root.BGM93.pick('battle', null, null)); return; }
     }
     retroPlay(key);
   };
   function retroPlay(key) {
-    fileStop(); Audio.bgmFile = null;
+    bgmStopFile(); Audio.bgmFile = null;
     var tr = TRACKS[key]; if (!tr) { clearTimeout(Audio.timer); Audio.timer = null; Audio.current = null; return; }
     clearTimeout(Audio.timer); Audio.timer = null; Audio.current = key;
     var mel = parse(tr.mel), bass = parse(tr.bass); var beat = 60 / tr.bpm;

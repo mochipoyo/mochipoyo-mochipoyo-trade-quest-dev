@@ -1,28 +1,28 @@
-=== gesture93 2d pc
-  OK  操作の前は鳴らない（ブラウザの決まり）（{"ctx":"none","mute":false,"cur":null,"src":null,"t":0}）
-  OK  最初のクリックでタイトルの曲が鳴る（{"ctx":"running","mute":false,"cur":"calm_before_the_storm","src":"0ad-calm-before-the-storm.mp3","t":3.27}）
-  OK  音を消していたセーブで「音を出す」→ 町の曲が鳴る（{"ctx":"running","mute":false,"cur":"the_fledgling_kingdom","src":"0ad-the-fledgling-kingdom.mp3","t":4.24}）
+=== gesture93 2d pc（3D の描画は止めない）
+  OK  操作の前は鳴らない（ブラウザの決まり）（{"ctx":"none","mute":false,"cur":null,"playing":false,"t":0,"level":0}）
+  OK  最初のクリックでタイトルの曲が鳴る（{"ctx":"running","engine":"buffer","mute":false,"cur":"calm_before_the_storm","playing":true,"t":2.68,"level":0.0272}）
+  OK  音を消していたセーブで「音を出す」→ 町の曲が鳴る（{"ctx":"running","engine":"buffer","mute":false,"cur":"the_fledgling_kingdom","playing":true,"t":2.41,"level":0.0157}）
   OK  ページのエラーなし
 結果 2d pc：OK 4 / NG 0
 rc=0
-=== gesture93 2d m390
-  OK  操作の前は鳴らない（ブラウザの決まり）（{"ctx":"none","mute":false,"cur":null,"src":null,"t":0}）
-  OK  最初のタップでタイトルの曲が鳴る（{"ctx":"running","mute":false,"cur":"calm_before_the_storm","src":"0ad-calm-before-the-storm.mp3","t":3.28}）
-  OK  音を消していたセーブで「音を出す」→ 町の曲が鳴る（{"ctx":"running","mute":false,"cur":"the_fledgling_kingdom","src":"0ad-the-fledgling-kingdom.mp3","t":4.26}）
-  OK  ページのエラーなし
-結果 2d m390：OK 4 / NG 0
-rc=0
-=== gesture93 3d pc
-  OK  操作の前は鳴らない（ブラウザの決まり）（{"ctx":"none","mute":false,"cur":null,"src":null,"t":0}）
-  OK  最初のクリックでタイトルの曲が鳴る（{"ctx":"running","mute":false,"cur":"calm_before_the_storm","src":"0ad-calm-before-the-storm.mp3","t":3.25}）
-  OK  音を消していたセーブで「音を出す」→ 町の曲が鳴る（{"ctx":"running","mute":false,"cur":"the_fledgling_kingdom","src":"0ad-the-fledgling-kingdom.mp3","t":16.31}）
+=== gesture93 3d pc（3D の描画は止めない）
+  OK  操作の前は鳴らない（ブラウザの決まり）（{"ctx":"none","mute":false,"cur":null,"playing":false,"t":0,"level":0}）
+  OK  最初のクリックでタイトルの曲が鳴る（{"ctx":"running","engine":"buffer","mute":false,"cur":"calm_before_the_storm","playing":true,"t":2.61,"level":0.0336}）
+  OK  音を消していたセーブで「音を出す」→ 町の曲が鳴る（{"ctx":"running","engine":"buffer","mute":false,"cur":"the_fledgling_kingdom","playing":true,"t":48.66,"level":0.0626}）
   OK  ページのエラーなし
 結果 3d pc：OK 4 / NG 0
 rc=0
-=== gesture93 3d m390
-  OK  操作の前は鳴らない（ブラウザの決まり）（{"ctx":"none","mute":false,"cur":null,"src":null,"t":0}）
-  OK  最初のタップでタイトルの曲が鳴る（{"ctx":"running","mute":false,"cur":"calm_before_the_storm","src":"0ad-calm-before-the-storm.mp3","t":3.29}）
-  OK  音を消していたセーブで「音を出す」→ 町の曲が鳴る（{"ctx":"running","mute":false,"cur":"the_fledgling_kingdom","src":"0ad-the-fledgling-kingdom.mp3","t":8.99}）
+=== gesture93 2d m390（3D の描画は止めない）
+  OK  操作の前は鳴らない（ブラウザの決まり）（{"ctx":"none","mute":false,"cur":null,"playing":false,"t":0,"level":0}）
+  OK  最初のタップでタイトルの曲が鳴る（{"ctx":"running","engine":"stream","mute":false,"cur":"calm_before_the_storm","playing":true,"t":2.69,"level":0.028}）
+  OK  音を消していたセーブで「音を出す」→ 町の曲が鳴る（{"ctx":"running","engine":"stream","mute":false,"cur":"the_fledgling_kingdom","playing":true,"t":2.61,"level":0.0106}）
+  OK  ページのエラーなし
+結果 2d m390：OK 4 / NG 0
+rc=0
+=== gesture93 3d m390（3D の描画は止めない）
+  OK  操作の前は鳴らない（ブラウザの決まり）（{"ctx":"none","mute":false,"cur":null,"playing":false,"t":0,"level":0}）
+  OK  最初のタップでタイトルの曲が鳴る（{"ctx":"running","engine":"stream","mute":false,"cur":"calm_before_the_storm","playing":true,"t":2.68,"level":0.0273}）
+  OK  音を消していたセーブで「音を出す」→ 町の曲が鳴る（{"ctx":"running","engine":"stream","mute":false,"cur":"the_fledgling_kingdom","playing":true,"t":11.66,"level":0.0103}）
   OK  ページのエラーなし
 結果 3d m390：OK 4 / NG 0
 rc=0

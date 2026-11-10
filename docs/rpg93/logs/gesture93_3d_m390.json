@@ -6,15 +6,15 @@
  "steps": [
   {
    "ok": true,
-   "m": "操作の前は鳴らない（ブラウザの決まり）（{\"ctx\":\"none\",\"mute\":false,\"cur\":null,\"src\":null,\"t\":0}）"
+   "m": "操作の前は鳴らない（ブラウザの決まり）（{\"ctx\":\"none\",\"mute\":false,\"cur\":null,\"playing\":false,\"t\":0,\"level\":0}）"
   },
   {
    "ok": true,
-   "m": "最初のタップでタイトルの曲が鳴る（{\"ctx\":\"running\",\"mute\":false,\"cur\":\"calm_before_the_storm\",\"src\":\"0ad-calm-before-the-storm.mp3\",\"t\":3.29}）"
+   "m": "最初のタップでタイトルの曲が鳴る（{\"ctx\":\"running\",\"engine\":\"stream\",\"mute\":false,\"cur\":\"calm_before_the_storm\",\"playing\":true,\"t\":2.68,\"level\":0.0273}）"
   },
   {
    "ok": true,
-   "m": "音を消していたセーブで「音を出す」→ 町の曲が鳴る（{\"ctx\":\"running\",\"mute\":false,\"cur\":\"the_fledgling_kingdom\",\"src\":\"0ad-the-fledgling-kingdom.mp3\",\"t\":8.99}）"
+   "m": "音を消していたセーブで「音を出す」→ 町の曲が鳴る（{\"ctx\":\"running\",\"engine\":\"stream\",\"mute\":false,\"cur\":\"the_fledgling_kingdom\",\"playing\":true,\"t\":11.66,\"level\":0.0103}）"
   },
   {
    "ok": true,

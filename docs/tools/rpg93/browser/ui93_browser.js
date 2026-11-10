@@ -30,12 +30,12 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
   // ---- 1 タイトル：音
   await p.goto(URL); await ready();
   await p.waitForSelector('#ui .title-menu', { timeout: 120000 });
-  const playingEl = () => p.evaluate(() => { const e = Audio.FILE.els.find((x) => !x.paused && /0ad-/.test(x.getAttribute('src') || '')); return { cur: Audio.FILE.cur, ctx: Audio.ctx ? Audio.ctx.state : 'none', src: e ? e.getAttribute('src').replace(/^.*\//, '') : null, t: e ? +e.currentTime.toFixed(2) : 0 }; });
-  const t1 = await p.evaluate(() => ({ chip: [...document.querySelectorAll('#ui .rw-tool')].map((x) => x.textContent).join('|'), snd: Audio.titleSound(), ls: localStorage.getItem('mtq-title-sound'), cur: Audio.FILE.cur }));
+  const playingEl = () => p.evaluate(async () => { Audio.bgmLevel(); await new Promise((r) => setTimeout(r, 400)); const st = Audio.bgmState(); return { engine: st.engine, cur: st.cur, playing: st.playing, ctx: Audio.ctx ? Audio.ctx.state : 'none', t: st.t, level: +Audio.bgmLevel().toFixed(4) }; });   // v9.3 修正：鳴らし方（読み込んでから／流しながら）によらず、出ている音の大きさ（level）も見る
+  const t1 = await p.evaluate(() => ({ chip: [...document.querySelectorAll('#ui .rw-tool')].map((x) => x.textContent).join('|'), snd: Audio.titleSound(), ls: localStorage.getItem('mtq-title-sound'), cur: Audio.ctx ? Audio.bgmState().cur : null }));
   S(/音：ON/.test(t1.chip) && t1.snd === true && t1.ls === null && !t1.cur, 'タイトル：最初は音 ON（' + t1.chip + '）。操作の前は鳴らさない（ブラウザの決まり）'); await shot('title');
   await tapEl(await p.$('#ui .title-menu .rw-title')); await p.waitForTimeout(2500);
-  const t2 = await playingEl(); S(t2.cur === 'calm_before_the_storm' && t2.t > 0.5 && t2.ctx === 'running', '最初のクリック／タップでタイトルの曲が鳴り、時間が進む（' + JSON.stringify(t2) + '）');
-  await item('音：ON'); await p.waitForTimeout(600); const t3 = await p.evaluate(() => ({ chip: [...document.querySelectorAll('#ui .rw-tool')].map((x) => x.textContent).join('|'), ls: localStorage.getItem('mtq-title-sound'), cur: Audio.FILE.cur }));
+  const t2 = await playingEl(); S(t2.cur === 'calm_before_the_storm' && t2.playing && t2.t > 0.5 && t2.ctx === 'running' && t2.level > 0.0005, '最初のクリック／タップでタイトルの曲が鳴り、時間が進み、音が出ている（' + JSON.stringify(t2) + '）');
+  await item('音：ON'); await p.waitForTimeout(600); const t3 = await p.evaluate(() => ({ chip: [...document.querySelectorAll('#ui .rw-tool')].map((x) => x.textContent).join('|'), ls: localStorage.getItem('mtq-title-sound'), cur: Audio.bgmState().cur }));
   S(/音：OFF/.test(t3.chip) && t3.ls === 'off' && !t3.cur, 'タイトル：OFF にすると曲が止まり、端末に覚える（' + t3.ls + '）');
   await item('音：OFF'); await p.waitForTimeout(2500); const t4 = await playingEl();
   S(t4.cur === 'calm_before_the_storm' && t4.t > 0.5, 'タイトル：ON に戻すとまた鳴る（' + t4.t + '秒）');
@@ -53,21 +53,21 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
 
   // ---- 2 BGM
   const m0 = music.length; await p.evaluate(() => { Audio.unlock(); Audio.playBgm('town'); }); await p.waitForTimeout(1500);
-  S(music.length === m0 && !(await p.evaluate(() => Audio.FILE.cur)), '音を消している間は曲を読み込まない（読み込み ' + (music.length - m0) + ' 件）');
+  S(music.length === m0 && !(await p.evaluate(() => Audio.bgmState().cur)), '音を消している間は曲を読み込まない（読み込み ' + (music.length - m0) + ' 件）');
   await p.evaluate(() => { State.data.settings.mute = false; State.data.settings.bgm = 0.5; Audio.apply(); }); await p.waitForTimeout(3000);
-  const b1 = await p.evaluate(() => ({ cur: Audio.FILE.cur, map: World.map && World.map.id, els: Audio.FILE.els.map((e) => ({ src: (e.getAttribute('src') || '').replace(/^.*\//, ''), paused: e.paused, t: +e.currentTime.toFixed(2) })) }));
-  const playing = b1.els.find((e) => !e.paused && /0ad-/.test(e.src));
-  S(!!b1.cur && !!playing && playing.t > 0.5, '音を出すと場所の曲が鳴り、時間が進む（' + b1.map + ' → ' + b1.cur + '・' + (playing ? playing.src + ' ' + playing.t + '秒' : 'なし') + '）');
+  const b1 = await p.evaluate(async () => { Audio.bgmLevel(); await new Promise((r) => setTimeout(r, 400)); return Object.assign({ map: World.map && World.map.id, level: +Audio.bgmLevel().toFixed(4) }, Audio.bgmState()); });
+  const playing = b1.playing ? b1 : null;
+  S(!!b1.cur && b1.playing && b1.t > 0.5 && b1.level > 0.0005, '音を出すと場所の曲が鳴り、時間が進み、音が出ている（' + b1.map + ' → ' + b1.cur + '・' + b1.engine + '・' + b1.t + '秒・大きさ ' + b1.level + '）');
   await p.evaluate(() => Audio.playBgm('battle')); await p.waitForTimeout(2500);
-  const b2 = await p.evaluate(() => ({ cur: Audio.FILE.cur, els: Audio.FILE.els.map((e) => ({ src: (e.getAttribute('src') || '').replace(/^.*\//, ''), paused: e.paused, t: +e.currentTime.toFixed(2) })) }));
-  S(b2.cur && b2.cur !== b1.cur && b2.els.some((e) => !e.paused && e.t > 0.3 && e.src.indexOf(b2.cur.replace(/_/g, '-')) >= 0), '戦闘の曲へ切り替わる（' + b2.cur + '）');
+  const b2 = await p.evaluate(async () => { await new Promise((r) => setTimeout(r, 400)); return Object.assign({ level: +Audio.bgmLevel().toFixed(4) }, Audio.bgmState()); });
+  S(b2.cur && b2.cur !== b1.cur && b2.playing && b2.t > 0.3 && b2.level > 0.0005, '戦闘の曲へ切り替わる（' + b2.cur + '・' + b2.t + '秒）');
   await p.evaluate(() => Audio.playBgm('town')); await p.waitForTimeout(1800);
-  const b3 = await p.evaluate(() => ({ cur: Audio.FILE.cur, t: Audio.FILE.els[Audio.FILE.act].currentTime }));
-  S(b3.cur === b1.cur && b3.t > (playing ? playing.t : 0), '戦闘のあとは町の曲の続きから（' + b3.t.toFixed(1) + '秒。サーバーが範囲指定 Range に答えるとき）');
-  const dup = await p.evaluate(() => { Audio.current = null; Audio.playBgm('town'); return new Promise((r) => setTimeout(() => r(Audio.FILE.els.filter((e) => !e.paused && /0ad-/.test(e.getAttribute('src') || '')).length), 1200)); });
-  S(dup === 1, '同じ曲をもう一度鳴らしても、重ねて鳴らさない（鳴っている再生器 ' + dup + '）');
+  const b3 = await p.evaluate(() => Audio.bgmState());
+  S(b3.cur === b1.cur && b3.t > (playing ? playing.t : 0), '戦闘のあとは町の曲の続きから（' + b3.t.toFixed(1) + '秒。流しながら鳴らすときは、サーバーが範囲指定 Range に答えるとき）');
+  const dup = await p.evaluate(() => { const before = Audio.BUF.node; Audio.current = null; Audio.playBgm('town'); return new Promise((r) => setTimeout(() => r(Audio.bgmState().engine === 'buffer' ? (Audio.BUF.node === before && !!before ? 1 : 2) : Audio.FILE.els.filter((e) => !e.paused && /0ad-/.test(e.getAttribute('src') || '')).length), 1200)); });
+  S(dup === 1, '同じ曲をもう一度鳴らしても、重ねて鳴らさない（' + dup + '）');
   await p.evaluate(() => { State.data.settings.mute = true; Audio.apply(); }); await p.waitForTimeout(500);
-  S(!(await p.evaluate(() => Audio.FILE.cur)), '音を消すと曲が止まる');
+  S(!(await p.evaluate(() => Audio.bgmState().cur)), '音を消すと曲が止まる');
 
   // ---- 3〜5 戦闘
   const en = await p.evaluate(() => {   // 主人公の攻撃呪文の属性に弱い敵（効き目「ばつぐん」が出る相手）
@@ -129,7 +129,9 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
   if (hasTab) { await item('戦闘', '#ui .rw-tab'); await p.waitForTimeout(250); }
   const st = await p.evaluate(() => [...document.querySelectorAll('#ui > :last-child .rw-item')].map((x) => x.textContent.replace(/\s+/g, ' ').trim()));
   S(st.some((x) => /戦闘速度/.test(x)) && st.some((x) => /戦闘の演出/.test(x)) && st.some((x) => /効き目/.test(x)), '設定（戦闘）：戦闘速度・戦闘の演出・効き目の表示（' + st.filter((x) => /戦闘速度|演出|効き目/.test(x)).join('／') + '）'); await shot('settings_battle');
-  if (hasTab) { await item('音', '#ui .rw-tab'); await p.waitForTimeout(250); const so = await p.evaluate(() => [...document.querySelectorAll('#ui > :last-child .rw-item')].map((x) => x.textContent.replace(/\s+/g, ' ').trim())); S(so.some((x) => /BGM の種類/.test(x)) && so.some((x) => /クレジット/.test(x)), '設定（音）：BGM の種類・サウンドテスト・クレジット'); await shot('settings_sound'); }
+  if (hasTab) { await item('音', '#ui .rw-tab'); await p.waitForTimeout(250); const so = await p.evaluate(() => [...document.querySelectorAll('#ui > :last-child .rw-item')].map((x) => x.textContent.replace(/\s+/g, ' ').trim())); S(so.some((x) => /BGM の種類/.test(x)) && so.some((x) => /BGM の鳴らし方/.test(x)) && so.some((x) => /BGM の状態/.test(x)) && so.some((x) => /クレジット/.test(x)), '設定（音）：BGM の種類・鳴らし方・状態・サウンドテスト・クレジット'); await shot('settings_sound'); }
+  await reset(); await p.evaluate(() => { Menu.bgmDiag(); }); await p.waitForTimeout(1200);
+  const dtx = await p.evaluate(() => { const n = document.querySelector('#ui .bgm-diag'); return n ? n.textContent : ''; }); S(/BGM の状態/.test(dtx) && /鳴らし方/.test(dtx) && /出ている音の大きさ/.test(dtx), '設定（音）：BGM の状態の画面（音の準備・鳴らし方・曲・状態・大きさ）'); await shot('bgmdiag');
   await reset();
 
   S(errs.length === 0, 'ページのエラーなし' + (errs.length ? '：' + errs.slice(0, 3).join(' / ') : ''));

@@ -1125,3 +1125,10 @@ body.mobile.m-port .rw-list.cmd-list .rw-item { min-height: 36px; padding-top: 3
 /* v9.3 スマホ横：コマンドの行を詰めて多く見せ、窓を味方の欄（下から約 100px）の上に（残りの行は今までどおり窓の中でスクロール） */
 body.mobile.m-land .rw-list.cmd-list { bottom: 106px; max-height: calc(100% - 118px); }
 body.mobile.m-land .rw-list.cmd-list .rw-item { min-height: 36px; padding-top: 3px; padding-bottom: 3px; }
+/* v9.3 修正：BGM の状態（設定 → 音 → BGM の状態を見る） */
+.bgm-diag .bgmdiag-t { width: 100%; border-collapse: collapse; font-size: 13px; }
+.bgm-diag .bgmdiag-t th { text-align: left; color: #cbb98a; font-weight: normal; padding: 3px 10px 3px 0; white-space: nowrap; vertical-align: top; }
+.bgm-diag .bgmdiag-t td { padding: 3px 0; word-break: break-all; }
+.bgm-diag .bgmdiag-btns { margin: 10px 0 6px; }
+.bgm-diag .bgmdiag-retry { display: inline-block; padding: 7px 16px; border: 1px solid #e8c15a; border-radius: 6px; cursor: pointer; color: #ffe9a8; background: rgba(232,193,90,.12); }
+.bgm-diag .bgmdiag-retry:hover { background: rgba(232,193,90,.25); }
