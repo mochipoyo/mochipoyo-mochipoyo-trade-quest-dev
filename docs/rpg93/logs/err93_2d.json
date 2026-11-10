@@ -21,7 +21,7 @@
   },
   {
    "ok": true,
-   "m": "通信を戻して［もう一度鳴らす］を押すと、曲を読み直して鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"cur\":\"calm_before_the_storm\",\"state\":\"playing\",\"err\":\"\",\"playing\":true,\"t\":2.66,\"retro\":null,\"level\":0.0277}）"
+   "m": "通信を戻して［もう一度鳴らす］を押すと、曲を読み直して鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"cur\":\"calm_before_the_storm\",\"state\":\"playing\",\"err\":\"\",\"playing\":true,\"t\":2.67,\"retro\":null,\"level\":0.0273}）"
   },
   {
    "ok": true,

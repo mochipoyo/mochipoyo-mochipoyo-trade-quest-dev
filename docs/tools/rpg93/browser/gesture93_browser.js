@@ -4,6 +4,7 @@
 //   2 音を消しているセーブを「つづきから」：聞かれて「音を出す」→ 町の曲が鳴り、時間が進む
 //   v9.3 修正（Windows の Chrome・3D 版で BGM が鳴らない）：鳴らし方（PC＝読み込んでから鳴らす）によらず、WebAudio の中で実際に出ている音の大きさ（level）も確かめる
 //   3D は MTQ3D.paused で描画を止めない（PAUSE3D=1 のときだけ止める）
+//   v9.3 修正（iPhone で「流しながら鳴らす」の音が WebAudio に届かない）：自動の鳴らし方は PC もスマホも「読み込んでから鳴らす」
 //   KIND=2d|3d  VIEW=pc|m390  PORT=…  OUT=…
 const { chromium } = require('playwright'); const fs = require('fs');
 const PORT = process.env.PORT || 8820; const KIND = process.env.KIND || '2d'; const VIEW = process.env.VIEW || 'pc'; const OUT = process.env.OUT || '/home/claude/envwork/docs/rpg93/';
@@ -27,7 +28,8 @@ const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.lo
   await q.goto(URL); await readyQ();
   const a0 = await playingQ(); S(!a0.cur, '操作の前は鳴らない（ブラウザの決まり）（' + JSON.stringify(a0) + '）');
   await tapQ(await q.$('#ui .title-menu .rw-title')); await q.waitForFunction(() => { const st = Audio.ctx && Audio.bgmState(); return st && st.playing && st.t > 2; }, null, { timeout: +(process.env.WAIT || 60000), polling: 500 }).catch(() => { });
-  const a1 = await playingQ(); S(a1.ctx === 'running' && a1.cur === 'calm_before_the_storm' && a1.playing && a1.t > 0.5 && a1.level > 0.0005, '最初の' + (VIEW === 'pc' ? 'クリック' : 'タップ') + 'でタイトルの曲が鳴る（' + JSON.stringify(a1) + '）');
+  const a1 = await playingQ(); S(a1.engine === 'buffer', '鳴らし方は自動で「読み込んでから鳴らす」（PC もスマホも。v9.3 修正：iPhone で「流しながら」は音が届かなかった）（' + a1.engine + '）');
+  S(a1.ctx === 'running' && a1.cur === 'calm_before_the_storm' && a1.playing && a1.t > 0.5 && a1.level > 0.0005, '最初の' + (VIEW === 'pc' ? 'クリック' : 'タップ') + 'でタイトルの曲が鳴る（' + JSON.stringify(a1) + '）');
   await itemQ('つづきから'); await itemQ('スロット1'); await itemQ('音を出す');
   if (KIND === '3d') { await q.waitForFunction(() => MTQ3D.current && MTQ3D.current.map && !MTQ3D.building, null, { timeout: 300000 }); if (process.env.PAUSE3D) await q.evaluate(() => { MTQ3D.paused = true; }); }   // この作業環境（ソフトウェア描画）では 3D の描画が CPU を使い切り、曲の読み込みが進まないため止める
   await q.waitForFunction(() => window.World && World.map, null, { timeout: 120000 }); await q.waitForFunction(() => { const st = Audio.bgmState(); return st.playing && st.t > 2; }, null, { timeout: +(process.env.WAIT || 60000), polling: 500 }).catch(() => { });

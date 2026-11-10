@@ -1,19 +1,19 @@
-=== err93 2d 18:52:50
+=== err93 2d 19:08:28
   OK  PC の鳴らし方は「読み込んでから鳴らす」（buffer）
   OK  曲が読めない（通信 404・2 回）と、状態が「読めなかった」になる（{"ctx":"running","engine":"buffer","cur":null,"state":"error","err":"通信 404","playing":false,"t":0,"retro":"title","level":0.03}）
   OK  無音のままにせず、レトロ風の音に切り替わる（音の大きさ 0.03）
   OK  「BGM の状態を見る」に「読めなかった：通信 404」「レトロ（title）」と出る
-  OK  通信を戻して［もう一度鳴らす］を押すと、曲を読み直して鳴る（{"ctx":"running","engine":"buffer","cur":"calm_before_the_storm","state":"playing","err":"","playing":true,"t":2.66,"retro":null,"level":0.0277}）
+  OK  通信を戻して［もう一度鳴らす］を押すと、曲を読み直して鳴る（{"ctx":"running","engine":"buffer","cur":"calm_before_the_storm","state":"playing","err":"","playing":true,"t":2.67,"retro":null,"level":0.0273}）
   OK  「BGM の状態を見る」が「鳴らしている」に変わる
   OK  ページのエラーなし
 結果 2d：OK 7 / NG 0
 rc=0
-=== err93 3d 18:52:59
+=== err93 3d 19:08:37
   OK  PC の鳴らし方は「読み込んでから鳴らす」（buffer）
-  OK  曲が読めない（通信 404・2 回）と、状態が「読めなかった」になる（{"ctx":"running","engine":"buffer","cur":null,"state":"error","err":"通信 404","playing":false,"t":0,"retro":"title","level":0.0317}）
-  OK  無音のままにせず、レトロ風の音に切り替わる（音の大きさ 0.0317）
+  OK  曲が読めない（通信 404・2 回）と、状態が「読めなかった」になる（{"ctx":"running","engine":"buffer","cur":null,"state":"error","err":"通信 404","playing":false,"t":0,"retro":"title","level":0.0357}）
+  OK  無音のままにせず、レトロ風の音に切り替わる（音の大きさ 0.0357）
   OK  「BGM の状態を見る」に「読めなかった：通信 404」「レトロ（title）」と出る
-  OK  通信を戻して［もう一度鳴らす］を押すと、曲を読み直して鳴る（{"ctx":"running","engine":"buffer","cur":"calm_before_the_storm","state":"playing","err":"","playing":true,"t":2.56,"retro":null,"level":0.0385}）
+  OK  通信を戻して［もう一度鳴らす］を押すと、曲を読み直して鳴る（{"ctx":"running","engine":"buffer","cur":"calm_before_the_storm","state":"playing","err":"","playing":true,"t":2.73,"retro":null,"level":0.0351}）
   OK  「BGM の状態を見る」が「鳴らしている」に変わる
   OK  ページのエラーなし
 結果 3d：OK 7 / NG 0

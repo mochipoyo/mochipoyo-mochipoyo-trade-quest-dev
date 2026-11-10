@@ -171,6 +171,7 @@ function clean() { doc.querySelectorAll('#ui > *').forEach((n) => n.remove()); E
   w.localStorage.setItem('mtq-title-sound', 'off'); T(AU.titleSound() === false, 'タイトルで OFF にしたら OFF のまま'); w.localStorage.removeItem('mtq-title-sound');
   const sv = State.data; State.data = null; State.newGame('音', 'warrior'); T(State.data.settings.mute === false, '新しいゲームは音あり（タイトルの音が ON のとき）'); State.data = sv;
   T(typeof AU.bgmState === 'function' && typeof AU.bgmLevel === 'function' && typeof AU.bgmEngine === 'function', 'BGM の鳴らし方（読み込んでから／流しながら）と、状態・音の大きさを調べる部品');
+  T(!/coarse[^\n]*return 'stream'/.test(src('js/ui/audio.js')) && /function keepN\(\) \{ return touchOnly\(\) \? 2 : 3; \}/.test(src('js/ui/audio.js')), '自動の鳴らし方はスマホ・タブレットも「読み込んでから鳴らす」（覚える曲はスマホ 2 曲・PC 3 曲）');
   T(typeof AU.retryFiles === 'function' && /A\.retryFiles\(\)/.test(src('js/ui/menu.js')), '読めなかった曲を［もう一度鳴らす］・鳴らし方の切り替えで読み直す');
   T(/key: 'bgmEngine'/.test(src('js/ui/menu.js')) && /action: 'bgmdiag'/.test(src('js/ui/menu.js')) && typeof w.Menu.bgmDiag === 'function', '設定（音）：BGM の鳴らし方・BGM の状態を見る');
   const asrc = src('js/ui/audio.js'); T(/'pointerup', 'touchend', 'click'/.test(asrc), 'スマホ：指を離したとき（pointerup・touchend・click）にも音の許可をもらう');

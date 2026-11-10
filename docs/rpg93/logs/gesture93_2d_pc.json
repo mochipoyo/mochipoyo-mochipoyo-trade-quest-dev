@@ -1,7 +1,7 @@
 {
  "KIND": "2d",
  "VIEW": "pc",
- "ok": 4,
+ "ok": 5,
  "ng": 0,
  "steps": [
   {
@@ -10,11 +10,15 @@
   },
   {
    "ok": true,
-   "m": "最初のクリックでタイトルの曲が鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"mute\":false,\"cur\":\"calm_before_the_storm\",\"playing\":true,\"t\":2.61,\"level\":0.0336}）"
+   "m": "鳴らし方は自動で「読み込んでから鳴らす」（PC もスマホも。v9.3 修正：iPhone で「流しながら」は音が届かなかった）（buffer）"
   },
   {
    "ok": true,
-   "m": "音を消していたセーブで「音を出す」→ 町の曲が鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"mute\":false,\"cur\":\"the_fledgling_kingdom\",\"playing\":true,\"t\":2.78,\"level\":0.008}）"
+   "m": "最初のクリックでタイトルの曲が鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"mute\":false,\"cur\":\"calm_before_the_storm\",\"playing\":true,\"t\":2.7,\"level\":0.0288}）"
+  },
+  {
+   "ok": true,
+   "m": "音を消していたセーブで「音を出す」→ 町の曲が鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"mute\":false,\"cur\":\"the_fledgling_kingdom\",\"playing\":true,\"t\":2.88,\"level\":0.0074}）"
   },
   {
    "ok": true,

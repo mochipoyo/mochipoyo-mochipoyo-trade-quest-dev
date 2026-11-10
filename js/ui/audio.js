@@ -117,21 +117,23 @@
      ・Windows の Chrome の 3D 版で、<audio> の曲だけが鳴らなかった（効果音は鳴る）とのご報告。原因は確かめられていないが、
        効果音と同じ WebAudio の仕組みで鳴らせば、<audio> の再生の仕組みを通らない
      ・曲のファイルを全部読み込み（fetch）、音の形に直して（decodeAudioData。22.05kHz に下げてメモリを抑える）、AudioBufferSourceNode でくり返し鳴らす
-     ・読み込みが終わるまで鳴らない（1 曲 0.8〜2.4MB）。覚えておく曲は最大 3 曲（今の曲・戦闘の曲・前の曲。1 曲 最大 約 55MB）
-     ・設定「BGM の鳴らし方」：自動（PC＝読み込んでから・スマホ＝流しながら）／読み込んでから鳴らす／流しながら鳴らす（<audio>。今までの作り） */
+     ・読み込みが終わるまで鳴らない（1 曲 0.8〜2.4MB）。覚えておく曲は PC 最大 3 曲（今の曲・戦闘の曲・前の曲）、スマホ・タブレット最大 2 曲（今の曲・戦闘の曲）。1 曲 最大 約 55MB
+     ・設定「BGM の鳴らし方」：自動（＝読み込んでから鳴らす）／読み込んでから鳴らす／流しながら鳴らす（<audio>。今までの作り）
+     ・v9.3 修正：iPhone で「流しながら鳴らす」が、曲は進むのに WebAudio に音が届かない（出ている音の大きさ 0）ことが分かったため、スマホ・タブレットも自動は「読み込んでから鳴らす」 */
   var BUF = { cache: {}, order: [], cur: null, node: null, gain: null, t0: 0, off: 0, dur: 0, pos: {}, failed: {}, keep: null, state: '', err: '' };
   Audio.BUF = BUF;
-  var RATE = 22050, KEEP = 3;
+  var RATE = 22050;
+  function touchOnly() { try { return !!(root.matchMedia && root.matchMedia('(pointer: coarse)').matches && !root.matchMedia('(pointer: fine)').matches); } catch (e) { return false; } }
+  function keepN() { return touchOnly() ? 2 : 3; }   // スマホ・タブレットはメモリを抑える
   Audio.bgmEngine = function () {
     var s = Audio.settings(); if (s.bgmEngine === 'stream' || s.bgmEngine === 'buffer') return s.bgmEngine === 'buffer' && !canBuf() ? 'stream' : s.bgmEngine;
     if (!canBuf()) return 'stream';
-    try { if (root.matchMedia && root.matchMedia('(pointer: coarse)').matches && !root.matchMedia('(pointer: fine)').matches) return 'stream'; } catch (e) { }   // スマホ・タブレット（指だけ）は流しながら（メモリを使わない）
     return 'buffer';
   };
   function canBuf() { return !!(root.fetch && root.Promise && Audio.ctx && Audio.ctx.decodeAudioData && Audio.ctx.createBufferSource); }
   function useBuf() { return Audio.bgmEngine() === 'buffer'; }
   function bufTouch(id) { var i = BUF.order.indexOf(id); if (i >= 0) BUF.order.splice(i, 1); BUF.order.push(id); }
-  function bufTrim() { while (BUF.order.length > KEEP) { var old = null; for (var i = 0; i < BUF.order.length; i++) { var k = BUF.order[i]; if (k !== BUF.cur && k !== BUF.keep) { old = k; break; } } if (!old) break; BUF.order.splice(BUF.order.indexOf(old), 1); delete BUF.cache[old]; } }
+  function bufTrim() { while (BUF.order.length > keepN()) { var old = null; for (var i = 0; i < BUF.order.length; i++) { var k = BUF.order[i]; if (k !== BUF.cur && k !== BUF.keep) { old = k; break; } } if (!old) break; BUF.order.splice(BUF.order.indexOf(old), 1); delete BUF.cache[old]; } }
   function bufDecode(ab) {
     return new Promise(function (res, rej) {
       var OAC = root.OfflineAudioContext || root.webkitOfflineAudioContext, dc = Audio.ctx;

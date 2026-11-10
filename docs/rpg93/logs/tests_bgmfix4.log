@@ -1,0 +1,13 @@
+自動の鳴らし方をスマホ・タブレットも「読み込んでから鳴らす」に（iPhone で「流しながら」の音が届かない件）のあと
+=== rpg93/rpg93_test.js 
+結果：OK 83 / NG 0
+=== rpg93/rpg93_test.js 2d
+結果：OK 83 / NG 0
+=== menu92/menu92_test.js 
+結果：OK 89 / NG 0
+=== menu92/menu92_test.js 2d
+結果：OK 89 / NG 0
+=== v88/ui88_test.js 
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+結果: 62 OK / 0 NG []　ページのエラー 0
