@@ -8,6 +8,7 @@ module.exports = function load(opts) {
   w.HTMLCanvasElement.prototype.getContext = function () { return ctxStub; }; w.scrollTo = () => {}; w.HTMLElement.prototype.scrollIntoView = () => {}; w.URL.createObjectURL = () => 'blob:x'; w.AudioContext = function () { return { createGain: () => ({ connect() {}, gain: {} }), destination: {} }; };
   const errors = []; w.addEventListener('error', (e) => errors.push(e.message));
   if (opts.join !== false) w.MTQ_JOIN76 = true;
+  if (typeof opts.before === 'function') opts.before(w);   // v9.4.1 スクリプトを読む前に（例：3D 版のセーブの置き場所 MTQ_SAVE_PREFIX）
   if (opts.setting) w.localStorage.setItem('mtq3d-join', opts.setting);
   const srcs = [...html.matchAll(/src="(js\/[^"]+)"/g)].map((m) => m[1].replace(/\?.*$/, ''));
   for (const f of srcs) { if (f === 'js/rpg/world76.js' && opts.join !== false && opts.earth !== false) w.eval(fs.readFileSync(dir + 'js/data/earth78-terrain.js', 'utf8')); try { w.eval(fs.readFileSync(dir + f, 'utf8')); } catch (e) { errors.push(f + ': ' + e.message); } }

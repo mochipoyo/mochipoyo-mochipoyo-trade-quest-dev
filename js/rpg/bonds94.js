@@ -13,6 +13,14 @@
        3D：MTQ3D.cine（既存のイベント用カメラ）で、主人公と話す仲間（隊列に見えている仲間）の間に寄る。主人公の気持ちは MTQ3D.emote（既存のモーション）だけ
        隊列に見えていない仲間（待機中）・ポン太の 3D の動きはない（カメラ・間・文章で表す）
    ・話せる場所：町・村・建物の中（宿屋・酒場を含む）・野営地、またはテントを張った直後のその場所（Bonds.safeHere）。メインの導入（プロローグ）の最中は話せない
+   ・v9.4.1（正しい指示書の 11〜14 章）
+       記録は「最後まで見たとき」にだけ確定する（途中の選択・記念品・最後に選んだことは写しにためておき、最後にまとめて書く）。
+         途中で閉じた・エラーになった・「今日はやめておく」のときは、先送りの回数のほかは何も書かない（同じ話を最初からもう一度見られる）
+       同時に二つの話は始まらない（Bonds.playing の間は play がすぐ戻る）
+       選択肢のキャンセル：「今日はやめておく」がある問いだけ、キャンセル＝先送り。ほかの問いはキャンセルできない（Win.choice の cancel:false）
+       交わした日常会話（heard）とクリア後の会話（post）も記録する。思い出手帳で読み返せる
+       取り残しの回収（RESCUE）：本人が戦闘メンバーにいなかったために、既存の個人クエストの「本人が読む場面」と達成が取り残されたとき、
+         あとから本人と読む（仲間と話す、または元の場所）。達成は既存の Events.questComplete（達成済みなら何もしない＝報酬は二重にならない）
    ========================================================= */
 (function (root) {
   'use strict';
@@ -26,16 +34,16 @@
   function now() { return Date.now(); }
 
   /* ---------- 記録 ---------- */
-  B.defaults = function () { return { v: 1, seen: {}, later: {}, mem: {}, last: {}, hist: {}, keep: {}, chat: {}, camp: null }; };
+  B.defaults = function () { return { v: 1, seen: {}, later: {}, mem: {}, last: {}, hist: {}, keep: {}, chat: {}, heard: {}, post: {}, camp: null }; };
+  B.KEYS = ['seen', 'later', 'mem', 'last', 'hist', 'keep', 'chat', 'heard', 'post'];
   B.ensure = function (d) {
     d = d || D(); if (!d) return null;
     if (!d.bonds || typeof d.bonds !== 'object' || Array.isArray(d.bonds)) d.bonds = B.defaults();
     var b = d.bonds, t = B.defaults();
-    ['seen', 'later', 'mem', 'last', 'hist', 'keep', 'chat'].forEach(function (k) { if (!b[k] || typeof b[k] !== 'object' || Array.isArray(b[k])) b[k] = t[k]; });
+    B.KEYS.forEach(function (k) { if (!b[k] || typeof b[k] !== 'object' || Array.isArray(b[k])) b[k] = t[k]; });
     if (b.camp && (typeof b.camp !== 'object' || typeof b.camp.map !== 'string')) b.camp = null;
     if (b.camp === undefined) b.camp = null;
-    Object.keys(b.hist).forEach(function (k) { if (!Array.isArray(b.hist[k])) b.hist[k] = []; });
-    Object.keys(b.keep).forEach(function (k) { if (!Array.isArray(b.keep[k])) b.keep[k] = []; });
+    ['hist', 'keep', 'heard'].forEach(function (g) { Object.keys(b[g]).forEach(function (k) { if (!Array.isArray(b[g][k])) b[g][k] = []; }); });
     b.v = 1; return b;
   };
   function BD() { return B.ensure(); }
@@ -77,10 +85,10 @@
   B.region = function () { var W0 = root.World; var id = W0 && W0.map && W0.map.id; if (!id) return null; try { return root.Nav && root.Nav.regionOf ? root.Nav.regionOf(id) : null; } catch (e) { return null; } };
 
   /* ---------- 条件 ---------- */
-  // { join:[id], q:[quest], main:n, ch:n, flag:[f], noflag:[f], ep:[epId], pair:[pairId], clear:true, mem:{k:v}, memHas:[k], region:[r], any:[cond…], not:cond, inParty:[id] }
-  B.cond = function (c, mem) {
+  // { join:[id], q:[quest], main:n, ch:n, flag:[f], noflag:[f], flagIs:{f:値}, ep:[epId], pair:[pairId], clear:true, mem:{k:v}, memHas:[k], region:[r], any:[cond…], not:cond, inParty:[id], ctx:'呼んだ場所' }
+  B.cond = function (c, mem, ctx) {
     if (!c) return true; var d = D(); if (!d) return false; mem = mem || BD().mem;
-    if (Array.isArray(c)) return c.every(function (x) { return B.cond(x, mem); });
+    if (Array.isArray(c)) return c.every(function (x) { return B.cond(x, mem, ctx); });
     var ok = true;
     if (c.join) ok = ok && c.join.every(B.joined);
     if (c.q) ok = ok && c.q.every(B.questDone);
@@ -88,6 +96,8 @@
     if (c.ch) ok = ok && B.chapter() >= c.ch;
     if (c.flag) ok = ok && c.flag.every(function (f) { return !!d.flags[f]; });
     if (c.noflag) ok = ok && c.noflag.every(function (f) { return !d.flags[f]; });
+    if (c.flagIs) ok = ok && Object.keys(c.flagIs).every(function (f) { return d.flags[f] === c.flagIs[f]; });
+    if (c.ctx) ok = ok && ctx === c.ctx;
     if (c.ep) ok = ok && c.ep.every(function (e) { return !!BD().seen[e]; });
     if (c.pair) ok = ok && c.pair.every(function (e) { return !!BD().seen[e]; });
     if (c.clear) ok = ok && B.cleared();
@@ -95,8 +105,8 @@
     if (c.region) { var r = B.region(); ok = ok && c.region.indexOf(r) >= 0; }
     if (c.mem) ok = ok && Object.keys(c.mem).every(function (k) { return mem[k] === c.mem[k]; });
     if (c.memHas) ok = ok && c.memHas.every(function (k) { return mem[k] !== undefined && mem[k] !== null && mem[k] !== ''; });
-    if (c.any) ok = ok && c.any.some(function (x) { return B.cond(x, mem); });
-    if (c.not) ok = ok && !B.cond(c.not, mem);
+    if (c.any) ok = ok && c.any.some(function (x) { return B.cond(x, mem, ctx); });
+    if (c.not) ok = ok && !B.cond(c.not, mem, ctx);
     return ok;
   };
 
@@ -126,13 +136,48 @@
   B.readyEpisodes = function (id) { return B.episodes(id).filter(function (e) { return B.epState(e) === 'ready'; }); };
   B.awayEpisodes = function (id) { return B.episodes(id).filter(function (e) { return B.epState(e) === 'away'; }); };
   B.readyPairs = function (id) { return B.pairsOf(id).filter(function (p) { return B.pairState(p) === 'ready'; }); };
-  B.hasNew = function (id) { return B.joined(id) && (B.readyEpisodes(id).length > 0 || B.readyPairs(id).length > 0); };
+  B.hasNew = function (id) { return B.joined(id) && (B.readyEpisodes(id).length > 0 || B.readyPairs(id).length > 0 || B.rescuesFor(id, 'talk').length > 0); };
   B.anyNew = function () { return IDS.some(function (id) { return id !== 'hero' && B.hasNew(id); }) || B.readyEpisodes('hero').length > 0; };
   B.talkable = function () { return IDS.filter(function (id) { return id !== 'hero' && B.joined(id); }); };
+  // 加入した順（d.companions に加わった順。ポン太は仲間のあと）。一覧はこの順に並べる
+  B.joinOrder = function () {
+    var d = D(); if (!d) return [];
+    var out = Object.keys(d.companions || {}).filter(function (id) { return IDS.indexOf(id) >= 0 && id !== 'hero' && id !== 'ponta'; });
+    if (B.joined('ponta')) out.push('ponta'); return out;
+  };
+
+  /* ---------- 星見塔の焚き火（js/data/sky.js）から：第2話まで見届けた仲間の一言（最大3人） ---------- */
+  B.BONFIRE_MAX = 3;
+  B.bonfireLines = function () {
+    var F = DATA().BONFIRE || {}; var ids = B.joinOrder().filter(function (id) { return F[id] && B.seen(id + '_2'); });
+    ids.sort(function (x, y) { return B.stage(y) - B.stage(x); });
+    return ids.slice(0, B.BONFIRE_MAX).map(function (id) { return { id: id, name: id === 'ponta' ? '' : B.name(id), lines: F[id].map(function (s) { return B.fmt(s); }), act: id === 'ponta' }; });
+  };
+  B.bonfire = async function (c) {
+    var L = B.bonfireLines(); var M = W(); if (!L.length || !M) return 0;
+    for (var i = 0; i < L.length; i++) { var x = L[i]; if (x.act) await M.message(x.lines, { portrait: B.portrait(x.id) }); else await M.message(x.lines, { name: x.name, portrait: B.portrait(x.id) }); }
+    return L.length;
+  };
   B.summary = function (id) {
     var b = BD(); var eps = B.episodes(id);
     return { id: id, name: B.name(id), stage: B.stage(id), label: B.stageLabel(id), seen: eps.filter(function (e) { return B.seen(e.id); }).length, total: eps.length,
       isNew: B.hasNew(id), away: B.awayEpisodes(id).map(function (e) { return e.place.label; }), last: b.last[id] || null };
+  };
+
+  /* ---------- 取り残しの回収（BONDS94.RESCUE） ----------
+     { id:'rescue_…', quest:既存のクエストID, who:仲間, pending:条件, via:'talk'（仲間と話す・元の場所）|'npc'（元の場所の人に会う）, where:'案内', steps:[…], flags:{達成のときに立てる既存のフラグ} } */
+  B.rescueOf = function (quest) { var R = DATA().RESCUE || {}; for (var k in R) if (R[k].quest === quest) return R[k]; return null; };
+  B.rescuePending = function (quest) { var r = B.rescueOf(quest); return !!(r && B.joined(r.who) && !B.questDone(r.quest) && B.cond(r.pending)); };
+  B.rescuesFor = function (id, via) { var R = DATA().RESCUE || {}; return Object.keys(R).map(function (k) { return R[k]; }).filter(function (r) { return r.who === id && (!via || r.via === via) && B.rescuePending(r.quest); }); };
+  // 回収の場面を見て、最後まで見たときだけ既存のクエストを達成にする（報酬は既存の questComplete。達成済みなら何もしない）
+  B.rescue = async function (quest, opts) {
+    var r = B.rescueOf(quest); if (!r || !B.rescuePending(quest)) return { done: false };
+    var res = await B.play(r, { ctx: (opts && opts.ctx) || 'talk' });
+    if (!res.done) return res;
+    var d = D(); Object.keys(r.flags || {}).forEach(function (f) { d.flags[f] = r.flags[f]; });
+    var Ev = root.Events; if (Ev) { if (r.start && Ev.questStart && !(d.quests[quest] && d.quests[quest].state === 'active')) try { Ev.questStart(quest); } catch (e) { /* 受注の表示だけ */ } if (Ev.questComplete) await Ev.questComplete(quest); }
+    if (root.State && root.State.autosave) try { root.State.autosave(); } catch (e) { /* 保存の失敗で止めない */ }
+    return res;
   };
 
   /* ---------- 話せる場所 ---------- */
@@ -175,47 +220,68 @@
        ／['h', 文, 気持ち]（主人公の台詞。性別・一人称を決めない）／['c', 問い, [{ t, mem, last, keep, later, then:[…] }]]（選択）
        ／['if', 条件, [手順], [そうでないときの手順]]／['p', ミリ秒]（間）／['cam', 'close'|'normal'|'wide'|'off']（3D の寄り）／['mem', {k:v}]／['keep', 記念品ID] */
   B.playing = false;
+  // 場面の切り替わりの暗転（既存の Story3121.veil と同じ幕。待つのは Win.sleep なので、確かめでは待たない）
+  function veil(on, ms) { var S = root.Story3121; if (!S || !S.veil) return Promise.resolve(); try { S.veil(on, '#000', ms); } catch (e) { return Promise.resolve(); } var M = W(); return M && M.sleep ? M.sleep(ms) : Promise.resolve(); }
+  function sfx(k) { try { if (root.Audio && root.Audio.sfx) root.Audio.sfx(k); } catch (e) { /* 音だけ */ } }
   B.play = async function (scene, opts) {
     opts = opts || {}; var replay = !!opts.replay; var b = BD(); var M = W(); if (!scene || !M) return { done: false };
-    var mem = replay ? JSON.parse(JSON.stringify(b.mem)) : b.mem;   // 再生では記録を変えない（写しを使う）
-    var st = { stop: false, later: false, camMode: scene.cam || 'normal', choices: [] };
+    if (B.playing) return { done: false, busy: true };   // 連続タップなどで二つ目が始まらないように
+    // 記録は写しの上で進め、最後まで見たときだけまとめて書く（再生では書かない）
+    var mem = JSON.parse(JSON.stringify(b.mem));
+    var buf = { last: [], keep: [] };
+    var st = { stop: false, later: false, camMode: scene.cam || 'normal', choices: [], keeps: [] };
     var who0 = scene.who || scene.a || null; var cam = opts.noCam ? function () { return false; } : B.cam3d;
+    var fade = !opts.noFade && !opts.chat; var err = null;
     B.playing = true;
     try {
+      if (fade) { await veil(0.7, 220); }
       cam(st.camMode, who0);
+      if (fade) await veil(0, 380);
       if (!replay && b.later[scene.id] && scene.resume) await run(scene.resume);
       await run(scene.steps || []);
-    } finally { B.playing = false; cam('off'); }
+      if (fade && !st.later) { await veil(0.5, 240); await veil(0, 360); }
+    } catch (e) { err = e; }
+    finally { B.playing = false; cam('off'); if (fade) veil(0, 0); }
+    if (err) { try { if (root.console) root.console.error('[Bonds] 話の途中でエラー（記録は変えていない）', scene.id, err); } catch (e) { } return { done: false, error: err }; }
     if (st.later) { if (!replay) b.later[scene.id] = (b.later[scene.id] || 0) + 1; return { done: false, later: true }; }
     if (!replay) {
+      Object.keys(mem).forEach(function (k) { b.mem[k] = mem[k]; });
+      buf.last.forEach(function (t) { remember(scene, t); });
+      buf.keep.forEach(function (k) { addKeep(scene, k); });
       b.seen[scene.id] = now(); delete b.later[scene.id];
       if (root.State && root.State.autosave) try { root.State.autosave(); } catch (e) { /* 保存の失敗で止めない */ }
     }
-    return { done: true, choices: st.choices };
+    return { done: true, choices: st.choices, keeps: st.keeps };
 
     async function run(steps) {
       for (var i = 0; i < steps.length && !st.stop; i++) await step(steps[i]);
     }
     function lines(x) { return (Array.isArray(x) ? x : [x]).map(function (s) { return B.fmt(s, mem); }); }
+    function keep(k) { if (!k) return; if (st.keeps.indexOf(k) < 0) st.keeps.push(k); if (!replay) { buf.keep.push(k); sfx('chest'); } }
     async function step(s) {
       var k = s[0];
       if (k === 'n') { await M.message(lines(s[1])); return; }
       if (k === 's') { cam(st.camMode, s[1]); await M.message(lines(s[2]), { name: B.name(s[1]), portrait: B.portrait(s[1]), emo: s[3] || null }); return; }
       if (k === 'a') { cam(st.camMode, s[1]); await M.message(lines(s[2]), { portrait: B.portrait(s[1]), emo: s[3] || null }); return; }
       if (k === 'h') { if (s[2] && !opts.noCam) heroEmote(s[2]); await M.message(lines(s[1]), { name: B.name('hero'), portrait: B.portrait('hero'), emo: s[2] || null }); return; }
+      if (k === 'x') { var pf = null; try { pf = root.Events && root.Events.portraitFor ? root.Events.portraitFor(s[1], null) : null; } catch (e) { pf = null; } await M.message(lines(s[2]), { name: s[1], portrait: pf, emo: s[3] || null }); return; }   // 仲間以外の人（既存の NPC の名前）
       if (k === 'p') { if (M.sleep) await M.sleep(Math.min(2000, s[1] || 500)); return; }
       if (k === 'cam') { st.camMode = s[1]; cam(st.camMode, who0); return; }
+      if (k === 'fade') { await veil(s[1] || 0, Math.min(1200, s[2] || 400)); return; }
+      if (k === 'sfx') { sfx(s[1]); return; }
       if (k === 'mem') { Object.keys(s[1] || {}).forEach(function (key) { mem[key] = s[1][key]; }); return; }
-      if (k === 'keep') { if (!replay) addKeep(scene, s[1]); return; }
-      if (k === 'if') { await run(B.cond(s[1], mem) ? (s[2] || []) : (s[3] || [])); return; }
+      if (k === 'keep') { keep(s[1]); return; }
+      if (k === 'if') { await run(B.cond(s[1], mem, opts.ctx) ? (s[2] || []) : (s[3] || [])); return; }
       if (k === 'c') {
-        var o = (s[2] || []).filter(function (x) { return !x.when || B.cond(x.when, mem); });
-        var a = await M.choice(B.fmt(s[1] || '', mem), o.map(function (x) { return B.fmt(x.t, mem); }));
-        var pick = o[a] || o[o.length - 1]; if (!pick) return;
+        var o = (s[2] || []).filter(function (x) { return !x.when || B.cond(x.when, mem, opts.ctx); }); if (!o.length) return;
+        var li = -1; o.forEach(function (x, i) { if (x.later && li < 0) li = i; });
+        // キャンセル：「今日はやめておく」がある問いだけ先送り。ほかの問いはキャンセルできない
+        var a = await M.choice(B.fmt(s[1] || '', mem), o.map(function (x) { return B.fmt(x.t, mem); }), { cancel: li >= 0 });
+        var pick = a >= 0 && o[a] ? o[a] : (li >= 0 ? o[li] : o[0]);
         st.choices.push(pick.t);
         if (pick.mem) Object.keys(pick.mem).forEach(function (key) { mem[key] = pick.mem[key]; });
-        if (pick.last && !replay) remember(scene, B.fmt(pick.last, mem));
-        if (pick.keep && !replay) addKeep(scene, pick.keep);
+        if (pick.last) buf.last.push(B.fmt(pick.last, mem));
+        if (pick.keep) keep(pick.keep);
         if (pick.then) await run(pick.then);
         if (pick.later) { st.later = true; st.stop = true; }
         if (pick.end) st.stop = true;
@@ -269,12 +335,26 @@
   };
   B.chat = async function (id) {
     var c = B.nextChat(id); var M = W(); if (!c || !M) { if (M) await M.message([B.name(id) + 'は、いつものように隣にいる。']); return null; }
-    var e = c.entry; var emo = Array.isArray(e) ? null : e.emo || null;
-    if (id === 'ponta') await M.message(entryLines(e).map(function (s) { return B.fmt(s); }), { portrait: B.portrait('ponta'), emo: emo });
-    else if (!Array.isArray(e) && e.steps) await B.play({ id: 'chat_' + id, who: id, steps: e.steps, cam: 'normal' }, { replay: true });
-    else { B.cam3d('normal', id); await M.message(entryLines(e).map(function (s) { return B.fmt(s); }), { name: B.name(id), portrait: B.portrait(id), emo: emo }); B.cam3d('off'); }
+    if (B.playing) return null;
+    var e = c.entry; var emo = Array.isArray(e) ? null : e.emo || null; var shown = entryLines(e).map(function (s) { return B.fmt(s); });
+    if (!Array.isArray(e) && e.steps) await B.play({ id: 'chat_' + id, who: id, steps: e.steps, cam: 'normal' }, { replay: true, chat: true });
+    else {
+      B.playing = true;
+      try {
+        if (id === 'ponta') await M.message(shown, { portrait: B.portrait('ponta'), emo: emo });
+        else { B.cam3d('normal', id); await M.message(shown, { name: B.name(id), portrait: B.portrait(id), emo: emo }); }
+      } finally { B.playing = false; B.cam3d('off'); }
+    }
     var b = BD(); b.chat[id] = (b.chat[id] || 0) + 1;
+    B.heard(id, c.topic, shown);
+    if (c.topic === 'post' && !b.post[id]) b.post[id] = now();
     return c.topic;
+  };
+  // 交わした日常会話の記録（同じ話は1つにまとめる。1人 40 件まで）。思い出手帳で読み返せる
+  B.heard = function (id, topic, shown) {
+    var b = BD(); var list = b.heard[id] || (b.heard[id] = []); var key = topic + ':' + (shown[0] || '');
+    for (var i = list.length - 1; i >= 0; i--) if (list[i].k === key) list.splice(i, 1);
+    list.push({ k: key, topic: topic, t: shown.slice(0, 4), at: now() }); if (list.length > 40) list.splice(0, list.length - 40);
   };
 
   /* ---------- エンディング：変化を見届けた仲間との思い出（finale.js の Finale.epilogue から） ---------- */

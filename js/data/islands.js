@@ -410,6 +410,7 @@
     { x: 6, y: 6, type: 'boss', solid: false, doneFlag: 'library_guardian_defeated', enemy: 'boss_library_guardian', intro: ['部屋の中央で、古代の機構が目を開けた。', '図書館の守護機構「記録ヲ持チ出ス者カ。読ム者カ。——判定不能。排除スル」'], after: ['機構は動きを止めた。目の光が、拒絶から……待機に変わった。', '奥の記録台が、静かに光っている。'] },
     { x: 6, y: 2, type: 'script', solid: false, run: async function (c) {
       var d = root.State.data; var withMina = !!(d.companions.mina && d.party.indexOf('mina') >= 0);
+      if (d.flags.mina_father_record && withMina && root.Bonds && root.Bonds.rescuePending('mina_father')) { await root.Bonds.rescue('mina_father', { ctx: 'stand' }); return; }   // v9.4.1 ミナがいないときに読んでいたら、ミナとここで読む（仲間と話す、からも読める）
       if (d.flags.mina_father_record) { await c.msg(['記録台。最後の記録係の記録は、' + (d.flags.memory_choice === 0 ? '持ち帰った。' : 'ここに残した。'), '台座に一行：「お前が自分の人生を歩いてくれるなら」']); return; }
       if (!d.flags.library_guardian_defeated) { await c.msg(['守護機構が記録台を守っている。']); return; }
       if (withMina) await c.say('ミナ', ['……読む。私が読む。']);

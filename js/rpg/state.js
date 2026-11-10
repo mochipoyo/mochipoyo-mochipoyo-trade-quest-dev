@@ -40,7 +40,7 @@
       // v9.0 もちぽよ実践トレード道場（js/ui/practiceui.js の PracticeUI.defaults と同じ形。旧セーブは State.migrate がこの初期値で補い、PracticeUI.ensure が壊れた値を直す）
       practice: { v: 1, capital: CONFIG.risk.capital, history: [], profile: 'mochipoyo', overrides: {}, hints: true, level: 1, recent: [], series: null, last: null, psych: { answers: {}, log: [] }, seen: false },
       // v9.4 仲間の絆（js/rpg/bonds94.js の Bonds.defaults と同じ形。旧セーブは State.migrate がこの初期値で補い、Bonds.ensure が壊れた値を直す）
-      bonds: { v: 1, seen: {}, later: {}, mem: {}, last: {}, hist: {}, keep: {}, chat: {}, camp: null }
+      bonds: { v: 1, seen: {}, later: {}, mem: {}, last: {}, hist: {}, keep: {}, chat: {}, heard: {}, post: {}, camp: null }
     };
     if (root.Skills76) root.Skills76.sync(d);   // v7.6 職業・キャラの全体攻撃の技：いまのレベルまでに覚える技だけを足す（ほかの技は変えない）
     if (root.Quiz) root.Quiz.ensure(d);   // 5体分の記録（新しいゲームでも、読み込んだセーブと同じ形にする）

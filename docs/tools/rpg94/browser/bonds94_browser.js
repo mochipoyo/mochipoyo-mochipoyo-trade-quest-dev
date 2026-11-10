@@ -1,7 +1,7 @@
 // v9.4 仲間の絆の確かめ（ヘッドレス Chromium。実機ではない。GPU なしのソフトウェア描画）
 //   実際のクリック／タップで：メニュー → パーティ →「仲間と話す」→ 一覧（絆・思い出・新しい話・最後に選んだこと）→ リーナ →「新しい話」
 //   → メニューが閉じて話が再生される（立ち絵・気持ちの動き・選択肢）→ 記録される → 3D はイベント用カメラ（MTQ3D.cine）が寄って、終わると戻る
-//   →「仲間の思い出」→ リーナ → 思い出の再生（セーブの中身が変わらない）→ 話す（日常会話）→（PC だけ）宿に泊まったあとの一言
+//   →「仲間の思い出」→ リーナ → 思い出の再生（セーブの中身が変わらない）→ 話す（日常会話）→（PC だけ）宿に泊まったあとの知らせ（v9.4.1 トーストだけ）
 //   KIND=2d|3d  VIEW=pc|m390|land  PORT=…  OUT=…
 const { chromium } = require('playwright'); const fs = require('fs');
 const PORT = process.env.PORT || 8860; const KIND = process.env.KIND || '2d'; const VIEW = process.env.VIEW || 'pc'; const OUT = process.env.OUT || '/home/claude/envwork/docs/rpg94/';
@@ -91,11 +91,12 @@ const VP = { pc: { viewport: { width: 1280, height: 720 } }, m390: { viewport: {
   // 宿に泊まったあとの一言（PC だけ）
   if (VIEW === 'pc') {
     await p.evaluate(() => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); World.busy = false; State.data.gold = 9999; });
-    const innP = p.evaluate(() => Services.inn(10));
-    await item('泊まる'); n = 0; let asked = false;
-    while (n++ < 40) { const st = await p.evaluate(() => ({ choice: document.querySelector('#ui .rw-choice') ? document.querySelector('#ui .rw-choice').textContent : '', msg: !!document.querySelector('#ui .rw-msg') })); if (/話したそう|尻尾/.test(st.choice)) { asked = true; await item('そのまま出発する'); break; } if (st.msg) { await tapEl(await p.$('#ui .rw-msg')); continue; } if (!st.choice && !st.msg) await p.waitForTimeout(250); }
-    await innP.catch(() => { });
-    S(asked, '宿に泊まったあと、新しい話がある仲間がいれば一言（「そのまま出発する」も選べる）');
+    await p.evaluate(() => { const t = document.getElementById('toast'); if (t) { t.classList.remove('show'); t.textContent = ''; } });
+    let innDone = false; const innP = p.evaluate(() => Services.inn(10)).then(() => { innDone = true; }, () => { innDone = true; });
+    await item('泊まる'); n = 0; let asked = false, toast = '';   // v9.4.1 選択の窓ではなく、小さなトーストだけ（強制的なポップアップをしない）
+    while (n++ < 80 && !innDone) { const st = await p.evaluate(() => ({ choice: document.querySelector('#ui .rw-choice') ? document.querySelector('#ui .rw-choice').textContent : '', msg: !!document.querySelector('#ui .rw-msg'), t: (document.querySelector('#toast.show') || {}).textContent || '' })); if (/話したそう|尻尾|聞きたそう/.test(st.t)) toast = st.t; if (/話したそう|尻尾/.test(st.choice)) asked = true; if (st.msg) { await tapEl(await p.$('#ui .rw-msg')); continue; } await p.waitForTimeout(250); }
+    await innP; if (!toast) toast = await p.evaluate(() => (document.querySelector('#toast.show') || {}).textContent || '');
+    S(!asked && /話したそう|尻尾|聞きたそう/.test(toast), '宿に泊まったあと、新しい話がある仲間がいれば小さなトーストで知らせる（選択の窓は出さない）：「' + toast + '」');
   }
   S(errs.length === 0, 'ページのエラーなし' + (errs.length ? '：' + errs.slice(0, 3).join(' / ') : ''));
   const ng = steps.filter((x) => !x.ok).length; fs.mkdirSync(OUT + 'logs', { recursive: true });

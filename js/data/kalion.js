@@ -369,6 +369,7 @@
     npcs: [
       { id: 'sk_valen', x: 5, y: 2, sprite: 'royal_guard', dir: 'down', wander: 0, talk: async function (c) {
         var d = root.State.data;
+        if (c.flag('kyle_oath_done') && d.party.indexOf('kyle') >= 0 && root.Bonds && root.Bonds.rescuePending('kyle_oath')) { await root.Bonds.rescue('kyle_oath', { ctx: 'npc' }); return; }   // v9.4.1 カイルが一騎打ちのあとに加入したとき：カイルを連れて会うと「カイルの誓い」を達成（報酬は既存のまま）
         if (c.flag('kyle_oath_done')) { await c.say('騎士団長ヴァレン', [c.flag('sevran_fallen') ? '大宰相は退いた。騎士団は王ではなく民に誓いを立て直す。……カイル、戻ってこいとは言わん。お前の道を行け。' : '通行証は渡した。王宮の奥に、帳簿の中枢がある。親衛隊長ドレクが守っている。']); return; }
         var n = ['testimony_1', 'testimony_2', 'testimony_3'].filter(function (f) { return d.flags[f]; }).length;
         if (n < 3) { await c.say('騎士団長ヴァレン', ['私はヴァレン。騎士団長だ。……王宮の通行証が欲しいのなら、理由を示せ。', '大宰相の帳簿を疑うなら、被害者の証言を三つ持ってこい。騎士の剣は、証拠のないところには抜かん。']); return; }

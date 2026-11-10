@@ -42,7 +42,7 @@ function scenes() { return Object.values(B94.EP).concat(Object.values(B94.PAIRS)
   T(PAIRS.length === 21 && want.every((p) => PAIRS.some((q) => (q.a === p[0] && q.b === p[1]) || (q.a === p[1] && q.b === p[0]))), '関係の話：指示書の21組がすべてある');
   const pc = {}; PAIRS.forEach((p) => { pc[p.a] = (pc[p.a] || 0) + 1; pc[p.b] = (pc[p.b] || 0) + 1; }); T(IDS.concat(['ponta']).every((id) => pc[id] >= 2), '全仲間（ポン太を含む17）に関係の話が2つ以上（' + IDS.concat(['ponta']).map((id) => id + ':' + (pc[id] || 0)).join(' ') + '）');
   const keeps = new Set(), memSet = new Set(), memUse = new Set(), speakers = new Set(), emos = new Set(), quests = new Set(), regions = new Set(), badKind = [];
-  const KINDS = ['n', 's', 'a', 'h', 'c', 'if', 'p', 'cam', 'mem', 'keep', 'opt'];
+  const KINDS = ['n', 's', 'a', 'h', 'x', 'c', 'if', 'p', 'cam', 'fade', 'sfx', 'mem', 'keep', 'opt'];   // v9.4.1 x（仲間以外の人）・fade・sfx
   const scanText = (t) => String(t).replace(/\{m:([a-z0-9_]+)/g, (_, k) => { memUse.add(k); return ''; });
   scenes().forEach((sc) => {
     [sc.cond].concat([]).forEach(function q(c) { if (!c) return; if (c.q) c.q.forEach((x) => quests.add(x)); if (c.any) c.any.forEach(q); if (c.not) q(c.not); });
@@ -92,7 +92,7 @@ function scenes() { return Object.values(B94.EP).concat(Object.values(B94.PAIRS)
   const headState = require('child_process').execSync('git -C ' + ROOT + ' show 6b4d2a9856a7ea7beecf654a89d40dd025b97a8d:js/rpg/state.js', { encoding: 'utf8' });
   const keyLines = headState.split('\n').filter((l) => /KEY_PREFIX|LEGACY_KEY|NORMAL_PREFIX|mtq-3d|mtq-rpg/.test(l));
   T(keyLines.length > 0 && keyLines.every((l) => src('js/rpg/state.js').indexOf(l) >= 0), 'セーブの置き場所（LocalStorage のキー）の行は基準コミットと同じ（' + keyLines.length + '行）');
-  T(src('js/rpg/state.js').indexOf("bonds: { v: 1, seen: {}, later: {}, mem: {}, last: {}, hist: {}, keep: {}, chat: {}, camp: null }") >= 0 && !/KEY_PREFIX\s*=.*bonds/.test(src('js/rpg/state.js')), 'state.js の変更は初期値と ensure だけ');
+  T(src('js/rpg/state.js').indexOf("bonds: { v: 1, seen: {}, later: {}, mem: {}, last: {}, hist: {}, keep: {}, chat: {}, heard: {}, post: {}, camp: null }") >= 0 && !/KEY_PREFIX\s*=.*bonds/.test(src('js/rpg/state.js')), 'state.js の変更は初期値と ensure だけ');
 
   console.log('-- D 解放の順番・条件・場所');
   stubWin(); joinAll(d); B.ensure();

@@ -462,6 +462,7 @@
   warps: [{ x: 1, y: 1, to: 'oracle_core_1', tx: 10, ty: 10 }, { x: 15, y: 9, to: 'oracle_core_3', tx: 7, ty: 12 }],
   chests: [{ id: 'or2', x: 12, y: 2, item: 'phoenix_feather', qty: 2 }],
   events: [{ x: 11, y: 7, type: 'script', solid: false, run: async function (c) { var d = D(); var withSeris = !!(d.companions.seris && d.party.indexOf('seris') >= 0);
+    if (d.flags.core_2 && withSeris && root.Bonds && root.Bonds.rescuePending('seris_master')) { await root.Bonds.rescue('seris_master', { ctx: 'stand' }); return; }   // v9.4.1 セリスがいないときに読んでいたら、セリスとここで読む（仲間と話す、からも読める）
     if (d.flags.core_2) { await c.msg(['テオドルの記録。「予測は、選択の代わりにはならない」']); return; }
     if (withSeris) await c.say('セリス', ['……師の字。テオドル。', '読む。私が読む。']);
     await c.msg(['【テオドルの記録】「オラクルの基礎理論は、相場の波を読む理論から始めた。上位の流れと下位の流れ、勢いの衰え、反転の兆し」', '「災害を予測するために、私はそれを拡張した。予測は当たった。だが遺族は、予測ではなく「保証」を求めた」', '「私は理論を渡した。保証のために使われると知りながら。……予測は、選択の代わりにはならない。それを言う勇気が、私にはなかった」', '「弟子へ。もし読んでいるなら——理論は正しかった。使い方を間違えたのは私だ。読むのは波で、決めるのは、お前だ」']);

@@ -113,7 +113,7 @@
     World.updateHud();
     await Win.message(['おはよう！ ぐっすり眠れたかい？ HPとMPが回復した。', '（戦闘不能の仲間は教会で治してもらおう）']);
     State.autosave();
-    if (root.BondsUI) await root.BondsUI.afterInn();   // v9.4 新しい話がある仲間がいれば一言（「そのまま出発する」も選べる）
+    if (root.BondsUI) await root.BondsUI.afterInn();   // v9.4 新しい話がある仲間がいれば、小さな知らせ（v9.4.1 トーストだけ。選択の窓は出さない）
   };
 
   /* ---------- 教会 ---------- */

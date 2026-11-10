@@ -243,6 +243,7 @@
   chests: [{ id: 'ol3', x: 24, y: 9, item: 'elixir', qty: 2 }],
   events: [
     { x: 2, y: 2, type: 'script', solid: false, run: async function (c) { var d = D(); var ws = inParty('seris');
+      if (d.flags.origin_notes && ws && root.Bonds && root.Bonds.rescuePending('seris_origin')) { await root.Bonds.rescue('seris_origin', { ctx: 'stand' }); return; }   // v9.4.1 セリスがいないときに読んでいたら、セリスとここで読む（仲間と話す、からも読める）
       if (d.flags.origin_notes) { await c.msg(['テオドルの机。手記は、もう読んだ。', '最後の頁：「読むのは波で、決めるのは——」']); return; }
       if (ws) await c.say('セリス', ['師の机……。ここで、全部書いていたのね。']);
       await c.msg(['【テオドルの手記】', '「演算機構は危険だ。予測は、いつか保証を求める声に変わる。わかっている」', '「それでも私は作り続ける。止めれば、ヴォルクのような者が、もっと悪い形で作る。だから私が、一番ましな形で作る」', '「——これは言い訳だ。わかっている。危険を知りながら作り続ける者は、知らずに作る者より罪が重い」', '「弟子へ。私は止められなかった。お前は、止める勇気と、作る勇気の、両方を持ってくれ。どちらか一方だけでは、私と同じになる」']);

@@ -54,7 +54,7 @@ exit 0
 === ult/dojo_test
 exit 0
 OK 10 questions advanced
-seiran reckless {"passed":false,"best":31,"last":31,"attempts":1,"lastAt":1794317820690}
+seiran reckless {"passed":false,"best":25,"last":25,"attempts":1,"lastAt":1794346007921}
 OK reckless exam recorded
 OK reckless result: passed=false
 OK ultimate menu navigates

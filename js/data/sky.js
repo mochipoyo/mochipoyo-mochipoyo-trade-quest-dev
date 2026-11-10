@@ -27,6 +27,16 @@
     kazuto: ['カズト', ['仲間を守るための魔力が欲しかった。盾になるのは、俺の役目だと思ってた。', '……でも、守られてもいいんだって、この旅で知った。']],
     mochipoyo: ['謎のタイムトラベラーM', ['2035年から、ずいぶん遠くまで来ちゃったなあ。', '千年前の誰かも、こうやって火を囲んで、相場の話をしたのかな。', '……昔、似たようなことを教えた気もする。でも、あの時代だったかな。']]
   };
+  // v9.4.1 個人の話（既存のクエスト）をまだ終えていない仲間は、終えたあとの前提で話さない（上の CAMP の文は終えたときにそのまま出す）
+  //   kyle：kyle_oath（ヴァレン団長の前で口に出す）／mina：mina_father（父の記録を自分で読む）／seris：seris_origin（師の手記「止める勇気と作る勇気」）
+  //   lucia：lucia_wave（師匠の言葉を自分の言葉に）／ganes：dark_memorial（第15章の記憶の墓標に弟の名を刻む。焚き火の第14章より後の出来事）
+  var CAMP_BEFORE = {
+    kyle: ['kyle_oath', ['迷いの森で部下を失ったのは、命令に従ったからだ。', '……まだ、それをちゃんと口に出せていない。言うべき相手がいる。']],
+    mina: ['mina_father', ['父さんの記録のこと、みんなから聞いた。……でも、まだ自分の目で読んでない。', '宝箱を開けるのが好きなのは、父さんゆずりかも。中に何が入ってるか、開けるまでわからないから。']],
+    seris: ['seris_origin', ['師が何を迷っていたのか、私はまだ、全部は読めていない。', '……魔法は、波を読むためにある。波を止めるためじゃない。それだけは、わかる。']],
+    lucia: ['lucia_wave', ['師匠の一番弟子でいることに、ずっとこだわってる。', '読むのは波で、決めるのは自分。……師匠の言葉を、いつか自分の言葉にしたい。']],
+    ganes: ['dark_memorial', ['弟の最後の一日を、日誌で知った。', '……知ってから、槌が少し軽くなった。']]
+  };
   add({ id: 'star_camp', name: '星見塔の野営地', kind: 'town', bgm: 'town', fallback: 'grass', style: 'wood', rows: [
     'ffffffffffffffffffff',
     'f........rr........f',
@@ -48,9 +58,10 @@
   events: [{ x: 9, y: 6, type: 'script', solid: true, run: async function (c) {
     var d = D(); var ids = Object.keys(CAMP).filter(function (id) { return d.companions[id]; });
     await c.msg(['焚き火を囲んだ。雲海の上に、星が近い。', '……誰からともなく、話し始めた。']);
-    for (var i = 0; i < ids.length; i++) { var e = CAMP[ids[i]]; await c.say(e[0], e[1]); }
+    for (var i = 0; i < ids.length; i++) { var e = CAMP[ids[i]]; var pre = CAMP_BEFORE[ids[i]]; await c.say(e[0], pre && !c.questDone(pre[0]) ? pre[1] : e[1]); }
     if (!ids.length) await c.msg(['ひとりで火を見つめた。旅の始まりから、ずいぶん遠くまで来た。']);
     if (d.flags.ponta_joined) await c.msg(['神聖犬ポン太が、焚き火のそばで丸くなった。尻尾が、ぱたりと一度だけ揺れた。']);
+    if (root.Bonds && root.Bonds.bonfire) await root.Bonds.bonfire(c);   // v9.4.1 第2話まで見届けた仲間の一言（最大3人。仲間の絆）
     await c.say(d.hero.name, ['……みんな、自分で選んできたんだな。', '明日は天空神殿だ。']);
     // v6.9 「ひとりじゃなかった」とハケイの手紙（js/data/story3121.js の回想「天空の焚き火」）
     var s31 = d.flags.s3121_new_prologue || d.flags.s3121_recalled;

@@ -31,4 +31,9 @@ md += '\n## 4. 日常会話の数\n\n| 人 | いつもの話 | 食べ物・趣�
 Object.keys(B.CHAT).forEach((id) => { const c = B.CHAT[id]; const o = Object.values(c.others || {}).reduce((n, l) => n + l.length, 0); const pa = Object.values(c.pairAfter || {}).reduce((n, l) => n + l.length, 0); md += `| ${NAMES[id]} | ${c.daily.length} | ${c.food.length} | ${Object.values(c.region).reduce((n, l) => n + l.length, 0)}（${Object.keys(c.region).length - 1}） | ${c.battle.length} | ${o} | ${pa} | ${c.post.length} |\n`; });
 md += '\n## 5. 記念品（持ち物ではない。思い出手帳の記録だけ）\n\n| ID | 名前 | 説明（{m:…} は選択の記憶） |\n|---|---|---|\n';
 Object.keys(B.KEEP).forEach((k) => { md += `| \`${k}\` | ${B.KEEP[k].name} | ${B.KEEP[k].desc} |\n`; });
+// v9.4.1 取り残しの回収・星見塔の焚き火の一言
+md += '\n## 6. 取り残しの回収（v9.4.1。既存の個人クエストの「本人が読む場面」と達成）\n\n| ID | 人 | 既存のクエスト | 見つける条件（本人が加入・クエスト未達成に加えて） | どこで | 達成のときに立てる既存のフラグ |\n|---|---|---|---|---|---|\n';
+Object.values(B.RESCUE || {}).forEach((r) => { md += `| \`${r.id}\` | ${NAMES[r.who]} | \`${r.quest}\` | ${cond(r.pending)} | ${r.via === 'talk' ? '仲間と話す／元の場所（' + r.where + '）' : r.where} | ${Object.keys(r.flags || {}).map((f) => '`' + f + '`').join('・') || '—'} |\n`; });
+md += '\n## 7. 星見塔の焚き火：第2話まで見た仲間の一言（v9.4.1。最大3人）\n\n| 人 | 一言 |\n|---|---|\n';
+Object.keys(B.BONFIRE || {}).forEach((id) => { md += `| ${NAMES[id]} | ${B.BONFIRE[id].join(' ')} |\n`; });
 process.stdout.write(md);
