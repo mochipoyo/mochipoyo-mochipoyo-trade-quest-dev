@@ -1,0 +1,35 @@
+{
+ "KIND": "3d",
+ "ok": 7,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "PC の鳴らし方は「読み込んでから鳴らす」（buffer）"
+  },
+  {
+   "ok": true,
+   "m": "曲が読めない（通信 404・2 回）と、状態が「読めなかった」になる（{\"ctx\":\"running\",\"engine\":\"buffer\",\"cur\":null,\"state\":\"error\",\"err\":\"通信 404\",\"playing\":false,\"t\":0,\"retro\":\"title\",\"level\":0.0317}）"
+  },
+  {
+   "ok": true,
+   "m": "無音のままにせず、レトロ風の音に切り替わる（音の大きさ 0.0317）"
+  },
+  {
+   "ok": true,
+   "m": "「BGM の状態を見る」に「読めなかった：通信 404」「レトロ（title）」と出る"
+  },
+  {
+   "ok": true,
+   "m": "通信を戻して［もう一度鳴らす］を押すと、曲を読み直して鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"cur\":\"calm_before_the_storm\",\"state\":\"playing\",\"err\":\"\",\"playing\":true,\"t\":2.56,\"retro\":null,\"level\":0.0385}）"
+  },
+  {
+   "ok": true,
+   "m": "「BGM の状態を見る」が「鳴らしている」に変わる"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  }
+ ]
+}

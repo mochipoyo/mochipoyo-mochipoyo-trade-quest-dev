@@ -1,0 +1,13 @@
+「BGM の状態を見る」の改善（読めなかったを残す・読み込み中の秒数・［もう一度鳴らす］で読み直す）のあと
+=== rpg93/rpg93_test.js 
+結果：OK 82 / NG 0
+=== rpg93/rpg93_test.js 2d
+結果：OK 82 / NG 0
+=== menu92/menu92_test.js 
+結果：OK 89 / NG 0
+=== menu92/menu92_test.js 2d
+結果：OK 89 / NG 0
+=== v88/ui88_test.js 
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+結果: 62 OK / 0 NG []　ページのエラー 0

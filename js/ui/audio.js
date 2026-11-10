@@ -159,10 +159,10 @@
   function bufPlay(id, restart) {
     if (BUF.cur === id) { if (restart && BUF.node) { var b0 = BUF.node.buffer; bufStopNode(0.05); bufStart(id, b0, 0); } return true; }
     if (BUF.cur) BUF.pos[BUF.cur] = bufPos();
-    bufStopNode(0.8); BUF.cur = id; BUF.state = 'loading'; BUF.err = '';
+    bufStopNode(0.8); BUF.cur = id; BUF.state = 'loading'; BUF.err = ''; BUF.since = Date.now();
     var start = restart ? 0 : (BUF.pos[id] || 0);
     bufLoad(id).then(function (b) { if (BUF.cur !== id || BUF.node) return; if (Audio.settings().mute) return; bufStart(id, b, start); },
-      function (e) { BUF.err = String((e && e.message) || e); if (BUF.cur !== id) return; BUF.failed[id] = true; FILE.failed[id] = true; BUF.cur = null; BUF.state = 'error'; var k = Audio.lastKey; Audio.current = null; retroPlay(k); });
+      function (e) { BUF.err = String((e && e.message) || e); if (BUF.cur !== id) return; BUF.failed[id] = true; FILE.failed[id] = true; BUF.cur = null; var k = Audio.lastKey; Audio.current = null; retroPlay(k); BUF.state = 'error'; });   // 「読めなかった」をレトロの音に切り替えたあとも残す（BGM の状態を見る）
     return true;
   }
   function bufStop() { if (BUF.cur) BUF.pos[BUF.cur] = bufPos(); BUF.cur = null; BUF.state = ''; bufStopNode(0.3); }
@@ -171,9 +171,11 @@
   function bgmStopFile() { bufStop(); fileStop(); }
   function bgmCur() { return BUF.cur || FILE.cur; }
   // 今の BGM の様子（設定の「BGM の状態」・確かめ用）
+  // 読めなかった曲をもう一度読む（設定の［もう一度鳴らす］・鳴らし方の切り替え）
+  Audio.retryFiles = function () { FILE.failed = {}; BUF.failed = {}; BUF.err = ''; if (BUF.state === 'error') BUF.state = ''; };
   Audio.bgmState = function () {
     var eng = Audio.ctx ? Audio.bgmEngine() : '';
-    if (BUF.cur || (eng === 'buffer' && !FILE.cur)) return { engine: 'buffer', cur: BUF.cur, state: BUF.state, playing: !!BUF.node, t: BUF.node ? +bufPos().toFixed(2) : 0, err: BUF.err, cached: Object.keys(BUF.cache) };
+    if (BUF.cur || (eng === 'buffer' && !FILE.cur)) return { engine: 'buffer', cur: BUF.cur, state: BUF.state, playing: !!BUF.node, t: BUF.node ? +bufPos().toFixed(2) : 0, err: BUF.err, cached: Object.keys(BUF.cache), wait: BUF.state === 'loading' && BUF.since ? Math.round((Date.now() - BUF.since) / 1000) : 0 };
     var e = FILE.els[FILE.act]; return { engine: 'stream', cur: FILE.cur, state: e ? 'readyState ' + e.readyState : '', playing: !!(e && FILE.cur && !e.paused && e.readyState >= 3), t: e ? +e.currentTime.toFixed(2) : 0, err: e && e.error ? 'MEDIA_ERR ' + e.error.code : '' };
   };
   // BGM の音の大きさ（実際に出ている音。0〜1 の RMS）。設定の「BGM の状態」と確かめで使う

@@ -325,7 +325,7 @@
     var body = function () {
       var s = A.settings(), st = A.bgmState ? A.bgmState() : {}, B = root.BGM93, lv = A.bgmLevel ? A.bgmLevel() : 0, db = lv > 0 ? Math.round(20 * Math.log(lv) / Math.LN10) : null;
       var tr = st.cur && B && B.TRACKS[st.cur] ? B.TRACKS[st.cur].title : (A.current && !/^file:/.test(A.current) ? 'レトロ（' + A.current + '）' : 'なし');
-      var stateJa = { loading: '読み込み中', playing: '鳴らしている', error: '読めなかった' }[st.state] || st.state || '—';
+      var stateJa = st.state === 'loading' ? '読み込み中' + (st.wait ? '（' + st.wait + ' 秒）' : '') : ({ playing: '鳴らしている', error: '読めなかった' }[st.state] || st.state || '—');
       var rows = [['音（設定）', s.mute ? 'OFF（消している）' : 'ON'], ['音の準備（WebAudio）', A.ctx ? A.ctx.state : 'まだ（画面をクリック・タップすると準備する）'], ['BGM の種類', s.bgmKind === 'retro' ? 'レトロ' : 'フリー音源の曲'],
         ['鳴らし方', st.engine === 'buffer' ? '読み込んでから鳴らす' : st.engine === 'stream' ? '流しながら鳴らす（<audio>）' : '—'], ['場面', (A.lastKey || '—') + '（' + ((root.World && root.World.map && root.World.map.id) || '—') + '）'],
         ['曲', tr], ['状態', stateJa + (st.err ? '：' + st.err : '')], ['位置', st.t ? st.t.toFixed(1) + ' 秒' : '—'], ['出ている音の大きさ', db === null ? '0（無音）' : db + ' dB　' + '■'.repeat(Math.max(0, Math.min(10, Math.round((db + 70) / 6))))]];
@@ -334,7 +334,7 @@
     var done = Win.panel('<div class="rw-title">BGM の状態</div><div class="bgmdiag-body">' + body() + '</div><div class="bgmdiag-btns"><span class="rw-chip bgmdiag-retry">もう一度鳴らす</span></div><p class="small muted">鳴らないときは、この画面の写真を送ってください（原因を調べるのに使います）。設定「BGM の鳴らし方」を切り替えると直ることがあります。</p>', { cls: 'bgm-diag rw-tall' });
     var panel = [].slice.call(document.querySelectorAll('#ui .bgm-diag')).pop();
     var timer = setInterval(function () { var b = panel && panel.querySelector('.bgmdiag-body'); if (!b || !document.body.contains(panel)) { clearInterval(timer); return; } b.innerHTML = body(); }, 500);
-    var rb = panel && panel.querySelector('.bgmdiag-retry'); if (rb) rb.addEventListener('click', function (e) { e.stopPropagation(); if (A.unlock) A.unlock(); var k = A.lastKey; if (k) { A.stopBgm(); A.playBgm(k); } });
+    var rb = panel && panel.querySelector('.bgmdiag-retry'); if (rb) rb.addEventListener('click', function (e) { e.stopPropagation(); if (A.unlock) A.unlock(); if (A.retryFiles) A.retryFiles(); var k = A.lastKey; if (k) { A.stopBgm(); A.playBgm(k); } });
     await done; clearInterval(timer);
   };
   Menu.soundTest = async function () {
@@ -791,7 +791,7 @@
       { cat: 'sound', label: 'BGM音量', key: 'bgm', opts: volOpts(st.bgm), fmt: pct, after: function () { if (A) A.apply(); } , note: '選ぶとすぐに今の曲の音量が変わる' },
       { cat: 'sound', label: '効果音音量', key: 'se', opts: volOpts(st.se), fmt: pct, after: function () { if (A) { A.apply(); A.sfx('coin'); } }, note: '選ぶと試しの音を鳴らす' },
       { cat: 'sound', label: 'BGM の種類', key: 'bgmKind', def: 'file', opts: [{ v: 'file', l: 'フリー音源の曲（0 A.D.）' }, { v: 'retro', l: 'レトロ（自作の電子音）' }], after: function () { if (A && A.lastKey) { var k = A.lastKey; A.stopBgm(); A.playBgm(k); } }, note: '曲は場所（町・フィールド・ダンジョン）と戦闘で変わる。読めないときは自作の曲になる' },   // v9.3
-      { cat: 'sound', label: 'BGM の鳴らし方', key: 'bgmEngine', def: 'auto', opts: [{ v: 'auto', l: '自動（PC＝読み込んでから・スマホ＝流しながら）' }, { v: 'buffer', l: '読み込んでから鳴らす（効果音と同じ仕組み）' }, { v: 'stream', l: '流しながら鳴らす（<audio>）' }], set: function (v) { if (v === 'auto') delete st.bgmEngine; else st.bgmEngine = v; }, after: function () { if (A && A.lastKey) { var k = A.lastKey; A.stopBgm(); A.playBgm(k); } }, note: 'BGM が鳴らないときに切り替える。読み込んでから鳴らすは、曲を全部読み込むまで（1〜数秒）鳴らない' },   // v9.3 修正
+      { cat: 'sound', label: 'BGM の鳴らし方', key: 'bgmEngine', def: 'auto', opts: [{ v: 'auto', l: '自動（PC＝読み込んでから・スマホ＝流しながら）' }, { v: 'buffer', l: '読み込んでから鳴らす（効果音と同じ仕組み）' }, { v: 'stream', l: '流しながら鳴らす（<audio>）' }], set: function (v) { if (v === 'auto') delete st.bgmEngine; else st.bgmEngine = v; }, after: function () { if (A && A.retryFiles) A.retryFiles(); if (A && A.lastKey) { var k = A.lastKey; A.stopBgm(); A.playBgm(k); } }, note: 'BGM が鳴らないときに切り替える。読み込んでから鳴らすは、曲を全部読み込むまで（1〜数秒）鳴らない' },   // v9.3 修正
       { cat: 'sound', label: 'BGM の状態を見る（鳴らないとき）', action: 'bgmdiag', right: '' },   // v9.3 修正
       { cat: 'sound', label: 'BGM を聞く（サウンドテスト）', action: 'soundtest', right: '' },   // v9.3
       { cat: 'sound', label: 'BGM のクレジット', action: 'bgmcredit', right: 'CC BY-SA 3.0' },   // v9.3

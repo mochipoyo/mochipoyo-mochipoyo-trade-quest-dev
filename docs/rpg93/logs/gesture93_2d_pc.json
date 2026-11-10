@@ -10,11 +10,11 @@
   },
   {
    "ok": true,
-   "m": "最初のクリックでタイトルの曲が鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"mute\":false,\"cur\":\"calm_before_the_storm\",\"playing\":true,\"t\":2.68,\"level\":0.0272}）"
+   "m": "最初のクリックでタイトルの曲が鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"mute\":false,\"cur\":\"calm_before_the_storm\",\"playing\":true,\"t\":2.61,\"level\":0.0336}）"
   },
   {
    "ok": true,
-   "m": "音を消していたセーブで「音を出す」→ 町の曲が鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"mute\":false,\"cur\":\"the_fledgling_kingdom\",\"playing\":true,\"t\":2.41,\"level\":0.0157}）"
+   "m": "音を消していたセーブで「音を出す」→ 町の曲が鳴る（{\"ctx\":\"running\",\"engine\":\"buffer\",\"mute\":false,\"cur\":\"the_fledgling_kingdom\",\"playing\":true,\"t\":2.78,\"level\":0.008}）"
   },
   {
    "ok": true,
