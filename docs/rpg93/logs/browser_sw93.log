@@ -1,0 +1,20 @@
+=== sw93 2d
+  OK  1 回目：登録される（{"ready":true,"scope":"https://localhost:8472/"}）
+  OK  1 回目のうちに保存したファイル 176 個
+  OK  1 回目のあと、通信を切って開き直してもタイトルまで出る（保存が 1 回目で済んでいる）
+  OK  2 回目：Service Worker がページを操り、176 / 176 件を返す
+  OK  通信を切っても、保存したものでタイトルまで出る（176 件を Service Worker から）
+  OK  セーブ（LocalStorage）の数は変わらない（0）
+  OK  ページのエラーなし
+結果 2d：OK 7 / NG 0
+rc=0
+=== sw93 3d
+  OK  1 回目：登録される（{"ready":true,"scope":"https://localhost:8472/"}）
+  OK  1 回目のうちに保存したファイル 244 個
+  OK  1 回目のあと、通信を切って開き直してもタイトルまで出る（保存が 1 回目で済んでいる）
+  OK  2 回目：Service Worker がページを操り、244 / 244 件を返す
+  OK  通信を切っても、保存したものでタイトルまで出る（246 件を Service Worker から）
+  OK  セーブ（LocalStorage）の数は変わらない（0）
+  OK  ページのエラーなし
+結果 3d：OK 7 / NG 0
+rc=0

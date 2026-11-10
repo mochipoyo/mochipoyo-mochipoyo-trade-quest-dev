@@ -14,3 +14,11 @@ rc=0
 rc=0
 == 2D 版　読み込みのエラー 0
 結果：OK 89 / NG 0
+=== rpg93/rpg93_test （Service Worker の保存の改善のあと・b87cd33＋作業中）
+rc=0
+== 3D 版と同じ読み込み　読み込みのエラー 0
+結果：OK 71 / NG 0
+=== rpg93/rpg93_test 2d（Service Worker の保存の改善のあと・b87cd33＋作業中）
+rc=0
+== 2D 版　読み込みのエラー 0
+結果：OK 71 / NG 0

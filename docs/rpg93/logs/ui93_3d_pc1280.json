@@ -14,7 +14,7 @@
   },
   {
    "ok": true,
-   "m": "タイトルの曲が鳴る（calm_before_the_storm・[{\"src\":\"0ad-calm-before-the-storm.mp3\",\"paused\":false,\"t\":2.71},{\"src\":\"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=\",\"paused\":true,\"t\":0}]）"
+   "m": "タイトルの曲が鳴る（calm_before_the_storm・[{\"src\":\"0ad-calm-before-the-storm.mp3\",\"paused\":false,\"t\":2.69},{\"src\":\"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=\",\"paused\":true,\"t\":0}]）"
   },
   {
    "ok": true,
@@ -78,7 +78,7 @@
   },
   {
    "ok": true,
-   "m": "戦闘速度「とてもはやい」：1 ターンの再生 10120ms → 5332ms（全員ぼうぎょ・敵の行動つき）"
+   "m": "戦闘速度「とてもはやい」：1 ターンの再生 9710ms → 4961ms（全員ぼうぎょ・敵の行動つき）"
   },
   {
    "ok": true,
@@ -94,7 +94,7 @@
   },
   {
    "ok": true,
-   "m": "まんたん：全員の HP が満タン（まんたん：足りないHPは合計 363。どうやって回復する？／→ 呪文と道具で回復する／リーナは癒しの滴を8回唱えた（MP−16）／生きている仲間のHPが満タンになった！）"
+   "m": "まんたん：全員の HP が満タン（まんたん：足りないHPは合計 363。どうやって回復する？／→ 呪文と道具で回復する／リーナは癒しの滴を9回唱えた（MP−18）／生きている仲間のHPが満タンになった！）"
   },
   {
    "ok": true,
@@ -111,15 +111,15 @@
  ],
  "music": [
   {
-   "t": 1794286897138,
+   "t": 1794288759004,
    "u": "0ad-calm-before-the-storm.mp3"
   },
   {
-   "t": 1794286924247,
+   "t": 1794288781612,
    "u": "0ad-the-fledgling-kingdom.mp3"
   },
   {
-   "t": 1794286924248,
+   "t": 1794288781613,
    "u": "0ad-taiko-2.mp3"
   }
  ],

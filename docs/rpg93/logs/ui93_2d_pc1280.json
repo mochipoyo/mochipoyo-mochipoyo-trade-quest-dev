@@ -14,7 +14,7 @@
   },
   {
    "ok": true,
-   "m": "タイトルの曲が鳴る（calm_before_the_storm・[{\"src\":\"0ad-calm-before-the-storm.mp3\",\"paused\":false,\"t\":2.7},{\"src\":\"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=\",\"paused\":true,\"t\":0.01}]）"
+   "m": "タイトルの曲が鳴る（calm_before_the_storm・[{\"src\":\"0ad-calm-before-the-storm.mp3\",\"paused\":false,\"t\":2.69},{\"src\":\"80LEowAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=\",\"paused\":true,\"t\":0}]）"
   },
   {
    "ok": true,
@@ -78,7 +78,7 @@
   },
   {
    "ok": true,
-   "m": "戦闘速度「とてもはやい」：1 ターンの再生 5634ms → 1077ms（全員ぼうぎょ・敵の行動つき）"
+   "m": "戦闘速度「とてもはやい」：1 ターンの再生 4885ms → 1286ms（全員ぼうぎょ・敵の行動つき）"
   },
   {
    "ok": true,
@@ -111,15 +111,15 @@
  ],
  "music": [
   {
-   "t": 1794286778890,
+   "t": 1794288721136,
    "u": "0ad-calm-before-the-storm.mp3"
   },
   {
-   "t": 1794286788750,
+   "t": 1794288730138,
    "u": "0ad-the-fledgling-kingdom.mp3"
   },
   {
-   "t": 1794286788751,
+   "t": 1794288730138,
    "u": "0ad-taiko-2.mp3"
   }
  ],

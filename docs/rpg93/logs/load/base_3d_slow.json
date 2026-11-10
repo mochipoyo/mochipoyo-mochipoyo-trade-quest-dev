@@ -1,0 +1,76 @@
+{
+ "KIND": "3d",
+ "NET": "slow",
+ "net": {
+  "latency": 150,
+  "downloadThroughput": 200000,
+  "uploadThroughput": 93750
+ },
+ "first": {
+  "domMs": 15790,
+  "titleMs": 15943,
+  "readyMs": 74191,
+  "req": {
+   "n": 494,
+   "kb": 13551,
+   "by": {
+    "other": {
+     "n": 49,
+     "kb": 4648,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 26,
+     "cached": 0
+    },
+    "js": {
+     "n": 253,
+     "kb": 2389,
+     "cached": 0
+    },
+    "image": {
+     "n": 191,
+     "kb": 6488,
+     "cached": 0
+    }
+   }
+  }
+ },
+ "cont": {
+  "ms": 16191,
+  "n": 16,
+  "kb": 2587
+ },
+ "second": {
+  "titleMs": 12420,
+  "readyMs": 36487,
+  "req": {
+   "n": 496,
+   "kb": 5172,
+   "by": {
+    "other": {
+     "n": 49,
+     "kb": 4648,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 26,
+     "cached": 0
+    },
+    "js": {
+     "n": 255,
+     "kb": 498,
+     "cached": 0
+    },
+    "image": {
+     "n": 191,
+     "kb": 0,
+     "cached": 0
+    }
+   }
+  }
+ },
+ "errs": []
+}

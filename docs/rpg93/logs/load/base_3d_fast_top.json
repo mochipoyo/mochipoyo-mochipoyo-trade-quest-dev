@@ -1,0 +1,430 @@
+{
+ "KIND": "3d",
+ "NET": "fast",
+ "net": {
+  "latency": 5,
+  "downloadThroughput": -1,
+  "uploadThroughput": -1
+ },
+ "first": {
+  "domMs": 2802,
+  "titleMs": 3338,
+  "readyMs": 3420,
+  "req": {
+   "n": 493,
+   "kb": 13551,
+   "by": {
+    "other": {
+     "n": 48,
+     "kb": 4648,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 26,
+     "cached": 0
+    },
+    "js": {
+     "n": 253,
+     "kb": 2389,
+     "cached": 0
+    },
+    "image": {
+     "n": 191,
+     "kb": 6488,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "3d/textures/grass_normal.jpg",
+    "kb": 506,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/prop_well.glb",
+    "kb": 478,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_hero.glb",
+    "kb": 397,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_priest.glb",
+    "kb": 357,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_lina.glb",
+    "kb": 355,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_master.glb",
+    "kb": 350,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_merchant.glb",
+    "kb": 344,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_villager_f.glb",
+    "kb": 334,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_elder.glb",
+    "kb": 326,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_innkeeper.glb",
+    "kb": 324,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_child.glb",
+    "kb": 320,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_villager_m.glb",
+    "kb": 317,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/main-BVdflzRV.js",
+    "kb": 286,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/Character3D-BG39NyV_.js",
+    "kb": 212,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/grass_albedo.jpg",
+    "kb": 206,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/timber_normal.jpg",
+    "kb": 170,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/planks_normal.jpg",
+    "kb": 147,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/gald.png",
+    "kb": 135,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/lucia.png",
+    "kb": 134,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/cobble_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/plaster_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/stonewall_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/mochipoyo.png",
+    "kb": 125,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/dirt_normal.jpg",
+    "kb": 123,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/seris.png",
+    "kb": 116,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "cont": {
+  "ms": 3083,
+  "n": 16,
+  "kb": 2587
+ },
+ "second": {
+  "titleMs": 11303,
+  "readyMs": 11337,
+  "req": {
+   "n": 493,
+   "kb": 5172,
+   "by": {
+    "other": {
+     "n": 48,
+     "kb": 4647,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 26,
+     "cached": 0
+    },
+    "js": {
+     "n": 253,
+     "kb": 498,
+     "cached": 0
+    },
+    "image": {
+     "n": 191,
+     "kb": 0,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "3d/models/prop_well.glb",
+    "kb": 478,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_hero.glb",
+    "kb": 397,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_priest.glb",
+    "kb": 357,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_lina.glb",
+    "kb": 355,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_master.glb",
+    "kb": 350,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_merchant.glb",
+    "kb": 344,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_villager_f.glb",
+    "kb": 334,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_elder.glb",
+    "kb": 326,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_innkeeper.glb",
+    "kb": 324,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_child.glb",
+    "kb": 320,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_villager_m.glb",
+    "kb": 317,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/main-BVdflzRV.js",
+    "kb": 286,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/Character3D-BG39NyV_.js",
+    "kb": 212,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/prop_flowerbed.glb",
+    "kb": 86,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/furn_bookshelf.glb",
+    "kb": 62,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/tree_oak_a.glb",
+    "kb": 48,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/tree_oak_b.glb",
+    "kb": 48,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/tree_oak_c.glb",
+    "kb": 47,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/furn_bed.glb",
+    "kb": 37,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/tree_pine_a.glb",
+    "kb": 35,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/tree_pine_b.glb",
+    "kb": 35,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/tree_pine_c.glb",
+    "kb": 35,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/furn_table.glb",
+    "kb": 33,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "styles.css?v=61c8de563f",
+    "kb": 26,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/prop_bench.glb",
+    "kb": 19,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "errs": []
+}

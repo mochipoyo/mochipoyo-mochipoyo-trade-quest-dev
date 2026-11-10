@@ -12,7 +12,7 @@
   window.MTQ_SAVE_PREFIX = 'mtq-3d-slot-';
   window.MTQ_JOIN76 = true;   // v7.6 地上のフィールドと海を1枚の世界としてつなぐ（js/rpg/world76.js。3D設定「世界のつながり」で切り替え）
 </script>
-  <script type="module" crossorigin src="./assets/main-DVPReQJ3.js"></script>
+  <script type="module" crossorigin src="./assets/main-CQD-dfCM.js"></script>
   <link rel="modulepreload" crossorigin href="./assets/Character3D-BG39NyV_.js">
 </head>
 <body class="mtq3d">
@@ -162,7 +162,7 @@
 <script src="../js/data/iq73.js?v=ad9ec70fe6"></script>
 <script src="../js/data/townlife73.js?v=91dad97dce"></script>
 <script src="../js/core/assets.js?v=374ab66aae"></script>
-<script src="../js/core/version.js?v=6e0addd19f"></script>
+<script src="../js/core/version.js?v=ad30911660"></script>
 <script src="../js/core/update-check.js?v=a1d36ddb7e"></script>
 <script src="../js/core/bossart.js?v=b3be73da9f"></script>
 <script src="../js/data/enemy-redesign.js?v=deb935de9e"></script>
@@ -298,7 +298,7 @@
 <script src="../js/rpg/boss-unique-gear.js?v=8a3bb8dc8a"></script>
 <script src="../js/main.js?v=5d31a7230c"></script>
 </template>
-<script src="../dist/mtq.min.js?v=18c111066b"></script>
+<script src="../dist/mtq.min.js?v=cce4da1905"></script>
 <script>
   // まとめたファイルが読めなかったとき（ファイルがない・通信の失敗）：一覧のスクリプトを、この場所に順に書き込んで読む（同期的に読むので、後の起動の処理はそのまま）
   if (!window.MochiQuest) document.write(document.getElementById('mtq-src').innerHTML);
@@ -309,7 +309,7 @@
     window.addEventListener('error', function (e) { if (e && e.filename && /three|assets\/main/.test(e.filename)) return; showError(e.message || e); });
     window.addEventListener('unhandledrejection', function (e) { console.error(e.reason); });
     // v9.3 2回目から速く開く：Service Worker（../sw.js。2D 版と同じ）。https のときだけ・?nosw で止める
-    try { if ('serviceWorker' in navigator && location.protocol === 'https:' && !/[?&]nosw/.test(location.search)) window.addEventListener('load', function () { navigator.serviceWorker.register('../sw.js', { scope: '../' }).catch(function () { }); }); } catch (e) { }
+    try { if ('serviceWorker' in navigator && location.protocol === 'https:' && !/[?&]nosw/.test(location.search)) { try { if (performance.setResourceTimingBufferSize) performance.setResourceTimingBufferSize(3000); } catch (e) { } window.addEventListener('load', function () { var first = !navigator.serviceWorker.controller; navigator.serviceWorker.register('../sw.js', { scope: '../' }).then(function () { if (!first) return; navigator.serviceWorker.ready.then(function (r) { setTimeout(function () { try { var u = performance.getEntriesByType('resource').map(function (x) { return x.name; }).filter(function (n) { return n.indexOf(location.origin) === 0 && !/\/assets\/music\//.test(n); }); u.push(location.href); if (r.active) r.active.postMessage({ type: 'warm', urls: u }); } catch (e) { } }, 3000); }); }).catch(function () { }); }); } } catch (e) { }   /* v9.3 初めて開いたとき：読み込んだファイルを Service Worker に伝えて保存してもらう（2 回目から保存したものを使えるように） */
     var booted = false;
     // 安全装置：2D版のセーブ枠（mtq-rpg-v2-slot-*）へ書き込む状態では起動しない（js/rpg/state.js が古い場合）
     function savesSafe() { return !!(window.State && /^mtq-3d-/.test(window.State.keyPrefix || '')); }

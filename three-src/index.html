@@ -27,7 +27,7 @@
     window.addEventListener('error', function (e) { if (e && e.filename && /three|assets\/main/.test(e.filename)) return; showError(e.message || e); });
     window.addEventListener('unhandledrejection', function (e) { console.error(e.reason); });
     // v9.3 2回目から速く開く：Service Worker（../sw.js。2D 版と同じ）。https のときだけ・?nosw で止める
-    try { if ('serviceWorker' in navigator && location.protocol === 'https:' && !/[?&]nosw/.test(location.search)) window.addEventListener('load', function () { navigator.serviceWorker.register('../sw.js', { scope: '../' }).catch(function () { }); }); } catch (e) { }
+    try { if ('serviceWorker' in navigator && location.protocol === 'https:' && !/[?&]nosw/.test(location.search)) { try { if (performance.setResourceTimingBufferSize) performance.setResourceTimingBufferSize(3000); } catch (e) { } window.addEventListener('load', function () { var first = !navigator.serviceWorker.controller; navigator.serviceWorker.register('../sw.js', { scope: '../' }).then(function () { if (!first) return; navigator.serviceWorker.ready.then(function (r) { setTimeout(function () { try { var u = performance.getEntriesByType('resource').map(function (x) { return x.name; }).filter(function (n) { return n.indexOf(location.origin) === 0 && !/\/assets\/music\//.test(n); }); u.push(location.href); if (r.active) r.active.postMessage({ type: 'warm', urls: u }); } catch (e) { } }, 3000); }); }).catch(function () { }); }); } } catch (e) { }   /* v9.3 初めて開いたとき：読み込んだファイルを Service Worker に伝えて保存してもらう（2 回目から保存したものを使えるように） */
     var booted = false;
     // 安全装置：2D版のセーブ枠（mtq-rpg-v2-slot-*）へ書き込む状態では起動しない（js/rpg/state.js が古い場合）
     function savesSafe() { return !!(window.State && /^mtq-3d-/.test(window.State.keyPrefix || '')); }

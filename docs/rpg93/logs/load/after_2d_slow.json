@@ -1,0 +1,430 @@
+{
+ "KIND": "2d",
+ "NET": "slow",
+ "net": {
+  "latency": 150,
+  "downloadThroughput": 200000,
+  "uploadThroughput": 93750
+ },
+ "first": {
+  "domMs": 8591,
+  "titleMs": 8682,
+  "readyMs": 8682,
+  "req": {
+   "n": 13,
+   "kb": 1326,
+   "by": {
+    "other": {
+     "n": 1,
+     "kb": 6,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 28,
+     "cached": 0
+    },
+    "js": {
+     "n": 1,
+     "kb": 1281,
+     "cached": 0
+    },
+    "image": {
+     "n": 10,
+     "kb": 10,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "dist/mtq.min.js?v=18c111066b",
+    "kb": 1281,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "styles.css?v=5bed6d3e3e",
+    "kb": 28,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/yosen_slime.webp",
+    "kb": 8,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "index.html",
+    "kb": 6,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/kazuto.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/hero_warrior.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/kyle.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/hero_waveblade.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/gald.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/hero_knight.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_raizen.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/innkeeper.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_lione.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_seiran.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/hero_magicknight.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/master.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/hero_mage.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/sailor.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/seris.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/villager_f.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_bard.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/guard.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_chrono.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/scholar.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/mina.png",
+    "kb": 2,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "cont": {
+  "ms": 247,
+  "n": 1,
+  "kb": 0
+ },
+ "second": {
+  "titleMs": 2575,
+  "readyMs": 2575,
+  "req": {
+   "n": 62,
+   "kb": 6,
+   "by": {
+    "other": {
+     "n": 1,
+     "kb": 6,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 0,
+     "cached": 0
+    },
+    "js": {
+     "n": 1,
+     "kb": 0,
+     "cached": 0
+    },
+    "image": {
+     "n": 59,
+     "kb": 0,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "index.html",
+    "kb": 6,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "styles.css?v=5bed6d3e3e",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "dist/mtq.min.js?v=18c111066b",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/yosen_slime.webp",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bandit.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/lizard.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/dark_mage.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/ghost_dark.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/slime_blue_big.webp",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/treant.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/sand_lizard.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/stalactite_golem.webp",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bandit_archer.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/rock_lizard.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/mummy.webp",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/pirate.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/scholar.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/shadow.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_galen.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_seiran.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_bard.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_mirea.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_lione.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_chrono.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/overworld/tm_volte.png",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "errs": []
+}

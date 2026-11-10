@@ -1,0 +1,2404 @@
+{
+ "KIND": "3d",
+ "NET": "fast",
+ "net": {
+  "latency": 5,
+  "downloadThroughput": -1,
+  "uploadThroughput": -1
+ },
+ "first": {
+  "domMs": 2923,
+  "titleMs": 3230,
+  "readyMs": 3550,
+  "req": {
+   "n": 493,
+   "kb": 13551,
+   "by": {
+    "other": {
+     "n": 48,
+     "kb": 4648,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 26,
+     "cached": 0
+    },
+    "js": {
+     "n": 253,
+     "kb": 2389,
+     "cached": 0
+    },
+    "image": {
+     "n": 191,
+     "kb": 6488,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "3d/textures/grass_normal.jpg",
+    "kb": 506,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/prop_well.glb",
+    "kb": 478,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_hero.glb",
+    "kb": 397,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_priest.glb",
+    "kb": 357,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_lina.glb",
+    "kb": 355,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_master.glb",
+    "kb": 350,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_merchant.glb",
+    "kb": 344,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_villager_f.glb",
+    "kb": 334,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_elder.glb",
+    "kb": 326,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_innkeeper.glb",
+    "kb": 324,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_child.glb",
+    "kb": 320,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_villager_m.glb",
+    "kb": 317,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/main-BVdflzRV.js",
+    "kb": 286,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/Character3D-BG39NyV_.js",
+    "kb": 212,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/grass_albedo.jpg",
+    "kb": 206,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/timber_normal.jpg",
+    "kb": 170,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/planks_normal.jpg",
+    "kb": 147,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/gald.png",
+    "kb": 135,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/lucia.png",
+    "kb": 134,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/cobble_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/plaster_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/stonewall_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/mochipoyo.png",
+    "kb": 125,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/dirt_normal.jpg",
+    "kb": 123,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/seris.png",
+    "kb": 116,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ],
+  "urls": [
+   [
+    "3d/index.html",
+    6
+   ],
+   [
+    "styles.css",
+    26
+   ],
+   [
+    "3d/assets/main-BVdflzRV.js",
+    286
+   ],
+   [
+    "3d/assets/Character3D-BG39NyV_.js",
+    212
+   ],
+   [
+    "js/data/earth78-terrain.js",
+    29
+   ],
+   [
+    "js/config.js",
+    1
+   ],
+   [
+    "js/cloud-config.js",
+    1
+   ],
+   [
+    "js/signals.js",
+    7
+   ],
+   [
+    "js/indicators.js",
+    5
+   ],
+   [
+    "js/scenarios.js",
+    10
+   ],
+   [
+    "js/data/scenarios-extra.js",
+    7
+   ],
+   [
+    "js/data/scenario-seeds.js",
+    2
+   ],
+   [
+    "js/tradecore.js",
+    10
+   ],
+   [
+    "js/position.js",
+    6
+   ],
+   [
+    "js/trading.js",
+    14
+   ],
+   [
+    "js/strategy.js",
+    9
+   ],
+   [
+    "js/practice.js",
+    16
+   ],
+   [
+    "js/trainer91.js",
+    11
+   ],
+   [
+    "js/data/practice-seeds.js",
+    1
+   ],
+   [
+    "js/data/practice-psych.js",
+    3
+   ],
+   [
+    "js/chart.js",
+    6
+   ],
+   [
+    "js/ui/chartctl.js",
+    5
+   ],
+   [
+    "js/sprites.js",
+    3
+   ],
+   [
+    "js/core/engine.js",
+    3
+   ],
+   [
+    "js/core/tiles.js",
+    11
+   ],
+   [
+    "js/core/chars.js",
+    2
+   ],
+   [
+    "js/core/animals73.js",
+    4
+   ],
+   [
+    "js/core/monsterart.js",
+    7
+   ],
+   [
+    "js/core/monsterart65.js",
+    6
+   ],
+   [
+    "js/core/monsterart76.js",
+    4
+   ],
+   [
+    "js/core/quizmonart.js",
+    6
+   ],
+   [
+    "js/core/buildings.js",
+    9
+   ],
+   [
+    "js/core/map.js",
+    6
+   ],
+   [
+    "js/core/space76.js",
+    2
+   ],
+   [
+    "js/core/landmarks.js",
+    21
+   ],
+   [
+    "js/data/learning.js",
+    20
+   ],
+   [
+    "js/data/learning-events.js",
+    7
+   ],
+   [
+    "js/data/vehicles.js",
+    2
+   ],
+   [
+    "js/data/growth.js",
+    3
+   ],
+   [
+    "js/data/jobs.js",
+    5
+   ],
+   [
+    "js/data/skills.js",
+    6
+   ],
+   [
+    "js/data/skills64.js",
+    5
+   ],
+   [
+    "js/data/items.js",
+    10
+   ],
+   [
+    "js/data/items73.js",
+    1
+   ],
+   [
+    "js/data/food.js",
+    1
+   ],
+   [
+    "js/data/enemies.js",
+    25
+   ],
+   [
+    "js/data/story.js",
+    14
+   ],
+   [
+    "js/data/world.js",
+    5
+   ],
+   [
+    "js/data/world-grania.js",
+    3
+   ],
+   [
+    "js/data/world-kalion.js",
+    3
+   ],
+   [
+    "js/data/world-islands.js",
+    2
+   ],
+   [
+    "js/data/world-tempus.js",
+    2
+   ],
+   [
+    "js/data/world-machine.js",
+    2
+   ],
+   [
+    "js/data/world-magicka.js",
+    2
+   ],
+   [
+    "js/data/world-sky.js",
+    2
+   ],
+   [
+    "js/data/world-dark.js",
+    2
+   ],
+   [
+    "js/data/world-desert.js",
+    2
+   ],
+   [
+    "js/data/world-dragon.js",
+    2
+   ],
+   [
+    "js/data/world-snow.js",
+    2
+   ],
+   [
+    "js/data/towns.js",
+    16
+   ],
+   [
+    "js/data/dungeons.js",
+    6
+   ],
+   [
+    "js/data/grania.js",
+    12
+   ],
+   [
+    "js/data/kalion.js",
+    17
+   ],
+   [
+    "js/data/islands.js",
+    14
+   ],
+   [
+    "js/data/tempus.js",
+    17
+   ],
+   [
+    "js/data/magicka.js",
+    9
+   ],
+   [
+    "js/data/sky.js",
+    6
+   ],
+   [
+    "js/data/finale.js",
+    12
+   ],
+   [
+    "js/data/sidequests.js",
+    5
+   ],
+   [
+    "js/data/desert.js",
+    14
+   ],
+   [
+    "js/data/dragon.js",
+    9
+   ],
+   [
+    "js/data/snow.js",
+    10
+   ],
+   [
+    "js/data/hidden.js",
+    4
+   ],
+   [
+    "js/data/sidequests2.js",
+    15
+   ],
+   [
+    "js/data/luxbell.js",
+    9
+   ],
+   [
+    "js/data/academy.js",
+    19
+   ],
+   [
+    "js/data/search-points.js",
+    4
+   ],
+   [
+    "js/data/ooparts.js",
+    9
+   ],
+   [
+    "js/data/objectives.js",
+    9
+   ],
+   [
+    "js/data/designs.js",
+    8
+   ],
+   [
+    "js/data/gear64.js",
+    10
+   ],
+   [
+    "js/data/tradia.js",
+    15
+   ],
+   [
+    "js/data/expand-a.js",
+    11
+   ],
+   [
+    "js/data/expand-a2.js",
+    7
+   ],
+   [
+    "js/data/expand-a3.js",
+    11
+   ],
+   [
+    "js/data/expand-a4.js",
+    10
+   ],
+   [
+    "js/data/expand-a5.js",
+    5
+   ],
+   [
+    "js/data/expand-a6.js",
+    25
+   ],
+   [
+    "js/data/boss64.js",
+    3
+   ],
+   [
+    "js/data/tune73.js",
+    1
+   ],
+   [
+    "js/data/enemy-scale67.js",
+    3
+   ],
+   [
+    "js/data/escape65.js",
+    2
+   ],
+   [
+    "js/data/monsters65.js",
+    10
+   ],
+   [
+    "js/data/enemies-add35.js",
+    18
+   ],
+   [
+    "js/data/events65.js",
+    16
+   ],
+   [
+    "js/data/fx65.js",
+    6
+   ],
+   [
+    "js/data/battlebg39.js",
+    4
+   ],
+   [
+    "js/data/astra65.js",
+    3
+   ],
+   [
+    "js/data/market-seeds.js",
+    2
+   ],
+   [
+    "js/data/ultimates.js",
+    17
+   ],
+   [
+    "js/data/quiz-monsters.js",
+    20
+   ],
+   [
+    "js/data/quiz-monsters2.js",
+    26
+   ],
+   [
+    "js/core/quizmonart2.js",
+    4
+   ],
+   [
+    "js/data/companions67.js",
+    1
+   ],
+   [
+    "js/data/chatter67.js",
+    13
+   ],
+   [
+    "js/data/asset-manifest.js",
+    12
+   ],
+   [
+    "js/data/boss-redesign.js",
+    4
+   ],
+   [
+    "js/data/bosses19.js",
+    13
+   ],
+   [
+    "js/data/companions68.js",
+    7
+   ],
+   [
+    "js/data/mp79.js",
+    1
+   ],
+   [
+    "js/data/tweaks68.js",
+    4
+   ],
+   [
+    "js/data/story3121.js",
+    27
+   ],
+   [
+    "js/data/story3121-world.js",
+    19
+   ],
+   [
+    "js/data/placedecor70.js",
+    4
+   ],
+   [
+    "js/data/remake71-poyo.js",
+    6
+   ],
+   [
+    "js/data/remake71-tradia.js",
+    5
+   ],
+   [
+    "js/data/expand72-towns.js",
+    20
+   ],
+   [
+    "js/data/homes73.js",
+    3
+   ],
+   [
+    "js/data/iq73.js",
+    5
+   ],
+   [
+    "js/data/townlife73.js",
+    13
+   ],
+   [
+    "js/core/assets.js",
+    3
+   ],
+   [
+    "js/core/version.js",
+    0
+   ],
+   [
+    "js/core/update-check.js",
+    2
+   ],
+   [
+    "js/core/bossart.js",
+    9
+   ],
+   [
+    "js/data/enemy-redesign.js",
+    11
+   ],
+   [
+    "js/core/enemyart.js",
+    5
+   ],
+   [
+    "js/data/enemyart76.js",
+    2
+   ],
+   [
+    "js/data/mob76.js",
+    3
+   ],
+   [
+    "js/data/skills76.js",
+    7
+   ],
+   [
+    "js/data/enemyskills76.js",
+    8
+   ],
+   [
+    "js/rpg/actors.js",
+    3
+   ],
+   [
+    "js/rpg/state.js",
+    5
+   ],
+   [
+    "js/rpg/saves.js",
+    4
+   ],
+   [
+    "js/rpg/cloud.js",
+    6
+   ],
+   [
+    "js/rpg/combat.js",
+    24
+   ],
+   [
+    "js/rpg/market.js",
+    21
+   ],
+   [
+    "js/rpg/ultimates.js",
+    13
+   ],
+   [
+    "js/rpg/quiz.js",
+    5
+   ],
+   [
+    "js/rpg/playlog.js",
+    3
+   ],
+   [
+    "js/ui/windows.js",
+    7
+   ],
+   [
+    "js/rpg/follow.js",
+    3
+   ],
+   [
+    "js/rpg/leverage.js",
+    9
+   ],
+   [
+    "js/rpg/tradebattle.js",
+    6
+   ],
+   [
+    "js/rpg/world.js",
+    17
+   ],
+   [
+    "js/rpg/events.js",
+    5
+   ],
+   [
+    "js/rpg/chatter.js",
+    4
+   ],
+   [
+    "js/rpg/masters.js",
+    5
+   ],
+   [
+    "js/rpg/learning.js",
+    4
+   ],
+   [
+    "js/rpg/vehicle.js",
+    4
+   ],
+   [
+    "js/rpg/harbors.js",
+    5
+   ],
+   [
+    "js/rpg/dock79.js",
+    4
+   ],
+   [
+    "js/rpg/nav.js",
+    12
+   ],
+   [
+    "js/rpg/world76.js",
+    17
+   ],
+   [
+    "js/rpg/carriage79.js",
+    2
+   ],
+   [
+    "js/rpg/airshipcall86.js",
+    3
+   ],
+   [
+    "js/rpg/reclevel79.js",
+    4
+   ],
+   [
+    "js/rpg/warpmark.js",
+    4
+   ],
+   [
+    "js/rpg/seatreasure.js",
+    3
+   ],
+   [
+    "js/rpg/mapwiden.js",
+    3
+   ],
+   [
+    "js/rpg/envlayout.js",
+    13
+   ],
+   [
+    "js/rpg/edgeexit.js",
+    4
+   ],
+   [
+    "js/rpg/dungeonexit.js",
+    4
+   ],
+   [
+    "js/rpg/bosssymbol.js",
+    6
+   ],
+   [
+    "js/rpg/quizsymbol.js",
+    5
+   ],
+   [
+    "js/rpg/search.js",
+    4
+   ],
+   [
+    "js/rpg/travel.js",
+    2
+   ],
+   [
+    "js/rpg/astra.js",
+    7
+   ],
+   [
+    "js/rpg/casino.js",
+    4
+   ],
+   [
+    "js/rpg/labsim.js",
+    5
+   ],
+   [
+    "js/rpg/ooparts.js",
+    3
+   ],
+   [
+    "js/rpg/growth.js",
+    3
+   ],
+   [
+    "js/ui/audio.js",
+    3
+   ],
+   [
+    "js/ui/ambient81.js",
+    2
+   ],
+   [
+    "js/rpg/shoptier76.js",
+    2
+   ],
+   [
+    "js/ui/services.js",
+    12
+   ],
+   [
+    "js/ui/trade.js",
+    13
+   ],
+   [
+    "js/ui/practiceui.js",
+    25
+   ],
+   [
+    "js/ui/trainer91ui.js",
+    13
+   ],
+   [
+    "js/ui/chartbattle.js",
+    21
+   ],
+   [
+    "js/ui/quizbattle.js",
+    15
+   ],
+   [
+    "js/ui/dojo.js",
+    8
+   ],
+   [
+    "js/ui/fx2d.js",
+    7
+   ],
+   [
+    "js/ui/battlebg65.js",
+    14
+   ],
+   [
+    "js/ui/battle.js",
+    27
+   ],
+   [
+    "js/ui/menu.js",
+    31
+   ],
+   [
+    "js/ui/vehicleart.js",
+    3
+   ],
+   [
+    "js/ui/minimap.js",
+    24
+   ],
+   [
+    "js/ui/worldmap.js",
+    9
+   ],
+   [
+    "js/ui/astraview.js",
+    10
+   ],
+   [
+    "js/ui/casino.js",
+    7
+   ],
+   [
+    "js/ui/labs.js",
+    10
+   ],
+   [
+    "js/ui/tradia.js",
+    11
+   ],
+   [
+    "js/ui/ooparts.js",
+    2
+   ],
+   [
+    "js/ui/sidebar.js",
+    3
+   ],
+   [
+    "js/ui/mobile.js",
+    8
+   ],
+   [
+    "js/ui/debug.js",
+    6
+   ],
+   [
+    "js/ui/saveui.js",
+    5
+   ],
+   [
+    "js/ui/title.js",
+    4
+   ],
+   [
+    "js/data/env76.js",
+    1
+   ],
+   [
+    "js/data/ship76.js",
+    3
+   ],
+   [
+    "js/rpg/terrace76.js",
+    4
+   ],
+   [
+    "js/rpg/meal76.js",
+    1
+   ],
+   [
+    "js/data/bread76.js",
+    1
+   ],
+   [
+    "js/data/towns76.js",
+    12
+   ],
+   [
+    "js/data/carriage79-data.js",
+    1
+   ],
+   [
+    "js/data/boss79.js",
+    1
+   ],
+   [
+    "js/rpg/mapremake.js",
+    9
+   ],
+   [
+    "js/rpg/interior76.js",
+    6
+   ],
+   [
+    "js/rpg/remake81.js",
+    9
+   ],
+   [
+    "js/data/remake81-dow.js",
+    4
+   ],
+   [
+    "js/data/remake81-academy.js",
+    8
+   ],
+   [
+    "js/data/remake81-rivel.js",
+    6
+   ],
+   [
+    "js/data/remake81-marina.js",
+    5
+   ],
+   [
+    "js/data/remake81-sahar.js",
+    3
+   ],
+   [
+    "js/data/remake81-verum.js",
+    4
+   ],
+   [
+    "js/data/remake81-tradia.js",
+    3
+   ],
+   [
+    "js/data/remake81-palace.js",
+    2
+   ],
+   [
+    "js/data/remake81-artisan.js",
+    3
+   ],
+   [
+    "js/data/remake81-erased.js",
+    2
+   ],
+   [
+    "js/data/remake81-starcamp.js",
+    2
+   ],
+   [
+    "js/data/remake81-district.js",
+    2
+   ],
+   [
+    "js/data/remake81-mirror.js",
+    2
+   ],
+   [
+    "js/data/remake81-ciel.js",
+    2
+   ],
+   [
+    "js/data/remake81-ruins.js",
+    3
+   ],
+   [
+    "js/data/remake81-arunav.js",
+    2
+   ],
+   [
+    "js/data/remake81-ignas.js",
+    3
+   ],
+   [
+    "js/data/remake81-frost.js",
+    3
+   ],
+   [
+    "js/data/remake81-luxbell.js",
+    3
+   ],
+   [
+    "js/data/remake81-node.js",
+    3
+   ],
+   [
+    "js/data/remake81-tempus.js",
+    4
+   ],
+   [
+    "js/data/remake81-magicka.js",
+    3
+   ],
+   [
+    "js/data/remake81-sentra.js",
+    3
+   ],
+   [
+    "js/data/remake81-kalion.js",
+    3
+   ],
+   [
+    "js/data/earth78-layout.js",
+    5
+   ],
+   [
+    "js/data/region78-kit.js",
+    5
+   ],
+   [
+    "js/data/region78-neon.js",
+    10
+   ],
+   [
+    "js/data/region78-meridian.js",
+    10
+   ],
+   [
+    "js/data/region78-nereia.js",
+    9
+   ],
+   [
+    "js/data/region78-orbis.js",
+    8
+   ],
+   [
+    "js/data/remake81-darkcamp.js",
+    3
+   ],
+   [
+    "js/data/region78-aeria.js",
+    6
+   ],
+   [
+    "js/data/remake81-aeria.js",
+    2
+   ],
+   [
+    "js/data/region78-earth.js",
+    5
+   ],
+   [
+    "js/data/bosslair19.js",
+    5
+   ],
+   [
+    "js/rpg/earth78.js",
+    27
+   ],
+   [
+    "js/rpg/astra78.js",
+    4
+   ],
+   [
+    "js/data/castle82.js",
+    7
+   ],
+   [
+    "js/data/academy82.js",
+    6
+   ],
+   [
+    "js/rpg/quote82.js",
+    2
+   ],
+   [
+    "js/rpg/layout82.js",
+    15
+   ],
+   [
+    "js/rpg/trademaster83.js",
+    13
+   ],
+   [
+    "js/rpg/tradeduel90.js",
+    7
+   ],
+   [
+    "js/data/boss-unique-gear.js",
+    19
+   ],
+   [
+    "js/rpg/boss-unique-gear.js",
+    17
+   ],
+   [
+    "js/main.js",
+    1
+   ],
+   [
+    "assets/monsters/yosen_slime.png",
+    21
+   ],
+   [
+    "assets/monsters/insen_slime.png",
+    23
+   ],
+   [
+    "assets/monsters/contrarian_bat.png",
+    34
+   ],
+   [
+    "assets/monsters/stoploss_zombie.png",
+    39
+   ],
+   [
+    "assets/monsters/nanpin_goblin.png",
+    35
+   ],
+   [
+    "assets/monsters/simple_cultist.png",
+    34
+   ],
+   [
+    "assets/monsters/fullleva_ogre.png",
+    55
+   ],
+   [
+    "assets/monsters/kotsukotsu_knight.png",
+    43
+   ],
+   [
+    "assets/monsters/pojipoji_phantom.png",
+    40
+   ],
+   [
+    "assets/monsters/indicator_mage.png",
+    46
+   ],
+   [
+    "assets/monsters/slime.png",
+    15
+   ],
+   [
+    "assets/monsters/slime_red.png",
+    15
+   ],
+   [
+    "assets/monsters/bee.png",
+    30
+   ],
+   [
+    "assets/monsters/mushroom.png",
+    24
+   ],
+   [
+    "assets/monsters/bug.png",
+    22
+   ],
+   [
+    "assets/monsters/bat.png",
+    25
+   ],
+   [
+    "assets/monsters/wolf.png",
+    28
+   ],
+   [
+    "assets/monsters/snake.png",
+    24
+   ],
+   [
+    "assets/monsters/bandit.png",
+    1
+   ],
+   [
+    "assets/monsters/ghost.png",
+    21
+   ],
+   [
+    "assets/monsters/skeleton.png",
+    29
+   ],
+   [
+    "assets/monsters/lizard.png",
+    1
+   ],
+   [
+    "assets/monsters/mole.png",
+    25
+   ],
+   [
+    "assets/monsters/golem.png",
+    25
+   ],
+   [
+    "assets/monsters/imp.png",
+    35
+   ],
+   [
+    "assets/monsters/dark_mage.png",
+    1
+   ],
+   [
+    "assets/monsters/slime_metal.png",
+    16
+   ],
+   [
+    "assets/monsters/bug_poison.png",
+    22
+   ],
+   [
+    "assets/monsters/fear_shadow.png",
+    23
+   ],
+   [
+    "assets/monsters/crab.png",
+    27
+   ],
+   [
+    "assets/monsters/bat_fire.png",
+    23
+   ],
+   [
+    "assets/monsters/sand_mole.png",
+    22
+   ],
+   [
+    "assets/monsters/snake_ice.png",
+    25
+   ],
+   [
+    "assets/monsters/wolf_dark.png",
+    23
+   ],
+   [
+    "assets/monsters/golem_iron.png",
+    24
+   ],
+   [
+    "assets/monsters/ghost_dark.png",
+    1
+   ],
+   [
+    "assets/monsters/bug_armor.png",
+    21
+   ],
+   [
+    "assets/monsters/slime_gold.png",
+    17
+   ],
+   [
+    "assets/monsters/slime_green.png",
+    16
+   ],
+   [
+    "assets/monsters/rabbit.png",
+    33
+   ],
+   [
+    "assets/monsters/sparrow_hawk.png",
+    24
+   ],
+   [
+    "assets/monsters/petal.png",
+    32
+   ],
+   [
+    "assets/monsters/slime_blue_big.png",
+    22
+   ],
+   [
+    "assets/monsters/crow.png",
+    21
+   ],
+   [
+    "assets/monsters/boar.png",
+    27
+   ],
+   [
+    "assets/monsters/maneater.png",
+    31
+   ],
+   [
+    "assets/monsters/mushroom_king.png",
+    27
+   ],
+   [
+    "assets/monsters/forest_fairy.png",
+    26
+   ],
+   [
+    "assets/monsters/treant.png",
+    2
+   ],
+   [
+    "assets/monsters/vulture.png",
+    27
+   ],
+   [
+    "assets/monsters/scorpion.png",
+    21
+   ],
+   [
+    "assets/monsters/wild_dog.png",
+    24
+   ],
+   [
+    "assets/monsters/mimic.png",
+    25
+   ],
+   [
+    "assets/monsters/sand_lizard.png",
+    1
+   ],
+   [
+    "assets/monsters/cave_crab.png",
+    23
+   ],
+   [
+    "assets/monsters/stalactite_golem.png",
+    23
+   ],
+   [
+    "assets/monsters/zombie.png",
+    22
+   ],
+   [
+    "assets/monsters/floating_eye.png",
+    27
+   ],
+   [
+    "assets/monsters/ore_slime.png",
+    16
+   ],
+   [
+    "assets/monsters/candle_golem.png",
+    17
+   ],
+   [
+    "assets/monsters/bear_shadow.png",
+    27
+   ],
+   [
+    "assets/monsters/bandit_archer.png",
+    1
+   ],
+   [
+    "assets/monsters/rock_lizard.png",
+    1
+   ],
+   [
+    "assets/monsters/mountain_hawk.png",
+    25
+   ],
+   [
+    "assets/monsters/mountain_cat.png",
+    28
+   ],
+   [
+    "assets/monsters/rock_golem.png",
+    24
+   ],
+   [
+    "assets/monsters/harpy.png",
+    32
+   ],
+   [
+    "assets/monsters/slime_rainbow.png",
+    17
+   ],
+   [
+    "assets/monsters/cactus.png",
+    28
+   ],
+   [
+    "assets/monsters/mummy.png",
+    21
+   ],
+   [
+    "assets/monsters/snow_wolf.png",
+    25
+   ],
+   [
+    "assets/monsters/ice_spirit.png",
+    24
+   ],
+   [
+    "assets/monsters/yeti.png",
+    28
+   ],
+   [
+    "assets/monsters/gargoyle.png",
+    29
+   ],
+   [
+    "assets/monsters/magitek.png",
+    18
+   ],
+   [
+    "assets/monsters/bull_shadow.png",
+    29
+   ],
+   [
+    "assets/monsters/chart_wraith.png",
+    18
+   ],
+   [
+    "assets/monsters/demon_knight.png",
+    36
+   ],
+   [
+    "assets/monsters/dark_slime.png",
+    18
+   ],
+   [
+    "assets/monsters/wisp.png",
+    22
+   ],
+   [
+    "assets/monsters/pirate.png",
+    1
+   ],
+   [
+    "assets/monsters/sea_serpent.png",
+    22
+   ],
+   [
+    "assets/monsters/ruin_guardian.png",
+    20
+   ],
+   [
+    "assets/characters/jobs/warrior.png",
+    57
+   ],
+   [
+    "assets/characters/jobs/mage.png",
+    55
+   ],
+   [
+    "assets/characters/jobs/priest.png",
+    56
+   ],
+   [
+    "assets/characters/jobs/monk.png",
+    47
+   ],
+   [
+    "assets/characters/jobs/thief.png",
+    43
+   ],
+   [
+    "assets/characters/jobs/merchant.png",
+    51
+   ],
+   [
+    "assets/characters/jobs/hunter.png",
+    52
+   ],
+   [
+    "assets/characters/jobs/knight.png",
+    55
+   ],
+   [
+    "assets/characters/jobs/sage.png",
+    63
+   ],
+   [
+    "assets/characters/jobs/magicknight.png",
+    51
+   ],
+   [
+    "assets/characters/jobs/waveblade.png",
+    50
+   ],
+   [
+    "assets/characters/jobs/master.png",
+    57
+   ],
+   [
+    "assets/characters/companions/lina.png",
+    109
+   ],
+   [
+    "assets/characters/companions/kyle.png",
+    104
+   ],
+   [
+    "assets/characters/companions/mina.png",
+    84
+   ],
+   [
+    "assets/characters/companions/seris.png",
+    116
+   ],
+   [
+    "assets/characters/companions/gald.png",
+    135
+   ],
+   [
+    "assets/characters/companions/lucia.png",
+    134
+   ],
+   [
+    "assets/characters/companions/kazuto.png",
+    104
+   ],
+   [
+    "assets/characters/companions/mochipoyo.png",
+    125
+   ],
+   [
+    "assets/characters/companions/ponta.png",
+    77
+   ],
+   [
+    "assets/characters/npcs/tm_galen.png",
+    13
+   ],
+   [
+    "assets/characters/npcs/tm_seiran.png",
+    14
+   ],
+   [
+    "assets/characters/npcs/tm_bard.png",
+    12
+   ],
+   [
+    "assets/characters/npcs/tm_mirea.png",
+    14
+   ],
+   [
+    "assets/characters/npcs/tm_lione.png",
+    17
+   ],
+   [
+    "assets/characters/npcs/tm_chrono.png",
+    14
+   ],
+   [
+    "assets/characters/npcs/tm_volte.png",
+    13
+   ],
+   [
+    "assets/characters/npcs/tm_raizen.png",
+    14
+   ],
+   [
+    "assets/characters/npcs/tm_arzen.png",
+    13
+   ],
+   [
+    "assets/characters/npcs/tm_ordis.png",
+    13
+   ],
+   [
+    "assets/characters/npcs/villager_m.png",
+    39
+   ],
+   [
+    "assets/characters/npcs/villager_f.png",
+    43
+   ],
+   [
+    "assets/characters/npcs/elder.png",
+    50
+   ],
+   [
+    "assets/characters/npcs/child.png",
+    27
+   ],
+   [
+    "assets/characters/npcs/merchant.png",
+    51
+   ],
+   [
+    "assets/characters/npcs/innkeeper.png",
+    46
+   ],
+   [
+    "assets/characters/npcs/priest.png",
+    56
+   ],
+   [
+    "assets/characters/npcs/guard.png",
+    57
+   ],
+   [
+    "assets/characters/npcs/king.png",
+    81
+   ],
+   [
+    "assets/characters/npcs/master.png",
+    56
+   ],
+   [
+    "assets/characters/npcs/scholar.png",
+    1
+   ],
+   [
+    "assets/characters/npcs/bartender.png",
+    46
+   ],
+   [
+    "assets/characters/npcs/sailor.png",
+    43
+   ],
+   [
+    "assets/characters/npcs/shadow.png",
+    1
+   ],
+   [
+    "assets/characters/overworld/tm_galen.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/tm_seiran.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/tm_bard.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/tm_mirea.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/tm_lione.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/tm_chrono.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/tm_volte.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/tm_raizen.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/tm_arzen.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/tm_ordis.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_warrior.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_mage.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_priest.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_monk.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_thief.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_merchant.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_hunter.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_knight.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_sage.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_magicknight.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_waveblade.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/hero_master.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/lina.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/kyle.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/mina.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/seris.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/gald.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/lucia.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/villager_m.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/villager_f.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/elder.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/child.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/merchant.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/innkeeper.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/priest.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/guard.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/king.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/master.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/scholar.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/bartender.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/sailor.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/shadow.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/kazuto.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/mochipoyo.png",
+    2
+   ],
+   [
+    "assets/characters/overworld/ponta.png",
+    5
+   ],
+   [
+    "3d/textures/grass_albedo.jpg",
+    206
+   ],
+   [
+    "3d/textures/grass_normal.jpg",
+    506
+   ],
+   [
+    "3d/textures/dirt_albedo.jpg",
+    50
+   ],
+   [
+    "3d/textures/dirt_normal.jpg",
+    123
+   ],
+   [
+    "3d/textures/cobble_albedo.jpg",
+    68
+   ],
+   [
+    "3d/textures/cobble_normal.jpg",
+    127
+   ],
+   [
+    "3d/textures/plaster_albedo.jpg",
+    31
+   ],
+   [
+    "3d/textures/plaster_normal.jpg",
+    127
+   ],
+   [
+    "3d/textures/timber_albedo.jpg",
+    67
+   ],
+   [
+    "3d/textures/timber_normal.jpg",
+    170
+   ],
+   [
+    "3d/textures/planks_albedo.jpg",
+    47
+   ],
+   [
+    "3d/textures/planks_normal.jpg",
+    147
+   ],
+   [
+    "3d/textures/shingles_albedo.jpg",
+    64
+   ],
+   [
+    "3d/textures/shingles_normal.jpg",
+    93
+   ],
+   [
+    "3d/textures/stonewall_albedo.jpg",
+    34
+   ],
+   [
+    "3d/textures/stonewall_normal.jpg",
+    127
+   ],
+   [
+    "3d/textures/carpet_albedo.jpg",
+    39
+   ],
+   [
+    "3d/textures/carpet_normal.jpg",
+    96
+   ],
+   [
+    "3d/models/char_hero.glb",
+    397
+   ],
+   [
+    "3d/models/char_villager_m.glb",
+    317
+   ],
+   [
+    "3d/models/char_villager_f.glb",
+    334
+   ],
+   [
+    "3d/models/char_child.glb",
+    320
+   ],
+   [
+    "3d/models/char_elder.glb",
+    326
+   ],
+   [
+    "3d/models/char_priest.glb",
+    357
+   ],
+   [
+    "3d/models/char_merchant.glb",
+    344
+   ],
+   [
+    "3d/models/char_master.glb",
+    350
+   ],
+   [
+    "3d/models/char_innkeeper.glb",
+    324
+   ],
+   [
+    "3d/models/char_lina.glb",
+    355
+   ],
+   [
+    "3d/models/prop_lamppost.glb",
+    18
+   ],
+   [
+    "3d/models/prop_wall_lantern.glb",
+    6
+   ],
+   [
+    "3d/models/prop_barrel.glb",
+    9
+   ],
+   [
+    "3d/models/prop_crate.glb",
+    14
+   ],
+   [
+    "3d/models/prop_bench.glb",
+    19
+   ],
+   [
+    "3d/models/prop_well.glb",
+    478
+   ],
+   [
+    "3d/models/prop_flowerbed.glb",
+    86
+   ],
+   [
+    "3d/models/prop_fence.glb",
+    10
+   ],
+   [
+    "3d/models/prop_sign.glb",
+    13
+   ],
+   [
+    "3d/models/prop_crops.glb",
+    17
+   ],
+   [
+    "3d/models/icon_potion.glb",
+    7
+   ],
+   [
+    "3d/models/icon_bed.glb",
+    5
+   ],
+   [
+    "3d/models/icon_sword.glb",
+    5
+   ],
+   [
+    "3d/models/icon_bell.glb",
+    4
+   ],
+   [
+    "3d/models/icon_chart.glb",
+    8
+   ],
+   [
+    "3d/models/icon_scroll.glb",
+    6
+   ],
+   [
+    "3d/models/furn_bed.glb",
+    37
+   ],
+   [
+    "3d/models/furn_table.glb",
+    33
+   ],
+   [
+    "3d/models/furn_counter.glb",
+    9
+   ],
+   [
+    "3d/models/furn_bookshelf.glb",
+    62
+   ],
+   [
+    "3d/models/furn_pillar.glb",
+    14
+   ],
+   [
+    "3d/models/furn_crystal.glb",
+    5
+   ],
+   [
+    "3d/models/tree_pine_a.glb",
+    35
+   ],
+   [
+    "3d/models/tree_pine_b.glb",
+    35
+   ],
+   [
+    "3d/models/tree_pine_c.glb",
+    35
+   ],
+   [
+    "3d/models/tree_oak_a.glb",
+    48
+   ],
+   [
+    "3d/models/tree_oak_b.glb",
+    48
+   ],
+   [
+    "3d/models/tree_oak_c.glb",
+    47
+   ],
+   [
+    "3d/models/tree_pine_a_lod1.glb",
+    12
+   ],
+   [
+    "3d/models/tree_pine_b_lod1.glb",
+    12
+   ],
+   [
+    "3d/models/tree_pine_c_lod1.glb",
+    12
+   ],
+   [
+    "3d/models/tree_oak_a_lod1.glb",
+    14
+   ],
+   [
+    "3d/models/tree_oak_b_lod1.glb",
+    14
+   ],
+   [
+    "3d/models/tree_oak_c_lod1.glb",
+    14
+   ],
+   [
+    "3d/models/bush_a.glb",
+    9
+   ],
+   [
+    "3d/models/rock_a.glb",
+    9
+   ],
+   [
+    "3d/models/rock_b.glb",
+    9
+   ]
+  ]
+ },
+ "cont": {
+  "ms": 2960,
+  "n": 16,
+  "kb": 2587
+ },
+ "second": {
+  "titleMs": 11305,
+  "readyMs": 11332,
+  "req": {
+   "n": 493,
+   "kb": 0,
+   "by": {
+    "other": {
+     "n": 48,
+     "kb": 0,
+     "cached": 48
+    },
+    "css": {
+     "n": 1,
+     "kb": 0,
+     "cached": 1
+    },
+    "js": {
+     "n": 253,
+     "kb": 0,
+     "cached": 2
+    },
+    "image": {
+     "n": 191,
+     "kb": 0,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "3d/index.html",
+    "kb": 0,
+    "c": true,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "styles.css?v=61c8de563f",
+    "kb": 0,
+    "c": true,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/main-BVdflzRV.js",
+    "kb": 0,
+    "c": true,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/Character3D-BG39NyV_.js",
+    "kb": 0,
+    "c": true,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/data/earth78-terrain.js?v=8058032366",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/config.js?v=34eba7246f",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/cloud-config.js?v=ceefacd1a5",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/signals.js?v=e14b0f957e",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/indicators.js?v=788c323acf",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/scenarios.js?v=c9f6c5b9c8",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/data/scenarios-extra.js?v=29760ef170",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/data/scenario-seeds.js?v=1deeadd5e9",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/tradecore.js?v=c04927106d",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/position.js?v=ddf7772749",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/trading.js?v=0c638ae2a5",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/strategy.js?v=2225619061",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/practice.js?v=01c9a78180",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/trainer91.js?v=8d844790e0",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/data/practice-seeds.js?v=4b93f9da15",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/data/practice-psych.js?v=49be2ca486",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/chart.js?v=bb68ce0424",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/ui/chartctl.js?v=1f55b375ad",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/sprites.js?v=0cb51c94cc",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/core/engine.js?v=e12765d0ea",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/core/tiles.js?v=edeb1b723b",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "errs": []
+}

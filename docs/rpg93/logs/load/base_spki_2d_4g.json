@@ -1,0 +1,430 @@
+{
+ "KIND": "2d",
+ "NET": "4g",
+ "net": {
+  "latency": 60,
+  "downloadThroughput": 1125000,
+  "uploadThroughput": 187500
+ },
+ "first": {
+  "domMs": 3731,
+  "titleMs": 3867,
+  "readyMs": 3867,
+  "req": {
+   "n": 314,
+   "kb": 2125,
+   "by": {
+    "other": {
+     "n": 1,
+     "kb": 5,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 26,
+     "cached": 0
+    },
+    "js": {
+     "n": 250,
+     "kb": 1862,
+     "cached": 0
+    },
+    "image": {
+     "n": 62,
+     "kb": 231,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "assets/monsters/indicator_mage.png",
+    "kb": 46,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/villager_f.png",
+    "kb": 43,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/sailor.png",
+    "kb": 43,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/kotsukotsu_knight.png",
+    "kb": 43,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/thief.png",
+    "kb": 43,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/pojipoji_phantom.png",
+    "kb": 40,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/villager_m.png",
+    "kb": 39,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/demon_knight.png",
+    "kb": 36,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/nanpin_goblin.png",
+    "kb": 35,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/imp.png",
+    "kb": 35,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/simple_cultist.png",
+    "kb": 34,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/contrarian_bat.png",
+    "kb": 34,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/rabbit.png",
+    "kb": 33,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/petal.png",
+    "kb": 32,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/harpy.png",
+    "kb": 32,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/ui/menu.js?v=a8e478b39c",
+    "kb": 31,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/maneater.png",
+    "kb": 31,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bee.png",
+    "kb": 30,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/skeleton.png",
+    "kb": 29,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/gargoyle.png",
+    "kb": 29,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bull_shadow.png",
+    "kb": 29,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/yeti.png",
+    "kb": 28,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/cactus.png",
+    "kb": 28,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/mountain_cat.png",
+    "kb": 28,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/wolf.png",
+    "kb": 28,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "cont": {
+  "ms": 278,
+  "n": 1,
+  "kb": 0
+ },
+ "second": {
+  "titleMs": 1644,
+  "readyMs": 1644,
+  "req": {
+   "n": 413,
+   "kb": 947,
+   "by": {
+    "other": {
+     "n": 1,
+     "kb": 0,
+     "cached": 1
+    },
+    "css": {
+     "n": 1,
+     "kb": 0,
+     "cached": 1
+    },
+    "js": {
+     "n": 250,
+     "kb": 0,
+     "cached": 0
+    },
+    "image": {
+     "n": 161,
+     "kb": 947,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "assets/characters/jobs/warrior.png",
+    "kb": 57,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/master.png",
+    "kb": 57,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/guard.png",
+    "kb": 57,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/master.png",
+    "kb": 56,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/priest.png",
+    "kb": 56,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/priest.png",
+    "kb": 56,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/fullleva_ogre.png",
+    "kb": 55,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/mage.png",
+    "kb": 55,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/knight.png",
+    "kb": 55,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/hunter.png",
+    "kb": 52,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/merchant.png",
+    "kb": 51,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/magicknight.png",
+    "kb": 51,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/merchant.png",
+    "kb": 51,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/waveblade.png",
+    "kb": 50,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/elder.png",
+    "kb": 50,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/monk.png",
+    "kb": 47,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/bartender.png",
+    "kb": 46,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/innkeeper.png",
+    "kb": 46,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "index.html",
+    "kb": 0,
+    "c": true,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "styles.css?v=61c8de563f",
+    "kb": 0,
+    "c": true,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/config.js?v=34eba7246f",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/cloud-config.js?v=ceefacd1a5",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/signals.js?v=e14b0f957e",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/indicators.js?v=788c323acf",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/scenarios.js?v=c9f6c5b9c8",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "errs": []
+}

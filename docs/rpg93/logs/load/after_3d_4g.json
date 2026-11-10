@@ -1,0 +1,430 @@
+{
+ "KIND": "3d",
+ "NET": "4g",
+ "net": {
+  "latency": 60,
+  "downloadThroughput": 1125000,
+  "uploadThroughput": 187500
+ },
+ "first": {
+  "domMs": 4078,
+  "titleMs": 4249,
+  "readyMs": 11924,
+  "req": {
+   "n": 244,
+   "kb": 10129,
+   "by": {
+    "other": {
+     "n": 48,
+     "kb": 4648,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 28,
+     "cached": 0
+    },
+    "js": {
+     "n": 4,
+     "kb": 1808,
+     "cached": 0
+    },
+    "image": {
+     "n": 191,
+     "kb": 3645,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "dist/mtq.min.js?v=18c111066b",
+    "kb": 1281,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/grass_normal.jpg",
+    "kb": 506,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/prop_well.glb",
+    "kb": 478,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_hero.glb",
+    "kb": 397,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_priest.glb",
+    "kb": 357,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_lina.glb",
+    "kb": 355,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_master.glb",
+    "kb": 350,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_merchant.glb",
+    "kb": 344,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_villager_f.glb",
+    "kb": 334,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_elder.glb",
+    "kb": 326,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_innkeeper.glb",
+    "kb": 324,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_child.glb",
+    "kb": 320,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_villager_m.glb",
+    "kb": 317,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/main-DVPReQJ3.js",
+    "kb": 286,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/Character3D-BG39NyV_.js",
+    "kb": 212,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/grass_albedo.jpg",
+    "kb": 206,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/timber_normal.jpg",
+    "kb": 170,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/planks_normal.jpg",
+    "kb": 147,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/cobble_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/plaster_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/stonewall_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/dirt_normal.jpg",
+    "kb": 123,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/carpet_normal.jpg",
+    "kb": 96,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/shingles_normal.jpg",
+    "kb": 93,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/prop_flowerbed.glb",
+    "kb": 86,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "cont": {
+  "ms": 3134,
+  "n": 16,
+  "kb": 0
+ },
+ "second": {
+  "titleMs": 11147,
+  "readyMs": 11918,
+  "req": {
+   "n": 244,
+   "kb": 0,
+   "by": {
+    "other": {
+     "n": 48,
+     "kb": 0,
+     "cached": 48
+    },
+    "css": {
+     "n": 1,
+     "kb": 0,
+     "cached": 1
+    },
+    "js": {
+     "n": 4,
+     "kb": 0,
+     "cached": 4
+    },
+    "image": {
+     "n": 191,
+     "kb": 0,
+     "cached": 191
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "3d/index.html",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "styles.css?v=5bed6d3e3e",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/main-DVPReQJ3.js",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/Character3D-BG39NyV_.js",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "js/data/earth78-terrain.js?v=8058032366",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "dist/mtq.min.js?v=18c111066b",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/yosen_slime.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/insen_slime.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/contrarian_bat.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/stoploss_zombie.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/nanpin_goblin.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/simple_cultist.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/fullleva_ogre.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/kotsukotsu_knight.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/pojipoji_phantom.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/indicator_mage.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/slime.png",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/slime_red.png",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bee.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/mushroom.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bug.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bat.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/wolf.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/snake.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bandit.png",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   }
+  ]
+ },
+ "errs": []
+}

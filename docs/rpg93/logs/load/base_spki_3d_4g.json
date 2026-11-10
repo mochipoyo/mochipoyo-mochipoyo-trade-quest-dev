@@ -1,0 +1,430 @@
+{
+ "KIND": "3d",
+ "NET": "4g",
+ "net": {
+  "latency": 60,
+  "downloadThroughput": 1125000,
+  "uploadThroughput": 187500
+ },
+ "first": {
+  "domMs": 4472,
+  "titleMs": 4622,
+  "readyMs": 14983,
+  "req": {
+   "n": 493,
+   "kb": 13551,
+   "by": {
+    "other": {
+     "n": 48,
+     "kb": 4648,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 26,
+     "cached": 0
+    },
+    "js": {
+     "n": 253,
+     "kb": 2389,
+     "cached": 0
+    },
+    "image": {
+     "n": 191,
+     "kb": 6488,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "3d/textures/grass_normal.jpg",
+    "kb": 506,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/prop_well.glb",
+    "kb": 478,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_hero.glb",
+    "kb": 397,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_priest.glb",
+    "kb": 357,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_lina.glb",
+    "kb": 355,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_master.glb",
+    "kb": 350,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_merchant.glb",
+    "kb": 344,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_villager_f.glb",
+    "kb": 334,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_elder.glb",
+    "kb": 326,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_innkeeper.glb",
+    "kb": 324,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_child.glb",
+    "kb": 320,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/models/char_villager_m.glb",
+    "kb": 317,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/main-BVdflzRV.js",
+    "kb": 286,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/Character3D-BG39NyV_.js",
+    "kb": 212,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/grass_albedo.jpg",
+    "kb": 206,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/timber_normal.jpg",
+    "kb": 170,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/planks_normal.jpg",
+    "kb": 147,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/gald.png",
+    "kb": 135,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/lucia.png",
+    "kb": 134,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/cobble_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/plaster_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/stonewall_normal.jpg",
+    "kb": 127,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/mochipoyo.png",
+    "kb": 125,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/textures/dirt_normal.jpg",
+    "kb": 123,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/seris.png",
+    "kb": 116,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "cont": {
+  "ms": 5168,
+  "n": 17,
+  "kb": 2587
+ },
+ "second": {
+  "titleMs": 10694,
+  "readyMs": 10737,
+  "req": {
+   "n": 493,
+   "kb": 0,
+   "by": {
+    "other": {
+     "n": 48,
+     "kb": 0,
+     "cached": 48
+    },
+    "css": {
+     "n": 1,
+     "kb": 0,
+     "cached": 1
+    },
+    "js": {
+     "n": 253,
+     "kb": 0,
+     "cached": 0
+    },
+    "image": {
+     "n": 191,
+     "kb": 0,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "3d/index.html",
+    "kb": 0,
+    "c": true,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "styles.css?v=61c8de563f",
+    "kb": 0,
+    "c": true,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/main-BVdflzRV.js",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "3d/assets/Character3D-BG39NyV_.js",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/data/earth78-terrain.js?v=8058032366",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/config.js?v=34eba7246f",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/cloud-config.js?v=ceefacd1a5",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/signals.js?v=e14b0f957e",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/indicators.js?v=788c323acf",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/scenarios.js?v=c9f6c5b9c8",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/data/scenarios-extra.js?v=29760ef170",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/data/scenario-seeds.js?v=1deeadd5e9",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/tradecore.js?v=c04927106d",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/position.js?v=ddf7772749",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/trading.js?v=0c638ae2a5",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/strategy.js?v=2225619061",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/practice.js?v=01c9a78180",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/trainer91.js?v=8d844790e0",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/data/practice-seeds.js?v=4b93f9da15",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/data/practice-psych.js?v=49be2ca486",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/chart.js?v=bb68ce0424",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/ui/chartctl.js?v=1f55b375ad",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/sprites.js?v=0cb51c94cc",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/core/engine.js?v=e12765d0ea",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "js/core/tiles.js?v=edeb1b723b",
+    "kb": 0,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "errs": []
+}

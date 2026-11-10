@@ -1,0 +1,430 @@
+{
+ "KIND": "2d",
+ "NET": "4g",
+ "net": {
+  "latency": 60,
+  "downloadThroughput": 1125000,
+  "uploadThroughput": 187500
+ },
+ "first": {
+  "domMs": 3125,
+  "titleMs": 3241,
+  "readyMs": 3241,
+  "req": {
+   "n": 176,
+   "kb": 2837,
+   "by": {
+    "other": {
+     "n": 1,
+     "kb": 6,
+     "cached": 0
+    },
+    "css": {
+     "n": 1,
+     "kb": 28,
+     "cached": 0
+    },
+    "js": {
+     "n": 1,
+     "kb": 1281,
+     "cached": 0
+    },
+    "image": {
+     "n": 173,
+     "kb": 1522,
+     "cached": 0
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "dist/mtq.min.js?v=18c111066b",
+    "kb": 1281,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/mochipoyo.webp",
+    "kb": 41,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/lucia.webp",
+    "kb": 34,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/gald.webp",
+    "kb": 32,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/seris.webp",
+    "kb": 29,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/lina.webp",
+    "kb": 29,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "styles.css?v=5bed6d3e3e",
+    "kb": 28,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/kyle.webp",
+    "kb": 25,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/kazuto.webp",
+    "kb": 22,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/mina.webp",
+    "kb": 21,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/ruin_guardian.png",
+    "kb": 20,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/chart_wraith.png",
+    "kb": 18,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/dark_slime.png",
+    "kb": 18,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/companions/ponta.webp",
+    "kb": 18,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/magitek.png",
+    "kb": 18,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/king.webp",
+    "kb": 18,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/fullleva_ogre.webp",
+    "kb": 18,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/slime_rainbow.png",
+    "kb": 17,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/slime_gold.png",
+    "kb": 17,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/npcs/tm_lione.png",
+    "kb": 17,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/candle_golem.png",
+    "kb": 17,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/ore_slime.png",
+    "kb": 16,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/characters/jobs/sage.webp",
+    "kb": 16,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/slime_green.png",
+    "kb": 16,
+    "c": false,
+    "sw": false,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/slime_metal.png",
+    "kb": 16,
+    "c": false,
+    "sw": false,
+    "st": 200
+   }
+  ]
+ },
+ "cont": {
+  "ms": 258,
+  "n": 1,
+  "kb": 0
+ },
+ "second": {
+  "titleMs": 1658,
+  "readyMs": 1658,
+  "req": {
+   "n": 176,
+   "kb": 0,
+   "by": {
+    "other": {
+     "n": 1,
+     "kb": 0,
+     "cached": 1
+    },
+    "css": {
+     "n": 1,
+     "kb": 0,
+     "cached": 1
+    },
+    "js": {
+     "n": 1,
+     "kb": 0,
+     "cached": 1
+    },
+    "image": {
+     "n": 173,
+     "kb": 0,
+     "cached": 173
+    }
+   }
+  },
+  "top": [
+   {
+    "u": "index.html",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "styles.css?v=5bed6d3e3e",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "dist/mtq.min.js?v=18c111066b",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/yosen_slime.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/insen_slime.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/contrarian_bat.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/stoploss_zombie.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/nanpin_goblin.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/simple_cultist.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/fullleva_ogre.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/kotsukotsu_knight.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/pojipoji_phantom.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/indicator_mage.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/slime.png",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/slime_red.png",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bee.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/mushroom.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bug.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bat.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/wolf.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/snake.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/bandit.png",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/ghost.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/skeleton.webp",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   },
+   {
+    "u": "assets/monsters/lizard.png",
+    "kb": 0,
+    "c": true,
+    "sw": true,
+    "st": 200
+   }
+  ]
+ },
+ "errs": []
+}

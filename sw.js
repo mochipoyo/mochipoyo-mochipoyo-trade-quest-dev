@@ -7,7 +7,7 @@
    ・曲（assets/music/ の MP3）・範囲指定（Range）の読み込みは、ここでは扱わない（ブラウザの通常のキャッシュ）
    ・止めたいとき：URL に ?nosw を付けて開く（登録しない）。セーブ（localStorage）には触らない
    ========================================================= */
-const VERSION = 'a687b8798f';   // tools/stamp-version.js が書き換える（手で書き換えない）
+const VERSION = '3c2811ed7c';   // tools/stamp-version.js が書き換える（手で書き換えない）
 const CACHE = 'mtq-' + VERSION;
 self.addEventListener('install', (e) => { self.skipWaiting(); });
 self.addEventListener('activate', (e) => {
@@ -28,6 +28,17 @@ async function staleWhileRevalidate(req, ev) {
   if (hit) { if (ev) ev.waitUntil(net); return hit; }
   const res = await net; if (res) return res; return fetch(req);
 }
+// 初めて開いたとき（ページから知らせが来る）：そのとき読み込んだファイルを保存する（曲・範囲の外・ほかのサイトは保存しない）
+self.addEventListener('message', (e) => {
+  const d = e.data; if (!d || d.type !== 'warm' || !Array.isArray(d.urls)) return;
+  e.waitUntil((async () => {
+    const scope = new URL(self.registration.scope); const c = await caches.open(CACHE);
+    for (const raw of d.urls.slice(0, 3000)) {
+      try { const u = new URL(raw); if (u.origin !== scope.origin || u.pathname.indexOf(scope.pathname) !== 0 || /\/assets\/music\//.test(u.pathname) || /\.(mp3|ogg|m4a)$/.test(u.pathname)) continue;
+        const req = new Request(u.href); if (await c.match(req)) continue; const res = await fetch(req); await put(req, res); } catch (err) { }
+    }
+  })());
+});
 self.addEventListener('fetch', (e) => {
   const r = e.request; if (r.method !== 'GET') return;
   const u = new URL(r.url); if (u.origin !== self.location.origin) return;
