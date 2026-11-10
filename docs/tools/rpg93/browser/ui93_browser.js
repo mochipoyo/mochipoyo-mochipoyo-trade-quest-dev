@@ -72,6 +72,8 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
   const cmd = await p.evaluate(() => [...document.querySelectorAll('#ui .cmd-list .rw-item')].map((x) => x.textContent.replace(/\s+/g, ' ').trim()));
   const cv = await inView('#ui .cmd-list');
   S(cmd.some((x) => /さくせん/.test(x)) && cv && cv.ok, '戦闘のコマンドに「さくせん」（' + cmd.length + ' 行・画面の中 ' + JSON.stringify(cv) + '）'); await shot('cmd');
+  const ov = await p.evaluate(() => { const L = document.querySelector('#ui .cmd-list').getBoundingClientRect(), H = document.getElementById('battle-party').getBoundingClientRect(), last = [...document.querySelectorAll('#ui .cmd-list .rw-item')].pop().getBoundingClientRect(); const xo = L.left < H.right && L.right > H.left; return { overlap: xo && L.bottom > H.top + 2 ? Math.round(L.bottom - H.top) : 0, list: [Math.round(L.top), Math.round(L.bottom)], hudTop: Math.round(H.top), lastItemVisible: last.bottom <= L.bottom + 1 }; });
+  S(ov.overlap === 0, 'コマンドの窓が味方の欄に重ならない（' + JSON.stringify(ov) + (ov.lastItemVisible ? '' : '。窓の中でスクロールして最後の行へ') + '）');
   await item('さくせん', '#ui .cmd-list .rw-item'); await p.waitForTimeout(300);
   const tv = await inView('#ui .rw-list'); const tl = await p.evaluate(() => [...document.querySelectorAll('#ui > :last-child .rw-item')].map((x) => x.textContent.replace(/\s+/g, ' ').trim()));
   S(tl.length >= 4 && tv && tv.ok, '作戦の窓：仲間の一覧（' + tl.slice(0, 5).join('／') + '）'); await shot('tactics');

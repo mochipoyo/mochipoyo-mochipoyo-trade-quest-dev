@@ -1119,3 +1119,6 @@ body.g3-front:not(.mobile) #battle-party .bp.mo-chop, body.g3-front:not(.mobile)
 body.g3-front:not(.mobile) #battle-party .bp.mo-claw, body.g3-front:not(.mobile) #battle-party .bp.mo-cast, body.g3-front:not(.mobile) #battle-party .bp.mo-pray, body.g3-front:not(.mobile) #battle-party .bp.mo-shout,
 body.g3-front:not(.mobile) #battle-party .bp.mo-guard { animation-name: mo-glow3; }
 @keyframes mo-glow3 { 0%, 100% { box-shadow: 0 0 10px rgba(232,193,90,.55); } 45% { box-shadow: 0 0 14px 3px var(--fx-col); } }
+/* v9.3 スマホ縦：戦闘のコマンド（「さくせん」を足して 8 行）を、スクロールなしで味方の欄の上に収める（行を少し詰め、幅を広げて「じゅもん・とくぎ」を 1 行に） */
+body.mobile.m-port .rw-list.cmd-list { width: 200px; bottom: 132px; }   /* 味方の欄（下から約 122px）に重ならない高さ */
+body.mobile.m-port .rw-list.cmd-list .rw-item { min-height: 36px; padding-top: 3px; padding-bottom: 3px; }

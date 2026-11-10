@@ -1,0 +1,9 @@
+=== maptest
+errors [] fails 0
+=== navtest
+結果: 24 OK / 0 NG []
+=== harbortest
+結果: 23 OK / 0 NG []
+=== ch17test
+ERRORS: []
+=== ch67test

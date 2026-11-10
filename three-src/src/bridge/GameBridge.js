@@ -74,7 +74,9 @@ export class App3D {
       while (true) {
         const hasAny = [0, 1, 2, 3].some((s) => S.slotInfo(s)); const has2D = [0, 1, 2, 3].some((s) => S.normalSlotInfo(s));
         const opts = [{ label: 'はじめから' }, { label: 'つづきから', disabled: !hasAny }, { label: '2D版のセーブを取り込む', disabled: !has2D, sub: has2D ? '2D版のセーブはそのまま残ります（コピーして3D版用に保存）' : '2D版のセーブが見つかりません' }, { label: 'データ管理' }];
-        const i = await Win.list(opts, { title: 'タイトル（3D版 Phase 1）', cancel: false, cls: 'title-menu' });
+        const A = G.Audio, snd = A && A.titleSound ? A.titleSound() : false;   // v9.3 タイトルで音の ON／OFF（2D 版の js/ui/title.js と同じ）
+        const i = await Win.list(opts, { title: 'タイトル（3D版 Phase 1）', cancel: false, cls: 'title-menu', tools: A && A.setTitleSound && !S.data ? [{ id: 'sound', label: '♪ 音：' + (snd ? 'ON' : 'OFF'), on: snd }] : null });
+        if (i && typeof i === 'object') { if (i.tool === 'sound') { if (A.unlock) A.unlock(); A.setTitleSound(!snd); } continue; }
         if (i === 0) { if (await T.newGame()) return; }
         if (i === 1) { if (await T.load()) return; }
         if (i === 2) { if (await app.import2D()) return; }

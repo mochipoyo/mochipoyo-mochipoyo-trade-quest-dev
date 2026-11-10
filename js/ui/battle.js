@@ -611,7 +611,7 @@
       if (BattleUI.isAuto()) return 'auto';
       var skills = Actors.allSkills(a).filter(function (s) { return SKILLS[s]; });
       var last = b._lastCmd88 && b._lastCmd88[a.id];
-      var opts = [{ key: 'attack', label: 'たたかう' }, { key: 'skill', label: 'じゅもん・とくぎ', disabled: !skills.length }, { key: 'item', label: 'どうぐ' }, { key: 'defend', label: 'ぼうぎょ' }, { key: 'escape', label: 'にげる', disabled: !b.canEscape }, { key: 'auto', label: 'オート戦闘', right: '自動' }, { key: 'tactics', label: 'さくせん', right: Combat.tacticName ? Combat.tacticName(a) : '', sub: 'オート戦闘での仲間ごとの考え方' }];   // v9.3 さくせん
+      var opts = [{ key: 'attack', label: 'たたかう' }, { key: 'skill', label: 'じゅもん・とくぎ', disabled: !skills.length }, { key: 'item', label: 'どうぐ' }, { key: 'defend', label: 'ぼうぎょ' }, { key: 'escape', label: 'にげる', disabled: !b.canEscape }, { key: 'auto', label: 'オート戦闘', right: '自動' }, { key: 'tactics', label: 'さくせん', right: Combat.tacticName ? Combat.tacticName(a) : '' }];   // v9.3 さくせん（説明は作戦の窓に。コマンドの窓はスマホでも 1 行で収める）
       if (last) opts.unshift({ key: 'repeat', label: '前回と同じ', right: cmdText(b, a, last), cls: 'repeat-cmd' });   // v8.8
       // 必殺技（主人公だけ）：「じゅもん・とくぎ」の次に出す
       var ultN = (U && U.isHero(a)) ? U.count(State.data) : -1;
