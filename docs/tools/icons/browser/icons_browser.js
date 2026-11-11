@@ -113,8 +113,10 @@ const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.lo
   for (let i = 0; i < 2; i++) { await p.keyboard.press('ArrowDown'); await p.waitForTimeout(150); }
   await p.waitForTimeout(900);
   const s3b = await p.evaluate(() => { const L = [...document.querySelectorAll('#ui .eq-list')].pop(); const rows = [...L.querySelectorAll('.rw-item')]; const info = L.querySelector('.rw-info'); const arts = [...info.querySelectorAll('.eq-arts [data-item-icon]')].map((x) => x.getAttribute('data-item-icon')); const hz = rows.filter((r) => r.querySelector('.l') && r.querySelector('.l').textContent === 'はずす')[0];
-    return { rows: rows.length, icons: rows.filter((r) => r.querySelector('.tqi')).length, hz: !!hz && !hz.querySelector('.tqi'), arts, tbl: !!info.querySelector('.eq-tbl'), big: Math.round((info.querySelector('.eq-arts .ia-art .tqi') || { getBoundingClientRect: () => ({ width: 0 }) }).getBoundingClientRect().width) }; });
-  S(s3b.icons === s3b.rows - 1 && s3b.hz && s3b.arts[0] === 'wooden_sword' && s3b.arts.length === 2 && s3b.tbl, '3 候補：武器に絵・「はずす」は絵なし。比較は いまの装備 → 変更先 の絵と能力の表（' + s3b.arts.join(' → ') + '、変更先 ' + s3b.big + 'px）');
+    const ib = info.getBoundingClientRect(), chg = info.querySelector('.eq-arts .eq-chg'), cb = chg ? chg.getBoundingClientRect() : null;
+    return { rows: rows.length, icons: rows.filter((r) => r.querySelector('.tqi')).length, hz: !!hz && !hz.querySelector('.tqi'), arts, tbl: !!info.querySelector('.eq-tbl'), big: Math.round((info.querySelector('.eq-arts .ia-art .tqi') || { getBoundingClientRect: () => ({ width: 0 }) }).getBoundingClientRect().width), chg: chg ? chg.textContent : '', chgSeen: !!cb && cb.top >= ib.top - 1 && cb.bottom <= ib.bottom + 1 && cb.right <= ib.right + 1 }; });
+  S(s3b.icons === s3b.rows - 1 && s3b.hz && s3b.arts[0] === 'dow_greatsword_2' && s3b.arts[1] === 'wooden_sword' && s3b.arts.length === 2 && s3b.tbl, '3 候補：武器に絵・「はずす」は絵なし。比較は 変更先の大きい絵（' + s3b.big + 'px）の隣に名前・いまの装備の小さい絵（' + s3b.arts.join('／いま ') + '）・変わる能力。能力の表はそのまま');
+  S(s3b.chgSeen && /攻撃 ▲\+/.test(s3b.chg), '3 変わる能力（' + s3b.chg + '）は、開いたままの詳細欄の中に見える（スクロールしなくてよい）');
   await shot('4_equip_compare');
   await esc(); const back3 = await p.evaluate(() => !!document.querySelector('#ui .equip-menu') && !document.querySelector('#ui .eq-list')); S(back3, '3 Esc で枠の一覧に戻る');
   await esc(); await clean();
@@ -159,7 +161,7 @@ const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.lo
   await p.evaluate((id) => { if (window.__dr) ENEMIES[id].drops = window.__dr; }, en);
   const s5b = await p.evaluate(() => { const R = document.querySelector('#ui .rs-items'); if (!R) return null; return [...R.querySelectorAll('.rs-item')].map((r) => (r.querySelector('.tqi') ? r.querySelector('.tqi').getAttribute('data-item-icon') : '-') + ':' + r.textContent.trim()); });
   S(s5b && s5b.length > 0 && s5b.every((x) => !/^-:/.test(x) || /なし/.test(x)), '5 戦闘の結果：落とした品の行に絵（' + (s5b ? s5b.join(' ') : '結果の画面が出なかった') + '）');
-  if (s5b) await shot('8_battle_result');
+  if (s5b) { await p.evaluate(() => { const r = document.querySelector('#ui .rs-items'); if (r) r.scrollIntoView({ block: 'center' }); }); await p.waitForTimeout(500); await shot('8_battle_result'); }   // 落とした品の行が写るように
   for (let i = 0; i < 20; i++) { const done = await p.evaluate(() => !!window.__btRes); if (done) break; await p.keyboard.press('Enter'); await p.waitForTimeout(400); }
   await clean(); await pause3d(false);
   // 9 エラー

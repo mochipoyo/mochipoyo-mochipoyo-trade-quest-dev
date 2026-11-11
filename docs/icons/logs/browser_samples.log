@@ -1,0 +1,43 @@
+見本の品の絵（画像を止めない）版 b7eddfd106（最後の形）
+=== samples 2d 13:12:38
+  OK  wooden_sword「木の剣」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/wooden_sword.webp?v=20261111-v1）
+  OK  steel_sword「鋼の剣」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/steel_sword.webp?v=20261111-v1）
+  OK  stoploss_shield「損切りの盾」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/stoploss_shield.webp?v=20261111-v1）
+  OK  b19_unsmiling_aegis「笑わぬ大盾」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/b19_unsmiling_aegis.webp?v=20261111-v1）
+  OK  potion「ポーション」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/potion.webp?v=20261111-v1）
+  OK  bread_baguette「勇者のバゲット」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/bread_baguette.webp?v=20261111-v1）
+  OK  porkbits_don「伝説のポークビッツ丼」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/porkbits_don.webp?v=20261111-v1）
+  OK  forest_key「森の鍵」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/forest_key.webp?v=20261111-v1）
+  OK  op_001「古代文明の歯車」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/op_001.webp?v=20261111-v1）
+  OK  dow_greatsword_2「ダウの大剣＋」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/dow_greatsword_2.webp?v=20261111-v1）
+  OK  leather_cap「革の帽子」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/leather_cap.webp?v=20261111-v1）
+  OK  ring_power「力の指輪」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/ring_power.webp?v=20261111-v1）
+  OK  coffee「コーヒー」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/coffee.webp?v=20261111-v1）
+  OK  fruit_juice「フルーツジュース」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/fruit_juice.webp?v=20261111-v1）
+  OK  qm_trophy_001「モグランのかじった単語帳」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/qm_trophy_001.webp?v=20261111-v1）
+  OK  絵のない ID（explorer_ring「探索者の指輪」）は対応表になく、ほかの絵を使わない（「？」の枠）
+  OK  ページのエラーなし
+  OK  思いがけない 404 などはない
+結果 samples 2d：OK 18 / NG 0
+rc=0
+=== samples 3d 13:12:42
+  OK  wooden_sword「木の剣」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/wooden_sword.webp?v=20261111-v1）
+  OK  steel_sword「鋼の剣」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/steel_sword.webp?v=20261111-v1）
+  OK  stoploss_shield「損切りの盾」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/stoploss_shield.webp?v=20261111-v1）
+  OK  b19_unsmiling_aegis「笑わぬ大盾」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/b19_unsmiling_aegis.webp?v=20261111-v1）
+  OK  potion「ポーション」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/potion.webp?v=20261111-v1）
+  OK  bread_baguette「勇者のバゲット」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/bread_baguette.webp?v=20261111-v1）
+  OK  porkbits_don「伝説のポークビッツ丼」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/porkbits_don.webp?v=20261111-v1）
+  OK  forest_key「森の鍵」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/forest_key.webp?v=20261111-v1）
+  OK  op_001「古代文明の歯車」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/op_001.webp?v=20261111-v1）
+  OK  dow_greatsword_2「ダウの大剣＋」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/dow_greatsword_2.webp?v=20261111-v1）
+  OK  leather_cap「革の帽子」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/leather_cap.webp?v=20261111-v1）
+  OK  ring_power「力の指輪」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/ring_power.webp?v=20261111-v1）
+  OK  coffee「コーヒー」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/coffee.webp?v=20261111-v1）
+  OK  fruit_juice「フルーツジュース」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/fruit_juice.webp?v=20261111-v1）
+  OK  qm_trophy_001「モグランのかじった単語帳」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/qm_trophy_001.webp?v=20261111-v1）
+  OK  絵のない ID（explorer_ring「探索者の指輪」）は対応表になく、ほかの絵を使わない（「？」の枠）
+  OK  ページのエラーなし
+  OK  思いがけない 404 などはない
+結果 samples 3d：OK 18 / NG 0
+rc=0

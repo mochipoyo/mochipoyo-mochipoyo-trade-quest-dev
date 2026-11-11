@@ -40,8 +40,9 @@
     var cls = 'tqi' + (o.frame === false ? ' tqi--bare' : '') + (o.detail ? ' tqi--detail' : '') + (it && it.bossExclusive ? ' tqi--unique' : '') + (o.cls ? ' ' + o.cls : '');
     var label = it ? it.name : (o.label || '未登録アイテム');
     var aria = o.decorative === false ? ' role="img" aria-label="' + esc(label) + '"' : ' aria-hidden="true"';
-    if (!it) return '<span class="' + cls + ' tqi--missing"' + aria + ' style="--tqi-size:' + size + 'px"><span class="tqi-fallback">?</span></span>';
-    return '<span class="' + cls + '"' + aria + ' data-item-icon="' + esc(it.id) + '" style="--tqi-size:' + size + 'px"><img class="tqi-img" src="' + esc(API.url(id, size, false)) + '" data-png-fallback="' + esc(API.url(id, size, true)) + '" width="' + size + '" height="' + size + '" alt="" loading="' + (o.detail ? 'eager' : 'lazy') + '"' + (o.detail ? ' fetchpriority="high"' : '') + ' decoding="async"><span class="tqi-fallback" hidden>?</span></span>';
+    // 「？」の印は CSS（.tqi-fallback::before）で出す。行の文字（textContent）に「?」を混ぜない
+    if (!it) return '<span class="' + cls + ' tqi--missing"' + aria + ' style="--tqi-size:' + size + 'px"><span class="tqi-fallback"></span></span>';
+    return '<span class="' + cls + '"' + aria + ' data-item-icon="' + esc(it.id) + '" style="--tqi-size:' + size + 'px"><img class="tqi-img" src="' + esc(API.url(id, size, false)) + '" data-png-fallback="' + esc(API.url(id, size, true)) + '" width="' + size + '" height="' + size + '" alt="" loading="' + (o.detail ? 'eager' : 'lazy') + '"' + (o.detail ? ' fetchpriority="high"' : '') + ' decoding="async"><span class="tqi-fallback" hidden></span></span>';
   };
   // 詳細欄の大きい絵（PC 160px。スマホは styles/item-icons.css で 112px）
   API.detailHtml = function (id, o) { return '<span class="ia-art">' + API.html(id, Object.assign({ size: 160, detail: true }, o || {})) + '</span>'; };

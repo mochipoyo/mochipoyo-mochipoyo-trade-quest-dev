@@ -1,0 +1,72 @@
+装備・道具の絵を入れたあとの既存のブラウザの確かめ（ui93・bonds94・bonds941・flow89・ui87）。Chromium・GPU なし。版 8aeea8cbcd（「?」の印を CSS に移す前の形）
+画面写真・結果の JSON は作業用の場所に置いた（リポジトリの docs/rpg93・docs/rpg94 などの記録は書き換えていない）
+=== ui93 2d pc1280 11:42:09
+結果 2d pc1280：OK 29 / NG 0
+rc=0
+=== ui93 2d m390 11:42:53
+結果 2d m390：OK 29 / NG 0
+rc=0
+=== ui93 2d land 11:43:38
+結果 2d land：OK 29 / NG 0
+rc=0
+=== ui93 3d pc1280 11:44:23
+結果 3d pc1280：OK 29 / NG 0
+rc=0
+=== ui93 3d m390 11:46:03
+結果 3d m390：OK 29 / NG 0
+rc=0
+=== ui93 3d land 11:47:13
+結果 3d land：OK 29 / NG 0
+rc=0
+=== bonds94 2d pc 11:48:17
+結果 2d pc：OK 14 / NG 0
+rc=0
+=== bonds94 2d m390 11:48:45
+結果 2d m390：OK 13 / NG 0
+rc=0
+=== bonds94 2d land 11:49:12
+結果 2d land：OK 13 / NG 0
+rc=0
+=== bonds94 3d pc 11:49:38
+結果 3d pc：OK 14 / NG 0
+rc=0
+=== bonds94 3d m390 12:10:53
+結果 3d m390：OK 13 / NG 0
+rc=0
+=== bonds94 3d land 12:14:57
+結果 3d land：OK 13 / NG 0
+rc=0
+=== bonds941 2d pc 12:19:50
+結果 2d pc：OK 13 / NG 0
+rc=0
+=== bonds941 2d m390 12:21:18
+結果 2d m390：OK 12 / NG 0
+rc=0
+=== bonds941 2d land 12:22:46
+結果 2d land：OK 12 / NG 0
+rc=0
+=== bonds941 3d pc 12:24:15
+結果 3d pc：OK 14 / NG 0
+rc=0
+=== bonds941 3d m390 12:42:54
+結果 3d m390：OK 13 / NG 0
+rc=0
+=== bonds941 3d land 12:48:17
+結果 3d land：OK 13 / NG 0
+rc=0
+=== flow89 2d pc 12:54:24
+結果: 14 OK / 0 NG
+rc=0
+=== flow89 3d pc 12:54:53
+結果: 14 OK / 0 NG
+rc=0
+=== flow89 2d p390 12:55:24
+結果: 14 OK / 0 NG
+rc=0
+=== flow89 3d p390 12:55:53
+結果: 14 OK / 0 NG
+rc=0
+=== ui87 12:56:24
+結果: 4/4 OK
+rc=0
+ALLDONE

@@ -1,0 +1,94 @@
+ID の照合・素材の確かめ・データのハッシュ：版 8aeea8cbcd で実行（その後の変更は表示の JS・CSS だけで、データのファイルは変えていない）
+ID の照合と素材の確かめ 2026-11-11 11:29
+=== 素材 ZIP の qa/check-item-icons.cjs
+{
+  "ok": true,
+  "active": 659,
+  "reserved": 6,
+  "total": 665,
+  "images": 1995,
+  "uniquePNGs": 665,
+  "paths2D3D": "ok"
+}
+rc=0
+=== id_match.js （ゲームを起動したあとの ITEMS・OOPARTS と素材の対応表）
+{
+ "mode": "3D と同じ読み込み",
+ "loadErrors": 0,
+ "items": 564,
+ "ooparts": 100,
+ "byCat": {
+  "weapon": 173,
+  "armor": 145,
+  "acc": 68,
+  "consumable": 60,
+  "key": 118
+ },
+ "matched": 659,
+ "addedIds": [
+  "explorer_ring",
+  "ancient_shield",
+  "starseer_staff",
+  "spacetime_armor",
+  "archeion_blade"
+ ],
+ "removedIds": [],
+ "nameDiffIds": [],
+ "reservedPresentInItems": [],
+ "catalogDiff": {
+  "notInGame": [],
+  "notInCatalog": [
+   "explorer_ring",
+   "ancient_shield",
+   "starseer_staff",
+   "spacetime_armor",
+   "archeion_blade"
+  ]
+ }
+}
+rc=0
+=== id_match.js 2d（ゲームを起動したあとの ITEMS・OOPARTS と素材の対応表）
+{
+ "mode": "2D",
+ "loadErrors": 0,
+ "items": 564,
+ "ooparts": 100,
+ "byCat": {
+  "weapon": 173,
+  "armor": 145,
+  "acc": 68,
+  "consumable": 60,
+  "key": 118
+ },
+ "matched": 659,
+ "addedIds": [
+  "explorer_ring",
+  "ancient_shield",
+  "starseer_staff",
+  "spacetime_armor",
+  "archeion_blade"
+ ],
+ "removedIds": [],
+ "nameDiffIds": [],
+ "reservedPresentInItems": [],
+ "catalogDiff": {
+  "notInGame": [],
+  "notInCatalog": [
+   "explorer_ring",
+   "ancient_shield",
+   "starseer_staff",
+   "spacetime_armor",
+   "archeion_blade"
+  ]
+ }
+}
+rc=0
+=== data_hash.js：参照コミット 483fd5f（<作業用の場所>/base483）
+{"loadErrors":0,"ITEMS":"36310ac517ed052c","itemCount":564,"OOPARTS":"d99a8750d953965a","SHOP_ADD":"d9e0eca65fd83790","SHOP_EXTRAS":"3efd9a547721dc3e","ENEMIES":"b69ac4f9cc387448","QUESTS":"3edebdbf990534aa","RECIPES":"74234e98afe7498f","REWARDS":"419187179b48191d"}
+=== data_hash.js：いまの作業ツリー
+{"loadErrors":0,"ITEMS":"36310ac517ed052c","itemCount":564,"OOPARTS":"d99a8750d953965a","SHOP_ADD":"d9e0eca65fd83790","SHOP_EXTRAS":"3efd9a547721dc3e","ENEMIES":"b69ac4f9cc387448","QUESTS":"3edebdbf990534aa","RECIPES":"74234e98afe7498f","REWARDS":"419187179b48191d"}
+=== data_hash.js 2d：参照コミット
+{"loadErrors":0,"ITEMS":"36310ac517ed052c","itemCount":564,"OOPARTS":"d99a8750d953965a","SHOP_ADD":"d9e0eca65fd83790","SHOP_EXTRAS":"3efd9a547721dc3e","ENEMIES":"1bddd9172fd9fe77","QUESTS":"a17f03627e407ef2","RECIPES":"74234e98afe7498f","REWARDS":"419187179b48191d"}
+=== data_hash.js 2d：いまの作業ツリー
+{"loadErrors":0,"ITEMS":"36310ac517ed052c","itemCount":564,"OOPARTS":"d99a8750d953965a","SHOP_ADD":"d9e0eca65fd83790","SHOP_EXTRAS":"3efd9a547721dc3e","ENEMIES":"1bddd9172fd9fe77","QUESTS":"a17f03627e407ef2","RECIPES":"74234e98afe7498f","REWARDS":"419187179b48191d"}
+ALLDONE

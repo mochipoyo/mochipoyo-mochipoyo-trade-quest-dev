@@ -3,7 +3,7 @@
    ・素材 ZIP の styles/item-icons.css を元にした（.tqi・.tqi-img・.tqi--bare・.tqi--detail・.tqi--unique・.tqi-fallback・.tqi-row・.tqi-detail-art）
      素材版の「.selected>.tqi」の外枠は入れていない（選択中・装備中・買えない・ボス固有は、既存の文字・枠・色で伝える）
    ・絵は正方形の枠に object-fit: contain（切っ先や裾を切らない）。枠の大きさは決まっているので、絵を読み込んでも行の高さ・幅は変わらない
-   ・大きさ：一覧 48px、詳細 PC 160px／スマホ 112px（縦・横とも）
+   ・大きさ：一覧 48px、詳細 PC 160px／スマホ 112px（縦・横とも。装備の比較だけスマホ 96px）
    ========================================================= */
 .tqi { --tqi-size: 48px; display: inline-grid; place-items: center; inline-size: var(--tqi-size); block-size: var(--tqi-size); flex: 0 0 var(--tqi-size); position: relative; box-sizing: border-box; overflow: hidden; border: 1px solid #a88c5a; border-radius: 9px; background: radial-gradient(ellipse at 34% 24%, #46546b, #172033 72%); box-shadow: inset 0 0 0 2px #d7bc7a1c; vertical-align: middle; pointer-events: none; }
 .tqi-img { display: block; inline-size: 100%; block-size: 100%; object-fit: contain; pointer-events: none; image-rendering: auto; }
@@ -11,6 +11,7 @@
 .tqi--detail { --tqi-size: 160px; border-radius: 14px; }
 .tqi--unique { border-color: #e2be62; background: radial-gradient(ellipse at 34% 24%, #5b4564, #211d38 72%); }
 .tqi-fallback { font: 700 24px/1 system-ui, sans-serif; color: #dccb9b; }
+.tqi-fallback::before { content: "?"; }   /* 印は CSS で（行の文字に「?」を混ぜない） */
 .tqi--missing .tqi-fallback { font-size: calc(var(--tqi-size) * 0.45); }
 .tqi-fallback[hidden], .tqi-img[hidden] { display: none; }
 .tqi-row { display: flex; align-items: center; gap: 10px; min-inline-size: 0; }
@@ -50,11 +51,21 @@ body:not(.mobile) .rw-list.rw-fixed.rw-preview.rw-has-icons > .rw-footer { grid-
 body.mobile .ia-art .tqi { --tqi-size: 112px !important; border-radius: 12px; }
 @media (max-width: 600px) { .ia-art .tqi { --tqi-size: 112px !important; border-radius: 12px; } }
 
-/* ---------- 装備の比較（いま → 変更先） ---------- */
-.eq-arts { display: flex; align-items: center; gap: 10px; margin: 2px 0 6px; }
-.eq-arts .eq-arrow { color: var(--gold, #e8c15a); font-weight: bold; }
-.eq-arts .eq-none { display: inline-grid; place-items: center; width: 48px; height: 48px; border: 1px dashed rgba(255,255,255,.3); border-radius: 9px; color: var(--muted, #9aa); font-size: 11px; flex: none; }
-.eq-arts .eq-new-name { font-weight: bold; min-width: 0; overflow-wrap: anywhere; }
+/* ---------- 装備の比較：変更先の大きい絵の隣に、名前・いまの装備（小さい絵）・変わる能力。下の能力の表は今までどおり ----------
+   「はずす」の枠も同じ大きさ（候補を動かしても詳細欄が跳ねない）。スマホは 96px（表の行を少しでも多く見せる） */
+.eq-arts { --eq-big: 160px; display: flex; align-items: flex-start; gap: 12px; margin: 2px 0 6px; }
+.eq-arts > .ia-art { flex: none; }
+.eq-arts .eq-none { display: inline-grid; place-items: center; flex: none; border: 1px dashed rgba(255,255,255,.3); color: var(--muted, #9aa); }
+.eq-arts > .eq-none { width: var(--eq-big); height: var(--eq-big); border-radius: 14px; font-size: 13px; }
+.eq-side { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.eq-side .eq-new-name { font-weight: bold; overflow-wrap: anywhere; }
+.eq-now { display: flex; align-items: center; gap: 6px; }
+.eq-now .eq-none { width: 32px; height: 32px; border-radius: 7px; font-size: 10px; }
+.eq-chg { display: flex; flex-wrap: wrap; gap: 0 8px; font-size: 12.5px; }
+.eq-chg .eq-up { color: #8fe08f; } .eq-chg .eq-down { color: #ff9a8a; }
+body.mobile .eq-arts { --eq-big: 96px; gap: 10px; }
+body.mobile .eq-arts .ia-art .tqi { --tqi-size: 96px !important; }
+@media (max-width: 600px) { .eq-arts { --eq-big: 96px; gap: 10px; } .eq-arts .ia-art .tqi { --tqi-size: 96px !important; } }
 
 /* ---------- パーティの装備一覧 ---------- */
 .pt-eq.has-icon { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 8px; align-items: center; }
@@ -67,5 +78,11 @@ body.mobile .ia-art .tqi { --tqi-size: 112px !important; border-radius: 12px; }
 .op-row.got.has-icon > .tqi { grid-row: 1 / span 2; }
 .op-row.got.has-icon > .op-desc { grid-column: 2 / 5; }
 .op-row .tqi { margin-right: 2px; }
+@media (max-width: 560px) {   /* スマホの縦：名前を 1 行で読めるように、地方名は名前の下へ */
+  .op-row.got.has-icon { grid-template-columns: 48px 58px minmax(0, 1fr); }
+  .op-row.got.has-icon > .tqi { grid-row: 1 / span 3; }
+  .op-row.got.has-icon > .op-reg { grid-column: 2 / 4; grid-row: 2; }
+  .op-row.got.has-icon > .op-desc { grid-column: 2 / 4; grid-row: 3; }
+}
 .op-rw.has-icon { display: inline-flex; align-items: center; gap: 4px; padding-left: 3px; }
 body .bu-result > .ia-art .tqi { --tqi-size: 64px !important; }   /* 戦闘結果のボス固有装備：スマホの詳細の大きさ（112px）にしない */

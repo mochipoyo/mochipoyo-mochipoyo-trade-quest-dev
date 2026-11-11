@@ -2,7 +2,7 @@
 //   node docs/tools/icons/icons_test.js [2d]
 //   A ID の照合  B 絵の URL（2D／3D・一覧／詳細・PNG・版）  C 起動時に絵を読まない  D Win.list・Win.choice（行の操作・エスケープ・絵のない一覧は今までと同じ）
 //   E 画面ごと（どうぐ・詳細・そうび・候補・比較・パーティ・図鑑・店・カジノ・戦闘・結果・オーパーツ・ボス固有・鍛え直し・供え物）
-//   F 表示だけ（セーブ・ITEMS を変えない）  G 売買・使用・装備の前後  H 旧セーブ（基準コミットのゲームで作ったもの）
+//   F 表示だけ（セーブ・ITEMS を変えない）  G 売買・使用・装備の前後  H 旧セーブ（v9.4 より前の版 6b4d2a9 のゲームで作ったクリア済みのセーブ。docs/tools/rpg94/fixtures/old_cleared.json）
 const path = require('path'); const fs = require('fs'); const vm = require('vm'); const load = require(path.resolve(__dirname, '../v78/load78.js'));
 const ROOT = path.resolve(__dirname, '../../..') + '/'; const FIX = path.resolve(__dirname, '../rpg94/fixtures') + '/';
 const two = process.argv.includes('2d'); const A = load(two ? { earth: false, join: false } : {}); const w = A.w; const doc = w.document;
@@ -52,7 +52,7 @@ const icoIn = (html) => [...String(html).matchAll(/data-item-icon="([^"]+)"/g)].
   T(/webp256\/potion\.webp/.test(c3.ItemIcons.url('potion', 160, false)) && /png256\/potion\.png/.test(c3.ItemIcons.url('potion', 48, true)) && c3.ItemIcons.url('constructor', 48) === null && c3.ItemIcons.url('nope', 48) === null, '一覧（48px）は webp128、詳細（160px）は webp256、代わりは png256。対応表にない ID・constructor は null');
   const h48 = II.html('wooden_sword', { size: 48 }), hd = II.detailHtml('wooden_sword');
   T(/loading="lazy"/.test(h48) && !/fetchpriority/.test(h48) && /webp128/.test(h48) && /loading="eager"/.test(hd) && /fetchpriority="high"/.test(hd) && /webp256/.test(hd) && /data-png-fallback="[^"]*png256\/wooden_sword\.png/.test(hd), '一覧の絵は遅延読み込み、選んだ詳細の絵だけ先に読む（fetchpriority）。どちらも PNG の代わりを持つ');
-  T(/aria-hidden="true"/.test(h48) && !/tabindex|onclick/.test(h48 + hd) && /tqi--missing/.test(II.html('nope')) && /\?/.test(II.html('nope')), '絵は飾り（aria-hidden・tabindex やクリックなし）。対応表にない ID は「？」の枠');
+  T(/aria-hidden="true"/.test(h48) && !/tabindex|onclick/.test(h48 + hd) && /tqi--missing/.test(II.html('nope')) && /<span class="tqi-fallback"><\/span>/.test(II.html('nope')) && /\.tqi-fallback::before\s*\{\s*content:\s*"\?"/.test(fs.readFileSync(ROOT + 'styles/item-icons.css', 'utf8')), '絵は飾り（aria-hidden・tabindex やクリックなし）。対応表にない ID は「？」の枠（印は CSS の ::before）');
 
   console.log('-- C 起動時');
   fresh(); World.start(); await sleep(50); World.busy = false;
@@ -65,6 +65,7 @@ const icoIn = (html) => [...String(html).matchAll(/data-item-icon="([^"]+)"/g)].
   await sleep(5); let L = doc.querySelector('#ui .rw-list:last-child') || [...doc.querySelectorAll('.rw-list')].pop(); let rows = L.querySelectorAll('.rw-item');
   T(rows[0].classList.contains('has-icon') && rows[0].firstElementChild.classList.contains('tqi') && rows[0].querySelector('.l').innerHTML === '&lt;b&gt;名&lt;/b&gt;' && rows[0].querySelector('.s').innerHTML === '説明&amp;' && !rows[1].querySelector('.tqi') && rows[2].getAttribute('aria-disabled') === 'true' && rows[2].querySelector('.tqi'), 'itemId の行だけ先頭に絵。ラベル・説明のエスケープ、無効の行はそのまま');
   T([...rows].every((r, i) => r.getAttribute('data-i') === String(i) && r.getAttribute('role') === 'option') && rows[0].getAttribute('aria-selected') === 'true' && L.querySelector('.rw-items').classList.contains('has-icons'), 'data-i・role・aria-selected はそのまま');
+  T(rows[0].textContent === '<b>名</b>×1説明&' && rows[2].textContent === '無効', '絵を足しても、行の文字（textContent）は名前・右の値・説明だけ（「?」などを混ぜない）');
   rows[1].click(); T(await p === 1, '行をクリックすると、今までどおりその番号を返す（絵を含む行全体が操作の対象）');
   const plain = [{ label: 'a', right: 'b', sub: 'c' }, { label: 'd' }]; const keepII = w.ItemIcons;
   p = Win.list(plain, { title: 'x' }); await sleep(5); const h1 = [...doc.querySelectorAll('.rw-list')].pop().querySelector('.rw-items').outerHTML; [...doc.querySelectorAll('.rw-close')].pop().click(); await p;
@@ -89,7 +90,7 @@ const icoIn = (html) => [...String(html).matchAll(/data-item-icon="([^"]+)"/g)].
   T(cand.filter((x) => x.label === 'はずす').length === 1 && !cand.filter((x) => x.label === 'はずす')[0].itemId && cand.filter((x) => x.itemId).every((x) => Actors_slot(x.itemId) === 'weapon'), '候補：武器の行に絵、「はずす」は絵なし');
   function Actors_slot(id) { return w.Actors.slotOf(id); }
   const cmp = Menu.equipCompareHtml(hero, 'weapon', 'steel_sword'), cmp0 = Menu.equipCompareHtml(hero, 'weapon', null);
-  T(icoIn(cmp).join() === 'wooden_sword,steel_sword' && /eq-tbl/.test(cmp) && icoIn(cmp0).join() === 'wooden_sword' && /eq-none">はずす/.test(cmp0), '比較：いまの装備 → 変更先の絵（はずすは絵なし）。能力の表はそのまま');
+  T(icoIn(cmp).join() === 'steel_sword,wooden_sword' && /eq-tbl/.test(cmp) && /class="eq-chg"><span class="eq-up">攻撃 ▲\+/.test(cmp) && icoIn(cmp0).join() === 'wooden_sword' && /eq-none">はずす/.test(cmp0), '比較：変更先の大きい絵の隣に、名前・いまの装備（小さい絵）・変わる能力（はずすは絵なし）。能力の表はそのまま');
   const pe = Menu.partyHtml.equip(hero); T(icoIn(pe).join() === 'wooden_sword' && (pe.match(/pt-eq/g) || []).length === 5, 'パーティの装備：装備している品だけ絵');
   // 図鑑
   LISTS = []; CHOICEQ = [1, -1]; await Menu.encyclopedia();
@@ -138,13 +139,31 @@ const icoIn = (html) => [...String(html).matchAll(/data-item-icon="([^"]+)"/g)].
   State.addItem('steel_sword', 1); const atk0 = w.Actors.stats(a0).atk; const cur0 = a0.equip.weapon; Services.equipItem(a0, 'steel_sword');
   T(a0.equip.weapon === 'steel_sword' && w.Actors.stats(a0).atk === atk0 - (cur0 ? ITEMS[cur0].atk || 0 : 0) + ITEMS.steel_sword.atk && !d.inventory.steel_sword, '装備を変える：攻撃力が鋼の剣の分だけ変わり、持ち物から減る');
 
-  console.log('-- H 旧セーブ');
-  const old = JSON.parse(fs.readFileSync(FIX + 'old_cleared.json', 'utf8')); w.localStorage.setItem('mtq-rpg-v2-slot-3', JSON.stringify(old)); d = State.load(3); State.data = d; World.start(); await sleep(20); World.busy = false;
-  const before = JSON.stringify(d); LISTS = []; await Menu.items({}); const oi = Object.keys(d.inventory).filter((id) => ITEMS[id]);
-  T(LISTS[0].rows.length === oi.length && LISTS[0].rows.every((x) => x.right === '×' + d.inventory[x.itemId]), '旧セーブ（基準コミットのゲームで作ったもの）：持ち物 ' + oi.length + ' 種がそのまま並び、所持数も同じ');
-  const hh = State.partyActors()[0]; LISTS = []; LISTQ = [-1]; await Menu.equip(hh); const er = LISTS[0].rows;
-  T(['weapon', 'armor', 'shield', 'head', 'acc'].every((sl, k) => (hh.equip[sl] ? er[k].right === ITEMS[hh.equip[sl]].name && er[k].itemId === hh.equip[sl] : er[k].right === '―' && !er[k].itemId)), '旧セーブ：装備の枠も同じ（装備している枠だけ絵）');
-  T(JSON.stringify(State.data) === before, '旧セーブ：見ただけでは中身は変わらない');
+  console.log('-- H 旧セーブ（2 つ：参照コミット 483fd5f のゲームで作った遊んでいる途中のセーブ／v9.4 より前の版 6b4d2a9 のゲームで作ったクリア済みのセーブ）');
+  const OLDS = [[path.resolve(__dirname, 'fixtures') + '/save_483fd5f.json', '483fd5f のセーブ（docs/tools/icons/fixtures/save_483fd5f.json）'], [FIX + 'old_cleared.json', '6b4d2a9 のクリア済みのセーブ（docs/tools/rpg94/fixtures/old_cleared.json）']];
+  for (const [file, lab] of OLDS) {
+    // jsdom の中の LocalStorage だけで読み込む（元のファイルは書き換えない）
+    const old = JSON.parse(fs.readFileSync(file, 'utf8')); w.localStorage.setItem('mtq-rpg-v2-slot-3', JSON.stringify(old)); d = State.load(3); State.data = d; World.start(); await sleep(20); World.busy = false;
+    const before = JSON.stringify(d); LISTS = []; await Menu.items({}); const oi = Object.keys(d.inventory).filter((id) => ITEMS[id]);
+    T(LISTS[0].rows.length === oi.length && LISTS[0].rows.every((x) => x.right === '×' + d.inventory[x.itemId] && w.ItemIcons.has(x.itemId)), '旧セーブ ' + lab + '：持ち物 ' + oi.length + ' 種がそのまま並び、所持数も同じ・すべてに絵');
+    const hh = State.partyActors()[0]; LISTS = []; LISTQ = [-1]; await Menu.equip(hh); const er = LISTS[0].rows;
+    T(['weapon', 'armor', 'shield', 'head', 'acc'].every((sl, k) => (hh.equip[sl] ? er[k].right === ITEMS[hh.equip[sl]].name && er[k].itemId === hh.equip[sl] : er[k].right === '―' && !er[k].itemId)), '旧セーブ：装備の枠も同じ（装備している枠だけ絵：' + ['weapon', 'armor', 'shield', 'head', 'acc'].map((sl) => hh.equip[sl] || '-').join(',') + '）');
+    T(JSON.stringify(State.data) === before, '旧セーブ：見ただけでは中身は変わらない');
+    // そのセーブのまま、買う・売る・使う・装備の前後を比べる
+    const om = State.partyActors().some((a) => a.job === 'merchant'), buyP = om ? Math.round(pp * 0.9) : pp, sellP = Math.floor(pp / 2);
+    d.gold = Math.max(d.gold, 1000); const og = d.gold, op0 = d.inventory.potion || 0;
+    LISTS = []; CHOICEQ = [0, 1, 2]; LISTQ = [0]; await Services.shop('item', ['potion']);   // 買う → ポーション → 2つ → やめる
+    T((d.inventory.potion || 0) === op0 + 2 && d.gold === og - buyP * 2, '旧セーブ：ポーションを2つ買う（所持 ' + op0 + '→' + (d.inventory.potion || 0) + '・お金 −' + buyP * 2 + 'G）');
+    CHOICEQ = [1, 0, 2]; LISTQ = [(rows) => rows.findIndex((r) => r.itemId === 'potion')]; await Services.shop('item', ['potion']);   // 売る → ポーションを 1つ
+    T((d.inventory.potion || 0) === op0 + 1 && d.gold === og - buyP * 2 + sellP, '旧セーブ：1つ売る（所持 ' + (d.inventory.potion || 0) + '・お金 +' + sellP + 'G）');
+    const oa = State.partyActors()[0], os = w.Actors.stats(oa); oa.hp = 1; LISTQ = [0]; await Menu.useItem('potion');
+    T((d.inventory.potion || 0) === op0 && oa.hp === Math.min(os.maxHp, 1 + (ITEMS.potion.effect.hp || 0)), '旧セーブ：使う（所持 ' + op0 + '・HP 1→' + oa.hp + '）');
+    State.addItem('steel_sword', 1); const ow = oa.equip.weapon, owN = ow ? (d.inventory[ow] || 0) : 0, oss = d.inventory.steel_sword || 0;
+    const prev = Menu.equipCompareHtml(oa, 'weapon', 'steel_sword').match(/<td>攻撃<\/td><td>(\d+)<\/td><td>→<\/td><td><b>(\d+)<\/b>/);
+    Services.equipItem(oa, 'steel_sword');
+    T(prev && oa.equip.weapon === 'steel_sword' && w.Actors.stats(oa).atk === +prev[2] && (d.inventory.steel_sword || 0) === oss - 1 && (!ow || (d.inventory[ow] || 0) === owN + 1), '旧セーブ：装備を変える（攻撃 ' + (prev ? prev[1] + '→' + prev[2] : '?') + '＝変える前の比較の表と同じ。鋼の剣は持ち物から減り、' + (ow ? ITEMS[ow].name + 'は持ち物に戻る' : '前は素手') + '）');
+    T(!/tqi|item-icons|webp/.test(JSON.stringify(State.data)), '旧セーブ：売買・使用・装備のあとも、セーブに絵の URL・読み込みの状態は入らない');
+  }
 
   console.log('\n結果：OK ' + okN + ' / NG ' + ng.length + (ng.length ? '\nNG：' + ng.join('\n    ') : ''));
   process.exit(ng.length ? 1 : 0);

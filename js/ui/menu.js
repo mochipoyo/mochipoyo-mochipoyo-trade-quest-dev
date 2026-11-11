@@ -254,8 +254,14 @@
   Menu.equipCompareHtml = function (a, slot, id) {
     var before = Actors.stats(a), after = statsWith(a, slot, id); var it = id ? ITEMS[id] : null; var curId = a.equip[slot];
     var rows = STAT_ROWS.map(function (r) { var b = before[r[0]] || 0, f = after[r[0]] || 0, df = f - b; return '<tr' + (df ? ' class="' + (df > 0 ? 'eq-up' : 'eq-down') + '"' : '') + '><td>' + r[1] + '</td><td>' + b + '</td><td>→</td><td><b>' + f + '</b></td><td>' + (df > 0 ? '▲+' + df : df < 0 ? '▼' + df : '±0') + '</td></tr>'; }).join('');
-    var II = root.ItemIcons;   // v9.5 いまの装備（小さい絵）→ 変更先（大きい絵）。「はずす」・空きは品物ではないので絵にしない
-    var arts = II ? '<div class="eq-arts">' + (curId ? II.html(curId, { size: 48 }) : '<span class="eq-none">なし</span>') + '<span class="eq-arrow">→</span>' + (it ? II.detailHtml(id) : '<span class="eq-none">はずす</span>') + '<span class="eq-new-name">' + esc(it ? it.name : '（はずす）') + '</span></div>' : '';
+    // v9.5 変更先の大きい絵。隣に名前・いまの装備（小さい絵）・変わる能力（下の表と同じ数字。スマホでも絵の隣で見える）。「はずす」・空きは品物ではないので絵にしない
+    var II = root.ItemIcons, arts = '';
+    if (II) {
+      var chg = STAT_ROWS.map(function (r) { var df = (after[r[0]] || 0) - (before[r[0]] || 0); return df ? '<span class="' + (df > 0 ? 'eq-up' : 'eq-down') + '">' + r[1] + ' ' + (df > 0 ? '▲+' + df : '▼' + df) + '</span>' : ''; }).filter(Boolean);
+      arts = '<div class="eq-arts">' + (it ? II.detailHtml(id) : '<span class="eq-none">はずす</span>') + '<div class="eq-side"><div class="eq-new-name">' + esc(it ? it.name : '（はずす）') + '</div>' +
+        '<div class="eq-now"><span class="muted small">いま</span>' + (curId ? II.html(curId, { size: 32 }) : '<span class="eq-none">なし</span>') + '</div>' +
+        '<div class="eq-chg">' + (chg.length ? chg.join('') : '<span class="muted">能力の数値は変わらない</span>') + '</div></div></div>';
+    }
     var h = '<div class="eq-cmp">' + arts + '<div class="small muted">' + esc(a.name) + '：' + esc(curId ? ITEMS[curId].name : '（なし）') + ' → <b>' + esc(it ? it.name : '（はずす）') + '</b></div><table class="tbl eq-tbl"><tr><th>能力</th><th>いま</th><th></th><th>装備後</th><th>差</th></tr>' + rows + '</table>';
     if (it) {
       var ft = fxText(it); if (ft.length) h += '<div class="eq-fx"><b>数値のほかの効果</b><ul>' + ft.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';

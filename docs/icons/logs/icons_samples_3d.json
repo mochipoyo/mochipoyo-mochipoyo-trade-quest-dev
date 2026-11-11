@@ -1,0 +1,225 @@
+{
+ "KIND": "3d",
+ "ok": 18,
+ "ng": 0,
+ "rows": [
+  {
+   "id": "wooden_sword",
+   "game": "木の剣",
+   "art": "木の剣",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/wooden_sword.webp?v=20261111-v1"
+  },
+  {
+   "id": "steel_sword",
+   "game": "鋼の剣",
+   "art": "鋼の剣",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/steel_sword.webp?v=20261111-v1"
+  },
+  {
+   "id": "stoploss_shield",
+   "game": "損切りの盾",
+   "art": "損切りの盾",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/stoploss_shield.webp?v=20261111-v1"
+  },
+  {
+   "id": "b19_unsmiling_aegis",
+   "game": "笑わぬ大盾",
+   "art": "笑わぬ大盾",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/b19_unsmiling_aegis.webp?v=20261111-v1"
+  },
+  {
+   "id": "potion",
+   "game": "ポーション",
+   "art": "ポーション",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/potion.webp?v=20261111-v1"
+  },
+  {
+   "id": "bread_baguette",
+   "game": "勇者のバゲット",
+   "art": "勇者のバゲット",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/bread_baguette.webp?v=20261111-v1"
+  },
+  {
+   "id": "porkbits_don",
+   "game": "伝説のポークビッツ丼",
+   "art": "伝説のポークビッツ丼",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/porkbits_don.webp?v=20261111-v1"
+  },
+  {
+   "id": "forest_key",
+   "game": "森の鍵",
+   "art": "森の鍵",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/forest_key.webp?v=20261111-v1"
+  },
+  {
+   "id": "op_001",
+   "game": "古代文明の歯車",
+   "art": "古代文明の歯車",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/op_001.webp?v=20261111-v1"
+  },
+  {
+   "id": "dow_greatsword_2",
+   "game": "ダウの大剣＋",
+   "art": "ダウの大剣＋",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/dow_greatsword_2.webp?v=20261111-v1"
+  },
+  {
+   "id": "leather_cap",
+   "game": "革の帽子",
+   "art": "革の帽子",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/leather_cap.webp?v=20261111-v1"
+  },
+  {
+   "id": "ring_power",
+   "game": "力の指輪",
+   "art": "力の指輪",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/ring_power.webp?v=20261111-v1"
+  },
+  {
+   "id": "coffee",
+   "game": "コーヒー",
+   "art": "コーヒー",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/coffee.webp?v=20261111-v1"
+  },
+  {
+   "id": "fruit_juice",
+   "game": "フルーツジュース",
+   "art": "フルーツジュース",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/fruit_juice.webp?v=20261111-v1"
+  },
+  {
+   "id": "qm_trophy_001",
+   "game": "モグランのかじった単語帳",
+   "art": "モグランのかじった単語帳",
+   "w128": "128x128",
+   "w256": "256x256",
+   "png": "256x256",
+   "url": "http://localhost:8872/assets/item-icons/webp128/qm_trophy_001.webp?v=20261111-v1"
+  },
+  {
+   "id": "explorer_ring",
+   "game": "探索者の指輪",
+   "art": null,
+   "w128": "-",
+   "w256": "-",
+   "png": "-",
+   "url": null
+  }
+ ],
+ "steps": [
+  {
+   "ok": true,
+   "m": "wooden_sword「木の剣」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/wooden_sword.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "steel_sword「鋼の剣」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/steel_sword.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "stoploss_shield「損切りの盾」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/stoploss_shield.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "b19_unsmiling_aegis「笑わぬ大盾」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/b19_unsmiling_aegis.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "potion「ポーション」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/potion.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "bread_baguette「勇者のバゲット」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/bread_baguette.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "porkbits_don「伝説のポークビッツ丼」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/porkbits_don.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "forest_key「森の鍵」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/forest_key.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "op_001「古代文明の歯車」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/op_001.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "dow_greatsword_2「ダウの大剣＋」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/dow_greatsword_2.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "leather_cap「革の帽子」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/leather_cap.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "ring_power「力の指輪」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/ring_power.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "coffee「コーヒー」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/coffee.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "fruit_juice「フルーツジュース」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/fruit_juice.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "qm_trophy_001「モグランのかじった単語帳」：webp128 128x128・webp256 256x256・png256 256x256（/assets/item-icons/webp128/qm_trophy_001.webp?v=20261111-v1）"
+  },
+  {
+   "ok": true,
+   "m": "絵のない ID（explorer_ring「探索者の指輪」）は対応表になく、ほかの絵を使わない（「？」の枠）"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  },
+  {
+   "ok": true,
+   "m": "思いがけない 404 などはない"
+  }
+ ]
+}

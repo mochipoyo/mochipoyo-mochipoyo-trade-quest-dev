@@ -1,0 +1,44 @@
+装備・道具の絵の確かめ（jsdom）2026-11-11 11:30（版 8aeea8cbcd：「?」の印を CSS に移す前の形。最後の形でのやり直しは tests_final.log）
+=== icons/icons_test.js
+rc=0
+== 3D 版と同じ読み込み　読み込みのエラー 0
+  OK  読み込みのエラーなし
+  OK  ItemIcons.coverage(ITEMS, OOPARTS)：対象 664（ITEMS 564・OOPARTS 100）・一致 659・絵なし 5
+    絵のない ID：explorer_ring, ancient_shield, starseer_staff, spacetime_armor, archeion_blade
+  OK  絵のない ID は、js/rpg/ooparts.js が起動時に足すオーパーツの礼の品だけ（素材の一覧にない）
+  OK  行をクリックすると、今までどおりその番号を返す（絵を含む行全体が操作の対象）
+  OK  戦闘の結果：落とした品の行に絵（res.drops のキー＝ID）
+結果：OK 48 / NG 0
+=== icons/icons_test.js 2d
+rc=0
+== 2D 版　読み込みのエラー 0
+  OK  読み込みのエラーなし
+  OK  ItemIcons.coverage(ITEMS, OOPARTS)：対象 664（ITEMS 564・OOPARTS 100）・一致 659・絵なし 5
+    絵のない ID：explorer_ring, ancient_shield, starseer_staff, spacetime_armor, archeion_blade
+  OK  絵のない ID は、js/rpg/ooparts.js が起動時に足すオーパーツの礼の品だけ（素材の一覧にない）
+  OK  行をクリックすると、今までどおりその番号を返す（絵を含む行全体が操作の対象）
+  OK  戦闘の結果：落とした品の行に絵（res.drops のキー＝ID）
+結果：OK 48 / NG 0
+=== rpg94/bonds94_test.js
+rc=0
+== 3D 版と同じ読み込み　読み込みのエラー 0
+  OK  読み込みのエラーなし
+  OK  個人の話：18対象×3話＝54話（ID は「人_番号」）
+結果：OK 67 / NG 0
+=== rpg94/bonds94_test.js 2d
+rc=0
+== 2D 版　読み込みのエラー 0
+  OK  読み込みのエラーなし
+  OK  個人の話：18対象×3話＝54話（ID は「人_番号」）
+結果：OK 67 / NG 0
+=== rpg94/bonds941_test.js
+rc=0
+== 3D 版と同じ読み込み　読み込みのエラー 0
+  OK  読み込みのエラーなし
+結果：OK 77 / NG 0
+=== rpg94/bonds941_test.js 2d
+rc=0
+== 2D 版　読み込みのエラー 0
+  OK  読み込みのエラーなし
+結果：OK 77 / NG 0
+ALLDONE
