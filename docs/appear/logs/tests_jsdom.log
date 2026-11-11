@@ -1,0 +1,49 @@
+装備の外見の確かめ（jsdom）2026-11-11 16:10 版 845f4406f2
+=== appear/appear_test.js
+rc=0
+結果：OK 26 / NG 0
+=== appear/appear_test.js 2d
+rc=0
+結果：OK 26 / NG 0
+=== icons/icons_test.js
+rc=0
+  OK  戦闘の結果：落とした品の行に絵（res.drops のキー＝ID）
+結果：OK 62 / NG 0
+=== icons/icons_test.js 2d
+rc=0
+  OK  戦闘の結果：落とした品の行に絵（res.drops のキー＝ID）
+結果：OK 62 / NG 0
+=== menu92/menu92_test.js
+rc=0
+結果：OK 89 / NG 0
+=== menu92/menu92_test.js 2d
+rc=0
+結果：OK 89 / NG 0
+=== rpg93/rpg93_test.js
+rc=0
+  OK  満タンになったかの結果が実際の HP と同じ
+結果：OK 89 / NG 0
+=== rpg93/rpg93_test.js 2d
+rc=0
+  OK  満タンになったかの結果が実際の HP と同じ
+結果：OK 89 / NG 0
+=== v88/ui88_test.js
+rc=0
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/ui88_test.js 2d
+rc=0
+結果: 62 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js
+rc=0
+  OK  経験値が入る（6→1・Lv1→2・結果 won）
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== v88/battle88_test.js 2d
+rc=0
+  OK  経験値が入る（6→1・Lv1→2・結果 won）
+結果: 22 OK / 0 NG []　ページのエラー 0
+=== rpg94/bonds94_test.js 2d
+rc=0
+結果：OK 67 / NG 0
+=== rpg94/bonds941_test.js 2d
+rc=0
+結果：OK 77 / NG 0

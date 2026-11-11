@@ -1,0 +1,127 @@
+装備の外見のブラウザの確かめ（ヘッドレス Chromium・GPU なし。実機ではない）版 845f4406f2
+装備の外見のブラウザの確かめ（Chromium・GPU なし。実機ではない）2026-11-11 16:12
+=== appear 2d pc 16:12:33
+  OK  1 なかまの画面：主人公（job:warrior）の全身にいまの装備（剣・鉄の鎧・鉄の盾・鉄の兜・指輪）を合成（高さ 306px）
+  OK  1 体格の違う仲間（ガルド）：槍とローブを合成（["gald","warrior","assets/characters/equip-bases/gald/front.png","front",["iron_spear","ro）
+  OK  2 そうび（枠の一覧）：同じ人物の全身（いまの装備）
+  OK  2 試着（剣→槍）：候補の全身は槍。本人の装備は変わらない
+  OK  2 試着（はずす）：武器のない全身。本人の装備は変わらない
+  OK  2 Esc（キャンセル）：装備は変わらない（外見も確定しない）
+  OK  2 兜→帽子（hero（転職：戦士→魔法使い）：iron_helm helm/helm → wizard_hat hat/witch）。見るだけで本人の装備は変わらない
+  OK  2 決めたあと：槍・ローブ・盾なし・頭なし・装飾品なしの外見（["hero","warrior","assets/characters/equip-bases/hero/job_warrior.png","job:warrior",["iron_spear","）
+  OK  3 転職（魔法使い）：見た目の素体も職業の立ち絵に変わる（job:mage）
+  OK  3 セーブには外見を書かない。ロードした装備ID から同じ外見（signature が同じ）
+  OK  4 2D の戦闘：味方の欄の小さな立ち絵に合成（hero:ok gald:ok lina:ok。スマホでは欄の立ち絵は今までどおり出さない）
+  OK  5 装備を変えると能力値・所持数は今までの処理どおり変わる（防御 38→11）
+  OK  5 未対応の人物・向きはない（{}）。合成 8 回・使い回し 5 回
+  OK  5 ページのエラーなし
+  OK  5 コンソールのエラーなし
+  OK  5 思いがけない 404 などはない
+結果 2d pc：OK 16 / NG 0
+rc=0
+=== appear 2d m360 16:13:31
+  OK  1 なかまの画面：主人公（job:warrior）の全身にいまの装備（剣・鉄の鎧・鉄の盾・鉄の兜・指輪）を合成（高さ 194px）
+  OK  1 体格の違う仲間（ガルド）：槍とローブを合成（["gald","warrior","assets/characters/equip-bases/gald/front.png","front",["iron_spear","ro）
+  OK  2 そうび（枠の一覧）：同じ人物の全身（いまの装備）
+  OK  2 試着（剣→槍）：候補の全身は槍。本人の装備は変わらない
+  OK  2 試着（はずす）：武器のない全身。本人の装備は変わらない
+  OK  2 Esc（キャンセル）：装備は変わらない（外見も確定しない）
+  OK  2 兜→帽子（hero（転職：戦士→魔法使い）：iron_helm helm/helm → wizard_hat hat/witch）。見るだけで本人の装備は変わらない
+  OK  2 決めたあと：槍・ローブ・盾なし・頭なし・装飾品なしの外見（["hero","warrior","assets/characters/equip-bases/hero/job_warrior.png","job:warrior",["iron_spear","）
+  OK  3 転職（魔法使い）：見た目の素体も職業の立ち絵に変わる（job:mage）
+  OK  3 セーブには外見を書かない。ロードした装備ID から同じ外見（signature が同じ）
+  OK  4 2D の戦闘：味方の欄の小さな立ち絵に合成（hero:ok gald:ok lina:ok。スマホでは欄の立ち絵は今までどおり出さない）
+  OK  5 装備を変えると能力値・所持数は今までの処理どおり変わる（防御 38→11）
+  OK  5 未対応の人物・向きはない（{}）。合成 8 回・使い回し 5 回
+  OK  5 ページのエラーなし
+  OK  5 コンソールのエラーなし
+  OK  5 思いがけない 404 などはない
+結果 2d m360：OK 16 / NG 0
+rc=0
+=== appear 2d land 16:14:28
+  OK  1 なかまの画面：主人公（job:warrior）の全身にいまの装備（剣・鉄の鎧・鉄の盾・鉄の兜・指輪）を合成（高さ 306px）
+  OK  1 体格の違う仲間（ガルド）：槍とローブを合成（["gald","warrior","assets/characters/equip-bases/gald/front.png","front",["iron_spear","ro）
+  OK  2 そうび（枠の一覧）：同じ人物の全身（いまの装備）
+  OK  2 試着（剣→槍）：候補の全身は槍。本人の装備は変わらない
+  OK  2 試着（はずす）：武器のない全身。本人の装備は変わらない
+  OK  2 Esc（キャンセル）：装備は変わらない（外見も確定しない）
+  OK  2 兜→帽子（hero（転職：戦士→魔法使い）：iron_helm helm/helm → wizard_hat hat/witch）。見るだけで本人の装備は変わらない
+  OK  2 決めたあと：槍・ローブ・盾なし・頭なし・装飾品なしの外見（["hero","warrior","assets/characters/equip-bases/hero/job_warrior.png","job:warrior",["iron_spear","）
+  OK  3 転職（魔法使い）：見た目の素体も職業の立ち絵に変わる（job:mage）
+  OK  3 セーブには外見を書かない。ロードした装備ID から同じ外見（signature が同じ）
+  OK  4 2D の戦闘：味方の欄の小さな立ち絵に合成（hero:ok gald:ok lina:ok。スマホでは欄の立ち絵は今までどおり出さない）
+  OK  5 装備を変えると能力値・所持数は今までの処理どおり変わる（防御 38→11）
+  OK  5 未対応の人物・向きはない（{}）。合成 8 回・使い回し 5 回
+  OK  5 ページのエラーなし
+  OK  5 コンソールのエラーなし
+  OK  5 思いがけない 404 などはない
+結果 2d land：OK 16 / NG 0
+rc=0
+=== appear 3d pc 16:15:26
+  OK  1 なかまの画面：主人公（job:warrior）の全身にいまの装備（剣・鉄の鎧・鉄の盾・鉄の兜・指輪）を合成（高さ 306px）
+  OK  1 体格の違う仲間（ガルド）：槍とローブを合成（["gald","warrior","assets/characters/equip-bases/gald/front.png","front",["iron_spear","ro）
+  OK  2 そうび（枠の一覧）：同じ人物の全身（いまの装備）
+  OK  2 試着（剣→槍）：候補の全身は槍。本人の装備は変わらない
+  OK  2 試着（はずす）：武器のない全身。本人の装備は変わらない
+  OK  2 Esc（キャンセル）：装備は変わらない（外見も確定しない）
+  OK  2 兜→帽子（hero（転職：戦士→魔法使い）：iron_helm helm/helm → wizard_hat hat/witch）。見るだけで本人の装備は変わらない
+  OK  2 決めたあと：槍・ローブ・盾なし・頭なし・装飾品なしの外見（["hero","warrior","assets/characters/equip-bases/hero/job_warrior.png","job:warrior",["iron_spear","）
+  OK  3 転職（魔法使い）：見た目の素体も職業の立ち絵に変わる（job:mage）
+  OK  3 セーブには外見を書かない。ロードした装備ID から同じ外見（signature が同じ）
+  OK  4 3D の戦闘（back）：主人公の 4 方向の絵に装備を合成（pixel:dir:back）
+  OK  4 3D の戦闘：戦闘メンバー全員が合成した絵（hero:ok gald:ok lina:ok）
+  OK  4 3D の勝利：正面に振り向いた絵も同じ装備（pixel:dir:front）
+  OK  5 装備を変えると能力値・所持数は今までの処理どおり変わる（防御 38→11）
+  OK  5 未対応の人物・向きはない（{}）。合成 12 回・使い回し 7 回
+  OK  5 ページのエラーなし
+  OK  5 コンソールのエラーなし
+  OK  5 思いがけない 404 などはない
+結果 3d pc：OK 18 / NG 0
+rc=0
+=== appear 3d m360 16:17:47
+  OK  1 なかまの画面：主人公（job:warrior）の全身にいまの装備（剣・鉄の鎧・鉄の盾・鉄の兜・指輪）を合成（高さ 194px）
+  OK  1 体格の違う仲間（ガルド）：槍とローブを合成（["gald","warrior","assets/characters/equip-bases/gald/front.png","front",["iron_spear","ro）
+  OK  2 そうび（枠の一覧）：同じ人物の全身（いまの装備）
+  OK  2 試着（剣→槍）：候補の全身は槍。本人の装備は変わらない
+  OK  2 試着（はずす）：武器のない全身。本人の装備は変わらない
+  OK  2 Esc（キャンセル）：装備は変わらない（外見も確定しない）
+  OK  2 兜→帽子（hero（転職：戦士→魔法使い）：iron_helm helm/helm → wizard_hat hat/witch）。見るだけで本人の装備は変わらない
+  OK  2 決めたあと：槍・ローブ・盾なし・頭なし・装飾品なしの外見（["hero","warrior","assets/characters/equip-bases/hero/job_warrior.png","job:warrior",["iron_spear","）
+  OK  3 転職（魔法使い）：見た目の素体も職業の立ち絵に変わる（job:mage）
+  OK  3 セーブには外見を書かない。ロードした装備ID から同じ外見（signature が同じ）
+  OK  4 3D の戦闘（back）：主人公の 4 方向の絵に装備を合成（pixel:dir:back）
+  OK  4 3D の戦闘：戦闘メンバー全員が合成した絵（hero:ok gald:ok lina:ok）
+  OK  4 3D の勝利：正面に振り向いた絵も同じ装備（pixel:dir:front）
+  OK  5 装備を変えると能力値・所持数は今までの処理どおり変わる（防御 38→11）
+  OK  5 未対応の人物・向きはない（{}）。合成 12 回・使い回し 7 回
+  OK  5 ページのエラーなし
+  OK  5 コンソールのエラーなし
+  OK  5 思いがけない 404 などはない
+結果 3d m360：OK 18 / NG 0
+rc=0
+=== appear 3d land 16:19:13
+  OK  1 なかまの画面：主人公（job:warrior）の全身にいまの装備（剣・鉄の鎧・鉄の盾・鉄の兜・指輪）を合成（高さ 306px）
+  OK  1 体格の違う仲間（ガルド）：槍とローブを合成（["gald","warrior","assets/characters/equip-bases/gald/front.png","front",["iron_spear","ro）
+  OK  2 そうび（枠の一覧）：同じ人物の全身（いまの装備）
+  OK  2 試着（剣→槍）：候補の全身は槍。本人の装備は変わらない
+  OK  2 試着（はずす）：武器のない全身。本人の装備は変わらない
+  OK  2 Esc（キャンセル）：装備は変わらない（外見も確定しない）
+  OK  2 兜→帽子（hero（転職：戦士→魔法使い）：iron_helm helm/helm → wizard_hat hat/witch）。見るだけで本人の装備は変わらない
+  OK  2 決めたあと：槍・ローブ・盾なし・頭なし・装飾品なしの外見（["hero","warrior","assets/characters/equip-bases/hero/job_warrior.png","job:warrior",["iron_spear","）
+  OK  3 転職（魔法使い）：見た目の素体も職業の立ち絵に変わる（job:mage）
+  OK  3 セーブには外見を書かない。ロードした装備ID から同じ外見（signature が同じ）
+  OK  4 3D の戦闘（back）：主人公の 4 方向の絵に装備を合成（pixel:dir:back）
+  OK  4 3D の戦闘：戦闘メンバー全員が合成した絵（hero:ok gald:ok lina:ok）
+  OK  4 3D の勝利：正面に振り向いた絵も同じ装備（pixel:dir:front）
+  OK  5 装備を変えると能力値・所持数は今までの処理どおり変わる（防御 38→11）
+  OK  5 未対応の人物・向きはない（{}）。合成 12 回・使い回し 7 回
+  OK  5 ページのエラーなし
+  OK  5 コンソールのエラーなし
+  OK  5 思いがけない 404 などはない
+結果 3d land：OK 18 / NG 0
+rc=0
+=== model3d 16:20:39
+errors 0 
+結果 model3d：OK
+rc=0
+ALLDONE
