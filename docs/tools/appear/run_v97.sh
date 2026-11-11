@@ -22,6 +22,8 @@ run "menu92/menu92_test.js 2d" node docs/tools/menu92/menu92_test.js 2d
 run "ブラウザ pixel 3d（メニュー・戦闘の背面）" env KIND=3d PORT=8894 node docs/tools/appear/browser/appear_pixel.js
 run "ブラウザ pixel 2d（メニュー）" env KIND=2d PORT=8894 node docs/tools/appear/browser/appear_pixel.js
 run "ブラウザ 合成の絵の書き出し" env PORT=8894 node docs/tools/appear/browser/appear_pixel_dump.js
+run "ブラウザ ふつうの手順（装備メニューで変更・解除 → そのまま戦闘）PC" env VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_ui.js
+run "ブラウザ ふつうの手順 スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_ui.js
 run "ブラウザ 別のサイト pixel 3d cors" env MODE=pixel KIND=3d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 3d nocors" env MODE=pixel KIND=3d XMODE=nocors XPORT=8896 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 2d cors" env MODE=pixel KIND=2d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
@@ -31,4 +33,5 @@ run "ブラウザ vector 2d pc（v9.6 の確かめ）" env KIND=2d VIEW=pc PORT=
 run "ブラウザ vector 3d pc（v9.6 の確かめ）" env KIND=3d VIEW=pc PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_browser.js
 run "ブラウザ 3Dモデル（?party=model）" env PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_model3d.js
 kill $X1 $X2 2>/dev/null; wait $X1 $X2 2>/dev/null; rm -f "$ONE"
+python3 docs/tools/appear/pixel_sheets.py >> "$LOG" 2>&1
 echo "--- まとめ" >> "$LOG"; echo "NG・失敗の行：$(grep -cE '^  NG  |終了コード|CRASH|FAIL' "$LOG")" >> "$LOG"

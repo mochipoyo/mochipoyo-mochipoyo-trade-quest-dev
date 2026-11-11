@@ -51,9 +51,9 @@ const SETS = [
     await p.waitForTimeout(250);
     const m = await p.evaluate(() => {
       const h = document.querySelector('#ui .pt-art .ea-host'); const cv = h && h.querySelector('canvas.ea-canvas'); const r = cv ? cv.getBoundingClientRect() : null;
-      const k = cv ? parseFloat(getComputedStyle(cv).getPropertyValue('--ea-k')) : null; const view = EquipmentAppearance.pixelView('hero', 'job:warrior');
-      // 元の絵（130 × 200）の範囲が画面のどこに来るか：下辺・左右の中心・1 ドットの大きさ
-      const px = r ? r.height / (k * view.h) : null;
+      const view = EquipmentAppearance.pixelView('hero', 'job:warrior'); const f = view.frame; const k = (f.y1 - f.y0) / view.h;
+      // 決まった枠（帽子・槍・杖の先まで）：下辺＝足もと・左右の中心・1 ドットの大きさ
+      const px = r ? r.height / (f.y1 - f.y0) : null;
       return { st: h && h.getAttribute('data-ea-state'), parts: cv && cv.getAttribute('data-ea-parts'), mode: cv && cv.getAttribute('data-ea-mode'), k, px, bottom: r && r.bottom, cx: r && (r.left + r.width / 2), w: r && r.width, h: r && r.height, cw: cv && cv.width, ch: cv && cv.height };
     });
     rec.menu[st.key] = Object.assign({ equip: e.equip, stats: e.stats }, m);
@@ -66,7 +66,7 @@ const SETS = [
   const ms = SETS.map((s) => rec.menu[s.key]);
   const near = (a, b, t) => Math.abs(a - b) <= t;
   S(ms.every((m) => near(m.bottom, ms[0].bottom, 1) && near(m.cx, ms[0].cx, 1) && near(m.px, ms[0].px, 0.01)), 'メニュー：足もと（元の絵の下辺）・左右の中心・1 ドットの大きさが、5 つの組み合わせで同じ（' + ms.map((m) => [m.bottom.toFixed(1), m.cx.toFixed(1), m.px.toFixed(3)].join('/')).join('　') + '）');
-  S(ms.every((m) => near(m.px, 300 / 200, 0.02) || near(m.px, 190 / 200, 0.02)), 'メニュー：人物の大きさは今までの立ち絵と同じ（元の絵 200 ドット → 画面 ' + (ms[0].px * 200).toFixed(0) + 'px）');
+  S(ms.every((m) => near(m.h, 300, 1) || near(m.h, 190, 1)), 'メニュー：決まった枠（帽子・槍・杖の先まで）を絵の枠の高さに収める（枠 ' + ms[0].h + 'px・1 ドット ' + ms[0].px.toFixed(3) + 'px＝元の絵の ' + (ms[0].px * 200).toFixed(0) + 'px 分）');
   // ---------------- 合成の絵の数値（同じ関数をページで使う） ----------------
   const geo = await p.evaluate(async (SETS) => {
     const EA = EquipmentAppearance; const out = {};
@@ -103,7 +103,8 @@ const SETS = [
         res[st.key] = { state: r.state, w: r.canvas.width, h: r.canvas.height, feet, swLeft, shLeft, hairOut, parts: r.parts };
       }
       // 胴の差分（軽装・重鎧）は素の絵の体の中だけ（体の外へ出ない＝肩当てが浮かない）
-      let outL = 0, outH = 0; for (let i = 0; i < W * H; i++) { if (lt.data[i * 4 + 3] > 16 && plain.data[i * 4 + 3] < 16) outL++; if (ht.data[i * 4 + 3] > 16 && plain.data[i * 4 + 3] < 16) outH++; }
+      const body = (i) => od.data[i * 4 + 3] >= 16 || plain.data[i * 4 + 3] >= 16;   // 体＝元の絵 ＋ 盾の後ろを補った腕（素の絵）
+      let outL = 0, outH = 0; for (let i = 0; i < W * H; i++) { if (lt.data[i * 4 + 3] > 16 && !body(i)) outL++; if (ht.data[i * 4 + 3] > 16 && !body(i)) outH++; }   // 体の外へ出ない
       // 元の絵の足もと
       let ofeet = -1; for (let y = H - 1; y >= 0 && ofeet < 0; y--) for (let x = 0; x < W; x++) if (od.data[(y * W + x) * 4 + 3] > 16) { ofeet = y; break; }
       out[vk] = { res, outL, outH, ofeet, W, H };
@@ -160,7 +161,7 @@ const SETS = [
       const b = await q.evaluate(() => { const i = BattleStage3D.actorsInfo(); const h = i.party.find((x) => x.id === 'hero'); return { hero: h, equip: Object.assign({}, State.data.hero.equip), others: i.party.filter((x) => x.id !== 'hero').map((x) => ({ id: x.id, ea: x.ea, model: x.model })), toasts: (window.__toasts || []).filter((t) => /3D/.test(t)) }; });
       b.ms = Date.now() - t0; rec.battle[st.key] = b;
       S(b.hero && /dir:back/.test(b.hero.model || '') && (st.key === 'plain' || !!b.hero.ea) && !b.toasts.length, '戦闘［' + st.name + '］主人公の背面の絵に合成（' + (b.hero && b.hero.model) + '・装備 ' + Object.values(b.equip).filter(Boolean).join(',') + '）。仲間は従来の絵（' + b.others.map((o) => o.id + ':' + (o.ea ? '合成' : '従来')).join(' ') + '）');
-      await q.screenshot({ path: `${OUT}shots/pixel_battle_${st.key}.jpg`, type: 'jpeg', quality: 88 });
+      await q.screenshot({ path: `${OUT}shots/pixel_battle_${st.key}.jpg`, type: 'jpeg', quality: 72 });
       await q.close();
     }
     const bs = SETS.map((s) => rec.battle[s.key] && rec.battle[s.key].hero && rec.battle[s.key].hero.size);

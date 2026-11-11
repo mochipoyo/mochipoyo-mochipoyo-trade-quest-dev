@@ -101,10 +101,15 @@ def compose(view, W, H, items, data):
     arm = C.get('armor')
     if arm:
         pal = C['armor_pal']
-        if arm == 'armor_heavy':
-            if not grayish(pal['main']): tint('armor_heavy_t', ramp_for(pal))
-        else:
-            tint(arm + '_t', ramp_for(pal)); fixed(arm + '_f')
+        for L in MATS[arm]:
+            k = L['part']
+            if k not in recs: continue
+            if L.get('erase'):
+                e = load_layer(recs[k]); h, w = e.shape[:2]; X, Y = recs[k]['x'] + PAD, recs[k]['y'] + PAD
+                sub = canvas[Y:Y + h, X:X + w]; sub[e[..., 3] > 0] = 0; continue
+            if L.get('onlyColor') and grayish(pal['main']): continue
+            if L.get('tint'): tint(k, ramp_for(pal))
+            else: fixed(k)
     if head:
         pal = C['head_pal']; r = ramp_for(pal)
         if head == 'head_helm' and grayish(pal['main']): r = REF
@@ -119,6 +124,9 @@ def compose(view, W, H, items, data):
 
 
 REF = ['#3c3133', '#5e5054', '#837476', '#a89a98', '#e2d8cc']
+MATS = {'armor_light': [{'part': 'armor_shape_f'}, {'part': 'armor_light_t', 'tint': 'main'}],
+        'armor_heavy': [{'part': 'armor_shape_f'}, {'part': 'armor_heavy_t', 'tint': 'main', 'onlyColor': True}],
+        'armor_robe': [{'part': 'armor_robe_x', 'erase': True}, {'part': 'armor_robe_t', 'tint': 'main'}, {'part': 'armor_robe_f'}]}
 
 SETS = [
     ('素', {}),
@@ -126,6 +134,8 @@ SETS = [
     ('重鎧＋兜＋剣と盾', {'armor': 'iron_armor', 'head': 'iron_helm', 'weapon': 'steel_sword', 'shield': 'iron_shield'}),
     ('ローブ＋帽子＋杖', {'armor': 'robe', 'head': 'wizard_hat', 'weapon': 'oak_staff'}),
     ('槍', {'armor': 'iron_armor', 'weapon': 'iron_spear'}),
+    ('ローブだけ', {'armor': 'robe'}),
+    ('重鎧だけ', {'armor': 'iron_armor'}),
 ]
 
 if __name__ == '__main__':

@@ -15,9 +15,9 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 
 | 種類 | 重ね順（z） | 素の絵（頭にかぶるときに替える） | 部品（tint＝品の色で塗る灰色の層） | 長柄（手を上に描き直す） |
 |---|---|---|---|---|
-| armor_light | 10 | —（変えない） | armor_light_t（tint:main） |  |
-| armor_heavy | 10 | —（変えない） | armor_heavy_t（tint:main・灰色の品は元の板金のまま） |  |
-| armor_robe | 10 | —（変えない） | armor_robe_t（tint:main）、armor_robe_f |  |
+| armor_light | 10 | —（変えない） | armor_shape_f、armor_light_t（tint:main） |  |
+| armor_heavy | 10 | —（変えない） | armor_shape_f、armor_heavy_t（tint:main） |  |
+| armor_robe | 10 | —（変えない） | armor_robe_x、armor_robe_t（tint:main）、armor_robe_f |  |
 | head_helm | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
 | head_hat | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
 | shield | 30 | —（変えない） | shield |  |

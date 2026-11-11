@@ -29,3 +29,17 @@ body.m-land .eq-body-head .ea-host { height: 60px; }
 body.m-land .eq-body-head .eq-body-img, body.m-land .eq-body-head .ea-canvas { height: 60px !important; max-width: 60px; }
 /* 戦闘の味方の欄（2D）：今までの小さな立ち絵と同じ場所・大きさ */
 .bp .ea-bp { display: contents; }
+/* v9.7 ドット絵の差分（主人公の立ち絵）：決まった枠（.ea-frame）に、帽子・槍・杖の先まで収める。枠の下辺＝足もと。
+   どの組み合わせでも同じ大きさ。合成の前・部品のない品のときの元の絵（img）も、枠の中の同じ大きさ・同じ足もと（--ea-f＝元の絵の高さ ÷ 枠の高さ） */
+.pt-artbox .ea-frame .ea-canvas.pt-portrait { height: 300px !important; max-height: none; width: auto; max-width: 100%; object-fit: contain; object-position: bottom; }
+.pt-artbox .ea-frame img.pt-portrait { height: calc(300px * var(--ea-f, 1)) !important; max-height: none; width: auto; object-fit: contain; object-position: bottom; }
+@media (max-width: 720px) {
+  .pt-artbox .ea-frame .ea-canvas.pt-portrait { height: 190px !important; }
+  .pt-artbox .ea-frame img.pt-portrait { height: calc(190px * var(--ea-f, 1)) !important; }
+}
+.eq-try .ea-frame img { height: calc(140px * var(--ea-f, 1)) !important; }
+.eq-body-head .ea-frame img { height: calc(120px * var(--ea-f, 1)) !important; }
+body.mobile .eq-try .ea-frame img { height: calc(96px * var(--ea-f, 1)) !important; }
+body.mobile .eq-body-head .ea-frame img { height: calc(84px * var(--ea-f, 1)) !important; }
+body.m-land .eq-body-head .ea-frame img { height: calc(60px * var(--ea-f, 1)) !important; }
+@media (max-width: 600px) { .eq-try .ea-frame img { height: calc(96px * var(--ea-f, 1)) !important; } }

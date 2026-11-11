@@ -1,0 +1,681 @@
+{
+ "VIEW": "pc",
+ "isPhone": false,
+ "ok": 20,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "［装備なし］装備メニューで 変更なし → 立ち絵 base_plain"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［軽装＋剣］装備メニューで weapon:steel_sword・armor:leather_armor → 立ち絵 base_plain armor_shape_f armor_light_t weapon_sword"
+  },
+  {
+   "ok": true,
+   "m": "［軽装＋剣］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［重鎧＋兜＋剣と盾］装備メニューで armor:iron_armor・shield:iron_shield・head:iron_helm → 立ち絵 base_helm armor_shape_f head_helm_t head_helm_f shield weapon_sword"
+  },
+  {
+   "ok": true,
+   "m": "［重鎧＋兜＋剣と盾］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［ローブ＋帽子＋杖］装備メニューで weapon:oak_staff・armor:robe・head:wizard_hat（先に転職：mage） → 立ち絵 base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand"
+  },
+  {
+   "ok": true,
+   "m": "［ローブ＋帽子＋杖］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［槍装備］装備メニューで weapon:iron_spear（先に転職：warrior） → 立ち絵 base_plain weapon_spear hand"
+  },
+  {
+   "ok": true,
+   "m": "［槍装備］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［全部はずす（解除）］装備メニューで weapon:はずす → 立ち絵 base_plain"
+  },
+  {
+   "ok": true,
+   "m": "［全部はずす（解除）］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "メニュー：足もと（枠の下辺）・左右の中心・1 ドットの大きさが 6 つとも同じ（下辺 335.3・中心 460.4・1 ドット 1.3274px）"
+  },
+  {
+   "ok": true,
+   "m": "メニュー：帽子・槍・杖の先まで、絵の枠と画面の中に収まる（見切れなし）"
+  },
+  {
+   "ok": true,
+   "m": "装備をはずすと素の絵（布の旅装）に戻る（はじめ・最後とも base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "ローブの組み合わせ（魔法使い）でも、立ち絵は本人の素体で着替える（menuBase）"
+  },
+  {
+   "ok": true,
+   "m": "戦闘：主人公の範囲（カメラ合わせ・影・HP の位置）が 6 つとも同じ（0.84×1.17 0.84×1.17 0.84×1.17 0.84×1.17 0.84×1.17 0.84×1.17）"
+  },
+  {
+   "ok": true,
+   "m": "能力値は今までの計算（防御：plain 8・light 14・heavy 38・robe 12・spear 10・off 10）"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  },
+  {
+   "ok": true,
+   "m": "読み込みの失敗なし"
+  }
+ ],
+ "rec": {
+  "plain": {
+   "name": "装備なし",
+   "jobChanged": false,
+   "ui": {
+    "done": [],
+    "eqHead": "base_plain"
+   },
+   "menu": {
+    "st": "ok",
+    "parts": "base_plain",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 35.3,
+     "bottom": 335.3,
+     "left": 371.5,
+     "right": 549.3,
+     "h": 300,
+     "cx": 460.4
+    },
+    "px": 1.3274,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 35.265625,
+     "bottom": 335.265625,
+     "h": 300
+    },
+    "equip": {
+     "weapon": null,
+     "armor": null,
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 34,
+     "maxMp": 10,
+     "atk": 9,
+     "def": 8,
+     "agi": 5,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    }
+   },
+   "battle": {
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "others": [
+     {
+      "id": "lina",
+      "ea": false
+     },
+     {
+      "id": "gald",
+      "ea": false
+     }
+    ],
+    "equip": {
+     "weapon": null,
+     "armor": null,
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "fell": [],
+    "ended": true
+   }
+  },
+  "light": {
+   "name": "軽装＋剣",
+   "jobChanged": false,
+   "ui": {
+    "done": [
+     "weapon:steel_sword",
+     "armor:leather_armor"
+    ],
+    "eqHead": "base_plain armor_shape_f armor_light_t weapon_sword"
+   },
+   "menu": {
+    "st": "ok",
+    "parts": "base_plain armor_shape_f armor_light_t weapon_sword",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 35.3,
+     "bottom": 335.3,
+     "left": 371.5,
+     "right": 549.3,
+     "h": 300,
+     "cx": 460.4
+    },
+    "px": 1.3274,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 35.265625,
+     "bottom": 335.265625,
+     "h": 300
+    },
+    "equip": {
+     "weapon": "steel_sword",
+     "armor": "leather_armor",
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 34,
+     "maxMp": 10,
+     "atk": 31,
+     "def": 14,
+     "agi": 5,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    }
+   },
+   "battle": {
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[\"steel_sword\",\"leather_armor\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "others": [
+     {
+      "id": "lina",
+      "ea": false
+     },
+     {
+      "id": "gald",
+      "ea": false
+     }
+    ],
+    "equip": {
+     "weapon": "steel_sword",
+     "armor": "leather_armor",
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "fell": [],
+    "ended": true
+   }
+  },
+  "heavy": {
+   "name": "重鎧＋兜＋剣と盾",
+   "jobChanged": false,
+   "ui": {
+    "done": [
+     "armor:iron_armor",
+     "shield:iron_shield",
+     "head:iron_helm"
+    ],
+    "eqHead": "base_helm armor_shape_f head_helm_t head_helm_f shield weapon_sword"
+   },
+   "menu": {
+    "st": "ok",
+    "parts": "base_helm armor_shape_f head_helm_t head_helm_f shield weapon_sword",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 35.3,
+     "bottom": 335.3,
+     "left": 371.5,
+     "right": 549.3,
+     "h": 300,
+     "cx": 460.4
+    },
+    "px": 1.3274,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 35.265625,
+     "bottom": 335.265625,
+     "h": 300
+    },
+    "equip": {
+     "weapon": "steel_sword",
+     "armor": "iron_armor",
+     "shield": "iron_shield",
+     "head": "iron_helm",
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 34,
+     "maxMp": 10,
+     "atk": 31,
+     "def": 38,
+     "agi": 3,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    }
+   },
+   "battle": {
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "others": [
+     {
+      "id": "lina",
+      "ea": false
+     },
+     {
+      "id": "gald",
+      "ea": false
+     }
+    ],
+    "equip": {
+     "weapon": "steel_sword",
+     "armor": "iron_armor",
+     "shield": "iron_shield",
+     "head": "iron_helm",
+     "acc": null
+    },
+    "fell": [],
+    "ended": true
+   }
+  },
+  "robe": {
+   "name": "ローブ＋帽子＋杖",
+   "jobChanged": true,
+   "ui": {
+    "done": [
+     "weapon:oak_staff",
+     "armor:robe",
+     "head:wizard_hat"
+    ],
+    "eqHead": "base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand"
+   },
+   "menu": {
+    "st": "ok",
+    "parts": "base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand",
+    "view": "job:warrior",
+    "job": "mage",
+    "sprite": "hero_mage",
+    "rect": {
+     "top": 35.3,
+     "bottom": 335.3,
+     "left": 371.5,
+     "right": 549.3,
+     "h": 300,
+     "cx": 460.4
+    },
+    "px": 1.3274,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 35.265625,
+     "bottom": 335.265625,
+     "h": 300
+    },
+    "equip": {
+     "weapon": "oak_staff",
+     "armor": "robe",
+     "shield": null,
+     "head": "wizard_hat",
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 25,
+     "maxMp": 26,
+     "atk": 6,
+     "def": 12,
+     "agi": 6,
+     "mag": 15,
+     "mdef": 5,
+     "immune": [],
+     "element": "none"
+    }
+   },
+   "battle": {
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "mage",
+     "sprite": "hero_mage",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"mage\",\"px:v9.7\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "others": [
+     {
+      "id": "lina",
+      "ea": false
+     },
+     {
+      "id": "gald",
+      "ea": false
+     }
+    ],
+    "equip": {
+     "weapon": "oak_staff",
+     "armor": "robe",
+     "shield": null,
+     "head": "wizard_hat",
+     "acc": null
+    },
+    "fell": [],
+    "ended": true
+   }
+  },
+  "spear": {
+   "name": "槍装備",
+   "jobChanged": true,
+   "ui": {
+    "done": [
+     "weapon:iron_spear"
+    ],
+    "eqHead": "base_plain weapon_spear hand"
+   },
+   "menu": {
+    "st": "ok",
+    "parts": "base_plain weapon_spear hand",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 35.3,
+     "bottom": 335.3,
+     "left": 371.5,
+     "right": 549.3,
+     "h": 300,
+     "cx": 460.4
+    },
+    "px": 1.3274,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 35.265625,
+     "bottom": 335.265625,
+     "h": 300
+    },
+    "equip": {
+     "weapon": "iron_spear",
+     "armor": null,
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 42,
+     "maxMp": 12,
+     "atk": 28,
+     "def": 10,
+     "agi": 6,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    }
+   },
+   "battle": {
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[\"iron_spear\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "others": [
+     {
+      "id": "lina",
+      "ea": false
+     },
+     {
+      "id": "gald",
+      "ea": false
+     }
+    ],
+    "equip": {
+     "weapon": "iron_spear",
+     "armor": null,
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "fell": [],
+    "ended": true
+   }
+  },
+  "off": {
+   "name": "全部はずす（解除）",
+   "jobChanged": false,
+   "ui": {
+    "done": [
+     "weapon:はずす"
+    ],
+    "eqHead": "base_plain"
+   },
+   "menu": {
+    "st": "ok",
+    "parts": "base_plain",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 35.3,
+     "bottom": 335.3,
+     "left": 371.5,
+     "right": 549.3,
+     "h": 300,
+     "cx": 460.4
+    },
+    "px": 1.3274,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 35.265625,
+     "bottom": 335.265625,
+     "h": 300
+    },
+    "equip": {
+     "weapon": null,
+     "armor": null,
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 42,
+     "maxMp": 12,
+     "atk": 11,
+     "def": 10,
+     "agi": 6,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    }
+   },
+   "battle": {
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "others": [
+     {
+      "id": "lina",
+      "ea": false
+     },
+     {
+      "id": "gald",
+      "ea": false
+     }
+    ],
+    "equip": {
+     "weapon": null,
+     "armor": null,
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "fell": [],
+    "ended": true
+   }
+  }
+ }
+}

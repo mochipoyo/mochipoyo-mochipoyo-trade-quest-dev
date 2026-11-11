@@ -471,7 +471,13 @@
   }
   function anchorsOf(actorId, viewKey) { var T = root.EQUIP_ANCHORS; var a = T && T.actors && own(T.actors, actorId) ? T.actors[actorId] : null; if (!a) return null; var v = own(a.views, viewKey) ? a.views[viewKey] : null; if (!v) return null; return { actor: a, view: v }; }
   // メニューで使う向き：主人公は職業の立ち絵（その職業の素体があれば）、仲間は正面
-  function menuView(actor) { if (!actor) return null; if (MODE === 'pixel') return actor.id === 'hero' && actor.job ? 'job:' + actor.job : 'front'; if (actor.id === 'hero' && actor.job && anchorsOf('hero', 'job:' + actor.job)) return 'job:' + actor.job; return 'front'; }
+  function menuView(actor) {
+    if (!actor) return null;
+    if (MODE === 'pixel') {   // v9.7 主人公：職業の立ち絵に部品があればそれ。なければ menuBase（本人の戦士の立ち絵）を素体にして着替える
+      if (actor.id !== 'hero' || !actor.job) return 'front';
+      var M = PX(); var mb = M && M.actors && M.actors.hero && M.actors.hero.menuBase;
+      return pixelView('hero', 'job:' + actor.job) ? 'job:' + actor.job : (mb && pixelView('hero', mb) ? mb : 'job:' + actor.job);
+    } if (actor.id === 'hero' && actor.job && anchorsOf('hero', 'job:' + actor.job)) return 'job:' + actor.job; return 'front'; }
   function note(actorId, viewKey, why) { var k = actorId + '/' + viewKey; if (!unsupported[k]) { unsupported[k] = why; try { console.info('[装備の外見] 本人の元の絵で表示：' + k + '（' + why + '）'); } catch (e) { } } }
   function supports(actor, viewKey) { if (!actor) return false; return MODE === 'pixel' ? !!pixelView(actor.id, viewKey) : !!anchorsOf(actor.id, viewKey); }
   // 位置の表を p ドットずらす（まわりに余白を足した画像に合わせる）
@@ -528,7 +534,7 @@
   }
   function materialFor(view, cls) {
     var M = PX(); var m = cls && M.materials && own(M.materials, cls) ? M.materials[cls] : null; if (!m) return null;
-    var ok = m.layers.every(function (L) { return own(view.parts, L.part); }) && (!m.base || own(view.parts, m.base)) && (!m.hand || own(view.parts, 'hand'));
+    var ok = m.layers.every(function (L) { return L.optional || own(view.parts, L.part); }) && (!m.base || own(view.parts, m.base)) && (!m.hand || own(view.parts, 'hand'));
     return ok ? m : null;
   }
   var PIX_SLOTS = ['armor', 'head', 'shield', 'weapon', 'acc'];
@@ -582,7 +588,7 @@
     if (!plan.ok) { if (actor) note(actor.id, viewKey, plan.why); return { state: 'none', why: plan.why }; }
     var M = PX(); var view = plan.view; var sig = signature(eqActor, layers, 'px:' + M.version, viewKey);
     var hit = CACHE.get(sig); if (hit) { stats.cacheHit++; CACHE.delete(sig); CACHE.set(sig, hit); return { state: 'ok', canvas: hit.canvas, sig: sig, layers: layers, view: view, pad: M.pad, body: hit.body, mode: 'pixel', parts: hit.parts }; }
-    var need = [plan.base]; plan.mats.forEach(function (mt) { mt.m.layers.forEach(function (L) { need.push(L.part); }); if (mt.m.hand) need.push('hand'); });
+    var need = [plan.base]; plan.mats.forEach(function (mt) { mt.m.layers.forEach(function (L) { if (own(view.parts, L.part)) need.push(L.part); }); if (mt.m.hand) need.push('hand'); });
     var ents = {}; need.forEach(function (k) { ents[k] = loadImg(view.parts[k].url); });
     var all = Object.keys(ents).map(function (k) { return ents[k]; });
     var bad = Object.keys(ents).filter(function (k) { return ents[k].state === 'error'; });
@@ -594,9 +600,12 @@
     put(plan.base, ents[plan.base].img);
     plan.mats.forEach(function (mt) {
       mt.m.layers.forEach(function (L) {
-        var e = ents[L.part]; var url = view.parts[L.part].url;
+        if (!own(view.parts, L.part)) return;   // optional（この向きにない部品）
+        var e = ents[L.part]; var url = view.parts[L.part].url; var pal = mt.layer.pal;
+        if (L.erase) { g.globalCompositeOperation = 'destination-out'; put(L.part, e.img); g.globalCompositeOperation = 'source-over'; return; }   // 素の絵の一部を消す（ローブの背面：マントの裾を短くする）
+        if (L.onlyColor && grayish(pal.main)) return;   // 灰色の品（鉄・鋼）：元の板金の色のまま
         if (!L.tint) { put(L.part, e.img); return; }
-        var pal = mt.layer.pal; var ramp;
+        var ramp;
         if (L.tint === 'orb') ramp = orbRamp(pal);
         else if (grayish(pal.main)) { if (L.grayKeep) return; ramp = L.grayRef && M.ref && M.ref[L.grayRef] ? M.ref[L.grayRef] : rampFor(pal); }   // 灰色の品：重鎧は元の板金のまま・兜は元の鎧の色
         else ramp = rampFor(pal);
@@ -611,6 +620,11 @@
   // メニューに置く切り出し：元の絵（w × h）の範囲を必ず含み、左右は元の絵の中心でそろえる。下は元の絵の下辺
   //   → 元の絵と同じ大きさ・同じ位置に人物が立つ（はみ出す槍・杖・帽子の先だけ、まわりへ出る）
   function menuCrop(c, view, pad) {
+    var f = view.frame;
+    if (f) {   // 決まった枠（どの組み合わせでも同じ）：帽子・槍・杖の先まで収め、足もと（元の絵の下辺）と左右の中心をそろえる
+      var o0 = mk(f.x1 - f.x0, f.y1 - f.y0); var g0 = o0.getContext('2d'); g0.imageSmoothingEnabled = false; g0.drawImage(c, -(pad + f.x0), -(pad + f.y0));
+      return { canvas: o0, k: (f.y1 - f.y0) / view.h, f: view.h / (f.y1 - f.y0), frame: true };
+    }
     var g = c.getContext('2d', { willReadFrequently: true }); var d = g.getImageData(0, 0, c.width, c.height).data; var x0 = c.width, y0 = c.height, x1 = -1;
     for (var y = 0; y < c.height; y++) for (var x = 0; x < c.width; x++) if (d[(y * c.width + x) * 4 + 3] > 16) { if (x < x0) x0 = x; if (y < y0) y0 = y; if (x > x1) x1 = x; }
     var cx = pad + view.w / 2; var half = Math.ceil(Math.max(view.w / 2, x1 < 0 ? 0 : cx - x0 + 1, x1 < 0 ? 0 : x1 + 1 - cx));
@@ -658,7 +672,8 @@
         cv.className = ((old && old.className) || '').replace(/\bea-img\b|\bea-canvas\b/g, '').trim() + ' ea-img ea-canvas'; cv.setAttribute('aria-hidden', 'true');
         var hpx = host.getAttribute('data-ea-h'); if (old && old.style && old.style.height) cv.style.height = old.style.height; else if (hpx) cv.style.height = hpx + 'px';
         // data-ea-fit="body"：人物（装備のない素体）の高さを今までの絵と同じにする（長い武器の先は枠の上へはみ出す）
-        if (host.getAttribute('data-ea-fit') === 'body' && (mc || r.body)) { var bh = r.body ? Math.max(1, r.body.y1 - r.body.y0) : 1; cv.style.setProperty('--ea-k', (mc ? mc.k : src.height / bh).toFixed(4)); host.classList.add('ea-fit-body'); }
+        if (mc && mc.frame) { host.classList.add('ea-frame'); host.style.setProperty('--ea-f', mc.f.toFixed(4)); }
+        else if (host.getAttribute('data-ea-fit') === 'body' && (mc || r.body)) { var bh = r.body ? Math.max(1, r.body.y1 - r.body.y0) : 1; cv.style.setProperty('--ea-k', (mc ? mc.k : src.height / bh).toFixed(4)); host.classList.add('ea-fit-body'); }
         cv.setAttribute('data-ea-mode', r.mode || 'vector'); if (r.parts) cv.setAttribute('data-ea-parts', r.parts.join(' '));
         cv.setAttribute('data-ea-sig', r.sig);
         if (old) old.replaceWith(cv); else { host.innerHTML = ''; host.appendChild(cv); }
@@ -676,7 +691,9 @@
   // 画面に置く印（HTML の文字列）。inner は従来の本人の絵（合成ができるまで表示する）
   function hostHtml(actorId, inner, o) {
     o = o || {}; var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
-    return '<span class="ea-host' + (o.cls ? ' ' + o.cls : '') + '" data-ea-actor="' + esc(actorId) + '" data-ea-view="' + esc(o.view || 'menu') + '"' + (o.equip ? ' data-ea-equip="' + esc(JSON.stringify(o.equip)) + '"' : '') + (o.h ? ' data-ea-h="' + (o.h | 0) + '"' : '') + (o.fit ? ' data-ea-fit="' + esc(o.fit) + '"' : '') + '>' + (inner || '') + '</span>';
+    // v9.7 枠のある向き（主人公の立ち絵）：合成ができる前の元の絵・部品のない品のときの元の絵も、同じ枠の大きさ・足もとで出す（--ea-f＝元の絵の高さ ÷ 枠の高さ）
+    var fr = ''; try { var A = root.State && root.State.actor && root.State.actor(actorId); var vk = A ? ((o.view || 'menu') === 'menu' ? menuView(A) : o.view) : null; var pv = MODE === 'pixel' && A ? pixelView(actorId, vk) : null; if (pv && pv.frame) fr = ' ea-frame" style="--ea-f:' + (pv.h / (pv.frame.y1 - pv.frame.y0)).toFixed(4); } catch (e) { fr = ''; }
+    return '<span class="ea-host' + (o.cls ? ' ' + o.cls : '') + fr + '" data-ea-actor="' + esc(actorId) + '" data-ea-view="' + esc(o.view || 'menu') + '"' + (o.equip ? ' data-ea-equip="' + esc(JSON.stringify(o.equip)) + '"' : '') + (o.h ? ' data-ea-h="' + (o.h | 0) + '"' : '') + (o.fit ? ' data-ea-fit="' + esc(o.fit) + '"' : '') + '>' + (inner || '') + '</span>';
   }
 
   var API = { slots: Object.freeze(slots.slice()), paths: paths, resolve: resolve, signature: signature, paint: paint, compose: compose,

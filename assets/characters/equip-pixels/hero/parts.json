@@ -1,14 +1,14 @@
 {
  "front": {
   "base_plain": {
-   "url": "assets/characters/equip-pixels/hero/job_warrior/base_plain.png?v=3989c1ed",
+   "url": "assets/characters/equip-pixels/hero/job_warrior/base_plain.png?v=bf4a860b",
    "x": 0,
    "y": 2,
    "w": 124,
    "h": 196
   },
-  "armor_light_t": {
-   "url": "assets/characters/equip-pixels/hero/job_warrior/armor_light_t.png?v=22ae0055",
+  "armor_shape_f": {
+   "url": "assets/characters/equip-pixels/hero/job_warrior/armor_shape_f.png?v=908d6300",
    "x": 20,
    "y": 77,
    "w": 86,
@@ -16,6 +16,13 @@
   },
   "armor_heavy_t": {
    "url": "assets/characters/equip-pixels/hero/job_warrior/armor_heavy_t.png?v=28213964",
+   "x": 20,
+   "y": 77,
+   "w": 86,
+   "h": 118
+  },
+  "armor_light_t": {
+   "url": "assets/characters/equip-pixels/hero/job_warrior/armor_light_t.png?v=22ae0055",
    "x": 20,
    "y": 77,
    "w": 86,
@@ -36,7 +43,7 @@
    "h": 119
   },
   "hand": {
-   "url": "assets/characters/equip-pixels/hero/job_warrior/hand.png?v=f39dbb16",
+   "url": "assets/characters/equip-pixels/hero/job_warrior/hand.png?v=45310a7a",
    "x": 12,
    "y": 104,
    "w": 21,
@@ -57,7 +64,7 @@
    "h": 67
   },
   "base_helm": {
-   "url": "assets/characters/equip-pixels/hero/job_warrior/base_helm.png?v=ec69c982",
+   "url": "assets/characters/equip-pixels/hero/job_warrior/base_helm.png?v=a403a7ca",
    "x": 0,
    "y": 8,
    "w": 124,
@@ -78,7 +85,7 @@
    "h": 69
   },
   "base_hat": {
-   "url": "assets/characters/equip-pixels/hero/job_warrior/base_hat.png?v=6ac3c183",
+   "url": "assets/characters/equip-pixels/hero/job_warrior/base_hat.png?v=740737a6",
    "x": 0,
    "y": 2,
    "w": 124,
@@ -122,21 +129,28 @@
  },
  "back": {
   "base_plain": {
-   "url": "assets/characters/equip-pixels/hero/back/base_plain.png?v=3447e196",
+   "url": "assets/characters/equip-pixels/hero/back/base_plain.png?v=a43cba85",
    "x": 88,
    "y": 102,
    "w": 151,
    "h": 203
   },
-  "armor_light_t": {
-   "url": "assets/characters/equip-pixels/hero/back/armor_light_t.png?v=05e2d1fb",
+  "armor_shape_f": {
+   "url": "assets/characters/equip-pixels/hero/back/armor_shape_f.png?v=ca8d9de0",
+   "x": 108,
+   "y": 178,
+   "w": 98,
+   "h": 122
+  },
+  "armor_heavy_t": {
+   "url": "assets/characters/equip-pixels/hero/back/armor_heavy_t.png?v=db615863",
    "x": 109,
    "y": 178,
    "w": 96,
    "h": 121
   },
-  "armor_heavy_t": {
-   "url": "assets/characters/equip-pixels/hero/back/armor_heavy_t.png?v=db615863",
+  "armor_light_t": {
+   "url": "assets/characters/equip-pixels/hero/back/armor_light_t.png?v=05e2d1fb",
    "x": 109,
    "y": 178,
    "w": 96,
@@ -157,7 +171,7 @@
    "h": 111
   },
   "hand": {
-   "url": "assets/characters/equip-pixels/hero/back/hand.png?v=0aa8958a",
+   "url": "assets/characters/equip-pixels/hero/back/hand.png?v=12be33b6",
    "x": 192,
    "y": 199,
    "w": 25,
@@ -178,7 +192,7 @@
    "h": 61
   },
   "base_helm": {
-   "url": "assets/characters/equip-pixels/hero/back/base_helm.png?v=2e74ae2e",
+   "url": "assets/characters/equip-pixels/hero/back/base_helm.png?v=78ee3079",
    "x": 88,
    "y": 110,
    "w": 151,
@@ -199,7 +213,7 @@
    "h": 69
   },
   "base_hat": {
-   "url": "assets/characters/equip-pixels/hero/back/base_hat.png?v=6b0fac5b",
+   "url": "assets/characters/equip-pixels/hero/back/base_hat.png?v=cd9fc4dc",
    "x": 88,
    "y": 102,
    "w": 151,
@@ -226,19 +240,26 @@
    "w": 12,
    "h": 234
   },
+  "armor_robe_x": {
+   "url": "assets/characters/equip-pixels/hero/back/armor_robe_x.png?v=30b83a60",
+   "x": 106,
+   "y": 245,
+   "w": 132,
+   "h": 60
+  },
   "armor_robe_t": {
-   "url": "assets/characters/equip-pixels/hero/back/armor_robe_t.png?v=58dd400f",
-   "x": 107,
+   "url": "assets/characters/equip-pixels/hero/back/armor_robe_t.png?v=b5a5d8dd",
+   "x": 108,
    "y": 178,
-   "w": 100,
-   "h": 114
+   "w": 98,
+   "h": 117
   },
   "armor_robe_f": {
-   "url": "assets/characters/equip-pixels/hero/back/armor_robe_f.png?v=74dd6e3f",
+   "url": "assets/characters/equip-pixels/hero/back/armor_robe_f.png?v=cf7f58d4",
    "x": 106,
-   "y": 235,
-   "w": 102,
-   "h": 64
+   "y": 178,
+   "w": 120,
+   "h": 121
   }
  }
 }

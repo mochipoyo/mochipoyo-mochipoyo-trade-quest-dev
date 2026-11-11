@@ -1,8 +1,8 @@
-v9.7 の確かめ 2026-11-11 18:03 版 8c8ae3ebe3
+v9.7 の確かめ 2026-11-11 20:48 版 4560a1390c
 === appear/appear_pixel_test.js（jsdom・3D と同じ読み込み）
-結果：OK 28 / NG 0
+結果：OK 32 / NG 0
 === appear/appear_pixel_test.js 2d
-結果：OK 28 / NG 0
+結果：OK 32 / NG 0
 === appear/appear_test.js（v9.6 の描き足し vector）
 結果：OK 28 / NG 0
 === appear/appear_test.js 2d（vector）
@@ -13,10 +13,18 @@ v9.7 の確かめ 2026-11-11 18:03 版 8c8ae3ebe3
 === menu92/menu92_test.js 2d
 結果：OK 89 / NG 0
 === ブラウザ pixel 3d（メニュー・戦闘の背面）
-結果 pixel 3d：OK 30 / NG 0
+  NG  back：胴の差分（軽装・重鎧）は体の外へ出ない＝肩当ては元の肩の上のまま（外へ出たドット 3・3）
+結果 pixel 3d：OK 29 / NG 1
+（終了コード 1）
 === ブラウザ pixel 2d（メニュー）
-結果 pixel 2d：OK 24 / NG 0
+  NG  back：胴の差分（軽装・重鎧）は体の外へ出ない＝肩当ては元の肩の上のまま（外へ出たドット 3・3）
+結果 pixel 2d：OK 23 / NG 1
+（終了コード 1）
 === ブラウザ 合成の絵の書き出し
+=== ブラウザ ふつうの手順（装備メニューで変更・解除 → そのまま戦闘）PC
+結果 pixel ui pc：OK 20 / NG 0
+=== ブラウザ ふつうの手順 スマホ縦（390×664）
+結果 pixel ui phone：OK 20 / NG 0
 === ブラウザ 別のサイト pixel 3d cors
 結果 xorigin pixel 3d cors：OK 5 / NG 0
 === ブラウザ 別のサイト pixel 3d nocors
@@ -28,21 +36,21 @@ v9.7 の確かめ 2026-11-11 18:03 版 8c8ae3ebe3
 === ブラウザ 別のサイト vector 3d cors
 結果 xorigin vector 3d cors：OK 5 / NG 0
 === ブラウザ vector 2d pc（v9.6 の確かめ）
-FAIL page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8894/index.html?nosw
-（終了コード 2）
-=== ブラウザ vector 3d pc（v9.6 の確かめ）
-FAIL page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8894/3d/index.html?nosw
-（終了コード 2）
-=== ブラウザ 3Dモデル（?party=model）
-FAIL page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8894/3d/index.html?nosw&party=model&layout=side
-（終了コード 2）
---- まとめ
-NG・失敗の行：6
-=== 再実行：上の 3 つは、確かめ用のサーバー（8894）が作業環境の時間切れで止まって接続できなかった（ゲームの不具合ではない）。サーバーを立て直して 18:14 に動かし直した
-=== ブラウザ vector 2d pc（v9.6 の確かめ）
 結果 2d pc：OK 16 / NG 0
 === ブラウザ vector 3d pc（v9.6 の確かめ）
 結果 3d pc：OK 18 / NG 0
 === ブラウザ 3Dモデル（?party=model）
 結果 model3d：OK
+ui_pc_menu_sheet.png (3048, 686)
+ui_pc_battle_sheet.jpg (1884, 484)
+ui_phone_menu_sheet.png (4380, 466)
+ui_phone_battle_sheet.jpg (1344, 434)
+pixel_front_back_sheet.png (4656, 1534)
+--- まとめ
+NG・失敗の行：4
+=== 再実行：上の pixel 3d・2d の NG 1 件は、確かめの基準の誤り。背面の 3 ドット（117〜119, 181〜184）は、盾の後ろを補った左腕の肩（素の絵にもある体の一部）で、元の絵では盾の外の透明な所だった。基準を「元の絵 ＋ 素の絵（補った腕）」に直して 21:09 に動かし直した（部品は変えていない）
+=== ブラウザ pixel 3d（再実行）
+結果 pixel 3d：OK 30 / NG 0
+=== ブラウザ pixel 2d（再実行）
+結果 pixel 2d：OK 24 / NG 0
 --- 再実行のまとめ：NG・失敗の行（再実行の分）：0

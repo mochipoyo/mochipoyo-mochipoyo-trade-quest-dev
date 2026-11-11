@@ -444,37 +444,70 @@ def robe_front(fp, mage, gold_m, plate_m):
     return gray, fixed
 
 
-def robe_back(bp, plate_m, cape_m):
-    """背面のローブ：マントの下から見える裾（脚のまわり）と、袖（腕の板金を布に）。マントはローブより手前"""
+CAPE_CUT = 244   # ローブのとき、背中の赤いマントをここで短くする（裾を上げて、ローブの長い裾と袖を見せる）
+
+
+def robe_back(bp, plate_m, cape_m, keep_m):   # plate_m＝鎧の範囲（板金・縁取り・継ぎ目）
+    """背面のローブ：
+       1 赤いマントを短くする（腰の下 CAPE_CUT で切り、波打つ裾を描き直す）＝ erase の層で元のマントの下を消す
+       2 くるぶしまでの長い裾（品の色。縦のしわ・金の縁取り）
+       3 釣り鐘形の広い袖（肩から手首へ広がる。拳は袖の外）
+       → 帽子・杖がなくても、袖と裾で重鎧（板金の腕・脛当て・長いマント）と見分けられる"""
     H, W = bp.shape[:2]; yy, xx = np.mgrid[0:H, 0:W].astype(float)
-    top, hem = 236, 290
+    erase = P.blank(H, W); g = P.blank(H, W); fixed = P.blank(H, W)
+    # 1) マントの下を消す
+    low = cape_m & (yy > CAPE_CUT)
+    halo = low.copy()
+    for _ in range(2): halo = halo | P.neighbors4(halo)
+    low = low | (halo & (bp[..., 3] > 0) & (bp[..., 3] < 250) & (yy > CAPE_CUT))   # マントの縁のにじみ（半透明）も消す
+    erase[low] = (255, 255, 255, 255)
+    # 新しい裾：切り口の下に、列ごとに 3〜7 ドットの波。色は元のマントの裾の近く（暗い赤）を写す
+    cols = np.where(cape_m[CAPE_CUT])[0]
+    for x in cols:
+        ys = np.where(cape_m[:, x])[0]; yb = ys.max()
+        d = int(round(5 + 2.2 * np.sin(x / 6.5) + 1.2 * np.sin(x / 2.7)))
+        for k in range(1, d + 1):   # 切り口の少し上のマントの赤を、裾へ向けて少しずつ暗く
+            sy = CAPE_CUT - 1 - (k % 3)
+            c = bp[sy, x] if cape_m[sy, x] else bp[CAPE_CUT, x]
+            q = c.copy(); q[:3] = np.round(c[:3] * (1 - 0.05 * k)); q[3] = 255; fixed[CAPE_CUT + k, x] = q
+        fixed[CAPE_CUT + d + 1, x] = (70, 12, 14, 255)
+    hem_cape = fixed[..., 3] > 0
+    # 2) 長い裾：腰（マントの下）から、くるぶし（hem）まで。下へ広がる。縦のしわ、左が明るい
+    top, hem = 232, 296
     t = np.clip((yy - top) / (hem - top), 0, 1)
-    half = 36 + 14 * t ** 1.1
-    skirt = (yy >= top) & (yy <= hem + 2 * np.sin((xx - BA) / 5.0)) & (np.abs(xx - BA) <= half)
-    # 布のしわ：縦の筋（明るい筋と暗い筋）。左が明るい
-    v = 0.42 - 0.2 * (xx - BA) / 50.0
-    folds = np.sin((xx - BA) / 6.2 + 0.6 * t); v = v + 0.14 * folds - 0.1 * t
-    hemband = skirt & (yy > hem - 4 + 2 * np.sin((xx - BA) / 5.0))
-    skirt_v = texturize(np.where(hemband, v - 0.18, v), 0.8, 1, 9)
-    tintm = skirt & ~cape_m
-    g = gray_layer(tintm, skirt_v)
-    # 袖：腕・肩当ての板金（マントに隠れていないところ）
-    sleeves = plate_m & (yy < 250) & ~cape_m
-    sg, _ = P.to_gray(bp, sleeves, out_lo=0.1, out_hi=0.92)
-    g[sleeves] = sg[sleeves]
-    fixed = P.blank(H, W)
-    # 裾の金の縁取り（マントに隠れていないところ）
-    trim = skirt & ~cape_m & (yy > hem - 2 + 2 * np.sin((xx - BA) / 5.0)) & (yy <= hem + 2 * np.sin((xx - BA) / 5.0))
-    gold_paint(fixed, trim, np.clip(0.6 - 0.4 * (xx - BA) / 50.0, 0, 1), GOLD)
-    # 靴：裾より下の脛当て → 茶色の革
-    L = P.lum(bp); cols = np.array([P.hexrgb(c) for c in ['#1c120c', '#3a2416', '#5a3a22', '#7a5232', '#9a6c44']])
-    boots = plate_m & (yy > 286)
-    bi = np.clip(((L - 60) / 170 * 4).round().astype(int), 0, 4)
-    for k in range(5):
-        mk = boots & (bi == k); fixed[mk] = (*cols[k], 255)
-    m = (g[..., 3] > 0) | (fixed[..., 3] > 0)
-    paint_fixed(fixed, ring_outline(m) & ~P.opaque(bp) & (yy > 230), OUT_CLOTH)
-    return g, fixed
+    half = 33 + 17 * t ** 1.1
+    wave = 1.5 * np.sin((xx - BA) / 5.0)
+    skirt = (yy >= top) & (yy <= hem + wave) & (np.abs(xx - BA) <= half)
+    v = 0.46 - 0.22 * (xx - BA) / 50.0 + 0.13 * np.sin((xx - BA) / 5.6 + 0.8 * t) - 0.06 * t
+    v = texturize(v, 0.4, 1, 9)
+    trim = skirt & (yy > hem - 3 + wave)
+    # 3) 袖：腕の形（肩・上腕・前腕の板金）をそのまま布にし、前腕の下へ釣り鐘形に垂らす（外側ほど長い）。拳は袖の外
+    arms = plate_m & (yy >= 178) & (yy < 232) & ((xx < BA - 18) | (xx > BA + 18)) & ~keep_m   # 手（手袋）は袖に入れない
+    sleeve = arms.copy(); drape = np.zeros((H, W), bool); cuff = np.zeros((H, W), bool)
+    for x in range(W):
+        ys = np.where(arms[:, x] & (yy[:, x] >= 200))[0]
+        if not len(ys): continue
+        out = abs(x - BA) - 18                       # 体から離れるほど（外側ほど）長く垂れる
+        d = int(np.clip(5 + out * 0.3, 5, 12)); y0 = ys.max()
+        drape[y0 + 1:y0 + 1 + d, x] = True; cuff[y0 + d, x] = True
+    sleeve |= drape
+    wide = P.neighbors4(sleeve) & ~cape_m & ((xx < BA - 22) | (xx > BA + 22)) & (yy > 186)   # 袖は腕より 1 ドット太い（布のふくらみ）
+    sleeve |= wide; cuff = (cuff | (P.neighbors4(cuff) & wide & (yy >= 214))) & ~np.roll(sleeve, -1, axis=0)
+    sleeve &= ~keep_m
+    vs = texturize(np.where(xx < BA, 0.58, 0.4) - 0.16 * np.clip((yy - 184) / 50.0, 0, 1) - np.where(drape, 0.08, 0.0), 0.6, 5, 2)
+    sg, _ = P.to_gray(bp, arms, out_lo=0.22, out_hi=0.82)
+    vs = np.where(arms, sg[..., 0] / 255.0 * 0.6 + vs * 0.4, vs)
+    cuff &= sleeve
+    # 重ね：裾（マントの上の部分には描かない＝マントが手前）→ 袖
+    body = (skirt & ~(cape_m & (yy <= CAPE_CUT)) & ~hem_cape) | sleeve
+    vv = np.where(sleeve, vs, v)
+    g = gray_layer(body & ~trim & ~cuff, vv)
+    gold_paint(fixed, (trim & ~hem_cape) | cuff, np.clip(0.6 - 0.4 * (xx - BA) / 50.0, 0, 1), GOLD)
+    m = body | hem_cape
+    paint_fixed(fixed, ring_outline(m) & ~P.opaque(bp) & (yy > 180), OUT_CLOTH)
+    # 袖と体の境い目・袖の口に線
+    paint_fixed(fixed, sleeve & P.neighbors4(~sleeve & ~P.opaque(bp)), OUT_CLOTH)
+    return erase, g, fixed
 
 
 # ============================================================
@@ -491,24 +524,73 @@ def ext(H, W, top, bottom=0):
     return H + top + bottom, W, top
 
 
-def build_view(name, o, plain, cfg):
-    """1 つの向きの部品をそろえる → {部品名: (配列, x, y)}"""
+TRAVEL = ['#3b3026', '#7d6a52', '#b8a582', '#ddd0b0', '#f3ecd6']    # 布の旅装（生成りの麻）
+BOOTS = ['#1c120c', '#3a2416', '#5a3a22', '#7a5232', '#9a6c44']     # 革の靴
+
+
+def armor_zone(a, region, belt):
+    """鎧の範囲：板金のドット ＋ そのすぐ横の金の縁取り ＋ 中に閉じこめられた暗い線（帯は含めない）"""
+    plate = plate_mask(a, region)
+    near = plate.copy()
+    for _ in range(2): near = near | P.neighbors4(near)
+    trim = is_gold(a) & near & region & ~belt
+    z = plate | trim
+    dark = P.opaque(a) & (P.lum(a) <= 52) & region & ~belt
+    for _ in range(2):
+        cnt = sum(np.roll(np.roll(z, dy, 0), dx, 1).astype(int) for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+        z = z | (dark & (cnt >= 3))
+    return z, plate, trim
+
+
+def ramp_fill(dst, mask, v, ramp):
+    cols = np.array([P.hexrgb(c) for c in ramp]); i = np.clip(np.round(v * (len(cols) - 1)).astype(int), 0, len(cols) - 1)
+    for k in range(len(cols)):
+        m = mask & (i == k); dst[m, 0], dst[m, 1], dst[m, 2] = cols[k]; dst[m, 3] = 255
+
+
+def travelize(a, zone, legs_y, trim_cols, hands=None):
+    """装備なし：鎧（胸当て・肩当て・腰の板・脛当て）→ 布の旅装（生成りの上着・袖）と革の靴。肩当ての外へ張り出した所は削る"""
+    t = a.copy(); H, W = a.shape[:2]; yy, xx = np.mgrid[0:H, 0:W]
+    was = P.opaque(t)
+    for (x0, x1, y0, y1) in trim_cols: t[(xx >= x0) & (xx < x1) & (yy >= y0) & (yy < y1) & zone] = 0   # 肩当ての張り出し
+    z = zone & P.opaque(t)
+    L = P.lum(a).astype(float); Lz = np.where(z, L, np.nan)
+    pad = np.pad(Lz, 1, mode='edge'); acc = np.zeros_like(L); n = np.zeros_like(L)
+    for dy in range(3):
+        for dx in range(3):
+            v = pad[dy:dy + H, dx:dx + W]; ok = ~np.isnan(v); acc[ok] += v[ok]; n[ok] += 1
+    Ls = np.where(n > 0, acc / np.maximum(n, 1), L)          # 板金の細かな光をならす（布はぎらぎら光らない）
+    lo, hi = np.nanpercentile(Lz, 4), np.nanpercentile(Lz, 96)
+    v = np.clip((Ls - lo) / max(1.0, hi - lo), 0, 1)
+    v = 0.36 + 0.5 * v
+    v = np.where(L <= 52, 0.24, v)                           # 板の継ぎ目の暗い線 → 布のしわ・縫い目（輪郭ほど濃くしない）
+    v = texturize(v, 0.35, 2, 3)
+    hm = hands if hands is not None else np.zeros((H, W), bool)
+    cloth = z & (yy < legs_y) & ~hm; boot = z & ((yy >= legs_y) | hm)   # 籠手（こて）→ 革の手袋、脛当て → 革の靴
+    ramp_fill(t, cloth, v, TRAVEL); ramp_fill(t, boot, np.clip(v * 0.9, 0, 1), BOOTS)
+    P.outline_edges(t, was, OUTLINE)
+    edge = z & P.opaque(t) & P.neighbors4(~P.opaque(t))
+    t[edge, 0], t[edge, 1], t[edge, 2] = OUTLINE
+    return t
+
+
+def build_view(name, o, wl, cfg):
+    """1 つの向きの部品をそろえる。wl＝剣・盾を外した絵（鎧はそのまま）"""
     H, W = o.shape[:2]; yy, xx = np.mgrid[0:H, 0:W]
     parts = {}
+    region = (yy >= cfg['body_y'])
+    zone, plate_m, trim_m = armor_zone(wl, region, cfg['belt_m'])
+    plain = travelize(wl, zone, cfg['legs_y'], cfg['trim_cols'], cfg['keep_m'])
     parts['base_plain'] = plain
-    region = yy >= cfg['body_y']
-    plate_m = plate_mask(plain, region)
-    # 胴：軽装（革）＝板金を明るさを抑えて品の色へ。重鎧＝板金をそのままの明るさで品の色へ（灰色の品なら描かない＝元の板金）
-    lg, _ = P.to_gray(plain, plate_m, out_lo=0.16, out_hi=0.8, gamma=1.1)
-    parts['armor_light_t'] = lg
-    hg, _ = P.to_gray(plain, plate_m, out_lo=0.0, out_hi=1.0)
-    parts['armor_heavy_t'] = hg
-    # 盾・剣（元の絵から切り離す）
+    # 鎧の形（元の絵の板金・縁取り・継ぎ目）。重鎧はこのまま。色のある品は板金だけ品の色（灰色の層）
+    parts['armor_shape_f'] = take(wl, zone)
+    hg, _ = P.to_gray(wl, plate_m, out_lo=0.0, out_hi=1.0); parts['armor_heavy_t'] = hg
+    # 軽装（革）：同じ形で、板金を明るさをしぼって品の色へ
+    lg, _ = P.to_gray(wl, plate_m, out_lo=0.16, out_hi=0.8, gamma=1.1); parts['armor_light_t'] = lg
     parts['shield'] = take(o, cfg['shield_m'])
     parts['weapon_sword'] = take(o, cfg['sword_m'])
-    # 握る手（長柄の上に描き直す範囲）
     parts['hand'] = take(plain, cfg['hand_m'] & P.opaque(plain) & ~is_red(plain))
-    return parts, plate_m
+    return parts, plate_m, zone, plain
 
 
 def save_parts(view_dir, parts, offsets):
@@ -536,25 +618,29 @@ if __name__ == '__main__':
     for y in range(12, 93): blade[y, :int(np.floor(blade_cut_front(y))) + 1] = True
     sword_m_f = (blade | rect(FH, FW, 0, 88, 31, 107) | rect(FH, FW, 0, 100, 13, 112) | (rect(FH, FW, 30, 90, 38, 101) & is_gold(fo)) | (rect(FH, FW, 21, 128, 33, 139) & is_gold(fo))) & P.opaque(fo)
     SHIELD_F_TIGHT = [(84, 90), (88, 86), (113, 86), (119, 91), (125, 101), (127, 112), (127, 128), (124, 140), (119, 150), (112, 159), (106, 164), (100, 161), (93, 153), (88, 144), (85, 132), (84, 118), (83, 104), (83, 95)]
-    cfg_f = {'body_y': 74, 'shield_m': P.poly_mask(FH, FW, SHIELD_F_TIGHT) & P.opaque(fo), 'sword_m': sword_m_f, 'hand_m': rect(FH, FW, 11, 104, 33, 129)}
-    pf, plate_f = build_view('front', fo, fp, cfg_f)
+    cfg_f = {'body_y': 74, 'shield_m': P.poly_mask(FH, FW, SHIELD_F_TIGHT) & P.opaque(fo), 'sword_m': sword_m_f, 'hand_m': rect(FH, FW, 11, 104, 33, 129),
+             'keep_m': rect(FH, FW, 11, 104, 33, 129) | rect(FH, FW, 2 * FA - 33, 104, 2 * FA - 11, 129), 'belt_m': rect(FH, FW, 38, 111, 92, 128), 'legs_y': 152,
+             'trim_cols': [(0, 33, 74, 97), (2 * FA - 32, 140, 74, 97)]}
+    pf, plate_f, zone_f, tp = build_view('front', fo, fp, cfg_f)
     # ---- 背面の剣・盾・手 ----
     changed_b = np.any(bo != bp, axis=-1)
     outl_b = np.all(bp[..., :3] == np.array(OUTLINE), axis=-1)
     sword_m_b = changed_b & rect(BH, BW, 193, 100, 250, 240) & P.opaque(bo) & ~outl_b
     SHIELD_B_TIGHT = [(117, 183), (106, 185), (98, 194), (92, 207), (90, 225), (91, 241), (96, 253), (105, 261), (115, 264), (121, 259), (123, 246), (124, 230), (126, 206), (124, 191)]
-    cfg_b = {'body_y': 172, 'shield_m': P.poly_mask(BH, BW, SHIELD_B_TIGHT) & P.opaque(bo), 'sword_m': sword_m_b, 'hand_m': rect(BH, BW, 192, 199, 218, 227)}
-    pb, plate_b = build_view('back', bo, bp, cfg_b)
+    cfg_b = {'body_y': 172, 'shield_m': P.poly_mask(BH, BW, SHIELD_B_TIGHT) & P.opaque(bo), 'sword_m': sword_m_b, 'hand_m': rect(BH, BW, 192, 199, 218, 227),
+             'keep_m': rect(BH, BW, 195, 203, 218, 227) | rect(BH, BW, int(2 * BA) - 218, 203, int(2 * BA) - 195, 227), 'belt_m': np.zeros((BH, BW), bool), 'legs_y': 250,
+             'trim_cols': [(0, 117, 176, 202), (int(2 * BA) - 116, 400, 176, 202)]}
+    pb, plate_b, zone_b, tb = build_view('back', bo, bp, cfg_b)
 
     # ---- 兜 ----
     g, f, hm = helm(FH, FW, cx=66, top=9, brow=47, rx=36, cheek=(30, 46, 87, 102, 73))
     pf['head_helm_t'], pf['head_helm_f'] = g, f
     face = rect(FH, FW, 46, 46, 88, 80)
-    bh = fp.copy(); clr = (fyy < 72) & ~hm & ~face; bh[clr] = 0; P.drop_specks(bh, 6)
+    bh = tp.copy(); clr = (fyy < 72) & ~hm & ~face; bh[clr] = 0; P.drop_specks(bh, 6)
     pf['base_helm'] = bh
     g, f, hmb = helm(BH, BW, cx=157, top=111, brow=161, rx=38, cheek=None, back=True, flare=9)
     pb['head_helm_t'], pb['head_helm_f'] = g, f
-    bhb = bp.copy(); clr = (byy < 171) & ~hmb & ~((byy >= 166) & (bxx > 120) & (bxx < 195)); bhb[clr] = 0; P.drop_specks(bhb, 6)
+    bhb = tb.copy(); clr = (byy < 171) & ~hmb & ~((byy >= 166) & (bxx > 120) & (bxx < 195)); bhb[clr] = 0; P.drop_specks(bhb, 6)
     pb['base_helm'] = bhb
     # ---- とんがり帽子（上へはみ出すので、大きめの台に描いて y をずらす）----
     TOP = 60
@@ -562,13 +648,13 @@ if __name__ == '__main__':
     pf['head_hat_t'], pf['head_hat_f'] = g, f
     hm2 = hatm[TOP:]; crown2 = crown[TOP:]
     brim_top = 43 - 9 * np.sqrt(np.clip(1 - ((fxx - 66) / 50.0) ** 2, 0, 1))
-    bt = fp.copy(); clr = (fyy < brim_top) & ~crown2 & (fyy < 60); bt[clr] = 0; P.drop_specks(bt, 6)
+    bt = tp.copy(); clr = (fyy < brim_top) & ~crown2 & (fyy < 60); bt[clr] = 0; P.drop_specks(bt, 6)
     pf['base_hat'] = bt
     g, f, hatmb, brimb, crownb = witch_hat(BH + TOP, BW, cx=157, by=149 + TOP, rx=54, ry=9, d=-1, buckle=False)
     pb['head_hat_t'], pb['head_hat_f'] = g, f
     crownb2 = crownb[TOP:]
     brim_top_b = 149 - 9 * np.sqrt(np.clip(1 - ((bxx - 157) / 54.0) ** 2, 0, 1))
-    btb = bp.copy(); clr = (byy < brim_top_b) & ~crownb2 & (byy < 165); btb[clr] = 0; P.drop_specks(btb, 6)
+    btb = tb.copy(); clr = (byy < brim_top_b) & ~crownb2 & (byy < 165); btb[clr] = 0; P.drop_specks(btb, 6)
     pb['base_hat'] = btb
     # ---- 杖・槍 ----
     def staff(H, W, cx, cy, ground, top_ext):
@@ -587,10 +673,10 @@ if __name__ == '__main__':
     pb['weapon_staff_t'], pb['weapon_staff_f'] = staff(BH, BW, 205, 148, 303, TOP)
     pb['weapon_spear'] = spear(BH, BW, 205, 70, 303, TOP)
     # ---- ローブ ----
-    pf['armor_robe_t'], pf['armor_robe_f'] = robe_front(fp, mage, None, plate_f)
+    pf['armor_robe_t'], pf['armor_robe_f'] = robe_front(fp, mage, None, plate_f)   # fp＝剣・盾を外した元の絵（スカーフ・腕の形を見る）
     hb_, sb_, vb_ = P.hsv(bp); cape_b = ((hb_ < 20) | (hb_ > 330)) & (sb_ > 0.3) & P.opaque(bp) & (byy > 165)
     cape_b = cape_b | (P.neighbors4(cape_b) & P.opaque(bp) & (P.lum(bp) < 60))   # マントの縁の暗い線もマントのうち
-    pb['armor_robe_t'], pb['armor_robe_f'] = robe_back(bp, plate_b, cape_b)
+    pb['armor_robe_x'], pb['armor_robe_t'], pb['armor_robe_f'] = robe_back(bp, zone_b, cape_b, cfg_b['keep_m'])
     # ---- 書き出し ----
     off = {k: (0, -TOP) for k in ('head_hat_t', 'head_hat_f', 'weapon_staff_t', 'weapon_staff_f', 'weapon_spear')}
     recF = save_parts(os.path.join(OUT, 'job_warrior'), pf, off)
@@ -599,6 +685,12 @@ if __name__ == '__main__':
     # ---- 対応表（js/data/equip-pixels.js）：人物ID・向き → 部品。部品の種類 → 装備の形 ----
     def box(arr):
         bb = P.bbox(P.opaque(arr)); return {'x0': bb[0], 'y0': bb[1], 'x1': bb[2], 'y1': bb[3]}
+    def frame(rec, w, h, m=2):
+        # メニューに置く枠：どの組み合わせでも同じ。全部の部品（帽子・槍・杖の先）を収め、左右は元の絵の中心でそろえ、下は元の絵の下辺（足もと）
+        x0 = min([0] + [r['x'] for r in rec.values()]) - m; x1 = max([w] + [r['x'] + r['w'] for r in rec.values()]) + m
+        y0 = min([0] + [r['y'] for r in rec.values()]) - m
+        half = max(w / 2 - x0, x1 - w / 2)
+        return {'x0': int(np.floor(w / 2 - half)), 'y0': int(y0), 'x1': int(np.ceil(w / 2 + half)), 'y1': int(h)}
     man = {
         'version': 'v9.7', 'pad': 48,
         'note': '装備の外見（ドット絵の差分）。tools/appear/pixel/build_hero.py が作る。部品の座標は元の絵と同じ（x, y＝左上）',
@@ -610,9 +702,9 @@ if __name__ == '__main__':
                     'shield': {'shield': 'shield'}},
         # 種類ごとの重ね方：base＝使う素の絵（頭にかぶるとき髪を切った絵）、layers＝重ねる部品（tint＝品の色の段で塗る灰色の層）、hand＝長柄：武器の上に手を描き直す
         'materials': {
-            'armor_light': {'z': 10, 'layers': [{'part': 'armor_light_t', 'tint': 'main'}]},
-            'armor_heavy': {'z': 10, 'layers': [{'part': 'armor_heavy_t', 'tint': 'main', 'grayKeep': True}]},
-            'armor_robe': {'z': 10, 'layers': [{'part': 'armor_robe_t', 'tint': 'main'}, {'part': 'armor_robe_f'}]},
+            'armor_light': {'z': 10, 'layers': [{'part': 'armor_shape_f'}, {'part': 'armor_light_t', 'tint': 'main'}]},
+            'armor_heavy': {'z': 10, 'layers': [{'part': 'armor_shape_f'}, {'part': 'armor_heavy_t', 'tint': 'main', 'onlyColor': True}]},
+            'armor_robe': {'z': 10, 'layers': [{'part': 'armor_robe_x', 'erase': True, 'optional': True}, {'part': 'armor_robe_t', 'tint': 'main'}, {'part': 'armor_robe_f'}]},
             'head_helm': {'z': 20, 'base': 'base_helm', 'layers': [{'part': 'head_helm_t', 'tint': 'main', 'grayRef': 'plate'}, {'part': 'head_helm_f'}]},
             'head_hat': {'z': 20, 'base': 'base_hat', 'layers': [{'part': 'head_hat_t', 'tint': 'main'}, {'part': 'head_hat_f'}]},
             'shield': {'z': 30, 'layers': [{'part': 'shield'}]},
@@ -620,11 +712,12 @@ if __name__ == '__main__':
             'weapon_staff': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_staff_t', 'tint': 'orb'}, {'part': 'weapon_staff_f'}]},
             'weapon_spear': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_spear'}]},
         },
-        'actors': {'hero': {'views': {
-            'job:warrior': {'src': FRONT_SRC, 'w': FW, 'h': FH, 'dir': 'front', 'pivot': [64, 197], 'body': box(fp),
+        # menuBase：メニューの立ち絵の素体。主人公はどの職業でも、本人の絵（戦士の立ち絵）を素体にして装備で着替える（戦闘の絵も職業で変わらないのと合わせる）
+        'actors': {'hero': {'menuBase': 'job:warrior', 'views': {
+            'job:warrior': {'src': FRONT_SRC, 'w': FW, 'h': FH, 'dir': 'front', 'pivot': [64, 197], 'body': box(tp), 'frame': frame(recF, FW, FH),
                             'grip': {'x': 22, 'y': 117, 'order': '剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す'},
                             'offhand': {'x': 105, 'y': 125, 'order': '盾：腕の上（体の後に描く）'}, 'parts': recF},
-            'back': {'src': BACK_SRC, 'w': BW, 'h': BH, 'dir': 'back', 'pivot': [160, 304], 'body': box(bp),
+            'back': {'src': BACK_SRC, 'w': BW, 'h': BH, 'dir': 'back', 'pivot': [160, 304], 'body': box(tb), 'frame': frame(recB, BW, BH),
                      'grip': {'x': 205, 'y': 213, 'order': '剣：拳の上に鍔／杖・槍：柄の上に拳を描き直す'},
                      'offhand': {'x': 108, 'y': 222, 'order': '盾：左腕の外側（体の後に描く）'}, 'parts': recB},
         }}},

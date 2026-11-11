@@ -13,11 +13,11 @@
   },
   {
    "ok": true,
-   "m": "メニュー［軽装＋剣］装備 {\"weapon\":\"steel_sword\",\"armor\":\"leather_armor\",\"shield\":null,\"head\":null,\"acc\":null} → 部品：base_plain armor_light_t weapon_sword"
+   "m": "メニュー［軽装＋剣］装備 {\"weapon\":\"steel_sword\",\"armor\":\"leather_armor\",\"shield\":null,\"head\":null,\"acc\":null} → 部品：base_plain armor_shape_f armor_light_t weapon_sword"
   },
   {
    "ok": true,
-   "m": "メニュー［重鎧＋兜＋剣と盾］装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null} → 部品：base_helm head_helm_t head_helm_f shield weapon_sword"
+   "m": "メニュー［重鎧＋兜＋剣と盾］装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null} → 部品：base_helm armor_shape_f head_helm_t head_helm_f shield weapon_sword"
   },
   {
    "ok": true,
@@ -25,15 +25,15 @@
   },
   {
    "ok": true,
-   "m": "メニュー［重鎧＋槍（長さの確かめ）］装備 {\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null} → 部品：base_plain weapon_spear hand"
+   "m": "メニュー［重鎧＋槍（長さの確かめ）］装備 {\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null} → 部品：base_plain armor_shape_f weapon_spear hand"
   },
   {
    "ok": true,
-   "m": "メニュー：足もと（元の絵の下辺）・左右の中心・1 ドットの大きさが、5 つの組み合わせで同じ（335.3/460.4/1.500　335.3/460.4/1.500　335.3/460.4/1.500　335.3/460.4/1.500　335.3/460.4/1.500）"
+   "m": "メニュー：足もと（元の絵の下辺）・左右の中心・1 ドットの大きさが、5 つの組み合わせで同じ（335.3/460.4/1.327　335.3/460.4/1.327　335.3/460.4/1.327　335.3/460.4/1.327　335.3/460.4/1.327）"
   },
   {
    "ok": true,
-   "m": "メニュー：人物の大きさは今までの立ち絵と同じ（元の絵 200 ドット → 画面 300px）"
+   "m": "メニュー：決まった枠（帽子・槍・杖の先まで）を絵の枠の高さに収める（枠 300px・1 ドット 1.327px＝元の絵の 265px 分）"
   },
   {
    "ok": true,
@@ -124,14 +124,14 @@
     "st": "ok",
     "parts": "base_plain",
     "mode": "pixel",
-    "k": 1,
-    "px": 1.5,
+    "k": 1.13,
+    "px": 1.3274336283185841,
     "bottom": 335.265625,
     "cx": 460.390625,
-    "w": 198,
+    "w": 177.875,
     "h": 300,
-    "cw": 132,
-    "ch": 200
+    "cw": 134,
+    "ch": 226
    },
    "light": {
     "equip": {
@@ -153,16 +153,16 @@
      "element": "none"
     },
     "st": "ok",
-    "parts": "base_plain armor_light_t weapon_sword",
+    "parts": "base_plain armor_shape_f armor_light_t weapon_sword",
     "mode": "pixel",
-    "k": 1,
-    "px": 1.5,
+    "k": 1.13,
+    "px": 1.3274336283185841,
     "bottom": 335.265625,
     "cx": 460.390625,
-    "w": 198,
+    "w": 177.875,
     "h": 300,
-    "cw": 132,
-    "ch": 200
+    "cw": 134,
+    "ch": 226
    },
    "heavy": {
     "equip": {
@@ -184,16 +184,16 @@
      "element": "none"
     },
     "st": "ok",
-    "parts": "base_helm head_helm_t head_helm_f shield weapon_sword",
+    "parts": "base_helm armor_shape_f head_helm_t head_helm_f shield weapon_sword",
     "mode": "pixel",
-    "k": 1,
-    "px": 1.5,
+    "k": 1.13,
+    "px": 1.3274336283185841,
     "bottom": 335.265625,
     "cx": 460.390625,
-    "w": 198,
+    "w": 177.875,
     "h": 300,
-    "cw": 132,
-    "ch": 200
+    "cw": 134,
+    "ch": 226
    },
    "robe": {
     "equip": {
@@ -217,14 +217,14 @@
     "st": "ok",
     "parts": "base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand",
     "mode": "pixel",
-    "k": 1.075,
-    "px": 1.5,
+    "k": 1.13,
+    "px": 1.3274336283185841,
     "bottom": 335.265625,
     "cx": 460.390625,
-    "w": 198,
-    "h": 322.5,
-    "cw": 132,
-    "ch": 215
+    "w": 177.875,
+    "h": 300,
+    "cw": 134,
+    "ch": 226
    },
    "spear": {
     "equip": {
@@ -246,16 +246,16 @@
      "element": "none"
     },
     "st": "ok",
-    "parts": "base_plain weapon_spear hand",
+    "parts": "base_plain armor_shape_f weapon_spear hand",
     "mode": "pixel",
-    "k": 1.12,
-    "px": 1.4999999999999998,
+    "k": 1.13,
+    "px": 1.3274336283185841,
     "bottom": 335.265625,
     "cx": 460.390625,
-    "w": 198,
-    "h": 336,
-    "cw": 132,
-    "ch": 224
+    "w": 177.875,
+    "h": 300,
+    "cw": 134,
+    "ch": 226
    }
   },
   "battle": {},
@@ -284,6 +284,7 @@
       "hairOut": 0,
       "parts": [
        "base_plain",
+       "armor_shape_f",
        "armor_light_t",
        "weapon_sword"
       ]
@@ -298,6 +299,7 @@
       "hairOut": 0,
       "parts": [
        "base_helm",
+       "armor_shape_f",
        "head_helm_t",
        "head_helm_f",
        "shield",
@@ -333,6 +335,7 @@
       "hairOut": 0,
       "parts": [
        "base_plain",
+       "armor_shape_f",
        "weapon_spear",
        "hand"
       ]
@@ -368,6 +371,7 @@
       "hairOut": 0,
       "parts": [
        "base_plain",
+       "armor_shape_f",
        "armor_light_t",
        "weapon_sword"
       ]
@@ -382,6 +386,7 @@
       "hairOut": 0,
       "parts": [
        "base_helm",
+       "armor_shape_f",
        "head_helm_t",
        "head_helm_f",
        "shield",
@@ -398,6 +403,7 @@
       "hairOut": 0,
       "parts": [
        "base_hat",
+       "armor_robe_x",
        "armor_robe_t",
        "armor_robe_f",
        "head_hat_t",
@@ -417,6 +423,7 @@
       "hairOut": 0,
       "parts": [
        "base_plain",
+       "armor_shape_f",
        "weapon_spear",
        "hand"
       ]

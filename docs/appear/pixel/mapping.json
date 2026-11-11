@@ -31,8 +31,8 @@
       "w": 124,
       "h": 196
      },
-     "armor_light_t": {
-      "file": "assets/characters/equip-pixels/hero/job_warrior/armor_light_t.png",
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/armor_shape_f.png",
       "x": 20,
       "y": 77,
       "w": 86,
@@ -40,6 +40,13 @@
      },
      "armor_heavy_t": {
       "file": "assets/characters/equip-pixels/hero/job_warrior/armor_heavy_t.png",
+      "x": 20,
+      "y": 77,
+      "w": 86,
+      "h": 118
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/armor_light_t.png",
       "x": 20,
       "y": 77,
       "w": 86,
@@ -174,15 +181,22 @@
       "w": 151,
       "h": 203
      },
-     "armor_light_t": {
-      "file": "assets/characters/equip-pixels/hero/back/armor_light_t.png",
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/hero/back/armor_shape_f.png",
+      "x": 108,
+      "y": 178,
+      "w": 98,
+      "h": 122
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/hero/back/armor_heavy_t.png",
       "x": 109,
       "y": 178,
       "w": 96,
       "h": 121
      },
-     "armor_heavy_t": {
-      "file": "assets/characters/equip-pixels/hero/back/armor_heavy_t.png",
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/hero/back/armor_light_t.png",
       "x": 109,
       "y": 178,
       "w": 96,
@@ -272,19 +286,26 @@
       "w": 12,
       "h": 234
      },
+     "armor_robe_x": {
+      "file": "assets/characters/equip-pixels/hero/back/armor_robe_x.png",
+      "x": 106,
+      "y": 245,
+      "w": 132,
+      "h": 60
+     },
      "armor_robe_t": {
       "file": "assets/characters/equip-pixels/hero/back/armor_robe_t.png",
-      "x": 107,
+      "x": 108,
       "y": 178,
-      "w": 100,
-      "h": 114
+      "w": 98,
+      "h": 117
      },
      "armor_robe_f": {
       "file": "assets/characters/equip-pixels/hero/back/armor_robe_f.png",
       "x": 106,
-      "y": 235,
-      "w": 102,
-      "h": 64
+      "y": 178,
+      "w": 120,
+      "h": 121
      }
     }
    }
@@ -4339,6 +4360,9 @@
    "z": 10,
    "layers": [
     {
+     "part": "armor_shape_f"
+    },
+    {
      "part": "armor_light_t",
      "tint": "main"
     }
@@ -4348,15 +4372,23 @@
    "z": 10,
    "layers": [
     {
+     "part": "armor_shape_f"
+    },
+    {
      "part": "armor_heavy_t",
      "tint": "main",
-     "grayKeep": true
+     "onlyColor": true
     }
    ]
   },
   "armor_robe": {
    "z": 10,
    "layers": [
+    {
+     "part": "armor_robe_x",
+     "erase": true,
+     "optional": true
+    },
     {
      "part": "armor_robe_t",
      "tint": "main"
