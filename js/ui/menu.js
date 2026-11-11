@@ -262,6 +262,9 @@
         '<div class="eq-now"><span class="muted small">いま</span>' + (curId ? II.html(curId, { size: 32 }) : '<span class="eq-none">なし</span>') + '</div>' +
         '<div class="eq-chg">' + (chg.length ? chg.join('') : '<span class="muted">能力の数値は変わらない</span>') + '</div></div></div>';
     }
+    var EA = root.EquipmentAppearance, tryOn = '';   // v9.6 試着：装備のコピー（いまの装備＋この候補）で全身を見せる。決めるまで本人の装備は変わらない
+    if (EA && EA.supports(a, EA.menuView(a))) { var te = {}; te[slot] = id || null; tryOn = '<div class="eq-try">' + EA.hostHtml(a.id, root.Assets ? root.Assets.portraitTagFor(a, 'portrait eq-try-img', 140) : '', { view: 'menu', equip: te, cls: 'eq-try-fig' }) + '<div class="eq-try-cap muted small">' + (id ? '試着' : 'はずすと') + '</div></div>'; }
+    if (tryOn) arts = '<div class="eq-top">' + tryOn + arts + '</div>';
     var h = '<div class="eq-cmp">' + arts + '<div class="small muted">' + esc(a.name) + '：' + esc(curId ? ITEMS[curId].name : '（なし）') + ' → <b>' + esc(it ? it.name : '（はずす）') + '</b></div><table class="tbl eq-tbl"><tr><th>能力</th><th>いま</th><th></th><th>装備後</th><th>差</th></tr>' + rows + '</table>';
     if (it) {
       var ft = fxText(it); if (ft.length) h += '<div class="eq-fx"><b>数値のほかの効果</b><ul>' + ft.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
@@ -298,7 +301,8 @@
       var s = Actors.stats(a); var rec = focus ? Menu.recommend(a, focus) : null;
       var rows = EQ_SLOTS.map(function (sl, k) { var r0 = rec && rec[k]; return { label: EQ_NAMES[sl], right: a.equip[sl] ? ITEMS[a.equip[sl]].name : '―', sub: r0 && r0.better ? 'おすすめ候補：' + ITEMS[r0.best].name : undefined, itemId: a.equip[sl] || undefined }; });   // v9.5 装備している枠だけ絵（空き枠は品物ではない）
       rows.push({ label: 'おすすめ候補を見る', sub: '攻撃重視・耐久重視・魔法重視（見るだけ。自動では装備しない）' });
-      var i = await Win.list(rows, { title: a.name + 'の装備　HP' + s.maxHp + ' MP' + s.maxMp + ' 攻' + s.atk + ' 防' + s.def + ' 速' + s.agi + ' 魔' + s.mag, cls: 'equip-menu', key: 'equip:slots', members: memberBar(mem, a, true) });
+      var EAq = root.EquipmentAppearance; var eqHead = EAq && EAq.supports(a, EAq.menuView(a)) ? '<div class="eq-body-head">' + EAq.hostHtml(a.id, root.Assets ? root.Assets.portraitTagFor(a, 'portrait eq-body-img', 120) : '', { view: 'menu', cls: 'eq-body-fig' }) + '<div class="muted small">いまの装備の見た目</div></div>' : '';   // v9.6 同じ人物の全身
+      var i = await Win.list(rows, { title: a.name + 'の装備　HP' + s.maxHp + ' MP' + s.maxMp + ' 攻' + s.atk + ' 防' + s.def + ' 速' + s.agi + ' 魔' + s.mag, cls: 'equip-menu', key: 'equip:slots', members: memberBar(mem, a, true), head: eqHead || undefined });
       if (i && typeof i === 'object') { if (i.member !== undefined && mem[i.member]) a = noteMember(mem[i.member]); continue; }   // 枠のカーソルは key で覚えている
       if (i < 0) return;
       if (i === EQ_SLOTS.length) { var fi = await Win.choice('どの考え方で候補を見る？', FOCUS.map(function (f) { return f.name; }).concat(['やめる'])); if (fi >= 0 && fi < FOCUS.length) { focus = FOCUS[fi].id; await Win.panel(Menu.recommendHtml(a, focus), { cls: 'eq-rec-panel' }); } continue; }
@@ -488,6 +492,7 @@
     },
     art: function (a) {
       var c = root.COMPANIONS && root.COMPANIONS[a.id]; var tag = root.Assets ? root.Assets.portraitTagFor(a, 'portrait pt-portrait', 300) : '';
+      var EA = root.EquipmentAppearance; if (EA && EA.supports(a, EA.menuView(a))) tag = EA.hostHtml(a.id, tag || '<div class="pt-noart">立ち絵なし</div>', { view: 'menu', fit: 'body', cls: 'ea-pt' });   // v9.6 装備した見た目（合成ができるまでは今までの立ち絵）
       var title = a.id === 'hero' && root.Growth ? '<span class="title-badge">' + esc(root.Growth.title()) + '</span>' : '';
       var bio = c ? '<div class="pt-bio">' + esc(c.bio || '') + '</div>' + (c.background || c.personality ? '<div class="pt-bio2 muted small">' + esc(c.background || '') + (c.personality ? '　性格：' + esc(c.personality) : '') + '</div>' : '') : '<div class="pt-bio">主人公。相場の波を読む力を持つ。</div>';
       return '<div class="pt-artbox">' + (tag || '<div class="pt-noart">立ち絵なし</div>') + '</div><div class="pt-name">' + esc(a.name) + ' ' + title + '</div><div class="pt-job">' + esc(JOBS[a.job].name) + ' Lv' + a.level + '</div>' + bio;

@@ -1,0 +1,31 @@
+/* =========================================================
+   v9.6 装備でキャラの外見が変わる（styles.css・styles/item-icons.css の後に読む）。js/rpg/equipment-appearance.js が入れる合成の絵の置き場所だけ
+   ・合成ができるまでは今までの本人の絵（.ea-host の中の img）。できたら同じ場所・同じ大きさの canvas（.ea-canvas）に差し替える
+   ・なかまの画面の立ち絵：人物（装備のない素体）の高さを今までと同じにする（長い武器の先は枠の上へ出る。--ea-k＝合成の絵の高さ ÷ 人物の高さ）
+   ========================================================= */
+.ea-host { display: inline-flex; align-items: flex-end; justify-content: center; }
+.ea-canvas { display: block; }
+/* なかまの画面 */
+.pt-artbox > .ea-host { height: 100%; width: 100%; }
+.pt-artbox .ea-fit-body .ea-canvas.pt-portrait { height: calc(300px * var(--ea-k, 1)) !important; max-height: none; max-width: 100%; object-fit: contain; object-position: bottom; }
+@media (max-width: 720px) { .pt-artbox .ea-fit-body .ea-canvas.pt-portrait { height: calc(190px * var(--ea-k, 1)) !important; max-height: none; } }
+/* そうびの候補：試着の全身（大きい品の絵の左） */
+.eq-top { display: flex; gap: 10px; align-items: flex-start; }
+.eq-top > .eq-arts { flex: 1 1 auto; min-width: 0; margin-top: 0; }
+.eq-try { flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.eq-try .ea-host { height: 140px; }
+.eq-try .eq-try-img, .eq-try .ea-canvas { height: 140px !important; width: auto; max-width: 112px; object-fit: contain; object-position: bottom; }
+.eq-try-cap { line-height: 1.2; }
+body.mobile .eq-try .ea-host { height: 96px; }
+body.mobile .eq-try .eq-try-img, body.mobile .eq-try .ea-canvas { height: 96px !important; max-width: 76px; }
+@media (max-width: 600px) { .eq-try .ea-host { height: 96px; } .eq-try .eq-try-img, .eq-try .ea-canvas { height: 96px !important; max-width: 76px; } }
+/* そうび（枠の一覧）：いまの装備の全身 */
+.eq-body-head { display: flex; align-items: flex-end; justify-content: center; gap: 8px; margin: 2px 0 4px; }
+.eq-body-head .ea-host { height: 120px; }
+.eq-body-head .eq-body-img, .eq-body-head .ea-canvas { height: 120px !important; width: auto; max-width: 120px; object-fit: contain; object-position: bottom; }
+body.mobile .eq-body-head .ea-host { height: 84px; }
+body.mobile .eq-body-head .eq-body-img, body.mobile .eq-body-head .ea-canvas { height: 84px !important; max-width: 84px; }
+body.m-land .eq-body-head .ea-host { height: 60px; }
+body.m-land .eq-body-head .eq-body-img, body.m-land .eq-body-head .ea-canvas { height: 60px !important; max-width: 60px; }
+/* 戦闘の味方の欄（2D）：今までの小さな立ち絵と同じ場所・大きさ */
+.bp .ea-bp { display: contents; }

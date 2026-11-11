@@ -516,7 +516,7 @@
     var cards = pw.querySelectorAll('.bp');
     var same = cards.length === b.party.length && b.party.every(function (a, i) { return cards[i].getAttribute('data-id') === a.id; });
     if (!same) {
-      pw.innerHTML = b.party.map(function (a) { var pu = root.Assets ? root.Assets.portraitUrlFor(a) : null; return '<div class="bp" data-id="' + a.id + '">' + (pu ? '<img class="bp-portrait" src="' + pu + '" alt="" draggable="false">' : '') + '<div class="bp-body"><div class="bp-name"></div><div class="bp-hp"></div><div class="bar hp"><span></span></div><div class="bp-mp"></div></div></div>'; }).join('');
+      pw.innerHTML = b.party.map(function (a) { var pu = root.Assets ? root.Assets.portraitUrlFor(a) : null; var pimg = pu ? '<img class="bp-portrait" src="' + pu + '" alt="" draggable="false">' : ''; var EA = root.EquipmentAppearance; if (pimg && EA && EA.supports(a, EA.menuView(a))) pimg = EA.hostHtml(a.id, pimg, { view: 'menu', cls: 'ea-bp' }); return '<div class="bp" data-id="' + a.id + '">' + pimg + '<div class="bp-body"><div class="bp-name"></div><div class="bp-hp"></div><div class="bar hp"><span></span></div><div class="bp-mp"></div></div></div>'; }).join('');
       cards = pw.querySelectorAll('.bp');
     }
     b.party.forEach(function (a, i) {

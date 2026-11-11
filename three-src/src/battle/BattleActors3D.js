@@ -104,21 +104,22 @@ function partyPixelBack(a) {
 }
 
 export class BattleActors3D {
-  constructor(stage, models) { this.stage = stage; this.models = models; this.party = new Map(); this.enemies = []; this.seenPops = new WeakSet(); this.seenAnims = new WeakSet(); this.log = []; this.sync = []; }
+  constructor(stage, models) { this.stage = stage; this.models = models; this.party = new Map(); this.enemies = []; this.seenPops = new WeakSet(); this.seenAnims = new WeakSet(); this.log = []; this.sync = []; this.eaCrops = new Map(); }
 
   setup(scene, S) {
-    this.dispose(); this.scene = scene; this.S = S; const b = scene.b; this.ready = 0; this.want = 0; this.failedArt = 0;
+    this.dispose(); this.scene = scene; this.S = S; const b = scene.b; this.ready = 0; this.want = 0; this.failedArt = 0; this.eaCrops = new Map();
     b.enemies.forEach((e, i) => this.addEnemy(e, i));
     this.style = partyStyle(); this.layout = this.stage && this.stage.layout === 'side' ? 'side' : 'front';
     // v6.8 味方の向き：前後の並び＝背中（back）。左右の並び＝敵のいる側を向く（敵が左なら left、右なら right）。正面（front）は勝利のときだけ
     this.partyDir = devPartyDir() || this.sideDir(b);
     if (this.style === 'sprite') b.party.forEach((a) => { PD.retryFailed(a, [this.partyDir, 'front'], 1500); PD.load(a, this.partyDir); PD.load(a, 'front'); });   // 先読み（地図にいるあいだに読み込み済みならすぐ使える）
+    const EA = G.EquipmentAppearance; if (this.style === 'sprite' && EA) b.party.forEach((a) => { try { [this.partyDir, 'front'].forEach((d) => { if (EA.supports(a, d)) EA.request(a, d); }); } catch (err) { /* なし */ } });   // v9.6 装備の外見：素体の読み込みを先に始める（戦闘中の向きと、勝利の正面）
     // v6.8 神聖犬ポン太：味方の板と同じしくみで、味方の右に立てる（id は 'ponta'。j = -1 で立ち位置は petHome）
     if (b.pet && this.style === 'sprite') { const pa = { id: b.pet.id, sprite: b.pet.id, job: null, pet: true }; PD.retryFailed(pa, [this.partyDir, 'front'], 1500); PD.load(pa, this.partyDir); PD.load(pa, 'front'); const ent = { id: b.pet.id, j: -1, a: pa, pet: true, model: null, ch: null, ready: false, dead: false, victory: false, tries: 0 }; this.party.set(b.pet.id, ent); this.want++; this.buildSprite(ent); }
     b.party.forEach((a, j) => {
       const model = a.id === 'hero' ? 'hero' : characterModelFor(a.sprite); const ent = { id: a.id, j, a, model, ch: null, ready: false, dead: false, victory: false, tries: 0 }; this.party.set(a.id, ent); this.want++;
       if (this.style === 'sprite') { this.buildSprite(ent); return; }
-      Character3D.create(this.models, model, { scale: PARTY_SCALE }).then((ch) => { if (!ch || this.scene !== scene) return; ent.ch = ch; S.add(ch.root); ent.ready = true; this.ready++; }).catch((err) => { console.warn('battle party', model, err); ent.failed = true; });
+      Character3D.create(this.models, model, { scale: PARTY_SCALE }).then((ch) => { if (!ch || this.scene !== scene) return; ent.ch = ch; try { this.dressModel(ent, ch); } catch (err) { console.warn('[装備の外見] 3Dモデル', ent.id, err); } S.add(ch.root); ent.ready = true; this.ready++; }).catch((err) => { console.warn('battle party', model, err); ent.failed = true; });
     });
   }
   // v6.8 左右の並びで味方が向く側（敵の平均の横位置が味方より左なら left）。前後の並びは back
@@ -192,7 +193,7 @@ export class BattleActors3D {
   //   以前の絵（同じ本人の立ち絵・歩行のドット絵。別の仲間の絵にはならない）で始め、あとで新しい絵が読めたら差し替える（updateSprites）
   buildSprite(ent) {
     const now = performance.now(); if (!ent.t0) ent.t0 = now; const waited = now - ent.t0;
-    const got = PD.get(ent.a, this.partyDir); ent.pd = got.state; ent.pdUrl = got.info ? got.info.url : null;
+    const got = this.dirGot(ent, this.partyDir); ent.pd = got.state; ent.pdUrl = got.info ? got.info.url : null;
     if (got.state === 'ok' && !ent.pdBad) return this.useDirArt(ent, got, this.partyDir);   // 板を作れなかった（pdBad）ときは以前の絵のまま（毎フレーム作り直さない）
     if (got.state === 'loading' && waited < DIR_WAIT && !ent.pdBad) { ent.tries++; return false; }   // 新しい絵の読み込み中：次のフレームでもう一度（以前の絵の4秒待ちとは別）
     if (got.state !== 'none' && !ent.pdNote) { ent.pdNote = true; console.warn('[味方の4方向の絵] まだ使えない → 以前の絵で表示し、読めたら差し替える：' + ent.id + ' / ' + this.partyDir + ' / ' + (got.state === 'error' ? '読み込みの失敗 ' + (got.err || '') : '読み込み中（' + Math.round(waited) + 'ms）') + ' / ' + ent.pdUrl); }
@@ -212,10 +213,11 @@ export class BattleActors3D {
     const vol = buildArtVolume(c, { height: c.height * s, aspect: c.width / c.height, smooth: false, depth: 0.05, grid: 64 });
     vol.mesh.position.set(art.offX * s, art.offY * s, 0);   // 切り出した絵の下辺の中央 → 基準点から見た位置
     vol.box = { dx: art.offX * s, w: (art.x1 - art.x0) * s, h: (info.pivot[1] - art.y0) * s };   // 立ち位置から見た、見える部分（足もと〜頭・武器の先）
+    if (got.base && got.base.art) { const ba = got.base.art, bi = got.base.info; vol.box = { dx: ba.offX * s, w: (ba.x1 - ba.x0) * s, h: (bi.pivot[1] - ba.y0) * s }; }   // v9.6 装備の外見：カメラ合わせ・影・HP の位置は元の絵の範囲のまま（武器が長くなっても動かさない）
     vol.dir = info.dir; vol.url = info.url; vol.px = s; return vol;
   }
   useDirArt(ent, got, dir) {
-    try { const vol = this.makeDirVol(got); this.attachArt(ent, vol, 'dir:' + dir); ent.url = got.info.url; ent.failed = false; return true; }
+    try { const vol = this.makeDirVol(got); this.attachArt(ent, vol, 'dir:' + dir); ent.url = got.info.url; ent.eaSig = got.sig || null; ent.failed = false; return true; }
     catch (err) { console.warn('battle party direction art', ent.id, dir, err); ent.pdBad = true; return false; }
   }
   // 板を立てる（はじめて）／差し替える（以前の絵 → 新しい絵、勝利の振り向き）。グループと影はそのまま
@@ -356,9 +358,11 @@ export class BattleActors3D {
     for (const ent of this.party.values()) {
       if (!ent.art) { if (!ent.failed || (ent.pdUrl && !ent.pdBad && PD.get(ent.a, this.partyDir).state === 'ok')) this.buildSprite(ent); if (!ent.art) continue; }
       // v6.8 以前の絵で始めた人：新しい4方向の絵が読めたら差し替える（読み込みが遅かった・一度失敗した）
-      if (!/^dir:/.test(ent.kind || '') && !ent.pdBad && ent.pd !== 'none' && !ent.dead) { const got = PD.get(ent.a, this.partyDir); ent.pd = got.state; if (got.state === 'ok') this.useDirArt(ent, got, this.partyDir); }
+      if (!/^dir:/.test(ent.kind || '') && !ent.pdBad && ent.pd !== 'none' && !ent.dead) { const got = this.dirGot(ent, this.partyDir); ent.pd = got.state; if (got.state === 'ok') this.useDirArt(ent, got, this.partyDir); }
+      // v9.6 装備の外見：合成が遅れて元の絵で始めた人は、合成ができたら同じ向きのまま差し替える（変わったときだけ。毎フレーム作り直さない）
+      if (ent.eaWait && /^dir:/.test(ent.kind || '')) { const d0 = ent.kind.slice(4); const g2 = this.dirGot(ent, d0); if (g2.sig && g2.sig !== ent.eaSig) this.useDirArt(ent, g2, d0); }
       // v6.8 勝利：正面（front）の絵に振り向く（読み込み済みのときだけ。開発の向きの固定 ?partydir= のときはしない）
-      if (scene.victory >= 0 && !ent.dead && !ent.vicTurn && /^dir:/.test(ent.kind || '') && !devPartyDir()) { const gf = PD.get(ent.a, 'front'); if (gf.state === 'ok') { ent.vicTurn = true; this.useDirArt(ent, gf, 'front'); } else if (gf.state !== 'loading') ent.vicTurn = true; }
+      if (scene.victory >= 0 && !ent.dead && !ent.vicTurn && /^dir:/.test(ent.kind || '') && !devPartyDir()) { const gf = this.dirGot(ent, 'front'); if (gf.state === 'ok') { ent.vicTurn = true; this.useDirArt(ent, gf, 'front'); } else if (gf.state !== 'loading') ent.vicTurn = true; }
       const U = ent.uniforms; const g = ent.group; const m = ent.art.mesh; U.uTime.value += dt;
       const pv = view.p ? view.p.find((x) => x.id === ent.id) : null; const home = this.partyHome(ent.j);
       const dead = !!(pv && (pv.dead || pv.hp <= 0));
@@ -433,8 +437,83 @@ export class BattleActors3D {
     return { want: this.want, ready: this.ready, failedArt: this.failedArt, altArt: this.altArt || 0, cors: this.enemies.filter((e) => e && e.cors).length, waiting: this.enemies.filter((e) => e && e.waitClean && !e.art).length,
       enemies: this.enemies.filter(Boolean).map((e) => ({ i: e.i, id: e.e.defId, source: e.source, ready: e.ready, vis: !!e.vis, size: e.art ? { w: +e.art.size.w.toFixed(2), h: +e.art.size.h.toFixed(2) } : null, tris: e.art ? e.art.stats.tris : 0, plan: e.plan ? e.plan.anim : null, dissolve: e.uniforms ? +e.uniforms.uDissolve.value.toFixed(2) : 0 })),
       style: this.style, partyDir: this.partyDir, party: [...this.party.values()].map((p) => ({ id: p.id, model: this.style === 'sprite' ? 'pixel:' + (p.kind || 'pending') : p.model, ready: p.ready, anim: p.ch ? p.ch.currentName : (p.plan ? p.plan.anim : p.dead ? 'Defeat' : 'Idle'), dead: p.dead, status: this.style === 'sprite' ? '2D' : (MODELS[p.model] ? MODELS[p.model].status : 'fallback'),
-        job: p.a.job, sprite: p.a.sprite, url: p.art && p.art.url ? p.art.url : null, pd: p.pd || null, vis: p.group ? !!p.group.visible : false, size: p.art ? { w: +((p.art.box || p.art.size).w).toFixed(2), h: +((p.art.box || p.art.size).h).toFixed(2) } : null })), dirs: PD.stats(),
+        job: p.a.job, sprite: p.a.sprite, url: p.art && p.art.url ? p.art.url : null, pd: p.pd || null, ea: p.eaSig || null, eaWait: !!p.eaWait, eaModel: p.eaModel || null, vis: p.group ? !!p.group.visible : false, size: p.art ? { w: +((p.art.box || p.art.size).w).toFixed(2), h: +((p.art.box || p.art.size).h).toFixed(2) } : null })), dirs: PD.stats(),
       log: this.log.slice(-20), sync: this.sync.slice(-40) };
+  }
+  /* ---------- v9.6 装備の外見（js/rpg/equipment-appearance.js） ----------
+     ・ドット絵：その向きの元の画像（切り出す前）に EquipmentAppearance で装備を合成し、PartyDirections と同じ方法で切り出す
+       基準点（pivot）は合成の絵の余白の分だけずらす。refH・体格の比（ratio）は元のまま＝人物の大きさ・足もとは変わらない（武器が長くなっても）
+       合成の絵は装備の組み合わせ（signature）ごとに 1 回だけ作り、切り出しも 1 回だけ（eaCrops）。板（テクスチャ）は差し替えたときに古いものを捨てる（attachArt）
+     ・まだ合成できない（読み込み中）・位置の表がない人物や向き・ペット：元の絵のまま */
+  dirGot(ent, dir) {
+    const got = PD.get(ent.a, dir); const EA = G.EquipmentAppearance;
+    if (got.state !== 'ok' || !EA || ent.a.pet || ent.pet) return got;
+    const d = got.info.dir; if (!EA.supports(ent.a, d)) { ent.eaWait = false; return got; }
+    const r = EA.request(ent.a, d);
+    if (r.state === 'loading') { ent.eaWait = true; return got; }
+    ent.eaWait = false; if (r.state !== 'ok') return got;
+    let c = this.eaCrops.get(r.sig + '|' + d);
+    if (!c) { const pv = [got.info.pivot[0] + r.pad, got.info.pivot[1] + r.pad]; try { c = { art: PD.cropArt(r.canvas, pv), info: Object.assign({}, got.info, { pivot: pv }) }; } catch (err) { console.warn('[装備の外見] 切り出せない', ent.id, d, err); return got; } this.eaCrops.set(r.sig + '|' + d, c); }
+    return { state: 'ok', info: c.info, art: c.art, base: got, sig: r.sig };
+  }
+  // 3Dモデル（開発の確認用 ?party=model）：持ち物を骨に付け替える。手に一体の剣・杖・盾（Sword・Staff・Shield）は隠し、装備の形の簡易な立体を付ける
+  //   骨：武器＝hand.R、盾＝forearm.L、頭＝head、胴＝chest（腰 hips まで）、装飾品＝neck（指輪・腕輪は hand.R）
+  dressModel(ent, ch) {
+    const EA = G.EquipmentAppearance; if (!EA || !ch || !ch.model) return;
+    const norm = (n) => String(n || '').replace(/[^a-z]/gi, '').toLowerCase();
+    const bones = {}; const held = []; let skinned = null;
+    ch.model.traverse((o) => { if (o.isBone) bones[norm(o.name)] = o; if (o.isSkinnedMesh && !skinned) skinned = o; });
+    ch.model.traverse((o) => { if (o.parent && o.parent.isBone && !o.isBone && /sword|staff|shield/i.test(o.name || '')) held.push(o); });
+    held.forEach((o) => { o.visible = false; });   // 元の持ち物は隠す（装備を外したときも素の見た目に）
+    const layers = EA.resolve(ent.a); const by = {}; layers.forEach((l) => { by[l.slot] = l; });
+    const mat = (c, metal) => new THREE.MeshStandardMaterial({ color: new THREE.Color(c), roughness: metal ? 0.38 : 0.8, metalness: metal ? 0.55 : 0.05 });
+    const made = []; const put = (bone, obj) => { if (bone) { bone.add(obj); made.push(obj.name || 'part'); } };
+    ch.model.updateMatrixWorld(true);
+    // 大きさ：頭の骨から頭のてっぺんまで（体の立体の一番上）を頭の大きさにする
+    let headR = 0.16; if (skinned && bones.head) { const bb = new THREE.Box3().setFromObject(skinned); const topW = new THREE.Vector3((bb.min.x + bb.max.x) / 2, bb.max.y, (bb.min.z + bb.max.z) / 2); const tl = bones.head.worldToLocal(topW.clone()); if (tl.y > 0.05 && tl.y < 1) headR = tl.y / 2; }
+    // 武器：元の剣（Sword）と同じ手の中の位置。刃は +Z、長柄・杖・弓は +Y（元の杖 Staff と同じ）
+    const W = by.weapon; if (W && bones.handr) {
+      const g = new THREE.Group(); g.name = 'ea_weapon_' + W.shape; g.position.set(0.1845, 0.3493, 0.0299); g.quaternion.set(-0.99849, 0.02598, 0.02598, 0.04086);
+      const grip = new THREE.Vector3(-0.165, 0.33, 0); const pole = { spear: 1, staff: 1, bow: 1 }[W.shape]; const P = W.pal;
+      const L = { sword: W.sub === 'greatsword' ? 0.55 : 0.42, dagger: 0.22, spear: 0.9, axe: 0.42, bow: 0.7, staff: 0.85, club: 0.4, claw: 0.12 }[W.shape] || 0.4;
+      const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.035, 1), mat(P.dark || P.trim)); const head = new THREE.Group();
+      if (pole) { shaft.scale.set(1, 1, 1); shaft.geometry = new THREE.CylinderGeometry(0.018, 0.018, L, 8); shaft.position.copy(grip).add(new THREE.Vector3(0, L / 2 - 0.25, 0)); head.position.copy(grip).add(new THREE.Vector3(0, L - 0.25, 0)); }
+      else { shaft.scale.set(1, 1, 0.08); shaft.position.copy(grip).add(new THREE.Vector3(0, 0, -0.02)); head.position.copy(grip); }
+      g.add(shaft);
+      if (W.shape === 'sword' || W.shape === 'dagger') { const bl = new THREE.Mesh(new THREE.BoxGeometry(W.sub === 'greatsword' ? 0.07 : 0.045, 0.012, L), mat(P.light || P.main, true)); bl.position.set(0, 0, 0.05 + L / 2); head.add(bl); const gd = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.025, 0.025), mat(P.trim, true)); gd.position.set(0, 0, 0.04); head.add(gd); }
+      else if (W.shape === 'axe' || W.shape === 'club') { const hd = new THREE.Mesh(W.shape === 'axe' ? new THREE.BoxGeometry(0.16, 0.02, 0.12) : new THREE.CylinderGeometry(0.05, 0.05, 0.12, 10), mat(P.light || P.main, true)); hd.position.set(W.shape === 'axe' ? 0.07 : 0, 0, L); head.add(hd); const sh2 = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.03, L), mat(P.dark || P.trim)); sh2.position.set(0, 0, L / 2); head.add(sh2); }
+      else if (W.shape === 'claw') { for (let k = -1; k <= 1; k++) { const bl = new THREE.Mesh(new THREE.ConeGeometry(0.012, 0.14, 6), mat(P.light || P.main, true)); bl.rotation.x = Math.PI / 2; bl.position.set(k * 0.03, 0, 0.1); head.add(bl); } }
+      else if (W.shape === 'spear') { const tip = new THREE.Mesh(new THREE.ConeGeometry(0.04, 0.16, 8), mat(P.light || P.main, true)); tip.position.y = 0.08; head.add(tip); }
+      else if (W.shape === 'staff') { const orb = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 8), mat(P.acc || P.main, true)); orb.position.y = 0.03; head.add(orb); }
+      else if (W.shape === 'bow') { const arc = new THREE.Mesh(new THREE.TorusGeometry(L * 0.5, 0.015, 6, 20, Math.PI * 0.9), mat(P.main)); arc.rotation.z = -Math.PI * 0.45; arc.position.set(-0.04, -L * 0.5 + 0.0, 0); head.add(arc); }
+      g.add(head); put(bones.handr, g);
+    }
+    // 盾：元の盾（Shield）と同じ前腕の位置・向き（面の向きは X）
+    const Sd = by.shield; if (Sd && (bones.forearml || bones.handl)) {
+      const g = new THREE.Group(); g.name = 'ea_shield_' + Sd.sub; g.position.set(-0.198, 0.458, 0.0226); g.quaternion.set(-0.99711, -0.04515, -0.04515, 0.04123);
+      const big = Sd.sub === 'tower' ? 1.35 : Sd.sub === 'buckler' ? 0.75 : 1; const round = Sd.sub === 'round' || Sd.sub === 'buckler';
+      const face = new THREE.Mesh(round ? new THREE.CylinderGeometry(0.15 * big, 0.15 * big, 0.03, 20) : new THREE.BoxGeometry(0.03, 0.3 * big, 0.24 * big), mat(Sd.pal.main, true)); if (round) face.rotation.z = Math.PI / 2;
+      face.position.set(0.222, 0.415, 0.04); g.add(face); const boss = new THREE.Mesh(new THREE.SphereGeometry(0.035, 10, 8), mat(Sd.pal.trim, true)); boss.position.set(0.245, 0.415, 0.04); g.add(boss);
+      put(bones.forearml || bones.handl, g);
+    }
+    // 頭：兜＝半球、帽子＝つば＋円すい（魔女帽）／円柱（ほか）、冠＝輪
+    const Hd = by.head; if (Hd && bones.head) {
+      const g = new THREE.Group(); g.name = 'ea_head_' + Hd.sub; g.position.set(0, headR, 0); const P = Hd.pal;
+      if (Hd.sub === 'crown' || Hd.sub === 'circlet') { const ring = new THREE.Mesh(new THREE.TorusGeometry(headR * 0.95, headR * 0.1, 6, 20), mat(P.trim || '#d8b04a', true)); ring.rotation.x = Math.PI / 2; ring.position.y = headR * 0.35; g.add(ring); }
+      else if (Hd.shape === 'helm') { const cap = new THREE.Mesh(new THREE.SphereGeometry(headR * 0.92, 18, 10, 0, Math.PI * 2, 0, Math.PI * 0.5), mat(P.light || P.main, true)); cap.position.y = -headR * 0.12; g.add(cap); }
+      else { const brim = new THREE.Mesh(new THREE.CylinderGeometry(headR * 1.5, headR * 1.5, 0.02, 20), mat(P.main)); brim.position.y = headR * 0.45; g.add(brim);
+        const top = new THREE.Mesh(Hd.sub === 'witch' ? new THREE.ConeGeometry(headR * 0.9, headR * 2.2, 14) : new THREE.CylinderGeometry(headR * 0.85, headR * 0.95, headR * 0.7, 14), mat(P.main)); top.position.y = headR * (Hd.sub === 'witch' ? 1.5 : 0.8); g.add(top); }
+      put(bones.head, g);
+    }
+    // 胴：胸の骨から腰の骨まで（ローブは足もと近くまで広がる）
+    const Ar = by.armor; if (Ar && bones.chest) {
+      const hipsL = bones.hips ? bones.chest.worldToLocal(bones.hips.getWorldPosition(new THREE.Vector3())) : new THREE.Vector3(0, -0.3, 0); const hgt = Math.max(0.15, -hipsL.y + 0.12); const robe = Ar.shape === 'robe';
+      const len = robe ? hgt * 2.1 : hgt; const shell = new THREE.Mesh(new THREE.CylinderGeometry(headR * 0.95, headR * (robe ? 1.6 : 1.0), len, 16, 1, true), mat(Ar.shape === 'heavy' ? (Ar.pal.light || Ar.pal.main) : Ar.pal.main, Ar.shape === 'heavy'));
+      shell.material.side = THREE.DoubleSide; shell.position.y = headR * 0.4 - len / 2; shell.name = 'ea_armor_' + Ar.shape; put(bones.chest, shell);
+    }
+    // 装飾品：首（首飾り・護符など）。指輪・腕輪は右手
+    const Ac = by.acc; if (Ac) { const at = (Ac.sub === 'ring' || Ac.sub === 'bracelet') ? bones.handr : bones.neck || bones.chest; if (at) { const t = new THREE.Mesh(new THREE.TorusGeometry(Ac.sub === 'ring' ? 0.03 : headR * 0.6, 0.01, 6, 16), mat(Ac.pal.trim || '#d8b04a', true)); t.rotation.x = Math.PI / 2; t.name = 'ea_acc_' + Ac.sub; put(at, t); } }
+    ent.eaModel = { parts: made, hidden: held.map((o) => o.name), bones: Object.keys(bones).filter((k) => /^(handr|forearml|handl|head|chest|neck|hips)$/.test(k)) };
   }
   dispose() {
     for (const en of this.enemies) if (en && en.art) { if (en.group && en.group.parent) en.group.parent.remove(en.group); en.art.dispose(); }

@@ -124,5 +124,7 @@ export function stats() {
 // テスト用：キャッシュを空にする（読み込みの失敗と復帰の確認）
 export function clearCache() { cache.clear(); }
 
-export const PartyDirections = { DIRS, PACK_DIR, hasActor, actorIds, resolve, load, get, preload, retry, retryFailed, stats, clearCache, root: packRoot };
+// v9.6 装備の外見：合成した絵（元の画像の大きさ＋まわりの余白）を、同じ方法で切り出す（BattleActors3D が pivot を余白の分ずらして呼ぶ）
+export { cropArt };
+export const PartyDirections = { DIRS, PACK_DIR, hasActor, actorIds, resolve, load, get, preload, retry, retryFailed, stats, clearCache, cropArt, root: packRoot };
 if (typeof window !== 'undefined') window.MTQ3D_PartyDirections = PartyDirections;   // 確認・テスト用
