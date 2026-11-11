@@ -150,7 +150,8 @@
   Menu.itemDetail = function (id) {
     var it = ITEMS[id]; if (!it) return ''; var IC = root.ItemCat; var S = root.Services; var d = State.data;
     var g = IC ? IC.GENRES.filter(function (x) { return x.id === IC.of(id); })[0] : null;
-    var h = '<div class="it-detail"><div class="it-name">' + esc(it.name) + ' <span class="muted small">' + esc(g ? g.name : '') + '　所持 ' + (d.inventory[id] || 0) + '</span></div>';
+    var art = root.ItemIcons ? root.ItemIcons.detailHtml(id) : '';   // v9.5 選んだ品の大きい絵（隣に名前・所持数・性能や効果）
+    var h = '<div class="it-detail' + (art ? ' has-art' : '') + '">' + art + '<div class="it-text"><div class="it-name">' + esc(it.name) + ' <span class="muted small">' + esc(g ? g.name : '') + '　所持 ' + (d.inventory[id] || 0) + '</span></div>';
     h += '<div>' + esc(it.bossExclusive && it.lore ? it.lore : (it.desc || '')) + '</div>';   // v8.7 ボス固有装備は由来だけ（固有効果は下の欄に出すので二重にしない）
     if (it.cat === 'consumable') h += '<div class="muted small">使える場面：' + esc(IC.scene(id)) + '　対象：' + esc(itemTarget(it)) + (it.price ? '　値段 ' + it.price + 'G' : '') + '</div>';
     else if (it.cat === 'weapon' || it.cat === 'armor') {
@@ -159,7 +160,7 @@
       if (S && S.compareInfo) h += '<div class="it-cmp small">' + S.compareInfo(it).replace(/^<div class="muted">[\s\S]*?<\/div>(<div>[\s\S]*?<\/div>)?/, '') + '</div>';
       if (root.BossGear) h += root.BossGear.detailHtml(id);   // v8.7 ボス固有装備：固有効果・入手先・非売品（基礎値の比較とは別の欄）
     } else h += '<div class="muted small">' + (it.subcategory === 'material' ? '素材：鍛冶などで使う。使ったり売ったりはできない' : '重要アイテム：使ったり売ったりはできない') + '</div>';
-    return h + '</div>';
+    return h + '</div></div>';
   };
   // v8.8 opts.genre：最初に開くジャンル（'hp'・'key' など）／opts.fav：最近使った・お気に入りだけ
   //      行をタップ＝選んで詳細を見る → ［使う・見る］で実行。［★お気に入り］で印をつける（State.data.ui.favItems）
@@ -176,7 +177,7 @@
       var sid = ITEM_SORTS[sort].id;
       ids.sort(function (a, b) { if (sid === 'name') return ITEMS[a].name.localeCompare(ITEMS[b].name, 'ja'); if (sid === 'count') return (d.inventory[b] || 0) - (d.inventory[a] || 0); return (order[IC.of(a)] - order[IC.of(b)]) || ((ITEMS[a].tier || 0) - (ITEMS[b].tier || 0)); });
       if (favOnly) { var rec = u.recentItems.filter(function (id) { return ids.indexOf(id) >= 0; }); ids = rec.concat(ids.filter(function (id) { return u.favItems[id] && rec.indexOf(id) < 0; })); }
-      var rows = ids.map(function (id) { var it = ITEMS[id]; var tag = (u.favItems[id] ? '★' : '') + (favOnly && u.recentItems.indexOf(id) >= 0 ? '（最近）' : ''); return { label: (tag ? tag + ' ' : '') + it.name, right: '×' + d.inventory[id], sub: (it.cat === 'consumable' ? (canUseNow(id) ? '' : '【' + IC.scene(id) + '】') : '') + (it.desc || ''), cls: 'g-' + IC.of(id) + (it.cat === 'key' ? ' key' : '') }; });
+      var rows = ids.map(function (id) { var it = ITEMS[id]; var tag = (u.favItems[id] ? '★' : '') + (favOnly && u.recentItems.indexOf(id) >= 0 ? '（最近）' : ''); return { label: (tag ? tag + ' ' : '') + it.name, right: '×' + d.inventory[id], sub: (it.cat === 'consumable' ? (canUseNow(id) ? '' : '【' + IC.scene(id) + '】') : '') + (it.desc || ''), cls: 'g-' + IC.of(id) + (it.cat === 'key' ? ' key' : ''), itemId: id }; });
       if (!rows.length) rows = [{ label: favOnly ? '（最近使った道具・お気に入りはまだない。道具を選んで［★お気に入り］で印をつけられる）' : usableOnly ? '（いま使えるものはない）' : '（このジャンルの持ち物はない）', disabled: true }];
       var counts = G.map(function (g) { return g.id === 'all' ? all.length : all.filter(function (id) { return IC.of(id) === g.id; }).length; });
       var key = 'items:' + G[tab].id + (favOnly ? ':fav' : '') + (usableOnly ? ':use' : '') + ':' + sort;
@@ -253,7 +254,9 @@
   Menu.equipCompareHtml = function (a, slot, id) {
     var before = Actors.stats(a), after = statsWith(a, slot, id); var it = id ? ITEMS[id] : null; var curId = a.equip[slot];
     var rows = STAT_ROWS.map(function (r) { var b = before[r[0]] || 0, f = after[r[0]] || 0, df = f - b; return '<tr' + (df ? ' class="' + (df > 0 ? 'eq-up' : 'eq-down') + '"' : '') + '><td>' + r[1] + '</td><td>' + b + '</td><td>→</td><td><b>' + f + '</b></td><td>' + (df > 0 ? '▲+' + df : df < 0 ? '▼' + df : '±0') + '</td></tr>'; }).join('');
-    var h = '<div class="eq-cmp"><div class="small muted">' + esc(a.name) + '：' + esc(curId ? ITEMS[curId].name : '（なし）') + ' → <b>' + esc(it ? it.name : '（はずす）') + '</b></div><table class="tbl eq-tbl"><tr><th>能力</th><th>いま</th><th></th><th>装備後</th><th>差</th></tr>' + rows + '</table>';
+    var II = root.ItemIcons;   // v9.5 いまの装備（小さい絵）→ 変更先（大きい絵）。「はずす」・空きは品物ではないので絵にしない
+    var arts = II ? '<div class="eq-arts">' + (curId ? II.html(curId, { size: 48 }) : '<span class="eq-none">なし</span>') + '<span class="eq-arrow">→</span>' + (it ? II.detailHtml(id) : '<span class="eq-none">はずす</span>') + '<span class="eq-new-name">' + esc(it ? it.name : '（はずす）') + '</span></div>' : '';
+    var h = '<div class="eq-cmp">' + arts + '<div class="small muted">' + esc(a.name) + '：' + esc(curId ? ITEMS[curId].name : '（なし）') + ' → <b>' + esc(it ? it.name : '（はずす）') + '</b></div><table class="tbl eq-tbl"><tr><th>能力</th><th>いま</th><th></th><th>装備後</th><th>差</th></tr>' + rows + '</table>';
     if (it) {
       var ft = fxText(it); if (ft.length) h += '<div class="eq-fx"><b>数値のほかの効果</b><ul>' + ft.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
       if (it.bossExclusive && root.BossGear) h += root.BossGear.detailHtml(id);
@@ -287,7 +290,7 @@
     while (true) {
       var mem = members(); if (mem.indexOf(a) < 0) return;
       var s = Actors.stats(a); var rec = focus ? Menu.recommend(a, focus) : null;
-      var rows = EQ_SLOTS.map(function (sl, k) { var r0 = rec && rec[k]; return { label: EQ_NAMES[sl], right: a.equip[sl] ? ITEMS[a.equip[sl]].name : '―', sub: r0 && r0.better ? 'おすすめ候補：' + ITEMS[r0.best].name : undefined }; });
+      var rows = EQ_SLOTS.map(function (sl, k) { var r0 = rec && rec[k]; return { label: EQ_NAMES[sl], right: a.equip[sl] ? ITEMS[a.equip[sl]].name : '―', sub: r0 && r0.better ? 'おすすめ候補：' + ITEMS[r0.best].name : undefined, itemId: a.equip[sl] || undefined }; });   // v9.5 装備している枠だけ絵（空き枠は品物ではない）
       rows.push({ label: 'おすすめ候補を見る', sub: '攻撃重視・耐久重視・魔法重視（見るだけ。自動では装備しない）' });
       var i = await Win.list(rows, { title: a.name + 'の装備　HP' + s.maxHp + ' MP' + s.maxMp + ' 攻' + s.atk + ' 防' + s.def + ' 速' + s.agi + ' 魔' + s.mag, cls: 'equip-menu', key: 'equip:slots', members: memberBar(mem, a, true) });
       if (i && typeof i === 'object') { if (i.member !== undefined && mem[i.member]) a = noteMember(mem[i.member]); continue; }   // 枠のカーソルは key で覚えている
@@ -303,7 +306,7 @@
       var mem = members(); var inv = State.data.inventory;
       var rec = focus ? Menu.recommend(a, focus) : null; var rb = rec && rec[si] && rec[si].better ? rec[si].best : null;
       var cands = Object.keys(inv).filter(function (id) { return Actors.slotOf(id) === slot && Actors.canEquip(a, id); });
-      var opts = cands.map(function (id) { var it = ITEMS[id]; var key = it.cat === 'weapon' ? 'atk' : 'def'; var cur = a.equip[slot] ? ITEMS[a.equip[slot]][key] || 0 : 0; var diff = (it[key] || 0) - cur; return { label: (id === rb ? '◎ ' : '') + it.name, right: (key === 'atk' ? '攻' : '防') + (diff >= 0 ? '+' : '') + diff, sub: it.bossExclusive && it.uniqueName ? '固有効果【' + it.uniqueName + '】' + it.uniqueText : it.desc }; });   // v8.7 ボス固有装備：右＝基礎値の差、下＝固有効果（分けて出す）
+      var opts = cands.map(function (id) { var it = ITEMS[id]; var key = it.cat === 'weapon' ? 'atk' : 'def'; var cur = a.equip[slot] ? ITEMS[a.equip[slot]][key] || 0 : 0; var diff = (it[key] || 0) - cur; return { label: (id === rb ? '◎ ' : '') + it.name, right: (key === 'atk' ? '攻' : '防') + (diff >= 0 ? '+' : '') + diff, sub: it.bossExclusive && it.uniqueName ? '固有効果【' + it.uniqueName + '】' + it.uniqueText : it.desc, itemId: id }; });   // v8.7 ボス固有装備：右＝基礎値の差、下＝固有効果（分けて出す）
       if (a.equip[slot]) opts.push({ label: 'はずす', right: '' });
       var none = !opts.length; if (none) opts.push({ label: '（' + a.name + 'が' + EQ_NAMES[slot] + 'に装備できるものを持っていない）', disabled: true });
       var init = keep === null ? 0 : keep === '' ? (a.equip[slot] ? cands.length : 0) : Math.max(0, cands.indexOf(keep));
@@ -492,7 +495,8 @@
     },
     equip: function (a) {
       return Object.keys(SLOT_NAME).map(function (sl) { var id = a.equip && a.equip[sl]; var it = id && ITEMS[id];
-        return '<div class="pt-eq"><span class="pt-slot">' + SLOT_NAME[sl] + '</span><b>' + (it ? esc(it.name) : '―') + '</b>' + (it ? '<div class="muted small">' + esc(root.Services && root.Services.statLine ? root.Services.statLine(it) : '') + (it.desc ? '　' + esc(it.desc) : '') + '</div>' : '') + '</div>'; }).join('');
+        var ic = it && root.ItemIcons ? root.ItemIcons.html(id, { size: 44 }) : '';   // v9.5 装備している品だけ絵
+        return '<div class="pt-eq' + (ic ? ' has-icon' : '') + '">' + ic + (ic ? '<div>' : '') + '<span class="pt-slot">' + SLOT_NAME[sl] + '</span><b>' + (it ? esc(it.name) : '―') + '</b>' + (ic ? '</div>' : '') + (it ? '<div class="muted small">' + esc(root.Services && root.Services.statLine ? root.Services.statLine(it) : '') + (it.desc ? '　' + esc(it.desc) : '') + '</div>' : '') + '</div>'; }).join('');
     },
     skills: function (a) {
       var list = Actors.allSkills(a).filter(function (k) { return SKILLS[k]; }); if (!list.length) return '<div class="muted">まだ呪文・特技を覚えていない。</div>';
@@ -702,7 +706,7 @@
       if (i === 5) { await Menu.studyRecord(); continue; }   // v6.1
       var d = State.data;
       if (i === 0) { await Menu.bestiary(); }
-      else if (i === 1) { var iids = root.ITEM_LIST; await Win.list(iids.map(function (id) { var it = ITEMS[id]; var known = d.inventory[id] || d.flags['seen_item_' + id] || State.partyActors().some(function (a) { return Object.keys(a.equip).some(function (s) { return a.equip[s] === id; }); }); return known ? { label: it.name, right: ({ weapon: '武器', armor: '防具', consumable: '道具', key: '大事なもの' })[it.cat], sub: it.desc || '' } : { label: '？？？', disabled: true, sub: '未入手' }; }), { title: 'アイテム図鑑' }); }
+      else if (i === 1) { var iids = root.ITEM_LIST; await Win.list(iids.map(function (id) { var it = ITEMS[id]; var known = d.inventory[id] || d.flags['seen_item_' + id] || State.partyActors().some(function (a) { return Object.keys(a.equip).some(function (s) { return a.equip[s] === id; }); }); return known ? { label: it.name, right: ({ weapon: '武器', armor: '防具', consumable: '道具', key: '大事なもの' })[it.cat], sub: it.desc || '', itemId: id } : { label: '？？？', disabled: true, sub: '未入手' }; }), { title: 'アイテム図鑑' }); }   // v9.5 知っている行だけ絵（未入手は名前も絵も出さない）
       else if (i === 2) { await Win.list(root.JOB_LIST.map(function (j) { var J = JOBS[j]; return { label: J.name, right: J.role, sub: J.desc + '　固有：' + J.trait }; }), { title: '職業一覧' }); }
       else if (i === 3) { var ch = root.STORY_CHAPTERS.filter(function (c) { return !c.flag || d.flags[c.flag]; }); var cur = ch[ch.length - 1]; await Win.panel('<div class="rw-title">冒険の記録</div><div>現在：' + esc(cur.title) + '</div><div class="muted small">歩数 ' + d.steps + '　訪れた場所 ' + Object.keys(d.visited).length + '　開けた宝箱 ' + Object.keys(d.chests).length + '　仲間 ' + (Object.keys(d.companions).length + 1) + '人　預金 ' + d.bank + 'G</div><div class="muted small">クリスタルの欠片：' + (d.inventory.crystal_shard || 0) + (d.flags.shard_returned ? '（王に届けた）' : '') + '</div>'); }
     }

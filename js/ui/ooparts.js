@@ -11,14 +11,15 @@
   OopartsUI.list = function () {
     var all = O().list().filter(O().placed); var regions = []; all.forEach(function (e) { if (regions.indexOf(e.regionName) < 0) regions.push(e.regionName); });
     var filter = 'all';
+    var II = root.ItemIcons;   // v9.5 見つけた遺物だけ絵（まだの遺物は「？？？」と場所のヒントのまま）。礼の品は名前が見えるときだけ絵
     function body() {
       var c = O().count(), t = O().total(); var pct = t ? Math.round(c / t * 100) : 0; var rw = O().state().rewards;
       var head = '<div class="bs-head">見つけた遺物 ' + c + '/' + t + '（' + pct + '%）<div class="bar"><span style="width:' + pct + '%"></span></div></div>' +
-        '<div class="op-rewards">' + O().REWARDS.map(function (R) { var it = root.ITEMS[R.item]; var got = rw[R.n]; return '<span class="op-rw' + (got ? ' got' : c >= R.n ? ' ready' : '') + '">' + R.n + '個：' + (got || c >= R.n ? esc(it.name) : '？？？') + (got ? ' ✓' : c >= R.n ? '（受け取れる）' : '') + '</span>'; }).join('') + '</div>' +
+        '<div class="op-rewards">' + O().REWARDS.map(function (R) { var it = root.ITEMS[R.item]; var got = rw[R.n]; var ic = (got || c >= R.n) && II ? II.html(R.item, { size: 32 }) : ''; return '<span class="op-rw' + (got ? ' got' : c >= R.n ? ' ready' : '') + (ic ? ' has-icon' : '') + '">' + ic + R.n + '個：' + (got || c >= R.n ? esc(it.name) : '？？？') + (got ? ' ✓' : c >= R.n ? '（受け取れる）' : '') + '</span>'; }).join('') + '</div>' +
         '<div class="cs-row wrap op-filter"><button class="cs-btn' + (filter === 'all' ? ' on' : '') + '" data-f="all">すべて</button>' + regions.map(function (r, i) { return '<button class="cs-btn' + (filter === String(i) ? ' on' : '') + '" data-f="' + i + '">' + esc(r) + '</button>'; }).join('') + '</div>';
       var rows = all.filter(function (e) { return filter === 'all' || e.regionName === regions[+filter]; }).map(function (e) {
         var got = O().has(e.id); var no = 'No.' + String(e.no).padStart(3, '0');
-        return got ? '<div class="op-row got"><span class="op-no">' + no + '</span><span class="op-name">' + esc(e.name) + '</span><span class="op-reg">' + esc(e.regionName) + '</span><div class="op-desc">' + esc(e.desc) + '</div></div>'
+        return got ? '<div class="op-row got' + (II ? ' has-icon' : '') + '">' + (II ? II.html(e.id, { size: 48 }) : '') + '<span class="op-no">' + no + '</span><span class="op-name">' + esc(e.name) + '</span><span class="op-reg">' + esc(e.regionName) + '</span><div class="op-desc">' + esc(e.desc) + '</div></div>'
           : '<div class="op-row"><span class="op-no">' + no + '</span><span class="op-name muted">？？？</span><span class="op-reg">' + esc(e.regionName) + '</span><div class="op-desc muted">ヒント：' + esc(e.where) + '</div></div>';
       }).join('');
       return head + '<div class="op-list">' + rows + '</div>';

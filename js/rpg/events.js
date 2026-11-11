@@ -47,7 +47,7 @@
     return {
       say: function (name, lines) { return Win.message(lines, { name: name, portrait: Events.portraitFor(name, npc) }); },
       msg: function (lines) { return Win.message(lines); },
-      choice: function (prompt, options) { return Win.choice(prompt, options); },
+      choice: function (prompt, options, opts) { return Win.choice(prompt, options, opts); },   // v9.5 opts（例：itemIds で選択肢に絵）。今までの呼び方は変わらない
       flag: function (k) { return !!d.flags[k]; }, setFlag: function (k, v) { d.flags[k] = v === undefined ? true : v; },
       has: function (id) { return State.hasItem(id); }, give: function (id, q) { State.addItem(id, q || 1); }, take: function (id, q) { if (root.BossGear && root.BossGear.locked(id)) { if (root.console) console.warn('ボス固有装備は渡せない', id); return; } State.addItem(id, -(q || 1)); },   // v8.7 ボス固有装備は取り上げない
       get gold() { return d.gold; }, addGold: function (g) { d.gold += g; },

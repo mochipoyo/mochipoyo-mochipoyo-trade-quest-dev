@@ -17,7 +17,9 @@
     return parts.join(' ');
   }
   // 装備品の比較情報（パーティー各員の装備可否と性能差）
-  function compareInfo(it) {
+  // v9.5 opts.art：詳細欄の左に大きい絵（買う画面など）。どうぐの詳細（Menu.itemDetail）は自分で絵を出すので付けない
+  function compareInfo(it, opts) {
+    if (opts && opts.art && root.ItemIcons) return '<div class="ia-pair">' + root.ItemIcons.detailHtml(it.id) + '<div class="ia-text"><div class="it-name">' + esc(it.name) + '</div>' + compareInfo(it) + '</div></div>';
     if (it.cat !== 'weapon' && it.cat !== 'armor') return '<div class="muted">' + esc(it.desc || '') + '</div>';
     var slot = Actors.slotOf(it.id);
     var rows = State.partyActors().map(function (a) {
@@ -52,8 +54,8 @@
   async function buyLoop(stock) {
     var d = State.data;
     while (true) {
-      var items = stock.map(function (id) { var it = ITEMS[id]; return { label: it.name, right: priceFor(it, true) + 'G', disabled: d.gold < priceFor(it, true), sub: (d.inventory[id] ? '所持' + d.inventory[id] + ' ' : '') + statLine(it) }; });
-      var i = await Win.list(items, { title: '買う（所持金 ' + d.gold + 'G）', okLabel: '買う', info: function (k) { return compareInfo(ITEMS[stock[k]]); } });
+      var items = stock.map(function (id) { var it = ITEMS[id]; return { label: it.name, right: priceFor(it, true) + 'G', disabled: d.gold < priceFor(it, true), sub: (d.inventory[id] ? '所持' + d.inventory[id] + ' ' : '') + statLine(it), itemId: id }; });
+      var i = await Win.list(items, { title: '買う（所持金 ' + d.gold + 'G）', okLabel: '買う', info: function (k) { return compareInfo(ITEMS[stock[k]], { art: true }); } });
       if (i < 0) return;
       var it = ITEMS[stock[i]]; var p = priceFor(it, true);
       var maxQty = Math.min(9, Math.floor(d.gold / p));
@@ -85,7 +87,7 @@
     while (true) {
       var ids = Object.keys(d.inventory).filter(function (id) { return ITEMS[id] && ITEMS[id].price > 0 && !(root.BossGear && root.BossGear.locked(id)); });   // v8.7 ボス固有装備は売れない（値段 0 だけに頼らない）
       if (!ids.length) { await Win.message(['売れるものを持っていない。']); return; }
-      var items = ids.map(function (id) { var it = ITEMS[id]; return { label: it.name + ' ×' + d.inventory[id], right: priceFor(it, false) + 'G', sub: it.desc || statLine(it) }; });
+      var items = ids.map(function (id) { var it = ITEMS[id]; return { label: it.name + ' ×' + d.inventory[id], right: priceFor(it, false) + 'G', sub: it.desc || statLine(it), itemId: id }; });
       var i = await Win.list(items, { title: '売る（所持金 ' + d.gold + 'G）' });
       if (i < 0) return;
       var it = ITEMS[ids[i]]; var p = priceFor(it, false);

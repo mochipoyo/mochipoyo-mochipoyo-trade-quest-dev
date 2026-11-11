@@ -13,7 +13,7 @@
   function W() { return root.World; }
   function F() { return D().flags; }
   function msg(l) { return root.Win.message(l); }
-  function choice(p, o) { return root.Win.choice(p, o); }
+  function choice(p, o, x) { return root.Win.choice(p, o, x); }   // v9.5 x（例：itemIds で選択肢に絵）
   function refresh() { if (W().map) W().applyState(W().map); }
   function Grid(Wd, H, ch) { var g = []; for (var y = 0; y < H; y++) { g.push([]); for (var x = 0; x < Wd; x++) g[y].push(ch); } return {
     set: function (x, y, c) { if (g[y] && g[y][x] !== undefined) g[y][x] = c; return this; },
@@ -567,7 +567,7 @@
     var d = D(); if (d.flags.a6_sr_open) { await msg(['船長の墓標。供えたラーメンの器が、きれいに空になっている。']); return; }
     var inv = Object.keys(d.inventory || {}).filter(function (id) { return d.inventory[id] > 0 && root.ITEMS[id] && root.ITEMS[id].cat === 'consumable'; });
     if (!inv.length) { await msg(['船長の墓標。「供え物を」と刻まれている。', '……いまは、供えられる物を持っていない。']); return; }
-    var c = await choice('船長の墓標に、何を供える？', inv.map(function (id) { return root.ITEMS[id].name; }).concat(['やめる'])); if (c < 0 || c >= inv.length) return;
+    var c = await choice('船長の墓標に、何を供える？', inv.map(function (id) { return root.ITEMS[id].name; }).concat(['やめる']), { itemIds: inv }); if (c < 0 || c >= inv.length) return;   // v9.5 持ち物の絵
     if (inv[c] !== SR_WANT) { await msg([root.ITEMS[inv[c]].name + 'を供えようとすると、波が寄せて押し返された。', '（船長の好物ではないらしい。航海日誌を読んでみよう）']); return; }
     root.State.addItem(SR_WANT, -1);
     await open('a6_sr_open', ['ラーメンを供えた。……湯気の向こうで、誰かが笑った気がした。', '墓標の後ろの船倉の扉が、ぎいと開いた。']);

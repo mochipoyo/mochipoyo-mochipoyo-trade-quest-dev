@@ -511,7 +511,7 @@
     if (!grant || !grant.granted) return ''; var id = grant.itemId; var it = IT()[id]; var row = UG.rowOfItem(id); if (!it || !row) return '';
     var kind = (root.ItemCat && root.ItemCat.GENRES.filter(function (g) { return g.id === root.ItemCat.of(id); })[0] || {}).name || '';
     var who = UG.whoCanEquip(id);
-    return '<h3>ボス固有装備</h3><div class="bu-result">' + UG.iconHtml(id) + '<div class="bu-r-body"><div class="bu-r-name">' + esc(it.name) + ' <span class="muted small">' + esc(kind) + '</span></div>' +
+    return '<h3>ボス固有装備</h3><div class="bu-result">' + (root.ItemIcons ? root.ItemIcons.detailHtml(id, { size: 64 }) : '') + UG.iconHtml(id) + '<div class="bu-r-body"><div class="bu-r-name">' + esc(it.name) + ' <span class="muted small">' + esc(kind) + '</span></div>' +
       '<div class="small">' + esc(UG.statLine(it)) + '</div><div class="small"><b>【' + esc(it.uniqueName) + '】</b>' + esc(it.uniqueText) + '</div>' +
       '<div class="muted small">装備できる：' + esc(who.length ? who.join('・') : 'いまの仲間にはいない') + '（職業：' + esc(UG.jobsText(it)) + '）　入手先：' + esc(UG.sourceText(row, true)) + '</div></div></div>';
   };
@@ -534,10 +534,10 @@
     var Win = root.Win; var list = UG.collection(); var got = list.filter(function (x) { return x.claimed || x.owned; }).length;
     var rows = list.map(function (x) {
       var known = x.seen; var it = x.item;
-      return { label: known ? it.name : '？？？', right: x.state, sub: known ? ('【' + it.uniqueName + '】' + it.uniqueText) : (x.row.group === 'E' ? 'イベントの戦い' : 'まだ会っていないボス'), disabled: !known, cls: x.claimed || x.owned ? 'bu-got' : '' };
+      return { label: known ? it.name : '？？？', right: x.state, sub: known ? ('【' + it.uniqueName + '】' + it.uniqueText) : (x.row.group === 'E' ? 'イベントの戦い' : 'まだ会っていないボス'), disabled: !known, cls: x.claimed || x.owned ? 'bu-got' : '', itemId: known ? it.id : undefined };   // v9.5 知っている行だけ絵
     });
     while (true) {
-      var r = await Win.list(rows, { title: 'ボス固有装備（' + got + '/' + list.length + '）', info: function (k) { var x = list[k]; return x && x.seen ? '<div class="it-detail"><div class="it-name">' + UG.iconHtml(x.item.id) + esc(x.item.name) + '</div><div class="small">' + esc(UG.statLine(x.item)) + '</div><div class="muted small">' + esc(x.item.lore || '') + '</div>' + UG.detailHtml(x.item.id) + '<div class="muted small">装備できる職業：' + esc(UG.jobsText(x.item)) + '</div><div class="muted small">状態：' + esc(x.state) + '</div></div>' : '<div class="muted">？？？</div>'; } });
+      var r = await Win.list(rows, { title: 'ボス固有装備（' + got + '/' + list.length + '）', info: function (k) { var x = list[k]; return x && x.seen ? '<div class="it-detail' + (root.ItemIcons ? ' has-art">' + root.ItemIcons.detailHtml(x.item.id) : '">') + '<div class="it-text"><div class="it-name">' + UG.iconHtml(x.item.id) + esc(x.item.name) + '</div><div class="small">' + esc(UG.statLine(x.item)) + '</div><div class="muted small">' + esc(x.item.lore || '') + '</div>' + UG.detailHtml(x.item.id) + '<div class="muted small">装備できる職業：' + esc(UG.jobsText(x.item)) + '</div><div class="muted small">状態：' + esc(x.state) + '</div></div></div>' : '<div class="muted">？？？</div>'; } });
       if (r === -1 || r === undefined || r === null || typeof r === 'object') return;
       var x = list[r]; if (x && x.item.id === 'b19_crossroads_blade' && (x.owned || x.claimed)) await UG.contractChoose();
     }

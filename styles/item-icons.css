@@ -1,0 +1,71 @@
+/* =========================================================
+   v9.5 装備・道具・オーパーツの絵（styles.css の後に読む）。js/ui/item-icons.js の .tqi と、それを置く場所のレイアウトだけ
+   ・素材 ZIP の styles/item-icons.css を元にした（.tqi・.tqi-img・.tqi--bare・.tqi--detail・.tqi--unique・.tqi-fallback・.tqi-row・.tqi-detail-art）
+     素材版の「.selected>.tqi」の外枠は入れていない（選択中・装備中・買えない・ボス固有は、既存の文字・枠・色で伝える）
+   ・絵は正方形の枠に object-fit: contain（切っ先や裾を切らない）。枠の大きさは決まっているので、絵を読み込んでも行の高さ・幅は変わらない
+   ・大きさ：一覧 48px、詳細 PC 160px／スマホ 112px（縦・横とも）
+   ========================================================= */
+.tqi { --tqi-size: 48px; display: inline-grid; place-items: center; inline-size: var(--tqi-size); block-size: var(--tqi-size); flex: 0 0 var(--tqi-size); position: relative; box-sizing: border-box; overflow: hidden; border: 1px solid #a88c5a; border-radius: 9px; background: radial-gradient(ellipse at 34% 24%, #46546b, #172033 72%); box-shadow: inset 0 0 0 2px #d7bc7a1c; vertical-align: middle; pointer-events: none; }
+.tqi-img { display: block; inline-size: 100%; block-size: 100%; object-fit: contain; pointer-events: none; image-rendering: auto; }
+.tqi--bare { border: 0; box-shadow: none; background: transparent; border-radius: 0; }
+.tqi--detail { --tqi-size: 160px; border-radius: 14px; }
+.tqi--unique { border-color: #e2be62; background: radial-gradient(ellipse at 34% 24%, #5b4564, #211d38 72%); }
+.tqi-fallback { font: 700 24px/1 system-ui, sans-serif; color: #dccb9b; }
+.tqi--missing .tqi-fallback { font-size: calc(var(--tqi-size) * 0.45); }
+.tqi-fallback[hidden], .tqi-img[hidden] { display: none; }
+.tqi-row { display: flex; align-items: center; gap: 10px; min-inline-size: 0; }
+.tqi-row__text { min-inline-size: 0; flex: 1; }
+.tqi-detail-art { display: flex; justify-content: center; align-items: center; min-block-size: 176px; margin: 6px 0 12px; }
+@media (prefers-reduced-motion: reduce) { .tqi, .tqi-img { transition: none !important; animation: none !important; } }
+
+/* ---------- 一覧（Win.list）：itemId がある行だけ。絵は行の先頭、名前・右の値・説明は今までどおり ---------- */
+.rw-item.has-icon { display: grid; grid-template-columns: var(--tqi-row, 48px) minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: 8px; align-items: center; }
+.rw-item.has-icon > .tqi { --tqi-size: var(--tqi-row, 48px) !important; grid-column: 1; grid-row: 1 / span 2; }
+.rw-item.has-icon > .l { grid-column: 2; grid-row: 1; min-width: 0; overflow-wrap: anywhere; }
+.rw-item.has-icon > .r { grid-column: 3; grid-row: 1; white-space: nowrap; }
+.rw-item.has-icon > .l:last-child { grid-column: 2 / 4; }
+.rw-item.has-icon > .s { grid-column: 2 / 4; grid-row: 2; width: auto; min-width: 0; }
+/* 同じ一覧の絵のない行（「はずす」・空き・？？？）は、名前の位置だけそろえる */
+.rw-items.has-icons > .rw-item:not(.has-icon) { padding-left: calc(22px + var(--tqi-row, 48px) + 8px); }
+
+/* ---------- 絵のある詳細つきの一覧（どうぐ・そうびの候補・店・景品・ボス固有装備）：PC は一覧（左）と詳細（右）を並べる ----------
+   スマホの縦は今までの .rw-fixed（一覧 11：詳細 9）、スマホの横は今までの横並び（styles.css の body.m-land …rw-fixed.rw-preview）のまま */
+body:not(.mobile) .rw-list.rw-fixed.rw-preview.rw-has-icons { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); grid-template-rows: auto auto minmax(0, 1fr) auto auto; column-gap: 12px; width: 96%; max-width: 860px; height: min(92%, 760px); }
+body:not(.mobile) .rw-list.rw-fixed.rw-preview.rw-has-icons > .rw-title { grid-column: 1 / -1; grid-row: 1; }
+body:not(.mobile) .rw-list.rw-fixed.rw-preview.rw-has-icons > .rw-head { grid-column: 1 / -1; grid-row: 2; }
+body:not(.mobile) .rw-list.rw-fixed.rw-preview.rw-has-icons > .rw-items { grid-column: 1; grid-row: 3 / 5; min-height: 0; }
+body:not(.mobile) .rw-list.rw-fixed.rw-preview.rw-has-icons > .rw-info { grid-column: 2; grid-row: 3; min-height: 0; max-height: none; overflow-y: auto; border-top: 0; border-left: 1px solid rgba(255,255,255,.2); margin-top: 0; padding: 0 0 0 10px; }
+body:not(.mobile) .rw-list.rw-fixed.rw-preview.rw-has-icons > .rw-actbar { grid-column: 2; grid-row: 4; }
+body:not(.mobile) .rw-list.rw-fixed.rw-preview.rw-has-icons > .rw-footer { grid-column: 1 / -1; grid-row: 5; }
+
+/* ---------- 選択肢（Win.choice の opts.itemIds）：鍛え直しなど ---------- */
+.rw-opt.has-icon { display: flex; align-items: center; gap: 8px; }
+.rw-opt.has-icon > .tqi { --tqi-size: 44px !important; }
+
+/* ---------- 詳細欄：大きい絵の隣に、名前・所持数・性能や効果 ---------- */
+.ia-art { display: inline-flex; flex: none; }
+.it-detail.has-art, .ia-pair { display: flex; gap: 12px; align-items: flex-start; }
+.it-detail.has-art > .ia-art, .ia-pair > .ia-art { flex: none; }
+.it-detail.has-art > .it-text, .ia-pair > .ia-text { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+body.mobile .ia-art .tqi { --tqi-size: 112px !important; border-radius: 12px; }
+@media (max-width: 600px) { .ia-art .tqi { --tqi-size: 112px !important; border-radius: 12px; } }
+
+/* ---------- 装備の比較（いま → 変更先） ---------- */
+.eq-arts { display: flex; align-items: center; gap: 10px; margin: 2px 0 6px; }
+.eq-arts .eq-arrow { color: var(--gold, #e8c15a); font-weight: bold; }
+.eq-arts .eq-none { display: inline-grid; place-items: center; width: 48px; height: 48px; border: 1px dashed rgba(255,255,255,.3); border-radius: 9px; color: var(--muted, #9aa); font-size: 11px; flex: none; }
+.eq-arts .eq-new-name { font-weight: bold; min-width: 0; overflow-wrap: anywhere; }
+
+/* ---------- パーティの装備一覧 ---------- */
+.pt-eq.has-icon { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 8px; align-items: center; }
+.pt-eq.has-icon > .tqi { grid-row: 1 / span 3; }
+.pt-eq.has-icon > :not(.tqi) { grid-column: 2; min-width: 0; }
+
+/* ---------- 戦闘の結果・オーパーツ ---------- */
+.rs-item.has-icon { display: inline-flex; align-items: center; gap: 6px; padding-left: 4px; }
+.op-row.got.has-icon { display: grid; grid-template-columns: 48px 58px minmax(0, 1fr) auto; column-gap: 8px; align-items: center; }
+.op-row.got.has-icon > .tqi { grid-row: 1 / span 2; }
+.op-row.got.has-icon > .op-desc { grid-column: 2 / 5; }
+.op-row .tqi { margin-right: 2px; }
+.op-rw.has-icon { display: inline-flex; align-items: center; gap: 4px; padding-left: 3px; }
+body .bu-result > .ia-art .tqi { --tqi-size: 64px !important; }   /* 戦闘結果のボス固有装備：スマホの詳細の大きさ（112px）にしない */

@@ -119,7 +119,8 @@
     opts = opts || {};
     return new Promise(function (resolve) {
       var cur = opts.initial || 0;
-      var node = el('<div class="rw-choice"><div class="rw-prompt' + (prompt ? '' : ' hidden') + '">' + esc(prompt || '') + '</div><div class="rw-opts" role="listbox">' + options.map(function (o, i) { return '<div class="rw-opt" role="option" tabindex="-1" data-i="' + i + '">' + esc(o) + '</div>'; }).join('') + '</div></div>');
+      var IIc = root.ItemIcons; var oIds = opts.itemIds || [];   // v9.5 opts.itemIds[i]：その選択肢の先頭に絵（鍛え直しなど。操作は今までどおり）
+      var node = el('<div class="rw-choice"><div class="rw-prompt' + (prompt ? '' : ' hidden') + '">' + esc(prompt || '') + '</div><div class="rw-opts" role="listbox">' + options.map(function (o, i) { var ic = oIds[i] && IIc ? IIc.html(oIds[i], { size: 44 }) : ''; return '<div class="rw-opt' + (ic ? ' has-icon' : '') + '" role="option" tabindex="-1" data-i="' + i + '">' + ic + (ic ? '<span>' + esc(o) + '</span>' : esc(o)) + '</div>'; }).join('') + '</div></div>');
       var optEls = node.querySelectorAll('.rw-opt');
       function render() { optEls.forEach(function (o, i) { o.classList.toggle('cur', i === cur); o.setAttribute('aria-selected', i === cur ? 'true' : 'false'); }); if (node._scroll && optEls[cur] && optEls[cur].scrollIntoView) optEls[cur].scrollIntoView({ block: 'nearest' }); }
       if (prompt) Win.logLine('', prompt, 'ask');   // v9.3 会話の履歴：問いかけと、選んだ答え
@@ -185,7 +186,11 @@
         : (acts ? '<div class="rw-actbar">' + acts + '</div>' : '');
       var node = el('<div class="rw-list ' + (opts.cls || '') + (preview ? ' rw-preview' : '') + '">' + (opts.title ? '<div class="rw-title">' + esc(opts.title) + '</div>' : '') + (opts.head ? '<div class="rw-head">' + opts.head + '</div>' : '') + '<div class="rw-items" role="listbox"></div>' + (opts.info ? '<div class="rw-info" aria-live="polite"></div>' : '') + bar + (opts.footer ? '<div class="rw-footer">' + opts.footer + '</div>' : '') + '</div>');
       var itemsEl = node.querySelector('.rw-items'); var infoEl = node.querySelector('.rw-info'); var okEl = node.querySelector('.rw-ok');
-      itemsEl.innerHTML = items.map(function (it, i) { return '<div class="rw-item' + (it.disabled ? ' disabled' : '') + (it.cls ? ' ' + it.cls : '') + '" role="option" tabindex="-1"' + (it.disabled ? ' aria-disabled="true"' : '') + ' data-i="' + i + '"><span class="l">' + esc(it.label) + '</span>' + (it.right !== undefined ? '<span class="r">' + esc(it.right) + '</span>' : '') + (it.sub ? '<div class="s">' + esc(it.sub) + '</div>' : '') + '</div>'; }).join('') || '<div class="rw-item disabled" aria-disabled="true">（なし）</div>';
+      // v9.5 行に itemId（ゲームの正確なアイテム／オーパーツの ID）があれば、その行だけ先頭に絵（js/ui/item-icons.js）。絵は飾り：操作・選択の返り値は今までどおり行全体
+      var IIc = root.ItemIcons; var anyIcon = false;
+      itemsEl.innerHTML = items.map(function (it, i) { var ic = it.itemId && IIc ? IIc.html(it.itemId, { size: 48 }) : ''; if (ic) anyIcon = true; return '<div class="rw-item' + (ic ? ' has-icon' : '') + (it.disabled ? ' disabled' : '') + (it.cls ? ' ' + it.cls : '') + '" role="option" tabindex="-1"' + (it.disabled ? ' aria-disabled="true"' : '') + ' data-i="' + i + '">' + ic + '<span class="l">' + esc(it.label) + '</span>' + (it.right !== undefined ? '<span class="r">' + esc(it.right) + '</span>' : '') + (it.sub ? '<div class="s">' + esc(it.sub) + '</div>' : '') + '</div>'; }).join('') || '<div class="rw-item disabled" aria-disabled="true">（なし）</div>';
+      // 絵のある一覧：詳細つきなら大きさが一律の窓（.rw-fixed）にして、PC は一覧（左）と詳細（右）を並べる（styles/item-icons.css）。絵のない一覧は今までどおり
+      if (anyIcon) { itemsEl.classList.add('has-icons'); node.classList.add('rw-has-icons'); if (preview) node.classList.add('rw-fixed'); }
       var itemEls = itemsEl.querySelectorAll('.rw-item'); var armed = -1;
       function remember() { if (opts.key) MEM[opts.key] = { cur: cur, scroll: itemsEl.scrollTop }; }
       function render(noScroll) { itemEls.forEach(function (o, i) { o.classList.toggle('cur', i === cur); o.setAttribute('aria-selected', i === cur ? 'true' : 'false'); }); if (infoEl && items.length) infoEl.innerHTML = opts.info(cur) || ''; if (okEl) okEl.classList.toggle('disabled', !items.length || !!(items[cur] && items[cur].disabled)); var c = itemEls[cur]; if (!noScroll && c && c.scrollIntoView) c.scrollIntoView({ block: 'nearest' }); }

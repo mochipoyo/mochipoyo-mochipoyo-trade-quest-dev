@@ -178,8 +178,8 @@
   /* ---------- 景品交換所 ---------- */
   CasinoUI.prizes = async function (list) {
     while (true) {
-      var items = list.map(function (p) { var it = root.ITEMS[p.item]; return { label: it.name, right: p.cost.toLocaleString() + '枚', disabled: Cs().coins() < p.cost, sub: it.desc || '' }; });
-      var i = await Win.list(items, { title: '景品交換所（コイン ' + Cs().coins().toLocaleString() + '枚）', info: function (k) { var it = root.ITEMS[list[k].item]; return '<div class="small">' + esc(it.desc || '') + '</div>' + (list[k].lore ? '<div class="small muted">' + esc(list[k].lore) + '</div>' : ''); } });
+      var items = list.map(function (p) { var it = root.ITEMS[p.item]; return { label: it.name, right: p.cost.toLocaleString() + '枚', disabled: Cs().coins() < p.cost, sub: it.desc || '', itemId: p.item }; });   // v9.5 景品の絵
+      var i = await Win.list(items, { title: '景品交換所（コイン ' + Cs().coins().toLocaleString() + '枚）', info: function (k) { var it = root.ITEMS[list[k].item]; var txt = '<div class="small">' + esc(it.desc || '') + '</div>' + (list[k].lore ? '<div class="small muted">' + esc(list[k].lore) + '</div>' : ''); return root.ItemIcons ? '<div class="ia-pair">' + root.ItemIcons.detailHtml(list[k].item) + '<div class="ia-text"><div class="it-name">' + esc(it.name) + '</div>' + txt + '</div></div>' : txt; } });
       if (i < 0) return;
       var p = list[i]; var it = root.ITEMS[p.item];
       var a = await Win.choice(it.name + 'を ' + p.cost.toLocaleString() + '枚のコインと交換しますか？', ['交換する', 'やめる']); if (a !== 0) continue;

@@ -88,7 +88,7 @@
     var d = D(); var ITEMS = root.ITEMS;
     var owned = UPGRADE.filter(function (id) { return (d.inventory[id] || 0) > 0 || allActors().some(function (a) { return a.equip && a.equip.weapon === id; }); });
     if (!owned.length) { await c.say('鍛冶長イグナ', ['鍛え直せるのは、波形の名を持つ武器だけだ。ダウの大剣、EMA三重槍、RCI転輪弓、MACD双剣、ヒドゥンの魔杖、損切りの短剣。', '持ってきたら、竜の鱗1枚と' + FORGE_GOLD + 'Gで打ち直してやる。']); return; }
-    var i = await c.choice('どれを鍛え直す？（竜の鱗1枚＋' + FORGE_GOLD + 'G。竜の鱗 ' + (d.inventory.dragon_scale || 0) + '枚）', owned.map(function (id) { return ITEMS[id].name + ' → ' + ITEMS[id + '_2'].name; }).concat(['やめる']));
+    var i = await c.choice('どれを鍛え直す？（竜の鱗1枚＋' + FORGE_GOLD + 'G。竜の鱗 ' + (d.inventory.dragon_scale || 0) + '枚）', owned.map(function (id) { return ITEMS[id].name + ' → ' + ITEMS[id + '_2'].name; }).concat(['やめる']), { itemIds: owned.map(function (id) { return id + '_2'; }) });   // v9.5 鍛え直したあとの武器の絵
     if (i < 0 || i >= owned.length) return;
     var id = owned[i];
     if (!c.has('dragon_scale')) { await c.say('鍛冶長イグナ', ['竜の鱗がないな。竜脈洞窟で、落ちている鱗を拾ってこい。竜の幼生が落とすこともある。']); return; }

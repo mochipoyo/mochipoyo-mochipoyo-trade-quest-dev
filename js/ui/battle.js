@@ -488,7 +488,8 @@
         '<div class="rs-exp">' + (m.dead ? '戦闘不能（経験値なし）' : '+' + m.gained + ' EXP') + '<span class="muted small">　次のレベルまで ' + m.toNext + ' EXP</span></div>' +
         '<div class="rs-bar"><span style="width:' + bPct + '%" data-before="' + bPct + '" data-after="' + aPct + '" data-up="' + (m.levelUp ? 1 : 0) + '"></span></div>' + stat + skills + '</div>';
     }).join('');
-    var drops = Object.keys(res.drops); var dropHtml = drops.length ? drops.map(function (id) { return '<div class="rs-item">' + esc(ITEMS[id] ? ITEMS[id].name : id) + ' × ' + res.drops[id] + '</div>'; }).join('') : '<div class="muted">なし</div>';
+    // v9.5 落とした品の絵（res.drops のキー＝アイテム ID）
+    var drops = Object.keys(res.drops); var dropHtml = drops.length ? drops.map(function (id) { var ic = ITEMS[id] && root.ItemIcons ? root.ItemIcons.html(id, { size: 44 }) : ''; return '<div class="rs-item' + (ic ? ' has-icon' : '') + '">' + ic + '<span>' + esc(ITEMS[id] ? ITEMS[id].name : id) + ' × ' + res.drops[id] + '</span></div>'; }).join('') : '<div class="muted">なし</div>';
     if (simple) {
       var mline = res.members.map(function (m) { return '<span class="rs-mini">' + esc(m.actor.name) + ' ' + (m.dead ? '戦闘不能' : '+' + m.gained + ' EXP') + '<small>（次まで ' + m.toNext + '）</small></span>'; }).join('');
       var dl = drops.length ? drops.map(function (id) { return esc(ITEMS[id] ? ITEMS[id].name : id) + ' × ' + res.drops[id]; }).join('、') : 'なし';
@@ -650,7 +651,7 @@
         // v8.8 よく使う道具（最近使った・お気に入り）を先に並べる
         var mu = root.Menu && root.Menu.ui ? root.Menu.ui() : { recentItems: [], favItems: {} }; var rank = function (id) { var r = mu.recentItems.indexOf(id); return (mu.favItems[id] ? 0 : 100) + (r >= 0 ? r : 50); };
         ids.sort(function (x, y) { return rank(x) - rank(y); });
-        var ii = await Win.list(ids.map(function (id) { return { label: (mu.favItems[id] ? '★ ' : '') + ITEMS[id].name, right: '×' + inv[id], sub: (mu.recentItems.indexOf(id) >= 0 ? '最近使った　' : '') + ITEMS[id].desc }; }), { title: 'どうぐ' }); if (ii < 0) continue;
+        var ii = await Win.list(ids.map(function (id) { return { label: (mu.favItems[id] ? '★ ' : '') + ITEMS[id].name, right: '×' + inv[id], sub: (mu.recentItems.indexOf(id) >= 0 ? '最近使った　' : '') + ITEMS[id].desc, itemId: id }; }), { title: 'どうぐ' }); if (ii < 0) continue;   // v9.5 絵（並び・使える道具の絞り込みは今までどおり）
         var it = ITEMS[ids[ii]]; var tg = null;
         if (!it.effect.damage && !it.effect.escape) { var tid = await pickAlly(b, !!it.effect.revive); if (!tid) continue; tg = { side: 'party', id: tid }; }   // v6.4 撤退の煙玉は対象なし
         if (root.Menu && root.Menu.noteItemUse) root.Menu.noteItemUse(it.id);
