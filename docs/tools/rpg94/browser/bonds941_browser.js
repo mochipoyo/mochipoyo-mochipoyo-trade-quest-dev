@@ -3,6 +3,8 @@
 //   → 話の間は歩けない（キー入力で位置が変わらない）・終わると歩ける・3D のカメラが戻る → 連続タップで二つ目が始まらない
 //   → スマホで一番長い選択肢が画面からはみ出さない（折り返す）→（PC）宿のあとはトーストだけ
 //   → 保存して読み込み直すと進み具合が戻る → 話の途中でページを読み込み直すと、途中の選択は残らず、同じ話を最初から見られる
+//   3D：この作業環境（GPU なし）では 3D を描きながらの操作がとても遅いため、4 の間だけ描画し、ほかは描画を止める。歩く確かめは既存の flow89 と同じく
+//       キーの状態を立てて MTQ3D.updateLogic を呼ぶ（キーを押した時間ではフレームが進まないため）
 //   KIND=2d|3d  VIEW=pc|m390|land  PORT=…  OUT=…
 const { chromium } = require('playwright'); const fs = require('fs');
 const PORT = process.env.PORT || 8860; const KIND = process.env.KIND || '2d'; const VIEW = process.env.VIEW || 'pc'; const OUT = process.env.OUT || '/home/claude/envwork/docs/rpg94/';
@@ -10,9 +12,11 @@ const URL = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'in
 const TO = KIND === '3d' ? 120000 : 30000;
 const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.log((ok ? '  OK  ' : '  NG  ') + m); };
 const VP = { pc: { viewport: { width: 1280, height: 720 } }, m390: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 }, land: { viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 } }[VIEW];
-const MOBILE3D = KIND === '3d' && VIEW !== 'pc';
+// 3D：この作業環境（GPU なしのソフトウェア描画）では 3D を描きながらの操作がとても遅いため、3D の動きを見る 4（話の間は歩けない・終わると歩ける・カメラが戻る）の間だけ描画し、ほかの手順では描画を止める（画面の処理は 2D と同じ）
+const R3 = KIND === '3d';
 (async () => {
   const br = await chromium.launch(); const ctx = await br.newContext(VP); const p = await ctx.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message.slice(0, 160)));
+  const pause3d = (on) => R3 ? p.evaluate((v) => { MTQ3D.paused = v; }, on) : Promise.resolve();
   const shot = (n) => p.screenshot({ path: `${OUT}shots/bonds941_${KIND}_${VIEW}_${n}.jpg`, type: 'jpeg', quality: 72, timeout: TO });
   const tapEl = async (h) => { try { await h.evaluate((el) => el.scrollIntoView({ block: 'nearest' })); await p.waitForTimeout(250); } catch (e) { } const b = await h.boundingBox(); if (!b) return false; if (VIEW === 'pc') await p.mouse.click(b.x + b.width / 2, b.y + b.height / 2); else await p.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); await p.waitForTimeout(200); return true; };
   const find = (sel, text) => p.waitForFunction(([s, t]) => [...document.querySelectorAll(s)].reverse().find((x) => x.offsetParent && (!t || x.textContent.indexOf(t) >= 0)) || null, [sel, text], { timeout: TO, polling: 250 }).then((h) => h.asElement());
@@ -49,20 +53,20 @@ const MOBILE3D = KIND === '3d' && VIEW !== 'pc';
   await p.evaluate(() => { window.__cine = []; if (window.MTQ3D && MTQ3D.cine) { const c0 = MTQ3D.cine.bind(MTQ3D); MTQ3D.cine = (o) => { __cine.push(o ? 1 : 0); return c0(o); }; }
     window.__plays = []; const p0 = Bonds.play; Bonds.play = async function (sc, o) { const r = await p0.call(Bonds, sc, o); __plays.push({ id: sc.id, busy: !!r.busy, done: !!r.done, later: !!r.later }); return r; }; });
   // 1) 一覧は加入した順
-  if (MOBILE3D) await p.evaluate(() => { MTQ3D.paused = true; });
+  await pause3d(true);
   p.evaluate(() => { Menu._tab = 1; Menu.open(); }); await item('仲間と話す'); await p.waitForFunction(() => !!document.querySelector('#ui .bond-list'), null, { timeout: TO, polling: 250 });
   const rows = await p.evaluate(() => [...document.querySelectorAll('#ui .bond-list .rw-item')].map((x) => x.textContent));
   S(/リーナ/.test(rows[0]) && /カイル/.test(rows[1]) && /ミナ/.test(rows[2]) && /ガルド/.test(rows[3]) && /セリス/.test(rows[4]) && /ポン太/.test(rows[5]), '「仲間と話す」は加入した順（リーナ・カイル・ミナ・ガルド・セリス・ポン太）：' + rows.slice(0, 6).map((r) => (r.match(/リーナ|カイル|ミナ|ガルド|セリス|ポン太/) || ['?'])[0]).join(' '));
   S(/★/.test(rows[2]), '取り残し（ミナの父）があるミナに小さな印（★）');
   await shot('1_list');
   // 2) 取り残しの回収：控えのミナと、父の記録を読む
-  await item('ミナ'); await item('父の記録を、ミナと読む'); if (MOBILE3D) await p.evaluate(() => { MTQ3D.paused = false; });
+  await item('ミナ'); await item('父の記録を、ミナと読む');
   const ok2 = await playOut('!!(State.data.quests.mina_father && State.data.quests.mina_father.state === "done")');
   const r2 = await p.evaluate(() => ({ q: State.data.quests.mina_father && State.data.quests.mina_father.state, ring: State.data.inventory.ring_speed || 0, pending: Bonds.rescuePending('mina_father') }));
   S(ok2 && r2.q === 'done' && r2.ring === 1 && !r2.pending, '控えのミナと「父の記録」を読む → 「ミナの父」を達成（素早さの指輪 1 つ）');
   await p.waitForFunction(() => !World.busy, null, { timeout: 30000 }).catch(() => { }); await clean();
   // 3) リーナ第1話：先送りの問いでキャンセル → 先送り
-  const talkTo = async (who, what) => { if (MOBILE3D) await p.evaluate(() => { MTQ3D.paused = true; }); p.evaluate(() => { Menu._tab = 1; Menu.open(); }); await item('仲間と話す'); await item(who); await item(what); if (MOBILE3D) await p.evaluate(() => { MTQ3D.paused = false; }); };
+  const talkTo = async (who, what, live3d) => { await pause3d(true); p.evaluate(() => { Menu._tab = 1; Menu.open(); }); await item('仲間と話す'); await item(who); await item(what); if (live3d) await pause3d(false); };
   await talkTo('リーナ', '新しい話');
   let n = 0; while (n++ < 60) { const st = await p.evaluate(() => ({ c: [...document.querySelectorAll('#ui .rw-choice .rw-opt')].map((o) => o.textContent), m: !!document.querySelector('#ui .rw-msg') })); if (st.c.some((t) => /やめておく/.test(t))) break; if (st.m) await tapEl(await p.$('#ui .rw-msg')); else await p.waitForTimeout(200); }
   await p.keyboard.press('Escape'); await p.waitForTimeout(600);
@@ -71,9 +75,12 @@ const MOBILE3D = KIND === '3d' && VIEW !== 'pc';
   S(r3.later === 1 && !r3.seen && r3.ready === 'ready', '「今日はやめておく」がある問いでキャンセル：先送りになり、あとでまた見られる');
   await p.waitForFunction(() => !World.busy, null, { timeout: 30000 }).catch(() => { }); await clean();
   // 4) もう一度：先送りのない問いではキャンセルで閉じない／話の間はキーで歩けない
+  // 動かす：2D はキーを押す。3D はこの作業環境ではフレームがとても遅く、キーを押した時間では進まないため、既存の flow89 と同じく
+  //   キーの状態（Engine.Input.keys）を立てて MTQ3D.updateLogic を 60 回（1 秒ぶん）呼ぶ（会話中は既存の World.busy の判定で止まるかを見る）
+  const nudge = async (key) => { if (R3) await p.evaluate((k) => { const d = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' }[k]; const K = Engine.Input.keys; ['up', 'down', 'left', 'right'].forEach((x) => { K[x] = x === d; }); for (let i = 0; i < 60; i++) MTQ3D.updateLogic(1 / 60); ['up', 'down', 'left', 'right'].forEach((x) => { K[x] = false; }); }, key); else { await p.keyboard.down(key); await p.waitForTimeout(900); await p.keyboard.up(key); } await p.waitForTimeout(400); };
   const where = () => JSON.stringify([State.data.pos.x, State.data.pos.y].concat(World.player ? [Math.round(World.player.x * 10), Math.round(World.player.y * 10)] : []));
   const pos0 = await p.evaluate(where);
-  await talkTo('リーナ', '新しい話');
+  await talkTo('リーナ', '新しい話', true);   // ここだけ 3D を描きながら（話の間の入力・カメラ）
   let cancelOk = null, moved = null; n = 0;
   while (n++ < 260) {
     const st = await p.evaluate(() => ({ c: [...document.querySelectorAll('#ui .rw-choice .rw-opt')].map((o) => o.textContent), m: !!document.querySelector('#ui .rw-msg'), done: !!State.data.bonds.seen.lina_1, playing: Bonds.playing }));
@@ -82,7 +89,7 @@ const MOBILE3D = KIND === '3d' && VIEW !== 'pc';
       if (cancelOk === null && !st.c.some((t) => /やめておく/.test(t))) { await p.keyboard.press('Escape'); await p.waitForTimeout(500); cancelOk = await p.evaluate((k) => document.querySelectorAll('#ui .rw-choice .rw-opt').length === k && Bonds.playing, st.c.length); }
       const opts = await p.$$('#ui .rw-choice .rw-opt'); let i = st.c.findIndex((t) => /リーナの分/.test(t)); if (i < 0) i = st.c.findIndex((t) => !/やめておく/.test(t)); await tapEl(opts[Math.max(0, i)]); continue;
     }
-    if (st.m) { if (moved === null && n > 4) { await p.keyboard.down('ArrowRight'); await p.waitForTimeout(700); await p.keyboard.up('ArrowRight'); moved = await p.evaluate(([f, p0]) => eval('(' + f + ')')() !== p0 || !World.busy, [where.toString(), pos0]); if (n > 6 && moved === false) await shot('2_scene'); } await tapEl(await p.$('#ui .rw-msg')); continue; }
+    if (st.m) { if (moved === null && n > 4) { await nudge('ArrowRight'); moved = await p.evaluate(([f, p0]) => eval('(' + f + ')')() !== p0 || !World.busy, [where.toString(), pos0]); if (n > 6 && moved === false) await shot('2_scene'); } await tapEl(await p.$('#ui .rw-msg')); continue; }
     await p.waitForTimeout(200);
   }
   S(cancelOk === true, '先送りのない問いでキャンセルしても、選択肢は閉じない（話は続く）');
@@ -90,18 +97,16 @@ const MOBILE3D = KIND === '3d' && VIEW !== 'pc';
   await p.waitForFunction(() => !World.busy && !Bonds.playing, null, { timeout: 30000 }).catch(() => { });
   await p.waitForTimeout(600);
   const after = await p.evaluate(() => ({ busy: World.busy, ui: document.querySelectorAll('#ui > *').length, cine: window.__cine.slice(-1)[0], seen: !!State.data.bonds.seen.lina_1 }));
-  if (MOBILE3D) await p.evaluate(() => { MTQ3D.paused = false; });
   const pos1 = await p.evaluate(where);
-  let pos2 = pos1; for (const key of ['ArrowLeft', 'ArrowDown', 'ArrowRight', 'ArrowUp']) { await p.keyboard.down(key); await p.waitForTimeout(900); await p.keyboard.up(key); await p.waitForTimeout(500); pos2 = await p.evaluate(where); if (pos2 !== pos1) break; }
+  let pos2 = pos1; for (const key of ['ArrowLeft', 'ArrowDown', 'ArrowRight', 'ArrowUp']) { await nudge(key); pos2 = await p.evaluate(where); if (pos2 !== pos1) break; }
   S(after.seen && !after.busy && pos2 !== pos1, '話が終わると、入力が戻り歩ける（' + pos1 + '→' + pos2 + '）' + (KIND === '3d' ? '・3D のカメラは戻る（最後の呼び出し：' + (after.cine === 0 ? '戻す' : after.cine) + '）' : ''));
   if (KIND === '3d') S(after.cine === 0, '3D：会話のあと、イベント用カメラは元に戻っている');
   // 5) 連続タップ：「新しい話」をすばやく2回
   await clean(); const plays0 = await p.evaluate(() => __plays.length);
-  if (MOBILE3D) await p.evaluate(() => { MTQ3D.paused = true; });
+  await pause3d(true);
   p.evaluate(() => { Menu._tab = 1; Menu.open(); }); await item('仲間と話す'); await item('ガルド');
   const h = await find('#ui .rw-opt', '新しい話'); const bb = await h.boundingBox();
   for (let k = 0; k < 3; k++) { if (VIEW === 'pc') await p.mouse.click(bb.x + bb.width / 2, bb.y + bb.height / 2); else await p.touchscreen.tap(bb.x + bb.width / 2, bb.y + bb.height / 2); await p.waitForTimeout(40); }
-  if (MOBILE3D) await p.evaluate(() => { MTQ3D.paused = false; });
   await playOut('!!State.data.bonds.seen.gald_1');
   await p.waitForFunction(() => !World.busy && !Bonds.playing, null, { timeout: 30000 }).catch(() => { });
   const pl = await p.evaluate((k) => __plays.slice(k), plays0);
@@ -126,7 +131,7 @@ const MOBILE3D = KIND === '3d' && VIEW !== 'pc';
   const saved = await p.evaluate(() => { State.save(1); return { seen: Object.keys(State.data.bonds.seen).sort(), mem: State.data.bonds.mem, q: State.data.quests.mina_father.state }; });
   await p.reload(); await boot();
   await p.evaluate(() => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay); State.data = State.load(1); World.start(); });
-  await toMap();
+  await toMap(); await pause3d(true);
   const loaded = await p.evaluate(() => ({ seen: Object.keys(State.data.bonds.seen).sort(), mem: State.data.bonds.mem, q: State.data.quests.mina_father.state, st: Bonds.epState(BONDS94.EP.lina_2) }));
   S(JSON.stringify(loaded.seen) === JSON.stringify(saved.seen) && JSON.stringify(loaded.mem) === JSON.stringify(saved.mem) && loaded.q === 'done', '保存して読み込み直すと、見た話・選んだこと・回収した「ミナの父」が戻る（' + loaded.seen.join(' ') + '）');
   // 9) 話の途中でページを読み込み直す → 途中の選択は残らない
@@ -137,7 +142,7 @@ const MOBILE3D = KIND === '3d' && VIEW !== 'pc';
   const mid = await p.evaluate(() => ({ playing: Bonds.playing, mem: JSON.stringify(State.data.bonds.mem) }));
   await p.reload(); await boot();
   await p.evaluate(() => { document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay); State.data = State.load(0) || State.load(1); World.start(); });
-  await toMap();
+  await toMap(); await pause3d(true);
   const re = await p.evaluate(() => ({ seen: !!State.data.bonds.seen.kyle_1, st: Bonds.epState(BONDS94.EP.kyle_1), memKeys: Object.keys(State.data.bonds.mem).filter((k) => /^kyle_/.test(k)) }));
   S(picked && mid.playing && !re.seen && re.st === 'ready' && re.memKeys.length === 0, '話の途中（選択のあと）でページを読み込み直しても、途中の選択は残らず、カイル第1話を最初から見られる');
   S(errs.length === 0, 'ページのエラーなし' + (errs.length ? '：' + errs.slice(0, 3).join(' / ') : ''));
