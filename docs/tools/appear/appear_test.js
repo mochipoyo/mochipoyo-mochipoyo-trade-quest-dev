@@ -1,4 +1,4 @@
-// v9.6 装備でキャラの外見が変わる：jsdom の確かめ（2D／3D と同じ読み込み）。jsdom には描く仕組みがないので、合成の絵そのものはブラウザの確かめ（browser/appear_browser.js）で見る
+// v9.6 装備でキャラの外見が変わる：jsdom の確かめ（2D／3D と同じ読み込み）。v9.7 からふだんはドット絵の差分（appear_pixel_test.js）。ここは v9.6 の描き足し（setMode('vector')）を確かめる。jsdom には描く仕組みがないので、合成の絵そのものはブラウザの確かめ（browser/appear_browser.js）で見る
 //   node docs/tools/appear/appear_test.js [2d]
 const path = require('path'); const fs = require('fs'); const crypto = require('crypto'); const load = require(path.resolve(__dirname, '../v78/load78.js'));
 const ROOT = path.resolve(__dirname, '../../..') + '/'; const two = process.argv.includes('2d');
@@ -10,6 +10,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   console.log('== ' + (two ? '2D 版' : '3D 版と同じ読み込み') + '　読み込みのエラー ' + A.errors.length);
   T(A.errors.length === 0, '読み込みのエラーなし');
   const EA = w.EquipmentAppearance, I = w.ITEMS, D = w.EQUIP_APPEARANCE_DATA, AN = w.EQUIP_ANCHORS;
+  EA.setMode('vector');   // v9.7：v9.6 の描き足しで確かめる（ふだんの表示はドット絵の差分）
   T(EA && D && AN && ['slots', 'resolve', 'signature', 'paint', 'compose'].every((k) => typeof EA[k] !== 'undefined'), '共通部品 EquipmentAppearance（素材キットと同じ slots・resolve・signature・paint・compose）と、外見の表・位置の表がある');
   T(Object.keys(EA.paths).length === 15, '素材キットの 15 の形（' + Object.keys(EA.paths).join(',') + '）');
   console.log('-- 装備の表（ゲームの装備は ITEMS のまま。見た目だけ）');

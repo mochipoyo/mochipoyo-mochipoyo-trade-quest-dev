@@ -1,4 +1,5 @@
 // v9.6 装備でキャラの外見が変わる：ブラウザの確かめ（ヘッドレス Chromium。実機ではない。GPU なしのソフトウェア描画）
+//   v9.7 からふだんはドット絵の差分（appear_pixel.js）。ここは v9.6 の描き足し（EquipmentAppearance.setMode('vector')）を確かめる
 //   KIND=2d|3d  VIEW=pc|m360|land  PORT=…  OUT=…（記録 logs/appear_<KIND>_<VIEW>.json・画面写真 shots/appear_*.jpg）
 //   1 なかまの画面：主人公（職業の立ち絵）と体格の違う仲間（ガルド）の全身が、いまの装備で合成される。外すと素の見た目
 //   2 そうび：枠の一覧の全身。候補の試着（剣→槍、重鎧→ローブ、盾あり→なし、兜→帽子、装飾品）。Esc では本人の装備も外見も変わらない。決めると変わる
@@ -27,6 +28,7 @@ const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.lo
   if (KIND === '3d') await p.waitForFunction(() => window.MTQ3D && MTQ3D.ready, null, { timeout: 300000 });
   await p.waitForSelector('#ui .title-menu', { timeout: 300000 });
   const before = await p.evaluate(() => {
+    EquipmentAppearance.setMode('vector');
     document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay);
     State.newGame('もち', 'warrior'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.settings.soundAsk93 = true; d.gold = 300;
     ['gald', 'lina'].forEach((id) => State.joinCompanion(id));

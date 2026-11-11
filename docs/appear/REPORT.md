@@ -1,5 +1,10 @@
 # 装備でキャラの外見が変わる（v9.6）の報告
 
+> **v9.7 の変更**：外見の作り方を、ドット絵の差分（主人公の試作）に切り替えた。報告は `docs/appear/pixel/REPORT.md`。
+> - ふだんは、部品のある人物・向きだけが着替える。いまは主人公のメニューの戦士の立ち絵と、戦闘の背面だけ。
+> - ほかの人物・向きは、本人の従来の絵になる。
+> - 下の v9.6 の描き足し（vector）は、開発の見比べ用に残した（`EquipmentAppearance.setMode('vector')`）。
+
 - ブランチ：`feature/equip-appearance`（dev リポジトリ）。main・公開本番には入れていない
 - 参照コミット：`8c5bd238d8e9996570d801691dc3a613ac9e117a`（v9.5 装備の絵）。作業の始めの HEAD と同じで、指示書の入口は移動していなかった
   - 注：指示書の「Assets.portraitFor 系」は、実際の名前が `Assets.portrait`／`portraitUrlFor`／`portraitTagFor`（同じ役割）

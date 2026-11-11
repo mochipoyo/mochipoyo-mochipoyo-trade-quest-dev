@@ -1,0 +1,4454 @@
+{
+ "note": "v9.7 装備の外見（ドット絵の差分）の対応表。appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備から作る。ほかのキャラへ広げるときは、人物ID・向きごとに parts をそろえる",
+ "actors": {
+  "hero": {
+   "job:warrior": {
+    "src": "assets/characters/jobs/warrior.png",
+    "size": [
+     130,
+     200
+    ],
+    "dir": "front",
+    "pivot": [
+     64,
+     197
+    ],
+    "grip": {
+     "x": 22,
+     "y": 117,
+     "order": "剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す"
+    },
+    "offhand": {
+     "x": 105,
+     "y": 125,
+     "order": "盾：腕の上（体の後に描く）"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/base_plain.png",
+      "x": 0,
+      "y": 2,
+      "w": 124,
+      "h": 196
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/armor_light_t.png",
+      "x": 20,
+      "y": 77,
+      "w": 86,
+      "h": 118
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/armor_heavy_t.png",
+      "x": 20,
+      "y": 77,
+      "w": 86,
+      "h": 118
+     },
+     "shield": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/shield.png",
+      "x": 83,
+      "y": 86,
+      "w": 45,
+      "h": 79
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/weapon_sword.png",
+      "x": 0,
+      "y": 17,
+      "w": 38,
+      "h": 119
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/hand.png",
+      "x": 12,
+      "y": 104,
+      "w": 21,
+      "h": 25
+     },
+     "head_helm_t": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/head_helm_t.png",
+      "x": 30,
+      "y": 9,
+      "w": 73,
+      "h": 65
+     },
+     "head_helm_f": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/head_helm_f.png",
+      "x": 29,
+      "y": 8,
+      "w": 75,
+      "h": 67
+     },
+     "base_helm": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/base_helm.png",
+      "x": 0,
+      "y": 8,
+      "w": 124,
+      "h": 190
+     },
+     "head_hat_t": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/head_hat_t.png",
+      "x": 16,
+      "y": -14,
+      "w": 101,
+      "h": 67
+     },
+     "head_hat_f": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/head_hat_f.png",
+      "x": 15,
+      "y": -15,
+      "w": 103,
+      "h": 69
+     },
+     "base_hat": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/base_hat.png",
+      "x": 0,
+      "y": 2,
+      "w": 124,
+      "h": 196
+     },
+     "weapon_staff_t": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/weapon_staff_t.png",
+      "x": 16,
+      "y": 46,
+      "w": 13,
+      "h": 13
+     },
+     "weapon_staff_f": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/weapon_staff_f.png",
+      "x": 12,
+      "y": 39,
+      "w": 21,
+      "h": 159
+     },
+     "weapon_spear": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/weapon_spear.png",
+      "x": 16,
+      "y": -24,
+      "w": 12,
+      "h": 222
+     },
+     "armor_robe_t": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_t.png",
+      "x": 15,
+      "y": 77,
+      "w": 94,
+      "h": 107
+     },
+     "armor_robe_f": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_f.png",
+      "x": 13,
+      "y": 80,
+      "w": 98,
+      "h": 115
+     }
+    }
+   },
+   "back": {
+    "src": "assets/characters/party-directions-v3/sprites/hero/back.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "back",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 205,
+     "y": 213,
+     "order": "剣：拳の上に鍔／杖・槍：柄の上に拳を描き直す"
+    },
+    "offhand": {
+     "x": 108,
+     "y": 222,
+     "order": "盾：左腕の外側（体の後に描く）"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/hero/back/base_plain.png",
+      "x": 88,
+      "y": 102,
+      "w": 151,
+      "h": 203
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/hero/back/armor_light_t.png",
+      "x": 109,
+      "y": 178,
+      "w": 96,
+      "h": 121
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/hero/back/armor_heavy_t.png",
+      "x": 109,
+      "y": 178,
+      "w": 96,
+      "h": 121
+     },
+     "shield": {
+      "file": "assets/characters/equip-pixels/hero/back/shield.png",
+      "x": 91,
+      "y": 185,
+      "w": 36,
+      "h": 78
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/hero/back/weapon_sword.png",
+      "x": 193,
+      "y": 122,
+      "w": 43,
+      "h": 111
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/hero/back/hand.png",
+      "x": 192,
+      "y": 199,
+      "w": 25,
+      "h": 28
+     },
+     "head_helm_t": {
+      "file": "assets/characters/equip-pixels/hero/back/head_helm_t.png",
+      "x": 117,
+      "y": 111,
+      "w": 80,
+      "h": 59
+     },
+     "head_helm_f": {
+      "file": "assets/characters/equip-pixels/hero/back/head_helm_f.png",
+      "x": 116,
+      "y": 110,
+      "w": 82,
+      "h": 61
+     },
+     "base_helm": {
+      "file": "assets/characters/equip-pixels/hero/back/base_helm.png",
+      "x": 88,
+      "y": 110,
+      "w": 151,
+      "h": 195
+     },
+     "head_hat_t": {
+      "file": "assets/characters/equip-pixels/hero/back/head_hat_t.png",
+      "x": 103,
+      "y": 92,
+      "w": 109,
+      "h": 67
+     },
+     "head_hat_f": {
+      "file": "assets/characters/equip-pixels/hero/back/head_hat_f.png",
+      "x": 102,
+      "y": 91,
+      "w": 111,
+      "h": 69
+     },
+     "base_hat": {
+      "file": "assets/characters/equip-pixels/hero/back/base_hat.png",
+      "x": 88,
+      "y": 102,
+      "w": 151,
+      "h": 203
+     },
+     "weapon_staff_t": {
+      "file": "assets/characters/equip-pixels/hero/back/weapon_staff_t.png",
+      "x": 199,
+      "y": 142,
+      "w": 13,
+      "h": 13
+     },
+     "weapon_staff_f": {
+      "file": "assets/characters/equip-pixels/hero/back/weapon_staff_f.png",
+      "x": 195,
+      "y": 135,
+      "w": 21,
+      "h": 169
+     },
+     "weapon_spear": {
+      "file": "assets/characters/equip-pixels/hero/back/weapon_spear.png",
+      "x": 199,
+      "y": 70,
+      "w": 12,
+      "h": 234
+     },
+     "armor_robe_t": {
+      "file": "assets/characters/equip-pixels/hero/back/armor_robe_t.png",
+      "x": 107,
+      "y": 178,
+      "w": 100,
+      "h": 114
+     },
+     "armor_robe_f": {
+      "file": "assets/characters/equip-pixels/hero/back/armor_robe_f.png",
+      "x": 106,
+      "y": 235,
+      "w": 102,
+      "h": 64
+     }
+    }
+   }
+  }
+ },
+ "items": {
+  "wooden_sword": {
+   "name": "木の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "wood",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "copper_sword": {
+   "name": "銅の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "iron_sword": {
+   "name": "鉄の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "steel_sword": {
+   "name": "鋼の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "knight_sword": {
+   "name": "騎士の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "wave_sword": {
+   "name": "波形の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "dagger": {
+   "name": "短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bronze_dagger": {
+   "name": "青銅のナイフ",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "knife",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "assassin_dagger": {
+   "name": "暗殺者の短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "spear": {
+   "name": "槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "iron_spear": {
+   "name": "鉄の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "halberd": {
+   "name": "ハルバード",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "halberd",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "hand_axe": {
+   "name": "手斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "handaxe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "battle_axe": {
+   "name": "戦斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "battleaxe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "short_bow": {
+   "name": "短弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "shortbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "hunter_bow": {
+   "name": "狩人の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "long_bow": {
+   "name": "長弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "longbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "oak_staff": {
+   "name": "樫の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "wood",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "mage_staff": {
+   "name": "魔道士の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "sage_staff": {
+   "name": "賢者の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "club": {
+   "name": "棍棒",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "club",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "iron_club": {
+   "name": "鉄棍",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "rod",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "holy_mace": {
+   "name": "聖なるメイス",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "mace",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "leather_claw": {
+   "name": "革の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "iron_claw": {
+   "name": "鉄の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "tiger_claw": {
+   "name": "虎の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "cloth": {
+   "name": "布の服",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloth",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "leather_armor": {
+   "name": "革の鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "scale_armor": {
+   "name": "鱗の鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ninja_garb": {
+   "name": "忍び装束",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "ninja",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "chain_mail": {
+   "name": "鎖帷子",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "chain",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "iron_armor": {
+   "name": "鉄の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "knight_armor": {
+   "name": "騎士の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "robe": {
+   "name": "旅人のローブ",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "silk_robe": {
+   "name": "絹のローブ",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "sage_robe": {
+   "name": "賢者のローブ",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "wooden_shield": {
+   "name": "木の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "round",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "iron_shield": {
+   "name": "鉄の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "knight_shield": {
+   "name": "騎士の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "stoploss_shield": {
+   "name": "損切りの盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "leather_cap": {
+   "name": "革の帽子",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "cap",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "feather_hat": {
+   "name": "羽根帽子",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "feather",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "wizard_hat": {
+   "name": "魔法使いの帽子",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "witch",
+   "material": "head_hat",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "iron_helm": {
+   "name": "鉄の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "knight_helm": {
+   "name": "騎士の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ring_power": {
+   "name": "力の指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "ring_guard": {
+   "name": "守りの指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "ring_speed": {
+   "name": "疾風の指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "amulet_life": {
+   "name": "命のお守り",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "amulet_mind": {
+   "name": "知恵のお守り",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "antidote_charm": {
+   "name": "毒消しの護符",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "time_amulet": {
+   "name": "時間軸の護符",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "tide_dagger": {
+   "name": "潮目の短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "survey_bow": {
+   "name": "測量士の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "sea_coat": {
+   "name": "航海士のコート",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "coat",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "chrono_staff": {
+   "name": "時詠みの杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "gear_bow": {
+   "name": "機巧弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "mechbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "temporal_robe": {
+   "name": "時のローブ",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "rune_blade": {
+   "name": "ルーンブレード",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "arcane_staff": {
+   "name": "魔導の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "star_bow": {
+   "name": "星見の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "void_dagger": {
+   "name": "虚無の短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "astral_spear": {
+   "name": "星界の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "sky_axe": {
+   "name": "天空の斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "axe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "shadow_claw": {
+   "name": "影の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "balance_mace": {
+   "name": "均衡の槌",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "hammer",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "rune_mail": {
+   "name": "ルーンメイル",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "star_cloak": {
+   "name": "星のマント",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloak",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "sky_robe": {
+   "name": "天空のローブ",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "aegis_shield": {
+   "name": "イージスの盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "star_helm": {
+   "name": "星の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "arcane_hat": {
+   "name": "魔導帽",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "witch",
+   "material": "head_hat",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "iron_crown": {
+   "name": "鉄の冠",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "circlet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "dow_greatsword": {
+   "name": "ダウの大剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "greatsword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ema_trident": {
+   "name": "EMA三重槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "rci_bow": {
+   "name": "RCI転輪弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "mechbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "macd_twin": {
+   "name": "MACD双剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "twin",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "hidden_staff": {
+   "name": "ヒドゥンの魔杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "stoploss_dagger": {
+   "name": "損切りの短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "armor_risk": {
+   "name": "資金管理の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "robe_skip": {
+   "name": "見送りの法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "cloak_volatility": {
+   "name": "変動相場のマント",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloak",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "helm_timeframe": {
+   "name": "時間軸の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "armor_patience": {
+   "name": "忍耐の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "compass_wave": {
+   "name": "波形の羅針盤",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "compass",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "ring_rci": {
+   "name": "RCIの指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "amulet_macd": {
+   "name": "MACDの護符",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "scale_rr": {
+   "name": "リスクリワードの天秤",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "scale",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "charm_stoploss": {
+   "name": "損切りのお守り",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "glasses_htf": {
+   "name": "上位足の眼鏡",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "glasses",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "necklace_skip": {
+   "name": "見送りの首飾り",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "necklace",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bracelet_reverse": {
+   "name": "反転の腕輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "bracelet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "dow_greatsword_2": {
+   "name": "ダウの大剣＋",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "greatsword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ema_trident_2": {
+   "name": "EMA三重槍＋",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "rci_bow_2": {
+   "name": "RCI転輪弓＋",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "mechbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "macd_twin_2": {
+   "name": "MACD双剣＋",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "twin",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "hidden_staff_2": {
+   "name": "ヒドゥンの魔杖＋",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "stoploss_dagger_2": {
+   "name": "損切りの短剣＋",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "scimitar": {
+   "name": "砂漠の曲刀",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "saber",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "sun_spear": {
+   "name": "陽炎の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "caravan_bow": {
+   "name": "隊商の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "dune_cloak": {
+   "name": "砂避けのマント",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloak",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "sand_turban": {
+   "name": "砂漠のターバン",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "turban",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "mirage_veil": {
+   "name": "蜃気楼のヴェール",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "veil",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "dragon_axe": {
+   "name": "竜骨の斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "axe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "flame_claw": {
+   "name": "炎の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "dragon_mail": {
+   "name": "竜鱗の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "scale",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ember_robe": {
+   "name": "熾火のローブ",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "dragon_helm": {
+   "name": "竜の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "dragon",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ryumyaku_blade": {
+   "name": "竜脈の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ice_staff": {
+   "name": "氷晶の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "crystal",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "fur_coat": {
+   "name": "毛皮のコート",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "coat",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "clock_hand_spear": {
+   "name": "時計の針の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "clockhand",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "wave_charm": {
+   "name": "波形の護符",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "mentor_crown": {
+   "name": "導師の冠",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "crown",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ash_hammer": {
+   "name": "灰鉄の大槌",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "hammer",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "captain_saber": {
+   "name": "船長のサーベル",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "saber",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "zero_bow": {
+   "name": "零誤差の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "healer_robe": {
+   "name": "癒し手の法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "auditor_seal": {
+   "name": "監査官の印",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "brooch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "oath_mail": {
+   "name": "誓約の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "surveyor_ring": {
+   "name": "測量士の指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "navigator_compass": {
+   "name": "ハヤテの羅針盤",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "compass",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "io_core": {
+   "name": "最初の歯車",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "gear",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "shield_risk": {
+   "name": "リスク分散の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "lucky_ring": {
+   "name": "幸運の指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "gambler_cloak": {
+   "name": "勝負師のマント",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloak",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "golden_shield": {
+   "name": "黄金の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "prob_sword": {
+   "name": "確率の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ev_staff": {
+   "name": "期待値の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "legend_gambler_armor": {
+   "name": "伝説の勝負師の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "fate_blade": {
+   "name": "運命を切り拓く剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "lln_charm": {
+   "name": "大数の法則の護符",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "academy_crest": {
+   "name": "学院の徽章",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "brooch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "yang_sword": {
+   "name": "陽線の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "yin_sword": {
+   "name": "陰線の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "resistance_blade": {
+   "name": "レジスタンスブレード",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "equilibrium_sword": {
+   "name": "均衡断ちの聖剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "pinbar_dagger": {
+   "name": "ピンバー短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "breakout_dagger": {
+   "name": "ブレイクアウトダガー",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "contrarian_blade": {
+   "name": "逆張りの刃",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "silent_knife": {
+   "name": "無音のアサシンナイフ",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "knife",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "pullback_spear": {
+   "name": "押し目の長槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "takeprofit_trident": {
+   "name": "利確の三叉槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "trident",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ryumyaku_spear": {
+   "name": "竜脈穿ちの槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "star_cycle_spear": {
+   "name": "星周期の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "momentum_axe": {
+   "name": "モメンタムアックス",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "axe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "chainbreak_axe": {
+   "name": "鉄鎖破りの斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "axe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "crater_axe": {
+   "name": "火口の戦斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "battleaxe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "crash_axe": {
+   "name": "暴落粉砕斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "battleaxe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "breakconfirm_bow": {
+   "name": "ブレイク確認の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "range_bow": {
+   "name": "値幅測定の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "prob_hunt_bow": {
+   "name": "確率の狩弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "azure_longbow": {
+   "name": "蒼天の長弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "longbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "compound_staff": {
+   "name": "複利の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "stats_staff": {
+   "name": "統計の魔杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "oracle_staff": {
+   "name": "オラクル解析杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "spacetime_staff": {
+   "name": "時空観測の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "candle_hammer": {
+   "name": "ローソクの鉄槌",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "hammer",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "margin_hammer": {
+   "name": "マージンハンマー",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "hammer",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "basis_rod": {
+   "name": "根拠の鉄棍",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "rod",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "scale_mace": {
+   "name": "天秤の聖槌",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "hammer",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "retro_claw": {
+   "name": "逆行の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "thunder_claw": {
+   "name": "雷迅の鉤爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "losscut_claw": {
+   "name": "損失遮断の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "obsidian_twin": {
+   "name": "黒曜の双爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "twinclaw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "copperwall_armor": {
+   "name": "銅壁の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ashiron_plate": {
+   "name": "灰鉄の胸甲",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "cuirass",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "prob_armor": {
+   "name": "確率装甲",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "federal_plate": {
+   "name": "連邦重甲",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "deepsea_armor": {
+   "name": "深海装甲",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "final_plate": {
+   "name": "終局のプレート",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "trader_coat": {
+   "name": "旅商人の上衣",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloth",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "surf_armor": {
+   "name": "波乗りの軽鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "seabreeze_leather": {
+   "name": "潮風の革鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "auditor_coat": {
+   "name": "監査官の上着",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloth",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "sandstorm_cloak": {
+   "name": "砂嵐の外套",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloak",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "stardrift_mail": {
+   "name": "星渡りの軽鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "statistician_robe": {
+   "name": "統計学者のローブ",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "antiretro_vestment": {
+   "name": "逆行耐性の法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "iceport_robe": {
+   "name": "氷港の魔導衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "chrono_formal": {
+   "name": "時詠みの礼装",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "voidward_robe": {
+   "name": "虚無を払う法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "dow_buckler": {
+   "name": "ダウの小盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "buckler",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "pullback_shield": {
+   "name": "押し目の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ironcastle_shield": {
+   "name": "鉄城の大盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "tower",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "mana_barrier_shield": {
+   "name": "マナ防壁",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "barrier",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "doom_guard_shield": {
+   "name": "終末の守護盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "smoked_helm": {
+   "name": "燻銀の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "seachart_helm": {
+   "name": "海図の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "math_helm": {
+   "name": "数理の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "hilo_hat": {
+   "name": "高値安値の帽子",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "cap",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "desert_star_hat": {
+   "name": "砂漠の星帽",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "cap",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "icecrystal_hood": {
+   "name": "氷晶の頭巾",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "hood",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "scalein_ring": {
+   "name": "分割利確の指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "stoporder_ring": {
+   "name": "逆指値の指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "ev_bracelet": {
+   "name": "期待値の腕輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "bracelet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "streak_charm": {
+   "name": "連敗耐性の護符",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "star_compass": {
+   "name": "航海星図のコンパス",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "compass",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "nonslip_charm": {
+   "name": "滑落防止の靴飾り",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "anklet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "target_pendant": {
+   "name": "利確標的のペンダント",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "necklace",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "breakeven_crest": {
+   "name": "損益分岐の紋章",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "brooch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "thinice_brooch": {
+   "name": "薄氷のブローチ",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "brooch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "dragon_heart": {
+   "name": "ドラゴンの心核",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "shard",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "observer_lens": {
+   "name": "観測者のレンズ",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "glasses",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "memory_drop": {
+   "name": "記憶のしずく",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "necklace",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "market_bell": {
+   "name": "マーケットベル",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "bell",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "vol_earring": {
+   "name": "ボラティリティの耳飾り",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "earring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "candle_stone": {
+   "name": "ローソクの守り石",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "shard",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "pivot_ring": {
+   "name": "ピボットリング",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "allocation_bangle": {
+   "name": "資金配分の腕輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "bracelet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "oath_chain": {
+   "name": "誓いの鎖",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "chain",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "reversal_warning": {
+   "name": "反転注意の護符",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "astral_lodestone": {
+   "name": "星界の羅針石",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "compass",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "td_scalper_knife": {
+   "name": "刹那のスキャルナイフ",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "knife",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "td_session_watch": {
+   "name": "立会いの懐中時計",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "watch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "td_swing_longbow": {
+   "name": "上位足の長弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "longbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "td_mirror_buckler": {
+   "name": "逆張りの鏡盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "round",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "td_breakout_halberd": {
+   "name": "節目破りの斧槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "halberd",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "td_dow_crown": {
+   "name": "賢人の波形冠",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "crown",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "td_ema_staff": {
+   "name": "三本線の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "td_rci_hat": {
+   "name": "過熱を読む魔女帽",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "witch",
+   "material": "head_hat",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "td_divergence_lens": {
+   "name": "乖離のレンズ",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "glasses",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "td_stoploss_pledge": {
+   "name": "損切りの誓約書",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "scroll",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "td_risk_robe": {
+   "name": "資金管理の法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "td_zeno_blade": {
+   "name": "相場師ゼノの剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "td_margin_charm": {
+   "name": "証拠金の守り札",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "amulet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "b19_golden_kine": {
+   "name": "黄金の餅つき杵",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "kine",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "b19_silent_bell": {
+   "name": "静寂の鈴",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "bell",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "b19_present_jewel_blade": {
+   "name": "今を見る宝刃",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "b19_dark_matter_veil": {
+   "name": "暗黒物質の衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "b19_two_faced_dagger": {
+   "name": "表裏の短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "b19_bronze_desire_mail": {
+   "name": "青銅の欲望鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "b19_hold_fast_lance": {
+   "name": "踏みとどまる皇子の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "b19_ember_tablet_staff": {
+   "name": "残り火の石板杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "tablet",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "b19_unsmiling_aegis": {
+   "name": "笑わぬ大盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "tower",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "b19_check_piece": {
+   "name": "王手の駒",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "piece",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "b19_porcelain_robe": {
+   "name": "白磁の羽衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "veil",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "b19_rate_gauge_helm": {
+   "name": "金利計の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "b19_seal_justice_sword": {
+   "name": "電子封印の正義剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "b19_amber_memory_bow": {
+   "name": "琥珀の追憶弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "longbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "b19_bare_face_cloak": {
+   "name": "素顔の外套",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloak",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "b19_sober_claw": {
+   "name": "酔わずの鉤爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "b19_expected_value_axe": {
+   "name": "期待値の斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "axe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "b19_balance_star": {
+   "name": "星の天秤章",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "brooch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "b19_crossroads_blade": {
+   "name": "分かれ道の魔剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "forked",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "b19_all_seal": {
+   "name": "十九の契約印",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "brooch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "t68_islands_sword": {
+   "name": "潮騒の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_islands_spear": {
+   "name": "潮騒の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_islands_bow": {
+   "name": "潮騒の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_islands_dagger": {
+   "name": "潮騒の短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_islands_staff": {
+   "name": "潮騒の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_islands_club": {
+   "name": "潮騒の槌",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "hammer",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_islands_heavy": {
+   "name": "潮騒の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_islands_light": {
+   "name": "潮騒の軽鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_islands_robe": {
+   "name": "潮騒の法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_islands_shield": {
+   "name": "潮騒の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_islands_helm": {
+   "name": "潮騒の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_islands_hat": {
+   "name": "潮騒の帽子",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "cap",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_tempus_sword": {
+   "name": "刻針の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_tempus_spear": {
+   "name": "刻針の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_tempus_bow": {
+   "name": "刻針の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_tempus_dagger": {
+   "name": "刻針の短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_tempus_staff": {
+   "name": "刻針の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_tempus_claw": {
+   "name": "刻針の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_tempus_heavy": {
+   "name": "刻針の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_tempus_light": {
+   "name": "刻針の軽鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_tempus_shield": {
+   "name": "刻針の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_tempus_hat": {
+   "name": "刻針の帽子",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "cap",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_desert_sword": {
+   "name": "熱砂の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_desert_spear": {
+   "name": "熱砂の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_desert_bow": {
+   "name": "熱砂の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_desert_staff": {
+   "name": "熱砂の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_desert_club": {
+   "name": "熱砂の槌",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "hammer",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_desert_heavy": {
+   "name": "熱砂の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_desert_light": {
+   "name": "熱砂の軽鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_desert_robe": {
+   "name": "熱砂の法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_desert_shield": {
+   "name": "熱砂の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_desert_helm": {
+   "name": "熱砂の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_desert_hat": {
+   "name": "熱砂の帽子",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "cap",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_machine_sword": {
+   "name": "機鋼の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_machine_spear": {
+   "name": "機鋼の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_machine_bow": {
+   "name": "機鋼の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "mechbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_machine_dagger": {
+   "name": "機鋼の短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_machine_staff": {
+   "name": "機鋼の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_machine_heavy": {
+   "name": "機鋼の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_machine_light": {
+   "name": "機鋼の軽鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_machine_robe": {
+   "name": "機鋼の法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_machine_shield": {
+   "name": "機鋼の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_machine_helm": {
+   "name": "機鋼の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_machine_hat": {
+   "name": "機鋼の帽子",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "cap",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_snow_spear": {
+   "name": "凍星の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_snow_bow": {
+   "name": "凍星の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_snow_staff": {
+   "name": "凍星の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_snow_claw": {
+   "name": "凍星の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_snow_heavy": {
+   "name": "凍星の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_snow_light": {
+   "name": "凍星の軽鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_snow_robe": {
+   "name": "凍星の法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_snow_shield": {
+   "name": "凍星の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_snow_helm": {
+   "name": "凍星の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dragon_sword": {
+   "name": "竜牙の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dragon_staff": {
+   "name": "竜牙の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dragon_club": {
+   "name": "竜牙の槌",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "hammer",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_dragon_claw": {
+   "name": "竜牙の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_dragon_heavy": {
+   "name": "竜牙の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dragon_robe": {
+   "name": "竜牙の法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dragon_shield": {
+   "name": "竜牙の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dragon_helm": {
+   "name": "竜牙の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "dragon",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dragon_hat": {
+   "name": "竜牙の帽子",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "cap",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_dark_sword": {
+   "name": "暁光の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dark_spear": {
+   "name": "暁光の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dark_axe": {
+   "name": "暁光の戦斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "battleaxe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_dark_bow": {
+   "name": "暁光の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_dark_dagger": {
+   "name": "暁光の短剣",
+   "slot": "weapon",
+   "shape": "dagger",
+   "sub": "dagger",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_dark_staff": {
+   "name": "暁光の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dark_club": {
+   "name": "暁光の槌",
+   "slot": "weapon",
+   "shape": "club",
+   "sub": "hammer",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_dark_claw": {
+   "name": "暁光の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "t68_dark_heavy": {
+   "name": "暁光の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dark_light": {
+   "name": "暁光の軽鎧",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "leather",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dark_robe": {
+   "name": "暁光の法衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dark_shield": {
+   "name": "暁光の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dark_helm": {
+   "name": "暁光の兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "t68_dark_hat": {
+   "name": "暁光の帽子",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "cap",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "explorer_ring": {
+   "name": "探索者の指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "ancient_shield": {
+   "name": "古代文明の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "round",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "starseer_staff": {
+   "name": "星読みの杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "spacetime_armor": {
+   "name": "時空の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "archeion_blade": {
+   "name": "伝説剣アルケイオン",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "neon_umbrella": {
+   "name": "錆雨の傘槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "umbrella",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "neon_raincoat": {
+   "name": "ネオンの合羽",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloak",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "clean_filter": {
+   "name": "浄水のフィルター",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "filter",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "guide_flag_spear": {
+   "name": "誘導の旗槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "banner",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "ashshore_coat": {
+   "name": "灰岸のコート",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "coat",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "conductor_watch": {
+   "name": "車掌の懐中時計",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "watch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "tidegate_staff": {
+   "name": "潮門の鍵杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "key",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "coral_mail": {
+   "name": "珊瑚の鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "surf_earring": {
+   "name": "潮騒の耳飾り",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "earring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "orbit_bow": {
+   "name": "周回軌道の弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "orbit_shield": {
+   "name": "軌道の盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "star_ring": {
+   "name": "星環の指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "azure_sword": {
+   "name": "蒼天の剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "aeria_robe": {
+   "name": "浮天の羽衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "veil",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "reactor_shard": {
+   "name": "浮力炉の欠片",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "shard",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "earth_globe": {
+   "name": "地球儀のブローチ",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "brooch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bu_trend_compass": {
+   "name": "迷い晴らしの羅針盤",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "compass",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bu_greed_crystal_mail": {
+   "name": "黄金結晶の戒め鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_garon_axe": {
+   "name": "ガロンの戦利斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "battleaxe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bu_urga_spear": {
+   "name": "潮牙槍ウルガ",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_zarg_chainbreaker": {
+   "name": "解放の断鎖斧",
+   "slot": "weapon",
+   "shape": "axe",
+   "sub": "battleaxe",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bu_ledger_shield": {
+   "name": "黒帳の監査盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "heater",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_valen_oathblade": {
+   "name": "ヴァレンの誓約剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "greatsword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_dorek_bastion": {
+   "name": "ドレクの王宮大盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "tower",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_ledger_core_ring": {
+   "name": "中枢照合の指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bu_742_memory_cloak": {
+   "name": "七時四十二分の外套",
+   "slot": "armor",
+   "shape": "light",
+   "sub": "cloak",
+   "material": "armor_light",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_library_archive_staff": {
+   "name": "万巻記録の書杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "book",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_zaid_sand_bow": {
+   "name": "砂嵐を裂く弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "bow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bu_time_guardian_watch": {
+   "name": "時守りの懐中時計",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "watch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bu_frost_spirit_robe": {
+   "name": "名を取り戻す氷霊衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_memory_keeper_helm": {
+   "name": "追憶封じの冠",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "crown",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bu_drone_link_bow": {
+   "name": "群眼の追尾弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "mechbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bu_core_barrier_mail": {
+   "name": "中枢防衛装甲",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_volk_forbidden_staff": {
+   "name": "禁書大臣の魔導杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "book",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_magma_warden_mail": {
+   "name": "溶岩番竜の重鱗鎧",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "scale",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_sky_guardian_spear": {
+   "name": "天穹審判の槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "spear",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_zarg_remnant_claw": {
+   "name": "残鎖を断つ手甲",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "gauntlet",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bu_sevran_blank_robe": {
+   "name": "白紙の宰相衣",
+   "slot": "armor",
+   "shape": "robe",
+   "sub": "robe",
+   "material": "armor_robe",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_fear_break_shield": {
+   "name": "恐怖を越える大盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "tower",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_greed_limit_gauntlet": {
+   "name": "欲望を律する爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "gauntlet",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bu_open_future_blade": {
+   "name": "未来を選ぶ聖剣",
+   "slot": "weapon",
+   "shape": "sword",
+   "sub": "sword",
+   "material": "weapon_sword",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_wolf_king_claw": {
+   "name": "白銀狼王の爪",
+   "slot": "weapon",
+   "shape": "claw",
+   "sub": "claw",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bu_crystal_resonance_staff": {
+   "name": "結晶共鳴の杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "crystal",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_gull_admiral_hat": {
+   "name": "海賊カモメの提督帽",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "bicorne",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bu_observer_lens": {
+   "name": "観測者のレンズ",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "glasses",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bu_soul_warden_lamp": {
+   "name": "魂守りの灯",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "lantern",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bu_zero_echo_staff": {
+   "name": "零点共鳴杖",
+   "slot": "weapon",
+   "shape": "staff",
+   "sub": "staff",
+   "material": "weapon_staff",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_tides_coral_trident": {
+   "name": "大潮王の珊瑚三叉槍",
+   "slot": "weapon",
+   "shape": "spear",
+   "sub": "trident",
+   "material": "weapon_spear",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_signal_shield": {
+   "name": "閉塞解除の信号盾",
+   "slot": "shield",
+   "shape": "shield",
+   "sub": "round",
+   "material": "shield",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_archive_backup_mail": {
+   "name": "アーカイブ復旧装甲",
+   "slot": "armor",
+   "shape": "heavy",
+   "sub": "plate",
+   "material": "armor_heavy",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_orbis_orbit_bow": {
+   "name": "周回軌道の監視弓",
+   "slot": "weapon",
+   "shape": "bow",
+   "sub": "mechbow",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  },
+  "bu_anchor_gravity_helm": {
+   "name": "重力錨の蒼穹兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_mine_captain_helm": {
+   "name": "看守長の断鎖兜",
+   "slot": "head",
+   "shape": "helm",
+   "sub": "helm",
+   "material": "head_helm",
+   "views": {
+    "hero/job:warrior": true,
+    "hero/back": true
+   }
+  },
+  "bu_hald_audit_badge": {
+   "name": "徴税隊長の監査徽章",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "brooch",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bu_entangled_ring": {
+   "name": "もつれ相関の指輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "ring",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bu_desire_seal_bracer": {
+   "name": "欲望封じの腕輪",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "bracelet",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bu_fear_seal_lantern": {
+   "name": "恐怖を照らすランタン",
+   "slot": "acc",
+   "shape": "acc",
+   "sub": "lantern",
+   "material": "（描かない：装飾品）",
+   "views": {}
+  },
+  "bu_control_seal_circlet": {
+   "name": "支配断ちの額環",
+   "slot": "head",
+   "shape": "hat",
+   "sub": "circlet",
+   "material": null,
+   "views": {
+    "hero/job:warrior": false,
+    "hero/back": false
+   }
+  }
+ },
+ "materials": {
+  "armor_light": {
+   "z": 10,
+   "layers": [
+    {
+     "part": "armor_light_t",
+     "tint": "main"
+    }
+   ]
+  },
+  "armor_heavy": {
+   "z": 10,
+   "layers": [
+    {
+     "part": "armor_heavy_t",
+     "tint": "main",
+     "grayKeep": true
+    }
+   ]
+  },
+  "armor_robe": {
+   "z": 10,
+   "layers": [
+    {
+     "part": "armor_robe_t",
+     "tint": "main"
+    },
+    {
+     "part": "armor_robe_f"
+    }
+   ]
+  },
+  "head_helm": {
+   "z": 20,
+   "base": "base_helm",
+   "layers": [
+    {
+     "part": "head_helm_t",
+     "tint": "main",
+     "grayRef": "plate"
+    },
+    {
+     "part": "head_helm_f"
+    }
+   ]
+  },
+  "head_hat": {
+   "z": 20,
+   "base": "base_hat",
+   "layers": [
+    {
+     "part": "head_hat_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_hat_f"
+    }
+   ]
+  },
+  "shield": {
+   "z": 30,
+   "layers": [
+    {
+     "part": "shield"
+    }
+   ]
+  },
+  "weapon_sword": {
+   "z": 40,
+   "layers": [
+    {
+     "part": "weapon_sword"
+    }
+   ]
+  },
+  "weapon_staff": {
+   "z": 40,
+   "hand": true,
+   "layers": [
+    {
+     "part": "weapon_staff_t",
+     "tint": "orb"
+    },
+    {
+     "part": "weapon_staff_f"
+    }
+   ]
+  },
+  "weapon_spear": {
+   "z": 40,
+   "hand": true,
+   "layers": [
+    {
+     "part": "weapon_spear"
+    }
+   ]
+  }
+ },
+ "classes": {
+  "armor": {
+   "light": "armor_light",
+   "heavy": "armor_heavy",
+   "robe": "armor_robe"
+  },
+  "head": {
+   "helm": "head_helm",
+   "hat:witch": "head_hat"
+  },
+  "weapon": {
+   "sword": "weapon_sword",
+   "staff": "weapon_staff",
+   "spear": "weapon_spear"
+  },
+  "shield": {
+   "shield": "shield"
+  }
+ }
+}

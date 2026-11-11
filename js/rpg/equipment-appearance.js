@@ -1,5 +1,7 @@
 /* =========================================================
-   EquipmentAppearance（v9.6）：装備でキャラの外見が変わる（見た目だけ。能力・装備できるか・所持数・ボス装備の効果・セーブは既存の処理のまま）
+   EquipmentAppearance（v9.6 → v9.7）：装備でキャラの外見が変わる
+   ・v9.7：ドット絵の差分に切り替え（下の「v9.7 ドット絵の差分」）。部品のある人物・向き（試作は主人公のメニューの戦士の立ち絵と戦闘の背面）だけ着替え、
+     ほかは本人の従来の絵。v9.6 の描き足し（以下の説明）は setMode('vector') でだけ使う（開発の見比べ用）（見た目だけ。能力・装備できるか・所持数・ボス装備の効果・セーブは既存の処理のまま）
    ・素材キット（TradeQuest_Equipment_Appearance・参照 8c5bd23）の js/equipment-appearance.js を元にした共通部品。同じ名前の関数（slots・resolve・signature・paint・compose）を残し、足したもの：
        形の細かい違い（剣・大剣・曲刀、槍・斧槍・三叉、重鎧・鎖・鱗、ローブ・羽衣、兜・冠、帽子・魔女帽…）と、向き（正面・背面・左右）ごとの描き分け
        配色は装備の絵（assets/item-icons）の色から（js/data/equip-appearance-data.js。tools/appear/make_appearance_data.py が作る）。表にない品は type の形と ID から決めた色
@@ -469,9 +471,9 @@
   }
   function anchorsOf(actorId, viewKey) { var T = root.EQUIP_ANCHORS; var a = T && T.actors && own(T.actors, actorId) ? T.actors[actorId] : null; if (!a) return null; var v = own(a.views, viewKey) ? a.views[viewKey] : null; if (!v) return null; return { actor: a, view: v }; }
   // メニューで使う向き：主人公は職業の立ち絵（その職業の素体があれば）、仲間は正面
-  function menuView(actor) { if (!actor) return null; if (actor.id === 'hero' && actor.job && anchorsOf('hero', 'job:' + actor.job)) return 'job:' + actor.job; return 'front'; }
+  function menuView(actor) { if (!actor) return null; if (MODE === 'pixel') return actor.id === 'hero' && actor.job ? 'job:' + actor.job : 'front'; if (actor.id === 'hero' && actor.job && anchorsOf('hero', 'job:' + actor.job)) return 'job:' + actor.job; return 'front'; }
   function note(actorId, viewKey, why) { var k = actorId + '/' + viewKey; if (!unsupported[k]) { unsupported[k] = why; try { console.info('[装備の外見] 本人の元の絵で表示：' + k + '（' + why + '）'); } catch (e) { } } }
-  function supports(actor, viewKey) { return !!(actor && anchorsOf(actor.id, viewKey)); }
+  function supports(actor, viewKey) { if (!actor) return false; return MODE === 'pixel' ? !!pixelView(actor.id, viewKey) : !!anchorsOf(actor.id, viewKey); }
   // 位置の表を p ドットずらす（まわりに余白を足した画像に合わせる）
   var POS = { x: 1, y: 1, cx: 1, top: 1, brow: 1, chin: 1, sy: 1, wy: 1, hem: 1 };
   function shiftAnchors(o, p, inAcc) {
@@ -486,7 +488,7 @@
   // 同期で調べる（戦闘の毎フレームの確認用）：{ state: 'none'|'loading'|'ok'|'error', canvas, sig, pad }。読み込みが要るなら始める。作るのは組み合わせが変わったときだけ
   // 失敗しても投げない（3D の戦闘・メニューを止めない）。読めない・作れないときは state: 'error'（呼び出し側は本人の元の絵）
   function request(actor, viewKey, opts) {
-    try { return request0(actor, viewKey, opts); }
+    try { return MODE === 'pixel' ? pixelRequest(actor, viewKey, opts || {}) : request0(actor, viewKey, opts); }
     catch (e) { stats.failed++; if (actor) note(actor.id, viewKey, '合成の失敗：' + String((e && e.message) || e).slice(0, 80)); return { state: 'error' }; }
   }
   function request0(actor, viewKey, opts) {
@@ -506,6 +508,116 @@
     var body = opaqueBox(pb);   // 装備のない素体の範囲（メニューで人物の大きさをそろえるため）
     stats.composed++; CACHE.set(sig, { canvas: canvas, body: body }); while (CACHE.size > CACHE_MAX) CACHE.delete(CACHE.keys().next().value);
     return { state: 'ok', canvas: canvas, sig: sig, layers: layers, view: r.view, pad: PAD, body: body };
+  }
+
+  /* ---------- v9.7 ドット絵の差分（試作は主人公の「メニューの戦士の立ち絵」と「戦闘の背面」）----------
+     人物・向きごとに、元の絵から作った部品（js/data/equip-pixels.js・assets/characters/equip-pixels/）を重ねる
+       素の絵（剣・盾を外して手と体を描き直したもの。兜・帽子のときは、はみ出す髪を消したもの）→ 胴 → 頭 → 盾 → 武器 →（長柄なら）握る手
+       色を変える部分は灰色の層：品の色（装備の絵の色。EQUIP_APPEARANCE_DATA）から作った 5 段の色で塗る。灰色の品（鉄・鋼）は元の鎧の板金の色
+     部品のない人物・向き・装備の形（斧・弓・短剣・小さな帽子など）は、本人の従来の絵（武器・盾を持った元の絵）で表示し、理由を unsupported に記録
+     装飾品は描かない（試作の対象外。記録だけ）
+     画像の大きさ・足もとの基準点は元の絵と同じ。まわりに余白（pad）を足して、長い槍・杖・帽子の先が切れないようにする（人物の大きさ・立ち位置は変えない） */
+  var MODE = 'pixel';   // 'pixel'（v9.7）／'vector'（v9.6 の描き足し。開発の見比べ用：setMode('vector')）
+  function PX() { return root.EQUIP_PIXELS || null; }
+  function pixelView(actorId, viewKey) { var M = PX(); var a = M && M.actors && own(M.actors, actorId) ? M.actors[actorId] : null; return a && a.views && own(a.views, viewKey) ? a.views[viewKey] : null; }
+  // 装備（resolve の 1 枠）→ 部品の種類（armor_light・head_helm・weapon_staff…）。表にない形は null
+  function pixelClass(layer) {
+    var M = PX(); if (!M || !layer) return null; var c = M.classes && M.classes[layer.slot]; if (!c) return null;
+    if (layer.slot === 'head' && layer.shape === 'hat') return own(c, 'hat:' + layer.sub) ? c['hat:' + layer.sub] : null;
+    return own(c, layer.shape) ? c[layer.shape] : null;
+  }
+  function materialFor(view, cls) {
+    var M = PX(); var m = cls && M.materials && own(M.materials, cls) ? M.materials[cls] : null; if (!m) return null;
+    var ok = m.layers.every(function (L) { return own(view.parts, L.part); }) && (!m.base || own(view.parts, m.base)) && (!m.hand || own(view.parts, 'hand'));
+    return ok ? m : null;
+  }
+  var PIX_SLOTS = ['armor', 'head', 'shield', 'weapon', 'acc'];
+  // 装備 → 重ね方 { ok, base, mats[{cls, m, layer}], skipped[] } ／ { ok: false, why }
+  function pixelPlan(actor, viewKey, layers) {
+    var view = pixelView(actor && actor.id, viewKey); if (!view) return { ok: false, why: '部品がない人物・向き' };
+    layers = layers || resolve(actor); var eq = (actor && actor.equip) || {}; var mats = [], skipped = [], base = 'base_plain';
+    for (var i = 0; i < PIX_SLOTS.length; i++) {
+      var slot = PIX_SLOTS[i]; var id = eq[slot]; if (!id) continue;
+      var L = layers.filter(function (l) { return l.slot === slot; })[0];
+      if (slot === 'acc') { skipped.push('acc:' + id); continue; }
+      if (!L) return { ok: false, why: slot + '：' + id + '（形が分からない品）' };
+      var cls = pixelClass(L); var m = materialFor(view, cls);
+      if (!m) return { ok: false, why: slot + '：' + id + '（' + (cls || (L.shape + (L.sub && L.sub !== L.shape ? '/' + L.sub : ''))) + ' の部品がない）' };
+      if (m.base) base = m.base;
+      mats.push({ cls: cls, m: m, layer: L });
+    }
+    mats.sort(function (a, b) { return (a.m.z || 0) - (b.m.z || 0); });
+    return { ok: true, view: view, base: base, mats: mats, skipped: skipped };
+  }
+  // 品の色 → 5 段の色（暗い→明るい）。tools/appear/pixel/preview.py の ramp_for と同じ
+  function mixc(a, b, t) { var A = hex(a), B = hex(b); return rgb([0, 1, 2].map(function (i) { return A[i] + (B[i] - A[i]) * t; })); }
+  function hueOf(c) { var a = hex(c).map(function (v) { return v / 255; }); var mx = Math.max.apply(null, a), mn = Math.min.apply(null, a), d = mx - mn; if (d < 1e-6) return 0; var h = mx === a[0] ? ((a[1] - a[2]) / d) % 6 : mx === a[1] ? (a[2] - a[0]) / d + 2 : (a[0] - a[1]) / d + 4; h *= 60; return h < 0 ? h + 360 : h; }
+  function hueDist(a, b) { var d = Math.abs(hueOf(a) - hueOf(b)) % 360; return Math.min(d, 360 - d); }
+  function grayish(c) { return sat(c) < 0.22; }
+  function rampFor(pal) {
+    var main = pal.main; var light = null; var cands = [pal.light, pal.trim, pal.acc];
+    for (var i = 0; i < cands.length; i++) { var c = cands[i]; if (c && lum(c) > lum(main) + 25 && (hueDist(c, main) < 40 || (grayish(main) && grayish(c)))) { light = c; break; } }
+    if (!light) light = mixc(main, '#ffffff', 0.45);
+    var dark = lum(pal.dark) < lum(main) - 18 ? pal.dark : mixc(main, '#000000', 0.5);
+    return [mixc(dark, '#000000', 0.35), dark, main, mixc(main, light, 0.55), light];
+  }
+  function orbRamp(pal) { var a = grayish(pal.acc) ? pal.main : pal.acc; return [mixc(a, '#000000', 0.6), mixc(a, '#000000', 0.25), a, mixc(a, '#ffffff', 0.45), '#ffffff']; }
+  function rampLut(ramp) {
+    var cs = ramp.map(hex); var n = cs.length; var lut = new Uint8ClampedArray(256 * 3);
+    for (var v = 0; v < 256; v++) { var p = v / 255 * (n - 1); var i = Math.min(n - 2, Math.max(0, Math.floor(p))); var t = p - i; for (var k = 0; k < 3; k++) lut[v * 3 + k] = Math.round(cs[i][k] + (cs[i + 1][k] - cs[i][k]) * t); }
+    return lut;
+  }
+  var TINTS = new Map();
+  function tinted(e, url, ramp) {
+    var key = url + '|' + ramp.join(','); var t = TINTS.get(key); if (t) return t;
+    var im = e.img, W = im.naturalWidth || im.width, H = im.naturalHeight || im.height; var c = mk(W, H); var g = c.getContext('2d', { willReadFrequently: true });
+    g.drawImage(im, 0, 0); var d = g.getImageData(0, 0, W, H); var a = d.data; var lut = rampLut(ramp);
+    for (var i = 0; i < a.length; i += 4) { if (!a[i + 3]) continue; var v = a[i]; a[i] = lut[v * 3]; a[i + 1] = lut[v * 3 + 1]; a[i + 2] = lut[v * 3 + 2]; }
+    g.putImageData(d, 0, 0); TINTS.set(key, c); while (TINTS.size > 80) TINTS.delete(TINTS.keys().next().value);
+    return c;
+  }
+  function pixelRequest(actor, viewKey, opts) {
+    var eqActor = opts.equip ? { id: actor.id, job: actor.job, equip: opts.equip } : actor;
+    var layers = resolve(eqActor); var plan = pixelPlan(eqActor, viewKey, layers);
+    if (!plan.ok) { if (actor) note(actor.id, viewKey, plan.why); return { state: 'none', why: plan.why }; }
+    var M = PX(); var view = plan.view; var sig = signature(eqActor, layers, 'px:' + M.version, viewKey);
+    var hit = CACHE.get(sig); if (hit) { stats.cacheHit++; CACHE.delete(sig); CACHE.set(sig, hit); return { state: 'ok', canvas: hit.canvas, sig: sig, layers: layers, view: view, pad: M.pad, body: hit.body, mode: 'pixel', parts: hit.parts }; }
+    var need = [plan.base]; plan.mats.forEach(function (mt) { mt.m.layers.forEach(function (L) { need.push(L.part); }); if (mt.m.hand) need.push('hand'); });
+    var ents = {}; need.forEach(function (k) { ents[k] = loadImg(view.parts[k].url); });
+    var all = Object.keys(ents).map(function (k) { return ents[k]; });
+    var bad = Object.keys(ents).filter(function (k) { return ents[k].state === 'error'; });
+    if (bad.length) { stats.failed++; note(actor.id, viewKey, '部品を使えない：' + bad[0] + '（' + (ents[bad[0]].why || '読み込みの失敗') + '）'); return { state: 'error', sig: sig }; }
+    if (all.some(function (e) { return e.state !== 'ok'; })) return { state: 'loading', sig: sig, promise: Promise.all(all.map(function (e) { return e.promise; })) };
+    var P = M.pad; var canvas = mk(view.w + 2 * P, view.h + 2 * P); var g = canvas.getContext('2d'); g.imageSmoothingEnabled = false;
+    var used = [];
+    var put = function (k, img) { var r = view.parts[k]; g.drawImage(img, P + r.x, P + r.y); used.push(k); };
+    put(plan.base, ents[plan.base].img);
+    plan.mats.forEach(function (mt) {
+      mt.m.layers.forEach(function (L) {
+        var e = ents[L.part]; var url = view.parts[L.part].url;
+        if (!L.tint) { put(L.part, e.img); return; }
+        var pal = mt.layer.pal; var ramp;
+        if (L.tint === 'orb') ramp = orbRamp(pal);
+        else if (grayish(pal.main)) { if (L.grayKeep) return; ramp = L.grayRef && M.ref && M.ref[L.grayRef] ? M.ref[L.grayRef] : rampFor(pal); }   // 灰色の品：重鎧は元の板金のまま・兜は元の鎧の色
+        else ramp = rampFor(pal);
+        put(L.part, tinted(e, url, ramp));
+      });
+      if (mt.m.hand) put('hand', ents.hand.img);
+    });
+    var b = view.body; var body = { x0: b.x0 + P, y0: b.y0 + P, x1: b.x1 + P, y1: b.y1 + P };
+    stats.composed++; CACHE.set(sig, { canvas: canvas, body: body, parts: used }); while (CACHE.size > CACHE_MAX) CACHE.delete(CACHE.keys().next().value);
+    return { state: 'ok', canvas: canvas, sig: sig, layers: layers, view: view, pad: P, body: body, mode: 'pixel', parts: used };
+  }
+  // メニューに置く切り出し：元の絵（w × h）の範囲を必ず含み、左右は元の絵の中心でそろえる。下は元の絵の下辺
+  //   → 元の絵と同じ大きさ・同じ位置に人物が立つ（はみ出す槍・杖・帽子の先だけ、まわりへ出る）
+  function menuCrop(c, view, pad) {
+    var g = c.getContext('2d', { willReadFrequently: true }); var d = g.getImageData(0, 0, c.width, c.height).data; var x0 = c.width, y0 = c.height, x1 = -1;
+    for (var y = 0; y < c.height; y++) for (var x = 0; x < c.width; x++) if (d[(y * c.width + x) * 4 + 3] > 16) { if (x < x0) x0 = x; if (y < y0) y0 = y; if (x > x1) x1 = x; }
+    var cx = pad + view.w / 2; var half = Math.ceil(Math.max(view.w / 2, x1 < 0 ? 0 : cx - x0 + 1, x1 < 0 ? 0 : x1 + 1 - cx));
+    var top = Math.min(pad, y0); var bottom = pad + view.h;
+    var L = Math.max(0, Math.floor(cx - half)); var R = Math.min(c.width, Math.ceil(cx + half)); var o = mk(R - L, bottom - top);
+    var og = o.getContext('2d'); og.imageSmoothingEnabled = false; og.drawImage(c, -L, -top);
+    return { canvas: o, k: (bottom - top) / view.h, kw: (R - L) / view.w };
   }
   function opaqueBox(c) { var g = c.getContext('2d', { willReadFrequently: true }); var d = g.getImageData(0, 0, c.width, c.height).data; var x0 = c.width, y0 = c.height, x1 = -1, y1 = -1; for (var y = 0; y < c.height; y++) for (var x = 0; x < c.width; x++) if (d[(y * c.width + x) * 4 + 3] > 16) { if (x < x0) x0 = x; if (y < y0) y0 = y; if (x > x1) x1 = x; if (y > y1) y1 = y; } return x1 < 0 ? null : { x0: x0, y0: y0, x1: x1 + 1, y1: y1 + 1 }; }
   // Promise で受け取る（メニュー用）
@@ -540,12 +652,14 @@
       composeFor(actor, vk, opts).then(function (r) {
         if (!host.isConnected || host.getAttribute('data-ea-key') !== key) return;   // 古い読み込みの結果は入れない
         if (r.state !== 'ok') { host.setAttribute('data-ea-state', r.state); return; }
-        var src = cropOpaque(r.canvas, 2); var old = host.querySelector('.ea-img') || host.querySelector('img') || host.querySelector('canvas');
+        var mc = r.mode === 'pixel' && r.view ? menuCrop(r.canvas, r.view, r.pad) : null;   // v9.7 元の絵と同じ範囲・中心で切り出す（人物の大きさ・立ち位置をそろえる）
+        var src = mc ? mc.canvas : cropOpaque(r.canvas, 2); var old = host.querySelector('.ea-img') || host.querySelector('img') || host.querySelector('canvas');
         var cv = mk(src.width, src.height); var g = cv.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(src, 0, 0);
         cv.className = ((old && old.className) || '').replace(/\bea-img\b|\bea-canvas\b/g, '').trim() + ' ea-img ea-canvas'; cv.setAttribute('aria-hidden', 'true');
         var hpx = host.getAttribute('data-ea-h'); if (old && old.style && old.style.height) cv.style.height = old.style.height; else if (hpx) cv.style.height = hpx + 'px';
         // data-ea-fit="body"：人物（装備のない素体）の高さを今までの絵と同じにする（長い武器の先は枠の上へはみ出す）
-        if (host.getAttribute('data-ea-fit') === 'body' && r.body) { var bh = Math.max(1, r.body.y1 - r.body.y0); cv.style.setProperty('--ea-k', (src.height / bh).toFixed(4)); host.classList.add('ea-fit-body'); }
+        if (host.getAttribute('data-ea-fit') === 'body' && (mc || r.body)) { var bh = r.body ? Math.max(1, r.body.y1 - r.body.y0) : 1; cv.style.setProperty('--ea-k', (mc ? mc.k : src.height / bh).toFixed(4)); host.classList.add('ea-fit-body'); }
+        cv.setAttribute('data-ea-mode', r.mode || 'vector'); if (r.parts) cv.setAttribute('data-ea-parts', r.parts.join(' '));
         cv.setAttribute('data-ea-sig', r.sig);
         if (old) old.replaceWith(cv); else { host.innerHTML = ''; host.appendChild(cv); }
         host.setAttribute('data-ea-state', 'ok');
@@ -567,8 +681,12 @@
 
   var API = { slots: Object.freeze(slots.slice()), paths: paths, resolve: resolve, signature: signature, paint: paint, compose: compose,
     request: request, composeFor: composeFor, cropOpaque: cropOpaque, menuView: menuView, supports: supports, anchorsOf: anchorsOf, hydrate: hydrate, hostHtml: hostHtml, watch: watch,
-    accPlace: accPlace, unsupported: function () { return Object.assign({}, unsupported); }, stats: function () { return Object.assign({ cached: CACHE.size }, stats); },
-    clearCache: function () { CACHE.clear(); MASKS.clear(); } };
+    accPlace: accPlace, unsupported: function () { return Object.assign({}, unsupported); }, stats: function () { return Object.assign({ cached: CACHE.size, mode: MODE }, stats); },
+    clearCache: function () { CACHE.clear(); MASKS.clear(); TINTS.clear(); },
+    // v9.7 ドット絵の差分
+    mode: function () { return MODE; }, setMode: function (m) { if (m === 'pixel' || m === 'vector') { MODE = m; CACHE.clear(); Object.keys(unsupported).forEach(function (k) { delete unsupported[k]; }); } return MODE; },
+    pixelClass: pixelClass, pixelPlan: function (actor, viewKey) { var p = pixelPlan(actor, viewKey); return p.ok ? { ok: true, base: p.base, mats: p.mats.map(function (m) { return m.cls; }), skipped: p.skipped } : p; },
+    pixelView: pixelView, rampFor: rampFor, orbRamp: orbRamp, menuCrop: menuCrop };
   root.EquipmentAppearance = Object.freeze(API);
   watch();
 })(typeof window === 'undefined' ? globalThis : window);

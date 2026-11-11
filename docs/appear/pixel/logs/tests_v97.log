@@ -1,0 +1,48 @@
+v9.7 の確かめ 2026-11-11 18:03 版 8c8ae3ebe3
+=== appear/appear_pixel_test.js（jsdom・3D と同じ読み込み）
+結果：OK 28 / NG 0
+=== appear/appear_pixel_test.js 2d
+結果：OK 28 / NG 0
+=== appear/appear_test.js（v9.6 の描き足し vector）
+結果：OK 28 / NG 0
+=== appear/appear_test.js 2d（vector）
+結果：OK 28 / NG 0
+=== icons/icons_test.js
+  OK  戦闘の結果：落とした品の行に絵（res.drops のキー＝ID）
+結果：OK 62 / NG 0
+=== menu92/menu92_test.js 2d
+結果：OK 89 / NG 0
+=== ブラウザ pixel 3d（メニュー・戦闘の背面）
+結果 pixel 3d：OK 30 / NG 0
+=== ブラウザ pixel 2d（メニュー）
+結果 pixel 2d：OK 24 / NG 0
+=== ブラウザ 合成の絵の書き出し
+=== ブラウザ 別のサイト pixel 3d cors
+結果 xorigin pixel 3d cors：OK 5 / NG 0
+=== ブラウザ 別のサイト pixel 3d nocors
+結果 xorigin pixel 3d nocors：OK 5 / NG 0
+=== ブラウザ 別のサイト pixel 2d cors
+結果 xorigin pixel 2d cors：OK 4 / NG 0
+=== ブラウザ 別のサイト pixel 2d nocors
+結果 xorigin pixel 2d nocors：OK 4 / NG 0
+=== ブラウザ 別のサイト vector 3d cors
+結果 xorigin vector 3d cors：OK 5 / NG 0
+=== ブラウザ vector 2d pc（v9.6 の確かめ）
+FAIL page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8894/index.html?nosw
+（終了コード 2）
+=== ブラウザ vector 3d pc（v9.6 の確かめ）
+FAIL page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8894/3d/index.html?nosw
+（終了コード 2）
+=== ブラウザ 3Dモデル（?party=model）
+FAIL page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8894/3d/index.html?nosw&party=model&layout=side
+（終了コード 2）
+--- まとめ
+NG・失敗の行：6
+=== 再実行：上の 3 つは、確かめ用のサーバー（8894）が作業環境の時間切れで止まって接続できなかった（ゲームの不具合ではない）。サーバーを立て直して 18:14 に動かし直した
+=== ブラウザ vector 2d pc（v9.6 の確かめ）
+結果 2d pc：OK 16 / NG 0
+=== ブラウザ vector 3d pc（v9.6 の確かめ）
+結果 3d pc：OK 18 / NG 0
+=== ブラウザ 3Dモデル（?party=model）
+結果 model3d：OK
+--- 再実行のまとめ：NG・失敗の行（再実行の分）：0

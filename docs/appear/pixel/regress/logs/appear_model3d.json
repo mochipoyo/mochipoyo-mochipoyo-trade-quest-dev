@@ -1,0 +1,79 @@
+{
+ "ok": true,
+ "info": {
+  "style": "model",
+  "party": [
+   {
+    "id": "hero",
+    "model": "hero",
+    "ready": true,
+    "eaModel": {
+     "parts": [
+      "ea_weapon_spear",
+      "ea_shield_heater",
+      "ea_head_helm",
+      "ea_armor_heavy",
+      "ea_acc_ring"
+     ],
+     "hidden": [
+      "Shield",
+      "Sword"
+     ],
+     "bones": [
+      "hips",
+      "chest",
+      "neck",
+      "head",
+      "forearml",
+      "handl",
+      "handr"
+     ]
+    }
+   },
+   {
+    "id": "lina",
+    "model": "lina",
+    "ready": true,
+    "eaModel": {
+     "parts": [
+      "ea_head_witch",
+      "ea_armor_robe"
+     ],
+     "hidden": [
+      "Staff"
+     ],
+     "bones": [
+      "hips",
+      "chest",
+      "neck",
+      "head",
+      "forearml",
+      "handl",
+      "handr"
+     ]
+    }
+   },
+   {
+    "id": "gald",
+    "model": "gald",
+    "ready": true,
+    "eaModel": {
+     "parts": [],
+     "hidden": [
+      "Sword"
+     ],
+     "bones": [
+      "hips",
+      "chest",
+      "neck",
+      "head",
+      "forearml",
+      "handl",
+      "handr"
+     ]
+    }
+   }
+  ]
+ },
+ "errs": []
+}

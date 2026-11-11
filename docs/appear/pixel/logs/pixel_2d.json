@@ -1,0 +1,433 @@
+{
+ "KIND": "2d",
+ "ok": 24,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "外見の作り方：ドット絵の差分（mode pixel）"
+  },
+  {
+   "ok": true,
+   "m": "メニュー［素（装備なし）］装備 {\"weapon\":null,\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null} → 部品：base_plain"
+  },
+  {
+   "ok": true,
+   "m": "メニュー［軽装＋剣］装備 {\"weapon\":\"steel_sword\",\"armor\":\"leather_armor\",\"shield\":null,\"head\":null,\"acc\":null} → 部品：base_plain armor_light_t weapon_sword"
+  },
+  {
+   "ok": true,
+   "m": "メニュー［重鎧＋兜＋剣と盾］装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null} → 部品：base_helm head_helm_t head_helm_f shield weapon_sword"
+  },
+  {
+   "ok": true,
+   "m": "メニュー［ローブ＋帽子＋杖］装備 {\"weapon\":\"oak_staff\",\"armor\":\"robe\",\"shield\":null,\"head\":\"wizard_hat\",\"acc\":null} → 部品：base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand"
+  },
+  {
+   "ok": true,
+   "m": "メニュー［重鎧＋槍（長さの確かめ）］装備 {\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null} → 部品：base_plain weapon_spear hand"
+  },
+  {
+   "ok": true,
+   "m": "メニュー：足もと（元の絵の下辺）・左右の中心・1 ドットの大きさが、5 つの組み合わせで同じ（335.3/460.4/1.500　335.3/460.4/1.500　335.3/460.4/1.500　335.3/460.4/1.500　335.3/460.4/1.500）"
+  },
+  {
+   "ok": true,
+   "m": "メニュー：人物の大きさは今までの立ち絵と同じ（元の絵 200 ドット → 画面 300px）"
+  },
+  {
+   "ok": true,
+   "m": "job:warrior：5 つの組み合わせとも、合成の絵の大きさは同じ（226×296＝元の絵＋まわり 48）"
+  },
+  {
+   "ok": true,
+   "m": "job:warrior：足もとの行が元の絵と同じ（245）：plain 245・light 245・heavy 245・robe 245・spear 245（槍・杖を持っても変わらない）"
+  },
+  {
+   "ok": true,
+   "m": "job:warrior：剣・盾を持たない組み合わせに、元の剣・盾のドットが残っていない（plain 剣0/盾0・light 剣0/盾0・heavy 剣0/盾0・robe 剣0/盾0・spear 剣0/盾0）"
+  },
+  {
+   "ok": true,
+   "m": "job:warrior：兜の上・外に髪のドットがない（0）"
+  },
+  {
+   "ok": true,
+   "m": "job:warrior：胴の差分（軽装・重鎧）は体の外へ出ない＝肩当ては元の肩の上のまま（外へ出たドット 0・0）"
+  },
+  {
+   "ok": true,
+   "m": "back：5 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+  },
+  {
+   "ok": true,
+   "m": "back：足もとの行が元の絵と同じ（351）：plain 351・light 351・heavy 351・robe 351・spear 351（槍・杖を持っても変わらない）"
+  },
+  {
+   "ok": true,
+   "m": "back：剣・盾を持たない組み合わせに、元の剣・盾のドットが残っていない（plain 剣0/盾0・light 剣0/盾0・heavy 剣0/盾0・robe 剣0/盾0・spear 剣0/盾0）"
+  },
+  {
+   "ok": true,
+   "m": "back：兜の上・外に髪のドットがない（0）"
+  },
+  {
+   "ok": true,
+   "m": "back：胴の差分（軽装・重鎧）は体の外へ出ない＝肩当ては元の肩の上のまま（外へ出たドット 0・0）"
+  },
+  {
+   "ok": true,
+   "m": "部品のない品は、本人の従来の絵（斧：weapon：hand_axe（axe/handaxe の部品がない）／革の帽子：head：leather_cap（hat/cap の部品がない））"
+  },
+  {
+   "ok": true,
+   "m": "装飾品は描かない（試作の対象外。記録：acc:ring_power）。ほかの装備は着替える"
+  },
+  {
+   "ok": true,
+   "m": "部品のない人物・向き（ガルド・主人公の戦闘の正面・魔法使いの立ち絵）は本人の従来の絵"
+  },
+  {
+   "ok": true,
+   "m": "メニュー［斧］：部品がないので従来の立ち絵（http://localhost:8894/assets/characters/jobs/warrior.webp）"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  },
+  {
+   "ok": true,
+   "m": "読み込みの失敗（404 など）なし"
+  }
+ ],
+ "rec": {
+  "menu": {
+   "plain": {
+    "equip": {
+     "weapon": null,
+     "armor": null,
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 34,
+     "maxMp": 10,
+     "atk": 9,
+     "def": 8,
+     "agi": 5,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "st": "ok",
+    "parts": "base_plain",
+    "mode": "pixel",
+    "k": 1,
+    "px": 1.5,
+    "bottom": 335.265625,
+    "cx": 460.390625,
+    "w": 198,
+    "h": 300,
+    "cw": 132,
+    "ch": 200
+   },
+   "light": {
+    "equip": {
+     "weapon": "steel_sword",
+     "armor": "leather_armor",
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 34,
+     "maxMp": 10,
+     "atk": 31,
+     "def": 14,
+     "agi": 5,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "st": "ok",
+    "parts": "base_plain armor_light_t weapon_sword",
+    "mode": "pixel",
+    "k": 1,
+    "px": 1.5,
+    "bottom": 335.265625,
+    "cx": 460.390625,
+    "w": 198,
+    "h": 300,
+    "cw": 132,
+    "ch": 200
+   },
+   "heavy": {
+    "equip": {
+     "weapon": "steel_sword",
+     "armor": "iron_armor",
+     "shield": "iron_shield",
+     "head": "iron_helm",
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 34,
+     "maxMp": 10,
+     "atk": 31,
+     "def": 38,
+     "agi": 3,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "st": "ok",
+    "parts": "base_helm head_helm_t head_helm_f shield weapon_sword",
+    "mode": "pixel",
+    "k": 1,
+    "px": 1.5,
+    "bottom": 335.265625,
+    "cx": 460.390625,
+    "w": 198,
+    "h": 300,
+    "cw": 132,
+    "ch": 200
+   },
+   "robe": {
+    "equip": {
+     "weapon": "oak_staff",
+     "armor": "robe",
+     "shield": null,
+     "head": "wizard_hat",
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 34,
+     "maxMp": 10,
+     "atk": 12,
+     "def": 16,
+     "agi": 5,
+     "mag": 7,
+     "mdef": 2,
+     "immune": [],
+     "element": "none"
+    },
+    "st": "ok",
+    "parts": "base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand",
+    "mode": "pixel",
+    "k": 1.075,
+    "px": 1.5,
+    "bottom": 335.265625,
+    "cx": 460.390625,
+    "w": 198,
+    "h": 322.5,
+    "cw": 132,
+    "ch": 215
+   },
+   "spear": {
+    "equip": {
+     "weapon": "iron_spear",
+     "armor": "iron_armor",
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 34,
+     "maxMp": 10,
+     "atk": 26,
+     "def": 26,
+     "agi": 3,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "st": "ok",
+    "parts": "base_plain weapon_spear hand",
+    "mode": "pixel",
+    "k": 1.12,
+    "px": 1.4999999999999998,
+    "bottom": 335.265625,
+    "cx": 460.390625,
+    "w": 198,
+    "h": 336,
+    "cw": 132,
+    "ch": 224
+   }
+  },
+  "battle": {},
+  "geo": {
+   "job:warrior": {
+    "res": {
+     "plain": {
+      "state": "ok",
+      "w": 226,
+      "h": 296,
+      "feet": 245,
+      "swLeft": 0,
+      "shLeft": 0,
+      "hairOut": 0,
+      "parts": [
+       "base_plain"
+      ]
+     },
+     "light": {
+      "state": "ok",
+      "w": 226,
+      "h": 296,
+      "feet": 245,
+      "swLeft": 0,
+      "shLeft": 0,
+      "hairOut": 0,
+      "parts": [
+       "base_plain",
+       "armor_light_t",
+       "weapon_sword"
+      ]
+     },
+     "heavy": {
+      "state": "ok",
+      "w": 226,
+      "h": 296,
+      "feet": 245,
+      "swLeft": 0,
+      "shLeft": 0,
+      "hairOut": 0,
+      "parts": [
+       "base_helm",
+       "head_helm_t",
+       "head_helm_f",
+       "shield",
+       "weapon_sword"
+      ]
+     },
+     "robe": {
+      "state": "ok",
+      "w": 226,
+      "h": 296,
+      "feet": 245,
+      "swLeft": 0,
+      "shLeft": 0,
+      "hairOut": 0,
+      "parts": [
+       "base_hat",
+       "armor_robe_t",
+       "armor_robe_f",
+       "head_hat_t",
+       "head_hat_f",
+       "weapon_staff_t",
+       "weapon_staff_f",
+       "hand"
+      ]
+     },
+     "spear": {
+      "state": "ok",
+      "w": 226,
+      "h": 296,
+      "feet": 245,
+      "swLeft": 0,
+      "shLeft": 0,
+      "hairOut": 0,
+      "parts": [
+       "base_plain",
+       "weapon_spear",
+       "hand"
+      ]
+     }
+    },
+    "outL": 0,
+    "outH": 0,
+    "ofeet": 245,
+    "W": 226,
+    "H": 296
+   },
+   "back": {
+    "res": {
+     "plain": {
+      "state": "ok",
+      "w": 416,
+      "h": 416,
+      "feet": 351,
+      "swLeft": 0,
+      "shLeft": 0,
+      "hairOut": 0,
+      "parts": [
+       "base_plain"
+      ]
+     },
+     "light": {
+      "state": "ok",
+      "w": 416,
+      "h": 416,
+      "feet": 351,
+      "swLeft": 0,
+      "shLeft": 0,
+      "hairOut": 0,
+      "parts": [
+       "base_plain",
+       "armor_light_t",
+       "weapon_sword"
+      ]
+     },
+     "heavy": {
+      "state": "ok",
+      "w": 416,
+      "h": 416,
+      "feet": 351,
+      "swLeft": 0,
+      "shLeft": 0,
+      "hairOut": 0,
+      "parts": [
+       "base_helm",
+       "head_helm_t",
+       "head_helm_f",
+       "shield",
+       "weapon_sword"
+      ]
+     },
+     "robe": {
+      "state": "ok",
+      "w": 416,
+      "h": 416,
+      "feet": 351,
+      "swLeft": 0,
+      "shLeft": 0,
+      "hairOut": 0,
+      "parts": [
+       "base_hat",
+       "armor_robe_t",
+       "armor_robe_f",
+       "head_hat_t",
+       "head_hat_f",
+       "weapon_staff_t",
+       "weapon_staff_f",
+       "hand"
+      ]
+     },
+     "spear": {
+      "state": "ok",
+      "w": 416,
+      "h": 416,
+      "feet": 351,
+      "swLeft": 0,
+      "shLeft": 0,
+      "hairOut": 0,
+      "parts": [
+       "base_plain",
+       "weapon_spear",
+       "hand"
+      ]
+     }
+    },
+    "outL": 0,
+    "outH": 0,
+    "ofeet": 351,
+    "W": 416,
+    "H": 416
+   }
+  }
+ }
+}
