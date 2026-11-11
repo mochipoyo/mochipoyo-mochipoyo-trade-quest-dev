@@ -1,0 +1,22 @@
+v9.6.1 の直しのあとの確かめ 2026-11-11 16:51 版 5aef1a8702
+=== appear/appear_test.js
+結果：OK 28 / NG 0
+=== appear/appear_test.js 2d
+結果：OK 28 / NG 0
+=== icons/icons_test.js
+  OK  戦闘の結果：落とした品の行に絵（res.drops のキー＝ID）
+結果：OK 62 / NG 0
+=== menu92/menu92_test.js 2d
+結果：OK 89 / NG 0
+=== appear 2d pc
+結果 2d pc：OK 16 / NG 0
+=== appear 2d m360
+結果 2d m360：OK 16 / NG 0
+=== appear 2d land
+結果 2d land：OK 16 / NG 0
+=== appear 3d pc
+結果 3d pc：OK 18 / NG 0
+=== appear 3d m360
+結果 3d m360：OK 18 / NG 0
+=== appear 3d land
+結果 3d land：OK 18 / NG 0

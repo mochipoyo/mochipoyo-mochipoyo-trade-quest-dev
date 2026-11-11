@@ -455,10 +455,16 @@
   var MASKS = new Map();   // viewKey → maskInfo
   var unsupported = {}; var stats = { composed: 0, cacheHit: 0, failed: 0 };
   function base() { var A = root.Assets; return (A && A.base) || ''; }
+  // v9.6.1 素体の画像は CORS（crossOrigin = 'anonymous'）で読む。githack・CDN の転送などで画像が「別のサイト扱い」になると、
+  //   CORS なしで読んだ画像を描いたキャンバスは「汚れ」て、ピクセルの読み取り（getImageData）も WebGL のテクスチャも禁止される（3D の戦闘が表示できなくなった）
+  //   PartyDirections（3D の 4 方向の絵）・readable.js と同じ読み方。読めても汚れているときは使わない（本人の元の絵のまま）
+  function clean(im) { try { var c = mk(1, 1); var g = c.getContext('2d'); g.drawImage(im, 0, 0, 1, 1); g.getImageData(0, 0, 1, 1); return true; } catch (e) { return false; } }
   function loadImg(url) {
     var e = VIEWS[url]; if (e) return e;
     e = VIEWS[url] = { state: 'loading', img: null };
-    e.promise = new Promise(function (ok) { var im = new Image(); im.decoding = 'async'; im.onload = function () { e.state = 'ok'; e.img = im; ok(e); }; im.onerror = function () { e.state = 'error'; ok(e); }; im.src = base() + url; });
+    e.promise = new Promise(function (ok) { var im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
+      im.onload = function () { if (clean(im)) { e.state = 'ok'; e.img = im; } else { e.state = 'error'; e.why = '画像が別のサイト扱いで読み取れない'; } ok(e); };
+      im.onerror = function () { e.state = 'error'; e.why = '読み込みの失敗（404・通信・CORS）'; ok(e); }; im.src = base() + url; });
     return e;
   }
   function anchorsOf(actorId, viewKey) { var T = root.EQUIP_ANCHORS; var a = T && T.actors && own(T.actors, actorId) ? T.actors[actorId] : null; if (!a) return null; var v = own(a.views, viewKey) ? a.views[viewKey] : null; if (!v) return null; return { actor: a, view: v }; }
@@ -478,14 +484,19 @@
   function padded(e, p) { var k = 'pad' + p; if (e[k]) return e[k]; var im = e.img, W = im.naturalWidth || im.width, H = im.naturalHeight || im.height; var c = mk(W + 2 * p, H + 2 * p); var g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(im, p, p); e[k] = c; return c; }
   var PAD = 48;   // 元の絵のまわりに足す余白（ドット）。戦闘では基準点（pivot）を同じだけずらす
   // 同期で調べる（戦闘の毎フレームの確認用）：{ state: 'none'|'loading'|'ok'|'error', canvas, sig, pad }。読み込みが要るなら始める。作るのは組み合わせが変わったときだけ
+  // 失敗しても投げない（3D の戦闘・メニューを止めない）。読めない・作れないときは state: 'error'（呼び出し側は本人の元の絵）
   function request(actor, viewKey, opts) {
+    try { return request0(actor, viewKey, opts); }
+    catch (e) { stats.failed++; if (actor) note(actor.id, viewKey, '合成の失敗：' + String((e && e.message) || e).slice(0, 80)); return { state: 'error' }; }
+  }
+  function request0(actor, viewKey, opts) {
     opts = opts || {}; var r = anchorsOf(actor && actor.id, viewKey); if (!r) { if (actor) note(actor.id, viewKey, '位置の表・素体がない'); return { state: 'none' }; }
     var eqActor = opts.equip ? { id: actor.id, job: actor.job, equip: opts.equip } : actor;
     var layers = resolve(eqActor); var sig = signature(eqActor, layers, r.view.base, viewKey);
     var hit = CACHE.get(sig); if (hit) { stats.cacheHit++; CACHE.delete(sig); CACHE.set(sig, hit); return { state: 'ok', canvas: hit.canvas, sig: sig, layers: layers, view: r.view, pad: PAD, body: hit.body }; }
     var b = loadImg(r.view.base), m = r.view.mask ? loadImg(r.view.mask) : null, nh = r.view.nohat && layers.some(function (l) { return l.slot === 'head'; }) ? loadImg(r.view.nohat) : null;
     var parts = [b, m, nh].filter(Boolean);
-    if (parts.some(function (e) { return e.state === 'error'; })) { stats.failed++; note(actor.id, viewKey, '素体の読み込みの失敗'); return { state: 'error', sig: sig }; }
+    if (parts.some(function (e) { return e.state === 'error'; })) { stats.failed++; note(actor.id, viewKey, '素体を使えない：' + (parts.filter(function (e) { return e.state === 'error'; })[0].why || '読み込みの失敗')); return { state: 'error', sig: sig }; }
     if (parts.some(function (e) { return e.state !== 'ok'; })) return { state: 'loading', sig: sig, promise: Promise.all(parts.map(function (e) { return e.promise; })) };
     var px = r.view.a.px || r.actor.px || 2;
     var pb = padded(b, PAD), pm = m ? padded(m, PAD) : null, pn = nh ? padded(nh, PAD) : null;
@@ -500,7 +511,7 @@
   // Promise で受け取る（メニュー用）
   function composeFor(actor, viewKey, opts) {
     var r = request(actor, viewKey, opts); if (r.state !== 'loading') return Promise.resolve(r);
-    return r.promise.then(function () { return request(actor, viewKey, opts); });
+    return r.promise.then(function () { return request(actor, viewKey, opts); }, function () { return { state: 'error' }; });
   }
   // 不透明な部分だけを切り出す（メニューの表示用。拡大はしない）
   function cropOpaque(c, pad) {
@@ -538,7 +549,7 @@
         cv.setAttribute('data-ea-sig', r.sig);
         if (old) old.replaceWith(cv); else { host.innerHTML = ''; host.appendChild(cv); }
         host.setAttribute('data-ea-state', 'ok');
-      });
+      }).catch(function (e) { if (host.getAttribute('data-ea-key') === key) host.setAttribute('data-ea-state', 'error'); try { console.warn('[装備の外見] 表示できない（本人の元の絵のまま）', id, e); } catch (e2) { } });
     });
   }
   var obs = null;

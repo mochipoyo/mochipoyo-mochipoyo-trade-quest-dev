@@ -448,8 +448,8 @@ export class BattleActors3D {
   dirGot(ent, dir) {
     const got = PD.get(ent.a, dir); const EA = G.EquipmentAppearance;
     if (got.state !== 'ok' || !EA || ent.a.pet || ent.pet) return got;
-    const d = got.info.dir; if (!EA.supports(ent.a, d)) { ent.eaWait = false; return got; }
-    const r = EA.request(ent.a, d);
+    const d = got.info.dir; let r;
+    try { if (!EA.supports(ent.a, d)) { ent.eaWait = false; return got; } r = EA.request(ent.a, d); } catch (err) { ent.eaWait = false; console.warn('[装備の外見] 使えない → 本人の元の絵', ent.id, d, err); return got; }   // v9.6.1 何があっても戦闘は止めない
     if (r.state === 'loading') { ent.eaWait = true; return got; }
     ent.eaWait = false; if (r.state !== 'ok') return got;
     let c = this.eaCrops.get(r.sig + '|' + d);

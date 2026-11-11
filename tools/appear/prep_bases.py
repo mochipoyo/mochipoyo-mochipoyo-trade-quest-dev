@@ -160,6 +160,10 @@ def do_view(aid, vk, v, px):
     mask = np.zeros((H, W, 3), np.uint8); mask[face, 0] = 255; mask[hair, 1] = 255; mask[hand, 2] = 255
     Image.fromarray(mask).save(os.path.join(od, name + '_mask.png'), optimize=True); res['mask'] = 'assets/characters/equip-bases/%s/%s_mask.png' % (aid, name)
     res['dir'] = v.get('dir', vk if vk in ('front', 'back', 'left', 'right') else 'front'); res['a'] = v['a']; res['src'] = v['src']
+    # v9.6.1 画像の URL に中身のハッシュの先頭（?v=）を付ける（作り直したとき、古い画像がキャッシュから出ないように。PartyDirections と同じ）
+    import hashlib
+    for k in ('base', 'mask', 'nohat'):
+        if k in res: res[k] = res[k] + '?v=' + hashlib.sha256(open(os.path.join(ROOT, res[k]), 'rb').read()).hexdigest()[:10]
     return res
 
 def main():

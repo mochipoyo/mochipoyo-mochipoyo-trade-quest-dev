@@ -1,0 +1,27 @@
+素体の画像が別のサイト扱いになるとき（githack などの再現）2026-11-11 16:49 版 5aef1a8702。ヘッドレス Chromium・GPU なし
+=== 3d cors
+  OK  メニュー：別のサイトの素体でも合成できる（CORS で読む）
+  OK  3D の戦闘が 3D のまま表示される（2D に落ちない）
+  OK  3D の戦闘：全員の 4 方向の絵に装備を合成（hero:合成 gald:合成 lina:合成）
+  OK  素体の画像は別のサイト（ポート 8895）から読んだ（14 件）
+  OK  ページのエラーなし
+結果 xorigin 3d cors：OK 5 / NG 0
+=== 3d nocors
+  OK  メニュー：素体を読めないときは、今までの本人の立ち絵のまま（error）
+  OK  3D の戦闘が 3D のまま表示される（2D に落ちない）
+  OK  3D の戦闘：素体を読めないので、全員が本人の元の 4 方向の絵（hero:pixel:dir:back gald:pixel:dir:back lina:pixel:dir:back）。読めなかったことを記録：6 件
+  OK  素体の画像は別のサイト（ポート 8896）から読んだ（14 件）
+  OK  ページのエラーなし
+結果 xorigin 3d nocors：OK 5 / NG 0
+=== 2d cors
+  OK  メニュー：別のサイトの素体でも合成できる（CORS で読む）
+  OK  2D の戦闘の欄：ok,ok,ok
+  OK  素体の画像は別のサイト（ポート 8895）から読んだ（6 件）
+  OK  ページのエラーなし
+結果 xorigin 2d cors：OK 4 / NG 0
+=== 2d nocors
+  OK  メニュー：素体を読めないときは、今までの本人の立ち絵のまま（error）
+  OK  2D の戦闘の欄：error,error,error
+  OK  素体の画像は別のサイト（ポート 8896）から読んだ（6 件）
+  OK  ページのエラーなし
+結果 xorigin 2d nocors：OK 4 / NG 0
