@@ -41,7 +41,7 @@ for v in ('pc', 'phone'):
     cr = BATTLE_CROP.get(v)
     if not cr or not os.path.exists(D + 'ui_%s_menu_plain.png' % v): continue
     rows2 = []
-    for k, t in [('plain', '装備なし'), ('heavyaxe', '重鎧＋手斧\n（部品のない武器\nは描かない）'), ('robe', 'ローブ＋帽子＋杖\n（魔法使いで装備）')]:
+    for k, t in [('plain', '装備なし'), ('heavyaxe', '重鎧＋手斧\n（剣から替えても\n鎧はそのまま）'), ('robe', 'ローブ＋帽子＋杖\n（魔法使いで装備）')]:
         cells = []
         for lab, path, crop in (('メニュー正面', 'ui_%s_menu_%s.png', None), ('戦闘背面', 'ui_%s_battle_%s.jpg', cr), ('勝利正面', 'ui_%s_victory_%s.jpg', cr), ('戦闘のあとのメニュー', 'ui_%s_menu_after_%s.png', None)):
             pp = D + path % (v, k)

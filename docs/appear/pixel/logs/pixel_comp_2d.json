@@ -1,6 +1,6 @@
 {
  "KIND": "2d",
- "ok": 37,
+ "ok": 42,
  "ng": 0,
  "steps": [
   {
@@ -13,7 +13,11 @@
   },
   {
    "ok": true,
-   "m": "lina［革の鎧（軽装）］装備 {\"armor\":\"leather_armor\"} → 部品：base_plain armor_light_t"
+   "m": "lina［法衣＋杖＋革の帽子］装備 {\"weapon\":\"oak_staff\",\"armor\":\"robe_skip\",\"head\":\"leather_cap\"} → 部品：base_plain armor_robe_t armor_robe_f head_cap_t weapon_staff_t weapon_staff_f hand"
+  },
+  {
+   "ok": true,
+   "m": "lina［革の鎧（軽装）＋高値安値の帽子］装備 {\"armor\":\"leather_armor\",\"head\":\"hilo_hat\"} → 部品：base_plain armor_light_t head_cap_t"
   },
   {
    "ok": true,
@@ -21,51 +25,55 @@
   },
   {
    "ok": true,
-   "m": "lina［法衣＋こん棒＋帽子＋盾（部品のない品）］装備 {\"weapon\":\"club\",\"armor\":\"robe_skip\",\"shield\":\"wooden_shield\",\"head\":\"leather_cap\"} → 部品：base_plain armor_robe_t armor_robe_f／描かない：head:leather_cap（hat/cap の部品がない→描かない） shield:wooden_shield（shield の部品がない→描かない） weapon:club（club の部品がない→描かない）"
+   "m": "lina［法衣＋こん棒＋羽根帽子＋盾（部品のない品）］装備 {\"weapon\":\"club\",\"armor\":\"robe_skip\",\"shield\":\"wooden_shield\",\"head\":\"feather_hat\"} → 部品：base_plain armor_robe_t armor_robe_f／描かない：head:feather_hat（hat/feather の部品がない→描かない） shield:wooden_shield（shield の部品がない→描かない） weapon:club（club の部品がない→描かない）"
   },
   {
    "ok": true,
-   "m": "lina：なかまの画面の足もと・左右の中心・1 ドットの大きさが 5 つとも同じ（335.3/460.4/1.087）"
+   "m": "lina：なかまの画面の足もと・左右の中心・1 ドットの大きさが 6 つとも同じ（335.3/460.4/1.087）"
   },
   {
    "ok": true,
-   "m": "lina：部品のない品は部位ごと（club・leather_cap・wooden_shield は描かない。鎧は着替える：base_plain armor_robe_t armor_robe_f）"
+   "m": "lina：部品のない品は部位ごと（club・feather_hat・wooden_shield は描かない。鎧は着替える：base_plain armor_robe_t armor_robe_f）"
   },
   {
    "ok": true,
-   "m": "lina menu：5 つの組み合わせとも、合成の絵の大きさは同じ（291×370＝元の絵＋まわり 48）"
+   "m": "リーナ：帽子（cap 型：革の帽子・高値安値の帽子）は頭巾を品の色に（base_plain armor_robe_t armor_robe_f head_cap_t weapon_staff_t weapon_staff_f hand）"
   },
   {
    "ok": true,
-   "m": "lina menu：足もとの行が元の絵と同じ（319）：plain 319・robe 319・light 319・staff 319・nopart 319"
+   "m": "lina menu：6 つの組み合わせとも、合成の絵の大きさは同じ（291×370＝元の絵＋まわり 48）"
   },
   {
    "ok": true,
-   "m": "lina menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・robe 0・light 0・staff 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "m": "lina menu：足もとの行が元の絵と同じ（319）：plain 319・robe 319・cap 319・light 319・staff 319・nopart 319"
   },
   {
    "ok": true,
-   "m": "lina back：5 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+   "m": "lina menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・robe 0・cap 0・light 0・staff 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
-   "m": "lina back：足もとの行が元の絵と同じ（351）：plain 351・robe 351・light 351・staff 351・nopart 351"
+   "m": "lina back：6 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
   },
   {
    "ok": true,
-   "m": "lina back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・robe 0・light 0・staff 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "m": "lina back：足もとの行が元の絵と同じ（351）：plain 351・robe 351・cap 351・light 351・staff 351・nopart 351"
   },
   {
    "ok": true,
-   "m": "lina front：5 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+   "m": "lina back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・robe 0・cap 0・light 0・staff 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
-   "m": "lina front：足もとの行が元の絵と同じ（349）：plain 349・robe 349・light 349・staff 349・nopart 349"
+   "m": "lina front：6 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
   },
   {
    "ok": true,
-   "m": "lina front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・robe 0・light 0・staff 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "m": "lina front：足もとの行が元の絵と同じ（349）：plain 349・robe 349・cap 349・light 349・staff 349・nopart 349"
+  },
+  {
+   "ok": true,
+   "m": "lina front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・robe 0・cap 0・light 0・staff 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
@@ -81,59 +89,71 @@
   },
   {
    "ok": true,
-   "m": "gald［騎士の鎧（色のある重鎧）］装備 {\"armor\":\"knight_armor\"} → 部品：base_plain armor_shape_f armor_heavy_t"
+   "m": "gald［重鎧＋剣と盾］装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\"} → 部品：base_plain armor_shape_f shield_t shield_f weapon_sword hand"
   },
   {
    "ok": true,
-   "m": "gald［革の鎧（軽装）］装備 {\"weapon\":\"hand_axe\",\"armor\":\"leather_armor\"} → 部品：base_plain armor_light_t weapon_axe hand"
+   "m": "gald［重鎧＋盾（武器をはずす）］装備 {\"armor\":\"iron_armor\",\"shield\":\"iron_shield\"} → 部品：base_plain armor_shape_f shield_t shield_f"
   },
   {
    "ok": true,
-   "m": "gald［重鎧＋剣＋兜＋盾（部品のない品）］装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\"} → 部品：base_plain armor_shape_f／描かない：head:iron_helm（head_helm の部品がない→描かない） shield:iron_shield（shield の部品がない→描かない） weapon:steel_sword（weapon_sword の部品がない→描かない）"
+   "m": "gald［騎士の鎧・剣・盾（色のある品）］装備 {\"weapon\":\"knight_sword\",\"armor\":\"knight_armor\",\"shield\":\"knight_shield\"} → 部品：base_plain armor_shape_f armor_heavy_t shield_t shield_f weapon_sword hand"
   },
   {
    "ok": true,
-   "m": "gald：なかまの画面の足もと・左右の中心・1 ドットの大きさが 5 つとも同じ（335.3/460.4/1.0753）"
+   "m": "gald［革の鎧（軽装）＋手斧］装備 {\"weapon\":\"hand_axe\",\"armor\":\"leather_armor\"} → 部品：base_plain armor_light_t weapon_axe hand"
   },
   {
    "ok": true,
-   "m": "gald：部品のない品は部位ごと（steel_sword・iron_helm・iron_shield は描かない。鎧は着替える：base_plain armor_shape_f）"
+   "m": "gald［重鎧＋槍＋兜（部品のない品）］装備 {\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"head\":\"iron_helm\"} → 部品：base_plain armor_shape_f／描かない：head:iron_helm（head_helm の部品がない→描かない） weapon:iron_spear（weapon_spear の部品がない→描かない）"
   },
   {
    "ok": true,
-   "m": "gald menu：5 つの組み合わせとも、合成の絵の大きさは同じ（351×373＝元の絵＋まわり 48）"
+   "m": "gald：なかまの画面の足もと・左右の中心・1 ドットの大きさが 7 つとも同じ（335.3/460.4/1.0753）"
   },
   {
    "ok": true,
-   "m": "gald menu：足もとの行が元の絵と同じ（322）：plain 322・heavy 322・knight 322・light 322・nopart 322"
+   "m": "gald：部品のない品は部位ごと（iron_spear・iron_helm は描かない。鎧は着替える：base_plain armor_shape_f）"
   },
   {
    "ok": true,
-   "m": "gald menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "m": "ガルド：斧から剣と盾に替えても重鎧はそのまま（base_plain armor_shape_f shield_t shield_f weapon_sword hand）。武器をはずすと手ぶら（base_plain armor_shape_f shield_t shield_f）"
   },
   {
    "ok": true,
-   "m": "gald back：5 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+   "m": "gald menu：7 つの組み合わせとも、合成の絵の大きさは同じ（351×373＝元の絵＋まわり 48）"
   },
   {
    "ok": true,
-   "m": "gald back：足もとの行が元の絵と同じ（351）：plain 351・heavy 351・knight 351・light 351・nopart 351"
+   "m": "gald menu：足もとの行が元の絵と同じ（322）：plain 322・heavy 322・sword 322・unarmed 322・knight 322・light 322・nopart 322"
   },
   {
    "ok": true,
-   "m": "gald back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "m": "gald menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・sword 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
-   "m": "gald front：5 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+   "m": "gald back：7 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
   },
   {
    "ok": true,
-   "m": "gald front：足もとの行が元の絵と同じ（349）：plain 349・heavy 349・knight 349・light 349・nopart 349"
+   "m": "gald back：足もとの行が元の絵と同じ（351）：plain 351・heavy 351・sword 351・unarmed 351・knight 351・light 351・nopart 351"
   },
   {
    "ok": true,
-   "m": "gald front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "m": "gald back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・sword 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+  },
+  {
+   "ok": true,
+   "m": "gald front：7 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+  },
+  {
+   "ok": true,
+   "m": "gald front：足もとの行が元の絵と同じ（349）：plain 349・heavy 349・sword 349・unarmed 349・knight 349・light 349・nopart 349"
+  },
+  {
+   "ok": true,
+   "m": "gald front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・sword 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
@@ -211,12 +231,40 @@
      "px": 1.087,
      "h": 300
     },
+    "cap": {
+     "equip": {
+      "weapon": "oak_staff",
+      "armor": "robe_skip",
+      "shield": null,
+      "head": "leather_cap",
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 29,
+      "maxMp": 28,
+      "atk": 8,
+      "def": 20,
+      "agi": 6,
+      "mag": 12,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_robe_t armor_robe_f head_cap_t weapon_staff_t weapon_staff_f hand",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.087,
+     "h": 300
+    },
     "light": {
      "equip": {
       "weapon": null,
       "armor": "leather_armor",
       "shield": null,
-      "head": null,
+      "head": "hilo_hat",
       "acc": null
      },
      "res": {},
@@ -224,15 +272,15 @@
       "maxHp": 29,
       "maxMp": 28,
       "atk": 5,
-      "def": 12,
-      "agi": 6,
-      "mag": 10,
-      "mdef": 3,
+      "def": 16,
+      "agi": 8,
+      "mag": 12,
+      "mdef": 4,
       "immune": [],
       "element": "none"
      },
      "st": "ok",
-     "parts": "base_plain armor_light_t",
+     "parts": "base_plain armor_light_t head_cap_t",
      "skipped": null,
      "bottom": 335.3,
      "cx": 460.4,
@@ -272,7 +320,7 @@
       "weapon": "club",
       "armor": "robe_skip",
       "shield": "wooden_shield",
-      "head": "leather_cap",
+      "head": "feather_hat",
       "acc": null
      },
      "res": {},
@@ -280,8 +328,8 @@
       "maxHp": 29,
       "maxMp": 28,
       "atk": 11,
-      "def": 23,
-      "agi": 6,
+      "def": 25,
+      "agi": 8,
       "mag": 10,
       "mdef": 3,
       "immune": [],
@@ -289,7 +337,7 @@
      },
      "st": "ok",
      "parts": "base_plain armor_robe_t armor_robe_f",
-     "skipped": "head:leather_cap（hat/cap の部品がない→描かない） shield:wooden_shield（shield の部品がない→描かない） weapon:club（club の部品がない→描かない）",
+     "skipped": "head:feather_hat（hat/feather の部品がない→描かない） shield:wooden_shield（shield の部品がない→描かない） weapon:club（club の部品がない→描かない）",
      "bottom": 335.3,
      "cx": 460.4,
      "px": 1.087,
@@ -328,6 +376,24 @@
        ],
        "skipped": []
       },
+      "cap": {
+       "state": "ok",
+       "w": 291,
+       "h": 370,
+       "feet": 319,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_robe_t",
+        "armor_robe_f",
+        "head_cap_t",
+        "weapon_staff_t",
+        "weapon_staff_f",
+        "hand"
+       ],
+       "skipped": []
+      },
       "light": {
        "state": "ok",
        "w": 291,
@@ -337,7 +403,8 @@
        "ex": null,
        "parts": [
         "base_plain",
-        "armor_light_t"
+        "armor_light_t",
+        "head_cap_t"
        ],
        "skipped": []
       },
@@ -369,7 +436,7 @@
         "armor_robe_f"
        ],
        "skipped": [
-        "head:leather_cap（hat/cap の部品がない→描かない）",
+        "head:feather_hat（hat/feather の部品がない→描かない）",
         "shield:wooden_shield（shield の部品がない→描かない）",
         "weapon:club（club の部品がない→描かない）"
        ]
@@ -410,6 +477,24 @@
        ],
        "skipped": []
       },
+      "cap": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_robe_t",
+        "armor_robe_f",
+        "head_cap_t",
+        "weapon_staff_t",
+        "weapon_staff_f",
+        "hand"
+       ],
+       "skipped": []
+      },
       "light": {
        "state": "ok",
        "w": 416,
@@ -419,7 +504,8 @@
        "ex": null,
        "parts": [
         "base_plain",
-        "armor_light_t"
+        "armor_light_t",
+        "head_cap_t"
        ],
        "skipped": []
       },
@@ -451,7 +537,7 @@
         "armor_robe_f"
        ],
        "skipped": [
-        "head:leather_cap（hat/cap の部品がない→描かない）",
+        "head:feather_hat（hat/feather の部品がない→描かない）",
         "shield:wooden_shield（shield の部品がない→描かない）",
         "weapon:club（club の部品がない→描かない）"
        ]
@@ -492,6 +578,24 @@
        ],
        "skipped": []
       },
+      "cap": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_robe_t",
+        "armor_robe_f",
+        "head_cap_t",
+        "weapon_staff_t",
+        "weapon_staff_f",
+        "hand"
+       ],
+       "skipped": []
+      },
       "light": {
        "state": "ok",
        "w": 416,
@@ -501,7 +605,8 @@
        "ex": null,
        "parts": [
         "base_plain",
-        "armor_light_t"
+        "armor_light_t",
+        "head_cap_t"
        ],
        "skipped": []
       },
@@ -533,7 +638,7 @@
         "armor_robe_f"
        ],
        "skipped": [
-        "head:leather_cap（hat/cap の部品がない→描かない）",
+        "head:feather_hat（hat/feather の部品がない→描かない）",
         "shield:wooden_shield（shield の部品がない→描かない）",
         "weapon:club（club の部品がない→描かない）"
        ]
@@ -603,11 +708,39 @@
      "px": 1.0753,
      "h": 300
     },
-    "knight": {
+    "sword": {
+     "equip": {
+      "weapon": "steel_sword",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 72,
+      "maxMp": 18,
+      "atk": 43,
+      "def": 43,
+      "agi": 8,
+      "mag": 4,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_t shield_f weapon_sword hand",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.0753,
+     "h": 300
+    },
+    "unarmed": {
      "equip": {
       "weapon": null,
-      "armor": "knight_armor",
-      "shield": null,
+      "armor": "iron_armor",
+      "shield": "iron_shield",
       "head": null,
       "acc": null
      },
@@ -616,7 +749,7 @@
       "maxHp": 72,
       "maxMp": 18,
       "atk": 21,
-      "def": 44,
+      "def": 43,
       "agi": 8,
       "mag": 4,
       "mdef": 1,
@@ -624,7 +757,35 @@
       "element": "none"
      },
      "st": "ok",
-     "parts": "base_plain armor_shape_f armor_heavy_t",
+     "parts": "base_plain armor_shape_f shield_t shield_f",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.0753,
+     "h": 300
+    },
+    "knight": {
+     "equip": {
+      "weapon": "knight_sword",
+      "armor": "knight_armor",
+      "shield": "knight_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 72,
+      "maxMp": 18,
+      "atk": 51,
+      "def": 56,
+      "agi": 8,
+      "mag": 4,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f armor_heavy_t shield_t shield_f weapon_sword hand",
      "skipped": null,
      "bottom": 335.3,
      "cx": 460.4,
@@ -661,9 +822,9 @@
     },
     "nopart": {
      "equip": {
-      "weapon": "steel_sword",
+      "weapon": "iron_spear",
       "armor": "iron_armor",
-      "shield": "iron_shield",
+      "shield": null,
       "head": "iron_helm",
       "acc": null
      },
@@ -671,8 +832,8 @@
      "stats": {
       "maxHp": 72,
       "maxMp": 18,
-      "atk": 43,
-      "def": 48,
+      "atk": 38,
+      "def": 41,
       "agi": 8,
       "mag": 4,
       "mdef": 1,
@@ -681,7 +842,7 @@
      },
      "st": "ok",
      "parts": "base_plain armor_shape_f",
-     "skipped": "head:iron_helm（head_helm の部品がない→描かない） shield:iron_shield（shield の部品がない→描かない） weapon:steel_sword（weapon_sword の部品がない→描かない）",
+     "skipped": "head:iron_helm（head_helm の部品がない→描かない） weapon:iron_spear（weapon_spear の部品がない→描かない）",
      "bottom": 335.3,
      "cx": 460.4,
      "px": 1.0753,
@@ -718,6 +879,38 @@
        ],
        "skipped": []
       },
+      "sword": {
+       "state": "ok",
+       "w": 351,
+       "h": 373,
+       "feet": 322,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_t",
+        "shield_f",
+        "weapon_sword",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "unarmed": {
+       "state": "ok",
+       "w": 351,
+       "h": 373,
+       "feet": 322,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_t",
+        "shield_f"
+       ],
+       "skipped": []
+      },
       "knight": {
        "state": "ok",
        "w": 351,
@@ -728,7 +921,11 @@
        "parts": [
         "base_plain",
         "armor_shape_f",
-        "armor_heavy_t"
+        "armor_heavy_t",
+        "shield_t",
+        "shield_f",
+        "weapon_sword",
+        "hand"
        ],
        "skipped": []
       },
@@ -760,8 +957,7 @@
        ],
        "skipped": [
         "head:iron_helm（head_helm の部品がない→描かない）",
-        "shield:iron_shield（shield の部品がない→描かない）",
-        "weapon:steel_sword（weapon_sword の部品がない→描かない）"
+        "weapon:iron_spear（weapon_spear の部品がない→描かない）"
        ]
       }
      },
@@ -798,6 +994,38 @@
        ],
        "skipped": []
       },
+      "sword": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_t",
+        "shield_f",
+        "weapon_sword",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "unarmed": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_t",
+        "shield_f"
+       ],
+       "skipped": []
+      },
       "knight": {
        "state": "ok",
        "w": 416,
@@ -808,7 +1036,11 @@
        "parts": [
         "base_plain",
         "armor_shape_f",
-        "armor_heavy_t"
+        "armor_heavy_t",
+        "shield_t",
+        "shield_f",
+        "weapon_sword",
+        "hand"
        ],
        "skipped": []
       },
@@ -840,8 +1072,7 @@
        ],
        "skipped": [
         "head:iron_helm（head_helm の部品がない→描かない）",
-        "shield:iron_shield（shield の部品がない→描かない）",
-        "weapon:steel_sword（weapon_sword の部品がない→描かない）"
+        "weapon:iron_spear（weapon_spear の部品がない→描かない）"
        ]
       }
      },
@@ -878,6 +1109,38 @@
        ],
        "skipped": []
       },
+      "sword": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_t",
+        "shield_f",
+        "weapon_sword",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "unarmed": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_t",
+        "shield_f"
+       ],
+       "skipped": []
+      },
       "knight": {
        "state": "ok",
        "w": 416,
@@ -888,7 +1151,11 @@
        "parts": [
         "base_plain",
         "armor_shape_f",
-        "armor_heavy_t"
+        "armor_heavy_t",
+        "shield_t",
+        "shield_f",
+        "weapon_sword",
+        "hand"
        ],
        "skipped": []
       },
@@ -920,8 +1187,7 @@
        ],
        "skipped": [
         "head:iron_helm（head_helm の部品がない→描かない）",
-        "shield:iron_shield（shield の部品がない→描かない）",
-        "weapon:steel_sword（weapon_sword の部品がない→描かない）"
+        "weapon:iron_spear（weapon_spear の部品がない→描かない）"
        ]
       }
      },

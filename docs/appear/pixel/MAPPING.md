@@ -6,15 +6,15 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 
 | 人物ID | 向き | 元の絵 | 足もとの基準点 | 握る位置（武器） | 盾の位置 |
 |---|---|---|---|---|---|
-| hero | job:warrior | assets/characters/jobs/warrior.png | 64, 197 | 22, 117（剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す） | 105, 125（盾：腕の上（体の後に描く）） |
-| hero | front | assets/characters/party-directions-v3/sprites/hero/front.png | 160, 304 | 117, 221（剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す） | 200, 229（盾：腕の上（体の後に描く）） |
-| hero | back | assets/characters/party-directions-v3/sprites/hero/back.png | 160, 304 | 205, 213（剣：拳の上に鍔／杖・槍：柄の上に拳を描き直す） | 108, 222（盾：左腕の外側（体の後に描く）） |
+| hero | job:warrior | assets/characters/jobs/warrior.png | 64, 197 | 22, 117（剣：拳の上に鍔（剣を後に描く）／杖・槍・斧：柄の上に拳を描き直す） | 105, 125（盾：腕の上（体の後に描く）） |
+| hero | front | assets/characters/party-directions-v3/sprites/hero/front.png | 160, 304 | 117, 221（剣：拳の上に鍔（剣を後に描く）／杖・槍・斧：柄の上に拳を描き直す） | 200, 229（盾：腕の上（体の後に描く）） |
+| hero | back | assets/characters/party-directions-v3/sprites/hero/back.png | 160, 304 | 205, 213（剣：拳の上に鍔／杖・槍・斧：柄の上に拳を描き直す） | 108, 222（盾：左腕の外側（体の後に描く）） |
 | lina | menu | assets/characters/companions/lina.png | 97, 271 | 48, 121（杖：柄の上に手を描き直す） | —（盾の部品なし） |
 | lina | front | assets/characters/party-directions-v3/sprites/lina/front.png | 160, 304 | 111, 151（杖：柄の上に手を描き直す） | —（盾の部品なし） |
 | lina | back | assets/characters/party-directions-v3/sprites/lina/back.png | 160, 304 | 225, 152（杖：柄の上に手を描き直す） | —（盾の部品なし） |
-| gald | menu | assets/characters/companions/gald.png | 128, 274 | 37, 137（斧：柄の上に拳を描き直す） | —（盾の部品なし） |
-| gald | front | assets/characters/party-directions-v3/sprites/gald/front.png | 160, 304 | 70, 164（斧：柄の上に拳を描き直す） | —（盾の部品なし） |
-| gald | back | assets/characters/party-directions-v3/sprites/gald/back.png | 160, 304 | 246, 156（斧：柄の上に拳を描き直す） | —（盾の部品なし） |
+| gald | menu | assets/characters/companions/gald.png | 128, 274 | 37, 137（斧・剣：柄の上に拳を描き直す） | 186, 190（盾：左の拳と前腕の上（体・鎧の後に描く）） |
+| gald | front | assets/characters/party-directions-v3/sprites/gald/front.png | 160, 304 | 70, 164（斧・剣：柄の上に拳を描き直す） | 219, 217（盾：左の拳と前腕の上（体・鎧の後に描く）） |
+| gald | back | assets/characters/party-directions-v3/sprites/gald/back.png | 160, 304 | 246, 156（斧・剣：柄の上に拳を描き直す） | 72, 212（盾：左腕の外側（体・鎧の後に描く）） |
 
 ほかの人物・向き：部品なし（本人の従来の絵）。
 
@@ -31,9 +31,12 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | weapon_sword（（全員）） | 40 | —（変えない） | weapon_sword |  |
 | weapon_staff（（全員）） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
 | weapon_spear（（全員）） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_axe（（全員）） | 40 | —（変えない） | weapon_axe | はい |
+| head_cap（（全員）） | 20 | —（変えない） | head_cap_t（tint:main） |  |
 | armor_light（lina） | 10 | —（変えない） | armor_light_t（tint:main） |  |
 | armor_light（gald） | 10 | —（変えない） | armor_light_t（tint:main） |  |
-| weapon_axe（gald） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_sword（gald） | 40 | —（変えない） | weapon_sword | はい |
+| shield（gald） | 30 | —（変えない） | shield_t（tint:main・灰色の品は元の鎧の色）、shield_f |  |
 
 ## 装備ID → 部品の種類
 
@@ -71,7 +74,7 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor | robe/robe | armor_robe | 23 | robe, silk_robe, sage_robe, temporal_robe, sky_robe, robe_skip, ember_robe, healer_robe, statistician_robe, antiretro_vestment, iceport_robe, chrono_formal, voidward_robe, td_risk_robe, b19_dark_matter_veil, t68_islands_robe, t68_desert_robe, t68_machine_robe, t68_snow_robe, t68_dragon_robe, t68_dark_robe, bu_frost_spirit_robe, bu_sevran_blank_robe |
 | armor | robe/veil | armor_robe | 3 | mirage_veil, b19_porcelain_robe, aeria_robe |
 | head | hat/bicorne | （なし→その部位を描かない） | 1 | bu_gull_admiral_hat |
-| head | hat/cap | （なし→その部位を描かない） | 9 | leather_cap, hilo_hat, desert_star_hat, t68_islands_hat, t68_tempus_hat, t68_desert_hat, t68_machine_hat, t68_dragon_hat, t68_dark_hat |
+| head | hat/cap | head_cap | 9 | leather_cap, hilo_hat, desert_star_hat, t68_islands_hat, t68_tempus_hat, t68_desert_hat, t68_machine_hat, t68_dragon_hat, t68_dark_hat |
 | head | hat/circlet | （なし→その部位を描かない） | 1 | bu_control_seal_circlet |
 | head | hat/crown | （なし→その部位を描かない） | 1 | bu_memory_keeper_helm |
 | head | hat/feather | （なし→その部位を描かない） | 1 | feather_hat |
@@ -126,6 +129,6 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 
 | 人物ID | 描ける種類 |
 |---|---|
-| hero | armor_light、armor_heavy、armor_robe、head_helm、head_hat、weapon_sword、weapon_staff、weapon_spear、shield |
-| lina | armor_light、armor_robe、weapon_staff |
-| gald | armor_light、armor_heavy、weapon_axe |
+| hero | armor_light、armor_heavy、armor_robe、head_helm、head_hat、weapon_sword、weapon_staff、weapon_spear、weapon_axe、shield |
+| lina | armor_light、armor_robe、head_cap、weapon_staff |
+| gald | armor_light、armor_heavy、weapon_sword、weapon_axe、shield |

@@ -81,6 +81,13 @@
      "w": 150,
      "h": 136
     },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/lina/menu/head_cap_t.png?v=605035df",
+     "x": 70,
+     "y": 34,
+     "w": 89,
+     "h": 58
+    },
     "hand": {
      "url": "assets/characters/equip-pixels/lina/menu/hand.png?v=f8283644",
      "x": 37,
@@ -153,6 +160,13 @@
      "y": 146,
      "w": 150,
      "h": 136
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/lina/menu/head_cap_t.png?v=605035df",
+     "x": 133,
+     "y": 64,
+     "w": 89,
+     "h": 58
     },
     "hand": {
      "url": "assets/characters/equip-pixels/lina/menu/hand.png?v=f8283644",
@@ -231,6 +245,13 @@
      "y": 149,
      "w": 143,
      "h": 138
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/lina/back/head_cap_t.png?v=fea8cf85",
+     "x": 106,
+     "y": 65,
+     "w": 89,
+     "h": 65
     },
     "hand": {
      "url": "assets/characters/equip-pixels/lina/back/hand.png?v=d582ae4c",

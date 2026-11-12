@@ -475,6 +475,8 @@
     var lvUp = res.members.some(function (m) { return m.levelUp; }); var newSk = res.members.some(function (m) { return (m.newSkills && m.newSkills.length) || (m.newUlts && m.newUlts.length); }); var gear = !!(res.bossGear && res.bossGear.granted);
     var special = []; if (boss) special.push('ボスを倒した！'); if (gear) special.push('ボス固有装備を入手'); if (lvUp) special.push('レベルアップ'); if (newSk) special.push('新しい技を覚えた');
     var simple = !special.length;
+    // v9.8.1 3D の戦闘で味方を 3D の人物として描いているとき（勝利の振り向きで装備が見える）：結果の窓を画面の上に寄せ、人物（頭・武器）に重ねない
+    var sc3 = root.BattleUI && root.BattleUI.scene; var top3 = !!(sc3 && sc3._stage3d && root.BattleStage3D && root.BattleStage3D.actorsOn && root.BattleStage3D.actorsOn(sc3));
     var killed = Object.keys(res.killed).map(function (n) { return esc(n) + ' × ' + res.killed[n]; }).join('、');
     var goldLine = res.merchantBonus ? res.gold + ' G <span class="muted small">（' + res.goldBase + ' G ＋ 商人ボーナス ' + res.merchantBonus + ' G）</span>' : res.gold + ' G';
     var members = res.members.map(function (m, i) {
@@ -494,13 +496,13 @@
       var mline = res.members.map(function (m) { return '<span class="rs-mini">' + esc(m.actor.name) + ' ' + (m.dead ? '戦闘不能' : '+' + m.gained + ' EXP') + '<small>（次まで ' + m.toNext + '）</small></span>'; }).join('');
       var dl = drops.length ? drops.map(function (id) { return esc(ITEMS[id] ? ITEMS[id].name : id) + ' × ' + res.drops[id]; }).join('、') : 'なし';
       var stS = document.getElementById('stage'); if (stS) stS.classList.add('result-open');
-      return Win.panel('<div class="rs-title rs-small">VICTORY！</div><div class="rs-killed">' + killed + ' を倒した！</div><div class="rs-rewards"><div>経験値 <b>' + res.exp + ' EXP</b></div><div>ゴールド <b>' + goldLine + '</b></div></div><div class="rs-minis">' + mline + '</div><div class="rs-items small">入手：' + dl + '</div>', { cls: 'result-victory result-simple', closeLabel: '次へ' }).then(function (v) { if (stS) stS.classList.remove('result-open'); return v; });
+      return Win.panel('<div class="rs-title rs-small">VICTORY！</div><div class="rs-killed">' + killed + ' を倒した！</div><div class="rs-rewards"><div>経験値 <b>' + res.exp + ' EXP</b></div><div>ゴールド <b>' + goldLine + '</b></div></div><div class="rs-minis">' + mline + '</div><div class="rs-items small">入手：' + dl + '</div>', { cls: 'result-victory result-simple' + (top3 ? ' rs-top' : ''), closeLabel: '次へ' }).then(function (v) { if (stS) stS.classList.remove('result-open'); return v; });
     }
     var html = '<div class="rs-title">VICTORY！</div><div class="rs-special">★ ' + special.map(esc).join('　★ ') + '</div><div class="rs-killed">' + killed + ' を倒した！</div>' +
       '<div class="rs-rewards"><div>獲得経験値 <b>' + res.exp + ' EXP</b></div><div>獲得ゴールド <b>' + goldLine + '</b></div></div>' +
       '<h3>仲間の成長</h3><div class="rs-members">' + members + '</div><h3>入手アイテム</h3><div class="rs-items">' + dropHtml + '</div>' + (root.BossGear && res.bossGear ? root.BossGear.resultHtml(res.bossGear) : '');   // v8.7 ボス固有装備（初回の正規勝利だけ）
     var stg87 = document.getElementById('stage'); if (stg87) stg87.classList.add('result-open');   // v8.7 リザルトの間は戦闘の欄（上のメッセージ・下の仲間）を隠す（長いリザルトの「次へ」が隠れないように）
-    return Win.panel(html, { cls: 'result-victory', closeLabel: '次へ', setup: function (node) {
+    return Win.panel(html, { cls: 'result-victory' + (top3 ? ' rs-top' : ''), closeLabel: '次へ', setup: function (node) {
       // 経験値バーの演出（計算はしない。確定済みの値へ動かすだけ）
       if (lvMs >= 0) setTimeout(function () { node.querySelectorAll('.rs-levelup').forEach(function (x) { x.classList.add('rs-lv-go'); }); }, lvMs);   // v9.3 レベルアップのファンファーレに合わせて「LEVEL UP!」を光らせる
       var bars = node.querySelectorAll('.rs-bar span');

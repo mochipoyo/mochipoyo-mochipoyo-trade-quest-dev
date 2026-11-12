@@ -9,7 +9,9 @@
 #     armor_heavy_t   重鎧の板金の灰色の層（色のある品だけ品の色で塗る。灰色の品は armor_shape_f の色のまま）
 #     armor_light_t   軽装：シャツを品の色にする灰色の層
 #     weapon_axe      斧：元の絵から切り離した斧（どの斧も同じ形）
-#     hand            斧を握る拳（柄の上に描き直す）
+#     weapon_sword    v9.8.1 剣：描いて作った剣（斧と同じ握り・同じ向き。拳の上に鍔、刃は上へ。どの剣も同じ形）
+#     shield_t/f      v9.8.1 盾：描いて作ったヒーター形の盾（もう一方の腕。面＝品の色・灰色の品は鉄の色、縁＝青銅、中央の鋲＝鉄）
+#     hand            斧・剣を握る拳（柄の上に描き直す）
 #   重ね順：肩当ては毛皮の肩掛けの「上」（毛皮の下に隠れると、背面では重鎧と素の違いが見えないため）。胸当ては毛皮の襟・ひげ・帯・革紐の下
 import os
 import sys
@@ -19,6 +21,7 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pxlib as P
 import build_hero as H
+import gear as GR
 
 ROOT = H.ROOT
 OUT = os.path.join(ROOT, 'assets', 'characters', 'equip-pixels', 'gald')
@@ -187,6 +190,9 @@ FRONT = {
     'wrap_r': [(160, 156), (210, 156), (210, 186), (160, 186)],
     'legs': [[(60, 208), (106, 208), (106, 245), (60, 245)], [(160, 222), (214, 222), (214, 247), (160, 247)]],
     'pauldrons': [(80, 120, 23, 17, False), (178, 134, 26, 18, True)],
+    # v9.8.1 剣：斧の柄と同じ握り・向き（拳の中心 grip、柄の上向き up）。盾：下ろした左の拳と前腕の上（正面から見た面）
+    'sword': {'grip': (37, 137), 'up': (0.423, -0.906), 'guard_at': 23},
+    'shield': (186, 190, 62, 76, 1.0),
     'hairbox': [(80, 20), (200, 20), (200, 120), (80, 120)],
 }
 BACK = {
@@ -201,6 +207,8 @@ BACK = {
     'wrap_r': [(226, 150), (266, 150), (266, 178), (226, 178)],
     'legs': [[(88, 238), (148, 238), (148, 274), (88, 274)], [(168, 238), (236, 238), (236, 274), (168, 274)]],
     'pauldrons': [(98, 168, 22, 16, False), (222, 152, 20, 15, True)],
+    'sword': {'grip': (246, 156), 'up': (-0.36, -0.933), 'guard_at': 19},
+    'shield': (72, 212, 62, 74, 0.78),   # 背面：左腕の外側。少し横に縮めて斜めから見た形
     'hairbox': [(110, 40), (214, 40), (214, 130), (110, 130)],
     'mirror': ([(178, 50), (216, 50), (216, 122), (178, 122)], 158),
 }
@@ -305,6 +313,9 @@ def build(o, R):
     shape_f, heavy_g, _ = heavy(p, R)
     parts = {'base_plain': t, 'armor_shape_f': shape_f, 'armor_heavy_t': heavy_g, 'armor_light_t': light_g,
              'weapon_axe': H.take(o, m & P.opaque(o)), 'hand': H.take(t, hand & P.opaque(t))}
+    Hh, Ww = o.shape[:2]; sw = R['sword']
+    parts['weapon_sword'] = GR.sword(Hh, Ww, sw['grip'], sw['up'], blade_len=108, blade_w=13, tip=20, guard_w=34, guard_at=sw['guard_at'], pommel_at=-(sw['guard_at'] + 4), pommel_r=5)
+    parts['shield_t'], parts['shield_f'], _ = GR.heater(Hh, Ww, *R['shield'], rim_ramp=GR.BRONZE)
     return parts, p, m
 
 
@@ -333,14 +344,16 @@ if __name__ == '__main__':
         'menuBase': 'menu',
         # ガルドの重ね方：重鎧は主人公と同じ名前の部品（GLOBAL）。軽装はシャツの色だけ変える。斧は柄の上に拳を描き直す
         'materials': {'armor_light': {'z': 10, 'layers': [{'part': 'armor_light_t', 'tint': 'main'}]},
-                      'weapon_axe': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_axe'}]}},
+                      # v9.8.1 剣は拳の下に柄を通す（主人公の剣と違い、拳を後に描く）。盾は面を品の色（灰色の品は鉄の色）
+                      'weapon_sword': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_sword'}]},
+                      'shield': {'z': 30, 'layers': [{'part': 'shield_t', 'tint': 'main', 'grayRef': 'iron'}, {'part': 'shield_f'}]}},
         'views': {
             'menu': {'src': FRONT_SRC, 'w': FW, 'h': FH, 'dir': 'front', 'pivot': [128, 274], 'body': box(tf), 'frame': frame(recF, FW, FH),
-                     'grip': {'x': 37, 'y': 137, 'order': '斧：柄の上に拳を描き直す'}, 'parts': recF},
+                     'grip': {'x': 37, 'y': 137, 'order': '斧・剣：柄の上に拳を描き直す'}, 'offhand': {'x': 186, 'y': 190, 'order': '盾：左の拳と前腕の上（体・鎧の後に描く）'}, 'parts': recF},
             'front': {'src': FRONT_BATTLE_SRC, 'w': 320, 'h': 320, 'dir': 'front', 'pivot': [160, 304], 'body': shiftbox(box(tf), FDX, FDY),
-                      'grip': {'x': 37 + FDX, 'y': 137 + FDY, 'order': '斧：柄の上に拳を描き直す'}, 'from': 'menu', 'parts': shiftparts(recF, FDX, FDY)},
+                      'grip': {'x': 37 + FDX, 'y': 137 + FDY, 'order': '斧・剣：柄の上に拳を描き直す'}, 'offhand': {'x': 186 + FDX, 'y': 190 + FDY, 'order': '盾：左の拳と前腕の上（体・鎧の後に描く）'}, 'from': 'menu', 'parts': shiftparts(recF, FDX, FDY)},
             'back': {'src': BACK_SRC, 'w': BW, 'h': BH, 'dir': 'back', 'pivot': [160, 304], 'body': box(tb), 'frame': frame(recB, BW, BH),
-                     'grip': {'x': 246, 'y': 156, 'order': '斧：柄の上に拳を描き直す'}, 'parts': recB},
+                     'grip': {'x': 246, 'y': 156, 'order': '斧・剣：柄の上に拳を描き直す'}, 'offhand': {'x': 72, 'y': 212, 'order': '盾：左腕の外側（体・鎧の後に描く）'}, 'parts': recB},
         }}
     json.dump(actor, open(os.path.join(OUT, 'actor.json'), 'w', encoding='utf8'), ensure_ascii=False, indent=1)
     import manifest

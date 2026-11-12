@@ -112,6 +112,13 @@
    "w": 12,
    "h": 222
   },
+  "weapon_axe": {
+   "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_axe.png?v=16accbbe",
+   "x": 9,
+   "y": 53,
+   "w": 34,
+   "h": 87
+  },
   "armor_robe_t": {
    "url": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_t.png?v=d0a7c935",
    "x": 15,
@@ -239,6 +246,13 @@
    "y": 70,
    "w": 12,
    "h": 234
+  },
+  "weapon_axe": {
+   "url": "assets/characters/equip-pixels/hero/back/weapon_axe.png?v=fb650bfd",
+   "x": 198,
+   "y": 141,
+   "w": 48,
+   "h": 95
   },
   "armor_robe_x": {
    "url": "assets/characters/equip-pixels/hero/back/armor_robe_x.png?v=30b83a60",

@@ -1,5 +1,5 @@
 #!/bin/bash
-# v9.8 装備の外見（ドット絵の差分）：確かめ一式（主人公の v9.7 の確かめ ＋ 仲間 リーナ・ガルド）を順に動かして、結果の行を 1 つの記録にまとめる
+# v9.8〜v9.8.1 装備の外見（ドット絵の差分）：確かめ一式（主人公の v9.7 の確かめ ＋ 仲間 リーナ・ガルド ＋ v9.8.1 の剣・盾・斧・帽子）を順に動かして、結果の行を 1 つの記録にまとめる
 #   bash docs/tools/appear/run_v98.sh <記録ファイル>
 #   前提：8894 に静かなサーバー（docs/tools/rpg93/rangeserver.js）。別のサイトの確かめ用に 8895（cors）・8896（nocors）を立てて、終わったら止める
 #   v9.6 の確かめ（vector・別のサイト・3Dモデル）の画面写真・記録は docs/appear/pixel/regress/ に書く（v9.6 の報告の記録は書き換えない）
@@ -14,6 +14,7 @@ node docs/tools/appear/browser/xorigin_server.js . 8895 cors > /dev/null 2>&1 & 
 node docs/tools/appear/browser/xorigin_server.js . 8896 nocors > /dev/null 2>&1 & X2=$!
 sleep 1
 run "appear/appear_pixel_test.js（jsdom・3D と同じ読み込み）" node docs/tools/appear/appear_pixel_test.js
+run "ブラウザ 3 人の装備できる品と、描く／描かない品（docs/appear/pixel/SURVEY.md）" env PORT=8894 node docs/tools/appear/browser/appear_survey.js
 run "appear/appear_pixel_test.js 2d" node docs/tools/appear/appear_pixel_test.js 2d
 run "appear/appear_test.js（v9.6 の描き足し vector）" node docs/tools/appear/appear_test.js
 run "appear/appear_test.js 2d（vector）" node docs/tools/appear/appear_test.js 2d

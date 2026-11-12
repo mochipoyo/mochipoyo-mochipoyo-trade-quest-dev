@@ -10,12 +10,25 @@
     }
    ]
   },
-  "weapon_axe": {
+  "weapon_sword": {
    "z": 40,
    "hand": true,
    "layers": [
     {
-     "part": "weapon_axe"
+     "part": "weapon_sword"
+    }
+   ]
+  },
+  "shield": {
+   "z": 30,
+   "layers": [
+    {
+     "part": "shield_t",
+     "tint": "main",
+     "grayRef": "iron"
+    },
+    {
+     "part": "shield_f"
     }
    ]
   }
@@ -45,7 +58,12 @@
    "grip": {
     "x": 37,
     "y": 137,
-    "order": "斧：柄の上に拳を描き直す"
+    "order": "斧・剣：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 186,
+    "y": 190,
+    "order": "盾：左の拳と前腕の上（体・鎧の後に描く）"
    },
    "parts": {
     "base_plain": {
@@ -89,6 +107,27 @@
      "y": 117,
      "w": 42,
      "h": 42
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_sword.png?v=77b00968",
+     "x": 20,
+     "y": 16,
+     "w": 75,
+     "h": 152
+    },
+    "shield_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/shield_t.png?v=4495fa6d",
+     "x": 158,
+     "y": 155,
+     "w": 57,
+     "h": 71
+    },
+    "shield_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/shield_f.png?v=c9fb6043",
+     "x": 154,
+     "y": 151,
+     "w": 65,
+     "h": 79
     }
    }
   },
@@ -110,7 +149,12 @@
    "grip": {
     "x": 70,
     "y": 164,
-    "order": "斧：柄の上に拳を描き直す"
+    "order": "斧・剣：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 219,
+    "y": 217,
+    "order": "盾：左の拳と前腕の上（体・鎧の後に描く）"
    },
    "from": "menu",
    "parts": {
@@ -155,6 +199,27 @@
      "y": 144,
      "w": 42,
      "h": 42
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_sword.png?v=77b00968",
+     "x": 53,
+     "y": 43,
+     "w": 75,
+     "h": 152
+    },
+    "shield_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/shield_t.png?v=4495fa6d",
+     "x": 191,
+     "y": 182,
+     "w": 57,
+     "h": 71
+    },
+    "shield_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/shield_f.png?v=c9fb6043",
+     "x": 187,
+     "y": 178,
+     "w": 65,
+     "h": 79
     }
    }
   },
@@ -182,7 +247,12 @@
    "grip": {
     "x": 246,
     "y": 156,
-    "order": "斧：柄の上に拳を描き直す"
+    "order": "斧・剣：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 72,
+    "y": 212,
+    "order": "盾：左腕の外側（体・鎧の後に描く）"
    },
    "parts": {
     "base_plain": {
@@ -226,6 +296,27 @@
      "y": 139,
      "w": 36,
      "h": 34
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/gald/back/weapon_sword.png?v=1abe7751",
+     "x": 199,
+     "y": 36,
+     "w": 62,
+     "h": 148
+    },
+    "shield_t": {
+     "url": "assets/characters/equip-pixels/gald/back/shield_t.png?v=a287fd24",
+     "x": 51,
+     "y": 178,
+     "w": 43,
+     "h": 68
+    },
+    "shield_f": {
+     "url": "assets/characters/equip-pixels/gald/back/shield_f.png?v=2f3de280",
+     "x": 47,
+     "y": 174,
+     "w": 51,
+     "h": 77
     }
    }
   }

@@ -8,7 +8,7 @@
 #     base_hat    帽子用の素の絵：帽子の上へ突き抜ける髪を消したもの
 #     armor_*     胴の差分（軽装＝革・重鎧＝元の板金・ローブ）。色を変える部分は灰色（_t）で、変えない部分（縁・金具・肌）はそのまま（_f）
 #     head_*      兜・帽子
-#     weapon_*    武器（剣は元の絵から切り離したもの。杖は同じ画風の魔法使いの絵から）
+#     weapon_*    武器（剣は元の絵から切り離したもの。杖は同じ画風の魔法使いの絵から。v9.8.1 斧は gear.py で描いたもの）
 #     shield      盾（元の絵から切り離したもの）
 #     hand        武器を握る手（長柄を持つとき、柄の上に描き直す）の範囲
 import os
@@ -673,6 +673,11 @@ if __name__ == '__main__':
     pf['weapon_spear'] = spear(FH, FW, 22, -24, 197, TOP)
     pb['weapon_staff_t'], pb['weapon_staff_f'] = staff(BH, BW, 205, 148, 303, TOP)
     pb['weapon_spear'] = spear(BH, BW, 205, 70, 303, TOP)
+    # ---- v9.8.1 斧（描いて作る。剣と同じ握り・同じ向き。刃は頭の側＝メニューの枠の中に収まる向き。どの斧も同じ形）----
+    import gear as GR
+    #   正面は刃が頭の側に来るので、斧頭を肩の高さに下げて顔にかからないようにする（柄は剣より短い）
+    pf['weapon_axe'] = GR.axe(FH, FW, (22, 117), (-0.158, -0.987), top=62, bottom=22, head=40, reach=20, side=1, spike_len=6)
+    pb['weapon_axe'] = GR.axe(BH, BW, (205, 213), (0.228, -0.974), top=72, bottom=22, head=42, reach=21, side=1, spike_len=7)
     # ---- ローブ ----
     pf['armor_robe_t'], pf['armor_robe_f'] = robe_front(fp, mage, None, plate_f)   # fp＝剣・盾を外した元の絵（スカーフ・腕の形を見る）
     hb_, sb_, vb_ = P.hsv(bp); cape_b = ((hb_ < 20) | (hb_ > 330)) & (sb_ > 0.3) & P.opaque(bp) & (byy > 165)
@@ -701,15 +706,15 @@ if __name__ == '__main__':
         # menuBase：メニューの立ち絵の素体。主人公はどの職業でも、本人の絵（戦士の立ち絵）を素体にして装備で着替える（戦闘の絵も職業で変わらないのと合わせる）
         'menuBase': 'job:warrior', 'views': {
             'job:warrior': {'src': FRONT_SRC, 'w': FW, 'h': FH, 'dir': 'front', 'pivot': [64, 197], 'body': box(tp), 'frame': frame(recF, FW, FH),
-                            'grip': {'x': 22, 'y': 117, 'order': '剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す'},
+                            'grip': {'x': 22, 'y': 117, 'order': '剣：拳の上に鍔（剣を後に描く）／杖・槍・斧：柄の上に拳を描き直す'},
                             'offhand': {'x': 105, 'y': 125, 'order': '盾：腕の上（体の後に描く）'}, 'parts': recF},
             # 戦闘の正面（勝利のときの振り向き）：party-directions の hero/front.png は、戦士の立ち絵と同じ絵・同じ大きさ（人物の高さ 196）を (95, 104) に置いたもの
             #   → メニュー正面の部品をそのまま使い、座標だけ (95, 104) ずらす（新しい画像は作らない。足もと 302 行目・縮尺 1:1 が戦闘と同じ）
             'front': {'src': FRONT_BATTLE_SRC, 'w': 320, 'h': 320, 'dir': 'front', 'pivot': [160, 304], 'body': shiftbox(box(tp), FDX, FDY),
-                      'grip': {'x': 22 + FDX, 'y': 117 + FDY, 'order': '剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す'},
+                      'grip': {'x': 22 + FDX, 'y': 117 + FDY, 'order': '剣：拳の上に鍔（剣を後に描く）／杖・槍・斧：柄の上に拳を描き直す'},
                       'offhand': {'x': 105 + FDX, 'y': 125 + FDY, 'order': '盾：腕の上（体の後に描く）'}, 'from': 'job:warrior', 'parts': shiftparts(recF, FDX, FDY)},
             'back': {'src': BACK_SRC, 'w': BW, 'h': BH, 'dir': 'back', 'pivot': [160, 304], 'body': box(tb), 'frame': frame(recB, BW, BH),
-                     'grip': {'x': 205, 'y': 213, 'order': '剣：拳の上に鍔／杖・槍：柄の上に拳を描き直す'},
+                     'grip': {'x': 205, 'y': 213, 'order': '剣：拳の上に鍔／杖・槍・斧：柄の上に拳を描き直す'},
                      'offhand': {'x': 108, 'y': 222, 'order': '盾：左腕の外側（体の後に描く）'}, 'parts': recB},
         }}
     json.dump(actor, open(os.path.join(OUT, 'actor.json'), 'w', encoding='utf8'), ensure_ascii=False, indent=1)

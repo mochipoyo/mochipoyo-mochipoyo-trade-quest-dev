@@ -9,6 +9,7 @@
 #     armor_light_t   軽装：旅装の布を品の色にする灰色の層
 #     weapon_staff_t/f 杖：元の絵から切り離した杖。玉＝品の色（灰色の層）
 #     hand            杖を握る手（柄の上に描き直す）
+#     head_cap_t      v9.8.1 帽子（cap 型）：頭巾の白い布を品の色にする灰色の層（形は頭巾のまま＝品の色の頭巾。金の飾り・リボンはそのまま）
 #   髪・頭巾は元の絵のまま（法衣・旅装より手前の髪は、素の絵の髪がそのまま見える＝部品は髪の所に描かない）
 import os
 import sys
@@ -280,6 +281,17 @@ def robe_parts(a, z, C):
     return g, f
 
 
+def hood_cap(a, view):
+    """帽子（cap 型）：頭巾の白い布（顔・髪のつやは除く）を品の色にする灰色の層"""
+    Hh, Ww = a.shape[:2]; h, s, v = P.hsv(a); yy, xx = np.mgrid[0:Hh, 0:Ww]
+    white = P.opaque(a) & (((s < 0.26) & (v > 0.55)) | ((h >= 225) & (h <= 322) & (s < 0.42) & (v > 0.4)))   # 白い布と、その影（薄い藤色）
+    if view == 'front': m = white & (yy < 118) & (xx > 52) & (xx < 178) & ~P.ellipse_mask(Hh, Ww, (78, 62, 138, 128))
+    else: m = white & (yy < 134) & (xx > 78) & (xx < 214)
+    lab, n = P.components(m); cnt = np.bincount(lab.ravel(), minlength=n + 1); keep = cnt >= 30; keep[0] = False; m = keep[lab]   # 髪のつやの小さな点は除く
+    g, _ = P.to_gray(a, m, out_lo=0.2, out_hi=0.98)
+    return smooth_gray(g, m)
+
+
 def light_part(t, z, C):
     """軽装：旅装の麻の布を品の色に（灰色の層）。革の胴着・縫い目はそのまま（素の絵の旅装が見える）"""
     cloth = z & (C['white'] | (~C['red'] & ~C['gold'] & ~C['dark']))
@@ -318,6 +330,7 @@ if __name__ == '__main__':
     pf['armor_robe_t'], pf['armor_robe_f'] = robe_parts(fpA, zfA, CfA)
     pb['armor_robe_t'], pb['armor_robe_f'] = robe_parts(bpA, zbA, CbA)
     pf['armor_light_t'] = light_part(tf, zfB, CfB); pb['armor_light_t'] = light_part(tb, zbB, CbB)
+    pf['head_cap_t'] = hood_cap(tf, 'front'); pb['head_cap_t'] = hood_cap(tb, 'back')
     pf['hand'] = H.take(tf, handf & P.opaque(tf)); pb['hand'] = H.take(tb, handb & P.opaque(tb))
     fp, bp, zf, zb = fpA, bpA, zfA, zbA
     if CHECK:

@@ -10,14 +10,15 @@ PARTS = os.path.join(ROOT, 'assets', 'characters', 'equip-pixels')
 ORDER = ['hero', 'lina', 'gald']   # 書き出す順（表の中の順。ほかの人物は名前の順で後ろ）
 
 PLATE_REF = ['#3c3133', '#5e5054', '#837476', '#a89a98', '#e2d8cc']   # 主人公の鎧の板金の色（元の絵から）
+IRON_REF = ['#262022', '#40373a', '#615657', '#8b7f7d', '#cbbfb3']    # v9.8 ガルドの重鎧・盾の鉄の色（灰色の品はこの色）
 
 GLOBAL = {
-    'version': 'v9.8', 'pad': 48,
+    'version': 'v9.8.1', 'pad': 48,
     'note': '装備の外見（ドット絵の差分）。tools/appear/pixel/build_<人物ID>.py が部品を作り、manifest.py がまとめる。部品の座標は元の絵と同じ（x, y＝左上）',
-    'ref': {'plate': PLATE_REF},
+    'ref': {'plate': PLATE_REF, 'iron': IRON_REF},
     # 部品の種類：装備の枠と形（ITEMS の type。帽子は形の細かい違い sub も）→ 種類。表にない形・その人に部品がない種類は「その部位だけ描かない」
     'classes': {'armor': {'light': 'armor_light', 'heavy': 'armor_heavy', 'robe': 'armor_robe'},
-                'head': {'helm': 'head_helm', 'hat:witch': 'head_hat'},
+                'head': {'helm': 'head_helm', 'hat:witch': 'head_hat', 'hat:cap': 'head_cap'},
                 'weapon': {'sword': 'weapon_sword', 'staff': 'weapon_staff', 'spear': 'weapon_spear', 'axe': 'weapon_axe'},
                 'shield': {'shield': 'shield'}},
     # 種類ごとの重ね方（主人公の部品の名前）。人ごとに違う重ね方は actors.<人物ID>.materials に書く（こちらより先に使う）
@@ -32,6 +33,9 @@ GLOBAL = {
         'weapon_sword': {'z': 40, 'layers': [{'part': 'weapon_sword'}]},
         'weapon_staff': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_staff_t', 'tint': 'orb'}, {'part': 'weapon_staff_f'}]},
         'weapon_spear': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_spear'}]},
+        # v9.8.1 斧（主人公・ガルド）：柄の上に拳を描き直す／つば付きの帽子（cap 型。リーナは頭巾の形のまま品の色の頭巾）
+        'weapon_axe': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_axe'}]},
+        'head_cap': {'z': 20, 'layers': [{'part': 'head_cap_t', 'tint': 'main'}]},
     },
 }
 

@@ -29,7 +29,7 @@
   },
   {
    "ok": true,
-   "m": "メニュー［重鎧＋手斧（部品のない武器）］装備 {\"weapon\":\"hand_axe\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null} → 部品：base_plain armor_shape_f"
+   "m": "メニュー［重鎧＋手斧（v9.8.1 から描く）］装備 {\"weapon\":\"hand_axe\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null} → 部品：base_plain armor_shape_f weapon_axe hand"
   },
   {
    "ok": true,
@@ -101,7 +101,7 @@
   },
   {
    "ok": true,
-   "m": "部品のない品は、その部位だけ描かない（斧：weapon:hand_axe（weapon_axe の部品がない→描かない）／革の帽子：head:leather_cap（hat/cap の部品がない→描かない））"
+   "m": "v9.8.1 斧は描く（weapon_axe）。部品のない品は、その部位だけ描かない（短剣：weapon:dagger（dagger の部品がない→描かない）／革の帽子：head:leather_cap（head_cap の部品がない→描かない））"
   },
   {
    "ok": true,
@@ -113,7 +113,7 @@
   },
   {
    "ok": true,
-   "m": "メニュー［斧だけ］：武器は描かない（手は空・元の剣は戻らない）。部品：base_plain／描かない：weapon:hand_axe（weapon_axe の部品がない→描かない）"
+   "m": "メニュー［斧だけ］：斧を描き、拳を柄の上に描き直す。部品：base_plain weapon_axe hand"
   },
   {
    "ok": true,
@@ -301,7 +301,7 @@
      "element": "none"
     },
     "st": "ok",
-    "parts": "base_plain armor_shape_f",
+    "parts": "base_plain armor_shape_f weapon_axe hand",
     "mode": "pixel",
     "k": 1.13,
     "px": 1.3274336283185841,
@@ -405,7 +405,9 @@
       "hairOut": 0,
       "parts": [
        "base_plain",
-       "armor_shape_f"
+       "armor_shape_f",
+       "weapon_axe",
+       "hand"
       ]
      }
     },
@@ -506,7 +508,9 @@
       "hairOut": 0,
       "parts": [
        "base_plain",
-       "armor_shape_f"
+       "armor_shape_f",
+       "weapon_axe",
+       "hand"
       ]
      }
     },
@@ -606,7 +610,9 @@
       "hairOut": 0,
       "parts": [
        "base_plain",
-       "armor_shape_f"
+       "armor_shape_f",
+       "weapon_axe",
+       "hand"
       ]
      }
     },

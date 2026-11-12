@@ -1,10 +1,10 @@
 # v9.8 装備の外見（ドット絵の差分）：仲間（リーナ・ガルド）の確かめの画面写真を並べた 1 枚を作る（報告用）
 #   python3 docs/tools/appear/pixel_sheets_comp.py
 #   先に browser/appear_pixel_comp_ui.js（VIEW=pc・phone）を動かしておく（記録 logs/ui_comp_<pc|phone>.json の人物の矩形で切り出す）
-#   ・compare_comp_<pc|phone>.jpg：行＝リーナ 装備なし／リーナ 法衣＋杖／ガルド 装備なし／ガルド 重鎧＋斧
+#   ・compare_comp_<pc|phone>.jpg：行＝リーナ 装備なし／法衣＋杖／＋革の帽子／杖をはずす、ガルド 装備なし／重鎧＋斧／剣＋盾／剣をはずす（v9.8.1）
 #                                  列＝メニュー正面／戦闘背面／勝利正面（結果の窓を隠して）／勝利正面（結果の窓あり）／戦闘のあとのメニュー
 #     メニュー＝なかまの画面の立ち絵の枠（同じ倍率）。戦闘・勝利＝同じカメラ・同じ倍率（画面写真の 2 倍の画素のまま切り出す）
-#   ・pixel_comp_sets_<lina|gald>.jpg：ゲームと同じ重ね方で作った合成の絵（menu・front・back × 組み合わせ。2 倍）
+#   ・pixel_comp_sets_<hero|lina|gald>.jpg：ゲームと同じ重ね方で作った合成の絵（メニュー・勝利の正面・背面 × 組み合わせ。2 倍）
 import os, sys, json
 from PIL import Image, ImageDraw, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
@@ -12,7 +12,8 @@ D = os.path.join(ROOT, 'docs', 'appear', 'pixel', 'shots') + '/'; L = os.path.jo
 FONT = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
 f = ImageFont.truetype(FONT, 24) if os.path.exists(FONT) else ImageFont.load_default()
 fs = ImageFont.truetype(FONT, 18) if os.path.exists(FONT) else ImageFont.load_default()
-ROWS = [('lina', 'plain', 'リーナ\n装備なし\n（旅装・手ぶら）'), ('lina', 'equip', 'リーナ\n見送りの法衣\n＋樫の杖'), ('gald', 'plain', 'ガルド\n装備なし\n（旅装・手ぶら）'), ('gald', 'equip', 'ガルド\n鉄の鎧＋戦斧')]
+ROWS = [('lina', 'plain', 'リーナ\n装備なし\n（旅装・手ぶら）'), ('lina', 'equip', 'リーナ\n見送りの法衣\n＋樫の杖'), ('lina', 'swap', 'リーナ\n法衣＋杖\n＋革の帽子'), ('lina', 'unarm', 'リーナ\n法衣＋帽子\n（杖をはずす）'),
+        ('gald', 'plain', 'ガルド\n装備なし\n（旅装・手ぶら）'), ('gald', 'equip', 'ガルド\n鉄の鎧＋戦斧'), ('gald', 'swap', 'ガルド\n鉄の鎧＋鋼の剣\n＋鉄の盾'), ('gald', 'unarm', 'ガルド\n鉄の鎧＋盾\n（剣をはずす）')]
 
 
 def crop_rect(path, r, k=2, m=14):
@@ -60,5 +61,5 @@ for v in ('pc', 'phone'):
 sys.path.insert(0, os.path.join(ROOT, 'tools', 'appear', 'pixel'))
 import manifest as MF, preview as PV, compose as CP
 M = MF.manifest(); data = PV.appearance_data()
-for a in ('lina', 'gald'):
+for a in ('hero', 'lina', 'gald'):
     if a in M['actors']: CP.sheet(M, a, D, data, each=False, name='pixel_comp_sets_%s.jpg' % a)

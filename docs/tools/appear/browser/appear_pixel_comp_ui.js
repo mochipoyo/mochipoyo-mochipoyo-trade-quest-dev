@@ -13,9 +13,19 @@ const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.lo
 const WHO = { lina: 'リーナ', gald: 'ガルド' };
 const STATES = [
   { key: 'plain', name: '装備なし（加入したまま）', eq: null, battle: true },
-  { key: 'equip', name: 'リーナ：法衣＋杖／ガルド：重鎧＋斧', eq: { lina: { armor: 'robe_skip', weapon: 'oak_staff' }, gald: { armor: 'iron_armor', weapon: 'battle_axe' } }, cancel: true, battle: true },
-  { key: 'off', name: '全部はずす（解除）', eq: { lina: { armor: null, weapon: null }, gald: { armor: null, weapon: null } }, battle: false },
+  { key: 'equip', name: 'リーナ：法衣＋杖／ガルド：重鎧＋斧', eq: { lina: { armor: 'robe_skip', weapon: 'oak_staff' }, gald: { armor: 'iron_armor', weapon: 'battle_axe' } }, cancel: '武器', battle: true },
+  { key: 'swap', name: 'リーナ：＋革の帽子／ガルド：斧→剣＋盾', eq: { lina: { head: 'leather_cap' }, gald: { weapon: 'steel_sword', shield: 'iron_shield' } }, cancel: '盾', battle: true },
+  { key: 'unarm', name: '武器をはずす（2 人とも）', eq: { lina: { weapon: null }, gald: { weapon: null } }, battle: true },
+  { key: 'off', name: '全部はずす（解除）', eq: { lina: { armor: null, head: null }, gald: { armor: null, shield: null } }, battle: false },
 ];
+// 組み合わせごとの、なかまの画面の立ち絵の部品（重ねる順）
+const PARTS = {
+  plain: { lina: 'base_plain', gald: 'base_plain' },
+  equip: { lina: 'base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand', gald: 'base_plain armor_shape_f weapon_axe hand' },
+  swap: { lina: 'base_plain armor_robe_t armor_robe_f head_cap_t weapon_staff_t weapon_staff_f hand', gald: 'base_plain armor_shape_f shield_t shield_f weapon_sword hand' },
+  unarm: { lina: 'base_plain armor_robe_t armor_robe_f head_cap_t', gald: 'base_plain armor_shape_f shield_t shield_f' },
+  off: { lina: 'base_plain', gald: 'base_plain' },
+};
 const SLOT_LABEL = { weapon: '武器', armor: '鎧', shield: '盾', head: '頭' };
 let PG = null;
 (async () => {
@@ -31,10 +41,10 @@ let PG = null;
     document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay);
     State.newGame('もち', 'warrior'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.settings.soundAsk93 = true; d.gold = 20000;
     ['lina', 'gald'].forEach((id) => State.joinCompanion(id));
-    ['robe_skip', 'oak_staff', 'iron_armor', 'battle_axe'].forEach((id) => State.addItem(id, 1));
+    ['robe_skip', 'oak_staff', 'iron_armor', 'battle_axe', 'leather_cap', 'steel_sword', 'iron_shield'].forEach((id) => State.addItem(id, 1));
     World.start();
     return { party: d.party.slice(), lina: Object.assign({}, State.actor('lina').equip), gald: Object.assign({}, State.actor('gald').equip), jobs: { lina: State.actor('lina').job, gald: State.actor('gald').job },
-      can: { robe_skip: Actors.canEquip(State.actor('lina'), 'robe_skip'), oak_staff: Actors.canEquip(State.actor('lina'), 'oak_staff'), iron_armor: Actors.canEquip(State.actor('gald'), 'iron_armor'), battle_axe: Actors.canEquip(State.actor('gald'), 'battle_axe') } };
+      can: { robe_skip: Actors.canEquip(State.actor('lina'), 'robe_skip'), oak_staff: Actors.canEquip(State.actor('lina'), 'oak_staff'), leather_cap: Actors.canEquip(State.actor('lina'), 'leather_cap'), iron_armor: Actors.canEquip(State.actor('gald'), 'iron_armor'), battle_axe: Actors.canEquip(State.actor('gald'), 'battle_axe'), steel_sword: Actors.canEquip(State.actor('gald'), 'steel_sword'), iron_shield: Actors.canEquip(State.actor('gald'), 'iron_shield') } };
   });
   S(setup.party.join() === 'hero,lina,gald' && Object.values(setup.can).every(Boolean) && !Object.values(setup.lina).some(Boolean) && !Object.values(setup.gald).some(Boolean), '準備：主人公・リーナ（' + setup.jobs.lina + '）・ガルド（' + setup.jobs.gald + '）。仲間は加入したとき何も装備していない。比べる品はゲームのデータで装備できる（' + JSON.stringify(setup.can) + '）');
   await p.waitForTimeout(1500);
@@ -75,10 +85,10 @@ let PG = null;
     await p.waitForTimeout(400); const head = await headParts();
     await closeAll(); return { done, head };
   };
-  const cancelVia = async (id) => {
+  const cancelVia = async (id, slotLabel) => {
     const before = await p.evaluate((a) => JSON.stringify(State.actor(a).equip), id);
     await openEquip(id); const head0 = await headParts();
-    await pick(new RegExp(WHO[id] + 'の装備'), /^武器/); await waitTop(new RegExp(WHO[id] + 'の.+を選ぶ'));
+    await pick(new RegExp(WHO[id] + 'の装備'), new RegExp('^' + (slotLabel || '武器'))); await waitTop(new RegExp(WHO[id] + 'の.+を選ぶ'));
     await p.keyboard.press('Escape'); await p.waitForTimeout(400);
     const back = await waitTop(new RegExp(WHO[id] + 'の装備')).then(() => true).catch(() => false); await p.waitForTimeout(400);
     const head1 = await headParts(); const after = await p.evaluate((a) => JSON.stringify(State.actor(a).equip), id);
@@ -130,8 +140,10 @@ let PG = null;
     });
     return out;
   });
-  const battle = async (key) => {
+  const battle = async (key, levelup) => {
     await closeAll(); await pause3d(false);
+    // 経験値の準備（確かめの都合）：ふつうは 3 人の経験値を 0 にして、レベルアップしない＝簡単な結果の窓で比べる。levelup のときは主人公をレベルアップの直前にして、詳しい結果の窓を出す
+    await p.evaluate((lv) => { const d = State.data; [d.hero].concat(['lina', 'gald'].map((x) => State.actor(x))).forEach((a) => { a.exp = 0; }); if (lv) d.hero.exp = Actors.expForLevel(d.hero.level) - 1; }, !!levelup);
     await p.evaluate(() => { window.__btRes = null; const en = Object.keys(ENEMIES).filter((k) => ENEMIES[k].hp < 40 && !ENEMIES[k].boss && !ENEMIES[k].flee)[0]; State.data.settings.autoBattle = false; World.startBattle([en], {}).then((r) => { window.__btRes = r || 'end'; }); });
     await p.waitForSelector('#ui .cmd-list', { timeout: 120000 });
     await p.waitForFunction(() => { const i = window.BattleStage3D && BattleStage3D.actorsInfo && BattleStage3D.actorsInfo(); return i && i.party && ['lina', 'gald'].every((id) => { const x = i.party.find((q) => q.id === id); return x && /dir:/.test(x.model || '') && !x.eaWait; }); }, null, { timeout: 60000 }).catch(() => null);
@@ -151,6 +163,7 @@ let PG = null;
         if (v) {
           await p.waitForTimeout(600); b.victory = await info(); b.vrects = await rects();
           b.cover = await coverage();   // 結果の窓を出したまま：人物がどこまで見えるか
+          b.panel = await p.evaluate(() => { const n = document.querySelector('#ui .rw-panel.result-victory'); if (!n) return null; const r = n.getBoundingClientRect(); return { cls: n.className, top: Math.round(r.top), bottom: Math.round(r.bottom), h: Math.round(r.height) }; });
           await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_c_victory_ui_${key}.jpg`, type: 'jpeg', quality: 72 });
           await p.evaluate(() => { const u = document.getElementById('ui'); if (u) u.style.visibility = 'hidden'; }); await p.waitForTimeout(120);
           await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_c_victory_${key}.jpg`, type: 'jpeg', quality: 72 });
@@ -171,21 +184,21 @@ let PG = null;
     const ui = {};
     if (st.eq) for (const id of ['lina', 'gald']) ui[id] = await equipVia(id, st.eq[id]);
     const m = await shotParty(st.key);
-    const cx = {}; if (st.cancel) for (const id of ['lina', 'gald']) cx[id] = await cancelVia(id);
+    const cx = {}; if (st.cancel) for (const id of ['lina', 'gald']) cx[id] = await cancelVia(id, id === 'lina' && st.cancel === '盾' ? '頭' : st.cancel);   // リーナは盾を装備できない形の確かめは不要：頭の一覧で取り消す
     const bt = st.battle ? await battle(st.key) : null;
     const m2 = st.battle ? await shotParty(st.key, '_after') : null;
     rec[st.key] = { name: st.name, ui, menu: m, cancel: cx, battle: bt, after: m2 };
     for (const id of ['lina', 'gald']) {
       const mm = m[id]; const want = st.eq ? Object.keys(st.eq[id]).every((s) => (mm.equip[s] || null) === st.eq[id][s]) : !Object.values(mm.equip).some(Boolean);
-      const wantParts = st.key === 'equip' ? (id === 'lina' ? 'base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand' : 'base_plain armor_shape_f weapon_axe hand') : 'base_plain';
+      const wantParts = PARTS[st.key][id];
       S(want && mm.st === 'ok' && mm.actor === id && mm.view === 'menu' && mm.parts === wantParts, `［${st.name}］${WHO[id]}：${st.eq ? '装備メニューで ' + (ui[id].done.join('・') || '変更なし') : '加入したまま'} → なかまの画面の立ち絵 ${mm.parts}（そうびの画面の絵 ${ui[id] ? ui[id].head : '—'}）`);
-      if (st.cancel) S(cx[id].same && cx[id].back && cx[id].head0 === cx[id].head1, `［${st.name}］${WHO[id]}：キャンセル（［そうび］→ 武器 → 品の一覧で Esc）→ 装備も絵も変わらない（${cx[id].before}・そうびの画面の絵 ${cx[id].head1}）`);
+      if (st.cancel) S(cx[id].same && cx[id].back && cx[id].head0 === cx[id].head1, `［${st.name}］${WHO[id]}：キャンセル（［そうび］→ ${id === 'lina' && st.cancel === '盾' ? '頭' : st.cancel} → 品の一覧で Esc）→ 装備も絵も変わらない（${cx[id].before}・そうびの画面の絵 ${cx[id].head1}）`);
       if (bt) {
         const x = bt[id], v = bt.victory && bt.victory[id];
         S(x && /dir:back/.test(x.model || '') && !!x.ea && !bt.fell.length, `［${st.name}］${WHO[id]}：そのまま戦闘 → 背面に合成（${x && x.model}・装備 ${JSON.stringify(bt.equip[id])}）`);
         S(v && /dir:front/.test(v.model || '') && /"front"/.test(v.ea || ''), `［${st.name}］${WHO[id]}：勝利の振り向き → 正面にも同じ装備を合成（${v && v.model}・範囲 ${v && JSON.stringify(v.size)}）`);
         const a2 = m2[id]; S(a2.st === 'ok' && a2.parts === mm.parts && JSON.stringify(a2.equip) === JSON.stringify(mm.equip) && a2.rect && mm.rect && Math.abs(a2.rect.bottom - mm.rect.bottom) < 1, `［${st.name}］${WHO[id]}：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（${a2.parts}）`);
-        const cv = bt.cover && bt.cover[id]; S(!!cv, `［${st.name}］${WHO[id]}：勝利の結果の窓を出したまま → 人物の矩形の ${cv ? Math.round(cv.covered * 100) : '?'}% が窓に隠れる（頭の上 30% は ${cv ? Math.round(cv.headCovered * 100) : '?'}%）（記録のみ）`);
+        const cv = bt.cover && bt.cover[id]; S(!!cv && bt.panel && / rs-top/.test(bt.panel.cls) && cv.headCovered === 0 && cv.covered <= 0.03, `［${st.name}］${WHO[id]}：勝利の結果の窓を出したまま → 窓は画面の上（${bt.panel && bt.panel.cls}・${bt.panel && bt.panel.top}〜${bt.panel && bt.panel.bottom}px）。人物の矩形の ${cv ? Math.round(cv.covered * 100) : '?'}% が窓に重なる（頭の上 30% は ${cv ? Math.round(cv.headCovered * 100) : '?'}%）`);
       }
       if (bt) S(bt.ended, `［${st.name}］戦闘のあとフィールドへ戻った`);
     }
@@ -201,6 +214,14 @@ let PG = null;
     S(sr.every((r) => r && Math.abs(r.dy - sr[0].dy) <= 1.5 && Math.abs(r.kh - sr[0].kh) <= 0.015), `${WHO[id]}：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：${sr.map((r) => r && 'Δ足もと ' + r.dy + 'px・高さ比 ' + r.kh).join('／')}）`);
   }
   S(rec.off.menu.lina.parts === 'base_plain' && rec.off.menu.gald.parts === 'base_plain', '全部はずすと素の絵（旅装・手ぶら）に戻る（2 人とも base_plain）');
+  const gS = rec.swap.menu.gald, gU = rec.unarm.menu.gald, bS = rec.swap.battle, bU = rec.unarm.battle;
+  const sig = (x) => String((x && x.ea) || ''); const has = (x, ids) => ids.every((k) => sig(x).indexOf('"' + k + '"') >= 0);
+  S(gS.equip.armor === 'iron_armor' && /armor_shape_f/.test(gS.parts) && /weapon_sword/.test(gS.parts) && !/weapon_axe/.test(gS.parts) && has(bS.gald, ['iron_armor', 'steel_sword', 'iron_shield']) && has(bS.victory && bS.victory.gald, ['iron_armor', 'steel_sword', 'iron_shield']), 'ガルド：斧から剣と盾に替えても、重鎧は表示を続ける（なかまの画面 ' + gS.parts + '／戦闘の背面・勝利の正面の合成の印に 鉄の鎧・鋼の剣・鉄の盾）');
+  S(!gU.equip.weapon && gU.equip.shield === 'iron_shield' && !/weapon_|hand/.test(gU.parts) && /shield_t/.test(gU.parts), 'ガルド：武器をはずすと手ぶら（拳だけ。盾・重鎧はそのまま）：' + gU.parts);
+  // 詳しい結果の窓（レベルアップ）：記録のみ（窓の高さが人物まで届くか）
+  const lv = await battle('levelup', true);
+  const lvc = lv.cover || {}; rec.levelup = { battle: lv };
+  S(!!(lv.panel && !/result-simple/.test(lv.panel.cls)), `レベルアップの勝利：詳しい結果の窓（${lv.panel && lv.panel.cls}・${lv.panel && lv.panel.top}〜${lv.panel && lv.panel.bottom}px）。人物の矩形に重なる割合 主人公 ${lvc.hero ? Math.round(lvc.hero.covered * 100) : '?'}%・リーナ ${lvc.lina ? Math.round(lvc.lina.covered * 100) : '?'}%・ガルド ${lvc.gald ? Math.round(lvc.gald.covered * 100) : '?'}%（記録のみ）`);
   S(errs.length === 0, 'ページのエラーなし' + (errs.length ? '：' + errs.slice(0, 3).join(' / ') : ''));
   S(bad.length === 0, '読み込みの失敗なし' + (bad.length ? '：' + bad.slice(0, 4).join(' / ') : ''));
   const ng = steps.filter((x) => !x.ok).length;

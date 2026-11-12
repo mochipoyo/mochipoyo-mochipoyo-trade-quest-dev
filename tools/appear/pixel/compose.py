@@ -82,10 +82,14 @@ def compose(M, actor, vk, equip, data):
 
 
 SETS = {
-    'lina': [('装備なし', {}), ('法衣＋杖', {'armor': 'robe_skip', 'weapon': 'oak_staff'}), ('潮騒の法衣', {'armor': 't68_islands_robe'}), ('革の鎧', {'armor': 'leather_armor'}),
-             ('杖だけ', {'weapon': 'mage_staff'}), ('棍棒＋帽子（部品なし）', {'weapon': 'club', 'head': 'leather_cap'})],
-    'gald': [('装備なし', {}), ('重鎧＋斧', {'armor': 'iron_armor', 'weapon': 'battle_axe'}), ('騎士の鎧', {'armor': 'knight_armor'}), ('革の鎧', {'armor': 'leather_armor'}),
-             ('斧だけ', {'weapon': 'hand_axe'}), ('剣＋兜（部品なし）', {'weapon': 'steel_sword', 'head': 'iron_helm'})],
+    'hero': [('装備なし', {}), ('重鎧＋手斧', {'armor': 'iron_armor', 'weapon': 'hand_axe'}), ('重鎧＋兜＋戦斧＋盾', {'armor': 'iron_armor', 'head': 'iron_helm', 'weapon': 'battle_axe', 'shield': 'iron_shield'}),
+             ('軽装＋竜骨の斧', {'armor': 'leather_armor', 'weapon': 'dragon_axe'}), ('重鎧＋兜＋剣と盾', {'armor': 'iron_armor', 'head': 'iron_helm', 'weapon': 'steel_sword', 'shield': 'iron_shield'})],
+    'lina': [('装備なし', {}), ('法衣＋杖', {'armor': 'robe_skip', 'weapon': 'oak_staff'}), ('法衣＋杖＋革の帽子', {'armor': 'robe_skip', 'weapon': 'oak_staff', 'head': 'leather_cap'}),
+             ('旅装＋高値安値の帽子', {'head': 'hilo_hat'}), ('潮騒の法衣＋潮騒の帽子', {'armor': 't68_islands_robe', 'head': 't68_islands_hat'}),
+             ('こん棒＋盾＋羽根帽子（部品なし）', {'weapon': 'club', 'shield': 'wooden_shield', 'head': 'feather_hat'})],
+    'gald': [('装備なし', {}), ('重鎧＋斧', {'armor': 'iron_armor', 'weapon': 'battle_axe'}), ('重鎧＋剣と盾', {'armor': 'iron_armor', 'weapon': 'steel_sword', 'shield': 'iron_shield'}),
+             ('重鎧＋盾（武器なし）', {'armor': 'iron_armor', 'shield': 'iron_shield'}), ('騎士の鎧＋騎士の剣＋騎士の盾', {'armor': 'knight_armor', 'weapon': 'knight_sword', 'shield': 'knight_shield'}),
+             ('軽装＋木の剣＋木の盾', {'armor': 'leather_armor', 'weapon': 'wooden_sword', 'shield': 'wooden_shield'}), ('槍＋兜（部品なし）', {'weapon': 'iron_spear', 'head': 'iron_helm'})],
 }
 
 
@@ -97,7 +101,7 @@ def sheet(M, actor, out, data, k=2, each=True, name=None):
         for label, eq in SETS[actor]:
             c, sk = compose(M, actor, vk, eq, data)
             v = M['actors'][actor]['views'][vk]; pad = M['pad']
-            if vk in ('back', 'front'):
+            if vk in ('back', 'front') or (actor == 'hero' and vk != 'job:warrior'):
                 bb = v['body']; c = c[pad + bb['y0'] - 70:pad + v['h'], pad + bb['x0'] - 50:pad + bb['x1'] + 50]
             im = Image.fromarray(np.clip(c, 0, 255).astype(np.uint8), 'RGBA'); ims.append((label, im.resize((im.width * k, im.height * k), Image.NEAREST)))
             if each: P.save(c, os.path.join(out, '%s_%s_%d.png' % (actor, vk, len(ims))))

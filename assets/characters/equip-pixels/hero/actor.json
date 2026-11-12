@@ -25,7 +25,7 @@
    "grip": {
     "x": 22,
     "y": 117,
-    "order": "剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す"
+    "order": "剣：拳の上に鍔（剣を後に描く）／杖・槍・斧：柄の上に拳を描き直す"
    },
    "offhand": {
     "x": 105,
@@ -145,6 +145,13 @@
      "w": 12,
      "h": 222
     },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_axe.png?v=16accbbe",
+     "x": 9,
+     "y": 53,
+     "w": 34,
+     "h": 87
+    },
     "armor_robe_t": {
      "url": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_t.png?v=d0a7c935",
      "x": 15,
@@ -179,7 +186,7 @@
    "grip": {
     "x": 117,
     "y": 221,
-    "order": "剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す"
+    "order": "剣：拳の上に鍔（剣を後に描く）／杖・槍・斧：柄の上に拳を描き直す"
    },
    "offhand": {
     "x": 200,
@@ -300,6 +307,13 @@
      "w": 12,
      "h": 222
     },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_axe.png?v=16accbbe",
+     "x": 104,
+     "y": 157,
+     "w": 34,
+     "h": 87
+    },
     "armor_robe_t": {
      "url": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_t.png?v=d0a7c935",
      "x": 110,
@@ -340,7 +354,7 @@
    "grip": {
     "x": 205,
     "y": 213,
-    "order": "剣：拳の上に鍔／杖・槍：柄の上に拳を描き直す"
+    "order": "剣：拳の上に鍔／杖・槍・斧：柄の上に拳を描き直す"
    },
    "offhand": {
     "x": 108,
@@ -459,6 +473,13 @@
      "y": 70,
      "w": 12,
      "h": 234
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/hero/back/weapon_axe.png?v=fb650bfd",
+     "x": 198,
+     "y": 141,
+     "w": 48,
+     "h": 95
     },
     "armor_robe_x": {
      "url": "assets/characters/equip-pixels/hero/back/armor_robe_x.png?v=30b83a60",

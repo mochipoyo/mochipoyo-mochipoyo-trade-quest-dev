@@ -14,7 +14,7 @@
   },
   {
    "ok": true,
-   "m": "［装備なし］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8\",\"front\",[]]）"
+   "m": "［装備なし］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[]]）"
   },
   {
    "ok": true,
@@ -30,7 +30,7 @@
   },
   {
    "ok": true,
-   "m": "［軽装＋剣］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8\",\"front\",[\"steel_sword\",\"leather_armor\"]]）"
+   "m": "［軽装＋剣］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[\"steel_sword\",\"leather_armor\"]]）"
   },
   {
    "ok": true,
@@ -46,7 +46,7 @@
   },
   {
    "ok": true,
-   "m": "［重鎧＋兜＋剣と盾］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]）"
+   "m": "［重鎧＋兜＋剣と盾］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm）"
   },
   {
    "ok": true,
@@ -54,27 +54,27 @@
   },
   {
    "ok": true,
-   "m": "［重鎧＋手斧（部品のない武器）］装備メニューで weapon:hand_axe → 立ち絵 base_helm armor_shape_f head_helm_t head_helm_f shield"
+   "m": "［重鎧＋手斧］装備メニューで weapon:hand_axe → 立ち絵 base_helm armor_shape_f head_helm_t head_helm_f shield weapon_axe hand"
   },
   {
    "ok": true,
-   "m": "［重鎧＋手斧（部品のない武器）］そのまま戦闘：主人公の背面に合成（pixel:dir:back）。仲間（lina:合成 gald:合成）。戦闘のあとフィールドへ戻った：true"
+   "m": "［重鎧＋手斧］そのまま戦闘：主人公の背面に合成（pixel:dir:back）。仲間（lina:合成 gald:合成）。戦闘のあとフィールドへ戻った：true"
   },
   {
    "ok": true,
-   "m": "［重鎧＋手斧（部品のない武器）］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8\",\"front\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]）"
+   "m": "［重鎧＋手斧］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]）"
   },
   {
    "ok": true,
-   "m": "［重鎧＋手斧（部品のない武器）］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_helm armor_shape_f head_helm_t head_helm_f shield）"
+   "m": "［重鎧＋手斧］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_helm armor_shape_f head_helm_t head_helm_f shield weapon_axe hand）"
   },
   {
    "ok": true,
-   "m": "［重鎧＋手斧（部品のない武器）］キャンセル：［そうび］→ 武器 → 品の一覧で Esc → 装備も絵も変わらない（{\"weapon\":\"hand_axe\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null}・そうびの画面の絵 base_helm armor_shape_f head_helm_t head_helm_f shield）"
+   "m": "［重鎧＋手斧］キャンセル：［そうび］→ 武器 → 品の一覧で Esc → 装備も絵も変わらない（{\"weapon\":\"hand_axe\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null}・そうびの画面の絵 base_helm armor_shape_f head_helm_t head_helm_f shield weapon_axe hand）"
   },
   {
    "ok": true,
-   "m": "［重鎧＋手斧（部品のない武器）］重鎧は表示を続け、部品のない手斧は描かない（部品 base_helm armor_shape_f head_helm_t head_helm_f shield／描かない weapon:hand_axe（weapon_axe の部品がない→描かない））"
+   "m": "［重鎧＋手斧］剣から手斧に替えても重鎧は表示を続け、v9.8.1 から手斧を描く（拳は柄の上。部品 base_helm armor_shape_f head_helm_t head_helm_f shield weapon_axe hand）"
   },
   {
    "ok": true,
@@ -86,7 +86,7 @@
   },
   {
    "ok": true,
-   "m": "［ローブ＋帽子＋杖］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"mage\",\"px:v9.8\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]）"
+   "m": "［ローブ＋帽子＋杖］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"mage\",\"px:v9.8.1\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]）"
   },
   {
    "ok": true,
@@ -102,7 +102,7 @@
   },
   {
    "ok": true,
-   "m": "［槍装備］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8\",\"front\",[\"iron_spear\"]]）"
+   "m": "［槍装備］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[\"iron_spear\"]]）"
   },
   {
    "ok": true,
@@ -118,7 +118,7 @@
   },
   {
    "ok": true,
-   "m": "［全部はずす（解除）］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8\",\"front\",[]]）"
+   "m": "［全部はずす（解除）］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[]]）"
   },
   {
    "ok": true,
@@ -230,7 +230,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -268,7 +268,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"front\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -399,7 +399,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[\"steel_sword\",\"leather_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"back\",[\"steel_sword\",\"leather_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -437,7 +437,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"front\",[\"steel_sword\",\"leather_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[\"steel_sword\",\"leather_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -569,7 +569,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -607,7 +607,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -668,17 +668,17 @@
    }
   },
   "heavyaxe": {
-   "name": "重鎧＋手斧（部品のない武器）",
+   "name": "重鎧＋手斧",
    "jobChanged": false,
    "ui": {
     "done": [
      "weapon:hand_axe"
     ],
-    "eqHead": "base_helm armor_shape_f head_helm_t head_helm_f shield"
+    "eqHead": "base_helm armor_shape_f head_helm_t head_helm_f shield weapon_axe hand"
    },
    "menu": {
     "st": "ok",
-    "parts": "base_helm armor_shape_f head_helm_t head_helm_f shield",
+    "parts": "base_helm armor_shape_f head_helm_t head_helm_f shield weapon_axe hand",
     "view": "job:warrior",
     "job": "warrior",
     "sprite": "hero_warrior",
@@ -722,13 +722,13 @@
      "immune": [],
      "element": "none"
     },
-    "skipped": "weapon:hand_axe（weapon_axe の部品がない→描かない）"
+    "skipped": null
    },
    "cancel": {
     "same": true,
     "back": true,
-    "head0": "base_helm armor_shape_f head_helm_t head_helm_f shield",
-    "head1": "base_helm armor_shape_f head_helm_t head_helm_f shield",
+    "head0": "base_helm armor_shape_f head_helm_t head_helm_f shield weapon_axe hand",
+    "head1": "base_helm armor_shape_f head_helm_t head_helm_f shield weapon_axe hand",
     "before": "{\"weapon\":\"hand_axe\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null}"
    },
    "battle": {
@@ -743,7 +743,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"back\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -781,7 +781,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"front\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -794,7 +794,7 @@
    },
    "after": {
     "st": "ok",
-    "parts": "base_helm armor_shape_f head_helm_t head_helm_f shield",
+    "parts": "base_helm armor_shape_f head_helm_t head_helm_f shield weapon_axe hand",
     "view": "job:warrior",
     "job": "warrior",
     "sprite": "hero_warrior",
@@ -838,7 +838,7 @@
      "immune": [],
      "element": "none"
     },
-    "skipped": "weapon:hand_axe（weapon_axe の部品がない→描かない）"
+    "skipped": null
    }
   },
   "robe": {
@@ -913,7 +913,7 @@
      "sprite": "hero_mage",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"mage\",\"px:v9.8\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "ea": "[\"hero\",\"mage\",\"px:v9.8.1\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -951,7 +951,7 @@
      "sprite": "hero_mage",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"mage\",\"px:v9.8\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "ea": "[\"hero\",\"mage\",\"px:v9.8.1\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1081,7 +1081,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[\"iron_spear\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"back\",[\"iron_spear\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1119,7 +1119,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"front\",[\"iron_spear\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[\"iron_spear\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1249,7 +1249,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1287,7 +1287,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"front\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.1\",\"front\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,

@@ -4,7 +4,7 @@
 //   3 そのまま World.startBattle（ふつうの戦闘の入り口）で戦闘 → 主人公の背面を写す → 勝つ → 勝利の振り向き（正面）を写す → フィールドへ
 //   4 戦闘のあと、もう一度［なかま］で立ち絵を写し、戦闘の前と同じ装備・同じ部品か確かめる
 //   ローブ・帽子・杖は戦士には装備できないので、転職（Services.jobChange の画面）で魔法使いにしてから装備し、槍の前に戦士へ戻す
-//   組み合わせ：装備なし／軽装＋剣／重鎧＋兜＋剣と盾／重鎧＋手斧（部品のない武器）／ローブ＋帽子＋杖／槍装備／（最後に）全部はずす
+//   組み合わせ：装備なし／軽装＋剣／重鎧＋兜＋剣と盾／重鎧＋手斧（v9.8.1 から斧を描く）／ローブ＋帽子＋杖／槍装備／（最後に）全部はずす
 //   キャンセル：重鎧＋手斧のあと、［そうび］→ 武器 → 品の一覧で Esc（キャンセル）→ 装備も絵も変わらないこと
 //   VIEW=pc（1280×720）｜phone（スマホ縦：iPhone 13 相当 390×664）  PORT=…  OUT=…
 const { chromium, devices } = require('playwright'); const fs = require('fs');
@@ -15,7 +15,7 @@ const STATES = [
   { key: 'plain', name: '装備なし', job: 'warrior', eq: { weapon: null, armor: null, shield: null, head: null } },
   { key: 'light', name: '軽装＋剣', job: 'warrior', eq: { armor: 'leather_armor', weapon: 'steel_sword' } },
   { key: 'heavy', name: '重鎧＋兜＋剣と盾', job: 'warrior', eq: { armor: 'iron_armor', head: 'iron_helm', shield: 'iron_shield', weapon: 'steel_sword' } },
-  { key: 'heavyaxe', name: '重鎧＋手斧（部品のない武器）', job: 'warrior', eq: { weapon: 'hand_axe' }, cancel: true },
+  { key: 'heavyaxe', name: '重鎧＋手斧', job: 'warrior', eq: { weapon: 'hand_axe' }, cancel: true },
   { key: 'robe', name: 'ローブ＋帽子＋杖', job: 'mage', eq: { armor: 'robe', head: 'wizard_hat', weapon: 'oak_staff' } },
   { key: 'spear', name: '槍装備', job: 'warrior', eq: { weapon: 'iron_spear', armor: null, head: null, shield: null } },
   { key: 'off', name: '全部はずす（解除）', job: 'warrior', eq: { weapon: null, armor: null, shield: null, head: null } },
@@ -157,7 +157,7 @@ let PG = null;   // 失敗したときに画面を残すため
     S(bt.victory && /dir:front/.test(bt.victory.model || '') && !!bt.victory.ea && /"front"/.test(bt.victory.ea || ''), `［${st.name}］勝利の振り向き：正面の絵にも同じ装備を合成（${bt.victory && bt.victory.model}・範囲 ${bt.victory && JSON.stringify(bt.victory.size)}・合成の印 ${bt.victory && String(bt.victory.ea).slice(0, 90)}）`);
     S(m2.st === 'ok' && m2.parts === m.parts && JSON.stringify(m2.equip) === JSON.stringify(m.equip) && m2.rect && m.rect && Math.abs(m2.rect.bottom - m.rect.bottom) < 1, `［${st.name}］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（${m2.parts}）`);
     if (cx) S(cx.same && cx.back && cx.head0 === cx.head1, `［${st.name}］キャンセル：［そうび］→ 武器 → 品の一覧で Esc → 装備も絵も変わらない（${cx.before}・そうびの画面の絵 ${cx.head1}）`);
-    if (st.key === 'heavyaxe') S(/armor_shape_f/.test(m.parts) && !/weapon_/.test(m.parts) && /hand_axe/.test(m.skipped || ''), `［${st.name}］重鎧は表示を続け、部品のない手斧は描かない（部品 ${m.parts}／描かない ${m.skipped}）`);
+    if (st.key === 'heavyaxe') S(/armor_shape_f/.test(m.parts) && /weapon_axe/.test(m.parts) && / hand$/.test(m.parts) && !/weapon_sword/.test(m.parts) && !m.skipped, `［${st.name}］剣から手斧に替えても重鎧は表示を続け、v9.8.1 から手斧を描く（拳は柄の上。部品 ${m.parts}）`);
   }
   const ms = STATES.map((s) => rec[s.key].menu);
   const near = (a, b, t) => Math.abs(a - b) <= t;

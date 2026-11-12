@@ -1,5 +1,5 @@
 // v9.7 装備の外見（ドット絵の差分）：ブラウザの確かめ（ヘッドレス Chromium。実機ではない。GPU なしのソフトウェア描画）
-//   主人公の 3 つの組み合わせ（軽装＋剣／重鎧＋兜＋剣と盾／ローブ＋帽子＋杖）と、素（装備なし）・槍・部品のない品（斧・小さな帽子）を、
+//   主人公の 3 つの組み合わせ（軽装＋剣／重鎧＋兜＋剣と盾／ローブ＋帽子＋杖）と、素（装備なし）・槍・斧（v9.8.1）・部品のない品（短剣・小さな帽子）を、
 //   1 メニュー（なかまの画面の立ち絵＝戦士の立ち絵）と 2 戦闘（3D：背面の 4 方向の絵）で表示して、画面写真と数値を残す
 //   確かめること：元の剣・盾が残らない／兜から髪が出ない／胴の差分が体の外へ出ない（肩当てが浮かない）／足もとの基準点・人物の大きさ・立ち位置が組み合わせで変わらない
 //                 部品のない品・向き・人物は本人の従来の絵／能力値・所持数・セーブの形は今までどおり／ページのエラーなし
@@ -14,7 +14,7 @@ const SETS = [
   { key: 'heavy', name: '重鎧＋兜＋剣と盾', eq: { armor: 'iron_armor', head: 'iron_helm', weapon: 'steel_sword', shield: 'iron_shield' } },
   { key: 'robe', name: 'ローブ＋帽子＋杖', eq: { armor: 'robe', head: 'wizard_hat', weapon: 'oak_staff' } },
   { key: 'spear', name: '重鎧＋槍（長さの確かめ）', eq: { armor: 'iron_armor', weapon: 'iron_spear' } },
-  { key: 'heavyaxe', name: '重鎧＋手斧（部品のない武器）', eq: { armor: 'iron_armor', weapon: 'hand_axe' } },
+  { key: 'heavyaxe', name: '重鎧＋手斧（v9.8.1 から描く）', eq: { armor: 'iron_armor', weapon: 'hand_axe' } },
 ];
 (async () => {
   fs.mkdirSync(OUT + 'shots', { recursive: true }); fs.mkdirSync(OUT + 'logs', { recursive: true });
@@ -79,7 +79,7 @@ const SETS = [
       const orig = await load(view.src); const oc = document.createElement('canvas'); oc.width = W; oc.height = H; oc.getContext('2d').drawImage(orig, pad, pad); const od = data(oc);
       const hel = await layerData(view, 'head_helm_t', W, H, pad), helf = await layerData(view, 'head_helm_f', W, H, pad);
       const plain = await layerData(view, 'base_plain', W, H, pad), lt = await layerData(view, 'armor_light_t', W, H, pad), ht = await layerData(view, 'armor_heavy_t', W, H, pad);
-      const sw = await layerData(view, 'weapon_sword', W, H, pad), sh = await layerData(view, 'shield', W, H, pad), shp = await layerData(view, 'armor_shape_f', W, H, pad);
+      const sw = await layerData(view, 'weapon_sword', W, H, pad), sh = await layerData(view, 'shield', W, H, pad), shp = await layerData(view, 'armor_shape_f', W, H, pad), axp = await layerData(view, 'weapon_axe', W, H, pad), hnd = await layerData(view, 'hand', W, H, pad);
       const res = {};
       for (const st of SETS) {
         const actor = { id: 'hero', job: 'warrior', equip: st.eq };
@@ -92,7 +92,8 @@ const SETS = [
         for (let i = 0; i < W * H; i++) {
           const eq3 = (D) => D.data[i * 4 + 3] > 16 && d.data[i * 4 + 3] > 16 && Math.abs(D.data[i * 4] - d.data[i * 4]) < 3 && Math.abs(D.data[i * 4 + 1] - d.data[i * 4 + 1]) < 3 && Math.abs(D.data[i * 4 + 2] - d.data[i * 4 + 2]) < 3;
           const armored = /armor|mail|plate/.test(st.eq.armor || '');   // 鎧の形を重ねる組み合わせ
-          const same = (D) => eq3(D) && !eq3(plain) && !(armored && eq3(shp));   // 元の剣・盾の色のドットで、素の絵・鎧の形の部品では説明できないもの（体の上に重なった所も数える）
+          const axed = /axe/.test(st.eq.weapon || '');   // v9.8.1 斧の組み合わせ：斧・拳の部品のドットは斧のもの
+          const same = (D) => eq3(D) && !eq3(plain) && !(armored && eq3(shp)) && !(axed && (eq3(axp) || eq3(hnd)));   // 元の剣・盾の色のドットで、素の絵・鎧の形・斧の部品では説明できないもの（体の上に重なった所も数える）
           if (!st.eq.weapon || st.eq.weapon !== 'steel_sword') { if (same(sw)) swLeft++; }
           if (!st.eq.shield) { if (same(sh)) shLeft++; }
         }
@@ -130,17 +131,18 @@ const SETS = [
     const a1 = window.__axe ? EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { weapon: window.__axe } }, 'job:warrior') : null;
     const a2 = EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { head: 'leather_cap' } }, 'job:warrior');
     const a3 = EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { acc: 'ring_power', weapon: 'steel_sword' } }, 'job:warrior');
-    return { axe: a1, cap: a2, ring: a3, gald: EA.supports(State.actor('gald'), 'front'), galdBack: EA.supports(State.actor('gald'), 'back'), heroLeft: EA.supports(h, 'left'), heroFront: EA.supports(h, 'front'), heroMage: EA.supports({ id: 'hero', job: 'mage' }, 'job:mage') };
+    const a4 = EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { weapon: 'dagger', armor: 'iron_armor' } }, 'job:warrior');   // 短剣（主人公に部品のない武器の例。盗賊などの品）
+    return { dagger: a4, axe: a1, cap: a2, ring: a3, gald: EA.supports(State.actor('gald'), 'front'), galdBack: EA.supports(State.actor('gald'), 'back'), heroLeft: EA.supports(h, 'left'), heroFront: EA.supports(h, 'front'), heroMage: EA.supports({ id: 'hero', job: 'mage' }, 'job:mage') };
   });
-  S(un.axe && un.axe.ok && un.axe.mats.length === 0 && /部品がない/.test(un.axe.skipped.join()) && un.cap.ok && un.cap.base === 'base_plain' && /leather_cap/.test(un.cap.skipped.join()), '部品のない品は、その部位だけ描かない（斧：' + (un.axe ? un.axe.skipped.join() : '装備できる斧なし') + '／革の帽子：' + un.cap.skipped.join() + '）');
+  S(un.axe && un.axe.ok && un.axe.mats.join() === 'weapon_axe' && un.dagger.ok && un.dagger.mats.join() === 'armor_heavy' && /部品がない/.test(un.dagger.skipped.join()) && un.cap.ok && un.cap.base === 'base_plain' && /leather_cap/.test(un.cap.skipped.join()), 'v9.8.1 斧は描く（' + (un.axe && un.axe.mats.join()) + '）。部品のない品は、その部位だけ描かない（短剣：' + un.dagger.skipped.join() + '／革の帽子：' + un.cap.skipped.join() + '）');
   S(un.ring.ok && un.ring.skipped.length === 1, '装飾品は描かない（試作の対象外。記録：' + un.ring.skipped.join(',') + '）。ほかの装備は着替える');
   S(un.gald && un.galdBack && !un.heroLeft && !un.heroMage && un.heroFront, '部品のない向き（主人公の戦闘の横向き・魔法使いの立ち絵の向き）は本人の従来の絵。主人公の勝利の正面は着替える。v9.8 からガルドの正面・背面も着替える（確かめは appear_pixel_comp.js）');
-  // 斧を持ったときのメニュー：従来の立ち絵のまま
+  // 斧を持ったときのメニュー：v9.8.1 から斧を描く（柄の上に拳）
   if (before.axe) {
     await equipSet({ weapon: before.axe }); await p.evaluate(() => { Menu.party(); }); await p.waitForSelector('#ui .party-screen .pt-art', { timeout: 60000 });
     await p.waitForFunction(() => { const h = document.querySelector('#ui .pt-art .ea-host'); return h && /ok|error|none/.test(h.getAttribute('data-ea-state') || ''); }, null, { timeout: 30000 }).catch(() => null);
     const ax = await p.evaluate(() => { const h = document.querySelector('#ui .pt-art .ea-host'); const cv = h && h.querySelector('canvas.ea-canvas'); return { st: h && h.getAttribute('data-ea-state'), parts: cv && cv.getAttribute('data-ea-parts'), skipped: cv && cv.getAttribute('data-ea-skipped') }; });
-    S(ax.st === 'ok' && !/weapon_/.test(ax.parts || '') && /hand_axe|axe/.test(ax.skipped || ''), 'メニュー［斧だけ］：武器は描かない（手は空・元の剣は戻らない）。部品：' + ax.parts + '／描かない：' + ax.skipped);
+    S(ax.st === 'ok' && /weapon_axe/.test(ax.parts || '') && /hand/.test(ax.parts || '') && !ax.skipped, 'メニュー［斧だけ］：斧を描き、拳を柄の上に描き直す。部品：' + ax.parts);
     const box = await p.$('#ui .party-screen .pt-artbox') || await p.$('#ui .party-screen .pt-art'); if (box) await box.screenshot({ path: `${OUT}shots/pixel_menu_${KIND}_axe.png` });
     await p.keyboard.press('Escape'); await p.waitForTimeout(200);
   }
