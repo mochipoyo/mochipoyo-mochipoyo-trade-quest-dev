@@ -1,4 +1,4 @@
-# 装備の外見（ドット絵の差分）の対応表（v9.7〜v9.8.2・自動生成）
+# 装備の外見（ドット絵の差分）の対応表（v9.7〜v9.8.4・自動生成）
 
 appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS）から作る。手で書き換えない。
 
@@ -21,6 +21,9 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | kazuto | menu | assets/characters/companions/kazuto.png | 124, 257 | 56, 146（剣：拳の下に鍔（剣を後に描く）／槍・斧：柄の上に拳を描き直す） | 198, 155（盾：左の拳と前腕の上（体・鎧の後に描く）） |
 | kazuto | front | assets/characters/party-directions-add68/sprites/kazuto/front.png | 160, 304 | 96, 192（剣：拳の下に鍔（剣を後に描く）／槍・斧：柄の上に拳を描き直す） | 238, 201（盾：左の拳と前腕の上（体・鎧の後に描く）） |
 | kazuto | back | assets/characters/party-directions-add68/sprites/kazuto/back.png | 160, 304 | 251, 181（剣：正面の剣を左右に返して右手（マントの陰）の先に置く／槍・斧：柄の上に拳を描き直す） | 108, 205（盾：左腕の外側（体の後ろの左腕の上）） |
+| mina | menu | assets/characters/companions/mina.png | 97, 266 | 160, 170（弓：ミナの左手（画面の右）。握りの上に拳を描き直す／短剣：元の絵の 2 本） | 30, 150（短剣のもう 1 本（右手）。盾の部品なし） |
+| mina | front | assets/characters/party-directions-v3/sprites/mina/front.png | 160, 304 | 222, 206（弓：ミナの左手（画面の右）。握りの上に拳を描き直す／短剣：元の絵の 2 本） | 92, 186（短剣のもう 1 本（右手）。盾の部品なし） |
+| mina | back | assets/characters/party-directions-v3/sprites/mina/back.png | 160, 304 | 112, 209（弓：ミナの左手（画面の左）。握りの上に拳を描き直す／短剣：元の絵の 2 本） | 228, 208（短剣のもう 1 本（右手）。盾の部品なし） |
 
 ほかの人物・向き：部品なし（本人の従来の絵）。
 
@@ -39,6 +42,8 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | weapon_spear（（全員）） | 40 | —（変えない） | weapon_spear | はい |
 | weapon_axe（（全員）） | 40 | —（変えない） | weapon_axe | はい |
 | head_cap（（全員）） | 20 | —（変えない） | head_cap_t（tint:main） |  |
+| weapon_bow（（全員）） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_dagger（（全員）） | 40 | —（変えない） | weapon_dagger |  |
 | armor_light（lina） | 10 | —（変えない） | armor_light_t（tint:main） |  |
 | armor_light（gald） | 10 | —（変えない） | armor_light_t（tint:main） |  |
 | weapon_sword（gald） | 40 | —（変えない） | weapon_sword | はい |
@@ -100,10 +105,10 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | weapon | axe/axe | weapon_axe | 5 | sky_axe, dragon_axe, momentum_axe, chainbreak_axe, b19_expected_value_axe |
 | weapon | axe/battleaxe | weapon_axe | 6 | battle_axe, crater_axe, crash_axe, t68_dark_axe, bu_garon_axe, bu_zarg_chainbreaker |
 | weapon | axe/handaxe | weapon_axe | 1 | hand_axe |
-| weapon | bow/bow | （なし→その部位を描かない） | 15 | hunter_bow, survey_bow, star_bow, caravan_bow, zero_bow, breakconfirm_bow, range_bow, prob_hunt_bow, t68_islands_bow, t68_tempus_bow, t68_desert_bow, t68_snow_bow, t68_dark_bow, orbit_bow, bu_zaid_sand_bow |
-| weapon | bow/longbow | （なし→その部位を描かない） | 4 | long_bow, azure_longbow, td_swing_longbow, b19_amber_memory_bow |
-| weapon | bow/mechbow | （なし→その部位を描かない） | 6 | gear_bow, rci_bow, rci_bow_2, t68_machine_bow, bu_drone_link_bow, bu_orbis_orbit_bow |
-| weapon | bow/shortbow | （なし→その部位を描かない） | 1 | short_bow |
+| weapon | bow/bow | weapon_bow | 15 | hunter_bow, survey_bow, star_bow, caravan_bow, zero_bow, breakconfirm_bow, range_bow, prob_hunt_bow, t68_islands_bow, t68_tempus_bow, t68_desert_bow, t68_snow_bow, t68_dark_bow, orbit_bow, bu_zaid_sand_bow |
+| weapon | bow/longbow | weapon_bow | 4 | long_bow, azure_longbow, td_swing_longbow, b19_amber_memory_bow |
+| weapon | bow/mechbow | weapon_bow | 6 | gear_bow, rci_bow, rci_bow_2, t68_machine_bow, bu_drone_link_bow, bu_orbis_orbit_bow |
+| weapon | bow/shortbow | weapon_bow | 1 | short_bow |
 | weapon | claw/claw | （なし→その部位を描かない） | 14 | leather_claw, iron_claw, tiger_claw, shadow_claw, flame_claw, retro_claw, thunder_claw, losscut_claw, b19_sober_claw, t68_tempus_claw, t68_snow_claw, t68_dragon_claw, t68_dark_claw, bu_wolf_king_claw |
 | weapon | claw/gauntlet | （なし→その部位を描かない） | 2 | bu_zarg_remnant_claw, bu_greed_limit_gauntlet |
 | weapon | claw/twinclaw | （なし→その部位を描かない） | 1 | obsidian_twin |
@@ -112,9 +117,9 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | weapon | club/kine | （なし→その部位を描かない） | 1 | b19_golden_kine |
 | weapon | club/mace | （なし→その部位を描かない） | 1 | holy_mace |
 | weapon | club/rod | （なし→その部位を描かない） | 2 | iron_club, basis_rod |
-| weapon | dagger/dagger | （なし→その部位を描かない） | 15 | dagger, assassin_dagger, tide_dagger, void_dagger, stoploss_dagger, stoploss_dagger_2, pinbar_dagger, breakout_dagger, contrarian_blade, b19_present_jewel_blade, b19_two_faced_dagger, t68_islands_dagger, t68_tempus_dagger, t68_machine_dagger, t68_dark_dagger |
-| weapon | dagger/knife | （なし→その部位を描かない） | 3 | bronze_dagger, silent_knife, td_scalper_knife |
-| weapon | dagger/twin | （なし→その部位を描かない） | 2 | macd_twin, macd_twin_2 |
+| weapon | dagger/dagger | weapon_dagger | 15 | dagger, assassin_dagger, tide_dagger, void_dagger, stoploss_dagger, stoploss_dagger_2, pinbar_dagger, breakout_dagger, contrarian_blade, b19_present_jewel_blade, b19_two_faced_dagger, t68_islands_dagger, t68_tempus_dagger, t68_machine_dagger, t68_dark_dagger |
+| weapon | dagger/knife | weapon_dagger | 3 | bronze_dagger, silent_knife, td_scalper_knife |
+| weapon | dagger/twin | weapon_dagger | 2 | macd_twin, macd_twin_2 |
 | weapon | spear/banner | weapon_spear | 1 | guide_flag_spear |
 | weapon | spear/clockhand | weapon_spear | 1 | clock_hand_spear |
 | weapon | spear/halberd | weapon_spear | 2 | halberd, td_breakout_halberd |
@@ -142,3 +147,4 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | gald | armor_light、armor_heavy、weapon_sword、weapon_axe、shield |
 | kyle | armor_light、armor_heavy、head_helm、weapon_sword、weapon_spear、shield |
 | kazuto | armor_light、armor_heavy、head_helm、weapon_sword、weapon_spear、weapon_axe、shield |
+| mina | weapon_bow、weapon_dagger |

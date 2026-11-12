@@ -143,3 +143,25 @@ def spear(Hh, Ww, grip, up, top=150, bottom=100, head=34, half=6.5, shaft_w=2.2)
     m = blade | collar | shaft | butt
     outline(L, m)
     return L
+
+
+def bow(Hh, Ww, grip, up, length=120, depth=15, side=1, limb_w=2.0):
+    """v9.8.4 弓：握り（弓の真ん中）を拳の位置に置く。弓の腹は side の側（+1＝右・-1＝左）へふくらみ、弦は反対側（体の側）にまっすぐ張る
+       木の弓・握りは革巻き・両端は金の弭（はず）。弦は 1 ドットの明るい線（輪郭なし）"""
+    u, v = local(Hh, Ww, grip, up)
+    half = length / 2.0; a = v * side
+    t = np.clip(u / half, -1, 1)
+    curve = -depth * t ** 2 + 2.5 * np.clip(np.abs(t) - 0.82, 0, 1) / 0.18          # 握りで 0、端へ向かって体の側へ反る。端は少しだけ外へ返す（リカーブ）
+    w = limb_w * (1.0 - 0.45 * np.abs(t))                                            # 端へ向かって細く
+    limb = (np.abs(u) <= half) & (np.abs(a - curve) <= np.maximum(w, 0.9))
+    wrap = limb & (np.abs(u) <= 6)
+    tips = limb & (np.abs(u) >= half - 5)
+    string = (np.abs(u) <= half - 2) & (np.abs(a - (-depth + 1.5)) <= 0.5) & ~limb
+    L = P.blank(Hh, Ww)
+    vl = np.clip(0.62 - 0.3 * (a - curve) / max(0.9, limb_w) * side * -1 - 0.12 * np.abs(t), 0, 1)
+    ramp_put(L, limb, vl, ['#4a2c14', '#7a4a22', '#a86c34', '#d09850', '#f0c880'])   # 明るい木（小さな戦闘の絵でも、暗い髪・服の前で見える）
+    ramp_put(L, wrap, np.where((np.floor(u).astype(int) % 3) == 0, 0.25, 0.6), LEATHER)
+    ramp_put(L, tips, np.clip(0.7 - 0.2 * np.sign(u), 0, 1), GOLD)
+    outline(L, limb)
+    L[string] = (236, 232, 220, 255)
+    return L

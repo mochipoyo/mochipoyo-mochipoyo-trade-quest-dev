@@ -12,7 +12,7 @@
 const { chromium } = require('playwright'); const fs = require('fs');
 const PORT = process.env.PORT || 8894; const KIND = process.env.KIND || '3d'; const OUT = process.env.OUT || '/home/claude/envwork/docs/appear/pixel/';
 const URL0 = `http://localhost:${PORT}/` + (KIND === '3d' ? '3d/index.html' : 'index.html') + '?nosw';
-const WHO = (process.env.WHO || 'lina,gald').split(','); const TAG = WHO.join() === 'lina,gald' ? 'comp' : 'knight';
+const WHO = (process.env.WHO || 'lina,gald').split(','); const TAG = WHO.join() === 'lina,gald' ? 'comp' : WHO[0] === 'mina' ? 'mina' : 'knight';
 const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.log((ok ? '  OK  ' : '  NG  ') + m); };
 const SETS = {
   lina: [{ key: 'plain', name: '装備なし', eq: {} }, { key: 'robe', name: '法衣＋杖', eq: { armor: 'robe_skip', weapon: 'oak_staff' } }, { key: 'cap', name: '法衣＋杖＋革の帽子', eq: { armor: 'robe_skip', weapon: 'oak_staff', head: 'leather_cap' } },
@@ -29,8 +29,11 @@ const SETS = {
     { key: 'spear', name: '重鎧＋槍と盾', eq: { armor: 'iron_armor', weapon: 'iron_spear', shield: 'iron_shield' } }, { key: 'unarmed', name: '重鎧＋盾（武器をはずす）', eq: { armor: 'iron_armor', shield: 'iron_shield' } },
     { key: 'knight', name: '騎士の鎧・剣・盾（色のある品）', eq: { armor: 'knight_armor', weapon: 'knight_sword', shield: 'knight_shield' } }, { key: 'light', name: '革の鎧（軽装）＋手斧', eq: { armor: 'leather_armor', weapon: 'hand_axe' } },
     { key: 'nopart', name: '重鎧＋鉄の兜（v9.8.3 から描く）', eq: { armor: 'iron_armor', head: 'iron_helm' } }],
+  // v9.8.4 ミナ（盗賊：短剣・剣・弓）
+  mina: [{ key: 'plain', name: '装備なし', eq: {} }, { key: 'bow', name: '短弓', eq: { weapon: 'short_bow' } }, { key: 'dagger', name: '短剣（元の絵の 2 本）', eq: { weapon: 'dagger' } },
+    { key: 'longbow', name: '長弓（色のある品も同じ形）', eq: { weapon: 'long_bow' } }, { key: 'nopart', name: '銅の剣＋革の鎧＋革の帽子（部品のない品）', eq: { weapon: 'copper_sword', armor: 'leather_armor', head: 'leather_cap' } }],
 };
-const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe', 'weapon_sword'], kyle: ['weapon_sword'], kazuto: ['weapon_sword'] };   // 元の武器（杖・斧・剣）と、v9.8.1 の剣
+const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe', 'weapon_sword'], kyle: ['weapon_sword'], kazuto: ['weapon_sword'], mina: ['weapon_dagger'] };   // 元の武器（杖・斧・剣）と、v9.8.1 の剣
 (async () => {
   fs.mkdirSync(OUT + 'shots', { recursive: true }); fs.mkdirSync(OUT + 'logs', { recursive: true });
   const br = await chromium.launch(); const ctx = await br.newContext({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 2 }); const p = await ctx.newPage();
@@ -71,8 +74,8 @@ const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe'
     }
     const ms = SETS[id].map((s) => rec[id].menu[s.key]); const near = (a, b, t) => Math.abs(a - b) <= t;
     S(ms.every((m) => near(m.bottom, ms[0].bottom, 1) && near(m.cx, ms[0].cx, 1) && near(m.px, ms[0].px, 0.005)), `${id}：なかまの画面の足もと・左右の中心・1 ドットの大きさが ${ms.length} つとも同じ（${ms[0].bottom}/${ms[0].cx}/${ms[0].px}）`);
-    const np = rec[id].menu.nopart; const nps = id === 'lina' ? ['club', 'feather_hat', 'wooden_shield'] : id === 'gald' ? ['iron_spear', 'iron_helm'] : [];
-    S(np.st === 'ok' && nps.every((x) => (np.skipped || '').indexOf(x) >= 0) && /armor_/.test(np.parts) && !/weapon_/.test(np.parts), `${id}：部品のない品は部位ごと（${nps.join('・')} は描かない。鎧は着替える：${np.parts}）`);
+    const np = rec[id].menu.nopart; const nps = id === 'lina' ? ['club', 'feather_hat', 'wooden_shield'] : id === 'gald' ? ['iron_spear', 'iron_helm'] : id === 'mina' ? ['copper_sword', 'leather_armor', 'leather_cap'] : [];
+    S(np.st === 'ok' && nps.every((x) => (np.skipped || '').indexOf(x) >= 0) && (id === 'mina' ? np.parts === 'base_plain' : /armor_/.test(np.parts)) && !/weapon_/.test(np.parts), `${id}：部品のない品は部位ごと（${nps.join('・')} は描かない。鎧は着替える：${np.parts}）`);
     if (id === 'gald') { const m1 = rec[id].menu.heavy, m2 = rec[id].menu.sword, m3 = rec[id].menu.unarmed;
       S(/armor_shape_f/.test(m1.parts) && /weapon_axe/.test(m1.parts) && /armor_shape_f/.test(m2.parts) && /shield_t shield_f weapon_sword hand$/.test(m2.parts) && /armor_shape_f shield_t shield_f$/.test(m3.parts), `ガルド：斧から剣と盾に替えても重鎧はそのまま（${m2.parts}）。武器をはずすと手ぶら（${m3.parts}）`); }
     if (id === 'kyle' || id === 'kazuto') { const M0 = rec[id].menu; const sh = 'shield_f shield_e';
@@ -81,6 +84,7 @@ const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe'
       const alt = id === 'kyle' ? M0.spear : M0.axe; const altW = id === 'kyle' ? 'weapon_spear' : 'weapon_axe'; const altSh = id === 'kyle' ? ' ' + sh : '';
       S(alt.parts === 'base_plain armor_shape_f' + altSh + ' ' + altW + ' hand' && M0.unarmed.parts === 'base_plain armor_shape_f ' + sh, `${id}：剣から${id === 'kyle' ? '槍' : '斧'}に持ち替えても重鎧${id === 'kyle' ? '・盾' : ''}はそのまま（${alt.parts}）。武器をはずすと手ぶら（${M0.unarmed.parts}）`);
       S(/armor_heavy_t/.test(M0.knight.parts) && /shield_t/.test(M0.knight.parts) && /armor_light_t/.test(M0.light.parts) && (id === 'kazuto' || /shield_t/.test(M0.light.parts)), `${id}：色のある品は品の色（騎士の鎧・盾 ${M0.knight.parts}／${id === 'kazuto' ? '革の鎧' : '革の鎧・木の盾'} ${M0.light.parts}）`); }
+    if (id === 'mina') { const M0 = rec[id].menu; S(M0.plain.parts === 'base_plain' && M0.bow.parts === 'base_plain weapon_bow hand' && M0.longbow.parts === M0.bow.parts && M0.dagger.parts === 'base_plain weapon_dagger', `ミナ：装備なし＝手ぶら／弓＝${M0.bow.parts}／短剣＝${M0.dagger.parts}`); }
     if (id === 'lina') { const c1 = rec[id].menu.cap, c2 = rec[id].menu.light;
       S(/head_cap_t/.test(c1.parts) && /head_cap_t/.test(c2.parts) && !c1.skipped && !c2.skipped, `リーナ：帽子（cap 型：革の帽子・高値安値の帽子）は頭巾を品の色に（${c1.parts}）`); }
     // ---- 2 合成の絵の数値（同じ関数をページで使う）----
@@ -95,6 +99,7 @@ const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe'
         const lay = async (k) => { const r = view.parts[k]; const im = await load(r.url); const c = can(); c.getContext('2d').drawImage(im, pad + r.x, pad + r.y); return data(c); };
         const wps = []; for (const k of W0) wps.push(await lay(k)); const plain = await lay('base_plain'); const hand = await lay('hand');
         const fixedArmor = []; for (const k of ['armor_robe_f', 'armor_shape_f', 'shield_f']) if (view.parts[k]) fixedArmor.push(await lay(k));   // 鎧・法衣の「そのまま」の部品（輪郭の色が、元の武器の輪郭と同じことがある）
+        const bowL = view.parts.weapon_bow ? await lay('weapon_bow') : null;   // v9.8.4 弓を持つ組み合わせ：弓の部品のドット（輪郭の色が、元の短剣の輪郭と同じことがある）は弓のもの
         let ofeet = -1; for (let y = H - 1; y >= 0 && ofeet < 0; y--) for (let x = 0; x < W; x++) if (od.data[(y * W + x) * 4 + 3] > 16) { ofeet = y; break; }
         const res = {};
         for (const st of sets) {
@@ -103,11 +108,11 @@ const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe'
           const d = data(r.canvas); const A = (D, i) => D.data[i * 4 + 3];
           let feet = -1; for (let y = H - 1; y >= 0 && feet < 0; y--) for (let x = pad + view.body.x0; x < pad + view.body.x1; x++) if (A(d, y * W + x) > 16) { feet = y; break; }
           // 元の武器のドットが残っていないか（武器を持たない組み合わせ）：元の武器の部品の場所に、その色のままのドットで、素の絵・手では説明できないもの
-          let left = 0, ex = null; const holds = !!st.eq.weapon && /staff|axe|sword/.test(st.eq.weapon);
+          let left = 0, ex = null; const holds = !!st.eq.weapon && /staff|axe|sword|dagger/.test(st.eq.weapon);
           if (!holds) for (let i = 0; i < W * H; i++) {
             if (A(d, i) <= 16) continue;
             const eq3 = (D) => D.data[i * 4 + 3] > 16 && Math.abs(D.data[i * 4] - d.data[i * 4]) < 3 && Math.abs(D.data[i * 4 + 1] - d.data[i * 4 + 1]) < 3 && Math.abs(D.data[i * 4 + 2] - d.data[i * 4 + 2]) < 3;
-            if (wps.some((D) => D.data[i * 4 + 3] > 16 && eq3(D)) && !eq3(plain) && !eq3(hand) && !(st.eq.armor && fixedArmor.some((D) => eq3(D)))) { left++; if (!ex) ex = { x: i % W - pad, y: Math.floor(i / W) - pad, rgb: [d.data[i * 4], d.data[i * 4 + 1], d.data[i * 4 + 2]] }; }
+            if (wps.some((D) => D.data[i * 4 + 3] > 16 && eq3(D)) && !eq3(plain) && !eq3(hand) && !(st.eq.armor && fixedArmor.some((D) => eq3(D))) && !(bowL && /bow/.test(st.eq.weapon || '') && eq3(bowL))) { left++; if (!ex) ex = { x: i % W - pad, y: Math.floor(i / W) - pad, rgb: [d.data[i * 4], d.data[i * 4 + 1], d.data[i * 4 + 2]] }; }
           }
           // 武器の部品の範囲（元の武器があった所）に、何かが描かれているか：武器なしなら 0 に近い（手・体の後ろを埋めた所を除く）
           res[st.key] = { state: r.state, w: r.canvas.width, h: r.canvas.height, feet, left, ex, parts: r.parts, skipped: r.skipped };
@@ -135,7 +140,7 @@ const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe'
     S(same.diff === 0, `${id}：勝利の正面の合成＝メニュー正面の合成を (${same.dx}, ${same.dy}) ずらしたもの（${SETS[id][1].name}：違うドット ${same.diff} / ${same.n}）`);
   }
   // ---- 3 部品のない向き・データ ----
-  const un = await p.evaluate((W) => { const EA = EquipmentAppearance; const L = State.actor(W[0]), G = State.actor(W[1]); return { lLeft: EA.supports(L, 'left'), gRight: EA.supports(G, 'right'), lMenu: EA.menuView(L), gMenu: EA.menuView(G), save: !/equip-pixels|ea-|data:image/.test(JSON.stringify(State.data)) }; }, WHO);
+  const un = await p.evaluate((W) => { const EA = EquipmentAppearance; const L = State.actor(W[0]), G = State.actor(W[W.length - 1]); return { lLeft: EA.supports(L, 'left'), gRight: EA.supports(G, 'right'), lMenu: EA.menuView(L), gMenu: EA.menuView(G), save: !/equip-pixels|ea-|data:image/.test(JSON.stringify(State.data)) }; }, WHO);
   S(!un.lLeft && !un.gRight && un.lMenu === 'menu' && un.gMenu === 'menu' && un.save, '横向き（左右）は従来の絵。メニューは本人の立ち絵（menu）。セーブに外見を書かない');
   S(errs.length === 0, 'ページのエラーなし' + (errs.length ? '：' + errs.slice(0, 3).join(' / ') : ''));
   S(bad.length === 0, '読み込みの失敗（404 など）なし' + (bad.length ? '：' + bad.slice(0, 5).join(' / ') : ''));

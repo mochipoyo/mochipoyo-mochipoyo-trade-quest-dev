@@ -16,9 +16,9 @@ for (const f of fs.readdirSync(ROOT + 'js/data').filter((x) => x.endsWith('.js')
   await p.goto(`http://localhost:${PORT}/index.html?nosw`); await p.waitForFunction(() => window.ITEMS && window.EquipmentAppearance && window.Actors && window.STARTER_WEAPON, null, { timeout: 120000 });
   const r = await p.evaluate((shops) => {
     const EA = EquipmentAppearance; const where = {}; shops.forEach((s) => s.items.forEach((id) => { (where[id] = where[id] || []).indexOf(s.town) < 0 && where[id].push(s.town); }));
-    const actors = { hero: { id: 'hero', job: 'warrior' } }; ['lina', 'gald', 'kyle', 'kazuto'].forEach((id) => { actors[id] = { id, job: COMPANIONS[id].job }; });
+    const actors = { hero: { id: 'hero', job: 'warrior' } }; ['lina', 'gald', 'kyle', 'kazuto', 'mina'].forEach((id) => { actors[id] = { id, job: COMPANIONS[id].job }; });
     const out = { starter: { hero: STARTER_WEAPON.warrior }, join: {}, jobs: {}, actors: {} };
-    ['lina', 'gald', 'kyle', 'kazuto'].forEach((id) => { const c = COMPANIONS[id]; const a = Actors.create(id, c.name, c.job, c.joinLevel, c.sprite); out.join[id] = { job: c.job, joinLevel: c.joinLevel, equip: a.equip }; });
+    ['lina', 'gald', 'kyle', 'kazuto', 'mina'].forEach((id) => { const c = COMPANIONS[id]; const a = Actors.create(id, c.name, c.job, c.joinLevel, c.sprite); out.join[id] = { job: c.job, joinLevel: c.joinLevel, equip: a.equip }; });
     for (const [aid, a] of Object.entries(actors)) {
       const j = JOBS[a.job]; out.jobs[aid] = { job: a.job, name: j.name, weapons: j.weapons, armors: j.armors };
       const rows = {};
@@ -39,7 +39,7 @@ for (const f of fs.readdirSync(ROOT + 'js/data').filter((x) => x.endsWith('.js')
   }, shops);
   await br.close();
   fs.writeFileSync(OUT + 'survey.json', JSON.stringify(r, null, 1));
-  const NAME = { hero: '主人公（戦士）', lina: 'リーナ（僧侶）', gald: 'ガルド（戦士）', kyle: 'カイル（騎士）', kazuto: 'カズト（戦士）' };
+  const NAME = { hero: '主人公（戦士）', lina: 'リーナ（僧侶）', gald: 'ガルド（戦士）', kyle: 'カイル（騎士）', kazuto: 'カズト（戦士）', mina: 'ミナ（盗賊）' };
   const md = ['# 装備の外見：主人公と仲間の装備できる品と、描く／描かない品（自動生成）', '', '`docs/tools/appear/browser/appear_survey.js` がゲームのデータから作る。手で書き換えない。装飾品は数えない（外見を描かない決まり）。', '',
     '## 初期装備', '', '- 主人公：作ったときは何も装備していない。最初に村長と話すと、職業の初めの武器（戦士は ' + r.starter.hero + '）をもらって、その場で装備する（js/data/towns.js）',
     '- 仲間：加入したとき（State.joinCompanion → Actors.create）は何も装備していない（下の表は Actors.create で作って確かめた装備）', '', '| 人物 | 職業 | 加入のレベル（下限） | 装備 |', '|---|---|---|---|', ...Object.entries(r.join).map(([k, j]) => `| ${NAME[k]} | ${j.job} | ${j.joinLevel} | ${Object.entries(j.equip).map(([s, v]) => s + ':' + (v || 'なし')).join(' ')} |`), '',

@@ -20,7 +20,10 @@ KNIGHT = len(sys.argv) > 1 and sys.argv[1] == 'knight'
 if KNIGHT:
     ROWS = [('kyle', 'plain', 'カイル\n装備なし\n（鎧下・手ぶら）'), ('kyle', 'equip', 'カイル\n鉄の鎧＋鋼の剣\n＋鉄の盾'), ('kyle', 'swap', 'カイル\n剣→鉄の槍\n（鎧・盾はそのまま）'), ('kyle', 'unarm', 'カイル\n鉄の鎧＋盾\n（槍をはずす）'),
             ('kazuto', 'plain', 'カズト\n装備なし\n（鎧下・手ぶら）'), ('kazuto', 'equip', 'カズト\n鉄の鎧＋鋼の剣\n＋鉄の盾'), ('kazuto', 'swap', 'カズト\n剣と盾→戦斧\n（鎧はそのまま）'), ('kazuto', 'unarm', 'カズト\n鉄の鎧\n（斧をはずす）')]
-LOGN, SHN, OUTN = ('knight', 'k', 'knight') if KNIGHT else ('comp', 'c', 'comp')
+MINA = len(sys.argv) > 1 and sys.argv[1] == 'mina'   # v9.8.4 ミナ（弓・短剣）：logs/ui_mina_<pc|phone>.json → compare_mina_<pc|phone>.jpg・pixel_comp_sets_mina.jpg
+if MINA:
+    ROWS = [('mina', 'plain', 'ミナ\n装備なし\n（手ぶら）'), ('mina', 'equip', 'ミナ\n短弓'), ('mina', 'swap', 'ミナ\n短剣に持ち替え'), ('mina', 'unarm', 'ミナ\n武器をはずす')]
+LOGN, SHN, OUTN = ('mina', 'm', 'mina') if MINA else ('knight', 'k', 'knight') if KNIGHT else ('comp', 'c', 'comp')
 
 
 def crop_rect(path, r, k=2, m=14):
@@ -68,5 +71,5 @@ for v in ('pc', 'phone'):
 sys.path.insert(0, os.path.join(ROOT, 'tools', 'appear', 'pixel'))
 import manifest as MF, preview as PV, compose as CP
 M = MF.manifest(); data = PV.appearance_data()
-for a in (('kyle', 'kazuto') if KNIGHT else ('hero', 'lina', 'gald')):
+for a in (('mina',) if MINA else ('kyle', 'kazuto') if KNIGHT else ('hero', 'lina', 'gald')):
     if a in M['actors']: CP.sheet(M, a, D, data, each=False, name='pixel_comp_sets_%s.jpg' % a)

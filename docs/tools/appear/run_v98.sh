@@ -37,6 +37,12 @@ run "ブラウザ v9.8.2 カイル・カズト ふつうの手順（確定・解
 run "ブラウザ v9.8.2 カイル・カズト ふつうの手順 スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_knight_ui.js
 run "ブラウザ v9.8.2 カイル・カズト そうび画面 PC" env PAIR=knight VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_comp_equip.js
 run "ブラウザ v9.8.2 カイル・カズト そうび画面 スマホ縦" env PAIR=knight VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_comp_equip.js
+run "ブラウザ v9.8.4 結果の窓：4 人編成・複数人のレベルアップ PC" env VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_result4.js
+run "ブラウザ v9.8.4 結果の窓：4 人編成・複数人のレベルアップ スマホ縦" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_result4.js
+run "ブラウザ v9.8.4 ミナ（弓・短剣）開発用の切り替え 3d" env WHO=mina KIND=3d PORT=8894 node docs/tools/appear/browser/appear_pixel_comp.js
+run "ブラウザ v9.8.4 ミナ（弓・短剣）開発用の切り替え 2d" env WHO=mina KIND=2d PORT=8894 node docs/tools/appear/browser/appear_pixel_comp.js
+run "ブラウザ v9.8.4 ミナ ふつうの手順（確定・キャンセル・解除 → 戦闘 → 勝利 → メニュー・セーブの読み直し）PC" env VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_mina_ui.js
+run "ブラウザ v9.8.4 ミナ ふつうの手順 スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_mina_ui.js
 run "ブラウザ 別のサイト pixel 3d cors" env MODE=pixel KIND=3d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 3d nocors" env MODE=pixel KIND=3d XMODE=nocors XPORT=8896 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 2d cors" env MODE=pixel KIND=2d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
@@ -49,4 +55,5 @@ kill $X1 $X2 2>/dev/null; wait $X1 $X2 2>/dev/null; rm -f "$ONE"
 python3 docs/tools/appear/pixel_sheets.py >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_comp.py >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_comp.py knight >> "$LOG" 2>&1
+python3 docs/tools/appear/pixel_sheets_comp.py mina >> "$LOG" 2>&1
 echo "--- まとめ" >> "$LOG"; echo "NG・失敗の行：$(grep -cE '^  NG  |終了コード|CRASH|FAIL' "$LOG")" >> "$LOG"
