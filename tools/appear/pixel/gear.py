@@ -120,3 +120,26 @@ def heater(Hh, Ww, cx, cy, w, h, squash=1.0, light=-1, rim_ramp=None):
         if 0 <= py < Hh and 0 <= px < Ww and rim[py, px]: f[py, px] = (*P.hexrgb(BLADE[4]), 255)
     outline(f, m)
     return g, f, m
+
+
+def spear(Hh, Ww, grip, up, top=150, bottom=100, head=34, half=6.5, shaft_w=2.2):
+    """v9.8.2 槍：木の柄（握りの下 bottom・上 top）。上の端に木の葉形の穂先（真ん中に稜線）と金の口金、下の端に青銅の石突き
+       カイル・カズトの正面・背面（握りの位置と柄の向きで置く。主人公の槍は build_hero.py の別の描き方のまま）"""
+    u, v = local(Hh, Ww, grip, up)
+    hb = top - head                                                          # 穂先の付け根
+    s = (top - u) / head                                                     # 0＝先・1＝付け根
+    w = half * np.where(s < 0.62, np.sqrt(np.clip(s / 0.62, 0, 1)), np.clip((1 - s) / 0.38, 0, 1) ** 0.8)
+    blade = (s >= 0) & (s <= 1) & (np.abs(v + 0.25) <= np.maximum(w, 0.6))
+    collar = (u >= hb - 5) & (u < hb + 0.5) & (np.abs(v) <= shaft_w + 1.4)
+    shaft = (u >= -bottom + 3) & (u < hb - 5) & (np.abs(v) <= shaft_w)
+    butt = (u >= -bottom) & (u < -bottom + 3) & (np.abs(v) <= shaft_w + 0.6)
+    L = P.blank(Hh, Ww)
+    ramp_put(L, shaft, np.clip(0.55 - 0.35 * v / shaft_w + np.where((np.floor(u).astype(int) % 13) == 0, -0.25, 0), 0, 1), WOOD)
+    vb = np.where(v < -0.6, 0.84, np.where(v > 0.6, 0.4, 0.66)) - 0.12 * np.clip(1 - s, 0, 1)
+    vb = np.where(np.abs(v + 0.25) < 0.6, 0.98, vb)                          # 稜線
+    ramp_put(L, blade, vb, BLADE)
+    ramp_put(L, collar, np.clip(0.7 - 0.35 * v / (shaft_w + 1.4) - 0.1 * ((u - hb + 5) // 2 % 2), 0, 1), GOLD)
+    ramp_put(L, butt, np.clip(0.6 - 0.3 * v / (shaft_w + 0.6), 0, 1), BRONZE)
+    m = blade | collar | shaft | butt
+    outline(L, m)
+    return L

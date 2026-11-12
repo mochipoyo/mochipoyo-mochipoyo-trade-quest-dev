@@ -5,6 +5,8 @@
 #                                  列＝メニュー正面／戦闘背面／勝利正面（結果の窓を隠して）／勝利正面（結果の窓あり）／戦闘のあとのメニュー
 #     メニュー＝なかまの画面の立ち絵の枠（同じ倍率）。戦闘・勝利＝同じカメラ・同じ倍率（画面写真の 2 倍の画素のまま切り出す）
 #   ・pixel_comp_sets_<hero|lina|gald>.jpg：ゲームと同じ重ね方で作った合成の絵（メニュー・勝利の正面・背面 × 組み合わせ。2 倍）
+#   v9.8.2 python3 docs/tools/appear/pixel_sheets_comp.py knight：カイル・カズト（browser/appear_pixel_knight_ui.js の記録 logs/ui_knight_<pc|phone>.json）
+#     → compare_knight_<pc|phone>.jpg（行＝カイル・カズト × 装備なし／重鎧＋剣と盾／持ち替え／武器なし）・pixel_comp_sets_<kyle|kazuto>.jpg
 import os, sys, json
 from PIL import Image, ImageDraw, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
@@ -14,6 +16,11 @@ f = ImageFont.truetype(FONT, 24) if os.path.exists(FONT) else ImageFont.load_def
 fs = ImageFont.truetype(FONT, 18) if os.path.exists(FONT) else ImageFont.load_default()
 ROWS = [('lina', 'plain', 'リーナ\n装備なし\n（旅装・手ぶら）'), ('lina', 'equip', 'リーナ\n見送りの法衣\n＋樫の杖'), ('lina', 'swap', 'リーナ\n法衣＋杖\n＋革の帽子'), ('lina', 'unarm', 'リーナ\n法衣＋帽子\n（杖をはずす）'),
         ('gald', 'plain', 'ガルド\n装備なし\n（旅装・手ぶら）'), ('gald', 'equip', 'ガルド\n鉄の鎧＋戦斧'), ('gald', 'swap', 'ガルド\n鉄の鎧＋鋼の剣\n＋鉄の盾'), ('gald', 'unarm', 'ガルド\n鉄の鎧＋盾\n（剣をはずす）')]
+KNIGHT = len(sys.argv) > 1 and sys.argv[1] == 'knight'
+if KNIGHT:
+    ROWS = [('kyle', 'plain', 'カイル\n装備なし\n（鎧下・手ぶら）'), ('kyle', 'equip', 'カイル\n鉄の鎧＋鋼の剣\n＋鉄の盾'), ('kyle', 'swap', 'カイル\n剣→鉄の槍\n（鎧・盾はそのまま）'), ('kyle', 'unarm', 'カイル\n鉄の鎧＋盾\n（槍をはずす）'),
+            ('kazuto', 'plain', 'カズト\n装備なし\n（鎧下・手ぶら）'), ('kazuto', 'equip', 'カズト\n鉄の鎧＋鋼の剣\n＋鉄の盾'), ('kazuto', 'swap', 'カズト\n剣と盾→戦斧\n（鎧はそのまま）'), ('kazuto', 'unarm', 'カズト\n鉄の鎧\n（斧をはずす）')]
+LOGN, SHN, OUTN = ('knight', 'k', 'knight') if KNIGHT else ('comp', 'c', 'comp')
 
 
 def crop_rect(path, r, k=2, m=14):
@@ -26,18 +33,18 @@ def missing(w=200, h=200, t='画面なし（確かめられず）'):
 
 
 for v in ('pc', 'phone'):
-    lp = L + 'ui_comp_%s.json' % v
+    lp = L + 'ui_%s_%s.json' % (LOGN, v)
     if not os.path.exists(lp): continue
     rec = json.load(open(lp, encoding='utf8'))['rec']
     rows = []
     for aid, st, title in ROWS:
         b = rec[st]['battle'] or {}; cells = []
         def menu(tag):
-            p = D + 'ui_%s_c_menu%s_%s_%s.png' % (v, tag, aid, st); return Image.open(p).convert('RGB') if os.path.exists(p) else missing()
+            p = D + 'ui_%s_%s_menu%s_%s_%s.png' % (v, SHN, tag, aid, st); return Image.open(p).convert('RGB') if os.path.exists(p) else missing()
         cells.append(('メニュー正面', menu('')))
-        r = (b.get('rects') or {}).get(aid); p = D + 'ui_%s_c_battle_%s.jpg' % (v, st)
+        r = (b.get('rects') or {}).get(aid); p = D + 'ui_%s_%s_battle_%s.jpg' % (v, SHN, st)
         cells.append(('戦闘背面', crop_rect(p, r) if r and os.path.exists(p) else missing()))
-        r = (b.get('vrects') or {}).get(aid); p = D + 'ui_%s_c_victory_%s.jpg' % (v, st); p2 = D + 'ui_%s_c_victory_ui_%s.jpg' % (v, st)
+        r = (b.get('vrects') or {}).get(aid); p = D + 'ui_%s_%s_victory_%s.jpg' % (v, SHN, st); p2 = D + 'ui_%s_%s_victory_ui_%s.jpg' % (v, SHN, st)
         cells.append(('勝利正面', crop_rect(p, r) if r and os.path.exists(p) else missing()))
         cv = (b.get('cover') or {}).get(aid)
         cells.append(('勝利正面（窓あり）' + ('\n窓に隠れる %d%%' % round(cv['covered'] * 100) if cv else ''), crop_rect(p2, r) if r and os.path.exists(p2) else missing()))
@@ -56,10 +63,10 @@ for v in ('pc', 'phone'):
             x += ww[j] + 12
         y += h + 16
     d.text((10, H - 34), ('PC 1280×720' if v == 'pc' else 'スマホ縦 390×664') + '。ふつうの装備メニューで変更 → そのまま戦闘 → 勝利 → メニュー。戦闘・勝利は同じカメラ・同じ倍率（結果の窓ありの列は、窓が人物に重なった画面そのまま）', fill=(200, 210, 230), font=fs)
-    S.save(D + 'compare_comp_%s.jpg' % v, quality=88); print('compare_comp_%s.jpg' % v, S.size)
+    S.save(D + 'compare_%s_%s.jpg' % (OUTN, v), quality=88); print('compare_%s_%s.jpg' % (OUTN, v), S.size)
 # 合成の絵（開発用の重ね方の見本）
 sys.path.insert(0, os.path.join(ROOT, 'tools', 'appear', 'pixel'))
 import manifest as MF, preview as PV, compose as CP
 M = MF.manifest(); data = PV.appearance_data()
-for a in ('hero', 'lina', 'gald'):
+for a in (('kyle', 'kazuto') if KNIGHT else ('hero', 'lina', 'gald')):
     if a in M['actors']: CP.sheet(M, a, D, data, each=False, name='pixel_comp_sets_%s.jpg' % a)

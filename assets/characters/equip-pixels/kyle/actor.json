@@ -1,0 +1,330 @@
+{
+ "menuBase": "menu",
+ "materials": {
+  "shield": {
+   "z": 30,
+   "layers": [
+    {
+     "part": "shield_f"
+    },
+    {
+     "part": "shield_t",
+     "tint": "main",
+     "onlyColor": true
+    },
+    {
+     "part": "shield_e"
+    }
+   ]
+  }
+ },
+ "views": {
+  "menu": {
+   "src": "assets/characters/companions/kyle.png",
+   "w": 218,
+   "h": 265,
+   "dir": "front",
+   "pivot": [
+    109,
+    263
+   ],
+   "body": {
+    "x0": 0,
+    "y0": 2,
+    "x1": 218,
+    "y1": 263
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 220,
+    "y1": 265
+   },
+   "grip": {
+    "x": 35,
+    "y": 160,
+    "order": "剣：拳の下に鍔（剣を後に描く）／槍：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 170,
+    "y": 160,
+    "order": "盾：左の拳と前腕の上（体・鎧の後に描く）"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/kyle/menu/base_plain.png?v=352183a6",
+     "x": 0,
+     "y": 2,
+     "w": 218,
+     "h": 261
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/armor_shape_f.png?v=8d8827c3",
+     "x": 17,
+     "y": 84,
+     "w": 167,
+     "h": 179
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/armor_heavy_t.png?v=4347e8e7",
+     "x": 17,
+     "y": 84,
+     "w": 167,
+     "h": 179
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/armor_light_t.png?v=baa66a4a",
+     "x": 17,
+     "y": 84,
+     "w": 167,
+     "h": 179
+    },
+    "shield_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/shield_f.png?v=9c46634a",
+     "x": 132,
+     "y": 104,
+     "w": 74,
+     "h": 116
+    },
+    "shield_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/shield_t.png?v=74a1940e",
+     "x": 133,
+     "y": 105,
+     "w": 72,
+     "h": 115
+    },
+    "shield_e": {
+     "url": "assets/characters/equip-pixels/kyle/menu/shield_e.png?v=4cead30a",
+     "x": 132,
+     "y": 104,
+     "w": 74,
+     "h": 116
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_sword.png?v=c66cbfe7",
+     "x": 10,
+     "y": 143,
+     "w": 129,
+     "h": 101
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/kyle/menu/hand.png?v=43db1c0f",
+     "x": 19,
+     "y": 146,
+     "w": 34,
+     "h": 28
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_spear.png?v=2e7ee827",
+     "x": 20,
+     "y": 8,
+     "w": 25,
+     "h": 253
+    }
+   }
+  },
+  "front": {
+   "src": "assets/characters/party-directions-v3/sprites/kyle/front.png",
+   "w": 320,
+   "h": 320,
+   "dir": "front",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 51,
+    "y0": 41,
+    "x1": 269,
+    "y1": 302
+   },
+   "grip": {
+    "x": 86,
+    "y": 199,
+    "order": "剣：拳の下に鍔（剣を後に描く）／槍：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 221,
+    "y": 199,
+    "order": "盾：左の拳と前腕の上（体・鎧の後に描く）"
+   },
+   "from": "menu",
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/kyle/menu/base_plain.png?v=352183a6",
+     "x": 51,
+     "y": 41,
+     "w": 218,
+     "h": 261
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/armor_shape_f.png?v=8d8827c3",
+     "x": 68,
+     "y": 123,
+     "w": 167,
+     "h": 179
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/armor_heavy_t.png?v=4347e8e7",
+     "x": 68,
+     "y": 123,
+     "w": 167,
+     "h": 179
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/armor_light_t.png?v=baa66a4a",
+     "x": 68,
+     "y": 123,
+     "w": 167,
+     "h": 179
+    },
+    "shield_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/shield_f.png?v=9c46634a",
+     "x": 183,
+     "y": 143,
+     "w": 74,
+     "h": 116
+    },
+    "shield_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/shield_t.png?v=74a1940e",
+     "x": 184,
+     "y": 144,
+     "w": 72,
+     "h": 115
+    },
+    "shield_e": {
+     "url": "assets/characters/equip-pixels/kyle/menu/shield_e.png?v=4cead30a",
+     "x": 183,
+     "y": 143,
+     "w": 74,
+     "h": 116
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_sword.png?v=c66cbfe7",
+     "x": 61,
+     "y": 182,
+     "w": 129,
+     "h": 101
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/kyle/menu/hand.png?v=43db1c0f",
+     "x": 70,
+     "y": 185,
+     "w": 34,
+     "h": 28
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_spear.png?v=2e7ee827",
+     "x": 71,
+     "y": 47,
+     "w": 25,
+     "h": 253
+    }
+   }
+  },
+  "back": {
+   "src": "assets/characters/party-directions-v3/sprites/kyle/back.png",
+   "w": 320,
+   "h": 320,
+   "dir": "back",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 43,
+    "y0": 34,
+    "x1": 252,
+    "y1": 304
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 322,
+    "y1": 320
+   },
+   "grip": {
+    "x": 232,
+    "y": 203,
+    "order": "剣：拳の下に鍔／槍：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 64,
+    "y": 195,
+    "order": "盾：左腕の外側（腕の後ろ）"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/kyle/back/base_plain.png?v=e299038c",
+     "x": 39,
+     "y": 30,
+     "w": 252,
+     "h": 276
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/armor_shape_f.png?v=980c1c6a",
+     "x": 82,
+     "y": 121,
+     "w": 162,
+     "h": 181
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/armor_heavy_t.png?v=67f2ec60",
+     "x": 82,
+     "y": 121,
+     "w": 161,
+     "h": 178
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/armor_light_t.png?v=aea8d53c",
+     "x": 82,
+     "y": 121,
+     "w": 161,
+     "h": 178
+    },
+    "shield_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/shield_f.png?v=eec706ea",
+     "x": 49,
+     "y": 145,
+     "w": 39,
+     "h": 104
+    },
+    "shield_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/shield_t.png?v=5a126716",
+     "x": 49,
+     "y": 145,
+     "w": 39,
+     "h": 104
+    },
+    "shield_e": {
+     "url": "assets/characters/equip-pixels/kyle/back/shield_e.png?v=db4bc946",
+     "x": 51,
+     "y": 146,
+     "w": 36,
+     "h": 94
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/kyle/back/weapon_sword.png?v=b01ad597",
+     "x": 215,
+     "y": 184,
+     "w": 72,
+     "h": 98
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/kyle/back/hand.png?v=8d1550b2",
+     "x": 217,
+     "y": 190,
+     "w": 30,
+     "h": 26
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/kyle/back/weapon_spear.png?v=fcda7ca3",
+     "x": 223,
+     "y": 51,
+     "w": 25,
+     "h": 250
+    }
+   }
+  }
+ }
+}

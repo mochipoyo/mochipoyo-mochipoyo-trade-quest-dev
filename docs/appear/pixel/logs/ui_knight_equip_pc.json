@@ -1,0 +1,84 @@
+{
+ "VIEW": "pc",
+ "PAIR": "knight",
+ "ok": 5,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "カイル：そうび画面の上の立ち絵に合成（base_plain armor_shape_f・{\"w\":99.8,\"h\":120}）"
+  },
+  {
+   "ok": true,
+   "m": "カイル：品の一覧で 鋼の剣 を選ぶと、試着の枠に持った絵（base_plain armor_shape_f weapon_sword・絵 {\"x\":527.3,\"y\":112.7,\"w\":112,\"h\":140}）。確定しなければ装備は変わらない"
+  },
+  {
+   "ok": true,
+   "m": "カズト：そうび画面の上の立ち絵に合成（base_plain armor_shape_f・{\"w\":116.8,\"h\":120}）"
+  },
+  {
+   "ok": true,
+   "m": "カズト：品の一覧で 戦斧 を選ぶと、試着の枠に持った絵（base_plain armor_shape_f weapon_axe hand・絵 {\"x\":527.3,\"y\":112.7,\"w\":112,\"h\":140}）。確定しなければ装備は変わらない"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  }
+ ],
+ "rec": {
+  "kyle": {
+   "head": {
+    "parts": "base_plain armor_shape_f",
+    "state": "ok",
+    "rect": {
+     "w": 99.8,
+     "h": 120
+    }
+   },
+   "tryOn": {
+    "state": "ok",
+    "parts": "base_plain armor_shape_f weapon_sword",
+    "rect": {
+     "x": 527.3,
+     "y": 112.7,
+     "w": 112,
+     "h": 140
+    },
+    "box": {
+     "x": 527.3,
+     "y": 112.7,
+     "w": 112,
+     "h": 155.3
+    }
+   },
+   "same": true
+  },
+  "kazuto": {
+   "head": {
+    "parts": "base_plain armor_shape_f",
+    "state": "ok",
+    "rect": {
+     "w": 116.8,
+     "h": 120
+    }
+   },
+   "tryOn": {
+    "state": "ok",
+    "parts": "base_plain armor_shape_f weapon_axe hand",
+    "rect": {
+     "x": 527.3,
+     "y": 112.7,
+     "w": 112,
+     "h": 140
+    },
+    "box": {
+     "x": 527.3,
+     "y": 112.7,
+     "w": 112,
+     "h": 155.3
+    }
+   },
+   "same": true
+  }
+ }
+}

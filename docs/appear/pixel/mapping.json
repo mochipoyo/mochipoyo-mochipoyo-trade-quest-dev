@@ -970,6 +970,595 @@
      }
     }
    }
+  },
+  "kyle": {
+   "menu": {
+    "src": "assets/characters/companions/kyle.png",
+    "size": [
+     218,
+     265
+    ],
+    "dir": "front",
+    "pivot": [
+     109,
+     263
+    ],
+    "grip": {
+     "x": 35,
+     "y": 160,
+     "order": "剣：拳の下に鍔（剣を後に描く）／槍：柄の上に拳を描き直す"
+    },
+    "offhand": {
+     "x": 170,
+     "y": 160,
+     "order": "盾：左の拳と前腕の上（体・鎧の後に描く）"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/kyle/menu/base_plain.png",
+      "x": 0,
+      "y": 2,
+      "w": 218,
+      "h": 261
+     },
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/kyle/menu/armor_shape_f.png",
+      "x": 17,
+      "y": 84,
+      "w": 167,
+      "h": 179
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/kyle/menu/armor_heavy_t.png",
+      "x": 17,
+      "y": 84,
+      "w": 167,
+      "h": 179
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/kyle/menu/armor_light_t.png",
+      "x": 17,
+      "y": 84,
+      "w": 167,
+      "h": 179
+     },
+     "shield_f": {
+      "file": "assets/characters/equip-pixels/kyle/menu/shield_f.png",
+      "x": 132,
+      "y": 104,
+      "w": 74,
+      "h": 116
+     },
+     "shield_t": {
+      "file": "assets/characters/equip-pixels/kyle/menu/shield_t.png",
+      "x": 133,
+      "y": 105,
+      "w": 72,
+      "h": 115
+     },
+     "shield_e": {
+      "file": "assets/characters/equip-pixels/kyle/menu/shield_e.png",
+      "x": 132,
+      "y": 104,
+      "w": 74,
+      "h": 116
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/kyle/menu/weapon_sword.png",
+      "x": 10,
+      "y": 143,
+      "w": 129,
+      "h": 101
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/kyle/menu/hand.png",
+      "x": 19,
+      "y": 146,
+      "w": 34,
+      "h": 28
+     },
+     "weapon_spear": {
+      "file": "assets/characters/equip-pixels/kyle/menu/weapon_spear.png",
+      "x": 20,
+      "y": 8,
+      "w": 25,
+      "h": 253
+     }
+    }
+   },
+   "front": {
+    "src": "assets/characters/party-directions-v3/sprites/kyle/front.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "front",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 86,
+     "y": 199,
+     "order": "剣：拳の下に鍔（剣を後に描く）／槍：柄の上に拳を描き直す"
+    },
+    "offhand": {
+     "x": 221,
+     "y": 199,
+     "order": "盾：左の拳と前腕の上（体・鎧の後に描く）"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/kyle/menu/base_plain.png",
+      "x": 51,
+      "y": 41,
+      "w": 218,
+      "h": 261
+     },
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/kyle/menu/armor_shape_f.png",
+      "x": 68,
+      "y": 123,
+      "w": 167,
+      "h": 179
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/kyle/menu/armor_heavy_t.png",
+      "x": 68,
+      "y": 123,
+      "w": 167,
+      "h": 179
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/kyle/menu/armor_light_t.png",
+      "x": 68,
+      "y": 123,
+      "w": 167,
+      "h": 179
+     },
+     "shield_f": {
+      "file": "assets/characters/equip-pixels/kyle/menu/shield_f.png",
+      "x": 183,
+      "y": 143,
+      "w": 74,
+      "h": 116
+     },
+     "shield_t": {
+      "file": "assets/characters/equip-pixels/kyle/menu/shield_t.png",
+      "x": 184,
+      "y": 144,
+      "w": 72,
+      "h": 115
+     },
+     "shield_e": {
+      "file": "assets/characters/equip-pixels/kyle/menu/shield_e.png",
+      "x": 183,
+      "y": 143,
+      "w": 74,
+      "h": 116
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/kyle/menu/weapon_sword.png",
+      "x": 61,
+      "y": 182,
+      "w": 129,
+      "h": 101
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/kyle/menu/hand.png",
+      "x": 70,
+      "y": 185,
+      "w": 34,
+      "h": 28
+     },
+     "weapon_spear": {
+      "file": "assets/characters/equip-pixels/kyle/menu/weapon_spear.png",
+      "x": 71,
+      "y": 47,
+      "w": 25,
+      "h": 253
+     }
+    }
+   },
+   "back": {
+    "src": "assets/characters/party-directions-v3/sprites/kyle/back.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "back",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 232,
+     "y": 203,
+     "order": "剣：拳の下に鍔／槍：柄の上に拳を描き直す"
+    },
+    "offhand": {
+     "x": 64,
+     "y": 195,
+     "order": "盾：左腕の外側（腕の後ろ）"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/kyle/back/base_plain.png",
+      "x": 39,
+      "y": 30,
+      "w": 252,
+      "h": 276
+     },
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/kyle/back/armor_shape_f.png",
+      "x": 82,
+      "y": 121,
+      "w": 162,
+      "h": 181
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/kyle/back/armor_heavy_t.png",
+      "x": 82,
+      "y": 121,
+      "w": 161,
+      "h": 178
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/kyle/back/armor_light_t.png",
+      "x": 82,
+      "y": 121,
+      "w": 161,
+      "h": 178
+     },
+     "shield_f": {
+      "file": "assets/characters/equip-pixels/kyle/back/shield_f.png",
+      "x": 49,
+      "y": 145,
+      "w": 39,
+      "h": 104
+     },
+     "shield_t": {
+      "file": "assets/characters/equip-pixels/kyle/back/shield_t.png",
+      "x": 49,
+      "y": 145,
+      "w": 39,
+      "h": 104
+     },
+     "shield_e": {
+      "file": "assets/characters/equip-pixels/kyle/back/shield_e.png",
+      "x": 51,
+      "y": 146,
+      "w": 36,
+      "h": 94
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/kyle/back/weapon_sword.png",
+      "x": 215,
+      "y": 184,
+      "w": 72,
+      "h": 98
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/kyle/back/hand.png",
+      "x": 217,
+      "y": 190,
+      "w": 30,
+      "h": 26
+     },
+     "weapon_spear": {
+      "file": "assets/characters/equip-pixels/kyle/back/weapon_spear.png",
+      "x": 223,
+      "y": 51,
+      "w": 25,
+      "h": 250
+     }
+    }
+   }
+  },
+  "kazuto": {
+   "menu": {
+    "src": "assets/characters/companions/kazuto.png",
+    "size": [
+     249,
+     258
+    ],
+    "dir": "front",
+    "pivot": [
+     124,
+     257
+    ],
+    "grip": {
+     "x": 56,
+     "y": 146,
+     "order": "剣：拳の下に鍔（剣を後に描く）／槍・斧：柄の上に拳を描き直す"
+    },
+    "offhand": {
+     "x": 198,
+     "y": 155,
+     "order": "盾：左の拳と前腕の上（体・鎧の後に描く）"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/base_plain.png",
+      "x": 28,
+      "y": 0,
+      "w": 215,
+      "h": 258
+     },
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/armor_shape_f.png",
+      "x": 47,
+      "y": 60,
+      "w": 157,
+      "h": 198
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/armor_heavy_t.png",
+      "x": 48,
+      "y": 60,
+      "w": 156,
+      "h": 195
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/armor_light_t.png",
+      "x": 48,
+      "y": 60,
+      "w": 156,
+      "h": 195
+     },
+     "shield_f": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/shield_f.png",
+      "x": 154,
+      "y": 67,
+      "w": 89,
+      "h": 176
+     },
+     "shield_t": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/shield_t.png",
+      "x": 154,
+      "y": 67,
+      "w": 89,
+      "h": 176
+     },
+     "shield_e": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/shield_e.png",
+      "x": 156,
+      "y": 69,
+      "w": 85,
+      "h": 166
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/weapon_sword.png",
+      "x": 0,
+      "y": 146,
+      "w": 85,
+      "h": 106
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/hand.png",
+      "x": 45,
+      "y": 127,
+      "w": 25,
+      "h": 36
+     },
+     "weapon_spear": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/weapon_spear.png",
+      "x": 38,
+      "y": 0,
+      "w": 30,
+      "h": 245
+     },
+     "weapon_axe": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/weapon_axe.png",
+      "x": 21,
+      "y": 73,
+      "w": 42,
+      "h": 101
+     }
+    }
+   },
+   "front": {
+    "src": "assets/characters/party-directions-add68/sprites/kazuto/front.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "front",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 96,
+     "y": 192,
+     "order": "剣：拳の下に鍔（剣を後に描く）／槍・斧：柄の上に拳を描き直す"
+    },
+    "offhand": {
+     "x": 238,
+     "y": 201,
+     "order": "盾：左の拳と前腕の上（体・鎧の後に描く）"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/base_plain.png",
+      "x": 68,
+      "y": 46,
+      "w": 215,
+      "h": 258
+     },
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/armor_shape_f.png",
+      "x": 87,
+      "y": 106,
+      "w": 157,
+      "h": 198
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/armor_heavy_t.png",
+      "x": 88,
+      "y": 106,
+      "w": 156,
+      "h": 195
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/armor_light_t.png",
+      "x": 88,
+      "y": 106,
+      "w": 156,
+      "h": 195
+     },
+     "shield_f": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/shield_f.png",
+      "x": 194,
+      "y": 113,
+      "w": 89,
+      "h": 176
+     },
+     "shield_t": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/shield_t.png",
+      "x": 194,
+      "y": 113,
+      "w": 89,
+      "h": 176
+     },
+     "shield_e": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/shield_e.png",
+      "x": 196,
+      "y": 115,
+      "w": 85,
+      "h": 166
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/weapon_sword.png",
+      "x": 40,
+      "y": 192,
+      "w": 85,
+      "h": 106
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/hand.png",
+      "x": 85,
+      "y": 173,
+      "w": 25,
+      "h": 36
+     },
+     "weapon_spear": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/weapon_spear.png",
+      "x": 78,
+      "y": 46,
+      "w": 30,
+      "h": 245
+     },
+     "weapon_axe": {
+      "file": "assets/characters/equip-pixels/kazuto/menu/weapon_axe.png",
+      "x": 61,
+      "y": 119,
+      "w": 42,
+      "h": 101
+     }
+    }
+   },
+   "back": {
+    "src": "assets/characters/party-directions-add68/sprites/kazuto/back.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "back",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 251,
+     "y": 181,
+     "order": "剣：正面の剣を左右に返して右手（マントの陰）の先に置く／槍・斧：柄の上に拳を描き直す"
+    },
+    "offhand": {
+     "x": 108,
+     "y": 205,
+     "order": "盾：左腕の外側（体の後ろの左腕の上）"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/kazuto/back/base_plain.png",
+      "x": 68,
+      "y": 47,
+      "w": 233,
+      "h": 257
+     },
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/kazuto/back/armor_shape_f.png",
+      "x": 82,
+      "y": 110,
+      "w": 167,
+      "h": 194
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/kazuto/back/armor_heavy_t.png",
+      "x": 82,
+      "y": 112,
+      "w": 167,
+      "h": 189
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/kazuto/back/armor_light_t.png",
+      "x": 82,
+      "y": 112,
+      "w": 167,
+      "h": 189
+     },
+     "shield_f": {
+      "file": "assets/characters/equip-pixels/kazuto/back/shield_f.png",
+      "x": 68,
+      "y": 111,
+      "w": 86,
+      "h": 190
+     },
+     "shield_t": {
+      "file": "assets/characters/equip-pixels/kazuto/back/shield_t.png",
+      "x": 68,
+      "y": 111,
+      "w": 86,
+      "h": 190
+     },
+     "shield_e": {
+      "file": "assets/characters/equip-pixels/kazuto/back/shield_e.png",
+      "x": 71,
+      "y": 114,
+      "w": 81,
+      "h": 185
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/kazuto/back/hand.png",
+      "x": 236,
+      "y": 153,
+      "w": 17,
+      "h": 30
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/kazuto/back/weapon_sword.png",
+      "x": 223,
+      "y": 181,
+      "w": 85,
+      "h": 106
+     },
+     "weapon_spear": {
+      "file": "assets/characters/equip-pixels/kazuto/back/weapon_spear.png",
+      "x": 240,
+      "y": 31,
+      "w": 29,
+      "h": 249
+     },
+     "weapon_axe": {
+      "file": "assets/characters/equip-pixels/kazuto/back/weapon_axe.png",
+      "x": 245,
+      "y": 108,
+      "w": 41,
+      "h": 101
+     }
+    }
+   }
   }
  },
  "items": {
@@ -988,7 +1577,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "copper_sword": {
@@ -1006,7 +1601,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "iron_sword": {
@@ -1024,7 +1625,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "steel_sword": {
@@ -1042,7 +1649,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "knight_sword": {
@@ -1060,7 +1673,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "wave_sword": {
@@ -1078,7 +1697,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "dagger": {
@@ -1096,7 +1721,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bronze_dagger": {
@@ -1114,7 +1745,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "assassin_dagger": {
@@ -1132,7 +1769,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "spear": {
@@ -1150,7 +1793,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "iron_spear": {
@@ -1168,7 +1817,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "halberd": {
@@ -1186,7 +1841,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "hand_axe": {
@@ -1204,7 +1865,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "battle_axe": {
@@ -1222,7 +1889,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "short_bow": {
@@ -1240,7 +1913,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "hunter_bow": {
@@ -1258,7 +1937,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "long_bow": {
@@ -1276,7 +1961,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "oak_staff": {
@@ -1294,7 +1985,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "mage_staff": {
@@ -1312,7 +2009,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "sage_staff": {
@@ -1330,7 +2033,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "club": {
@@ -1348,7 +2057,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "iron_club": {
@@ -1366,7 +2081,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "holy_mace": {
@@ -1384,7 +2105,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "leather_claw": {
@@ -1402,7 +2129,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "iron_claw": {
@@ -1420,7 +2153,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "tiger_claw": {
@@ -1438,7 +2177,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "cloth": {
@@ -1456,7 +2201,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "leather_armor": {
@@ -1474,7 +2225,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "scale_armor": {
@@ -1492,7 +2249,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "ninja_garb": {
@@ -1510,7 +2273,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "chain_mail": {
@@ -1528,7 +2297,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "iron_armor": {
@@ -1546,7 +2321,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "knight_armor": {
@@ -1564,7 +2345,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "robe": {
@@ -1582,7 +2369,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "silk_robe": {
@@ -1600,7 +2393,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "sage_robe": {
@@ -1618,7 +2417,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "wooden_shield": {
@@ -1636,7 +2441,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "iron_shield": {
@@ -1654,7 +2465,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "knight_shield": {
@@ -1672,7 +2489,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "stoploss_shield": {
@@ -1690,7 +2513,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "leather_cap": {
@@ -1708,7 +2537,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "feather_hat": {
@@ -1726,7 +2561,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "wizard_hat": {
@@ -1744,7 +2585,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "iron_helm": {
@@ -1762,7 +2609,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "knight_helm": {
@@ -1780,7 +2633,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "ring_power": {
@@ -1854,7 +2713,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "survey_bow": {
@@ -1872,7 +2737,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "sea_coat": {
@@ -1890,7 +2761,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "chrono_staff": {
@@ -1908,7 +2785,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "gear_bow": {
@@ -1926,7 +2809,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "temporal_robe": {
@@ -1944,7 +2833,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "rune_blade": {
@@ -1962,7 +2857,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "arcane_staff": {
@@ -1980,7 +2881,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "star_bow": {
@@ -1998,7 +2905,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "void_dagger": {
@@ -2016,7 +2929,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "astral_spear": {
@@ -2034,7 +2953,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "sky_axe": {
@@ -2052,7 +2977,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "shadow_claw": {
@@ -2070,7 +3001,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "balance_mace": {
@@ -2088,7 +3025,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "rune_mail": {
@@ -2106,7 +3049,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "star_cloak": {
@@ -2124,7 +3073,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "sky_robe": {
@@ -2142,7 +3097,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "aegis_shield": {
@@ -2160,7 +3121,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "star_helm": {
@@ -2178,7 +3145,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "arcane_hat": {
@@ -2196,7 +3169,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "iron_crown": {
@@ -2222,7 +3201,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "ema_trident": {
@@ -2240,7 +3225,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "rci_bow": {
@@ -2258,7 +3249,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "macd_twin": {
@@ -2276,7 +3273,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "hidden_staff": {
@@ -2294,7 +3297,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "stoploss_dagger": {
@@ -2312,7 +3321,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "armor_risk": {
@@ -2330,7 +3345,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "robe_skip": {
@@ -2348,7 +3369,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "cloak_volatility": {
@@ -2366,7 +3393,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "helm_timeframe": {
@@ -2384,7 +3417,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "armor_patience": {
@@ -2402,7 +3441,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "compass_wave": {
@@ -2484,7 +3529,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "ema_trident_2": {
@@ -2502,7 +3553,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "rci_bow_2": {
@@ -2520,7 +3577,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "macd_twin_2": {
@@ -2538,7 +3601,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "hidden_staff_2": {
@@ -2556,7 +3625,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "stoploss_dagger_2": {
@@ -2574,7 +3649,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "scimitar": {
@@ -2592,7 +3673,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "sun_spear": {
@@ -2610,7 +3697,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "caravan_bow": {
@@ -2628,7 +3721,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "dune_cloak": {
@@ -2646,7 +3745,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "sand_turban": {
@@ -2664,7 +3769,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "mirage_veil": {
@@ -2682,7 +3793,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "dragon_axe": {
@@ -2700,7 +3817,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "flame_claw": {
@@ -2718,7 +3841,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "dragon_mail": {
@@ -2736,7 +3865,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "ember_robe": {
@@ -2754,7 +3889,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "dragon_helm": {
@@ -2772,7 +3913,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "ryumyaku_blade": {
@@ -2790,7 +3937,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "ice_staff": {
@@ -2808,7 +3961,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "fur_coat": {
@@ -2826,7 +3985,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "clock_hand_spear": {
@@ -2844,7 +4009,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "wave_charm": {
@@ -2870,7 +4041,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "ash_hammer": {
@@ -2888,7 +4065,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "captain_saber": {
@@ -2906,7 +4089,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "zero_bow": {
@@ -2924,7 +4113,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "healer_robe": {
@@ -2942,7 +4137,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "auditor_seal": {
@@ -2968,7 +4169,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "surveyor_ring": {
@@ -3010,7 +4217,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "lucky_ring": {
@@ -3036,7 +4249,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "golden_shield": {
@@ -3054,7 +4273,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "prob_sword": {
@@ -3072,7 +4297,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "ev_staff": {
@@ -3090,7 +4321,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "legend_gambler_armor": {
@@ -3108,7 +4345,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "fate_blade": {
@@ -3126,7 +4369,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "lln_charm": {
@@ -3160,7 +4409,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "yin_sword": {
@@ -3178,7 +4433,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "resistance_blade": {
@@ -3196,7 +4457,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "equilibrium_sword": {
@@ -3214,7 +4481,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "pinbar_dagger": {
@@ -3232,7 +4505,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "breakout_dagger": {
@@ -3250,7 +4529,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "contrarian_blade": {
@@ -3268,7 +4553,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "silent_knife": {
@@ -3286,7 +4577,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "pullback_spear": {
@@ -3304,7 +4601,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "takeprofit_trident": {
@@ -3322,7 +4625,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "ryumyaku_spear": {
@@ -3340,7 +4649,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "star_cycle_spear": {
@@ -3358,7 +4673,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "momentum_axe": {
@@ -3376,7 +4697,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "chainbreak_axe": {
@@ -3394,7 +4721,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "crater_axe": {
@@ -3412,7 +4745,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "crash_axe": {
@@ -3430,7 +4769,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "breakconfirm_bow": {
@@ -3448,7 +4793,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "range_bow": {
@@ -3466,7 +4817,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "prob_hunt_bow": {
@@ -3484,7 +4841,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "azure_longbow": {
@@ -3502,7 +4865,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "compound_staff": {
@@ -3520,7 +4889,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "stats_staff": {
@@ -3538,7 +4913,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "oracle_staff": {
@@ -3556,7 +4937,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "spacetime_staff": {
@@ -3574,7 +4961,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "candle_hammer": {
@@ -3592,7 +4985,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "margin_hammer": {
@@ -3610,7 +5009,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "basis_rod": {
@@ -3628,7 +5033,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "scale_mace": {
@@ -3646,7 +5057,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "retro_claw": {
@@ -3664,7 +5081,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "thunder_claw": {
@@ -3682,7 +5105,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "losscut_claw": {
@@ -3700,7 +5129,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "obsidian_twin": {
@@ -3718,7 +5153,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "copperwall_armor": {
@@ -3736,7 +5177,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "ashiron_plate": {
@@ -3754,7 +5201,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "prob_armor": {
@@ -3772,7 +5225,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "federal_plate": {
@@ -3790,7 +5249,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "deepsea_armor": {
@@ -3808,7 +5273,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "final_plate": {
@@ -3826,7 +5297,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "trader_coat": {
@@ -3844,7 +5321,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "surf_armor": {
@@ -3862,7 +5345,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "seabreeze_leather": {
@@ -3880,7 +5369,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "auditor_coat": {
@@ -3898,7 +5393,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "sandstorm_cloak": {
@@ -3916,7 +5417,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "stardrift_mail": {
@@ -3934,7 +5441,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "statistician_robe": {
@@ -3952,7 +5465,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "antiretro_vestment": {
@@ -3970,7 +5489,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "iceport_robe": {
@@ -3988,7 +5513,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "chrono_formal": {
@@ -4006,7 +5537,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "voidward_robe": {
@@ -4024,7 +5561,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "dow_buckler": {
@@ -4042,7 +5585,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "pullback_shield": {
@@ -4060,7 +5609,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "ironcastle_shield": {
@@ -4078,7 +5633,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "mana_barrier_shield": {
@@ -4096,7 +5657,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "doom_guard_shield": {
@@ -4114,7 +5681,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "smoked_helm": {
@@ -4132,7 +5705,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "seachart_helm": {
@@ -4150,7 +5729,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "math_helm": {
@@ -4168,7 +5753,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "hilo_hat": {
@@ -4186,7 +5777,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "desert_star_hat": {
@@ -4204,7 +5801,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "icecrystal_hood": {
@@ -4222,7 +5825,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "scalein_ring": {
@@ -4400,7 +6009,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "td_session_watch": {
@@ -4426,7 +6041,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "td_mirror_buckler": {
@@ -4444,7 +6065,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "td_breakout_halberd": {
@@ -4462,7 +6089,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "td_dow_crown": {
@@ -4480,7 +6113,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "td_ema_staff": {
@@ -4498,7 +6137,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "td_rci_hat": {
@@ -4516,7 +6161,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "td_divergence_lens": {
@@ -4550,7 +6201,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "td_zeno_blade": {
@@ -4568,7 +6225,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "td_margin_charm": {
@@ -4594,7 +6257,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "b19_silent_bell": {
@@ -4620,7 +6289,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "b19_dark_matter_veil": {
@@ -4638,7 +6313,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "b19_two_faced_dagger": {
@@ -4656,7 +6337,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "b19_bronze_desire_mail": {
@@ -4674,7 +6361,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "b19_hold_fast_lance": {
@@ -4692,7 +6385,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "b19_ember_tablet_staff": {
@@ -4710,7 +6409,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "b19_unsmiling_aegis": {
@@ -4728,7 +6433,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "b19_check_piece": {
@@ -4754,7 +6465,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "b19_rate_gauge_helm": {
@@ -4772,7 +6489,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "b19_seal_justice_sword": {
@@ -4790,7 +6513,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "b19_amber_memory_bow": {
@@ -4808,7 +6537,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "b19_bare_face_cloak": {
@@ -4826,7 +6561,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "b19_sober_claw": {
@@ -4844,7 +6585,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "b19_expected_value_axe": {
@@ -4862,7 +6609,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "b19_balance_star": {
@@ -4888,7 +6641,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "b19_all_seal": {
@@ -4914,7 +6673,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_islands_spear": {
@@ -4932,7 +6697,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_islands_bow": {
@@ -4950,7 +6721,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_islands_dagger": {
@@ -4968,7 +6745,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_islands_staff": {
@@ -4986,7 +6769,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_islands_club": {
@@ -5004,7 +6793,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_islands_heavy": {
@@ -5022,7 +6817,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_islands_light": {
@@ -5040,7 +6841,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_islands_robe": {
@@ -5058,7 +6865,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_islands_shield": {
@@ -5076,7 +6889,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_islands_helm": {
@@ -5094,7 +6913,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_islands_hat": {
@@ -5112,7 +6937,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_tempus_sword": {
@@ -5130,7 +6961,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_tempus_spear": {
@@ -5148,7 +6985,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_tempus_bow": {
@@ -5166,7 +7009,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_tempus_dagger": {
@@ -5184,7 +7033,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_tempus_staff": {
@@ -5202,7 +7057,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_tempus_claw": {
@@ -5220,7 +7081,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_tempus_heavy": {
@@ -5238,7 +7105,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_tempus_light": {
@@ -5256,7 +7129,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_tempus_shield": {
@@ -5274,7 +7153,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_tempus_hat": {
@@ -5292,7 +7177,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_desert_sword": {
@@ -5310,7 +7201,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_desert_spear": {
@@ -5328,7 +7225,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_desert_bow": {
@@ -5346,7 +7249,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_desert_staff": {
@@ -5364,7 +7273,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_desert_club": {
@@ -5382,7 +7297,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_desert_heavy": {
@@ -5400,7 +7321,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_desert_light": {
@@ -5418,7 +7345,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_desert_robe": {
@@ -5436,7 +7369,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_desert_shield": {
@@ -5454,7 +7393,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_desert_helm": {
@@ -5472,7 +7417,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_desert_hat": {
@@ -5490,7 +7441,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_machine_sword": {
@@ -5508,7 +7465,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_machine_spear": {
@@ -5526,7 +7489,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_machine_bow": {
@@ -5544,7 +7513,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_machine_dagger": {
@@ -5562,7 +7537,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_machine_staff": {
@@ -5580,7 +7561,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_machine_heavy": {
@@ -5598,7 +7585,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_machine_light": {
@@ -5616,7 +7609,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_machine_robe": {
@@ -5634,7 +7633,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_machine_shield": {
@@ -5652,7 +7657,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_machine_helm": {
@@ -5670,7 +7681,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_machine_hat": {
@@ -5688,7 +7705,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_snow_spear": {
@@ -5706,7 +7729,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_snow_bow": {
@@ -5724,7 +7753,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_snow_staff": {
@@ -5742,7 +7777,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_snow_claw": {
@@ -5760,7 +7801,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_snow_heavy": {
@@ -5778,7 +7825,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_snow_light": {
@@ -5796,7 +7849,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_snow_robe": {
@@ -5814,7 +7873,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_snow_shield": {
@@ -5832,7 +7897,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_snow_helm": {
@@ -5850,7 +7921,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dragon_sword": {
@@ -5868,7 +7945,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_dragon_staff": {
@@ -5886,7 +7969,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dragon_club": {
@@ -5904,7 +7993,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dragon_claw": {
@@ -5922,7 +8017,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dragon_heavy": {
@@ -5940,7 +8041,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_dragon_robe": {
@@ -5958,7 +8065,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dragon_shield": {
@@ -5976,7 +8089,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_dragon_helm": {
@@ -5994,7 +8113,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dragon_hat": {
@@ -6012,7 +8137,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dark_sword": {
@@ -6030,7 +8161,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_dark_spear": {
@@ -6048,7 +8185,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_dark_axe": {
@@ -6066,7 +8209,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_dark_bow": {
@@ -6084,7 +8233,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dark_dagger": {
@@ -6102,7 +8257,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dark_staff": {
@@ -6120,7 +8281,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dark_club": {
@@ -6138,7 +8305,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dark_claw": {
@@ -6156,7 +8329,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dark_heavy": {
@@ -6174,7 +8353,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_dark_light": {
@@ -6192,7 +8377,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_dark_robe": {
@@ -6210,7 +8401,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dark_shield": {
@@ -6228,7 +8425,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "t68_dark_helm": {
@@ -6246,7 +8449,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "t68_dark_hat": {
@@ -6264,7 +8473,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "explorer_ring": {
@@ -6290,7 +8505,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "starseer_staff": {
@@ -6308,7 +8529,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "spacetime_armor": {
@@ -6326,7 +8553,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "archeion_blade": {
@@ -6344,7 +8577,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "neon_umbrella": {
@@ -6362,7 +8601,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "neon_raincoat": {
@@ -6380,7 +8625,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "clean_filter": {
@@ -6406,7 +8657,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "ashshore_coat": {
@@ -6424,7 +8681,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "conductor_watch": {
@@ -6450,7 +8713,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "coral_mail": {
@@ -6468,7 +8737,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "surf_earring": {
@@ -6494,7 +8769,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "orbit_shield": {
@@ -6512,7 +8793,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "star_ring": {
@@ -6538,7 +8825,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "aeria_robe": {
@@ -6556,7 +8849,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "reactor_shard": {
@@ -6598,7 +8897,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_garon_axe": {
@@ -6616,7 +8921,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_urga_spear": {
@@ -6634,7 +8945,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_zarg_chainbreaker": {
@@ -6652,7 +8969,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_ledger_shield": {
@@ -6670,7 +8993,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_valen_oathblade": {
@@ -6688,7 +9017,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_dorek_bastion": {
@@ -6706,7 +9041,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_ledger_core_ring": {
@@ -6732,7 +9073,13 @@
     "lina/back": true,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_library_archive_staff": {
@@ -6750,7 +9097,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_zaid_sand_bow": {
@@ -6768,7 +9121,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_time_guardian_watch": {
@@ -6794,7 +9153,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_memory_keeper_helm": {
@@ -6812,7 +9177,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_drone_link_bow": {
@@ -6830,7 +9201,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_core_barrier_mail": {
@@ -6848,7 +9225,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_volk_forbidden_staff": {
@@ -6866,7 +9249,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_magma_warden_mail": {
@@ -6884,7 +9273,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_sky_guardian_spear": {
@@ -6902,7 +9297,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_zarg_remnant_claw": {
@@ -6920,7 +9321,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_sevran_blank_robe": {
@@ -6938,7 +9345,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_fear_break_shield": {
@@ -6956,7 +9369,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_greed_limit_gauntlet": {
@@ -6974,7 +9393,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_open_future_blade": {
@@ -6992,7 +9417,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_wolf_king_claw": {
@@ -7010,7 +9441,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_crystal_resonance_staff": {
@@ -7028,7 +9465,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_gull_admiral_hat": {
@@ -7046,7 +9489,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_observer_lens": {
@@ -7080,7 +9529,13 @@
     "lina/back": true,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_tides_coral_trident": {
@@ -7098,7 +9553,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_signal_shield": {
@@ -7116,7 +9577,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_archive_backup_mail": {
@@ -7134,7 +9601,13 @@
     "lina/back": false,
     "gald/menu": true,
     "gald/front": true,
-    "gald/back": true
+    "gald/back": true,
+    "kyle/menu": true,
+    "kyle/front": true,
+    "kyle/back": true,
+    "kazuto/menu": true,
+    "kazuto/front": true,
+    "kazuto/back": true
    }
   },
   "bu_orbis_orbit_bow": {
@@ -7152,7 +9625,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_anchor_gravity_helm": {
@@ -7170,7 +9649,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_mine_captain_helm": {
@@ -7188,7 +9673,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   },
   "bu_hald_audit_badge": {
@@ -7238,7 +9729,13 @@
     "lina/back": false,
     "gald/menu": false,
     "gald/front": false,
-    "gald/back": false
+    "gald/back": false,
+    "kyle/menu": false,
+    "kyle/front": false,
+    "kyle/back": false,
+    "kazuto/menu": false,
+    "kazuto/front": false,
+    "kazuto/back": false
    }
   }
  },

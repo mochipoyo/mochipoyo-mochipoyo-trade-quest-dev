@@ -1,0 +1,351 @@
+{
+ "menuBase": "menu",
+ "materials": {
+  "shield": {
+   "z": 30,
+   "layers": [
+    {
+     "part": "shield_f"
+    },
+    {
+     "part": "shield_t",
+     "tint": "main",
+     "onlyColor": true
+    },
+    {
+     "part": "shield_e"
+    }
+   ]
+  }
+ },
+ "views": {
+  "menu": {
+   "src": "assets/characters/companions/kazuto.png",
+   "w": 249,
+   "h": 258,
+   "dir": "front",
+   "pivot": [
+    124,
+    257
+   ],
+   "body": {
+    "x0": 45,
+    "y0": 0,
+    "x1": 206,
+    "y1": 258
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 251,
+    "y1": 258
+   },
+   "grip": {
+    "x": 56,
+    "y": 146,
+    "order": "剣：拳の下に鍔（剣を後に描く）／槍・斧：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 198,
+    "y": 155,
+    "order": "盾：左の拳と前腕の上（体・鎧の後に描く）"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/base_plain.png?v=858334a7",
+     "x": 28,
+     "y": 0,
+     "w": 215,
+     "h": 258
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/armor_shape_f.png?v=2b32b0a1",
+     "x": 47,
+     "y": 60,
+     "w": 157,
+     "h": 198
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/armor_heavy_t.png?v=ece52585",
+     "x": 48,
+     "y": 60,
+     "w": 156,
+     "h": 195
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/armor_light_t.png?v=5c2975ac",
+     "x": 48,
+     "y": 60,
+     "w": 156,
+     "h": 195
+    },
+    "shield_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/shield_f.png?v=b9a4d180",
+     "x": 154,
+     "y": 67,
+     "w": 89,
+     "h": 176
+    },
+    "shield_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/shield_t.png?v=de20751f",
+     "x": 154,
+     "y": 67,
+     "w": 89,
+     "h": 176
+    },
+    "shield_e": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/shield_e.png?v=7ac34e58",
+     "x": 156,
+     "y": 69,
+     "w": 85,
+     "h": 166
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/weapon_sword.png?v=9b509588",
+     "x": 0,
+     "y": 146,
+     "w": 85,
+     "h": 106
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/hand.png?v=d501bded",
+     "x": 45,
+     "y": 127,
+     "w": 25,
+     "h": 36
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/weapon_spear.png?v=10e02504",
+     "x": 38,
+     "y": 0,
+     "w": 30,
+     "h": 245
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/weapon_axe.png?v=3e71cd5f",
+     "x": 21,
+     "y": 73,
+     "w": 42,
+     "h": 101
+    }
+   }
+  },
+  "front": {
+   "src": "assets/characters/party-directions-add68/sprites/kazuto/front.png",
+   "w": 320,
+   "h": 320,
+   "dir": "front",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 85,
+    "y0": 46,
+    "x1": 246,
+    "y1": 304
+   },
+   "grip": {
+    "x": 96,
+    "y": 192,
+    "order": "剣：拳の下に鍔（剣を後に描く）／槍・斧：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 238,
+    "y": 201,
+    "order": "盾：左の拳と前腕の上（体・鎧の後に描く）"
+   },
+   "from": "menu",
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/base_plain.png?v=858334a7",
+     "x": 68,
+     "y": 46,
+     "w": 215,
+     "h": 258
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/armor_shape_f.png?v=2b32b0a1",
+     "x": 87,
+     "y": 106,
+     "w": 157,
+     "h": 198
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/armor_heavy_t.png?v=ece52585",
+     "x": 88,
+     "y": 106,
+     "w": 156,
+     "h": 195
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/armor_light_t.png?v=5c2975ac",
+     "x": 88,
+     "y": 106,
+     "w": 156,
+     "h": 195
+    },
+    "shield_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/shield_f.png?v=b9a4d180",
+     "x": 194,
+     "y": 113,
+     "w": 89,
+     "h": 176
+    },
+    "shield_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/shield_t.png?v=de20751f",
+     "x": 194,
+     "y": 113,
+     "w": 89,
+     "h": 176
+    },
+    "shield_e": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/shield_e.png?v=7ac34e58",
+     "x": 196,
+     "y": 115,
+     "w": 85,
+     "h": 166
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/weapon_sword.png?v=9b509588",
+     "x": 40,
+     "y": 192,
+     "w": 85,
+     "h": 106
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/hand.png?v=d501bded",
+     "x": 85,
+     "y": 173,
+     "w": 25,
+     "h": 36
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/weapon_spear.png?v=10e02504",
+     "x": 78,
+     "y": 46,
+     "w": 30,
+     "h": 245
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/weapon_axe.png?v=3e71cd5f",
+     "x": 61,
+     "y": 119,
+     "w": 42,
+     "h": 101
+    }
+   }
+  },
+  "back": {
+   "src": "assets/characters/party-directions-add68/sprites/kazuto/back.png",
+   "w": 320,
+   "h": 320,
+   "dir": "back",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 68,
+    "y0": 47,
+    "x1": 301,
+    "y1": 304
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 322,
+    "y1": 320
+   },
+   "grip": {
+    "x": 251,
+    "y": 181,
+    "order": "剣：正面の剣を左右に返して右手（マントの陰）の先に置く／槍・斧：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 108,
+    "y": 205,
+    "order": "盾：左腕の外側（体の後ろの左腕の上）"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/kazuto/back/base_plain.png?v=7e095b08",
+     "x": 68,
+     "y": 47,
+     "w": 233,
+     "h": 257
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/kazuto/back/armor_shape_f.png?v=21991e42",
+     "x": 82,
+     "y": 110,
+     "w": 167,
+     "h": 194
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/kazuto/back/armor_heavy_t.png?v=45383ba6",
+     "x": 82,
+     "y": 112,
+     "w": 167,
+     "h": 189
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/kazuto/back/armor_light_t.png?v=0e5a8197",
+     "x": 82,
+     "y": 112,
+     "w": 167,
+     "h": 189
+    },
+    "shield_f": {
+     "url": "assets/characters/equip-pixels/kazuto/back/shield_f.png?v=42a878c8",
+     "x": 68,
+     "y": 111,
+     "w": 86,
+     "h": 190
+    },
+    "shield_t": {
+     "url": "assets/characters/equip-pixels/kazuto/back/shield_t.png?v=bd8dbb60",
+     "x": 68,
+     "y": 111,
+     "w": 86,
+     "h": 190
+    },
+    "shield_e": {
+     "url": "assets/characters/equip-pixels/kazuto/back/shield_e.png?v=6c4ed529",
+     "x": 71,
+     "y": 114,
+     "w": 81,
+     "h": 185
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/kazuto/back/hand.png?v=00a44aff",
+     "x": 236,
+     "y": 153,
+     "w": 17,
+     "h": 30
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/kazuto/back/weapon_sword.png?v=c333c38b",
+     "x": 223,
+     "y": 181,
+     "w": 85,
+     "h": 106
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/kazuto/back/weapon_spear.png?v=b54e87ef",
+     "x": 240,
+     "y": 31,
+     "w": 29,
+     "h": 249
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/kazuto/back/weapon_axe.png?v=f8c13494",
+     "x": 245,
+     "y": 108,
+     "w": 41,
+     "h": 101
+    }
+   }
+  }
+ }
+}

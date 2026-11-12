@@ -1,4 +1,4 @@
-# 装備の外見（ドット絵の差分）の対応表（v9.7〜v9.8・自動生成）
+# 装備の外見（ドット絵の差分）の対応表（v9.7〜v9.8.2・自動生成）
 
 appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS）から作る。手で書き換えない。
 
@@ -15,6 +15,12 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | gald | menu | assets/characters/companions/gald.png | 128, 274 | 37, 137（斧・剣：柄の上に拳を描き直す） | 186, 190（盾：左の拳と前腕の上（体・鎧の後に描く）） |
 | gald | front | assets/characters/party-directions-v3/sprites/gald/front.png | 160, 304 | 70, 164（斧・剣：柄の上に拳を描き直す） | 219, 217（盾：左の拳と前腕の上（体・鎧の後に描く）） |
 | gald | back | assets/characters/party-directions-v3/sprites/gald/back.png | 160, 304 | 246, 156（斧・剣：柄の上に拳を描き直す） | 72, 212（盾：左腕の外側（体・鎧の後に描く）） |
+| kyle | menu | assets/characters/companions/kyle.png | 109, 263 | 35, 160（剣：拳の下に鍔（剣を後に描く）／槍：柄の上に拳を描き直す） | 170, 160（盾：左の拳と前腕の上（体・鎧の後に描く）） |
+| kyle | front | assets/characters/party-directions-v3/sprites/kyle/front.png | 160, 304 | 86, 199（剣：拳の下に鍔（剣を後に描く）／槍：柄の上に拳を描き直す） | 221, 199（盾：左の拳と前腕の上（体・鎧の後に描く）） |
+| kyle | back | assets/characters/party-directions-v3/sprites/kyle/back.png | 160, 304 | 232, 203（剣：拳の下に鍔／槍：柄の上に拳を描き直す） | 64, 195（盾：左腕の外側（腕の後ろ）） |
+| kazuto | menu | assets/characters/companions/kazuto.png | 124, 257 | 56, 146（剣：拳の下に鍔（剣を後に描く）／槍・斧：柄の上に拳を描き直す） | 198, 155（盾：左の拳と前腕の上（体・鎧の後に描く）） |
+| kazuto | front | assets/characters/party-directions-add68/sprites/kazuto/front.png | 160, 304 | 96, 192（剣：拳の下に鍔（剣を後に描く）／槍・斧：柄の上に拳を描き直す） | 238, 201（盾：左の拳と前腕の上（体・鎧の後に描く）） |
+| kazuto | back | assets/characters/party-directions-add68/sprites/kazuto/back.png | 160, 304 | 251, 181（剣：正面の剣を左右に返して右手（マントの陰）の先に置く／槍・斧：柄の上に拳を描き直す） | 108, 205（盾：左腕の外側（体の後ろの左腕の上）） |
 
 ほかの人物・向き：部品なし（本人の従来の絵）。
 
@@ -37,6 +43,8 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（gald） | 10 | —（変えない） | armor_light_t（tint:main） |  |
 | weapon_sword（gald） | 40 | —（変えない） | weapon_sword | はい |
 | shield（gald） | 30 | —（変えない） | shield_t（tint:main・灰色の品は元の鎧の色）、shield_f |  |
+| shield（kyle） | 30 | —（変えない） | shield_f、shield_t（tint:main・灰色の品は塗らない）、shield_e |  |
+| shield（kazuto） | 30 | —（変えない） | shield_f、shield_t（tint:main・灰色の品は塗らない）、shield_e |  |
 
 ## 装備ID → 部品の種類
 
@@ -132,3 +140,5 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | hero | armor_light、armor_heavy、armor_robe、head_helm、head_hat、weapon_sword、weapon_staff、weapon_spear、weapon_axe、shield |
 | lina | armor_light、armor_robe、head_cap、weapon_staff |
 | gald | armor_light、armor_heavy、weapon_sword、weapon_axe、shield |
+| kyle | armor_light、armor_heavy、weapon_sword、weapon_spear、shield |
+| kazuto | armor_light、armor_heavy、weapon_sword、weapon_spear、weapon_axe、shield |

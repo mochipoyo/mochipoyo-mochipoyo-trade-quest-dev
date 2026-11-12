@@ -1,0 +1,1384 @@
+{
+ "KIND": "2d",
+ "WHO": [
+  "kyle",
+  "kazuto"
+ ],
+ "ok": 48,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "kyle［装備なし］装備 {} → 部品：base_plain"
+  },
+  {
+   "ok": true,
+   "m": "kyle［重鎧＋剣と盾］装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_sword"
+  },
+  {
+   "ok": true,
+   "m": "kyle［重鎧＋槍と盾（剣から持ち替え）］装備 {\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_spear hand"
+  },
+  {
+   "ok": true,
+   "m": "kyle［重鎧＋盾（武器をはずす）］装備 {\"armor\":\"iron_armor\",\"shield\":\"iron_shield\"} → 部品：base_plain armor_shape_f shield_f shield_e"
+  },
+  {
+   "ok": true,
+   "m": "kyle［騎士の鎧・剣・盾（色のある品）］装備 {\"weapon\":\"knight_sword\",\"armor\":\"knight_armor\",\"shield\":\"knight_shield\"} → 部品：base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword"
+  },
+  {
+   "ok": true,
+   "m": "kyle［革の鎧（軽装）＋木の剣＋木の盾］装備 {\"weapon\":\"wooden_sword\",\"armor\":\"leather_armor\",\"shield\":\"wooden_shield\"} → 部品：base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword"
+  },
+  {
+   "ok": true,
+   "m": "kyle［重鎧＋兜（兜は部品のない品）］装備 {\"armor\":\"iron_armor\",\"head\":\"iron_helm\"} → 部品：base_plain armor_shape_f／描かない：head:iron_helm（head_helm の部品がない→描かない）"
+  },
+  {
+   "ok": true,
+   "m": "kyle：なかまの画面の足もと・左右の中心・1 ドットの大きさが 7 つとも同じ（335.3/460.4/1.1236）"
+  },
+  {
+   "ok": true,
+   "m": "kyle：部品のない品は部位ごと（iron_helm は描かない。鎧は着替える：base_plain armor_shape_f）"
+  },
+  {
+   "ok": true,
+   "m": "kyle：装備なし＝素の絵（鎧下・手ぶら）。重鎧＋剣と盾＝元の絵の装い（base_plain armor_shape_f shield_f shield_e weapon_sword）"
+  },
+  {
+   "ok": true,
+   "m": "kyle：剣から槍に持ち替えても重鎧・盾はそのまま（base_plain armor_shape_f shield_f shield_e weapon_spear hand）。武器をはずすと手ぶら（base_plain armor_shape_f shield_f shield_e）"
+  },
+  {
+   "ok": true,
+   "m": "kyle：色のある品は品の色（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword／革の鎧・木の盾 base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword）"
+  },
+  {
+   "ok": true,
+   "m": "kyle menu：7 つの組み合わせとも、合成の絵の大きさは同じ（314×361＝元の絵＋まわり 48）"
+  },
+  {
+   "ok": true,
+   "m": "kyle menu：足もとの行が元の絵と同じ（310）：plain 310・sword 310・spear 310・unarmed 310・knight 310・light 310・nopart 310"
+  },
+  {
+   "ok": true,
+   "m": "kyle menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+  },
+  {
+   "ok": true,
+   "m": "kyle back：7 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+  },
+  {
+   "ok": true,
+   "m": "kyle back：足もとの行が元の絵と同じ（351）：plain 351・sword 351・spear 351・unarmed 351・knight 351・light 351・nopart 351"
+  },
+  {
+   "ok": true,
+   "m": "kyle back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+  },
+  {
+   "ok": true,
+   "m": "kyle front：7 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+  },
+  {
+   "ok": true,
+   "m": "kyle front：足もとの行が元の絵と同じ（349）：plain 349・sword 349・spear 349・unarmed 349・knight 349・light 349・nopart 349"
+  },
+  {
+   "ok": true,
+   "m": "kyle front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+  },
+  {
+   "ok": true,
+   "m": "kyle：勝利の正面の合成＝メニュー正面の合成を (51, 39) ずらしたもの（重鎧＋剣と盾：違うドット 0 / 57770）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto［装備なし］装備 {} → 部品：base_plain"
+  },
+  {
+   "ok": true,
+   "m": "kazuto［重鎧＋剣と盾］装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_sword"
+  },
+  {
+   "ok": true,
+   "m": "kazuto［重鎧＋戦斧（剣と盾から持ち替え）］装備 {\"weapon\":\"battle_axe\",\"armor\":\"iron_armor\"} → 部品：base_plain armor_shape_f weapon_axe hand"
+  },
+  {
+   "ok": true,
+   "m": "kazuto［重鎧＋槍と盾］装備 {\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_spear hand"
+  },
+  {
+   "ok": true,
+   "m": "kazuto［重鎧＋盾（武器をはずす）］装備 {\"armor\":\"iron_armor\",\"shield\":\"iron_shield\"} → 部品：base_plain armor_shape_f shield_f shield_e"
+  },
+  {
+   "ok": true,
+   "m": "kazuto［騎士の鎧・剣・盾（色のある品）］装備 {\"weapon\":\"knight_sword\",\"armor\":\"knight_armor\",\"shield\":\"knight_shield\"} → 部品：base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword"
+  },
+  {
+   "ok": true,
+   "m": "kazuto［革の鎧（軽装）＋手斧］装備 {\"weapon\":\"hand_axe\",\"armor\":\"leather_armor\"} → 部品：base_plain armor_shape_f armor_light_t weapon_axe hand"
+  },
+  {
+   "ok": true,
+   "m": "kazuto［重鎧＋兜（兜は部品のない品）］装備 {\"armor\":\"iron_armor\",\"head\":\"iron_helm\"} → 部品：base_plain armor_shape_f／描かない：head:iron_helm（head_helm の部品がない→描かない）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto：なかまの画面の足もと・左右の中心・1 ドットの大きさが 8 つとも同じ（335.3/460.4/1.1538）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto：部品のない品は部位ごと（iron_helm は描かない。鎧は着替える：base_plain armor_shape_f）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto：装備なし＝素の絵（鎧下・手ぶら）。重鎧＋剣と盾＝元の絵の装い（base_plain armor_shape_f shield_f shield_e weapon_sword）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto：剣から斧に持ち替えても重鎧はそのまま（base_plain armor_shape_f weapon_axe hand）。武器をはずすと手ぶら（base_plain armor_shape_f shield_f shield_e）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto：色のある品は品の色（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword／革の鎧 base_plain armor_shape_f armor_light_t weapon_axe hand）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto menu：8 つの組み合わせとも、合成の絵の大きさは同じ（345×354＝元の絵＋まわり 48）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto menu：足もとの行が元の絵と同じ（305）：plain 305・sword 305・axe 305・spear 305・unarmed 305・knight 305・light 305・nopart 305"
+  },
+  {
+   "ok": true,
+   "m": "kazuto menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・axe 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto back：8 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto back：足もとの行が元の絵と同じ（351）：plain 351・sword 351・axe 351・spear 351・unarmed 351・knight 351・light 351・nopart 351"
+  },
+  {
+   "ok": true,
+   "m": "kazuto back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・axe 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto front：8 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto front：足もとの行が元の絵と同じ（351）：plain 351・sword 351・axe 351・spear 351・unarmed 351・knight 351・light 351・nopart 351"
+  },
+  {
+   "ok": true,
+   "m": "kazuto front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・axe 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto：勝利の正面の合成＝メニュー正面の合成を (40, 46) ずらしたもの（重鎧＋剣と盾：違うドット 0 / 64242）"
+  },
+  {
+   "ok": true,
+   "m": "横向き（左右）は従来の絵。メニューは本人の立ち絵（menu）。セーブに外見を書かない"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  },
+  {
+   "ok": true,
+   "m": "読み込みの失敗（404 など）なし"
+  }
+ ],
+ "rec": {
+  "kyle": {
+   "menu": {
+    "plain": {
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 14,
+      "def": 19,
+      "agi": 6,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1236,
+     "h": 300
+    },
+    "sword": {
+     "equip": {
+      "weapon": "steel_sword",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 36,
+      "def": 44,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e weapon_sword",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1236,
+     "h": 300
+    },
+    "spear": {
+     "equip": {
+      "weapon": "iron_spear",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 31,
+      "def": 44,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e weapon_spear hand",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1236,
+     "h": 300
+    },
+    "unarmed": {
+     "equip": {
+      "weapon": null,
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 14,
+      "def": 44,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1236,
+     "h": 300
+    },
+    "knight": {
+     "equip": {
+      "weapon": "knight_sword",
+      "armor": "knight_armor",
+      "shield": "knight_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 44,
+      "def": 57,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1236,
+     "h": 300
+    },
+    "light": {
+     "equip": {
+      "weapon": "wooden_sword",
+      "armor": "leather_armor",
+      "shield": "wooden_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 18,
+      "def": 28,
+      "agi": 6,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1236,
+     "h": 300
+    },
+    "nopart": {
+     "equip": {
+      "weapon": null,
+      "armor": "iron_armor",
+      "shield": null,
+      "head": "iron_helm",
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 14,
+      "def": 42,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f",
+     "skipped": "head:iron_helm（head_helm の部品がない→描かない）",
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1236,
+     "h": 300
+    }
+   },
+   "geo": {
+    "menu": {
+     "res": {
+      "plain": {
+       "state": "ok",
+       "w": 314,
+       "h": 361,
+       "feet": 310,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain"
+       ],
+       "skipped": []
+      },
+      "sword": {
+       "state": "ok",
+       "w": 314,
+       "h": 361,
+       "feet": 310,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "spear": {
+       "state": "ok",
+       "w": 314,
+       "h": 361,
+       "feet": 310,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_spear",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "unarmed": {
+       "state": "ok",
+       "w": 314,
+       "h": 361,
+       "feet": 310,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e"
+       ],
+       "skipped": []
+      },
+      "knight": {
+       "state": "ok",
+       "w": 314,
+       "h": 361,
+       "feet": 310,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_heavy_t",
+        "shield_f",
+        "shield_t",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "light": {
+       "state": "ok",
+       "w": 314,
+       "h": 361,
+       "feet": 310,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_light_t",
+        "shield_f",
+        "shield_t",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "nopart": {
+       "state": "ok",
+       "w": 314,
+       "h": 361,
+       "feet": 310,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f"
+       ],
+       "skipped": [
+        "head:iron_helm（head_helm の部品がない→描かない）"
+       ]
+      }
+     },
+     "ofeet": 310,
+     "W": 314,
+     "H": 361
+    },
+    "back": {
+     "res": {
+      "plain": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain"
+       ],
+       "skipped": []
+      },
+      "sword": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "spear": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_spear",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "unarmed": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e"
+       ],
+       "skipped": []
+      },
+      "knight": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_heavy_t",
+        "shield_f",
+        "shield_t",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "light": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_light_t",
+        "shield_f",
+        "shield_t",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "nopart": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f"
+       ],
+       "skipped": [
+        "head:iron_helm（head_helm の部品がない→描かない）"
+       ]
+      }
+     },
+     "ofeet": 351,
+     "W": 416,
+     "H": 416
+    },
+    "front": {
+     "res": {
+      "plain": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain"
+       ],
+       "skipped": []
+      },
+      "sword": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "spear": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_spear",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "unarmed": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e"
+       ],
+       "skipped": []
+      },
+      "knight": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_heavy_t",
+        "shield_f",
+        "shield_t",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "light": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_light_t",
+        "shield_f",
+        "shield_t",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "nopart": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f"
+       ],
+       "skipped": [
+        "head:iron_helm（head_helm の部品がない→描かない）"
+       ]
+      }
+     },
+     "ofeet": 349,
+     "W": 416,
+     "H": 416
+    }
+   }
+  },
+  "kazuto": {
+   "menu": {
+    "plain": {
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 74,
+      "def": 62,
+      "agi": 32,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1538,
+     "h": 300
+    },
+    "sword": {
+     "equip": {
+      "weapon": "steel_sword",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 96,
+      "def": 87,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e weapon_sword",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1538,
+     "h": 300
+    },
+    "axe": {
+     "equip": {
+      "weapon": "battle_axe",
+      "armor": "iron_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 93,
+      "def": 80,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f weapon_axe hand",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1538,
+     "h": 300
+    },
+    "spear": {
+     "equip": {
+      "weapon": "iron_spear",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 91,
+      "def": 87,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e weapon_spear hand",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1538,
+     "h": 300
+    },
+    "unarmed": {
+     "equip": {
+      "weapon": null,
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 74,
+      "def": 87,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1538,
+     "h": 300
+    },
+    "knight": {
+     "equip": {
+      "weapon": "knight_sword",
+      "armor": "knight_armor",
+      "shield": "knight_shield",
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 104,
+      "def": 100,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1538,
+     "h": 300
+    },
+    "light": {
+     "equip": {
+      "weapon": "hand_axe",
+      "armor": "leather_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 83,
+      "def": 68,
+      "agi": 32,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f armor_light_t weapon_axe hand",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1538,
+     "h": 300
+    },
+    "nopart": {
+     "equip": {
+      "weapon": null,
+      "armor": "iron_armor",
+      "shield": null,
+      "head": "iron_helm",
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 74,
+      "def": 85,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain armor_shape_f",
+     "skipped": "head:iron_helm（head_helm の部品がない→描かない）",
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1538,
+     "h": 300
+    }
+   },
+   "geo": {
+    "menu": {
+     "res": {
+      "plain": {
+       "state": "ok",
+       "w": 345,
+       "h": 354,
+       "feet": 305,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain"
+       ],
+       "skipped": []
+      },
+      "sword": {
+       "state": "ok",
+       "w": 345,
+       "h": 354,
+       "feet": 305,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "axe": {
+       "state": "ok",
+       "w": 345,
+       "h": 354,
+       "feet": 305,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "weapon_axe",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "spear": {
+       "state": "ok",
+       "w": 345,
+       "h": 354,
+       "feet": 305,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_spear",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "unarmed": {
+       "state": "ok",
+       "w": 345,
+       "h": 354,
+       "feet": 305,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e"
+       ],
+       "skipped": []
+      },
+      "knight": {
+       "state": "ok",
+       "w": 345,
+       "h": 354,
+       "feet": 305,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_heavy_t",
+        "shield_f",
+        "shield_t",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "light": {
+       "state": "ok",
+       "w": 345,
+       "h": 354,
+       "feet": 305,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_light_t",
+        "weapon_axe",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "nopart": {
+       "state": "ok",
+       "w": 345,
+       "h": 354,
+       "feet": 305,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f"
+       ],
+       "skipped": [
+        "head:iron_helm（head_helm の部品がない→描かない）"
+       ]
+      }
+     },
+     "ofeet": 305,
+     "W": 345,
+     "H": 354
+    },
+    "back": {
+     "res": {
+      "plain": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain"
+       ],
+       "skipped": []
+      },
+      "sword": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "axe": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "weapon_axe",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "spear": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_spear",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "unarmed": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e"
+       ],
+       "skipped": []
+      },
+      "knight": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_heavy_t",
+        "shield_f",
+        "shield_t",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "light": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_light_t",
+        "weapon_axe",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "nopart": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f"
+       ],
+       "skipped": [
+        "head:iron_helm（head_helm の部品がない→描かない）"
+       ]
+      }
+     },
+     "ofeet": 351,
+     "W": 416,
+     "H": 416
+    },
+    "front": {
+     "res": {
+      "plain": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain"
+       ],
+       "skipped": []
+      },
+      "sword": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "axe": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "weapon_axe",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "spear": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e",
+        "weapon_spear",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "unarmed": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "shield_f",
+        "shield_e"
+       ],
+       "skipped": []
+      },
+      "knight": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_heavy_t",
+        "shield_f",
+        "shield_t",
+        "shield_e",
+        "weapon_sword"
+       ],
+       "skipped": []
+      },
+      "light": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f",
+        "armor_light_t",
+        "weapon_axe",
+        "hand"
+       ],
+       "skipped": []
+      },
+      "nopart": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "armor_shape_f"
+       ],
+       "skipped": [
+        "head:iron_helm（head_helm の部品がない→描かない）"
+       ]
+      }
+     },
+     "ofeet": 351,
+     "W": 416,
+     "H": 416
+    }
+   }
+  }
+ }
+}
