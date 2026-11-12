@@ -101,7 +101,7 @@
   },
   {
    "ok": true,
-   "m": "部品のない品は、その部位だけ描かない（斧：weapon:hand_axe（axe/handaxe の部品がない→描かない）／革の帽子：head:leather_cap（hat/cap の部品がない→描かない））"
+   "m": "部品のない品は、その部位だけ描かない（斧：weapon:hand_axe（weapon_axe の部品がない→描かない）／革の帽子：head:leather_cap（hat/cap の部品がない→描かない））"
   },
   {
    "ok": true,
@@ -109,35 +109,35 @@
   },
   {
    "ok": true,
-   "m": "部品のない人物・向き（ガルド・主人公の戦闘の横向き・魔法使いの立ち絵の向き）は本人の従来の絵。主人公の勝利の正面は着替える"
+   "m": "部品のない向き（主人公の戦闘の横向き・魔法使いの立ち絵の向き）は本人の従来の絵。主人公の勝利の正面は着替える。v9.8 からガルドの正面・背面も着替える（確かめは appear_pixel_comp.js）"
   },
   {
    "ok": true,
-   "m": "メニュー［斧だけ］：武器は描かない（手は空・元の剣は戻らない）。部品：base_plain／描かない：weapon:hand_axe（axe/handaxe の部品がない→描かない）"
+   "m": "メニュー［斧だけ］：武器は描かない（手は空・元の剣は戻らない）。部品：base_plain／描かない：weapon:hand_axe（weapon_axe の部品がない→描かない）"
   },
   {
    "ok": true,
-   "m": "戦闘［素（装備なし）］主人公の背面の絵に合成（pixel:dir:back・装備 ）。仲間は従来の絵（gald:従来 lina:従来）"
+   "m": "戦闘［素（装備なし）］主人公の背面の絵に合成（pixel:dir:back・装備 ）。仲間は従来の絵（gald:合成 lina:合成）"
   },
   {
    "ok": true,
-   "m": "戦闘［軽装＋剣］主人公の背面の絵に合成（pixel:dir:back・装備 steel_sword,leather_armor）。仲間は従来の絵（gald:従来 lina:従来）"
+   "m": "戦闘［軽装＋剣］主人公の背面の絵に合成（pixel:dir:back・装備 steel_sword,leather_armor）。仲間は従来の絵（gald:合成 lina:合成）"
   },
   {
    "ok": true,
-   "m": "戦闘［重鎧＋兜＋剣と盾］主人公の背面の絵に合成（pixel:dir:back・装備 steel_sword,iron_armor,iron_shield,iron_helm）。仲間は従来の絵（gald:従来 lina:従来）"
+   "m": "戦闘［重鎧＋兜＋剣と盾］主人公の背面の絵に合成（pixel:dir:back・装備 steel_sword,iron_armor,iron_shield,iron_helm）。仲間は従来の絵（gald:合成 lina:合成）"
   },
   {
    "ok": true,
-   "m": "戦闘［ローブ＋帽子＋杖］主人公の背面の絵に合成（pixel:dir:back・装備 oak_staff,robe,wizard_hat）。仲間は従来の絵（gald:従来 lina:従来）"
+   "m": "戦闘［ローブ＋帽子＋杖］主人公の背面の絵に合成（pixel:dir:back・装備 oak_staff,robe,wizard_hat）。仲間は従来の絵（gald:合成 lina:合成）"
   },
   {
    "ok": true,
-   "m": "戦闘［重鎧＋槍（長さの確かめ）］主人公の背面の絵に合成（pixel:dir:back・装備 iron_spear,iron_armor）。仲間は従来の絵（gald:従来 lina:従来）"
+   "m": "戦闘［重鎧＋槍（長さの確かめ）］主人公の背面の絵に合成（pixel:dir:back・装備 iron_spear,iron_armor）。仲間は従来の絵（gald:合成 lina:合成）"
   },
   {
    "ok": true,
-   "m": "戦闘［重鎧＋手斧（部品のない武器）］主人公の背面の絵に合成（pixel:dir:back・装備 hand_axe,iron_armor）。仲間は従来の絵（gald:従来 lina:従来）"
+   "m": "戦闘［重鎧＋手斧（部品のない武器）］主人公の背面の絵に合成（pixel:dir:back・装備 hand_axe,iron_armor）。仲間は従来の絵（gald:合成 lina:合成）"
   },
   {
    "ok": true,
@@ -354,7 +354,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -373,17 +373,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": null,
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": null,
+      "ea": "[\"lina\",\"priest\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 8158
+    "ms": 7485
    },
    "light": {
     "hero": {
@@ -397,7 +397,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[\"steel_sword\",\"leather_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[\"steel_sword\",\"leather_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -416,17 +416,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": null,
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": null,
+      "ea": "[\"lina\",\"priest\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 7924
+    "ms": 7283
    },
    "heavy": {
     "hero": {
@@ -440,7 +440,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -459,17 +459,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": null,
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": null,
+      "ea": "[\"lina\",\"priest\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 7969
+    "ms": 7770
    },
    "robe": {
     "hero": {
@@ -483,7 +483,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -502,17 +502,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": null,
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": null,
+      "ea": "[\"lina\",\"priest\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 7902
+    "ms": 7943
    },
    "spear": {
     "hero": {
@@ -526,7 +526,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[\"iron_spear\",\"iron_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[\"iron_spear\",\"iron_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -545,17 +545,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": null,
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": null,
+      "ea": "[\"lina\",\"priest\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 8523
+    "ms": 7476
    },
    "heavyaxe": {
     "hero": {
@@ -569,7 +569,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[\"hand_axe\",\"iron_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[\"hand_axe\",\"iron_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -588,17 +588,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": null,
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": null,
+      "ea": "[\"lina\",\"priest\",\"px:v9.8\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 7966
+    "ms": 8011
    }
   },
   "geo": {

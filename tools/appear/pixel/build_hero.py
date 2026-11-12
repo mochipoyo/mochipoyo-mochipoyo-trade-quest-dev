@@ -1,6 +1,6 @@
 # v9.7 装備の外見（ドット絵の差分）：主人公の「メニュー正面（戦士の立ち絵 jobs/warrior.png）」と「戦闘の背面（party-directions-v3 の hero/back.png）」
-#   元の絵は読むだけ。作った部品は assets/characters/equip-pixels/hero/<向き>/ に、対応表は js/data/equip-pixels.js に書く
-#   python3 tools/appear/pixel/build_hero.py [確かめの絵の出力フォルダ]
+#   元の絵は読むだけ。作った部品は assets/characters/equip-pixels/hero/<向き>/ に、主人公の対応表は hero/actor.json に書く
+#   python3 tools/appear/pixel/build_hero.py [確かめの絵の出力フォルダ]（部品と actor.json を書き、manifest.py で js/data/equip-pixels.js をまとめ直す）
 #
 #   部品（どれも元の絵と同じ座標。切り出して x, y を記録）
 #     base_plain  素の絵：剣と盾を外し、手と体を描き直したもの（装備がないとき・頭に何もかぶらないとき）
@@ -695,29 +695,11 @@ if __name__ == '__main__':
         y0 = min([0] + [r['y'] for r in rec.values()]) - m
         half = max(w / 2 - x0, x1 - w / 2)
         return {'x0': int(np.floor(w / 2 - half)), 'y0': int(y0), 'x1': int(np.ceil(w / 2 + half)), 'y1': int(h)}
-    man = {
-        'version': 'v9.7', 'pad': 48,
-        'note': '装備の外見（ドット絵の差分）。tools/appear/pixel/build_hero.py が作る。部品の座標は元の絵と同じ（x, y＝左上）',
-        'ref': {'plate': PLATE_REF},
-        # 部品の種類：装備の枠と形（ITEMS の type。帽子は形の細かい違い sub も）→ 種類。表にない形は「素材なし」（本人の従来の絵で表示）
-        'classes': {'armor': {'light': 'armor_light', 'heavy': 'armor_heavy', 'robe': 'armor_robe'},
-                    'head': {'helm': 'head_helm', 'hat:witch': 'head_hat'},
-                    'weapon': {'sword': 'weapon_sword', 'staff': 'weapon_staff', 'spear': 'weapon_spear'},
-                    'shield': {'shield': 'shield'}},
-        # 種類ごとの重ね方：base＝使う素の絵（頭にかぶるとき髪を切った絵）、layers＝重ねる部品（tint＝品の色の段で塗る灰色の層）、hand＝長柄：武器の上に手を描き直す
-        'materials': {
-            'armor_light': {'z': 10, 'layers': [{'part': 'armor_shape_f'}, {'part': 'armor_light_t', 'tint': 'main'}]},
-            'armor_heavy': {'z': 10, 'layers': [{'part': 'armor_shape_f'}, {'part': 'armor_heavy_t', 'tint': 'main', 'onlyColor': True}]},
-            'armor_robe': {'z': 10, 'layers': [{'part': 'armor_robe_x', 'erase': True, 'optional': True}, {'part': 'armor_robe_t', 'tint': 'main'}, {'part': 'armor_robe_f'}]},
-            'head_helm': {'z': 20, 'base': 'base_helm', 'layers': [{'part': 'head_helm_t', 'tint': 'main', 'grayRef': 'plate'}, {'part': 'head_helm_f'}]},
-            'head_hat': {'z': 20, 'base': 'base_hat', 'layers': [{'part': 'head_hat_t', 'tint': 'main'}, {'part': 'head_hat_f'}]},
-            'shield': {'z': 30, 'layers': [{'part': 'shield'}]},
-            'weapon_sword': {'z': 40, 'layers': [{'part': 'weapon_sword'}]},
-            'weapon_staff': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_staff_t', 'tint': 'orb'}, {'part': 'weapon_staff_f'}]},
-            'weapon_spear': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_spear'}]},
-        },
+    # ---- 主人公の対応表（assets/characters/equip-pixels/hero/actor.json）。全員分は manifest.py が js/data/equip-pixels.js にまとめる ----
+    #   部品の種類・重ね方（classes・materials）は manifest.py の GLOBAL（主人公の部品の名前）
+    actor = {
         # menuBase：メニューの立ち絵の素体。主人公はどの職業でも、本人の絵（戦士の立ち絵）を素体にして装備で着替える（戦闘の絵も職業で変わらないのと合わせる）
-        'actors': {'hero': {'menuBase': 'job:warrior', 'views': {
+        'menuBase': 'job:warrior', 'views': {
             'job:warrior': {'src': FRONT_SRC, 'w': FW, 'h': FH, 'dir': 'front', 'pivot': [64, 197], 'body': box(tp), 'frame': frame(recF, FW, FH),
                             'grip': {'x': 22, 'y': 117, 'order': '剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す'},
                             'offhand': {'x': 105, 'y': 125, 'order': '盾：腕の上（体の後に描く）'}, 'parts': recF},
@@ -729,11 +711,8 @@ if __name__ == '__main__':
             'back': {'src': BACK_SRC, 'w': BW, 'h': BH, 'dir': 'back', 'pivot': [160, 304], 'body': box(tb), 'frame': frame(recB, BW, BH),
                      'grip': {'x': 205, 'y': 213, 'order': '剣：拳の上に鍔／杖・槍：柄の上に拳を描き直す'},
                      'offhand': {'x': 108, 'y': 222, 'order': '盾：左腕の外側（体の後に描く）'}, 'parts': recB},
-        }}},
-    }
-    js = ('/* v9.7 装備の外見（ドット絵の差分）の対応表。tools/appear/pixel/build_hero.py が作る（手で書き換えない）\n'
-          '   人物ID → 向き（メニューの立ち絵 job:<職業>・戦闘の front/back/left/right）→ 部品（assets/characters/equip-pixels/）\n'
-          '   ここにない人物・向き、部品のない装備は、本人の従来の絵で表示する */\n'
-          '(function (root) { root.EQUIP_PIXELS = ' + json.dumps(man, ensure_ascii=False, separators=(',', ':')) + '; })(typeof window === \'undefined\' ? globalThis : window);\n')
-    open(os.path.join(ROOT, 'js', 'data', 'equip-pixels.js'), 'w', encoding='utf8').write(js)
-    print('front', len(recF), 'back', len(recB), 'manifest', len(js))
+        }}
+    json.dump(actor, open(os.path.join(OUT, 'actor.json'), 'w', encoding='utf8'), ensure_ascii=False, indent=1)
+    import manifest
+    man = manifest.write()
+    print('front', len(recF), 'back', len(recB))

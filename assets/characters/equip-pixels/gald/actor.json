@@ -1,0 +1,233 @@
+{
+ "menuBase": "menu",
+ "materials": {
+  "armor_light": {
+   "z": 10,
+   "layers": [
+    {
+     "part": "armor_light_t",
+     "tint": "main"
+    }
+   ]
+  },
+  "weapon_axe": {
+   "z": 40,
+   "hand": true,
+   "layers": [
+    {
+     "part": "weapon_axe"
+    }
+   ]
+  }
+ },
+ "views": {
+  "menu": {
+   "src": "assets/characters/companions/gald.png",
+   "w": 255,
+   "h": 277,
+   "dir": "front",
+   "pivot": [
+    128,
+    274
+   ],
+   "body": {
+    "x0": 17,
+    "y0": 18,
+    "x1": 253,
+    "y1": 275
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 257,
+    "y1": 277
+   },
+   "grip": {
+    "x": 37,
+    "y": 137,
+    "order": "斧：柄の上に拳を描き直す"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/gald/menu/base_plain.png?v=7e1ba86a",
+     "x": 17,
+     "y": 18,
+     "w": 236,
+     "h": 257
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/armor_shape_f.png?v=78172d7d",
+     "x": 45,
+     "y": 102,
+     "w": 169,
+     "h": 147
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/armor_heavy_t.png?v=2de574b1",
+     "x": 46,
+     "y": 103,
+     "w": 165,
+     "h": 145
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/armor_light_t.png?v=0c7f080a",
+     "x": 63,
+     "y": 122,
+     "w": 144,
+     "h": 57
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_axe.png?v=8e7677f9",
+     "x": 2,
+     "y": 2,
+     "w": 97,
+     "h": 207
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/gald/menu/hand.png?v=f22ef815",
+     "x": 17,
+     "y": 117,
+     "w": 42,
+     "h": 42
+    }
+   }
+  },
+  "front": {
+   "src": "assets/characters/party-directions-v3/sprites/gald/front.png",
+   "w": 320,
+   "h": 320,
+   "dir": "front",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 50,
+    "y0": 45,
+    "x1": 286,
+    "y1": 302
+   },
+   "grip": {
+    "x": 70,
+    "y": 164,
+    "order": "斧：柄の上に拳を描き直す"
+   },
+   "from": "menu",
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/gald/menu/base_plain.png?v=7e1ba86a",
+     "x": 50,
+     "y": 45,
+     "w": 236,
+     "h": 257
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/armor_shape_f.png?v=78172d7d",
+     "x": 78,
+     "y": 129,
+     "w": 169,
+     "h": 147
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/armor_heavy_t.png?v=2de574b1",
+     "x": 79,
+     "y": 130,
+     "w": 165,
+     "h": 145
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/armor_light_t.png?v=0c7f080a",
+     "x": 96,
+     "y": 149,
+     "w": 144,
+     "h": 57
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_axe.png?v=8e7677f9",
+     "x": 35,
+     "y": 29,
+     "w": 97,
+     "h": 207
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/gald/menu/hand.png?v=f22ef815",
+     "x": 50,
+     "y": 144,
+     "w": 42,
+     "h": 42
+    }
+   }
+  },
+  "back": {
+   "src": "assets/characters/party-directions-v3/sprites/gald/back.png",
+   "w": 320,
+   "h": 320,
+   "dir": "back",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 57,
+    "y0": 59,
+    "x1": 263,
+    "y1": 304
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 322,
+    "y1": 320
+   },
+   "grip": {
+    "x": 246,
+    "y": 156,
+    "order": "斧：柄の上に拳を描き直す"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/gald/back/base_plain.png?v=65be1979",
+     "x": 53,
+     "y": 46,
+     "w": 214,
+     "h": 262
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/gald/back/armor_shape_f.png?v=ae6c720f",
+     "x": 57,
+     "y": 136,
+     "w": 207,
+     "h": 140
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/gald/back/armor_heavy_t.png?v=1e770901",
+     "x": 58,
+     "y": 137,
+     "w": 205,
+     "h": 138
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/gald/back/armor_light_t.png?v=35cab918",
+     "x": 64,
+     "y": 160,
+     "w": 189,
+     "h": 43
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/gald/back/weapon_axe.png?v=fcc3cdd1",
+     "x": 182,
+     "y": 38,
+     "w": 95,
+     "h": 186
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/gald/back/hand.png?v=9a5aae53",
+     "x": 227,
+     "y": 139,
+     "w": 36,
+     "h": 34
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,245 @@
+{
+ "menuBase": "menu",
+ "materials": {
+  "armor_light": {
+   "z": 10,
+   "layers": [
+    {
+     "part": "armor_light_t",
+     "tint": "main"
+    }
+   ]
+  }
+ },
+ "views": {
+  "menu": {
+   "src": "assets/characters/companions/lina.png",
+   "w": 195,
+   "h": 274,
+   "dir": "front",
+   "pivot": [
+    97,
+    271
+   ],
+   "body": {
+    "x0": 22,
+    "y0": 31,
+    "x1": 195,
+    "y1": 272
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 197,
+    "y1": 274
+   },
+   "grip": {
+    "x": 48,
+    "y": 121,
+    "order": "杖：柄の上に手を描き直す"
+   },
+   "parts": {
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/lina/menu/weapon_staff_t.png?v=bca314af",
+     "x": 25,
+     "y": 22,
+     "w": 30,
+     "h": 30
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/lina/menu/weapon_staff_f.png?v=19bd06b3",
+     "x": 0,
+     "y": 2,
+     "w": 89,
+     "h": 264
+    },
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/lina/menu/base_plain.png?v=230423e6",
+     "x": 22,
+     "y": 31,
+     "w": 173,
+     "h": 241
+    },
+    "armor_robe_t": {
+     "url": "assets/characters/equip-pixels/lina/menu/armor_robe_t.png?v=b6441721",
+     "x": 30,
+     "y": 116,
+     "w": 157,
+     "h": 136
+    },
+    "armor_robe_f": {
+     "url": "assets/characters/equip-pixels/lina/menu/armor_robe_f.png?v=7328e41f",
+     "x": 11,
+     "y": 116,
+     "w": 177,
+     "h": 136
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/lina/menu/armor_light_t.png?v=22c12e34",
+     "x": 37,
+     "y": 116,
+     "w": 150,
+     "h": 136
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/lina/menu/hand.png?v=f8283644",
+     "x": 37,
+     "y": 108,
+     "w": 23,
+     "h": 26
+    }
+   }
+  },
+  "front": {
+   "src": "assets/characters/party-directions-v3/sprites/lina/front.png",
+   "w": 320,
+   "h": 320,
+   "dir": "front",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 85,
+    "y0": 61,
+    "x1": 258,
+    "y1": 302
+   },
+   "grip": {
+    "x": 111,
+    "y": 151,
+    "order": "杖：柄の上に手を描き直す"
+   },
+   "from": "menu",
+   "parts": {
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/lina/menu/weapon_staff_t.png?v=bca314af",
+     "x": 88,
+     "y": 52,
+     "w": 30,
+     "h": 30
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/lina/menu/weapon_staff_f.png?v=19bd06b3",
+     "x": 63,
+     "y": 32,
+     "w": 89,
+     "h": 264
+    },
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/lina/menu/base_plain.png?v=230423e6",
+     "x": 85,
+     "y": 61,
+     "w": 173,
+     "h": 241
+    },
+    "armor_robe_t": {
+     "url": "assets/characters/equip-pixels/lina/menu/armor_robe_t.png?v=b6441721",
+     "x": 93,
+     "y": 146,
+     "w": 157,
+     "h": 136
+    },
+    "armor_robe_f": {
+     "url": "assets/characters/equip-pixels/lina/menu/armor_robe_f.png?v=7328e41f",
+     "x": 74,
+     "y": 146,
+     "w": 177,
+     "h": 136
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/lina/menu/armor_light_t.png?v=22c12e34",
+     "x": 100,
+     "y": 146,
+     "w": 150,
+     "h": 136
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/lina/menu/hand.png?v=f8283644",
+     "x": 100,
+     "y": 138,
+     "w": 23,
+     "h": 26
+    }
+   }
+  },
+  "back": {
+   "src": "assets/characters/party-directions-v3/sprites/lina/back.png",
+   "w": 320,
+   "h": 320,
+   "dir": "back",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 56,
+    "y0": 63,
+    "x1": 259,
+    "y1": 304
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 322,
+    "y1": 320
+   },
+   "grip": {
+    "x": 225,
+    "y": 152,
+    "order": "杖：柄の上に手を描き直す"
+   },
+   "parts": {
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/lina/back/weapon_staff_t.png?v=e009ffe8",
+     "x": 219,
+     "y": 55,
+     "w": 27,
+     "h": 28
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/lina/back/weapon_staff_f.png?v=9b69b3ff",
+     "x": 186,
+     "y": 34,
+     "w": 82,
+     "h": 266
+    },
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/lina/back/base_plain.png?v=25fc2c7c",
+     "x": 54,
+     "y": 40,
+     "w": 215,
+     "h": 268
+    },
+    "armor_robe_t": {
+     "url": "assets/characters/equip-pixels/lina/back/armor_robe_t.png?v=b58fe6fc",
+     "x": 87,
+     "y": 149,
+     "w": 143,
+     "h": 138
+    },
+    "armor_robe_f": {
+     "url": "assets/characters/equip-pixels/lina/back/armor_robe_f.png?v=3881718c",
+     "x": 56,
+     "y": 150,
+     "w": 212,
+     "h": 137
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/lina/back/armor_light_t.png?v=79afa037",
+     "x": 87,
+     "y": 149,
+     "w": 143,
+     "h": 138
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/lina/back/hand.png?v=d582ae4c",
+     "x": 216,
+     "y": 147,
+     "w": 20,
+     "h": 20
+    }
+   }
+  }
+ }
+}

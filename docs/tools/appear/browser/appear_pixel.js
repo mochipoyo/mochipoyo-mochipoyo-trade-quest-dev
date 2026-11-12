@@ -134,7 +134,7 @@ const SETS = [
   });
   S(un.axe && un.axe.ok && un.axe.mats.length === 0 && /部品がない/.test(un.axe.skipped.join()) && un.cap.ok && un.cap.base === 'base_plain' && /leather_cap/.test(un.cap.skipped.join()), '部品のない品は、その部位だけ描かない（斧：' + (un.axe ? un.axe.skipped.join() : '装備できる斧なし') + '／革の帽子：' + un.cap.skipped.join() + '）');
   S(un.ring.ok && un.ring.skipped.length === 1, '装飾品は描かない（試作の対象外。記録：' + un.ring.skipped.join(',') + '）。ほかの装備は着替える');
-  S(!un.gald && !un.galdBack && !un.heroLeft && !un.heroMage && un.heroFront, '部品のない人物・向き（ガルド・主人公の戦闘の横向き・魔法使いの立ち絵の向き）は本人の従来の絵。主人公の勝利の正面は着替える');
+  S(un.gald && un.galdBack && !un.heroLeft && !un.heroMage && un.heroFront, '部品のない向き（主人公の戦闘の横向き・魔法使いの立ち絵の向き）は本人の従来の絵。主人公の勝利の正面は着替える。v9.8 からガルドの正面・背面も着替える（確かめは appear_pixel_comp.js）');
   // 斧を持ったときのメニュー：従来の立ち絵のまま
   if (before.axe) {
     await equipSet({ weapon: before.axe }); await p.evaluate(() => { Menu.party(); }); await p.waitForSelector('#ui .party-screen .pt-art', { timeout: 60000 });

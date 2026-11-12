@@ -1,0 +1,83 @@
+{
+ "VIEW": "phone",
+ "ok": 5,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "リーナ：そうび画面の上の立ち絵に合成（base_plain armor_robe_t armor_robe_f・{\"w\":60.6,\"h\":84}）"
+  },
+  {
+   "ok": true,
+   "m": "リーナ：品の一覧で 樫の杖 を選ぶと、試着の枠に持った絵（base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand・絵 {\"x\":20.8,\"y\":259.5,\"w\":69.2,\"h\":96}）。確定しなければ装備は変わらない"
+  },
+  {
+   "ok": true,
+   "m": "ガルド：そうび画面の上の立ち絵に合成（base_plain armor_shape_f・{\"w\":78,\"h\":84}）"
+  },
+  {
+   "ok": true,
+   "m": "ガルド：品の一覧で 戦斧 を選ぶと、試着の枠に持った絵（base_plain armor_shape_f weapon_axe hand・絵 {\"x\":20.8,\"y\":259.5,\"w\":76,\"h\":96}）。確定しなければ装備は変わらない"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  }
+ ],
+ "rec": {
+  "lina": {
+   "head": {
+    "parts": "base_plain armor_robe_t armor_robe_f",
+    "state": "ok",
+    "rect": {
+     "w": 60.6,
+     "h": 84
+    }
+   },
+   "tryOn": {
+    "state": "ok",
+    "parts": "base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand",
+    "rect": {
+     "x": 20.8,
+     "y": 259.5,
+     "w": 69.2,
+     "h": 96
+    },
+    "box": {
+     "x": 20.8,
+     "y": 259.5,
+     "w": 69.2,
+     "h": 111.3
+    }
+   },
+   "same": true
+  },
+  "gald": {
+   "head": {
+    "parts": "base_plain armor_shape_f",
+    "state": "ok",
+    "rect": {
+     "w": 78,
+     "h": 84
+    }
+   },
+   "tryOn": {
+    "state": "ok",
+    "parts": "base_plain armor_shape_f weapon_axe hand",
+    "rect": {
+     "x": 20.8,
+     "y": 259.5,
+     "w": 76,
+     "h": 96
+    },
+    "box": {
+     "x": 20.8,
+     "y": 259.5,
+     "w": 76,
+     "h": 111.3
+    }
+   },
+   "same": true
+  }
+ }
+}

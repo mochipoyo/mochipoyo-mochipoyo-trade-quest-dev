@@ -1,5 +1,5 @@
 {
- "note": "v9.7 装備の外見（ドット絵の差分）の対応表。appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備から作る。ほかのキャラへ広げるときは、人物ID・向きごとに parts をそろえる",
+ "note": "v9.7〜v9.8 装備の外見（ドット絵の差分）の対応表。appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備から作る。ほかのキャラへ広げるときは、人物ID・向きごとに parts をそろえる",
  "actors": {
   "hero": {
    "job:warrior": {
@@ -459,6 +459,397 @@
      }
     }
    }
+  },
+  "lina": {
+   "menu": {
+    "src": "assets/characters/companions/lina.png",
+    "size": [
+     195,
+     274
+    ],
+    "dir": "front",
+    "pivot": [
+     97,
+     271
+    ],
+    "grip": {
+     "x": 48,
+     "y": 121,
+     "order": "杖：柄の上に手を描き直す"
+    },
+    "parts": {
+     "weapon_staff_t": {
+      "file": "assets/characters/equip-pixels/lina/menu/weapon_staff_t.png",
+      "x": 25,
+      "y": 22,
+      "w": 30,
+      "h": 30
+     },
+     "weapon_staff_f": {
+      "file": "assets/characters/equip-pixels/lina/menu/weapon_staff_f.png",
+      "x": 0,
+      "y": 2,
+      "w": 89,
+      "h": 264
+     },
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/lina/menu/base_plain.png",
+      "x": 22,
+      "y": 31,
+      "w": 173,
+      "h": 241
+     },
+     "armor_robe_t": {
+      "file": "assets/characters/equip-pixels/lina/menu/armor_robe_t.png",
+      "x": 30,
+      "y": 116,
+      "w": 157,
+      "h": 136
+     },
+     "armor_robe_f": {
+      "file": "assets/characters/equip-pixels/lina/menu/armor_robe_f.png",
+      "x": 11,
+      "y": 116,
+      "w": 177,
+      "h": 136
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/lina/menu/armor_light_t.png",
+      "x": 37,
+      "y": 116,
+      "w": 150,
+      "h": 136
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/lina/menu/hand.png",
+      "x": 37,
+      "y": 108,
+      "w": 23,
+      "h": 26
+     }
+    }
+   },
+   "front": {
+    "src": "assets/characters/party-directions-v3/sprites/lina/front.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "front",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 111,
+     "y": 151,
+     "order": "杖：柄の上に手を描き直す"
+    },
+    "parts": {
+     "weapon_staff_t": {
+      "file": "assets/characters/equip-pixels/lina/menu/weapon_staff_t.png",
+      "x": 88,
+      "y": 52,
+      "w": 30,
+      "h": 30
+     },
+     "weapon_staff_f": {
+      "file": "assets/characters/equip-pixels/lina/menu/weapon_staff_f.png",
+      "x": 63,
+      "y": 32,
+      "w": 89,
+      "h": 264
+     },
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/lina/menu/base_plain.png",
+      "x": 85,
+      "y": 61,
+      "w": 173,
+      "h": 241
+     },
+     "armor_robe_t": {
+      "file": "assets/characters/equip-pixels/lina/menu/armor_robe_t.png",
+      "x": 93,
+      "y": 146,
+      "w": 157,
+      "h": 136
+     },
+     "armor_robe_f": {
+      "file": "assets/characters/equip-pixels/lina/menu/armor_robe_f.png",
+      "x": 74,
+      "y": 146,
+      "w": 177,
+      "h": 136
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/lina/menu/armor_light_t.png",
+      "x": 100,
+      "y": 146,
+      "w": 150,
+      "h": 136
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/lina/menu/hand.png",
+      "x": 100,
+      "y": 138,
+      "w": 23,
+      "h": 26
+     }
+    }
+   },
+   "back": {
+    "src": "assets/characters/party-directions-v3/sprites/lina/back.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "back",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 225,
+     "y": 152,
+     "order": "杖：柄の上に手を描き直す"
+    },
+    "parts": {
+     "weapon_staff_t": {
+      "file": "assets/characters/equip-pixels/lina/back/weapon_staff_t.png",
+      "x": 219,
+      "y": 55,
+      "w": 27,
+      "h": 28
+     },
+     "weapon_staff_f": {
+      "file": "assets/characters/equip-pixels/lina/back/weapon_staff_f.png",
+      "x": 186,
+      "y": 34,
+      "w": 82,
+      "h": 266
+     },
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/lina/back/base_plain.png",
+      "x": 54,
+      "y": 40,
+      "w": 215,
+      "h": 268
+     },
+     "armor_robe_t": {
+      "file": "assets/characters/equip-pixels/lina/back/armor_robe_t.png",
+      "x": 87,
+      "y": 149,
+      "w": 143,
+      "h": 138
+     },
+     "armor_robe_f": {
+      "file": "assets/characters/equip-pixels/lina/back/armor_robe_f.png",
+      "x": 56,
+      "y": 150,
+      "w": 212,
+      "h": 137
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/lina/back/armor_light_t.png",
+      "x": 87,
+      "y": 149,
+      "w": 143,
+      "h": 138
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/lina/back/hand.png",
+      "x": 216,
+      "y": 147,
+      "w": 20,
+      "h": 20
+     }
+    }
+   }
+  },
+  "gald": {
+   "menu": {
+    "src": "assets/characters/companions/gald.png",
+    "size": [
+     255,
+     277
+    ],
+    "dir": "front",
+    "pivot": [
+     128,
+     274
+    ],
+    "grip": {
+     "x": 37,
+     "y": 137,
+     "order": "斧：柄の上に拳を描き直す"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/gald/menu/base_plain.png",
+      "x": 17,
+      "y": 18,
+      "w": 236,
+      "h": 257
+     },
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/gald/menu/armor_shape_f.png",
+      "x": 45,
+      "y": 102,
+      "w": 169,
+      "h": 147
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/gald/menu/armor_heavy_t.png",
+      "x": 46,
+      "y": 103,
+      "w": 165,
+      "h": 145
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/gald/menu/armor_light_t.png",
+      "x": 63,
+      "y": 122,
+      "w": 144,
+      "h": 57
+     },
+     "weapon_axe": {
+      "file": "assets/characters/equip-pixels/gald/menu/weapon_axe.png",
+      "x": 2,
+      "y": 2,
+      "w": 97,
+      "h": 207
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/gald/menu/hand.png",
+      "x": 17,
+      "y": 117,
+      "w": 42,
+      "h": 42
+     }
+    }
+   },
+   "front": {
+    "src": "assets/characters/party-directions-v3/sprites/gald/front.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "front",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 70,
+     "y": 164,
+     "order": "斧：柄の上に拳を描き直す"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/gald/menu/base_plain.png",
+      "x": 50,
+      "y": 45,
+      "w": 236,
+      "h": 257
+     },
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/gald/menu/armor_shape_f.png",
+      "x": 78,
+      "y": 129,
+      "w": 169,
+      "h": 147
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/gald/menu/armor_heavy_t.png",
+      "x": 79,
+      "y": 130,
+      "w": 165,
+      "h": 145
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/gald/menu/armor_light_t.png",
+      "x": 96,
+      "y": 149,
+      "w": 144,
+      "h": 57
+     },
+     "weapon_axe": {
+      "file": "assets/characters/equip-pixels/gald/menu/weapon_axe.png",
+      "x": 35,
+      "y": 29,
+      "w": 97,
+      "h": 207
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/gald/menu/hand.png",
+      "x": 50,
+      "y": 144,
+      "w": 42,
+      "h": 42
+     }
+    }
+   },
+   "back": {
+    "src": "assets/characters/party-directions-v3/sprites/gald/back.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "back",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 246,
+     "y": 156,
+     "order": "斧：柄の上に拳を描き直す"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/gald/back/base_plain.png",
+      "x": 53,
+      "y": 46,
+      "w": 214,
+      "h": 262
+     },
+     "armor_shape_f": {
+      "file": "assets/characters/equip-pixels/gald/back/armor_shape_f.png",
+      "x": 57,
+      "y": 136,
+      "w": 207,
+      "h": 140
+     },
+     "armor_heavy_t": {
+      "file": "assets/characters/equip-pixels/gald/back/armor_heavy_t.png",
+      "x": 58,
+      "y": 137,
+      "w": 205,
+      "h": 138
+     },
+     "armor_light_t": {
+      "file": "assets/characters/equip-pixels/gald/back/armor_light_t.png",
+      "x": 64,
+      "y": 160,
+      "w": 189,
+      "h": 43
+     },
+     "weapon_axe": {
+      "file": "assets/characters/equip-pixels/gald/back/weapon_axe.png",
+      "x": 182,
+      "y": 38,
+      "w": 95,
+      "h": 186
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/gald/back/hand.png",
+      "x": 227,
+      "y": 139,
+      "w": 36,
+      "h": 34
+     }
+    }
+   }
   }
  },
  "items": {
@@ -471,7 +862,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "copper_sword": {
@@ -483,7 +880,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "iron_sword": {
@@ -495,7 +898,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "steel_sword": {
@@ -507,7 +916,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "knight_sword": {
@@ -519,7 +934,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "wave_sword": {
@@ -531,7 +952,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "dagger": {
@@ -543,7 +970,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bronze_dagger": {
@@ -555,7 +988,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "assassin_dagger": {
@@ -567,7 +1006,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "spear": {
@@ -579,7 +1024,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "iron_spear": {
@@ -591,7 +1042,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "halberd": {
@@ -603,7 +1060,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "hand_axe": {
@@ -611,11 +1074,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "handaxe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "battle_axe": {
@@ -623,11 +1092,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "battleaxe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "short_bow": {
@@ -639,7 +1114,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "hunter_bow": {
@@ -651,7 +1132,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "long_bow": {
@@ -663,7 +1150,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "oak_staff": {
@@ -675,7 +1168,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "mage_staff": {
@@ -687,7 +1186,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "sage_staff": {
@@ -699,7 +1204,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "club": {
@@ -711,7 +1222,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "iron_club": {
@@ -723,7 +1240,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "holy_mace": {
@@ -735,7 +1258,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "leather_claw": {
@@ -747,7 +1276,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "iron_claw": {
@@ -759,7 +1294,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "tiger_claw": {
@@ -771,7 +1312,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "cloth": {
@@ -783,7 +1330,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "leather_armor": {
@@ -795,7 +1348,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "scale_armor": {
@@ -807,7 +1366,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "ninja_garb": {
@@ -819,7 +1384,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "chain_mail": {
@@ -831,7 +1402,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "iron_armor": {
@@ -843,7 +1420,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "knight_armor": {
@@ -855,7 +1438,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "robe": {
@@ -867,7 +1456,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "silk_robe": {
@@ -879,7 +1474,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "sage_robe": {
@@ -891,7 +1492,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "wooden_shield": {
@@ -903,7 +1510,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "iron_shield": {
@@ -915,7 +1528,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "knight_shield": {
@@ -927,7 +1546,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "stoploss_shield": {
@@ -939,7 +1564,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "leather_cap": {
@@ -951,7 +1582,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "feather_hat": {
@@ -963,7 +1600,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "wizard_hat": {
@@ -975,7 +1618,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "iron_helm": {
@@ -987,7 +1636,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "knight_helm": {
@@ -999,7 +1654,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "ring_power": {
@@ -1067,7 +1728,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "survey_bow": {
@@ -1079,7 +1746,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "sea_coat": {
@@ -1091,7 +1764,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "chrono_staff": {
@@ -1103,7 +1782,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "gear_bow": {
@@ -1115,7 +1800,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "temporal_robe": {
@@ -1127,7 +1818,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "rune_blade": {
@@ -1139,7 +1836,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "arcane_staff": {
@@ -1151,7 +1854,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "star_bow": {
@@ -1163,7 +1872,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "void_dagger": {
@@ -1175,7 +1890,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "astral_spear": {
@@ -1187,7 +1908,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "sky_axe": {
@@ -1195,11 +1922,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "axe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "shadow_claw": {
@@ -1211,7 +1944,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "balance_mace": {
@@ -1223,7 +1962,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "rune_mail": {
@@ -1235,7 +1980,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "star_cloak": {
@@ -1247,7 +1998,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "sky_robe": {
@@ -1259,7 +2016,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "aegis_shield": {
@@ -1271,7 +2034,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "star_helm": {
@@ -1283,7 +2052,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "arcane_hat": {
@@ -1295,7 +2070,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "iron_crown": {
@@ -1315,7 +2096,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "ema_trident": {
@@ -1327,7 +2114,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "rci_bow": {
@@ -1339,7 +2132,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "macd_twin": {
@@ -1351,7 +2150,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "hidden_staff": {
@@ -1363,7 +2168,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "stoploss_dagger": {
@@ -1375,7 +2186,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "armor_risk": {
@@ -1387,7 +2204,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "robe_skip": {
@@ -1399,7 +2222,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "cloak_volatility": {
@@ -1411,7 +2240,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "helm_timeframe": {
@@ -1423,7 +2258,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "armor_patience": {
@@ -1435,7 +2276,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "compass_wave": {
@@ -1511,7 +2358,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "ema_trident_2": {
@@ -1523,7 +2376,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "rci_bow_2": {
@@ -1535,7 +2394,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "macd_twin_2": {
@@ -1547,7 +2412,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "hidden_staff_2": {
@@ -1559,7 +2430,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "stoploss_dagger_2": {
@@ -1571,7 +2448,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "scimitar": {
@@ -1583,7 +2466,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "sun_spear": {
@@ -1595,7 +2484,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "caravan_bow": {
@@ -1607,7 +2502,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "dune_cloak": {
@@ -1619,7 +2520,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "sand_turban": {
@@ -1631,7 +2538,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "mirage_veil": {
@@ -1643,7 +2556,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "dragon_axe": {
@@ -1651,11 +2570,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "axe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "flame_claw": {
@@ -1667,7 +2592,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "dragon_mail": {
@@ -1679,7 +2610,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "ember_robe": {
@@ -1691,7 +2628,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "dragon_helm": {
@@ -1703,7 +2646,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "ryumyaku_blade": {
@@ -1715,7 +2664,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "ice_staff": {
@@ -1727,7 +2682,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "fur_coat": {
@@ -1739,7 +2700,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "clock_hand_spear": {
@@ -1751,7 +2718,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "wave_charm": {
@@ -1771,7 +2744,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "ash_hammer": {
@@ -1783,7 +2762,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "captain_saber": {
@@ -1795,7 +2780,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "zero_bow": {
@@ -1807,7 +2798,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "healer_robe": {
@@ -1819,7 +2816,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "auditor_seal": {
@@ -1839,7 +2842,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "surveyor_ring": {
@@ -1875,7 +2884,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "lucky_ring": {
@@ -1895,7 +2910,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "golden_shield": {
@@ -1907,7 +2928,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "prob_sword": {
@@ -1919,7 +2946,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "ev_staff": {
@@ -1931,7 +2964,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "legend_gambler_armor": {
@@ -1943,7 +2982,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "fate_blade": {
@@ -1955,7 +3000,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "lln_charm": {
@@ -1983,7 +3034,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "yin_sword": {
@@ -1995,7 +3052,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "resistance_blade": {
@@ -2007,7 +3070,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "equilibrium_sword": {
@@ -2019,7 +3088,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "pinbar_dagger": {
@@ -2031,7 +3106,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "breakout_dagger": {
@@ -2043,7 +3124,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "contrarian_blade": {
@@ -2055,7 +3142,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "silent_knife": {
@@ -2067,7 +3160,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "pullback_spear": {
@@ -2079,7 +3178,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "takeprofit_trident": {
@@ -2091,7 +3196,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "ryumyaku_spear": {
@@ -2103,7 +3214,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "star_cycle_spear": {
@@ -2115,7 +3232,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "momentum_axe": {
@@ -2123,11 +3246,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "axe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "chainbreak_axe": {
@@ -2135,11 +3264,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "axe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "crater_axe": {
@@ -2147,11 +3282,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "battleaxe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "crash_axe": {
@@ -2159,11 +3300,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "battleaxe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "breakconfirm_bow": {
@@ -2175,7 +3322,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "range_bow": {
@@ -2187,7 +3340,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "prob_hunt_bow": {
@@ -2199,7 +3358,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "azure_longbow": {
@@ -2211,7 +3376,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "compound_staff": {
@@ -2223,7 +3394,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "stats_staff": {
@@ -2235,7 +3412,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "oracle_staff": {
@@ -2247,7 +3430,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "spacetime_staff": {
@@ -2259,7 +3448,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "candle_hammer": {
@@ -2271,7 +3466,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "margin_hammer": {
@@ -2283,7 +3484,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "basis_rod": {
@@ -2295,7 +3502,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "scale_mace": {
@@ -2307,7 +3520,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "retro_claw": {
@@ -2319,7 +3538,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "thunder_claw": {
@@ -2331,7 +3556,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "losscut_claw": {
@@ -2343,7 +3574,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "obsidian_twin": {
@@ -2355,7 +3592,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "copperwall_armor": {
@@ -2367,7 +3610,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "ashiron_plate": {
@@ -2379,7 +3628,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "prob_armor": {
@@ -2391,7 +3646,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "federal_plate": {
@@ -2403,7 +3664,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "deepsea_armor": {
@@ -2415,7 +3682,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "final_plate": {
@@ -2427,7 +3700,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "trader_coat": {
@@ -2439,7 +3718,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "surf_armor": {
@@ -2451,7 +3736,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "seabreeze_leather": {
@@ -2463,7 +3754,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "auditor_coat": {
@@ -2475,7 +3772,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "sandstorm_cloak": {
@@ -2487,7 +3790,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "stardrift_mail": {
@@ -2499,7 +3808,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "statistician_robe": {
@@ -2511,7 +3826,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "antiretro_vestment": {
@@ -2523,7 +3844,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "iceport_robe": {
@@ -2535,7 +3862,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "chrono_formal": {
@@ -2547,7 +3880,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "voidward_robe": {
@@ -2559,7 +3898,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "dow_buckler": {
@@ -2571,7 +3916,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "pullback_shield": {
@@ -2583,7 +3934,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "ironcastle_shield": {
@@ -2595,7 +3952,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "mana_barrier_shield": {
@@ -2607,7 +3970,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "doom_guard_shield": {
@@ -2619,7 +3988,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "smoked_helm": {
@@ -2631,7 +4006,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "seachart_helm": {
@@ -2643,7 +4024,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "math_helm": {
@@ -2655,7 +4042,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "hilo_hat": {
@@ -2667,7 +4060,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "desert_star_hat": {
@@ -2679,7 +4078,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "icecrystal_hood": {
@@ -2691,7 +4096,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "scalein_ring": {
@@ -2863,7 +4274,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "td_session_watch": {
@@ -2883,7 +4300,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "td_mirror_buckler": {
@@ -2895,7 +4318,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "td_breakout_halberd": {
@@ -2907,7 +4336,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "td_dow_crown": {
@@ -2919,7 +4354,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "td_ema_staff": {
@@ -2931,7 +4372,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "td_rci_hat": {
@@ -2943,7 +4390,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "td_divergence_lens": {
@@ -2971,7 +4424,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "td_zeno_blade": {
@@ -2983,7 +4442,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "td_margin_charm": {
@@ -3003,7 +4468,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_silent_bell": {
@@ -3023,7 +4494,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_dark_matter_veil": {
@@ -3035,7 +4512,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_two_faced_dagger": {
@@ -3047,7 +4530,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_bronze_desire_mail": {
@@ -3059,7 +4548,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "b19_hold_fast_lance": {
@@ -3071,7 +4566,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_ember_tablet_staff": {
@@ -3083,7 +4584,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_unsmiling_aegis": {
@@ -3095,7 +4602,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_check_piece": {
@@ -3115,7 +4628,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_rate_gauge_helm": {
@@ -3127,7 +4646,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_seal_justice_sword": {
@@ -3139,7 +4664,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_amber_memory_bow": {
@@ -3151,7 +4682,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_bare_face_cloak": {
@@ -3163,7 +4700,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "b19_sober_claw": {
@@ -3175,7 +4718,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_expected_value_axe": {
@@ -3183,11 +4732,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "axe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "b19_balance_star": {
@@ -3207,7 +4762,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "b19_all_seal": {
@@ -3227,7 +4788,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_islands_spear": {
@@ -3239,7 +4806,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_islands_bow": {
@@ -3251,7 +4824,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_islands_dagger": {
@@ -3263,7 +4842,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_islands_staff": {
@@ -3275,7 +4860,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_islands_club": {
@@ -3287,7 +4878,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_islands_heavy": {
@@ -3299,7 +4896,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_islands_light": {
@@ -3311,7 +4914,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_islands_robe": {
@@ -3323,7 +4932,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_islands_shield": {
@@ -3335,7 +4950,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_islands_helm": {
@@ -3347,7 +4968,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_islands_hat": {
@@ -3359,7 +4986,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_tempus_sword": {
@@ -3371,7 +5004,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_tempus_spear": {
@@ -3383,7 +5022,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_tempus_bow": {
@@ -3395,7 +5040,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_tempus_dagger": {
@@ -3407,7 +5058,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_tempus_staff": {
@@ -3419,7 +5076,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_tempus_claw": {
@@ -3431,7 +5094,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_tempus_heavy": {
@@ -3443,7 +5112,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_tempus_light": {
@@ -3455,7 +5130,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_tempus_shield": {
@@ -3467,7 +5148,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_tempus_hat": {
@@ -3479,7 +5166,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_desert_sword": {
@@ -3491,7 +5184,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_desert_spear": {
@@ -3503,7 +5202,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_desert_bow": {
@@ -3515,7 +5220,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_desert_staff": {
@@ -3527,7 +5238,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_desert_club": {
@@ -3539,7 +5256,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_desert_heavy": {
@@ -3551,7 +5274,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_desert_light": {
@@ -3563,7 +5292,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_desert_robe": {
@@ -3575,7 +5310,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_desert_shield": {
@@ -3587,7 +5328,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_desert_helm": {
@@ -3599,7 +5346,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_desert_hat": {
@@ -3611,7 +5364,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_machine_sword": {
@@ -3623,7 +5382,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_machine_spear": {
@@ -3635,7 +5400,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_machine_bow": {
@@ -3647,7 +5418,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_machine_dagger": {
@@ -3659,7 +5436,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_machine_staff": {
@@ -3671,7 +5454,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_machine_heavy": {
@@ -3683,7 +5472,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_machine_light": {
@@ -3695,7 +5490,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_machine_robe": {
@@ -3707,7 +5508,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_machine_shield": {
@@ -3719,7 +5526,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_machine_helm": {
@@ -3731,7 +5544,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_machine_hat": {
@@ -3743,7 +5562,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_snow_spear": {
@@ -3755,7 +5580,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_snow_bow": {
@@ -3767,7 +5598,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_snow_staff": {
@@ -3779,7 +5616,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_snow_claw": {
@@ -3791,7 +5634,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_snow_heavy": {
@@ -3803,7 +5652,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_snow_light": {
@@ -3815,7 +5670,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_snow_robe": {
@@ -3827,7 +5688,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_snow_shield": {
@@ -3839,7 +5706,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_snow_helm": {
@@ -3851,7 +5724,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dragon_sword": {
@@ -3863,7 +5742,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dragon_staff": {
@@ -3875,7 +5760,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dragon_club": {
@@ -3887,7 +5778,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dragon_claw": {
@@ -3899,7 +5796,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dragon_heavy": {
@@ -3911,7 +5814,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_dragon_robe": {
@@ -3923,7 +5832,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dragon_shield": {
@@ -3935,7 +5850,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dragon_helm": {
@@ -3947,7 +5868,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dragon_hat": {
@@ -3959,7 +5886,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_sword": {
@@ -3971,7 +5904,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_spear": {
@@ -3983,7 +5922,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_axe": {
@@ -3991,11 +5936,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "battleaxe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_dark_bow": {
@@ -4007,7 +5958,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_dagger": {
@@ -4019,7 +5976,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_staff": {
@@ -4031,7 +5994,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_club": {
@@ -4043,7 +6012,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_claw": {
@@ -4055,7 +6030,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_heavy": {
@@ -4067,7 +6048,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_dark_light": {
@@ -4079,7 +6066,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "t68_dark_robe": {
@@ -4091,7 +6084,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_shield": {
@@ -4103,7 +6102,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_helm": {
@@ -4115,7 +6120,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "t68_dark_hat": {
@@ -4127,7 +6138,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "explorer_ring": {
@@ -4147,7 +6164,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "starseer_staff": {
@@ -4159,7 +6182,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "spacetime_armor": {
@@ -4171,7 +6200,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "archeion_blade": {
@@ -4183,7 +6218,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "neon_umbrella": {
@@ -4195,7 +6236,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "neon_raincoat": {
@@ -4207,7 +6254,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "clean_filter": {
@@ -4227,7 +6280,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "ashshore_coat": {
@@ -4239,7 +6298,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "conductor_watch": {
@@ -4259,7 +6324,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "coral_mail": {
@@ -4271,7 +6342,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "surf_earring": {
@@ -4291,7 +6368,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "orbit_shield": {
@@ -4303,7 +6386,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "star_ring": {
@@ -4323,7 +6412,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "aeria_robe": {
@@ -4335,7 +6430,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "reactor_shard": {
@@ -4371,7 +6472,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "bu_garon_axe": {
@@ -4379,11 +6486,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "battleaxe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "bu_urga_spear": {
@@ -4395,7 +6508,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_zarg_chainbreaker": {
@@ -4403,11 +6522,17 @@
    "slot": "weapon",
    "shape": "axe",
    "sub": "battleaxe",
-   "material": null,
+   "material": "weapon_axe",
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "bu_ledger_shield": {
@@ -4419,7 +6544,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_valen_oathblade": {
@@ -4431,7 +6562,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_dorek_bastion": {
@@ -4443,7 +6580,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_ledger_core_ring": {
@@ -4463,7 +6606,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "bu_library_archive_staff": {
@@ -4475,7 +6624,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_zaid_sand_bow": {
@@ -4487,7 +6642,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_time_guardian_watch": {
@@ -4507,7 +6668,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_memory_keeper_helm": {
@@ -4519,7 +6686,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_drone_link_bow": {
@@ -4531,7 +6704,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_core_barrier_mail": {
@@ -4543,7 +6722,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "bu_volk_forbidden_staff": {
@@ -4555,7 +6740,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_magma_warden_mail": {
@@ -4567,7 +6758,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "bu_sky_guardian_spear": {
@@ -4579,7 +6776,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_zarg_remnant_claw": {
@@ -4591,7 +6794,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_sevran_blank_robe": {
@@ -4603,7 +6812,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_fear_break_shield": {
@@ -4615,7 +6830,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_greed_limit_gauntlet": {
@@ -4627,7 +6848,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_open_future_blade": {
@@ -4639,7 +6866,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_wolf_king_claw": {
@@ -4651,7 +6884,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_crystal_resonance_staff": {
@@ -4663,7 +6902,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_gull_admiral_hat": {
@@ -4675,7 +6920,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_observer_lens": {
@@ -4703,7 +6954,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": true,
+    "lina/front": true,
+    "lina/back": true,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_tides_coral_trident": {
@@ -4715,7 +6972,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_signal_shield": {
@@ -4727,7 +6990,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_archive_backup_mail": {
@@ -4739,7 +7008,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": true,
+    "gald/front": true,
+    "gald/back": true
    }
   },
   "bu_orbis_orbit_bow": {
@@ -4751,7 +7026,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_anchor_gravity_helm": {
@@ -4763,7 +7044,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_mine_captain_helm": {
@@ -4775,7 +7062,13 @@
    "views": {
     "hero/job:warrior": true,
     "hero/front": true,
-    "hero/back": true
+    "hero/back": true,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   },
   "bu_hald_audit_badge": {
@@ -4819,7 +7112,13 @@
    "views": {
     "hero/job:warrior": false,
     "hero/front": false,
-    "hero/back": false
+    "hero/back": false,
+    "lina/menu": false,
+    "lina/front": false,
+    "lina/back": false,
+    "gald/menu": false,
+    "gald/front": false,
+    "gald/back": false
    }
   }
  },
@@ -4945,7 +7244,8 @@
   "weapon": {
    "sword": "weapon_sword",
    "staff": "weapon_staff",
-   "spear": "weapon_spear"
+   "spear": "weapon_spear",
+   "axe": "weapon_axe"
   },
   "shield": {
    "shield": "shield"

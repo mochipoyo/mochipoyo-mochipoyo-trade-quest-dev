@@ -1,0 +1,487 @@
+{
+ "menuBase": "job:warrior",
+ "views": {
+  "job:warrior": {
+   "src": "assets/characters/jobs/warrior.png",
+   "w": 130,
+   "h": 200,
+   "dir": "front",
+   "pivot": [
+    64,
+    197
+   ],
+   "body": {
+    "x0": 0,
+    "y0": 2,
+    "x1": 124,
+    "y1": 198
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -26,
+    "x1": 132,
+    "y1": 200
+   },
+   "grip": {
+    "x": 22,
+    "y": 117,
+    "order": "剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 105,
+    "y": 125,
+    "order": "盾：腕の上（体の後に描く）"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/base_plain.png?v=bf4a860b",
+     "x": 0,
+     "y": 2,
+     "w": 124,
+     "h": 196
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/armor_shape_f.png?v=908d6300",
+     "x": 20,
+     "y": 77,
+     "w": 86,
+     "h": 118
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/armor_heavy_t.png?v=28213964",
+     "x": 20,
+     "y": 77,
+     "w": 86,
+     "h": 118
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/armor_light_t.png?v=22ae0055",
+     "x": 20,
+     "y": 77,
+     "w": 86,
+     "h": 118
+    },
+    "shield": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/shield.png?v=f6322646",
+     "x": 83,
+     "y": 86,
+     "w": 45,
+     "h": 79
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_sword.png?v=ed8f4ae4",
+     "x": 0,
+     "y": 17,
+     "w": 38,
+     "h": 119
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/hand.png?v=45310a7a",
+     "x": 12,
+     "y": 104,
+     "w": 21,
+     "h": 25
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/head_helm_t.png?v=6be35c49",
+     "x": 30,
+     "y": 9,
+     "w": 73,
+     "h": 65
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/head_helm_f.png?v=8f5b10f1",
+     "x": 29,
+     "y": 8,
+     "w": 75,
+     "h": 67
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/base_helm.png?v=a403a7ca",
+     "x": 0,
+     "y": 8,
+     "w": 124,
+     "h": 190
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/head_hat_t.png?v=b646efbb",
+     "x": 16,
+     "y": -14,
+     "w": 101,
+     "h": 67
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/head_hat_f.png?v=a1f0a724",
+     "x": 15,
+     "y": -15,
+     "w": 103,
+     "h": 69
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/base_hat.png?v=740737a6",
+     "x": 0,
+     "y": 2,
+     "w": 124,
+     "h": 196
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_staff_t.png?v=50cfb500",
+     "x": 16,
+     "y": 46,
+     "w": 13,
+     "h": 13
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_staff_f.png?v=b7a553a8",
+     "x": 12,
+     "y": 39,
+     "w": 21,
+     "h": 159
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_spear.png?v=e0de409c",
+     "x": 16,
+     "y": -24,
+     "w": 12,
+     "h": 222
+    },
+    "armor_robe_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_t.png?v=d0a7c935",
+     "x": 15,
+     "y": 77,
+     "w": 94,
+     "h": 107
+    },
+    "armor_robe_f": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_f.png?v=5a01cc31",
+     "x": 13,
+     "y": 80,
+     "w": 98,
+     "h": 115
+    }
+   }
+  },
+  "front": {
+   "src": "assets/characters/party-directions-v3/sprites/hero/front.png",
+   "w": 320,
+   "h": 320,
+   "dir": "front",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 95,
+    "y0": 106,
+    "x1": 219,
+    "y1": 302
+   },
+   "grip": {
+    "x": 117,
+    "y": 221,
+    "order": "剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 200,
+    "y": 229,
+    "order": "盾：腕の上（体の後に描く）"
+   },
+   "from": "job:warrior",
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/base_plain.png?v=bf4a860b",
+     "x": 95,
+     "y": 106,
+     "w": 124,
+     "h": 196
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/armor_shape_f.png?v=908d6300",
+     "x": 115,
+     "y": 181,
+     "w": 86,
+     "h": 118
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/armor_heavy_t.png?v=28213964",
+     "x": 115,
+     "y": 181,
+     "w": 86,
+     "h": 118
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/armor_light_t.png?v=22ae0055",
+     "x": 115,
+     "y": 181,
+     "w": 86,
+     "h": 118
+    },
+    "shield": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/shield.png?v=f6322646",
+     "x": 178,
+     "y": 190,
+     "w": 45,
+     "h": 79
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_sword.png?v=ed8f4ae4",
+     "x": 95,
+     "y": 121,
+     "w": 38,
+     "h": 119
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/hand.png?v=45310a7a",
+     "x": 107,
+     "y": 208,
+     "w": 21,
+     "h": 25
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/head_helm_t.png?v=6be35c49",
+     "x": 125,
+     "y": 113,
+     "w": 73,
+     "h": 65
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/head_helm_f.png?v=8f5b10f1",
+     "x": 124,
+     "y": 112,
+     "w": 75,
+     "h": 67
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/base_helm.png?v=a403a7ca",
+     "x": 95,
+     "y": 112,
+     "w": 124,
+     "h": 190
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/head_hat_t.png?v=b646efbb",
+     "x": 111,
+     "y": 90,
+     "w": 101,
+     "h": 67
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/head_hat_f.png?v=a1f0a724",
+     "x": 110,
+     "y": 89,
+     "w": 103,
+     "h": 69
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/base_hat.png?v=740737a6",
+     "x": 95,
+     "y": 106,
+     "w": 124,
+     "h": 196
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_staff_t.png?v=50cfb500",
+     "x": 111,
+     "y": 150,
+     "w": 13,
+     "h": 13
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_staff_f.png?v=b7a553a8",
+     "x": 107,
+     "y": 143,
+     "w": 21,
+     "h": 159
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_spear.png?v=e0de409c",
+     "x": 111,
+     "y": 80,
+     "w": 12,
+     "h": 222
+    },
+    "armor_robe_t": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_t.png?v=d0a7c935",
+     "x": 110,
+     "y": 181,
+     "w": 94,
+     "h": 107
+    },
+    "armor_robe_f": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_f.png?v=5a01cc31",
+     "x": 108,
+     "y": 184,
+     "w": 98,
+     "h": 115
+    }
+   }
+  },
+  "back": {
+   "src": "assets/characters/party-directions-v3/sprites/hero/back.png",
+   "w": 320,
+   "h": 320,
+   "dir": "back",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 97,
+    "y0": 103,
+    "x1": 236,
+    "y1": 304
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 322,
+    "y1": 320
+   },
+   "grip": {
+    "x": 205,
+    "y": 213,
+    "order": "剣：拳の上に鍔／杖・槍：柄の上に拳を描き直す"
+   },
+   "offhand": {
+    "x": 108,
+    "y": 222,
+    "order": "盾：左腕の外側（体の後に描く）"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/hero/back/base_plain.png?v=a43cba85",
+     "x": 88,
+     "y": 102,
+     "w": 151,
+     "h": 203
+    },
+    "armor_shape_f": {
+     "url": "assets/characters/equip-pixels/hero/back/armor_shape_f.png?v=ca8d9de0",
+     "x": 108,
+     "y": 178,
+     "w": 98,
+     "h": 122
+    },
+    "armor_heavy_t": {
+     "url": "assets/characters/equip-pixels/hero/back/armor_heavy_t.png?v=db615863",
+     "x": 109,
+     "y": 178,
+     "w": 96,
+     "h": 121
+    },
+    "armor_light_t": {
+     "url": "assets/characters/equip-pixels/hero/back/armor_light_t.png?v=05e2d1fb",
+     "x": 109,
+     "y": 178,
+     "w": 96,
+     "h": 121
+    },
+    "shield": {
+     "url": "assets/characters/equip-pixels/hero/back/shield.png?v=cf866d57",
+     "x": 91,
+     "y": 185,
+     "w": 36,
+     "h": 78
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/hero/back/weapon_sword.png?v=e1507124",
+     "x": 193,
+     "y": 122,
+     "w": 43,
+     "h": 111
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/hero/back/hand.png?v=12be33b6",
+     "x": 192,
+     "y": 199,
+     "w": 25,
+     "h": 28
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/hero/back/head_helm_t.png?v=506d1c81",
+     "x": 117,
+     "y": 111,
+     "w": 80,
+     "h": 59
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/hero/back/head_helm_f.png?v=2fe357dc",
+     "x": 116,
+     "y": 110,
+     "w": 82,
+     "h": 61
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/hero/back/base_helm.png?v=78ee3079",
+     "x": 88,
+     "y": 110,
+     "w": 151,
+     "h": 195
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/hero/back/head_hat_t.png?v=2feb45be",
+     "x": 103,
+     "y": 92,
+     "w": 109,
+     "h": 67
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/hero/back/head_hat_f.png?v=aabffe41",
+     "x": 102,
+     "y": 91,
+     "w": 111,
+     "h": 69
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/hero/back/base_hat.png?v=cd9fc4dc",
+     "x": 88,
+     "y": 102,
+     "w": 151,
+     "h": 203
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/hero/back/weapon_staff_t.png?v=50cfb500",
+     "x": 199,
+     "y": 142,
+     "w": 13,
+     "h": 13
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/hero/back/weapon_staff_f.png?v=74a98c0a",
+     "x": 195,
+     "y": 135,
+     "w": 21,
+     "h": 169
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/hero/back/weapon_spear.png?v=40c2afe7",
+     "x": 199,
+     "y": 70,
+     "w": 12,
+     "h": 234
+    },
+    "armor_robe_x": {
+     "url": "assets/characters/equip-pixels/hero/back/armor_robe_x.png?v=30b83a60",
+     "x": 106,
+     "y": 245,
+     "w": 132,
+     "h": 60
+    },
+    "armor_robe_t": {
+     "url": "assets/characters/equip-pixels/hero/back/armor_robe_t.png?v=b5a5d8dd",
+     "x": 108,
+     "y": 178,
+     "w": 98,
+     "h": 117
+    },
+    "armor_robe_f": {
+     "url": "assets/characters/equip-pixels/hero/back/armor_robe_f.png?v=cf7f58d4",
+     "x": 106,
+     "y": 178,
+     "w": 120,
+     "h": 121
+    }
+   }
+  }
+ }
+}

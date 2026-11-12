@@ -39,12 +39,12 @@ const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.lo
     const fellBack = b.toasts.some((t) => /3Dの戦闘を表示できない/.test(t));
     S(!fellBack && b.on, '3D の戦闘が 3D のまま表示される（2D に落ちない）' + (fellBack ? '：' + b.toasts.filter((t) => /3D/.test(t)).join(' / ').slice(0, 160) : ''));
     const party = b.info ? b.info.party : [];
-    if (XMODE === 'cors' && MODE === 'pixel') S(party.length && party.every((x) => (x.id === 'hero') === !!x.ea && /^pixel:dir:/.test(x.model)), '3D の戦闘：主人公の背面の絵に装備を合成。部品のない仲間は従来の絵（' + party.map((x) => x.id + ':' + (x.ea ? '合成' : '元の絵')).join(' ') + '）');
+    if (XMODE === 'cors' && MODE === 'pixel') S(party.length && party.every((x) => (['hero', 'lina', 'gald'].indexOf(x.id) >= 0) === !!x.ea && /^pixel:dir:/.test(x.model)), '3D の戦闘：部品のある人物（主人公・v9.8 のリーナ・ガルド）の背面の絵に装備を合成。部品のない仲間は従来の絵（' + party.map((x) => x.id + ':' + (x.ea ? '合成' : '元の絵')).join(' ') + '）');
     else if (XMODE === 'cors') S(party.length && party.every((x) => x.ea && /^pixel:dir:/.test(x.model)), '3D の戦闘：全員の 4 方向の絵に装備を合成（' + party.map((x) => x.id + ':' + (x.ea ? '合成' : '元の絵')).join(' ') + '）');
     else S(party.length && party.every((x) => !x.ea && /^pixel:dir:/.test(x.model)), '3D の戦闘：素体を読めないので、全員が本人の元の 4 方向の絵（' + party.map((x) => x.id + ':' + x.model).join(' ') + '）。読めなかったことを記録：' + Object.keys(b.un).length + ' 件');
   } else {
     const c = await p.evaluate(() => [...document.querySelectorAll('#battle-party .ea-host')].map((h) => h.getAttribute('data-ea-state')));
-    S(c.length && c.every((x) => x === (XMODE === 'cors' ? 'ok' : 'error')), '2D の戦闘の欄：' + c.join(',') + (MODE === 'pixel' ? '（部品があるのは主人公だけ）' : ''));
+    S(c.length && c.every((x) => x === (XMODE === 'cors' ? 'ok' : 'error')), '2D の戦闘の欄：' + c.join(',') + (MODE === 'pixel' ? '（部品があるのは主人公・リーナ・ガルド）' : ''));
   }
   await p.screenshot({ path: `${OUT}shots/appear_xorigin_${TAG}${KIND}_${XMODE}.jpg`, type: 'jpeg', quality: 76 });
   S(moved.length > 0, '素体の画像は別のサイト（ポート ' + XPORT + '）から読んだ（' + moved.length + ' 件）');

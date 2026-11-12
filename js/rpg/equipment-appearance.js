@@ -474,8 +474,9 @@
   function menuView(actor) {
     if (!actor) return null;
     if (MODE === 'pixel') {   // v9.7 主人公：職業の立ち絵に部品があればそれ。なければ menuBase（本人の戦士の立ち絵）を素体にして着替える
-      if (actor.id !== 'hero' || !actor.job) return 'front';
-      var M = PX(); var mb = M && M.actors && M.actors.hero && M.actors.hero.menuBase;
+      var M = PX(); var A = M && M.actors && own(M.actors, actor.id) ? M.actors[actor.id] : null; var mb = A && A.menuBase;
+      if (actor.id !== 'hero') return mb && pixelView(actor.id, mb) ? mb : 'front';   // v9.8 仲間（リーナ・ガルド）：本人の立ち絵（menuBase）。転職しても本人の絵（戦闘の絵が人物IDで決まるのと合わせる）
+      if (!actor.job) return 'front';
       return pixelView('hero', 'job:' + actor.job) ? 'job:' + actor.job : (mb && pixelView('hero', mb) ? mb : 'job:' + actor.job);
     } if (actor.id === 'hero' && actor.job && anchorsOf('hero', 'job:' + actor.job)) return 'job:' + actor.job; return 'front'; }
   function note(actorId, viewKey, why) { var k = actorId + '/' + viewKey; if (!unsupported[k]) { unsupported[k] = why; try { console.info(/#/.test(viewKey) ? '[装備の外見] 部品がないので、その部位は描かない：' + k + '（' + why + '）' : '[装備の外見] 本人の元の絵で表示：' + k + '（' + why + '）'); } catch (e) { } } }
@@ -520,7 +521,9 @@
      人物・向きごとに、元の絵から作った部品（js/data/equip-pixels.js・assets/characters/equip-pixels/）を重ねる
        素の絵（剣・盾を外して手と体を描き直したもの。兜・帽子のときは、はみ出す髪を消したもの）→ 胴 → 頭 → 盾 → 武器 →（長柄なら）握る手
        色を変える部分は灰色の層：品の色（装備の絵の色。EQUIP_APPEARANCE_DATA）から作った 5 段の色で塗る。灰色の品（鉄・鋼）は元の鎧の板金の色
-     部品のない人物・向き・装備の形（斧・弓・短剣・小さな帽子など）は、本人の従来の絵（武器・盾を持った元の絵）で表示し、理由を unsupported に記録
+     部品のない人物・向き（左右など）は、本人の従来の絵（武器・盾を持った元の絵）で表示し、理由を unsupported に記録
+     部品のない装備の形（v9.7.2〜）は、その部位だけ描かない（ほかの部位は着替える。武器なら手は空のまま）
+     v9.8 仲間（リーナ・ガルド）にも広げた：人ごとの重ね方（actors.<人物ID>.materials）と、メニューの素体（menuBase）。転職しても本人の絵で着替える
      装飾品は描かない（試作の対象外。記録だけ）
      画像の大きさ・足もとの基準点は元の絵と同じ。まわりに余白（pad）を足して、長い槍・杖・帽子の先が切れないようにする（人物の大きさ・立ち位置は変えない） */
   var MODE = 'pixel';   // 'pixel'（v9.7）／'vector'（v9.6 の描き足し。開発の見比べ用：setMode('vector')）
@@ -532,8 +535,10 @@
     if (layer.slot === 'head' && layer.shape === 'hat') return own(c, 'hat:' + layer.sub) ? c['hat:' + layer.sub] : null;
     return own(c, layer.shape) ? c[layer.shape] : null;
   }
-  function materialFor(view, cls) {
-    var M = PX(); var m = cls && M.materials && own(M.materials, cls) ? M.materials[cls] : null; if (!m) return null;
+  // 重ね方：人ごとの重ね方（actors.<人物ID>.materials）→ 全員の重ね方（materials）の順に探す。その向きに部品がそろっていなければ null（その部位は描かない）
+  function materialFor(view, cls, actorId) {
+    var M = PX(); if (!cls || !M) return null; var A = actorId && M.actors && own(M.actors, actorId) ? M.actors[actorId] : null;
+    var m = A && A.materials && own(A.materials, cls) ? A.materials[cls] : (M.materials && own(M.materials, cls) ? M.materials[cls] : null); if (!m) return null;
     var ok = m.layers.every(function (L) { return L.optional || own(view.parts, L.part); }) && (!m.base || own(view.parts, m.base)) && (!m.hand || own(view.parts, 'hand'));
     return ok ? m : null;
   }
@@ -548,7 +553,7 @@
       if (slot === 'acc') { skipped.push('acc:' + id); continue; }
       // v9.7.2 部品のない品は「その部位だけ描かない」（ほかの部位はそのまま着替える）。武器なら手は空のまま＝元の絵の剣は戻らない
       if (!L) { skipped.push(slot + ':' + id + '（形が分からない品）'); continue; }
-      var cls = pixelClass(L); var m = materialFor(view, cls);
+      var cls = pixelClass(L); var m = materialFor(view, cls, actor && actor.id);
       if (!m) { skipped.push(slot + ':' + id + '（' + (cls || (L.shape + (L.sub && L.sub !== L.shape ? '/' + L.sub : ''))) + ' の部品がない→描かない）'); continue; }
       if (m.base) base = m.base;
       mats.push({ cls: cls, m: m, layer: L });

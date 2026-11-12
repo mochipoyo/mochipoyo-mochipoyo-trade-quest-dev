@@ -1,0 +1,77 @@
+v9.8 の確かめ 2026-11-12 17:53 版 9eacc9950b
+=== appear/appear_pixel_test.js（jsdom・3D と同じ読み込み）
+結果：OK 45 / NG 0
+=== appear/appear_pixel_test.js 2d
+結果：OK 45 / NG 0
+=== appear/appear_test.js（v9.6 の描き足し vector）
+結果：OK 28 / NG 0
+=== appear/appear_test.js 2d（vector）
+結果：OK 28 / NG 0
+=== icons/icons_test.js
+  OK  戦闘の結果：落とした品の行に絵（res.drops のキー＝ID）
+結果：OK 62 / NG 0
+=== menu92/menu92_test.js 2d
+結果：OK 89 / NG 0
+=== ブラウザ pixel 3d（メニュー・戦闘の背面）
+結果 pixel 3d：OK 37 / NG 0
+=== ブラウザ pixel 2d（メニュー）
+結果 pixel 2d：OK 30 / NG 0
+=== ブラウザ 合成の絵の書き出し
+=== ブラウザ ふつうの手順（装備メニューで変更・解除 → そのまま戦闘）PC
+結果 pixel ui pc：OK 39 / NG 0
+=== ブラウザ ふつうの手順 スマホ縦（390×664）
+結果 pixel ui phone：OK 39 / NG 0
+=== ブラウザ 仲間（リーナ・ガルド）開発用の切り替え 3d
+結果 pixel comp 3d：OK 37 / NG 0
+=== ブラウザ 仲間（リーナ・ガルド）開発用の切り替え 2d
+結果 pixel comp 2d：OK 37 / NG 0
+=== ブラウザ 仲間 ふつうの手順（装備メニューで確定・解除・キャンセル → 戦闘 → 勝利 → メニュー）PC
+  OK  ［装備なし（加入したまま）］リーナ：勝利の結果の窓を出したまま → 人物の矩形の 52% が窓に隠れる（頭の上 30% は 100%）（記録のみ）
+  OK  ［装備なし（加入したまま）］ガルド：勝利の結果の窓を出したまま → 人物の矩形の 60% が窓に隠れる（頭の上 30% は 100%）（記録のみ）
+  OK  ［リーナ：法衣＋杖／ガルド：重鎧＋斧］リーナ：勝利の結果の窓を出したまま → 人物の矩形の 54% が窓に隠れる（頭の上 30% は 100%）（記録のみ）
+  OK  ［リーナ：法衣＋杖／ガルド：重鎧＋斧］ガルド：勝利の結果の窓を出したまま → 人物の矩形の 62% が窓に隠れる（頭の上 30% は 100%）（記録のみ）
+結果 pixel ui comp pc：OK 40 / NG 0
+=== ブラウザ 仲間 ふつうの手順 スマホ縦（390×664）
+  OK  ［装備なし（加入したまま）］リーナ：勝利の結果の窓を出したまま → 人物の矩形の 43% が窓に隠れる（頭の上 30% は 100%）（記録のみ）
+  OK  ［装備なし（加入したまま）］ガルド：勝利の結果の窓を出したまま → 人物の矩形の 48% が窓に隠れる（頭の上 30% は 98%）（記録のみ）
+  OK  ［リーナ：法衣＋杖／ガルド：重鎧＋斧］リーナ：勝利の結果の窓を出したまま → 人物の矩形の 43% が窓に隠れる（頭の上 30% は 100%）（記録のみ）
+  OK  ［リーナ：法衣＋杖／ガルド：重鎧＋斧］ガルド：勝利の結果の窓を出したまま → 人物の矩形の 50% が窓に隠れる（頭の上 30% は 98%）（記録のみ）
+結果 pixel ui comp phone：OK 40 / NG 0
+=== ブラウザ 別のサイト pixel 3d cors
+結果 xorigin pixel 3d cors：OK 5 / NG 0
+=== ブラウザ 別のサイト pixel 3d nocors
+結果 xorigin pixel 3d nocors：OK 5 / NG 0
+=== ブラウザ 別のサイト pixel 2d cors
+結果 xorigin pixel 2d cors：OK 4 / NG 0
+=== ブラウザ 別のサイト pixel 2d nocors
+結果 xorigin pixel 2d nocors：OK 4 / NG 0
+=== ブラウザ 別のサイト vector 3d cors
+結果 xorigin vector 3d cors：OK 5 / NG 0
+=== ブラウザ vector 2d pc（v9.6 の確かめ）
+結果 2d pc：OK 16 / NG 0
+=== ブラウザ vector 3d pc（v9.6 の確かめ）
+結果 3d pc：OK 18 / NG 0
+=== ブラウザ 3Dモデル（?party=model）
+結果 model3d：OK
+ui_pc_menu_sheet.png (3554, 686)
+ui_pc_battle_sheet.jpg (2196, 484)
+ui_phone_menu_sheet.png (5108, 466)
+ui_phone_battle_sheet.jpg (1566, 434)
+compare_pc.jpg (1898, 1944)
+compare_phone.jpg (2162, 1284)
+ui_pc_victory_sheet.jpg (2196, 484)
+ui_phone_victory_sheet.jpg (1566, 434)
+pixel_front_back_sheet.png (5298, 1534)
+compare_comp_pc.jpg (2235, 2586)
+compare_comp_phone.jpg (2436, 1706)
+pixel_comp_sets_lina.jpg (3692, 2142)
+pixel_comp_sets_gald.jpg (4268, 2188)
+--- まとめ
+NG・失敗の行：0
+runner-done
+
+（以下は、上の一式のあとに追加で動かした確かめ。run_v98.sh には次から入る）
+=== ブラウザ 仲間 そうび画面（上の立ち絵・品の一覧の試着の枠）PC
+結果 pixel ui comp equip pc：OK 5 / NG 0
+=== ブラウザ 仲間 そうび画面（上の立ち絵・品の一覧の試着の枠）スマホ縦
+結果 pixel ui comp equip phone：OK 5 / NG 0

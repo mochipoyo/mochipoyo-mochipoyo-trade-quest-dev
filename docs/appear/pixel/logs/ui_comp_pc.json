@@ -1,0 +1,1138 @@
+{
+ "VIEW": "pc",
+ "isPhone": false,
+ "ok": 40,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "準備：主人公・リーナ（priest）・ガルド（warrior）。仲間は加入したとき何も装備していない。比べる品はゲームのデータで装備できる（{\"robe_skip\":true,\"oak_staff\":true,\"iron_armor\":true,\"battle_axe\":true}）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］リーナ：加入したまま → なかまの画面の立ち絵 base_plain（そうびの画面の絵 —）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］リーナ：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":null,\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］リーナ：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.84,\"h\":1.17}）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］リーナ：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］リーナ：勝利の結果の窓を出したまま → 人物の矩形の 52% が窓に隠れる（頭の上 30% は 100%）（記録のみ）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］ガルド：加入したまま → なかまの画面の立ち絵 base_plain（そうびの画面の絵 —）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］ガルド：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":null,\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］ガルド：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":1.17,\"h\":1.28}）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］ガルド：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］ガルド：勝利の結果の窓を出したまま → 人物の矩形の 60% が窓に隠れる（頭の上 30% は 100%）（記録のみ）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］リーナ：装備メニューで weapon:oak_staff・armor:robe_skip → なかまの画面の立ち絵 base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand（そうびの画面の絵 base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］リーナ：キャンセル（［そうび］→ 武器 → 品の一覧で Esc）→ 装備も絵も変わらない（{\"weapon\":\"oak_staff\",\"armor\":\"robe_skip\",\"shield\":null,\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］リーナ：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":\"oak_staff\",\"armor\":\"robe_skip\",\"shield\":null,\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］リーナ：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.84,\"h\":1.17}）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］リーナ：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］リーナ：勝利の結果の窓を出したまま → 人物の矩形の 54% が窓に隠れる（頭の上 30% は 100%）（記録のみ）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］ガルド：装備メニューで weapon:battle_axe・armor:iron_armor → なかまの画面の立ち絵 base_plain armor_shape_f weapon_axe hand（そうびの画面の絵 base_plain armor_shape_f weapon_axe hand）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］ガルド：キャンセル（［そうび］→ 武器 → 品の一覧で Esc）→ 装備も絵も変わらない（{\"weapon\":\"battle_axe\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain armor_shape_f weapon_axe hand）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］ガルド：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":\"battle_axe\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］ガルド：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":1.17,\"h\":1.28}）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］ガルド：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain armor_shape_f weapon_axe hand）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］ガルド：勝利の結果の窓を出したまま → 人物の矩形の 62% が窓に隠れる（頭の上 30% は 100%）（記録のみ）"
+  },
+  {
+   "ok": true,
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［全部はずす（解除）］リーナ：装備メニューで weapon:はずす・armor:はずす → なかまの画面の立ち絵 base_plain（そうびの画面の絵 base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "［全部はずす（解除）］ガルド：装備メニューで weapon:はずす・armor:はずす → なかまの画面の立ち絵 base_plain（そうびの画面の絵 base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "リーナ：メニューの足もと（枠の下辺）・左右の中心・1 ドットの大きさが 3 つとも同じ（下辺 335.3・中心 460.4・1 ドット 1.087px）"
+  },
+  {
+   "ok": true,
+   "m": "リーナ：杖・斧の先まで、絵の枠と画面の中に収まる（見切れなし）"
+  },
+  {
+   "ok": true,
+   "m": "リーナ：戦闘の背面・勝利の正面の範囲（カメラ合わせ・影・HP の位置）が組み合わせで同じ（背面 0.92×1.17 0.92×1.17／正面 0.84×1.17 0.84×1.17）"
+  },
+  {
+   "ok": true,
+   "m": "リーナ：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 6.5px・高さ比 1.032／Δ足もと 5.2px・高さ比 1.032）"
+  },
+  {
+   "ok": true,
+   "m": "ガルド：メニューの足もと（枠の下辺）・左右の中心・1 ドットの大きさが 3 つとも同じ（下辺 335.3・中心 460.4・1 ドット 1.0753px）"
+  },
+  {
+   "ok": true,
+   "m": "ガルド：杖・斧の先まで、絵の枠と画面の中に収まる（見切れなし）"
+  },
+  {
+   "ok": true,
+   "m": "ガルド：戦闘の背面・勝利の正面の範囲（カメラ合わせ・影・HP の位置）が組み合わせで同じ（背面 1.03×1.24 1.03×1.24／正面 1.17×1.28 1.17×1.28）"
+  },
+  {
+   "ok": true,
+   "m": "ガルド：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 1.3px・高さ比 1.118／Δ足もと 0px・高さ比 1.118）"
+  },
+  {
+   "ok": true,
+   "m": "全部はずすと素の絵（旅装・手ぶら）に戻る（2 人とも base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  },
+  {
+   "ok": true,
+   "m": "読み込みの失敗なし"
+  }
+ ],
+ "rec": {
+  "plain": {
+   "name": "装備なし（加入したまま）",
+   "ui": {},
+   "menu": {
+    "lina": {
+     "actor": "lina",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "priest",
+     "rect": {
+      "top": 35.3,
+      "bottom": 335.3,
+      "left": 352.2,
+      "right": 568.5,
+      "w": 216.3,
+      "h": 300,
+      "cx": 460.4
+     },
+     "px": 1.087,
+     "pxw": 1.0869,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 29,
+      "maxMp": 28,
+      "atk": 5,
+      "def": 6,
+      "agi": 6,
+      "mag": 10,
+      "mdef": 3,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "gald": {
+     "actor": "gald",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 35.3,
+      "bottom": 335.3,
+      "left": 337.5,
+      "right": 583.3,
+      "w": 245.8,
+      "h": 300,
+      "cx": 460.4
+     },
+     "px": 1.0753,
+     "pxw": 0.9488,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 72,
+      "maxMp": 18,
+      "atk": 21,
+      "def": 18,
+      "agi": 10,
+      "mag": 4,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "cancel": {},
+   "battle": {
+    "lina": {
+     "id": "lina",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "priest",
+     "sprite": "lina",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/back.png?v=4c0e723e6f",
+     "pd": "ok",
+     "ea": "[\"lina\",\"priest\",\"px:v9.8\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.92,
+      "h": 1.17
+     }
+    },
+    "gald": {
+     "id": "gald",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "gald",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/back.png?v=1a71d96731",
+     "pd": "ok",
+     "ea": "[\"gald\",\"warrior\",\"px:v9.8\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.03,
+      "h": 1.24
+     }
+    },
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "equip": {
+     "lina": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "gald": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     }
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 325.3,
+      "y": 348.1,
+      "w": 102.9,
+      "h": 121.2
+     },
+     "lina": {
+      "x": 429.5,
+      "y": 353.3,
+      "w": 109.5,
+      "h": 122.5
+     },
+     "gald": {
+      "x": 537.7,
+      "y": 341.5,
+      "w": 122.5,
+      "h": 129
+     }
+    },
+    "victory": {
+     "lina": {
+      "id": "lina",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "priest",
+      "sprite": "lina",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/front.png?v=14f7e2e438",
+      "pd": "ok",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.84,
+       "h": 1.17
+      }
+     },
+     "gald": {
+      "id": "gald",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "gald",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/front.png?v=c44835cac4",
+      "pd": "ok",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.17,
+       "h": 1.28
+      }
+     },
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 329.2,
+      "y": 332.4,
+      "w": 92.5,
+      "h": 121.2
+     },
+     "lina": {
+      "x": 436,
+      "y": 335,
+      "w": 100.3,
+      "h": 125.1
+     },
+     "gald": {
+      "x": 528.5,
+      "y": 319.4,
+      "w": 140.7,
+      "h": 135.5
+     }
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory result-simple",
+       "x": 279,
+       "y": 154,
+       "w": 460,
+       "h": 250
+      }
+     ],
+     "hero": {
+      "covered": 0.557,
+      "headCovered": 1,
+      "rect": {
+       "x": 330,
+       "y": 336,
+       "w": 93,
+       "h": 121
+      }
+     },
+     "lina": {
+      "covered": 0.524,
+      "headCovered": 1,
+      "rect": {
+       "x": 436,
+       "y": 339,
+       "w": 100,
+       "h": 125
+      }
+     },
+     "gald": {
+      "covered": 0.603,
+      "headCovered": 1,
+      "rect": {
+       "x": 529,
+       "y": 323,
+       "w": 141,
+       "h": 136
+      }
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "lina": {
+     "actor": "lina",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "priest",
+     "rect": {
+      "top": 35.3,
+      "bottom": 335.3,
+      "left": 352.2,
+      "right": 568.5,
+      "w": 216.3,
+      "h": 300,
+      "cx": 460.4
+     },
+     "px": 1.087,
+     "pxw": 1.0869,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 29,
+      "maxMp": 28,
+      "atk": 5,
+      "def": 6,
+      "agi": 6,
+      "mag": 10,
+      "mdef": 3,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "gald": {
+     "actor": "gald",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 35.3,
+      "bottom": 335.3,
+      "left": 337.5,
+      "right": 583.3,
+      "w": 245.8,
+      "h": 300,
+      "cx": 460.4
+     },
+     "px": 1.0753,
+     "pxw": 0.9488,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 72,
+      "maxMp": 18,
+      "atk": 21,
+      "def": 18,
+      "agi": 10,
+      "mag": 4,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   }
+  },
+  "equip": {
+   "name": "リーナ：法衣＋杖／ガルド：重鎧＋斧",
+   "ui": {
+    "lina": {
+     "done": [
+      "weapon:oak_staff",
+      "armor:robe_skip"
+     ],
+     "head": "base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand"
+    },
+    "gald": {
+     "done": [
+      "weapon:battle_axe",
+      "armor:iron_armor"
+     ],
+     "head": "base_plain armor_shape_f weapon_axe hand"
+    }
+   },
+   "menu": {
+    "lina": {
+     "actor": "lina",
+     "st": "ok",
+     "parts": "base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "priest",
+     "rect": {
+      "top": 35.3,
+      "bottom": 335.3,
+      "left": 352.2,
+      "right": 568.5,
+      "w": 216.3,
+      "h": 300,
+      "cx": 460.4
+     },
+     "px": 1.087,
+     "pxw": 1.0869,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "oak_staff",
+      "armor": "robe_skip",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 29,
+      "maxMp": 28,
+      "atk": 8,
+      "def": 18,
+      "agi": 6,
+      "mag": 12,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "gald": {
+     "actor": "gald",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f weapon_axe hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 35.3,
+      "bottom": 335.3,
+      "left": 337.5,
+      "right": 583.3,
+      "w": 245.8,
+      "h": 300,
+      "cx": 460.4
+     },
+     "px": 1.0753,
+     "pxw": 0.9488,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "battle_axe",
+      "armor": "iron_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 72,
+      "maxMp": 18,
+      "atk": 40,
+      "def": 36,
+      "agi": 8,
+      "mag": 4,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "cancel": {
+    "lina": {
+     "same": true,
+     "back": true,
+     "head0": "base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand",
+     "head1": "base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand",
+     "before": "{\"weapon\":\"oak_staff\",\"armor\":\"robe_skip\",\"shield\":null,\"head\":null,\"acc\":null}"
+    },
+    "gald": {
+     "same": true,
+     "back": true,
+     "head0": "base_plain armor_shape_f weapon_axe hand",
+     "head1": "base_plain armor_shape_f weapon_axe hand",
+     "before": "{\"weapon\":\"battle_axe\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null}"
+    }
+   },
+   "battle": {
+    "lina": {
+     "id": "lina",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "priest",
+     "sprite": "lina",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/back.png?v=4c0e723e6f",
+     "pd": "ok",
+     "ea": "[\"lina\",\"priest\",\"px:v9.8\",\"back\",[\"oak_staff\",\"robe_skip\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.92,
+      "h": 1.17
+     }
+    },
+    "gald": {
+     "id": "gald",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "gald",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/back.png?v=1a71d96731",
+     "pd": "ok",
+     "ea": "[\"gald\",\"warrior\",\"px:v9.8\",\"back\",[\"battle_axe\",\"iron_armor\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.03,
+      "h": 1.24
+     }
+    },
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "equip": {
+     "lina": {
+      "weapon": "oak_staff",
+      "armor": "robe_skip",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "gald": {
+      "weapon": "battle_axe",
+      "armor": "iron_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     }
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 327.9,
+      "y": 348.1,
+      "w": 102.9,
+      "h": 121.2
+     },
+     "lina": {
+      "x": 433.4,
+      "y": 353.3,
+      "w": 109.5,
+      "h": 122.5
+     },
+     "gald": {
+      "x": 540.3,
+      "y": 341.5,
+      "w": 122.5,
+      "h": 129
+     }
+    },
+    "victory": {
+     "lina": {
+      "id": "lina",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "priest",
+      "sprite": "lina",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/front.png?v=14f7e2e438",
+      "pd": "ok",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8\",\"front\",[\"oak_staff\",\"robe_skip\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.84,
+       "h": 1.17
+      }
+     },
+     "gald": {
+      "id": "gald",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "gald",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/front.png?v=c44835cac4",
+      "pd": "ok",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8\",\"front\",[\"battle_axe\",\"iron_armor\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.17,
+       "h": 1.28
+      }
+     },
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 330.5,
+      "y": 335,
+      "w": 92.5,
+      "h": 121.2
+     },
+     "lina": {
+      "x": 436,
+      "y": 336.3,
+      "w": 100.3,
+      "h": 125.1
+     },
+     "gald": {
+      "x": 528.5,
+      "y": 320.7,
+      "w": 140.7,
+      "h": 135.5
+     }
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory result-simple",
+       "x": 279,
+       "y": 154,
+       "w": 460,
+       "h": 250
+      }
+     ],
+     "hero": {
+      "covered": 0.574,
+      "headCovered": 1,
+      "rect": {
+       "x": 330,
+       "y": 335,
+       "w": 93,
+       "h": 121
+      }
+     },
+     "lina": {
+      "covered": 0.54,
+      "headCovered": 1,
+      "rect": {
+       "x": 436,
+       "y": 336,
+       "w": 100,
+       "h": 125
+      }
+     },
+     "gald": {
+      "covered": 0.618,
+      "headCovered": 1,
+      "rect": {
+       "x": 529,
+       "y": 321,
+       "w": 141,
+       "h": 136
+      }
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "lina": {
+     "actor": "lina",
+     "st": "ok",
+     "parts": "base_plain armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "priest",
+     "rect": {
+      "top": 35.3,
+      "bottom": 335.3,
+      "left": 352.2,
+      "right": 568.5,
+      "w": 216.3,
+      "h": 300,
+      "cx": 460.4
+     },
+     "px": 1.087,
+     "pxw": 1.0869,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "oak_staff",
+      "armor": "robe_skip",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 29,
+      "maxMp": 28,
+      "atk": 8,
+      "def": 18,
+      "agi": 6,
+      "mag": 12,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "gald": {
+     "actor": "gald",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f weapon_axe hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 35.3,
+      "bottom": 335.3,
+      "left": 337.5,
+      "right": 583.3,
+      "w": 245.8,
+      "h": 300,
+      "cx": 460.4
+     },
+     "px": 1.0753,
+     "pxw": 0.9488,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "battle_axe",
+      "armor": "iron_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 72,
+      "maxMp": 18,
+      "atk": 40,
+      "def": 36,
+      "agi": 8,
+      "mag": 4,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   }
+  },
+  "off": {
+   "name": "全部はずす（解除）",
+   "ui": {
+    "lina": {
+     "done": [
+      "weapon:はずす",
+      "armor:はずす"
+     ],
+     "head": "base_plain"
+    },
+    "gald": {
+     "done": [
+      "weapon:はずす",
+      "armor:はずす"
+     ],
+     "head": "base_plain"
+    }
+   },
+   "menu": {
+    "lina": {
+     "actor": "lina",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "priest",
+     "rect": {
+      "top": 35.3,
+      "bottom": 335.3,
+      "left": 352.2,
+      "right": 568.5,
+      "w": 216.3,
+      "h": 300,
+      "cx": 460.4
+     },
+     "px": 1.087,
+     "pxw": 1.0869,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 29,
+      "maxMp": 28,
+      "atk": 5,
+      "def": 6,
+      "agi": 6,
+      "mag": 10,
+      "mdef": 3,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "gald": {
+     "actor": "gald",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 35.3,
+      "bottom": 335.3,
+      "left": 337.5,
+      "right": 583.3,
+      "w": 245.8,
+      "h": 300,
+      "cx": 460.4
+     },
+     "px": 1.0753,
+     "pxw": 0.9488,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 72,
+      "maxMp": 18,
+      "atk": 21,
+      "def": 18,
+      "agi": 10,
+      "mag": 4,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "cancel": {},
+   "battle": null,
+   "after": null
+  }
+ }
+}

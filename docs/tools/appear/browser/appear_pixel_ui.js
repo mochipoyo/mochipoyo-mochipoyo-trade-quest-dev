@@ -153,7 +153,7 @@ let PG = null;   // 失敗したときに画面を残すため
     rec[st.key] = { name: st.name, jobChanged: j, ui: e, menu: m, cancel: cx, battle: bt, after: m2 };
     const want = Object.keys(st.eq).every((s) => (m.equip[s] || null) === st.eq[s]);
     S(want && m.st === 'ok' && m.view === 'job:warrior', `［${st.name}］装備メニューで ${e.done.join('・') || '変更なし'}${j ? '（先に転職：' + st.job + '）' : ''} → 立ち絵 ${m.parts}`);
-    S(bt.hero && /dir:back/.test(bt.hero.model || '') && !!bt.hero.ea && !bt.fell.length && bt.ended, `［${st.name}］そのまま戦闘：主人公の背面に合成（${bt.hero && bt.hero.model}）。仲間は従来の絵（${bt.others.map((o) => o.id + ':' + (o.ea ? '合成' : '従来')).join(' ')}）。戦闘のあとフィールドへ戻った：${bt.ended}`);
+    S(bt.hero && /dir:back/.test(bt.hero.model || '') && !!bt.hero.ea && !bt.fell.length && bt.ended, `［${st.name}］そのまま戦闘：主人公の背面に合成（${bt.hero && bt.hero.model}）。仲間（${bt.others.map((o) => o.id + ':' + (o.ea ? '合成' : '従来')).join(' ')}）。戦闘のあとフィールドへ戻った：${bt.ended}`);
     S(bt.victory && /dir:front/.test(bt.victory.model || '') && !!bt.victory.ea && /"front"/.test(bt.victory.ea || ''), `［${st.name}］勝利の振り向き：正面の絵にも同じ装備を合成（${bt.victory && bt.victory.model}・範囲 ${bt.victory && JSON.stringify(bt.victory.size)}・合成の印 ${bt.victory && String(bt.victory.ea).slice(0, 90)}）`);
     S(m2.st === 'ok' && m2.parts === m.parts && JSON.stringify(m2.equip) === JSON.stringify(m.equip) && m2.rect && m.rect && Math.abs(m2.rect.bottom - m.rect.bottom) < 1, `［${st.name}］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（${m2.parts}）`);
     if (cx) S(cx.same && cx.back && cx.head0 === cx.head1, `［${st.name}］キャンセル：［そうび］→ 武器 → 品の一覧で Esc → 装備も絵も変わらない（${cx.before}・そうびの画面の絵 ${cx.head1}）`);
