@@ -13,6 +13,7 @@
 | ガルド（戦士） | warrior | 6 | weapon:なし armor:なし shield:なし head:なし acc:なし |
 | カイル（騎士） | knight | 4 | weapon:なし armor:なし shield:なし head:なし acc:なし |
 | カズト（戦士） | warrior | 28 | weapon:なし armor:なし shield:なし head:なし acc:なし |
+| ミナ（盗賊） | thief | 5 | weapon:なし armor:なし shield:なし head:なし acc:なし |
 
 ## 職業で装備できる種類
 
@@ -23,6 +24,7 @@
 | ガルド（戦士） | 戦士 | sword・axe・spear | heavy・light・shield・helm・acc |
 | カイル（騎士） | 騎士 | sword・spear | heavy・light・shield・helm・acc |
 | カズト（戦士） | 戦士 | sword・axe・spear | heavy・light・shield・helm・acc |
+| ミナ（盗賊） | 盗賊 | dagger・sword・bow | light・hat・acc |
 
 ## 種類ごとの品の数（描く／描かない）
 
@@ -68,3 +70,15 @@
 | カズト（戦士） | weapon:axe | weapon_axe | 12 | 0 | 手斧（200G）：rivel_town、戦斧（900G）：kalion_city、天空の斧（6200G）：dark_camp、竜骨の斧（6600G）：dragon.js:114、鉄鎖破りの斧（2900G）：tradia |
 | カズト（戦士） | weapon:spear | weapon_spear | 25 | 0 | 槍（260G）：rivel_town/dow_village、鉄の槍（760G）：kalion_city、ハルバード（2600G）：sahar_city/islands.js:103/kalion_city/magicka_city/ciel_port/frost_town/tempus_city/tempus.js:294、星界の槍（5800G）：dragon.js:114/dark_camp/magicka_city、陽炎の槍（3200G）：sahar_city、利確の三叉槍（3000G）：tradia |
 | カズト（戦士） | weapon:sword | weapon_sword | 31 | 0 | 木の剣（60G）：rivel_town、銅の剣（180G）：rivel_town/dow_village、鉄の剣（520G）：kalion_city/rivel_town/dow_village、鋼の剣（1400G）：kalion_city、騎士の剣（3200G）：islands.js:103/kalion_city/magicka_city/tempus_city/tempus.js:294/tradia、ルーンブレード（6000G）：dark_camp/magicka_city、砂漠の曲刀（3400G）：sahar_city、陰線の剣（2600G）：tradia、レジスタンスブレード（4200G）：tradia |
+| ミナ（盗賊） | weapon:sword | weapon_sword | 0 | 31 | 木の剣（60G）：rivel_town、銅の剣（180G）：rivel_town/dow_village、鉄の剣（520G）：kalion_city/rivel_town/dow_village、鋼の剣（1400G）：kalion_city、騎士の剣（3200G）：islands.js:103/kalion_city/magicka_city/tempus_city/tempus.js:294/tradia、ルーンブレード（6000G）：dark_camp/magicka_city、砂漠の曲刀（3400G）：sahar_city、陰線の剣（2600G）：tradia、レジスタンスブレード（4200G）：tradia |
+| ミナ（盗賊） | armor:light | armor_light | 0 | 26 | 布の服（50G）：rivel_town、革の鎧（220G）：rivel_town/dow_village、鱗の鎧（800G）：kalion_city/dow_village、忍び装束（1500G）：kalion_city/sentra_capital/tempus_city/node_city、航海士のコート（1700G）：tempus_city/node_city、星のマント（5200G）：dark_camp/magicka_city、砂避けのマント（2400G）：sahar_city、毛皮のコート（2800G）：ciel_port/frost_town、監査官の上着（2600G）：tradia |
+| ミナ（盗賊） | head:hat/cap | head_cap | 0 | 9 | 革の帽子（60G）：rivel_town |
+| ミナ（盗賊） | head:hat/witch | head_hat | 0 | 3 | 魔法使いの帽子（500G）：kalion_city/sentra_capital/frost_town/tempus_city/node_city/tradia、魔導帽（3200G）：ignas_town/dark_camp/magicka_city/region78-orbis.js:87 |
+| ミナ（盗賊） | head:hat/bicorne | （なし） | 0 | 1 | — |
+| ミナ（盗賊） | head:hat/circlet | （なし） | 0 | 1 | — |
+| ミナ（盗賊） | head:hat/crown | （なし） | 0 | 1 | — |
+| ミナ（盗賊） | head:hat/feather | （なし） | 0 | 1 | 羽根帽子（240G）：rivel_town/dow_village |
+| ミナ（盗賊） | head:hat/hood | （なし） | 0 | 1 | — |
+| ミナ（盗賊） | head:hat/turban | （なし） | 0 | 1 | 砂漠のターバン（1400G）：sahar_city |
+| ミナ（盗賊） | weapon:bow | weapon_bow | 26 | 0 | 短弓（150G）：rivel_town、狩人の弓（480G）：dow_village、長弓（1300G）：islands.js:103/kalion_city/tempus_city/tempus.js:294、測量士の弓（2000G）：islands.js:103/ciel_port/frost_town/tempus_city/tempus.js:294、機巧弓（2600G）：magicka_city/frost_town/tempus.js:294、星見の弓（5500G）：dragon.js:114/dark_camp、隊商の弓（2800G）：sahar_city |
+| ミナ（盗賊） | weapon:dagger | weapon_dagger | 20 | 0 | 短剣（70G）：rivel_town、青銅のナイフ（220G）：rivel_town/dow_village、暗殺者の短剣（1100G）：islands.js:103/kalion_city/tempus_city/tempus.js:294、潮目の短剣（1800G）：islands.js:103/tempus_city、虚無の短剣（5000G）：dark_camp/magicka_city、MACD双剣（4200G）：magicka_city、損切りの短剣（1500G）：sidequests.js:65、ブレイクアウトダガー（2200G）：tradia、逆張りの刃（3900G）：tradia |

@@ -101,7 +101,7 @@
   },
   {
    "ok": true,
-   "m": "v9.8.1 斧は描く（weapon_axe）。部品のない品は、その部位だけ描かない（短剣：weapon:dagger（dagger の部品がない→描かない）／革の帽子：head:leather_cap（head_cap の部品がない→描かない））"
+   "m": "v9.8.1 斧は描く（weapon_axe）。部品のない品は、その部位だけ描かない（短剣：weapon:dagger（weapon_dagger の部品がない→描かない）／革の帽子：head:leather_cap（head_cap の部品がない→描かない））"
   },
   {
    "ok": true,
@@ -354,7 +354,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -373,17 +373,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 8004
+    "ms": 8410
    },
    "light": {
     "hero": {
@@ -397,7 +397,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[\"steel_sword\",\"leather_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"back\",[\"steel_sword\",\"leather_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -416,17 +416,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 6869
+    "ms": 8179
    },
    "heavy": {
     "hero": {
@@ -440,7 +440,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -459,17 +459,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 6668
+    "ms": 8035
    },
    "robe": {
     "hero": {
@@ -483,7 +483,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -502,17 +502,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 6939
+    "ms": 7808
    },
    "spear": {
     "hero": {
@@ -526,7 +526,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[\"iron_spear\",\"iron_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"back\",[\"iron_spear\",\"iron_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -545,17 +545,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 7929
+    "ms": 8161
    },
    "heavyaxe": {
     "hero": {
@@ -569,7 +569,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[\"hand_axe\",\"iron_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"back\",[\"hand_axe\",\"iron_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -588,17 +588,17 @@
     "others": [
      {
       "id": "gald",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      },
      {
       "id": "lina",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.4\",\"back\",[]]",
       "model": "pixel:dir:back"
      }
     ],
     "toasts": [],
-    "ms": 7407
+    "ms": 7187
    }
   },
   "geo": {

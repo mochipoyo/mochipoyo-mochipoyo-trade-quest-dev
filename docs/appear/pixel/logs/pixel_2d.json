@@ -101,7 +101,7 @@
   },
   {
    "ok": true,
-   "m": "v9.8.1 斧は描く（weapon_axe）。部品のない品は、その部位だけ描かない（短剣：weapon:dagger（dagger の部品がない→描かない）／革の帽子：head:leather_cap（head_cap の部品がない→描かない））"
+   "m": "v9.8.1 斧は描く（weapon_axe）。部品のない品は、その部位だけ描かない（短剣：weapon:dagger（weapon_dagger の部品がない→描かない）／革の帽子：head:leather_cap（head_cap の部品がない→描かない））"
   },
   {
    "ok": true,

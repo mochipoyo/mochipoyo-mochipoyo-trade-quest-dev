@@ -481,21 +481,23 @@
     //   勝利のカメラが止まるまで少し動くので、しばらくの間くり返し測る。3D の人物を描いていないとき（2D 版など）は何もしない
     function fitTop(node) {
       if (!top3 || !root.BattleStage3D.partyRect) return function () {};
+      var minTop = Infinity;   // v9.8.4 人物は勝利のあいだ上下に動く（はねる）ので、いちばん高い位置に合わせる（窓は狭める向きだけ。スクロールのたびに広がって頭に重ならないように）
+      var more = function () { var sc = node.querySelector('.rs-scroll'); if (sc) node.classList.toggle('rs-more', sc.scrollHeight > sc.clientHeight + 2 && sc.scrollTop + sc.clientHeight < sc.scrollHeight - 2); };
       var fit = function () {
         try {
           var cv = document.getElementById('game') || document.querySelector('canvas'); var par = node.offsetParent || node.parentElement; if (!cv || !par || !node.isConnected) return;
           var cb = cv.getBoundingClientRect(), pb = par.getBoundingClientRect(), nb = node.getBoundingClientRect(); var ky = cb.height / cv.height; var top = Infinity;
           res.members.forEach(function (m) { var r = root.BattleStage3D.partyRect(sc3, m.actor.id, cv.width, cv.height, true); if (r) top = Math.min(top, cb.top + r.y * ky); });
           if (top === Infinity) return;
-          var room = Math.floor(top - nb.top - 8); var min = Math.min(150, Math.floor(pb.height * 0.4));   // どんなに狭くても、見出しと「次へ」は出す
+          minTop = Math.min(minTop, top); var room = Math.floor(minTop - nb.top - 8); var min = Math.min(150, Math.floor(pb.height * 0.4));   // どんなに狭くても、見出しと「次へ」は出す
           node.style.maxHeight = Math.max(min, room) + 'px'; node.setAttribute('data-rs-room', room);
-          var sc = node.querySelector('.rs-scroll'); if (sc) node.classList.toggle('rs-more', sc.scrollHeight > sc.clientHeight + 2 && sc.scrollTop + sc.clientHeight < sc.scrollHeight - 2);
+          more();
         } catch (e) { }
       };
       fit(); var n = 0; var tm = setInterval(function () { fit(); if (++n > 24) clearInterval(tm); }, 150);
-      var sc0 = node.querySelector('.rs-scroll'); if (sc0) sc0.addEventListener('scroll', fit);
+      var sc0 = node.querySelector('.rs-scroll'); if (sc0) sc0.addEventListener('scroll', more);
       // キーボード：上下・PageUp/PageDown で詳細をスクロール（Enter は「次へ」のまま）
-      var key = function (e) { var sc = node.querySelector('.rs-scroll'); if (!sc || !node.isConnected) return; var d = e.key === 'ArrowDown' ? 40 : e.key === 'ArrowUp' ? -40 : e.key === 'PageDown' ? sc.clientHeight * 0.8 : e.key === 'PageUp' ? -sc.clientHeight * 0.8 : 0; if (d) sc.scrollTop += d; };
+      var key = function (e) { var sc = node.querySelector('.rs-scroll'); if (!sc || !node.isConnected) return; var d = e.key === 'ArrowDown' ? 40 : e.key === 'ArrowUp' ? -40 : e.key === 'PageDown' ? sc.clientHeight * 0.8 : e.key === 'PageUp' ? -sc.clientHeight * 0.8 : 0; if (d) { sc.scrollTop += d; more(); } };
       window.addEventListener('keydown', key, true);
       return function () { clearInterval(tm); window.removeEventListener('keydown', key, true); };
     }

@@ -1,10 +1,10 @@
-v9.8 の確かめ 2026-11-12 22:18 版 612765ee41
+v9.8 の確かめ 2026-11-13 00:08 版 2d1df6a875
 === appear/appear_pixel_test.js（jsdom・3D と同じ読み込み）
-結果：OK 53 / NG 0
+結果：OK 58 / NG 0
 === ブラウザ 主人公と仲間の装備できる品と、描く／描かない品（docs/appear/pixel/SURVEY.md）
-結果 survey：hero 描く 169 / 描かない 0　lina 描く 89 / 描かない 50　gald 描く 125 / 描かない 44　kyle 描く 157 / 描かない 0　kazuto 描く 169 / 描かない 0
+結果 survey：hero 描く 169 / 描かない 0　lina 描く 89 / 描かない 50　gald 描く 125 / 描かない 44　kyle 描く 157 / 描かない 0　kazuto 描く 169 / 描かない 0　mina 描く 46 / 描かない 75
 === appear/appear_pixel_test.js 2d
-結果：OK 53 / NG 0
+結果：OK 58 / NG 0
 === appear/appear_test.js（v9.6 の描き足し vector）
 結果：OK 28 / NG 0
 === appear/appear_test.js 2d（vector）
@@ -36,11 +36,8 @@ v9.8 の確かめ 2026-11-12 22:18 版 612765ee41
   OK  ［リーナ：＋革の帽子／ガルド：斧→剣＋盾］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  NG  リーナ：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 5.2px・高さ比 1.032／Δ足もと 6.5px・高さ比 1.032／Δ足もと 5.2px・高さ比 1.032／Δ足もと 7.8px・高さ比 1.043）
-  NG  ガルド：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 0px・高さ比 1.118／Δ足もと 1.3px・高さ比 1.118／Δ足もと 1.3px・高さ比 1.129／Δ足もと 2.6px・高さ比 1.13）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜295px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 334px）
-結果 pixel ui comp pc：OK 68 / NG 2
-（終了コード 1）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 327px）
+結果 pixel ui comp pc：OK 70 / NG 0
 === ブラウザ 仲間 ふつうの手順 スマホ縦（390×664）
   OK  ［装備なし（加入したまま）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［装備なし（加入したまま）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
@@ -50,7 +47,7 @@ v9.8 の確かめ 2026-11-12 22:18 版 612765ee41
   OK  ［リーナ：＋革の帽子／ガルド：斧→剣＋盾］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜314px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 321px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜310px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 322px）
 結果 pixel ui comp phone：OK 70 / NG 0
 === ブラウザ 仲間 そうび画面（上の立ち絵・品の一覧の試着の枠）PC
 結果 pixel ui comp equip pc：OK 5 / NG 0
@@ -71,7 +68,7 @@ v9.8 の確かめ 2026-11-12 22:18 版 612765ee41
   OK  ［武器をはずす（2 人とも）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜295px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 326px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 322px）
 結果 pixel ui knight pc：OK 86 / NG 0
 === ブラウザ v9.8.2 カイル・カズト ふつうの手順 スマホ縦（390×664）
   OK  ［装備なし（加入したまま）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
@@ -84,12 +81,38 @@ v9.8 の確かめ 2026-11-12 22:18 版 612765ee41
   OK  ［武器をはずす（2 人とも）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜314px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 322px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜310px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 317px）
 結果 pixel ui knight phone：OK 86 / NG 0
 === ブラウザ v9.8.2 カイル・カズト そうび画面 PC
 結果 pixel ui knight equip pc：OK 5 / NG 0
 === ブラウザ v9.8.2 カイル・カズト そうび画面 スマホ縦
 結果 pixel ui knight equip phone：OK 5 / NG 0
+=== ブラウザ v9.8.4 結果の窓：4 人編成・複数人のレベルアップ PC
+  OK  ［2 人がレベルアップ（主人公・リーナ）］詳しい結果の窓（rw-panel result-victory rs-top rs-detail）。仲間の行 4・レベルアップ 2 人
+  OK  ［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more）。仲間の行 4・レベルアップ 4 人
+  NG  ［4 人ともレベルアップ］スクロールしても窓は閉じず、人物に重ならないまま
+結果 result4 pc：OK 17 / NG 1
+（終了コード 1）
+=== ブラウザ v9.8.4 結果の窓：4 人編成・複数人のレベルアップ スマホ縦
+  OK  ［2 人がレベルアップ（主人公・リーナ）］詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more）。仲間の行 4・レベルアップ 2 人
+  OK  ［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more）。仲間の行 4・レベルアップ 4 人
+結果 result4 phone：OK 22 / NG 0
+=== ブラウザ v9.8.4 ミナ（弓・短剣）開発用の切り替え 3d
+結果 pixel mina 3d：OK 21 / NG 0
+=== ブラウザ v9.8.4 ミナ（弓・短剣）開発用の切り替え 2d
+結果 pixel mina 2d：OK 21 / NG 0
+=== ブラウザ v9.8.4 ミナ ふつうの手順（確定・キャンセル・解除 → 戦闘 → 勝利 → メニュー・セーブの読み直し）PC
+  OK  ［装備なし（加入したまま）］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
+  OK  ［短弓を装備］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
+  OK  ［短弓 → 短剣に持ち替え］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
+  OK  ［武器をはずす（解除）］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
+結果 pixel ui mina pc：OK 38 / NG 0
+=== ブラウザ v9.8.4 ミナ ふつうの手順 スマホ縦（390×664）
+  OK  ［装備なし（加入したまま）］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜193px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
+  OK  ［短弓を装備］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜193px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
+  OK  ［短弓 → 短剣に持ち替え］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜193px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
+  OK  ［武器をはずす（解除）］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜193px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
+結果 pixel ui mina phone：OK 38 / NG 0
 === ブラウザ 別のサイト pixel 3d cors
 結果 xorigin pixel 3d cors：OK 5 / NG 0
 === ブラウザ 別のサイト pixel 3d nocors
@@ -124,9 +147,22 @@ compare_knight_pc.jpg (2279, 5058)
 compare_knight_phone.jpg (2463, 3298)
 pixel_comp_sets_kyle.jpg (5160, 2222)
 pixel_comp_sets_kazuto.jpg (6290, 2172)
+compare_mina_pc.jpg (2056, 2586)
+compare_mina_phone.jpg (2328, 1706)
+pixel_comp_sets_mina.jpg (3138, 2228)
 --- まとめ
-NG・失敗の行：3
-=== 動かし直し：仲間（リーナ・ガルド）ふつうの手順 pc（勝利の足もとを、カメラが止まってから測るように直したあと）
-結果 pixel ui comp pc：OK 70 / NG 0
-=== 動かし直し：仲間（リーナ・ガルド）ふつうの手順 phone（勝利の足もとを、カメラが止まってから測るように直したあと）
-結果 pixel ui comp phone：OK 70 / NG 0
+NG・失敗の行：2
+=== 動かし直し 1：結果の窓 4 人編成・複数人のレベルアップ pc（窓の高さを、人物のいちばん高い位置に合わせるように直したあと）
+結果 result4 pc：OK 14 / NG 0
+=== 動かし直し 1：結果の窓 4 人編成・複数人のレベルアップ phone（窓の高さを、人物のいちばん高い位置に合わせるように直したあと）
+結果 result4 phone：OK 22 / NG 0
+=== 動かし直し 2：結果の窓 4 人編成・複数人のレベルアップ pc（窓の高さを、人物のいちばん高い位置に合わせるように直したあと）
+結果 result4 pc：OK 14 / NG 0
+=== 動かし直し 2：結果の窓 4 人編成・複数人のレベルアップ phone（窓の高さを、人物のいちばん高い位置に合わせるように直したあと）
+結果 result4 phone：OK 22 / NG 0
+=== 動かし直し：カイル・カズト ふつうの手順 pc（同じ直しのあと。レベルアップの勝利の窓をふくむ）
+結果 pixel ui knight pc：OK 86 / NG 0
+=== 動かし直し：カイル・カズト ふつうの手順 phone（同じ直しのあと。レベルアップの勝利の窓をふくむ）
+結果 pixel ui knight phone：OK 86 / NG 0
+=== 動かし直し：ミナ ふつうの手順 pc（同じ直しのあと）
+結果 pixel ui mina pc：OK 38 / NG 0

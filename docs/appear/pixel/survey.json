@@ -46,6 +46,17 @@
     "head": null,
     "acc": null
    }
+  },
+  "mina": {
+   "job": "thief",
+   "joinLevel": 5,
+   "equip": {
+    "weapon": null,
+    "armor": null,
+    "shield": null,
+    "head": null,
+    "acc": null
+   }
   }
  },
  "jobs": {
@@ -124,6 +135,20 @@
     "light",
     "shield",
     "helm",
+    "acc"
+   ]
+  },
+  "mina": {
+   "job": "thief",
+   "name": "盗賊",
+   "weapons": [
+    "dagger",
+    "sword",
+    "bow"
+   ],
+   "armors": [
+    "light",
+    "hat",
     "acc"
    ]
   }
@@ -3389,6 +3414,611 @@
       ]
      }
     ]
+   }
+  ],
+  "mina": [
+   {
+    "slot": "weapon",
+    "shape": "weapon:sword",
+    "cls": "weapon_sword",
+    "drawn": 0,
+    "not": 31,
+    "items": [
+     "wooden_sword",
+     "copper_sword",
+     "iron_sword",
+     "steel_sword",
+     "knight_sword",
+     "wave_sword",
+     "rune_blade",
+     "dow_greatsword",
+     "dow_greatsword_2",
+     "scimitar",
+     "ryumyaku_blade",
+     "captain_saber",
+     "prob_sword",
+     "fate_blade",
+     "yang_sword",
+     "yin_sword",
+     "resistance_blade",
+     "equilibrium_sword",
+     "td_zeno_blade",
+     "b19_seal_justice_sword",
+     "b19_crossroads_blade",
+     "t68_islands_sword",
+     "t68_tempus_sword",
+     "t68_desert_sword",
+     "t68_machine_sword",
+     "t68_dragon_sword",
+     "t68_dark_sword",
+     "archeion_blade",
+     "azure_sword",
+     "bu_valen_oathblade",
+     "bu_open_future_blade"
+    ],
+    "shop": [
+     {
+      "id": "wooden_sword",
+      "name": "木の剣",
+      "price": 60,
+      "towns": [
+       "rivel_town"
+      ]
+     },
+     {
+      "id": "copper_sword",
+      "name": "銅の剣",
+      "price": 180,
+      "towns": [
+       "rivel_town",
+       "dow_village"
+      ]
+     },
+     {
+      "id": "iron_sword",
+      "name": "鉄の剣",
+      "price": 520,
+      "towns": [
+       "kalion_city",
+       "rivel_town",
+       "dow_village"
+      ]
+     },
+     {
+      "id": "steel_sword",
+      "name": "鋼の剣",
+      "price": 1400,
+      "towns": [
+       "kalion_city"
+      ]
+     },
+     {
+      "id": "knight_sword",
+      "name": "騎士の剣",
+      "price": 3200,
+      "towns": [
+       "islands.js:103",
+       "kalion_city",
+       "magicka_city",
+       "tempus_city",
+       "tempus.js:294",
+       "tradia"
+      ]
+     },
+     {
+      "id": "rune_blade",
+      "name": "ルーンブレード",
+      "price": 6000,
+      "towns": [
+       "dark_camp",
+       "magicka_city"
+      ]
+     },
+     {
+      "id": "scimitar",
+      "name": "砂漠の曲刀",
+      "price": 3400,
+      "towns": [
+       "sahar_city"
+      ]
+     },
+     {
+      "id": "yin_sword",
+      "name": "陰線の剣",
+      "price": 2600,
+      "towns": [
+       "tradia"
+      ]
+     },
+     {
+      "id": "resistance_blade",
+      "name": "レジスタンスブレード",
+      "price": 4200,
+      "towns": [
+       "tradia"
+      ]
+     }
+    ]
+   },
+   {
+    "slot": "weapon",
+    "shape": "weapon:dagger",
+    "cls": "weapon_dagger",
+    "drawn": 20,
+    "not": 0,
+    "items": [
+     "dagger",
+     "bronze_dagger",
+     "assassin_dagger",
+     "tide_dagger",
+     "void_dagger",
+     "macd_twin",
+     "stoploss_dagger",
+     "macd_twin_2",
+     "stoploss_dagger_2",
+     "pinbar_dagger",
+     "breakout_dagger",
+     "contrarian_blade",
+     "silent_knife",
+     "td_scalper_knife",
+     "b19_present_jewel_blade",
+     "b19_two_faced_dagger",
+     "t68_islands_dagger",
+     "t68_tempus_dagger",
+     "t68_machine_dagger",
+     "t68_dark_dagger"
+    ],
+    "shop": [
+     {
+      "id": "dagger",
+      "name": "短剣",
+      "price": 70,
+      "towns": [
+       "rivel_town"
+      ]
+     },
+     {
+      "id": "bronze_dagger",
+      "name": "青銅のナイフ",
+      "price": 220,
+      "towns": [
+       "rivel_town",
+       "dow_village"
+      ]
+     },
+     {
+      "id": "assassin_dagger",
+      "name": "暗殺者の短剣",
+      "price": 1100,
+      "towns": [
+       "islands.js:103",
+       "kalion_city",
+       "tempus_city",
+       "tempus.js:294"
+      ]
+     },
+     {
+      "id": "tide_dagger",
+      "name": "潮目の短剣",
+      "price": 1800,
+      "towns": [
+       "islands.js:103",
+       "tempus_city"
+      ]
+     },
+     {
+      "id": "void_dagger",
+      "name": "虚無の短剣",
+      "price": 5000,
+      "towns": [
+       "dark_camp",
+       "magicka_city"
+      ]
+     },
+     {
+      "id": "macd_twin",
+      "name": "MACD双剣",
+      "price": 4200,
+      "towns": [
+       "magicka_city"
+      ]
+     },
+     {
+      "id": "stoploss_dagger",
+      "name": "損切りの短剣",
+      "price": 1500,
+      "towns": [
+       "sidequests.js:65"
+      ]
+     },
+     {
+      "id": "breakout_dagger",
+      "name": "ブレイクアウトダガー",
+      "price": 2200,
+      "towns": [
+       "tradia"
+      ]
+     },
+     {
+      "id": "contrarian_blade",
+      "name": "逆張りの刃",
+      "price": 3900,
+      "towns": [
+       "tradia"
+      ]
+     }
+    ]
+   },
+   {
+    "slot": "weapon",
+    "shape": "weapon:bow",
+    "cls": "weapon_bow",
+    "drawn": 26,
+    "not": 0,
+    "items": [
+     "short_bow",
+     "hunter_bow",
+     "long_bow",
+     "survey_bow",
+     "gear_bow",
+     "star_bow",
+     "rci_bow",
+     "rci_bow_2",
+     "caravan_bow",
+     "zero_bow",
+     "breakconfirm_bow",
+     "range_bow",
+     "prob_hunt_bow",
+     "azure_longbow",
+     "td_swing_longbow",
+     "b19_amber_memory_bow",
+     "t68_islands_bow",
+     "t68_tempus_bow",
+     "t68_desert_bow",
+     "t68_machine_bow",
+     "t68_snow_bow",
+     "t68_dark_bow",
+     "orbit_bow",
+     "bu_zaid_sand_bow",
+     "bu_drone_link_bow",
+     "bu_orbis_orbit_bow"
+    ],
+    "shop": [
+     {
+      "id": "short_bow",
+      "name": "短弓",
+      "price": 150,
+      "towns": [
+       "rivel_town"
+      ]
+     },
+     {
+      "id": "hunter_bow",
+      "name": "狩人の弓",
+      "price": 480,
+      "towns": [
+       "dow_village"
+      ]
+     },
+     {
+      "id": "long_bow",
+      "name": "長弓",
+      "price": 1300,
+      "towns": [
+       "islands.js:103",
+       "kalion_city",
+       "tempus_city",
+       "tempus.js:294"
+      ]
+     },
+     {
+      "id": "survey_bow",
+      "name": "測量士の弓",
+      "price": 2000,
+      "towns": [
+       "islands.js:103",
+       "ciel_port",
+       "frost_town",
+       "tempus_city",
+       "tempus.js:294"
+      ]
+     },
+     {
+      "id": "gear_bow",
+      "name": "機巧弓",
+      "price": 2600,
+      "towns": [
+       "magicka_city",
+       "frost_town",
+       "tempus.js:294"
+      ]
+     },
+     {
+      "id": "star_bow",
+      "name": "星見の弓",
+      "price": 5500,
+      "towns": [
+       "dragon.js:114",
+       "dark_camp"
+      ]
+     },
+     {
+      "id": "caravan_bow",
+      "name": "隊商の弓",
+      "price": 2800,
+      "towns": [
+       "sahar_city"
+      ]
+     }
+    ]
+   },
+   {
+    "slot": "armor",
+    "shape": "armor:light",
+    "cls": "armor_light",
+    "drawn": 0,
+    "not": 26,
+    "items": [
+     "cloth",
+     "leather_armor",
+     "scale_armor",
+     "ninja_garb",
+     "sea_coat",
+     "star_cloak",
+     "cloak_volatility",
+     "dune_cloak",
+     "fur_coat",
+     "gambler_cloak",
+     "trader_coat",
+     "surf_armor",
+     "seabreeze_leather",
+     "auditor_coat",
+     "sandstorm_cloak",
+     "stardrift_mail",
+     "b19_bare_face_cloak",
+     "t68_islands_light",
+     "t68_tempus_light",
+     "t68_desert_light",
+     "t68_machine_light",
+     "t68_snow_light",
+     "t68_dark_light",
+     "neon_raincoat",
+     "ashshore_coat",
+     "bu_742_memory_cloak"
+    ],
+    "shop": [
+     {
+      "id": "cloth",
+      "name": "布の服",
+      "price": 50,
+      "towns": [
+       "rivel_town"
+      ]
+     },
+     {
+      "id": "leather_armor",
+      "name": "革の鎧",
+      "price": 220,
+      "towns": [
+       "rivel_town",
+       "dow_village"
+      ]
+     },
+     {
+      "id": "scale_armor",
+      "name": "鱗の鎧",
+      "price": 800,
+      "towns": [
+       "kalion_city",
+       "dow_village"
+      ]
+     },
+     {
+      "id": "ninja_garb",
+      "name": "忍び装束",
+      "price": 1500,
+      "towns": [
+       "kalion_city",
+       "sentra_capital",
+       "tempus_city",
+       "node_city"
+      ]
+     },
+     {
+      "id": "sea_coat",
+      "name": "航海士のコート",
+      "price": 1700,
+      "towns": [
+       "tempus_city",
+       "node_city"
+      ]
+     },
+     {
+      "id": "star_cloak",
+      "name": "星のマント",
+      "price": 5200,
+      "towns": [
+       "dark_camp",
+       "magicka_city"
+      ]
+     },
+     {
+      "id": "dune_cloak",
+      "name": "砂避けのマント",
+      "price": 2400,
+      "towns": [
+       "sahar_city"
+      ]
+     },
+     {
+      "id": "fur_coat",
+      "name": "毛皮のコート",
+      "price": 2800,
+      "towns": [
+       "ciel_port",
+       "frost_town"
+      ]
+     },
+     {
+      "id": "auditor_coat",
+      "name": "監査官の上着",
+      "price": 2600,
+      "towns": [
+       "tradia"
+      ]
+     }
+    ]
+   },
+   {
+    "slot": "head",
+    "shape": "head:hat/cap",
+    "cls": "head_cap",
+    "drawn": 0,
+    "not": 9,
+    "items": [
+     "leather_cap",
+     "hilo_hat",
+     "desert_star_hat",
+     "t68_islands_hat",
+     "t68_tempus_hat",
+     "t68_desert_hat",
+     "t68_machine_hat",
+     "t68_dragon_hat",
+     "t68_dark_hat"
+    ],
+    "shop": [
+     {
+      "id": "leather_cap",
+      "name": "革の帽子",
+      "price": 60,
+      "towns": [
+       "rivel_town"
+      ]
+     }
+    ]
+   },
+   {
+    "slot": "head",
+    "shape": "head:hat/feather",
+    "cls": null,
+    "drawn": 0,
+    "not": 1,
+    "items": [
+     "feather_hat"
+    ],
+    "shop": [
+     {
+      "id": "feather_hat",
+      "name": "羽根帽子",
+      "price": 240,
+      "towns": [
+       "rivel_town",
+       "dow_village"
+      ]
+     }
+    ]
+   },
+   {
+    "slot": "head",
+    "shape": "head:hat/witch",
+    "cls": "head_hat",
+    "drawn": 0,
+    "not": 3,
+    "items": [
+     "wizard_hat",
+     "arcane_hat",
+     "td_rci_hat"
+    ],
+    "shop": [
+     {
+      "id": "wizard_hat",
+      "name": "魔法使いの帽子",
+      "price": 500,
+      "towns": [
+       "kalion_city",
+       "sentra_capital",
+       "frost_town",
+       "tempus_city",
+       "node_city",
+       "tradia"
+      ]
+     },
+     {
+      "id": "arcane_hat",
+      "name": "魔導帽",
+      "price": 3200,
+      "towns": [
+       "ignas_town",
+       "dark_camp",
+       "magicka_city",
+       "region78-orbis.js:87"
+      ]
+     }
+    ]
+   },
+   {
+    "slot": "head",
+    "shape": "head:hat/turban",
+    "cls": null,
+    "drawn": 0,
+    "not": 1,
+    "items": [
+     "sand_turban"
+    ],
+    "shop": [
+     {
+      "id": "sand_turban",
+      "name": "砂漠のターバン",
+      "price": 1400,
+      "towns": [
+       "sahar_city"
+      ]
+     }
+    ]
+   },
+   {
+    "slot": "head",
+    "shape": "head:hat/hood",
+    "cls": null,
+    "drawn": 0,
+    "not": 1,
+    "items": [
+     "icecrystal_hood"
+    ],
+    "shop": []
+   },
+   {
+    "slot": "head",
+    "shape": "head:hat/crown",
+    "cls": null,
+    "drawn": 0,
+    "not": 1,
+    "items": [
+     "bu_memory_keeper_helm"
+    ],
+    "shop": []
+   },
+   {
+    "slot": "head",
+    "shape": "head:hat/bicorne",
+    "cls": null,
+    "drawn": 0,
+    "not": 1,
+    "items": [
+     "bu_gull_admiral_hat"
+    ],
+    "shop": []
+   },
+   {
+    "slot": "head",
+    "shape": "head:hat/circlet",
+    "cls": null,
+    "drawn": 0,
+    "not": 1,
+    "items": [
+     "bu_control_seal_circlet"
+    ],
+    "shop": []
    }
   ]
  }
