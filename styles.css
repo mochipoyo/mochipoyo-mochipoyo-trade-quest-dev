@@ -931,6 +931,15 @@ html.ui-large .chart-battle { font-size: 15px; } html.ui-large .chart-battle .cb
 .rs-detail .rs-morehint { display: none; text-align: center; font-size: 11px; color: var(--gold); line-height: 1.4; }
 .rs-detail.rs-more .rs-morehint { display: block; }
 .rs-detail .rw-panel-close { margin-top: 4px; padding: 4px; }
+/* v9.8.4 4 人編成・複数人のレベルアップ：見出しを 2 行にまとめ、仲間の行を詰める（PC は 4 人が横に並び、行の中で折り返さない） */
+.rw-panel.result-victory.rs-detail { max-width: 860px; }
+.rs-detail .rs-headline, .rs-detail .rs-sum { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px 12px; }
+.rs-detail .rs-headline .rs-special { margin: 0; flex: 0 1 auto; }
+.rs-detail .rs-sum { margin: 2px 0; } .rs-detail .rs-sum .rs-killed { margin: 0; } .rs-detail .rs-sum .rs-rewards { margin: 0; gap: 4px 14px; flex: 0 1 auto; }
+.rs-detail .rs-rewards b { font-size: 1rem; }
+.rs-detail .rs-member { padding: 3px 6px; } .rs-detail .rs-head { gap: 2px 6px; } .rs-detail .rs-levelup { font-size: 11px; margin-left: auto; white-space: nowrap; }
+.rs-detail .rs-name, .rs-detail .rs-lv { white-space: nowrap; } .rs-detail .rs-exp { white-space: nowrap; } .rs-detail .rs-stat { word-spacing: 3px; font-size: 11px; }
+.rs-detail .rs-items::before { content: '入手：'; align-self: center; }
 .rs-minis { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 6px 0; } .rs-mini small { color: var(--muted); margin-left: 2px; }
 .rs-special { text-align: center; color: #1a1407; background: linear-gradient(90deg, #e8c15a, #ffe9a0, #e8c15a); border-radius: 6px; padding: 3px 8px; margin: 4px 0; font-weight: bold; }
 #auto-battle .ab-keep { display: block; font-size: 9px; line-height: 1; opacity: .85; }

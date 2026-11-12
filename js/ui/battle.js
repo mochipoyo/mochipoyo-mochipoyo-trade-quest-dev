@@ -504,12 +504,12 @@
     var members = res.members.map(function (m, i) {
       var a = m.actor; var bPct = Math.min(100, Math.round(m.before.exp / Actors.expForLevel(m.before.level) * 100)); var aPct = Math.min(100, Math.round(m.after.exp / Actors.expForLevel(m.after.level) * 100));
       var stat = '';
-      if (m.levelUp) { var bs = m.before.stats, as = m.after.stats; var d = [['HP', as.maxHp - bs.maxHp], ['MP', as.maxMp - bs.maxMp], ['攻', as.atk - bs.atk], ['防', as.def - bs.def], ['速', as.agi - bs.agi], ['魔', as.mag - bs.mag]].filter(function (x) { return x[1] > 0; }).map(function (x) { return x[0] + '+' + x[1]; }).join('　'); stat = '<div class="rs-stat">' + stat + esc(d) + '</div>'; }
+      if (m.levelUp) { var bs = m.before.stats, as = m.after.stats; var d = [['HP', as.maxHp - bs.maxHp], ['MP', as.maxMp - bs.maxMp], ['攻', as.atk - bs.atk], ['防', as.def - bs.def], ['速', as.agi - bs.agi], ['魔', as.mag - bs.mag]].filter(function (x) { return x[1] > 0; }).map(function (x) { return x[0] + '+' + x[1]; }).join(top3 ? ' ' : '　'); stat = '<div class="rs-stat">' + stat + esc(d) + '</div>'; }
       var skills = m.newSkills.length ? '<div class="rs-skill">✦ ' + m.newSkills.map(function (k) { return esc(SKILLS[k].name); }).join('・') + ' を覚えた！</div>' : '';
       if (m.newUlts && m.newUlts.length && U) skills += '<div class="rs-skill rs-ult">✦ 必殺技「' + m.newUlts.map(function (k) { return esc(U.get(k).name); }).join('」「') + '」を覚えた！（戦闘の「必殺技」から）</div>';
       return '<div class="rs-member ' + (m.levelUp ? 'up' : '') + (m.dead ? ' dead' : '') + '" data-i="' + i + '">' +
         '<div class="rs-head"><span class="rs-name">' + esc(a.name) + '</span><span class="rs-lv">Lv.' + m.before.level + (m.levelUp ? ' → <b>Lv.' + m.after.level + '</b>' : '') + '</span>' + (m.levelUp ? '<span class="rs-levelup">LEVEL UP!</span>' : '') + '</div>' +
-        '<div class="rs-exp">' + (m.dead ? '戦闘不能（経験値なし）' : '+' + m.gained + ' EXP') + '<span class="muted small">　次のレベルまで ' + m.toNext + ' EXP</span></div>' +
+        '<div class="rs-exp">' + (m.dead ? '戦闘不能（経験値なし）' : '+' + m.gained + ' EXP') + '<span class="muted small">' + (top3 ? '（次まで ' + m.toNext + '）' : '　次のレベルまで ' + m.toNext + ' EXP') + '</span></div>' +
         '<div class="rs-bar"><span style="width:' + bPct + '%" data-before="' + bPct + '" data-after="' + aPct + '" data-up="' + (m.levelUp ? 1 : 0) + '"></span></div>' + stat + skills + '</div>';
     }).join('');
     // v9.5 落とした品の絵（res.drops のキー＝アイテム ID）
@@ -520,8 +520,9 @@
       var stS = document.getElementById('stage'); if (stS) stS.classList.add('result-open'); var offS = null;
       return Win.panel('<div class="rs-title rs-small">VICTORY！</div><div class="rs-killed">' + killed + ' を倒した！</div><div class="rs-rewards"><div>経験値 <b>' + res.exp + ' EXP</b></div><div>ゴールド <b>' + goldLine + '</b></div></div><div class="rs-minis">' + mline + '</div><div class="rs-items small">入手：' + dl + '</div>', { cls: 'result-victory result-simple' + (top3 ? ' rs-top' : ''), closeLabel: '次へ', setup: function (node) { offS = fitTop(node); } }).then(function (v) { if (offS) offS(); if (stS) stS.classList.remove('result-open'); return v; });
     }
-    var html = '<div class="rs-title">VICTORY！</div><div class="rs-special">★ ' + special.map(esc).join('　★ ') + '</div><div class="rs-killed">' + killed + ' を倒した！</div>' +
-      '<div class="rs-rewards"><div>獲得経験値 <b>' + res.exp + ' EXP</b></div><div>獲得ゴールド <b>' + goldLine + '</b></div></div>' +
+    // v9.8.4 3D の戦闘：見出しを 2 行にまとめる（VICTORY＋特別な出来事／倒した敵＋報酬）＝詳細の欄を広く
+    var html = (top3 ? '<div class="rs-headline">' : '') + '<div class="rs-title">VICTORY！</div><div class="rs-special">★ ' + special.map(esc).join('　★ ') + '</div>' + (top3 ? '</div><div class="rs-sum">' : '') + '<div class="rs-killed">' + killed + ' を倒した！</div>' +
+      '<div class="rs-rewards"><div>' + (top3 ? '' : '獲得') + '経験値 <b>' + res.exp + ' EXP</b></div><div>' + (top3 ? '' : '獲得') + 'ゴールド <b>' + goldLine + '</b></div></div>' + (top3 ? '</div>' : '') +
       (top3 ? '<div class="rs-scroll">' : '') + '<h3>仲間の成長</h3><div class="rs-members">' + members + '</div><h3>入手アイテム</h3><div class="rs-items">' + dropHtml + '</div>' + (root.BossGear && res.bossGear ? root.BossGear.resultHtml(res.bossGear) : '') + (top3 ? '</div><div class="rs-morehint">▼ つづきあり（スクロール／↑↓キー）</div>' : '');   // v8.7 ボス固有装備（初回の正規勝利だけ）
     var stg87 = document.getElementById('stage'); if (stg87) stg87.classList.add('result-open');   // v8.7 リザルトの間は戦闘の欄（上のメッセージ・下の仲間）を隠す（長いリザルトの「次へ」が隠れないように）
     var offD = null;

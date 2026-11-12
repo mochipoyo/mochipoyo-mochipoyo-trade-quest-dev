@@ -1,0 +1,737 @@
+{
+ "VIEW": "pc",
+ "ok": 14,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "準備：4 人編成（hero・kyle・kazuto・lina）。頭の上・武器の先が高い装備（兜・槍・戦斧・杖）を着けた"
+  },
+  {
+   "ok": true,
+   "m": "［2 人がレベルアップ（主人公・リーナ）］詳しい結果の窓（rw-panel result-victory rs-top rs-detail）。仲間の行 4・レベルアップ 2 人"
+  },
+  {
+   "ok": true,
+   "m": "［2 人がレベルアップ（主人公・リーナ）］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 12〜247px。主人公 上端 323px（すき間 76px・重なり 0%）・カイル 上端 340px（すき間 93px・重なり 0%）・カズト 上端 335px（すき間 88px・重なり 0%）・リーナ 上端 338px（すき間 90px・重なり 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人がレベルアップ（主人公・リーナ）］人物（装備の先まで）が 3D の画面の外へ見切れない（画面 92〜926×8〜550。主人公 294〜387×323〜460・カイル 390〜512×340〜465・カズト 506〜635×335〜467・リーナ 620〜725×338〜460）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人がレベルアップ（主人公・リーナ）］「次へ」が窓と画面の中に見える（207〜238px・高さ 31px。窓の左右 117〜901／画面の幅 1280）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人がレベルアップ（主人公・リーナ）］詳細は欄に全部入る（欄 127px／中身 127px）→ スクロール不要・「つづきあり」の印なし"
+  },
+  {
+   "ok": true,
+   "m": "［2 人がレベルアップ（主人公・リーナ）］「次へ」をクリックすると窓が閉じ、戦闘が終わってフィールドへ戻る"
+  },
+  {
+   "ok": true,
+   "m": "［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail）。仲間の行 4・レベルアップ 4 人"
+  },
+  {
+   "ok": true,
+   "m": "［4 人ともレベルアップ］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 12〜300px。主人公 上端 323px（すき間 23px・重なり 0%）・カイル 上端 340px（すき間 40px・重なり 0%）・カズト 上端 335px（すき間 35px・重なり 0%）・リーナ 上端 338px（すき間 38px・重なり 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［4 人ともレベルアップ］人物（装備の先まで）が 3D の画面の外へ見切れない（画面 92〜926×8〜550。主人公 293〜385×323〜460・カイル 389〜510×340〜465・カズト 505〜634×335〜467・リーナ 618〜724×338〜460）"
+  },
+  {
+   "ok": true,
+   "m": "［4 人ともレベルアップ］「次へ」が窓と画面の中に見える（260〜291px・高さ 31px。窓の左右 117〜901／画面の幅 1280）"
+  },
+  {
+   "ok": true,
+   "m": "［4 人ともレベルアップ］詳細は欄に全部入る（欄 180px／中身 180px）→ スクロール不要・「つづきあり」の印なし"
+  },
+  {
+   "ok": true,
+   "m": "［4 人ともレベルアップ］「次へ」をクリックすると窓が閉じ、戦闘が終わってフィールドへ戻る"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  }
+ ],
+ "rec": {
+  "two": {
+   "name": "2 人がレベルアップ（主人公・リーナ）",
+   "first": {
+    "cls": "rw-panel result-victory rs-top rs-detail",
+    "top": 12,
+    "bottom": 247,
+    "left": 117,
+    "right": 901,
+    "vw": 1280,
+    "vh": 720,
+    "canvas": {
+     "top": 8,
+     "bottom": 550,
+     "left": 92,
+     "right": 926
+    },
+    "scroll": {
+     "top": 0,
+     "h": 127,
+     "all": 127,
+     "x": 509,
+     "y": 140,
+     "yTop": 76,
+     "yBot": 203
+    },
+    "close": {
+     "x": 509,
+     "y": 223,
+     "top": 207,
+     "bottom": 238,
+     "h": 31,
+     "in": true
+    },
+    "more": false,
+    "hint": false,
+    "ups": 2,
+    "members": 4,
+    "who": {
+     "hero": {
+      "top": 323,
+      "bottom": 460,
+      "left": 294,
+      "right": 387,
+      "covered": 0,
+      "gap": 76,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kyle": {
+      "top": 340,
+      "bottom": 465,
+      "left": 390,
+      "right": 512,
+      "covered": 0,
+      "gap": 93,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
+      "top": 335,
+      "bottom": 467,
+      "left": 506,
+      "right": 635,
+      "covered": 0,
+      "gap": 88,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "lina": {
+      "top": 338,
+      "bottom": 460,
+      "left": 620,
+      "right": 725,
+      "covered": 0,
+      "gap": 90,
+      "clip": false,
+      "front": true,
+      "ea": true
+     }
+    }
+   },
+   "wheel": {
+    "cls": "rw-panel result-victory rs-top rs-detail",
+    "top": 12,
+    "bottom": 247,
+    "left": 117,
+    "right": 901,
+    "vw": 1280,
+    "vh": 720,
+    "canvas": {
+     "top": 8,
+     "bottom": 550,
+     "left": 92,
+     "right": 926
+    },
+    "scroll": {
+     "top": 0,
+     "h": 127,
+     "all": 127,
+     "x": 509,
+     "y": 140,
+     "yTop": 76,
+     "yBot": 203
+    },
+    "close": {
+     "x": 509,
+     "y": 223,
+     "top": 207,
+     "bottom": 238,
+     "h": 31,
+     "in": true
+    },
+    "more": false,
+    "hint": false,
+    "ups": 2,
+    "members": 4,
+    "who": {
+     "hero": {
+      "top": 323,
+      "bottom": 460,
+      "left": 294,
+      "right": 387,
+      "covered": 0,
+      "gap": 76,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kyle": {
+      "top": 340,
+      "bottom": 465,
+      "left": 390,
+      "right": 512,
+      "covered": 0,
+      "gap": 93,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
+      "top": 335,
+      "bottom": 467,
+      "left": 506,
+      "right": 635,
+      "covered": 0,
+      "gap": 88,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "lina": {
+      "top": 338,
+      "bottom": 460,
+      "left": 620,
+      "right": 725,
+      "covered": 0,
+      "gap": 90,
+      "clip": false,
+      "front": true,
+      "ea": true
+     }
+    }
+   },
+   "bottom": {
+    "cls": "rw-panel result-victory rs-top rs-detail",
+    "top": 12,
+    "bottom": 247,
+    "left": 117,
+    "right": 901,
+    "vw": 1280,
+    "vh": 720,
+    "canvas": {
+     "top": 8,
+     "bottom": 550,
+     "left": 92,
+     "right": 926
+    },
+    "scroll": {
+     "top": 0,
+     "h": 127,
+     "all": 127,
+     "x": 509,
+     "y": 140,
+     "yTop": 76,
+     "yBot": 203
+    },
+    "close": {
+     "x": 509,
+     "y": 223,
+     "top": 207,
+     "bottom": 238,
+     "h": 31,
+     "in": true
+    },
+    "more": false,
+    "hint": false,
+    "ups": 2,
+    "members": 4,
+    "who": {
+     "hero": {
+      "top": 323,
+      "bottom": 460,
+      "left": 294,
+      "right": 387,
+      "covered": 0,
+      "gap": 76,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kyle": {
+      "top": 340,
+      "bottom": 465,
+      "left": 390,
+      "right": 512,
+      "covered": 0,
+      "gap": 93,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
+      "top": 335,
+      "bottom": 467,
+      "left": 506,
+      "right": 635,
+      "covered": 0,
+      "gap": 88,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "lina": {
+      "top": 338,
+      "bottom": 460,
+      "left": 620,
+      "right": 725,
+      "covered": 0,
+      "gap": 90,
+      "clip": false,
+      "front": true,
+      "ea": true
+     }
+    }
+   },
+   "back": {
+    "cls": "rw-panel result-victory rs-top rs-detail",
+    "top": 12,
+    "bottom": 247,
+    "left": 117,
+    "right": 901,
+    "vw": 1280,
+    "vh": 720,
+    "canvas": {
+     "top": 8,
+     "bottom": 550,
+     "left": 92,
+     "right": 926
+    },
+    "scroll": {
+     "top": 0,
+     "h": 127,
+     "all": 127,
+     "x": 509,
+     "y": 140,
+     "yTop": 76,
+     "yBot": 203
+    },
+    "close": {
+     "x": 509,
+     "y": 223,
+     "top": 207,
+     "bottom": 238,
+     "h": 31,
+     "in": true
+    },
+    "more": false,
+    "hint": false,
+    "ups": 2,
+    "members": 4,
+    "who": {
+     "hero": {
+      "top": 323,
+      "bottom": 460,
+      "left": 294,
+      "right": 387,
+      "covered": 0,
+      "gap": 76,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kyle": {
+      "top": 340,
+      "bottom": 465,
+      "left": 390,
+      "right": 512,
+      "covered": 0,
+      "gap": 93,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
+      "top": 335,
+      "bottom": 467,
+      "left": 506,
+      "right": 635,
+      "covered": 0,
+      "gap": 88,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "lina": {
+      "top": 338,
+      "bottom": 460,
+      "left": 620,
+      "right": 725,
+      "covered": 0,
+      "gap": 90,
+      "clip": false,
+      "front": true,
+      "ea": true
+     }
+    }
+   },
+   "levels": [
+    2,
+    3
+   ]
+  },
+  "all": {
+   "name": "4 人ともレベルアップ",
+   "first": {
+    "cls": "rw-panel result-victory rs-top rs-detail",
+    "top": 12,
+    "bottom": 300,
+    "left": 117,
+    "right": 901,
+    "vw": 1280,
+    "vh": 720,
+    "canvas": {
+     "top": 8,
+     "bottom": 550,
+     "left": 92,
+     "right": 926
+    },
+    "scroll": {
+     "top": 0,
+     "h": 180,
+     "all": 180,
+     "x": 509,
+     "y": 166,
+     "yTop": 76,
+     "yBot": 256
+    },
+    "close": {
+     "x": 509,
+     "y": 275,
+     "top": 260,
+     "bottom": 291,
+     "h": 31,
+     "in": true
+    },
+    "more": false,
+    "hint": false,
+    "ups": 4,
+    "members": 4,
+    "who": {
+     "hero": {
+      "top": 323,
+      "bottom": 460,
+      "left": 293,
+      "right": 385,
+      "covered": 0,
+      "gap": 23,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kyle": {
+      "top": 340,
+      "bottom": 465,
+      "left": 389,
+      "right": 510,
+      "covered": 0,
+      "gap": 40,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
+      "top": 335,
+      "bottom": 467,
+      "left": 505,
+      "right": 634,
+      "covered": 0,
+      "gap": 35,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "lina": {
+      "top": 338,
+      "bottom": 460,
+      "left": 618,
+      "right": 724,
+      "covered": 0,
+      "gap": 38,
+      "clip": false,
+      "front": true,
+      "ea": true
+     }
+    }
+   },
+   "wheel": {
+    "cls": "rw-panel result-victory rs-top rs-detail",
+    "top": 12,
+    "bottom": 300,
+    "left": 117,
+    "right": 901,
+    "vw": 1280,
+    "vh": 720,
+    "canvas": {
+     "top": 8,
+     "bottom": 550,
+     "left": 92,
+     "right": 926
+    },
+    "scroll": {
+     "top": 0,
+     "h": 180,
+     "all": 180,
+     "x": 509,
+     "y": 166,
+     "yTop": 76,
+     "yBot": 256
+    },
+    "close": {
+     "x": 509,
+     "y": 275,
+     "top": 260,
+     "bottom": 291,
+     "h": 31,
+     "in": true
+    },
+    "more": false,
+    "hint": false,
+    "ups": 4,
+    "members": 4,
+    "who": {
+     "hero": {
+      "top": 323,
+      "bottom": 460,
+      "left": 293,
+      "right": 385,
+      "covered": 0,
+      "gap": 23,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kyle": {
+      "top": 340,
+      "bottom": 465,
+      "left": 389,
+      "right": 510,
+      "covered": 0,
+      "gap": 40,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
+      "top": 335,
+      "bottom": 467,
+      "left": 505,
+      "right": 634,
+      "covered": 0,
+      "gap": 35,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "lina": {
+      "top": 338,
+      "bottom": 460,
+      "left": 618,
+      "right": 724,
+      "covered": 0,
+      "gap": 38,
+      "clip": false,
+      "front": true,
+      "ea": true
+     }
+    }
+   },
+   "bottom": {
+    "cls": "rw-panel result-victory rs-top rs-detail",
+    "top": 12,
+    "bottom": 300,
+    "left": 117,
+    "right": 901,
+    "vw": 1280,
+    "vh": 720,
+    "canvas": {
+     "top": 8,
+     "bottom": 550,
+     "left": 92,
+     "right": 926
+    },
+    "scroll": {
+     "top": 0,
+     "h": 180,
+     "all": 180,
+     "x": 509,
+     "y": 166,
+     "yTop": 76,
+     "yBot": 256
+    },
+    "close": {
+     "x": 509,
+     "y": 275,
+     "top": 260,
+     "bottom": 291,
+     "h": 31,
+     "in": true
+    },
+    "more": false,
+    "hint": false,
+    "ups": 4,
+    "members": 4,
+    "who": {
+     "hero": {
+      "top": 323,
+      "bottom": 460,
+      "left": 293,
+      "right": 385,
+      "covered": 0,
+      "gap": 23,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kyle": {
+      "top": 340,
+      "bottom": 465,
+      "left": 389,
+      "right": 510,
+      "covered": 0,
+      "gap": 40,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
+      "top": 335,
+      "bottom": 467,
+      "left": 505,
+      "right": 634,
+      "covered": 0,
+      "gap": 35,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "lina": {
+      "top": 338,
+      "bottom": 460,
+      "left": 618,
+      "right": 724,
+      "covered": 0,
+      "gap": 38,
+      "clip": false,
+      "front": true,
+      "ea": true
+     }
+    }
+   },
+   "back": {
+    "cls": "rw-panel result-victory rs-top rs-detail",
+    "top": 12,
+    "bottom": 300,
+    "left": 117,
+    "right": 901,
+    "vw": 1280,
+    "vh": 720,
+    "canvas": {
+     "top": 8,
+     "bottom": 550,
+     "left": 92,
+     "right": 926
+    },
+    "scroll": {
+     "top": 0,
+     "h": 180,
+     "all": 180,
+     "x": 509,
+     "y": 166,
+     "yTop": 76,
+     "yBot": 256
+    },
+    "close": {
+     "x": 509,
+     "y": 275,
+     "top": 260,
+     "bottom": 291,
+     "h": 31,
+     "in": true
+    },
+    "more": false,
+    "hint": false,
+    "ups": 4,
+    "members": 4,
+    "who": {
+     "hero": {
+      "top": 323,
+      "bottom": 460,
+      "left": 293,
+      "right": 385,
+      "covered": 0,
+      "gap": 23,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kyle": {
+      "top": 340,
+      "bottom": 465,
+      "left": 389,
+      "right": 510,
+      "covered": 0,
+      "gap": 40,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
+      "top": 335,
+      "bottom": 467,
+      "left": 505,
+      "right": 634,
+      "covered": 0,
+      "gap": 35,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "lina": {
+      "top": 338,
+      "bottom": 460,
+      "left": 618,
+      "right": 724,
+      "covered": 0,
+      "gap": 38,
+      "clip": false,
+      "front": true,
+      "ea": true
+     }
+    }
+   },
+   "levels": [
+    3,
+    5,
+    29,
+    4
+   ]
+  }
+ }
+}
