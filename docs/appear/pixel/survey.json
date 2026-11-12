@@ -2642,8 +2642,8 @@
     "slot": "head",
     "shape": "head:helm",
     "cls": "head_helm",
-    "drawn": 0,
-    "not": 19,
+    "drawn": 19,
+    "not": 0,
     "items": [
      "iron_helm",
      "knight_helm",
@@ -3315,8 +3315,8 @@
     "slot": "head",
     "shape": "head:helm",
     "cls": "head_helm",
-    "drawn": 0,
-    "not": 19,
+    "drawn": 19,
+    "not": 0,
     "items": [
      "iron_helm",
      "knight_helm",

@@ -171,6 +171,7 @@ let PG = null;
           await p.evaluate(() => { const u = document.getElementById('ui'); if (u) u.style.visibility = 'hidden'; }); await p.waitForTimeout(120);
           await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_c_victory_${key}.jpg`, type: 'jpeg', quality: 72 });
           await p.evaluate(() => { const u = document.getElementById('ui'); if (u) u.style.visibility = ''; });
+          await p.waitForTimeout(1200); b.vrects2 = await rects();   // 勝利のカメラが止まってから、もう一度（足もとの比べに使う。カイル・カズトの確かめと同じ）
         }
       }
       const fin = await p.evaluate(() => !!window.__btRes && !World.busy); if (fin) break;
@@ -213,7 +214,7 @@ let PG = null;
     const bs = STATES.filter((s) => s.battle).map((s) => rec[s.key].battle[id] && rec[s.key].battle[id].size); const vs = STATES.filter((s) => s.battle).map((s) => rec[s.key].battle.victory && rec[s.key].battle.victory[id] && rec[s.key].battle.victory[id].size);
     S(bs.every((z) => z && z.w === bs[0].w && z.h === bs[0].h) && vs.every((z) => z && z.w === vs[0].w && z.h === vs[0].h), `${WHO[id]}：戦闘の背面・勝利の正面の範囲（カメラ合わせ・影・HP の位置）が組み合わせで同じ（背面 ${bs.map((z) => z && z.w + '×' + z.h).join(' ')}／正面 ${vs.map((z) => z && z.w + '×' + z.h).join(' ')}）`);
     // 勝利のカメラは動くので、同じ瞬間の主人公（どちらの組み合わせも装備なし）との比で比べる：足もとの差・高さの比
-    const sr = STATES.filter((s) => s.battle).map((s) => { const v = rec[s.key].battle.vrects; const r = v && v[id], h = v && v.hero; return r && h ? { dy: +((r.y + r.h) - (h.y + h.h)).toFixed(1), kh: +(r.h / h.h).toFixed(3) } : null; });
+    const sr = STATES.filter((s) => s.battle).map((s) => { const v = rec[s.key].battle.vrects2 || rec[s.key].battle.vrects; const r = v && v[id], h = v && v.hero; return r && h ? { dy: +((r.y + r.h) - (h.y + h.h)).toFixed(1), kh: +(r.h / h.h).toFixed(3) } : null; });
     S(sr.every((r) => r && Math.abs(r.dy - sr[0].dy) <= 1.5 && Math.abs(r.kh - sr[0].kh) <= 0.015), `${WHO[id]}：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：${sr.map((r) => r && 'Δ足もと ' + r.dy + 'px・高さ比 ' + r.kh).join('／')}）`);
   }
   S(rec.off.menu.lina.parts === 'base_plain' && rec.off.menu.gald.parts === 'base_plain', '全部はずすと素の絵（旅装・手ぶら）に戻る（2 人とも base_plain）');

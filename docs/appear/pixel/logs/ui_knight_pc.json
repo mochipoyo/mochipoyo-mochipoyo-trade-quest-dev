@@ -334,7 +334,7 @@
   },
   {
    "ok": true,
-   "m": "レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜295px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 323px）"
+   "m": "レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜295px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 326px）"
   },
   {
    "ok": true,
@@ -526,22 +526,22 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 325.3,
+      "x": 329.2,
       "y": 348.1,
       "w": 102.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 419.1,
+      "x": 423,
       "y": 344.1,
       "w": 134.2,
       "h": 131.6
      },
      "kazuto": {
-      "x": 541.6,
-      "y": 341.5,
-      "w": 134.2,
-      "h": 130.3
+      "x": 545.5,
+      "y": 340.2,
+      "w": 135.5,
+      "h": 129
      }
     },
     "victory": {
@@ -609,19 +609,19 @@
     "vrects": {
      "hero": {
       "x": 330.5,
-      "y": 332.4,
+      "y": 337.6,
       "w": 92.5,
       "h": 121.2
      },
      "kyle": {
-      "x": 426.9,
-      "y": 329.8,
+      "x": 425.6,
+      "y": 335,
       "w": 121.2,
-      "h": 130.3
+      "h": 129
      },
      "kazuto": {
       "x": 529.9,
-      "y": 322,
+      "y": 327.2,
       "w": 144.6,
       "h": 131.6
      }
@@ -640,22 +640,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 338,
+      "fullTop": 340,
       "rect": {
        "x": 332,
-       "y": 338,
+       "y": 340,
        "w": 93,
-       "h": 121
+       "h": 120
       }
      },
      "kyle": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 335,
+      "fullTop": 338,
       "rect": {
        "x": 427,
-       "y": 335,
+       "y": 338,
        "w": 121,
        "h": 129
       }
@@ -664,11 +664,11 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 327,
+      "fullTop": 330,
       "rect": {
        "x": 530,
-       "y": 327,
-       "w": 145,
+       "y": 330,
+       "w": 143,
        "h": 132
       }
      }
@@ -688,19 +688,19 @@
     },
     "vrects2": {
      "hero": {
-      "x": 353.9,
+      "x": 355.2,
       "y": 340.2,
       "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 449.1,
+      "x": 451.7,
       "y": 337.6,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 550.7,
+      "x": 553.3,
       "y": 329.8,
       "w": 144.6,
       "h": 130.3
@@ -1015,14 +1015,14 @@
       "h": 121.2
      },
      "kyle": {
-      "x": 420.4,
+      "x": 419.1,
       "y": 344.1,
       "w": 134.2,
       "h": 131.6
      },
      "kazuto": {
-      "x": 542.9,
-      "y": 340.2,
+      "x": 541.6,
+      "y": 341.5,
       "w": 134.2,
       "h": 130.3
      }
@@ -1091,20 +1091,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 331.8,
+      "x": 334.4,
       "y": 332.4,
       "w": 92.5,
       "h": 121.2
      },
      "kyle": {
-      "x": 426.9,
-      "y": 331.1,
+      "x": 429.5,
+      "y": 329.8,
       "w": 121.2,
       "h": 130.3
      },
      "kazuto": {
-      "x": 531.2,
-      "y": 323.3,
+      "x": 533.8,
+      "y": 322,
       "w": 144.6,
       "h": 131.6
      }
@@ -1125,7 +1125,7 @@
       "fullCovered": 0,
       "fullTop": 331,
       "rect": {
-       "x": 333,
+       "x": 336,
        "y": 331,
        "w": 93,
        "h": 121
@@ -1137,7 +1137,7 @@
       "fullCovered": 0,
       "fullTop": 330,
       "rect": {
-       "x": 428,
+       "x": 431,
        "y": 330,
        "w": 121,
        "h": 130
@@ -1149,7 +1149,7 @@
       "fullCovered": 0,
       "fullTop": 322,
       "rect": {
-       "x": 531,
+       "x": 534,
        "y": 322,
        "w": 145,
        "h": 132
@@ -1171,20 +1171,20 @@
     },
     "vrects2": {
      "hero": {
-      "x": 357.8,
-      "y": 340.2,
+      "x": 363.1,
+      "y": 341.5,
       "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 454.3,
-      "y": 337.6,
+      "x": 459.5,
+      "y": 338.9,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 555.9,
-      "y": 329.8,
+      "x": 559.8,
+      "y": 331.1,
       "w": 144.6,
       "h": 130.3
      }
@@ -1571,19 +1571,19 @@
     },
     "vrects": {
      "hero": {
-      "x": 331.8,
+      "x": 329.2,
       "y": 340.2,
       "w": 92.5,
       "h": 119.9
      },
      "kyle": {
-      "x": 426.9,
+      "x": 424.3,
       "y": 337.6,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 529.9,
+      "x": 527.2,
       "y": 329.8,
       "w": 143.3,
       "h": 131.6
@@ -1603,35 +1603,35 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 339,
+      "fullTop": 332,
       "rect": {
-       "x": 333,
-       "y": 339,
+       "x": 329,
+       "y": 332,
        "w": 93,
-       "h": 120
+       "h": 121
       }
      },
      "kyle": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 338,
+      "fullTop": 330,
       "rect": {
-       "x": 428,
-       "y": 338,
+       "x": 424,
+       "y": 330,
        "w": 121,
-       "h": 129
+       "h": 130
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 330,
+      "fullTop": 322,
       "rect": {
-       "x": 531,
-       "y": 330,
-       "w": 143,
+       "x": 529,
+       "y": 322,
+       "w": 145,
        "h": 132
       }
      }
@@ -1651,19 +1651,19 @@
     },
     "vrects2": {
      "hero": {
-      "x": 356.5,
+      "x": 352.6,
       "y": 340.2,
       "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 453,
+      "x": 447.8,
       "y": 337.6,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 554.6,
+      "x": 549.4,
       "y": 329.8,
       "w": 144.6,
       "h": 130.3
@@ -1953,21 +1953,21 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 327.9,
+      "x": 326.6,
       "y": 348.1,
       "w": 102.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 420.4,
+      "x": 419.1,
       "y": 344.1,
       "w": 134.2,
       "h": 131.6
      },
      "kazuto": {
       "x": 542.9,
-      "y": 340.2,
-      "w": 135.5,
+      "y": 341.5,
+      "w": 134.2,
       "h": 130.3
      }
     },
@@ -2036,19 +2036,19 @@
     "vrects": {
      "hero": {
       "x": 331.8,
-      "y": 336.3,
+      "y": 335,
       "w": 92.5,
       "h": 121.2
      },
      "kyle": {
-      "x": 426.9,
-      "y": 333.7,
+      "x": 428.2,
+      "y": 332.4,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 529.9,
-      "y": 325.9,
+      "x": 531.2,
+      "y": 324.6,
       "w": 144.6,
       "h": 131.6
      }
@@ -2067,35 +2067,35 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 340,
       "rect": {
-       "x": 332,
-       "y": 334,
+       "x": 333,
+       "y": 340,
        "w": 93,
-       "h": 121
+       "h": 120
       }
      },
      "kyle": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 332,
+      "fullTop": 339,
       "rect": {
        "x": 428,
-       "y": 332,
+       "y": 339,
        "w": 121,
-       "h": 130
+       "h": 129
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 325,
+      "fullTop": 331,
       "rect": {
-       "x": 531,
-       "y": 325,
-       "w": 145,
+       "x": 532,
+       "y": 331,
+       "w": 143,
        "h": 132
       }
      }
@@ -2115,13 +2115,13 @@
     },
     "vrects2": {
      "hero": {
-      "x": 357.8,
+      "x": 356.5,
       "y": 340.2,
       "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 454.3,
+      "x": 453,
       "y": 337.6,
       "w": 121.2,
       "h": 129
@@ -2435,21 +2435,21 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 326.6,
+      "x": 327.9,
       "y": 348.1,
       "w": 102.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 419.1,
+      "x": 421.7,
       "y": 344.1,
       "w": 134.2,
       "h": 131.6
      },
      "kazuto": {
-      "x": 541.6,
-      "y": 341.5,
-      "w": 134.2,
+      "x": 544.2,
+      "y": 340.2,
+      "w": 135.5,
       "h": 130.3
      }
     },
@@ -2517,21 +2517,21 @@
     },
     "vrects": {
      "hero": {
-      "x": 331.8,
-      "y": 333.7,
+      "x": 329.2,
+      "y": 337.6,
       "w": 92.5,
       "h": 121.2
      },
      "kyle": {
-      "x": 426.9,
-      "y": 331.1,
+      "x": 424.3,
+      "y": 335,
       "w": 121.2,
-      "h": 130.3
+      "h": 129
      },
      "kazuto": {
-      "x": 531.2,
-      "y": 324.6,
-      "w": 144.6,
+      "x": 528.5,
+      "y": 327.2,
+      "w": 143.3,
       "h": 131.6
      }
     },
@@ -2549,35 +2549,35 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 340,
       "rect": {
-       "x": 333,
-       "y": 331,
+       "x": 330,
+       "y": 340,
        "w": 93,
-       "h": 121
+       "h": 120
       }
      },
      "kyle": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 343,
       "rect": {
-       "x": 428,
-       "y": 329,
+       "x": 426,
+       "y": 338,
        "w": 121,
-       "h": 130
+       "h": 129
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 322,
+      "fullTop": 331,
       "rect": {
-       "x": 531,
-       "y": 321,
-       "w": 145,
+       "x": 529,
+       "y": 330,
+       "w": 143,
        "h": 132
       }
      }
@@ -2597,19 +2597,19 @@
     },
     "vrects2": {
      "hero": {
-      "x": 357.8,
+      "x": 352.6,
       "y": 340.2,
       "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 454.3,
+      "x": 449.1,
       "y": 337.6,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 555.9,
+      "x": 550.7,
       "y": 329.8,
       "w": 144.6,
       "h": 130.3
@@ -2841,7 +2841,7 @@
      "sprite": "kyle",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"knight\",\"px:v9.8.3\",\"back\",[]]",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.8.3\",\"back\",[\"iron_spear\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2861,7 +2861,7 @@
      "sprite": "kazuto",
      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
      "pd": "ok",
-     "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.3\",\"back\",[\"battle_axe\",\"iron_armor\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2892,36 +2892,36 @@
     },
     "equip": {
      "kyle": {
-      "weapon": null,
-      "armor": null,
-      "shield": null,
-      "head": null,
+      "weapon": "iron_spear",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": "iron_helm",
       "acc": null
      },
      "kazuto": {
-      "weapon": null,
-      "armor": null,
+      "weapon": "battle_axe",
+      "armor": "iron_armor",
       "shield": null,
-      "head": null,
+      "head": "iron_helm",
       "acc": null
      }
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 329.2,
+      "x": 326.6,
       "y": 348.1,
       "w": 102.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 421.7,
+      "x": 420.4,
       "y": 344.1,
       "w": 134.2,
       "h": 131.6
      },
      "kazuto": {
-      "x": 544.2,
+      "x": 542.9,
       "y": 340.2,
       "w": 135.5,
       "h": 130.3
@@ -2939,7 +2939,7 @@
       "sprite": "kyle",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"knight\",\"px:v9.8.3\",\"front\",[]]",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.8.3\",\"front\",[\"iron_spear\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2959,7 +2959,7 @@
       "sprite": "kazuto",
       "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
       "pd": "ok",
-      "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.3\",\"front\",[]]",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.3\",\"front\",[\"battle_axe\",\"iron_armor\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2992,20 +2992,20 @@
     "vrects": {
      "hero": {
       "x": 330.5,
-      "y": 332.4,
+      "y": 340.2,
       "w": 92.5,
-      "h": 121.2
+      "h": 119.9
      },
      "kyle": {
       "x": 425.6,
-      "y": 329.8,
+      "y": 337.6,
       "w": 121.2,
-      "h": 130.3
+      "h": 129
      },
      "kazuto": {
       "x": 528.5,
-      "y": 322,
-      "w": 144.6,
+      "y": 329.8,
+      "w": 143.3,
       "h": 131.6
      }
     },
@@ -3023,10 +3023,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 332,
+      "fullTop": 335,
       "rect": {
        "x": 330,
-       "y": 332,
+       "y": 335,
        "w": 93,
        "h": 121
       }
@@ -3035,10 +3035,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 330,
+      "fullTop": 335,
       "rect": {
        "x": 426,
-       "y": 330,
+       "y": 332,
        "w": 121,
        "h": 130
       }
@@ -3047,10 +3047,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 323,
+      "fullTop": 326,
       "rect": {
-       "x": 530,
-       "y": 322,
+       "x": 529,
+       "y": 325,
        "w": 145,
        "h": 132
       }
@@ -3075,19 +3075,19 @@
     },
     "vrects2": {
      "hero": {
-      "x": 356.5,
+      "x": 352.6,
       "y": 340.2,
       "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 453,
+      "x": 449.1,
       "y": 337.6,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 554.6,
+      "x": 550.7,
       "y": 329.8,
       "w": 144.6,
       "h": 130.3

@@ -4,7 +4,7 @@
   "kyle",
   "kazuto"
  ],
- "ok": 48,
+ "ok": 50,
  "ng": 0,
  "steps": [
   {
@@ -33,7 +33,7 @@
   },
   {
    "ok": true,
-   "m": "kyle［重鎧＋兜（兜は部品のない品）］装備 {\"armor\":\"iron_armor\",\"head\":\"iron_helm\"} → 部品：base_plain armor_shape_f／描かない：head:iron_helm（head_helm の部品がない→描かない）"
+   "m": "kyle［重鎧＋鉄の兜（v9.8.3 から描く）］装備 {\"armor\":\"iron_armor\",\"head\":\"iron_helm\"} → 部品：base_helm armor_shape_f head_helm_t head_helm_f"
   },
   {
    "ok": true,
@@ -41,7 +41,11 @@
   },
   {
    "ok": true,
-   "m": "kyle：部品のない品は部位ごと（iron_helm は描かない。鎧は着替える：base_plain armor_shape_f）"
+   "m": "kyle：部品のない品は部位ごと（ は描かない。鎧は着替える：base_helm armor_shape_f head_helm_t head_helm_f）"
+  },
+  {
+   "ok": true,
+   "m": "kyle：v9.8.3 鉄の兜を描く（兜用の素の絵＋兜：base_helm armor_shape_f head_helm_t head_helm_f）"
   },
   {
    "ok": true,
@@ -125,7 +129,7 @@
   },
   {
    "ok": true,
-   "m": "kazuto［重鎧＋兜（兜は部品のない品）］装備 {\"armor\":\"iron_armor\",\"head\":\"iron_helm\"} → 部品：base_plain armor_shape_f／描かない：head:iron_helm（head_helm の部品がない→描かない）"
+   "m": "kazuto［重鎧＋鉄の兜（v9.8.3 から描く）］装備 {\"armor\":\"iron_armor\",\"head\":\"iron_helm\"} → 部品：base_helm armor_shape_f head_helm_t head_helm_f"
   },
   {
    "ok": true,
@@ -133,7 +137,11 @@
   },
   {
    "ok": true,
-   "m": "kazuto：部品のない品は部位ごと（iron_helm は描かない。鎧は着替える：base_plain armor_shape_f）"
+   "m": "kazuto：部品のない品は部位ごと（ は描かない。鎧は着替える：base_helm armor_shape_f head_helm_t head_helm_f）"
+  },
+  {
+   "ok": true,
+   "m": "kazuto：v9.8.3 鉄の兜を描く（兜用の素の絵＋兜：base_helm armor_shape_f head_helm_t head_helm_f）"
   },
   {
    "ok": true,
@@ -392,8 +400,8 @@
       "element": "none"
      },
      "st": "ok",
-     "parts": "base_plain armor_shape_f",
-     "skipped": "head:iron_helm（head_helm の部品がない→描かない）",
+     "parts": "base_helm armor_shape_f head_helm_t head_helm_f",
+     "skipped": null,
      "bottom": 335.3,
      "cx": 460.4,
      "px": 1.1236,
@@ -507,12 +515,12 @@
        "left": 0,
        "ex": null,
        "parts": [
-        "base_plain",
-        "armor_shape_f"
+        "base_helm",
+        "armor_shape_f",
+        "head_helm_t",
+        "head_helm_f"
        ],
-       "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）"
-       ]
+       "skipped": []
       }
      },
      "ofeet": 310,
@@ -625,12 +633,12 @@
        "left": 0,
        "ex": null,
        "parts": [
-        "base_plain",
-        "armor_shape_f"
+        "base_helm",
+        "armor_shape_f",
+        "head_helm_t",
+        "head_helm_f"
        ],
-       "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）"
-       ]
+       "skipped": []
       }
      },
      "ofeet": 351,
@@ -743,12 +751,12 @@
        "left": 0,
        "ex": null,
        "parts": [
-        "base_plain",
-        "armor_shape_f"
+        "base_helm",
+        "armor_shape_f",
+        "head_helm_t",
+        "head_helm_f"
        ],
-       "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）"
-       ]
+       "skipped": []
       }
      },
      "ofeet": 349,
@@ -976,8 +984,8 @@
       "element": "none"
      },
      "st": "ok",
-     "parts": "base_plain armor_shape_f",
-     "skipped": "head:iron_helm（head_helm の部品がない→描かない）",
+     "parts": "base_helm armor_shape_f head_helm_t head_helm_f",
+     "skipped": null,
      "bottom": 335.3,
      "cx": 460.4,
      "px": 1.1538,
@@ -1104,12 +1112,12 @@
        "left": 0,
        "ex": null,
        "parts": [
-        "base_plain",
-        "armor_shape_f"
+        "base_helm",
+        "armor_shape_f",
+        "head_helm_t",
+        "head_helm_f"
        ],
-       "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）"
-       ]
+       "skipped": []
       }
      },
      "ofeet": 305,
@@ -1235,12 +1243,12 @@
        "left": 0,
        "ex": null,
        "parts": [
-        "base_plain",
-        "armor_shape_f"
+        "base_helm",
+        "armor_shape_f",
+        "head_helm_t",
+        "head_helm_f"
        ],
-       "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）"
-       ]
+       "skipped": []
       }
      },
      "ofeet": 351,
@@ -1366,12 +1374,12 @@
        "left": 0,
        "ex": null,
        "parts": [
-        "base_plain",
-        "armor_shape_f"
+        "base_helm",
+        "armor_shape_f",
+        "head_helm_t",
+        "head_helm_f"
        ],
-       "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）"
-       ]
+       "skipped": []
       }
      },
      "ofeet": 351,

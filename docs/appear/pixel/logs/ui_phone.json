@@ -14,7 +14,7 @@
   },
   {
    "ok": true,
-   "m": "［装備なし］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]）"
+   "m": "［装備なし］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[]]）"
   },
   {
    "ok": true,
@@ -30,7 +30,7 @@
   },
   {
    "ok": true,
-   "m": "［軽装＋剣］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[\"steel_sword\",\"leather_armor\"]]）"
+   "m": "［軽装＋剣］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[\"steel_sword\",\"leather_armor\"]]）"
   },
   {
    "ok": true,
@@ -46,7 +46,7 @@
   },
   {
    "ok": true,
-   "m": "［重鎧＋兜＋剣と盾］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm）"
+   "m": "［重鎧＋兜＋剣と盾］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm）"
   },
   {
    "ok": true,
@@ -62,7 +62,7 @@
   },
   {
    "ok": true,
-   "m": "［重鎧＋手斧］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]）"
+   "m": "［重鎧＋手斧］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]）"
   },
   {
    "ok": true,
@@ -86,7 +86,7 @@
   },
   {
    "ok": true,
-   "m": "［ローブ＋帽子＋杖］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"mage\",\"px:v9.8.2\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]）"
+   "m": "［ローブ＋帽子＋杖］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"mage\",\"px:v9.8.3\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]）"
   },
   {
    "ok": true,
@@ -102,7 +102,7 @@
   },
   {
    "ok": true,
-   "m": "［槍装備］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[\"iron_spear\"]]）"
+   "m": "［槍装備］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[\"iron_spear\"]]）"
   },
   {
    "ok": true,
@@ -118,7 +118,7 @@
   },
   {
    "ok": true,
-   "m": "［全部はずす（解除）］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]）"
+   "m": "［全部はずす（解除）］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[]]）"
   },
   {
    "ok": true,
@@ -230,7 +230,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -268,7 +268,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -399,7 +399,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[\"steel_sword\",\"leather_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[\"steel_sword\",\"leather_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -437,7 +437,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[\"steel_sword\",\"leather_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[\"steel_sword\",\"leather_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -569,7 +569,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -607,7 +607,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -743,7 +743,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -781,7 +781,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -913,7 +913,7 @@
      "sprite": "hero_mage",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"mage\",\"px:v9.8.2\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "ea": "[\"hero\",\"mage\",\"px:v9.8.3\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -951,7 +951,7 @@
      "sprite": "hero_mage",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"mage\",\"px:v9.8.2\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "ea": "[\"hero\",\"mage\",\"px:v9.8.3\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1081,7 +1081,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[\"iron_spear\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[\"iron_spear\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1119,7 +1119,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[\"iron_spear\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[\"iron_spear\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1249,7 +1249,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1287,7 +1287,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,

@@ -1,7 +1,7 @@
 {
  "VIEW": "phone",
  "isPhone": true,
- "ok": 69,
+ "ok": 70,
  "ng": 0,
  "steps": [
   {
@@ -26,7 +26,7 @@
   },
   {
    "ok": true,
-   "m": "［装備なし（加入したまま）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+   "m": "［装備なし（加入したまま）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
   },
   {
    "ok": true,
@@ -50,7 +50,7 @@
   },
   {
    "ok": true,
-   "m": "［装備なし（加入したまま）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+   "m": "［装備なし（加入したまま）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
   },
   {
    "ok": true,
@@ -78,7 +78,7 @@
   },
   {
    "ok": true,
-   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
   },
   {
    "ok": true,
@@ -106,7 +106,7 @@
   },
   {
    "ok": true,
-   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+   "m": "［リーナ：法衣＋杖／ガルド：重鎧＋斧］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
   },
   {
    "ok": true,
@@ -134,7 +134,7 @@
   },
   {
    "ok": true,
-   "m": "［リーナ：＋革の帽子／ガルド：斧→剣＋盾］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+   "m": "［リーナ：＋革の帽子／ガルド：斧→剣＋盾］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
   },
   {
    "ok": true,
@@ -162,7 +162,7 @@
   },
   {
    "ok": true,
-   "m": "［リーナ：＋革の帽子／ガルド：斧→剣＋盾］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+   "m": "［リーナ：＋革の帽子／ガルド：斧→剣＋盾］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
   },
   {
    "ok": true,
@@ -186,7 +186,7 @@
   },
   {
    "ok": true,
-   "m": "［武器をはずす（2 人とも）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+   "m": "［武器をはずす（2 人とも）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
   },
   {
    "ok": true,
@@ -210,7 +210,7 @@
   },
   {
    "ok": true,
-   "m": "［武器をはずす（2 人とも）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+   "m": "［武器をはずす（2 人とも）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
   },
   {
    "ok": true,
@@ -238,7 +238,7 @@
   },
   {
    "ok": true,
-   "m": "リーナ：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 4.3px・高さ比 1.027／Δ足もと 4.3px・高さ比 1.027／Δ足もと 3.6px・高さ比 1.027／Δ足もと 3.6px・高さ比 1.027）"
+   "m": "リーナ：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 4.3px・高さ比 1.027／Δ足もと 4.3px・高さ比 1.027／Δ足もと 4.3px・高さ比 1.027／Δ足もと 4.3px・高さ比 1.027）"
   },
   {
    "ok": true,
@@ -254,7 +254,7 @@
   },
   {
    "ok": true,
-   "m": "ガルド：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 1.2px・高さ比 1.122／Δ足もと 1.2px・高さ比 1.122／Δ足もと 0.6px・高さ比 1.115／Δ足もと 0.5px・高さ比 1.115）"
+   "m": "ガルド：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 0.6px・高さ比 1.115／Δ足もと 0.6px・高さ比 1.115／Δ足もと 0.6px・高さ比 1.115／Δ足もと 0.6px・高さ比 1.115）"
   },
   {
    "ok": true,
@@ -270,7 +270,11 @@
   },
   {
    "ok": true,
-   "m": "レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top・4〜464px）。人物の矩形に重なる割合 主人公 100%・リーナ 100%・ガルド 98%（記録のみ）"
+   "m": "レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜309px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 321px）"
+  },
+  {
+   "ok": true,
+   "m": "レベルアップの勝利：「次へ」は窓の中に見え、詳細はスクロールできる（詳細の欄 122px／中身 273px・つづきの印 true）"
   },
   {
    "ok": true,
@@ -390,7 +394,7 @@
      "sprite": "lina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/back.png?v=4c0e723e6f",
      "pd": "ok",
-     "ea": "[\"lina\",\"priest\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -410,7 +414,7 @@
      "sprite": "gald",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/back.png?v=1a71d96731",
      "pd": "ok",
-     "ea": "[\"gald\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -430,7 +434,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -488,7 +492,7 @@
       "sprite": "lina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/front.png?v=14f7e2e438",
       "pd": "ok",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.2\",\"front\",[]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -508,7 +512,7 @@
       "sprite": "gald",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/front.png?v=c44835cac4",
       "pd": "ok",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -528,7 +532,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -541,21 +545,21 @@
     "vrects": {
      "hero": {
       "x": 135.3,
-      "y": 320.5,
+      "y": 324.2,
       "w": 65.8,
       "h": 89.6
      },
      "lina": {
       "x": 212.1,
-      "y": 322.4,
+      "y": 326,
       "w": 72.5,
       "h": 92
      },
      "gald": {
       "x": 279.1,
-      "y": 310.8,
+      "y": 314.4,
       "w": 101.2,
-      "h": 100.5
+      "h": 99.9
      }
     },
     "cover": {
@@ -571,19 +575,23 @@
      "hero": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 327,
       "rect": {
        "x": 135,
-       "y": 321,
+       "y": 327,
        "w": 66,
-       "h": 90
+       "h": 89
       }
      },
      "lina": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 339,
       "rect": {
-       "x": 211,
-       "y": 322,
+       "x": 212,
+       "y": 328,
        "w": 73,
        "h": 92
       }
@@ -591,11 +599,13 @@
      "gald": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 324,
       "rect": {
        "x": 279,
-       "y": 311,
+       "y": 317,
        "w": 101,
-       "h": 101
+       "h": 100
       }
      }
     },
@@ -603,7 +613,34 @@
      "cls": "rw-panel result-victory result-simple rs-top",
      "top": 4,
      "bottom": 217,
-     "h": 213
+     "h": 213,
+     "scroll": null,
+     "close": {
+      "top": 164,
+      "bottom": 208,
+      "in": true
+     },
+     "more": false
+    },
+    "vrects2": {
+     "hero": {
+      "x": 135.3,
+      "y": 327.8,
+      "w": 65.8,
+      "h": 89.6
+     },
+     "lina": {
+      "x": 212.1,
+      "y": 329.7,
+      "w": 72.5,
+      "h": 92
+     },
+     "gald": {
+      "x": 279.1,
+      "y": 318.1,
+      "w": 101.2,
+      "h": 99.9
+     }
     },
     "ended": true
    },
@@ -838,7 +875,7 @@
      "sprite": "lina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/back.png?v=4c0e723e6f",
      "pd": "ok",
-     "ea": "[\"lina\",\"priest\",\"px:v9.8.2\",\"back\",[\"oak_staff\",\"robe_skip\"]]",
+     "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[\"oak_staff\",\"robe_skip\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -858,7 +895,7 @@
      "sprite": "gald",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/back.png?v=1a71d96731",
      "pd": "ok",
-     "ea": "[\"gald\",\"warrior\",\"px:v9.8.2\",\"back\",[\"battle_axe\",\"iron_armor\"]]",
+     "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[\"battle_axe\",\"iron_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -878,7 +915,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -936,7 +973,7 @@
       "sprite": "lina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/front.png?v=14f7e2e438",
       "pd": "ok",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.2\",\"front\",[\"oak_staff\",\"robe_skip\"]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"front\",[\"oak_staff\",\"robe_skip\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -956,7 +993,7 @@
       "sprite": "gald",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/front.png?v=c44835cac4",
       "pd": "ok",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.2\",\"front\",[\"battle_axe\",\"iron_armor\"]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"front\",[\"battle_axe\",\"iron_armor\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -976,7 +1013,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -988,20 +1025,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 135.3,
-      "y": 320.5,
+      "x": 134.7,
+      "y": 315,
       "w": 65.8,
-      "h": 89.6
+      "h": 90.2
      },
      "lina": {
-      "x": 212.1,
-      "y": 322.4,
+      "x": 211.5,
+      "y": 316.9,
       "w": 72.5,
-      "h": 92
+      "h": 92.6
      },
      "gald": {
       "x": 279.1,
-      "y": 310.8,
+      "y": 305.3,
       "w": 101.2,
       "h": 100.5
      }
@@ -1019,9 +1056,11 @@
      "hero": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 318,
       "rect": {
        "x": 135,
-       "y": 321,
+       "y": 318,
        "w": 66,
        "h": 90
       }
@@ -1029,19 +1068,23 @@
      "lina": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 319,
       "rect": {
-       "x": 212,
-       "y": 322,
+       "x": 211,
+       "y": 319,
        "w": 73,
-       "h": 92
+       "h": 93
       }
      },
      "gald": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 308,
       "rect": {
        "x": 279,
-       "y": 311,
+       "y": 308,
        "w": 101,
        "h": 101
       }
@@ -1051,7 +1094,34 @@
      "cls": "rw-panel result-victory result-simple rs-top",
      "top": 4,
      "bottom": 217,
-     "h": 213
+     "h": 213,
+     "scroll": null,
+     "close": {
+      "top": 164,
+      "bottom": 208,
+      "in": true
+     },
+     "more": false
+    },
+    "vrects2": {
+     "hero": {
+      "x": 135.3,
+      "y": 327.8,
+      "w": 65.8,
+      "h": 89.6
+     },
+     "lina": {
+      "x": 212.1,
+      "y": 329.7,
+      "w": 72.5,
+      "h": 92
+     },
+     "gald": {
+      "x": 279.1,
+      "y": 318.1,
+      "w": 101.2,
+      "h": 99.9
+     }
     },
     "ended": true
    },
@@ -1285,7 +1355,7 @@
      "sprite": "lina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/back.png?v=4c0e723e6f",
      "pd": "ok",
-     "ea": "[\"lina\",\"priest\",\"px:v9.8.2\",\"back\",[\"oak_staff\",\"robe_skip\",\"leather_cap\"]]",
+     "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[\"oak_staff\",\"robe_skip\",\"leather_cap\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1305,7 +1375,7 @@
      "sprite": "gald",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/back.png?v=1a71d96731",
      "pd": "ok",
-     "ea": "[\"gald\",\"warrior\",\"px:v9.8.2\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1325,7 +1395,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1383,7 +1453,7 @@
       "sprite": "lina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/front.png?v=14f7e2e438",
       "pd": "ok",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.2\",\"front\",[\"oak_staff\",\"robe_skip\",\"leather_cap\"]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"front\",[\"oak_staff\",\"robe_skip\",\"leather_cap\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1403,7 +1473,7 @@
       "sprite": "gald",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/front.png?v=c44835cac4",
       "pd": "ok",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.2\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1423,7 +1493,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1436,20 +1506,20 @@
     "vrects": {
      "hero": {
       "x": 135.3,
-      "y": 325.4,
+      "y": 324.2,
       "w": 65.8,
       "h": 89.6
      },
      "lina": {
       "x": 212.1,
-      "y": 326.6,
+      "y": 325.4,
       "w": 72.5,
       "h": 92
      },
      "gald": {
       "x": 279.1,
-      "y": 315.7,
-      "w": 100.5,
+      "y": 313.8,
+      "w": 101.2,
       "h": 99.9
      }
     },
@@ -1466,9 +1536,11 @@
      "hero": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 328,
       "rect": {
        "x": 135,
-       "y": 327,
+       "y": 328,
        "w": 66,
        "h": 89
       }
@@ -1476,9 +1548,11 @@
      "lina": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 330,
       "rect": {
        "x": 212,
-       "y": 328,
+       "y": 330,
        "w": 73,
        "h": 92
       }
@@ -1486,9 +1560,11 @@
      "gald": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 324,
       "rect": {
        "x": 279,
-       "y": 317,
+       "y": 318,
        "w": 101,
        "h": 100
       }
@@ -1498,7 +1574,34 @@
      "cls": "rw-panel result-victory result-simple rs-top",
      "top": 4,
      "bottom": 217,
-     "h": 213
+     "h": 213,
+     "scroll": null,
+     "close": {
+      "top": 164,
+      "bottom": 208,
+      "in": true
+     },
+     "more": false
+    },
+    "vrects2": {
+     "hero": {
+      "x": 135.3,
+      "y": 327.8,
+      "w": 65.8,
+      "h": 89.6
+     },
+     "lina": {
+      "x": 212.1,
+      "y": 329.7,
+      "w": 72.5,
+      "h": 92
+     },
+     "gald": {
+      "x": 279.1,
+      "y": 318.1,
+      "w": 101.2,
+      "h": 99.9
+     }
     },
     "ended": true
    },
@@ -1716,7 +1819,7 @@
      "sprite": "lina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/back.png?v=4c0e723e6f",
      "pd": "ok",
-     "ea": "[\"lina\",\"priest\",\"px:v9.8.2\",\"back\",[\"robe_skip\",\"leather_cap\"]]",
+     "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[\"robe_skip\",\"leather_cap\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1736,7 +1839,7 @@
      "sprite": "gald",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/back.png?v=1a71d96731",
      "pd": "ok",
-     "ea": "[\"gald\",\"warrior\",\"px:v9.8.2\",\"back\",[\"iron_armor\",\"iron_shield\"]]",
+     "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[\"iron_armor\",\"iron_shield\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1756,7 +1859,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1814,7 +1917,7 @@
       "sprite": "lina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/front.png?v=14f7e2e438",
       "pd": "ok",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.2\",\"front\",[\"robe_skip\",\"leather_cap\"]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"front\",[\"robe_skip\",\"leather_cap\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1834,7 +1937,7 @@
       "sprite": "gald",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/front.png?v=c44835cac4",
       "pd": "ok",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.2\",\"front\",[\"iron_armor\",\"iron_shield\"]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"front\",[\"iron_armor\",\"iron_shield\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1854,7 +1957,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1867,21 +1970,21 @@
     "vrects": {
      "hero": {
       "x": 135.3,
-      "y": 323.6,
+      "y": 320.5,
       "w": 65.8,
       "h": 89.6
      },
      "lina": {
-      "x": 212.1,
-      "y": 324.8,
+      "x": 211.5,
+      "y": 322.4,
       "w": 72.5,
       "h": 92
      },
      "gald": {
       "x": 279.1,
-      "y": 313.8,
+      "y": 310.8,
       "w": 101.2,
-      "h": 99.9
+      "h": 100.5
      }
     },
     "cover": {
@@ -1897,19 +2000,23 @@
      "hero": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 325,
       "rect": {
        "x": 135,
-       "y": 328,
+       "y": 325,
        "w": 66,
-       "h": 89
+       "h": 90
       }
      },
      "lina": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 337,
       "rect": {
        "x": 212,
-       "y": 329,
+       "y": 327,
        "w": 73,
        "h": 92
       }
@@ -1917,9 +2024,11 @@
      "gald": {
       "covered": 0,
       "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 322,
       "rect": {
        "x": 279,
-       "y": 318,
+       "y": 316,
        "w": 101,
        "h": 100
       }
@@ -1929,7 +2038,34 @@
      "cls": "rw-panel result-victory result-simple rs-top",
      "top": 4,
      "bottom": 217,
-     "h": 213
+     "h": 213,
+     "scroll": null,
+     "close": {
+      "top": 164,
+      "bottom": 208,
+      "in": true
+     },
+     "more": false
+    },
+    "vrects2": {
+     "hero": {
+      "x": 135.3,
+      "y": 327.8,
+      "w": 65.8,
+      "h": 89.6
+     },
+     "lina": {
+      "x": 212.1,
+      "y": 329.7,
+      "w": 72.5,
+      "h": 92
+     },
+     "gald": {
+      "x": 279.1,
+      "y": 318.1,
+      "w": 101.2,
+      "h": 99.9
+     }
     },
     "ended": true
    },
@@ -2153,7 +2289,7 @@
      "sprite": "lina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/back.png?v=4c0e723e6f",
      "pd": "ok",
-     "ea": "[\"lina\",\"priest\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"back\",[\"oak_staff\",\"robe_skip\",\"leather_cap\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2173,7 +2309,7 @@
      "sprite": "gald",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/back.png?v=1a71d96731",
      "pd": "ok",
-     "ea": "[\"gald\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2193,7 +2329,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2204,16 +2340,16 @@
     },
     "equip": {
      "lina": {
-      "weapon": null,
-      "armor": null,
+      "weapon": "oak_staff",
+      "armor": "robe_skip",
       "shield": null,
-      "head": null,
+      "head": "leather_cap",
       "acc": null
      },
      "gald": {
-      "weapon": null,
-      "armor": null,
-      "shield": null,
+      "weapon": "steel_sword",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
       "head": null,
       "acc": null
      }
@@ -2251,7 +2387,7 @@
       "sprite": "lina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/lina/front.png?v=14f7e2e438",
       "pd": "ok",
-      "ea": "[\"lina\",\"priest\",\"px:v9.8.2\",\"front\",[]]",
+      "ea": "[\"lina\",\"priest\",\"px:v9.8.3\",\"front\",[\"oak_staff\",\"robe_skip\",\"leather_cap\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2271,7 +2407,7 @@
       "sprite": "gald",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/gald/front.png?v=c44835cac4",
       "pd": "ok",
-      "ea": "[\"gald\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "ea": "[\"gald\",\"warrior\",\"px:v9.8.3\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2291,7 +2427,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.3\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2304,19 +2440,19 @@
     "vrects": {
      "hero": {
       "x": 135.3,
-      "y": 326.6,
+      "y": 326,
       "w": 65.8,
       "h": 89
      },
      "lina": {
       "x": 212.1,
-      "y": 327.8,
+      "y": 327.2,
       "w": 72.5,
       "h": 92
      },
      "gald": {
       "x": 279.1,
-      "y": 316.9,
+      "y": 316.3,
       "w": 100.5,
       "h": 99.9
      }
@@ -2324,49 +2460,86 @@
     "cover": {
      "wins": [
       {
-       "cls": "rw-panel result-victory rs-top",
+       "cls": "rw-panel result-victory rs-top rs-detail",
        "x": 12,
        "y": 4,
        "w": 367,
-       "h": 460
+       "h": 299
       }
      ],
      "hero": {
-      "covered": 1,
-      "headCovered": 1,
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 325,
       "rect": {
        "x": 135,
-       "y": 324,
+       "y": 325,
        "w": 66,
        "h": 90
       }
      },
      "lina": {
-      "covered": 1,
-      "headCovered": 1,
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 327,
       "rect": {
        "x": 212,
-       "y": 325,
+       "y": 327,
        "w": 73,
        "h": 92
       }
      },
      "gald": {
-      "covered": 0.98,
-      "headCovered": 0.98,
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 321,
       "rect": {
        "x": 279,
-       "y": 314,
+       "y": 316,
        "w": 101,
        "h": 100
       }
      }
     },
     "panel": {
-     "cls": "rw-panel result-victory rs-top",
+     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
      "top": 4,
-     "bottom": 464,
-     "h": 460
+     "bottom": 309,
+     "h": 305,
+     "scroll": {
+      "h": 122,
+      "all": 273,
+      "can": true
+     },
+     "close": {
+      "top": 256,
+      "bottom": 300,
+      "in": true
+     },
+     "more": true
+    },
+    "vrects2": {
+     "hero": {
+      "x": 135.3,
+      "y": 327.8,
+      "w": 65.8,
+      "h": 89.6
+     },
+     "lina": {
+      "x": 212.1,
+      "y": 329.7,
+      "w": 72.5,
+      "h": 92
+     },
+     "gald": {
+      "x": 279.1,
+      "y": 318.1,
+      "w": 101.2,
+      "h": 99.9
+     }
     },
     "ended": true
    }
