@@ -1,5 +1,9 @@
 {
  "KIND": "3d",
+ "WHO": [
+  "lina",
+  "gald"
+ ],
  "ok": 42,
  "ng": 0,
  "steps": [

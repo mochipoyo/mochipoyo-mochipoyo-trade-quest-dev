@@ -1,0 +1,2480 @@
+{
+ "VIEW": "phone",
+ "isPhone": true,
+ "ok": 70,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "準備：主人公・カイル（knight Lv4）・カズト（warrior Lv28）。仲間は加入したとき何も装備していない。比べる品はゲームのデータで装備できる（{\"k_sword\":true,\"k_spear\":true,\"k_shield\":true,\"k_armor\":true,\"z_sword\":true,\"z_axe\":true,\"z_shield\":true,\"z_armor\":true}）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］カイル：加入したまま → なかまの画面の立ち絵 base_plain（そうびの画面の絵 —）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］カイル：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":null,\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］カイル：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":1.01,\"h\":1.22}）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］カイル：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］カズト：加入したまま → なかまの画面の立ち絵 base_plain（そうびの画面の絵 —）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］カズト：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":null,\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］カズト：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":1.2,\"h\":1.25}）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］カズト：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし（加入したまま）］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カイル：装備メニューで weapon:steel_sword・armor:iron_armor・shield:iron_shield → なかまの画面の立ち絵 base_plain armor_shape_f shield_f shield_e weapon_sword（そうびの画面の絵 base_plain armor_shape_f shield_f shield_e weapon_sword）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カイル：キャンセル（［そうび］→ 武器 → 品の一覧で Esc）→ 装備も絵も変わらない（{\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain armor_shape_f shield_f shield_e weapon_sword）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カイル：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カイル：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":1.01,\"h\":1.22}）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カイル：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain armor_shape_f shield_f shield_e weapon_sword）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カズト：装備メニューで weapon:steel_sword・armor:iron_armor・shield:iron_shield → なかまの画面の立ち絵 base_plain armor_shape_f shield_f shield_e weapon_sword（そうびの画面の絵 base_plain armor_shape_f shield_f shield_e weapon_sword）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カズト：キャンセル（［そうび］→ 武器 → 品の一覧で Esc）→ 装備も絵も変わらない（{\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain armor_shape_f shield_f shield_e weapon_sword）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カズト：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カズト：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":1.2,\"h\":1.25}）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カズト：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain armor_shape_f shield_f shield_e weapon_sword）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［2 人とも：重鎧＋剣と盾（元の絵の装い）］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カイル：装備メニューで weapon:iron_spear → なかまの画面の立ち絵 base_plain armor_shape_f shield_f shield_e weapon_spear hand（そうびの画面の絵 base_plain armor_shape_f shield_f shield_e weapon_spear hand）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カイル：キャンセル（［そうび］→ 盾 → 品の一覧で Esc）→ 装備も絵も変わらない（{\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain armor_shape_f shield_f shield_e weapon_spear hand）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カイル：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カイル：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":1.01,\"h\":1.22}）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カイル：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain armor_shape_f shield_f shield_e weapon_spear hand）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カズト：装備メニューで weapon:battle_axe・shield:はずす → なかまの画面の立ち絵 base_plain armor_shape_f weapon_axe hand（そうびの画面の絵 base_plain armor_shape_f weapon_axe hand）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カズト：キャンセル（［そうび］→ 鎧 → 品の一覧で Esc）→ 装備も絵も変わらない（{\"weapon\":\"battle_axe\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain armor_shape_f weapon_axe hand）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カズト：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":\"battle_axe\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カズト：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":1.2,\"h\":1.25}）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カズト：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain armor_shape_f weapon_axe hand）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［カイル：剣→槍／カズト：剣と盾→戦斧］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］カイル：装備メニューで weapon:はずす → なかまの画面の立ち絵 base_plain armor_shape_f shield_f shield_e（そうびの画面の絵 base_plain armor_shape_f shield_f shield_e）"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］カイル：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":null,\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］カイル：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":1.01,\"h\":1.22}）"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］カイル：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain armor_shape_f shield_f shield_e）"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］カズト：装備メニューで weapon:はずす → なかまの画面の立ち絵 base_plain armor_shape_f（そうびの画面の絵 base_plain armor_shape_f）"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］カズト：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":null,\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］カズト：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":1.2,\"h\":1.25}）"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］カズト：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain armor_shape_f）"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［武器をはずす（2 人とも）］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［全部はずす（解除）］カイル：装備メニューで armor:はずす・shield:はずす → なかまの画面の立ち絵 base_plain（そうびの画面の絵 base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "［全部はずす（解除）］カズト：装備メニューで armor:はずす → なかまの画面の立ち絵 base_plain（そうびの画面の絵 base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "カイル：メニューの足もと（枠の下辺）・左右の中心・1 ドットの大きさが 5 つとも同じ（下辺 270.9・中心 195・1 ドット 0.7116px）"
+  },
+  {
+   "ok": true,
+   "m": "カイル：剣・槍・斧・盾の先まで、絵の枠と画面の中に収まる（見切れなし）"
+  },
+  {
+   "ok": true,
+   "m": "カイル：戦闘の背面・勝利の正面の範囲（カメラ合わせ・影・HP の位置）が組み合わせで同じ（背面 1.13×1.25 1.13×1.25 1.13×1.25 1.13×1.25／正面 1.01×1.22 1.01×1.22 1.01×1.22 1.01×1.22）"
+  },
+  {
+   "ok": true,
+   "m": "カイル：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 3.7px・高さ比 1.064／Δ足もと 3.7px・高さ比 1.064／Δ足もと 3.7px・高さ比 1.064／Δ足もと 3.7px・高さ比 1.064）"
+  },
+  {
+   "ok": true,
+   "m": "カズト：メニューの足もと（枠の下辺）・左右の中心・1 ドットの大きさが 5 つとも同じ（下辺 270.9・中心 195・1 ドット 0.7308px）"
+  },
+  {
+   "ok": true,
+   "m": "カズト：剣・槍・斧・盾の先まで、絵の枠と画面の中に収まる（見切れなし）"
+  },
+  {
+   "ok": true,
+   "m": "カズト：戦闘の背面・勝利の正面の範囲（カメラ合わせ・影・HP の位置）が組み合わせで同じ（背面 1.13×1.24 1.13×1.24 1.13×1.24 1.13×1.24／正面 1.2×1.25 1.2×1.25 1.2×1.25 1.2×1.25）"
+  },
+  {
+   "ok": true,
+   "m": "カズト：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 0.6px・高さ比 1.084／Δ足もと 0.6px・高さ比 1.084／Δ足もと 0.6px・高さ比 1.084／Δ足もと 0.6px・高さ比 1.084）"
+  },
+  {
+   "ok": true,
+   "m": "全部はずすと素の絵（鎧下・手ぶら）に戻る（2 人とも base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "カイル：剣から槍に持ち替えても、重鎧・盾は表示を続ける（なかまの画面 base_plain armor_shape_f shield_f shield_e weapon_spear hand／戦闘の背面・勝利の正面の合成の印に 鉄の鎧・鉄の槍・鉄の盾）"
+  },
+  {
+   "ok": true,
+   "m": "カズト：剣と盾から戦斧に持ち替えても、重鎧は表示を続ける（盾ははずした。なかまの画面 base_plain armor_shape_f weapon_axe hand／戦闘・勝利の合成の印に 鉄の鎧・戦斧）"
+  },
+  {
+   "ok": true,
+   "m": "カイル・カズト：武器をはずすと手ぶら（拳だけ。鎧・盾はそのまま）：base_plain armor_shape_f shield_f shield_e／base_plain armor_shape_f"
+  },
+  {
+   "ok": true,
+   "m": "レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top・4〜464px）。人物の矩形に重なる割合 主人公 100%・カイル 100%・カズト 100%（記録のみ）"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  },
+  {
+   "ok": true,
+   "m": "読み込みの失敗なし"
+  }
+ ],
+ "rec": {
+  "plain": {
+   "name": "装備なし（加入したまま）",
+   "ui": {},
+   "menu": {
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 116,
+      "right": 274,
+      "w": 158,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7116,
+     "pxw": 0.7116,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 14,
+      "def": 19,
+      "agi": 6,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kazuto": {
+     "actor": "kazuto",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 102.6,
+      "right": 287.4,
+      "w": 184.9,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7308,
+     "pxw": 0.7307,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 74,
+      "def": 62,
+      "agi": 32,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "cancel": {},
+   "battle": {
+    "kyle": {
+     "id": "kyle",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "knight",
+     "sprite": "kyle",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
+     "pd": "ok",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.8.2\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.25
+     }
+    },
+    "kazuto": {
+     "id": "kazuto",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "kazuto",
+     "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
+     "pd": "ok",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.24
+     }
+    },
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "equip": {
+     "kyle": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "kazuto": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     }
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 131,
+      "y": 329.7,
+      "w": 71.9,
+      "h": 87.8
+     },
+     "kyle": {
+      "x": 197.4,
+      "y": 326.6,
+      "w": 94.5,
+      "h": 94.5
+     },
+     "kazuto": {
+      "x": 283.4,
+      "y": 324.8,
+      "w": 93.8,
+      "h": 93.2
+     }
+    },
+    "victory": {
+     "kyle": {
+      "id": "kyle",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "knight",
+      "sprite": "kyle",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
+      "pd": "ok",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.8.2\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.01,
+       "h": 1.22
+      }
+     },
+     "kazuto": {
+      "id": "kazuto",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "kazuto",
+      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
+      "pd": "ok",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.2,
+       "h": 1.25
+      }
+     },
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 132.8,
+      "y": 319.9,
+      "w": 64,
+      "h": 87.1
+     },
+     "kyle": {
+      "x": 200.5,
+      "y": 318.1,
+      "w": 84.1,
+      "h": 92.6
+     },
+     "kazuto": {
+      "x": 273,
+      "y": 313.2,
+      "w": 100.5,
+      "h": 94.5
+     }
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory result-simple rs",
+       "x": 12,
+       "y": 4,
+       "w": 367,
+       "h": 213
+      }
+     ],
+     "hero": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 133,
+       "y": 324,
+       "w": 64,
+       "h": 87
+      }
+     },
+     "kyle": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 200,
+       "y": 322,
+       "w": 84,
+       "h": 93
+      }
+     },
+     "kazuto": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 273,
+       "y": 317,
+       "w": 100,
+       "h": 94
+      }
+     }
+    },
+    "panel": {
+     "cls": "rw-panel result-victory result-simple rs-top",
+     "top": 4,
+     "bottom": 217,
+     "h": 213
+    },
+    "vrects2": {
+     "hero": {
+      "x": 134.1,
+      "y": 330.9,
+      "w": 64,
+      "h": 86.5
+     },
+     "kyle": {
+      "x": 200.5,
+      "y": 329.1,
+      "w": 84.1,
+      "h": 92
+     },
+     "kazuto": {
+      "x": 273,
+      "y": 324.2,
+      "w": 99.9,
+      "h": 93.8
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 116,
+      "right": 274,
+      "w": 158,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7116,
+     "pxw": 0.7116,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 14,
+      "def": 19,
+      "agi": 6,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kazuto": {
+     "actor": "kazuto",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 102.6,
+      "right": 287.4,
+      "w": 184.9,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7308,
+     "pxw": 0.7307,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 74,
+      "def": 62,
+      "agi": 32,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   }
+  },
+  "equip": {
+   "name": "2 人とも：重鎧＋剣と盾（元の絵の装い）",
+   "ui": {
+    "kyle": {
+     "done": [
+      "weapon:steel_sword",
+      "armor:iron_armor",
+      "shield:iron_shield"
+     ],
+     "head": "base_plain armor_shape_f shield_f shield_e weapon_sword"
+    },
+    "kazuto": {
+     "done": [
+      "weapon:steel_sword",
+      "armor:iron_armor",
+      "shield:iron_shield"
+     ],
+     "head": "base_plain armor_shape_f shield_f shield_e weapon_sword"
+    }
+   },
+   "menu": {
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e weapon_sword",
+     "skipped": null,
+     "view": "menu",
+     "job": "knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 116,
+      "right": 274,
+      "w": 158,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7116,
+     "pxw": 0.7116,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "steel_sword",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 36,
+      "def": 44,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kazuto": {
+     "actor": "kazuto",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e weapon_sword",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 102.6,
+      "right": 287.4,
+      "w": 184.9,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7308,
+     "pxw": 0.7307,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "steel_sword",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 96,
+      "def": 87,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "cancel": {
+    "kyle": {
+     "same": true,
+     "back": true,
+     "head0": "base_plain armor_shape_f shield_f shield_e weapon_sword",
+     "head1": "base_plain armor_shape_f shield_f shield_e weapon_sword",
+     "before": "{\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":null,\"acc\":null}"
+    },
+    "kazuto": {
+     "same": true,
+     "back": true,
+     "head0": "base_plain armor_shape_f shield_f shield_e weapon_sword",
+     "head1": "base_plain armor_shape_f shield_f shield_e weapon_sword",
+     "before": "{\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":null,\"acc\":null}"
+    }
+   },
+   "battle": {
+    "kyle": {
+     "id": "kyle",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "knight",
+     "sprite": "kyle",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
+     "pd": "ok",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.8.2\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.25
+     }
+    },
+    "kazuto": {
+     "id": "kazuto",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "kazuto",
+     "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
+     "pd": "ok",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.2\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.24
+     }
+    },
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "equip": {
+     "kyle": {
+      "weapon": "steel_sword",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "kazuto": {
+      "weapon": "steel_sword",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     }
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 131,
+      "y": 329.7,
+      "w": 71.9,
+      "h": 87.8
+     },
+     "kyle": {
+      "x": 196.8,
+      "y": 326.6,
+      "w": 94.5,
+      "h": 94.5
+     },
+     "kazuto": {
+      "x": 283.4,
+      "y": 324.8,
+      "w": 93.8,
+      "h": 93.2
+     }
+    },
+    "victory": {
+     "kyle": {
+      "id": "kyle",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "knight",
+      "sprite": "kyle",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
+      "pd": "ok",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.8.2\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.01,
+       "h": 1.22
+      }
+     },
+     "kazuto": {
+      "id": "kazuto",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "kazuto",
+      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
+      "pd": "ok",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.2\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.2,
+       "h": 1.25
+      }
+     },
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 133.5,
+      "y": 321.8,
+      "w": 64,
+      "h": 86.5
+     },
+     "kyle": {
+      "x": 200.5,
+      "y": 319.9,
+      "w": 84.1,
+      "h": 92.6
+     },
+     "kazuto": {
+      "x": 273,
+      "y": 315,
+      "w": 100.5,
+      "h": 94.5
+     }
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory result-simple rs",
+       "x": 12,
+       "y": 4,
+       "w": 367,
+       "h": 213
+      }
+     ],
+     "hero": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 133,
+       "y": 326,
+       "w": 64,
+       "h": 87
+      }
+     },
+     "kyle": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 200,
+       "y": 324,
+       "w": 84,
+       "h": 93
+      }
+     },
+     "kazuto": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 273,
+       "y": 319,
+       "w": 100,
+       "h": 94
+      }
+     }
+    },
+    "panel": {
+     "cls": "rw-panel result-victory result-simple rs-top",
+     "top": 4,
+     "bottom": 217,
+     "h": 213
+    },
+    "vrects2": {
+     "hero": {
+      "x": 134.1,
+      "y": 330.9,
+      "w": 64,
+      "h": 86.5
+     },
+     "kyle": {
+      "x": 200.5,
+      "y": 329.1,
+      "w": 84.1,
+      "h": 92
+     },
+     "kazuto": {
+      "x": 273,
+      "y": 324.2,
+      "w": 99.9,
+      "h": 93.8
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e weapon_sword",
+     "skipped": null,
+     "view": "menu",
+     "job": "knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 116,
+      "right": 274,
+      "w": 158,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7116,
+     "pxw": 0.7116,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "steel_sword",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 36,
+      "def": 44,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kazuto": {
+     "actor": "kazuto",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e weapon_sword",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 102.6,
+      "right": 287.4,
+      "w": 184.9,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7308,
+     "pxw": 0.7307,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "steel_sword",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 96,
+      "def": 87,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   }
+  },
+  "swap": {
+   "name": "カイル：剣→槍／カズト：剣と盾→戦斧",
+   "ui": {
+    "kyle": {
+     "done": [
+      "weapon:iron_spear"
+     ],
+     "head": "base_plain armor_shape_f shield_f shield_e weapon_spear hand"
+    },
+    "kazuto": {
+     "done": [
+      "weapon:battle_axe",
+      "shield:はずす"
+     ],
+     "head": "base_plain armor_shape_f weapon_axe hand"
+    }
+   },
+   "menu": {
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e weapon_spear hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 116,
+      "right": 274,
+      "w": 158,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7116,
+     "pxw": 0.7116,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "iron_spear",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 31,
+      "def": 44,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kazuto": {
+     "actor": "kazuto",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f weapon_axe hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 102.6,
+      "right": 287.4,
+      "w": 184.9,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7308,
+     "pxw": 0.7307,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "battle_axe",
+      "armor": "iron_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 93,
+      "def": 80,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "cancel": {
+    "kyle": {
+     "same": true,
+     "back": true,
+     "head0": "base_plain armor_shape_f shield_f shield_e weapon_spear hand",
+     "head1": "base_plain armor_shape_f shield_f shield_e weapon_spear hand",
+     "before": "{\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":null,\"acc\":null}"
+    },
+    "kazuto": {
+     "same": true,
+     "back": true,
+     "head0": "base_plain armor_shape_f weapon_axe hand",
+     "head1": "base_plain armor_shape_f weapon_axe hand",
+     "before": "{\"weapon\":\"battle_axe\",\"armor\":\"iron_armor\",\"shield\":null,\"head\":null,\"acc\":null}"
+    }
+   },
+   "battle": {
+    "kyle": {
+     "id": "kyle",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "knight",
+     "sprite": "kyle",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
+     "pd": "ok",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.8.2\",\"back\",[\"iron_spear\",\"iron_armor\",\"iron_shield\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.25
+     }
+    },
+    "kazuto": {
+     "id": "kazuto",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "kazuto",
+     "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
+     "pd": "ok",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.2\",\"back\",[\"battle_axe\",\"iron_armor\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.24
+     }
+    },
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "equip": {
+     "kyle": {
+      "weapon": "iron_spear",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "kazuto": {
+      "weapon": "battle_axe",
+      "armor": "iron_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     }
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 131.6,
+      "y": 329.7,
+      "w": 71.9,
+      "h": 87.8
+     },
+     "kyle": {
+      "x": 196.8,
+      "y": 326.6,
+      "w": 94.5,
+      "h": 94.5
+     },
+     "kazuto": {
+      "x": 283.4,
+      "y": 324.8,
+      "w": 93.8,
+      "h": 93.2
+     }
+    },
+    "victory": {
+     "kyle": {
+      "id": "kyle",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "knight",
+      "sprite": "kyle",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
+      "pd": "ok",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.8.2\",\"front\",[\"iron_spear\",\"iron_armor\",\"iron_shield\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.01,
+       "h": 1.22
+      }
+     },
+     "kazuto": {
+      "id": "kazuto",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "kazuto",
+      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
+      "pd": "ok",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.2\",\"front\",[\"battle_axe\",\"iron_armor\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.2,
+       "h": 1.25
+      }
+     },
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 133.5,
+      "y": 319.9,
+      "w": 64,
+      "h": 87.1
+     },
+     "kyle": {
+      "x": 200.5,
+      "y": 318.1,
+      "w": 84.1,
+      "h": 92.6
+     },
+     "kazuto": {
+      "x": 273,
+      "y": 313.2,
+      "w": 100.5,
+      "h": 94.5
+     }
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory result-simple rs",
+       "x": 12,
+       "y": 4,
+       "w": 367,
+       "h": 213
+      }
+     ],
+     "hero": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 133,
+       "y": 324,
+       "w": 64,
+       "h": 87
+      }
+     },
+     "kyle": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 200,
+       "y": 322,
+       "w": 84,
+       "h": 93
+      }
+     },
+     "kazuto": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 273,
+       "y": 317,
+       "w": 100,
+       "h": 94
+      }
+     }
+    },
+    "panel": {
+     "cls": "rw-panel result-victory result-simple rs-top",
+     "top": 4,
+     "bottom": 217,
+     "h": 213
+    },
+    "vrects2": {
+     "hero": {
+      "x": 134.1,
+      "y": 330.9,
+      "w": 64,
+      "h": 86.5
+     },
+     "kyle": {
+      "x": 200.5,
+      "y": 329.1,
+      "w": 84.1,
+      "h": 92
+     },
+     "kazuto": {
+      "x": 273,
+      "y": 324.2,
+      "w": 99.9,
+      "h": 93.8
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e weapon_spear hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 116,
+      "right": 274,
+      "w": 158,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7116,
+     "pxw": 0.7116,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "iron_spear",
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 31,
+      "def": 44,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kazuto": {
+     "actor": "kazuto",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f weapon_axe hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 102.6,
+      "right": 287.4,
+      "w": 184.9,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7308,
+     "pxw": 0.7307,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "battle_axe",
+      "armor": "iron_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 93,
+      "def": 80,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   }
+  },
+  "unarm": {
+   "name": "武器をはずす（2 人とも）",
+   "ui": {
+    "kyle": {
+     "done": [
+      "weapon:はずす"
+     ],
+     "head": "base_plain armor_shape_f shield_f shield_e"
+    },
+    "kazuto": {
+     "done": [
+      "weapon:はずす"
+     ],
+     "head": "base_plain armor_shape_f"
+    }
+   },
+   "menu": {
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e",
+     "skipped": null,
+     "view": "menu",
+     "job": "knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 116,
+      "right": 274,
+      "w": 158,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7116,
+     "pxw": 0.7116,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 14,
+      "def": 44,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kazuto": {
+     "actor": "kazuto",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 102.6,
+      "right": 287.4,
+      "w": 184.9,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7308,
+     "pxw": 0.7307,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": "iron_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 74,
+      "def": 80,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "cancel": {},
+   "battle": {
+    "kyle": {
+     "id": "kyle",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "knight",
+     "sprite": "kyle",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
+     "pd": "ok",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.8.2\",\"back\",[\"iron_armor\",\"iron_shield\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.25
+     }
+    },
+    "kazuto": {
+     "id": "kazuto",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "kazuto",
+     "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
+     "pd": "ok",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.2\",\"back\",[\"iron_armor\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.24
+     }
+    },
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "equip": {
+     "kyle": {
+      "weapon": null,
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "kazuto": {
+      "weapon": null,
+      "armor": "iron_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     }
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 131,
+      "y": 329.7,
+      "w": 71.9,
+      "h": 87.8
+     },
+     "kyle": {
+      "x": 196.8,
+      "y": 326.6,
+      "w": 94.5,
+      "h": 94.5
+     },
+     "kazuto": {
+      "x": 283.4,
+      "y": 324.8,
+      "w": 93.8,
+      "h": 93.2
+     }
+    },
+    "victory": {
+     "kyle": {
+      "id": "kyle",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "knight",
+      "sprite": "kyle",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
+      "pd": "ok",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.8.2\",\"front\",[\"iron_armor\",\"iron_shield\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.01,
+       "h": 1.22
+      }
+     },
+     "kazuto": {
+      "id": "kazuto",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "kazuto",
+      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
+      "pd": "ok",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.2\",\"front\",[\"iron_armor\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.2,
+       "h": 1.25
+      }
+     },
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 133.5,
+      "y": 325.4,
+      "w": 64,
+      "h": 86.5
+     },
+     "kyle": {
+      "x": 200.5,
+      "y": 323.6,
+      "w": 84.1,
+      "h": 92.6
+     },
+     "kazuto": {
+      "x": 273,
+      "y": 318.7,
+      "w": 99.9,
+      "h": 94.5
+     }
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory result-simple rs",
+       "x": 12,
+       "y": 4,
+       "w": 367,
+       "h": 213
+      }
+     ],
+     "hero": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 133,
+       "y": 329,
+       "w": 64,
+       "h": 87
+      }
+     },
+     "kyle": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 200,
+       "y": 327,
+       "w": 84,
+       "h": 92
+      }
+     },
+     "kazuto": {
+      "covered": 0,
+      "headCovered": 0,
+      "rect": {
+       "x": 273,
+       "y": 322,
+       "w": 100,
+       "h": 94
+      }
+     }
+    },
+    "panel": {
+     "cls": "rw-panel result-victory result-simple rs-top",
+     "top": 4,
+     "bottom": 217,
+     "h": 213
+    },
+    "vrects2": {
+     "hero": {
+      "x": 134.1,
+      "y": 330.9,
+      "w": 64,
+      "h": 86.5
+     },
+     "kyle": {
+      "x": 200.5,
+      "y": 329.1,
+      "w": 84.1,
+      "h": 92
+     },
+     "kazuto": {
+      "x": 273,
+      "y": 324.2,
+      "w": 99.9,
+      "h": 93.8
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f shield_f shield_e",
+     "skipped": null,
+     "view": "menu",
+     "job": "knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 116,
+      "right": 274,
+      "w": 158,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7116,
+     "pxw": 0.7116,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": "iron_armor",
+      "shield": "iron_shield",
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 14,
+      "def": 44,
+      "agi": 4,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kazuto": {
+     "actor": "kazuto",
+     "st": "ok",
+     "parts": "base_plain armor_shape_f",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 102.6,
+      "right": 287.4,
+      "w": 184.9,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7308,
+     "pxw": 0.7307,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": "iron_armor",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 74,
+      "def": 80,
+      "agi": 30,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   }
+  },
+  "off": {
+   "name": "全部はずす（解除）",
+   "ui": {
+    "kyle": {
+     "done": [
+      "armor:はずす",
+      "shield:はずす"
+     ],
+     "head": "base_plain"
+    },
+    "kazuto": {
+     "done": [
+      "armor:はずす"
+     ],
+     "head": "base_plain"
+    }
+   },
+   "menu": {
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 116,
+      "right": 274,
+      "w": 158,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7116,
+     "pxw": 0.7116,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 60,
+      "maxMp": 17,
+      "atk": 14,
+      "def": 19,
+      "agi": 6,
+      "mag": 5,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kazuto": {
+     "actor": "kazuto",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "menu",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 102.6,
+      "right": 287.4,
+      "w": 184.9,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7308,
+     "pxw": 0.7307,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 237,
+      "maxMp": 114,
+      "atk": 74,
+      "def": 62,
+      "agi": 32,
+      "mag": 13,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "cancel": {},
+   "battle": null,
+   "after": null
+  },
+  "levelup": {
+   "battle": {
+    "kyle": {
+     "id": "kyle",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "knight",
+     "sprite": "kyle",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
+     "pd": "ok",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.8.2\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.25
+     }
+    },
+    "kazuto": {
+     "id": "kazuto",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "kazuto",
+     "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
+     "pd": "ok",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.24
+     }
+    },
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "equip": {
+     "kyle": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "kazuto": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     }
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 131.6,
+      "y": 329.7,
+      "w": 71.9,
+      "h": 87.8
+     },
+     "kyle": {
+      "x": 197.4,
+      "y": 326.6,
+      "w": 94.5,
+      "h": 94.5
+     },
+     "kazuto": {
+      "x": 283.4,
+      "y": 324.8,
+      "w": 93.8,
+      "h": 93.2
+     }
+    },
+    "victory": {
+     "kyle": {
+      "id": "kyle",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "knight",
+      "sprite": "kyle",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
+      "pd": "ok",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.8.2\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.01,
+       "h": 1.22
+      }
+     },
+     "kazuto": {
+      "id": "kazuto",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "kazuto",
+      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
+      "pd": "ok",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.2,
+       "h": 1.25
+      }
+     },
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.2\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 133.5,
+      "y": 328.5,
+      "w": 64,
+      "h": 86.5
+     },
+     "kyle": {
+      "x": 200.5,
+      "y": 327.2,
+      "w": 84.1,
+      "h": 92
+     },
+     "kazuto": {
+      "x": 273,
+      "y": 321.8,
+      "w": 99.9,
+      "h": 93.8
+     }
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory rs-top",
+       "x": 12,
+       "y": 4,
+       "w": 367,
+       "h": 460
+      }
+     ],
+     "hero": {
+      "covered": 1,
+      "headCovered": 1,
+      "rect": {
+       "x": 133,
+       "y": 329,
+       "w": 64,
+       "h": 87
+      }
+     },
+     "kyle": {
+      "covered": 1,
+      "headCovered": 1,
+      "rect": {
+       "x": 200,
+       "y": 328,
+       "w": 84,
+       "h": 92
+      }
+     },
+     "kazuto": {
+      "covered": 1,
+      "headCovered": 1,
+      "rect": {
+       "x": 273,
+       "y": 322,
+       "w": 100,
+       "h": 94
+      }
+     }
+    },
+    "panel": {
+     "cls": "rw-panel result-victory rs-top",
+     "top": 4,
+     "bottom": 464,
+     "h": 460
+    },
+    "vrects2": {
+     "hero": {
+      "x": 134.1,
+      "y": 330.9,
+      "w": 64,
+      "h": 86.5
+     },
+     "kyle": {
+      "x": 200.5,
+      "y": 329.1,
+      "w": 84.1,
+      "h": 92
+     },
+     "kazuto": {
+      "x": 273,
+      "y": 324.2,
+      "w": 99.9,
+      "h": 93.8
+     }
+    },
+    "ended": true
+   }
+  }
+ }
+}
