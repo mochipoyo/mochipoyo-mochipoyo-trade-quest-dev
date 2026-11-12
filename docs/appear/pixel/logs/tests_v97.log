@@ -1,8 +1,8 @@
-v9.7 の確かめ 2026-11-11 20:48 版 4560a1390c
+v9.7 の確かめ 2026-11-12 16:26 版 220d2d829f
 === appear/appear_pixel_test.js（jsdom・3D と同じ読み込み）
-結果：OK 32 / NG 0
+結果：OK 33 / NG 0
 === appear/appear_pixel_test.js 2d
-結果：OK 32 / NG 0
+結果：OK 33 / NG 0
 === appear/appear_test.js（v9.6 の描き足し vector）
 結果：OK 28 / NG 0
 === appear/appear_test.js 2d（vector）
@@ -13,18 +13,18 @@ v9.7 の確かめ 2026-11-11 20:48 版 4560a1390c
 === menu92/menu92_test.js 2d
 結果：OK 89 / NG 0
 === ブラウザ pixel 3d（メニュー・戦闘の背面）
-  NG  back：胴の差分（軽装・重鎧）は体の外へ出ない＝肩当ては元の肩の上のまま（外へ出たドット 3・3）
-結果 pixel 3d：OK 29 / NG 1
+  NG  back：剣・盾を持たない組み合わせに、元の剣・盾のドットが残っていない（plain 剣0/盾0・light 剣0/盾0・heavy 剣0/盾0・robe 剣0/盾0・spear 剣0/盾1・heavyaxe 剣0/盾1）
+結果 pixel 3d：OK 36 / NG 1
 （終了コード 1）
 === ブラウザ pixel 2d（メニュー）
-  NG  back：胴の差分（軽装・重鎧）は体の外へ出ない＝肩当ては元の肩の上のまま（外へ出たドット 3・3）
-結果 pixel 2d：OK 23 / NG 1
+  NG  back：剣・盾を持たない組み合わせに、元の剣・盾のドットが残っていない（plain 剣0/盾0・light 剣0/盾0・heavy 剣0/盾0・robe 剣0/盾0・spear 剣0/盾1・heavyaxe 剣0/盾1）
+結果 pixel 2d：OK 29 / NG 1
 （終了コード 1）
 === ブラウザ 合成の絵の書き出し
 === ブラウザ ふつうの手順（装備メニューで変更・解除 → そのまま戦闘）PC
-結果 pixel ui pc：OK 20 / NG 0
+結果 pixel ui pc：OK 39 / NG 0
 === ブラウザ ふつうの手順 スマホ縦（390×664）
-結果 pixel ui phone：OK 20 / NG 0
+結果 pixel ui phone：OK 39 / NG 0
 === ブラウザ 別のサイト pixel 3d cors
 結果 xorigin pixel 3d cors：OK 5 / NG 0
 === ブラウザ 別のサイト pixel 3d nocors
@@ -41,16 +41,20 @@ v9.7 の確かめ 2026-11-11 20:48 版 4560a1390c
 結果 3d pc：OK 18 / NG 0
 === ブラウザ 3Dモデル（?party=model）
 結果 model3d：OK
-ui_pc_menu_sheet.png (3048, 686)
-ui_pc_battle_sheet.jpg (1884, 484)
-ui_phone_menu_sheet.png (4380, 466)
-ui_phone_battle_sheet.jpg (1344, 434)
-pixel_front_back_sheet.png (4656, 1534)
+ui_pc_menu_sheet.png (3554, 686)
+ui_pc_battle_sheet.jpg (2196, 484)
+ui_phone_menu_sheet.png (5108, 466)
+ui_phone_battle_sheet.jpg (1566, 434)
+compare_pc.jpg (1898, 1944)
+compare_phone.jpg (2162, 1284)
+ui_pc_victory_sheet.jpg (2196, 484)
+ui_phone_victory_sheet.jpg (1566, 434)
+pixel_front_back_sheet.png (5298, 1534)
 --- まとめ
 NG・失敗の行：4
-=== 再実行：上の pixel 3d・2d の NG 1 件は、確かめの基準の誤り。背面の 3 ドット（117〜119, 181〜184）は、盾の後ろを補った左腕の肩（素の絵にもある体の一部）で、元の絵では盾の外の透明な所だった。基準を「元の絵 ＋ 素の絵（補った腕）」に直して 21:09 に動かし直した（部品は変えていない）
+=== 再実行：上の pixel 3d・2d の NG 1 件は、確かめの基準の誤り。背面の重鎧＋槍・重鎧＋手斧で「盾の色のドット」と数えた 1 ドット（112, 213）は、重鎧の部品（armor_shape_f：補った左腕のひじ当て）のドットで、色がたまたま盾の部品の同じ場所のドット（元の絵の左腕）と同じだった。基準に「鎧の形の部品で説明できるドットは除く」を足して 16:45 に動かし直した（部品は変えていない）
 === ブラウザ pixel 3d（再実行）
-結果 pixel 3d：OK 30 / NG 0
+結果 pixel 3d：OK 37 / NG 0
 === ブラウザ pixel 2d（再実行）
-結果 pixel 2d：OK 24 / NG 0
+結果 pixel 2d：OK 30 / NG 0
 --- 再実行のまとめ：NG・失敗の行（再実行の分）：0

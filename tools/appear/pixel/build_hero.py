@@ -92,6 +92,7 @@ def front_plain(o):
 # 戦闘の背面：party-directions-v3/sprites/hero/back.png（320 × 320、足もとの基準点 [160, 304]）
 # ============================================================
 BACK_SRC = 'assets/characters/party-directions-v3/sprites/hero/back.png'
+FRONT_BATTLE_SRC = 'assets/characters/party-directions-v3/sprites/hero/front.png'   # 戦闘の正面（勝利の振り向き）。戦士の立ち絵と同じ絵を (95, 104) に置いたもの
 BA = 156.5       # 体の左右の中心（足から）
 SHIELD_B = [(118, 180), (106, 183), (97, 193), (90, 207), (88, 225), (89, 242), (95, 255), (105, 263), (116, 266), (123, 260), (125, 246), (125, 230), (127, 205), (125, 190)]
 BLADE_B = [(203, 108), (246, 108), (246, 215), (229, 215), (216, 208), (211, 203), (203, 201)]
@@ -685,6 +686,9 @@ if __name__ == '__main__':
     # ---- 対応表（js/data/equip-pixels.js）：人物ID・向き → 部品。部品の種類 → 装備の形 ----
     def box(arr):
         bb = P.bbox(P.opaque(arr)); return {'x0': bb[0], 'y0': bb[1], 'x1': bb[2], 'y1': bb[3]}
+    FDX, FDY = 95, 104
+    def shiftbox(b, dx, dy): return {'x0': b['x0'] + dx, 'y0': b['y0'] + dy, 'x1': b['x1'] + dx, 'y1': b['y1'] + dy}
+    def shiftparts(rec, dx, dy): return {k: dict(v, x=v['x'] + dx, y=v['y'] + dy) for k, v in rec.items()}
     def frame(rec, w, h, m=2):
         # メニューに置く枠：どの組み合わせでも同じ。全部の部品（帽子・槍・杖の先）を収め、左右は元の絵の中心でそろえ、下は元の絵の下辺（足もと）
         x0 = min([0] + [r['x'] for r in rec.values()]) - m; x1 = max([w] + [r['x'] + r['w'] for r in rec.values()]) + m
@@ -717,6 +721,11 @@ if __name__ == '__main__':
             'job:warrior': {'src': FRONT_SRC, 'w': FW, 'h': FH, 'dir': 'front', 'pivot': [64, 197], 'body': box(tp), 'frame': frame(recF, FW, FH),
                             'grip': {'x': 22, 'y': 117, 'order': '剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す'},
                             'offhand': {'x': 105, 'y': 125, 'order': '盾：腕の上（体の後に描く）'}, 'parts': recF},
+            # 戦闘の正面（勝利のときの振り向き）：party-directions の hero/front.png は、戦士の立ち絵と同じ絵・同じ大きさ（人物の高さ 196）を (95, 104) に置いたもの
+            #   → メニュー正面の部品をそのまま使い、座標だけ (95, 104) ずらす（新しい画像は作らない。足もと 302 行目・縮尺 1:1 が戦闘と同じ）
+            'front': {'src': FRONT_BATTLE_SRC, 'w': 320, 'h': 320, 'dir': 'front', 'pivot': [160, 304], 'body': shiftbox(box(tp), FDX, FDY),
+                      'grip': {'x': 22 + FDX, 'y': 117 + FDY, 'order': '剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す'},
+                      'offhand': {'x': 105 + FDX, 'y': 125 + FDY, 'order': '盾：腕の上（体の後に描く）'}, 'from': 'job:warrior', 'parts': shiftparts(recF, FDX, FDY)},
             'back': {'src': BACK_SRC, 'w': BW, 'h': BH, 'dir': 'back', 'pivot': [160, 304], 'body': box(tb), 'frame': frame(recB, BW, BH),
                      'grip': {'x': 205, 'y': 213, 'order': '剣：拳の上に鍔／杖・槍：柄の上に拳を描き直す'},
                      'offhand': {'x': 108, 'y': 222, 'order': '盾：左腕の外側（体の後に描く）'}, 'parts': recB},

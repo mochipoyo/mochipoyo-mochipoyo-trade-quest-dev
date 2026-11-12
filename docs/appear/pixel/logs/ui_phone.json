@@ -1,7 +1,7 @@
 {
  "VIEW": "phone",
  "isPhone": true,
- "ok": 20,
+ "ok": 39,
  "ng": 0,
  "steps": [
   {
@@ -10,7 +10,15 @@
   },
   {
    "ok": true,
-   "m": "［装備なし］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+   "m": "［装備なし］そのまま戦闘：主人公の背面に合成（pixel:dir:back）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.7\",\"front\",[]]）"
+  },
+  {
+   "ok": true,
+   "m": "［装備なし］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain）"
   },
   {
    "ok": true,
@@ -18,7 +26,15 @@
   },
   {
    "ok": true,
-   "m": "［軽装＋剣］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+   "m": "［軽装＋剣］そのまま戦闘：主人公の背面に合成（pixel:dir:back）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［軽装＋剣］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.7\",\"front\",[\"steel_sword\",\"leather_armor\"]]）"
+  },
+  {
+   "ok": true,
+   "m": "［軽装＋剣］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain armor_shape_f armor_light_t weapon_sword）"
   },
   {
    "ok": true,
@@ -26,7 +42,39 @@
   },
   {
    "ok": true,
-   "m": "［重鎧＋兜＋剣と盾］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+   "m": "［重鎧＋兜＋剣と盾］そのまま戦闘：主人公の背面に合成（pixel:dir:back）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［重鎧＋兜＋剣と盾］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.7\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]）"
+  },
+  {
+   "ok": true,
+   "m": "［重鎧＋兜＋剣と盾］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_helm armor_shape_f head_helm_t head_helm_f shield weapon_sword）"
+  },
+  {
+   "ok": true,
+   "m": "［重鎧＋手斧（部品のない武器）］装備メニューで weapon:hand_axe → 立ち絵 base_helm armor_shape_f head_helm_t head_helm_f shield"
+  },
+  {
+   "ok": true,
+   "m": "［重鎧＋手斧（部品のない武器）］そのまま戦闘：主人公の背面に合成（pixel:dir:back）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［重鎧＋手斧（部品のない武器）］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.7\",\"front\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]）"
+  },
+  {
+   "ok": true,
+   "m": "［重鎧＋手斧（部品のない武器）］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_helm armor_shape_f head_helm_t head_helm_f shield）"
+  },
+  {
+   "ok": true,
+   "m": "［重鎧＋手斧（部品のない武器）］キャンセル：［そうび］→ 武器 → 品の一覧で Esc → 装備も絵も変わらない（{\"weapon\":\"hand_axe\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null}・そうびの画面の絵 base_helm armor_shape_f head_helm_t head_helm_f shield）"
+  },
+  {
+   "ok": true,
+   "m": "［重鎧＋手斧（部品のない武器）］重鎧は表示を続け、部品のない手斧は描かない（部品 base_helm armor_shape_f head_helm_t head_helm_f shield／描かない weapon:hand_axe（axe/handaxe の部品がない→描かない））"
   },
   {
    "ok": true,
@@ -34,7 +82,15 @@
   },
   {
    "ok": true,
-   "m": "［ローブ＋帽子＋杖］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+   "m": "［ローブ＋帽子＋杖］そのまま戦闘：主人公の背面に合成（pixel:dir:back）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［ローブ＋帽子＋杖］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"mage\",\"px:v9.7\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]）"
+  },
+  {
+   "ok": true,
+   "m": "［ローブ＋帽子＋杖］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand）"
   },
   {
    "ok": true,
@@ -42,7 +98,15 @@
   },
   {
    "ok": true,
-   "m": "［槍装備］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+   "m": "［槍装備］そのまま戦闘：主人公の背面に合成（pixel:dir:back）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+  },
+  {
+   "ok": true,
+   "m": "［槍装備］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.7\",\"front\",[\"iron_spear\"]]）"
+  },
+  {
+   "ok": true,
+   "m": "［槍装備］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain weapon_spear hand）"
   },
   {
    "ok": true,
@@ -50,11 +114,19 @@
   },
   {
    "ok": true,
-   "m": "［全部はずす（解除）］そのまま戦闘：主人公の背面に合成（pixel:dir:back・合成）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
+   "m": "［全部はずす（解除）］そのまま戦闘：主人公の背面に合成（pixel:dir:back）。仲間は従来の絵（lina:従来 gald:従来）。戦闘のあとフィールドへ戻った：true"
   },
   {
    "ok": true,
-   "m": "メニュー：足もと（枠の下辺）・左右の中心・1 ドットの大きさが 6 つとも同じ（下辺 270.9・中心 195・1 ドット 0.8407px）"
+   "m": "［全部はずす（解除）］勝利の振り向き：正面の絵にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.75,\"h\":1.15}・合成の印 [\"hero\",\"warrior\",\"px:v9.7\",\"front\",[]]）"
+  },
+  {
+   "ok": true,
+   "m": "［全部はずす（解除）］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain）"
+  },
+  {
+   "ok": true,
+   "m": "メニュー：足もと（枠の下辺）・左右の中心・1 ドットの大きさが 7 つとも同じ（下辺 270.9・中心 195・1 ドット 0.8407px）"
   },
   {
    "ok": true,
@@ -70,11 +142,15 @@
   },
   {
    "ok": true,
-   "m": "戦闘：主人公の範囲（カメラ合わせ・影・HP の位置）が 6 つとも同じ（0.84×1.17 0.84×1.17 0.84×1.17 0.84×1.17 0.84×1.17 0.84×1.17）"
+   "m": "戦闘：主人公の範囲（カメラ合わせ・影・HP の位置）が 7 つとも同じ（0.84×1.17 0.84×1.17 0.84×1.17 0.84×1.17 0.84×1.17 0.84×1.17 0.84×1.17）"
   },
   {
    "ok": true,
-   "m": "能力値は今までの計算（防御：plain 8・light 14・heavy 38・robe 12・spear 10・off 10）"
+   "m": "勝利の正面：主人公の範囲（元の戦闘の正面の絵と同じ）が 7 つとも同じ（0.75×1.15 0.75×1.15 0.75×1.15 0.75×1.15 0.75×1.15 0.75×1.15 0.75×1.15）"
+  },
+  {
+   "ok": true,
+   "m": "能力値は今までの計算（防御：plain 8・light 14・heavy 38・heavyaxe 40・robe 12・spear 10・off 10）"
   },
   {
    "ok": true,
@@ -138,8 +214,10 @@
      "mdef": 1,
      "immune": [],
      "element": "none"
-    }
+    },
+    "skipped": null
    },
+   "cancel": null,
    "battle": {
     "hero": {
      "id": "hero",
@@ -179,7 +257,75 @@
      "acc": null
     },
     "fell": [],
+    "victory": {
+     "id": "hero",
+     "model": "pixel:dir:front",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"front\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.75,
+      "h": 1.15
+     }
+    },
     "ended": true
+   },
+   "after": {
+    "st": "ok",
+    "parts": "base_plain",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 80.9,
+     "bottom": 270.9,
+     "left": 138.7,
+     "right": 251.3,
+     "h": 190,
+     "cx": 195
+    },
+    "px": 0.8407,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 80.9453125,
+     "bottom": 270.9453125,
+     "h": 190
+    },
+    "equip": {
+     "weapon": null,
+     "armor": null,
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 34,
+     "maxMp": 10,
+     "atk": 9,
+     "def": 8,
+     "agi": 5,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "skipped": null
    }
   },
   "light": {
@@ -237,8 +383,10 @@
      "mdef": 1,
      "immune": [],
      "element": "none"
-    }
+    },
+    "skipped": null
    },
+   "cancel": null,
    "battle": {
     "hero": {
      "id": "hero",
@@ -278,7 +426,75 @@
      "acc": null
     },
     "fell": [],
+    "victory": {
+     "id": "hero",
+     "model": "pixel:dir:front",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"front\",[\"steel_sword\",\"leather_armor\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.75,
+      "h": 1.15
+     }
+    },
     "ended": true
+   },
+   "after": {
+    "st": "ok",
+    "parts": "base_plain armor_shape_f armor_light_t weapon_sword",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 80.9,
+     "bottom": 270.9,
+     "left": 138.7,
+     "right": 251.3,
+     "h": 190,
+     "cx": 195
+    },
+    "px": 0.8407,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 80.9453125,
+     "bottom": 270.9453125,
+     "h": 190
+    },
+    "equip": {
+     "weapon": "steel_sword",
+     "armor": "leather_armor",
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 34,
+     "maxMp": 10,
+     "atk": 31,
+     "def": 14,
+     "agi": 5,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "skipped": null
    }
   },
   "heavy": {
@@ -337,8 +553,10 @@
      "mdef": 1,
      "immune": [],
      "element": "none"
-    }
+    },
+    "skipped": null
    },
+   "cancel": null,
    "battle": {
     "hero": {
      "id": "hero",
@@ -378,7 +596,249 @@
      "acc": null
     },
     "fell": [],
+    "victory": {
+     "id": "hero",
+     "model": "pixel:dir:front",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.75,
+      "h": 1.15
+     }
+    },
     "ended": true
+   },
+   "after": {
+    "st": "ok",
+    "parts": "base_helm armor_shape_f head_helm_t head_helm_f shield weapon_sword",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 80.9,
+     "bottom": 270.9,
+     "left": 138.7,
+     "right": 251.3,
+     "h": 190,
+     "cx": 195
+    },
+    "px": 0.8407,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 80.9453125,
+     "bottom": 270.9453125,
+     "h": 190
+    },
+    "equip": {
+     "weapon": "steel_sword",
+     "armor": "iron_armor",
+     "shield": "iron_shield",
+     "head": "iron_helm",
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 42,
+     "maxMp": 12,
+     "atk": 33,
+     "def": 40,
+     "agi": 4,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "skipped": null
+   }
+  },
+  "heavyaxe": {
+   "name": "重鎧＋手斧（部品のない武器）",
+   "jobChanged": false,
+   "ui": {
+    "done": [
+     "weapon:hand_axe"
+    ],
+    "eqHead": "base_helm armor_shape_f head_helm_t head_helm_f shield"
+   },
+   "menu": {
+    "st": "ok",
+    "parts": "base_helm armor_shape_f head_helm_t head_helm_f shield",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 80.9,
+     "bottom": 270.9,
+     "left": 138.7,
+     "right": 251.3,
+     "h": 190,
+     "cx": 195
+    },
+    "px": 0.8407,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 80.9453125,
+     "bottom": 270.9453125,
+     "h": 190
+    },
+    "equip": {
+     "weapon": "hand_axe",
+     "armor": "iron_armor",
+     "shield": "iron_shield",
+     "head": "iron_helm",
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 42,
+     "maxMp": 12,
+     "atk": 20,
+     "def": 40,
+     "agi": 4,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "skipped": "weapon:hand_axe（axe/handaxe の部品がない→描かない）"
+   },
+   "cancel": {
+    "same": true,
+    "back": true,
+    "head0": "base_helm armor_shape_f head_helm_t head_helm_f shield",
+    "head1": "base_helm armor_shape_f head_helm_t head_helm_f shield",
+    "before": "{\"weapon\":\"hand_axe\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null}"
+   },
+   "battle": {
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"back\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "others": [
+     {
+      "id": "lina",
+      "ea": false
+     },
+     {
+      "id": "gald",
+      "ea": false
+     }
+    ],
+    "equip": {
+     "weapon": "hand_axe",
+     "armor": "iron_armor",
+     "shield": "iron_shield",
+     "head": "iron_helm",
+     "acc": null
+    },
+    "fell": [],
+    "victory": {
+     "id": "hero",
+     "model": "pixel:dir:front",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"front\",[\"hand_axe\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.75,
+      "h": 1.15
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "st": "ok",
+    "parts": "base_helm armor_shape_f head_helm_t head_helm_f shield",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 80.9,
+     "bottom": 270.9,
+     "left": 138.7,
+     "right": 251.3,
+     "h": 190,
+     "cx": 195
+    },
+    "px": 0.8407,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 80.9453125,
+     "bottom": 270.9453125,
+     "h": 190
+    },
+    "equip": {
+     "weapon": "hand_axe",
+     "armor": "iron_armor",
+     "shield": "iron_shield",
+     "head": "iron_helm",
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 42,
+     "maxMp": 12,
+     "atk": 20,
+     "def": 40,
+     "agi": 4,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "skipped": "weapon:hand_axe（axe/handaxe の部品がない→描かない）"
    }
   },
   "robe": {
@@ -437,8 +897,10 @@
      "mdef": 5,
      "immune": [],
      "element": "none"
-    }
+    },
+    "skipped": null
    },
+   "cancel": null,
    "battle": {
     "hero": {
      "id": "hero",
@@ -478,7 +940,75 @@
      "acc": null
     },
     "fell": [],
+    "victory": {
+     "id": "hero",
+     "model": "pixel:dir:front",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "mage",
+     "sprite": "hero_mage",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+     "pd": "ok",
+     "ea": "[\"hero\",\"mage\",\"px:v9.7\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.75,
+      "h": 1.15
+     }
+    },
     "ended": true
+   },
+   "after": {
+    "st": "ok",
+    "parts": "base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand",
+    "view": "job:warrior",
+    "job": "mage",
+    "sprite": "hero_mage",
+    "rect": {
+     "top": 80.9,
+     "bottom": 270.9,
+     "left": 138.7,
+     "right": 251.3,
+     "h": 190,
+     "cx": 195
+    },
+    "px": 0.8407,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 80.9453125,
+     "bottom": 270.9453125,
+     "h": 190
+    },
+    "equip": {
+     "weapon": "oak_staff",
+     "armor": "robe",
+     "shield": null,
+     "head": "wizard_hat",
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 25,
+     "maxMp": 26,
+     "atk": 6,
+     "def": 12,
+     "agi": 6,
+     "mag": 15,
+     "mdef": 5,
+     "immune": [],
+     "element": "none"
+    },
+    "skipped": null
    }
   },
   "spear": {
@@ -535,8 +1065,10 @@
      "mdef": 1,
      "immune": [],
      "element": "none"
-    }
+    },
+    "skipped": null
    },
+   "cancel": null,
    "battle": {
     "hero": {
      "id": "hero",
@@ -576,7 +1108,75 @@
      "acc": null
     },
     "fell": [],
+    "victory": {
+     "id": "hero",
+     "model": "pixel:dir:front",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"front\",[\"iron_spear\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.75,
+      "h": 1.15
+     }
+    },
     "ended": true
+   },
+   "after": {
+    "st": "ok",
+    "parts": "base_plain weapon_spear hand",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 80.9,
+     "bottom": 270.9,
+     "left": 138.7,
+     "right": 251.3,
+     "h": 190,
+     "cx": 195
+    },
+    "px": 0.8407,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 80.9453125,
+     "bottom": 270.9453125,
+     "h": 190
+    },
+    "equip": {
+     "weapon": "iron_spear",
+     "armor": null,
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 42,
+     "maxMp": 12,
+     "atk": 28,
+     "def": 10,
+     "agi": 6,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "skipped": null
    }
   },
   "off": {
@@ -633,8 +1233,10 @@
      "mdef": 1,
      "immune": [],
      "element": "none"
-    }
+    },
+    "skipped": null
    },
+   "cancel": null,
    "battle": {
     "hero": {
      "id": "hero",
@@ -674,7 +1276,75 @@
      "acc": null
     },
     "fell": [],
+    "victory": {
+     "id": "hero",
+     "model": "pixel:dir:front",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.7\",\"front\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.75,
+      "h": 1.15
+     }
+    },
     "ended": true
+   },
+   "after": {
+    "st": "ok",
+    "parts": "base_plain",
+    "view": "job:warrior",
+    "job": "warrior",
+    "sprite": "hero_warrior",
+    "rect": {
+     "top": 80.9,
+     "bottom": 270.9,
+     "left": 138.7,
+     "right": 251.3,
+     "h": 190,
+     "cx": 195
+    },
+    "px": 0.8407,
+    "clip": {
+     "top": false,
+     "bottom": false,
+     "left": false,
+     "right": false,
+     "screen": false
+    },
+    "ov": null,
+    "box": {
+     "top": 80.9453125,
+     "bottom": 270.9453125,
+     "h": 190
+    },
+    "equip": {
+     "weapon": null,
+     "armor": null,
+     "shield": null,
+     "head": null,
+     "acc": null
+    },
+    "stats": {
+     "maxHp": 42,
+     "maxMp": 12,
+     "atk": 11,
+     "def": 10,
+     "agi": 6,
+     "mag": 2,
+     "mdef": 1,
+     "immune": [],
+     "element": "none"
+    },
+    "skipped": null
    }
   }
  }

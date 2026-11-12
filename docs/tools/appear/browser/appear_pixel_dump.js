@@ -3,7 +3,7 @@
 const { chromium } = require('playwright'); const fs = require('fs');
 const PORT = process.env.PORT || 8894; const OUT = process.env.OUT || '/home/claude/envwork/docs/appear/pixel/';
 const SETS = [['plain', {}], ['light', { armor: 'leather_armor', weapon: 'steel_sword' }], ['heavy', { armor: 'iron_armor', head: 'iron_helm', weapon: 'steel_sword', shield: 'iron_shield' }], ['robe', { armor: 'robe', head: 'wizard_hat', weapon: 'oak_staff' }], ['spear', { weapon: 'iron_spear' }],
-  ['robeonly', { armor: 'robe' }], ['heavyonly', { armor: 'iron_armor' }]];   // 帽子・杖・兜・盾・剣を外した見比べ（袖と裾の違い）
+  ['robeonly', { armor: 'robe' }], ['heavyonly', { armor: 'iron_armor' }], ['heavyaxe', { armor: 'iron_armor', head: 'iron_helm', shield: 'iron_shield', weapon: 'hand_axe' }]];   // 帽子・杖・兜・盾・剣を外した見比べ（袖と裾の違い）
 (async () => {
   fs.mkdirSync(OUT + 'shots', { recursive: true });
   const br = await chromium.launch(); const p = await br.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));

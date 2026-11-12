@@ -1,9 +1,11 @@
 // v9.7 装備の外見（ドット絵の差分）：ふつうの遊び方の手順で確かめる（ヘッドレス Chromium。実機ではない。GPU なし）
 //   1 フィールドでメニュー（Esc）→［そうび］→ 主人公 → 枠 → 品／はずす（画面をクリックして選ぶ。装備の処理は今までのまま）
 //   2 メニュー →［パーティ］→［なかま］で立ち絵（メニュー正面）を写す → メニューを閉じる
-//   3 そのまま World.startBattle（ふつうの戦闘の入り口）で戦闘 → 主人公の背面を写す → 勝って終わる → 次の組み合わせへ
+//   3 そのまま World.startBattle（ふつうの戦闘の入り口）で戦闘 → 主人公の背面を写す → 勝つ → 勝利の振り向き（正面）を写す → フィールドへ
+//   4 戦闘のあと、もう一度［なかま］で立ち絵を写し、戦闘の前と同じ装備・同じ部品か確かめる
 //   ローブ・帽子・杖は戦士には装備できないので、転職（Services.jobChange の画面）で魔法使いにしてから装備し、槍の前に戦士へ戻す
-//   組み合わせ：装備なし／軽装＋剣／重鎧＋兜＋剣と盾／ローブ＋帽子＋杖／槍装備／（最後に）全部はずす
+//   組み合わせ：装備なし／軽装＋剣／重鎧＋兜＋剣と盾／重鎧＋手斧（部品のない武器）／ローブ＋帽子＋杖／槍装備／（最後に）全部はずす
+//   キャンセル：重鎧＋手斧のあと、［そうび］→ 武器 → 品の一覧で Esc（キャンセル）→ 装備も絵も変わらないこと
 //   VIEW=pc（1280×720）｜phone（スマホ縦：iPhone 13 相当 390×664）  PORT=…  OUT=…
 const { chromium, devices } = require('playwright'); const fs = require('fs');
 const PORT = process.env.PORT || 8894; const VIEW = process.env.VIEW || 'pc'; const OUT = process.env.OUT || '/home/claude/envwork/docs/appear/pixel/';
@@ -13,6 +15,7 @@ const STATES = [
   { key: 'plain', name: '装備なし', job: 'warrior', eq: { weapon: null, armor: null, shield: null, head: null } },
   { key: 'light', name: '軽装＋剣', job: 'warrior', eq: { armor: 'leather_armor', weapon: 'steel_sword' } },
   { key: 'heavy', name: '重鎧＋兜＋剣と盾', job: 'warrior', eq: { armor: 'iron_armor', head: 'iron_helm', shield: 'iron_shield', weapon: 'steel_sword' } },
+  { key: 'heavyaxe', name: '重鎧＋手斧（部品のない武器）', job: 'warrior', eq: { weapon: 'hand_axe' }, cancel: true },
   { key: 'robe', name: 'ローブ＋帽子＋杖', job: 'mage', eq: { armor: 'robe', head: 'wizard_hat', weapon: 'oak_staff' } },
   { key: 'spear', name: '槍装備', job: 'warrior', eq: { weapon: 'iron_spear', armor: null, head: null, shield: null } },
   { key: 'off', name: '全部はずす（解除）', job: 'warrior', eq: { weapon: null, armor: null, shield: null, head: null } },
@@ -32,7 +35,7 @@ let PG = null;   // 失敗したときに画面を残すため
     document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay);
     State.newGame('もち', 'warrior'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.settings.soundAsk93 = true; d.gold = 20000;
     ['lina', 'gald'].forEach((id) => State.joinCompanion(id));
-    ['leather_armor', 'iron_armor', 'robe', 'iron_helm', 'wizard_hat', 'steel_sword', 'iron_shield', 'oak_staff', 'iron_spear'].forEach((id) => State.addItem(id, 1));
+    ['leather_armor', 'iron_armor', 'robe', 'iron_helm', 'wizard_hat', 'steel_sword', 'iron_shield', 'oak_staff', 'iron_spear', 'hand_axe'].forEach((id) => State.addItem(id, 1));
     World.start();
   });
   await p.waitForTimeout(1500);
@@ -77,7 +80,21 @@ let PG = null;   // 失敗したときに画面を残すため
     const lines = await p.evaluate(() => { const n = document.querySelector('#ui .equip-menu .eq-body-head canvas'); return n ? n.getAttribute('data-ea-parts') : null; });
     await closeAll(); return { done, eqHead: lines };
   };
-  const shotParty = async (key) => {
+  // キャンセル：［そうび］→ 武器 → 品の一覧で Esc → 装備も、そうびの画面の絵も変わらない
+  const cancelVia = async () => {
+    const before = await p.evaluate(() => JSON.stringify(State.data.hero.equip));
+    await openMenu(); const t = await top(); const eqb = await t.$('.rw-tool[data-tool="equip"]'); await eqb.click({ timeout: 8000 }); await p.waitForTimeout(250);
+    await pick(/装備を変える/, /^もち/);
+    await waitTop(/もちの装備/); await p.waitForTimeout(300);
+    const head0 = await p.evaluate(() => { const n = document.querySelector('#ui .equip-menu .eq-body-head canvas'); return n ? n.getAttribute('data-ea-parts') : null; });
+    await pick(/もちの装備/, /^武器/); await waitTop(/もちの.+を選ぶ/);
+    await p.keyboard.press('Escape'); await p.waitForTimeout(400);
+    const back = await waitTop(/もちの装備/).then(() => true).catch(() => false); await p.waitForTimeout(300);
+    const head1 = await p.evaluate(() => { const n = document.querySelector('#ui .equip-menu .eq-body-head canvas'); return n ? n.getAttribute('data-ea-parts') : null; });
+    const after = await p.evaluate(() => JSON.stringify(State.data.hero.equip));
+    await closeAll(); return { same: before === after, back, head0, head1, before };
+  };
+  const shotParty = async (key, tag) => {
     await openMenu(); await tab('パーティ'); await pick(/メニュー/, /^なかま/);
     await p.waitForSelector('#ui .party-screen .pt-art', { timeout: 30000 });
     await p.waitForFunction(() => { const h = document.querySelector('#ui .pt-art .ea-host'); return h && /ok|error|none/.test(h.getAttribute('data-ea-state') || ''); }, null, { timeout: 30000 }).catch(() => null);
@@ -91,8 +108,9 @@ let PG = null;   // 失敗したときに画面を残すため
       return { st: h && h.getAttribute('data-ea-state'), parts: cv && cv.getAttribute('data-ea-parts'), view: EquipmentAppearance.menuView(State.data.hero), job: State.data.hero.job, sprite: State.data.hero.sprite,
         rect: r && { top: +r.top.toFixed(1), bottom: +r.bottom.toFixed(1), left: +r.left.toFixed(1), right: +r.right.toFixed(1), h: +r.height.toFixed(1), cx: +((r.left + r.right) / 2).toFixed(1) }, px: r && f ? +(r.height / (f.y1 - f.y0)).toFixed(4) : null, clip, ov, box: { top: b.top, bottom: b.bottom, h: b.height }, equip: Object.assign({}, State.data.hero.equip), stats: Actors.stats(State.data.hero) };
     });
-    const el = await p.$('#ui .party-screen .pt-artbox') || await p.$('#ui .party-screen .pt-art'); if (el) await el.screenshot({ path: `${OUT}shots/ui_${VIEW}_menu_${key}.png` });
-    if (key === 'robe' || key === 'spear') await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_menu_full_${key}.jpg`, type: 'jpeg', quality: 85 });
+    const el = await p.$('#ui .party-screen .pt-artbox') || await p.$('#ui .party-screen .pt-art'); if (el) await el.screenshot({ path: `${OUT}shots/ui_${VIEW}_menu${tag || ''}_${key}.png` });
+    if (!tag && (key === 'robe' || key === 'heavyaxe')) await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_menu_full_${key}.jpg`, type: 'jpeg', quality: 80 });
+    m.skipped = await p.evaluate(() => { const cv = document.querySelector('#ui .pt-art .ea-host canvas.ea-canvas'); return cv ? cv.getAttribute('data-ea-skipped') : null; });
     await closeAll(); return m;
   };
   const battle = async (key) => {
@@ -103,10 +121,21 @@ let PG = null;   // 失敗したときに画面を残すため
     await p.waitForTimeout(1500);
     const b = await p.evaluate(() => { const i = BattleStage3D.actorsInfo(); const h = i.party.find((x) => x.id === 'hero'); return { hero: h, others: i.party.filter((x) => x.id !== 'hero').map((x) => ({ id: x.id, ea: !!x.ea })), equip: Object.assign({}, State.data.hero.equip), fell: (window.__toasts || []).filter((t) => /3Dの戦闘を表示できない/.test(t)) }; });
     await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_battle_${key}.jpg`, type: 'jpeg', quality: 72 });
-    // 勝って終わる（フィールドへ戻る）
+    // 勝つ → 勝利の振り向き（正面）を写す → 勝利・経験値・戦利品の画面を Enter で進めて、フィールドへ戻る
     await p.evaluate(() => { const bt = BattleUI.battle; bt.enemies.forEach((e) => { e.hp = 1; }); State.data.settings.autoBattle = true; });
     await p.keyboard.press('Enter');
-    for (let i = 0; i < 200; i++) { await p.waitForTimeout(500); const fin = await p.evaluate(() => !!window.__btRes && !World.busy); if (fin) break; await p.keyboard.press('Enter'); }   // 勝利・経験値・戦利品の画面を Enter で進める
+    b.victory = null;
+    for (let i = 0; i < 200; i++) {
+      await p.waitForTimeout(250);
+      if (!b.victory) { const v = await p.evaluate(() => { const i = window.BattleStage3D && BattleStage3D.actorsInfo && BattleStage3D.actorsInfo(); const h = i && i.party && i.party.find((x) => x.id === 'hero'); return h && /dir:front/.test(h.model || '') ? h : null; });
+        if (v) { await p.waitForTimeout(500); b.victory = await p.evaluate(() => BattleStage3D.actorsInfo().party.find((x) => x.id === 'hero'));
+          await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_victory_ui_${key}.jpg`, type: 'jpeg', quality: 72 });   // そのままの画面（勝利の結果の窓が人物に重なる）
+          await p.evaluate(() => { const u = document.getElementById('ui'); if (u) u.style.visibility = 'hidden'; }); await p.waitForTimeout(120);   // 人物を見るため、結果の窓だけ一瞬隠して撮る（ゲームの動きは変えない）
+          await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_victory_${key}.jpg`, type: 'jpeg', quality: 72 });
+          await p.evaluate(() => { const u = document.getElementById('ui'); if (u) u.style.visibility = ''; }); } }
+      const fin = await p.evaluate(() => !!window.__btRes && !World.busy); if (fin) break;
+      if (b.victory || i % 2) await p.keyboard.press('Enter');
+    }
     await p.evaluate(() => { State.data.settings.autoBattle = false; });
     b.ended = await p.evaluate(() => !!window.__btRes && !World.busy);
     await pause3d(true);
@@ -118,20 +147,28 @@ let PG = null;   // 失敗したときに画面を残すため
     const j = await jobChange(st.job);
     const e = await equipVia(st.eq);
     const m = await shotParty(st.key);
+    const cx = st.cancel ? await cancelVia() : null;
     const bt = await battle(st.key);
-    rec[st.key] = { name: st.name, jobChanged: j, ui: e, menu: m, battle: bt };
+    const m2 = await shotParty(st.key, '_after');
+    rec[st.key] = { name: st.name, jobChanged: j, ui: e, menu: m, cancel: cx, battle: bt, after: m2 };
     const want = Object.keys(st.eq).every((s) => (m.equip[s] || null) === st.eq[s]);
     S(want && m.st === 'ok' && m.view === 'job:warrior', `［${st.name}］装備メニューで ${e.done.join('・') || '変更なし'}${j ? '（先に転職：' + st.job + '）' : ''} → 立ち絵 ${m.parts}`);
-    S(bt.hero && /dir:back/.test(bt.hero.model || '') && (st.key === 'plain' || st.key === 'off' || !!bt.hero.ea) && !bt.fell.length && bt.ended, `［${st.name}］そのまま戦闘：主人公の背面に合成（${bt.hero && bt.hero.model}・${bt.hero && bt.hero.ea ? '合成' : '素の絵'}）。仲間は従来の絵（${bt.others.map((o) => o.id + ':' + (o.ea ? '合成' : '従来')).join(' ')}）。戦闘のあとフィールドへ戻った：${bt.ended}`);
+    S(bt.hero && /dir:back/.test(bt.hero.model || '') && !!bt.hero.ea && !bt.fell.length && bt.ended, `［${st.name}］そのまま戦闘：主人公の背面に合成（${bt.hero && bt.hero.model}）。仲間は従来の絵（${bt.others.map((o) => o.id + ':' + (o.ea ? '合成' : '従来')).join(' ')}）。戦闘のあとフィールドへ戻った：${bt.ended}`);
+    S(bt.victory && /dir:front/.test(bt.victory.model || '') && !!bt.victory.ea && /"front"/.test(bt.victory.ea || ''), `［${st.name}］勝利の振り向き：正面の絵にも同じ装備を合成（${bt.victory && bt.victory.model}・範囲 ${bt.victory && JSON.stringify(bt.victory.size)}・合成の印 ${bt.victory && String(bt.victory.ea).slice(0, 90)}）`);
+    S(m2.st === 'ok' && m2.parts === m.parts && JSON.stringify(m2.equip) === JSON.stringify(m.equip) && m2.rect && m.rect && Math.abs(m2.rect.bottom - m.rect.bottom) < 1, `［${st.name}］戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（${m2.parts}）`);
+    if (cx) S(cx.same && cx.back && cx.head0 === cx.head1, `［${st.name}］キャンセル：［そうび］→ 武器 → 品の一覧で Esc → 装備も絵も変わらない（${cx.before}・そうびの画面の絵 ${cx.head1}）`);
+    if (st.key === 'heavyaxe') S(/armor_shape_f/.test(m.parts) && !/weapon_/.test(m.parts) && /hand_axe/.test(m.skipped || ''), `［${st.name}］重鎧は表示を続け、部品のない手斧は描かない（部品 ${m.parts}／描かない ${m.skipped}）`);
   }
   const ms = STATES.map((s) => rec[s.key].menu);
   const near = (a, b, t) => Math.abs(a - b) <= t;
-  S(ms.every((m) => m.rect && near(m.rect.bottom, ms[0].rect.bottom, 1) && near(m.rect.cx, ms[0].rect.cx, 1) && near(m.px, ms[0].px, 0.005)), `メニュー：足もと（枠の下辺）・左右の中心・1 ドットの大きさが 6 つとも同じ（下辺 ${ms[0].rect.bottom}・中心 ${ms[0].rect.cx}・1 ドット ${ms[0].px}px）`);
+  S(ms.every((m) => m.rect && near(m.rect.bottom, ms[0].rect.bottom, 1) && near(m.rect.cx, ms[0].rect.cx, 1) && near(m.px, ms[0].px, 0.005)), `メニュー：足もと（枠の下辺）・左右の中心・1 ドットの大きさが ${ms.length} つとも同じ（下辺 ${ms[0].rect.bottom}・中心 ${ms[0].rect.cx}・1 ドット ${ms[0].px}px）`);
   S(ms.every((m) => m.clip && !m.clip.top && !m.clip.bottom && !m.clip.left && !m.clip.right && !m.clip.screen && !m.ov), 'メニュー：帽子・槍・杖の先まで、絵の枠と画面の中に収まる（見切れなし）' + ms.filter((m) => !m.clip || m.ov || Object.values(m.clip).some(Boolean)).map((m) => JSON.stringify(m.clip) + m.ov).join(' '));
   S(rec.plain.menu.parts === 'base_plain' && rec.off.menu.parts === 'base_plain', '装備をはずすと素の絵（布の旅装）に戻る（はじめ・最後とも base_plain）');
   S(rec.robe.menu.job === 'mage' && rec.robe.menu.view === 'job:warrior', 'ローブの組み合わせ（魔法使い）でも、立ち絵は本人の素体で着替える（menuBase）');
   const bs = STATES.map((s) => rec[s.key].battle.hero && rec[s.key].battle.hero.size);
-  S(bs.every((z) => z && z.w === bs[0].w && z.h === bs[0].h), '戦闘：主人公の範囲（カメラ合わせ・影・HP の位置）が 6 つとも同じ（' + bs.map((z) => z && z.w + '×' + z.h).join(' ') + '）');
+  S(bs.every((z) => z && z.w === bs[0].w && z.h === bs[0].h), '戦闘：主人公の範囲（カメラ合わせ・影・HP の位置）が ' + bs.length + ' つとも同じ（' + bs.map((z) => z && z.w + '×' + z.h).join(' ') + '）');
+  const vs = STATES.map((s) => rec[s.key].battle.victory && rec[s.key].battle.victory.size);
+  S(vs.every((z) => z && z.w === vs[0].w && z.h === vs[0].h), '勝利の正面：主人公の範囲（元の戦闘の正面の絵と同じ）が ' + vs.length + ' つとも同じ（' + vs.map((z) => z && z.w + '×' + z.h).join(' ') + '）');
   const stv = STATES.map((s) => rec[s.key].menu.stats);
   S(stv.every((x) => x && typeof x.def === 'number'), '能力値は今までの計算（防御：' + STATES.map((s, i) => s.key + ' ' + stv[i].def).join('・') + '）');
   S(errs.length === 0, 'ページのエラーなし' + (errs.length ? '：' + errs.slice(0, 3).join(' / ') : ''));

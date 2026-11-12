@@ -10,7 +10,7 @@ D = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'appear
 FONT = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
 f = ImageFont.truetype(FONT, 26) if os.path.exists(FONT) else ImageFont.load_default()
 fs = ImageFont.truetype(FONT, 20) if os.path.exists(FONT) else ImageFont.load_default()
-UI = [('plain', '装備なし'), ('light', '軽装＋剣'), ('heavy', '重鎧＋兜＋剣と盾'), ('robe', 'ローブ＋帽子＋杖'), ('spear', '槍装備'), ('off', '全部はずす（解除）')]
+UI = [('plain', '装備なし'), ('light', '軽装＋剣'), ('heavy', '重鎧＋兜＋剣と盾'), ('heavyaxe', '重鎧＋手斧'), ('robe', 'ローブ＋帽子＋杖'), ('spear', '槍装備'), ('off', '全部はずす（解除）')]
 # 戦闘の画面写真から主人公のまわりを切り出す範囲（画面の倍率 2 の画素。カメラは毎回同じ）
 BATTLE_CROP = {'pc': (600, 560, 900, 960), 'phone': (236, 500, 446, 850)}
 
@@ -36,8 +36,40 @@ for v in ('pc', 'phone'):
             p = D + 'ui_%s_battle_%s.jpg' % (v, k)
             if os.path.exists(p): bat.append((t, Image.open(p).convert('RGB').crop(cr)))
         row(bat, 'ui_%s_battle_sheet.jpg' % v, jpg=True, note='そのまま入った戦闘（3D・背面）。同じカメラ・同じ切り出し＝同じ倍率')
+# 提出用：組み合わせ（行）× 画面（列：メニュー正面・戦闘背面・勝利正面・戦闘のあとのメニュー）。PC・スマホ縦それぞれ
+for v in ('pc', 'phone'):
+    cr = BATTLE_CROP.get(v)
+    if not cr or not os.path.exists(D + 'ui_%s_menu_plain.png' % v): continue
+    rows2 = []
+    for k, t in [('plain', '装備なし'), ('heavyaxe', '重鎧＋手斧\n（部品のない武器\nは描かない）'), ('robe', 'ローブ＋帽子＋杖\n（魔法使いで装備）')]:
+        cells = []
+        for lab, path, crop in (('メニュー正面', 'ui_%s_menu_%s.png', None), ('戦闘背面', 'ui_%s_battle_%s.jpg', cr), ('勝利正面', 'ui_%s_victory_%s.jpg', cr), ('戦闘のあとのメニュー', 'ui_%s_menu_after_%s.png', None)):
+            pp = D + path % (v, k)
+            if os.path.exists(pp):
+                im = Image.open(pp).convert('RGB'); im = im.crop(crop) if crop else im
+            else:
+                im = Image.new('RGB', (200, 200), (60, 20, 20)); ImageDraw.Draw(im).text((10, 90), '画面なし（確かめられず）', fill=(255, 200, 200), font=fs)
+            cells.append((lab, im))
+        rows2.append((t, cells))
+    hh = max(max(i.height for _, i in c) for _, c in rows2); ww = [max(c[j][1].width for _, c in rows2) for j in range(4)]
+    LW = 250; W2 = LW + sum(ww) + 12 * 5; H2 = 50 + len(rows2) * (hh + 16) + 40
+    S2 = Image.new('RGB', (W2, H2), (20, 24, 40)); d2 = ImageDraw.Draw(S2); x = LW
+    for j, (lab, _) in enumerate(rows2[0][1]): d2.text((x + 6, 10), lab, fill=(255, 230, 150), font=f); x += ww[j] + 12
+    y = 50
+    for t, cells in rows2:
+        d2.multiline_text((10, y + hh // 2 - 30), t, fill=(255, 255, 255), font=fs, spacing=6); x = LW
+        for j, (lab, im) in enumerate(cells): S2.paste(im, (x + (ww[j] - im.width) // 2, y + hh - im.height)); x += ww[j] + 12
+        y += hh + 16
+    d2.text((10, H2 - 32), ('PC 1280×720' if v == 'pc' else 'スマホ縦 390×664') + '。メニュー＝なかまの画面の立ち絵の枠（同じ倍率）。戦闘・勝利＝同じカメラ・同じ切り出し', fill=(200, 210, 230), font=fs)
+    S2.save(D + 'compare_%s.jpg' % v, quality=88); print('compare_%s.jpg' % v, S2.size)
+# 勝利の正面（組み合わせごと）
+for v in ('pc', 'phone'):
+    cr = BATTLE_CROP.get(v)
+    if not cr: continue
+    vic = [(t, Image.open(D + 'ui_%s_victory_%s.jpg' % (v, k)).convert('RGB').crop(cr)) for k, t in UI if os.path.exists(D + 'ui_%s_victory_%s.jpg' % (v, k))]
+    row(vic, 'ui_%s_victory_sheet.jpg' % v, jpg=True, note='勝利の振り向き（3D・正面）。同じカメラ・同じ切り出し')
 # 正面と背面を同じ 3 倍で（ゲームの中で作った合成の絵）
-SETS = [('plain', '装備なし'), ('light', '軽装＋剣'), ('heavy', '重鎧＋兜＋剣と盾'), ('robe', 'ローブ＋帽子＋杖'), ('spear', '槍装備'), ('robeonly', 'ローブだけ'), ('heavyonly', '重鎧だけ')]
+SETS = [('plain', '装備なし'), ('light', '軽装＋剣'), ('heavy', '重鎧＋兜＋剣と盾'), ('heavyaxe', '重鎧＋手斧'), ('robe', 'ローブ＋帽子＋杖'), ('spear', '槍装備'), ('robeonly', 'ローブだけ'), ('heavyonly', '重鎧だけ')]
 PAD, K = 48, 3
 CROP = {'job_warrior': (PAD - 2, PAD - 26, PAD + 132, PAD + 200), 'back': (PAD + 52, PAD + 70, PAD + 262, PAD + 306)}
 rows = []

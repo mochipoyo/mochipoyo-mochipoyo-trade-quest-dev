@@ -7,6 +7,7 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | 人物ID | 向き | 元の絵 | 足もとの基準点 | 握る位置（武器） | 盾の位置 |
 |---|---|---|---|---|---|
 | hero | job:warrior | assets/characters/jobs/warrior.png | 64, 197 | 22, 117（剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す） | 105, 125（盾：腕の上（体の後に描く）） |
+| hero | front | assets/characters/party-directions-v3/sprites/hero/front.png | 160, 304 | 117, 221（剣：拳の上に鍔（剣を後に描く）／杖・槍：柄の上に拳を描き直す） | 200, 229（盾：腕の上（体の後に描く）） |
 | hero | back | assets/characters/party-directions-v3/sprites/hero/back.png | 160, 304 | 205, 213（剣：拳の上に鍔／杖・槍：柄の上に拳を描き直す） | 108, 222（盾：左腕の外側（体の後に描く）） |
 
 ほかの人物・向き：部品なし（本人の従来の絵）。

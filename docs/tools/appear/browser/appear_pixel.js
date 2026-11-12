@@ -14,6 +14,7 @@ const SETS = [
   { key: 'heavy', name: '重鎧＋兜＋剣と盾', eq: { armor: 'iron_armor', head: 'iron_helm', weapon: 'steel_sword', shield: 'iron_shield' } },
   { key: 'robe', name: 'ローブ＋帽子＋杖', eq: { armor: 'robe', head: 'wizard_hat', weapon: 'oak_staff' } },
   { key: 'spear', name: '重鎧＋槍（長さの確かめ）', eq: { armor: 'iron_armor', weapon: 'iron_spear' } },
+  { key: 'heavyaxe', name: '重鎧＋手斧（部品のない武器）', eq: { armor: 'iron_armor', weapon: 'hand_axe' } },
 ];
 (async () => {
   fs.mkdirSync(OUT + 'shots', { recursive: true }); fs.mkdirSync(OUT + 'logs', { recursive: true });
@@ -73,12 +74,12 @@ const SETS = [
     const load = (u) => new Promise((ok) => { const im = new Image(); im.crossOrigin = 'anonymous'; im.onload = () => ok(im); im.onerror = () => ok(null); im.src = (Assets.base || '') + u; });
     const data = (c) => c.getContext('2d').getImageData(0, 0, c.width, c.height);
     const layerData = async (view, k, W, H, pad) => { const r = view.parts[k]; const im = await load(r.url); const c = document.createElement('canvas'); c.width = W; c.height = H; c.getContext('2d').drawImage(im, pad + r.x, pad + r.y); return data(c); };
-    for (const vk of ['job:warrior', 'back']) {
+    for (const vk of ['job:warrior', 'back', 'front']) {
       const view = EA.pixelView('hero', vk); const pad = 48; const W = view.w + 2 * pad, H = view.h + 2 * pad;
       const orig = await load(view.src); const oc = document.createElement('canvas'); oc.width = W; oc.height = H; oc.getContext('2d').drawImage(orig, pad, pad); const od = data(oc);
       const hel = await layerData(view, 'head_helm_t', W, H, pad), helf = await layerData(view, 'head_helm_f', W, H, pad);
       const plain = await layerData(view, 'base_plain', W, H, pad), lt = await layerData(view, 'armor_light_t', W, H, pad), ht = await layerData(view, 'armor_heavy_t', W, H, pad);
-      const sw = await layerData(view, 'weapon_sword', W, H, pad), sh = await layerData(view, 'shield', W, H, pad);
+      const sw = await layerData(view, 'weapon_sword', W, H, pad), sh = await layerData(view, 'shield', W, H, pad), shp = await layerData(view, 'armor_shape_f', W, H, pad);
       const res = {};
       for (const st of SETS) {
         const actor = { id: 'hero', job: 'warrior', equip: st.eq };
@@ -89,14 +90,16 @@ const SETS = [
         // 元の剣・盾のドットが残っていないか（剣・盾を持たない組み合わせ）：元の剣・盾の部品の場所に、その色のままのドットが何個あるか
         let swLeft = 0, shLeft = 0;
         for (let i = 0; i < W * H; i++) {
-          const same = (D) => D.data[i * 4 + 3] > 16 && Math.abs(D.data[i * 4] - d.data[i * 4]) < 3 && Math.abs(D.data[i * 4 + 1] - d.data[i * 4 + 1]) < 3 && Math.abs(D.data[i * 4 + 2] - d.data[i * 4 + 2]) < 3 && d.data[i * 4 + 3] > 16 && plain.data[i * 4 + 3] < 16;
+          const eq3 = (D) => D.data[i * 4 + 3] > 16 && d.data[i * 4 + 3] > 16 && Math.abs(D.data[i * 4] - d.data[i * 4]) < 3 && Math.abs(D.data[i * 4 + 1] - d.data[i * 4 + 1]) < 3 && Math.abs(D.data[i * 4 + 2] - d.data[i * 4 + 2]) < 3;
+          const armored = /armor|mail|plate/.test(st.eq.armor || '');   // 鎧の形を重ねる組み合わせ
+          const same = (D) => eq3(D) && !eq3(plain) && !(armored && eq3(shp));   // 元の剣・盾の色のドットで、素の絵・鎧の形の部品では説明できないもの（体の上に重なった所も数える）
           if (!st.eq.weapon || st.eq.weapon !== 'steel_sword') { if (same(sw)) swLeft++; }
           if (!st.eq.shield) { if (same(sh)) shLeft++; }
         }
         // 兜から髪が出ていないか：兜の組み合わせで、額の帯より上の行・兜の外にある赤い髪のドット
         let hairOut = 0;
         if (st.eq.head === 'iron_helm') {
-          const brow = vk === 'back' ? pad + 160 : pad + 46;
+          const brow = vk === 'back' ? pad + 160 : vk === 'front' ? pad + 150 : pad + 46;
           for (let y = 0; y < brow; y++) for (let x = 0; x < W; x++) { const i = (y * W + x) * 4; if (d.data[i + 3] < 16) continue; if (hel.data[i + 3] > 16 || helf.data[i + 3] > 16) continue;
             const R = d.data[i], G = d.data[i + 1], B = d.data[i + 2]; if (R > 120 && R > G * 1.6 && R > B * 1.6) hairOut++; }
         }
@@ -112,9 +115,9 @@ const SETS = [
     return out;
   }, SETS);
   rec.geo = geo;
-  for (const vk of ['job:warrior', 'back']) {
+  for (const vk of ['job:warrior', 'back', 'front']) {
     const g = geo[vk]; const rs = SETS.map((s) => g.res[s.key]);
-    S(rs.every((r) => r.state === 'ok' && r.w === g.W && r.h === g.H), vk + '：5 つの組み合わせとも、合成の絵の大きさは同じ（' + g.W + '×' + g.H + '＝元の絵＋まわり 48）');
+    S(rs.every((r) => r.state === 'ok' && r.w === g.W && r.h === g.H), vk + '：' + SETS.length + ' つの組み合わせとも、合成の絵の大きさは同じ（' + g.W + '×' + g.H + '＝元の絵＋まわり 48）');
     S(rs.every((r) => r.feet === g.ofeet), vk + '：足もとの行が元の絵と同じ（' + g.ofeet + '）：' + SETS.map((s) => s.key + ' ' + g.res[s.key].feet).join('・') + '（槍・杖を持っても変わらない）');
     S(rs.every((r) => r.swLeft === 0 && r.shLeft === 0), vk + '：剣・盾を持たない組み合わせに、元の剣・盾のドットが残っていない（' + SETS.map((s) => s.key + ' 剣' + g.res[s.key].swLeft + '/盾' + g.res[s.key].shLeft).join('・') + '）');
     S(g.res.heavy.hairOut === 0, vk + '：兜の上・外に髪のドットがない（' + g.res.heavy.hairOut + '）');
@@ -127,17 +130,17 @@ const SETS = [
     const a1 = window.__axe ? EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { weapon: window.__axe } }, 'job:warrior') : null;
     const a2 = EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { head: 'leather_cap' } }, 'job:warrior');
     const a3 = EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { acc: 'ring_power', weapon: 'steel_sword' } }, 'job:warrior');
-    return { axe: a1, cap: a2, ring: a3, gald: EA.supports(State.actor('gald'), 'front'), galdBack: EA.supports(State.actor('gald'), 'back'), heroFront: EA.supports(h, 'front'), heroMage: EA.supports({ id: 'hero', job: 'mage' }, 'job:mage') };
+    return { axe: a1, cap: a2, ring: a3, gald: EA.supports(State.actor('gald'), 'front'), galdBack: EA.supports(State.actor('gald'), 'back'), heroLeft: EA.supports(h, 'left'), heroFront: EA.supports(h, 'front'), heroMage: EA.supports({ id: 'hero', job: 'mage' }, 'job:mage') };
   });
-  S((!un.axe || (!un.axe.ok && /部品がない/.test(un.axe.why))) && !un.cap.ok, '部品のない品は、本人の従来の絵（斧：' + (un.axe ? un.axe.why : '装備できる斧なし') + '／革の帽子：' + un.cap.why + '）');
+  S(un.axe && un.axe.ok && un.axe.mats.length === 0 && /部品がない/.test(un.axe.skipped.join()) && un.cap.ok && un.cap.base === 'base_plain' && /leather_cap/.test(un.cap.skipped.join()), '部品のない品は、その部位だけ描かない（斧：' + (un.axe ? un.axe.skipped.join() : '装備できる斧なし') + '／革の帽子：' + un.cap.skipped.join() + '）');
   S(un.ring.ok && un.ring.skipped.length === 1, '装飾品は描かない（試作の対象外。記録：' + un.ring.skipped.join(',') + '）。ほかの装備は着替える');
-  S(!un.gald && !un.galdBack && !un.heroFront && !un.heroMage, '部品のない人物・向き（ガルド・主人公の戦闘の正面・魔法使いの立ち絵）は本人の従来の絵');
+  S(!un.gald && !un.galdBack && !un.heroLeft && !un.heroMage && un.heroFront, '部品のない人物・向き（ガルド・主人公の戦闘の横向き・魔法使いの立ち絵の向き）は本人の従来の絵。主人公の勝利の正面は着替える');
   // 斧を持ったときのメニュー：従来の立ち絵のまま
   if (before.axe) {
     await equipSet({ weapon: before.axe }); await p.evaluate(() => { Menu.party(); }); await p.waitForSelector('#ui .party-screen .pt-art', { timeout: 60000 });
     await p.waitForFunction(() => { const h = document.querySelector('#ui .pt-art .ea-host'); return h && /ok|error|none/.test(h.getAttribute('data-ea-state') || ''); }, null, { timeout: 30000 }).catch(() => null);
-    const ax = await p.evaluate(() => { const h = document.querySelector('#ui .pt-art .ea-host'); return { st: h && h.getAttribute('data-ea-state'), img: !!(h && h.querySelector('img')), src: h && h.querySelector('img') && h.querySelector('img').getAttribute('src') }; });
-    S(ax.st === 'none' && ax.img && /jobs\/warrior/.test(ax.src || ''), 'メニュー［斧］：部品がないので従来の立ち絵（' + ax.src + '）');
+    const ax = await p.evaluate(() => { const h = document.querySelector('#ui .pt-art .ea-host'); const cv = h && h.querySelector('canvas.ea-canvas'); return { st: h && h.getAttribute('data-ea-state'), parts: cv && cv.getAttribute('data-ea-parts'), skipped: cv && cv.getAttribute('data-ea-skipped') }; });
+    S(ax.st === 'ok' && !/weapon_/.test(ax.parts || '') && /hand_axe|axe/.test(ax.skipped || ''), 'メニュー［斧だけ］：武器は描かない（手は空・元の剣は戻らない）。部品：' + ax.parts + '／描かない：' + ax.skipped);
     const box = await p.$('#ui .party-screen .pt-artbox') || await p.$('#ui .party-screen .pt-art'); if (box) await box.screenshot({ path: `${OUT}shots/pixel_menu_${KIND}_axe.png` });
     await p.keyboard.press('Escape'); await p.waitForTimeout(200);
   }

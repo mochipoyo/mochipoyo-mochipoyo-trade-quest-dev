@@ -478,7 +478,7 @@
       var M = PX(); var mb = M && M.actors && M.actors.hero && M.actors.hero.menuBase;
       return pixelView('hero', 'job:' + actor.job) ? 'job:' + actor.job : (mb && pixelView('hero', mb) ? mb : 'job:' + actor.job);
     } if (actor.id === 'hero' && actor.job && anchorsOf('hero', 'job:' + actor.job)) return 'job:' + actor.job; return 'front'; }
-  function note(actorId, viewKey, why) { var k = actorId + '/' + viewKey; if (!unsupported[k]) { unsupported[k] = why; try { console.info('[装備の外見] 本人の元の絵で表示：' + k + '（' + why + '）'); } catch (e) { } } }
+  function note(actorId, viewKey, why) { var k = actorId + '/' + viewKey; if (!unsupported[k]) { unsupported[k] = why; try { console.info(/#/.test(viewKey) ? '[装備の外見] 部品がないので、その部位は描かない：' + k + '（' + why + '）' : '[装備の外見] 本人の元の絵で表示：' + k + '（' + why + '）'); } catch (e) { } } }
   function supports(actor, viewKey) { if (!actor) return false; return MODE === 'pixel' ? !!pixelView(actor.id, viewKey) : !!anchorsOf(actor.id, viewKey); }
   // 位置の表を p ドットずらす（まわりに余白を足した画像に合わせる）
   var POS = { x: 1, y: 1, cx: 1, top: 1, brow: 1, chin: 1, sy: 1, wy: 1, hem: 1 };
@@ -546,9 +546,10 @@
       var slot = PIX_SLOTS[i]; var id = eq[slot]; if (!id) continue;
       var L = layers.filter(function (l) { return l.slot === slot; })[0];
       if (slot === 'acc') { skipped.push('acc:' + id); continue; }
-      if (!L) return { ok: false, why: slot + '：' + id + '（形が分からない品）' };
+      // v9.7.2 部品のない品は「その部位だけ描かない」（ほかの部位はそのまま着替える）。武器なら手は空のまま＝元の絵の剣は戻らない
+      if (!L) { skipped.push(slot + ':' + id + '（形が分からない品）'); continue; }
       var cls = pixelClass(L); var m = materialFor(view, cls);
-      if (!m) return { ok: false, why: slot + '：' + id + '（' + (cls || (L.shape + (L.sub && L.sub !== L.shape ? '/' + L.sub : ''))) + ' の部品がない）' };
+      if (!m) { skipped.push(slot + ':' + id + '（' + (cls || (L.shape + (L.sub && L.sub !== L.shape ? '/' + L.sub : ''))) + ' の部品がない→描かない）'); continue; }
       if (m.base) base = m.base;
       mats.push({ cls: cls, m: m, layer: L });
     }
@@ -586,8 +587,9 @@
     var eqActor = opts.equip ? { id: actor.id, job: actor.job, equip: opts.equip } : actor;
     var layers = resolve(eqActor); var plan = pixelPlan(eqActor, viewKey, layers);
     if (!plan.ok) { if (actor) note(actor.id, viewKey, plan.why); return { state: 'none', why: plan.why }; }
+    plan.skipped.forEach(function (w) { if (!/^acc:/.test(w)) note(actor.id, viewKey + '#' + w.split(':')[0], w); });   // 描かなかった部位を記録
     var M = PX(); var view = plan.view; var sig = signature(eqActor, layers, 'px:' + M.version, viewKey);
-    var hit = CACHE.get(sig); if (hit) { stats.cacheHit++; CACHE.delete(sig); CACHE.set(sig, hit); return { state: 'ok', canvas: hit.canvas, sig: sig, layers: layers, view: view, pad: M.pad, body: hit.body, mode: 'pixel', parts: hit.parts }; }
+    var hit = CACHE.get(sig); if (hit) { stats.cacheHit++; CACHE.delete(sig); CACHE.set(sig, hit); return { state: 'ok', canvas: hit.canvas, sig: sig, layers: layers, view: view, pad: M.pad, body: hit.body, mode: 'pixel', parts: hit.parts, skipped: plan.skipped }; }
     var need = [plan.base]; plan.mats.forEach(function (mt) { mt.m.layers.forEach(function (L) { if (own(view.parts, L.part)) need.push(L.part); }); if (mt.m.hand) need.push('hand'); });
     var ents = {}; need.forEach(function (k) { ents[k] = loadImg(view.parts[k].url); });
     var all = Object.keys(ents).map(function (k) { return ents[k]; });
@@ -615,7 +617,7 @@
     });
     var b = view.body; var body = { x0: b.x0 + P, y0: b.y0 + P, x1: b.x1 + P, y1: b.y1 + P };
     stats.composed++; CACHE.set(sig, { canvas: canvas, body: body, parts: used }); while (CACHE.size > CACHE_MAX) CACHE.delete(CACHE.keys().next().value);
-    return { state: 'ok', canvas: canvas, sig: sig, layers: layers, view: view, pad: P, body: body, mode: 'pixel', parts: used };
+    return { state: 'ok', canvas: canvas, sig: sig, layers: layers, view: view, pad: P, body: body, mode: 'pixel', parts: used, skipped: plan.skipped };
   }
   // メニューに置く切り出し：元の絵（w × h）の範囲を必ず含み、左右は元の絵の中心でそろえる。下は元の絵の下辺
   //   → 元の絵と同じ大きさ・同じ位置に人物が立つ（はみ出す槍・杖・帽子の先だけ、まわりへ出る）
@@ -674,7 +676,7 @@
         // data-ea-fit="body"：人物（装備のない素体）の高さを今までの絵と同じにする（長い武器の先は枠の上へはみ出す）
         if (mc && mc.frame) { host.classList.add('ea-frame'); host.style.setProperty('--ea-f', mc.f.toFixed(4)); }
         else if (host.getAttribute('data-ea-fit') === 'body' && (mc || r.body)) { var bh = r.body ? Math.max(1, r.body.y1 - r.body.y0) : 1; cv.style.setProperty('--ea-k', (mc ? mc.k : src.height / bh).toFixed(4)); host.classList.add('ea-fit-body'); }
-        cv.setAttribute('data-ea-mode', r.mode || 'vector'); if (r.parts) cv.setAttribute('data-ea-parts', r.parts.join(' '));
+        cv.setAttribute('data-ea-mode', r.mode || 'vector'); if (r.parts) cv.setAttribute('data-ea-parts', r.parts.join(' ')); if (r.skipped && r.skipped.length) cv.setAttribute('data-ea-skipped', r.skipped.join(' ')); else cv.removeAttribute('data-ea-skipped');
         cv.setAttribute('data-ea-sig', r.sig);
         if (old) old.replaceWith(cv); else { host.innerHTML = ''; host.appendChild(cv); }
         host.setAttribute('data-ea-state', 'ok');
