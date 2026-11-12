@@ -95,7 +95,7 @@ SETS = {
              ('重鎧＋盾（武器なし）', {'armor': 'iron_armor', 'shield': 'iron_shield'}), ('軽装＋木の剣＋木の盾', {'armor': 'leather_armor', 'weapon': 'wooden_sword', 'shield': 'wooden_shield'}),
              ('騎士の鎧＋騎士の剣＋騎士の盾', {'armor': 'knight_armor', 'weapon': 'knight_sword', 'shield': 'knight_shield'}), ('重鎧＋鉄の兜＋槍と盾', {'armor': 'iron_armor', 'weapon': 'spear', 'head': 'iron_helm', 'shield': 'iron_shield'}), ('装備なし＋騎士の兜', {'head': 'knight_helm'})],
     # v9.8.4 ミナ（盗賊：短剣・剣・弓）
-    'mina': [('装備なし', {}), ('短弓', {'weapon': 'short_bow'}), ('短剣', {'weapon': 'dagger'}), ('長弓', {'weapon': 'long_bow'}), ('銅の剣＋革の鎧（部品なし）', {'weapon': 'copper_sword', 'armor': 'leather_armor'})],
+    'mina': [('装備なし', {}), ('短弓', {'weapon': 'short_bow'}), ('短剣', {'weapon': 'dagger'}), ('長弓', {'weapon': 'long_bow'}), ('銅の剣（片手剣）', {'weapon': 'copper_sword'}), ('鋼の剣＋革の鎧（鎧は部品なし）', {'weapon': 'steel_sword', 'armor': 'leather_armor'})],
     'kazuto': [('装備なし', {}), ('重鎧＋剣と盾', {'armor': 'iron_armor', 'weapon': 'steel_sword', 'shield': 'iron_shield'}), ('重鎧＋戦斧', {'armor': 'iron_armor', 'weapon': 'battle_axe'}),
                ('重鎧＋槍と盾', {'armor': 'iron_armor', 'weapon': 'iron_spear', 'shield': 'iron_shield'}), ('重鎧＋盾（武器なし）', {'armor': 'iron_armor', 'shield': 'iron_shield'}),
                ('軽装＋手斧', {'armor': 'leather_armor', 'weapon': 'hand_axe'}), ('騎士の鎧＋騎士の剣＋騎士の盾', {'armor': 'knight_armor', 'weapon': 'knight_sword', 'shield': 'knight_shield'}),

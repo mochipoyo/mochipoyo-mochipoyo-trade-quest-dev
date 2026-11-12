@@ -31,9 +31,9 @@ const SETS = {
     { key: 'nopart', name: '重鎧＋鉄の兜（v9.8.3 から描く）', eq: { armor: 'iron_armor', head: 'iron_helm' } }],
   // v9.8.4 ミナ（盗賊：短剣・剣・弓）
   mina: [{ key: 'plain', name: '装備なし', eq: {} }, { key: 'bow', name: '短弓', eq: { weapon: 'short_bow' } }, { key: 'dagger', name: '短剣（元の絵の 2 本）', eq: { weapon: 'dagger' } },
-    { key: 'longbow', name: '長弓（色のある品も同じ形）', eq: { weapon: 'long_bow' } }, { key: 'nopart', name: '銅の剣＋革の鎧＋革の帽子（部品のない品）', eq: { weapon: 'copper_sword', armor: 'leather_armor', head: 'leather_cap' } }],
+    { key: 'longbow', name: '長弓（色のある品も同じ形）', eq: { weapon: 'long_bow' } }, { key: 'sword', name: '銅の剣（v9.8.5 片手剣）', eq: { weapon: 'copper_sword' } }, { key: 'nopart', name: '革の鎧＋革の帽子（部品のない品）', eq: { armor: 'leather_armor', head: 'leather_cap' } }],
 };
-const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe', 'weapon_sword'], kyle: ['weapon_sword'], kazuto: ['weapon_sword'], mina: ['weapon_dagger'] };   // 元の武器（杖・斧・剣）と、v9.8.1 の剣
+const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe', 'weapon_sword'], kyle: ['weapon_sword'], kazuto: ['weapon_sword'], mina: ['weapon_dagger'] };   // ミナの剣は描いた剣（元の絵にはない）   // 元の武器（杖・斧・剣）と、v9.8.1 の剣
 (async () => {
   fs.mkdirSync(OUT + 'shots', { recursive: true }); fs.mkdirSync(OUT + 'logs', { recursive: true });
   const br = await chromium.launch(); const ctx = await br.newContext({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 2 }); const p = await ctx.newPage();
@@ -74,7 +74,7 @@ const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe'
     }
     const ms = SETS[id].map((s) => rec[id].menu[s.key]); const near = (a, b, t) => Math.abs(a - b) <= t;
     S(ms.every((m) => near(m.bottom, ms[0].bottom, 1) && near(m.cx, ms[0].cx, 1) && near(m.px, ms[0].px, 0.005)), `${id}：なかまの画面の足もと・左右の中心・1 ドットの大きさが ${ms.length} つとも同じ（${ms[0].bottom}/${ms[0].cx}/${ms[0].px}）`);
-    const np = rec[id].menu.nopart; const nps = id === 'lina' ? ['club', 'feather_hat', 'wooden_shield'] : id === 'gald' ? ['iron_spear', 'iron_helm'] : id === 'mina' ? ['copper_sword', 'leather_armor', 'leather_cap'] : [];
+    const np = rec[id].menu.nopart; const nps = id === 'lina' ? ['club', 'feather_hat', 'wooden_shield'] : id === 'gald' ? ['iron_spear', 'iron_helm'] : id === 'mina' ? ['leather_armor', 'leather_cap'] : [];
     S(np.st === 'ok' && nps.every((x) => (np.skipped || '').indexOf(x) >= 0) && (id === 'mina' ? np.parts === 'base_plain' : /armor_/.test(np.parts)) && !/weapon_/.test(np.parts), `${id}：部品のない品は部位ごと（${nps.join('・')} は描かない。鎧は着替える：${np.parts}）`);
     if (id === 'gald') { const m1 = rec[id].menu.heavy, m2 = rec[id].menu.sword, m3 = rec[id].menu.unarmed;
       S(/armor_shape_f/.test(m1.parts) && /weapon_axe/.test(m1.parts) && /armor_shape_f/.test(m2.parts) && /shield_t shield_f weapon_sword hand$/.test(m2.parts) && /armor_shape_f shield_t shield_f$/.test(m3.parts), `ガルド：斧から剣と盾に替えても重鎧はそのまま（${m2.parts}）。武器をはずすと手ぶら（${m3.parts}）`); }
@@ -84,7 +84,7 @@ const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe'
       const alt = id === 'kyle' ? M0.spear : M0.axe; const altW = id === 'kyle' ? 'weapon_spear' : 'weapon_axe'; const altSh = id === 'kyle' ? ' ' + sh : '';
       S(alt.parts === 'base_plain armor_shape_f' + altSh + ' ' + altW + ' hand' && M0.unarmed.parts === 'base_plain armor_shape_f ' + sh, `${id}：剣から${id === 'kyle' ? '槍' : '斧'}に持ち替えても重鎧${id === 'kyle' ? '・盾' : ''}はそのまま（${alt.parts}）。武器をはずすと手ぶら（${M0.unarmed.parts}）`);
       S(/armor_heavy_t/.test(M0.knight.parts) && /shield_t/.test(M0.knight.parts) && /armor_light_t/.test(M0.light.parts) && (id === 'kazuto' || /shield_t/.test(M0.light.parts)), `${id}：色のある品は品の色（騎士の鎧・盾 ${M0.knight.parts}／${id === 'kazuto' ? '革の鎧' : '革の鎧・木の盾'} ${M0.light.parts}）`); }
-    if (id === 'mina') { const M0 = rec[id].menu; S(M0.plain.parts === 'base_plain' && M0.bow.parts === 'base_plain weapon_bow hand' && M0.longbow.parts === M0.bow.parts && M0.dagger.parts === 'base_plain weapon_dagger', `ミナ：装備なし＝手ぶら／弓＝${M0.bow.parts}／短剣＝${M0.dagger.parts}`); }
+    if (id === 'mina') { const M0 = rec[id].menu; S(M0.plain.parts === 'base_plain' && M0.bow.parts === 'base_plain weapon_bow hand' && M0.longbow.parts === M0.bow.parts && M0.dagger.parts === 'base_plain weapon_dagger' && M0.sword.parts === 'base_plain weapon_sword hand', `ミナ：剣＝${M0.sword.parts}／装備なし＝手ぶら／弓＝${M0.bow.parts}／短剣＝${M0.dagger.parts}`); }
     if (id === 'lina') { const c1 = rec[id].menu.cap, c2 = rec[id].menu.light;
       S(/head_cap_t/.test(c1.parts) && /head_cap_t/.test(c2.parts) && !c1.skipped && !c2.skipped, `リーナ：帽子（cap 型：革の帽子・高値安値の帽子）は頭巾を品の色に（${c1.parts}）`); }
     // ---- 2 合成の絵の数値（同じ関数をページで使う）----

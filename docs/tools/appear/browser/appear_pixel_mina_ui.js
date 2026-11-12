@@ -1,6 +1,7 @@
 // v9.8.4 装備の外見（ドット絵の差分）：ミナ（盗賊）の弓・短剣を、ふつうの遊び方の手順で確かめる（ヘッドレス Chromium。実機ではない。GPU なし）
 //   appear_pixel_knight_ui.js と同じ手順：［そうび］で確定・キャンセル（品の一覧で Esc）・解除 →［なかま］の立ち絵 → 戦闘（背面）→ 勝利（正面。結果の窓あり・なし）→ 戦闘のあとの［なかま］
-//   組み合わせ：装備なし（加入したまま）→ 短弓 → 短剣に持ち替え → 武器をはずす
+//   組み合わせ：装備なし（加入したまま）→ 銅の剣（v9.8.5）→ 短弓 → 短剣 → 武器をはずす。それぞれ品の一覧でキャンセルも
+//   v9.8.5 以前の版（v9.8.3・v9.7.2）のゲームを実際に動かして作ったセーブ（fixtures/。make_old_save.js）をコピーして読み、装備ID・所持数・外見を確かめる
 //   セーブの互換：装備ID だけを書いたセーブ（外見の情報なし）を読み直しても、同じ装備ID から同じ部品になる（ページを読み込み直して確かめる）
 //   VIEW=pc（1280×720）｜phone（スマホ縦：iPhone 13 相当 390×664）  PORT=…  OUT=…
 const { chromium, devices } = require('playwright'); const fs = require('fs');
@@ -10,12 +11,13 @@ const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.lo
 const WHO = { mina: 'ミナ' }; const IDS = Object.keys(WHO);
 const STATES = [
   { key: 'plain', name: '装備なし（加入したまま）', eq: null, battle: true },
-  { key: 'equip', name: '短弓を装備', eq: { mina: { weapon: 'short_bow' } }, cancel: { mina: '武器' }, battle: true },
+  { key: 'sword', name: '銅の剣を装備（v9.8.5 片手剣）', eq: { mina: { weapon: 'copper_sword' } }, cancel: { mina: '武器' }, battle: true },
+  { key: 'equip', name: '銅の剣 → 短弓に持ち替え', eq: { mina: { weapon: 'short_bow' } }, cancel: { mina: '武器' }, battle: true },
   { key: 'swap', name: '短弓 → 短剣に持ち替え', eq: { mina: { weapon: 'dagger' } }, cancel: { mina: '武器' }, battle: true },
   { key: 'unarm', name: '武器をはずす（解除）', eq: { mina: { weapon: null } }, battle: true },
 ];
 // 組み合わせごとの、なかまの画面の立ち絵の部品（重ねる順）
-const PARTS = { plain: { mina: 'base_plain' }, equip: { mina: 'base_plain weapon_bow hand' }, swap: { mina: 'base_plain weapon_dagger' }, unarm: { mina: 'base_plain' } };
+const PARTS = { plain: { mina: 'base_plain' }, sword: { mina: 'base_plain weapon_sword hand' }, equip: { mina: 'base_plain weapon_bow hand' }, swap: { mina: 'base_plain weapon_dagger' }, unarm: { mina: 'base_plain' } };
 const SLOT_LABEL = { weapon: '武器', armor: '鎧', shield: '盾', head: '頭' };
 let PG = null;
 (async () => {
@@ -30,7 +32,7 @@ let PG = null;
     const T = Win.toast; Win.toast = function (m) { (window.__toasts = window.__toasts || []).push(String(m)); return T.apply(this, arguments); };
     document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay);
     State.newGame('もち', 'warrior'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.settings.soundAsk93 = true; d.gold = 20000;
-    State.joinCompanion('mina'); ['short_bow', 'dagger'].forEach((id) => State.addItem(id, 1));
+    State.joinCompanion('mina'); ['short_bow', 'dagger', 'copper_sword'].forEach((id) => State.addItem(id, 1));
     World.start(); const M = State.actor('mina');
     return { party: d.party.slice(), mina: Object.assign({}, M.equip), job: M.job, lv: M.level, can: { bow: Actors.canEquip(M, 'short_bow'), dagger: Actors.canEquip(M, 'dagger') }, shape: { bow: ITEMS.short_bow.type, dagger: ITEMS.dagger.type } };
   });
@@ -206,6 +208,9 @@ let PG = null;
     S(sr.every((r) => r && Math.abs(r.dy - sr[0].dy) <= 1.5 && Math.abs(r.kh - sr[0].kh) <= 0.015), `${WHO[id]}：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：${sr.map((r) => r && 'Δ足もと ' + r.dy + 'px・高さ比 ' + r.kh).join('／')}）`);
   }
   const sig = (x) => String((x && x.ea) || ''); const has = (x, ids) => ids.every((k) => sig(x).indexOf('"' + k + '"') >= 0);
+  const bS0 = rec.sword.battle;
+  S(has(bS0.mina, ['copper_sword']) && has(bS0.victory && bS0.victory.mina, ['copper_sword']) && rec.sword.menu.mina.parts === 'base_plain weapon_sword hand' && !rec.sword.menu.mina.skipped, '銅の剣：手ぶらにならず、片手剣がメニュー正面・戦闘の背面・勝利の正面の 3 つに出る（柄の上に拳を描き直す）');
+  S(!has(rec.equip.battle.mina, ['copper_sword']) && !/weapon_sword/.test(rec.equip.menu.mina.parts), '剣 → 弓に持ち替え：剣は消える');
   const bE = rec.equip.battle, bW = rec.swap.battle, bU = rec.unarm.battle;
   S(has(bE.mina, ['short_bow']) && has(bE.victory && bE.victory.mina, ['short_bow']) && rec.equip.menu.mina.parts === 'base_plain weapon_bow hand', '短弓：同じ装備ID（short_bow）が、メニュー正面・戦闘の背面・勝利の正面の 3 つに出る（弓の握りの上に拳を描き直す）');
   S(has(bW.mina, ['dagger']) && has(bW.victory && bW.victory.mina, ['dagger']) && !has(bW.mina, ['short_bow']) && rec.swap.menu.mina.parts === 'base_plain weapon_dagger', '短剣に持ち替え：弓は消え、短剣（元の絵の 2 本）が 3 つの向きに出る');
@@ -219,6 +224,31 @@ let PG = null;
     const old = JSON.parse(JSON.stringify(M)); old.equip.weapon = 'dagger';   // 以前の版で短剣を装備していたミナ（装備ID だけ）
     return { equip: M.equip, bow: ['menu', 'back', 'front'].map((vk) => plan(M, vk)), dagger: ['menu', 'back', 'front'].map((vk) => plan(old, vk)), hero: plan(d.hero, EA.menuView(d.hero)) }; });
   S(ld && ld.equip.weapon === 'short_bow' && ld.bow.every((x) => x === 'base_plain weapon_bow') && ld.dagger.every((x) => x === 'base_plain weapon_dagger'), 'セーブを読み直す（ページの読み込み直し）：装備ID short_bow のまま → 3 つの向きとも弓。短剣を装備したセーブ（装備ID dagger）は 3 つの向きとも短剣（' + (ld && ld.bow.join('／')) + '）');
+  // ---- v9.8.5 以前の版で実際に作ったテスト用のセーブ（fixtures/save_<版>.json）をコピーして読む ----
+  //   セーブのファイルは読むだけ（書き換えない）。LocalStorage へコピー → ページを読み込み直す → スロット 1 を読む（タイトルの「つづきから」と同じ State.load）→ 装備ID・所持数 → 外見
+  const crypto = require('crypto'); rec.old = {};
+  for (const fxName of ['v983', 'v972']) {
+    const fp = `${OUT}fixtures/save_${fxName}.json`; const raw = fs.readFileSync(fp, 'utf8'); const sha0 = crypto.createHash('sha256').update(raw).digest('hex'); const fx = JSON.parse(raw);
+    await p.evaluate((ks) => { localStorage.clear(); Object.keys(ks).forEach((k) => localStorage.setItem(k, ks[k])); }, fx.localStorage);
+    await p.reload(); await p.waitForFunction(() => window.MTQ3D && MTQ3D.ready, null, { timeout: 300000 }); await p.waitForSelector('#ui .title-menu', { timeout: 300000 });
+    const o = await p.evaluate(() => {
+      const d = State.load(1); if (!d) return null; document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay);
+      State.data = d; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.settings.soundAsk93 = true; World.start();
+      const EA = EquipmentAppearance; const plan = (a) => ['menu', 'back', 'front'].map((dir) => { const vk = dir === 'menu' ? EA.menuView(a) : dir; const q = EA.pixelPlan(a, vk); return q.ok ? [q.base].concat(q.mats).join(' ') + (q.skipped.length ? ' !' + q.skipped.join(',') : '') : 'x'; });
+      const keys = {}; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); keys[k] = localStorage.getItem(k); }
+      return { party: d.party.slice(), equip: Object.fromEntries(d.party.map((id) => [id, Object.assign({}, State.actor(id).equip)])), inventory: JSON.parse(JSON.stringify(d.inventory)), gold: d.gold, plans: Object.fromEntries(d.party.map((id) => [id, plan(State.actor(id))])), keys };
+    });
+    const ex = fx.expect; const tag = `以前の版のセーブ ${fxName}（${fx.madeWith.commit}・外見の版 ${fx.madeWith.equipPixels.version}）`;
+    S(o && JSON.stringify(o.party) === JSON.stringify(ex.party) && JSON.stringify(o.equip) === JSON.stringify(ex.equip), `${tag}：パーティ（${o && o.party.join('・')}）と、全員の装備ID が作ったときと同じ（ミナ ${o && JSON.stringify(o.equip.mina.weapon)}）`);
+    S(o && JSON.stringify(o.inventory) === JSON.stringify(ex.inventory) && o.gold === ex.gold, `${tag}：所持数が作ったときと同じ（${o && JSON.stringify(o.inventory)}・${o && o.gold}G）`);
+    const want = { hero: 'armor_heavy head_helm weapon_sword', lina: 'armor_robe head_cap weapon_staff', mina: 'weapon_sword', kyle: 'armor_heavy shield weapon_spear' };
+    S(o && Object.keys(want).every((id) => o.plans[id].every((x) => x.replace(/^base_\w+ /, '') === want[id])), `${tag}：装備ID から、3 つの向きとも対応する外見になる（` + Object.keys(want).map((id) => id + '＝' + (o && o.plans[id][0])).join('／') + '）');
+    S(o && Object.keys(fx.localStorage).every((k) => o.keys[k] === fx.localStorage[k]) && crypto.createHash('sha256').update(fs.readFileSync(fp, 'utf8')).digest('hex') === sha0, `${tag}：読んだだけではセーブを書き換えない（LocalStorage の中身・セーブのファイルとも同じ）`);
+    await p.waitForTimeout(1500); await pause3d(true);
+    const m = await shotParty('old_' + fxName); const b = await battle('old_' + fxName);
+    S(m.mina.st === 'ok' && m.mina.parts === 'base_plain weapon_sword hand' && has(b.mina, ['copper_sword']) && has(b.victory && b.victory.mina, ['copper_sword']), `${tag}：ミナ（銅の剣）は、なかまの画面・戦闘の背面・勝利の正面とも片手剣（${m.mina.parts}）`);
+    rec.old[fxName] = { load: o && { party: o.party, equip: o.equip, inventory: o.inventory, plans: o.plans }, menu: m, battle: b };
+  }
   S(errs.length === 0, 'ページのエラーなし' + (errs.length ? '：' + errs.slice(0, 3).join(' / ') : ''));
   S(bad.length === 0, '読み込みの失敗なし' + (bad.length ? '：' + bad.slice(0, 4).join(' / ') : ''));
   const ng = steps.filter((x) => !x.ok).length;

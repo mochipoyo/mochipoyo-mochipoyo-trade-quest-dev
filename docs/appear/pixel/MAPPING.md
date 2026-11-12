@@ -1,4 +1,4 @@
-# 装備の外見（ドット絵の差分）の対応表（v9.7〜v9.8.4・自動生成）
+# 装備の外見（ドット絵の差分）の対応表（v9.7〜v9.8.5・自動生成）
 
 appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS）から作る。手で書き換えない。
 
@@ -50,6 +50,7 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | shield（gald） | 30 | —（変えない） | shield_t（tint:main・灰色の品は元の鎧の色）、shield_f |  |
 | shield（kyle） | 30 | —（変えない） | shield_f、shield_t（tint:main・灰色の品は塗らない）、shield_e |  |
 | shield（kazuto） | 30 | —（変えない） | shield_f、shield_t（tint:main・灰色の品は塗らない）、shield_e |  |
+| weapon_sword（mina） | 40 | —（変えない） | weapon_sword | はい |
 
 ## 装備ID → 部品の種類
 
@@ -147,4 +148,4 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | gald | armor_light、armor_heavy、weapon_sword、weapon_axe、shield |
 | kyle | armor_light、armor_heavy、head_helm、weapon_sword、weapon_spear、shield |
 | kazuto | armor_light、armor_heavy、head_helm、weapon_sword、weapon_spear、weapon_axe、shield |
-| mina | weapon_bow、weapon_dagger |
+| mina | weapon_sword、weapon_bow、weapon_dagger |

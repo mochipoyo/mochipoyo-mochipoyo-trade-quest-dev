@@ -1,5 +1,16 @@
 {
  "menuBase": "menu",
+ "materials": {
+  "weapon_sword": {
+   "z": 40,
+   "hand": true,
+   "layers": [
+    {
+     "part": "weapon_sword"
+    }
+   ]
+  }
+ },
  "views": {
   "menu": {
    "src": "assets/characters/companions/mina.png",
@@ -53,6 +64,13 @@
      "y": 158,
      "w": 25,
      "h": 26
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/mina/menu/weapon_sword.png?v=d329f652",
+     "x": 153,
+     "y": 156,
+     "w": 32,
+     "h": 85
     },
     "weapon_bow": {
      "url": "assets/characters/equip-pixels/mina/menu/weapon_bow.png?v=f6b4aa92",
@@ -110,6 +128,13 @@
      "y": 194,
      "w": 25,
      "h": 26
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/mina/menu/weapon_sword.png?v=d329f652",
+     "x": 215,
+     "y": 192,
+     "w": 32,
+     "h": 85
     },
     "weapon_bow": {
      "url": "assets/characters/equip-pixels/mina/menu/weapon_bow.png?v=f6b4aa92",
@@ -172,6 +197,13 @@
      "y": 198,
      "w": 25,
      "h": 23
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/mina/back/weapon_sword.png?v=6ce0e8d4",
+     "x": 93,
+     "y": 195,
+     "w": 28,
+     "h": 87
     },
     "weapon_bow": {
      "url": "assets/characters/equip-pixels/mina/back/weapon_bow.png?v=212d2ea5",

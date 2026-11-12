@@ -22,7 +22,7 @@ if KNIGHT:
             ('kazuto', 'plain', 'カズト\n装備なし\n（鎧下・手ぶら）'), ('kazuto', 'equip', 'カズト\n鉄の鎧＋鋼の剣\n＋鉄の盾'), ('kazuto', 'swap', 'カズト\n剣と盾→戦斧\n（鎧はそのまま）'), ('kazuto', 'unarm', 'カズト\n鉄の鎧\n（斧をはずす）')]
 MINA = len(sys.argv) > 1 and sys.argv[1] == 'mina'   # v9.8.4 ミナ（弓・短剣）：logs/ui_mina_<pc|phone>.json → compare_mina_<pc|phone>.jpg・pixel_comp_sets_mina.jpg
 if MINA:
-    ROWS = [('mina', 'plain', 'ミナ\n装備なし\n（手ぶら）'), ('mina', 'equip', 'ミナ\n短弓'), ('mina', 'swap', 'ミナ\n短剣に持ち替え'), ('mina', 'unarm', 'ミナ\n武器をはずす')]
+    ROWS = [('mina', 'plain', 'ミナ\n装備なし\n（手ぶら）'), ('mina', 'sword', 'ミナ\n銅の剣\n（片手剣）'), ('mina', 'equip', 'ミナ\n短弓に持ち替え'), ('mina', 'swap', 'ミナ\n短剣に持ち替え'), ('mina', 'unarm', 'ミナ\n武器をはずす')]
 LOGN, SHN, OUTN = ('mina', 'm', 'mina') if MINA else ('knight', 'k', 'knight') if KNIGHT else ('comp', 'c', 'comp')
 
 

@@ -1730,6 +1730,13 @@
       "w": 25,
       "h": 26
      },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/mina/menu/weapon_sword.png",
+      "x": 153,
+      "y": 156,
+      "w": 32,
+      "h": 85
+     },
      "weapon_bow": {
       "file": "assets/characters/equip-pixels/mina/menu/weapon_bow.png",
       "x": 137,
@@ -1781,6 +1788,13 @@
       "y": 194,
       "w": 25,
       "h": 26
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/mina/menu/weapon_sword.png",
+      "x": 215,
+      "y": 192,
+      "w": 32,
+      "h": 85
      },
      "weapon_bow": {
       "file": "assets/characters/equip-pixels/mina/menu/weapon_bow.png",
@@ -1834,6 +1848,13 @@
       "w": 25,
       "h": 23
      },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/mina/back/weapon_sword.png",
+      "x": 93,
+      "y": 195,
+      "w": 28,
+      "h": 87
+     },
      "weapon_bow": {
       "file": "assets/characters/equip-pixels/mina/back/weapon_bow.png",
       "x": 108,
@@ -1868,9 +1889,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "copper_sword": {
@@ -1895,9 +1916,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "iron_sword": {
@@ -1922,9 +1943,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "steel_sword": {
@@ -1949,9 +1970,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "knight_sword": {
@@ -1976,9 +1997,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "wave_sword": {
@@ -2003,9 +2024,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "dagger": {
@@ -3301,9 +3322,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "arcane_staff": {
@@ -3687,9 +3708,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "ema_trident": {
@@ -4048,9 +4069,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "ema_trident_2": {
@@ -4210,9 +4231,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "sun_spear": {
@@ -4507,9 +4528,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "ice_staff": {
@@ -4677,9 +4698,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "zero_bow": {
@@ -4906,9 +4927,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "ev_staff": {
@@ -4987,9 +5008,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "lln_charm": {
@@ -5030,9 +5051,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "yin_sword": {
@@ -5057,9 +5078,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "resistance_blade": {
@@ -5084,9 +5105,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "equilibrium_sword": {
@@ -5111,9 +5132,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "pinbar_dagger": {
@@ -7050,9 +7071,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "td_margin_charm": {
@@ -7371,9 +7392,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "b19_amber_memory_bow": {
@@ -7514,9 +7535,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "b19_all_seal": {
@@ -7549,9 +7570,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "t68_islands_spear": {
@@ -7873,9 +7894,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "t68_tempus_spear": {
@@ -8143,9 +8164,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "t68_desert_spear": {
@@ -8440,9 +8461,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "t68_machine_spear": {
@@ -8980,9 +9001,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "t68_dragon_staff": {
@@ -9223,9 +9244,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "t68_dark_spear": {
@@ -9690,9 +9711,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "neon_umbrella": {
@@ -9965,9 +9986,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "aeria_robe": {
@@ -10178,9 +10199,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "bu_dorek_bastion": {
@@ -10626,9 +10647,9 @@
     "kazuto/menu": true,
     "kazuto/front": true,
     "kazuto/back": true,
-    "mina/menu": false,
-    "mina/front": false,
-    "mina/back": false
+    "mina/menu": true,
+    "mina/front": true,
+    "mina/back": true
    }
   },
   "bu_wolf_king_claw": {
