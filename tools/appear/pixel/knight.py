@@ -242,3 +242,18 @@ def export(actor_id, out_dir, srcs, front_off, pf, pb, meta):
         }}
     json.dump(actor, open(os.path.join(out_dir, 'actor.json'), 'w', encoding='utf8'), ensure_ascii=False, indent=1)
     return actor, recF, recB
+
+
+def helm_parts(plain, cx, top, brow, rx, head, face=None, cheek=None, flare=0):
+    """v9.8.3 兜（主人公と同じ丸い兜を、その人の頭の形に合わせて描く）
+       head＝頭（髪）の範囲の多角形、face＝残す顔・首の範囲（正面）。兜の外へはみ出す髪は素の絵から消す（base_helm）
+       返す部品：base_helm・head_helm_t（色を変える灰色の層）・head_helm_f（額の帯・輪郭）"""
+    Hh, Ww = plain.shape[:2]; back = cheek is None
+    g, f, m = H.helm(Hh, Ww, cx, top, brow, rx, cheek, back=back, flare=flare)
+    b = plain.copy()
+    cut = poly(plain.shape, head) & ~m
+    if face is not None: cut &= ~poly(plain.shape, face)
+    b[cut] = 0
+    edge = P.opaque(b) & P.neighbors4(cut) & ~m          # 切り口（顔の横など）に輪郭
+    b[edge, 0], b[edge, 1], b[edge, 2] = OUTLINE
+    return {'base_helm': b, 'head_helm_t': g, 'head_helm_f': f}

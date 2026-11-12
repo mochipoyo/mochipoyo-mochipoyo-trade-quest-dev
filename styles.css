@@ -915,6 +915,22 @@ html.ui-large .chart-battle { font-size: 15px; } html.ui-large .chart-battle .cb
 .result-simple.rs-top .rs-minis { margin: 2px 0; }
 .result-simple.rs-top .rs-items { margin: 2px 0; }
 .result-simple.rs-top .rw-panel-close { margin-top: 6px; padding: 4px; }
+/* v9.8.3 3D の戦闘の詳しい結果（レベルアップ・新しい技・ボス）：窓は上、高さは人物の頭・武器の上まで（js/ui/battle.js の fitTop が max-height を入れる）。
+   見出し・報酬・「次へ」はいつも見え、仲間の成長・入手アイテムは中でスクロール */
+.rw-panel.result-victory.rs-detail { display: flex; flex-direction: column; overflow: hidden; max-width: 780px; padding: 6px 12px; max-height: 52%; }
+.rs-detail > * { flex: 0 0 auto; }
+.rs-detail .rs-title { font-size: 1.15rem; margin: 0; line-height: 1.2; animation: none; }
+.rs-detail .rs-special { font-size: 12px; line-height: 1.3; padding: 1px 8px; margin: 2px 0; }
+.rs-detail .rs-killed { margin: 1px 0 2px; font-size: 13px; }
+.rs-detail .rs-rewards { margin: 2px 0; padding: 2px 8px; }
+.rs-detail .rs-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; margin: 4px 0 0; padding-right: 2px; }
+.rs-detail .rs-scroll h3 { display: none; }
+.rs-detail .rs-members { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 4px; }
+.rs-detail .rs-member { padding: 3px 8px; font-size: 12px; } .rs-detail .rs-exp { font-size: 12px; } .rs-detail .rs-bar { height: 6px; margin: 2px 0; }
+.rs-detail .rs-items { margin-top: 4px; font-size: 12px; }
+.rs-detail .rs-morehint { display: none; text-align: center; font-size: 11px; color: var(--gold); line-height: 1.4; }
+.rs-detail.rs-more .rs-morehint { display: block; }
+.rs-detail .rw-panel-close { margin-top: 4px; padding: 4px; }
 .rs-minis { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 6px 0; } .rs-mini small { color: var(--muted); margin-left: 2px; }
 .rs-special { text-align: center; color: #1a1407; background: linear-gradient(90deg, #e8c15a, #ffe9a0, #e8c15a); border-radius: 6px; padding: 3px 8px; margin: 4px 0; font-weight: bold; }
 #auto-battle .ab-keep { display: block; font-size: 9px; line-height: 1; opacity: .85; }

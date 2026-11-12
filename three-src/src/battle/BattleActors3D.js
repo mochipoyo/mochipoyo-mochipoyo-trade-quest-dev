@@ -213,6 +213,7 @@ export class BattleActors3D {
     const vol = buildArtVolume(c, { height: c.height * s, aspect: c.width / c.height, smooth: false, depth: 0.05, grid: 64 });
     vol.mesh.position.set(art.offX * s, art.offY * s, 0);   // 切り出した絵の下辺の中央 → 基準点から見た位置
     vol.box = { dx: art.offX * s, w: (art.x1 - art.x0) * s, h: (info.pivot[1] - art.y0) * s };   // 立ち位置から見た、見える部分（足もと〜頭・武器の先）
+    vol.full = { dx: vol.box.dx, w: vol.box.w, h: vol.box.h };   // v9.8.3 装備をふくむ見える範囲（武器・帽子の先まで）。勝利の結果の窓を人物に重ねないために使う
     if (got.base && got.base.art) { const ba = got.base.art, bi = got.base.info; vol.box = { dx: ba.offX * s, w: (ba.x1 - ba.x0) * s, h: (bi.pivot[1] - ba.y0) * s }; }   // v9.6 装備の外見：カメラ合わせ・影・HP の位置は元の絵の範囲のまま（武器が長くなっても動かさない）
     vol.dir = info.dir; vol.url = info.url; vol.px = s; return vol;
   }
@@ -424,9 +425,9 @@ export class BattleActors3D {
     return n ? { l, r, t, b } : null;
   }
   // 味方のドット絵を画面に写した矩形（スマホの画面部品との重なりの確認用。3Dモデルの方式では null）
-  partyRect(id, W, H, camera) {
+  partyRect(id, W, H, camera, full) {   // full＝装備（武器・帽子の先）までふくむ範囲
     const ent = this.party.get(id); if (!ent || !ent.group || !ent.art) return null;
-    const p = ent.group.position; const bx = ent.art.box || { dx: 0, w: ent.art.size.w, h: ent.art.size.h }; const half = bx.w * 0.5, cx = p.x + (bx.dx || 0);   // v6.8 いま見えている絵の範囲
+    const p = ent.group.position; const bx = (full && ent.art.full) || ent.art.box || { dx: 0, w: ent.art.size.w, h: ent.art.size.h }; const half = bx.w * 0.5, cx = p.x + (bx.dx || 0);   // v6.8 いま見えている絵の範囲
     const pts = [new THREE.Vector3(cx - half, p.y, p.z), new THREE.Vector3(cx + half, p.y, p.z), new THREE.Vector3(cx - half, p.y + bx.h, p.z), new THREE.Vector3(cx + half, p.y + bx.h, p.z)].map((v) => v.project(camera));
     const xs = pts.map((v) => (v.x * 0.5 + 0.5) * W), ys = pts.map((v) => (-v.y * 0.5 + 0.5) * H);
     return { x: Math.round(Math.min(...xs)), y: Math.round(Math.min(...ys)), w: Math.round(Math.max(...xs) - Math.min(...xs)), h: Math.round(Math.max(...ys) - Math.min(...ys)) };

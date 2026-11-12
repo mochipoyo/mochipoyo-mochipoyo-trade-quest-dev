@@ -24,11 +24,11 @@ const SETS = {
   // v9.8.2 カイル（騎士：剣・槍）・カズト（戦士：剣・斧・槍）。2 番目（sword）が元の絵の装い
   kyle: [{ key: 'plain', name: '装備なし', eq: {} }, { key: 'sword', name: '重鎧＋剣と盾', eq: { armor: 'iron_armor', weapon: 'steel_sword', shield: 'iron_shield' } }, { key: 'spear', name: '重鎧＋槍と盾（剣から持ち替え）', eq: { armor: 'iron_armor', weapon: 'iron_spear', shield: 'iron_shield' } },
     { key: 'unarmed', name: '重鎧＋盾（武器をはずす）', eq: { armor: 'iron_armor', shield: 'iron_shield' } }, { key: 'knight', name: '騎士の鎧・剣・盾（色のある品）', eq: { armor: 'knight_armor', weapon: 'knight_sword', shield: 'knight_shield' } },
-    { key: 'light', name: '革の鎧（軽装）＋木の剣＋木の盾', eq: { armor: 'leather_armor', weapon: 'wooden_sword', shield: 'wooden_shield' } }, { key: 'nopart', name: '重鎧＋兜（兜は部品のない品）', eq: { armor: 'iron_armor', head: 'iron_helm' } }],
+    { key: 'light', name: '革の鎧（軽装）＋木の剣＋木の盾', eq: { armor: 'leather_armor', weapon: 'wooden_sword', shield: 'wooden_shield' } }, { key: 'nopart', name: '重鎧＋鉄の兜（v9.8.3 から描く）', eq: { armor: 'iron_armor', head: 'iron_helm' } }],
   kazuto: [{ key: 'plain', name: '装備なし', eq: {} }, { key: 'sword', name: '重鎧＋剣と盾', eq: { armor: 'iron_armor', weapon: 'steel_sword', shield: 'iron_shield' } }, { key: 'axe', name: '重鎧＋戦斧（剣と盾から持ち替え）', eq: { armor: 'iron_armor', weapon: 'battle_axe' } },
     { key: 'spear', name: '重鎧＋槍と盾', eq: { armor: 'iron_armor', weapon: 'iron_spear', shield: 'iron_shield' } }, { key: 'unarmed', name: '重鎧＋盾（武器をはずす）', eq: { armor: 'iron_armor', shield: 'iron_shield' } },
     { key: 'knight', name: '騎士の鎧・剣・盾（色のある品）', eq: { armor: 'knight_armor', weapon: 'knight_sword', shield: 'knight_shield' } }, { key: 'light', name: '革の鎧（軽装）＋手斧', eq: { armor: 'leather_armor', weapon: 'hand_axe' } },
-    { key: 'nopart', name: '重鎧＋兜（兜は部品のない品）', eq: { armor: 'iron_armor', head: 'iron_helm' } }],
+    { key: 'nopart', name: '重鎧＋鉄の兜（v9.8.3 から描く）', eq: { armor: 'iron_armor', head: 'iron_helm' } }],
 };
 const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe', 'weapon_sword'], kyle: ['weapon_sword'], kazuto: ['weapon_sword'] };   // 元の武器（杖・斧・剣）と、v9.8.1 の剣
 (async () => {
@@ -71,11 +71,12 @@ const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe'
     }
     const ms = SETS[id].map((s) => rec[id].menu[s.key]); const near = (a, b, t) => Math.abs(a - b) <= t;
     S(ms.every((m) => near(m.bottom, ms[0].bottom, 1) && near(m.cx, ms[0].cx, 1) && near(m.px, ms[0].px, 0.005)), `${id}：なかまの画面の足もと・左右の中心・1 ドットの大きさが ${ms.length} つとも同じ（${ms[0].bottom}/${ms[0].cx}/${ms[0].px}）`);
-    const np = rec[id].menu.nopart; const nps = id === 'lina' ? ['club', 'feather_hat', 'wooden_shield'] : id === 'gald' ? ['iron_spear', 'iron_helm'] : ['iron_helm'];
+    const np = rec[id].menu.nopart; const nps = id === 'lina' ? ['club', 'feather_hat', 'wooden_shield'] : id === 'gald' ? ['iron_spear', 'iron_helm'] : [];
     S(np.st === 'ok' && nps.every((x) => (np.skipped || '').indexOf(x) >= 0) && /armor_/.test(np.parts) && !/weapon_/.test(np.parts), `${id}：部品のない品は部位ごと（${nps.join('・')} は描かない。鎧は着替える：${np.parts}）`);
     if (id === 'gald') { const m1 = rec[id].menu.heavy, m2 = rec[id].menu.sword, m3 = rec[id].menu.unarmed;
       S(/armor_shape_f/.test(m1.parts) && /weapon_axe/.test(m1.parts) && /armor_shape_f/.test(m2.parts) && /shield_t shield_f weapon_sword hand$/.test(m2.parts) && /armor_shape_f shield_t shield_f$/.test(m3.parts), `ガルド：斧から剣と盾に替えても重鎧はそのまま（${m2.parts}）。武器をはずすと手ぶら（${m3.parts}）`); }
     if (id === 'kyle' || id === 'kazuto') { const M0 = rec[id].menu; const sh = 'shield_f shield_e';
+      S(M0.nopart.parts === 'base_helm armor_shape_f head_helm_t head_helm_f' && !M0.nopart.skipped, `${id}：v9.8.3 鉄の兜を描く（兜用の素の絵＋兜：${M0.nopart.parts}）`);
       S(M0.plain.parts === 'base_plain' && M0.sword.parts === 'base_plain armor_shape_f ' + sh + ' weapon_sword', `${id}：装備なし＝素の絵（鎧下・手ぶら）。重鎧＋剣と盾＝元の絵の装い（${M0.sword.parts}）`);
       const alt = id === 'kyle' ? M0.spear : M0.axe; const altW = id === 'kyle' ? 'weapon_spear' : 'weapon_axe'; const altSh = id === 'kyle' ? ' ' + sh : '';
       S(alt.parts === 'base_plain armor_shape_f' + altSh + ' ' + altW + ' hand' && M0.unarmed.parts === 'base_plain armor_shape_f ' + sh, `${id}：剣から${id === 'kyle' ? '槍' : '斧'}に持ち替えても重鎧${id === 'kyle' ? '・盾' : ''}はそのまま（${alt.parts}）。武器をはずすと手ぶら（${M0.unarmed.parts}）`);

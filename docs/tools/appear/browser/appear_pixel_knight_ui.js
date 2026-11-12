@@ -17,7 +17,8 @@ const STATES = [
   { key: 'equip', name: '2 人とも：重鎧＋剣と盾（元の絵の装い）', eq: { kyle: { armor: 'iron_armor', weapon: 'steel_sword', shield: 'iron_shield' }, kazuto: { armor: 'iron_armor', weapon: 'steel_sword', shield: 'iron_shield' } }, cancel: { kyle: '武器', kazuto: '武器' }, battle: true },
   { key: 'swap', name: 'カイル：剣→槍／カズト：剣と盾→戦斧', eq: { kyle: { weapon: 'iron_spear' }, kazuto: { weapon: 'battle_axe', shield: null } }, cancel: { kyle: '盾', kazuto: '鎧' }, battle: true },
   { key: 'unarm', name: '武器をはずす（2 人とも）', eq: { kyle: { weapon: null }, kazuto: { weapon: null } }, battle: true },
-  { key: 'off', name: '全部はずす（解除）', eq: { kyle: { armor: null, shield: null }, kazuto: { armor: null } }, battle: false },
+  { key: 'helm', name: '2 人とも：鉄の兜をかぶる（＋剣・盾）', eq: { kyle: { head: 'iron_helm', weapon: 'steel_sword' }, kazuto: { head: 'iron_helm', weapon: 'steel_sword', shield: 'iron_shield' } }, cancel: { kyle: '頭', kazuto: '頭' }, battle: true },
+  { key: 'off', name: '全部はずす（解除）', eq: { kyle: { weapon: null, armor: null, shield: null, head: null }, kazuto: { weapon: null, armor: null, shield: null, head: null } }, battle: false },
 ];
 // 組み合わせごとの、なかまの画面の立ち絵の部品（重ねる順）
 const PARTS = {
@@ -25,6 +26,7 @@ const PARTS = {
   equip: { kyle: 'base_plain armor_shape_f shield_f shield_e weapon_sword', kazuto: 'base_plain armor_shape_f shield_f shield_e weapon_sword' },
   swap: { kyle: 'base_plain armor_shape_f shield_f shield_e weapon_spear hand', kazuto: 'base_plain armor_shape_f weapon_axe hand' },
   unarm: { kyle: 'base_plain armor_shape_f shield_f shield_e', kazuto: 'base_plain armor_shape_f' },
+  helm: { kyle: 'base_helm armor_shape_f head_helm_t head_helm_f shield_f shield_e weapon_sword', kazuto: 'base_helm armor_shape_f head_helm_t head_helm_f shield_f shield_e weapon_sword' },
   off: { kyle: 'base_plain', kazuto: 'base_plain' },
 };
 const SLOT_LABEL = { weapon: '武器', armor: '鎧', shield: '盾', head: '頭' };
@@ -42,7 +44,7 @@ let PG = null;
     document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay);
     State.newGame('もち', 'warrior'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.settings.soundAsk93 = true; d.gold = 20000;
     ['kyle', 'kazuto'].forEach((id) => State.joinCompanion(id));
-    [['iron_armor', 2], ['steel_sword', 2], ['iron_shield', 2], ['iron_spear', 1], ['battle_axe', 1]].forEach(([id, n]) => State.addItem(id, n));
+    [['iron_armor', 2], ['steel_sword', 2], ['iron_shield', 2], ['iron_spear', 1], ['battle_axe', 1], ['iron_helm', 2]].forEach(([id, n]) => State.addItem(id, n));
     World.start();
     const K = State.actor('kyle'), Z = State.actor('kazuto');
     return { party: d.party.slice(), kyle: Object.assign({}, K.equip), kazuto: Object.assign({}, Z.equip), jobs: { kyle: K.job, kazuto: Z.job }, lv: { kyle: K.level, kazuto: Z.level },
@@ -138,7 +140,10 @@ let PG = null;
       let n = 0, c = 0; for (let y = R.t; y < R.b; y += 2) for (let x = R.l; x < R.r; x += 2) { n++; if (wins.some((w) => x >= w.r.left && x <= w.r.right && y >= w.r.top && y <= w.r.bottom)) c++; }
       // 頭（上 30%）が見えているか
       let nh = 0, ch = 0; for (let y = R.t; y < R.t + (R.b - R.t) * 0.3; y += 2) for (let x = R.l; x < R.r; x += 2) { nh++; if (wins.some((w) => x >= w.r.left && x <= w.r.right && y >= w.r.top && y <= w.r.bottom)) ch++; }
-      out[id] = { covered: n ? +(c / n).toFixed(3) : null, headCovered: nh ? +(ch / nh).toFixed(3) : null, rect: { x: Math.round(R.l), y: Math.round(R.t), w: Math.round(R.r - R.l), h: Math.round(R.b - R.t) } };
+      // v9.8.3 装備（武器・帽子の先）までふくむ範囲でも測る
+      const rf = BattleStage3D.partyRect(sc, id, cv.width, cv.height, true) || r; const F = { l: b.left + rf.x * kx, t: b.top + rf.y * ky, r: b.left + (rf.x + rf.w) * kx, b: b.top + (rf.y + rf.h) * ky };
+      let nf = 0, cf = 0; for (let y = F.t; y < F.b; y += 2) for (let x = F.l; x < F.r; x += 2) { nf++; if (wins.some((w) => x >= w.r.left && x <= w.r.right && y >= w.r.top && y <= w.r.bottom)) cf++; }
+      out[id] = { covered: n ? +(c / n).toFixed(3) : null, headCovered: nh ? +(ch / nh).toFixed(3) : null, fullCovered: nf ? +(cf / nf).toFixed(3) : null, fullTop: Math.round(F.t), rect: { x: Math.round(R.l), y: Math.round(R.t), w: Math.round(R.r - R.l), h: Math.round(R.b - R.t) } };
     });
     return out;
   });
@@ -165,7 +170,7 @@ let PG = null;
         if (v) {
           await p.waitForTimeout(600); b.victory = await info(); b.vrects = await rects();
           b.cover = await coverage();   // 結果の窓を出したまま：人物がどこまで見えるか
-          b.panel = await p.evaluate(() => { const n = document.querySelector('#ui .rw-panel.result-victory'); if (!n) return null; const r = n.getBoundingClientRect(); return { cls: n.className, top: Math.round(r.top), bottom: Math.round(r.bottom), h: Math.round(r.height) }; });
+          b.panel = await p.evaluate(() => { const n = document.querySelector('#ui .rw-panel.result-victory'); if (!n) return null; const r = n.getBoundingClientRect(); const sc = n.querySelector('.rs-scroll'); const cl = n.querySelector('.rw-panel-close'); const cr = cl && cl.getBoundingClientRect(); const before = sc ? sc.scrollTop : 0; if (sc) sc.scrollTop = 99999; const moved = sc ? sc.scrollTop : 0; if (sc) sc.scrollTop = before; return { cls: n.className, top: Math.round(r.top), bottom: Math.round(r.bottom), h: Math.round(r.height), scroll: sc ? { h: sc.clientHeight, all: sc.scrollHeight, can: moved > 0 || sc.scrollHeight <= sc.clientHeight + 2 } : null, close: cr ? { top: Math.round(cr.top), bottom: Math.round(cr.bottom), in: cr.bottom <= r.bottom + 1 && cr.bottom <= innerHeight && cr.height > 10 } : null, more: /rs-more/.test(n.className) }; });
           await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_k_victory_ui_${key}.jpg`, type: 'jpeg', quality: 72 });
           await p.evaluate(() => { const u = document.getElementById('ui'); if (u) u.style.visibility = 'hidden'; }); await p.waitForTimeout(120);
           await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_k_victory_${key}.jpg`, type: 'jpeg', quality: 72 });
@@ -201,7 +206,7 @@ let PG = null;
         S(x && /dir:back/.test(x.model || '') && !!x.ea && !bt.fell.length, `［${st.name}］${WHO[id]}：そのまま戦闘 → 背面に合成（${x && x.model}・装備 ${JSON.stringify(bt.equip[id])}）`);
         S(v && /dir:front/.test(v.model || '') && /"front"/.test(v.ea || ''), `［${st.name}］${WHO[id]}：勝利の振り向き → 正面にも同じ装備を合成（${v && v.model}・範囲 ${v && JSON.stringify(v.size)}）`);
         const a2 = m2[id]; S(a2.st === 'ok' && a2.parts === mm.parts && JSON.stringify(a2.equip) === JSON.stringify(mm.equip) && a2.rect && mm.rect && Math.abs(a2.rect.bottom - mm.rect.bottom) < 1, `［${st.name}］${WHO[id]}：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（${a2.parts}）`);
-        const cv = bt.cover && bt.cover[id]; S(!!cv && bt.panel && / rs-top/.test(bt.panel.cls) && cv.headCovered === 0 && cv.covered <= 0.03, `［${st.name}］${WHO[id]}：勝利の結果の窓を出したまま → 窓は画面の上（${bt.panel && bt.panel.cls}・${bt.panel && bt.panel.top}〜${bt.panel && bt.panel.bottom}px）。人物の矩形の ${cv ? Math.round(cv.covered * 100) : '?'}% が窓に重なる（頭の上 30% は ${cv ? Math.round(cv.headCovered * 100) : '?'}%）`);
+        const cv = bt.cover && bt.cover[id]; S(!!cv && bt.panel && / rs-top/.test(bt.panel.cls) && cv.headCovered === 0 && cv.covered <= 0.03 && cv.fullCovered <= 0.03, `［${st.name}］${WHO[id]}：勝利の結果の窓を出したまま → 窓は画面の上（${bt.panel && bt.panel.cls}・${bt.panel && bt.panel.top}〜${bt.panel && bt.panel.bottom}px）。人物の矩形の ${cv ? Math.round(cv.covered * 100) : '?'}% が窓に重なる（頭の上 30% は ${cv ? Math.round(cv.headCovered * 100) : '?'}%・装備の先まで ${cv ? Math.round(cv.fullCovered * 100) : '?'}%）`);
       }
       if (bt) S(bt.ended, `［${st.name}］戦闘のあとフィールドへ戻った`);
     }
@@ -216,16 +221,22 @@ let PG = null;
     const sr = STATES.filter((s) => s.battle).map((s) => { const v = rec[s.key].battle.vrects2 || rec[s.key].battle.vrects; const r = v && v[id], h = v && v.hero; return r && h ? { dy: +((r.y + r.h) - (h.y + h.h)).toFixed(1), kh: +(r.h / h.h).toFixed(3) } : null; });
     S(sr.every((r) => r && Math.abs(r.dy - sr[0].dy) <= 1.5 && Math.abs(r.kh - sr[0].kh) <= 0.015), `${WHO[id]}：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：${sr.map((r) => r && 'Δ足もと ' + r.dy + 'px・高さ比 ' + r.kh).join('／')}）`);
   }
-  S(rec.off.menu.kyle.parts === 'base_plain' && rec.off.menu.kazuto.parts === 'base_plain', '全部はずすと素の絵（鎧下・手ぶら）に戻る（2 人とも base_plain）');
   const sig = (x) => String((x && x.ea) || ''); const has = (x, ids) => ids.every((k) => sig(x).indexOf('"' + k + '"') >= 0);
+  const hK = rec.helm, hb = hK.battle;
+  S(IDS.every((id) => hK.menu[id].equip.head === 'iron_helm' && /^base_helm /.test(hK.menu[id].parts) && has(hb[id], ['iron_helm']) && has(hb.victory && hb.victory[id], ['iron_helm'])), '鉄の兜：2 人とも、なかまの画面は兜用の素の絵（はみ出す髪を消した絵）＋兜。戦闘の背面・勝利の正面の合成の印にも 鉄の兜');
+  S(rec.off.menu.kyle.parts === 'base_plain' && rec.off.menu.kazuto.parts === 'base_plain', '全部はずすと素の絵（鎧下・手ぶら）に戻る（2 人とも base_plain）');
   const kS = rec.swap.menu.kyle, zS = rec.swap.menu.kazuto, bS = rec.swap.battle, kU = rec.unarm.menu.kyle, zU = rec.unarm.menu.kazuto;
   S(kS.equip.armor === 'iron_armor' && kS.equip.shield === 'iron_shield' && /armor_shape_f shield_f shield_e weapon_spear hand$/.test(kS.parts) && !/weapon_sword/.test(kS.parts) && has(bS.kyle, ['iron_armor', 'iron_spear', 'iron_shield']) && has(bS.victory && bS.victory.kyle, ['iron_armor', 'iron_spear', 'iron_shield']), 'カイル：剣から槍に持ち替えても、重鎧・盾は表示を続ける（なかまの画面 ' + kS.parts + '／戦闘の背面・勝利の正面の合成の印に 鉄の鎧・鉄の槍・鉄の盾）');
   S(zS.equip.armor === 'iron_armor' && !zS.equip.shield && /armor_shape_f weapon_axe hand$/.test(zS.parts) && !/shield_/.test(zS.parts) && has(bS.kazuto, ['iron_armor', 'battle_axe']) && has(bS.victory && bS.victory.kazuto, ['iron_armor', 'battle_axe']), 'カズト：剣と盾から戦斧に持ち替えても、重鎧は表示を続ける（盾ははずした。なかまの画面 ' + zS.parts + '／戦闘・勝利の合成の印に 鉄の鎧・戦斧）');
   S(!kU.equip.weapon && kU.parts === 'base_plain armor_shape_f shield_f shield_e' && !zU.equip.weapon && zU.parts === 'base_plain armor_shape_f', 'カイル・カズト：武器をはずすと手ぶら（拳だけ。鎧・盾はそのまま）：' + kU.parts + '／' + zU.parts);
   // 詳しい結果の窓（レベルアップ）：記録のみ（窓の高さが人物まで届くか）
+  // レベルアップの勝利は、装備を着けた姿で（ふつうの装備メニューから着け直す）：結果の窓を出したまま、顔と武器が見えるか
+  const LVEQ = { kyle: { armor: 'iron_armor', head: 'iron_helm', weapon: 'iron_spear', shield: 'iron_shield' }, kazuto: { armor: 'iron_armor', head: 'iron_helm', weapon: 'battle_axe' } }; for (const id of Object.keys(LVEQ)) await equipVia(id, LVEQ[id]);
   const lv = await battle('levelup', true);
   const lvc = lv.cover || {}; rec.levelup = { battle: lv };
-  S(!!(lv.panel && !/result-simple/.test(lv.panel.cls)), `レベルアップの勝利：詳しい結果の窓（${lv.panel && lv.panel.cls}・${lv.panel && lv.panel.top}〜${lv.panel && lv.panel.bottom}px）。人物の矩形に重なる割合 主人公 ${lvc.hero ? Math.round(lvc.hero.covered * 100) : '?'}%・カイル ${lvc.kyle ? Math.round(lvc.kyle.covered * 100) : '?'}%・カズト ${lvc.kazuto ? Math.round(lvc.kazuto.covered * 100) : '?'}%（記録のみ）`);
+  const lvIds = ['hero', 'kyle', 'kazuto']; const lvOk = lvIds.every((id) => lvc[id] && lvc[id].headCovered === 0 && lvc[id].covered <= 0.03 && lvc[id].fullCovered <= 0.03);
+  S(!!(lv.panel && /rs-detail/.test(lv.panel.cls)) && lvOk, `レベルアップの勝利：詳しい結果の窓（${lv.panel && lv.panel.cls}・${lv.panel && lv.panel.top}〜${lv.panel && lv.panel.bottom}px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：${lvIds.map((id) => id + ' ' + (lvc[id] ? Math.round(lvc[id].covered * 100) + '%／' + Math.round(lvc[id].fullCovered * 100) + '%' : '?')).join('・')}。装備の先のいちばん上 ${Math.min(...lvIds.map((id) => lvc[id] ? lvc[id].fullTop : 9999))}px）`);
+  S(!!(lv.panel && lv.panel.close && lv.panel.close.in && lv.panel.scroll && lv.panel.scroll.can), `レベルアップの勝利：「次へ」は窓の中に見え、詳細はスクロールできる（詳細の欄 ${lv.panel && lv.panel.scroll && lv.panel.scroll.h}px／中身 ${lv.panel && lv.panel.scroll && lv.panel.scroll.all}px・つづきの印 ${lv.panel && lv.panel.more}）`);
   S(errs.length === 0, 'ページのエラーなし' + (errs.length ? '：' + errs.slice(0, 3).join(' / ') : ''));
   S(bad.length === 0, '読み込みの失敗なし' + (bad.length ? '：' + bad.slice(0, 4).join(' / ') : ''));
   const ng = steps.filter((x) => !x.ok).length;

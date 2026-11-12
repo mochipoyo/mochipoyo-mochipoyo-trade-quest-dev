@@ -452,7 +452,7 @@ export class BattleStage3D {
   drawn(scene, i) { return !!(this.actorMode && this.actors && scene === this.lastScene && this.actors.drawn(i)); }
   partyPos(scene, id, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.partyPos(id, W, H, this.camera); }
   petDrawn(scene) { return !!(this.actorMode && this.actors && scene === this.lastScene && this.actors.petDrawn()); }
-  partyRect(scene, id, W, H) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.partyRect(id, W, H, this.camera); }
+  partyRect(scene, id, W, H, full) { if (!this.actorMode || !this.actors || scene !== this.lastScene) return null; return this.actors.partyRect(id, W, H, this.camera, full); }
   // v6.6 「前後」の並び：戦闘背景の画像（2D版の背景の絵＝画面の大きさで作った cover の絵・夜・地域の色・ボスの色つき）を画面いっぱいの背景にし、
   //   3Dの地面・景色・遠景の板・霧を隠す（敵・味方・影・技の光・粒・ボスの紋章は3Dのまま）。画像がまだ・失敗・「軽量」・3D設定で「3Dの景色」のときは以前の3Dの景色
   syncPhoto(scene) {

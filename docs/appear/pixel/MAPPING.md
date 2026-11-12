@@ -140,5 +140,5 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | hero | armor_light、armor_heavy、armor_robe、head_helm、head_hat、weapon_sword、weapon_staff、weapon_spear、weapon_axe、shield |
 | lina | armor_light、armor_robe、head_cap、weapon_staff |
 | gald | armor_light、armor_heavy、weapon_sword、weapon_axe、shield |
-| kyle | armor_light、armor_heavy、weapon_sword、weapon_spear、shield |
-| kazuto | armor_light、armor_heavy、weapon_sword、weapon_spear、weapon_axe、shield |
+| kyle | armor_light、armor_heavy、head_helm、weapon_sword、weapon_spear、shield |
+| kazuto | armor_light、armor_heavy、head_helm、weapon_sword、weapon_spear、weapon_axe、shield |

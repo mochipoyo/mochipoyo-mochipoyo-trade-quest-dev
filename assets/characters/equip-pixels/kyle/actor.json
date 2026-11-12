@@ -114,6 +114,27 @@
      "w": 34,
      "h": 28
     },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/kyle/menu/base_helm.png?v=aeb8e128",
+     "x": 0,
+     "y": 11,
+     "w": 218,
+     "h": 252
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_helm_t.png?v=f92b6282",
+     "x": 65,
+     "y": 12,
+     "w": 73,
+     "h": 73
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_helm_f.png?v=b13c13e8",
+     "x": 64,
+     "y": 11,
+     "w": 75,
+     "h": 75
+    },
     "weapon_spear": {
      "url": "assets/characters/equip-pixels/kyle/menu/weapon_spear.png?v=2e7ee827",
      "x": 20,
@@ -212,6 +233,27 @@
      "y": 185,
      "w": 34,
      "h": 28
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/kyle/menu/base_helm.png?v=aeb8e128",
+     "x": 51,
+     "y": 50,
+     "w": 218,
+     "h": 252
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_helm_t.png?v=f92b6282",
+     "x": 116,
+     "y": 51,
+     "w": 73,
+     "h": 73
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_helm_f.png?v=b13c13e8",
+     "x": 115,
+     "y": 50,
+     "w": 75,
+     "h": 75
     },
     "weapon_spear": {
      "url": "assets/characters/equip-pixels/kyle/menu/weapon_spear.png?v=2e7ee827",
@@ -316,6 +358,27 @@
      "y": 190,
      "w": 30,
      "h": 26
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/kyle/back/base_helm.png?v=7901c15a",
+     "x": 39,
+     "y": 33,
+     "w": 252,
+     "h": 273
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/head_helm_t.png?v=085d2c6e",
+     "x": 118,
+     "y": 54,
+     "w": 84,
+     "h": 65
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/head_helm_f.png?v=8de673af",
+     "x": 117,
+     "y": 53,
+     "w": 86,
+     "h": 67
     },
     "weapon_spear": {
      "url": "assets/characters/equip-pixels/kyle/back/weapon_spear.png?v=fcda7ca3",

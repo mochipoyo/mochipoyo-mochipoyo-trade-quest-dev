@@ -95,6 +95,8 @@ def build_front(o):
     cfg = {'body_y': 58, 'keep': keep, 'belt': belt, 'legs_y': 220, 'glove': (M['fist'] | lfist) & P.opaque(wl), 'sigma': 3.0,
            'hand': M['fist'], 'shield': M['shield'], 'shield_face': (red(o) | (P.lum(o) < 90)) & ~H.is_gold(o), 'sword': M['sword_part']}
     pr, zone, plate = K.parts(o, wl, cfg, CLOTH, BOOTS)
+    pr.update(K.helm_parts(pr['base_plain'], 127, 3, 35, 33, head=[(85, 0), (170, 0), (170, 50), (160, 60), (94, 60), (85, 46)],
+                           face=[(104, 35), (150, 35), (152, 52), (142, 66), (112, 66), (102, 52)], cheek=(94, 105, 149, 160, 58)))
     pr['weapon_spear'] = GR.spear(Hh, Ww, GRIP_F, (-0.08, -0.997), top=150, bottom=98, head=36, half=7, shaft_w=2.5)
     pr['weapon_axe'] = GR.axe(Hh, Ww, GRIP_F, (-0.12, -0.993), top=72, bottom=26, head=44, reach=22, side=-1, shaft_w=2.6, spike_len=8)
     return pr, wl, M, zone
@@ -109,6 +111,7 @@ def build_back(o, front_sword):
     cfg = {'body_y': 100, 'keep': keep, 'belt': np.zeros(S[:2], bool), 'legs_y': 262, 'glove': M['fist'] & P.opaque(wl), 'sigma': 3.0,
            'hand': M['fist'], 'shield': M['shield'], 'shield_face': (red(o) | (P.lum(o) < 90)) & ~H.is_gold(o), 'sword': None}
     pr, zone, plate = K.parts(o, wl, cfg, CLOTH, BOOTS)
+    pr.update(K.helm_parts(pr['base_plain'], 166, 44, 82, 31, head=[(128, 40), (204, 40), (204, 88), (196, 96), (136, 96), (128, 88)], flare=11))
     pr['weapon_sword'] = flip_place(front_sword, GRIP_F, S[:2], GRIP_B)
     pr['weapon_spear'] = GR.spear(Hh, Ww, GRIP_B, (0.08, -0.997), top=150, bottom=98, head=36, half=7, shaft_w=2.5)
     pr['weapon_axe'] = GR.axe(Hh, Ww, GRIP_B, (0.1, -0.995), top=72, bottom=26, head=44, reach=22, side=1, shaft_w=2.6, spike_len=8)

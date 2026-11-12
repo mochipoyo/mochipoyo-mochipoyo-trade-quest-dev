@@ -95,6 +95,8 @@ def build_front(o):
     cfg = {'body_y': 84, 'keep': (hair(o, 100) & head) | blue(wl), 'belt': belt, 'legs_y': 222, 'glove': (M['fist'] | lfist | belt) & P.opaque(wl),
            'hand': M['fist'], 'shield': M['shield'], 'shield_face': blue(o), 'sword': M['sword']}
     pr, zone, plate = K.parts(o, wl, cfg, CLOTH)
+    pr.update(K.helm_parts(pr['base_plain'], 101, 12, 57, 36, head=[(40, 0), (165, 0), (165, 78), (140, 92), (62, 92), (40, 78)],
+                           face=[(76, 57), (126, 57), (128, 76), (118, 92), (84, 92), (74, 76)], cheek=(65, 77, 125, 137, 84)))
     pr['weapon_spear'] = GR.spear(Hh, Ww, (35, 160), (-0.06, -0.998), top=152, bottom=100, head=34, half=6.5, shaft_w=2.4)
     return pr, wl, M, zone
 
@@ -109,6 +111,7 @@ def build_back(o):
     cfg = {'body_y': 116, 'keep': (hair(o, 120) & head) | blue(wl), 'belt': np.zeros(S[:2], bool), 'legs_y': 262, 'glove': (M['fist'] | lfist) & P.opaque(wl),
            'hand': M['fist'], 'shield': M['shield'], 'shield_face': (P.lum(o) < 95) & ~H.is_gold(o), 'sword': M['sword']}
     pr, zone, plate = K.parts(o, wl, cfg, CLOTH)
+    pr.update(K.helm_parts(pr['base_plain'], 160, 54, 104, 40, head=[(100, 25), (222, 25), (222, 112), (196, 122), (124, 122), (100, 112)], flare=15))
     pr['weapon_spear'] = GR.spear(Hh, Ww, (232, 203), (0.06, -0.998), top=152, bottom=96, head=34, half=6.5, shaft_w=2.4)
     return pr, wl, M, zone
 

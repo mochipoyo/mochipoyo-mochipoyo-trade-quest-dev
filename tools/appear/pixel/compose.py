@@ -93,11 +93,11 @@ SETS = {
     # v9.8.2 カイル（騎士：剣・槍）・カズト（戦士：剣・斧・槍）
     'kyle': [('装備なし', {}), ('重鎧＋剣と盾', {'armor': 'iron_armor', 'weapon': 'steel_sword', 'shield': 'iron_shield'}), ('重鎧＋槍と盾', {'armor': 'iron_armor', 'weapon': 'iron_spear', 'shield': 'iron_shield'}),
              ('重鎧＋盾（武器なし）', {'armor': 'iron_armor', 'shield': 'iron_shield'}), ('軽装＋木の剣＋木の盾', {'armor': 'leather_armor', 'weapon': 'wooden_sword', 'shield': 'wooden_shield'}),
-             ('騎士の鎧＋騎士の剣＋騎士の盾', {'armor': 'knight_armor', 'weapon': 'knight_sword', 'shield': 'knight_shield'}), ('槍＋兜（兜は部品なし）', {'weapon': 'spear', 'head': 'iron_helm'})],
+             ('騎士の鎧＋騎士の剣＋騎士の盾', {'armor': 'knight_armor', 'weapon': 'knight_sword', 'shield': 'knight_shield'}), ('重鎧＋鉄の兜＋槍と盾', {'armor': 'iron_armor', 'weapon': 'spear', 'head': 'iron_helm', 'shield': 'iron_shield'}), ('装備なし＋騎士の兜', {'head': 'knight_helm'})],
     'kazuto': [('装備なし', {}), ('重鎧＋剣と盾', {'armor': 'iron_armor', 'weapon': 'steel_sword', 'shield': 'iron_shield'}), ('重鎧＋戦斧', {'armor': 'iron_armor', 'weapon': 'battle_axe'}),
                ('重鎧＋槍と盾', {'armor': 'iron_armor', 'weapon': 'iron_spear', 'shield': 'iron_shield'}), ('重鎧＋盾（武器なし）', {'armor': 'iron_armor', 'shield': 'iron_shield'}),
                ('軽装＋手斧', {'armor': 'leather_armor', 'weapon': 'hand_axe'}), ('騎士の鎧＋騎士の剣＋騎士の盾', {'armor': 'knight_armor', 'weapon': 'knight_sword', 'shield': 'knight_shield'}),
-               ('剣＋兜（兜は部品なし）', {'weapon': 'iron_sword', 'head': 'iron_helm'})],
+               ('重鎧＋鉄の兜＋剣と盾', {'armor': 'iron_armor', 'weapon': 'iron_sword', 'head': 'iron_helm', 'shield': 'iron_shield'}), ('装備なし＋騎士の兜', {'head': 'knight_helm'})],
 }
 
 

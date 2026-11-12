@@ -238,7 +238,7 @@ export class App3D {
       petDrawn(scene) { return !!(app.battle && !app.battleFailed && app.battle.petDrawn && app.battle.petDrawn(scene)); },   // v6.8 神聖犬ポン太を3Dで描いているか（2D版は描かない）
       // 敵の名前の文字の倍率：画面（#game）に縮んで表示されたときに、約10px より小さくならないように（PC の画面では 1）
       labelScale(W) { const g = document.getElementById('game'); const css = g ? g.clientWidth : 0; if (!css || !W) return 1; return Math.max(1, Math.min(1.8, 10 / (12 * css / W))); },
-      partyRect(scene, id, W, H) { return app.battle && !app.battleFailed ? app.battle.partyRect(scene, id, W, H) : null; },
+      partyRect(scene, id, W, H, full) { return app.battle && !app.battleFailed ? app.battle.partyRect(scene, id, W, H, full) : null; },
       actorsOn(scene) { return !!(app.battle && !app.battleFailed && app.battle.actorMode && scene === app.battle.lastScene); },
       actorsInfo() { return app.battle && app.battle.actors ? app.battle.actors.info() : null; },
       setActors(on) { try { localStorage.setItem('mtq3d-battle-actors', on ? 'on' : 'off'); } catch (e) { /* なし */ } },
