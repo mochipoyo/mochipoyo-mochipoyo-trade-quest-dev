@@ -3421,8 +3421,8 @@
     "slot": "weapon",
     "shape": "weapon:sword",
     "cls": "weapon_sword",
-    "drawn": 0,
-    "not": 31,
+    "drawn": 31,
+    "not": 0,
     "items": [
      "wooden_sword",
      "copper_sword",
