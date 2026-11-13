@@ -43,7 +43,10 @@ def plan(M, actor, vk, equip, data):
         mats.append((m, PV.pal_of(rec)))
     # v9.8.6 職業の服装（equip の '_job'。ゲームの pixelPlan と同じ：素の絵のすぐ上に重ねる）
     jo = (M['actors'][actor].get('jobs') or {}).get(equip.get('_job'))
-    if jo and all(L['part'] in view['parts'] for L in jo['layers']): mats.append((jo, None))
+    if jo and all(L.get('optional') or L['part'] in view['parts'] for L in jo['layers']):
+        mats.append((jo, None))
+        ov = jo.get('over')   # v9.8.8 職業の服装の手前の層（魔法使いの袖）
+        if ov and all(L.get('optional') or L['part'] in view['parts'] for L in ov['layers']): mats.append((ov, None))
     mats.sort(key=lambda t: t[0].get('z', 0))
     return view, base, mats, skipped
 
@@ -89,7 +92,9 @@ SETS = {
     'hero': [('装備なし', {}), ('重鎧＋手斧', {'armor': 'iron_armor', 'weapon': 'hand_axe'}), ('重鎧＋兜＋戦斧＋盾', {'armor': 'iron_armor', 'head': 'iron_helm', 'weapon': 'battle_axe', 'shield': 'iron_shield'}),
              ('軽装＋竜骨の斧', {'armor': 'leather_armor', 'weapon': 'dragon_axe'}), ('重鎧＋兜＋剣と盾', {'armor': 'iron_armor', 'head': 'iron_helm', 'weapon': 'steel_sword', 'shield': 'iron_shield'}),
              ('狩人：装備なし', {'_job': 'hunter'}), ('狩人：短弓', {'_job': 'hunter', 'weapon': 'short_bow'}), ('狩人：革の鎧＋革の帽子＋長弓', {'_job': 'hunter', 'weapon': 'long_bow', 'armor': 'leather_armor', 'head': 'leather_cap'}), ('狩人：槍', {'_job': 'hunter', 'weapon': 'spear'}),
-             ('盗賊：装備なし', {'_job': 'thief'}), ('盗賊：短剣', {'_job': 'thief', 'weapon': 'dagger'}), ('盗賊：鋼の剣＋革の鎧', {'_job': 'thief', 'weapon': 'steel_sword', 'armor': 'leather_armor'}), ('盗賊：短弓', {'_job': 'thief', 'weapon': 'short_bow'})],
+             ('盗賊：装備なし', {'_job': 'thief'}), ('盗賊：短剣', {'_job': 'thief', 'weapon': 'dagger'}), ('盗賊：鋼の剣＋革の鎧', {'_job': 'thief', 'weapon': 'steel_sword', 'armor': 'leather_armor'}), ('盗賊：短弓', {'_job': 'thief', 'weapon': 'short_bow'}),
+             ('魔法使い：装備なし', {'_job': 'mage'}), ('魔法使い：樫の杖', {'_job': 'mage', 'weapon': 'oak_staff'}), ('魔法使い：短剣', {'_job': 'mage', 'weapon': 'dagger'}),
+             ('魔法使い：賢者の杖＋旅人のローブ＋魔法使いの帽子', {'_job': 'mage', 'weapon': 'sage_staff', 'armor': 'robe', 'head': 'wizard_hat'})],
     'lina': [('装備なし', {}), ('法衣＋杖', {'armor': 'robe_skip', 'weapon': 'oak_staff'}), ('法衣＋杖＋革の帽子', {'armor': 'robe_skip', 'weapon': 'oak_staff', 'head': 'leather_cap'}),
              ('旅装＋高値安値の帽子', {'head': 'hilo_hat'}), ('潮騒の法衣＋潮騒の帽子', {'armor': 't68_islands_robe', 'head': 't68_islands_hat'}),
              ('こん棒＋盾＋羽根帽子（部品なし）', {'weapon': 'club', 'shield': 'wooden_shield', 'head': 'feather_hat'})],

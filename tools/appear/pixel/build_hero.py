@@ -686,6 +686,10 @@ if __name__ == '__main__':
     hb_, sb_, vb_ = P.hsv(bp); cape_b = ((hb_ < 20) | (hb_ > 330)) & (sb_ > 0.3) & P.opaque(bp) & (byy > 165)
     cape_b = cape_b | (P.neighbors4(cape_b) & P.opaque(bp) & (P.lum(bp) < 60))   # マントの縁の暗い線もマントのうち
     pb['armor_robe_x'], pb['armor_robe_t'], pb['armor_robe_f'] = robe_back(bp, zone_b, cape_b, cfg_b['keep_m'])
+    # ---- v9.8.8 魔法使いの服装（ローブの裾・広い袖）。ローブの品と同じ形を紫で塗り、袖は武器の手前の層 ----
+    import hero_mage
+    hero_mage.add(pf, pb, {'robe_f': (pf['armor_robe_t'], pf['armor_robe_f']), 'robe_b': (pb['armor_robe_x'], pb['armor_robe_t'], pb['armor_robe_f']),
+                           'cape_b': cape_b, 'TRAVEL': TRAVEL, 'FA': FA, 'BA': BA})
     # ---- 書き出し ----
     off = {k: (0, -TOP) for k in ('head_hat_t', 'head_hat_f', 'weapon_staff_t', 'weapon_staff_f', 'weapon_spear')}
     recF = save_parts(os.path.join(OUT, 'job_warrior'), pf, off)
@@ -709,7 +713,9 @@ if __name__ == '__main__':
         # menuBase：メニューの立ち絵の素体。主人公はどの職業でも、本人の絵（戦士の立ち絵）を素体にして装備で着替える（戦闘の絵も職業で変わらないのと合わせる）
         'menuBase': 'job:warrior',
         # v9.8.6 職業の服装：素の絵のすぐ上に重ねる（戦士は重ね絵なし）。短剣は拳を柄の上に描き直す（人ごとの重ね方）
-        'jobs': {'hunter': {'z': 5, 'layers': [{'part': 'outfit_hunter'}]}, 'thief': {'z': 5, 'layers': [{'part': 'outfit_thief'}]}},
+        #   v9.8.8 魔法使い：ローブ（背面はマントを短くする erase の層つき）。over＝袖の層（武器・握りの拳より手前。袖口が手首にかぶさり、杖の柄は袖口の中を通る）
+        'jobs': {'hunter': {'z': 5, 'layers': [{'part': 'outfit_hunter'}]}, 'thief': {'z': 5, 'layers': [{'part': 'outfit_thief'}]},
+                 'mage': {'z': 5, 'layers': [{'part': 'outfit_mage_x', 'erase': True, 'optional': True}, {'part': 'outfit_mage'}], 'over': {'z': 45, 'layers': [{'part': 'outfit_mage_o'}]}}},
         'materials': {'weapon_dagger': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_dagger'}]}},
         'views': {
             'job:warrior': {'src': FRONT_SRC, 'w': FW, 'h': FH, 'dir': 'front', 'pivot': [64, 197], 'body': box(tp), 'frame': frame(recF, FW, FH),

@@ -1,5 +1,5 @@
 #!/bin/bash
-# v9.8〜v9.8.2 装備の外見（ドット絵の差分）：確かめ一式（主人公の v9.7 の確かめ ＋ 仲間 リーナ・ガルド ＋ v9.8.1 の剣・盾・斧・帽子 ＋ v9.8.2 カイル・カズト）を順に動かして、結果の行を 1 つの記録にまとめる
+# v9.8〜v9.8.8 装備の外見（ドット絵の差分）：確かめ一式（主人公の v9.7 の確かめ ＋ 仲間 リーナ・ガルド ＋ v9.8.1 の剣・盾・斧・帽子 ＋ v9.8.2 カイル・カズト）を順に動かして、結果の行を 1 つの記録にまとめる
 #   bash docs/tools/appear/run_v98.sh <記録ファイル>
 #   前提：8894 に静かなサーバー（docs/tools/rpg93/rangeserver.js）。別のサイトの確かめ用に 8895（cors）・8896（nocors）を立てて、終わったら止める
 #   v9.6 の確かめ（vector・別のサイト・3Dモデル）の画面写真・記録は docs/appear/pixel/regress/ に書く（v9.6 の報告の記録は書き換えない）
@@ -47,6 +47,8 @@ run "ブラウザ v9.8.6 主人公の転職（戦士→狩人→盗賊→戦士�
 run "ブラウザ v9.8.6 主人公の転職 スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_herojob_ui.js
 run "ブラウザ v9.8.7 転職のプレビュー（ギルドの職業の一覧）PC" env VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_job_preview.js
 run "ブラウザ v9.8.7 転職のプレビュー スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_job_preview.js
+run "ブラウザ v9.8.8 主人公の魔法使い（プレビュー・持ち越し／外れる装備・確定・杖の着脱・キャンセル → 戦闘 → 勝利）PC" env VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_mage_ui.js
+run "ブラウザ v9.8.8 主人公の魔法使い スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_mage_ui.js
 run "ブラウザ 別のサイト pixel 3d cors" env MODE=pixel KIND=3d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 3d nocors" env MODE=pixel KIND=3d XMODE=nocors XPORT=8896 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 2d cors" env MODE=pixel KIND=2d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
@@ -61,4 +63,5 @@ python3 docs/tools/appear/pixel_sheets_comp.py >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_comp.py knight >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_comp.py mina >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_comp.py herojob >> "$LOG" 2>&1
+python3 docs/tools/appear/pixel_sheets_comp.py mage >> "$LOG" 2>&1
 echo "--- まとめ" >> "$LOG"; echo "NG・失敗の行：$(grep -cE '^  NG  |終了コード|CRASH|FAIL' "$LOG")" >> "$LOG"

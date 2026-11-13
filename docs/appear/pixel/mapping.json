@@ -184,6 +184,20 @@
       "y": 80,
       "w": 98,
       "h": 115
+     },
+     "outfit_mage": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/outfit_mage.png",
+      "x": 0,
+      "y": 77,
+      "w": 124,
+      "h": 118
+     },
+     "outfit_mage_o": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/outfit_mage_o.png",
+      "x": 11,
+      "y": 75,
+      "w": 105,
+      "h": 40
      }
     }
    },
@@ -369,6 +383,20 @@
       "y": 184,
       "w": 98,
       "h": 115
+     },
+     "outfit_mage": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/outfit_mage.png",
+      "x": 95,
+      "y": 181,
+      "w": 124,
+      "h": 118
+     },
+     "outfit_mage_o": {
+      "file": "assets/characters/equip-pixels/hero/job_warrior/outfit_mage_o.png",
+      "x": 106,
+      "y": 179,
+      "w": 105,
+      "h": 40
      }
     }
    },
@@ -561,6 +589,27 @@
       "y": 178,
       "w": 120,
       "h": 121
+     },
+     "outfit_mage_x": {
+      "file": "assets/characters/equip-pixels/hero/back/outfit_mage_x.png",
+      "x": 106,
+      "y": 245,
+      "w": 132,
+      "h": 60
+     },
+     "outfit_mage": {
+      "file": "assets/characters/equip-pixels/hero/back/outfit_mage.png",
+      "x": 98,
+      "y": 170,
+      "w": 128,
+      "h": 129
+     },
+     "outfit_mage_o": {
+      "file": "assets/characters/equip-pixels/hero/back/outfit_mage_o.png",
+      "x": 95,
+      "y": 180,
+      "w": 131,
+      "h": 74
      }
     }
    }
