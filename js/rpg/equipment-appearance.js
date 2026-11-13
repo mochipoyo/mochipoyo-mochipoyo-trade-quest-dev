@@ -573,7 +573,7 @@
     var hasPart = function (L) { return L.optional || own(view.parts, L.part); };
     // v9.8.9 装備が覆う部位（covers：'sleeve'・'body'・'hem' など）の服の層は描かない（ローブを着たら、職業の服の袖は描かずローブの袖にする）
     var covered = {}; mats.forEach(function (mt) { (mt.m.covers || []).forEach(function (r) { covered[r] = true; }); });
-    var keepL = function (L) { return !(L.region && covered[L.region]); };
+    var keepL = function (L) { return !(L.region && covered[L.region]) && own(view.parts, L.part); };   // その向きにない部品（optional）も外す
     var jl = jo && jo.pal ? { pal: jo.pal, pal2: jo.pal2 || null } : null;   // 職業の配色（pal があれば灰色の層を職業の色で塗る。ない服は描いた色のまま）
     if (jo && jo.layers.every(hasPart)) {
       mats.push({ cls: 'outfit:' + actor.job, m: Object.assign({}, jo, { layers: jo.layers.filter(keepL) }), layer: jl });

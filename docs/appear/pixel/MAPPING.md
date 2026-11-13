@@ -45,13 +45,38 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | weapon_bow（（全員）） | 40 | —（変えない） | weapon_bow | はい |
 | weapon_dagger（（全員）） | 40 | —（変えない） | weapon_dagger |  |
 | weapon_dagger（hero） | 40 | —（変えない） | weapon_dagger | はい |
+| armor_robe（hero） | 10 | —（変えない） | armor_robe_x（消す）、armor_robe_t（tint:main）、armor_robe_f |  |
 | armor_light（lina） | 10 | —（変えない） | armor_light_t（tint:main） |  |
+| weapon_sword（lina） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（lina） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（lina） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（lina） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（lina） | 40 | —（変えない） | weapon_bow | はい |
 | armor_light（gald） | 10 | —（変えない） | armor_light_t（tint:main） |  |
 | weapon_sword（gald） | 40 | —（変えない） | weapon_sword | はい |
 | shield（gald） | 30 | —（変えない） | shield_t（tint:main・灰色の品は元の鎧の色）、shield_f |  |
+| weapon_dagger（gald） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_spear（gald） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（gald） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（gald） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| armor_robe（gald） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
 | shield（kyle） | 30 | —（変えない） | shield_f、shield_t（tint:main・灰色の品は塗らない）、shield_e |  |
+| weapon_dagger（kyle） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（kyle） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_bow（kyle） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（kyle） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| armor_robe（kyle） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
 | shield（kazuto） | 30 | —（変えない） | shield_f、shield_t（tint:main・灰色の品は塗らない）、shield_e |  |
+| weapon_dagger（kazuto） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_bow（kazuto） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（kazuto） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| armor_robe（kazuto） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
 | weapon_sword（mina） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_axe（mina） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（mina） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_staff（mina） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| armor_robe（mina） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（mina） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 
 ## 装備ID → 部品の種類
 
@@ -145,8 +170,8 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | 人物ID | 描ける種類 |
 |---|---|
 | hero | armor_light、armor_heavy、armor_robe、head_helm、head_hat、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
-| lina | armor_light、armor_robe、head_cap、weapon_staff |
-| gald | armor_light、armor_heavy、weapon_sword、weapon_axe、shield |
-| kyle | armor_light、armor_heavy、head_helm、weapon_sword、weapon_spear、shield |
-| kazuto | armor_light、armor_heavy、head_helm、weapon_sword、weapon_spear、weapon_axe、shield |
-| mina | weapon_sword、weapon_bow、weapon_dagger |
+| lina | armor_light、armor_robe、head_cap、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger |
+| gald | armor_light、armor_heavy、armor_robe、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| kyle | armor_light、armor_heavy、armor_robe、head_helm、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| kazuto | armor_light、armor_heavy、armor_robe、head_helm、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| mina | armor_light、armor_robe、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger |

@@ -26,11 +26,11 @@
   },
   {
    "ok": true,
-   "m": "［戦士：鉄の鎧＋鋼の剣］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain armor_shape_f weapon_sword）。戦闘の大きさ：背面 99×121.2・勝利の正面 88.6×121.2（CSS の画素）"
+   "m": "［戦士：鉄の鎧＋鋼の剣］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain armor_shape_f weapon_sword）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×121.2（CSS の画素）"
   },
   {
    "ok": true,
-   "m": "戦士 → 魔法使いのプレビュー：主人公本人の魔法使いの姿（base_plain outfit_mage outfit_mage_o）。鉄の鎧・鋼の剣は外れ、名前が出る（「転職すると外れる装備：鋼の剣・鉄の鎧（持ち物に戻る）」）。絵は一覧の中に収まる（高さ 140px）"
+   "m": "戦士 → 魔法使いのプレビュー：主人公本人の魔法使いの姿（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f）。鉄の鎧・鋼の剣は外れ、名前が出る（「転職すると外れる装備：鋼の剣・鉄の鎧（持ち物に戻る）」）。絵は一覧の中に収まる（高さ 140px）"
   },
   {
    "ok": true,
@@ -66,11 +66,11 @@
   },
   {
    "ok": true,
-   "m": "［狩人：短弓］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain outfit_hunter weapon_bow hand）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×121.2（CSS の画素）"
+   "m": "［狩人：短弓］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain outfit_hunter weapon_bow hand）。戦闘の大きさ：背面 99×121.2・勝利の正面 88.6×121.2（CSS の画素）"
   },
   {
    "ok": true,
-   "m": "狩人（短弓）→ 魔法使いのプレビュー：弓は魔法使いが装備できないので外れる（base_plain outfit_mage outfit_mage_o・「転職すると外れる装備：短弓（持ち物に戻る）」）。見ただけでは何も変わらない"
+   "m": "狩人（短弓）→ 魔法使いのプレビュー：弓は魔法使いが装備できないので外れる（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f・「転職すると外れる装備：短弓（持ち物に戻る）」）。見ただけでは何も変わらない"
   },
   {
    "ok": true,
@@ -94,31 +94,31 @@
   },
   {
    "ok": true,
-   "m": "［盗賊：短剣＋革の鎧］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain outfit_thief armor_shape_f armor_light_t weapon_dagger hand）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×119.9（CSS の画素）"
+   "m": "［盗賊：短剣＋革の鎧］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain outfit_thief armor_shape_f armor_light_t weapon_dagger hand）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×121.2（CSS の画素）"
   },
   {
    "ok": true,
-   "m": "盗賊（短剣＋革の鎧）→ 魔法使いのプレビュー：短剣は持ち越し（base_plain outfit_mage weapon_dagger hand outfit_mage_o）、革の鎧は外れる（「転職すると外れる装備：革の鎧（持ち物に戻る）」「そのまま使える装備：短剣」）"
+   "m": "盗賊（短剣＋革の鎧）→ 魔法使いのプレビュー：短剣は持ち越し（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_dagger hand jf_sleeve_t jf_sleeve_f）、革の鎧は外れる（「転職すると外れる装備：革の鎧（持ち物に戻る）」「そのまま使える装備：短剣」）"
   },
   {
    "ok": true,
-   "m": "確定：革の鎧だけ外れて持ち物に戻り（所持数 +1）、短剣は装備したまま（所持数そのまま）。「なかま」の画面の外見（base_plain outfit_mage weapon_dagger hand outfit_mage_o）＝直前のプレビュー（base_plain outfit_mage weapon_dagger hand outfit_mage_o）"
+   "m": "確定：革の鎧だけ外れて持ち物に戻り（所持数 +1）、短剣は装備したまま（所持数そのまま）。「なかま」の画面の外見（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_dagger hand jf_sleeve_t jf_sleeve_f）＝直前のプレビュー（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_dagger hand jf_sleeve_t jf_sleeve_f）"
   },
   {
    "ok": true,
-   "m": "［魔法使い：樫の杖］［そうび］で weapon:oak_staff → なかまの画面の立ち絵 base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o（そうびの画面の絵 base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o・装備 {\"weapon\":\"oak_staff\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
+   "m": "［魔法使い：樫の杖］［そうび］で weapon:oak_staff → なかまの画面の立ち絵 base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f（そうびの画面の絵 base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f・装備 {\"weapon\":\"oak_staff\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
   },
   {
    "ok": true,
-   "m": "［魔法使い：樫の杖］キャンセル（［そうび］→ 武器 → 品の一覧で Esc）→ 装備・所持数・絵が変わらない（{\"weapon\":\"oak_staff\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o）"
+   "m": "［魔法使い：樫の杖］キャンセル（［そうび］→ 武器 → 品の一覧で Esc）→ 装備・所持数・絵が変わらない（{\"weapon\":\"oak_staff\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f）"
   },
   {
    "ok": true,
-   "m": "［魔法使い：樫の杖］そのまま戦闘 → 背面に合成（pixel:dir:back）。戦闘の絵と同じ合成の印の部品 base_plain outfit_mage_x outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o"
+   "m": "［魔法使い：樫の杖］そのまま戦闘 → 背面に合成（pixel:dir:back）。戦闘の絵と同じ合成の印の部品 base_plain armor_robe_x jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f jf_capehem_t"
   },
   {
    "ok": true,
-   "m": "［魔法使い：樫の杖］勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・部品 base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o）"
+   "m": "［魔法使い：樫の杖］勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・部品 base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f）"
   },
   {
    "ok": true,
@@ -126,7 +126,7 @@
   },
   {
    "ok": true,
-   "m": "［魔法使い：樫の杖］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×121.2（CSS の画素）"
+   "m": "［魔法使い：樫の杖］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×121.2（CSS の画素）"
   },
   {
    "ok": true,
@@ -134,15 +134,15 @@
   },
   {
    "ok": true,
-   "m": "［魔法使い：杖をはずす（装備なし）］［そうび］で weapon:はずす → なかまの画面の立ち絵 base_plain outfit_mage outfit_mage_o（そうびの画面の絵 base_plain outfit_mage outfit_mage_o・装備 {\"weapon\":null,\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
+   "m": "［魔法使い：杖をはずす（装備なし）］［そうび］で weapon:はずす → なかまの画面の立ち絵 base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f（そうびの画面の絵 base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f・装備 {\"weapon\":null,\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
   },
   {
    "ok": true,
-   "m": "［魔法使い：杖をはずす（装備なし）］そのまま戦闘 → 背面に合成（pixel:dir:back）。戦闘の絵と同じ合成の印の部品 base_plain outfit_mage_x outfit_mage outfit_mage_o"
+   "m": "［魔法使い：杖をはずす（装備なし）］そのまま戦闘 → 背面に合成（pixel:dir:back）。戦闘の絵と同じ合成の印の部品 base_plain armor_robe_x jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f jf_capehem_t"
   },
   {
    "ok": true,
-   "m": "［魔法使い：杖をはずす（装備なし）］勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・部品 base_plain outfit_mage outfit_mage_o）"
+   "m": "［魔法使い：杖をはずす（装備なし）］勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・部品 base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f）"
   },
   {
    "ok": true,
@@ -150,7 +150,7 @@
   },
   {
    "ok": true,
-   "m": "［魔法使い：杖をはずす（装備なし）］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain outfit_mage outfit_mage_o）。戦闘の大きさ：背面 99×121.2・勝利の正面 88.6×121.2（CSS の画素）"
+   "m": "［魔法使い：杖をはずす（装備なし）］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×121.2（CSS の画素）"
   },
   {
    "ok": true,
@@ -162,7 +162,7 @@
   },
   {
    "ok": true,
-   "m": "重なりの順：袖（outfit_mage_o）は杖・握りの拳より手前に描く（正面・背面とも最後の層）"
+   "m": "重なりの順：袖（jf_sleeve。v9.8.8 は outfit_mage_o）は杖・握りの拳より手前に描く（正面・背面とも）"
   },
   {
    "ok": true,
@@ -251,7 +251,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.8\",\"back\",[\"steel_sword\",\"iron_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"back\",[\"steel_sword\",\"iron_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -270,14 +270,14 @@
      }
     },
     "px": {
-     "sig": "[\"hero\",\"warrior\",\"px:v9.8.8\",\"back\",[\"steel_sword\",\"iron_armor\"]]",
+     "sig": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"back\",[\"steel_sword\",\"iron_armor\"]]",
      "parts": "base_plain armor_shape_f weapon_sword",
      "st": "ok"
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 438.6,
+      "x": 436,
       "y": 348.1,
       "w": 99,
       "h": 121.2
@@ -295,7 +295,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.8\",\"front\",[\"steel_sword\",\"iron_armor\"]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"front\",[\"steel_sword\",\"iron_armor\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -307,14 +307,14 @@
     },
     "vrects": {
      "hero": {
-      "x": 443.8,
-      "y": 332.4,
-      "w": 88.6,
+      "x": 439.9,
+      "y": 337.6,
+      "w": 87.3,
       "h": 121.2
      }
     },
     "vpx": {
-     "sig": "[\"hero\",\"warrior\",\"px:v9.8.8\",\"front\",[\"steel_sword\",\"iron_armor\"]]",
+     "sig": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"front\",[\"steel_sword\",\"iron_armor\"]]",
      "parts": "base_plain armor_shape_f weapon_sword",
      "st": "ok"
     },
@@ -332,11 +332,11 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 332,
+      "fullTop": 334,
       "rect": {
-       "x": 444,
-       "y": 332,
-       "w": 89,
+       "x": 440,
+       "y": 334,
+       "w": 87,
        "h": 121
       }
      }
@@ -356,7 +356,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 469.9,
+      "x": 464.7,
       "y": 340.2,
       "w": 87.3,
       "h": 119.9
@@ -418,8 +418,8 @@
     "has": true,
     "job": "mage",
     "st": "ok",
-    "parts": "base_plain outfit_mage outfit_mage_o",
-    "sig": "[\"hero\",\"mage\",\"px:v9.8.8\",\"job:warrior\",[]]",
+    "parts": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f",
+    "sig": "[\"hero\",\"mage\",\"px:v9.8.9\",\"job:warrior\",[]]",
     "offIds": "steel_sword,iron_armor",
     "keepIds": "",
     "offText": "転職すると外れる装備：鋼の剣・鉄の鎧（持ち物に戻る）",
@@ -434,7 +434,7 @@
     "job": "hunter",
     "st": "ok",
     "parts": "base_plain outfit_hunter",
-    "sig": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"job:warrior\",[]]",
+    "sig": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"job:warrior\",[]]",
     "offIds": "steel_sword,iron_armor",
     "keepIds": "",
     "offText": "転職すると外れる装備：鋼の剣・鉄の鎧（持ち物に戻る）",
@@ -449,7 +449,7 @@
     "job": "thief",
     "st": "ok",
     "parts": "base_plain outfit_thief weapon_sword",
-    "sig": "[\"hero\",\"thief\",\"px:v9.8.8\",\"job:warrior\",[\"steel_sword\"]]",
+    "sig": "[\"hero\",\"thief\",\"px:v9.8.9\",\"job:warrior\",[\"steel_sword\"]]",
     "offIds": "iron_armor",
     "keepIds": "steel_sword",
     "offText": "転職すると外れる装備：鉄の鎧（持ち物に戻る）",
@@ -463,8 +463,8 @@
     "has": true,
     "job": "mage",
     "st": "ok",
-    "parts": "base_plain outfit_mage outfit_mage_o",
-    "sig": "[\"hero\",\"mage\",\"px:v9.8.8\",\"job:warrior\",[]]",
+    "parts": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f",
+    "sig": "[\"hero\",\"mage\",\"px:v9.8.9\",\"job:warrior\",[]]",
     "offIds": "steel_sword,iron_armor",
     "keepIds": "",
     "offText": "転職すると外れる装備：鋼の剣・鉄の鎧（持ち物に戻る）",
@@ -542,7 +542,7 @@
      "sprite": "hero_hunter",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"back\",[\"short_bow\"]]",
+     "ea": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"back\",[\"short_bow\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -561,14 +561,14 @@
      }
     },
     "px": {
-     "sig": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"back\",[\"short_bow\"]]",
+     "sig": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"back\",[\"short_bow\"]]",
      "parts": "base_plain outfit_hunter weapon_bow hand",
      "st": "ok"
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 437.3,
+      "x": 436,
       "y": 348.1,
       "w": 99,
       "h": 121.2
@@ -586,7 +586,7 @@
       "sprite": "hero_hunter",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"front\",[\"short_bow\"]]",
+      "ea": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"front\",[\"short_bow\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -598,14 +598,14 @@
     },
     "vrects": {
      "hero": {
-      "x": 437.3,
-      "y": 338.9,
-      "w": 87.3,
+      "x": 438.6,
+      "y": 332.4,
+      "w": 88.6,
       "h": 121.2
      }
     },
     "vpx": {
-     "sig": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"front\",[\"short_bow\"]]",
+     "sig": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"front\",[\"short_bow\"]]",
      "parts": "base_plain outfit_hunter weapon_bow hand",
      "st": "ok"
     },
@@ -623,11 +623,11 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 340,
       "rect": {
-       "x": 437,
-       "y": 334,
-       "w": 89,
+       "x": 440,
+       "y": 340,
+       "w": 87,
        "h": 121
       }
      }
@@ -647,7 +647,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 459.5,
+      "x": 464.7,
       "y": 340.2,
       "w": 87.3,
       "h": 119.9
@@ -772,7 +772,7 @@
      "sprite": "hero_thief",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"thief\",\"px:v9.8.8\",\"back\",[\"dagger\",\"leather_armor\"]]",
+     "ea": "[\"hero\",\"thief\",\"px:v9.8.9\",\"back\",[\"dagger\",\"leather_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -791,14 +791,14 @@
      }
     },
     "px": {
-     "sig": "[\"hero\",\"thief\",\"px:v9.8.8\",\"back\",[\"dagger\",\"leather_armor\"]]",
+     "sig": "[\"hero\",\"thief\",\"px:v9.8.9\",\"back\",[\"dagger\",\"leather_armor\"]]",
      "parts": "base_plain outfit_thief armor_shape_f armor_light_t weapon_dagger hand",
      "st": "ok"
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 438.6,
+      "x": 436,
       "y": 348.1,
       "w": 99,
       "h": 121.2
@@ -816,7 +816,7 @@
       "sprite": "hero_thief",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"thief\",\"px:v9.8.8\",\"front\",[\"dagger\",\"leather_armor\"]]",
+      "ea": "[\"hero\",\"thief\",\"px:v9.8.9\",\"front\",[\"dagger\",\"leather_armor\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -828,14 +828,14 @@
     },
     "vrects": {
      "hero": {
-      "x": 434.7,
-      "y": 344.1,
+      "x": 437.3,
+      "y": 338.9,
       "w": 87.3,
-      "h": 119.9
+      "h": 121.2
      }
     },
     "vpx": {
-     "sig": "[\"hero\",\"thief\",\"px:v9.8.8\",\"front\",[\"dagger\",\"leather_armor\"]]",
+     "sig": "[\"hero\",\"thief\",\"px:v9.8.9\",\"front\",[\"dagger\",\"leather_armor\"]]",
      "parts": "base_plain outfit_thief armor_shape_f armor_light_t weapon_dagger hand",
      "st": "ok"
     },
@@ -855,7 +855,7 @@
       "fullCovered": 0,
       "fullTop": 335,
       "rect": {
-       "x": 435,
+       "x": 437,
        "y": 335,
        "w": 87,
        "h": 121
@@ -877,7 +877,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 453,
+      "x": 458.2,
       "y": 340.2,
       "w": 87.3,
       "h": 119.9
@@ -940,8 +940,8 @@
      "has": true,
      "job": "mage",
      "st": "ok",
-     "parts": "base_plain outfit_mage weapon_dagger hand outfit_mage_o",
-     "sig": "[\"hero\",\"mage\",\"px:v9.8.8\",\"job:warrior\",[\"dagger\"]]",
+     "parts": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_dagger hand jf_sleeve_t jf_sleeve_f",
+     "sig": "[\"hero\",\"mage\",\"px:v9.8.9\",\"job:warrior\",[\"dagger\"]]",
      "offIds": "leather_armor",
      "keepIds": "dagger",
      "offText": "転職すると外れる装備：革の鎧（持ち物に戻る）",
@@ -950,7 +950,7 @@
      "inView": true,
      "h": 140
     },
-    "m": "base_plain outfit_mage weapon_dagger hand outfit_mage_o",
+    "m": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_dagger hand jf_sleeve_t jf_sleeve_f",
     "off": [
      "leather_armor"
     ],
@@ -982,8 +982,8 @@
     "has": true,
     "job": "mage",
     "st": "ok",
-    "parts": "base_plain outfit_mage outfit_mage_o",
-    "sig": "[\"hero\",\"mage\",\"px:v9.8.8\",\"job:warrior\",[]]",
+    "parts": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f",
+    "sig": "[\"hero\",\"mage\",\"px:v9.8.9\",\"job:warrior\",[]]",
     "offIds": "short_bow",
     "keepIds": "",
     "offText": "転職すると外れる装備：短弓（持ち物に戻る）",
@@ -999,13 +999,13 @@
     "done": [
      "weapon:oak_staff"
     ],
-    "head": "base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o"
+    "head": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f"
    },
    "menu": {
     "hero": {
      "actor": "hero",
      "st": "ok",
-     "parts": "base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o",
+     "parts": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
      "skipped": null,
      "view": "job:warrior",
      "job": "mage",
@@ -1051,8 +1051,8 @@
    "cancel": {
     "same": true,
     "back": true,
-    "head0": "base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o",
-    "head1": "base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o",
+    "head0": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
+    "head1": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
     "before": "{\"weapon\":\"oak_staff\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}",
     "invSame": true
    },
@@ -1068,7 +1068,7 @@
      "sprite": "hero_mage",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"mage\",\"px:v9.8.8\",\"back\",[\"oak_staff\"]]",
+     "ea": "[\"hero\",\"mage\",\"px:v9.8.9\",\"back\",[\"oak_staff\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1087,14 +1087,14 @@
      }
     },
     "px": {
-     "sig": "[\"hero\",\"mage\",\"px:v9.8.8\",\"back\",[\"oak_staff\"]]",
-     "parts": "base_plain outfit_mage_x outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o",
+     "sig": "[\"hero\",\"mage\",\"px:v9.8.9\",\"back\",[\"oak_staff\"]]",
+     "parts": "base_plain armor_robe_x jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f jf_capehem_t",
      "st": "ok"
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 441.2,
+      "x": 438.6,
       "y": 348.1,
       "w": 99,
       "h": 121.2
@@ -1112,7 +1112,7 @@
       "sprite": "hero_mage",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"mage\",\"px:v9.8.8\",\"front\",[\"oak_staff\"]]",
+      "ea": "[\"hero\",\"mage\",\"px:v9.8.9\",\"front\",[\"oak_staff\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1124,15 +1124,15 @@
     },
     "vrects": {
      "hero": {
-      "x": 433.4,
-      "y": 336.3,
+      "x": 437.3,
+      "y": 333.7,
       "w": 87.3,
       "h": 121.2
      }
     },
     "vpx": {
-     "sig": "[\"hero\",\"mage\",\"px:v9.8.8\",\"front\",[\"oak_staff\"]]",
-     "parts": "base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o",
+     "sig": "[\"hero\",\"mage\",\"px:v9.8.9\",\"front\",[\"oak_staff\"]]",
+     "parts": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
      "st": "ok"
     },
     "cover": {
@@ -1149,12 +1149,12 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 336,
+      "fullTop": 343,
       "rect": {
-       "x": 433,
-       "y": 336,
+       "x": 439,
+       "y": 343,
        "w": 87,
-       "h": 121
+       "h": 120
       }
      }
     },
@@ -1173,7 +1173,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 449.1,
+      "x": 459.5,
       "y": 340.2,
       "w": 87.3,
       "h": 119.9
@@ -1185,7 +1185,7 @@
     "hero": {
      "actor": "hero",
      "st": "ok",
-     "parts": "base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o",
+     "parts": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
      "skipped": null,
      "view": "job:warrior",
      "job": "mage",
@@ -1235,13 +1235,13 @@
     "done": [
      "weapon:はずす"
     ],
-    "head": "base_plain outfit_mage outfit_mage_o"
+    "head": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f"
    },
    "menu": {
     "hero": {
      "actor": "hero",
      "st": "ok",
-     "parts": "base_plain outfit_mage outfit_mage_o",
+     "parts": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f",
      "skipped": null,
      "view": "job:warrior",
      "job": "mage",
@@ -1297,7 +1297,7 @@
      "sprite": "hero_mage",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"mage\",\"px:v9.8.8\",\"back\",[]]",
+     "ea": "[\"hero\",\"mage\",\"px:v9.8.9\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1316,14 +1316,14 @@
      }
     },
     "px": {
-     "sig": "[\"hero\",\"mage\",\"px:v9.8.8\",\"back\",[]]",
-     "parts": "base_plain outfit_mage_x outfit_mage outfit_mage_o",
+     "sig": "[\"hero\",\"mage\",\"px:v9.8.9\",\"back\",[]]",
+     "parts": "base_plain armor_robe_x jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f jf_capehem_t",
      "st": "ok"
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 439.9,
+      "x": 438.6,
       "y": 348.1,
       "w": 99,
       "h": 121.2
@@ -1341,7 +1341,7 @@
       "sprite": "hero_mage",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"mage\",\"px:v9.8.8\",\"front\",[]]",
+      "ea": "[\"hero\",\"mage\",\"px:v9.8.9\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1353,15 +1353,15 @@
     },
     "vrects": {
      "hero": {
-      "x": 433.4,
-      "y": 328.5,
-      "w": 88.6,
+      "x": 434.7,
+      "y": 335,
+      "w": 87.3,
       "h": 121.2
      }
     },
     "vpx": {
-     "sig": "[\"hero\",\"mage\",\"px:v9.8.8\",\"front\",[]]",
-     "parts": "base_plain outfit_mage outfit_mage_o",
+     "sig": "[\"hero\",\"mage\",\"px:v9.8.9\",\"front\",[]]",
+     "parts": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f",
      "st": "ok"
     },
     "cover": {
@@ -1378,12 +1378,12 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 329,
+      "fullTop": 343,
       "rect": {
-       "x": 433,
-       "y": 329,
-       "w": 89,
-       "h": 121
+       "x": 436,
+       "y": 343,
+       "w": 87,
+       "h": 120
       }
      }
     },
@@ -1402,7 +1402,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 447.8,
+      "x": 453,
       "y": 340.2,
       "w": 87.3,
       "h": 119.9
@@ -1414,7 +1414,7 @@
     "hero": {
      "actor": "hero",
      "st": "ok",
-     "parts": "base_plain outfit_mage outfit_mage_o",
+     "parts": "base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f",
      "skipped": null,
      "view": "job:warrior",
      "job": "mage",

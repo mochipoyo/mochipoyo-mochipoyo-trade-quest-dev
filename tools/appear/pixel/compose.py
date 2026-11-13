@@ -57,7 +57,7 @@ def plan(M, actor, vk, equip, data):
     # v9.8.6 職業の服装（equip の '_job'。ゲームの pixelPlan と同じ：素の絵のすぐ上に重ねる）
     jo = job_outfit(M, actor, equip.get('_job'))
     covered = set(r for m, _ in mats for r in (m.get('covers') or []))   # v9.8.9 装備が覆う部位の服の層は描かない
-    keep = lambda L: not (L.get('region') in covered)
+    keep = lambda L: not (L.get('region') in covered) and L['part'] in view['parts']
     if jo and all(L.get('optional') or L['part'] in view['parts'] for L in jo['layers']):
         jp = dict(jo['pal'], _job=1, _pal2=jo.get('pal2')) if jo.get('pal') else None   # v9.8.9 職業の配色（灰色の層を職業の色で塗る）
         mats.append((dict(jo, layers=[L for L in jo['layers'] if keep(L)]), jp))

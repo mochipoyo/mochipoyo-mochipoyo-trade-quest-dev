@@ -239,7 +239,7 @@ let PG = null;
   const pK = await look('騎士'); const pH2 = await look('hunter'); const s1 = await snap();
   S(pH.has && pH.st === 'ok' && pH.job === 'hunter' && pH.parts === 'base_plain outfit_hunter' && pH.offIds === 'steel_sword,iron_armor' && /鋼の剣/.test(pH.offText) && /鉄の鎧/.test(pH.offText) && pH.inView, `戦士 → 狩人のプレビュー：主人公本人の狩人の姿（${pH.parts}）。鉄の鎧・鋼の剣はプレビューから外れ、名前が出る（「${pH.offText}」）。絵は一覧の中に収まる（高さ ${pH.h}px）`);
   S(pT.has && pT.st === 'ok' && pT.parts === 'base_plain outfit_thief weapon_sword' && pT.offIds === 'iron_armor' && pT.keepIds === 'steel_sword' && /鉄の鎧/.test(pT.offText) && !/鋼の剣/.test(pT.offText) && /鋼の剣/.test(pT.keepText), `戦士 → 盗賊のプレビュー：盗賊でも使える鋼の剣は表示（${pT.parts}）、鉄の鎧だけ外れる（「${pT.offText}」「${pT.keepText}」）`);
-  S(!pK.has && pK.oldPortrait, '外見を職業で描き分けない職業（騎士）は、今までどおり職業の絵（プレビューなし）');
+  S(pK.has && pK.st === 'ok' && /jf_cape_t/.test(pK.parts) && !pK.oldPortrait, 'v9.8.9 から騎士もプレビュー（マントの系統を騎士の配色で。' + pK.parts + '）。v9.8.8 までは職業の絵（プレビューなし）');
   S(pH2.parts === pH.parts && pH2.sig === pH.sig && s1 === s0, '候補を切り替えても（狩人 → 盗賊 → 騎士 → 狩人）、同じ候補は同じプレビュー。職業・装備・所持数・所持金・セーブの中身は変わらない');
   await p.keyboard.press('Escape'); await p.waitForTimeout(400); await leaveGuild(); const s2 = await snap();
   S(s2 === s0, '一覧をキャンセル（Esc）してギルドを出ても、何も変わらない');

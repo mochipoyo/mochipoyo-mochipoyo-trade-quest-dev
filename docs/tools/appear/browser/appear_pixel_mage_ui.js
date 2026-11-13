@@ -47,7 +47,7 @@ let PG = null;
   };
   const pressUntil = async (fn, key = 'Escape', n = 8) => { for (let i = 0; i < n; i++) { if (await p.evaluate(fn)) return true; await p.keyboard.press(key); await p.waitForTimeout(250); } return p.evaluate(fn); };
   const closeAll = () => pressUntil(() => !document.querySelector('#ui .rw-list, #ui .rw-choice, #ui .rw-msg') && !World.busy);
-  const openMenu = async () => { await closeAll(); await p.keyboard.press('Escape'); await waitTop(/メニュー/); };
+  const openMenu = async () => { for (let i = 0; i < 3; i++) { await closeAll(); await p.keyboard.press('Escape'); try { await waitTop(/メニュー/, i < 2 ? 6000 : 20000); return; } catch (e) { if (i === 2) throw e; } } };   // v9.8.9 読み込みの直後は Esc が届かないことがあるので押し直す
   const tab = async (label) => { const t = await waitTop(/メニュー/); const tb = await t.evaluateHandle((n, lb) => [...n.querySelectorAll('.rw-tab')].find((x) => x.textContent.indexOf(lb) === 0) || null, label); if (tb.asElement()) await tb.asElement().click(); await p.waitForTimeout(250); };
   const headParts = () => p.evaluate(() => { const n = document.querySelector('#ui .equip-menu .eq-body-head canvas'); return n ? n.getAttribute('data-ea-parts') : null; });
   const openEquip = async (id) => {
@@ -254,7 +254,7 @@ let PG = null;
   await openJobList();
   const pM = await look('mage'); await p.screenshot({ path: `${OUT}shots/jobprev_mage_${VIEW}_warrior.jpg`, type: 'jpeg', quality: 80 });
   const pH = await look('hunter'); const pT = await look('thief'); const pM2 = await look('mage'); const s1 = await snap();
-  const PM0 = 'base_plain outfit_mage outfit_mage_o';
+  const PM0 = 'base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f';   // v9.8.9 系統 _robe の部品（v9.8.8 は base_plain outfit_mage outfit_mage_o）
   S(pM.has && pM.st === 'ok' && pM.job === 'mage' && pM.parts === PM0 && pM.offIds === 'steel_sword,iron_armor' && /鋼の剣/.test(pM.offText) && /鉄の鎧/.test(pM.offText) && pM.inView, `戦士 → 魔法使いのプレビュー：主人公本人の魔法使いの姿（${pM.parts}）。鉄の鎧・鋼の剣は外れ、名前が出る（「${pM.offText}」）。絵は一覧の中に収まる（高さ ${pM.h}px）`);
   S(pH.parts === 'base_plain outfit_hunter' && pT.parts === 'base_plain outfit_thief weapon_sword' && pM2.sig === pM.sig && pM2.parts === pM.parts && s1 === s0, `候補を切り替えても（魔法使い → 狩人 → 盗賊 → 魔法使い）、同じ候補は同じプレビュー。職業・装備・所持数・所持金・セーブの中身は変わらない`);
   await p.keyboard.press('Escape'); await p.waitForTimeout(400); await leaveGuild(); const s2 = await snap();
@@ -271,21 +271,21 @@ let PG = null;
   const jt = await guildChange('thief');
   await scene('t1', '盗賊：短剣＋革の鎧', { weapon: 'dagger', armor: 'leather_armor' }, { battle: true, has: ['outfit_thief', 'weapon_dagger', 'hand'] });
   // ---- 5 盗賊 → 魔法使い：短剣は持ち越す・革の鎧は外れる。一覧から確定 → なかま＝直前のプレビュー ----
-  const PMD = 'base_plain outfit_mage weapon_dagger hand outfit_mage_o';
+  const PMD = 'base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_dagger hand jf_sleeve_t jf_sleeve_f';
   const c1 = await confirmFromList('mage');
   S(c1.pv.parts === PMD && c1.pv.offIds === 'leather_armor' && c1.pv.keepIds === 'dagger' && /革の鎧/.test(c1.pv.offText) && /短剣/.test(c1.pv.keepText), `盗賊（短剣＋革の鎧）→ 魔法使いのプレビュー：短剣は持ち越し（${c1.pv.parts}）、革の鎧は外れる（「${c1.pv.offText}」「${c1.pv.keepText}」）`);
   S(c1.job === 'mage' && c1.off.join() === 'leather_armor' && c1.keep.join() === 'dagger' && c1.invOk && c1.m.st === 'ok' && c1.m.parts === c1.pv.parts, `確定：革の鎧だけ外れて持ち物に戻り（所持数 +1）、短剣は装備したまま（所持数そのまま）。「なかま」の画面の外見（${c1.m.parts}）＝直前のプレビュー（${c1.pv.parts}）`);
   rec.confirm = { c1: { pv: c1.pv, m: c1.m.parts, off: c1.off, keep: c1.keep, e0: c1.e0, e1: c1.e1 }, jh: jh.off, jt: jt.off, pHM };
   // ---- 6 魔法使い：樫の杖（キャンセルも）→ 戦闘 → 杖をはずす → 戦闘 ----
   const i6 = await inv();
-  const PMS = 'base_plain outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o';
-  await scene('m1', '魔法使い：樫の杖', { weapon: 'oak_staff' }, { battle: true, cancel: '武器', parts: PMS, back: 'base_plain outfit_mage_x outfit_mage weapon_staff_t weapon_staff_f hand outfit_mage_o' });
+  const PMS = 'base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f';
+  await scene('m1', '魔法使い：樫の杖', { weapon: 'oak_staff' }, { battle: true, cancel: '武器', parts: PMS, back: 'base_plain armor_robe_x jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f jf_capehem_t' });
   const i7 = await inv(); S(N(i7, 'oak_staff') === N(i6, 'oak_staff') - 1 && N(i7, 'dagger') === N(i6, 'dagger') + 1, `杖に持ち替え：樫の杖の所持数 ${N(i6, 'oak_staff')} → ${N(i7, 'oak_staff')}・短剣 ${N(i6, 'dagger')} → ${N(i7, 'dagger')}（持ち替えた短剣は持ち物に戻る）`);
-  await scene('m2', '魔法使い：杖をはずす（装備なし）', { weapon: null }, { battle: true, parts: PM0, back: 'base_plain outfit_mage_x outfit_mage outfit_mage_o' });
+  await scene('m2', '魔法使い：杖をはずす（装備なし）', { weapon: null }, { battle: true, parts: PM0, back: 'base_plain armor_robe_x jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f jf_capehem_t' });
   const i8 = await inv(); S(N(i8, 'oak_staff') === N(i7, 'oak_staff') + 1, `杖をはずす：樫の杖は持ち物に戻る（所持数 ${N(i7, 'oak_staff')} → ${N(i8, 'oak_staff')}）`);
   const B = (k) => rec[k].battle; const hasP = (s, k) => (' ' + (s || '') + ' ').indexOf(' ' + k + ' ') >= 0;
   S(['weapon_staff_t', 'weapon_staff_f', 'hand'].every((k) => hasP(B('m1').px.parts, k) && hasP(B('m1').vpx.parts, k) && hasP(rec.m1.menu.hero.parts, k)) && ['weapon_staff_t', 'weapon_staff_f', 'hand'].every((k) => !hasP(B('m2').px.parts, k) && !hasP(B('m2').vpx.parts, k) && !hasP(rec.m2.menu.hero.parts, k) && !hasP(rec.m2.ui.head, k)), '杖は 3 つの向き（メニュー正面・戦闘背面・勝利正面）に出て、はずすと 3 つの向きとそうびの画面の絵から消える（袖・ローブはそのまま）');
-  S(['m1', 'm2'].every((k) => B(k).px.parts.split(' ').pop() === 'outfit_mage_o' && B(k).vpx.parts.split(' ').pop() === 'outfit_mage_o'), '重なりの順：袖（outfit_mage_o）は杖・握りの拳より手前に描く（正面・背面とも最後の層）');
+  const after = (s, a, b) => { const q = s.split(' '); return q.indexOf(b) > q.indexOf(a) && q.indexOf(a) >= 0; }; S(['m1'].every((k) => ['px', 'vpx'].every((w) => after(B(k)[w].parts, 'hand', 'jf_sleeve_t') && after(B(k)[w].parts, 'weapon_staff_f', 'jf_sleeve_t'))), '重なりの順：袖（jf_sleeve。v9.8.8 は outfit_mage_o）は杖・握りの拳より手前に描く（正面・背面とも）');
   // 戦闘の大きさ・足もとが職業・装備で変わらない
   const ks = ['w0', 'h1', 't1', 'm1', 'm2']; const bs = ks.map((k) => B(k).hero && B(k).hero.size); const vs = ks.map((k) => B(k).victory && B(k).victory.hero && B(k).victory.hero.size);
   S(bs.every((z) => z && z.w === bs[0].w && z.h === bs[0].h) && vs.every((z) => z && z.w === vs[0].w && z.h === vs[0].h), `戦闘の背面・勝利の正面の範囲が職業・装備で同じ（背面 ${bs.map((z) => z && z.w + '×' + z.h).join(' ')}／正面 ${vs.map((z) => z && z.w + '×' + z.h).join(' ')}）`);
