@@ -1,7 +1,7 @@
 {
  "VIEW": "phone",
  "isPhone": true,
- "ok": 38,
+ "ok": 57,
  "ng": 0,
  "steps": [
   {
@@ -34,31 +34,59 @@
   },
   {
    "ok": true,
-   "m": "［短弓を装備］ミナ：装備メニューで weapon:short_bow → なかまの画面の立ち絵 base_plain weapon_bow hand（そうびの画面の絵 base_plain weapon_bow hand）"
+   "m": "［銅の剣を装備（v9.8.5 片手剣）］ミナ：装備メニューで weapon:copper_sword → なかまの画面の立ち絵 base_plain weapon_sword hand（そうびの画面の絵 base_plain weapon_sword hand）"
   },
   {
    "ok": true,
-   "m": "［短弓を装備］ミナ：キャンセル（［そうび］→ 武器 → 品の一覧で Esc）→ 装備も絵も変わらない（{\"weapon\":\"short_bow\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain weapon_bow hand）"
+   "m": "［銅の剣を装備（v9.8.5 片手剣）］ミナ：キャンセル（［そうび］→ 武器 → 品の一覧で Esc）→ 装備も絵も変わらない（{\"weapon\":\"copper_sword\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain weapon_sword hand）"
   },
   {
    "ok": true,
-   "m": "［短弓を装備］ミナ：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":\"short_bow\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
+   "m": "［銅の剣を装備（v9.8.5 片手剣）］ミナ：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":\"copper_sword\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
   },
   {
    "ok": true,
-   "m": "［短弓を装備］ミナ：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.84,\"h\":1.16}）"
+   "m": "［銅の剣を装備（v9.8.5 片手剣）］ミナ：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.84,\"h\":1.16}）"
   },
   {
    "ok": true,
-   "m": "［短弓を装備］ミナ：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain weapon_bow hand）"
+   "m": "［銅の剣を装備（v9.8.5 片手剣）］ミナ：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain weapon_sword hand）"
   },
   {
    "ok": true,
-   "m": "［短弓を装備］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜193px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
+   "m": "［銅の剣を装備（v9.8.5 片手剣）］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜193px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
   },
   {
    "ok": true,
-   "m": "［短弓を装備］戦闘のあとフィールドへ戻った"
+   "m": "［銅の剣を装備（v9.8.5 片手剣）］戦闘のあとフィールドへ戻った"
+  },
+  {
+   "ok": true,
+   "m": "［銅の剣 → 短弓に持ち替え］ミナ：装備メニューで weapon:short_bow → なかまの画面の立ち絵 base_plain weapon_bow hand（そうびの画面の絵 base_plain weapon_bow hand）"
+  },
+  {
+   "ok": true,
+   "m": "［銅の剣 → 短弓に持ち替え］ミナ：キャンセル（［そうび］→ 武器 → 品の一覧で Esc）→ 装備も絵も変わらない（{\"weapon\":\"short_bow\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}・そうびの画面の絵 base_plain weapon_bow hand）"
+  },
+  {
+   "ok": true,
+   "m": "［銅の剣 → 短弓に持ち替え］ミナ：そのまま戦闘 → 背面に合成（pixel:dir:back・装備 {\"weapon\":\"short_bow\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［銅の剣 → 短弓に持ち替え］ミナ：勝利の振り向き → 正面にも同じ装備を合成（pixel:dir:front・範囲 {\"w\":0.84,\"h\":1.16}）"
+  },
+  {
+   "ok": true,
+   "m": "［銅の剣 → 短弓に持ち替え］ミナ：戦闘のあとのメニュー：戦闘の前と同じ装備・同じ部品（base_plain weapon_bow hand）"
+  },
+  {
+   "ok": true,
+   "m": "［銅の剣 → 短弓に持ち替え］ミナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜193px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）"
+  },
+  {
+   "ok": true,
+   "m": "［銅の剣 → 短弓に持ち替え］戦闘のあとフィールドへ戻った"
   },
   {
    "ok": true,
@@ -114,7 +142,7 @@
   },
   {
    "ok": true,
-   "m": "ミナ：メニューの足もと（枠の下辺）・左右の中心・1 ドットの大きさが 4 つとも同じ（下辺 270.9・中心 195・1 ドット 0.7037px）"
+   "m": "ミナ：メニューの足もと（枠の下辺）・左右の中心・1 ドットの大きさが 5 つとも同じ（下辺 270.9・中心 195・1 ドット 0.7037px）"
   },
   {
    "ok": true,
@@ -122,11 +150,19 @@
   },
   {
    "ok": true,
-   "m": "ミナ：戦闘の背面・勝利の正面の範囲（カメラ合わせ・影・HP の位置）が組み合わせで同じ（背面 0.99×1.16 0.99×1.16 0.99×1.16 0.99×1.16／正面 0.84×1.16 0.84×1.16 0.84×1.16 0.84×1.16）"
+   "m": "ミナ：戦闘の背面・勝利の正面の範囲（カメラ合わせ・影・HP の位置）が組み合わせで同じ（背面 0.99×1.16 0.99×1.16 0.99×1.16 0.99×1.16 0.99×1.16／正面 0.84×1.16 0.84×1.16 0.84×1.16 0.84×1.16 0.84×1.16）"
   },
   {
    "ok": true,
-   "m": "ミナ：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 0.6px・高さ比 1.007／Δ足もと 0.6px・高さ比 1.007／Δ足もと 0.6px・高さ比 1.007／Δ足もと 0.6px・高さ比 1.007）"
+   "m": "ミナ：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 0.6px・高さ比 1.007／Δ足もと 0.6px・高さ比 1.007／Δ足もと 0.6px・高さ比 1.007／Δ足もと 0.6px・高さ比 1.007／Δ足もと 0.6px・高さ比 1.007）"
+  },
+  {
+   "ok": true,
+   "m": "銅の剣：手ぶらにならず、片手剣がメニュー正面・戦闘の背面・勝利の正面の 3 つに出る（柄の上に拳を描き直す）"
+  },
+  {
+   "ok": true,
+   "m": "剣 → 弓に持ち替え：剣は消える"
   },
   {
    "ok": true,
@@ -147,6 +183,46 @@
   {
    "ok": true,
    "m": "セーブを読み直す（ページの読み込み直し）：装備ID short_bow のまま → 3 つの向きとも弓。短剣を装備したセーブ（装備ID dagger）は 3 つの向きとも短剣（base_plain weapon_bow／base_plain weapon_bow／base_plain weapon_bow）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v983（8861f81・外見の版 v9.8.3）：パーティ（hero・lina・mina・kyle）と、全員の装備ID が作ったときと同じ（ミナ \"copper_sword\"）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v983（8861f81・外見の版 v9.8.3）：所持数が作ったときと同じ（{\"copper_sword\":1,\"short_bow\":2,\"dagger\":1,\"herb\":5}・1234G）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v983（8861f81・外見の版 v9.8.3）：装備ID から、3 つの向きとも対応する外見になる（hero＝base_helm armor_heavy head_helm weapon_sword／lina＝base_plain armor_robe head_cap weapon_staff／mina＝base_plain weapon_sword／kyle＝base_plain armor_heavy shield weapon_spear）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v983（8861f81・外見の版 v9.8.3）：読んだだけではセーブを書き換えない（LocalStorage の中身・セーブのファイルとも同じ）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v983（8861f81・外見の版 v9.8.3）：ミナ（銅の剣）は、なかまの画面・戦闘の背面・勝利の正面とも片手剣（base_plain weapon_sword hand）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v972（4ed959b・外見の版 v9.7）：パーティ（hero・lina・mina・kyle）と、全員の装備ID が作ったときと同じ（ミナ \"copper_sword\"）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v972（4ed959b・外見の版 v9.7）：所持数が作ったときと同じ（{\"copper_sword\":1,\"short_bow\":2,\"dagger\":1,\"herb\":5}・1234G）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v972（4ed959b・外見の版 v9.7）：装備ID から、3 つの向きとも対応する外見になる（hero＝base_helm armor_heavy head_helm weapon_sword／lina＝base_plain armor_robe head_cap weapon_staff／mina＝base_plain weapon_sword／kyle＝base_plain armor_heavy shield weapon_spear）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v972（4ed959b・外見の版 v9.7）：読んだだけではセーブを書き換えない（LocalStorage の中身・セーブのファイルとも同じ）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v972（4ed959b・外見の版 v9.7）：ミナ（銅の剣）は、なかまの画面・戦闘の背面・勝利の正面とも片手剣（base_plain weapon_sword hand）"
   },
   {
    "ok": true,
@@ -221,7 +297,7 @@
      "sprite": "mina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
      "pd": "ok",
-     "ea": "[\"mina\",\"thief\",\"px:v9.8.4\",\"back\",[]]",
+     "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -241,7 +317,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -262,7 +338,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 177.3,
+      "x": 176.7,
       "y": 330.9,
       "w": 72.5,
       "h": 90.2
@@ -286,7 +362,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.4\",\"front\",[]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -306,7 +382,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -319,13 +395,13 @@
     "vrects": {
      "hero": {
       "x": 179.2,
-      "y": 322.4,
+      "y": 325.4,
       "w": 64.6,
       "h": 89.6
      },
      "mina": {
       "x": 260.8,
-      "y": 322.4,
+      "y": 325.4,
       "w": 71.9,
       "h": 90.2
      }
@@ -344,10 +420,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 326,
+      "fullTop": 325,
       "rect": {
        "x": 179,
-       "y": 326,
+       "y": 325,
        "w": 65,
        "h": 90
       }
@@ -356,10 +432,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 326,
+      "fullTop": 324,
       "rect": {
        "x": 261,
-       "y": 326,
+       "y": 324,
        "w": 72,
        "h": 90
       }
@@ -442,8 +518,307 @@
     }
    }
   },
+  "sword": {
+   "name": "銅の剣を装備（v9.8.5 片手剣）",
+   "ui": {
+    "mina": {
+     "done": [
+      "weapon:copper_sword"
+     ],
+     "head": "base_plain weapon_sword hand"
+    }
+   },
+   "menu": {
+    "mina": {
+     "actor": "mina",
+     "st": "ok",
+     "parts": "base_plain weapon_sword hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "thief",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 124.6,
+      "right": 265.4,
+      "w": 140.7,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7037,
+     "pxw": 0.7037,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "copper_sword",
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 48,
+      "maxMp": 19,
+      "atk": 23,
+      "def": 8,
+      "agi": 21,
+      "mag": 7,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "cancel": {
+    "mina": {
+     "same": true,
+     "back": true,
+     "head0": "base_plain weapon_sword hand",
+     "head1": "base_plain weapon_sword hand",
+     "before": "{\"weapon\":\"copper_sword\",\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}"
+    }
+   },
+   "battle": {
+    "mina": {
+     "id": "mina",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "thief",
+     "sprite": "mina",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
+     "pd": "ok",
+     "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[\"copper_sword\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.99,
+      "h": 1.16
+     }
+    },
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "equip": {
+     "mina": {
+      "weapon": "copper_sword",
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     }
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 176.7,
+      "y": 330.9,
+      "w": 72.5,
+      "h": 90.2
+     },
+     "mina": {
+      "x": 245.6,
+      "y": 331.5,
+      "w": 84.1,
+      "h": 90.2
+     }
+    },
+    "victory": {
+     "mina": {
+      "id": "mina",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "thief",
+      "sprite": "mina",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
+      "pd": "ok",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[\"copper_sword\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.84,
+       "h": 1.16
+      }
+     },
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 179.2,
+      "y": 321.8,
+      "w": 64.6,
+      "h": 89.6
+     },
+     "mina": {
+      "x": 260.8,
+      "y": 321.8,
+      "w": 71.9,
+      "h": 90.2
+     }
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory result-simple rs",
+       "x": 12,
+       "y": 4,
+       "w": 367,
+       "h": 189
+      }
+     ],
+     "hero": {
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 325,
+      "rect": {
+       "x": 179,
+       "y": 325,
+       "w": 65,
+       "h": 90
+      }
+     },
+     "mina": {
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 325,
+      "rect": {
+       "x": 261,
+       "y": 325,
+       "w": 72,
+       "h": 90
+      }
+     }
+    },
+    "panel": {
+     "cls": "rw-panel result-victory result-simple rs-top",
+     "top": 4,
+     "bottom": 193,
+     "h": 189,
+     "scroll": null,
+     "close": {
+      "top": 140,
+      "bottom": 184,
+      "in": true
+     },
+     "more": false
+    },
+    "vrects2": {
+     "hero": {
+      "x": 179.2,
+      "y": 331.5,
+      "w": 64,
+      "h": 89.6
+     },
+     "mina": {
+      "x": 260.8,
+      "y": 331.5,
+      "w": 71.9,
+      "h": 90.2
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "mina": {
+     "actor": "mina",
+     "st": "ok",
+     "parts": "base_plain weapon_sword hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "thief",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 124.6,
+      "right": 265.4,
+      "w": 140.7,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.7037,
+     "pxw": 0.7037,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "copper_sword",
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 48,
+      "maxMp": 19,
+      "atk": 23,
+      "def": 8,
+      "agi": 21,
+      "mag": 7,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   }
+  },
   "equip": {
-   "name": "短弓を装備",
+   "name": "銅の剣 → 短弓に持ち替え",
    "ui": {
     "mina": {
      "done": [
@@ -520,7 +895,7 @@
      "sprite": "mina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
      "pd": "ok",
-     "ea": "[\"mina\",\"thief\",\"px:v9.8.4\",\"back\",[\"short_bow\"]]",
+     "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[\"short_bow\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -540,7 +915,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -561,7 +936,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 177.3,
+      "x": 176.7,
       "y": 330.9,
       "w": 72.5,
       "h": 90.2
@@ -585,7 +960,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.4\",\"front\",[\"short_bow\"]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[\"short_bow\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -605,7 +980,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -618,13 +993,13 @@
     "vrects": {
      "hero": {
       "x": 179.2,
-      "y": 329.7,
+      "y": 325.4,
       "w": 64.6,
       "h": 89.6
      },
      "mina": {
       "x": 260.8,
-      "y": 329.1,
+      "y": 325.4,
       "w": 71.9,
       "h": 90.2
      }
@@ -643,22 +1018,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 330,
       "rect": {
        "x": 179,
-       "y": 331,
-       "w": 64,
-       "h": 89
+       "y": 330,
+       "w": 65,
+       "h": 90
       }
      },
      "mina": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 329,
       "rect": {
        "x": 261,
-       "y": 331,
+       "y": 329,
        "w": 72,
        "h": 90
       }
@@ -819,7 +1194,7 @@
      "sprite": "mina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
      "pd": "ok",
-     "ea": "[\"mina\",\"thief\",\"px:v9.8.4\",\"back\",[\"dagger\"]]",
+     "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[\"dagger\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -839,7 +1214,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -860,7 +1235,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 177.3,
+      "x": 176.7,
       "y": 330.9,
       "w": 72.5,
       "h": 90.2
@@ -884,7 +1259,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.4\",\"front\",[\"dagger\"]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[\"dagger\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -904,7 +1279,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -917,7 +1292,7 @@
     "vrects": {
      "hero": {
       "x": 179.2,
-      "y": 318.7,
+      "y": 319.3,
       "w": 64.6,
       "h": 90.2
      },
@@ -942,10 +1317,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 321,
+      "fullTop": 322,
       "rect": {
        "x": 179,
-       "y": 321,
+       "y": 322,
        "w": 65,
        "h": 90
       }
@@ -1110,7 +1485,7 @@
      "sprite": "mina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
      "pd": "ok",
-     "ea": "[\"mina\",\"thief\",\"px:v9.8.4\",\"back\",[]]",
+     "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1130,7 +1505,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1151,7 +1526,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 177.3,
+      "x": 176.7,
       "y": 330.9,
       "w": 72.5,
       "h": 90.2
@@ -1175,7 +1550,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.4\",\"front\",[]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1195,7 +1570,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.4\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1208,13 +1583,13 @@
     "vrects": {
      "hero": {
       "x": 179.2,
-      "y": 326.6,
+      "y": 328.5,
       "w": 64.6,
       "h": 89.6
      },
      "mina": {
       "x": 260.8,
-      "y": 326,
+      "y": 328.5,
       "w": 71.9,
       "h": 90.2
      }
@@ -1233,10 +1608,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 330,
+      "fullTop": 325,
       "rect": {
        "x": 179,
-       "y": 330,
+       "y": 325,
        "w": 65,
        "h": 90
       }
@@ -1245,10 +1620,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 329,
+      "fullTop": 325,
       "rect": {
        "x": 261,
-       "y": 329,
+       "y": 325,
        "w": 72,
        "h": 90
       }
@@ -1328,6 +1703,608 @@
       "immune": [],
       "element": "none"
      }
+    }
+   }
+  },
+  "old": {
+   "v983": {
+    "load": {
+     "party": [
+      "hero",
+      "lina",
+      "mina",
+      "kyle"
+     ],
+     "equip": {
+      "hero": {
+       "weapon": "steel_sword",
+       "armor": "iron_armor",
+       "shield": null,
+       "head": "iron_helm",
+       "acc": null
+      },
+      "lina": {
+       "weapon": "oak_staff",
+       "armor": "robe_skip",
+       "shield": null,
+       "head": "leather_cap",
+       "acc": null
+      },
+      "mina": {
+       "weapon": "copper_sword",
+       "armor": null,
+       "shield": null,
+       "head": null,
+       "acc": null
+      },
+      "kyle": {
+       "weapon": "iron_spear",
+       "armor": "iron_armor",
+       "shield": "iron_shield",
+       "head": null,
+       "acc": null
+      }
+     },
+     "inventory": {
+      "copper_sword": 1,
+      "short_bow": 2,
+      "dagger": 1,
+      "herb": 5
+     },
+     "plans": {
+      "hero": [
+       "base_helm armor_heavy head_helm weapon_sword",
+       "base_helm armor_heavy head_helm weapon_sword",
+       "base_helm armor_heavy head_helm weapon_sword"
+      ],
+      "lina": [
+       "base_plain armor_robe head_cap weapon_staff",
+       "base_plain armor_robe head_cap weapon_staff",
+       "base_plain armor_robe head_cap weapon_staff"
+      ],
+      "mina": [
+       "base_plain weapon_sword",
+       "base_plain weapon_sword",
+       "base_plain weapon_sword"
+      ],
+      "kyle": [
+       "base_plain armor_heavy shield weapon_spear",
+       "base_plain armor_heavy shield weapon_spear",
+       "base_plain armor_heavy shield weapon_spear"
+      ]
+     }
+    },
+    "menu": {
+     "mina": {
+      "actor": "mina",
+      "st": "ok",
+      "parts": "base_plain weapon_sword hand",
+      "skipped": null,
+      "view": "menu",
+      "job": "thief",
+      "rect": {
+       "top": 80.9,
+       "bottom": 270.9,
+       "left": 124.6,
+       "right": 265.4,
+       "w": 140.7,
+       "h": 190,
+       "cx": 195
+      },
+      "px": 0.7037,
+      "pxw": 0.7037,
+      "clip": {
+       "top": false,
+       "bottom": false,
+       "left": false,
+       "right": false,
+       "screen": false
+      },
+      "ov": null,
+      "equip": {
+       "weapon": "copper_sword",
+       "armor": null,
+       "shield": null,
+       "head": null,
+       "acc": null
+      },
+      "stats": {
+       "maxHp": 48,
+       "maxMp": 19,
+       "atk": 23,
+       "def": 8,
+       "agi": 21,
+       "mag": 7,
+       "mdef": 2,
+       "immune": [],
+       "element": "none"
+      }
+     }
+    },
+    "battle": {
+     "mina": {
+      "id": "mina",
+      "model": "pixel:dir:back",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "thief",
+      "sprite": "mina",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
+      "pd": "ok",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[\"copper_sword\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.99,
+       "h": 1.16
+      }
+     },
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:back",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.84,
+       "h": 1.17
+      }
+     },
+     "equip": {
+      "mina": {
+       "weapon": "copper_sword",
+       "armor": null,
+       "shield": null,
+       "head": null,
+       "acc": null
+      }
+     },
+     "fell": [],
+     "rects": {
+      "hero": {
+       "x": 131.6,
+       "y": 337,
+       "w": 56.7,
+       "h": 68.3
+      },
+      "mina": {
+       "x": 239.5,
+       "y": 340,
+       "w": 64,
+       "h": 68.3
+      }
+     },
+     "victory": {
+      "mina": {
+       "id": "mina",
+       "model": "pixel:dir:front",
+       "ready": true,
+       "anim": "Idle",
+       "dead": false,
+       "status": "2D",
+       "job": "thief",
+       "sprite": "mina",
+       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
+       "pd": "ok",
+       "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[\"copper_sword\"]]",
+       "eaWait": false,
+       "eaModel": null,
+       "vis": true,
+       "size": {
+        "w": 0.84,
+        "h": 1.16
+       }
+      },
+      "hero": {
+       "id": "hero",
+       "model": "pixel:dir:front",
+       "ready": true,
+       "anim": "Idle",
+       "dead": false,
+       "status": "2D",
+       "job": "warrior",
+       "sprite": "hero_warrior",
+       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+       "pd": "ok",
+       "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
+       "eaWait": false,
+       "eaModel": null,
+       "vis": true,
+       "size": {
+        "w": 0.75,
+        "h": 1.15
+       }
+      }
+     },
+     "vrects": {
+      "hero": {
+       "x": 133.5,
+       "y": 335.8,
+       "w": 50.6,
+       "h": 67
+      },
+      "mina": {
+       "x": 251.1,
+       "y": 338.2,
+       "w": 54.8,
+       "h": 68.3
+      }
+     },
+     "cover": {
+      "wins": [
+       {
+        "cls": "rw-panel result-victory result-simple rs",
+        "x": 12,
+        "y": 4,
+        "w": 367,
+        "h": 213
+       }
+      ],
+      "hero": {
+       "covered": 0,
+       "headCovered": 0,
+       "fullCovered": 0,
+       "fullTop": 335,
+       "rect": {
+        "x": 133,
+        "y": 333,
+        "w": 51,
+        "h": 68
+       }
+      },
+      "mina": {
+       "covered": 0,
+       "headCovered": 0,
+       "fullCovered": 0,
+       "fullTop": 336,
+       "rect": {
+        "x": 251,
+        "y": 336,
+        "w": 55,
+        "h": 69
+       }
+      }
+     },
+     "panel": {
+      "cls": "rw-panel result-victory result-simple rs-top",
+      "top": 4,
+      "bottom": 217,
+      "h": 213,
+      "scroll": null,
+      "close": {
+       "top": 164,
+       "bottom": 208,
+       "in": true
+      },
+      "more": false
+     },
+     "vrects2": {
+      "hero": {
+       "x": 133.5,
+       "y": 337.6,
+       "w": 50.6,
+       "h": 67
+      },
+      "mina": {
+       "x": 251.7,
+       "y": 340,
+       "w": 54.8,
+       "h": 68.3
+      }
+     },
+     "ended": true
+    }
+   },
+   "v972": {
+    "load": {
+     "party": [
+      "hero",
+      "lina",
+      "mina",
+      "kyle"
+     ],
+     "equip": {
+      "hero": {
+       "weapon": "steel_sword",
+       "armor": "iron_armor",
+       "shield": null,
+       "head": "iron_helm",
+       "acc": null
+      },
+      "lina": {
+       "weapon": "oak_staff",
+       "armor": "robe_skip",
+       "shield": null,
+       "head": "leather_cap",
+       "acc": null
+      },
+      "mina": {
+       "weapon": "copper_sword",
+       "armor": null,
+       "shield": null,
+       "head": null,
+       "acc": null
+      },
+      "kyle": {
+       "weapon": "iron_spear",
+       "armor": "iron_armor",
+       "shield": "iron_shield",
+       "head": null,
+       "acc": null
+      }
+     },
+     "inventory": {
+      "copper_sword": 1,
+      "short_bow": 2,
+      "dagger": 1,
+      "herb": 5
+     },
+     "plans": {
+      "hero": [
+       "base_helm armor_heavy head_helm weapon_sword",
+       "base_helm armor_heavy head_helm weapon_sword",
+       "base_helm armor_heavy head_helm weapon_sword"
+      ],
+      "lina": [
+       "base_plain armor_robe head_cap weapon_staff",
+       "base_plain armor_robe head_cap weapon_staff",
+       "base_plain armor_robe head_cap weapon_staff"
+      ],
+      "mina": [
+       "base_plain weapon_sword",
+       "base_plain weapon_sword",
+       "base_plain weapon_sword"
+      ],
+      "kyle": [
+       "base_plain armor_heavy shield weapon_spear",
+       "base_plain armor_heavy shield weapon_spear",
+       "base_plain armor_heavy shield weapon_spear"
+      ]
+     }
+    },
+    "menu": {
+     "mina": {
+      "actor": "mina",
+      "st": "ok",
+      "parts": "base_plain weapon_sword hand",
+      "skipped": null,
+      "view": "menu",
+      "job": "thief",
+      "rect": {
+       "top": 80.9,
+       "bottom": 270.9,
+       "left": 124.6,
+       "right": 265.4,
+       "w": 140.7,
+       "h": 190,
+       "cx": 195
+      },
+      "px": 0.7037,
+      "pxw": 0.7037,
+      "clip": {
+       "top": false,
+       "bottom": false,
+       "left": false,
+       "right": false,
+       "screen": false
+      },
+      "ov": null,
+      "equip": {
+       "weapon": "copper_sword",
+       "armor": null,
+       "shield": null,
+       "head": null,
+       "acc": null
+      },
+      "stats": {
+       "maxHp": 48,
+       "maxMp": 19,
+       "atk": 23,
+       "def": 8,
+       "agi": 21,
+       "mag": 7,
+       "mdef": 2,
+       "immune": [],
+       "element": "none"
+      }
+     }
+    },
+    "battle": {
+     "mina": {
+      "id": "mina",
+      "model": "pixel:dir:back",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "thief",
+      "sprite": "mina",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
+      "pd": "ok",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[\"copper_sword\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.99,
+       "h": 1.16
+      }
+     },
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:back",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.84,
+       "h": 1.17
+      }
+     },
+     "equip": {
+      "mina": {
+       "weapon": "copper_sword",
+       "armor": null,
+       "shield": null,
+       "head": null,
+       "acc": null
+      }
+     },
+     "fell": [],
+     "rects": {
+      "hero": {
+       "x": 131.6,
+       "y": 337,
+       "w": 56.7,
+       "h": 68.3
+      },
+      "mina": {
+       "x": 240.1,
+       "y": 340,
+       "w": 64,
+       "h": 68.3
+      }
+     },
+     "victory": {
+      "mina": {
+       "id": "mina",
+       "model": "pixel:dir:front",
+       "ready": true,
+       "anim": "Idle",
+       "dead": false,
+       "status": "2D",
+       "job": "thief",
+       "sprite": "mina",
+       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
+       "pd": "ok",
+       "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[\"copper_sword\"]]",
+       "eaWait": false,
+       "eaModel": null,
+       "vis": true,
+       "size": {
+        "w": 0.84,
+        "h": 1.16
+       }
+      },
+      "hero": {
+       "id": "hero",
+       "model": "pixel:dir:front",
+       "ready": true,
+       "anim": "Idle",
+       "dead": false,
+       "status": "2D",
+       "job": "warrior",
+       "sprite": "hero_warrior",
+       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+       "pd": "ok",
+       "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
+       "eaWait": false,
+       "eaModel": null,
+       "vis": true,
+       "size": {
+        "w": 0.75,
+        "h": 1.15
+       }
+      }
+     },
+     "vrects": {
+      "hero": {
+       "x": 133.5,
+       "y": 337,
+       "w": 50.6,
+       "h": 67
+      },
+      "mina": {
+       "x": 251.1,
+       "y": 339.4,
+       "w": 54.8,
+       "h": 68.3
+      }
+     },
+     "cover": {
+      "wins": [
+       {
+        "cls": "rw-panel result-victory result-simple rs",
+        "x": 12,
+        "y": 4,
+        "w": 367,
+        "h": 213
+       }
+      ],
+      "hero": {
+       "covered": 0,
+       "headCovered": 0,
+       "fullCovered": 0,
+       "fullTop": 337,
+       "rect": {
+        "x": 133,
+        "y": 335,
+        "w": 51,
+        "h": 68
+       }
+      },
+      "mina": {
+       "covered": 0,
+       "headCovered": 0,
+       "fullCovered": 0,
+       "fullTop": 338,
+       "rect": {
+        "x": 251,
+        "y": 338,
+        "w": 55,
+        "h": 68
+       }
+      }
+     },
+     "panel": {
+      "cls": "rw-panel result-victory result-simple rs-top",
+      "top": 4,
+      "bottom": 217,
+      "h": 213,
+      "scroll": null,
+      "close": {
+       "top": 164,
+       "bottom": 208,
+       "in": true
+      },
+      "more": false
+     },
+     "vrects2": {
+      "hero": {
+       "x": 133.5,
+       "y": 337.6,
+       "w": 50.6,
+       "h": 67
+      },
+      "mina": {
+       "x": 251.7,
+       "y": 340,
+       "w": 54.8,
+       "h": 68.3
+      }
+     },
+     "ended": true
     }
    }
   }

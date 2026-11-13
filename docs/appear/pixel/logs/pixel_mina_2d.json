@@ -3,7 +3,7 @@
  "WHO": [
   "mina"
  ],
- "ok": 21,
+ "ok": 22,
  "ng": 0,
  "steps": [
   {
@@ -24,55 +24,59 @@
   },
   {
    "ok": true,
-   "m": "mina［銅の剣＋革の鎧＋革の帽子（部品のない品）］装備 {\"weapon\":\"copper_sword\",\"armor\":\"leather_armor\",\"head\":\"leather_cap\"} → 部品：base_plain／描かない：armor:leather_armor（armor_light の部品がない→描かない） head:leather_cap（head_cap の部品がない→描かない） weapon:copper_sword（weapon_sword の部品がない→描かない）"
+   "m": "mina［銅の剣（v9.8.5 片手剣）］装備 {\"weapon\":\"copper_sword\"} → 部品：base_plain weapon_sword hand"
   },
   {
    "ok": true,
-   "m": "mina：なかまの画面の足もと・左右の中心・1 ドットの大きさが 5 つとも同じ（335.3/460.4/1.1111）"
+   "m": "mina［革の鎧＋革の帽子（部品のない品）］装備 {\"armor\":\"leather_armor\",\"head\":\"leather_cap\"} → 部品：base_plain／描かない：armor:leather_armor（armor_light の部品がない→描かない） head:leather_cap（head_cap の部品がない→描かない）"
   },
   {
    "ok": true,
-   "m": "mina：部品のない品は部位ごと（copper_sword・leather_armor・leather_cap は描かない。鎧は着替える：base_plain）"
+   "m": "mina：なかまの画面の足もと・左右の中心・1 ドットの大きさが 6 つとも同じ（335.3/460.4/1.1111）"
   },
   {
    "ok": true,
-   "m": "ミナ：装備なし＝手ぶら／弓＝base_plain weapon_bow hand／短剣＝base_plain weapon_dagger"
+   "m": "mina：部品のない品は部位ごと（leather_armor・leather_cap は描かない。鎧は着替える：base_plain）"
   },
   {
    "ok": true,
-   "m": "mina menu：5 つの組み合わせとも、合成の絵の大きさは同じ（292×364＝元の絵＋まわり 48）"
+   "m": "ミナ：剣＝base_plain weapon_sword hand／装備なし＝手ぶら／弓＝base_plain weapon_bow hand／短剣＝base_plain weapon_dagger"
   },
   {
    "ok": true,
-   "m": "mina menu：足もとの行が元の絵と同じ（313）：plain 313・bow 313・dagger 313・longbow 313・nopart 313"
+   "m": "mina menu：6 つの組み合わせとも、合成の絵の大きさは同じ（292×364＝元の絵＋まわり 48）"
   },
   {
    "ok": true,
-   "m": "mina menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・bow 0・dagger 0・longbow 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "m": "mina menu：足もとの行が元の絵と同じ（313）：plain 313・bow 313・dagger 313・longbow 313・sword 313・nopart 313"
   },
   {
    "ok": true,
-   "m": "mina back：5 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+   "m": "mina menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・bow 0・dagger 0・longbow 0・sword 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
-   "m": "mina back：足もとの行が元の絵と同じ（351）：plain 351・bow 351・dagger 351・longbow 351・nopart 351"
+   "m": "mina back：6 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
   },
   {
    "ok": true,
-   "m": "mina back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・bow 0・dagger 0・longbow 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "m": "mina back：足もとの行が元の絵と同じ（351）：plain 351・bow 351・dagger 351・longbow 351・sword 351・nopart 351"
   },
   {
    "ok": true,
-   "m": "mina front：5 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
+   "m": "mina back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・bow 0・dagger 0・longbow 0・sword 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
-   "m": "mina front：足もとの行が元の絵と同じ（349）：plain 349・bow 349・dagger 349・longbow 349・nopart 349"
+   "m": "mina front：6 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）"
   },
   {
    "ok": true,
-   "m": "mina front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・bow 0・dagger 0・longbow 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "m": "mina front：足もとの行が元の絵と同じ（349）：plain 349・bow 349・dagger 349・longbow 349・sword 349・nopart 349"
+  },
+  {
+   "ok": true,
+   "m": "mina front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・bow 0・dagger 0・longbow 0・sword 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
@@ -206,9 +210,37 @@
      "px": 1.1111,
      "h": 300
     },
-    "nopart": {
+    "sword": {
      "equip": {
       "weapon": "copper_sword",
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "res": {},
+     "stats": {
+      "maxHp": 48,
+      "maxMp": 19,
+      "atk": 23,
+      "def": 8,
+      "agi": 21,
+      "mag": 7,
+      "mdef": 2,
+      "immune": [],
+      "element": "none"
+     },
+     "st": "ok",
+     "parts": "base_plain weapon_sword hand",
+     "skipped": null,
+     "bottom": 335.3,
+     "cx": 460.4,
+     "px": 1.1111,
+     "h": 300
+    },
+    "nopart": {
+     "equip": {
+      "weapon": null,
       "armor": "leather_armor",
       "shield": null,
       "head": "leather_cap",
@@ -218,7 +250,7 @@
      "stats": {
       "maxHp": 48,
       "maxMp": 19,
-      "atk": 23,
+      "atk": 15,
       "def": 16,
       "agi": 21,
       "mag": 7,
@@ -228,7 +260,7 @@
      },
      "st": "ok",
      "parts": "base_plain",
-     "skipped": "armor:leather_armor（armor_light の部品がない→描かない） head:leather_cap（head_cap の部品がない→描かない） weapon:copper_sword（weapon_sword の部品がない→描かない）",
+     "skipped": "armor:leather_armor（armor_light の部品がない→描かない） head:leather_cap（head_cap の部品がない→描かない）",
      "bottom": 335.3,
      "cx": 460.4,
      "px": 1.1111,
@@ -291,6 +323,20 @@
        ],
        "skipped": []
       },
+      "sword": {
+       "state": "ok",
+       "w": 292,
+       "h": 364,
+       "feet": 313,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "weapon_sword",
+        "hand"
+       ],
+       "skipped": []
+      },
       "nopart": {
        "state": "ok",
        "w": 292,
@@ -303,8 +349,7 @@
        ],
        "skipped": [
         "armor:leather_armor（armor_light の部品がない→描かない）",
-        "head:leather_cap（head_cap の部品がない→描かない）",
-        "weapon:copper_sword（weapon_sword の部品がない→描かない）"
+        "head:leather_cap（head_cap の部品がない→描かない）"
        ]
       }
      },
@@ -367,6 +412,20 @@
        ],
        "skipped": []
       },
+      "sword": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 351,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "weapon_sword",
+        "hand"
+       ],
+       "skipped": []
+      },
       "nopart": {
        "state": "ok",
        "w": 416,
@@ -379,8 +438,7 @@
        ],
        "skipped": [
         "armor:leather_armor（armor_light の部品がない→描かない）",
-        "head:leather_cap（head_cap の部品がない→描かない）",
-        "weapon:copper_sword（weapon_sword の部品がない→描かない）"
+        "head:leather_cap（head_cap の部品がない→描かない）"
        ]
       }
      },
@@ -443,6 +501,20 @@
        ],
        "skipped": []
       },
+      "sword": {
+       "state": "ok",
+       "w": 416,
+       "h": 416,
+       "feet": 349,
+       "left": 0,
+       "ex": null,
+       "parts": [
+        "base_plain",
+        "weapon_sword",
+        "hand"
+       ],
+       "skipped": []
+      },
       "nopart": {
        "state": "ok",
        "w": 416,
@@ -455,8 +527,7 @@
        ],
        "skipped": [
         "armor:leather_armor（armor_light の部品がない→描かない）",
-        "head:leather_cap（head_cap の部品がない→描かない）",
-        "weapon:copper_sword（weapon_sword の部品がない→描かない）"
+        "head:leather_cap（head_cap の部品がない→描かない）"
        ]
       }
      },
