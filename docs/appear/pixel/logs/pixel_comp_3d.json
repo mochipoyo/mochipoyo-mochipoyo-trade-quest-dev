@@ -4,8 +4,8 @@
   "lina",
   "gald"
  ],
- "ok": 42,
- "ng": 0,
+ "ok": 38,
+ "ng": 4,
  "steps": [
   {
    "ok": true,
@@ -109,15 +109,15 @@
   },
   {
    "ok": true,
-   "m": "gald［重鎧＋槍＋兜（部品のない品）］装備 {\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"head\":\"iron_helm\"} → 部品：base_plain armor_shape_f／描かない：head:iron_helm（head_helm の部品がない→描かない） weapon:iron_spear（weapon_spear の部品がない→描かない）"
+   "m": "gald［重鎧＋槍＋兜（部品のない品）］装備 {\"weapon\":\"iron_spear\",\"armor\":\"iron_armor\",\"head\":\"iron_helm\"} → 部品：base_plain armor_shape_f weapon_spear hand／描かない：head:iron_helm（head_helm の部品がない→描かない）"
   },
   {
    "ok": true,
    "m": "gald：なかまの画面の足もと・左右の中心・1 ドットの大きさが 7 つとも同じ（335.3/460.4/1.0753）"
   },
   {
-   "ok": true,
-   "m": "gald：部品のない品は部位ごと（iron_spear・iron_helm は描かない。鎧は着替える：base_plain armor_shape_f）"
+   "ok": false,
+   "m": "gald：部品のない品は部位ごと（iron_spear・iron_helm は描かない。鎧は着替える：base_plain armor_shape_f weapon_spear hand）"
   },
   {
    "ok": true,
@@ -132,8 +132,8 @@
    "m": "gald menu：足もとの行が元の絵と同じ（322）：plain 322・heavy 322・sword 322・unarmed 322・knight 322・light 322・nopart 322"
   },
   {
-   "ok": true,
-   "m": "gald menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・sword 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "ok": false,
+   "m": "gald menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・sword 0・unarmed 0・knight 0・light 0・nopart 4{\"x\":32,\"y\":108,\"rgb\":[24,20,26]}。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
@@ -144,8 +144,8 @@
    "m": "gald back：足もとの行が元の絵と同じ（351）：plain 351・heavy 351・sword 351・unarmed 351・knight 351・light 351・nopart 351"
   },
   {
-   "ok": true,
-   "m": "gald back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・sword 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "ok": false,
+   "m": "gald back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・sword 0・unarmed 0・knight 0・light 0・nopart 4{\"x\":251,\"y\":130,\"rgb\":[24,20,26]}。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
@@ -156,8 +156,8 @@
    "m": "gald front：足もとの行が元の絵と同じ（349）：plain 349・heavy 349・sword 349・unarmed 349・knight 349・light 349・nopart 349"
   },
   {
-   "ok": true,
-   "m": "gald front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・sword 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
+   "ok": false,
+   "m": "gald front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・heavy 0・sword 0・unarmed 0・knight 0・light 0・nopart 4{\"x\":65,\"y\":135,\"rgb\":[24,20,26]}。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）"
   },
   {
    "ok": true,
@@ -845,8 +845,8 @@
       "element": "none"
      },
      "st": "ok",
-     "parts": "base_plain armor_shape_f",
-     "skipped": "head:iron_helm（head_helm の部品がない→描かない） weapon:iron_spear（weapon_spear の部品がない→描かない）",
+     "parts": "base_plain armor_shape_f weapon_spear hand",
+     "skipped": "head:iron_helm（head_helm の部品がない→描かない）",
      "bottom": 335.3,
      "cx": 460.4,
      "px": 1.0753,
@@ -953,15 +953,24 @@
        "w": 351,
        "h": 373,
        "feet": 322,
-       "left": 0,
-       "ex": null,
+       "left": 4,
+       "ex": {
+        "x": 32,
+        "y": 108,
+        "rgb": [
+         24,
+         20,
+         26
+        ]
+       },
        "parts": [
         "base_plain",
-        "armor_shape_f"
+        "armor_shape_f",
+        "weapon_spear",
+        "hand"
        ],
        "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）",
-        "weapon:iron_spear（weapon_spear の部品がない→描かない）"
+        "head:iron_helm（head_helm の部品がない→描かない）"
        ]
       }
      },
@@ -1068,15 +1077,24 @@
        "w": 416,
        "h": 416,
        "feet": 351,
-       "left": 0,
-       "ex": null,
+       "left": 4,
+       "ex": {
+        "x": 251,
+        "y": 130,
+        "rgb": [
+         24,
+         20,
+         26
+        ]
+       },
        "parts": [
         "base_plain",
-        "armor_shape_f"
+        "armor_shape_f",
+        "weapon_spear",
+        "hand"
        ],
        "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）",
-        "weapon:iron_spear（weapon_spear の部品がない→描かない）"
+        "head:iron_helm（head_helm の部品がない→描かない）"
        ]
       }
      },
@@ -1183,15 +1201,24 @@
        "w": 416,
        "h": 416,
        "feet": 349,
-       "left": 0,
-       "ex": null,
+       "left": 4,
+       "ex": {
+        "x": 65,
+        "y": 135,
+        "rgb": [
+         24,
+         20,
+         26
+        ]
+       },
        "parts": [
         "base_plain",
-        "armor_shape_f"
+        "armor_shape_f",
+        "weapon_spear",
+        "hand"
        ],
        "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）",
-        "weapon:iron_spear（weapon_spear の部品がない→描かない）"
+        "head:iron_helm（head_helm の部品がない→描かない）"
        ]
       }
      },

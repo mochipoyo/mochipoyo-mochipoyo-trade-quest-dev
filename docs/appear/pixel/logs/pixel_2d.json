@@ -21,7 +21,7 @@
   },
   {
    "ok": true,
-   "m": "メニュー［ローブ＋帽子＋杖］装備 {\"weapon\":\"oak_staff\",\"armor\":\"robe\",\"shield\":null,\"head\":\"wizard_hat\",\"acc\":null} → 部品：base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand"
+   "m": "メニュー［ローブ＋帽子＋杖］装備 {\"weapon\":\"oak_staff\",\"armor\":\"robe\",\"shield\":null,\"head\":\"wizard_hat\",\"acc\":null} → 部品：base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f"
   },
   {
    "ok": true,
@@ -239,7 +239,7 @@
      "element": "none"
     },
     "st": "ok",
-    "parts": "base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand",
+    "parts": "base_hat armor_robe_t armor_robe_f head_hat_t head_hat_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
     "mode": "pixel",
     "k": 1.13,
     "px": 1.3274336283185841,
@@ -377,7 +377,9 @@
        "head_hat_f",
        "weapon_staff_t",
        "weapon_staff_f",
-       "hand"
+       "hand",
+       "jf_sleeve_t",
+       "jf_sleeve_f"
       ]
      },
      "spear": {
@@ -480,7 +482,9 @@
        "head_hat_f",
        "weapon_staff_t",
        "weapon_staff_f",
-       "hand"
+       "hand",
+       "jf_sleeve_t",
+       "jf_sleeve_f"
       ]
      },
      "spear": {
@@ -582,7 +586,9 @@
        "head_hat_f",
        "weapon_staff_t",
        "weapon_staff_f",
-       "hand"
+       "hand",
+       "jf_sleeve_t",
+       "jf_sleeve_f"
       ]
      },
      "spear": {

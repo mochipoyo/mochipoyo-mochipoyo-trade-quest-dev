@@ -3,8 +3,8 @@
  "WHO": [
   "mina"
  ],
- "ok": 22,
- "ng": 0,
+ "ok": 20,
+ "ng": 2,
  "steps": [
   {
    "ok": true,
@@ -27,16 +27,16 @@
    "m": "mina［銅の剣（v9.8.5 片手剣）］装備 {\"weapon\":\"copper_sword\"} → 部品：base_plain weapon_sword hand"
   },
   {
-   "ok": true,
-   "m": "mina［革の鎧＋革の帽子（部品のない品）］装備 {\"armor\":\"leather_armor\",\"head\":\"leather_cap\"} → 部品：base_plain／描かない：armor:leather_armor（armor_light の部品がない→描かない） head:leather_cap（head_cap の部品がない→描かない）"
+   "ok": false,
+   "m": "mina［鉄の鎧＋革の帽子（部品のない品。v9.8.9 から軽装は服の色で描くので、重鎧に替えた）］装備 {\"head\":\"leather_cap\"} → 部品：base_plain／描かない：head:leather_cap（head_cap の部品がない→描かない）"
   },
   {
    "ok": true,
    "m": "mina：なかまの画面の足もと・左右の中心・1 ドットの大きさが 6 つとも同じ（335.3/460.4/1.1111）"
   },
   {
-   "ok": true,
-   "m": "mina：部品のない品は部位ごと（leather_armor・leather_cap は描かない。鎧は着替える：base_plain）"
+   "ok": false,
+   "m": "mina：部品のない品は部位ごと（iron_armor・leather_cap は描かない。鎧は着替える：base_plain）"
   },
   {
    "ok": true,
@@ -241,17 +241,19 @@
     "nopart": {
      "equip": {
       "weapon": null,
-      "armor": "leather_armor",
+      "armor": null,
       "shield": null,
       "head": "leather_cap",
       "acc": null
      },
-     "res": {},
+     "res": {
+      "armor": "装備できない"
+     },
      "stats": {
       "maxHp": 48,
       "maxMp": 19,
       "atk": 15,
-      "def": 16,
+      "def": 10,
       "agi": 21,
       "mag": 7,
       "mdef": 2,
@@ -260,7 +262,7 @@
      },
      "st": "ok",
      "parts": "base_plain",
-     "skipped": "armor:leather_armor（armor_light の部品がない→描かない） head:leather_cap（head_cap の部品がない→描かない）",
+     "skipped": "head:leather_cap（head_cap の部品がない→描かない）",
      "bottom": 335.3,
      "cx": 460.4,
      "px": 1.1111,
@@ -348,7 +350,7 @@
         "base_plain"
        ],
        "skipped": [
-        "armor:leather_armor（armor_light の部品がない→描かない）",
+        "armor:iron_armor（armor_heavy の部品がない→描かない）",
         "head:leather_cap（head_cap の部品がない→描かない）"
        ]
       }
@@ -437,7 +439,7 @@
         "base_plain"
        ],
        "skipped": [
-        "armor:leather_armor（armor_light の部品がない→描かない）",
+        "armor:iron_armor（armor_heavy の部品がない→描かない）",
         "head:leather_cap（head_cap の部品がない→描かない）"
        ]
       }
@@ -526,7 +528,7 @@
         "base_plain"
        ],
        "skipped": [
-        "armor:leather_armor（armor_light の部品がない→描かない）",
+        "armor:iron_armor（armor_heavy の部品がない→描かない）",
         "head:leather_cap（head_cap の部品がない→描かない）"
        ]
       }

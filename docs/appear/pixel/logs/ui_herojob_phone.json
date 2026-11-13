@@ -333,7 +333,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.8\",\"back\",[\"steel_sword\",\"iron_armor\"]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"back\",[\"steel_sword\",\"iron_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -372,7 +372,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.8\",\"front\",[\"steel_sword\",\"iron_armor\"]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"front\",[\"steel_sword\",\"iron_armor\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -385,7 +385,7 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 324.8,
+      "y": 323.6,
       "w": 63.4,
       "h": 89.6
      }
@@ -404,10 +404,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 325,
+      "fullTop": 328,
       "rect": {
        "x": 219,
-       "y": 325,
+       "y": 328,
        "w": 63,
        "h": 90
       }
@@ -428,7 +428,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 219.4,
+      "x": 218.8,
       "y": 332.1,
       "w": 63.4,
       "h": 89.6
@@ -549,7 +549,7 @@
      "sprite": "hero_hunter",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"back\",[]]",
+     "ea": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -588,7 +588,7 @@
       "sprite": "hero_hunter",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"front\",[]]",
+      "ea": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -620,10 +620,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 321,
+      "fullTop": 320,
       "rect": {
        "x": 219,
-       "y": 321,
+       "y": 320,
        "w": 64,
        "h": 90
       }
@@ -820,7 +820,7 @@
      "sprite": "hero_hunter",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"back\",[\"short_bow\"]]",
+     "ea": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"back\",[\"short_bow\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -859,7 +859,7 @@
       "sprite": "hero_hunter",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"front\",[\"short_bow\"]]",
+      "ea": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"front\",[\"short_bow\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -872,7 +872,7 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 327.2,
+      "y": 330.3,
       "w": 63.4,
       "h": 89.6
      }
@@ -891,12 +891,12 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 325,
+      "fullTop": 331,
       "rect": {
        "x": 219,
-       "y": 325,
+       "y": 331,
        "w": 63,
-       "h": 90
+       "h": 89
       }
      }
     },
@@ -1043,7 +1043,7 @@
      "sprite": "hero_hunter",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"back\",[]]",
+     "ea": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1082,7 +1082,7 @@
       "sprite": "hero_hunter",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"hunter\",\"px:v9.8.8\",\"front\",[]]",
+      "ea": "[\"hero\",\"hunter\",\"px:v9.8.9\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1095,7 +1095,7 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 324.8,
+      "y": 321.8,
       "w": 63.4,
       "h": 89.6
      }
@@ -1114,10 +1114,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 328,
+      "fullTop": 325,
       "rect": {
        "x": 219,
-       "y": 328,
+       "y": 325,
        "w": 63,
        "h": 90
       }
@@ -1265,7 +1265,7 @@
       "iron_armor": 1,
       "short_bow": 1
      },
-     "gold": 19915
+     "gold": 19916
     },
     "after": {
      "job": "thief",
@@ -1284,7 +1284,7 @@
       "iron_armor": 1,
       "short_bow": 1
      },
-     "gold": 19815
+     "gold": 19816
     },
     "off": [],
     "msg": "もちは盗賊になった！▼履歴"
@@ -1369,7 +1369,7 @@
      "sprite": "hero_thief",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"thief\",\"px:v9.8.8\",\"back\",[\"dagger\"]]",
+     "ea": "[\"hero\",\"thief\",\"px:v9.8.9\",\"back\",[\"dagger\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1408,7 +1408,7 @@
       "sprite": "hero_thief",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"thief\",\"px:v9.8.8\",\"front\",[\"dagger\"]]",
+      "ea": "[\"hero\",\"thief\",\"px:v9.8.9\",\"front\",[\"dagger\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1421,9 +1421,9 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 321.8,
-      "w": 64,
-      "h": 90.2
+      "y": 325.4,
+      "w": 63.4,
+      "h": 89.6
      }
     },
     "cover": {
@@ -1440,10 +1440,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 325,
+      "fullTop": 330,
       "rect": {
        "x": 219,
-       "y": 325,
+       "y": 330,
        "w": 63,
        "h": 90
       }
@@ -1585,7 +1585,7 @@
      "sprite": "hero_thief",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"thief\",\"px:v9.8.8\",\"back\",[\"dagger\"]]",
+     "ea": "[\"hero\",\"thief\",\"px:v9.8.9\",\"back\",[\"dagger\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1624,7 +1624,7 @@
       "sprite": "hero_thief",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"thief\",\"px:v9.8.8\",\"front\",[\"dagger\"]]",
+      "ea": "[\"hero\",\"thief\",\"px:v9.8.9\",\"front\",[\"dagger\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1637,9 +1637,9 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 332.1,
-      "w": 63.4,
-      "h": 89
+      "y": 318.7,
+      "w": 64,
+      "h": 90.2
      }
     },
     "cover": {
@@ -1656,11 +1656,11 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 328,
+      "fullTop": 321,
       "rect": {
        "x": 219,
-       "y": 328,
-       "w": 63,
+       "y": 321,
+       "w": 64,
        "h": 90
       }
      }
@@ -1835,7 +1835,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.8\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1856,7 +1856,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 216.9,
+      "x": 216.3,
       "y": 330.9,
       "w": 71.9,
       "h": 90.2
@@ -1874,7 +1874,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.8\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1887,9 +1887,9 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 323.6,
+      "y": 330.9,
       "w": 63.4,
-      "h": 89.6
+      "h": 89
      }
     },
     "cover": {
@@ -1930,7 +1930,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 219.4,
+      "x": 218.8,
       "y": 332.1,
       "w": 63.4,
       "h": 89.6
@@ -2000,7 +2000,7 @@
       "iron_armor": 1,
       "short_bow": 1
      },
-     "gold": 19823
+     "gold": 19824
     },
     "after": {
      "job": "warrior",
@@ -2019,7 +2019,7 @@
       "short_bow": 1,
       "dagger": 1
      },
-     "gold": 19723
+     "gold": 19724
     },
     "off": [
      "dagger"

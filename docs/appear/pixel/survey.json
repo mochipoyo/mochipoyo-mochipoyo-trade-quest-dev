@@ -1588,8 +1588,8 @@
     "slot": "weapon",
     "shape": "weapon:spear",
     "cls": "weapon_spear",
-    "drawn": 0,
-    "not": 25,
+    "drawn": 25,
+    "not": 0,
     "items": [
      "spear",
      "iron_spear",
@@ -3756,8 +3756,8 @@
     "slot": "armor",
     "shape": "armor:light",
     "cls": "armor_light",
-    "drawn": 0,
-    "not": 26,
+    "drawn": 26,
+    "not": 0,
     "items": [
      "cloth",
      "leather_armor",

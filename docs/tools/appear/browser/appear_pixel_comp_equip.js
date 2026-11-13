@@ -31,7 +31,7 @@ const IDS = Object.keys(WHO); const SH = PAIR === 'knight' ? 'k' : 'c';
   const rec = {};
   for (const id of IDS) {
     const [name, weapon] = WHO[id];
-    await p.keyboard.press('Escape'); await waitTop(/メニュー/);
+    for (let i = 0; i < 3; i++) { await p.keyboard.press('Escape'); try { await waitTop(/メニュー/, i < 2 ? 6000 : 20000); break; } catch (e) { if (i === 2) throw e; } }   // v9.8.9 読み込みの直後は Esc が届かないことがあるので押し直す
     const eqb = await (await top()).$('.rw-tool[data-tool="equip"]'); await eqb.click(); await p.waitForTimeout(250);
     await pick(/装備を変える/, new RegExp('^' + name)); await waitTop(new RegExp(name + 'の装備')); await p.waitForTimeout(600);
     const head = await p.evaluate(() => { const n = document.querySelector('#ui .equip-menu .eq-body-head canvas'); const h = n && n.closest('.ea-host'); const r = n && n.getBoundingClientRect(); return { parts: n && n.getAttribute('data-ea-parts'), state: h && h.getAttribute('data-ea-state'), rect: r && { w: +r.width.toFixed(1), h: +r.height.toFixed(1) } }; });
