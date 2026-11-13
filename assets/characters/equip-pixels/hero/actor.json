@@ -1,5 +1,34 @@
 {
  "menuBase": "job:warrior",
+ "jobs": {
+  "hunter": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "outfit_hunter"
+    }
+   ]
+  },
+  "thief": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "outfit_thief"
+    }
+   ]
+  }
+ },
+ "materials": {
+  "weapon_dagger": {
+   "z": 40,
+   "hand": true,
+   "layers": [
+    {
+     "part": "weapon_dagger"
+    }
+   ]
+  }
+ },
  "views": {
   "job:warrior": {
    "src": "assets/characters/jobs/warrior.png",
@@ -151,6 +180,34 @@
      "y": 53,
      "w": 34,
      "h": 87
+    },
+    "outfit_hunter": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/outfit_hunter.png?v=87d7bd00",
+     "x": 0,
+     "y": 59,
+     "w": 124,
+     "h": 131
+    },
+    "outfit_thief": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/outfit_thief.png?v=8237878c",
+     "x": 0,
+     "y": 64,
+     "w": 124,
+     "h": 126
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_bow.png?v=2840ea1a",
+     "x": 18,
+     "y": 63,
+     "w": 27,
+     "h": 105
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_dagger.png?v=14878c15",
+     "x": 12,
+     "y": 74,
+     "w": 17,
+     "h": 57
     },
     "armor_robe_t": {
      "url": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_t.png?v=d0a7c935",
@@ -313,6 +370,34 @@
      "y": 157,
      "w": 34,
      "h": 87
+    },
+    "outfit_hunter": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/outfit_hunter.png?v=87d7bd00",
+     "x": 95,
+     "y": 163,
+     "w": 124,
+     "h": 131
+    },
+    "outfit_thief": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/outfit_thief.png?v=8237878c",
+     "x": 95,
+     "y": 168,
+     "w": 124,
+     "h": 126
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_bow.png?v=2840ea1a",
+     "x": 113,
+     "y": 167,
+     "w": 27,
+     "h": 105
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/hero/job_warrior/weapon_dagger.png?v=14878c15",
+     "x": 107,
+     "y": 178,
+     "w": 17,
+     "h": 57
     },
     "armor_robe_t": {
      "url": "assets/characters/equip-pixels/hero/job_warrior/armor_robe_t.png?v=d0a7c935",
@@ -480,6 +565,34 @@
      "y": 141,
      "w": 48,
      "h": 95
+    },
+    "outfit_hunter": {
+     "url": "assets/characters/equip-pixels/hero/back/outfit_hunter.png?v=9e76b2f2",
+     "x": 98,
+     "y": 160,
+     "w": 137,
+     "h": 142
+    },
+    "outfit_thief": {
+     "url": "assets/characters/equip-pixels/hero/back/outfit_thief.png?v=ac7b7691",
+     "x": 98,
+     "y": 170,
+     "w": 137,
+     "h": 132
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/hero/back/weapon_bow.png?v=28ade584",
+     "x": 178,
+     "y": 156,
+     "w": 34,
+     "h": 109
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/hero/back/weapon_dagger.png?v=27f833fb",
+     "x": 199,
+     "y": 168,
+     "w": 19,
+     "h": 59
     },
     "armor_robe_x": {
      "url": "assets/characters/equip-pixels/hero/back/armor_robe_x.png?v=30b83a60",

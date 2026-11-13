@@ -558,6 +558,9 @@
       if (m.base) base = m.base;
       mats.push({ cls: cls, m: m, layer: L });
     }
+    // v9.8.6 職業の服装（主人公の狩人・盗賊）：対応表の actors.<人物ID>.jobs.<職業> の重ね絵を、素の絵のすぐ上に重ねる（その向きに部品があるときだけ）
+    var MJ = PX(); var AJ = MJ && MJ.actors && actor && own(MJ.actors, actor.id) ? MJ.actors[actor.id] : null; var jo = AJ && AJ.jobs && actor.job && own(AJ.jobs, actor.job) ? AJ.jobs[actor.job] : null;
+    if (jo && jo.layers.every(function (L) { return own(view.parts, L.part); })) mats.push({ cls: 'outfit:' + actor.job, m: jo, layer: null });
     mats.sort(function (a, b) { return (a.m.z || 0) - (b.m.z || 0); });
     return { ok: true, view: view, base: base, mats: mats, skipped: skipped };
   }
@@ -608,8 +611,9 @@
     plan.mats.forEach(function (mt) {
       mt.m.layers.forEach(function (L) {
         if (!own(view.parts, L.part)) return;   // optional（この向きにない部品）
-        var e = ents[L.part]; var url = view.parts[L.part].url; var pal = mt.layer.pal;
+        var e = ents[L.part]; var url = view.parts[L.part].url; var pal = mt.layer ? mt.layer.pal : null;
         if (L.erase) { g.globalCompositeOperation = 'destination-out'; put(L.part, e.img); g.globalCompositeOperation = 'source-over'; return; }   // 素の絵の一部を消す（ローブの背面：マントの裾を短くする）
+        if (!pal) { put(L.part, e.img); return; }   // 職業の服装（品の色なし）
         if (L.onlyColor && grayish(pal.main)) return;   // 灰色の品（鉄・鋼）：元の板金の色のまま
         if (!L.tint) { put(L.part, e.img); return; }
         var ramp;

@@ -1,4 +1,4 @@
-# 装備の外見（ドット絵の差分）の対応表（v9.7〜v9.8.5・自動生成）
+# 装備の外見（ドット絵の差分）の対応表（v9.7〜v9.8.6・自動生成）
 
 appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS）から作る。手で書き換えない。
 
@@ -44,6 +44,7 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | head_cap（（全員）） | 20 | —（変えない） | head_cap_t（tint:main） |  |
 | weapon_bow（（全員）） | 40 | —（変えない） | weapon_bow | はい |
 | weapon_dagger（（全員）） | 40 | —（変えない） | weapon_dagger |  |
+| weapon_dagger（hero） | 40 | —（変えない） | weapon_dagger | はい |
 | armor_light（lina） | 10 | —（変えない） | armor_light_t（tint:main） |  |
 | armor_light（gald） | 10 | —（変えない） | armor_light_t（tint:main） |  |
 | weapon_sword（gald） | 40 | —（変えない） | weapon_sword | はい |
@@ -143,7 +144,7 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 
 | 人物ID | 描ける種類 |
 |---|---|
-| hero | armor_light、armor_heavy、armor_robe、head_helm、head_hat、weapon_sword、weapon_staff、weapon_spear、weapon_axe、shield |
+| hero | armor_light、armor_heavy、armor_robe、head_helm、head_hat、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
 | lina | armor_light、armor_robe、head_cap、weapon_staff |
 | gald | armor_light、armor_heavy、weapon_sword、weapon_axe、shield |
 | kyle | armor_light、armor_heavy、head_helm、weapon_sword、weapon_spear、shield |

@@ -678,6 +678,9 @@ if __name__ == '__main__':
     #   正面は刃が頭の側に来るので、斧頭を肩の高さに下げて顔にかからないようにする（柄は剣より短い）
     pf['weapon_axe'] = GR.axe(FH, FW, (22, 117), (-0.158, -0.987), top=62, bottom=22, head=40, reach=20, side=1, spike_len=6)
     pb['weapon_axe'] = GR.axe(BH, BW, (205, 213), (0.228, -0.974), top=72, bottom=22, head=42, reach=21, side=1, spike_len=7)
+    # ---- v9.8.6 職業の服装（狩人・盗賊）と、弓・短剣 ----
+    import hero_jobs
+    hero_jobs.add(pf, pb, TRAVEL)
     # ---- ローブ ----
     pf['armor_robe_t'], pf['armor_robe_f'] = robe_front(fp, mage, None, plate_f)   # fp＝剣・盾を外した元の絵（スカーフ・腕の形を見る）
     hb_, sb_, vb_ = P.hsv(bp); cape_b = ((hb_ < 20) | (hb_ > 330)) & (sb_ > 0.3) & P.opaque(bp) & (byy > 165)
@@ -704,7 +707,11 @@ if __name__ == '__main__':
     #   部品の種類・重ね方（classes・materials）は manifest.py の GLOBAL（主人公の部品の名前）
     actor = {
         # menuBase：メニューの立ち絵の素体。主人公はどの職業でも、本人の絵（戦士の立ち絵）を素体にして装備で着替える（戦闘の絵も職業で変わらないのと合わせる）
-        'menuBase': 'job:warrior', 'views': {
+        'menuBase': 'job:warrior',
+        # v9.8.6 職業の服装：素の絵のすぐ上に重ねる（戦士は重ね絵なし）。短剣は拳を柄の上に描き直す（人ごとの重ね方）
+        'jobs': {'hunter': {'z': 5, 'layers': [{'part': 'outfit_hunter'}]}, 'thief': {'z': 5, 'layers': [{'part': 'outfit_thief'}]}},
+        'materials': {'weapon_dagger': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_dagger'}]}},
+        'views': {
             'job:warrior': {'src': FRONT_SRC, 'w': FW, 'h': FH, 'dir': 'front', 'pivot': [64, 197], 'body': box(tp), 'frame': frame(recF, FW, FH),
                             'grip': {'x': 22, 'y': 117, 'order': '剣：拳の上に鍔（剣を後に描く）／杖・槍・斧：柄の上に拳を描き直す'},
                             'offhand': {'x': 105, 'y': 125, 'order': '盾：腕の上（体の後に描く）'}, 'parts': recF},

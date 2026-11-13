@@ -23,7 +23,11 @@ if KNIGHT:
 MINA = len(sys.argv) > 1 and sys.argv[1] == 'mina'   # v9.8.4 ミナ（弓・短剣）：logs/ui_mina_<pc|phone>.json → compare_mina_<pc|phone>.jpg・pixel_comp_sets_mina.jpg
 if MINA:
     ROWS = [('mina', 'plain', 'ミナ\n装備なし\n（手ぶら）'), ('mina', 'sword', 'ミナ\n銅の剣\n（片手剣）'), ('mina', 'equip', 'ミナ\n短弓に持ち替え'), ('mina', 'swap', 'ミナ\n短剣に持ち替え'), ('mina', 'unarm', 'ミナ\n武器をはずす')]
-LOGN, SHN, OUTN = ('mina', 'm', 'mina') if MINA else ('knight', 'k', 'knight') if KNIGHT else ('comp', 'c', 'comp')
+HJ = len(sys.argv) > 1 and sys.argv[1] == 'herojob'   # v9.8.6 主人公の転職（狩人・盗賊）：logs/ui_herojob_<pc|phone>.json → compare_herojob_<pc|phone>.jpg
+if HJ:
+    ROWS = [('hero', 'w0', '主人公\n戦士\n鉄の鎧＋鋼の剣'), ('hero', 'h0', '主人公\n狩人に転職\n（剣・鎧が外れる）'), ('hero', 'h1', '主人公\n狩人\n短弓'), ('hero', 'h2', '主人公\n狩人\n短弓をはずす'),
+            ('hero', 't1', '主人公\n盗賊に転職\n短剣'), ('hero', 't2', '主人公\n盗賊\n「つづきから」で復帰'), ('hero', 'w1', '主人公\n戦士に転職\n（短剣が外れる）')]
+LOGN, SHN, OUTN = ('herojob', 'j', 'herojob') if HJ else ('mina', 'm', 'mina') if MINA else ('knight', 'k', 'knight') if KNIGHT else ('comp', 'c', 'comp')
 
 
 def crop_rect(path, r, k=2, m=14):
@@ -71,5 +75,5 @@ for v in ('pc', 'phone'):
 sys.path.insert(0, os.path.join(ROOT, 'tools', 'appear', 'pixel'))
 import manifest as MF, preview as PV, compose as CP
 M = MF.manifest(); data = PV.appearance_data()
-for a in (('mina',) if MINA else ('kyle', 'kazuto') if KNIGHT else ('hero', 'lina', 'gald')):
+for a in (() if HJ else ('mina',) if MINA else ('kyle', 'kazuto') if KNIGHT else ('hero', 'lina', 'gald')):
     if a in M['actors']: CP.sheet(M, a, D, data, each=False, name='pixel_comp_sets_%s.jpg' % a)
