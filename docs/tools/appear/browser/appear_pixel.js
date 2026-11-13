@@ -131,10 +131,10 @@ const SETS = [
     const a1 = window.__axe ? EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { weapon: window.__axe } }, 'job:warrior') : null;
     const a2 = EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { head: 'leather_cap' } }, 'job:warrior');
     const a3 = EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { acc: 'ring_power', weapon: 'steel_sword' } }, 'job:warrior');
-    const a4 = EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { weapon: 'dagger', armor: 'iron_armor' } }, 'job:warrior');   // 短剣（主人公に部品のない武器の例。盗賊などの品）
+    const a4 = EA.pixelPlan({ id: 'hero', job: 'warrior', equip: { weapon: 'club', armor: 'iron_armor' } }, 'job:warrior');   // こん棒（主人公に部品のない武器の例。v9.8.6 から短剣は描くので、例をこん棒に替えた）
     return { dagger: a4, axe: a1, cap: a2, ring: a3, gald: EA.supports(State.actor('gald'), 'front'), galdBack: EA.supports(State.actor('gald'), 'back'), heroLeft: EA.supports(h, 'left'), heroFront: EA.supports(h, 'front'), heroMage: EA.supports({ id: 'hero', job: 'mage' }, 'job:mage') };
   });
-  S(un.axe && un.axe.ok && un.axe.mats.join() === 'weapon_axe' && un.dagger.ok && un.dagger.mats.join() === 'armor_heavy' && /部品がない/.test(un.dagger.skipped.join()) && un.cap.ok && un.cap.base === 'base_plain' && /leather_cap/.test(un.cap.skipped.join()), 'v9.8.1 斧は描く（' + (un.axe && un.axe.mats.join()) + '）。部品のない品は、その部位だけ描かない（短剣：' + un.dagger.skipped.join() + '／革の帽子：' + un.cap.skipped.join() + '）');
+  S(un.axe && un.axe.ok && un.axe.mats.join() === 'weapon_axe' && un.dagger.ok && un.dagger.mats.join() === 'armor_heavy' && /部品がない/.test(un.dagger.skipped.join()) && un.cap.ok && un.cap.base === 'base_plain' && /leather_cap/.test(un.cap.skipped.join()), 'v9.8.1 斧は描く（' + (un.axe && un.axe.mats.join()) + '）。部品のない品は、その部位だけ描かない（こん棒：' + un.dagger.skipped.join() + '／革の帽子：' + un.cap.skipped.join() + '）');
   S(un.ring.ok && un.ring.skipped.length === 1, '装飾品は描かない（試作の対象外。記録：' + un.ring.skipped.join(',') + '）。ほかの装備は着替える');
   S(un.gald && un.galdBack && !un.heroLeft && !un.heroMage && un.heroFront, '部品のない向き（主人公の戦闘の横向き・魔法使いの立ち絵の向き）は本人の従来の絵。主人公の勝利の正面は着替える。v9.8 からガルドの正面・背面も着替える（確かめは appear_pixel_comp.js）');
   // 斧を持ったときのメニュー：v9.8.1 から斧を描く（柄の上に拳）

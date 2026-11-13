@@ -297,7 +297,7 @@
      "sprite": "mina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
      "pd": "ok",
-     "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[]]",
+     "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -317,7 +317,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -338,13 +338,13 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 381.3,
+      "x": 378.7,
       "y": 348.1,
       "w": 100.3,
       "h": 121.2
      },
      "mina": {
-      "x": 475.1,
+      "x": 473.8,
       "y": 349.4,
       "w": 116,
       "h": 121.2
@@ -362,7 +362,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -382,7 +382,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -394,16 +394,16 @@
     },
     "vrects": {
      "hero": {
-      "x": 380,
-      "y": 341.5,
+      "x": 390.4,
+      "y": 331.1,
       "w": 89.9,
-      "h": 119.9
+      "h": 121.2
      },
      "mina": {
-      "x": 492.1,
-      "y": 340.2,
+      "x": 502.5,
+      "y": 329.8,
       "w": 99,
-      "h": 121.2
+      "h": 122.5
      }
     },
     "cover": {
@@ -420,24 +420,24 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 340,
       "rect": {
-       "x": 380,
-       "y": 334,
-       "w": 90,
-       "h": 121
+       "x": 392,
+       "y": 340,
+       "w": 89,
+       "h": 120
       }
      },
      "mina": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 339,
       "rect": {
-       "x": 493,
-       "y": 334,
+       "x": 504,
+       "y": 339,
        "w": 99,
-       "h": 122
+       "h": 121
       }
      }
     },
@@ -456,15 +456,15 @@
     },
     "vrects2": {
      "hero": {
-      "x": 402.1,
-      "y": 340.2,
-      "w": 88.6,
+      "x": 424.3,
+      "y": 342.8,
+      "w": 87.3,
       "h": 119.9
      },
      "mina": {
-      "x": 514.2,
-      "y": 338.9,
-      "w": 99,
+      "x": 535.1,
+      "y": 341.5,
+      "w": 100.3,
       "h": 121.2
      }
     },
@@ -596,7 +596,7 @@
      "sprite": "mina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
      "pd": "ok",
-     "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[\"copper_sword\"]]",
+     "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"back\",[\"copper_sword\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -616,7 +616,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -637,13 +637,13 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 378.7,
+      "x": 381.3,
       "y": 348.1,
       "w": 100.3,
       "h": 121.2
      },
      "mina": {
-      "x": 473.8,
+      "x": 475.1,
       "y": 349.4,
       "w": 116,
       "h": 121.2
@@ -661,7 +661,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[\"copper_sword\"]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"front\",[\"copper_sword\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -681,7 +681,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -693,16 +693,16 @@
     },
     "vrects": {
      "hero": {
-      "x": 381.3,
-      "y": 340.2,
+      "x": 378.7,
+      "y": 332.4,
       "w": 89.9,
-      "h": 119.9
+      "h": 121.2
      },
      "mina": {
-      "x": 494.7,
-      "y": 340.2,
+      "x": 492.1,
+      "y": 332.4,
       "w": 99,
-      "h": 121.2
+      "h": 122.5
      }
     },
     "cover": {
@@ -719,22 +719,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 340,
+      "fullTop": 339,
       "rect": {
-       "x": 383,
-       "y": 340,
+       "x": 380,
+       "y": 339,
        "w": 90,
-       "h": 120
+       "h": 121
       }
      },
      "mina": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 340,
+      "fullTop": 339,
       "rect": {
-       "x": 495,
-       "y": 340,
+       "x": 492,
+       "y": 339,
        "w": 99,
        "h": 121
       }
@@ -755,13 +755,13 @@
     },
     "vrects2": {
      "hero": {
-      "x": 404.8,
+      "x": 402.1,
       "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "mina": {
-      "x": 516.8,
+      "x": 514.2,
       "y": 338.9,
       "w": 99,
       "h": 121.2
@@ -895,7 +895,7 @@
      "sprite": "mina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
      "pd": "ok",
-     "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[\"short_bow\"]]",
+     "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"back\",[\"short_bow\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -915,7 +915,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -936,13 +936,13 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 381.3,
+      "x": 378.7,
       "y": 348.1,
       "w": 100.3,
       "h": 121.2
      },
      "mina": {
-      "x": 475.1,
+      "x": 473.8,
       "y": 349.4,
       "w": 116,
       "h": 121.2
@@ -960,7 +960,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[\"short_bow\"]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"front\",[\"short_bow\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -980,7 +980,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -992,14 +992,14 @@
     },
     "vrects": {
      "hero": {
-      "x": 378.7,
-      "y": 337.6,
+      "x": 380,
+      "y": 342.8,
       "w": 89.9,
-      "h": 121.2
+      "h": 119.9
      },
      "mina": {
-      "x": 492.1,
-      "y": 336.3,
+      "x": 493.4,
+      "y": 342.8,
       "w": 99,
       "h": 121.2
      }
@@ -1018,24 +1018,24 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 343,
+      "fullTop": 335,
       "rect": {
-       "x": 380,
-       "y": 343,
+       "x": 381,
+       "y": 335,
        "w": 90,
-       "h": 120
+       "h": 121
       }
      },
      "mina": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 342,
+      "fullTop": 335,
       "rect": {
-       "x": 492,
-       "y": 342,
+       "x": 493,
+       "y": 335,
        "w": 99,
-       "h": 121
+       "h": 122
       }
      }
     },
@@ -1054,13 +1054,13 @@
     },
     "vrects2": {
      "hero": {
-      "x": 399.5,
+      "x": 402.1,
       "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "mina": {
-      "x": 512.9,
+      "x": 514.2,
       "y": 338.9,
       "w": 99,
       "h": 121.2
@@ -1194,7 +1194,7 @@
      "sprite": "mina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
      "pd": "ok",
-     "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[\"dagger\"]]",
+     "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"back\",[\"dagger\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1214,7 +1214,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1259,7 +1259,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[\"dagger\"]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"front\",[\"dagger\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1279,7 +1279,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1291,13 +1291,13 @@
     },
     "vrects": {
      "hero": {
-      "x": 380,
-      "y": 341.5,
+      "x": 382.6,
+      "y": 340.2,
       "w": 89.9,
       "h": 119.9
      },
      "mina": {
-      "x": 492.1,
+      "x": 496,
       "y": 340.2,
       "w": 99,
       "h": 121.2
@@ -1317,10 +1317,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 332,
       "rect": {
-       "x": 380,
-       "y": 334,
+       "x": 383,
+       "y": 332,
        "w": 90,
        "h": 121
       }
@@ -1329,10 +1329,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 332,
       "rect": {
-       "x": 493,
-       "y": 334,
+       "x": 496,
+       "y": 332,
        "w": 99,
        "h": 122
       }
@@ -1353,13 +1353,13 @@
     },
     "vrects2": {
      "hero": {
-      "x": 400.8,
+      "x": 408.7,
       "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "mina": {
-      "x": 512.9,
+      "x": 520.7,
       "y": 338.9,
       "w": 99,
       "h": 121.2
@@ -1485,7 +1485,7 @@
      "sprite": "mina",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
      "pd": "ok",
-     "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[]]",
+     "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1505,7 +1505,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1526,13 +1526,13 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 382.6,
+      "x": 377.4,
       "y": 348.1,
       "w": 100.3,
       "h": 121.2
      },
      "mina": {
-      "x": 476.4,
+      "x": 471.2,
       "y": 349.4,
       "w": 116,
       "h": 121.2
@@ -1550,7 +1550,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1570,7 +1570,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1582,16 +1582,16 @@
     },
     "vrects": {
      "hero": {
-      "x": 378.7,
-      "y": 340.2,
+      "x": 382.6,
+      "y": 333.7,
       "w": 89.9,
-      "h": 119.9
+      "h": 121.2
      },
      "mina": {
-      "x": 490.8,
-      "y": 340.2,
+      "x": 496,
+      "y": 333.7,
       "w": 99,
-      "h": 121.2
+      "h": 122.5
      }
     },
     "cover": {
@@ -1608,10 +1608,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 343,
+      "fullTop": 339,
       "rect": {
-       "x": 380,
-       "y": 343,
+       "x": 384,
+       "y": 339,
        "w": 90,
        "h": 120
       }
@@ -1620,10 +1620,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 342,
+      "fullTop": 339,
       "rect": {
-       "x": 492,
-       "y": 342,
+       "x": 496,
+       "y": 339,
        "w": 99,
        "h": 121
       }
@@ -1644,13 +1644,13 @@
     },
     "vrects2": {
      "hero": {
-      "x": 399.5,
+      "x": 407.4,
       "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "mina": {
-      "x": 511.6,
+      "x": 519.4,
       "y": 338.9,
       "w": 99,
       "h": 121.2
@@ -1833,7 +1833,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[\"copper_sword\"]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"back\",[\"copper_sword\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1853,7 +1853,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1874,7 +1874,7 @@
      "fell": [],
      "rects": {
       "hero": {
-       "x": 270.5,
+       "x": 269.2,
        "y": 348.1,
        "w": 105.6,
        "h": 121.2
@@ -1898,7 +1898,7 @@
        "sprite": "mina",
        "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
        "pd": "ok",
-       "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[\"copper_sword\"]]",
+       "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"front\",[\"copper_sword\"]]",
        "eaWait": false,
        "eaModel": null,
        "vis": true,
@@ -1918,7 +1918,7 @@
        "sprite": "hero_warrior",
        "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
        "pd": "ok",
-       "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
+       "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
        "eaWait": false,
        "eaModel": null,
        "vis": true,
@@ -1930,14 +1930,14 @@
      },
      "vrects": {
       "hero": {
-       "x": 290.1,
-       "y": 340.2,
+       "x": 288.8,
+       "y": 337.6,
        "w": 93.8,
        "h": 119.9
       },
       "mina": {
-       "x": 507.7,
-       "y": 344.1,
+       "x": 506.4,
+       "y": 341.5,
        "w": 100.3,
        "h": 122.5
       }
@@ -1958,7 +1958,7 @@
        "fullCovered": 0,
        "fullTop": 344,
        "rect": {
-        "x": 291,
+        "x": 290,
         "y": 340,
         "w": 94,
         "h": 120
@@ -1970,7 +1970,7 @@
        "fullCovered": 0,
        "fullTop": 344,
        "rect": {
-        "x": 509,
+        "x": 508,
         "y": 344,
         "w": 100,
         "h": 122
@@ -1992,14 +1992,14 @@
      },
      "vrects2": {
       "hero": {
-       "x": 321.4,
+       "x": 322.7,
        "y": 345.4,
        "w": 92.5,
        "h": 119.9
       },
       "mina": {
-       "x": 537.7,
-       "y": 348.1,
+       "x": 539,
+       "y": 349.4,
        "w": 101.6,
        "h": 122.5
       }
@@ -2133,7 +2133,7 @@
       "sprite": "mina",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/back.png?v=a2574b1ab4",
       "pd": "ok",
-      "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"back\",[\"copper_sword\"]]",
+      "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"back\",[\"copper_sword\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2153,7 +2153,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2174,13 +2174,13 @@
      "fell": [],
      "rects": {
       "hero": {
-       "x": 270.5,
+       "x": 269.2,
        "y": 348.1,
        "w": 105.6,
        "h": 121.2
       },
       "mina": {
-       "x": 467.3,
+       "x": 466,
        "y": 354.6,
        "w": 117.3,
        "h": 122.5
@@ -2198,7 +2198,7 @@
        "sprite": "mina",
        "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/mina/front.png?v=df0287d372",
        "pd": "ok",
-       "ea": "[\"mina\",\"thief\",\"px:v9.8.5\",\"front\",[\"copper_sword\"]]",
+       "ea": "[\"mina\",\"thief\",\"px:v9.8.6\",\"front\",[\"copper_sword\"]]",
        "eaWait": false,
        "eaModel": null,
        "vis": true,
@@ -2218,7 +2218,7 @@
        "sprite": "hero_warrior",
        "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
        "pd": "ok",
-       "ea": "[\"hero\",\"warrior\",\"px:v9.8.5\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
+       "ea": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_helm\"]]",
        "eaWait": false,
        "eaModel": null,
        "vis": true,
@@ -2231,15 +2231,15 @@
      "vrects": {
       "hero": {
        "x": 292.7,
-       "y": 331.1,
-       "w": 95.1,
+       "y": 335,
+       "w": 93.8,
        "h": 121.2
       },
       "mina": {
        "x": 510.3,
-       "y": 335,
-       "w": 101.6,
-       "h": 123.8
+       "y": 338.9,
+       "w": 100.3,
+       "h": 122.5
       }
      },
      "cover": {
@@ -2256,11 +2256,11 @@
        "covered": 0,
        "headCovered": 0,
        "fullCovered": 0,
-       "fullTop": 338,
+       "fullTop": 335,
        "rect": {
-        "x": 294,
-        "y": 334,
-        "w": 94,
+        "x": 293,
+        "y": 331,
+        "w": 95,
         "h": 121
        }
       },
@@ -2268,12 +2268,12 @@
        "covered": 0,
        "headCovered": 0,
        "fullCovered": 0,
-       "fullTop": 338,
+       "fullTop": 334,
        "rect": {
         "x": 512,
-        "y": 338,
+        "y": 334,
         "w": 102,
-        "h": 122
+        "h": 124
        }
       }
      },
