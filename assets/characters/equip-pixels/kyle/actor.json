@@ -16,6 +16,96 @@
      "part": "shield_e"
     }
    ]
+  },
+  "weapon_dagger": {
+   "z": 40,
+   "hand": true,
+   "generated": true,
+   "layers": [
+    {
+     "part": "weapon_dagger"
+    }
+   ]
+  },
+  "weapon_axe": {
+   "z": 40,
+   "hand": true,
+   "generated": true,
+   "layers": [
+    {
+     "part": "weapon_axe"
+    }
+   ]
+  },
+  "weapon_bow": {
+   "z": 40,
+   "hand": true,
+   "generated": true,
+   "layers": [
+    {
+     "part": "weapon_bow"
+    }
+   ]
+  },
+  "weapon_staff": {
+   "z": 40,
+   "hand": true,
+   "generated": true,
+   "layers": [
+    {
+     "part": "weapon_staff_t",
+     "tint": "orb"
+    },
+    {
+     "part": "weapon_staff_f"
+    }
+   ]
+  },
+  "armor_robe": {
+   "z": 10,
+   "covers": [
+    "body",
+    "sleeve"
+   ],
+   "generated": true,
+   "layers": [
+    {
+     "part": "jf_x",
+     "erase": true,
+     "optional": true
+    },
+    {
+     "part": "jf_capehem_f",
+     "optional": true
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main"
+    },
+    {
+     "part": "jf_skirt_t",
+     "tint": "main",
+     "optional": true
+    },
+    {
+     "part": "jf_skirt_f",
+     "optional": true
+    }
+   ],
+   "over": {
+    "z": 45,
+    "layers": [
+     {
+      "part": "jf_sleeve_t",
+      "tint": "main",
+      "optional": true
+     },
+     {
+      "part": "jf_sleeve_f",
+      "optional": true
+     }
+    ]
+   }
   }
  },
  "views": {
@@ -141,6 +231,90 @@
      "y": 8,
      "w": 25,
      "h": 253
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_dagger.png?v=363c65b2",
+     "x": 23,
+     "y": 103,
+     "w": 22,
+     "h": 75
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_axe.png?v=c1b9e578",
+     "x": 20,
+     "y": 65,
+     "w": 41,
+     "h": 126
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_bow.png?v=5be6e78f",
+     "x": 31,
+     "y": 89,
+     "w": 29,
+     "h": 140
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_staff_t.png?v=5f234771",
+     "x": 26,
+     "y": 3,
+     "w": 19,
+     "h": 19
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_staff_f.png?v=87482e95",
+     "x": 22,
+     "y": 0,
+     "w": 27,
+     "h": 262
+    },
+    "jf_cloth_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_cloth_t.png?v=550c1809",
+     "x": 26,
+     "y": 84,
+     "w": 158,
+     "h": 138
+    },
+    "jf_cape_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_cape_t.png?v=5889c500",
+     "x": 0,
+     "y": 140,
+     "w": 218,
+     "h": 121
+    },
+    "jf_capeup_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_capeup_t.png?v=5889c500",
+     "x": 0,
+     "y": 140,
+     "w": 218,
+     "h": 121
+    },
+    "jf_skirt_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_skirt_t.png?v=676432ee",
+     "x": 41,
+     "y": 152,
+     "w": 121,
+     "h": 97
+    },
+    "jf_skirt_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_skirt_f.png?v=b3ac2517",
+     "x": 38,
+     "y": 154,
+     "w": 126,
+     "h": 99
+    },
+    "jf_sleeve_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_sleeve_t.png?v=e1ba4eb3",
+     "x": 18,
+     "y": 92,
+     "w": 167,
+     "h": 61
+    },
+    "jf_sleeve_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_sleeve_f.png?v=fcd2e257",
+     "x": 15,
+     "y": 91,
+     "w": 173,
+     "h": 67
     }
    }
   },
@@ -261,6 +435,90 @@
      "y": 47,
      "w": 25,
      "h": 253
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_dagger.png?v=363c65b2",
+     "x": 74,
+     "y": 142,
+     "w": 22,
+     "h": 75
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_axe.png?v=c1b9e578",
+     "x": 71,
+     "y": 104,
+     "w": 41,
+     "h": 126
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_bow.png?v=5be6e78f",
+     "x": 82,
+     "y": 128,
+     "w": 29,
+     "h": 140
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_staff_t.png?v=5f234771",
+     "x": 77,
+     "y": 42,
+     "w": 19,
+     "h": 19
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/weapon_staff_f.png?v=87482e95",
+     "x": 73,
+     "y": 39,
+     "w": 27,
+     "h": 262
+    },
+    "jf_cloth_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_cloth_t.png?v=550c1809",
+     "x": 77,
+     "y": 123,
+     "w": 158,
+     "h": 138
+    },
+    "jf_cape_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_cape_t.png?v=5889c500",
+     "x": 51,
+     "y": 179,
+     "w": 218,
+     "h": 121
+    },
+    "jf_capeup_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_capeup_t.png?v=5889c500",
+     "x": 51,
+     "y": 179,
+     "w": 218,
+     "h": 121
+    },
+    "jf_skirt_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_skirt_t.png?v=676432ee",
+     "x": 92,
+     "y": 191,
+     "w": 121,
+     "h": 97
+    },
+    "jf_skirt_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_skirt_f.png?v=b3ac2517",
+     "x": 89,
+     "y": 193,
+     "w": 126,
+     "h": 99
+    },
+    "jf_sleeve_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_sleeve_t.png?v=e1ba4eb3",
+     "x": 69,
+     "y": 131,
+     "w": 167,
+     "h": 61
+    },
+    "jf_sleeve_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_sleeve_f.png?v=fcd2e257",
+     "x": 66,
+     "y": 130,
+     "w": 173,
+     "h": 67
     }
    }
   },
@@ -386,7 +644,567 @@
      "y": 51,
      "w": 25,
      "h": 250
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/kyle/back/weapon_dagger.png?v=655b5107",
+     "x": 222,
+     "y": 145,
+     "w": 23,
+     "h": 76
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/kyle/back/weapon_axe.png?v=d5c70f1d",
+     "x": 206,
+     "y": 105,
+     "w": 41,
+     "h": 130
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/kyle/back/weapon_bow.png?v=158ce237",
+     "x": 208,
+     "y": 130,
+     "w": 29,
+     "h": 145
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/weapon_staff_t.png?v=5f234771",
+     "x": 223,
+     "y": 26,
+     "w": 19,
+     "h": 19
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/weapon_staff_f.png?v=b701d3b7",
+     "x": 219,
+     "y": 19,
+     "w": 27,
+     "h": 284
+    },
+    "jf_cloth_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_cloth_t.png?v=0c2538d5",
+     "x": 82,
+     "y": 122,
+     "w": 162,
+     "h": 140
+    },
+    "jf_cape_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_cape_t.png?v=7038a133",
+     "x": 43,
+     "y": 150,
+     "w": 209,
+     "h": 149
+    },
+    "jf_x": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_x.png?v=51ab070c",
+     "x": 40,
+     "y": 223,
+     "w": 215,
+     "h": 79
+    },
+    "jf_capeup_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_capeup_t.png?v=84d5fa66",
+     "x": 80,
+     "y": 150,
+     "w": 162,
+     "h": 73
+    },
+    "jf_capehem_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_capehem_t.png?v=e51a6465",
+     "x": 80,
+     "y": 223,
+     "w": 146,
+     "h": 9
+    },
+    "jf_capehem_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_capehem_f.png?v=363be953",
+     "x": 80,
+     "y": 223,
+     "w": 146,
+     "h": 9
+    },
+    "jf_skirt_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_skirt_t.png?v=7a14dc4e",
+     "x": 90,
+     "y": 205,
+     "w": 142,
+     "h": 86
+    },
+    "jf_skirt_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_skirt_f.png?v=b425d976",
+     "x": 88,
+     "y": 207,
+     "w": 146,
+     "h": 88
+    },
+    "jf_sleeve_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_sleeve_t.png?v=dd0f6321",
+     "x": 76,
+     "y": 128,
+     "w": 169,
+     "h": 66
+    },
+    "jf_sleeve_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_sleeve_f.png?v=40361a20",
+     "x": 75,
+     "y": 127,
+     "w": 171,
+     "h": 77
     }
+   }
+  }
+ },
+ "jobs": {
+  "_robe": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_x",
+     "erase": true,
+     "optional": true
+    },
+    {
+     "part": "jf_capeup_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_skirt_t",
+     "tint": "main",
+     "optional": true,
+     "region": "body"
+    },
+    {
+     "part": "jf_skirt_f",
+     "optional": true,
+     "region": "body"
+    }
+   ],
+   "over": {
+    "z": 45,
+    "layers": [
+     {
+      "part": "jf_sleeve_t",
+      "tint": "main",
+      "optional": true,
+      "region": "sleeve"
+     },
+     {
+      "part": "jf_sleeve_f",
+      "optional": true,
+      "region": "sleeve"
+     },
+     {
+      "part": "jf_capehem_t",
+      "tint": "pal2",
+      "optional": true,
+      "region": "cape"
+     }
+    ]
+   }
+  },
+  "_coat": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_x",
+     "erase": true,
+     "optional": true
+    },
+    {
+     "part": "jf_capeup_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_skirt_t",
+     "tint": "main",
+     "optional": true,
+     "region": "body"
+    },
+    {
+     "part": "jf_skirt_f",
+     "optional": true,
+     "region": "body"
+    }
+   ],
+   "over": {
+    "z": 45,
+    "layers": [
+     {
+      "part": "jf_capehem_t",
+      "tint": "pal2",
+      "optional": true,
+      "region": "cape"
+     }
+    ]
+   }
+  },
+  "_cape": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    }
+   ]
+  },
+  "mage": {
+   "like": "_robe",
+   "pal": {
+    "main": "#4f2a78",
+    "dark": "#2a1545",
+    "light": "#a283cf",
+    "trim": "#a283cf",
+    "acc": "#a283cf"
+   },
+   "pal2": {
+    "main": "#5c3468",
+    "dark": "#28122e",
+    "light": "#7e5290",
+    "trim": "#7e5290",
+    "acc": "#7e5290"
+   }
+  },
+  "priest": {
+   "like": "_robe",
+   "pal": {
+    "main": "#e6e0cc",
+    "dark": "#9a927c",
+    "light": "#fffbea",
+    "trim": "#fffbea",
+    "acc": "#fffbea"
+   },
+   "pal2": {
+    "main": "#34509a",
+    "dark": "#18244a",
+    "light": "#6a8ad0",
+    "trim": "#6a8ad0",
+    "acc": "#6a8ad0"
+   }
+  },
+  "sage": {
+   "like": "_robe",
+   "pal": {
+    "main": "#2f6e4a",
+    "dark": "#16382a",
+    "light": "#76b48a",
+    "trim": "#76b48a",
+    "acc": "#76b48a"
+   },
+   "pal2": {
+    "main": "#b88a2a",
+    "dark": "#5a3c10",
+    "light": "#ecc66a",
+    "trim": "#ecc66a",
+    "acc": "#ecc66a"
+   }
+  },
+  "chronomancer": {
+   "like": "_robe",
+   "pal": {
+    "main": "#cbb68a",
+    "dark": "#7a6440",
+    "light": "#f2e6c2",
+    "trim": "#f2e6c2",
+    "acc": "#f2e6c2"
+   },
+   "pal2": {
+    "main": "#5a3a6e",
+    "dark": "#2a1838",
+    "light": "#9472aa",
+    "trim": "#9472aa",
+    "acc": "#9472aa"
+   }
+  },
+  "spirit_warden": {
+   "like": "_robe",
+   "pal": {
+    "main": "#5f7d34",
+    "dark": "#2e3e16",
+    "light": "#a4c070",
+    "trim": "#a4c070",
+    "acc": "#a4c070"
+   },
+   "pal2": {
+    "main": "#7a5a32",
+    "dark": "#3a2814",
+    "light": "#b48c5a",
+    "trim": "#b48c5a",
+    "acc": "#b48c5a"
+   }
+  },
+  "master": {
+   "like": "_robe",
+   "pal": {
+    "main": "#24345a",
+    "dark": "#10182e",
+    "light": "#5a72a8",
+    "trim": "#5a72a8",
+    "acc": "#5a72a8"
+   },
+   "pal2": {
+    "main": "#b8902a",
+    "dark": "#5a420e",
+    "light": "#ead07a",
+    "trim": "#ead07a",
+    "acc": "#ead07a"
+   }
+  },
+  "merchant": {
+   "like": "_coat",
+   "pal": {
+    "main": "#8a5a2a",
+    "dark": "#44280e",
+    "light": "#c8965a",
+    "trim": "#c8965a",
+    "acc": "#c8965a"
+   },
+   "pal2": {
+    "main": "#2f6a5a",
+    "dark": "#143028",
+    "light": "#64a090",
+    "trim": "#64a090",
+    "acc": "#64a090"
+   }
+  },
+  "auditor": {
+   "like": "_coat",
+   "pal": {
+    "main": "#34343e",
+    "dark": "#16161c",
+    "light": "#70707e",
+    "trim": "#70707e",
+    "acc": "#70707e"
+   },
+   "pal2": {
+    "main": "#7a1f2a",
+    "dark": "#3a0c12",
+    "light": "#b04a56",
+    "trim": "#b04a56",
+    "acc": "#b04a56"
+   }
+  },
+  "artisan": {
+   "like": "_coat",
+   "pal": {
+    "main": "#6a4a2a",
+    "dark": "#30200e",
+    "light": "#a47c52",
+    "trim": "#a47c52",
+    "acc": "#a47c52"
+   },
+   "pal2": {
+    "main": "#4a4a50",
+    "dark": "#222226",
+    "light": "#86868e",
+    "trim": "#86868e",
+    "acc": "#86868e"
+   }
+  },
+  "mechanist": {
+   "like": "_coat",
+   "pal": {
+    "main": "#2f6474",
+    "dark": "#122e36",
+    "light": "#6aa4b4",
+    "trim": "#6aa4b4",
+    "acc": "#6aa4b4"
+   },
+   "pal2": {
+    "main": "#b88a3a",
+    "dark": "#5a3e12",
+    "light": "#e8c070",
+    "trim": "#e8c070",
+    "acc": "#e8c070"
+   }
+  },
+  "loop_trader": {
+   "like": "_coat",
+   "pal": {
+    "main": "#1f5a3a",
+    "dark": "#0c2a1a",
+    "light": "#5a9a72",
+    "trim": "#5a9a72",
+    "acc": "#5a9a72"
+   },
+   "pal2": {
+    "main": "#c8a050",
+    "dark": "#6a4a18",
+    "light": "#f2d488",
+    "trim": "#f2d488",
+    "acc": "#f2d488"
+   }
+  },
+  "oath_knight": {
+   "like": "_cape",
+   "pal": {
+    "main": "#8a8070",
+    "dark": "#3e382e",
+    "light": "#c8bea8",
+    "trim": "#c8bea8",
+    "acc": "#c8bea8"
+   },
+   "pal2": {
+    "main": "#3a2a5a",
+    "dark": "#1a1230",
+    "light": "#6e5a96",
+    "trim": "#6e5a96",
+    "acc": "#6e5a96"
+   }
+  },
+  "magicknight": {
+   "like": "_cape",
+   "pal": {
+    "main": "#3a3a6a",
+    "dark": "#1a1a34",
+    "light": "#7a7ab0",
+    "trim": "#7a7ab0",
+    "acc": "#7a7ab0"
+   },
+   "pal2": {
+    "main": "#6a2a8a",
+    "dark": "#300e40",
+    "light": "#a466c4",
+    "trim": "#a466c4",
+    "acc": "#a466c4"
+   }
+  },
+  "waveblade": {
+   "like": "_cape",
+   "pal": {
+    "main": "#2a6a8a",
+    "dark": "#103244",
+    "light": "#6aaccc",
+    "trim": "#6aaccc",
+    "acc": "#6aaccc"
+   },
+   "pal2": {
+    "main": "#1f8a96",
+    "dark": "#0a3c42",
+    "light": "#5ac4cc",
+    "trim": "#5ac4cc",
+    "acc": "#5ac4cc"
+   }
+  },
+  "monk": {
+   "like": "_cape",
+   "pal": {
+    "main": "#c87a2a",
+    "dark": "#6a3a0e",
+    "light": "#f0b46a",
+    "trim": "#f0b46a",
+    "acc": "#f0b46a"
+   },
+   "pal2": {
+    "main": "#8a3a1a",
+    "dark": "#401608",
+    "light": "#c46a42",
+    "trim": "#c46a42",
+    "acc": "#c46a42"
+   }
+  },
+  "navigator": {
+   "like": "_cape",
+   "pal": {
+    "main": "#2a3a6a",
+    "dark": "#121a34",
+    "light": "#6a7ab0",
+    "trim": "#6a7ab0",
+    "acc": "#6a7ab0"
+   },
+   "pal2": {
+    "main": "#d8d2bc",
+    "dark": "#7a7462",
+    "light": "#fffbec",
+    "trim": "#fffbec",
+    "acc": "#fffbec"
+   }
+  },
+  "surveyor": {
+   "like": "_cape",
+   "pal": {
+    "main": "#8a6a3a",
+    "dark": "#42301a",
+    "light": "#c4a46e",
+    "trim": "#c4a46e",
+    "acc": "#c4a46e"
+   },
+   "pal2": {
+    "main": "#4a6a3a",
+    "dark": "#20301a",
+    "light": "#84a46e",
+    "trim": "#84a46e",
+    "acc": "#84a46e"
+   }
+  },
+  "warrior": {
+   "like": "_cape",
+   "pal": {
+    "main": "#b8a582",
+    "dark": "#5a4a36",
+    "light": "#f3ecd6",
+    "trim": "#f3ecd6",
+    "acc": "#f3ecd6"
+   },
+   "pal2": {
+    "main": "#b02424",
+    "dark": "#4a0c0c",
+    "light": "#e86a5a",
+    "trim": "#e86a5a",
+    "acc": "#e86a5a"
+   }
+  },
+  "hunter": {
+   "like": "_cape",
+   "pal": {
+    "main": "#55502a",
+    "dark": "#2c2a16",
+    "light": "#b0a862",
+    "trim": "#b0a862",
+    "acc": "#b0a862"
+   },
+   "pal2": {
+    "main": "#2f6e2a",
+    "dark": "#10240f",
+    "light": "#78bf62",
+    "trim": "#78bf62",
+    "acc": "#78bf62"
+   }
+  },
+  "thief": {
+   "like": "_cape",
+   "pal": {
+    "main": "#3c3c48",
+    "dark": "#131317",
+    "light": "#7c7c90",
+    "trim": "#7c7c90",
+    "acc": "#7c7c90"
+   },
+   "pal2": {
+    "main": "#2e2a54",
+    "dark": "#0e0c1c",
+    "light": "#6a62a0",
+    "trim": "#6a62a0",
+    "acc": "#6a62a0"
    }
   }
  }

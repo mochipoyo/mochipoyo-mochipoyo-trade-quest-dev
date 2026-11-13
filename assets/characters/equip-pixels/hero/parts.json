@@ -161,15 +161,36 @@
    "w": 98,
    "h": 115
   },
-  "outfit_mage": {
-   "url": "assets/characters/equip-pixels/hero/job_warrior/outfit_mage.png?v=8149d46d",
+  "jf_cape_t": {
+   "url": "assets/characters/equip-pixels/hero/job_warrior/jf_cape_t.png?v=b133c3ed",
    "x": 0,
-   "y": 77,
+   "y": 100,
    "w": 124,
-   "h": 118
+   "h": 98
   },
-  "outfit_mage_o": {
-   "url": "assets/characters/equip-pixels/hero/job_warrior/outfit_mage_o.png?v=f2ff48b2",
+  "jf_capeup_t": {
+   "url": "assets/characters/equip-pixels/hero/job_warrior/jf_capeup_t.png?v=b133c3ed",
+   "x": 0,
+   "y": 100,
+   "w": 124,
+   "h": 98
+  },
+  "jf_cloth_t": {
+   "url": "assets/characters/equip-pixels/hero/job_warrior/jf_cloth_t.png?v=aa44a2bc",
+   "x": 33,
+   "y": 77,
+   "w": 61,
+   "h": 75
+  },
+  "jf_sleeve_t": {
+   "url": "assets/characters/equip-pixels/hero/job_warrior/jf_sleeve_t.png?v=cbc93841",
+   "x": 14,
+   "y": 76,
+   "w": 99,
+   "h": 36
+  },
+  "jf_sleeve_f": {
+   "url": "assets/characters/equip-pixels/hero/job_warrior/jf_sleeve_f.png?v=2a41350b",
    "x": 11,
    "y": 75,
    "w": 105,
@@ -345,26 +366,47 @@
    "w": 120,
    "h": 121
   },
-  "outfit_mage_x": {
-   "url": "assets/characters/equip-pixels/hero/back/outfit_mage_x.png?v=30b83a60",
-   "x": 106,
+  "jf_cape_t": {
+   "url": "assets/characters/equip-pixels/hero/back/jf_cape_t.png?v=30fcf75c",
+   "x": 97,
+   "y": 165,
+   "w": 139,
+   "h": 139
+  },
+  "jf_capeup_t": {
+   "url": "assets/characters/equip-pixels/hero/back/jf_capeup_t.png?v=1b7feec2",
+   "x": 97,
+   "y": 165,
+   "w": 129,
+   "h": 80
+  },
+  "jf_capehem_t": {
+   "url": "assets/characters/equip-pixels/hero/back/jf_capehem_t.png?v=2e2e40da",
+   "x": 121,
    "y": 245,
-   "w": 132,
-   "h": 60
+   "w": 105,
+   "h": 9
   },
-  "outfit_mage": {
-   "url": "assets/characters/equip-pixels/hero/back/outfit_mage.png?v=152104da",
-   "x": 98,
-   "y": 170,
-   "w": 128,
-   "h": 129
+  "jf_cloth_t": {
+   "url": "assets/characters/equip-pixels/hero/back/jf_cloth_t.png?v=fd7da358",
+   "x": 117,
+   "y": 179,
+   "w": 80,
+   "h": 62
   },
-  "outfit_mage_o": {
-   "url": "assets/characters/equip-pixels/hero/back/outfit_mage_o.png?v=74fc6d67",
+  "jf_sleeve_t": {
+   "url": "assets/characters/equip-pixels/hero/back/jf_sleeve_t.png?v=1df51b31",
+   "x": 99,
+   "y": 180,
+   "w": 116,
+   "h": 32
+  },
+  "jf_sleeve_f": {
+   "url": "assets/characters/equip-pixels/hero/back/jf_sleeve_f.png?v=d0278368",
    "x": 95,
    "y": 180,
-   "w": 131,
-   "h": 74
+   "w": 124,
+   "h": 34
   }
  }
 }

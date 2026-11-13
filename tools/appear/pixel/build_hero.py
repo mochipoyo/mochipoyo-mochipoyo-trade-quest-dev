@@ -688,8 +688,7 @@ if __name__ == '__main__':
     pb['armor_robe_x'], pb['armor_robe_t'], pb['armor_robe_f'] = robe_back(bp, zone_b, cape_b, cfg_b['keep_m'])
     # ---- v9.8.8 魔法使いの服装（ローブの裾・広い袖）。ローブの品と同じ形を紫で塗り、袖は武器の手前の層 ----
     import hero_mage
-    hero_mage.add(pf, pb, {'robe_f': (pf['armor_robe_t'], pf['armor_robe_f']), 'robe_b': (pb['armor_robe_x'], pb['armor_robe_t'], pb['armor_robe_f']),
-                           'cape_b': cape_b, 'TRAVEL': TRAVEL, 'FA': FA, 'BA': BA})
+    hero_mage.add(pf, pb, {'robe_b': (pb['armor_robe_x'], pb['armor_robe_t'], pb['armor_robe_f']), 'cape_b': cape_b, 'TRAVEL': TRAVEL, 'FA': FA, 'BA': BA})   # v9.8.9 職業の服の系統（ローブ・長衣・マント）
     # ---- 書き出し ----
     off = {k: (0, -TOP) for k in ('head_hat_t', 'head_hat_f', 'weapon_staff_t', 'weapon_staff_f', 'weapon_spear')}
     recF = save_parts(os.path.join(OUT, 'job_warrior'), pf, off)
@@ -714,9 +713,10 @@ if __name__ == '__main__':
         'menuBase': 'job:warrior',
         # v9.8.6 職業の服装：素の絵のすぐ上に重ねる（戦士は重ね絵なし）。短剣は拳を柄の上に描き直す（人ごとの重ね方）
         #   v9.8.8 魔法使い：ローブ（背面はマントを短くする erase の層つき）。over＝袖の層（武器・握りの拳より手前。袖口が手首にかぶさり、杖の柄は袖口の中を通る）
-        'jobs': {'hunter': {'z': 5, 'layers': [{'part': 'outfit_hunter'}]}, 'thief': {'z': 5, 'layers': [{'part': 'outfit_thief'}]},
-                 'mage': {'z': 5, 'layers': [{'part': 'outfit_mage_x', 'erase': True, 'optional': True}, {'part': 'outfit_mage'}], 'over': {'z': 45, 'layers': [{'part': 'outfit_mage_o'}]}}},
-        'materials': {'weapon_dagger': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_dagger'}]}},
+        #   v9.8.9 全職業：系統（_robe・_coat・_cape）の形を共有し、職業ごとの配色（pal・pal2）で塗る（hero_mage.py の JOB_LOOKS）。戦士は重ね絵なし
+        'jobs': hero_mage.jobs_table({'hunter': {'z': 5, 'layers': [{'part': 'outfit_hunter'}]}, 'thief': {'z': 5, 'layers': [{'part': 'outfit_thief'}]}}),
+        #   v9.8.9 ローブの品：胴・裾・袖口を一着に（職業の服の胴・袖は描かず、品の色の袖を手前の層に）
+        'materials': {'weapon_dagger': {'z': 40, 'hand': True, 'layers': [{'part': 'weapon_dagger'}]}, 'armor_robe': hero_mage.ROBE_ITEM},
         'views': {
             'job:warrior': {'src': FRONT_SRC, 'w': FW, 'h': FH, 'dir': 'front', 'pivot': [64, 197], 'body': box(tp), 'frame': frame(recF, FW, FH),
                             'grip': {'x': 22, 'y': 117, 'order': '剣：拳の上に鍔（剣を後に描く）／杖・槍・斧：柄の上に拳を描き直す'},
