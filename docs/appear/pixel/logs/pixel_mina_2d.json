@@ -28,7 +28,7 @@
   },
   {
    "ok": true,
-   "m": "mina［革の帽子（部品のない品。v9.8.9 から軽装は服の色で描くので、革の鎧は外した。盗賊は重鎧を装備できない）］装備 {\"head\":\"leather_cap\"} → 部品：base_plain／描かない：head:leather_cap（head_cap の部品がない→描かない）"
+   "m": "mina［装飾品（仕様で描かない品。v9.9 から帽子はどれも描くので替えた）］装備 {\"acc\":\"ring_power\"} → 部品：base_plain／描かない：acc:ring_power"
   },
   {
    "ok": true,
@@ -36,7 +36,7 @@
   },
   {
    "ok": true,
-   "m": "mina：部品のない品は部位ごと（leather_cap は描かない。鎧は着替える：base_plain）"
+   "m": "mina：部品のない品は部位ごと（ring_power は描かない。鎧は着替える：base_plain）"
   },
   {
    "ok": true,
@@ -243,15 +243,15 @@
       "weapon": null,
       "armor": null,
       "shield": null,
-      "head": "leather_cap",
-      "acc": null
+      "head": null,
+      "acc": "ring_power"
      },
      "res": {},
      "stats": {
       "maxHp": 48,
       "maxMp": 19,
-      "atk": 15,
-      "def": 10,
+      "atk": 20,
+      "def": 8,
       "agi": 21,
       "mag": 7,
       "mdef": 2,
@@ -260,7 +260,7 @@
      },
      "st": "ok",
      "parts": "base_plain",
-     "skipped": "head:leather_cap（head_cap の部品がない→描かない）",
+     "skipped": "acc:ring_power",
      "bottom": 335.3,
      "cx": 460.4,
      "px": 1.1111,
@@ -348,7 +348,7 @@
         "base_plain"
        ],
        "skipped": [
-        "head:leather_cap（head_cap の部品がない→描かない）"
+        "acc:ring_power"
        ]
       }
      },
@@ -436,7 +436,7 @@
         "base_plain"
        ],
        "skipped": [
-        "head:leather_cap（head_cap の部品がない→描かない）"
+        "acc:ring_power"
        ]
       }
      },
@@ -524,7 +524,7 @@
         "base_plain"
        ],
        "skipped": [
-        "head:leather_cap（head_cap の部品がない→描かない）"
+        "acc:ring_power"
        ]
       }
      },

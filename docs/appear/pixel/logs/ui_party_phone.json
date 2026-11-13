@@ -6,7 +6,7 @@
  "steps": [
   {
    "ok": true,
-   "m": "準備：主人公（戦士）＋カイル（騎士）。職業のデータ：魔法使い 武器 staff・dagger・防具 robe・hat・acc（はじめの武器 oak_staff）／戦士 sword・axe・spear／狩人 bow・dagger・spear／盗賊 dagger・sword・bow。狩人・盗賊・魔法使いへ転職できる"
+   "m": "準備：主人公（戦士）＋カイル。職業のデータ：魔法使い 武器 staff・dagger・防具 robe・hat・acc（はじめの武器 oak_staff）／戦士 sword・axe・spear／狩人 bow・dagger・spear／盗賊 dagger・sword・bow。狩人・盗賊・魔法使いへ転職できる"
   },
   {
    "ok": true,
@@ -188,14 +188,14 @@
      "rect": {
       "top": 80.9,
       "bottom": 270.9,
-      "left": 116,
-      "right": 274,
-      "w": 158,
+      "left": 117.5,
+      "right": 272.5,
+      "w": 155.1,
       "h": 190,
       "cx": 195
      },
-     "px": 0.7116,
-     "pxw": 0.7116,
+     "px": 0.6985,
+     "pxw": 0.6985,
      "clip": {
       "top": false,
       "bottom": false,
@@ -236,7 +236,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -256,7 +256,7 @@
      "sprite": "kyle",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"knight\",\"px:v9.8.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -282,7 +282,7 @@
      }
     },
     "px": {
-     "sig": "[\"kyle\",\"knight\",\"px:v9.8.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "sig": "[\"kyle\",\"knight\",\"px:v9.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
      "parts": "base_plain armor_shape_f shield_f shield_e weapon_sword",
      "st": "ok"
     },
@@ -313,7 +313,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -333,7 +333,7 @@
       "sprite": "kyle",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"knight\",\"px:v9.8.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -352,13 +352,13 @@
      },
      "kyle": {
       "x": 245.6,
-      "y": 313.8,
+      "y": 314.4,
       "w": 86.5,
       "h": 95.1
      }
     },
     "vpx": {
-     "sig": "[\"kyle\",\"knight\",\"px:v9.8.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "sig": "[\"kyle\",\"knight\",\"px:v9.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
      "parts": "base_plain armor_shape_f shield_f shield_e weapon_sword",
      "st": "ok"
     },
@@ -376,10 +376,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 326,
+      "fullTop": 329,
       "rect": {
        "x": 171,
-       "y": 326,
+       "y": 329,
        "w": 65,
        "h": 90
       }
@@ -388,12 +388,12 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 321,
+      "fullTop": 324,
       "rect": {
        "x": 246,
-       "y": 321,
+       "y": 324,
        "w": 86,
-       "h": 95
+       "h": 94
       }
      }
     },
@@ -482,14 +482,14 @@
      "rect": {
       "top": 80.9,
       "bottom": 270.9,
-      "left": 116,
-      "right": 274,
-      "w": 158,
+      "left": 117.5,
+      "right": 272.5,
+      "w": 155.1,
       "h": 190,
       "cx": 195
      },
-     "px": 0.7116,
-     "pxw": 0.7116,
+     "px": 0.6985,
+     "pxw": 0.6985,
      "clip": {
       "top": false,
       "bottom": false,
@@ -577,14 +577,14 @@
      "rect": {
       "top": 80.9,
       "bottom": 270.9,
-      "left": 116,
-      "right": 274,
-      "w": 158,
+      "left": 117.5,
+      "right": 272.5,
+      "w": 155.1,
       "h": 190,
       "cx": 195
      },
-     "px": 0.7116,
-     "pxw": 0.7116,
+     "px": 0.6985,
+     "pxw": 0.6985,
      "clip": {
       "top": false,
       "bottom": false,
@@ -625,7 +625,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -645,7 +645,7 @@
      "sprite": "hero_mage",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"mage\",\"px:v9.8.9\",\"back\",[\"oak_staff\",\"robe\"]]",
+     "ea": "[\"kyle\",\"mage\",\"px:v9.9\",\"back\",[\"oak_staff\",\"robe\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -671,7 +671,7 @@
      }
     },
     "px": {
-     "sig": "[\"kyle\",\"mage\",\"px:v9.8.9\",\"back\",[\"oak_staff\",\"robe\"]]",
+     "sig": "[\"kyle\",\"mage\",\"px:v9.9\",\"back\",[\"oak_staff\",\"robe\"]]",
      "parts": "base_plain jf_x jf_capeup_t jf_x jf_capehem_f jf_cloth_t jf_skirt_t jf_skirt_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f jf_capehem_t",
      "st": "ok"
     },
@@ -702,7 +702,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -722,7 +722,7 @@
       "sprite": "hero_mage",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"mage\",\"px:v9.8.9\",\"front\",[\"oak_staff\",\"robe\"]]",
+      "ea": "[\"kyle\",\"mage\",\"px:v9.9\",\"front\",[\"oak_staff\",\"robe\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -735,409 +735,20 @@
     "vrects": {
      "hero": {
       "x": 171.2,
-      "y": 328.5,
+      "y": 325.4,
       "w": 64.6,
       "h": 89.6
      },
      "kyle": {
       "x": 245.6,
-      "y": 323.6,
-      "w": 85.9,
-      "h": 94.5
-     }
-    },
-    "vpx": {
-     "sig": "[\"kyle\",\"mage\",\"px:v9.8.9\",\"front\",[\"oak_staff\",\"robe\"]]",
-     "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
-     "st": "ok"
-    },
-    "cover": {
-     "wins": [
-      {
-       "cls": "rw-panel result-victory result-simple rs",
-       "x": 12,
-       "y": 4,
-       "w": 367,
-       "h": 189
-      }
-     ],
-     "hero": {
-      "covered": 0,
-      "headCovered": 0,
-      "fullCovered": 0,
-      "fullTop": 328,
-      "rect": {
-       "x": 171,
-       "y": 328,
-       "w": 65,
-       "h": 90
-      }
-     },
-     "kyle": {
-      "covered": 0,
-      "headCovered": 0,
-      "fullCovered": 0,
-      "fullTop": 323,
-      "rect": {
-       "x": 246,
-       "y": 324,
-       "w": 86,
-       "h": 94
-      }
-     }
-    },
-    "panel": {
-     "cls": "rw-panel result-victory result-simple rs-top",
-     "top": 4,
-     "bottom": 193,
-     "h": 189,
-     "scroll": null,
-     "close": {
-      "top": 140,
-      "bottom": 184,
-      "in": true
-     },
-     "more": false
-    },
-    "vrects2": {
-     "hero": {
-      "x": 171.2,
-      "y": 331.5,
-      "w": 64.6,
-      "h": 89.6
-     },
-     "kyle": {
-      "x": 245.6,
-      "y": 326.6,
-      "w": 85.9,
-      "h": 94.5
-     }
-    },
-    "ended": true
-   },
-   "after": {
-    "hero": {
-     "actor": "hero",
-     "st": "ok",
-     "parts": "base_plain",
-     "skipped": null,
-     "view": "job:warrior",
-     "job": "warrior",
-     "rect": {
-      "top": 80.9,
-      "bottom": 270.9,
-      "left": 138.7,
-      "right": 251.3,
-      "w": 112.6,
-      "h": 190,
-      "cx": 195
-     },
-     "px": 0.8407,
-     "pxw": 0.8406,
-     "clip": {
-      "top": false,
-      "bottom": false,
-      "left": false,
-      "right": false,
-      "screen": false
-     },
-     "ov": null,
-     "equip": {
-      "weapon": null,
-      "armor": null,
-      "shield": null,
-      "head": null,
-      "acc": null
-     },
-     "stats": {
-      "maxHp": 34,
-      "maxMp": 10,
-      "atk": 9,
-      "def": 8,
-      "agi": 5,
-      "mag": 2,
-      "mdef": 1,
-      "immune": [],
-      "element": "none"
-     }
-    },
-    "kyle": {
-     "actor": "kyle",
-     "st": "ok",
-     "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
-     "skipped": null,
-     "view": "menu",
-     "job": "mage",
-     "rect": {
-      "top": 80.9,
-      "bottom": 270.9,
-      "left": 116,
-      "right": 274,
-      "w": 158,
-      "h": 190,
-      "cx": 195
-     },
-     "px": 0.7116,
-     "pxw": 0.7116,
-     "clip": {
-      "top": false,
-      "bottom": false,
-      "left": false,
-      "right": false,
-      "screen": false
-     },
-     "ov": null,
-     "equip": {
-      "weapon": "oak_staff",
-      "armor": "robe",
-      "shield": null,
-      "head": null,
-      "acc": null
-     },
-     "stats": {
-      "maxHp": 26,
-      "maxMp": 27,
-      "atk": 6,
-      "def": 7,
-      "agi": 6,
-      "mag": 12,
-      "mdef": 4,
-      "immune": [],
-      "element": "none"
-     }
-    }
-   }
-  },
-  "k3": {
-   "name": "カイル 魔法使い：杖をはずす",
-   "menu": {
-    "hero": {
-     "actor": "hero",
-     "st": "ok",
-     "parts": "base_plain",
-     "skipped": null,
-     "view": "job:warrior",
-     "job": "warrior",
-     "rect": {
-      "top": 80.9,
-      "bottom": 270.9,
-      "left": 138.7,
-      "right": 251.3,
-      "w": 112.6,
-      "h": 190,
-      "cx": 195
-     },
-     "px": 0.8407,
-     "pxw": 0.8406,
-     "clip": {
-      "top": false,
-      "bottom": false,
-      "left": false,
-      "right": false,
-      "screen": false
-     },
-     "ov": null,
-     "equip": {
-      "weapon": null,
-      "armor": null,
-      "shield": null,
-      "head": null,
-      "acc": null
-     },
-     "stats": {
-      "maxHp": 34,
-      "maxMp": 10,
-      "atk": 9,
-      "def": 8,
-      "agi": 5,
-      "mag": 2,
-      "mdef": 1,
-      "immune": [],
-      "element": "none"
-     }
-    },
-    "kyle": {
-     "actor": "kyle",
-     "st": "ok",
-     "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f jf_sleeve_t jf_sleeve_f",
-     "skipped": null,
-     "view": "menu",
-     "job": "mage",
-     "rect": {
-      "top": 80.9,
-      "bottom": 270.9,
-      "left": 116,
-      "right": 274,
-      "w": 158,
-      "h": 190,
-      "cx": 195
-     },
-     "px": 0.7116,
-     "pxw": 0.7116,
-     "clip": {
-      "top": false,
-      "bottom": false,
-      "left": false,
-      "right": false,
-      "screen": false
-     },
-     "ov": null,
-     "equip": {
-      "weapon": null,
-      "armor": "robe",
-      "shield": null,
-      "head": null,
-      "acc": null
-     },
-     "stats": {
-      "maxHp": 26,
-      "maxMp": 27,
-      "atk": 3,
-      "def": 7,
-      "agi": 6,
-      "mag": 10,
-      "mdef": 3,
-      "immune": [],
-      "element": "none"
-     }
-    }
-   },
-   "battle": {
-    "hero": {
-     "id": "hero",
-     "model": "pixel:dir:back",
-     "ready": true,
-     "anim": "Idle",
-     "dead": false,
-     "status": "2D",
-     "job": "warrior",
-     "sprite": "hero_warrior",
-     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
-     "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"back\",[]]",
-     "eaWait": false,
-     "eaModel": null,
-     "vis": true,
-     "size": {
-      "w": 0.84,
-      "h": 1.17
-     }
-    },
-    "kyle": {
-     "id": "kyle",
-     "model": "pixel:dir:back",
-     "ready": true,
-     "anim": "Idle",
-     "dead": false,
-     "status": "2D",
-     "job": "mage",
-     "sprite": "hero_mage",
-     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
-     "pd": "ok",
-     "ea": "[\"kyle\",\"mage\",\"px:v9.8.9\",\"back\",[\"robe\"]]",
-     "eaWait": false,
-     "eaModel": null,
-     "vis": true,
-     "size": {
-      "w": 1.13,
-      "h": 1.25
-     }
-    },
-    "equip": {
-     "hero": {
-      "weapon": null,
-      "armor": null,
-      "shield": null,
-      "head": null,
-      "acc": null
-     },
-     "kyle": {
-      "weapon": null,
-      "armor": "robe",
-      "shield": null,
-      "head": null,
-      "acc": null
-     }
-    },
-    "px": {
-     "sig": "[\"kyle\",\"mage\",\"px:v9.8.9\",\"back\",[\"robe\"]]",
-     "parts": "base_plain jf_x jf_capeup_t jf_x jf_capehem_f jf_cloth_t jf_skirt_t jf_skirt_f jf_sleeve_t jf_sleeve_f jf_capehem_t",
-     "st": "ok"
-    },
-    "fell": [],
-    "rects": {
-     "hero": {
-      "x": 168.8,
-      "y": 330.9,
-      "w": 72.5,
-      "h": 90.2
-     },
-     "kyle": {
-      "x": 241.9,
-      "y": 324.8,
-      "w": 96.3,
-      "h": 96.9
-     }
-    },
-    "victory": {
-     "hero": {
-      "id": "hero",
-      "model": "pixel:dir:front",
-      "ready": true,
-      "anim": "Idle",
-      "dead": false,
-      "status": "2D",
-      "job": "warrior",
-      "sprite": "hero_warrior",
-      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
-      "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"front\",[]]",
-      "eaWait": false,
-      "eaModel": null,
-      "vis": true,
-      "size": {
-       "w": 0.75,
-       "h": 1.15
-      }
-     },
-     "kyle": {
-      "id": "kyle",
-      "model": "pixel:dir:front",
-      "ready": true,
-      "anim": "Idle",
-      "dead": false,
-      "status": "2D",
-      "job": "mage",
-      "sprite": "hero_mage",
-      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
-      "pd": "ok",
-      "ea": "[\"kyle\",\"mage\",\"px:v9.8.9\",\"front\",[\"robe\"]]",
-      "eaWait": false,
-      "eaModel": null,
-      "vis": true,
-      "size": {
-       "w": 1.01,
-       "h": 1.22
-      }
-     }
-    },
-    "vrects": {
-     "hero": {
-      "x": 171.2,
-      "y": 324.8,
-      "w": 64.6,
-      "h": 89.6
-     },
-     "kyle": {
-      "x": 245.6,
-      "y": 319.9,
+      "y": 320.5,
       "w": 86.5,
       "h": 95.1
      }
     },
     "vpx": {
-     "sig": "[\"kyle\",\"mage\",\"px:v9.8.9\",\"front\",[\"robe\"]]",
-     "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f jf_sleeve_t jf_sleeve_f",
+     "sig": "[\"kyle\",\"mage\",\"px:v9.9\",\"front\",[\"oak_staff\",\"robe\"]]",
+     "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
      "st": "ok"
     },
     "cover": {
@@ -1253,6 +864,101 @@
     "kyle": {
      "actor": "kyle",
      "st": "ok",
+     "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
+     "skipped": null,
+     "view": "menu",
+     "job": "mage",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 117.5,
+      "right": 272.5,
+      "w": 155.1,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.6985,
+     "pxw": 0.6985,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "oak_staff",
+      "armor": "robe",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 26,
+      "maxMp": 27,
+      "atk": 6,
+      "def": 7,
+      "agi": 6,
+      "mag": 12,
+      "mdef": 4,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   }
+  },
+  "k3": {
+   "name": "カイル 魔法使い：杖をはずす",
+   "menu": {
+    "hero": {
+     "actor": "hero",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "job:warrior",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 138.7,
+      "right": 251.3,
+      "w": 112.6,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.8407,
+     "pxw": 0.8406,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 34,
+      "maxMp": 10,
+      "atk": 9,
+      "def": 8,
+      "agi": 5,
+      "mag": 2,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
      "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f jf_sleeve_t jf_sleeve_f",
      "skipped": null,
      "view": "menu",
@@ -1260,14 +966,308 @@
      "rect": {
       "top": 80.9,
       "bottom": 270.9,
-      "left": 116,
-      "right": 274,
-      "w": 158,
+      "left": 117.5,
+      "right": 272.5,
+      "w": 155.1,
       "h": 190,
       "cx": 195
      },
-     "px": 0.7116,
-     "pxw": 0.7116,
+     "px": 0.6985,
+     "pxw": 0.6985,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": "robe",
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 26,
+      "maxMp": 27,
+      "atk": 3,
+      "def": 7,
+      "agi": 6,
+      "mag": 10,
+      "mdef": 3,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "battle": {
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "kyle": {
+     "id": "kyle",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "mage",
+     "sprite": "hero_mage",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
+     "pd": "ok",
+     "ea": "[\"kyle\",\"mage\",\"px:v9.9\",\"back\",[\"robe\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 1.13,
+      "h": 1.25
+     }
+    },
+    "equip": {
+     "hero": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "kyle": {
+      "weapon": null,
+      "armor": "robe",
+      "shield": null,
+      "head": null,
+      "acc": null
+     }
+    },
+    "px": {
+     "sig": "[\"kyle\",\"mage\",\"px:v9.9\",\"back\",[\"robe\"]]",
+     "parts": "base_plain jf_x jf_capeup_t jf_x jf_capehem_f jf_cloth_t jf_skirt_t jf_skirt_f jf_sleeve_t jf_sleeve_f jf_capehem_t",
+     "st": "ok"
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 168.8,
+      "y": 330.9,
+      "w": 72.5,
+      "h": 90.2
+     },
+     "kyle": {
+      "x": 241.9,
+      "y": 324.8,
+      "w": 96.3,
+      "h": 96.9
+     }
+    },
+    "victory": {
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     },
+     "kyle": {
+      "id": "kyle",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "mage",
+      "sprite": "hero_mage",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
+      "pd": "ok",
+      "ea": "[\"kyle\",\"mage\",\"px:v9.9\",\"front\",[\"robe\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.01,
+       "h": 1.22
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 171.2,
+      "y": 325.4,
+      "w": 64.6,
+      "h": 89.6
+     },
+     "kyle": {
+      "x": 245.6,
+      "y": 321.1,
+      "w": 85.9,
+      "h": 95.1
+     }
+    },
+    "vpx": {
+     "sig": "[\"kyle\",\"mage\",\"px:v9.9\",\"front\",[\"robe\"]]",
+     "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f jf_sleeve_t jf_sleeve_f",
+     "st": "ok"
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory result-simple rs",
+       "x": 12,
+       "y": 4,
+       "w": 367,
+       "h": 189
+      }
+     ],
+     "hero": {
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 325,
+      "rect": {
+       "x": 171,
+       "y": 325,
+       "w": 65,
+       "h": 90
+      }
+     },
+     "kyle": {
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 320,
+      "rect": {
+       "x": 246,
+       "y": 320,
+       "w": 87,
+       "h": 95
+      }
+     }
+    },
+    "panel": {
+     "cls": "rw-panel result-victory result-simple rs-top",
+     "top": 4,
+     "bottom": 193,
+     "h": 189,
+     "scroll": null,
+     "close": {
+      "top": 140,
+      "bottom": 184,
+      "in": true
+     },
+     "more": false
+    },
+    "vrects2": {
+     "hero": {
+      "x": 171.2,
+      "y": 331.5,
+      "w": 64.6,
+      "h": 89.6
+     },
+     "kyle": {
+      "x": 245.6,
+      "y": 326.6,
+      "w": 85.9,
+      "h": 94.5
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "hero": {
+     "actor": "hero",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "job:warrior",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 138.7,
+      "right": 251.3,
+      "w": 112.6,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.8407,
+     "pxw": 0.8406,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 34,
+      "maxMp": 10,
+      "atk": 9,
+      "def": 8,
+      "agi": 5,
+      "mag": 2,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "kyle": {
+     "actor": "kyle",
+     "st": "ok",
+     "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f jf_sleeve_t jf_sleeve_f",
+     "skipped": null,
+     "view": "menu",
+     "job": "mage",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 117.5,
+      "right": 272.5,
+      "w": 155.1,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.6985,
+     "pxw": 0.6985,
      "clip": {
       "top": false,
       "bottom": false,

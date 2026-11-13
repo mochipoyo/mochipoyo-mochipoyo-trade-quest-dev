@@ -7,9 +7,10 @@ cd "$(dirname "$0")/../../.." || exit 2
 LOG=${1:-docs/appear/pixel/logs/tests_v98.log}; mkdir -p "$(dirname "$LOG")"
 RG=docs/appear/pixel/regress/; mkdir -p "$RG"
 V=$(sed -n "s/.*MTQ_VERSION = '\([0-9a-f]*\)'.*/\1/p" js/core/version.js 2>/dev/null)
-echo "v9.8 の確かめ $(date '+%Y-%m-%d %H:%M') 版 $V" > "$LOG"
+# v9.9 一式が 2 時間を超えて止まったときの続き：FROM＝続きを始める確かめの名前（その前は飛ばし、記録は書き足す）
+if [ -n "$FROM" ]; then echo "=== 続き $(date '+%Y-%m-%d %H:%M') 版 $V（一式の作業の時間の上限で止まったため、「$FROM」から続けた）" >> "$LOG"; SKIP=1; else echo "v9.8 の確かめ $(date '+%Y-%m-%d %H:%M') 版 $V" > "$LOG"; SKIP=0; fi
 ONE=$(mktemp)
-run() { echo "=== $1" >> "$LOG"; shift; "$@" > "$ONE" 2>&1; local rc=$?; grep -E "結果|^  NG  |CRASH|FAIL" "$ONE" >> "$LOG"; [ $rc -ne 0 ] && echo "（終了コード $rc）" >> "$LOG"; }
+run() { if [ "$SKIP" = 1 ]; then case "$1" in "$FROM"*) SKIP=0 ;; *) return ;; esac; fi; echo "=== $1" >> "$LOG"; shift; "$@" > "$ONE" 2>&1; local rc=$?; grep -E "結果|^  NG  |CRASH|FAIL" "$ONE" >> "$LOG"; [ $rc -ne 0 ] && echo "（終了コード $rc）" >> "$LOG"; }
 node docs/tools/appear/browser/xorigin_server.js . 8895 cors > /dev/null 2>&1 & X1=$!
 node docs/tools/appear/browser/xorigin_server.js . 8896 nocors > /dev/null 2>&1 & X2=$!
 sleep 1

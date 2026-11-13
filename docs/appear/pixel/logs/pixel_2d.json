@@ -101,7 +101,7 @@
   },
   {
    "ok": true,
-   "m": "v9.8.1 斧は描く（weapon_axe）。部品のない品は、その部位だけ描かない（こん棒：weapon:club（club の部品がない→描かない）／革の帽子：head:leather_cap（head_cap の部品がない→描かない））"
+   "m": "v9.8.1 斧は描く（weapon_axe）。部品のない品は、その部位だけ描かない（こん棒：weapon:club（club の部品がない→描かない））。v9.9 から革の帽子は描く（base_cap head_cap。v9.8.9 までは描かない）"
   },
   {
    "ok": true,

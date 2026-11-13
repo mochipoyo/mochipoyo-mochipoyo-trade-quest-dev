@@ -1,8 +1,8 @@
-v9.8 の確かめ 2026-11-13 19:24 版 ebbd368197
+v9.8 の確かめ 2026-11-13 22:28 版 df0a3e15a1
 === appear/appear_pixel_test.js（jsdom・3D と同じ読み込み）
 結果：OK 74 / NG 0
 === ブラウザ 主人公と仲間の装備できる品と、描く／描かない品（docs/appear/pixel/SURVEY.md）
-結果 survey：hero 描く 169 / 描かない 0　lina 描く 89 / 描かない 50　gald 描く 150 / 描かない 19　kyle 描く 157 / 描かない 0　kazuto 描く 169 / 描かない 0　mina 描く 103 / 描かない 18
+結果 survey：hero 描く 169 / 描かない 0　lina 描く 125 / 描かない 14　gald 描く 169 / 描かない 0　kyle 描く 157 / 描かない 0　kazuto 描く 169 / 描かない 0　mina 描く 121 / 描かない 0
 === appear/appear_pixel_test.js 2d
 結果：OK 74 / NG 0
 === appear/appear_test.js（v9.6 の描き足し vector）
@@ -24,15 +24,9 @@ v9.8 の確かめ 2026-11-13 19:24 版 ebbd368197
 === ブラウザ ふつうの手順 スマホ縦（390×664）
 結果 pixel ui phone：OK 39 / NG 0
 === ブラウザ 仲間（リーナ・ガルド）開発用の切り替え 3d
-  NG  gald［重鎧＋こん棒＋兜（部品のない品。v9.8.9 から槍は描くので、こん棒に替えた）］装備 {"armor":"iron_armor","head":"iron_helm"} → 部品：base_plain armor_shape_f／描かない：head:iron_helm（head_helm の部品がない→描かない）
-  NG  gald：部品のない品は部位ごと（club・iron_helm は描かない。鎧は着替える：base_plain armor_shape_f）
-結果 pixel comp 3d：OK 40 / NG 2
-（終了コード 1）
+結果 pixel comp 3d：OK 42 / NG 0
 === ブラウザ 仲間（リーナ・ガルド）開発用の切り替え 2d
-  NG  gald［重鎧＋こん棒＋兜（部品のない品。v9.8.9 から槍は描くので、こん棒に替えた）］装備 {"armor":"iron_armor","head":"iron_helm"} → 部品：base_plain armor_shape_f／描かない：head:iron_helm（head_helm の部品がない→描かない）
-  NG  gald：部品のない品は部位ごと（club・iron_helm は描かない。鎧は着替える：base_plain armor_shape_f）
-結果 pixel comp 2d：OK 40 / NG 2
-（終了コード 1）
+結果 pixel comp 2d：OK 42 / NG 0
 === ブラウザ 仲間 ふつうの手順（装備メニューで確定・解除・キャンセル → 戦闘 → 勝利 → メニュー）PC
   OK  ［装備なし（加入したまま）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［装備なし（加入したまま）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
@@ -42,7 +36,7 @@ v9.8 の確かめ 2026-11-13 19:24 版 ebbd368197
   OK  ［リーナ：＋革の帽子／ガルド：斧→剣＋盾］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 334px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 331px）
 結果 pixel ui comp pc：OK 70 / NG 0
 === ブラウザ 仲間 ふつうの手順 スマホ縦（390×664）
   OK  ［装備なし（加入したまま）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
@@ -53,7 +47,7 @@ v9.8 の確かめ 2026-11-13 19:24 版 ebbd368197
   OK  ［リーナ：＋革の帽子／ガルド：斧→剣＋盾］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜301px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 320px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜304px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 323px）
 結果 pixel ui comp phone：OK 70 / NG 0
 === ブラウザ 仲間 そうび画面（上の立ち絵・品の一覧の試着の枠）PC
 結果 pixel ui comp equip pc：OK 5 / NG 0
@@ -74,7 +68,7 @@ v9.8 の確かめ 2026-11-13 19:24 版 ebbd368197
   OK  ［武器をはずす（2 人とも）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 321px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 325px）
 結果 pixel ui knight pc：OK 86 / NG 0
 === ブラウザ v9.8.2 カイル・カズト ふつうの手順 スマホ縦（390×664）
   OK  ［装備なし（加入したまま）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
@@ -87,7 +81,7 @@ v9.8 の確かめ 2026-11-13 19:24 版 ebbd368197
   OK  ［武器をはずす（2 人とも）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜305px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 325px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜304px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 319px）
 結果 pixel ui knight phone：OK 86 / NG 0
 === ブラウザ v9.8.2 カイル・カズト そうび画面 PC
 結果 pixel ui knight equip pc：OK 5 / NG 0
@@ -95,8 +89,8 @@ v9.8 の確かめ 2026-11-13 19:24 版 ebbd368197
 結果 pixel ui knight equip phone：OK 5 / NG 0
 === ブラウザ v9.8.4 結果の窓：4 人編成・複数人のレベルアップ PC
   OK  ［2 人がレベルアップ（主人公・リーナ）］詳しい結果の窓（rw-panel result-victory rs-top rs-detail）。仲間の行 4・レベルアップ 2 人
-  OK  ［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more）。仲間の行 4・レベルアップ 4 人
-結果 result4 pc：OK 18 / NG 0
+  OK  ［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail）。仲間の行 4・レベルアップ 4 人
+結果 result4 pc：OK 14 / NG 0
 === ブラウザ v9.8.4 結果の窓：4 人編成・複数人のレベルアップ スマホ縦
   OK  ［2 人がレベルアップ（主人公・リーナ）］詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more）。仲間の行 4・レベルアップ 2 人
   OK  ［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more）。仲間の行 4・レベルアップ 4 人
@@ -156,11 +150,15 @@ v9.8 の確かめ 2026-11-13 19:24 版 ebbd368197
   OK  ［魔法使い：杖をはずす（装備なし）］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
 結果 pixel ui mage phone：OK 44 / NG 0
 === ブラウザ v9.8.9 全員の職業・装備ID の調べ（docs/appear/pixel/SURVEY_ALL.md）
-結果 survey all：hero 描く 272/足りない 9/仕様 105・服 21/21　lina 描く 203/足りない 78/仕様 105・服 21/21　kyle 描く 269/足りない 12/仕様 105・服 21/21　mina 描く 194/足りない 87/仕様 105・服 21/21　seris 描く 0/足りない 281/仕様 105・服 0/21　gald 描く 250/足りない 31/仕様 105・服 21/21　lucia 描く 0/足りない 281/仕様 105・服 0/21　elna 描く 0/足りない 281/仕様 105・服 0/21　nagi 描く 0/足りない 281/仕様 105・服 0/21　iris 描く 0/足りない 281/仕様 105・服 0/21　sophia 描く 0/足りない 281/仕様 105・服 0/21　io 描く 0/足りない 281/仕様 105・服 0/21　ganes 描く 0/足りない 281/仕様 105・服 0/21　aster 描く 0/足りない 281/仕様 105・服 0/21　ord 描く 0/足りない 281/仕様 105・服 0/21　kazuto 描く 269/足りない 12/仕様 105・服 21/21　mochipoyo 描く 0/足りない 281/仕様 105・服 0/21
+結果 survey all：hero 描く 287/足りない 0/仕様 99・服 21/21　lina 描く 287/足りない 0/仕様 99・服 21/21　kyle 描く 287/足りない 0/仕様 99・服 21/21　mina 描く 287/足りない 0/仕様 99・服 21/21　seris 描く 287/足りない 0/仕様 99・服 21/21　gald 描く 287/足りない 0/仕様 99・服 21/21　lucia 描く 287/足りない 0/仕様 99・服 21/21　elna 描く 287/足りない 0/仕様 99・服 21/21　nagi 描く 287/足りない 0/仕様 99・服 21/21　iris 描く 287/足りない 0/仕様 99・服 21/21　sophia 描く 287/足りない 0/仕様 99・服 21/21　io 描く 287/足りない 0/仕様 99・服 21/21　ganes 描く 287/足りない 0/仕様 99・服 21/21　aster 描く 287/足りない 0/仕様 99・服 21/21　ord 描く 287/足りない 0/仕様 99・服 21/21　kazuto 描く 287/足りない 0/仕様 99・服 21/21　mochipoyo 描く 287/足りない 0/仕様 99・服 21/21
 === ブラウザ v9.8.9 仲間（カイル）の職業の服・装備（試着・確定・プレビュー・転職・ローブ・杖の着脱・キャンセル・以前の版のセーブ）PC
-結果 pixel ui party pc：OK 31 / NG 0
+結果 pixel ui party kyle pc：OK 31 / NG 0
 === ブラウザ v9.8.9 仲間（カイル）スマホ縦（390×664）
-結果 pixel ui party phone：OK 31 / NG 0
+結果 pixel ui party kyle phone：OK 31 / NG 0
+=== ブラウザ v9.9 仲間（セリス：素体・帽子・兜・盾・重鎧、転職の持ち越し／外れる・試着・着脱・キャンセル・以前の版のセーブ）PC
+結果 pixel ui party seris pc：OK 30 / NG 0
+=== ブラウザ v9.9 仲間（セリス）スマホ縦（390×664）
+結果 pixel ui party seris phone：OK 30 / NG 0
 === ブラウザ 別のサイト pixel 3d cors
 結果 xorigin pixel 3d cors：OK 5 / NG 0
 === ブラウザ 別のサイト pixel 3d nocors
@@ -169,6 +167,8 @@ v9.8 の確かめ 2026-11-13 19:24 版 ebbd368197
 結果 xorigin pixel 2d cors：OK 4 / NG 0
 === ブラウザ 別のサイト pixel 2d nocors
 結果 xorigin pixel 2d nocors：OK 4 / NG 0
+=== ブラウザ 別のサイト vector 3d cors
+=== 続き 2026-11-14 00:34 版 df0a3e15a1（一式の作業の時間の上限で止まったため、「ブラウザ 別のサイト vector 3d cors」から続けた）
 === ブラウザ 別のサイト vector 3d cors
 結果 xorigin vector 3d cors：OK 5 / NG 0
 === ブラウザ vector 2d pc（v9.6 の確かめ）
@@ -199,22 +199,21 @@ compare_mina_pc.jpg (2056, 3204)
 compare_mina_phone.jpg (2328, 2104)
 pixel_comp_sets_mina.jpg (3764, 2228)
 compare_herojob_pc.jpg (1976, 4440)
-compare_herojob_phone.jpg (2272, 2900)
-compare_mage_pc.jpg (1976, 3204)
+compare_herojob_phone.jpg (2270, 2900)
+compare_mage_pc.jpg (1980, 3204)
 compare_mage_phone.jpg (2272, 2104)
-lineup_mage_pc_css.png (1135, 440)
-lineup_mage_pc_x2.png (1520, 746)
+lineup_mage_pc_css.png (1135, 441)
+lineup_mage_pc_x2.png (1520, 747)
 lineup_mage_phone_css.png (1135, 378)
-lineup_mage_phone_x2.png (1520, 623)
+lineup_mage_phone_x2.png (1520, 624)
 pixel_comp_sets_hero.jpg (8270, 1824)
-lineup_party_pc_css.png (1460, 409)
-jobs_scaled_pc.png (3388, 1917)
-lineup_party_phone_css.png (1460, 343)
-jobs_scaled_phone.png (2569, 1451)
+lineup_party_pc_css.png (2414, 410)
+jobs_scaled_pc.png (3640, 5626)
+cmp3_pc.png (1252, 1199)
+all17_pc.png (1122, 6025)
+lineup_party_phone_css.png (2414, 343)
+jobs_scaled_phone.png (2758, 4233)
+cmp3_phone.png (1049, 911)
+all17_phone.png (870, 4530)
 --- まとめ
-NG・失敗の行：6
-=== 動かし直し 2026-11-13 21:17：開発用の切り替え（リーナ・ガルド）。ガルドの「部品のない品」の例を、戦士が装備できない こん棒 から 兜だけ に直した（v9.8.9 で戦士の武器はどれも描くため）
-=== ブラウザ 仲間（リーナ・ガルド）開発用の切り替え 3d（動かし直し）
-結果 pixel comp 3d：OK 42 / NG 0
-=== ブラウザ 仲間（リーナ・ガルド）開発用の切り替え 2d（動かし直し）
-結果 pixel comp 2d：OK 42 / NG 0
+NG・失敗の行：0

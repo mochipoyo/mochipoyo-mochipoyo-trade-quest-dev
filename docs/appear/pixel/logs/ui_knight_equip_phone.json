@@ -6,7 +6,7 @@
  "steps": [
   {
    "ok": true,
-   "m": "カイル：そうび画面の上の立ち絵に合成（base_plain armor_shape_f・{\"w\":69.8,\"h\":84}）"
+   "m": "カイル：そうび画面の上の立ち絵に合成（base_plain armor_shape_f・{\"w\":68.5,\"h\":84}）"
   },
   {
    "ok": true,
@@ -14,7 +14,7 @@
   },
   {
    "ok": true,
-   "m": "カズト：そうび画面の上の立ち絵に合成（base_plain armor_shape_f・{\"w\":81.7,\"h\":84}）"
+   "m": "カズト：そうび画面の上の立ち絵に合成（base_plain armor_shape_f・{\"w\":74,\"h\":84}）"
   },
   {
    "ok": true,
@@ -31,7 +31,7 @@
     "parts": "base_plain armor_shape_f",
     "state": "ok",
     "rect": {
-     "w": 69.8,
+     "w": 68.5,
      "h": 84
     }
    },
@@ -58,7 +58,7 @@
     "parts": "base_plain armor_shape_f",
     "state": "ok",
     "rect": {
-     "w": 81.7,
+     "w": 74,
      "h": 84
     }
    },

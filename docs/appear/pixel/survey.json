@@ -1217,8 +1217,8 @@
     "slot": "shield",
     "shape": "shield:shield",
     "cls": "shield",
-    "drawn": 0,
-    "not": 27,
+    "drawn": 27,
+    "not": 0,
     "items": [
      "wooden_shield",
      "iron_shield",
@@ -1339,9 +1339,9 @@
    {
     "slot": "head",
     "shape": "head:hat/feather",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_cap",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "feather_hat"
     ],
@@ -1361,8 +1361,8 @@
     "slot": "head",
     "shape": "head:hat/witch",
     "cls": "head_hat",
-    "drawn": 0,
-    "not": 3,
+    "drawn": 3,
+    "not": 0,
     "items": [
      "wizard_hat",
      "arcane_hat",
@@ -1398,9 +1398,9 @@
    {
     "slot": "head",
     "shape": "head:hat/turban",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_cap",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "sand_turban"
     ],
@@ -1418,9 +1418,9 @@
    {
     "slot": "head",
     "shape": "head:hat/hood",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_cap",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "icecrystal_hood"
     ],
@@ -1429,9 +1429,9 @@
    {
     "slot": "head",
     "shape": "head:hat/crown",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_circlet",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "bu_memory_keeper_helm"
     ],
@@ -1440,9 +1440,9 @@
    {
     "slot": "head",
     "shape": "head:hat/bicorne",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_cap",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "bu_gull_admiral_hat"
     ],
@@ -1451,9 +1451,9 @@
    {
     "slot": "head",
     "shape": "head:hat/circlet",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_circlet",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "bu_control_seal_circlet"
     ],
@@ -2057,8 +2057,8 @@
     "slot": "head",
     "shape": "head:helm",
     "cls": "head_helm",
-    "drawn": 0,
-    "not": 19,
+    "drawn": 19,
+    "not": 0,
     "items": [
      "iron_helm",
      "knight_helm",
@@ -3873,8 +3873,8 @@
     "slot": "head",
     "shape": "head:hat/cap",
     "cls": "head_cap",
-    "drawn": 0,
-    "not": 9,
+    "drawn": 9,
+    "not": 0,
     "items": [
      "leather_cap",
      "hilo_hat",
@@ -3900,9 +3900,9 @@
    {
     "slot": "head",
     "shape": "head:hat/feather",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_cap",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "feather_hat"
     ],
@@ -3922,8 +3922,8 @@
     "slot": "head",
     "shape": "head:hat/witch",
     "cls": "head_hat",
-    "drawn": 0,
-    "not": 3,
+    "drawn": 3,
+    "not": 0,
     "items": [
      "wizard_hat",
      "arcane_hat",
@@ -3959,9 +3959,9 @@
    {
     "slot": "head",
     "shape": "head:hat/turban",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_cap",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "sand_turban"
     ],
@@ -3979,9 +3979,9 @@
    {
     "slot": "head",
     "shape": "head:hat/hood",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_cap",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "icecrystal_hood"
     ],
@@ -3990,9 +3990,9 @@
    {
     "slot": "head",
     "shape": "head:hat/crown",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_circlet",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "bu_memory_keeper_helm"
     ],
@@ -4001,9 +4001,9 @@
    {
     "slot": "head",
     "shape": "head:hat/bicorne",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_cap",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "bu_gull_admiral_hat"
     ],
@@ -4012,9 +4012,9 @@
    {
     "slot": "head",
     "shape": "head:hat/circlet",
-    "cls": null,
-    "drawn": 0,
-    "not": 1,
+    "cls": "head_circlet",
+    "drawn": 1,
+    "not": 0,
     "items": [
      "bu_control_seal_circlet"
     ],

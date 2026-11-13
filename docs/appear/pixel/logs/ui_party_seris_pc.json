@@ -232,7 +232,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -252,7 +252,7 @@
      "sprite": "seris",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/seris/back.png?v=2e567034bc",
      "pd": "ok",
-     "ea": "[\"seris\",\"mage\",\"px:v9.8.9\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "ea": "[\"seris\",\"mage\",\"px:v9.9\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -278,14 +278,14 @@
      }
     },
     "px": {
-     "sig": "[\"seris\",\"mage\",\"px:v9.8.9\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "sig": "[\"seris\",\"mage\",\"px:v9.9\",\"back\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
      "parts": "base_plain jf_cloth_t own_hat_t weapon_staff_t weapon_staff_f hand",
      "st": "ok"
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 378.7,
+      "x": 377.4,
       "y": 348.1,
       "w": 100.3,
       "h": 121.2
@@ -309,7 +309,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -329,7 +329,7 @@
       "sprite": "seris",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/seris/front.png?v=47e54e88f8",
       "pd": "ok",
-      "ea": "[\"seris\",\"mage\",\"px:v9.8.9\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+      "ea": "[\"seris\",\"mage\",\"px:v9.9\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -341,20 +341,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 382.6,
-      "y": 336.3,
+      "x": 386.5,
+      "y": 340.2,
       "w": 89.9,
-      "h": 121.2
+      "h": 119.9
      },
      "seris": {
-      "x": 492.1,
-      "y": 331.1,
+      "x": 496,
+      "y": 335,
       "w": 106.9,
       "h": 126.4
      }
     },
     "vpx": {
-     "sig": "[\"seris\",\"mage\",\"px:v9.8.9\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
+     "sig": "[\"seris\",\"mage\",\"px:v9.9\",\"front\",[\"oak_staff\",\"robe\",\"wizard_hat\"]]",
      "parts": "base_plain jf_cloth_t own_hat_t weapon_staff_t weapon_staff_f hand",
      "st": "ok"
     },
@@ -372,10 +372,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 336,
+      "fullTop": 332,
       "rect": {
-       "x": 385,
-       "y": 336,
+       "x": 388,
+       "y": 332,
        "w": 90,
        "h": 121
       }
@@ -384,10 +384,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 326,
       "rect": {
-       "x": 495,
-       "y": 332,
+       "x": 497,
+       "y": 327,
        "w": 107,
        "h": 126
       }
@@ -408,15 +408,15 @@
     },
     "vrects2": {
      "hero": {
-      "x": 410,
-      "y": 340.2,
-      "w": 88.6,
+      "x": 417.8,
+      "y": 341.5,
+      "w": 87.3,
       "h": 119.9
      },
      "seris": {
-      "x": 519.4,
-      "y": 335,
-      "w": 106.9,
+      "x": 525.9,
+      "y": 336.3,
+      "w": 108.2,
       "h": 125.1
      }
     },
@@ -621,7 +621,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -641,7 +641,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/seris/back.png?v=2e567034bc",
      "pd": "ok",
-     "ea": "[\"seris\",\"warrior\",\"px:v9.8.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"seris\",\"warrior\",\"px:v9.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -667,7 +667,7 @@
      }
     },
     "px": {
-     "sig": "[\"seris\",\"warrior\",\"px:v9.8.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "sig": "[\"seris\",\"warrior\",\"px:v9.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "parts": "base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand",
      "st": "ok"
     },
@@ -698,7 +698,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -718,7 +718,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/seris/front.png?v=47e54e88f8",
       "pd": "ok",
-      "ea": "[\"seris\",\"warrior\",\"px:v9.8.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+      "ea": "[\"seris\",\"warrior\",\"px:v9.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -730,20 +730,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 385.2,
+      "x": 389.1,
       "y": 337.6,
       "w": 89.9,
       "h": 121.2
      },
      "seris": {
-      "x": 494.7,
+      "x": 498.6,
       "y": 332.4,
       "w": 106.9,
       "h": 126.4
      }
     },
     "vpx": {
-     "sig": "[\"seris\",\"warrior\",\"px:v9.8.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "sig": "[\"seris\",\"warrior\",\"px:v9.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "parts": "base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand",
      "st": "ok"
     },
@@ -761,24 +761,24 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 340,
       "rect": {
-       "x": 387,
-       "y": 334,
-       "w": 90,
-       "h": 121
+       "x": 392,
+       "y": 340,
+       "w": 89,
+       "h": 120
       }
      },
      "seris": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 329,
+      "fullTop": 335,
       "rect": {
-       "x": 496,
-       "y": 329,
+       "x": 501,
+       "y": 335,
        "w": 107,
-       "h": 126
+       "h": 125
       }
      }
     },
@@ -797,13 +797,13 @@
     },
     "vrects2": {
      "hero": {
-      "x": 413.9,
+      "x": 419.1,
       "y": 341.5,
-      "w": 88.6,
+      "w": 87.3,
       "h": 119.9
      },
      "seris": {
-      "x": 523.3,
+      "x": 527.2,
       "y": 336.3,
       "w": 108.2,
       "h": 125.1
@@ -1010,7 +1010,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1030,7 +1030,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/seris/back.png?v=2e567034bc",
      "pd": "ok",
-     "ea": "[\"seris\",\"warrior\",\"px:v9.8.9\",\"back\",[\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"seris\",\"warrior\",\"px:v9.9\",\"back\",[\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1056,7 +1056,7 @@
      }
     },
     "px": {
-     "sig": "[\"seris\",\"warrior\",\"px:v9.8.9\",\"back\",[\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "sig": "[\"seris\",\"warrior\",\"px:v9.9\",\"back\",[\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "parts": "base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf",
      "st": "ok"
     },
@@ -1069,7 +1069,7 @@
       "h": 121.2
      },
      "seris": {
-      "x": 486.8,
+      "x": 485.5,
       "y": 345.4,
       "w": 118.6,
       "h": 125.1
@@ -1087,7 +1087,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.8.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1107,7 +1107,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/seris/front.png?v=47e54e88f8",
       "pd": "ok",
-      "ea": "[\"seris\",\"warrior\",\"px:v9.8.9\",\"front\",[\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+      "ea": "[\"seris\",\"warrior\",\"px:v9.9\",\"front\",[\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1119,20 +1119,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 382.6,
-      "y": 336.3,
+      "x": 385.2,
+      "y": 340.2,
       "w": 89.9,
-      "h": 121.2
+      "h": 119.9
      },
      "seris": {
-      "x": 490.8,
-      "y": 331.1,
+      "x": 494.7,
+      "y": 335,
       "w": 106.9,
       "h": 126.4
      }
     },
     "vpx": {
-     "sig": "[\"seris\",\"warrior\",\"px:v9.8.9\",\"front\",[\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "sig": "[\"seris\",\"warrior\",\"px:v9.9\",\"front\",[\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "parts": "base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf",
      "st": "ok"
     },
@@ -1150,10 +1150,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 332,
+      "fullTop": 331,
       "rect": {
-       "x": 383,
-       "y": 332,
+       "x": 387,
+       "y": 331,
        "w": 90,
        "h": 121
       }
@@ -1162,10 +1162,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 349,
+      "fullTop": 348,
       "rect": {
-       "x": 493,
-       "y": 327,
+       "x": 496,
+       "y": 326,
        "w": 107,
        "h": 126
       }
@@ -1186,15 +1186,15 @@
     },
     "vrects2": {
      "hero": {
-      "x": 410,
+      "x": 412.6,
       "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "seris": {
-      "x": 518.1,
+      "x": 520.7,
       "y": 335,
-      "w": 106.9,
+      "w": 108.2,
       "h": 125.1
      }
     },
