@@ -117,6 +117,10 @@ FAMILIES = {
     # マント：今までの長いマントと旅装の形のまま、配色だけ
     '_cape': {'z': 5, 'layers': [{'part': 'jf_cape_t', 'tint': 'pal2', 'region': 'cape'}, {'part': 'jf_cloth_t', 'tint': 'main', 'region': 'body'}]},
 }
+# v9.9 似た職業を輪郭で見分ける：騎士の系統は肩当て（jf_pl）、軽装の系統は肩の短いマント（jf_mt）。部品は companion_jobs.py（gear_kit）が作る
+FAMILIES['_knight'] = {'z': 5, 'layers': FAMILIES['_cape']['layers'] + [{'part': 'jf_pl_t', 'tint': 'pal2', 'optional': True, 'region': 'shoulder'}, {'part': 'jf_pl_f', 'optional': True, 'region': 'shoulder'}]}
+FAMILIES['_mantle'] = {'z': 5, 'layers': FAMILIES['_cape']['layers'] + [{'part': 'jf_mt_t', 'tint': 'pal2', 'optional': True, 'region': 'shoulder'}, {'part': 'jf_mt_f', 'optional': True, 'region': 'shoulder'}]}
+FAM_OF = {'knight': '_knight', 'oath_knight': '_knight', 'magicknight': '_knight', 'waveblade': '_mantle', 'monk': '_mantle', 'navigator': '_mantle', 'surveyor': '_mantle'}
 JOB_LOOKS = {
     # ローブの系統
     'mage': ('_robe', pal('#4f2a78', '#2a1545', '#a283cf'), pal('#5c3468', '#28122e', '#7e5290')),
@@ -145,7 +149,7 @@ JOB_LOOKS = {
 def jobs_table(existing):
     """actor.json の jobs：系統（_robe・_coat・_cape）と、職業ごとの { like, pal, pal2 }。狩人・盗賊（v9.8.6 の手描きの服）はそのまま"""
     J = dict(existing); J.update(FAMILIES)
-    for j, (fam, p1, p2) in JOB_LOOKS.items(): J[j] = {'like': fam, 'pal': p1, 'pal2': p2}
+    for j, (fam, p1, p2) in JOB_LOOKS.items(): J[j] = {'like': FAM_OF.get(j, fam), 'pal': p1, 'pal2': p2}
     return J
 
 

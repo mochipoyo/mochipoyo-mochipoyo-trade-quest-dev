@@ -10,37 +10,99 @@
     }
    ]
   },
-  "weapon_axe": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
+  "head_helm": {
+   "z": 20,
+   "base": "base_helm",
    "layers": [
     {
-     "part": "weapon_axe"
-    }
-   ]
-  },
-  "weapon_spear": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
-   "layers": [
-    {
-     "part": "weapon_spear"
-    }
-   ]
-  },
-  "weapon_staff": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
-   "layers": [
-    {
-     "part": "weapon_staff_t",
-     "tint": "orb"
+     "part": "head_helm_t",
+     "tint": "main",
+     "grayRef": "plate"
     },
     {
-     "part": "weapon_staff_f"
+     "part": "head_helm_f"
+    }
+   ],
+   "generated": true
+  },
+  "head_hat": {
+   "z": 20,
+   "base": "base_hat",
+   "layers": [
+    {
+     "part": "head_hat_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_hat_f"
+    }
+   ],
+   "generated": true
+  },
+  "head_cap": {
+   "z": 20,
+   "base": "base_cap",
+   "layers": [
+    {
+     "part": "head_cap_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_cap_f",
+     "optional": true
+    }
+   ],
+   "generated": true
+  },
+  "head_circlet": {
+   "z": 21,
+   "layers": [
+    {
+     "part": "head_circlet_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_circlet_f"
+    }
+   ],
+   "generated": true
+  },
+  "shield": {
+   "z": 30,
+   "generated": true,
+   "layers": [
+    {
+     "part": "shield_gt",
+     "tint": "main",
+     "grayRef": "iron"
+    },
+    {
+     "part": "shield_gf"
+    }
+   ]
+  },
+  "armor_heavy": {
+   "z": 10,
+   "covers": [
+    "body",
+    "shoulder"
+   ],
+   "generated": true,
+   "layers": [
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "grayRef": "plate"
+    },
+    {
+     "part": "hv_pl_t",
+     "tint": "main",
+     "grayRef": "plate",
+     "optional": true
+    },
+    {
+     "part": "hv_pl_f",
+     "optional": true
     }
    ]
   },
@@ -172,27 +234,6 @@
      "w": 28,
      "h": 128
     },
-    "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/mina/menu/jf_cloth_t.png?v=c38a326c",
-     "x": 27,
-     "y": 125,
-     "w": 145,
-     "h": 139
-    },
-    "jf_skirt_t": {
-     "url": "assets/characters/equip-pixels/mina/menu/jf_skirt_t.png?v=6b958804",
-     "x": 41,
-     "y": 172,
-     "w": 102,
-     "h": 65
-    },
-    "jf_skirt_f": {
-     "url": "assets/characters/equip-pixels/mina/menu/jf_skirt_f.png?v=c6b66e05",
-     "x": 39,
-     "y": 174,
-     "w": 106,
-     "h": 67
-    },
     "weapon_axe": {
      "url": "assets/characters/equip-pixels/mina/menu/weapon_axe.png?v=03efbbe1",
      "x": 135,
@@ -220,6 +261,160 @@
      "y": 0,
      "w": 27,
      "h": 265
+    },
+    "jf_cloth_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_cloth_t.png?v=c38a326c",
+     "x": 27,
+     "y": 125,
+     "w": 145,
+     "h": 139
+    },
+    "jf_skirt_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_skirt_t.png?v=6b958804",
+     "x": 41,
+     "y": 172,
+     "w": 102,
+     "h": 65
+    },
+    "jf_skirt_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_skirt_f.png?v=c6b66e05",
+     "x": 39,
+     "y": 174,
+     "w": 106,
+     "h": 67
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/mina/menu/base_helm.png?v=58a8de0e",
+     "x": 1,
+     "y": 2,
+     "w": 193,
+     "h": 264
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_helm_t.png?v=493d6ac6",
+     "x": 47,
+     "y": 25,
+     "w": 76,
+     "h": 89
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_helm_f.png?v=bb195630",
+     "x": 46,
+     "y": 24,
+     "w": 79,
+     "h": 91
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/mina/menu/base_cap.png?v=865cdc73",
+     "x": 1,
+     "y": 2,
+     "w": 193,
+     "h": 264
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_cap_t.png?v=b790ea6f",
+     "x": 48,
+     "y": 23,
+     "w": 75,
+     "h": 53
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_cap_f.png?v=c3cf8c6a",
+     "x": 47,
+     "y": 22,
+     "w": 77,
+     "h": 55
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_circlet_t.png?v=482fb5fc",
+     "x": 48,
+     "y": 64,
+     "w": 75,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_circlet_f.png?v=bc9bd546",
+     "x": 47,
+     "y": 63,
+     "w": 77,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/mina/menu/base_hat.png?v=5aa533ff",
+     "x": 1,
+     "y": 2,
+     "w": 193,
+     "h": 264
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_pl_t.png?v=d9b5c755",
+     "x": 50,
+     "y": 111,
+     "w": 87,
+     "h": 25
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_pl_f.png?v=0aa59c1e",
+     "x": 49,
+     "y": 110,
+     "w": 89,
+     "h": 27
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_mt_t.png?v=38973879",
+     "x": 32,
+     "y": 112,
+     "w": 121,
+     "h": 35
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_mt_f.png?v=84e8cd1c",
+     "x": 31,
+     "y": 113,
+     "w": 123,
+     "h": 35
+    },
+    "shield_gt": {
+     "url": "assets/characters/equip-pixels/mina/menu/shield_gt.png?v=b2e4bc5e",
+     "x": 5,
+     "y": 118,
+     "w": 51,
+     "h": 65
+    },
+    "shield_gf": {
+     "url": "assets/characters/equip-pixels/mina/menu/shield_gf.png?v=68c855a0",
+     "x": 1,
+     "y": 114,
+     "w": 59,
+     "h": 73
+    },
+    "hv_pl_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/hv_pl_t.png?v=d9b5c755",
+     "x": 50,
+     "y": 111,
+     "w": 87,
+     "h": 25
+    },
+    "hv_pl_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/hv_pl_f.png?v=0aa59c1e",
+     "x": 49,
+     "y": 110,
+     "w": 89,
+     "h": 27
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_hat_t.png?v=59eade9f",
+     "x": 33,
+     "y": 14,
+     "w": 105,
+     "h": 67
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_hat_f.png?v=dc08109f",
+     "x": 32,
+     "y": 13,
+     "w": 107,
+     "h": 69
     }
    }
   },
@@ -285,27 +480,6 @@
      "w": 28,
      "h": 128
     },
-    "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/mina/menu/jf_cloth_t.png?v=c38a326c",
-     "x": 89,
-     "y": 161,
-     "w": 145,
-     "h": 139
-    },
-    "jf_skirt_t": {
-     "url": "assets/characters/equip-pixels/mina/menu/jf_skirt_t.png?v=6b958804",
-     "x": 103,
-     "y": 208,
-     "w": 102,
-     "h": 65
-    },
-    "jf_skirt_f": {
-     "url": "assets/characters/equip-pixels/mina/menu/jf_skirt_f.png?v=c6b66e05",
-     "x": 101,
-     "y": 210,
-     "w": 106,
-     "h": 67
-    },
     "weapon_axe": {
      "url": "assets/characters/equip-pixels/mina/menu/weapon_axe.png?v=03efbbe1",
      "x": 197,
@@ -333,6 +507,160 @@
      "y": 36,
      "w": 27,
      "h": 265
+    },
+    "jf_cloth_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_cloth_t.png?v=c38a326c",
+     "x": 89,
+     "y": 161,
+     "w": 145,
+     "h": 139
+    },
+    "jf_skirt_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_skirt_t.png?v=6b958804",
+     "x": 103,
+     "y": 208,
+     "w": 102,
+     "h": 65
+    },
+    "jf_skirt_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_skirt_f.png?v=c6b66e05",
+     "x": 101,
+     "y": 210,
+     "w": 106,
+     "h": 67
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/mina/menu/base_helm.png?v=58a8de0e",
+     "x": 63,
+     "y": 38,
+     "w": 193,
+     "h": 264
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_helm_t.png?v=493d6ac6",
+     "x": 109,
+     "y": 61,
+     "w": 76,
+     "h": 89
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_helm_f.png?v=bb195630",
+     "x": 108,
+     "y": 60,
+     "w": 79,
+     "h": 91
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/mina/menu/base_cap.png?v=865cdc73",
+     "x": 63,
+     "y": 38,
+     "w": 193,
+     "h": 264
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_cap_t.png?v=b790ea6f",
+     "x": 110,
+     "y": 59,
+     "w": 75,
+     "h": 53
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_cap_f.png?v=c3cf8c6a",
+     "x": 109,
+     "y": 58,
+     "w": 77,
+     "h": 55
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_circlet_t.png?v=482fb5fc",
+     "x": 110,
+     "y": 100,
+     "w": 75,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_circlet_f.png?v=bc9bd546",
+     "x": 109,
+     "y": 99,
+     "w": 77,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/mina/menu/base_hat.png?v=5aa533ff",
+     "x": 63,
+     "y": 38,
+     "w": 193,
+     "h": 264
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_pl_t.png?v=d9b5c755",
+     "x": 112,
+     "y": 147,
+     "w": 87,
+     "h": 25
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_pl_f.png?v=0aa59c1e",
+     "x": 111,
+     "y": 146,
+     "w": 89,
+     "h": 27
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_mt_t.png?v=38973879",
+     "x": 94,
+     "y": 148,
+     "w": 121,
+     "h": 35
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/jf_mt_f.png?v=84e8cd1c",
+     "x": 93,
+     "y": 149,
+     "w": 123,
+     "h": 35
+    },
+    "shield_gt": {
+     "url": "assets/characters/equip-pixels/mina/menu/shield_gt.png?v=b2e4bc5e",
+     "x": 67,
+     "y": 154,
+     "w": 51,
+     "h": 65
+    },
+    "shield_gf": {
+     "url": "assets/characters/equip-pixels/mina/menu/shield_gf.png?v=68c855a0",
+     "x": 63,
+     "y": 150,
+     "w": 59,
+     "h": 73
+    },
+    "hv_pl_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/hv_pl_t.png?v=d9b5c755",
+     "x": 112,
+     "y": 147,
+     "w": 87,
+     "h": 25
+    },
+    "hv_pl_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/hv_pl_f.png?v=0aa59c1e",
+     "x": 111,
+     "y": 146,
+     "w": 89,
+     "h": 27
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_hat_t.png?v=59eade9f",
+     "x": 95,
+     "y": 50,
+     "w": 105,
+     "h": 67
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/mina/menu/head_hat_f.png?v=dc08109f",
+     "x": 94,
+     "y": 49,
+     "w": 107,
+     "h": 69
     }
    }
   },
@@ -403,27 +731,6 @@
      "w": 27,
      "h": 128
     },
-    "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/mina/back/jf_cloth_t.png?v=c16e53dc",
-     "x": 85,
-     "y": 170,
-     "w": 147,
-     "h": 133
-    },
-    "jf_skirt_t": {
-     "url": "assets/characters/equip-pixels/mina/back/jf_skirt_t.png?v=407360cc",
-     "x": 111,
-     "y": 222,
-     "w": 109,
-     "h": 69
-    },
-    "jf_skirt_f": {
-     "url": "assets/characters/equip-pixels/mina/back/jf_skirt_f.png?v=07fd0f59",
-     "x": 109,
-     "y": 224,
-     "w": 114,
-     "h": 71
-    },
     "weapon_axe": {
      "url": "assets/characters/equip-pixels/mina/back/weapon_axe.png?v=95500fcf",
      "x": 98,
@@ -451,6 +758,160 @@
      "y": 27,
      "w": 27,
      "h": 276
+    },
+    "jf_cloth_t": {
+     "url": "assets/characters/equip-pixels/mina/back/jf_cloth_t.png?v=c16e53dc",
+     "x": 85,
+     "y": 170,
+     "w": 147,
+     "h": 133
+    },
+    "jf_skirt_t": {
+     "url": "assets/characters/equip-pixels/mina/back/jf_skirt_t.png?v=407360cc",
+     "x": 111,
+     "y": 222,
+     "w": 109,
+     "h": 69
+    },
+    "jf_skirt_f": {
+     "url": "assets/characters/equip-pixels/mina/back/jf_skirt_f.png?v=07fd0f59",
+     "x": 109,
+     "y": 224,
+     "w": 114,
+     "h": 71
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/mina/back/base_helm.png?v=5de8db77",
+     "x": 19,
+     "y": 33,
+     "w": 235,
+     "h": 275
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/mina/back/head_helm_t.png?v=134e8461",
+     "x": 105,
+     "y": 52,
+     "w": 90,
+     "h": 76
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/mina/back/head_helm_f.png?v=ff9a68cc",
+     "x": 104,
+     "y": 51,
+     "w": 92,
+     "h": 78
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/mina/back/base_cap.png?v=10085a9d",
+     "x": 19,
+     "y": 33,
+     "w": 235,
+     "h": 275
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/mina/back/head_cap_t.png?v=65454984",
+     "x": 110,
+     "y": 50,
+     "w": 81,
+     "h": 64
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/mina/back/head_cap_f.png?v=8f8b8016",
+     "x": 109,
+     "y": 49,
+     "w": 83,
+     "h": 66
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/mina/back/head_circlet_t.png?v=8b05a3ba",
+     "x": 109,
+     "y": 107,
+     "w": 83,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/mina/back/head_circlet_f.png?v=9e175328",
+     "x": 108,
+     "y": 106,
+     "w": 85,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/mina/back/base_hat.png?v=f0e1e844",
+     "x": 19,
+     "y": 33,
+     "w": 235,
+     "h": 275
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/mina/back/jf_pl_t.png?v=61cdde39",
+     "x": 107,
+     "y": 157,
+     "w": 97,
+     "h": 21
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/mina/back/jf_pl_f.png?v=40373d56",
+     "x": 106,
+     "y": 156,
+     "w": 99,
+     "h": 23
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/mina/back/jf_mt_t.png?v=e6495bf4",
+     "x": 105,
+     "y": 147,
+     "w": 123,
+     "h": 36
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/mina/back/jf_mt_f.png?v=f447d98e",
+     "x": 104,
+     "y": 149,
+     "w": 125,
+     "h": 35
+    },
+    "shield_gt": {
+     "url": "assets/characters/equip-pixels/mina/back/shield_gt.png?v=0f463e43",
+     "x": 211,
+     "y": 175,
+     "w": 35,
+     "h": 66
+    },
+    "shield_gf": {
+     "url": "assets/characters/equip-pixels/mina/back/shield_gf.png?v=34fa0250",
+     "x": 207,
+     "y": 171,
+     "w": 43,
+     "h": 75
+    },
+    "hv_pl_t": {
+     "url": "assets/characters/equip-pixels/mina/back/hv_pl_t.png?v=61cdde39",
+     "x": 107,
+     "y": 157,
+     "w": 97,
+     "h": 21
+    },
+    "hv_pl_f": {
+     "url": "assets/characters/equip-pixels/mina/back/hv_pl_f.png?v=40373d56",
+     "x": 106,
+     "y": 156,
+     "w": 99,
+     "h": 23
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/mina/back/head_hat_t.png?v=dd4d2041",
+     "x": 85,
+     "y": 49,
+     "w": 131,
+     "h": 77
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/mina/back/head_hat_f.png?v=1dd7abb8",
+     "x": 84,
+     "y": 48,
+     "w": 133,
+     "h": 80
     }
    }
   }
@@ -566,6 +1027,60 @@
      "part": "jf_cloth_t",
      "tint": "main",
      "region": "body"
+    }
+   ]
+  },
+  "_knight": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_pl_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "shoulder"
+    },
+    {
+     "part": "jf_pl_f",
+     "optional": true,
+     "region": "shoulder"
+    }
+   ]
+  },
+  "_mantle": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_mt_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "shoulder"
+    },
+    {
+     "part": "jf_mt_f",
+     "optional": true,
+     "region": "shoulder"
     }
    ]
   },
@@ -757,7 +1272,7 @@
    }
   },
   "knight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#b8bcc8",
     "dark": "#5a5e6a",
@@ -774,7 +1289,7 @@
    }
   },
   "oath_knight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#8a8070",
     "dark": "#3e382e",
@@ -791,7 +1306,7 @@
    }
   },
   "magicknight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#3a3a6a",
     "dark": "#1a1a34",
@@ -808,7 +1323,7 @@
    }
   },
   "waveblade": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#2a6a8a",
     "dark": "#103244",
@@ -825,7 +1340,7 @@
    }
   },
   "monk": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#c87a2a",
     "dark": "#6a3a0e",
@@ -842,7 +1357,7 @@
    }
   },
   "navigator": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#2a3a6a",
     "dark": "#121a34",
@@ -859,7 +1374,7 @@
    }
   },
   "surveyor": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#8a6a3a",
     "dark": "#42301a",
@@ -893,7 +1408,7 @@
    }
   },
   "hunter": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#55502a",
     "dark": "#2c2a16",
@@ -909,5 +1424,29 @@
     "acc": "#78bf62"
    }
   }
- }
+ },
+ "generated": [
+  "jf_cloth_t",
+  "jf_skirt_t",
+  "jf_skirt_f",
+  "base_helm",
+  "head_helm_t",
+  "head_helm_f",
+  "base_cap",
+  "head_cap_t",
+  "head_cap_f",
+  "head_circlet_t",
+  "head_circlet_f",
+  "base_hat",
+  "jf_pl_t",
+  "jf_pl_f",
+  "jf_mt_t",
+  "jf_mt_f",
+  "shield_gt",
+  "shield_gf",
+  "hv_pl_t",
+  "hv_pl_f",
+  "head_hat_t",
+  "head_hat_f"
+ ]
 }

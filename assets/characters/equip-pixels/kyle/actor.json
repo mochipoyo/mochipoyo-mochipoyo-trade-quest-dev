@@ -17,49 +17,47 @@
     }
    ]
   },
-  "weapon_dagger": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
+  "head_hat": {
+   "z": 20,
+   "base": "base_hat",
    "layers": [
     {
-     "part": "weapon_dagger"
-    }
-   ]
-  },
-  "weapon_axe": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
-   "layers": [
-    {
-     "part": "weapon_axe"
-    }
-   ]
-  },
-  "weapon_bow": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
-   "layers": [
-    {
-     "part": "weapon_bow"
-    }
-   ]
-  },
-  "weapon_staff": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
-   "layers": [
-    {
-     "part": "weapon_staff_t",
-     "tint": "orb"
+     "part": "head_hat_t",
+     "tint": "main"
     },
     {
-     "part": "weapon_staff_f"
+     "part": "head_hat_f"
     }
-   ]
+   ],
+   "generated": true
+  },
+  "head_cap": {
+   "z": 20,
+   "base": "base_cap",
+   "layers": [
+    {
+     "part": "head_cap_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_cap_f",
+     "optional": true
+    }
+   ],
+   "generated": true
+  },
+  "head_circlet": {
+   "z": 21,
+   "layers": [
+    {
+     "part": "head_circlet_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_circlet_f"
+    }
+   ],
+   "generated": true
   },
   "armor_robe": {
    "z": 10,
@@ -126,7 +124,7 @@
    },
    "frame": {
     "x0": -2,
-    "y0": -2,
+    "y0": -7,
     "x1": 220,
     "y1": 265
    },
@@ -315,6 +313,90 @@
      "y": 91,
      "w": 173,
      "h": 67
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/kyle/menu/base_cap.png?v=21689cfb",
+     "x": 0,
+     "y": 10,
+     "w": 218,
+     "h": 253
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_cap_t.png?v=114179cf",
+     "x": 67,
+     "y": 10,
+     "w": 69,
+     "h": 48
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_cap_f.png?v=5263c9d9",
+     "x": 66,
+     "y": 9,
+     "w": 71,
+     "h": 50
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_circlet_t.png?v=3b95a037",
+     "x": 66,
+     "y": 46,
+     "w": 71,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_circlet_f.png?v=8a22fddf",
+     "x": 65,
+     "y": 45,
+     "w": 73,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/kyle/menu/base_hat.png?v=19a4574c",
+     "x": 0,
+     "y": 4,
+     "w": 218,
+     "h": 259
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_t.png?v=d133890b",
+     "x": 29,
+     "y": 99,
+     "w": 144,
+     "h": 24
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_f.png?v=85c82542",
+     "x": 28,
+     "y": 98,
+     "w": 146,
+     "h": 26
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_mt_t.png?v=2f29b52f",
+     "x": 33,
+     "y": 89,
+     "w": 136,
+     "h": 39
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_mt_f.png?v=f8b85ac4",
+     "x": 32,
+     "y": 90,
+     "w": 138,
+     "h": 39
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_hat_t.png?v=33b38dae",
+     "x": 52,
+     "y": -4,
+     "w": 99,
+     "h": 66
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_hat_f.png?v=fecab34e",
+     "x": 51,
+     "y": -5,
+     "w": 101,
+     "h": 68
     }
    }
   },
@@ -519,6 +601,90 @@
      "y": 130,
      "w": 173,
      "h": 67
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/kyle/menu/base_cap.png?v=21689cfb",
+     "x": 51,
+     "y": 49,
+     "w": 218,
+     "h": 253
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_cap_t.png?v=114179cf",
+     "x": 118,
+     "y": 49,
+     "w": 69,
+     "h": 48
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_cap_f.png?v=5263c9d9",
+     "x": 117,
+     "y": 48,
+     "w": 71,
+     "h": 50
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_circlet_t.png?v=3b95a037",
+     "x": 117,
+     "y": 85,
+     "w": 71,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_circlet_f.png?v=8a22fddf",
+     "x": 116,
+     "y": 84,
+     "w": 73,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/kyle/menu/base_hat.png?v=19a4574c",
+     "x": 51,
+     "y": 43,
+     "w": 218,
+     "h": 259
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_t.png?v=d133890b",
+     "x": 80,
+     "y": 138,
+     "w": 144,
+     "h": 24
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_f.png?v=85c82542",
+     "x": 79,
+     "y": 137,
+     "w": 146,
+     "h": 26
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_mt_t.png?v=2f29b52f",
+     "x": 84,
+     "y": 128,
+     "w": 136,
+     "h": 39
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_mt_f.png?v=f8b85ac4",
+     "x": 83,
+     "y": 129,
+     "w": 138,
+     "h": 39
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_hat_t.png?v=33b38dae",
+     "x": 103,
+     "y": 35,
+     "w": 99,
+     "h": 66
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/kyle/menu/head_hat_f.png?v=fecab34e",
+     "x": 102,
+     "y": 34,
+     "w": 101,
+     "h": 68
     }
    }
   },
@@ -749,6 +915,90 @@
      "y": 127,
      "w": 171,
      "h": 77
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/kyle/back/base_cap.png?v=d9469c75",
+     "x": 39,
+     "y": 30,
+     "w": 252,
+     "h": 276
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/head_cap_t.png?v=dfbb40e6",
+     "x": 122,
+     "y": 52,
+     "w": 77,
+     "h": 50
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/head_cap_f.png?v=2b0f8f2e",
+     "x": 121,
+     "y": 51,
+     "w": 79,
+     "h": 52
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/head_circlet_t.png?v=b8094167",
+     "x": 121,
+     "y": 93,
+     "w": 79,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/head_circlet_f.png?v=f197ec09",
+     "x": 120,
+     "y": 92,
+     "w": 81,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/kyle/back/base_hat.png?v=22f4c3d0",
+     "x": 39,
+     "y": 30,
+     "w": 252,
+     "h": 276
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_pl_t.png?v=3a0e82a7",
+     "x": 82,
+     "y": 126,
+     "w": 156,
+     "h": 26
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_pl_f.png?v=694c28ae",
+     "x": 81,
+     "y": 125,
+     "w": 158,
+     "h": 28
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_mt_t.png?v=3fdbcf76",
+     "x": 86,
+     "y": 115,
+     "w": 149,
+     "h": 43
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/jf_mt_f.png?v=154f8d94",
+     "x": 85,
+     "y": 117,
+     "w": 151,
+     "h": 42
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/kyle/back/head_hat_t.png?v=9eae6ca7",
+     "x": 105,
+     "y": 43,
+     "w": 111,
+     "h": 67
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/kyle/back/head_hat_f.png?v=a628347b",
+     "x": 104,
+     "y": 42,
+     "w": 113,
+     "h": 69
     }
    }
   }
@@ -864,6 +1114,60 @@
      "part": "jf_cloth_t",
      "tint": "main",
      "region": "body"
+    }
+   ]
+  },
+  "_knight": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_pl_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "shoulder"
+    },
+    {
+     "part": "jf_pl_f",
+     "optional": true,
+     "region": "shoulder"
+    }
+   ]
+  },
+  "_mantle": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_mt_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "shoulder"
+    },
+    {
+     "part": "jf_mt_f",
+     "optional": true,
+     "region": "shoulder"
     }
    ]
   },
@@ -1055,7 +1359,7 @@
    }
   },
   "oath_knight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#8a8070",
     "dark": "#3e382e",
@@ -1072,7 +1376,7 @@
    }
   },
   "magicknight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#3a3a6a",
     "dark": "#1a1a34",
@@ -1089,7 +1393,7 @@
    }
   },
   "waveblade": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#2a6a8a",
     "dark": "#103244",
@@ -1106,7 +1410,7 @@
    }
   },
   "monk": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#c87a2a",
     "dark": "#6a3a0e",
@@ -1123,7 +1427,7 @@
    }
   },
   "navigator": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#2a3a6a",
     "dark": "#121a34",
@@ -1140,7 +1444,7 @@
    }
   },
   "surveyor": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#8a6a3a",
     "dark": "#42301a",
@@ -1174,7 +1478,7 @@
    }
   },
   "hunter": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#55502a",
     "dark": "#2c2a16",
@@ -1207,5 +1511,29 @@
     "acc": "#6a62a0"
    }
   }
- }
+ },
+ "generated": [
+  "jf_cloth_t",
+  "jf_cape_t",
+  "jf_capeup_t",
+  "jf_skirt_t",
+  "jf_skirt_f",
+  "jf_sleeve_t",
+  "jf_sleeve_f",
+  "jf_x",
+  "jf_capehem_t",
+  "jf_capehem_f",
+  "base_cap",
+  "head_cap_t",
+  "head_cap_f",
+  "head_circlet_t",
+  "head_circlet_f",
+  "base_hat",
+  "jf_pl_t",
+  "jf_pl_f",
+  "jf_mt_t",
+  "jf_mt_f",
+  "head_hat_t",
+  "head_hat_f"
+ ]
 }

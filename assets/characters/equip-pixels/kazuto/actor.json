@@ -17,39 +17,47 @@
     }
    ]
   },
-  "weapon_dagger": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
+  "head_hat": {
+   "z": 20,
+   "base": "base_hat",
    "layers": [
     {
-     "part": "weapon_dagger"
-    }
-   ]
-  },
-  "weapon_bow": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
-   "layers": [
-    {
-     "part": "weapon_bow"
-    }
-   ]
-  },
-  "weapon_staff": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
-   "layers": [
-    {
-     "part": "weapon_staff_t",
-     "tint": "orb"
+     "part": "head_hat_t",
+     "tint": "main"
     },
     {
-     "part": "weapon_staff_f"
+     "part": "head_hat_f"
     }
-   ]
+   ],
+   "generated": true
+  },
+  "head_cap": {
+   "z": 20,
+   "base": "base_cap",
+   "layers": [
+    {
+     "part": "head_cap_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_cap_f",
+     "optional": true
+    }
+   ],
+   "generated": true
+  },
+  "head_circlet": {
+   "z": 21,
+   "layers": [
+    {
+     "part": "head_circlet_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_circlet_f"
+    }
+   ],
+   "generated": true
   },
   "armor_robe": {
    "z": 10,
@@ -116,7 +124,7 @@
    },
    "frame": {
     "x0": -2,
-    "y0": -2,
+    "y0": -29,
     "x1": 251,
     "y1": 258
    },
@@ -305,6 +313,90 @@
      "y": 69,
      "w": 175,
      "h": 79
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/base_cap.png?v=e2108f64",
+     "x": 28,
+     "y": 1,
+     "w": 215,
+     "h": 257
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_cap_t.png?v=ca7cb4c4",
+     "x": 95,
+     "y": 1,
+     "w": 65,
+     "h": 36
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_cap_f.png?v=a261416b",
+     "x": 94,
+     "y": 0,
+     "w": 67,
+     "h": 38
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_circlet_t.png?v=9cf3a5b7",
+     "x": 95,
+     "y": 24,
+     "w": 65,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_circlet_f.png?v=10decde8",
+     "x": 94,
+     "y": 23,
+     "w": 67,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/base_hat.png?v=7f8ead43",
+     "x": 28,
+     "y": 0,
+     "w": 215,
+     "h": 258
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_t.png?v=4bafbf39",
+     "x": 42,
+     "y": 70,
+     "w": 164,
+     "h": 27
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_f.png?v=c6a840c2",
+     "x": 41,
+     "y": 69,
+     "w": 166,
+     "h": 29
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_mt_t.png?v=587ffd08",
+     "x": 47,
+     "y": 59,
+     "w": 156,
+     "h": 45
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_mt_f.png?v=507fc033",
+     "x": 46,
+     "y": 60,
+     "w": 158,
+     "h": 45
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_hat_t.png?v=67ddd11d",
+     "x": 82,
+     "y": -26,
+     "w": 91,
+     "h": 66
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_hat_f.png?v=a4a029d6",
+     "x": 81,
+     "y": -27,
+     "w": 93,
+     "h": 68
     }
    }
   },
@@ -509,6 +601,90 @@
      "y": 115,
      "w": 175,
      "h": 79
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/base_cap.png?v=e2108f64",
+     "x": 68,
+     "y": 47,
+     "w": 215,
+     "h": 257
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_cap_t.png?v=ca7cb4c4",
+     "x": 135,
+     "y": 47,
+     "w": 65,
+     "h": 36
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_cap_f.png?v=a261416b",
+     "x": 134,
+     "y": 46,
+     "w": 67,
+     "h": 38
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_circlet_t.png?v=9cf3a5b7",
+     "x": 135,
+     "y": 70,
+     "w": 65,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_circlet_f.png?v=10decde8",
+     "x": 134,
+     "y": 69,
+     "w": 67,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/base_hat.png?v=7f8ead43",
+     "x": 68,
+     "y": 46,
+     "w": 215,
+     "h": 258
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_t.png?v=4bafbf39",
+     "x": 82,
+     "y": 116,
+     "w": 164,
+     "h": 27
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_f.png?v=c6a840c2",
+     "x": 81,
+     "y": 115,
+     "w": 166,
+     "h": 29
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_mt_t.png?v=587ffd08",
+     "x": 87,
+     "y": 105,
+     "w": 156,
+     "h": 45
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_mt_f.png?v=507fc033",
+     "x": 86,
+     "y": 106,
+     "w": 158,
+     "h": 45
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_hat_t.png?v=67ddd11d",
+     "x": 122,
+     "y": 20,
+     "w": 91,
+     "h": 66
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/head_hat_f.png?v=a4a029d6",
+     "x": 121,
+     "y": 19,
+     "w": 93,
+     "h": 68
     }
    }
   },
@@ -725,6 +901,90 @@
      "y": 207,
      "w": 158,
      "h": 86
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/kazuto/back/base_cap.png?v=e82cfb10",
+     "x": 68,
+     "y": 47,
+     "w": 233,
+     "h": 257
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/kazuto/back/head_cap_t.png?v=98f278e9",
+     "x": 137,
+     "y": 42,
+     "w": 59,
+     "h": 38
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/kazuto/back/head_cap_f.png?v=3f373f2d",
+     "x": 136,
+     "y": 41,
+     "w": 61,
+     "h": 40
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/kazuto/back/head_circlet_t.png?v=1dc2f9d9",
+     "x": 136,
+     "y": 71,
+     "w": 61,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/kazuto/back/head_circlet_f.png?v=dee494ee",
+     "x": 135,
+     "y": 70,
+     "w": 63,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/kazuto/back/base_hat.png?v=f766fe12",
+     "x": 68,
+     "y": 47,
+     "w": 233,
+     "h": 257
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/kazuto/back/jf_pl_t.png?v=88d949f2",
+     "x": 84,
+     "y": 105,
+     "w": 176,
+     "h": 29
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/kazuto/back/jf_pl_f.png?v=27b9c808",
+     "x": 83,
+     "y": 104,
+     "w": 178,
+     "h": 31
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/kazuto/back/jf_mt_t.png?v=9a40ca89",
+     "x": 90,
+     "y": 93,
+     "w": 166,
+     "h": 47
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/kazuto/back/jf_mt_f.png?v=fbc9a773",
+     "x": 89,
+     "y": 95,
+     "w": 168,
+     "h": 46
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/kazuto/back/head_hat_t.png?v=906d9eba",
+     "x": 131,
+     "y": 30,
+     "w": 71,
+     "h": 55
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/kazuto/back/head_hat_f.png?v=0e4f4f53",
+     "x": 130,
+     "y": 29,
+     "w": 73,
+     "h": 57
     }
    }
   }
@@ -840,6 +1100,60 @@
      "part": "jf_cloth_t",
      "tint": "main",
      "region": "body"
+    }
+   ]
+  },
+  "_knight": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_pl_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "shoulder"
+    },
+    {
+     "part": "jf_pl_f",
+     "optional": true,
+     "region": "shoulder"
+    }
+   ]
+  },
+  "_mantle": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_mt_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "shoulder"
+    },
+    {
+     "part": "jf_mt_f",
+     "optional": true,
+     "region": "shoulder"
     }
    ]
   },
@@ -1031,7 +1345,7 @@
    }
   },
   "knight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#b8bcc8",
     "dark": "#5a5e6a",
@@ -1048,7 +1362,7 @@
    }
   },
   "oath_knight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#8a8070",
     "dark": "#3e382e",
@@ -1065,7 +1379,7 @@
    }
   },
   "magicknight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#3a3a6a",
     "dark": "#1a1a34",
@@ -1082,7 +1396,7 @@
    }
   },
   "waveblade": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#2a6a8a",
     "dark": "#103244",
@@ -1099,7 +1413,7 @@
    }
   },
   "monk": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#c87a2a",
     "dark": "#6a3a0e",
@@ -1116,7 +1430,7 @@
    }
   },
   "navigator": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#2a3a6a",
     "dark": "#121a34",
@@ -1133,7 +1447,7 @@
    }
   },
   "surveyor": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#8a6a3a",
     "dark": "#42301a",
@@ -1150,7 +1464,7 @@
    }
   },
   "hunter": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#55502a",
     "dark": "#2c2a16",
@@ -1183,5 +1497,29 @@
     "acc": "#6a62a0"
    }
   }
- }
+ },
+ "generated": [
+  "jf_cloth_t",
+  "jf_cape_t",
+  "jf_capeup_t",
+  "jf_skirt_t",
+  "jf_skirt_f",
+  "jf_sleeve_t",
+  "jf_sleeve_f",
+  "jf_x",
+  "jf_capehem_t",
+  "jf_capehem_f",
+  "base_cap",
+  "head_cap_t",
+  "head_cap_f",
+  "head_circlet_t",
+  "head_circlet_f",
+  "base_hat",
+  "jf_pl_t",
+  "jf_pl_f",
+  "jf_mt_t",
+  "jf_mt_f",
+  "head_hat_t",
+  "head_hat_f"
+ ]
 }

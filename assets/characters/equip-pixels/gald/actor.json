@@ -35,49 +35,62 @@
     }
    ]
   },
-  "weapon_dagger": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
+  "head_helm": {
+   "z": 20,
+   "base": "base_helm",
    "layers": [
     {
-     "part": "weapon_dagger"
-    }
-   ]
-  },
-  "weapon_spear": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
-   "layers": [
-    {
-     "part": "weapon_spear"
-    }
-   ]
-  },
-  "weapon_bow": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
-   "layers": [
-    {
-     "part": "weapon_bow"
-    }
-   ]
-  },
-  "weapon_staff": {
-   "z": 40,
-   "hand": true,
-   "generated": true,
-   "layers": [
-    {
-     "part": "weapon_staff_t",
-     "tint": "orb"
+     "part": "head_helm_t",
+     "tint": "main",
+     "grayRef": "plate"
     },
     {
-     "part": "weapon_staff_f"
+     "part": "head_helm_f"
     }
-   ]
+   ],
+   "generated": true
+  },
+  "head_hat": {
+   "z": 20,
+   "base": "base_hat",
+   "layers": [
+    {
+     "part": "head_hat_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_hat_f"
+    }
+   ],
+   "generated": true
+  },
+  "head_cap": {
+   "z": 20,
+   "base": "base_cap",
+   "layers": [
+    {
+     "part": "head_cap_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_cap_f",
+     "optional": true
+    }
+   ],
+   "generated": true
+  },
+  "head_circlet": {
+   "z": 21,
+   "layers": [
+    {
+     "part": "head_circlet_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_circlet_f"
+    }
+   ],
+   "generated": true
   },
   "armor_robe": {
    "z": 10,
@@ -222,6 +235,41 @@
      "w": 65,
      "h": 79
     },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_dagger.png?v=19453c31",
+     "x": 26,
+     "y": 81,
+     "w": 21,
+     "h": 74
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_spear.png?v=32ae13ae",
+     "x": 19,
+     "y": 2,
+     "w": 33,
+     "h": 267
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_bow.png?v=0412d476",
+     "x": 33,
+     "y": 67,
+     "w": 28,
+     "h": 138
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_staff_t.png?v=5f234771",
+     "x": 28,
+     "y": 3,
+     "w": 19,
+     "h": 19
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_staff_f.png?v=2c7180bb",
+     "x": 24,
+     "y": 0,
+     "w": 27,
+     "h": 274
+    },
     "jf_cloth_t": {
      "url": "assets/characters/equip-pixels/gald/menu/jf_cloth_t.png?v=38d52ff0",
      "x": 19,
@@ -257,40 +305,110 @@
      "w": 169,
      "h": 75
     },
-    "weapon_dagger": {
-     "url": "assets/characters/equip-pixels/gald/menu/weapon_dagger.png?v=19453c31",
-     "x": 26,
-     "y": 81,
-     "w": 21,
-     "h": 74
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/gald/menu/base_helm.png?v=ed5bcd01",
+     "x": 17,
+     "y": 24,
+     "w": 236,
+     "h": 251
     },
-    "weapon_spear": {
-     "url": "assets/characters/equip-pixels/gald/menu/weapon_spear.png?v=32ae13ae",
-     "x": 19,
-     "y": 2,
-     "w": 33,
-     "h": 267
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_helm_t.png?v=9465f7f4",
+     "x": 80,
+     "y": 22,
+     "w": 96,
+     "h": 107
     },
-    "weapon_bow": {
-     "url": "assets/characters/equip-pixels/gald/menu/weapon_bow.png?v=0412d476",
-     "x": 33,
-     "y": 67,
-     "w": 28,
-     "h": 138
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_helm_f.png?v=7377e1cf",
+     "x": 79,
+     "y": 21,
+     "w": 99,
+     "h": 109
     },
-    "weapon_staff_t": {
-     "url": "assets/characters/equip-pixels/gald/menu/weapon_staff_t.png?v=5f234771",
-     "x": 28,
-     "y": 3,
-     "w": 19,
-     "h": 19
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/gald/menu/base_cap.png?v=46d89ff3",
+     "x": 17,
+     "y": 23,
+     "w": 236,
+     "h": 252
     },
-    "weapon_staff_f": {
-     "url": "assets/characters/equip-pixels/gald/menu/weapon_staff_f.png?v=2c7180bb",
-     "x": 24,
-     "y": 0,
-     "w": 27,
-     "h": 274
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_cap_t.png?v=764e019a",
+     "x": 82,
+     "y": 20,
+     "w": 93,
+     "h": 69
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_cap_f.png?v=bc7aa116",
+     "x": 81,
+     "y": 19,
+     "w": 95,
+     "h": 71
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_circlet_t.png?v=0359c0e8",
+     "x": 81,
+     "y": 79,
+     "w": 95,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_circlet_f.png?v=07a9ab38",
+     "x": 80,
+     "y": 78,
+     "w": 97,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/gald/menu/base_hat.png?v=03c3b8f5",
+     "x": 17,
+     "y": 18,
+     "w": 236,
+     "h": 257
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_t.png?v=b6891288",
+     "x": 67,
+     "y": 136,
+     "w": 122,
+     "h": 20
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_f.png?v=f4a6cf98",
+     "x": 66,
+     "y": 135,
+     "w": 124,
+     "h": 22
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/jf_mt_t.png?v=0e9976d1",
+     "x": 71,
+     "y": 128,
+     "w": 116,
+     "h": 33
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/jf_mt_f.png?v=09630fc8",
+     "x": 70,
+     "y": 128,
+     "w": 118,
+     "h": 34
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_hat_t.png?v=e6e64efc",
+     "x": 41,
+     "y": 11,
+     "w": 175,
+     "h": 91
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_hat_f.png?v=06364138",
+     "x": 39,
+     "y": 9,
+     "w": 179,
+     "h": 94
     }
    }
   },
@@ -384,6 +502,41 @@
      "w": 65,
      "h": 79
     },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_dagger.png?v=19453c31",
+     "x": 59,
+     "y": 108,
+     "w": 21,
+     "h": 74
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_spear.png?v=32ae13ae",
+     "x": 52,
+     "y": 29,
+     "w": 33,
+     "h": 267
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_bow.png?v=0412d476",
+     "x": 66,
+     "y": 94,
+     "w": 28,
+     "h": 138
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_staff_t.png?v=5f234771",
+     "x": 61,
+     "y": 30,
+     "w": 19,
+     "h": 19
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/weapon_staff_f.png?v=2c7180bb",
+     "x": 57,
+     "y": 27,
+     "w": 27,
+     "h": 274
+    },
     "jf_cloth_t": {
      "url": "assets/characters/equip-pixels/gald/menu/jf_cloth_t.png?v=38d52ff0",
      "x": 52,
@@ -419,40 +572,110 @@
      "w": 169,
      "h": 75
     },
-    "weapon_dagger": {
-     "url": "assets/characters/equip-pixels/gald/menu/weapon_dagger.png?v=19453c31",
-     "x": 59,
-     "y": 108,
-     "w": 21,
-     "h": 74
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/gald/menu/base_helm.png?v=ed5bcd01",
+     "x": 50,
+     "y": 51,
+     "w": 236,
+     "h": 251
     },
-    "weapon_spear": {
-     "url": "assets/characters/equip-pixels/gald/menu/weapon_spear.png?v=32ae13ae",
-     "x": 52,
-     "y": 29,
-     "w": 33,
-     "h": 267
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_helm_t.png?v=9465f7f4",
+     "x": 113,
+     "y": 49,
+     "w": 96,
+     "h": 107
     },
-    "weapon_bow": {
-     "url": "assets/characters/equip-pixels/gald/menu/weapon_bow.png?v=0412d476",
-     "x": 66,
-     "y": 94,
-     "w": 28,
-     "h": 138
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_helm_f.png?v=7377e1cf",
+     "x": 112,
+     "y": 48,
+     "w": 99,
+     "h": 109
     },
-    "weapon_staff_t": {
-     "url": "assets/characters/equip-pixels/gald/menu/weapon_staff_t.png?v=5f234771",
-     "x": 61,
-     "y": 30,
-     "w": 19,
-     "h": 19
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/gald/menu/base_cap.png?v=46d89ff3",
+     "x": 50,
+     "y": 50,
+     "w": 236,
+     "h": 252
     },
-    "weapon_staff_f": {
-     "url": "assets/characters/equip-pixels/gald/menu/weapon_staff_f.png?v=2c7180bb",
-     "x": 57,
-     "y": 27,
-     "w": 27,
-     "h": 274
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_cap_t.png?v=764e019a",
+     "x": 115,
+     "y": 47,
+     "w": 93,
+     "h": 69
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_cap_f.png?v=bc7aa116",
+     "x": 114,
+     "y": 46,
+     "w": 95,
+     "h": 71
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_circlet_t.png?v=0359c0e8",
+     "x": 114,
+     "y": 106,
+     "w": 95,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_circlet_f.png?v=07a9ab38",
+     "x": 113,
+     "y": 105,
+     "w": 97,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/gald/menu/base_hat.png?v=03c3b8f5",
+     "x": 50,
+     "y": 45,
+     "w": 236,
+     "h": 257
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_t.png?v=b6891288",
+     "x": 100,
+     "y": 163,
+     "w": 122,
+     "h": 20
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_f.png?v=f4a6cf98",
+     "x": 99,
+     "y": 162,
+     "w": 124,
+     "h": 22
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/jf_mt_t.png?v=0e9976d1",
+     "x": 104,
+     "y": 155,
+     "w": 116,
+     "h": 33
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/jf_mt_f.png?v=09630fc8",
+     "x": 103,
+     "y": 155,
+     "w": 118,
+     "h": 34
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_hat_t.png?v=e6e64efc",
+     "x": 74,
+     "y": 38,
+     "w": 175,
+     "h": 91
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/gald/menu/head_hat_f.png?v=06364138",
+     "x": 72,
+     "y": 36,
+     "w": 179,
+     "h": 94
     }
    }
   },
@@ -551,6 +774,41 @@
      "w": 51,
      "h": 77
     },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/gald/back/weapon_dagger.png?v=76ebd14f",
+     "x": 237,
+     "y": 102,
+     "w": 21,
+     "h": 71
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/gald/back/weapon_spear.png?v=7fc5ce27",
+     "x": 233,
+     "y": 2,
+     "w": 33,
+     "h": 280
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/gald/back/weapon_bow.png?v=0546015e",
+     "x": 224,
+     "y": 89,
+     "w": 27,
+     "h": 132
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/gald/back/weapon_staff_t.png?v=aa13fb05",
+     "x": 238,
+     "y": 4,
+     "w": 17,
+     "h": 17
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/gald/back/weapon_staff_f.png?v=d6eb32e3",
+     "x": 234,
+     "y": 0,
+     "w": 25,
+     "h": 303
+    },
     "jf_cloth_t": {
      "url": "assets/characters/equip-pixels/gald/back/jf_cloth_t.png?v=978759ed",
      "x": 58,
@@ -586,40 +844,110 @@
      "w": 173,
      "h": 61
     },
-    "weapon_dagger": {
-     "url": "assets/characters/equip-pixels/gald/back/weapon_dagger.png?v=76ebd14f",
-     "x": 237,
-     "y": 102,
-     "w": 21,
-     "h": 71
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/gald/back/base_helm.png?v=d2c4f0b6",
+     "x": 53,
+     "y": 46,
+     "w": 214,
+     "h": 262
     },
-    "weapon_spear": {
-     "url": "assets/characters/equip-pixels/gald/back/weapon_spear.png?v=7fc5ce27",
-     "x": 233,
-     "y": 2,
-     "w": 33,
-     "h": 280
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/gald/back/head_helm_t.png?v=412d9b0c",
+     "x": 101,
+     "y": 42,
+     "w": 102,
+     "h": 82
     },
-    "weapon_bow": {
-     "url": "assets/characters/equip-pixels/gald/back/weapon_bow.png?v=0546015e",
-     "x": 224,
-     "y": 89,
-     "w": 27,
-     "h": 132
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/gald/back/head_helm_f.png?v=54b81a0b",
+     "x": 100,
+     "y": 41,
+     "w": 104,
+     "h": 84
     },
-    "weapon_staff_t": {
-     "url": "assets/characters/equip-pixels/gald/back/weapon_staff_t.png?v=aa13fb05",
-     "x": 238,
-     "y": 4,
-     "w": 17,
-     "h": 17
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/gald/back/base_cap.png?v=d181f028",
+     "x": 53,
+     "y": 46,
+     "w": 214,
+     "h": 262
     },
-    "weapon_staff_f": {
-     "url": "assets/characters/equip-pixels/gald/back/weapon_staff_f.png?v=d6eb32e3",
-     "x": 234,
-     "y": 0,
-     "w": 25,
-     "h": 303
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/gald/back/head_cap_t.png?v=ef61e654",
+     "x": 106,
+     "y": 40,
+     "w": 93,
+     "h": 68
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/gald/back/head_cap_f.png?v=ee901112",
+     "x": 105,
+     "y": 39,
+     "w": 95,
+     "h": 70
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/gald/back/head_circlet_t.png?v=0359c0e8",
+     "x": 105,
+     "y": 101,
+     "w": 95,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/gald/back/head_circlet_f.png?v=107da56c",
+     "x": 104,
+     "y": 100,
+     "w": 97,
+     "h": 14
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/gald/back/base_hat.png?v=aebabc14",
+     "x": 53,
+     "y": 46,
+     "w": 214,
+     "h": 262
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/gald/back/jf_pl_t.png?v=dcc2ca82",
+     "x": 87,
+     "y": 147,
+     "w": 140,
+     "h": 23
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/gald/back/jf_pl_f.png?v=f552baa1",
+     "x": 86,
+     "y": 146,
+     "w": 142,
+     "h": 25
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/gald/back/jf_mt_t.png?v=d9d8340b",
+     "x": 92,
+     "y": 137,
+     "w": 131,
+     "h": 38
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/gald/back/jf_mt_f.png?v=76615ab8",
+     "x": 91,
+     "y": 139,
+     "w": 133,
+     "h": 37
+    },
+    "head_hat_t": {
+     "url": "assets/characters/equip-pixels/gald/back/head_hat_t.png?v=300b1a52",
+     "x": 65,
+     "y": 33,
+     "w": 175,
+     "h": 91
+    },
+    "head_hat_f": {
+     "url": "assets/characters/equip-pixels/gald/back/head_hat_f.png?v=356fc6ac",
+     "x": 63,
+     "y": 31,
+     "w": 179,
+     "h": 94
     }
    }
   }
@@ -735,6 +1063,60 @@
      "part": "jf_cloth_t",
      "tint": "main",
      "region": "body"
+    }
+   ]
+  },
+  "_knight": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_pl_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "shoulder"
+    },
+    {
+     "part": "jf_pl_f",
+     "optional": true,
+     "region": "shoulder"
+    }
+   ]
+  },
+  "_mantle": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_mt_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "shoulder"
+    },
+    {
+     "part": "jf_mt_f",
+     "optional": true,
+     "region": "shoulder"
     }
    ]
   },
@@ -926,7 +1308,7 @@
    }
   },
   "knight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#b8bcc8",
     "dark": "#5a5e6a",
@@ -943,7 +1325,7 @@
    }
   },
   "oath_knight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#8a8070",
     "dark": "#3e382e",
@@ -960,7 +1342,7 @@
    }
   },
   "magicknight": {
-   "like": "_cape",
+   "like": "_knight",
    "pal": {
     "main": "#3a3a6a",
     "dark": "#1a1a34",
@@ -977,7 +1359,7 @@
    }
   },
   "waveblade": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#2a6a8a",
     "dark": "#103244",
@@ -994,7 +1376,7 @@
    }
   },
   "monk": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#c87a2a",
     "dark": "#6a3a0e",
@@ -1011,7 +1393,7 @@
    }
   },
   "navigator": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#2a3a6a",
     "dark": "#121a34",
@@ -1028,7 +1410,7 @@
    }
   },
   "surveyor": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#8a6a3a",
     "dark": "#42301a",
@@ -1045,7 +1427,7 @@
    }
   },
   "hunter": {
-   "like": "_cape",
+   "like": "_mantle",
    "pal": {
     "main": "#55502a",
     "dark": "#2c2a16",
@@ -1078,5 +1460,27 @@
     "acc": "#6a62a0"
    }
   }
- }
+ },
+ "generated": [
+  "jf_cloth_t",
+  "jf_cape_t",
+  "jf_capeup_t",
+  "jf_skirt_t",
+  "jf_skirt_f",
+  "base_helm",
+  "head_helm_t",
+  "head_helm_f",
+  "base_cap",
+  "head_cap_t",
+  "head_cap_f",
+  "head_circlet_t",
+  "head_circlet_f",
+  "base_hat",
+  "jf_pl_t",
+  "jf_pl_f",
+  "jf_mt_t",
+  "jf_mt_f",
+  "head_hat_t",
+  "head_hat_f"
+ ]
 }

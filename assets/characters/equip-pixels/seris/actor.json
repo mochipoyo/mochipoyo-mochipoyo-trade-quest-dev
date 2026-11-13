@@ -1,0 +1,1422 @@
+{
+ "menuBase": "menu",
+ "materials": {
+  "weapon_sword": {
+   "z": 40,
+   "hand": true,
+   "generated": true,
+   "layers": [
+    {
+     "part": "weapon_sword"
+    }
+   ]
+  },
+  "weapon_dagger": {
+   "z": 40,
+   "hand": true,
+   "generated": true,
+   "layers": [
+    {
+     "part": "weapon_dagger"
+    }
+   ]
+  },
+  "weapon_axe": {
+   "z": 40,
+   "hand": true,
+   "generated": true,
+   "layers": [
+    {
+     "part": "weapon_axe"
+    }
+   ]
+  },
+  "weapon_spear": {
+   "z": 40,
+   "hand": true,
+   "generated": true,
+   "layers": [
+    {
+     "part": "weapon_spear"
+    }
+   ]
+  },
+  "weapon_bow": {
+   "z": 40,
+   "hand": true,
+   "generated": true,
+   "layers": [
+    {
+     "part": "weapon_bow"
+    }
+   ]
+  },
+  "weapon_staff": {
+   "z": 40,
+   "hand": true,
+   "generated": true,
+   "layers": [
+    {
+     "part": "weapon_staff_t",
+     "tint": "orb"
+    },
+    {
+     "part": "weapon_staff_f"
+    }
+   ]
+  },
+  "head_helm": {
+   "z": 20,
+   "base": "base_helm",
+   "layers": [
+    {
+     "part": "head_helm_t",
+     "tint": "main",
+     "grayRef": "plate"
+    },
+    {
+     "part": "head_helm_f"
+    }
+   ],
+   "generated": true
+  },
+  "head_hat": {
+   "z": 20,
+   "generated": true,
+   "layers": [
+    {
+     "part": "own_hat_t",
+     "tint": "main"
+    }
+   ]
+  },
+  "head_cap": {
+   "z": 20,
+   "base": "base_cap",
+   "layers": [
+    {
+     "part": "head_cap_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_cap_f",
+     "optional": true
+    }
+   ],
+   "generated": true
+  },
+  "head_circlet": {
+   "z": 21,
+   "layers": [
+    {
+     "part": "head_circlet_t",
+     "tint": "main"
+    },
+    {
+     "part": "head_circlet_f"
+    }
+   ],
+   "generated": true
+  },
+  "shield": {
+   "z": 30,
+   "generated": true,
+   "layers": [
+    {
+     "part": "shield_gt",
+     "tint": "main",
+     "grayRef": "iron"
+    },
+    {
+     "part": "shield_gf"
+    }
+   ]
+  },
+  "armor_heavy": {
+   "z": 10,
+   "covers": [
+    "body",
+    "shoulder"
+   ],
+   "generated": true,
+   "layers": [
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "grayRef": "plate"
+    },
+    {
+     "part": "hv_pl_t",
+     "tint": "main",
+     "grayRef": "plate",
+     "optional": true
+    },
+    {
+     "part": "hv_pl_f",
+     "optional": true
+    }
+   ]
+  },
+  "armor_robe": {
+   "z": 10,
+   "covers": [
+    "body",
+    "sleeve"
+   ],
+   "generated": true,
+   "layers": [
+    {
+     "part": "jf_x",
+     "erase": true,
+     "optional": true
+    },
+    {
+     "part": "jf_capehem_f",
+     "optional": true
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main"
+    },
+    {
+     "part": "jf_skirt_t",
+     "tint": "main",
+     "optional": true
+    },
+    {
+     "part": "jf_skirt_f",
+     "optional": true
+    }
+   ],
+   "over": {
+    "z": 45,
+    "layers": [
+     {
+      "part": "jf_sleeve_t",
+      "tint": "main",
+      "optional": true
+     },
+     {
+      "part": "jf_sleeve_f",
+      "optional": true
+     }
+    ]
+   }
+  },
+  "armor_light": {
+   "z": 10,
+   "covers": [
+    "body"
+   ],
+   "generated": true,
+   "layers": [
+    {
+     "part": "jf_cloth_t",
+     "tint": "main"
+    }
+   ]
+  }
+ },
+ "views": {
+  "menu": {
+   "src": "assets/characters/companions/seris.png",
+   "w": 212,
+   "h": 280,
+   "dir": "front",
+   "pivot": [
+    106,
+    278
+   ],
+   "body": {
+    "x0": 6,
+    "y0": 2,
+    "x1": 212,
+    "y1": 278
+   },
+   "grip": {
+    "x": 36,
+    "y": 150,
+    "order": "武器：柄の上に手を描き直す"
+   },
+   "offhand": {
+    "x": 166,
+    "y": 182,
+    "order": "盾：前腕の上"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/seris/menu/base_plain.png?v=451e4c8c",
+     "x": 6,
+     "y": 2,
+     "w": 206,
+     "h": 276
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/seris/menu/hand.png?v=28f91a4b",
+     "x": 28,
+     "y": 136,
+     "w": 25,
+     "h": 32
+    },
+    "jf_cloth_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/jf_cloth_t.png?v=b391c1d7",
+     "x": 6,
+     "y": 128,
+     "w": 206,
+     "h": 147
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_sword.png?v=bf7f3770",
+     "x": 16,
+     "y": 1,
+     "w": 38,
+     "h": 176
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_dagger.png?v=2c140213",
+     "x": 24,
+     "y": 90,
+     "w": 23,
+     "h": 79
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_axe.png?v=6b021a30",
+     "x": 21,
+     "y": 50,
+     "w": 42,
+     "h": 132
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_spear.png?v=c01918da",
+     "x": 17,
+     "y": 2,
+     "w": 33,
+     "h": 277
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_bow.png?v=04aaca89",
+     "x": 32,
+     "y": 75,
+     "w": 30,
+     "h": 148
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_staff_t.png?v=79a861f8",
+     "x": 26,
+     "y": 2,
+     "w": 21,
+     "h": 21
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_staff_f.png?v=aac08da4",
+     "x": 22,
+     "y": 0,
+     "w": 29,
+     "h": 277
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=0806146c",
+     "x": 6,
+     "y": 49,
+     "w": 206,
+     "h": 229
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_helm_t.png?v=6bcf7152",
+     "x": 75,
+     "y": 50,
+     "w": 84,
+     "h": 79
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_helm_f.png?v=937ea981",
+     "x": 74,
+     "y": 49,
+     "w": 87,
+     "h": 81
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=ec90e4d2",
+     "x": 6,
+     "y": 49,
+     "w": 206,
+     "h": 229
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_cap_t.png?v=8c7c431a",
+     "x": 76,
+     "y": 48,
+     "w": 83,
+     "h": 53
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_cap_f.png?v=aaf49c10",
+     "x": 75,
+     "y": 47,
+     "w": 85,
+     "h": 55
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_circlet_t.png?v=8b05a3ba",
+     "x": 76,
+     "y": 89,
+     "w": 83,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_circlet_f.png?v=36de26dd",
+     "x": 75,
+     "y": 88,
+     "w": 85,
+     "h": 14
+    },
+    "own_hat_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/own_hat_t.png?v=cc16fb83",
+     "x": 26,
+     "y": 2,
+     "w": 173,
+     "h": 109
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/jf_pl_t.png?v=6aed3412",
+     "x": 66,
+     "y": 129,
+     "w": 105,
+     "h": 21
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/jf_pl_f.png?v=62bd64d1",
+     "x": 65,
+     "y": 128,
+     "w": 107,
+     "h": 23
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_t.png?v=65880d06",
+     "x": 53,
+     "y": 127,
+     "w": 118,
+     "h": 34
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_f.png?v=9fe19fca",
+     "x": 52,
+     "y": 128,
+     "w": 120,
+     "h": 34
+    },
+    "shield_gt": {
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gt.png?v=65e452ab",
+     "x": 142,
+     "y": 151,
+     "w": 49,
+     "h": 63
+    },
+    "shield_gf": {
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gf.png?v=834d5d58",
+     "x": 138,
+     "y": 147,
+     "w": 57,
+     "h": 71
+    },
+    "hv_pl_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/hv_pl_t.png?v=6aed3412",
+     "x": 66,
+     "y": 129,
+     "w": 105,
+     "h": 21
+    },
+    "hv_pl_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/hv_pl_f.png?v=62bd64d1",
+     "x": 65,
+     "y": 128,
+     "w": 107,
+     "h": 23
+    }
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 214,
+    "y1": 280
+   }
+  },
+  "front": {
+   "src": "assets/characters/party-directions-v3/sprites/seris/front.png",
+   "w": 320,
+   "h": 320,
+   "dir": "front",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 60,
+    "y0": 26,
+    "x1": 266,
+    "y1": 302
+   },
+   "grip": {
+    "x": 90,
+    "y": 174,
+    "order": "武器：柄の上に手を描き直す"
+   },
+   "offhand": {
+    "x": 220,
+    "y": 206,
+    "order": "盾：前腕の上"
+   },
+   "from": "menu",
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/seris/menu/base_plain.png?v=451e4c8c",
+     "x": 60,
+     "y": 26,
+     "w": 206,
+     "h": 276
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/seris/menu/hand.png?v=28f91a4b",
+     "x": 82,
+     "y": 160,
+     "w": 25,
+     "h": 32
+    },
+    "jf_cloth_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/jf_cloth_t.png?v=b391c1d7",
+     "x": 60,
+     "y": 152,
+     "w": 206,
+     "h": 147
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_sword.png?v=bf7f3770",
+     "x": 70,
+     "y": 25,
+     "w": 38,
+     "h": 176
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_dagger.png?v=2c140213",
+     "x": 78,
+     "y": 114,
+     "w": 23,
+     "h": 79
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_axe.png?v=6b021a30",
+     "x": 75,
+     "y": 74,
+     "w": 42,
+     "h": 132
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_spear.png?v=c01918da",
+     "x": 71,
+     "y": 26,
+     "w": 33,
+     "h": 277
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_bow.png?v=04aaca89",
+     "x": 86,
+     "y": 99,
+     "w": 30,
+     "h": 148
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_staff_t.png?v=79a861f8",
+     "x": 80,
+     "y": 26,
+     "w": 21,
+     "h": 21
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/weapon_staff_f.png?v=aac08da4",
+     "x": 76,
+     "y": 24,
+     "w": 29,
+     "h": 277
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=0806146c",
+     "x": 60,
+     "y": 73,
+     "w": 206,
+     "h": 229
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_helm_t.png?v=6bcf7152",
+     "x": 129,
+     "y": 74,
+     "w": 84,
+     "h": 79
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_helm_f.png?v=937ea981",
+     "x": 128,
+     "y": 73,
+     "w": 87,
+     "h": 81
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=ec90e4d2",
+     "x": 60,
+     "y": 73,
+     "w": 206,
+     "h": 229
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_cap_t.png?v=8c7c431a",
+     "x": 130,
+     "y": 72,
+     "w": 83,
+     "h": 53
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_cap_f.png?v=aaf49c10",
+     "x": 129,
+     "y": 71,
+     "w": 85,
+     "h": 55
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_circlet_t.png?v=8b05a3ba",
+     "x": 130,
+     "y": 113,
+     "w": 83,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_circlet_f.png?v=36de26dd",
+     "x": 129,
+     "y": 112,
+     "w": 85,
+     "h": 14
+    },
+    "own_hat_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/own_hat_t.png?v=cc16fb83",
+     "x": 80,
+     "y": 26,
+     "w": 173,
+     "h": 109
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/jf_pl_t.png?v=6aed3412",
+     "x": 120,
+     "y": 153,
+     "w": 105,
+     "h": 21
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/jf_pl_f.png?v=62bd64d1",
+     "x": 119,
+     "y": 152,
+     "w": 107,
+     "h": 23
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_t.png?v=65880d06",
+     "x": 107,
+     "y": 151,
+     "w": 118,
+     "h": 34
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_f.png?v=9fe19fca",
+     "x": 106,
+     "y": 152,
+     "w": 120,
+     "h": 34
+    },
+    "shield_gt": {
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gt.png?v=65e452ab",
+     "x": 196,
+     "y": 175,
+     "w": 49,
+     "h": 63
+    },
+    "shield_gf": {
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gf.png?v=834d5d58",
+     "x": 192,
+     "y": 171,
+     "w": 57,
+     "h": 71
+    },
+    "hv_pl_t": {
+     "url": "assets/characters/equip-pixels/seris/menu/hv_pl_t.png?v=6aed3412",
+     "x": 120,
+     "y": 153,
+     "w": 105,
+     "h": 21
+    },
+    "hv_pl_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/hv_pl_f.png?v=62bd64d1",
+     "x": 119,
+     "y": 152,
+     "w": 107,
+     "h": 23
+    }
+   }
+  },
+  "back": {
+   "src": "assets/characters/party-directions-v3/sprites/seris/back.png",
+   "w": 320,
+   "h": 320,
+   "dir": "back",
+   "pivot": [
+    160,
+    304
+   ],
+   "body": {
+    "x0": 48,
+    "y0": 26,
+    "x1": 264,
+    "y1": 304
+   },
+   "grip": {
+    "x": 246,
+    "y": 192,
+    "order": "武器：柄の上に手を描き直す"
+   },
+   "offhand": {
+    "x": 96,
+    "y": 186,
+    "order": "盾：前腕の上"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/seris/back/base_plain.png?v=e1e07cdb",
+     "x": 46,
+     "y": 24,
+     "w": 236,
+     "h": 283
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/seris/back/hand.png?v=fabbd1d0",
+     "x": 230,
+     "y": 178,
+     "w": 25,
+     "h": 29
+    },
+    "jf_cloth_t": {
+     "url": "assets/characters/equip-pixels/seris/back/jf_cloth_t.png?v=076346b3",
+     "x": 48,
+     "y": 150,
+     "w": 216,
+     "h": 154
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/seris/back/weapon_sword.png?v=49c992f1",
+     "x": 228,
+     "y": 43,
+     "w": 39,
+     "h": 176
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/seris/back/weapon_dagger.png?v=97ed7aa7",
+     "x": 236,
+     "y": 133,
+     "w": 23,
+     "h": 78
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/seris/back/weapon_axe.png?v=b8727fa9",
+     "x": 220,
+     "y": 91,
+     "w": 41,
+     "h": 134
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/seris/back/weapon_spear.png?v=1a927b9e",
+     "x": 233,
+     "y": 2,
+     "w": 36,
+     "h": 317
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/seris/back/weapon_bow.png?v=826c7469",
+     "x": 221,
+     "y": 116,
+     "w": 30,
+     "h": 150
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/seris/back/weapon_staff_t.png?v=79a861f8",
+     "x": 236,
+     "y": 9,
+     "w": 21,
+     "h": 21
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/seris/back/weapon_staff_f.png?v=927f07d7",
+     "x": 232,
+     "y": 2,
+     "w": 29,
+     "h": 301
+    },
+    "base_helm": {
+     "url": "assets/characters/equip-pixels/seris/back/base_helm.png?v=62dc9db2",
+     "x": 46,
+     "y": 24,
+     "w": 236,
+     "h": 283
+    },
+    "head_helm_t": {
+     "url": "assets/characters/equip-pixels/seris/back/head_helm_t.png?v=f3d87d11",
+     "x": 97,
+     "y": 70,
+     "w": 106,
+     "h": 82
+    },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/seris/back/head_helm_f.png?v=22f0c364",
+     "x": 96,
+     "y": 69,
+     "w": 108,
+     "h": 84
+    },
+    "base_cap": {
+     "url": "assets/characters/equip-pixels/seris/back/base_cap.png?v=d1cb4cfc",
+     "x": 46,
+     "y": 24,
+     "w": 236,
+     "h": 283
+    },
+    "head_cap_t": {
+     "url": "assets/characters/equip-pixels/seris/back/head_cap_t.png?v=6739f232",
+     "x": 103,
+     "y": 68,
+     "w": 95,
+     "h": 68
+    },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/seris/back/head_cap_f.png?v=fe86aedc",
+     "x": 102,
+     "y": 67,
+     "w": 97,
+     "h": 70
+    },
+    "head_circlet_t": {
+     "url": "assets/characters/equip-pixels/seris/back/head_circlet_t.png?v=5d53fccb",
+     "x": 101,
+     "y": 129,
+     "w": 99,
+     "h": 12
+    },
+    "head_circlet_f": {
+     "url": "assets/characters/equip-pixels/seris/back/head_circlet_f.png?v=d6654b98",
+     "x": 100,
+     "y": 128,
+     "w": 101,
+     "h": 14
+    },
+    "own_hat_t": {
+     "url": "assets/characters/equip-pixels/seris/back/own_hat_t.png?v=c0ca0dfc",
+     "x": 88,
+     "y": 26,
+     "w": 140,
+     "h": 134
+    },
+    "jf_pl_t": {
+     "url": "assets/characters/equip-pixels/seris/back/jf_pl_t.png?v=10d1b5c8",
+     "x": 104,
+     "y": 186,
+     "w": 97,
+     "h": 16
+    },
+    "jf_pl_f": {
+     "url": "assets/characters/equip-pixels/seris/back/jf_pl_f.png?v=9f388711",
+     "x": 103,
+     "y": 185,
+     "w": 99,
+     "h": 18
+    },
+    "jf_mt_t": {
+     "url": "assets/characters/equip-pixels/seris/back/jf_mt_t.png?v=d2106a68",
+     "x": 103,
+     "y": 182,
+     "w": 95,
+     "h": 28
+    },
+    "jf_mt_f": {
+     "url": "assets/characters/equip-pixels/seris/back/jf_mt_f.png?v=94733664",
+     "x": 102,
+     "y": 184,
+     "w": 97,
+     "h": 27
+    },
+    "shield_gt": {
+     "url": "assets/characters/equip-pixels/seris/back/shield_gt.png?v=52456b6b",
+     "x": 83,
+     "y": 161,
+     "w": 27,
+     "h": 50
+    },
+    "shield_gf": {
+     "url": "assets/characters/equip-pixels/seris/back/shield_gf.png?v=d2856f73",
+     "x": 79,
+     "y": 157,
+     "w": 35,
+     "h": 59
+    },
+    "hv_pl_t": {
+     "url": "assets/characters/equip-pixels/seris/back/hv_pl_t.png?v=10d1b5c8",
+     "x": 104,
+     "y": 186,
+     "w": 97,
+     "h": 16
+    },
+    "hv_pl_f": {
+     "url": "assets/characters/equip-pixels/seris/back/hv_pl_f.png?v=9f388711",
+     "x": 103,
+     "y": 185,
+     "w": 99,
+     "h": 18
+    }
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 322,
+    "y1": 320
+   }
+  }
+ },
+ "jobs": {
+  "_robe": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_x",
+     "erase": true,
+     "optional": true
+    },
+    {
+     "part": "jf_capeup_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_skirt_t",
+     "tint": "main",
+     "optional": true,
+     "region": "body"
+    },
+    {
+     "part": "jf_skirt_f",
+     "optional": true,
+     "region": "body"
+    }
+   ],
+   "over": {
+    "z": 45,
+    "layers": [
+     {
+      "part": "jf_sleeve_t",
+      "tint": "main",
+      "optional": true,
+      "region": "sleeve"
+     },
+     {
+      "part": "jf_sleeve_f",
+      "optional": true,
+      "region": "sleeve"
+     },
+     {
+      "part": "jf_capehem_t",
+      "tint": "pal2",
+      "optional": true,
+      "region": "cape"
+     }
+    ]
+   }
+  },
+  "_coat": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_x",
+     "erase": true,
+     "optional": true
+    },
+    {
+     "part": "jf_capeup_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_skirt_t",
+     "tint": "main",
+     "optional": true,
+     "region": "body"
+    },
+    {
+     "part": "jf_skirt_f",
+     "optional": true,
+     "region": "body"
+    }
+   ],
+   "over": {
+    "z": 45,
+    "layers": [
+     {
+      "part": "jf_capehem_t",
+      "tint": "pal2",
+      "optional": true,
+      "region": "cape"
+     }
+    ]
+   }
+  },
+  "_cape": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    }
+   ]
+  },
+  "_knight": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_pl_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "shoulder"
+    },
+    {
+     "part": "jf_pl_f",
+     "optional": true,
+     "region": "shoulder"
+    }
+   ]
+  },
+  "_mantle": {
+   "z": 5,
+   "layers": [
+    {
+     "part": "jf_cape_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "cape"
+    },
+    {
+     "part": "jf_cloth_t",
+     "tint": "main",
+     "region": "body"
+    },
+    {
+     "part": "jf_mt_t",
+     "tint": "pal2",
+     "optional": true,
+     "region": "shoulder"
+    },
+    {
+     "part": "jf_mt_f",
+     "optional": true,
+     "region": "shoulder"
+    }
+   ]
+  },
+  "priest": {
+   "like": "_robe",
+   "pal": {
+    "main": "#e6e0cc",
+    "dark": "#9a927c",
+    "light": "#fffbea",
+    "trim": "#fffbea",
+    "acc": "#fffbea"
+   },
+   "pal2": {
+    "main": "#34509a",
+    "dark": "#18244a",
+    "light": "#6a8ad0",
+    "trim": "#6a8ad0",
+    "acc": "#6a8ad0"
+   }
+  },
+  "sage": {
+   "like": "_robe",
+   "pal": {
+    "main": "#2f6e4a",
+    "dark": "#16382a",
+    "light": "#76b48a",
+    "trim": "#76b48a",
+    "acc": "#76b48a"
+   },
+   "pal2": {
+    "main": "#b88a2a",
+    "dark": "#5a3c10",
+    "light": "#ecc66a",
+    "trim": "#ecc66a",
+    "acc": "#ecc66a"
+   }
+  },
+  "chronomancer": {
+   "like": "_robe",
+   "pal": {
+    "main": "#cbb68a",
+    "dark": "#7a6440",
+    "light": "#f2e6c2",
+    "trim": "#f2e6c2",
+    "acc": "#f2e6c2"
+   },
+   "pal2": {
+    "main": "#5a3a6e",
+    "dark": "#2a1838",
+    "light": "#9472aa",
+    "trim": "#9472aa",
+    "acc": "#9472aa"
+   }
+  },
+  "spirit_warden": {
+   "like": "_robe",
+   "pal": {
+    "main": "#5f7d34",
+    "dark": "#2e3e16",
+    "light": "#a4c070",
+    "trim": "#a4c070",
+    "acc": "#a4c070"
+   },
+   "pal2": {
+    "main": "#7a5a32",
+    "dark": "#3a2814",
+    "light": "#b48c5a",
+    "trim": "#b48c5a",
+    "acc": "#b48c5a"
+   }
+  },
+  "master": {
+   "like": "_robe",
+   "pal": {
+    "main": "#24345a",
+    "dark": "#10182e",
+    "light": "#5a72a8",
+    "trim": "#5a72a8",
+    "acc": "#5a72a8"
+   },
+   "pal2": {
+    "main": "#b8902a",
+    "dark": "#5a420e",
+    "light": "#ead07a",
+    "trim": "#ead07a",
+    "acc": "#ead07a"
+   }
+  },
+  "merchant": {
+   "like": "_coat",
+   "pal": {
+    "main": "#8a5a2a",
+    "dark": "#44280e",
+    "light": "#c8965a",
+    "trim": "#c8965a",
+    "acc": "#c8965a"
+   },
+   "pal2": {
+    "main": "#2f6a5a",
+    "dark": "#143028",
+    "light": "#64a090",
+    "trim": "#64a090",
+    "acc": "#64a090"
+   }
+  },
+  "auditor": {
+   "like": "_coat",
+   "pal": {
+    "main": "#34343e",
+    "dark": "#16161c",
+    "light": "#70707e",
+    "trim": "#70707e",
+    "acc": "#70707e"
+   },
+   "pal2": {
+    "main": "#7a1f2a",
+    "dark": "#3a0c12",
+    "light": "#b04a56",
+    "trim": "#b04a56",
+    "acc": "#b04a56"
+   }
+  },
+  "artisan": {
+   "like": "_coat",
+   "pal": {
+    "main": "#6a4a2a",
+    "dark": "#30200e",
+    "light": "#a47c52",
+    "trim": "#a47c52",
+    "acc": "#a47c52"
+   },
+   "pal2": {
+    "main": "#4a4a50",
+    "dark": "#222226",
+    "light": "#86868e",
+    "trim": "#86868e",
+    "acc": "#86868e"
+   }
+  },
+  "mechanist": {
+   "like": "_coat",
+   "pal": {
+    "main": "#2f6474",
+    "dark": "#122e36",
+    "light": "#6aa4b4",
+    "trim": "#6aa4b4",
+    "acc": "#6aa4b4"
+   },
+   "pal2": {
+    "main": "#b88a3a",
+    "dark": "#5a3e12",
+    "light": "#e8c070",
+    "trim": "#e8c070",
+    "acc": "#e8c070"
+   }
+  },
+  "loop_trader": {
+   "like": "_coat",
+   "pal": {
+    "main": "#1f5a3a",
+    "dark": "#0c2a1a",
+    "light": "#5a9a72",
+    "trim": "#5a9a72",
+    "acc": "#5a9a72"
+   },
+   "pal2": {
+    "main": "#c8a050",
+    "dark": "#6a4a18",
+    "light": "#f2d488",
+    "trim": "#f2d488",
+    "acc": "#f2d488"
+   }
+  },
+  "knight": {
+   "like": "_knight",
+   "pal": {
+    "main": "#b8bcc8",
+    "dark": "#5a5e6a",
+    "light": "#eef0f6",
+    "trim": "#eef0f6",
+    "acc": "#eef0f6"
+   },
+   "pal2": {
+    "main": "#2a4a9a",
+    "dark": "#121e48",
+    "light": "#6a8ad8",
+    "trim": "#6a8ad8",
+    "acc": "#6a8ad8"
+   }
+  },
+  "oath_knight": {
+   "like": "_knight",
+   "pal": {
+    "main": "#8a8070",
+    "dark": "#3e382e",
+    "light": "#c8bea8",
+    "trim": "#c8bea8",
+    "acc": "#c8bea8"
+   },
+   "pal2": {
+    "main": "#3a2a5a",
+    "dark": "#1a1230",
+    "light": "#6e5a96",
+    "trim": "#6e5a96",
+    "acc": "#6e5a96"
+   }
+  },
+  "magicknight": {
+   "like": "_knight",
+   "pal": {
+    "main": "#3a3a6a",
+    "dark": "#1a1a34",
+    "light": "#7a7ab0",
+    "trim": "#7a7ab0",
+    "acc": "#7a7ab0"
+   },
+   "pal2": {
+    "main": "#6a2a8a",
+    "dark": "#300e40",
+    "light": "#a466c4",
+    "trim": "#a466c4",
+    "acc": "#a466c4"
+   }
+  },
+  "waveblade": {
+   "like": "_mantle",
+   "pal": {
+    "main": "#2a6a8a",
+    "dark": "#103244",
+    "light": "#6aaccc",
+    "trim": "#6aaccc",
+    "acc": "#6aaccc"
+   },
+   "pal2": {
+    "main": "#1f8a96",
+    "dark": "#0a3c42",
+    "light": "#5ac4cc",
+    "trim": "#5ac4cc",
+    "acc": "#5ac4cc"
+   }
+  },
+  "monk": {
+   "like": "_mantle",
+   "pal": {
+    "main": "#c87a2a",
+    "dark": "#6a3a0e",
+    "light": "#f0b46a",
+    "trim": "#f0b46a",
+    "acc": "#f0b46a"
+   },
+   "pal2": {
+    "main": "#8a3a1a",
+    "dark": "#401608",
+    "light": "#c46a42",
+    "trim": "#c46a42",
+    "acc": "#c46a42"
+   }
+  },
+  "navigator": {
+   "like": "_mantle",
+   "pal": {
+    "main": "#2a3a6a",
+    "dark": "#121a34",
+    "light": "#6a7ab0",
+    "trim": "#6a7ab0",
+    "acc": "#6a7ab0"
+   },
+   "pal2": {
+    "main": "#d8d2bc",
+    "dark": "#7a7462",
+    "light": "#fffbec",
+    "trim": "#fffbec",
+    "acc": "#fffbec"
+   }
+  },
+  "surveyor": {
+   "like": "_mantle",
+   "pal": {
+    "main": "#8a6a3a",
+    "dark": "#42301a",
+    "light": "#c4a46e",
+    "trim": "#c4a46e",
+    "acc": "#c4a46e"
+   },
+   "pal2": {
+    "main": "#4a6a3a",
+    "dark": "#20301a",
+    "light": "#84a46e",
+    "trim": "#84a46e",
+    "acc": "#84a46e"
+   }
+  },
+  "warrior": {
+   "like": "_cape",
+   "pal": {
+    "main": "#b8a582",
+    "dark": "#5a4a36",
+    "light": "#f3ecd6",
+    "trim": "#f3ecd6",
+    "acc": "#f3ecd6"
+   },
+   "pal2": {
+    "main": "#b02424",
+    "dark": "#4a0c0c",
+    "light": "#e86a5a",
+    "trim": "#e86a5a",
+    "acc": "#e86a5a"
+   }
+  },
+  "hunter": {
+   "like": "_mantle",
+   "pal": {
+    "main": "#55502a",
+    "dark": "#2c2a16",
+    "light": "#b0a862",
+    "trim": "#b0a862",
+    "acc": "#b0a862"
+   },
+   "pal2": {
+    "main": "#2f6e2a",
+    "dark": "#10240f",
+    "light": "#78bf62",
+    "trim": "#78bf62",
+    "acc": "#78bf62"
+   }
+  },
+  "thief": {
+   "like": "_cape",
+   "pal": {
+    "main": "#3c3c48",
+    "dark": "#131317",
+    "light": "#7c7c90",
+    "trim": "#7c7c90",
+    "acc": "#7c7c90"
+   },
+   "pal2": {
+    "main": "#2e2a54",
+    "dark": "#0e0c1c",
+    "light": "#6a62a0",
+    "trim": "#6a62a0",
+    "acc": "#6a62a0"
+   }
+  }
+ },
+ "generated": [
+  "jf_cloth_t",
+  "weapon_sword",
+  "weapon_dagger",
+  "weapon_axe",
+  "weapon_spear",
+  "weapon_bow",
+  "weapon_staff_t",
+  "weapon_staff_f",
+  "base_helm",
+  "head_helm_t",
+  "head_helm_f",
+  "base_cap",
+  "head_cap_t",
+  "head_cap_f",
+  "head_circlet_t",
+  "head_circlet_f",
+  "own_hat_t",
+  "jf_pl_t",
+  "jf_pl_f",
+  "jf_mt_t",
+  "jf_mt_f",
+  "shield_gt",
+  "shield_gf",
+  "hv_pl_t",
+  "hv_pl_f"
+ ]
+}

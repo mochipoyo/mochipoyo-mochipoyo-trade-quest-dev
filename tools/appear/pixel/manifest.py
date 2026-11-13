@@ -13,12 +13,14 @@ PLATE_REF = ['#3c3133', '#5e5054', '#837476', '#a89a98', '#e2d8cc']   # 主人�
 IRON_REF = ['#262022', '#40373a', '#615657', '#8b7f7d', '#cbbfb3']    # v9.8 ガルドの重鎧・盾の鉄の色（灰色の品はこの色）
 
 GLOBAL = {
-    'version': 'v9.8.9', 'pad': 48,
+    'version': 'v9.9', 'pad': 48,
     'note': '装備の外見（ドット絵の差分）。tools/appear/pixel/build_<人物ID>.py が部品を作り、manifest.py がまとめる。部品の座標は元の絵と同じ（x, y＝左上）',
     'ref': {'plate': PLATE_REF, 'iron': IRON_REF},
     # 部品の種類：装備の枠と形（ITEMS の type。帽子は形の細かい違い sub も）→ 種類。表にない形・その人に部品がない種類は「その部位だけ描かない」
     'classes': {'armor': {'light': 'armor_light', 'heavy': 'armor_heavy', 'robe': 'armor_robe'},
-                'head': {'helm': 'head_helm', 'hat:witch': 'head_hat', 'hat:cap': 'head_cap'},
+                'head': {'helm': 'head_helm', 'hat:witch': 'head_hat', 'hat:cap': 'head_cap',
+                         # v9.9 つばのない帽子・頭巾・ターバン・二角帽は、つば付きの帽子と同じ形（品の色）。冠・額冠は額の輪（head_circlet）
+                         'hat:feather': 'head_cap', 'hat:turban': 'head_cap', 'hat:hood': 'head_cap', 'hat:bicorne': 'head_cap', 'hat:crown': 'head_circlet', 'hat:circlet': 'head_circlet'},
                 'weapon': {'sword': 'weapon_sword', 'staff': 'weapon_staff', 'spear': 'weapon_spear', 'axe': 'weapon_axe', 'bow': 'weapon_bow', 'dagger': 'weapon_dagger'},
                 'shield': {'shield': 'shield'}},
     # v9.8.9 covers＝その装備が覆う部位（職業の服の同じ region の層は描かない）。over＝装備の手前の層
