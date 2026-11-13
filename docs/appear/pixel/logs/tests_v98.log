@@ -1,10 +1,10 @@
-v9.8 の確かめ 2026-11-13 12:33 版 5febff5f6a
+v9.8 の確かめ 2026-11-13 14:51 版 4ebdb2abb5
 === appear/appear_pixel_test.js（jsdom・3D と同じ読み込み）
-結果：OK 64 / NG 0
+結果：OK 70 / NG 0
 === ブラウザ 主人公と仲間の装備できる品と、描く／描かない品（docs/appear/pixel/SURVEY.md）
 結果 survey：hero 描く 169 / 描かない 0　lina 描く 89 / 描かない 50　gald 描く 125 / 描かない 44　kyle 描く 157 / 描かない 0　kazuto 描く 169 / 描かない 0　mina 描く 77 / 描かない 44
 === appear/appear_pixel_test.js 2d
-結果：OK 64 / NG 0
+結果：OK 70 / NG 0
 === appear/appear_test.js（v9.6 の描き足し vector）
 結果：OK 28 / NG 0
 === appear/appear_test.js 2d（vector）
@@ -36,7 +36,7 @@ v9.8 の確かめ 2026-11-13 12:33 版 5febff5f6a
   OK  ［リーナ：＋革の帽子／ガルド：斧→剣＋盾］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜279px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 326px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜279px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 334px）
 結果 pixel ui comp pc：OK 70 / NG 0
 === ブラウザ 仲間 ふつうの手順 スマホ縦（390×664）
   OK  ［装備なし（加入したまま）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
@@ -47,7 +47,7 @@ v9.8 の確かめ 2026-11-13 12:33 版 5febff5f6a
   OK  ［リーナ：＋革の帽子／ガルド：斧→剣＋盾］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜303px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 321px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜302px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 321px）
 結果 pixel ui comp phone：OK 70 / NG 0
 === ブラウザ 仲間 そうび画面（上の立ち絵・品の一覧の試着の枠）PC
 結果 pixel ui comp equip pc：OK 5 / NG 0
@@ -68,7 +68,7 @@ v9.8 の確かめ 2026-11-13 12:33 版 5febff5f6a
   OK  ［武器をはずす（2 人とも）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 332px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜279px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 321px）
 結果 pixel ui knight pc：OK 86 / NG 0
 === ブラウザ v9.8.2 カイル・カズト ふつうの手順 スマホ縦（390×664）
   OK  ［装備なし（加入したまま）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
@@ -81,7 +81,7 @@ v9.8 の確かめ 2026-11-13 12:33 版 5febff5f6a
   OK  ［武器をはずす（2 人とも）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜304px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 320px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜304px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 319px）
 結果 pixel ui knight phone：OK 86 / NG 0
 === ブラウザ v9.8.2 カイル・カズト そうび画面 PC
 結果 pixel ui knight equip pc：OK 5 / NG 0
@@ -135,6 +135,20 @@ v9.8 の確かめ 2026-11-13 12:33 版 5febff5f6a
 結果 jobprev pc：OK 14 / NG 0
 === ブラウザ v9.8.7 転職のプレビュー スマホ縦（390×664）
 結果 jobprev phone：OK 14 / NG 0
+=== ブラウザ v9.8.8 主人公の魔法使い（プレビュー・持ち越し／外れる装備・確定・杖の着脱・キャンセル → 戦闘 → 勝利）PC
+  OK  ［戦士：鉄の鎧＋鋼の剣］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
+  OK  ［狩人：短弓］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
+  OK  ［盗賊：短剣＋革の鎧］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
+  OK  ［魔法使い：樫の杖］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
+  OK  ［魔法使い：杖をはずす（装備なし）］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
+結果 pixel ui mage pc：OK 44 / NG 0
+=== ブラウザ v9.8.8 主人公の魔法使い スマホ縦（390×664）
+  OK  ［戦士：鉄の鎧＋鋼の剣］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
+  OK  ［狩人：短弓］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
+  OK  ［盗賊：短剣＋革の鎧］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
+  OK  ［魔法使い：樫の杖］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
+  OK  ［魔法使い：杖をはずす（装備なし）］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
+結果 pixel ui mage phone：OK 44 / NG 0
 === ブラウザ 別のサイト pixel 3d cors
 結果 xorigin pixel 3d cors：OK 5 / NG 0
 === ブラウザ 別のサイト pixel 3d nocors
@@ -162,17 +176,24 @@ ui_phone_victory_sheet.jpg (1566, 434)
 pixel_front_back_sheet.png (5298, 1534)
 compare_comp_pc.jpg (2237, 5058)
 compare_comp_phone.jpg (2436, 3298)
-pixel_comp_sets_hero.jpg (6326, 1824)
+pixel_comp_sets_hero.jpg (8270, 1824)
 pixel_comp_sets_lina.jpg (3692, 2142)
 pixel_comp_sets_gald.jpg (4978, 2188)
-compare_knight_pc.jpg (2279, 5058)
+compare_knight_pc.jpg (2277, 5058)
 compare_knight_phone.jpg (2463, 3298)
 pixel_comp_sets_kyle.jpg (5160, 2222)
 pixel_comp_sets_kazuto.jpg (6290, 2172)
 compare_mina_pc.jpg (2056, 3204)
 compare_mina_phone.jpg (2328, 2104)
 pixel_comp_sets_mina.jpg (3764, 2228)
-compare_herojob_pc.jpg (1982, 4440)
+compare_herojob_pc.jpg (1980, 4440)
 compare_herojob_phone.jpg (2272, 2900)
+compare_mage_pc.jpg (1982, 3204)
+compare_mage_phone.jpg (2270, 2104)
+lineup_mage_pc_css.png (1135, 441)
+lineup_mage_pc_x2.png (1520, 747)
+lineup_mage_phone_css.png (1135, 378)
+lineup_mage_phone_x2.png (1520, 622)
+pixel_comp_sets_hero.jpg (8270, 1824)
 --- まとめ
 NG・失敗の行：0
