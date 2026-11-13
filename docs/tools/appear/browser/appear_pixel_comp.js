@@ -20,7 +20,7 @@ const SETS = {
     { key: 'nopart', name: '法衣＋こん棒＋羽根帽子＋盾（部品のない品）', eq: { armor: 'robe_skip', weapon: 'club', head: 'feather_hat', shield: 'wooden_shield' } }],
   gald: [{ key: 'plain', name: '装備なし', eq: {} }, { key: 'heavy', name: '重鎧＋斧', eq: { armor: 'iron_armor', weapon: 'battle_axe' } }, { key: 'sword', name: '重鎧＋剣と盾', eq: { armor: 'iron_armor', weapon: 'steel_sword', shield: 'iron_shield' } },
     { key: 'unarmed', name: '重鎧＋盾（武器をはずす）', eq: { armor: 'iron_armor', shield: 'iron_shield' } }, { key: 'knight', name: '騎士の鎧・剣・盾（色のある品）', eq: { armor: 'knight_armor', weapon: 'knight_sword', shield: 'knight_shield' } },
-    { key: 'light', name: '革の鎧（軽装）＋手斧', eq: { armor: 'leather_armor', weapon: 'hand_axe' } }, { key: 'nopart', name: '重鎧＋こん棒＋兜（部品のない品。v9.8.9 から槍は描くので、こん棒に替えた）', eq: { armor: 'iron_armor', weapon: 'club', head: 'iron_helm' } }],
+    { key: 'light', name: '革の鎧（軽装）＋手斧', eq: { armor: 'leather_armor', weapon: 'hand_axe' } }, { key: 'nopart', name: '重鎧＋兜（部品のない品。v9.8.9 から槍は描き、戦士の武器はどれも描くので、武器は外した）', eq: { armor: 'iron_armor', head: 'iron_helm' } }],
   // v9.8.2 カイル（騎士：剣・槍）・カズト（戦士：剣・斧・槍）。2 番目（sword）が元の絵の装い
   kyle: [{ key: 'plain', name: '装備なし', eq: {} }, { key: 'sword', name: '重鎧＋剣と盾', eq: { armor: 'iron_armor', weapon: 'steel_sword', shield: 'iron_shield' } }, { key: 'spear', name: '重鎧＋槍と盾（剣から持ち替え）', eq: { armor: 'iron_armor', weapon: 'iron_spear', shield: 'iron_shield' } },
     { key: 'unarmed', name: '重鎧＋盾（武器をはずす）', eq: { armor: 'iron_armor', shield: 'iron_shield' } }, { key: 'knight', name: '騎士の鎧・剣・盾（色のある品）', eq: { armor: 'knight_armor', weapon: 'knight_sword', shield: 'knight_shield' } },
@@ -74,7 +74,7 @@ const WEAPON = { lina: ['weapon_staff_f', 'weapon_staff_t'], gald: ['weapon_axe'
     }
     const ms = SETS[id].map((s) => rec[id].menu[s.key]); const near = (a, b, t) => Math.abs(a - b) <= t;
     S(ms.every((m) => near(m.bottom, ms[0].bottom, 1) && near(m.cx, ms[0].cx, 1) && near(m.px, ms[0].px, 0.005)), `${id}：なかまの画面の足もと・左右の中心・1 ドットの大きさが ${ms.length} つとも同じ（${ms[0].bottom}/${ms[0].cx}/${ms[0].px}）`);
-    const np = rec[id].menu.nopart; const nps = id === 'lina' ? ['club', 'feather_hat', 'wooden_shield'] : id === 'gald' ? ['club', 'iron_helm'] : id === 'mina' ? ['leather_cap'] : [];
+    const np = rec[id].menu.nopart; const nps = id === 'lina' ? ['club', 'feather_hat', 'wooden_shield'] : id === 'gald' ? ['iron_helm'] : id === 'mina' ? ['leather_cap'] : [];
     S(np.st === 'ok' && nps.every((x) => (np.skipped || '').indexOf(x) >= 0) && (id === 'mina' ? np.parts === 'base_plain' : /armor_/.test(np.parts)) && !/weapon_/.test(np.parts), `${id}：部品のない品は部位ごと（${nps.join('・')} は描かない。鎧は着替える：${np.parts}）`);
     if (id === 'gald') { const m1 = rec[id].menu.heavy, m2 = rec[id].menu.sword, m3 = rec[id].menu.unarmed;
       S(/armor_shape_f/.test(m1.parts) && /weapon_axe/.test(m1.parts) && /armor_shape_f/.test(m2.parts) && /shield_t shield_f weapon_sword hand$/.test(m2.parts) && /armor_shape_f shield_t shield_f$/.test(m3.parts), `ガルド：斧から剣と盾に替えても重鎧はそのまま（${m2.parts}）。武器をはずすと手ぶら（${m3.parts}）`); }

@@ -26,7 +26,7 @@
   },
   {
    "ok": true,
-   "m": "［戦士：鉄の鎧＋鋼の剣］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain armor_shape_f weapon_sword）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×119.9（CSS の画素）"
+   "m": "［戦士：鉄の鎧＋鋼の剣］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain armor_shape_f weapon_sword）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×121.2（CSS の画素）"
   },
   {
    "ok": true,
@@ -66,7 +66,7 @@
   },
   {
    "ok": true,
-   "m": "［狩人：短弓］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain outfit_hunter weapon_bow hand）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×121.2（CSS の画素）"
+   "m": "［狩人：短弓］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain outfit_hunter weapon_bow hand）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×119.9（CSS の画素）"
   },
   {
    "ok": true,
@@ -94,7 +94,7 @@
   },
   {
    "ok": true,
-   "m": "［盗賊：短剣＋革の鎧］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain outfit_thief armor_shape_f armor_light_t weapon_dagger hand）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×119.9（CSS の画素）"
+   "m": "［盗賊：短剣＋革の鎧］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain outfit_thief armor_shape_f armor_light_t weapon_dagger hand）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×121.2（CSS の画素）"
   },
   {
    "ok": true,
@@ -126,7 +126,7 @@
   },
   {
    "ok": true,
-   "m": "［魔法使い：樫の杖］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×119.9（CSS の画素）"
+   "m": "［魔法使い：樫の杖］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×121.2（CSS の画素）"
   },
   {
    "ok": true,
@@ -150,7 +150,7 @@
   },
   {
    "ok": true,
-   "m": "［魔法使い：杖をはずす（装備なし）］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f）。戦闘の大きさ：背面 99×121.2・勝利の正面 88.6×121.2（CSS の画素）"
+   "m": "［魔法使い：杖をはずす（装備なし）］戦闘のあとフィールドへ戻り、なかまの画面も戦闘の前と同じ（base_plain jf_capeup_t jf_cloth_t armor_robe_t armor_robe_f jf_sleeve_t jf_sleeve_f）。戦闘の大きさ：背面 99×121.2・勝利の正面 87.3×119.9（CSS の画素）"
   },
   {
    "ok": true,
@@ -277,7 +277,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 438.6,
+      "x": 439.9,
       "y": 348.1,
       "w": 99,
       "h": 121.2
@@ -307,10 +307,10 @@
     },
     "vrects": {
      "hero": {
-      "x": 436,
-      "y": 342.8,
+      "x": 434.7,
+      "y": 337.6,
       "w": 87.3,
-      "h": 119.9
+      "h": 121.2
      }
     },
     "vpx": {
@@ -332,10 +332,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 336,
       "rect": {
-       "x": 436,
-       "y": 334,
+       "x": 435,
+       "y": 336,
        "w": 87,
        "h": 121
       }
@@ -356,7 +356,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 456.9,
+      "x": 450.4,
       "y": 340.2,
       "w": 87.3,
       "h": 119.9
@@ -599,9 +599,9 @@
     "vrects": {
      "hero": {
       "x": 433.4,
-      "y": 340.2,
+      "y": 344.1,
       "w": 87.3,
-      "h": 121.2
+      "h": 119.9
      }
     },
     "vpx": {
@@ -623,10 +623,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 336,
+      "fullTop": 335,
       "rect": {
        "x": 435,
-       "y": 336,
+       "y": 335,
        "w": 87,
        "h": 121
       }
@@ -647,7 +647,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 450.4,
+      "x": 449.1,
       "y": 340.2,
       "w": 87.3,
       "h": 119.9
@@ -798,7 +798,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 441.2,
+      "x": 439.9,
       "y": 348.1,
       "w": 99,
       "h": 121.2
@@ -829,9 +829,9 @@
     "vrects": {
      "hero": {
       "x": 433.4,
-      "y": 344.1,
+      "y": 340.2,
       "w": 87.3,
-      "h": 119.9
+      "h": 121.2
      }
     },
     "vpx": {
@@ -855,7 +855,7 @@
       "fullCovered": 0,
       "fullTop": 335,
       "rect": {
-       "x": 433,
+       "x": 435,
        "y": 335,
        "w": 87,
        "h": 121
@@ -1094,7 +1094,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 438.6,
+      "x": 437.3,
       "y": 348.1,
       "w": 99,
       "h": 121.2
@@ -1124,10 +1124,10 @@
     },
     "vrects": {
      "hero": {
-      "x": 436,
-      "y": 341.5,
+      "x": 434.7,
+      "y": 335,
       "w": 87.3,
-      "h": 119.9
+      "h": 121.2
      }
     },
     "vpx": {
@@ -1149,10 +1149,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 335,
+      "fullTop": 338,
       "rect": {
        "x": 436,
-       "y": 335,
+       "y": 338,
        "w": 87,
        "h": 121
       }
@@ -1173,7 +1173,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 454.3,
+      "x": 451.7,
       "y": 340.2,
       "w": 87.3,
       "h": 119.9
@@ -1323,7 +1323,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 439.9,
+      "x": 437.3,
       "y": 348.1,
       "w": 99,
       "h": 121.2
@@ -1353,10 +1353,10 @@
     },
     "vrects": {
      "hero": {
-      "x": 434.7,
-      "y": 329.8,
-      "w": 88.6,
-      "h": 121.2
+      "x": 436,
+      "y": 344.1,
+      "w": 87.3,
+      "h": 119.9
      }
     },
     "vpx": {
@@ -1378,10 +1378,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 336,
+      "fullTop": 334,
       "rect": {
        "x": 436,
-       "y": 336,
+       "y": 334,
        "w": 87,
        "h": 121
       }
@@ -1402,7 +1402,7 @@
     },
     "vrects2": {
      "hero": {
-      "x": 456.9,
+      "x": 453,
       "y": 340.2,
       "w": 87.3,
       "h": 119.9

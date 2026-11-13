@@ -70,7 +70,7 @@
   },
   {
    "ok": true,
-   "m": "ローブの品を着ると、袖・胴はローブの品（armor_robe・armor_robe:over）で描き、職業の服の袖は描かない（重ね方 outfit:mage,armor_robe,weapon_staff,armor_robe:over,outfit:mage:over）"
+   "m": "ローブの品を着ると、袖・胴はローブの品（armor_robe・armor_robe:over）で描き、職業の服の袖は描かない（重ね方 outfit:mage,armor_robe,weapon_staff,armor_robe:over）"
   },
   {
    "ok": true,
@@ -345,16 +345,16 @@
     },
     "vrects": {
      "hero": {
-      "x": 171.2,
-      "y": 327.2,
+      "x": 170.6,
+      "y": 318.7,
       "w": 64.6,
-      "h": 89.6
+      "h": 90.2
      },
      "kyle": {
       "x": 245.6,
-      "y": 322.4,
-      "w": 85.9,
-      "h": 94.5
+      "y": 313.8,
+      "w": 86.5,
+      "h": 95.1
      }
     },
     "vpx": {
@@ -376,24 +376,24 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 326,
       "rect": {
        "x": 171,
-       "y": 331,
+       "y": 326,
        "w": 65,
-       "h": 89
+       "h": 90
       }
      },
      "kyle": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 327,
+      "fullTop": 321,
       "rect": {
        "x": 246,
-       "y": 327,
+       "y": 321,
        "w": 86,
-       "h": 94
+       "h": 95
       }
      }
     },
@@ -741,7 +741,7 @@
      },
      "kyle": {
       "x": 245.6,
-      "y": 324.2,
+      "y": 323.6,
       "w": 85.9,
       "h": 94.5
      }
@@ -765,10 +765,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 324,
+      "fullTop": 328,
       "rect": {
        "x": 171,
-       "y": 324,
+       "y": 328,
        "w": 65,
        "h": 90
       }
@@ -777,12 +777,12 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 319,
+      "fullTop": 323,
       "rect": {
        "x": 246,
-       "y": 319,
-       "w": 87,
-       "h": 95
+       "y": 324,
+       "w": 86,
+       "h": 94
       }
      }
     },
@@ -1124,15 +1124,15 @@
     "vrects": {
      "hero": {
       "x": 171.2,
-      "y": 327.8,
+      "y": 324.8,
       "w": 64.6,
       "h": 89.6
      },
      "kyle": {
       "x": 245.6,
-      "y": 323.6,
-      "w": 85.9,
-      "h": 94.5
+      "y": 319.9,
+      "w": 86.5,
+      "h": 95.1
      }
     },
     "vpx": {
@@ -1154,10 +1154,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 327,
+      "fullTop": 330,
       "rect": {
        "x": 171,
-       "y": 327,
+       "y": 330,
        "w": 65,
        "h": 90
       }
@@ -1166,10 +1166,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 322,
+      "fullTop": 325,
       "rect": {
        "x": 246,
-       "y": 322,
+       "y": 325,
        "w": 86,
        "h": 94
       }
