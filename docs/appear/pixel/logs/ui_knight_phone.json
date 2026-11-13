@@ -334,11 +334,11 @@
   },
   {
    "ok": true,
-   "m": "レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜307px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 318px）"
+   "m": "レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜304px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 320px）"
   },
   {
    "ok": true,
-   "m": "レベルアップの勝利：「次へ」は窓の中に見え、詳細はスクロールできる（詳細の欄 125px／中身 240px・つづきの印 true）"
+   "m": "レベルアップの勝利：「次へ」は窓の中に見え、詳細はスクロールできる（詳細の欄 122px／中身 240px・つづきの印 true）"
   },
   {
    "ok": true,
@@ -609,20 +609,20 @@
     "vrects": {
      "hero": {
       "x": 133.5,
-      "y": 322.4,
+      "y": 324.8,
       "w": 64,
       "h": 86.5
      },
      "kyle": {
       "x": 200.5,
-      "y": 320.5,
+      "y": 323,
       "w": 84.1,
       "h": 92.6
      },
      "kazuto": {
       "x": 273,
-      "y": 315.7,
-      "w": 100.5,
+      "y": 318.1,
+      "w": 99.9,
       "h": 94.5
      }
     },
@@ -640,10 +640,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 327,
+      "fullTop": 328,
       "rect": {
        "x": 133,
-       "y": 327,
+       "y": 328,
        "w": 64,
        "h": 87
       }
@@ -652,22 +652,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 325,
+      "fullTop": 327,
       "rect": {
        "x": 200,
-       "y": 325,
+       "y": 327,
        "w": 84,
-       "h": 93
+       "h": 92
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 320,
+      "fullTop": 322,
       "rect": {
        "x": 273,
-       "y": 320,
+       "y": 322,
        "w": 100,
        "h": 94
       }
@@ -1092,21 +1092,21 @@
     "vrects": {
      "hero": {
       "x": 133.5,
-      "y": 323.6,
+      "y": 330.3,
       "w": 64,
       "h": 86.5
      },
      "kyle": {
       "x": 200.5,
-      "y": 321.8,
+      "y": 328.5,
       "w": 84.1,
-      "h": 92.6
+      "h": 92
      },
      "kazuto": {
       "x": 273,
-      "y": 316.9,
+      "y": 323.6,
       "w": 99.9,
-      "h": 94.5
+      "h": 93.8
      }
     },
     "cover": {
@@ -1123,10 +1123,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 328,
+      "fullTop": 327,
       "rect": {
        "x": 133,
-       "y": 328,
+       "y": 327,
        "w": 64,
        "h": 87
       }
@@ -1135,22 +1135,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 327,
+      "fullTop": 325,
       "rect": {
        "x": 200,
-       "y": 327,
+       "y": 325,
        "w": 84,
-       "h": 92
+       "h": 93
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 322,
+      "fullTop": 320,
       "rect": {
        "x": 273,
-       "y": 322,
+       "y": 320,
        "w": 100,
        "h": 94
       }
@@ -1572,19 +1572,19 @@
     "vrects": {
      "hero": {
       "x": 133.5,
-      "y": 325.4,
+      "y": 327.2,
       "w": 64,
       "h": 86.5
      },
      "kyle": {
       "x": 200.5,
-      "y": 323.6,
+      "y": 325.4,
       "w": 84.1,
       "h": 92.6
      },
      "kazuto": {
       "x": 273,
-      "y": 318.7,
+      "y": 320.5,
       "w": 99.9,
       "h": 94.5
      }
@@ -1603,10 +1603,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 329,
+      "fullTop": 325,
       "rect": {
        "x": 133,
-       "y": 329,
+       "y": 325,
        "w": 64,
        "h": 87
       }
@@ -1615,22 +1615,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 327,
+      "fullTop": 323,
       "rect": {
        "x": 200,
-       "y": 327,
+       "y": 323,
        "w": 84,
-       "h": 92
+       "h": 93
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 322,
+      "fullTop": 318,
       "rect": {
        "x": 273,
-       "y": 322,
+       "y": 318,
        "w": 100,
        "h": 94
       }
@@ -2036,20 +2036,20 @@
     "vrects": {
      "hero": {
       "x": 133.5,
-      "y": 326,
+      "y": 322.4,
       "w": 64,
       "h": 86.5
      },
      "kyle": {
       "x": 200.5,
-      "y": 324.2,
+      "y": 320.5,
       "w": 84.1,
       "h": 92.6
      },
      "kazuto": {
       "x": 273,
-      "y": 318.7,
-      "w": 99.9,
+      "y": 315,
+      "w": 100.5,
       "h": 94.5
      }
     },
@@ -2067,34 +2067,34 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 326,
       "rect": {
-       "x": 134,
-       "y": 331,
+       "x": 133,
+       "y": 326,
        "w": 64,
-       "h": 86
+       "h": 87
       }
      },
      "kyle": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 329,
+      "fullTop": 324,
       "rect": {
        "x": 200,
-       "y": 329,
+       "y": 324,
        "w": 84,
-       "h": 92
+       "h": 93
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 324,
+      "fullTop": 319,
       "rect": {
        "x": 273,
-       "y": 324,
+       "y": 319,
        "w": 100,
        "h": 94
       }
@@ -2518,21 +2518,21 @@
     "vrects": {
      "hero": {
       "x": 133.5,
-      "y": 326,
+      "y": 327.8,
       "w": 64,
       "h": 86.5
      },
      "kyle": {
       "x": 200.5,
-      "y": 324.2,
+      "y": 326,
       "w": 84.1,
-      "h": 92.6
+      "h": 92
      },
      "kazuto": {
       "x": 273,
-      "y": 319.3,
+      "y": 321.1,
       "w": 99.9,
-      "h": 94.5
+      "h": 93.8
      }
     },
     "cover": {
@@ -2549,10 +2549,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 324,
+      "fullTop": 330,
       "rect": {
        "x": 133,
-       "y": 324,
+       "y": 330,
        "w": 64,
        "h": 87
       }
@@ -2561,22 +2561,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 325,
+      "fullTop": 332,
       "rect": {
        "x": 200,
-       "y": 322,
+       "y": 328,
        "w": 84,
-       "h": 93
+       "h": 92
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 318,
+      "fullTop": 324,
       "rect": {
        "x": 273,
-       "y": 317,
+       "y": 324,
        "w": 100,
        "h": 94
       }
@@ -2992,21 +2992,21 @@
     "vrects": {
      "hero": {
       "x": 133.5,
-      "y": 323.6,
+      "y": 330.3,
       "w": 64,
       "h": 86.5
      },
      "kyle": {
       "x": 200.5,
-      "y": 321.8,
+      "y": 328.5,
       "w": 84.1,
-      "h": 92.6
+      "h": 92
      },
      "kazuto": {
       "x": 273,
-      "y": 316.9,
+      "y": 323.6,
       "w": 99.9,
-      "h": 94.5
+      "h": 93.8
      }
     },
     "cover": {
@@ -3016,17 +3016,17 @@
        "x": 12,
        "y": 4,
        "w": 367,
-       "h": 303
+       "h": 300
       }
      ],
      "hero": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 324,
+      "fullTop": 326,
       "rect": {
        "x": 133,
-       "y": 324,
+       "y": 326,
        "w": 64,
        "h": 87
       }
@@ -3035,10 +3035,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 324,
+      "fullTop": 327,
       "rect": {
        "x": 200,
-       "y": 322,
+       "y": 324,
        "w": 84,
        "h": 93
       }
@@ -3047,10 +3047,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 318,
+      "fullTop": 320,
       "rect": {
        "x": 273,
-       "y": 317,
+       "y": 319,
        "w": 100,
        "h": 94
       }
@@ -3059,16 +3059,16 @@
     "panel": {
      "cls": "rw-panel result-victory rs-top rs-detail rs-more",
      "top": 4,
-     "bottom": 307,
-     "h": 303,
+     "bottom": 304,
+     "h": 300,
      "scroll": {
-      "h": 125,
+      "h": 122,
       "all": 240,
       "can": true
      },
      "close": {
-      "top": 254,
-      "bottom": 298,
+      "top": 251,
+      "bottom": 295,
       "in": true
      },
      "more": true

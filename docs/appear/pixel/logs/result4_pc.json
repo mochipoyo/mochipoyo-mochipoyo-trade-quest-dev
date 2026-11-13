@@ -1,6 +1,6 @@
 {
  "VIEW": "pc",
- "ok": 14,
+ "ok": 18,
  "ng": 0,
  "steps": [
   {
@@ -13,11 +13,11 @@
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 12〜247px。主人公 上端 325px（すき間 77px・重なり 0%）・カイル 上端 342px（すき間 94px・重なり 0%）・カズト 上端 335px（すき間 88px・重なり 0%）・リーナ 上端 338px（すき間 90px・重なり 0%）"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 12〜247px。主人公 上端 325px（すき間 77px・重なり 0%）・カイル 上端 342px（すき間 94px・重なり 0%）・カズト 上端 336px（すき間 89px・重なり 0%）・リーナ 上端 339px（すき間 91px・重なり 0%）"
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］人物（装備の先まで）が 3D の画面の外へ見切れない（画面 92〜926×8〜550。主人公 302〜394×325〜461・カイル 400〜521×342〜467・カズト 514〜643×335〜467・リーナ 628〜733×338〜460）"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］人物（装備の先まで）が 3D の画面の外へ見切れない（画面 92〜926×8〜550。主人公 304〜397×325〜461・カイル 401〜522×342〜467・カズト 516〜645×336〜468・リーナ 629〜734×339〜461）"
   },
   {
    "ok": true,
@@ -33,15 +33,15 @@
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail）。仲間の行 4・レベルアップ 4 人"
+   "m": "［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more）。仲間の行 4・レベルアップ 4 人"
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 12〜300px。主人公 上端 325px（すき間 25px・重なり 0%）・カイル 上端 342px（すき間 42px・重なり 0%）・カズト 上端 335px（すき間 35px・重なり 0%）・リーナ 上端 338px（すき間 38px・重なり 0%）"
+   "m": "［4 人ともレベルアップ］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 12〜300px。主人公 上端 323px（すき間 23px・重なり 0%）・カイル 上端 340px（すき間 40px・重なり 0%）・カズト 上端 335px（すき間 35px・重なり 0%）・リーナ 上端 338px（すき間 38px・重なり 0%）"
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］人物（装備の先まで）が 3D の画面の外へ見切れない（画面 92〜926×8〜550。主人公 303〜396×325〜461・カイル 400〜521×342〜467・カズト 514〜643×335〜467・リーナ 628〜733×338〜460）"
+   "m": "［4 人ともレベルアップ］人物（装備の先まで）が 3D の画面の外へ見切れない（画面 92〜926×8〜550。主人公 299〜392×323〜460・カイル 397〜518×340〜465・カズト 512〜641×335〜467・リーナ 625〜731×338〜460）"
   },
   {
    "ok": true,
@@ -49,7 +49,23 @@
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］詳細は欄に全部入る（欄 180px／中身 180px）→ スクロール不要・「つづきあり」の印なし"
+   "m": "［4 人ともレベルアップ］詳細が欄に入りきらない（欄 164px／中身 212px）→「つづきあり」の印が出る"
+  },
+  {
+   "ok": true,
+   "m": "［4 人ともレベルアップ］マウスのホイールで詳細がスクロールする（位置 0 → 32）"
+  },
+  {
+   "ok": true,
+   "m": "［4 人ともレベルアップ］↓ キーでいちばん下まで行ける（位置 32＋欄 180＝中身 212）。いちばん下では「つづきあり」の印が消える"
+  },
+  {
+   "ok": true,
+   "m": "［4 人ともレベルアップ］↑ キーでいちばん上へ戻れる（位置 0）"
+  },
+  {
+   "ok": true,
+   "m": "［4 人ともレベルアップ］スクロールしても窓は閉じず、人物に重ならないまま"
   },
   {
    "ok": true,
@@ -102,8 +118,8 @@
      "hero": {
       "top": 325,
       "bottom": 461,
-      "left": 302,
-      "right": 394,
+      "left": 304,
+      "right": 397,
       "covered": 0,
       "gap": 77,
       "clip": false,
@@ -113,8 +129,8 @@
      "kyle": {
       "top": 342,
       "bottom": 467,
-      "left": 400,
-      "right": 521,
+      "left": 401,
+      "right": 522,
       "covered": 0,
       "gap": 94,
       "clip": false,
@@ -122,23 +138,23 @@
       "ea": true
      },
      "kazuto": {
-      "top": 335,
-      "bottom": 467,
-      "left": 514,
-      "right": 643,
+      "top": 336,
+      "bottom": 468,
+      "left": 516,
+      "right": 645,
       "covered": 0,
-      "gap": 88,
+      "gap": 89,
       "clip": false,
       "front": true,
       "ea": true
      },
      "lina": {
-      "top": 338,
-      "bottom": 460,
-      "left": 628,
-      "right": 733,
+      "top": 339,
+      "bottom": 461,
+      "left": 629,
+      "right": 734,
       "covered": 0,
-      "gap": 90,
+      "gap": 91,
       "clip": false,
       "front": true,
       "ea": true
@@ -184,8 +200,8 @@
      "hero": {
       "top": 325,
       "bottom": 461,
-      "left": 302,
-      "right": 394,
+      "left": 304,
+      "right": 397,
       "covered": 0,
       "gap": 77,
       "clip": false,
@@ -195,8 +211,8 @@
      "kyle": {
       "top": 342,
       "bottom": 467,
-      "left": 400,
-      "right": 521,
+      "left": 401,
+      "right": 522,
       "covered": 0,
       "gap": 94,
       "clip": false,
@@ -204,23 +220,23 @@
       "ea": true
      },
      "kazuto": {
-      "top": 335,
-      "bottom": 467,
-      "left": 514,
-      "right": 643,
+      "top": 336,
+      "bottom": 468,
+      "left": 516,
+      "right": 645,
       "covered": 0,
-      "gap": 88,
+      "gap": 89,
       "clip": false,
       "front": true,
       "ea": true
      },
      "lina": {
-      "top": 338,
-      "bottom": 460,
-      "left": 628,
-      "right": 733,
+      "top": 339,
+      "bottom": 461,
+      "left": 629,
+      "right": 734,
       "covered": 0,
-      "gap": 90,
+      "gap": 91,
       "clip": false,
       "front": true,
       "ea": true
@@ -266,8 +282,8 @@
      "hero": {
       "top": 325,
       "bottom": 461,
-      "left": 302,
-      "right": 394,
+      "left": 304,
+      "right": 397,
       "covered": 0,
       "gap": 77,
       "clip": false,
@@ -277,8 +293,8 @@
      "kyle": {
       "top": 342,
       "bottom": 467,
-      "left": 400,
-      "right": 521,
+      "left": 401,
+      "right": 522,
       "covered": 0,
       "gap": 94,
       "clip": false,
@@ -286,23 +302,23 @@
       "ea": true
      },
      "kazuto": {
-      "top": 335,
-      "bottom": 467,
-      "left": 514,
-      "right": 643,
+      "top": 336,
+      "bottom": 468,
+      "left": 516,
+      "right": 645,
       "covered": 0,
-      "gap": 88,
+      "gap": 89,
       "clip": false,
       "front": true,
       "ea": true
      },
      "lina": {
-      "top": 338,
-      "bottom": 460,
-      "left": 628,
-      "right": 733,
+      "top": 339,
+      "bottom": 461,
+      "left": 629,
+      "right": 734,
       "covered": 0,
-      "gap": 90,
+      "gap": 91,
       "clip": false,
       "front": true,
       "ea": true
@@ -348,8 +364,8 @@
      "hero": {
       "top": 325,
       "bottom": 461,
-      "left": 302,
-      "right": 394,
+      "left": 304,
+      "right": 397,
       "covered": 0,
       "gap": 77,
       "clip": false,
@@ -359,8 +375,8 @@
      "kyle": {
       "top": 342,
       "bottom": 467,
-      "left": 400,
-      "right": 521,
+      "left": 401,
+      "right": 522,
       "covered": 0,
       "gap": 94,
       "clip": false,
@@ -368,23 +384,23 @@
       "ea": true
      },
      "kazuto": {
-      "top": 335,
-      "bottom": 467,
-      "left": 514,
-      "right": 643,
+      "top": 336,
+      "bottom": 468,
+      "left": 516,
+      "right": 645,
       "covered": 0,
-      "gap": 88,
+      "gap": 89,
       "clip": false,
       "front": true,
       "ea": true
      },
      "lina": {
-      "top": 338,
-      "bottom": 460,
-      "left": 628,
-      "right": 733,
+      "top": 339,
+      "bottom": 461,
+      "left": 629,
+      "right": 734,
       "covered": 0,
-      "gap": 90,
+      "gap": 91,
       "clip": false,
       "front": true,
       "ea": true
@@ -399,7 +415,7 @@
   "all": {
    "name": "4 人ともレベルアップ",
    "first": {
-    "cls": "rw-panel result-victory rs-top rs-detail",
+    "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 12,
     "bottom": 300,
     "left": 117,
@@ -414,44 +430,44 @@
     },
     "scroll": {
      "top": 0,
-     "h": 180,
-     "all": 180,
+     "h": 164,
+     "all": 212,
      "x": 509,
-     "y": 166,
+     "y": 158,
      "yTop": 76,
-     "yBot": 256
+     "yBot": 241
     },
     "close": {
      "x": 509,
-     "y": 275,
+     "y": 276,
      "top": 260,
      "bottom": 291,
      "h": 31,
      "in": true
     },
-    "more": false,
-    "hint": false,
+    "more": true,
+    "hint": true,
     "ups": 4,
     "members": 4,
     "who": {
      "hero": {
-      "top": 325,
-      "bottom": 461,
-      "left": 303,
-      "right": 396,
+      "top": 323,
+      "bottom": 460,
+      "left": 299,
+      "right": 392,
       "covered": 0,
-      "gap": 25,
+      "gap": 23,
       "clip": false,
       "front": true,
       "ea": true
      },
      "kyle": {
-      "top": 342,
-      "bottom": 467,
-      "left": 400,
-      "right": 521,
+      "top": 340,
+      "bottom": 465,
+      "left": 397,
+      "right": 518,
       "covered": 0,
-      "gap": 42,
+      "gap": 40,
       "clip": false,
       "front": true,
       "ea": true
@@ -459,8 +475,8 @@
      "kazuto": {
       "top": 335,
       "bottom": 467,
-      "left": 514,
-      "right": 643,
+      "left": 512,
+      "right": 641,
       "covered": 0,
       "gap": 35,
       "clip": false,
@@ -470,8 +486,8 @@
      "lina": {
       "top": 338,
       "bottom": 460,
-      "left": 628,
-      "right": 733,
+      "left": 625,
+      "right": 731,
       "covered": 0,
       "gap": 38,
       "clip": false,
@@ -495,9 +511,9 @@
      "right": 926
     },
     "scroll": {
-     "top": 0,
+     "top": 32,
      "h": 180,
-     "all": 180,
+     "all": 212,
      "x": 509,
      "y": 166,
      "yTop": 76,
@@ -505,7 +521,7 @@
     },
     "close": {
      "x": 509,
-     "y": 275,
+     "y": 276,
      "top": 260,
      "bottom": 291,
      "h": 31,
@@ -517,45 +533,45 @@
     "members": 4,
     "who": {
      "hero": {
-      "top": 325,
-      "bottom": 461,
-      "left": 303,
-      "right": 396,
+      "top": 329,
+      "bottom": 465,
+      "left": 317,
+      "right": 409,
       "covered": 0,
-      "gap": 25,
+      "gap": 29,
       "clip": false,
       "front": true,
       "ea": true
      },
      "kyle": {
-      "top": 342,
-      "bottom": 467,
-      "left": 400,
-      "right": 521,
+      "top": 345,
+      "bottom": 471,
+      "left": 415,
+      "right": 535,
       "covered": 0,
-      "gap": 42,
+      "gap": 45,
       "clip": false,
       "front": true,
       "ea": true
      },
      "kazuto": {
-      "top": 335,
-      "bottom": 467,
-      "left": 514,
-      "right": 643,
+      "top": 339,
+      "bottom": 471,
+      "left": 530,
+      "right": 659,
       "covered": 0,
-      "gap": 35,
+      "gap": 39,
       "clip": false,
       "front": true,
       "ea": true
      },
      "lina": {
-      "top": 338,
-      "bottom": 460,
-      "left": 628,
-      "right": 733,
+      "top": 342,
+      "bottom": 464,
+      "left": 642,
+      "right": 747,
       "covered": 0,
-      "gap": 38,
+      "gap": 42,
       "clip": false,
       "front": true,
       "ea": true
@@ -577,9 +593,9 @@
      "right": 926
     },
     "scroll": {
-     "top": 0,
+     "top": 32,
      "h": 180,
-     "all": 180,
+     "all": 212,
      "x": 509,
      "y": 166,
      "yTop": 76,
@@ -587,7 +603,7 @@
     },
     "close": {
      "x": 509,
-     "y": 275,
+     "y": 276,
      "top": 260,
      "bottom": 291,
      "h": 31,
@@ -599,45 +615,45 @@
     "members": 4,
     "who": {
      "hero": {
-      "top": 325,
-      "bottom": 461,
-      "left": 303,
-      "right": 396,
+      "top": 329,
+      "bottom": 465,
+      "left": 306,
+      "right": 398,
       "covered": 0,
-      "gap": 25,
+      "gap": 29,
       "clip": false,
       "front": true,
       "ea": true
      },
      "kyle": {
-      "top": 342,
-      "bottom": 467,
-      "left": 400,
-      "right": 521,
+      "top": 347,
+      "bottom": 472,
+      "left": 402,
+      "right": 522,
       "covered": 0,
-      "gap": 42,
+      "gap": 47,
       "clip": false,
       "front": true,
       "ea": true
      },
      "kazuto": {
-      "top": 335,
-      "bottom": 467,
-      "left": 514,
-      "right": 643,
+      "top": 340,
+      "bottom": 471,
+      "left": 518,
+      "right": 647,
       "covered": 0,
-      "gap": 35,
+      "gap": 40,
       "clip": false,
       "front": true,
       "ea": true
      },
      "lina": {
-      "top": 338,
-      "bottom": 460,
-      "left": 628,
-      "right": 733,
+      "top": 343,
+      "bottom": 465,
+      "left": 630,
+      "right": 736,
       "covered": 0,
-      "gap": 38,
+      "gap": 43,
       "clip": false,
       "front": true,
       "ea": true
@@ -645,7 +661,7 @@
     }
    },
    "back": {
-    "cls": "rw-panel result-victory rs-top rs-detail",
+    "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 12,
     "bottom": 300,
     "left": 117,
@@ -660,66 +676,66 @@
     },
     "scroll": {
      "top": 0,
-     "h": 180,
-     "all": 180,
+     "h": 164,
+     "all": 212,
      "x": 509,
-     "y": 166,
+     "y": 158,
      "yTop": 76,
-     "yBot": 256
+     "yBot": 241
     },
     "close": {
      "x": 509,
-     "y": 275,
+     "y": 276,
      "top": 260,
      "bottom": 291,
      "h": 31,
      "in": true
     },
-    "more": false,
-    "hint": false,
+    "more": true,
+    "hint": true,
     "ups": 4,
     "members": 4,
     "who": {
      "hero": {
-      "top": 325,
-      "bottom": 461,
-      "left": 303,
-      "right": 396,
+      "top": 330,
+      "bottom": 467,
+      "left": 267,
+      "right": 360,
       "covered": 0,
-      "gap": 25,
+      "gap": 30,
       "clip": false,
       "front": true,
       "ea": true
      },
      "kyle": {
+      "top": 347,
+      "bottom": 472,
+      "left": 362,
+      "right": 483,
+      "covered": 0,
+      "gap": 47,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
       "top": 342,
-      "bottom": 467,
-      "left": 400,
-      "right": 521,
+      "bottom": 473,
+      "left": 476,
+      "right": 605,
       "covered": 0,
       "gap": 42,
       "clip": false,
       "front": true,
       "ea": true
      },
-     "kazuto": {
-      "top": 335,
-      "bottom": 467,
-      "left": 514,
-      "right": 643,
-      "covered": 0,
-      "gap": 35,
-      "clip": false,
-      "front": true,
-      "ea": true
-     },
      "lina": {
-      "top": 338,
-      "bottom": 460,
-      "left": 628,
-      "right": 733,
+      "top": 345,
+      "bottom": 468,
+      "left": 591,
+      "right": 695,
       "covered": 0,
-      "gap": 38,
+      "gap": 45,
       "clip": false,
       "front": true,
       "ea": true
