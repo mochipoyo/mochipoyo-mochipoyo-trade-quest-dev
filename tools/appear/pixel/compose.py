@@ -31,22 +31,40 @@ def material(M, actor, view, cls):
     return m if ok else None
 
 
+def job_outfit(M, actor, job):
+    """v9.8.9 ゲームの jobOutfit と同じ：{like: 職業, pal} は同じ形の服を借りて配色だけ変える"""
+    J = M['actors'][actor].get('jobs') or {}
+    if not job or job not in J: return None
+    j = J[job]; n = 0
+    while j and j.get('like') in J and n < 4:
+        b = J[j['like']]; j = dict(b, **{k: v for k, v in j.items() if k not in ('layers', 'over', 'z', 'like')}); j['like'] = b.get('like'); n += 1
+    return j if j and j.get('layers') else None
+
+
 def plan(M, actor, vk, equip, data):
     view = M['actors'][actor]['views'][vk]; mats = []; skipped = []; base = 'base_plain'
     for slot in SLOTS:
         iid = equip.get(slot)
         if not iid: continue
         if slot == 'acc': skipped.append('acc:' + iid); continue
-        rec = data.get(iid); cls = pixel_class(M, slot, rec); m = material(M, actor, view, cls)
+        rec = data.get(iid); cls = pixel_class(M, slot, rec)
+        m = material(M, actor, view, 'item:' + iid) or material(M, actor, view, cls)   # v9.8.9 固有装備の専用差分が先
         if not m: skipped.append(slot + ':' + iid); continue
         if m.get('base'): base = m['base']
         mats.append((m, PV.pal_of(rec)))
+        ov = m.get('over')   # v9.8.9 装備の手前の層（ローブの袖口など）
+        if ov and all(L.get('optional') or L['part'] in view['parts'] for L in ov['layers']): mats.append((ov, PV.pal_of(rec)))
     # v9.8.6 職業の服装（equip の '_job'。ゲームの pixelPlan と同じ：素の絵のすぐ上に重ねる）
-    jo = (M['actors'][actor].get('jobs') or {}).get(equip.get('_job'))
+    jo = job_outfit(M, actor, equip.get('_job'))
+    covered = set(r for m, _ in mats for r in (m.get('covers') or []))   # v9.8.9 装備が覆う部位の服の層は描かない
+    keep = lambda L: not (L.get('region') in covered)
     if jo and all(L.get('optional') or L['part'] in view['parts'] for L in jo['layers']):
-        mats.append((jo, None))
+        jp = dict(jo['pal'], _job=1, _pal2=jo.get('pal2')) if jo.get('pal') else None   # v9.8.9 職業の配色（灰色の層を職業の色で塗る）
+        mats.append((dict(jo, layers=[L for L in jo['layers'] if keep(L)]), jp))
         ov = jo.get('over')   # v9.8.8 職業の服装の手前の層（魔法使いの袖）
-        if ov and all(L.get('optional') or L['part'] in view['parts'] for L in ov['layers']): mats.append((ov, None))
+        if ov and all(L.get('optional') or L['part'] in view['parts'] for L in ov['layers']):
+            ol = [L for L in ov['layers'] if keep(L)]
+            if ol: mats.append((dict(ov, layers=ol), jp))
     mats.sort(key=lambda t: t[0].get('z', 0))
     return view, base, mats, skipped
 
@@ -78,8 +96,10 @@ def compose(M, actor, vk, equip, data):
             if pal is None: put(k, arr); continue
             if L.get('onlyColor') and PV.grayish(pal['main']): continue
             if not L.get('tint'): put(k, arr); continue
+            isjob = '_job' in pal   # v9.8.9 職業の配色（白い服も灰色の品の扱いにしない）
             if L['tint'] == 'orb': ramp = PV.orb_ramp(pal)
-            elif PV.grayish(pal['main']):
+            elif L['tint'] == 'pal2' and pal.get('_pal2'): ramp = PV.ramp_for(pal['_pal2'])
+            elif not isjob and PV.grayish(pal['main']):
                 if L.get('grayKeep'): continue
                 ramp = M['ref'][L['grayRef']] if L.get('grayRef') else PV.ramp_for(pal)
             else: ramp = PV.ramp_for(pal)

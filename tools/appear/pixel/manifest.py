@@ -13,7 +13,7 @@ PLATE_REF = ['#3c3133', '#5e5054', '#837476', '#a89a98', '#e2d8cc']   # 主人�
 IRON_REF = ['#262022', '#40373a', '#615657', '#8b7f7d', '#cbbfb3']    # v9.8 ガルドの重鎧・盾の鉄の色（灰色の品はこの色）
 
 GLOBAL = {
-    'version': 'v9.8.8', 'pad': 48,
+    'version': 'v9.8.9', 'pad': 48,
     'note': '装備の外見（ドット絵の差分）。tools/appear/pixel/build_<人物ID>.py が部品を作り、manifest.py がまとめる。部品の座標は元の絵と同じ（x, y＝左上）',
     'ref': {'plate': PLATE_REF, 'iron': IRON_REF},
     # 部品の種類：装備の枠と形（ITEMS の type。帽子は形の細かい違い sub も）→ 種類。表にない形・その人に部品がない種類は「その部位だけ描かない」
@@ -21,12 +21,13 @@ GLOBAL = {
                 'head': {'helm': 'head_helm', 'hat:witch': 'head_hat', 'hat:cap': 'head_cap'},
                 'weapon': {'sword': 'weapon_sword', 'staff': 'weapon_staff', 'spear': 'weapon_spear', 'axe': 'weapon_axe', 'bow': 'weapon_bow', 'dagger': 'weapon_dagger'},
                 'shield': {'shield': 'shield'}},
+    # v9.8.9 covers＝その装備が覆う部位（職業の服の同じ region の層は描かない）。over＝装備の手前の層
     # 種類ごとの重ね方（主人公の部品の名前）。人ごとに違う重ね方は actors.<人物ID>.materials に書く（こちらより先に使う）
     #   base＝使う素の絵（頭にかぶるとき髪を切った絵）、layers＝重ねる部品（tint＝品の色の段で塗る灰色の層）、hand＝長柄：武器の上に手を描き直す
     'materials': {
-        'armor_light': {'z': 10, 'layers': [{'part': 'armor_shape_f'}, {'part': 'armor_light_t', 'tint': 'main'}]},
-        'armor_heavy': {'z': 10, 'layers': [{'part': 'armor_shape_f'}, {'part': 'armor_heavy_t', 'tint': 'main', 'onlyColor': True}]},
-        'armor_robe': {'z': 10, 'layers': [{'part': 'armor_robe_x', 'erase': True, 'optional': True}, {'part': 'armor_robe_t', 'tint': 'main'}, {'part': 'armor_robe_f'}]},
+        'armor_light': {'z': 10, 'covers': ['body'], 'layers': [{'part': 'armor_shape_f'}, {'part': 'armor_light_t', 'tint': 'main'}]},
+        'armor_heavy': {'z': 10, 'covers': ['body'], 'layers': [{'part': 'armor_shape_f'}, {'part': 'armor_heavy_t', 'tint': 'main', 'onlyColor': True}]},
+        'armor_robe': {'z': 10, 'covers': ['body', 'sleeve'], 'layers': [{'part': 'armor_robe_x', 'erase': True, 'optional': True}, {'part': 'armor_robe_t', 'tint': 'main'}, {'part': 'armor_robe_f'}]},
         'head_helm': {'z': 20, 'base': 'base_helm', 'layers': [{'part': 'head_helm_t', 'tint': 'main', 'grayRef': 'plate'}, {'part': 'head_helm_f'}]},
         'head_hat': {'z': 20, 'base': 'base_hat', 'layers': [{'part': 'head_hat_t', 'tint': 'main'}, {'part': 'head_hat_f'}]},
         'shield': {'z': 30, 'layers': [{'part': 'shield'}]},

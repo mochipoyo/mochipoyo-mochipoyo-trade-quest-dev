@@ -542,6 +542,12 @@
     var ok = m.layers.every(function (L) { return L.optional || own(view.parts, L.part); }) && (!m.base || own(view.parts, m.base)) && (!m.hand || own(view.parts, 'hand'));
     return ok ? m : null;
   }
+  // v9.8.9 職業の服：actors.<人物>.jobs.<職業>。{ like: '<職業>', pal } は同じ形の服を借りて配色だけ変える（通常の職業は系統ごとに形を共有）
+  function jobOutfit(actorId, job) {
+    var M = PX(); var A = M && M.actors && actorId && own(M.actors, actorId) ? M.actors[actorId] : null; if (!A || !A.jobs || !job || !own(A.jobs, job)) return null;
+    var j = A.jobs[job]; var n = 0; while (j && j.like && own(A.jobs, j.like) && n++ < 4) { var b = A.jobs[j.like]; j = Object.assign({}, b, j, { layers: b.layers, over: b.over, z: b.z, like: b.like }); }
+    return j && j.layers ? j : null;
+  }
   var PIX_SLOTS = ['armor', 'head', 'shield', 'weapon', 'acc'];
   // 装備 → 重ね方 { ok, base, mats[{cls, m, layer}], skipped[] } ／ { ok: false, why }
   function pixelPlan(actor, viewKey, layers) {
@@ -553,18 +559,27 @@
       if (slot === 'acc') { skipped.push('acc:' + id); continue; }
       // v9.7.2 部品のない品は「その部位だけ描かない」（ほかの部位はそのまま着替える）。武器なら手は空のまま＝元の絵の剣は戻らない
       if (!L) { skipped.push(slot + ':' + id + '（形が分からない品）'); continue; }
-      var cls = pixelClass(L); var m = materialFor(view, cls, actor && actor.id);
+      var cls = pixelClass(L);
+      // v9.8.9 固有装備の専用差分：対応表の materials['item:<装備ID>']（人ごと → 全員の順）があれば、種類の重ね方より先に使う
+      var mi = materialFor(view, 'item:' + id, actor && actor.id); var m = mi || materialFor(view, cls, actor && actor.id); if (mi) cls = 'item:' + id;
       if (!m) { skipped.push(slot + ':' + id + '（' + (cls || (L.shape + (L.sub && L.sub !== L.shape ? '/' + L.sub : ''))) + ' の部品がない→描かない）'); continue; }
       if (m.base) base = m.base;
       mats.push({ cls: cls, m: m, layer: L });
+      // v9.8.9 装備の手前の層（over：ローブの袖口など。武器・拳より手前）。品の色で塗る
+      if (m.over && m.over.layers.every(function (q) { return q.optional || own(view.parts, q.part); })) mats.push({ cls: cls + ':over', m: m.over, layer: L });
     }
     // v9.8.6 職業の服装（主人公の狩人・盗賊）：対応表の actors.<人物ID>.jobs.<職業> の重ね絵を、素の絵のすぐ上に重ねる（その向きに部品があるときだけ）
-    var MJ = PX(); var AJ = MJ && MJ.actors && actor && own(MJ.actors, actor.id) ? MJ.actors[actor.id] : null; var jo = AJ && AJ.jobs && actor.job && own(AJ.jobs, actor.job) ? AJ.jobs[actor.job] : null;
+    var jo = jobOutfit(actor && actor.id, actor && actor.job);
     var hasPart = function (L) { return L.optional || own(view.parts, L.part); };
+    // v9.8.9 装備が覆う部位（covers：'sleeve'・'body'・'hem' など）の服の層は描かない（ローブを着たら、職業の服の袖は描かずローブの袖にする）
+    var covered = {}; mats.forEach(function (mt) { (mt.m.covers || []).forEach(function (r) { covered[r] = true; }); });
+    var keepL = function (L) { return !(L.region && covered[L.region]); };
+    var jl = jo && jo.pal ? { pal: jo.pal, pal2: jo.pal2 || null } : null;   // 職業の配色（pal があれば灰色の層を職業の色で塗る。ない服は描いた色のまま）
     if (jo && jo.layers.every(hasPart)) {
-      mats.push({ cls: 'outfit:' + actor.job, m: jo, layer: null });
+      mats.push({ cls: 'outfit:' + actor.job, m: Object.assign({}, jo, { layers: jo.layers.filter(keepL) }), layer: jl });
       // v9.8.8 職業の服装の手前の層（over：魔法使いの袖。武器と握りの拳より手前に描く。袖口が手首にかぶさり、杖の柄は袖口の中を通る）
-      if (jo.over && jo.over.layers.every(hasPart)) mats.push({ cls: 'outfit:' + actor.job + ':over', m: jo.over, layer: null });
+      var ov = jo.over && jo.over.layers.every(hasPart) ? jo.over.layers.filter(keepL) : [];
+      if (ov.length) mats.push({ cls: 'outfit:' + actor.job + ':over', m: Object.assign({}, jo.over, { layers: ov }), layer: jl });
     }
     mats.sort(function (a, b) { return (a.m.z || 0) - (b.m.z || 0); });
     return { ok: true, view: view, base: base, mats: mats, skipped: skipped };
@@ -622,8 +637,10 @@
         if (L.onlyColor && grayish(pal.main)) return;   // 灰色の品（鉄・鋼）：元の板金の色のまま
         if (!L.tint) { put(L.part, e.img); return; }
         var ramp;
+        var isJob = /^outfit:/.test(mt.cls);   // v9.8.9 職業の配色：白い服（僧侶など）も灰色の品の扱いにしない
         if (L.tint === 'orb') ramp = orbRamp(pal);
-        else if (grayish(pal.main)) { if (L.grayKeep) return; ramp = L.grayRef && M.ref && M.ref[L.grayRef] ? M.ref[L.grayRef] : rampFor(pal); }   // 灰色の品：重鎧は元の板金のまま・兜は元の鎧の色
+        else if (L.tint === 'pal2' && mt.layer.pal2) ramp = rampFor(mt.layer.pal2);   // 職業の 2 つめの色（マント）
+        else if (!isJob && grayish(pal.main)) { if (L.grayKeep) return; ramp = L.grayRef && M.ref && M.ref[L.grayRef] ? M.ref[L.grayRef] : rampFor(pal); }   // 灰色の品：重鎧は元の板金のまま・兜は元の鎧の色
         else ramp = rampFor(pal);
         put(L.part, tinted(e, url, ramp));
       });
