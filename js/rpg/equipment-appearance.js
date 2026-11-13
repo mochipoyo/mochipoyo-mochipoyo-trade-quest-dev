@@ -667,6 +667,7 @@
     var list = (rootEl || doc).querySelectorAll ? (rootEl || doc).querySelectorAll('[data-ea-actor]') : []; if (rootEl && rootEl.getAttribute && rootEl.getAttribute('data-ea-actor')) list = [rootEl].concat(Array.prototype.slice.call(list));
     Array.prototype.forEach.call(list, function (host) {
       var id = host.getAttribute('data-ea-actor'); var actor = root.State.actor(id); if (!actor) return;
+      var jobAs = host.getAttribute('data-ea-job'); if (jobAs && jobAs !== actor.job) actor = Object.assign({}, actor, { job: jobAs });   // v9.8.7 転職のプレビュー：別の職業になった姿（本人のデータは書き換えない。写しを使う）
       var eqTxt = host.getAttribute('data-ea-equip'); var eq = null; if (eqTxt) { try { eq = JSON.parse(eqTxt); } catch (e) { eq = null; } }
       var view = host.getAttribute('data-ea-view') || 'menu'; var vk = view === 'menu' ? menuView(actor) : view;
       if (!supports(actor, vk)) { host.setAttribute('data-ea-state', 'none'); return; }
@@ -692,6 +693,11 @@
       }).catch(function (e) { if (host.getAttribute('data-ea-key') === key) host.setAttribute('data-ea-state', 'error'); try { console.warn('[装備の外見] 表示できない（本人の元の絵のまま）', id, e); } catch (e2) { } });
     });
   }
+  // v9.8.7 転職のプレビュー：その人物が job になったとき、外見を職業で描き分けられるか（素体の職業＝主人公の戦士、または職業の服装の重ね絵がある職業）
+  function jobLook(actor, job) {
+    if (MODE !== 'pixel' || !actor || !job) return false; var M = PX(); var A = M && M.actors && own(M.actors, actor.id) ? M.actors[actor.id] : null; if (!A || !A.jobs) return false;
+    return own(A.jobs, job) || A.menuBase === 'job:' + job;
+  }
   var obs = null;
   function watch() {
     var doc = root.document; if (obs || !doc || !root.MutationObserver) return;
@@ -704,11 +710,11 @@
     o = o || {}; var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
     // v9.7 枠のある向き（主人公の立ち絵）：合成ができる前の元の絵・部品のない品のときの元の絵も、同じ枠の大きさ・足もとで出す（--ea-f＝元の絵の高さ ÷ 枠の高さ）
     var fr = ''; try { var A = root.State && root.State.actor && root.State.actor(actorId); var vk = A ? ((o.view || 'menu') === 'menu' ? menuView(A) : o.view) : null; var pv = MODE === 'pixel' && A ? pixelView(actorId, vk) : null; if (pv && pv.frame) fr = ' ea-frame" style="--ea-f:' + (pv.h / (pv.frame.y1 - pv.frame.y0)).toFixed(4); } catch (e) { fr = ''; }
-    return '<span class="ea-host' + (o.cls ? ' ' + o.cls : '') + fr + '" data-ea-actor="' + esc(actorId) + '" data-ea-view="' + esc(o.view || 'menu') + '"' + (o.equip ? ' data-ea-equip="' + esc(JSON.stringify(o.equip)) + '"' : '') + (o.h ? ' data-ea-h="' + (o.h | 0) + '"' : '') + (o.fit ? ' data-ea-fit="' + esc(o.fit) + '"' : '') + '>' + (inner || '') + '</span>';
+    return '<span class="ea-host' + (o.cls ? ' ' + o.cls : '') + fr + '" data-ea-actor="' + esc(actorId) + '" data-ea-view="' + esc(o.view || 'menu') + '"' + (o.equip ? ' data-ea-equip="' + esc(JSON.stringify(o.equip)) + '"' : '') + (o.h ? ' data-ea-h="' + (o.h | 0) + '"' : '') + (o.fit ? ' data-ea-fit="' + esc(o.fit) + '"' : '') + (o.job ? ' data-ea-job="' + esc(o.job) + '"' : '') + '>' + (inner || '') + '</span>';
   }
 
   var API = { slots: Object.freeze(slots.slice()), paths: paths, resolve: resolve, signature: signature, paint: paint, compose: compose,
-    request: request, composeFor: composeFor, cropOpaque: cropOpaque, menuView: menuView, supports: supports, anchorsOf: anchorsOf, hydrate: hydrate, hostHtml: hostHtml, watch: watch,
+    request: request, composeFor: composeFor, cropOpaque: cropOpaque, menuView: menuView, supports: supports, anchorsOf: anchorsOf, hydrate: hydrate, hostHtml: hostHtml, jobLook: jobLook, watch: watch,
     accPlace: accPlace, unsupported: function () { return Object.assign({}, unsupported); }, stats: function () { return Object.assign({ cached: CACHE.size, mode: MODE }, stats); },
     clearCache: function () { CACHE.clear(); MASKS.clear(); TINTS.clear(); },
     // v9.7 ドット絵の差分

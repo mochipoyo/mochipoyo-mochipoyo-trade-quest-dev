@@ -1,0 +1,160 @@
+{
+ "VIEW": "phone",
+ "isPhone": true,
+ "ok": 14,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "準備：主人公（戦士）。職業のデータ：戦士 sword・axe・spear／狩人 bow・dagger・spear／盗賊 dagger・sword・bow。狩人・盗賊へ転職できる"
+  },
+  {
+   "ok": true,
+   "m": "準備：戦士の主人公に 鉄の鎧＋鋼の剣。スロット 1 にセーブ（中身が変わらないことの比べに使う）"
+  },
+  {
+   "ok": true,
+   "m": "戦士 → 狩人のプレビュー：主人公本人の狩人の姿（base_plain outfit_hunter）。鉄の鎧・鋼の剣はプレビューから外れ、名前が出る（「転職すると外れる装備：鋼の剣・鉄の鎧（持ち物に戻る）」）。絵は一覧の中に収まる（高さ 96px）"
+  },
+  {
+   "ok": true,
+   "m": "戦士 → 盗賊のプレビュー：盗賊でも使える鋼の剣は表示（base_plain outfit_thief weapon_sword）、鉄の鎧だけ外れる（「転職すると外れる装備：鉄の鎧（持ち物に戻る）」「そのまま使える装備：鋼の剣」）"
+  },
+  {
+   "ok": true,
+   "m": "外見を職業で描き分けない職業（騎士）は、今までどおり職業の絵（プレビューなし）"
+  },
+  {
+   "ok": true,
+   "m": "候補を切り替えても（狩人 → 盗賊 → 騎士 → 狩人）、同じ候補は同じプレビュー。職業・装備・所持数・所持金・セーブの中身は変わらない"
+  },
+  {
+   "ok": true,
+   "m": "一覧をキャンセル（Esc）してギルドを出ても、何も変わらない"
+  },
+  {
+   "ok": true,
+   "m": "狩人を選んで、確かめの選択肢で「やめる」→ 何も変わらない"
+  },
+  {
+   "ok": true,
+   "m": "戦士 → 狩人を確定：プレビューで外れると出た 鉄の鎧・鋼の剣が外れて持ち物に戻り、「なかま」の画面の外見（base_plain outfit_hunter）＝直前のプレビュー（base_plain outfit_hunter）"
+  },
+  {
+   "ok": true,
+   "m": "狩人（短弓）→ 盗賊のプレビュー：短弓は持ち越す（base_plain outfit_thief weapon_bow hand）。外れる装備なし（「そのまま使える装備：短弓」）"
+  },
+  {
+   "ok": true,
+   "m": "狩人（短弓）→ 戦士のプレビュー：短弓が外れる（base_plain・「転職すると外れる装備：短弓（持ち物に戻る）」）。切り替えても何も変わらない"
+  },
+  {
+   "ok": true,
+   "m": "狩人 → 盗賊を確定：短弓は装備したまま。「なかま」の画面の外見（base_plain outfit_thief weapon_bow hand）＝直前のプレビュー（base_plain outfit_thief weapon_bow hand）"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  },
+  {
+   "ok": true,
+   "m": "読み込みの失敗なし"
+  }
+ ],
+ "rec": {
+  "preview": {
+   "pH": {
+    "cur": "狩人Lv1範囲ア",
+    "has": true,
+    "job": "hunter",
+    "st": "ok",
+    "parts": "base_plain outfit_hunter",
+    "sig": "[\"hero\",\"hunter\",\"px:v9.8.6\",\"job:warrior\",[]]",
+    "offIds": "steel_sword,iron_armor",
+    "keepIds": "",
+    "offText": "転職すると外れる装備：鋼の剣・鉄の鎧（持ち物に戻る）",
+    "keepText": "",
+    "oldPortrait": false,
+    "inView": true,
+    "h": 96
+   },
+   "pT": {
+    "cur": "盗賊Lv1速攻・",
+    "has": true,
+    "job": "thief",
+    "st": "ok",
+    "parts": "base_plain outfit_thief weapon_sword",
+    "sig": "[\"hero\",\"thief\",\"px:v9.8.6\",\"job:warrior\",[\"steel_sword\"]]",
+    "offIds": "iron_armor",
+    "keepIds": "steel_sword",
+    "offText": "転職すると外れる装備：鉄の鎧（持ち物に戻る）",
+    "keepText": "そのまま使える装備：鋼の剣",
+    "oldPortrait": false,
+    "inView": true,
+    "h": 96
+   },
+   "pK": {
+    "cur": "騎士Lv1盾役",
+    "has": false,
+    "job": null,
+    "st": null,
+    "parts": null,
+    "sig": null,
+    "offIds": null,
+    "keepIds": null,
+    "offText": "",
+    "keepText": "",
+    "oldPortrait": true,
+    "inView": false,
+    "h": null
+   },
+   "pv1": {
+    "cur": "狩人Lv1範囲ア",
+    "has": true,
+    "job": "hunter",
+    "st": "ok",
+    "parts": "base_plain outfit_hunter",
+    "sig": "[\"hero\",\"hunter\",\"px:v9.8.6\",\"job:warrior\",[]]",
+    "offIds": "steel_sword,iron_armor",
+    "keepIds": "",
+    "offText": "転職すると外れる装備：鋼の剣・鉄の鎧（持ち物に戻る）",
+    "keepText": "",
+    "oldPortrait": false,
+    "inView": true,
+    "h": 96
+   },
+   "m1": "base_plain outfit_hunter",
+   "pv2": {
+    "cur": "盗賊Lv1速攻・",
+    "has": true,
+    "job": "thief",
+    "st": "ok",
+    "parts": "base_plain outfit_thief weapon_bow hand",
+    "sig": "[\"hero\",\"thief\",\"px:v9.8.6\",\"job:warrior\",[\"short_bow\"]]",
+    "offIds": "",
+    "keepIds": "short_bow",
+    "offText": "",
+    "keepText": "そのまま使える装備：短弓",
+    "oldPortrait": false,
+    "inView": true,
+    "h": 96
+   },
+   "pW": {
+    "cur": "戦士Lv1物理ア",
+    "has": true,
+    "job": "warrior",
+    "st": "ok",
+    "parts": "base_plain",
+    "sig": "[\"hero\",\"warrior\",\"px:v9.8.6\",\"job:warrior\",[]]",
+    "offIds": "short_bow",
+    "keepIds": "",
+    "offText": "転職すると外れる装備：短弓（持ち物に戻る）",
+    "keepText": "",
+    "oldPortrait": false,
+    "inView": true,
+    "h": 96
+   },
+   "m2": "base_plain outfit_thief weapon_bow hand"
+  }
+ }
+}

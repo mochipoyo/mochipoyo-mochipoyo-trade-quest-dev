@@ -168,6 +168,21 @@
       else return;
     }
   };
+  // v9.8.7 転職のプレビュー：職業の一覧で、本人が転職したあとの姿（メニュー正面と同じ外見の合成）と、転職で外れる装備の名前を出す
+  //   見るだけ：本人の職業・装備・持ち物は書き換えない（外れる装備は、転職の処理 Actors.changeJob と同じ「その職業で装備できるか」で決める）
+  //   外見を職業で描き分けられる人物・職業（主人公の戦士・狩人・盗賊）だけ。ほかは今までどおり職業の絵
+  Services.jobPreview = function (actor, job) {
+    var EA = root.EquipmentAppearance; if (!EA || !EA.jobLook || !EA.jobLook(actor, job) || !EA.supports(actor, EA.menuView(actor))) return null;
+    var as = { job: job, equip: {} }; var te = {}, off = [], keep = [];
+    Object.keys(actor.equip).forEach(function (slot) { var id = actor.equip[slot]; if (!id) return; if (Actors.canEquip(as, id)) keep.push(id); else { te[slot] = null; off.push(id); } });
+    var nm = function (ids) { return ids.map(function (id) { return esc(ITEMS[id] ? ITEMS[id].name : id); }).join('・'); };
+    var html = '<div class="job-prev eq-try" data-job="' + esc(job) + '" data-off="' + esc(off.join(',')) + '" data-keep="' + esc(keep.join(',')) + '">' +
+      EA.hostHtml(actor.id, root.Assets ? root.Assets.portraitTagFor(actor, 'portrait eq-try-img', 140) : '', { view: 'menu', equip: te, job: job, cls: 'eq-try-fig' }) +
+      '<div class="job-prev-cap muted small">転職後の姿</div></div>' +
+      (off.length ? '<div class="job-off">転職すると外れる装備：<b>' + nm(off) + '</b>（持ち物に戻る）</div>' : '') +
+      (keep.length ? '<div class="job-keep muted small">そのまま使える装備：' + nm(keep) + '</div>' : (off.length ? '' : '<div class="job-keep muted small">いまは何も装備していない</div>'));
+    return { html: html, off: off, keep: keep, equip: te };
+  };
   Services.jobChange = async function () {
     var d = State.data; var party = ['hero'].concat(Object.keys(d.companions)).map(State.actor);
     var pi = await Win.choice('誰が転職する？', party.map(function (a) { return a.name + '（' + JOBS[a.job].name + ' Lv' + a.level + '）'; }).concat(['やめる']));
@@ -175,7 +190,7 @@
     var actor = party[pi];
     var jobs = root.JOB_LIST.filter(function (j) { return j !== actor.job; });
     var items = jobs.map(function (j) { var ok = Actors.jobUnlocked(actor, j, d.flags); return { label: JOBS[j].name, right: ok ? ('Lv' + (actor.jobLevels[j] || 1)) : '条件未達', disabled: !ok, sub: JOBS[j].role }; });
-    var ji = await Win.list(items, { title: actor.name + 'の転職先', okLabel: 'この職業にする', info: function (k) { var j = JOBS[jobs[k]]; var u = j.unlock; return (root.Assets ? root.Assets.portraitTag('hero_' + jobs[k], 'portrait info-portrait', 120) : '') + '<div>' + esc(j.desc) + '</div><div class="muted small">固有：' + esc(j.trait) + '</div><div class="muted small">武器：' + j.weapons.join('/') + '</div>' + (u ? '<div class="muted small">条件：' + (u.jobsAny ? u.jobsAny.map(function (x) { return JOBS[x].name; }).join('か') + 'でLv' + u.level : (u.flag ? '修行場で「' + (u.flag === 'learned_dow' ? 'ダウ理論' : '資金管理') + '」を修了しLv' + u.level : 'Lv' + u.level)) + '</div>' : ''); } });
+    var ji = await Win.list(items, { title: actor.name + 'の転職先', okLabel: 'この職業にする', cls: 'job-list', info: function (k) { var j = JOBS[jobs[k]]; var u = j.unlock; var pv = Services.jobPreview(actor, jobs[k]); return (pv ? pv.html : (root.Assets ? root.Assets.portraitTag('hero_' + jobs[k], 'portrait info-portrait', 120) : '')) + '<div>' + esc(j.desc) + '</div><div class="muted small">固有：' + esc(j.trait) + '</div><div class="muted small">武器：' + j.weapons.join('/') + '</div>' + (u ? '<div class="muted small">条件：' + (u.jobsAny ? u.jobsAny.map(function (x) { return JOBS[x].name; }).join('か') + 'でLv' + u.level : (u.flag ? '修行場で「' + (u.flag === 'learned_dow' ? 'ダウ理論' : '資金管理') + '」を修了しLv' + u.level : 'Lv' + u.level)) + '</div>' : ''); } });
     if (ji < 0) return;
     var job = jobs[ji]; var cost = 100 * actor.level;
     var c = await Win.choice(JOBS[job].name + 'に転職する？（費用' + cost + 'G。レベルは' + (actor.jobLevels[job] || 1) + 'から）', ['転職する', 'やめる']);

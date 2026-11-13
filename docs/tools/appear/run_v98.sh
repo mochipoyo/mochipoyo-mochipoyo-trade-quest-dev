@@ -45,6 +45,8 @@ run "ブラウザ v9.8.4 ミナ ふつうの手順（確定・キャンセル・
 run "ブラウザ v9.8.4 ミナ ふつうの手順 スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_mina_ui.js
 run "ブラウザ v9.8.6 主人公の転職（戦士→狩人→盗賊→戦士・着脱・キャンセル・セーブ→つづきから）PC" env VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_herojob_ui.js
 run "ブラウザ v9.8.6 主人公の転職 スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_herojob_ui.js
+run "ブラウザ v9.8.7 転職のプレビュー（ギルドの職業の一覧）PC" env VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_job_preview.js
+run "ブラウザ v9.8.7 転職のプレビュー スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_job_preview.js
 run "ブラウザ 別のサイト pixel 3d cors" env MODE=pixel KIND=3d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 3d nocors" env MODE=pixel KIND=3d XMODE=nocors XPORT=8896 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 2d cors" env MODE=pixel KIND=2d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js

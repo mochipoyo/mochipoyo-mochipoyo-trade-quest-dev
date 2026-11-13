@@ -43,3 +43,11 @@ body.mobile .eq-try .ea-frame img { height: calc(96px * var(--ea-f, 1)) !importa
 body.mobile .eq-body-head .ea-frame img { height: calc(84px * var(--ea-f, 1)) !important; }
 body.m-land .eq-body-head .ea-frame img { height: calc(60px * var(--ea-f, 1)) !important; }
 @media (max-width: 600px) { .eq-try .ea-frame img { height: calc(96px * var(--ea-f, 1)) !important; } }
+/* v9.8.7 転職のプレビュー（ギルドの職業の一覧）：本人の転職後の姿（試着と同じ大きさ）と、外れる装備 */
+.job-prev.eq-try { float: right; margin: 0 0 4px 10px; }
+.job-off { color: var(--gold, #f0c060); font-size: 13px; margin: 2px 0; }
+.job-keep { margin: 2px 0; }
+/* 職業の一覧の下の欄：プレビューの全身（140px。スマホは 96px）が切れない高さにする */
+.rw-list.job-list .rw-info { max-height: 42vh; min-height: 170px; }
+body.mobile .rw-list.job-list .rw-info { min-height: 126px; }
+@media (max-width: 600px) { .rw-list.job-list .rw-info { min-height: 126px; } }
