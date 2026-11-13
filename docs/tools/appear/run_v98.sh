@@ -1,5 +1,5 @@
 #!/bin/bash
-# v9.8〜v9.8.9 装備の外見（ドット絵の差分）：確かめ一式（主人公の v9.7 の確かめ ＋ 仲間 リーナ・ガルド ＋ v9.8.1 の剣・盾・斧・帽子 ＋ v9.8.2 カイル・カズト）を順に動かして、結果の行を 1 つの記録にまとめる
+# v9.8〜v9.9 装備の外見（ドット絵の差分）：確かめ一式（主人公の v9.7 の確かめ ＋ 仲間 リーナ・ガルド ＋ v9.8.1 の剣・盾・斧・帽子 ＋ v9.8.2 カイル・カズト）を順に動かして、結果の行を 1 つの記録にまとめる
 #   bash docs/tools/appear/run_v98.sh <記録ファイル>
 #   前提：8894 に静かなサーバー（docs/tools/rpg93/rangeserver.js）。別のサイトの確かめ用に 8895（cors）・8896（nocors）を立てて、終わったら止める
 #   v9.6 の確かめ（vector・別のサイト・3Dモデル）の画面写真・記録は docs/appear/pixel/regress/ に書く（v9.6 の報告の記録は書き換えない）
@@ -52,6 +52,8 @@ run "ブラウザ v9.8.8 主人公の魔法使い スマホ縦（390×664）" en
 run "ブラウザ v9.8.9 全員の職業・装備ID の調べ（docs/appear/pixel/SURVEY_ALL.md）" env PORT=8894 node docs/tools/appear/browser/appear_survey_all.js
 run "ブラウザ v9.8.9 仲間（カイル）の職業の服・装備（試着・確定・プレビュー・転職・ローブ・杖の着脱・キャンセル・以前の版のセーブ）PC" env VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
 run "ブラウザ v9.8.9 仲間（カイル）スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.9 仲間（セリス：素体・帽子・兜・盾・重鎧、転職の持ち越し／外れる・試着・着脱・キャンセル・以前の版のセーブ）PC" env PT=seris VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.9 仲間（セリス）スマホ縦（390×664）" env PT=seris VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
 run "ブラウザ 別のサイト pixel 3d cors" env MODE=pixel KIND=3d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 3d nocors" env MODE=pixel KIND=3d XMODE=nocors XPORT=8896 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 2d cors" env MODE=pixel KIND=2d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js

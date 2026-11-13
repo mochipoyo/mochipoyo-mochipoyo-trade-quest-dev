@@ -116,6 +116,7 @@
      "part": "head_circlet_f"
     }
    ],
+   "base": "base_nohat",
    "generated": true
   },
   "shield": {
@@ -315,66 +316,73 @@
      "h": 277
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=0806146c",
+     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=2f37fce3",
      "x": 6,
      "y": 49,
      "w": 206,
      "h": 229
     },
     "head_helm_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/head_helm_t.png?v=6bcf7152",
+     "url": "assets/characters/equip-pixels/seris/menu/head_helm_t.png?v=e0b0d739",
      "x": 75,
-     "y": 50,
+     "y": 48,
      "w": 84,
-     "h": 79
-    },
-    "head_helm_f": {
-     "url": "assets/characters/equip-pixels/seris/menu/head_helm_f.png?v=937ea981",
-     "x": 74,
-     "y": 49,
-     "w": 87,
      "h": 81
     },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_helm_f.png?v=009721e7",
+     "x": 74,
+     "y": 47,
+     "w": 87,
+     "h": 83
+    },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=ec90e4d2",
+     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=2f37fce3",
      "x": 6,
      "y": 49,
      "w": 206,
      "h": 229
     },
     "head_cap_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/head_cap_t.png?v=8c7c431a",
-     "x": 76,
-     "y": 48,
-     "w": 83,
-     "h": 53
+     "url": "assets/characters/equip-pixels/seris/menu/head_cap_t.png?v=10d5b8f6",
+     "x": 77,
+     "y": 46,
+     "w": 81,
+     "h": 47
     },
     "head_cap_f": {
-     "url": "assets/characters/equip-pixels/seris/menu/head_cap_f.png?v=aaf49c10",
-     "x": 75,
-     "y": 47,
-     "w": 85,
-     "h": 55
+     "url": "assets/characters/equip-pixels/seris/menu/head_cap_f.png?v=db451395",
+     "x": 76,
+     "y": 45,
+     "w": 83,
+     "h": 49
     },
     "head_circlet_t": {
      "url": "assets/characters/equip-pixels/seris/menu/head_circlet_t.png?v=8b05a3ba",
      "x": 76,
-     "y": 89,
+     "y": 81,
      "w": 83,
      "h": 12
     },
     "head_circlet_f": {
      "url": "assets/characters/equip-pixels/seris/menu/head_circlet_f.png?v=36de26dd",
      "x": 75,
-     "y": 88,
+     "y": 80,
      "w": 85,
      "h": 14
     },
+    "base_nohat": {
+     "url": "assets/characters/equip-pixels/seris/menu/base_nohat.png?v=2f37fce3",
+     "x": 6,
+     "y": 49,
+     "w": 206,
+     "h": 229
+    },
     "own_hat_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/own_hat_t.png?v=cc16fb83",
-     "x": 26,
+     "url": "assets/characters/equip-pixels/seris/menu/own_hat_t.png?v=e5f4e783",
+     "x": 20,
      "y": 2,
-     "w": 173,
+     "w": 179,
      "h": 109
     },
     "jf_pl_t": {
@@ -392,14 +400,14 @@
      "h": 23
     },
     "jf_mt_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_t.png?v=65880d06",
+     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_t.png?v=2f7e82b5",
      "x": 53,
-     "y": 127,
+     "y": 128,
      "w": 118,
-     "h": 34
+     "h": 33
     },
     "jf_mt_f": {
-     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_f.png?v=9fe19fca",
+     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_f.png?v=323b98cb",
      "x": 52,
      "y": 128,
      "w": 120,
@@ -539,66 +547,73 @@
      "h": 277
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=0806146c",
+     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=2f37fce3",
      "x": 60,
      "y": 73,
      "w": 206,
      "h": 229
     },
     "head_helm_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/head_helm_t.png?v=6bcf7152",
+     "url": "assets/characters/equip-pixels/seris/menu/head_helm_t.png?v=e0b0d739",
      "x": 129,
-     "y": 74,
+     "y": 72,
      "w": 84,
-     "h": 79
-    },
-    "head_helm_f": {
-     "url": "assets/characters/equip-pixels/seris/menu/head_helm_f.png?v=937ea981",
-     "x": 128,
-     "y": 73,
-     "w": 87,
      "h": 81
     },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/seris/menu/head_helm_f.png?v=009721e7",
+     "x": 128,
+     "y": 71,
+     "w": 87,
+     "h": 83
+    },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=ec90e4d2",
+     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=2f37fce3",
      "x": 60,
      "y": 73,
      "w": 206,
      "h": 229
     },
     "head_cap_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/head_cap_t.png?v=8c7c431a",
-     "x": 130,
-     "y": 72,
-     "w": 83,
-     "h": 53
+     "url": "assets/characters/equip-pixels/seris/menu/head_cap_t.png?v=10d5b8f6",
+     "x": 131,
+     "y": 70,
+     "w": 81,
+     "h": 47
     },
     "head_cap_f": {
-     "url": "assets/characters/equip-pixels/seris/menu/head_cap_f.png?v=aaf49c10",
-     "x": 129,
-     "y": 71,
-     "w": 85,
-     "h": 55
+     "url": "assets/characters/equip-pixels/seris/menu/head_cap_f.png?v=db451395",
+     "x": 130,
+     "y": 69,
+     "w": 83,
+     "h": 49
     },
     "head_circlet_t": {
      "url": "assets/characters/equip-pixels/seris/menu/head_circlet_t.png?v=8b05a3ba",
      "x": 130,
-     "y": 113,
+     "y": 105,
      "w": 83,
      "h": 12
     },
     "head_circlet_f": {
      "url": "assets/characters/equip-pixels/seris/menu/head_circlet_f.png?v=36de26dd",
      "x": 129,
-     "y": 112,
+     "y": 104,
      "w": 85,
      "h": 14
     },
+    "base_nohat": {
+     "url": "assets/characters/equip-pixels/seris/menu/base_nohat.png?v=2f37fce3",
+     "x": 60,
+     "y": 73,
+     "w": 206,
+     "h": 229
+    },
     "own_hat_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/own_hat_t.png?v=cc16fb83",
-     "x": 80,
+     "url": "assets/characters/equip-pixels/seris/menu/own_hat_t.png?v=e5f4e783",
+     "x": 74,
      "y": 26,
-     "w": 173,
+     "w": 179,
      "h": 109
     },
     "jf_pl_t": {
@@ -616,14 +631,14 @@
      "h": 23
     },
     "jf_mt_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_t.png?v=65880d06",
+     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_t.png?v=2f7e82b5",
      "x": 107,
-     "y": 151,
+     "y": 152,
      "w": 118,
-     "h": 34
+     "h": 33
     },
     "jf_mt_f": {
-     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_f.png?v=9fe19fca",
+     "url": "assets/characters/equip-pixels/seris/menu/jf_mt_f.png?v=323b98cb",
      "x": 106,
      "y": 152,
      "w": 120,
@@ -756,7 +771,7 @@
      "h": 301
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/seris/back/base_helm.png?v=62dc9db2",
+     "url": "assets/characters/equip-pixels/seris/back/base_helm.png?v=9b8e9e0c",
      "x": 46,
      "y": 24,
      "w": 236,
@@ -777,7 +792,7 @@
      "h": 84
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/seris/back/base_cap.png?v=d1cb4cfc",
+     "url": "assets/characters/equip-pixels/seris/back/base_cap.png?v=9b8e9e0c",
      "x": 46,
      "y": 24,
      "w": 236,
@@ -811,12 +826,19 @@
      "w": 101,
      "h": 14
     },
+    "base_nohat": {
+     "url": "assets/characters/equip-pixels/seris/back/base_nohat.png?v=9b8e9e0c",
+     "x": 46,
+     "y": 24,
+     "w": 236,
+     "h": 283
+    },
     "own_hat_t": {
-     "url": "assets/characters/equip-pixels/seris/back/own_hat_t.png?v=c0ca0dfc",
-     "x": 88,
+     "url": "assets/characters/equip-pixels/seris/back/own_hat_t.png?v=fdf6dcbe",
+     "x": 54,
      "y": 26,
-     "w": 140,
-     "h": 134
+     "w": 174,
+     "h": 139
     },
     "jf_pl_t": {
      "url": "assets/characters/equip-pixels/seris/back/jf_pl_t.png?v=10d1b5c8",
@@ -1409,6 +1431,7 @@
   "head_cap_f",
   "head_circlet_t",
   "head_circlet_f",
+  "base_nohat",
   "own_hat_t",
   "jf_pl_t",
   "jf_pl_f",

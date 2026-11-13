@@ -53,6 +53,7 @@
      "part": "head_circlet_f"
     }
    ],
+   "base": "base_nohat",
    "generated": true
   },
   "shield": {
@@ -222,11 +223,11 @@
      "h": 128
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/lina/menu/base_helm.png?v=c2b95cf0",
+     "url": "assets/characters/equip-pixels/lina/menu/base_helm.png?v=6a25e23f",
      "x": 22,
-     "y": 29,
+     "y": 31,
      "w": 173,
-     "h": 243
+     "h": 241
     },
     "head_helm_t": {
      "url": "assets/characters/equip-pixels/lina/menu/head_helm_t.png?v=a383b6b9",
@@ -256,12 +257,19 @@
      "w": 85,
      "h": 14
     },
-    "base_hat": {
-     "url": "assets/characters/equip-pixels/lina/menu/base_hat.png?v=bdb0268c",
+    "base_nohat": {
+     "url": "assets/characters/equip-pixels/lina/menu/base_nohat.png?v=c0866f30",
      "x": 22,
-     "y": 29,
+     "y": 31,
      "w": 173,
-     "h": 243
+     "h": 241
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/lina/menu/base_hat.png?v=22ace2cb",
+     "x": 22,
+     "y": 31,
+     "w": 173,
+     "h": 241
     },
     "jf_pl_t": {
      "url": "assets/characters/equip-pixels/lina/menu/jf_pl_t.png?v=8f6de68e",
@@ -456,11 +464,11 @@
      "h": 128
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/lina/menu/base_helm.png?v=c2b95cf0",
+     "url": "assets/characters/equip-pixels/lina/menu/base_helm.png?v=6a25e23f",
      "x": 85,
-     "y": 59,
+     "y": 61,
      "w": 173,
-     "h": 243
+     "h": 241
     },
     "head_helm_t": {
      "url": "assets/characters/equip-pixels/lina/menu/head_helm_t.png?v=a383b6b9",
@@ -490,12 +498,19 @@
      "w": 85,
      "h": 14
     },
-    "base_hat": {
-     "url": "assets/characters/equip-pixels/lina/menu/base_hat.png?v=bdb0268c",
+    "base_nohat": {
+     "url": "assets/characters/equip-pixels/lina/menu/base_nohat.png?v=c0866f30",
      "x": 85,
-     "y": 59,
+     "y": 61,
      "w": 173,
-     "h": 243
+     "h": 241
+    },
+    "base_hat": {
+     "url": "assets/characters/equip-pixels/lina/menu/base_hat.png?v=22ace2cb",
+     "x": 85,
+     "y": 61,
+     "w": 173,
+     "h": 241
     },
     "jf_pl_t": {
      "url": "assets/characters/equip-pixels/lina/menu/jf_pl_t.png?v=8f6de68e",
@@ -695,7 +710,7 @@
      "h": 111
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/lina/back/base_helm.png?v=7d807ca1",
+     "url": "assets/characters/equip-pixels/lina/back/base_helm.png?v=f8382361",
      "x": 54,
      "y": 40,
      "w": 215,
@@ -729,8 +744,15 @@
      "w": 97,
      "h": 14
     },
+    "base_nohat": {
+     "url": "assets/characters/equip-pixels/lina/back/base_nohat.png?v=f8382361",
+     "x": 54,
+     "y": 40,
+     "w": 215,
+     "h": 268
+    },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/lina/back/base_hat.png?v=95754911",
+     "url": "assets/characters/equip-pixels/lina/back/base_hat.png?v=311e7b1d",
      "x": 54,
      "y": 40,
      "w": 215,
@@ -1325,6 +1347,7 @@
   "head_helm_f",
   "head_circlet_t",
   "head_circlet_f",
+  "base_nohat",
   "base_hat",
   "jf_pl_t",
   "jf_pl_f",

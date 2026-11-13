@@ -13,6 +13,7 @@ FONT = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
 ft = lambda n: ImageFont.truetype(FONT, n) if os.path.exists(FONT) else ImageFont.load_default()
 sys.path.insert(0, os.path.join(ROOT, 'tools', 'appear', 'pixel'))
 import manifest as MF, preview as PV, compose as CP, pxlib as P
+ALL = ['hero', 'lina', 'gald', 'kyle', 'kazuto', 'mina', 'seris', 'lucia', 'elna', 'nagi', 'iris', 'sophia', 'io', 'ganes', 'aster', 'ord', 'mochipoyo']
 
 
 def crop(path, r, m=8, k=2):
@@ -33,6 +34,12 @@ def lineup(v):
         for key, t in (('k0', 'カイル 騎士 剣と盾'), ('k2', 'カイル 魔法使い ローブ＋杖'), ('k3', 'カイル 魔法使い 杖なし')):
             b = rec.get(key, {}).get('battle') or {}; r = (b.get('rects') or {}).get('kyle'); vr = (b.get('vrects') or {}).get('kyle')
             if r and vr: cells.append((t, crop(D + 'ui_%s_pt_battle_%s.jpg' % (v, key), r), crop(D + 'ui_%s_pt_victory_%s.jpg' % (v, key), vr), r))
+    ps = L + 'ui_party_seris_%s.json' % v
+    if os.path.exists(ps):
+        rec = json.load(open(ps, encoding='utf8'))['rec']
+        for key, t in (('s0', 'セリス 魔法使い 杖＋ローブ＋帽子'), ('s2', 'セリス 戦士 剣＋盾＋重鎧＋兜'), ('s3', 'セリス 戦士 剣をはずす')):
+            b = rec.get(key, {}).get('battle') or {}; r = (b.get('rects') or {}).get('seris'); vr = (b.get('vrects') or {}).get('seris')
+            if r and vr: cells.append((t, crop(D + 'ui_%s_pt_battle_%s.jpg' % (v, key), r), crop(D + 'ui_%s_pt_victory_%s.jpg' % (v, key), vr), r))
     if not cells: return None
     f = ft(13); cw = max(max(a.width, b.width, int(f.getlength(t))) for t, a, b, _ in cells) + 14; h1 = max(a.height for _, a, _, _ in cells); h2 = max(b.height for _, _, b, _ in cells)
     S = Image.new('RGB', (60 + cw * len(cells), 30 + h1 + h2 + 70), (20, 24, 40)); d = ImageDraw.Draw(S)
@@ -51,7 +58,7 @@ def scaled(v):
     M = MF.manifest(); data = PV.appearance_data(); hb = M['actors']['hero']['views']['back']['body']; k = r['h'] / (hb['y1'] - hb['y0'])   # 画面の 1 ドットの大きさ（CSS px）
     S = json.load(open(os.path.join(ROOT, 'docs', 'appear', 'pixel', 'survey_all.json'), encoding='utf8')); jobs = list(S['jobs'])
     f = ft(11); rows = []
-    for a in ('hero', 'lina', 'gald', 'kyle', 'kazuto', 'mina'):
+    for a in ALL:
         for vk in ('back', 'front'):
             ims = []
             for j in jobs:
@@ -71,5 +78,39 @@ def scaled(v):
     out = D + 'jobs_scaled_%s.png' % v; Img.save(out); print(os.path.basename(out), Img.size)
 
 
+def grid(v, actors, sets, name, note):
+    """合成の見本（ゲームと同じ重ね方）を、記録した戦闘の表示の大きさに縮めて並べる（行＝人 × 背面・勝利の正面、列＝装備の組）"""
+    mg = L + 'ui_mage_%s.json' % v
+    if not os.path.exists(mg): return
+    rec = json.load(open(mg, encoding='utf8'))['rec']; r = rec['m2']['battle']['rects']['hero']
+    M = MF.manifest(); data = PV.appearance_data(); hb = M['actors']['hero']['views']['back']['body']; k = r['h'] / (hb['y1'] - hb['y0'])
+    f = ft(11); rows = []
+    for a in actors:
+        for vk in ('back', 'front'):
+            ims = []
+            for lab, eq in sets:
+                c, _ = CP.compose(M, a, vk, eq, data); im = Image.fromarray(np.clip(c, 0, 255).astype(np.uint8), 'RGBA'); im = im.crop(im.getbbox())
+                ims.append(im.resize((max(1, round(im.width * k)), max(1, round(im.height * k))), Image.LANCZOS))
+            rows.append((a, vk, ims))
+    cw = max(max(max(i.width for i in ims) for _, _, ims in rows) + 8, max(int(f.getlength(l)) + 6 for l, _ in sets)); rh = [max(i.height for i in ims) + 4 for _, _, ims in rows]
+    W = 90 + cw * len(sets); H = 22 + sum(rh) + 30
+    Img = Image.new('RGB', (W, H), (96, 104, 92)); d = ImageDraw.Draw(Img)
+    for n, (lab, _) in enumerate(sets): d.text((90 + n * cw + 2, 4), lab, fill=(255, 240, 180), font=f)
+    nm = json.load(open(os.path.join(ROOT, 'docs', 'appear', 'pixel', 'survey_all.json'), encoding='utf8'))['chars']; y = 22
+    for (a, vk, ims), h in zip(rows, rh):
+        d.text((4, y + h // 2 - 6), nm[a]['name'][:5] + ('・背面' if vk == 'back' else '・正面'), fill=(255, 255, 255), font=f)
+        for n, im in enumerate(ims): Img.paste(im, (90 + n * cw + (cw - im.width) // 2, y + h - im.height), im)
+        y += h
+    d.text((4, H - 24), ('PC' if v == 'pc' else 'スマホ縦') + '：' + note + '。合成の見本を戦闘の表示の大きさ（1 ドット＝%.2f CSS px）に縮めた。画面写真ではない' % k, fill=(230, 235, 240), font=f)
+    Img.save(D + name % v); print(name % v, Img.size)
+
+
+SETS3 = [('装備なし', {}), ('樫の杖', {'weapon': 'oak_staff'}), ('剣＋盾＋重鎧＋兜', {'weapon': 'steel_sword', 'shield': 'iron_shield', 'armor': 'iron_armor', 'head': 'iron_helm'}),
+         ('ローブ＋とんがり帽子＋杖', {'armor': 'robe', 'head': 'wizard_hat', 'weapon': 'mage_staff'}), ('軽装＋革の帽子＋弓', {'armor': 'leather_armor', 'head': 'leather_cap', 'weapon': 'short_bow'}),
+         ('戦斧', {'weapon': 'battle_axe'}), ('槍＋額環', {'weapon': 'iron_spear', 'head': 'bu_control_seal_circlet'})]
+SETS17 = [('装備なし', {}), ('剣＋盾＋重鎧＋兜', {'weapon': 'steel_sword', 'shield': 'iron_shield', 'armor': 'iron_armor', 'head': 'iron_helm'}), ('魔法使い＋ローブ＋杖', {'_job': 'mage', 'armor': 'robe', 'weapon': 'oak_staff'}),
+          ('騎士（肩当て）', {'_job': 'knight'}), ('武闘家（肩のマント）', {'_job': 'monk'}), ('商人（長衣）', {'_job': 'merchant'})]
 for v in ('pc', 'phone'):
     lineup(v); scaled(v)
+    grid(v, ['seris', 'ganes', 'ord'], SETS3, 'cmp3_%s.png', 'セリス・ガネス・オルド：装備なしと装備あり（職業はそれぞれ加入時の職業）')
+    grid(v, ALL, SETS17, 'all17_%s.png', '主人公と仲間 16 人：代表の組み合わせと、似た職業の輪郭（騎士＝肩当て・武闘家＝肩の短いマント・商人＝長衣）')

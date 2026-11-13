@@ -29,7 +29,7 @@
   },
   {
    "ok": true,
-   "m": "lina［法衣＋こん棒＋羽根帽子＋盾（部品のない品）］装備 {\"weapon\":\"club\",\"armor\":\"robe_skip\",\"shield\":\"wooden_shield\",\"head\":\"feather_hat\"} → 部品：base_plain armor_robe_t armor_robe_f／描かない：head:feather_hat（hat/feather の部品がない→描かない） shield:wooden_shield（shield の部品がない→描かない） weapon:club（club の部品がない→描かない）"
+   "m": "lina［法衣＋こん棒＋装飾品（仕様で描かない品。v9.9 から盾・羽根帽子も描くので替えた）］装備 {\"weapon\":\"club\",\"armor\":\"robe_skip\",\"acc\":\"ring_power\"} → 部品：base_plain armor_robe_t armor_robe_f／描かない：weapon:club（club の部品がない→描かない） acc:ring_power"
   },
   {
    "ok": true,
@@ -37,7 +37,7 @@
   },
   {
    "ok": true,
-   "m": "lina：部品のない品は部位ごと（club・feather_hat・wooden_shield は描かない。鎧は着替える：base_plain armor_robe_t armor_robe_f）"
+   "m": "lina：部品のない品は部位ごと（club・ring_power は描かない。鎧は着替える：base_plain armor_robe_t armor_robe_f）"
   },
   {
    "ok": true,
@@ -109,7 +109,7 @@
   },
   {
    "ok": true,
-   "m": "gald［重鎧＋兜（部品のない品。v9.8.9 から槍は描き、戦士の武器はどれも描くので、武器は外した）］装備 {\"armor\":\"iron_armor\",\"head\":\"iron_helm\"} → 部品：base_plain armor_shape_f／描かない：head:iron_helm（head_helm の部品がない→描かない）"
+   "m": "gald［重鎧＋装飾品（仕様で描かない品。v9.9 から兜も描くので、装飾品に替えた）］装備 {\"armor\":\"iron_armor\",\"acc\":\"ring_power\"} → 部品：base_plain armor_shape_f／描かない：acc:ring_power"
   },
   {
    "ok": true,
@@ -117,7 +117,7 @@
   },
   {
    "ok": true,
-   "m": "gald：部品のない品は部位ごと（iron_helm は描かない。鎧は着替える：base_plain armor_shape_f）"
+   "m": "gald：部品のない品は部位ごと（ring_power は描かない。鎧は着替える：base_plain armor_shape_f）"
   },
   {
    "ok": true,
@@ -323,17 +323,17 @@
      "equip": {
       "weapon": "club",
       "armor": "robe_skip",
-      "shield": "wooden_shield",
-      "head": "feather_hat",
-      "acc": null
+      "shield": null,
+      "head": null,
+      "acc": "ring_power"
      },
      "res": {},
      "stats": {
       "maxHp": 29,
       "maxMp": 28,
-      "atk": 11,
-      "def": 25,
-      "agi": 8,
+      "atk": 16,
+      "def": 18,
+      "agi": 6,
       "mag": 10,
       "mdef": 3,
       "immune": [],
@@ -341,7 +341,7 @@
      },
      "st": "ok",
      "parts": "base_plain armor_robe_t armor_robe_f",
-     "skipped": "head:feather_hat（hat/feather の部品がない→描かない） shield:wooden_shield（shield の部品がない→描かない） weapon:club（club の部品がない→描かない）",
+     "skipped": "weapon:club（club の部品がない→描かない） acc:ring_power",
      "bottom": 335.3,
      "cx": 460.4,
      "px": 1.087,
@@ -440,9 +440,8 @@
         "armor_robe_f"
        ],
        "skipped": [
-        "head:feather_hat（hat/feather の部品がない→描かない）",
-        "shield:wooden_shield（shield の部品がない→描かない）",
-        "weapon:club（club の部品がない→描かない）"
+        "weapon:club（club の部品がない→描かない）",
+        "acc:ring_power"
        ]
       }
      },
@@ -541,9 +540,8 @@
         "armor_robe_f"
        ],
        "skipped": [
-        "head:feather_hat（hat/feather の部品がない→描かない）",
-        "shield:wooden_shield（shield の部品がない→描かない）",
-        "weapon:club（club の部品がない→描かない）"
+        "weapon:club（club の部品がない→描かない）",
+        "acc:ring_power"
        ]
       }
      },
@@ -642,9 +640,8 @@
         "armor_robe_f"
        ],
        "skipped": [
-        "head:feather_hat（hat/feather の部品がない→描かない）",
-        "shield:wooden_shield（shield の部品がない→描かない）",
-        "weapon:club（club の部品がない→描かない）"
+        "weapon:club（club の部品がない→描かない）",
+        "acc:ring_power"
        ]
       }
      },
@@ -829,15 +826,15 @@
       "weapon": null,
       "armor": "iron_armor",
       "shield": null,
-      "head": "iron_helm",
-      "acc": null
+      "head": null,
+      "acc": "ring_power"
      },
      "res": {},
      "stats": {
       "maxHp": 72,
       "maxMp": 18,
-      "atk": 21,
-      "def": 41,
+      "atk": 26,
+      "def": 36,
       "agi": 8,
       "mag": 4,
       "mdef": 1,
@@ -846,7 +843,7 @@
      },
      "st": "ok",
      "parts": "base_plain armor_shape_f",
-     "skipped": "head:iron_helm（head_helm の部品がない→描かない）",
+     "skipped": "acc:ring_power",
      "bottom": 335.3,
      "cx": 460.4,
      "px": 1.0753,
@@ -960,7 +957,7 @@
         "armor_shape_f"
        ],
        "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）"
+        "acc:ring_power"
        ]
       }
      },
@@ -1074,7 +1071,7 @@
         "armor_shape_f"
        ],
        "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）"
+        "acc:ring_power"
        ]
       }
      },
@@ -1188,7 +1185,7 @@
         "armor_shape_f"
        ],
        "skipped": [
-        "head:iron_helm（head_helm の部品がない→描かない）"
+        "acc:ring_power"
        ]
       }
      },

@@ -3,7 +3,7 @@
 //   ・就ける職業：JOB_LIST（ギルドの転職の一覧と同じ。全員が同じ一覧から選ぶ）。条件（unlock）は Actors.jobUnlocked と同じ決まりを文にして書く
 //   ・装備できる品：Actors.canEquip（その職業の武器・防具の種類）。職業ごとに数え、人ごとに ID の和をとる
 //   ・外見の対応：EquipmentAppearance.pixelPlan（ゲームと同じ重ね方）で、その人・その職業・その向きに部品が解決されるか
-//       描く＝部品に解決 ／ 足りない＝形（種類）はあるが、その人の部品がない ／ 仕様で描かない＝装飾品、形の決まっていない種類（こん棒・爪）
+//       描く＝部品に解決 ／ 足りない＝形（種類）はあるが、その人の部品がない ／ 仕様で描かない＝装飾品、形の決まっていない種類（こん棒・爪）。一覧は「仕様で表示しない品」の節
 //   ・職業の服：対応表の actors.<人物>.jobs.<職業>（服の重ね絵）、または元の絵がその職業の姿（主人公の戦士・仲間の加入時の職業）
 const { chromium } = require('playwright'); const fs = require('fs'); const path = require('path');
 const PORT = process.env.PORT || 8894; const ROOT = path.resolve(__dirname, '../../../..') + '/'; const OUT = process.env.OUT || ROOT + 'docs/appear/pixel/';
@@ -54,6 +54,10 @@ const PORT = process.env.PORT || 8894; const ROOT = path.resolve(__dirname, '../
     const js = Object.values(c.jobs); const cnt = (k) => js.filter((x) => x.look === k).length; const it = Object.values(c.items); const ci = (k) => it.filter((x) => x.st === k).length;
     md.push(`| ${c.name}（${id}） | ${r.jobs[c.job].name} | ${c.views.join('・') || '（なし）'} | ${cnt('outfit')}／${cnt('base')}／${cnt('missing') + cnt('noparts')} | ${ci('ok')}／${ci('missing')}／${ci('spec')}／${it.length} |`);
   }
+  // v9.9 仕様で表示しない品（全員共通。どの人・どの職業でも、その部位だけ描かない）
+  const spec = {}; for (const c of Object.values(r.chars)) for (const [iid, x] of Object.entries(c.items)) if (x.st === 'spec') { const k = x.slot + ':' + x.shape; (spec[k] = spec[k] || new Set()).add(iid); }
+  const WHY = { 'acc:acc': '装飾品（指輪・首飾りなど。体の絵に描かない決まり）', 'weapon:claw': '爪（形を決めていない武器）', 'weapon:club': 'こん棒（形を決めていない武器）' };
+  md.push('', '## 仕様で表示しない品（全員共通）', '', '| 枠：形 | 理由 | 品の数 | 装備の ID |', '|---|---|---|---|', ...Object.entries(spec).sort().map(([k, v]) => `| ${k} | ${WHY[k] || '形を決めていない'} | ${v.size} | ${[...v].sort().join(' ')} |`));
   md.push('', '## 人ごとの職業の服', '', '| 人物 | ' + Object.keys(r.jobs).map((k) => r.jobs[k].name).join(' | ') + ' |', '|---|' + Object.keys(r.jobs).map(() => '---').join('|') + '|');
   for (const [id, c] of Object.entries(r.chars)) md.push(`| ${c.name} | ` + Object.keys(r.jobs).map((k) => LK[c.jobs[k].look]).join(' | ') + ' |');
   md.push('', '## 人ごと・形ごとの装備の ID', '');

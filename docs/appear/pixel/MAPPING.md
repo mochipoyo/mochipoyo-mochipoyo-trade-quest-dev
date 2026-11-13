@@ -24,6 +24,39 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | mina | menu | assets/characters/companions/mina.png | 97, 266 | 160, 170（弓：ミナの左手（画面の右）。握りの上に拳を描き直す／短剣：元の絵の 2 本） | 30, 150（短剣のもう 1 本（右手）。盾の部品なし） |
 | mina | front | assets/characters/party-directions-v3/sprites/mina/front.png | 160, 304 | 222, 206（弓：ミナの左手（画面の右）。握りの上に拳を描き直す／短剣：元の絵の 2 本） | 92, 186（短剣のもう 1 本（右手）。盾の部品なし） |
 | mina | back | assets/characters/party-directions-v3/sprites/mina/back.png | 160, 304 | 112, 209（弓：ミナの左手（画面の左）。握りの上に拳を描き直す／短剣：元の絵の 2 本） | 228, 208（短剣のもう 1 本（右手）。盾の部品なし） |
+| aster | menu | assets/characters/party-directions-v3/sprites/aster/front.png | 160, 318 | 98, 168（武器：柄の上に手を描き直す） | 246, 188（盾：前腕の上） |
+| aster | front | assets/characters/party-directions-v3/sprites/aster/front.png | 160, 304 | 98, 168（武器：柄の上に手を描き直す） | 246, 188（盾：前腕の上） |
+| aster | back | assets/characters/party-directions-v3/sprites/aster/back.png | 160, 304 | 226, 167（武器：柄の上に手を描き直す） | 90, 180（盾：前腕の上） |
+| elna | menu | assets/characters/party-directions-v3/sprites/elna/front.png | 160, 318 | 95, 138（武器：柄の上に手を描き直す） | 170, 154（盾：前腕の上） |
+| elna | front | assets/characters/party-directions-v3/sprites/elna/front.png | 160, 304 | 95, 138（武器：柄の上に手を描き直す） | 170, 154（盾：前腕の上） |
+| elna | back | assets/characters/party-directions-v3/sprites/elna/back.png | 160, 304 | 225, 138（武器：柄の上に手を描き直す） | 118, 150（盾：前腕の上） |
+| ganes | menu | assets/characters/party-directions-v3/sprites/ganes/front.png | 160, 318 | 62, 206（武器：柄の上に手を描き直す） | 236, 200（盾：前腕の上） |
+| ganes | front | assets/characters/party-directions-v3/sprites/ganes/front.png | 160, 304 | 62, 206（武器：柄の上に手を描き直す） | 236, 200（盾：前腕の上） |
+| ganes | back | assets/characters/party-directions-v3/sprites/ganes/back.png | 160, 304 | 252, 196（武器：柄の上に手を描き直す） | 86, 192（盾：前腕の上） |
+| io | menu | assets/characters/party-directions-v3/sprites/io/front.png | 160, 318 | 206, 200（武器：柄の上に手を描き直す） | 88, 215（盾：前腕の上） |
+| io | front | assets/characters/party-directions-v3/sprites/io/front.png | 160, 304 | 206, 200（武器：柄の上に手を描き直す） | 88, 215（盾：前腕の上） |
+| io | back | assets/characters/party-directions-v3/sprites/io/back.png | 160, 304 | 106, 202（武器：柄の上に手を描き直す） | 270, 238（盾：前腕の上） |
+| iris | menu | assets/characters/party-directions-v3/sprites/iris/front.png | 160, 318 | 66, 184（武器：柄の上に手を描き直す） | 228, 214（盾：前腕の上） |
+| iris | front | assets/characters/party-directions-v3/sprites/iris/front.png | 160, 304 | 66, 184（武器：柄の上に手を描き直す） | 228, 214（盾：前腕の上） |
+| iris | back | assets/characters/party-directions-v3/sprites/iris/back.png | 160, 304 | 231, 222（武器：柄の上に手を描き直す） | 90, 176（盾：前腕の上） |
+| lucia | menu | assets/characters/companions/lucia.png | 124, 259 | 190, 138（武器：柄の上に手を描き直す） | 85, 162（盾：前腕の上） |
+| lucia | front | assets/characters/party-directions-v3/sprites/lucia/front.png | 160, 304 | 226, 181（武器：柄の上に手を描き直す） | 121, 205（盾：前腕の上） |
+| lucia | back | assets/characters/party-directions-v3/sprites/lucia/back.png | 160, 304 | 125, 152（武器：柄の上に手を描き直す） | 222, 200（盾：前腕の上） |
+| mochipoyo | menu | assets/characters/companions/mochipoyo.png | 136, 276 | 75, 118（武器：柄の上に手を描き直す） | 152, 112（盾：前腕の上） |
+| mochipoyo | front | assets/characters/party-directions-add68/sprites/mochipoyo/front.png | 160, 304 | 97, 144（武器：柄の上に手を描き直す） | 174, 138（盾：前腕の上） |
+| mochipoyo | back | assets/characters/party-directions-add68/sprites/mochipoyo/back.png | 160, 304 | 252, 165（武器：柄の上に手を描き直す） | 138, 150（盾：前腕の上） |
+| nagi | menu | assets/characters/party-directions-v3/sprites/nagi/front.png | 160, 318 | 102, 156（武器：柄の上に手を描き直す） | 214, 176（盾：前腕の上） |
+| nagi | front | assets/characters/party-directions-v3/sprites/nagi/front.png | 160, 304 | 102, 156（武器：柄の上に手を描き直す） | 214, 176（盾：前腕の上） |
+| nagi | back | assets/characters/party-directions-v3/sprites/nagi/back.png | 160, 304 | 206, 162（武器：柄の上に手を描き直す） | 108, 178（盾：前腕の上） |
+| ord | menu | assets/characters/party-directions-v3/sprites/ord/front.png | 160, 318 | 56, 178（武器：柄の上に手を描き直す） | 210, 190（盾：前腕の上） |
+| ord | front | assets/characters/party-directions-v3/sprites/ord/front.png | 160, 304 | 56, 178（武器：柄の上に手を描き直す） | 210, 190（盾：前腕の上） |
+| ord | back | assets/characters/party-directions-v3/sprites/ord/back.png | 160, 304 | 238, 180（武器：柄の上に手を描き直す） | 86, 200（盾：前腕の上） |
+| seris | menu | assets/characters/companions/seris.png | 106, 278 | 36, 150（武器：柄の上に手を描き直す） | 166, 182（盾：前腕の上） |
+| seris | front | assets/characters/party-directions-v3/sprites/seris/front.png | 160, 304 | 90, 174（武器：柄の上に手を描き直す） | 220, 206（盾：前腕の上） |
+| seris | back | assets/characters/party-directions-v3/sprites/seris/back.png | 160, 304 | 246, 192（武器：柄の上に手を描き直す） | 96, 186（盾：前腕の上） |
+| sophia | menu | assets/characters/party-directions-v3/sprites/sophia/front.png | 160, 318 | 90, 154（武器：柄の上に手を描き直す） | 178, 164（盾：前腕の上） |
+| sophia | front | assets/characters/party-directions-v3/sprites/sophia/front.png | 160, 304 | 90, 154（武器：柄の上に手を描き直す） | 178, 164（盾：前腕の上） |
+| sophia | back | assets/characters/party-directions-v3/sprites/sophia/back.png | 160, 304 | 214, 179（武器：柄の上に手を描き直す） | 100, 190（盾：前腕の上） |
 
 ほかの人物・向き：部品なし（本人の従来の絵）。
 
@@ -46,37 +79,195 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | weapon_dagger（（全員）） | 40 | —（変えない） | weapon_dagger |  |
 | weapon_dagger（hero） | 40 | —（変えない） | weapon_dagger | はい |
 | armor_robe（hero） | 10 | —（変えない） | armor_robe_x（消す）、armor_robe_t（tint:main）、armor_robe_f |  |
+| head_cap（hero） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（hero） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
 | armor_light（lina） | 10 | —（変えない） | armor_light_t（tint:main） |  |
-| weapon_sword（lina） | 40 | —（変えない） | weapon_sword | はい |
-| weapon_dagger（lina） | 40 | —（変えない） | weapon_dagger | はい |
-| weapon_axe（lina） | 40 | —（変えない） | weapon_axe | はい |
-| weapon_spear（lina） | 40 | —（変えない） | weapon_spear | はい |
-| weapon_bow（lina） | 40 | —（変えない） | weapon_bow | はい |
+| head_helm（lina） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（lina） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_circlet（lina） | 21 | base_nohat | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（lina） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（lina） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
 | armor_light（gald） | 10 | —（変えない） | armor_light_t（tint:main） |  |
 | weapon_sword（gald） | 40 | —（変えない） | weapon_sword | はい |
 | shield（gald） | 30 | —（変えない） | shield_t（tint:main・灰色の品は元の鎧の色）、shield_f |  |
-| weapon_dagger（gald） | 40 | —（変えない） | weapon_dagger | はい |
-| weapon_spear（gald） | 40 | —（変えない） | weapon_spear | はい |
-| weapon_bow（gald） | 40 | —（変えない） | weapon_bow | はい |
-| weapon_staff（gald） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（gald） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（gald） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（gald） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（gald） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
 | armor_robe（gald） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
 | shield（kyle） | 30 | —（変えない） | shield_f、shield_t（tint:main・灰色の品は塗らない）、shield_e |  |
-| weapon_dagger（kyle） | 40 | —（変えない） | weapon_dagger | はい |
-| weapon_axe（kyle） | 40 | —（変えない） | weapon_axe | はい |
-| weapon_bow（kyle） | 40 | —（変えない） | weapon_bow | はい |
-| weapon_staff（kyle） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_hat（kyle） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（kyle） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（kyle） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
 | armor_robe（kyle） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
 | shield（kazuto） | 30 | —（変えない） | shield_f、shield_t（tint:main・灰色の品は塗らない）、shield_e |  |
-| weapon_dagger（kazuto） | 40 | —（変えない） | weapon_dagger | はい |
-| weapon_bow（kazuto） | 40 | —（変えない） | weapon_bow | はい |
-| weapon_staff（kazuto） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_hat（kazuto） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（kazuto） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（kazuto） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
 | armor_robe（kazuto） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
 | weapon_sword（mina） | 40 | —（変えない） | weapon_sword | はい |
-| weapon_axe（mina） | 40 | —（変えない） | weapon_axe | はい |
-| weapon_spear（mina） | 40 | —（変えない） | weapon_spear | はい |
-| weapon_staff（mina） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（mina） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（mina） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（mina） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（mina） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（mina） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（mina） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
 | armor_robe（mina） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
 | armor_light（mina） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（aster） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（aster） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（aster） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（aster） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（aster） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（aster） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（aster） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（aster） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（aster） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（aster） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（aster） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（aster） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（aster） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（aster） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（elna） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（elna） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（elna） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（elna） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（elna） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（elna） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（elna） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（elna） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（elna） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（elna） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（elna） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（elna） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（elna） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（elna） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（ganes） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（ganes） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（ganes） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（ganes） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（ganes） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（ganes） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（ganes） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（ganes） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（ganes） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（ganes） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（ganes） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（ganes） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（ganes） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（ganes） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（io） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（io） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（io） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（io） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（io） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（io） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（io） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（io） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（io） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（io） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（io） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（io） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（io） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（io） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（iris） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（iris） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（iris） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（iris） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（iris） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（iris） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（iris） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（iris） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（iris） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（iris） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（iris） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（iris） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（iris） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（iris） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（lucia） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（lucia） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（lucia） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（lucia） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（lucia） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（lucia） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（lucia） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（lucia） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（lucia） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（lucia） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（lucia） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（lucia） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（lucia） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（lucia） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（mochipoyo） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（mochipoyo） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（mochipoyo） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（mochipoyo） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（mochipoyo） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（mochipoyo） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（mochipoyo） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（mochipoyo） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（mochipoyo） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（mochipoyo） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（mochipoyo） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（mochipoyo） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（mochipoyo） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（mochipoyo） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（nagi） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（nagi） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（nagi） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（nagi） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（nagi） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（nagi） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（nagi） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（nagi） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（nagi） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（nagi） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（nagi） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（nagi） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（nagi） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（nagi） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（ord） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（ord） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（ord） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（ord） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（ord） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（ord） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（ord） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（ord） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（ord） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（ord） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（ord） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（ord） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（ord） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（ord） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（seris） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（seris） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（seris） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（seris） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（seris） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（seris） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（seris） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（seris） | 20 | —（変えない） | own_hat_t（tint:main） |  |
+| head_cap（seris） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（seris） | 21 | base_nohat | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（seris） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（seris） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（seris） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（seris） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
+| weapon_sword（sophia） | 40 | —（変えない） | weapon_sword | はい |
+| weapon_dagger（sophia） | 40 | —（変えない） | weapon_dagger | はい |
+| weapon_axe（sophia） | 40 | —（変えない） | weapon_axe | はい |
+| weapon_spear（sophia） | 40 | —（変えない） | weapon_spear | はい |
+| weapon_bow（sophia） | 40 | —（変えない） | weapon_bow | はい |
+| weapon_staff（sophia） | 40 | —（変えない） | weapon_staff_t（tint:orb）、weapon_staff_f | はい |
+| head_helm（sophia） | 20 | base_helm | head_helm_t（tint:main・灰色の品は元の鎧の色）、head_helm_f |  |
+| head_hat（sophia） | 20 | base_hat | head_hat_t（tint:main）、head_hat_f |  |
+| head_cap（sophia） | 20 | base_cap | head_cap_t（tint:main）、head_cap_f |  |
+| head_circlet（sophia） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
+| shield（sophia） | 30 | —（変えない） | shield_gt（tint:main・灰色の品は元の鎧の色）、shield_gf |  |
+| armor_heavy（sophia） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
+| armor_robe（sophia） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
+| armor_light（sophia） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 
 ## 装備ID → 部品の種類
 
@@ -113,13 +304,13 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor | light/ninja | armor_light | 1 | ninja_garb |
 | armor | robe/robe | armor_robe | 23 | robe, silk_robe, sage_robe, temporal_robe, sky_robe, robe_skip, ember_robe, healer_robe, statistician_robe, antiretro_vestment, iceport_robe, chrono_formal, voidward_robe, td_risk_robe, b19_dark_matter_veil, t68_islands_robe, t68_desert_robe, t68_machine_robe, t68_snow_robe, t68_dragon_robe, t68_dark_robe, bu_frost_spirit_robe, bu_sevran_blank_robe |
 | armor | robe/veil | armor_robe | 3 | mirage_veil, b19_porcelain_robe, aeria_robe |
-| head | hat/bicorne | （なし→その部位を描かない） | 1 | bu_gull_admiral_hat |
+| head | hat/bicorne | head_cap | 1 | bu_gull_admiral_hat |
 | head | hat/cap | head_cap | 9 | leather_cap, hilo_hat, desert_star_hat, t68_islands_hat, t68_tempus_hat, t68_desert_hat, t68_machine_hat, t68_dragon_hat, t68_dark_hat |
-| head | hat/circlet | （なし→その部位を描かない） | 1 | bu_control_seal_circlet |
-| head | hat/crown | （なし→その部位を描かない） | 1 | bu_memory_keeper_helm |
-| head | hat/feather | （なし→その部位を描かない） | 1 | feather_hat |
-| head | hat/hood | （なし→その部位を描かない） | 1 | icecrystal_hood |
-| head | hat/turban | （なし→その部位を描かない） | 1 | sand_turban |
+| head | hat/circlet | head_circlet | 1 | bu_control_seal_circlet |
+| head | hat/crown | head_circlet | 1 | bu_memory_keeper_helm |
+| head | hat/feather | head_cap | 1 | feather_hat |
+| head | hat/hood | head_cap | 1 | icecrystal_hood |
+| head | hat/turban | head_cap | 1 | sand_turban |
 | head | hat/witch | head_hat | 3 | wizard_hat, arcane_hat, td_rci_hat |
 | head | helm/crown | head_helm | 2 | mentor_crown, td_dow_crown |
 | head | helm/dragon | head_helm | 2 | dragon_helm, t68_dragon_helm |
@@ -169,9 +360,20 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 
 | 人物ID | 描ける種類 |
 |---|---|
-| hero | armor_light、armor_heavy、armor_robe、head_helm、head_hat、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
-| lina | armor_light、armor_robe、head_cap、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger |
-| gald | armor_light、armor_heavy、armor_robe、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
-| kyle | armor_light、armor_heavy、armor_robe、head_helm、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
-| kazuto | armor_light、armor_heavy、armor_robe、head_helm、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
-| mina | armor_light、armor_robe、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger |
+| hero | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| lina | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| gald | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| kyle | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| kazuto | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| mina | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| aster | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| elna | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| ganes | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| io | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| iris | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| lucia | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| mochipoyo | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| nagi | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| ord | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| seris | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |
+| sophia | armor_light、armor_heavy、armor_robe、head_helm、head_hat、head_cap、head_circlet、weapon_sword、weapon_staff、weapon_spear、weapon_axe、weapon_bow、weapon_dagger、shield |

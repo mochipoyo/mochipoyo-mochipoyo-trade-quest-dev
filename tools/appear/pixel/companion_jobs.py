@@ -179,11 +179,11 @@ GEN = {
                            {'cloth': ((0, 360), (0, 0.22), (0.18, 0.72), (100, 999)), 'cape': ((340, 18), (0.35, 1.1), (0.12, 1.1), (100, 999)), 'skirt': (166, 186, 292, 46, 78), 'cut': 205, 'cx': 166}),
 }
 EXTRA.update({
-    'seris': {'menu': {'head': {'cx': 117, 'top': 50, 'brow': 100, 'rx': 42, 'neck': 130, 'face': R(85, 96, 150, 136), 'hair': R(20, 0, 205, 104),
-                                'own': [(25, 0), (205, 0), (205, 104), (160, 110), (117, 98), (80, 106), (28, 116)], 'own_is_hat': True, 'hair_hsv': ((185, 215), (0.3, 1.1), (0.55, 1.1))},
+    'seris': {'menu': {'head': {'cx': 117, 'top': 48, 'brow': 92, 'rx': 42, 'neck': 130, 'face': R(80, 84, 155, 136), 'hair': R(10, 0, 210, 96),
+                                'own': [(8, 0), (212, 0), (212, 104), (160, 110), (117, 90), (80, 100), (8, 118)], 'own_is_hat': True, 'hair_hsv': ((185, 215), (0.3, 1.1), (0.55, 1.1))},
                        'shoulders': [(84, 142, -1), (152, 142, 1)]},
               'back': {'head': {'cx': 150, 'top': 70, 'brow': 140, 'rx': 50, 'neck': 185, 'face': None, 'hair': R(60, 20, 245, 146),
-                                'own': [(90, 20), (245, 20), (245, 150), (200, 162), (150, 150), (100, 160), (88, 140)], 'own_is_hat': True, 'hair_hsv': ((185, 215), (0.3, 1.1), (0.55, 1.1))},
+                                'own': [(36, 10), (262, 10), (262, 150), (200, 165), (150, 152), (100, 162), (36, 152)], 'own_is_hat': True, 'hair_hsv': ((185, 215), (0.3, 1.1), (0.55, 1.1))},
                        'shoulders': [(118, 196, -1), (186, 196, 1)]}},
     'ganes': {'menu': {'head': {'cx': 165, 'top': 30, 'brow': 72, 'rx': 34, 'neck': 112, 'face': R(134, 62, 198, 116), 'hair': R(120, 22, 212, 78)}, 'shoulders': [(102, 132, -1), (226, 132, 1)]},
               'back': {'head': {'cx': 162, 'top': 30, 'brow': 84, 'rx': 36, 'neck': 112, 'face': None, 'hair': R(115, 22, 210, 92)}, 'shoulders': [(104, 134, -1), (222, 134, 1)]}},
@@ -311,7 +311,9 @@ def kit_view(aid, A, vk, c, need):
         hd = dict(hd); hd.setdefault('hat_by', hd['brow'] - 4); hd.setdefault('hat_rx', int(hd['rx'] * 1.38))
         if 'head_helm' in need: out['base_helm'], out['head_helm_t'], out['head_helm_f'] = GK.helm(base_h, hd, back)
         if 'head_cap' in need: out['base_cap'], out['head_cap_t'], out['head_cap_f'] = GK.cap(base_h, hd, back)
-        if 'head_circlet' in need: out['head_circlet_t'], out['head_circlet_f'] = GK.circlet(b, hd, back)
+        if 'head_circlet' in need:
+            out['head_circlet_t'], out['head_circlet_f'] = GK.circlet(base_h, hd, back)
+            if hd.get('own'): out['base_nohat'] = base_h   # 元の帽子・頭巾の人：額の輪は帽子を外して髪を補った絵の上に
         if 'head_hat' in need:
             if hd.get('own') and hd.get('own_is_hat'):   # 元の絵がとんがり帽子の人（セリス）：その帽子を品の色で塗る
                 out['own_hat_t'] = HM.gray_of(b, P.poly_mask(b.shape[0], b.shape[1], hd['own']) & P.opaque(b) & ~hsv_mask(b, *hd['hair_hsv']))
@@ -372,6 +374,7 @@ def run(ids=None):
         own_hat = any('own_hat_t' in A['views'][vk]['parts'] for vk in views)
         for c in need:
             if c == 'head_hat' and own_hat: mats[c] = {'z': 20, 'generated': True, 'layers': [{'part': 'own_hat_t', 'tint': 'main'}]}
+            elif c == 'head_circlet' and any('base_nohat' in A['views'][vk]['parts'] for vk in views): mats[c] = dict(HEAD_MATS[c], base='base_nohat', generated=True)
             elif c in HEAD_MATS: mats[c] = dict(HEAD_MATS[c], generated=True)
             elif c == 'shield': mats[c] = {'z': 30, 'generated': True, 'layers': [{'part': 'shield_gt', 'tint': 'main', 'grayRef': 'iron'}, {'part': 'shield_gf'}]}
             elif c == 'armor_heavy': mats[c] = {'z': 10, 'covers': ['body'], 'generated': True, 'layers': [{'part': 'jf_cloth_t', 'tint': 'main', 'grayRef': 'plate'}, {'part': 'hv_pl_t', 'tint': 'main', 'grayRef': 'plate', 'optional': True}, {'part': 'hv_pl_f', 'optional': True}]}

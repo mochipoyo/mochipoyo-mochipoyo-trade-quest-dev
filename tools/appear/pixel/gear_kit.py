@@ -24,14 +24,17 @@ def head_box(base, head):
 def hair_fill(base, head, hairm):
     """元の絵の帽子（own）を消し、その下の頭の上を髪で補う（髪の色の段を元の絵の髪から取り、丸い頭の形に塗る）"""
     Hh, Ww = base.shape[:2]; yy, xx = np.mgrid[0:Hh, 0:Ww].astype(float); b = base.copy()
-    own = P.poly_mask(Hh, Ww, head['own']) & P.opaque(base); b[own] = 0
-    cx, rx = head['cx'], head['rx']; cy = head['brow']; ry = head['brow'] - head['top']
+    own = P.poly_mask(Hh, Ww, head['own']) & P.opaque(base)
+    if head.get('face') is not None: own &= ~P.poly_mask(Hh, Ww, head['face'])   # 顔は残す
+    b[own] = 0
+    cx, rx = head['cx'], head['rx'] * 0.9; cy = head['brow'] + 2; ry = head['brow'] - head['top']
     dome = (((xx - cx) / rx) ** 2 + ((yy - cy) / ry) ** 2 <= 1.0) & (yy <= cy + 4)
     fill = dome & ~P.opaque(b)
     cols = base[hairm & P.opaque(base)][:, :3]
     if len(cols):
         L = cols.mean(1); qs = np.percentile(L, [10, 35, 60, 85]); ramp = [cols[np.argmin(np.abs(L - q))] for q in qs]
-        v = np.clip(0.75 - 0.5 * (xx - cx) / rx - 0.25 * (yy - (cy - ry)) / ry + 0.15 * np.sin(xx / 2.1 + yy / 5.0), 0, 0.999)
+        v = np.clip(0.72 - 0.38 * (xx - cx) / rx - 0.3 * (yy - (cy - ry)) / ry, 0, 0.999)
+        v = np.where((np.abs(((xx - cx) % 7) - 3.5) < 0.6) & (yy > cy - ry * 0.6), v - 0.22, v)   # 髪の筋（ゆるい縦の線）
         idx = (v * 4).astype(int)
         for k in range(4): mk = fill & (idx == k); b[mk, :3] = ramp[k]; b[mk, 3] = 255
     ring = P.neighbors4(P.opaque(b)) & ~P.opaque(b) & (dome | P.neighbors4(dome))
