@@ -216,6 +216,55 @@
      "tint": "main"
     }
    ]
+  },
+  "item:knight_sword": {
+   "z": 40,
+   "art": "sword_knight",
+   "layers": [
+    {
+     "part": "art_sword_knight"
+    }
+   ],
+   "hand": true
+  },
+  "item:sage_staff": {
+   "z": 40,
+   "art": "staff_sage",
+   "layers": [
+    {
+     "part": "art_staff_sage"
+    }
+   ],
+   "hand": true
+  },
+  "item:battle_axe": {
+   "z": 40,
+   "art": "axe_battle",
+   "layers": [
+    {
+     "part": "art_axe_battle"
+    }
+   ],
+   "hand": true
+  },
+  "item:knight_shield": {
+   "z": 30,
+   "art": "shield_knight",
+   "layers": [
+    {
+     "part": "art_shield_knight"
+    }
+   ]
+  },
+  "item:knight_helm": {
+   "z": 20,
+   "art": "helm_knight",
+   "layers": [
+    {
+     "part": "art_helm_knight"
+    }
+   ],
+   "base": "base_helm"
   }
  },
  "views": {
@@ -240,13 +289,13 @@
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
-    "x": 196,
+    "x": 190,
     "y": 160,
     "order": "盾：前腕の上"
    },
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_plain.png?v=0150bea2",
+     "url": "assets/characters/equip-pixels/seris/menu/base_plain.png?v=994fff9f",
      "x": 6,
      "y": 2,
      "w": 206,
@@ -260,7 +309,7 @@
      "h": 29
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/jf_cloth_t.png?v=52e4f910",
+     "url": "assets/characters/equip-pixels/seris/menu/jf_cloth_t.png?v=b4aba40d",
      "x": 6,
      "y": 128,
      "w": 206,
@@ -316,7 +365,7 @@
      "h": 277
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=b156be04",
+     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=2cdcd388",
      "x": 6,
      "y": 49,
      "w": 206,
@@ -337,7 +386,7 @@
      "h": 83
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=44707fe5",
+     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=9ba9e383",
      "x": 6,
      "y": 49,
      "w": 206,
@@ -372,7 +421,7 @@
      "h": 14
     },
     "base_nohat": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_nohat.png?v=54455f60",
+     "url": "assets/characters/equip-pixels/seris/menu/base_nohat.png?v=fbbce6d6",
      "x": 6,
      "y": 49,
      "w": 206,
@@ -414,17 +463,17 @@
      "h": 34
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/seris/menu/shield_gt.png?v=717fa113",
-     "x": 172,
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gt.png?v=77f36e60",
+     "x": 166,
      "y": 129,
-     "w": 40,
+     "w": 46,
      "h": 63
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/seris/menu/shield_gf.png?v=016442d8",
-     "x": 168,
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gf.png?v=cf84ca74",
+     "x": 162,
      "y": 125,
-     "w": 44,
+     "w": 50,
      "h": 71
     },
     "hv_pl_t": {
@@ -440,6 +489,41 @@
      "y": 128,
      "w": 107,
      "h": 23
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/seris/menu/art_sword_knight__menu.png?v=a2b86363",
+     "x": 3,
+     "y": 0,
+     "w": 61,
+     "h": 178
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/seris/menu/art_staff_sage__menu.png?v=ba2a537f",
+     "x": 0,
+     "y": 0,
+     "w": 78,
+     "h": 278
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/seris/menu/art_axe_battle__menu.png?v=10f8bf36",
+     "x": 5,
+     "y": 47,
+     "w": 78,
+     "h": 136
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/seris/menu/art_shield_knight__menu.png?v=ff5444d8",
+     "x": 161,
+     "y": 124,
+     "w": 51,
+     "h": 74
+    },
+    "art_helm_knight": {
+     "url": "assets/characters/equip-pixels/seris/menu/art_helm_knight__menu.png?v=534f597d",
+     "x": 71,
+     "y": 44,
+     "w": 94,
+     "h": 108
     }
    },
    "frame": {
@@ -470,14 +554,14 @@
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
-    "x": 250,
+    "x": 244,
     "y": 184,
     "order": "盾：前腕の上"
    },
    "from": "menu",
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_plain.png?v=0150bea2",
+     "url": "assets/characters/equip-pixels/seris/menu/base_plain.png?v=994fff9f",
      "x": 60,
      "y": 26,
      "w": 206,
@@ -491,7 +575,7 @@
      "h": 29
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/jf_cloth_t.png?v=52e4f910",
+     "url": "assets/characters/equip-pixels/seris/menu/jf_cloth_t.png?v=b4aba40d",
      "x": 60,
      "y": 152,
      "w": 206,
@@ -547,7 +631,7 @@
      "h": 277
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=b156be04",
+     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=2cdcd388",
      "x": 60,
      "y": 73,
      "w": 206,
@@ -568,7 +652,7 @@
      "h": 83
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=44707fe5",
+     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=9ba9e383",
      "x": 60,
      "y": 73,
      "w": 206,
@@ -603,7 +687,7 @@
      "h": 14
     },
     "base_nohat": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_nohat.png?v=54455f60",
+     "url": "assets/characters/equip-pixels/seris/menu/base_nohat.png?v=fbbce6d6",
      "x": 60,
      "y": 73,
      "w": 206,
@@ -645,17 +729,17 @@
      "h": 34
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/seris/menu/shield_gt.png?v=717fa113",
-     "x": 226,
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gt.png?v=77f36e60",
+     "x": 220,
      "y": 153,
-     "w": 40,
+     "w": 46,
      "h": 63
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/seris/menu/shield_gf.png?v=016442d8",
-     "x": 222,
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gf.png?v=cf84ca74",
+     "x": 216,
      "y": 149,
-     "w": 44,
+     "w": 50,
      "h": 71
     },
     "hv_pl_t": {
@@ -671,6 +755,41 @@
      "y": 152,
      "w": 107,
      "h": 23
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/seris/menu/art_sword_knight__menu.png?v=a2b86363",
+     "x": 57,
+     "y": 24,
+     "w": 61,
+     "h": 178
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/seris/menu/art_staff_sage__menu.png?v=ba2a537f",
+     "x": 54,
+     "y": 24,
+     "w": 78,
+     "h": 278
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/seris/menu/art_axe_battle__menu.png?v=10f8bf36",
+     "x": 59,
+     "y": 71,
+     "w": 78,
+     "h": 136
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/seris/menu/art_shield_knight__menu.png?v=ff5444d8",
+     "x": 215,
+     "y": 148,
+     "w": 51,
+     "h": 74
+    },
+    "art_helm_knight": {
+     "url": "assets/characters/equip-pixels/seris/menu/art_helm_knight__menu.png?v=534f597d",
+     "x": 125,
+     "y": 68,
+     "w": 94,
+     "h": 108
     }
    }
   },
@@ -881,6 +1000,41 @@
      "y": 167,
      "w": 35,
      "h": 59
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/seris/back/art_sword_knight__back.png?v=a27e4f99",
+     "x": 212,
+     "y": 26,
+     "w": 60,
+     "h": 178
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/seris/back/art_staff_sage__back.png?v=30261997",
+     "x": 193,
+     "y": 0,
+     "w": 93,
+     "h": 304
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/seris/back/art_axe_battle__back.png?v=085af3ea",
+     "x": 192,
+     "y": 72,
+     "w": 79,
+     "h": 138
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/seris/back/art_shield_knight__back.png?v=ff036d45",
+     "x": 55,
+     "y": 166,
+     "w": 44,
+     "h": 62
+    },
+    "art_helm_knight": {
+     "url": "assets/characters/equip-pixels/seris/back/art_helm_knight__back.png?v=e017c142",
+     "x": 99,
+     "y": 66,
+     "w": 103,
+     "h": 121
     }
    },
    "frame": {

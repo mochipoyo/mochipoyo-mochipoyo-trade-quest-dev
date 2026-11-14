@@ -219,6 +219,55 @@
      "tint": "main"
     }
    ]
+  },
+  "item:knight_sword": {
+   "z": 40,
+   "art": "sword_knight",
+   "layers": [
+    {
+     "part": "art_sword_knight"
+    }
+   ],
+   "hand": true
+  },
+  "item:sage_staff": {
+   "z": 40,
+   "art": "staff_sage",
+   "layers": [
+    {
+     "part": "art_staff_sage"
+    }
+   ],
+   "hand": true
+  },
+  "item:battle_axe": {
+   "z": 40,
+   "art": "axe_battle",
+   "layers": [
+    {
+     "part": "art_axe_battle"
+    }
+   ],
+   "hand": true
+  },
+  "item:knight_shield": {
+   "z": 30,
+   "art": "shield_knight",
+   "layers": [
+    {
+     "part": "art_shield_knight"
+    }
+   ]
+  },
+  "item:knight_helm": {
+   "z": 20,
+   "art": "helm_knight",
+   "layers": [
+    {
+     "part": "art_helm_knight"
+    }
+   ],
+   "base": "base_helm"
   }
  },
  "views": {
@@ -464,6 +513,41 @@
      "y": 46,
      "w": 147,
      "h": 84
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/io/menu/art_sword_knight__menu.png?v=d84bddf8",
+     "x": 186,
+     "y": 63,
+     "w": 52,
+     "h": 154
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/io/menu/art_staff_sage__menu.png?v=e3206887",
+     "x": 168,
+     "y": 29,
+     "w": 84,
+     "h": 275
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/io/menu/art_axe_battle__menu.png?v=4abe4512",
+     "x": 169,
+     "y": 104,
+     "w": 68,
+     "h": 118
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/io/menu/art_shield_knight__menu.png?v=c9d32492",
+     "x": 63,
+     "y": 179,
+     "w": 52,
+     "h": 74
+    },
+    "art_helm_knight": {
+     "url": "assets/characters/equip-pixels/io/menu/art_helm_knight__menu.png?v=4bfa6850",
+     "x": 104,
+     "y": 64,
+     "w": 100,
+     "h": 113
     }
    },
    "frame": {
@@ -716,6 +800,41 @@
      "y": 46,
      "w": 147,
      "h": 84
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/io/menu/art_sword_knight__menu.png?v=d84bddf8",
+     "x": 186,
+     "y": 63,
+     "w": 52,
+     "h": 154
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/io/menu/art_staff_sage__menu.png?v=e3206887",
+     "x": 168,
+     "y": 29,
+     "w": 84,
+     "h": 275
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/io/menu/art_axe_battle__menu.png?v=4abe4512",
+     "x": 169,
+     "y": 104,
+     "w": 68,
+     "h": 118
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/io/menu/art_shield_knight__menu.png?v=c9d32492",
+     "x": 63,
+     "y": 179,
+     "w": 52,
+     "h": 74
+    },
+    "art_helm_knight": {
+     "url": "assets/characters/equip-pixels/io/menu/art_helm_knight__menu.png?v=4bfa6850",
+     "x": 104,
+     "y": 64,
+     "w": 100,
+     "h": 113
     }
    }
   },
@@ -947,6 +1066,41 @@
      "y": 60,
      "w": 113,
      "h": 69
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/io/back/art_sword_knight__back.png?v=e5e366ad",
+     "x": 82,
+     "y": 69,
+     "w": 52,
+     "h": 151
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/io/back/art_staff_sage__back.png?v=85dc1c75",
+     "x": 68,
+     "y": 34,
+     "w": 83,
+     "h": 270
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/io/back/art_axe_battle__back.png?v=72dfa13f",
+     "x": 83,
+     "y": 108,
+     "w": 67,
+     "h": 117
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/io/back/art_shield_knight__back.png?v=4607c55f",
+     "x": 207,
+     "y": 179,
+     "w": 52,
+     "h": 72
+    },
+    "art_helm_knight": {
+     "url": "assets/characters/equip-pixels/io/back/art_helm_knight__back.png?v=39516580",
+     "x": 121,
+     "y": 67,
+     "w": 81,
+     "h": 97
     }
    },
    "frame": {

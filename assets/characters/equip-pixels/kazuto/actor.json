@@ -104,6 +104,55 @@
      }
     ]
    }
+  },
+  "item:knight_sword": {
+   "z": 40,
+   "art": "sword_knight",
+   "layers": [
+    {
+     "part": "art_sword_knight"
+    }
+   ],
+   "hand": true
+  },
+  "item:sage_staff": {
+   "z": 40,
+   "art": "staff_sage",
+   "layers": [
+    {
+     "part": "art_staff_sage"
+    }
+   ],
+   "hand": true
+  },
+  "item:battle_axe": {
+   "z": 40,
+   "art": "axe_battle",
+   "layers": [
+    {
+     "part": "art_axe_battle"
+    }
+   ],
+   "hand": true
+  },
+  "item:knight_shield": {
+   "z": 30,
+   "art": "shield_knight",
+   "layers": [
+    {
+     "part": "art_shield_knight"
+    }
+   ]
+  },
+  "item:knight_helm": {
+   "z": 20,
+   "art": "helm_knight",
+   "layers": [
+    {
+     "part": "art_helm_knight"
+    }
+   ],
+   "base": "base_helm"
   }
  },
  "views": {
@@ -397,6 +446,41 @@
      "y": -27,
      "w": 93,
      "h": 68
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/art_sword_knight__menu.png?v=1a895b42",
+     "x": 0,
+     "y": 156,
+     "w": 64,
+     "h": 95
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/art_staff_sage__menu.png?v=f892c6f9",
+     "x": 16,
+     "y": 0,
+     "w": 79,
+     "h": 258
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/art_axe_battle__menu.png?v=d571121a",
+     "x": 8,
+     "y": 71,
+     "w": 59,
+     "h": 103
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/art_shield_knight__menu.png?v=2d578a11",
+     "x": 153,
+     "y": 66,
+     "w": 92,
+     "h": 179
+    },
+    "art_helm_knight": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/art_helm_knight__menu.png?v=b8e5cab7",
+     "x": 90,
+     "y": 0,
+     "w": 76,
+     "h": 85
     }
    }
   },
@@ -685,6 +769,41 @@
      "y": 19,
      "w": 93,
      "h": 68
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/art_sword_knight__menu.png?v=1a895b42",
+     "x": 40,
+     "y": 202,
+     "w": 64,
+     "h": 95
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/art_staff_sage__menu.png?v=f892c6f9",
+     "x": 56,
+     "y": 46,
+     "w": 79,
+     "h": 258
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/art_axe_battle__menu.png?v=d571121a",
+     "x": 48,
+     "y": 117,
+     "w": 59,
+     "h": 103
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/art_shield_knight__menu.png?v=2d578a11",
+     "x": 193,
+     "y": 112,
+     "w": 92,
+     "h": 179
+    },
+    "art_helm_knight": {
+     "url": "assets/characters/equip-pixels/kazuto/menu/art_helm_knight__menu.png?v=b8e5cab7",
+     "x": 130,
+     "y": 46,
+     "w": 76,
+     "h": 85
     }
    }
   },
@@ -985,6 +1104,41 @@
      "y": 29,
      "w": 73,
      "h": 57
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/kazuto/back/art_sword_knight__back.png?v=b9047c70",
+     "x": 243,
+     "y": 191,
+     "w": 65,
+     "h": 95
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/kazuto/back/art_staff_sage__back.png?v=32ab204e",
+     "x": 205,
+     "y": 4,
+     "w": 91,
+     "h": 300
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/kazuto/back/art_axe_battle__back.png?v=6256cf42",
+     "x": 239,
+     "y": 105,
+     "w": 59,
+     "h": 104
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/kazuto/back/art_shield_knight__back.png?v=fd24b0a6",
+     "x": 67,
+     "y": 110,
+     "w": 89,
+     "h": 193
+    },
+    "art_helm_knight": {
+     "url": "assets/characters/equip-pixels/kazuto/back/art_helm_knight__back.png?v=1c20392a",
+     "x": 134,
+     "y": 40,
+     "w": 65,
+     "h": 77
     }
    }
   }
