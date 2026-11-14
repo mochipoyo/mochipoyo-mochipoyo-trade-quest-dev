@@ -881,20 +881,6 @@
      "y": 167,
      "w": 35,
      "h": 59
-    },
-    "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/seris/back/hv_pl_t.png?v=10d1b5c8",
-     "x": 104,
-     "y": 186,
-     "w": 97,
-     "h": 16
-    },
-    "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/seris/back/hv_pl_f.png?v=9f388711",
-     "x": 103,
-     "y": 185,
-     "w": 99,
-     "h": 18
     }
    },
    "frame": {

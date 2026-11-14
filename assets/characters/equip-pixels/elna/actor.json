@@ -382,18 +382,18 @@
      "h": 280
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/elna/menu/jf_pl_t.png?v=a2746dd6",
-     "x": 73,
-     "y": 129,
-     "w": 154,
-     "h": 25
+     "url": "assets/characters/equip-pixels/elna/menu/jf_pl_t.png?v=b7d62c10",
+     "x": 80,
+     "y": 121,
+     "w": 126,
+     "h": 21
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/elna/menu/jf_pl_f.png?v=dfb345bc",
-     "x": 72,
-     "y": 128,
-     "w": 156,
-     "h": 27
+     "url": "assets/characters/equip-pixels/elna/menu/jf_pl_f.png?v=b5a955bb",
+     "x": 79,
+     "y": 120,
+     "w": 128,
+     "h": 23
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/elna/menu/jf_mt_t.png?v=505b9b86",
@@ -410,32 +410,32 @@
      "h": 42
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/elna/menu/shield_gt.png?v=fa6ba065",
-     "x": 139,
-     "y": 115,
-     "w": 63,
-     "h": 79
+     "url": "assets/characters/equip-pixels/elna/menu/shield_gt.png?v=ef0d234d",
+     "x": 145,
+     "y": 122,
+     "w": 51,
+     "h": 65
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/elna/menu/shield_gf.png?v=38c76fbc",
-     "x": 135,
-     "y": 111,
-     "w": 71,
-     "h": 87
+     "url": "assets/characters/equip-pixels/elna/menu/shield_gf.png?v=120a58b9",
+     "x": 141,
+     "y": 118,
+     "w": 59,
+     "h": 73
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/elna/menu/hv_pl_t.png?v=a2746dd6",
-     "x": 73,
-     "y": 129,
-     "w": 154,
-     "h": 25
+     "url": "assets/characters/equip-pixels/elna/menu/hv_pl_t.png?v=b7d62c10",
+     "x": 80,
+     "y": 121,
+     "w": 126,
+     "h": 21
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/elna/menu/hv_pl_f.png?v=dfb345bc",
-     "x": 72,
-     "y": 128,
-     "w": 156,
-     "h": 27
+     "url": "assets/characters/equip-pixels/elna/menu/hv_pl_f.png?v=b5a955bb",
+     "x": 79,
+     "y": 120,
+     "w": 128,
+     "h": 23
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/elna/menu/head_hat_t.png?v=249fedad",
@@ -620,18 +620,18 @@
      "h": 280
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/elna/menu/jf_pl_t.png?v=a2746dd6",
-     "x": 73,
-     "y": 129,
-     "w": 154,
-     "h": 25
+     "url": "assets/characters/equip-pixels/elna/menu/jf_pl_t.png?v=b7d62c10",
+     "x": 80,
+     "y": 121,
+     "w": 126,
+     "h": 21
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/elna/menu/jf_pl_f.png?v=dfb345bc",
-     "x": 72,
-     "y": 128,
-     "w": 156,
-     "h": 27
+     "url": "assets/characters/equip-pixels/elna/menu/jf_pl_f.png?v=b5a955bb",
+     "x": 79,
+     "y": 120,
+     "w": 128,
+     "h": 23
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/elna/menu/jf_mt_t.png?v=505b9b86",
@@ -648,32 +648,32 @@
      "h": 42
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/elna/menu/shield_gt.png?v=fa6ba065",
-     "x": 139,
-     "y": 115,
-     "w": 63,
-     "h": 79
+     "url": "assets/characters/equip-pixels/elna/menu/shield_gt.png?v=ef0d234d",
+     "x": 145,
+     "y": 122,
+     "w": 51,
+     "h": 65
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/elna/menu/shield_gf.png?v=38c76fbc",
-     "x": 135,
-     "y": 111,
-     "w": 71,
-     "h": 87
+     "url": "assets/characters/equip-pixels/elna/menu/shield_gf.png?v=120a58b9",
+     "x": 141,
+     "y": 118,
+     "w": 59,
+     "h": 73
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/elna/menu/hv_pl_t.png?v=a2746dd6",
-     "x": 73,
-     "y": 129,
-     "w": 154,
-     "h": 25
+     "url": "assets/characters/equip-pixels/elna/menu/hv_pl_t.png?v=b7d62c10",
+     "x": 80,
+     "y": 121,
+     "w": 126,
+     "h": 21
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/elna/menu/hv_pl_f.png?v=dfb345bc",
-     "x": 72,
-     "y": 128,
-     "w": 156,
-     "h": 27
+     "url": "assets/characters/equip-pixels/elna/menu/hv_pl_f.png?v=b5a955bb",
+     "x": 79,
+     "y": 120,
+     "w": 128,
+     "h": 23
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/elna/menu/head_hat_t.png?v=249fedad",
@@ -851,18 +851,18 @@
      "h": 279
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/elna/back/jf_pl_t.png?v=7f3669da",
-     "x": 89,
-     "y": 119,
-     "w": 162,
-     "h": 27
+     "url": "assets/characters/equip-pixels/elna/back/jf_pl_t.png?v=1eb3974e",
+     "x": 109,
+     "y": 111,
+     "w": 116,
+     "h": 19
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/elna/back/jf_pl_f.png?v=cca2336f",
-     "x": 88,
-     "y": 118,
-     "w": 164,
-     "h": 29
+     "url": "assets/characters/equip-pixels/elna/back/jf_pl_f.png?v=bdee8c87",
+     "x": 108,
+     "y": 110,
+     "w": 118,
+     "h": 21
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/elna/back/jf_mt_t.png?v=1f9eb896",
@@ -879,32 +879,18 @@
      "h": 43
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/elna/back/shield_gt.png?v=3a0de05f",
-     "x": 96,
-     "y": 108,
-     "w": 45,
-     "h": 84
+     "url": "assets/characters/equip-pixels/elna/back/shield_gt.png?v=c29992d6",
+     "x": 103,
+     "y": 120,
+     "w": 31,
+     "h": 60
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/elna/back/shield_gf.png?v=48f3b2e2",
-     "x": 92,
-     "y": 104,
-     "w": 53,
-     "h": 93
-    },
-    "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/elna/back/hv_pl_t.png?v=7f3669da",
-     "x": 89,
-     "y": 119,
-     "w": 162,
-     "h": 27
-    },
-    "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/elna/back/hv_pl_f.png?v=cca2336f",
-     "x": 88,
-     "y": 118,
-     "w": 164,
-     "h": 29
+     "url": "assets/characters/equip-pixels/elna/back/shield_gf.png?v=30c1ea7c",
+     "x": 99,
+     "y": 116,
+     "w": 39,
+     "h": 69
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/elna/back/head_hat_t.png?v=69e1e7cf",

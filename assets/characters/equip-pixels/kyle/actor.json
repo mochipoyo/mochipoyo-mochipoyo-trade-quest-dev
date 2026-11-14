@@ -357,18 +357,18 @@
      "h": 259
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_t.png?v=d133890b",
-     "x": 29,
-     "y": 99,
-     "w": 144,
-     "h": 24
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_t.png?v=36d4156d",
+     "x": 48,
+     "y": 91,
+     "w": 106,
+     "h": 18
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_f.png?v=85c82542",
-     "x": 28,
-     "y": 98,
-     "w": 146,
-     "h": 26
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_f.png?v=be1a23db",
+     "x": 47,
+     "y": 90,
+     "w": 108,
+     "h": 20
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/kyle/menu/jf_mt_t.png?v=2f29b52f",
@@ -645,18 +645,18 @@
      "h": 259
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_t.png?v=d133890b",
-     "x": 80,
-     "y": 138,
-     "w": 144,
-     "h": 24
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_t.png?v=36d4156d",
+     "x": 99,
+     "y": 130,
+     "w": 106,
+     "h": 18
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_f.png?v=85c82542",
-     "x": 79,
-     "y": 137,
-     "w": 146,
-     "h": 26
+     "url": "assets/characters/equip-pixels/kyle/menu/jf_pl_f.png?v=be1a23db",
+     "x": 98,
+     "y": 129,
+     "w": 108,
+     "h": 20
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/kyle/menu/jf_mt_t.png?v=2f29b52f",
@@ -959,18 +959,18 @@
      "h": 276
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/kyle/back/jf_pl_t.png?v=3a0e82a7",
-     "x": 82,
-     "y": 126,
-     "w": 156,
-     "h": 26
+     "url": "assets/characters/equip-pixels/kyle/back/jf_pl_t.png?v=79d5495d",
+     "x": 101,
+     "y": 118,
+     "w": 119,
+     "h": 20
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/kyle/back/jf_pl_f.png?v=694c28ae",
-     "x": 81,
-     "y": 125,
-     "w": 158,
-     "h": 28
+     "url": "assets/characters/equip-pixels/kyle/back/jf_pl_f.png?v=f6808444",
+     "x": 100,
+     "y": 117,
+     "w": 121,
+     "h": 22
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/kyle/back/jf_mt_t.png?v=3fdbcf76",

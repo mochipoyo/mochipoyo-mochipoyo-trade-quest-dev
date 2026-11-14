@@ -26,7 +26,7 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | mina | back | assets/characters/party-directions-v3/sprites/mina/back.png | 160, 304 | 112, 209（弓：ミナの左手（画面の左）。握りの上に拳を描き直す／短剣：元の絵の 2 本） | 228, 208（短剣のもう 1 本（右手）。盾の部品なし） |
 | aster | menu | assets/characters/party-directions-v3/sprites/aster/front.png | 160, 318 | 98, 168（武器：柄の上に手を描き直す） | 246, 188（盾：前腕の上） |
 | aster | front | assets/characters/party-directions-v3/sprites/aster/front.png | 160, 304 | 98, 168（武器：柄の上に手を描き直す） | 246, 188（盾：前腕の上） |
-| aster | back | assets/characters/party-directions-v3/sprites/aster/back.png | 160, 304 | 226, 167（武器：柄の上に手を描き直す） | 90, 180（盾：前腕の上） |
+| aster | back | assets/characters/party-directions-v3/sprites/aster/back.png | 160, 304 | 230, 170（武器：柄の上に手を描き直す） | 90, 180（盾：前腕の上） |
 | elna | menu | assets/characters/party-directions-v3/sprites/elna/front.png | 160, 318 | 95, 138（武器：柄の上に手を描き直す） | 170, 154（盾：前腕の上） |
 | elna | front | assets/characters/party-directions-v3/sprites/elna/front.png | 160, 304 | 95, 138（武器：柄の上に手を描き直す） | 170, 154（盾：前腕の上） |
 | elna | back | assets/characters/party-directions-v3/sprites/elna/back.png | 160, 304 | 225, 138（武器：柄の上に手を描き直す） | 118, 150（盾：前腕の上） |
@@ -41,7 +41,7 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | iris | back | assets/characters/party-directions-v3/sprites/iris/back.png | 160, 304 | 231, 222（武器：柄の上に手を描き直す） | 90, 176（盾：前腕の上） |
 | lucia | menu | assets/characters/companions/lucia.png | 124, 259 | 190, 138（武器：柄の上に手を描き直す） | 85, 162（盾：前腕の上） |
 | lucia | front | assets/characters/party-directions-v3/sprites/lucia/front.png | 160, 304 | 226, 181（武器：柄の上に手を描き直す） | 121, 205（盾：前腕の上） |
-| lucia | back | assets/characters/party-directions-v3/sprites/lucia/back.png | 160, 304 | 125, 152（武器：柄の上に手を描き直す） | 222, 200（盾：前腕の上） |
+| lucia | back | assets/characters/party-directions-v3/sprites/lucia/back.png | 160, 304 | 92, 170（武器：柄の上に手を描き直す） | 222, 200（盾：前腕の上） |
 | mochipoyo | menu | assets/characters/companions/mochipoyo.png | 136, 276 | 75, 118（武器：柄の上に手を描き直す） | 152, 112（盾：前腕の上） |
 | mochipoyo | front | assets/characters/party-directions-add68/sprites/mochipoyo/front.png | 160, 304 | 97, 144（武器：柄の上に手を描き直す） | 174, 138（盾：前腕の上） |
 | mochipoyo | back | assets/characters/party-directions-add68/sprites/mochipoyo/back.png | 160, 304 | 252, 165（武器：柄の上に手を描き直す） | 138, 150（盾：前腕の上） |

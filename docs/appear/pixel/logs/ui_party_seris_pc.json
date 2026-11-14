@@ -54,19 +54,19 @@
   },
   {
    "ok": true,
-   "m": "［セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜］セリス：なかまの画面 base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand（職業 warrior・装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null}）"
+   "m": "［セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜（v9.10 から背面は肩当てなし。以前の期待：hv_pl_t も）］セリス：なかまの画面 base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand（職業 warrior・装備 {\"weapon\":\"steel_sword\",\"armor\":\"iron_armor\",\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null}）"
   },
   {
    "ok": true,
-   "m": "［セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜］セリス：戦闘の背面（pixel:dir:back・部品 base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand）"
+   "m": "［セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜（v9.10 から背面は肩当てなし。以前の期待：hv_pl_t も）］セリス：戦闘の背面（pixel:dir:back・部品 base_helm jf_cloth_t head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand）"
   },
   {
    "ok": true,
-   "m": "［セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜］セリス：勝利の正面（pixel:dir:front・部品 base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand）"
+   "m": "［セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜（v9.10 から背面は肩当てなし。以前の期待：hv_pl_t も）］セリス：勝利の正面（pixel:dir:front・部品 base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand）"
   },
   {
    "ok": true,
-   "m": "［セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜］戦闘のあとのなかまの画面も同じ（base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand）。戦闘の大きさ：背面 118.6×125.1（CSS の画素）"
+   "m": "［セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜（v9.10 から背面は肩当てなし。以前の期待：hv_pl_t も）］戦闘のあとのなかまの画面も同じ（base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand）。戦闘の大きさ：背面 118.6×125.1（CSS の画素）"
   },
   {
    "ok": true,
@@ -74,7 +74,7 @@
   },
   {
    "ok": true,
-   "m": "［セリス 戦士：剣をはずす］セリス：戦闘の背面（pixel:dir:back・部品 base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf）"
+   "m": "［セリス 戦士：剣をはずす］セリス：戦闘の背面（pixel:dir:back・部品 base_helm jf_cloth_t head_helm_t head_helm_f shield_gt shield_gf）"
   },
   {
    "ok": true,
@@ -285,13 +285,13 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 377.4,
+      "x": 381.3,
       "y": 348.1,
       "w": 100.3,
       "h": 121.2
      },
      "seris": {
-      "x": 484.2,
+      "x": 488.2,
       "y": 345.4,
       "w": 118.6,
       "h": 125.1
@@ -341,16 +341,16 @@
     },
     "vrects": {
      "hero": {
-      "x": 385.2,
-      "y": 337.6,
+      "x": 380,
+      "y": 341.5,
       "w": 89.9,
-      "h": 121.2
+      "h": 119.9
      },
      "seris": {
-      "x": 494.7,
-      "y": 332.4,
+      "x": 489.5,
+      "y": 336.3,
       "w": 106.9,
-      "h": 126.4
+      "h": 125.1
      }
     },
     "vpx": {
@@ -372,24 +372,24 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 343,
       "rect": {
-       "x": 385,
-       "y": 334,
+       "x": 381,
+       "y": 343,
        "w": 90,
-       "h": 121
+       "h": 120
       }
      },
      "seris": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 327,
+      "fullTop": 336,
       "rect": {
-       "x": 496,
-       "y": 329,
+       "x": 491,
+       "y": 338,
        "w": 107,
-       "h": 126
+       "h": 125
       }
      }
     },
@@ -408,13 +408,13 @@
     },
     "vrects2": {
      "hero": {
-      "x": 408.7,
+      "x": 402.1,
       "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "seris": {
-      "x": 518.1,
+      "x": 511.6,
       "y": 335,
       "w": 106.9,
       "h": 125.1
@@ -516,7 +516,7 @@
    }
   },
   "s2": {
-   "name": "セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜",
+   "name": "セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜（v9.10 から背面は肩当てなし。以前の期待：hv_pl_t も）",
    "menu": {
     "hero": {
      "actor": "hero",
@@ -668,7 +668,7 @@
     },
     "px": {
      "sig": "[\"seris\",\"warrior\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
-     "parts": "base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand",
+     "parts": "base_helm jf_cloth_t head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand",
      "st": "ok"
     },
     "fell": [],
@@ -730,14 +730,14 @@
     },
     "vrects": {
      "hero": {
-      "x": 377.4,
-      "y": 335,
+      "x": 376.1,
+      "y": 332.4,
       "w": 89.9,
       "h": 121.2
      },
      "seris": {
-      "x": 486.8,
-      "y": 329.8,
+      "x": 485.5,
+      "y": 328.5,
       "w": 106.9,
       "h": 126.4
      }
@@ -761,22 +761,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 340,
+      "fullTop": 335,
       "rect": {
-       "x": 379,
-       "y": 340,
+       "x": 377,
+       "y": 335,
        "w": 90,
-       "h": 120
+       "h": 121
       }
      },
      "seris": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 335,
+      "fullTop": 330,
       "rect": {
-       "x": 488,
-       "y": 335,
+       "x": 486,
+       "y": 330,
        "w": 107,
        "h": 126
       }
@@ -797,13 +797,13 @@
     },
     "vrects2": {
      "hero": {
-      "x": 398.2,
+      "x": 394.3,
       "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "seris": {
-      "x": 507.7,
+      "x": 503.8,
       "y": 335,
       "w": 106.9,
       "h": 125.1
@@ -1057,19 +1057,19 @@
     },
     "px": {
      "sig": "[\"seris\",\"warrior\",\"px:v9.9.1\",\"back\",[\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
-     "parts": "base_helm jf_cloth_t hv_pl_t hv_pl_f head_helm_t head_helm_f shield_gt shield_gf",
+     "parts": "base_helm jf_cloth_t head_helm_t head_helm_f shield_gt shield_gf",
      "st": "ok"
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 381.3,
+      "x": 382.6,
       "y": 348.1,
       "w": 100.3,
       "h": 121.2
      },
      "seris": {
-      "x": 488.2,
+      "x": 489.5,
       "y": 345.4,
       "w": 118.6,
       "h": 125.1
@@ -1119,16 +1119,16 @@
     },
     "vrects": {
      "hero": {
-      "x": 378.7,
-      "y": 342.8,
+      "x": 376.1,
+      "y": 338.9,
       "w": 89.9,
-      "h": 119.9
+      "h": 121.2
      },
      "seris": {
-      "x": 488.2,
-      "y": 337.6,
+      "x": 485.5,
+      "y": 333.7,
       "w": 106.9,
-      "h": 125.1
+      "h": 126.4
      }
     },
     "vpx": {
@@ -1150,24 +1150,24 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 342,
+      "fullTop": 334,
       "rect": {
-       "x": 380,
-       "y": 342,
+       "x": 377,
+       "y": 334,
        "w": 90,
-       "h": 120
+       "h": 121
       }
      },
      "seris": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 358,
+      "fullTop": 351,
       "rect": {
-       "x": 489,
-       "y": 338,
+       "x": 486,
+       "y": 329,
        "w": 107,
-       "h": 125
+       "h": 126
       }
      }
     },
@@ -1186,13 +1186,13 @@
     },
     "vrects2": {
      "hero": {
-      "x": 399.5,
+      "x": 395.6,
       "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "seris": {
-      "x": 509,
+      "x": 505.1,
       "y": 335,
       "w": 106.9,
       "h": 125.1

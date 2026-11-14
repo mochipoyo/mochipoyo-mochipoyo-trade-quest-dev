@@ -193,7 +193,8 @@ EXTRA.update({
 })
 HS = lambda lo: ((25, 65), (0, 0.3), (0.62, 1.1), (lo, 999))
 GEN.update({
-    'lucia': ('waveblade', {'cloth': ((205, 240), (0.35, 1.1), (0.15, 0.8), (112, 999)), 'cx': 125}, {'cloth': ((205, 240), (0.35, 1.1), (0.15, 0.8), (160, 999)), 'cx': 165}),
+    # v9.10 服の色の範囲から髪（暗い紺）を外した：明るさ 0.36 以上だけ。背面は髪の下に見える裾（y 215 から）だけ（以前は鎧・服の色で髪まで塗られていた）
+    'lucia': ('waveblade', {'cloth': ((205, 240), (0.35, 1.1), (0.36, 0.8), (112, 999)), 'cx': 125}, {'cloth': ((205, 240), (0.35, 1.1), (0.36, 0.8), (215, 999)), 'cx': 165}),
     'elna': ('auditor', {'cloth': ((210, 260), (0.15, 1.1), (0.08, 0.5), (122, 999)), 'cx': 150}, {'cloth': ((210, 260), (0.15, 1.1), (0.08, 0.5), (112, 999)), 'cx': 170}),
     'nagi': ('navigator', {'cloth': ((210, 240), (0.3, 1.1), (0.15, 0.65), (128, 999)), 'cape': ((8, 30), (0.6, 1.1), (0.5, 1.1), (170, 999)), 'skirt': (152, 194, 286, 40, 74), 'cx': 152},
                           {'cloth': ((210, 240), (0.3, 1.1), (0.15, 0.65), (128, 999)), 'cape': ((8, 30), (0.6, 1.1), (0.5, 1.1), (170, 999)), 'skirt': (160, 194, 286, 42, 76), 'cx': 160}),
@@ -305,8 +306,10 @@ def kit_view(aid, A, vk, c, need):
         c = dict(c, head=hd)
     if c.get('shoulders') == 'auto' and hd:
         feet = P.bbox(P.opaque(b))[3]; L = feet - hd['neck']; cx0 = c.get('cx', b.shape[1] // 2)
-        c = dict(c, shoulders=[(int(cx0 - 0.3 * L), int(hd['neck'] + 0.13 * L), -1), (int(cx0 + 0.3 * L), int(hd['neck'] + 0.13 * L), 1)])
+        # v9.10 肩の位置は頭の幅から（体の長さから決めると、裾の長い人で肩当てが肘の外に浮いた）
+        hx = hd['cx']; c = dict(c, shoulders=[(int(hx - 1.05 * hd['rx']), int(hd['neck'] + 0.30 * hd['rx']), -1), (int(hx + 1.05 * hd['rx']), int(hd['neck'] + 0.30 * hd['rx']), 1)])
     bb = P.bbox(P.opaque(b)); s = max(0.6, (bb[3] - hd['neck']) / 123.0) if hd else (bb[3] - bb[1]) / 196.0
+    if hd: s = min(s, hd['rx'] / 34.0)   # v9.10 盾・肩当ての大きさは頭の幅を上限に（裾の長い人で盾が体を覆った）
     base_h = GK.hair_fill(b, hd, hsv_mask(b, *hd['hair_hsv'])) if hd and hd.get('own') else b   # 元の帽子・頭巾を消して髪を補った絵（兜・帽子をかぶるとき）
     if hd:
         hd = dict(hd); hd.setdefault('hat_by', hd['brow'] - 4); hd.setdefault('hat_rx', int(hd['rx'] * 1.38))
@@ -330,7 +333,7 @@ def kit_view(aid, A, vk, c, need):
     oh = c.get('offhand') or (v.get('offhand') and (v['offhand']['x'], v['offhand']['y']))
     if 'shield' in need and oh:
         out['shield_gt'], out['shield_gf'] = GK.shield(b, oh, s, back)
-    if 'armor_heavy' in need and c.get('shoulders'):
+    if 'armor_heavy' in need and c.get('shoulders') and not back:   # v9.10 背面は肩当てを足さない（髪の上に灰色の塊として浮いて見えた。背面の重鎧は服の塗り分けだけ）
         out['hv_pl_t'], out['hv_pl_f'] = GK.pauldrons(b, c['shoulders'], s)
     return out
 

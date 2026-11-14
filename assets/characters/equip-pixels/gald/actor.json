@@ -369,17 +369,17 @@
      "h": 257
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_t.png?v=b6891288",
-     "x": 67,
-     "y": 136,
-     "w": 122,
+     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_t.png?v=47d263b9",
+     "x": 60,
+     "y": 132,
+     "w": 136,
      "h": 20
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_f.png?v=f4a6cf98",
-     "x": 66,
-     "y": 135,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_f.png?v=4afe1e8c",
+     "x": 59,
+     "y": 131,
+     "w": 138,
      "h": 22
     },
     "jf_mt_t": {
@@ -636,17 +636,17 @@
      "h": 257
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_t.png?v=b6891288",
-     "x": 100,
-     "y": 163,
-     "w": 122,
+     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_t.png?v=47d263b9",
+     "x": 93,
+     "y": 159,
+     "w": 136,
      "h": 20
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_f.png?v=f4a6cf98",
-     "x": 99,
-     "y": 162,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/gald/menu/jf_pl_f.png?v=4afe1e8c",
+     "x": 92,
+     "y": 158,
+     "w": 138,
      "h": 22
     },
     "jf_mt_t": {
@@ -908,17 +908,17 @@
      "h": 262
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/gald/back/jf_pl_t.png?v=dcc2ca82",
-     "x": 87,
-     "y": 147,
-     "w": 140,
+     "url": "assets/characters/equip-pixels/gald/back/jf_pl_t.png?v=4241484c",
+     "x": 81,
+     "y": 140,
+     "w": 142,
      "h": 23
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/gald/back/jf_pl_f.png?v=f552baa1",
-     "x": 86,
-     "y": 146,
-     "w": 142,
+     "url": "assets/characters/equip-pixels/gald/back/jf_pl_f.png?v=5d8c5be9",
+     "x": 80,
+     "y": 139,
+     "w": 144,
      "h": 25
     },
     "jf_mt_t": {

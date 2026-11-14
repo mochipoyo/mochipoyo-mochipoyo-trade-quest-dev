@@ -396,17 +396,17 @@
      "h": 243
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/io/menu/jf_pl_t.png?v=c39ccfa1",
-     "x": 91,
-     "y": 163,
-     "w": 122,
+     "url": "assets/characters/equip-pixels/io/menu/jf_pl_t.png?v=a84c6288",
+     "x": 89,
+     "y": 158,
+     "w": 128,
      "h": 21
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/io/menu/jf_pl_f.png?v=4cc390f9",
-     "x": 90,
-     "y": 162,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/io/menu/jf_pl_f.png?v=53d5b3c4",
+     "x": 88,
+     "y": 157,
+     "w": 130,
      "h": 23
     },
     "jf_mt_t": {
@@ -438,17 +438,17 @@
      "h": 71
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/io/menu/hv_pl_t.png?v=c39ccfa1",
-     "x": 91,
-     "y": 163,
-     "w": 122,
+     "url": "assets/characters/equip-pixels/io/menu/hv_pl_t.png?v=a84c6288",
+     "x": 89,
+     "y": 158,
+     "w": 128,
      "h": 21
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/io/menu/hv_pl_f.png?v=4cc390f9",
-     "x": 90,
-     "y": 162,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/io/menu/hv_pl_f.png?v=53d5b3c4",
+     "x": 88,
+     "y": 157,
+     "w": 130,
      "h": 23
     },
     "head_hat_t": {
@@ -648,17 +648,17 @@
      "h": 243
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/io/menu/jf_pl_t.png?v=c39ccfa1",
-     "x": 91,
-     "y": 163,
-     "w": 122,
+     "url": "assets/characters/equip-pixels/io/menu/jf_pl_t.png?v=a84c6288",
+     "x": 89,
+     "y": 158,
+     "w": 128,
      "h": 21
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/io/menu/jf_pl_f.png?v=4cc390f9",
-     "x": 90,
-     "y": 162,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/io/menu/jf_pl_f.png?v=53d5b3c4",
+     "x": 88,
+     "y": 157,
+     "w": 130,
      "h": 23
     },
     "jf_mt_t": {
@@ -690,17 +690,17 @@
      "h": 71
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/io/menu/hv_pl_t.png?v=c39ccfa1",
-     "x": 91,
-     "y": 163,
-     "w": 122,
+     "url": "assets/characters/equip-pixels/io/menu/hv_pl_t.png?v=a84c6288",
+     "x": 89,
+     "y": 158,
+     "w": 128,
      "h": 21
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/io/menu/hv_pl_f.png?v=4cc390f9",
-     "x": 90,
-     "y": 162,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/io/menu/hv_pl_f.png?v=53d5b3c4",
+     "x": 88,
+     "y": 157,
+     "w": 130,
      "h": 23
     },
     "head_hat_t": {
@@ -893,17 +893,17 @@
      "h": 242
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/io/back/jf_pl_t.png?v=69ec337e",
-     "x": 95,
-     "y": 166,
-     "w": 122,
+     "url": "assets/characters/equip-pixels/io/back/jf_pl_t.png?v=a43a1775",
+     "x": 102,
+     "y": 160,
+     "w": 119,
      "h": 20
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/io/back/jf_pl_f.png?v=f4a6cf98",
-     "x": 94,
-     "y": 165,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/io/back/jf_pl_f.png?v=f6808444",
+     "x": 101,
+     "y": 159,
+     "w": 121,
      "h": 22
     },
     "jf_mt_t": {
@@ -933,20 +933,6 @@
      "y": 180,
      "w": 41,
      "h": 69
-    },
-    "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/io/back/hv_pl_t.png?v=69ec337e",
-     "x": 95,
-     "y": 166,
-     "w": 122,
-     "h": 20
-    },
-    "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/io/back/hv_pl_f.png?v=f4a6cf98",
-     "x": 94,
-     "y": 165,
-     "w": 124,
-     "h": 22
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/io/back/head_hat_t.png?v=9eae6ca7",

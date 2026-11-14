@@ -396,18 +396,18 @@
      "h": 284
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/jf_pl_t.png?v=8709a6d3",
-     "x": 79,
-     "y": 115,
-     "w": 171,
-     "h": 27
+     "url": "assets/characters/equip-pixels/ganes/menu/jf_pl_t.png?v=4a2e184e",
+     "x": 86,
+     "y": 121,
+     "w": 157,
+     "h": 18
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/jf_pl_f.png?v=fda45bee",
-     "x": 78,
-     "y": 114,
-     "w": 173,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ganes/menu/jf_pl_f.png?v=f37c2fcd",
+     "x": 85,
+     "y": 120,
+     "w": 159,
+     "h": 20
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/ganes/menu/jf_mt_t.png?v=888f3bc9",
@@ -424,32 +424,32 @@
      "h": 44
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/ganes/menu/shield_gt.png?v=aa946e7e",
-     "x": 204,
-     "y": 158,
-     "w": 65,
-     "h": 85
+     "url": "assets/characters/equip-pixels/ganes/menu/shield_gt.png?v=76b9ee0d",
+     "x": 214,
+     "y": 172,
+     "w": 45,
+     "h": 57
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/ganes/menu/shield_gf.png?v=aacdf3e0",
-     "x": 200,
-     "y": 154,
-     "w": 73,
-     "h": 93
+     "url": "assets/characters/equip-pixels/ganes/menu/shield_gf.png?v=cb5f7f4b",
+     "x": 210,
+     "y": 168,
+     "w": 53,
+     "h": 65
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/hv_pl_t.png?v=8709a6d3",
-     "x": 79,
-     "y": 115,
-     "w": 171,
-     "h": 27
+     "url": "assets/characters/equip-pixels/ganes/menu/hv_pl_t.png?v=4a2e184e",
+     "x": 86,
+     "y": 121,
+     "w": 157,
+     "h": 18
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/hv_pl_f.png?v=fda45bee",
-     "x": 78,
-     "y": 114,
-     "w": 173,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ganes/menu/hv_pl_f.png?v=f37c2fcd",
+     "x": 85,
+     "y": 120,
+     "w": 159,
+     "h": 20
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/ganes/menu/head_hat_t.png?v=fc34cd3a",
@@ -648,18 +648,18 @@
      "h": 284
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/jf_pl_t.png?v=8709a6d3",
-     "x": 79,
-     "y": 115,
-     "w": 171,
-     "h": 27
+     "url": "assets/characters/equip-pixels/ganes/menu/jf_pl_t.png?v=4a2e184e",
+     "x": 86,
+     "y": 121,
+     "w": 157,
+     "h": 18
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/jf_pl_f.png?v=fda45bee",
-     "x": 78,
-     "y": 114,
-     "w": 173,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ganes/menu/jf_pl_f.png?v=f37c2fcd",
+     "x": 85,
+     "y": 120,
+     "w": 159,
+     "h": 20
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/ganes/menu/jf_mt_t.png?v=888f3bc9",
@@ -676,32 +676,32 @@
      "h": 44
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/ganes/menu/shield_gt.png?v=aa946e7e",
-     "x": 204,
-     "y": 158,
-     "w": 65,
-     "h": 85
+     "url": "assets/characters/equip-pixels/ganes/menu/shield_gt.png?v=76b9ee0d",
+     "x": 214,
+     "y": 172,
+     "w": 45,
+     "h": 57
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/ganes/menu/shield_gf.png?v=aacdf3e0",
-     "x": 200,
-     "y": 154,
-     "w": 73,
-     "h": 93
+     "url": "assets/characters/equip-pixels/ganes/menu/shield_gf.png?v=cb5f7f4b",
+     "x": 210,
+     "y": 168,
+     "w": 53,
+     "h": 65
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/hv_pl_t.png?v=8709a6d3",
-     "x": 79,
-     "y": 115,
-     "w": 171,
-     "h": 27
+     "url": "assets/characters/equip-pixels/ganes/menu/hv_pl_t.png?v=4a2e184e",
+     "x": 86,
+     "y": 121,
+     "w": 157,
+     "h": 18
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/hv_pl_f.png?v=fda45bee",
-     "x": 78,
-     "y": 114,
-     "w": 173,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ganes/menu/hv_pl_f.png?v=f37c2fcd",
+     "x": 85,
+     "y": 120,
+     "w": 159,
+     "h": 20
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/ganes/menu/head_hat_t.png?v=fc34cd3a",
@@ -893,18 +893,18 @@
      "h": 284
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/ganes/back/jf_pl_t.png?v=417d9972",
-     "x": 81,
-     "y": 117,
-     "w": 165,
-     "h": 27
+     "url": "assets/characters/equip-pixels/ganes/back/jf_pl_t.png?v=a0cd0a08",
+     "x": 89,
+     "y": 123,
+     "w": 149,
+     "h": 18
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/ganes/back/jf_pl_f.png?v=b1de5d1f",
-     "x": 80,
-     "y": 116,
-     "w": 167,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ganes/back/jf_pl_f.png?v=e1ac3561",
+     "x": 88,
+     "y": 122,
+     "w": 151,
+     "h": 20
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/ganes/back/jf_mt_t.png?v=df7cdf90",
@@ -921,32 +921,18 @@
      "h": 43
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/ganes/back/shield_gt.png?v=3a0de05f",
-     "x": 62,
-     "y": 154,
-     "w": 45,
-     "h": 84
+     "url": "assets/characters/equip-pixels/ganes/back/shield_gt.png?v=6373dea2",
+     "x": 70,
+     "y": 169,
+     "w": 29,
+     "h": 55
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/ganes/back/shield_gf.png?v=48f3b2e2",
-     "x": 58,
-     "y": 150,
-     "w": 53,
-     "h": 93
-    },
-    "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/ganes/back/hv_pl_t.png?v=417d9972",
-     "x": 81,
-     "y": 117,
-     "w": 165,
-     "h": 27
-    },
-    "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/ganes/back/hv_pl_f.png?v=b1de5d1f",
-     "x": 80,
-     "y": 116,
-     "w": 167,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ganes/back/shield_gf.png?v=8526f519",
+     "x": 66,
+     "y": 165,
+     "w": 37,
+     "h": 63
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/ganes/back/head_hat_t.png?v=5c687ea6",

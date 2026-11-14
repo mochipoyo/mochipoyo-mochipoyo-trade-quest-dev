@@ -257,15 +257,15 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/hero/job:warrior/jf_pl_t.png",
-      "x": 12,
-      "y": 79,
+      "x": 13,
+      "y": 73,
       "w": 106,
       "h": 18
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/hero/job:warrior/jf_pl_f.png",
-      "x": 11,
-      "y": 78,
+      "x": 12,
+      "y": 72,
       "w": 108,
       "h": 20
      },
@@ -540,15 +540,15 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/hero/job:warrior/jf_pl_t.png",
-      "x": 107,
-      "y": 183,
+      "x": 108,
+      "y": 177,
       "w": 106,
       "h": 18
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/hero/job:warrior/jf_pl_f.png",
-      "x": 106,
-      "y": 182,
+      "x": 107,
+      "y": 176,
       "w": 108,
       "h": 20
      },
@@ -837,15 +837,15 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/hero/back/jf_pl_t.png",
-      "x": 104,
-      "y": 178,
+      "x": 101,
+      "y": 172,
       "w": 112,
       "h": 18
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/hero/back/jf_pl_f.png",
-      "x": 103,
-      "y": 177,
+      "x": 100,
+      "y": 171,
       "w": 114,
       "h": 20
      },
@@ -1545,20 +1545,6 @@
       "w": 47,
       "h": 81
      },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/lina/back/hv_pl_t.png",
-      "x": 95,
-      "y": 155,
-      "w": 116,
-      "h": 24
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/lina/back/hv_pl_f.png",
-      "x": 94,
-      "y": 154,
-      "w": 118,
-      "h": 26
-     },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/lina/back/head_hat_t.png",
       "x": 61,
@@ -1797,16 +1783,16 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/gald/menu/jf_pl_t.png",
-      "x": 67,
-      "y": 136,
-      "w": 122,
+      "x": 60,
+      "y": 132,
+      "w": 136,
       "h": 20
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/gald/menu/jf_pl_f.png",
-      "x": 66,
-      "y": 135,
-      "w": 124,
+      "x": 59,
+      "y": 131,
+      "w": 138,
       "h": 22
      },
      "jf_mt_t": {
@@ -2059,16 +2045,16 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/gald/menu/jf_pl_t.png",
-      "x": 100,
-      "y": 163,
-      "w": 122,
+      "x": 93,
+      "y": 159,
+      "w": 136,
       "h": 20
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/gald/menu/jf_pl_f.png",
-      "x": 99,
-      "y": 162,
-      "w": 124,
+      "x": 92,
+      "y": 158,
+      "w": 138,
       "h": 22
      },
      "jf_mt_t": {
@@ -2321,16 +2307,16 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/gald/back/jf_pl_t.png",
-      "x": 87,
-      "y": 147,
-      "w": 140,
+      "x": 81,
+      "y": 140,
+      "w": 142,
       "h": 23
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/gald/back/jf_pl_f.png",
-      "x": 86,
-      "y": 146,
-      "w": 142,
+      "x": 80,
+      "y": 139,
+      "w": 144,
       "h": 25
      },
      "jf_mt_t": {
@@ -2606,17 +2592,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/kyle/menu/jf_pl_t.png",
-      "x": 29,
-      "y": 99,
-      "w": 144,
-      "h": 24
+      "x": 48,
+      "y": 91,
+      "w": 106,
+      "h": 18
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/kyle/menu/jf_pl_f.png",
-      "x": 28,
-      "y": 98,
-      "w": 146,
-      "h": 26
+      "x": 47,
+      "y": 90,
+      "w": 108,
+      "h": 20
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/kyle/menu/jf_mt_t.png",
@@ -2889,17 +2875,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/kyle/menu/jf_pl_t.png",
-      "x": 80,
-      "y": 138,
-      "w": 144,
-      "h": 24
+      "x": 99,
+      "y": 130,
+      "w": 106,
+      "h": 18
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/kyle/menu/jf_pl_f.png",
-      "x": 79,
-      "y": 137,
-      "w": 146,
-      "h": 26
+      "x": 98,
+      "y": 129,
+      "w": 108,
+      "h": 20
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/kyle/menu/jf_mt_t.png",
@@ -3193,17 +3179,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/kyle/back/jf_pl_t.png",
-      "x": 82,
-      "y": 126,
-      "w": 156,
-      "h": 26
+      "x": 101,
+      "y": 118,
+      "w": 119,
+      "h": 20
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/kyle/back/jf_pl_f.png",
-      "x": 81,
-      "y": 125,
-      "w": 158,
-      "h": 28
+      "x": 100,
+      "y": 117,
+      "w": 121,
+      "h": 22
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/kyle/back/jf_mt_t.png",
@@ -3478,17 +3464,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/kazuto/menu/jf_pl_t.png",
-      "x": 42,
-      "y": 70,
-      "w": 164,
-      "h": 27
+      "x": 78,
+      "y": 61,
+      "w": 98,
+      "h": 16
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/kazuto/menu/jf_pl_f.png",
-      "x": 41,
-      "y": 69,
-      "w": 166,
-      "h": 29
+      "x": 77,
+      "y": 60,
+      "w": 100,
+      "h": 18
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/kazuto/menu/jf_mt_t.png",
@@ -3761,17 +3747,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/kazuto/menu/jf_pl_t.png",
-      "x": 82,
-      "y": 116,
-      "w": 164,
-      "h": 27
+      "x": 118,
+      "y": 107,
+      "w": 98,
+      "h": 16
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/kazuto/menu/jf_pl_f.png",
-      "x": 81,
-      "y": 115,
-      "w": 166,
-      "h": 29
+      "x": 117,
+      "y": 106,
+      "w": 100,
+      "h": 18
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/kazuto/menu/jf_mt_t.png",
@@ -4051,17 +4037,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/kazuto/back/jf_pl_t.png",
-      "x": 84,
-      "y": 105,
-      "w": 176,
-      "h": 29
+      "x": 120,
+      "y": 95,
+      "w": 92,
+      "h": 16
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/kazuto/back/jf_pl_f.png",
-      "x": 83,
-      "y": 104,
-      "w": 178,
-      "h": 31
+      "x": 119,
+      "y": 94,
+      "w": 94,
+      "h": 18
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/kazuto/back/jf_mt_t.png",
@@ -4266,17 +4252,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/mina/menu/jf_pl_t.png",
-      "x": 50,
-      "y": 111,
-      "w": 87,
-      "h": 25
+      "x": 52,
+      "y": 112,
+      "w": 83,
+      "h": 23
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/mina/menu/jf_pl_f.png",
-      "x": 49,
-      "y": 110,
-      "w": 89,
-      "h": 27
+      "x": 51,
+      "y": 111,
+      "w": 85,
+      "h": 25
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/mina/menu/jf_mt_t.png",
@@ -4294,31 +4280,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/mina/menu/shield_gt.png",
-      "x": 5,
-      "y": 118,
-      "w": 51,
-      "h": 65
+      "x": 8,
+      "y": 121,
+      "w": 45,
+      "h": 59
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/mina/menu/shield_gf.png",
-      "x": 1,
-      "y": 114,
-      "w": 59,
-      "h": 73
+      "x": 4,
+      "y": 117,
+      "w": 53,
+      "h": 67
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/mina/menu/hv_pl_t.png",
-      "x": 50,
-      "y": 111,
-      "w": 87,
-      "h": 25
+      "x": 52,
+      "y": 112,
+      "w": 83,
+      "h": 23
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/mina/menu/hv_pl_f.png",
-      "x": 49,
-      "y": 110,
-      "w": 89,
-      "h": 27
+      "x": 51,
+      "y": 111,
+      "w": 85,
+      "h": 25
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/mina/menu/head_hat_t.png",
@@ -4507,17 +4493,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/mina/menu/jf_pl_t.png",
-      "x": 112,
-      "y": 147,
-      "w": 87,
-      "h": 25
+      "x": 114,
+      "y": 148,
+      "w": 83,
+      "h": 23
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/mina/menu/jf_pl_f.png",
-      "x": 111,
-      "y": 146,
-      "w": 89,
-      "h": 27
+      "x": 113,
+      "y": 147,
+      "w": 85,
+      "h": 25
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/mina/menu/jf_mt_t.png",
@@ -4535,31 +4521,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/mina/menu/shield_gt.png",
-      "x": 67,
-      "y": 154,
-      "w": 51,
-      "h": 65
+      "x": 70,
+      "y": 157,
+      "w": 45,
+      "h": 59
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/mina/menu/shield_gf.png",
-      "x": 63,
-      "y": 150,
-      "w": 59,
-      "h": 73
+      "x": 66,
+      "y": 153,
+      "w": 53,
+      "h": 67
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/mina/menu/hv_pl_t.png",
-      "x": 112,
-      "y": 147,
-      "w": 87,
-      "h": 25
+      "x": 114,
+      "y": 148,
+      "w": 83,
+      "h": 23
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/mina/menu/hv_pl_f.png",
-      "x": 111,
-      "y": 146,
-      "w": 89,
-      "h": 27
+      "x": 113,
+      "y": 147,
+      "w": 85,
+      "h": 25
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/mina/menu/head_hat_t.png",
@@ -4777,30 +4763,16 @@
      "shield_gt": {
       "file": "assets/characters/equip-pixels/mina/back/shield_gt.png",
       "x": 211,
-      "y": 175,
+      "y": 176,
       "w": 35,
-      "h": 66
+      "h": 65
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/mina/back/shield_gf.png",
       "x": 207,
-      "y": 171,
+      "y": 172,
       "w": 43,
-      "h": 75
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/mina/back/hv_pl_t.png",
-      "x": 107,
-      "y": 157,
-      "w": 97,
-      "h": 21
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/mina/back/hv_pl_f.png",
-      "x": 106,
-      "y": 156,
-      "w": 99,
-      "h": 23
+      "h": 73
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/mina/back/head_hat_t.png",
@@ -4977,17 +4949,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/aster/menu/jf_pl_t.png",
-      "x": 90,
-      "y": 147,
-      "w": 140,
-      "h": 23
+      "x": 107,
+      "y": 139,
+      "w": 112,
+      "h": 19
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/aster/menu/jf_pl_f.png",
-      "x": 89,
-      "y": 146,
-      "w": 142,
-      "h": 25
+      "x": 106,
+      "y": 138,
+      "w": 114,
+      "h": 21
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/aster/menu/jf_mt_t.png",
@@ -5005,31 +4977,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/aster/menu/shield_gt.png",
-      "x": 219,
-      "y": 153,
-      "w": 55,
-      "h": 71
+      "x": 224,
+      "y": 159,
+      "w": 45,
+      "h": 59
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/aster/menu/shield_gf.png",
-      "x": 215,
-      "y": 149,
-      "w": 63,
-      "h": 79
+      "x": 220,
+      "y": 155,
+      "w": 53,
+      "h": 67
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/aster/menu/hv_pl_t.png",
-      "x": 90,
-      "y": 147,
-      "w": 140,
-      "h": 23
+      "x": 107,
+      "y": 139,
+      "w": 112,
+      "h": 19
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/aster/menu/hv_pl_f.png",
-      "x": 89,
-      "y": 146,
-      "w": 142,
-      "h": 25
+      "x": 106,
+      "y": 138,
+      "w": 114,
+      "h": 21
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/aster/menu/head_hat_t.png",
@@ -5204,17 +5176,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/aster/menu/jf_pl_t.png",
-      "x": 90,
-      "y": 147,
-      "w": 140,
-      "h": 23
+      "x": 107,
+      "y": 139,
+      "w": 112,
+      "h": 19
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/aster/menu/jf_pl_f.png",
-      "x": 89,
-      "y": 146,
-      "w": 142,
-      "h": 25
+      "x": 106,
+      "y": 138,
+      "w": 114,
+      "h": 21
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/aster/menu/jf_mt_t.png",
@@ -5232,31 +5204,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/aster/menu/shield_gt.png",
-      "x": 219,
-      "y": 153,
-      "w": 55,
-      "h": 71
+      "x": 224,
+      "y": 159,
+      "w": 45,
+      "h": 59
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/aster/menu/shield_gf.png",
-      "x": 215,
-      "y": 149,
-      "w": 63,
-      "h": 79
+      "x": 220,
+      "y": 155,
+      "w": 53,
+      "h": 67
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/aster/menu/hv_pl_t.png",
-      "x": 90,
-      "y": 147,
-      "w": 140,
-      "h": 23
+      "x": 107,
+      "y": 139,
+      "w": 112,
+      "h": 19
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/aster/menu/hv_pl_f.png",
-      "x": 89,
-      "y": 146,
-      "w": 142,
-      "h": 25
+      "x": 106,
+      "y": 138,
+      "w": 114,
+      "h": 21
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/aster/menu/head_hat_t.png",
@@ -5286,8 +5258,8 @@
      304
     ],
     "grip": {
-     "x": 226,
-     "y": 167,
+     "x": 230,
+     "y": 170,
      "order": "武器：柄の上に手を描き直す"
     },
     "offhand": {
@@ -5305,63 +5277,63 @@
      },
      "hand": {
       "file": "assets/characters/equip-pixels/aster/back/hand.png",
-      "x": 219,
-      "y": 155,
-      "w": 14,
-      "h": 24
+      "x": 216,
+      "y": 158,
+      "w": 17,
+      "h": 25
      },
      "jf_cloth_t": {
       "file": "assets/characters/equip-pixels/aster/back/jf_cloth_t.png",
       "x": 61,
       "y": 145,
-      "w": 192,
+      "w": 196,
       "h": 138
      },
      "weapon_sword": {
       "file": "assets/characters/equip-pixels/aster/back/weapon_sword.png",
-      "x": 210,
-      "y": 26,
+      "x": 214,
+      "y": 32,
       "w": 36,
-      "h": 166
+      "h": 163
      },
      "weapon_dagger": {
       "file": "assets/characters/equip-pixels/aster/back/weapon_dagger.png",
-      "x": 217,
-      "y": 110,
-      "w": 22,
-      "h": 75
+      "x": 221,
+      "y": 114,
+      "w": 21,
+      "h": 74
      },
      "weapon_axe": {
       "file": "assets/characters/equip-pixels/aster/back/weapon_axe.png",
-      "x": 201,
-      "y": 72,
-      "w": 41,
-      "h": 126
+      "x": 205,
+      "y": 77,
+      "w": 40,
+      "h": 123
      },
      "weapon_spear": {
       "file": "assets/characters/equip-pixels/aster/back/weapon_spear.png",
-      "x": 212,
+      "x": 216,
       "y": 2,
       "w": 35,
-      "h": 299
+      "h": 300
      },
      "weapon_bow": {
       "file": "assets/characters/equip-pixels/aster/back/weapon_bow.png",
-      "x": 202,
-      "y": 96,
-      "w": 29,
-      "h": 140
+      "x": 207,
+      "y": 100,
+      "w": 28,
+      "h": 138
      },
      "weapon_staff_t": {
       "file": "assets/characters/equip-pixels/aster/back/weapon_staff_t.png",
-      "x": 217,
+      "x": 221,
       "y": 3,
       "w": 19,
       "h": 19
      },
      "weapon_staff_f": {
       "file": "assets/characters/equip-pixels/aster/back/weapon_staff_f.png",
-      "x": 213,
+      "x": 217,
       "y": 0,
       "w": 27,
       "h": 303
@@ -5375,17 +5347,17 @@
      },
      "head_helm_t": {
       "file": "assets/characters/equip-pixels/aster/back/head_helm_t.png",
-      "x": 117,
-      "y": 45,
-      "w": 98,
-      "h": 69
+      "x": 116,
+      "y": 50,
+      "w": 84,
+      "h": 65
      },
      "head_helm_f": {
       "file": "assets/characters/equip-pixels/aster/back/head_helm_f.png",
-      "x": 116,
-      "y": 44,
-      "w": 100,
-      "h": 71
+      "x": 115,
+      "y": 49,
+      "w": 86,
+      "h": 67
      },
      "base_cap": {
       "file": "assets/characters/equip-pixels/aster/back/base_cap.png",
@@ -5396,30 +5368,30 @@
      },
      "head_cap_t": {
       "file": "assets/characters/equip-pixels/aster/back/head_cap_t.png",
-      "x": 122,
-      "y": 43,
-      "w": 89,
-      "h": 57
+      "x": 120,
+      "y": 48,
+      "w": 77,
+      "h": 54
      },
      "head_cap_f": {
       "file": "assets/characters/equip-pixels/aster/back/head_cap_f.png",
-      "x": 121,
-      "y": 42,
-      "w": 91,
-      "h": 59
+      "x": 119,
+      "y": 47,
+      "w": 79,
+      "h": 56
      },
      "head_circlet_t": {
       "file": "assets/characters/equip-pixels/aster/back/head_circlet_t.png",
-      "x": 121,
-      "y": 92,
-      "w": 91,
+      "x": 119,
+      "y": 94,
+      "w": 79,
       "h": 12
      },
      "head_circlet_f": {
       "file": "assets/characters/equip-pixels/aster/back/head_circlet_f.png",
-      "x": 120,
-      "y": 91,
-      "w": 93,
+      "x": 118,
+      "y": 93,
+      "w": 81,
       "h": 14
      },
      "base_hat": {
@@ -5431,17 +5403,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/aster/back/jf_pl_t.png",
-      "x": 98,
-      "y": 151,
-      "w": 134,
-      "h": 22
+      "x": 99,
+      "y": 145,
+      "w": 119,
+      "h": 20
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/aster/back/jf_pl_f.png",
-      "x": 97,
-      "y": 150,
-      "w": 136,
-      "h": 24
+      "x": 98,
+      "y": 144,
+      "w": 121,
+      "h": 22
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/aster/back/jf_mt_t.png",
@@ -5459,45 +5431,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/aster/back/shield_gt.png",
-      "x": 72,
-      "y": 146,
-      "w": 37,
-      "h": 68
+      "x": 74,
+      "y": 149,
+      "w": 33,
+      "h": 62
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/aster/back/shield_gf.png",
-      "x": 68,
-      "y": 142,
-      "w": 45,
-      "h": 77
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/aster/back/hv_pl_t.png",
-      "x": 98,
-      "y": 151,
-      "w": 134,
-      "h": 22
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/aster/back/hv_pl_f.png",
-      "x": 97,
-      "y": 150,
-      "w": 136,
-      "h": 24
+      "x": 70,
+      "y": 145,
+      "w": 41,
+      "h": 71
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/aster/back/head_hat_t.png",
-      "x": 86,
-      "y": 27,
-      "w": 161,
-      "h": 87
+      "x": 103,
+      "y": 44,
+      "w": 111,
+      "h": 67
      },
      "head_hat_f": {
       "file": "assets/characters/equip-pixels/aster/back/head_hat_f.png",
-      "x": 85,
-      "y": 26,
-      "w": 163,
-      "h": 89
+      "x": 102,
+      "y": 43,
+      "w": 113,
+      "h": 69
      }
     }
    }
@@ -5660,17 +5618,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/elna/menu/jf_pl_t.png",
-      "x": 73,
-      "y": 129,
-      "w": 154,
-      "h": 25
+      "x": 80,
+      "y": 121,
+      "w": 126,
+      "h": 21
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/elna/menu/jf_pl_f.png",
-      "x": 72,
-      "y": 128,
-      "w": 156,
-      "h": 27
+      "x": 79,
+      "y": 120,
+      "w": 128,
+      "h": 23
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/elna/menu/jf_mt_t.png",
@@ -5688,31 +5646,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/elna/menu/shield_gt.png",
-      "x": 139,
-      "y": 115,
-      "w": 63,
-      "h": 79
+      "x": 145,
+      "y": 122,
+      "w": 51,
+      "h": 65
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/elna/menu/shield_gf.png",
-      "x": 135,
-      "y": 111,
-      "w": 71,
-      "h": 87
+      "x": 141,
+      "y": 118,
+      "w": 59,
+      "h": 73
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/elna/menu/hv_pl_t.png",
-      "x": 73,
-      "y": 129,
-      "w": 154,
-      "h": 25
+      "x": 80,
+      "y": 121,
+      "w": 126,
+      "h": 21
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/elna/menu/hv_pl_f.png",
-      "x": 72,
-      "y": 128,
-      "w": 156,
-      "h": 27
+      "x": 79,
+      "y": 120,
+      "w": 128,
+      "h": 23
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/elna/menu/head_hat_t.png",
@@ -5887,17 +5845,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/elna/menu/jf_pl_t.png",
-      "x": 73,
-      "y": 129,
-      "w": 154,
-      "h": 25
+      "x": 80,
+      "y": 121,
+      "w": 126,
+      "h": 21
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/elna/menu/jf_pl_f.png",
-      "x": 72,
-      "y": 128,
-      "w": 156,
-      "h": 27
+      "x": 79,
+      "y": 120,
+      "w": 128,
+      "h": 23
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/elna/menu/jf_mt_t.png",
@@ -5915,31 +5873,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/elna/menu/shield_gt.png",
-      "x": 139,
-      "y": 115,
-      "w": 63,
-      "h": 79
+      "x": 145,
+      "y": 122,
+      "w": 51,
+      "h": 65
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/elna/menu/shield_gf.png",
-      "x": 135,
-      "y": 111,
-      "w": 71,
-      "h": 87
+      "x": 141,
+      "y": 118,
+      "w": 59,
+      "h": 73
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/elna/menu/hv_pl_t.png",
-      "x": 73,
-      "y": 129,
-      "w": 154,
-      "h": 25
+      "x": 80,
+      "y": 121,
+      "w": 126,
+      "h": 21
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/elna/menu/hv_pl_f.png",
-      "x": 72,
-      "y": 128,
-      "w": 156,
-      "h": 27
+      "x": 79,
+      "y": 120,
+      "w": 128,
+      "h": 23
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/elna/menu/head_hat_t.png",
@@ -6114,17 +6072,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/elna/back/jf_pl_t.png",
-      "x": 89,
-      "y": 119,
-      "w": 162,
-      "h": 27
+      "x": 109,
+      "y": 111,
+      "w": 116,
+      "h": 19
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/elna/back/jf_pl_f.png",
-      "x": 88,
-      "y": 118,
-      "w": 164,
-      "h": 29
+      "x": 108,
+      "y": 110,
+      "w": 118,
+      "h": 21
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/elna/back/jf_mt_t.png",
@@ -6142,31 +6100,17 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/elna/back/shield_gt.png",
-      "x": 96,
-      "y": 108,
-      "w": 45,
-      "h": 84
+      "x": 103,
+      "y": 120,
+      "w": 31,
+      "h": 60
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/elna/back/shield_gf.png",
-      "x": 92,
-      "y": 104,
-      "w": 53,
-      "h": 93
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/elna/back/hv_pl_t.png",
-      "x": 89,
-      "y": 119,
-      "w": 162,
-      "h": 27
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/elna/back/hv_pl_f.png",
-      "x": 88,
-      "y": 118,
-      "w": 164,
-      "h": 29
+      "x": 99,
+      "y": 116,
+      "w": 39,
+      "h": 69
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/elna/back/head_hat_t.png",
@@ -6357,17 +6301,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/ganes/menu/jf_pl_t.png",
-      "x": 79,
-      "y": 115,
-      "w": 171,
-      "h": 27
+      "x": 86,
+      "y": 121,
+      "w": 157,
+      "h": 18
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/ganes/menu/jf_pl_f.png",
-      "x": 78,
-      "y": 114,
-      "w": 173,
-      "h": 29
+      "x": 85,
+      "y": 120,
+      "w": 159,
+      "h": 20
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/ganes/menu/jf_mt_t.png",
@@ -6385,31 +6329,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/ganes/menu/shield_gt.png",
-      "x": 204,
-      "y": 158,
-      "w": 65,
-      "h": 85
+      "x": 214,
+      "y": 172,
+      "w": 45,
+      "h": 57
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/ganes/menu/shield_gf.png",
-      "x": 200,
-      "y": 154,
-      "w": 73,
-      "h": 93
+      "x": 210,
+      "y": 168,
+      "w": 53,
+      "h": 65
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/ganes/menu/hv_pl_t.png",
-      "x": 79,
-      "y": 115,
-      "w": 171,
-      "h": 27
+      "x": 86,
+      "y": 121,
+      "w": 157,
+      "h": 18
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/ganes/menu/hv_pl_f.png",
-      "x": 78,
-      "y": 114,
-      "w": 173,
-      "h": 29
+      "x": 85,
+      "y": 120,
+      "w": 159,
+      "h": 20
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/ganes/menu/head_hat_t.png",
@@ -6598,17 +6542,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/ganes/menu/jf_pl_t.png",
-      "x": 79,
-      "y": 115,
-      "w": 171,
-      "h": 27
+      "x": 86,
+      "y": 121,
+      "w": 157,
+      "h": 18
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/ganes/menu/jf_pl_f.png",
-      "x": 78,
-      "y": 114,
-      "w": 173,
-      "h": 29
+      "x": 85,
+      "y": 120,
+      "w": 159,
+      "h": 20
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/ganes/menu/jf_mt_t.png",
@@ -6626,31 +6570,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/ganes/menu/shield_gt.png",
-      "x": 204,
-      "y": 158,
-      "w": 65,
-      "h": 85
+      "x": 214,
+      "y": 172,
+      "w": 45,
+      "h": 57
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/ganes/menu/shield_gf.png",
-      "x": 200,
-      "y": 154,
-      "w": 73,
-      "h": 93
+      "x": 210,
+      "y": 168,
+      "w": 53,
+      "h": 65
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/ganes/menu/hv_pl_t.png",
-      "x": 79,
-      "y": 115,
-      "w": 171,
-      "h": 27
+      "x": 86,
+      "y": 121,
+      "w": 157,
+      "h": 18
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/ganes/menu/hv_pl_f.png",
-      "x": 78,
-      "y": 114,
-      "w": 173,
-      "h": 29
+      "x": 85,
+      "y": 120,
+      "w": 159,
+      "h": 20
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/ganes/menu/head_hat_t.png",
@@ -6839,17 +6783,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/ganes/back/jf_pl_t.png",
-      "x": 81,
-      "y": 117,
-      "w": 165,
-      "h": 27
+      "x": 89,
+      "y": 123,
+      "w": 149,
+      "h": 18
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/ganes/back/jf_pl_f.png",
-      "x": 80,
-      "y": 116,
-      "w": 167,
-      "h": 29
+      "x": 88,
+      "y": 122,
+      "w": 151,
+      "h": 20
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/ganes/back/jf_mt_t.png",
@@ -6867,31 +6811,17 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/ganes/back/shield_gt.png",
-      "x": 62,
-      "y": 154,
-      "w": 45,
-      "h": 84
+      "x": 70,
+      "y": 169,
+      "w": 29,
+      "h": 55
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/ganes/back/shield_gf.png",
-      "x": 58,
-      "y": 150,
-      "w": 53,
-      "h": 93
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/ganes/back/hv_pl_t.png",
-      "x": 81,
-      "y": 117,
-      "w": 165,
-      "h": 27
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/ganes/back/hv_pl_f.png",
-      "x": 80,
-      "y": 116,
-      "w": 167,
-      "h": 29
+      "x": 66,
+      "y": 165,
+      "w": 37,
+      "h": 63
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/ganes/back/head_hat_t.png",
@@ -7082,16 +7012,16 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/io/menu/jf_pl_t.png",
-      "x": 91,
-      "y": 163,
-      "w": 122,
+      "x": 89,
+      "y": 158,
+      "w": 128,
       "h": 21
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/io/menu/jf_pl_f.png",
-      "x": 90,
-      "y": 162,
-      "w": 124,
+      "x": 88,
+      "y": 157,
+      "w": 130,
       "h": 23
      },
      "jf_mt_t": {
@@ -7124,16 +7054,16 @@
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/io/menu/hv_pl_t.png",
-      "x": 91,
-      "y": 163,
-      "w": 122,
+      "x": 89,
+      "y": 158,
+      "w": 128,
       "h": 21
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/io/menu/hv_pl_f.png",
-      "x": 90,
-      "y": 162,
-      "w": 124,
+      "x": 88,
+      "y": 157,
+      "w": 130,
       "h": 23
      },
      "head_hat_t": {
@@ -7323,16 +7253,16 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/io/menu/jf_pl_t.png",
-      "x": 91,
-      "y": 163,
-      "w": 122,
+      "x": 89,
+      "y": 158,
+      "w": 128,
       "h": 21
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/io/menu/jf_pl_f.png",
-      "x": 90,
-      "y": 162,
-      "w": 124,
+      "x": 88,
+      "y": 157,
+      "w": 130,
       "h": 23
      },
      "jf_mt_t": {
@@ -7365,16 +7295,16 @@
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/io/menu/hv_pl_t.png",
-      "x": 91,
-      "y": 163,
-      "w": 122,
+      "x": 89,
+      "y": 158,
+      "w": 128,
       "h": 21
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/io/menu/hv_pl_f.png",
-      "x": 90,
-      "y": 162,
-      "w": 124,
+      "x": 88,
+      "y": 157,
+      "w": 130,
       "h": 23
      },
      "head_hat_t": {
@@ -7564,16 +7494,16 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/io/back/jf_pl_t.png",
-      "x": 95,
-      "y": 166,
-      "w": 122,
+      "x": 102,
+      "y": 160,
+      "w": 119,
       "h": 20
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/io/back/jf_pl_f.png",
-      "x": 94,
-      "y": 165,
-      "w": 124,
+      "x": 101,
+      "y": 159,
+      "w": 121,
       "h": 22
      },
      "jf_mt_t": {
@@ -7603,20 +7533,6 @@
       "y": 180,
       "w": 41,
       "h": 69
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/io/back/hv_pl_t.png",
-      "x": 95,
-      "y": 166,
-      "w": 122,
-      "h": 20
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/io/back/hv_pl_f.png",
-      "x": 94,
-      "y": 165,
-      "w": 124,
-      "h": 22
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/io/back/head_hat_t.png",
@@ -7807,15 +7723,15 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/iris/menu/jf_pl_t.png",
-      "x": 86,
-      "y": 147,
+      "x": 87,
+      "y": 140,
       "w": 140,
       "h": 23
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/iris/menu/jf_pl_f.png",
-      "x": 85,
-      "y": 146,
+      "x": 86,
+      "y": 139,
       "w": 142,
       "h": 25
      },
@@ -7849,15 +7765,15 @@
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/iris/menu/hv_pl_t.png",
-      "x": 86,
-      "y": 147,
+      "x": 87,
+      "y": 140,
       "w": 140,
       "h": 23
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/iris/menu/hv_pl_f.png",
-      "x": 85,
-      "y": 146,
+      "x": 86,
+      "y": 139,
       "w": 142,
       "h": 25
      },
@@ -8048,15 +7964,15 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/iris/menu/jf_pl_t.png",
-      "x": 86,
-      "y": 147,
+      "x": 87,
+      "y": 140,
       "w": 140,
       "h": 23
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/iris/menu/jf_pl_f.png",
-      "x": 85,
-      "y": 146,
+      "x": 86,
+      "y": 139,
       "w": 142,
       "h": 25
      },
@@ -8090,15 +8006,15 @@
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/iris/menu/hv_pl_t.png",
-      "x": 86,
-      "y": 147,
+      "x": 87,
+      "y": 140,
       "w": 140,
       "h": 23
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/iris/menu/hv_pl_f.png",
-      "x": 85,
-      "y": 146,
+      "x": 86,
+      "y": 139,
       "w": 142,
       "h": 25
      },
@@ -8290,16 +8206,16 @@
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/iris/back/jf_pl_t.png",
       "x": 92,
-      "y": 147,
-      "w": 140,
-      "h": 23
+      "y": 139,
+      "w": 132,
+      "h": 22
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/iris/back/jf_pl_f.png",
       "x": 91,
-      "y": 146,
-      "w": 142,
-      "h": 25
+      "y": 138,
+      "w": 134,
+      "h": 24
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/iris/back/jf_mt_t.png",
@@ -8317,31 +8233,17 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/iris/back/shield_gt.png",
-      "x": 71,
-      "y": 141,
-      "w": 39,
-      "h": 71
+      "x": 72,
+      "y": 142,
+      "w": 37,
+      "h": 68
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/iris/back/shield_gf.png",
-      "x": 67,
-      "y": 137,
-      "w": 47,
-      "h": 79
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/iris/back/hv_pl_t.png",
-      "x": 92,
-      "y": 147,
-      "w": 140,
-      "h": 23
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/iris/back/hv_pl_f.png",
-      "x": 91,
-      "y": 146,
-      "w": 142,
-      "h": 25
+      "x": 68,
+      "y": 138,
+      "w": 45,
+      "h": 77
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/iris/back/head_hat_t.png",
@@ -8399,10 +8301,10 @@
      },
      "jf_cloth_t": {
       "file": "assets/characters/equip-pixels/lucia/menu/jf_cloth_t.png",
-      "x": 2,
+      "x": 4,
       "y": 112,
-      "w": 244,
-      "h": 147
+      "w": 242,
+      "h": 145
      },
      "weapon_sword": {
       "file": "assets/characters/equip-pixels/lucia/menu/weapon_sword.png",
@@ -8518,16 +8420,16 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/lucia/menu/jf_pl_t.png",
-      "x": 63,
-      "y": 118,
-      "w": 124,
+      "x": 57,
+      "y": 112,
+      "w": 128,
       "h": 21
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/lucia/menu/jf_pl_f.png",
-      "x": 62,
-      "y": 117,
-      "w": 126,
+      "x": 56,
+      "y": 111,
+      "w": 130,
       "h": 23
      },
      "jf_mt_t": {
@@ -8560,16 +8462,16 @@
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/lucia/menu/hv_pl_t.png",
-      "x": 63,
-      "y": 118,
-      "w": 124,
+      "x": 57,
+      "y": 112,
+      "w": 128,
       "h": 21
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/lucia/menu/hv_pl_f.png",
-      "x": 62,
-      "y": 117,
-      "w": 126,
+      "x": 56,
+      "y": 111,
+      "w": 130,
       "h": 23
      },
      "head_hat_t": {
@@ -8626,10 +8528,10 @@
      },
      "jf_cloth_t": {
       "file": "assets/characters/equip-pixels/lucia/menu/jf_cloth_t.png",
-      "x": 38,
+      "x": 40,
       "y": 155,
-      "w": 244,
-      "h": 147
+      "w": 242,
+      "h": 145
      },
      "weapon_sword": {
       "file": "assets/characters/equip-pixels/lucia/menu/weapon_sword.png",
@@ -8745,16 +8647,16 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/lucia/menu/jf_pl_t.png",
-      "x": 99,
-      "y": 161,
-      "w": 124,
+      "x": 93,
+      "y": 155,
+      "w": 128,
       "h": 21
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/lucia/menu/jf_pl_f.png",
-      "x": 98,
-      "y": 160,
-      "w": 126,
+      "x": 92,
+      "y": 154,
+      "w": 130,
       "h": 23
      },
      "jf_mt_t": {
@@ -8787,16 +8689,16 @@
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/lucia/menu/hv_pl_t.png",
-      "x": 99,
-      "y": 161,
-      "w": 124,
+      "x": 93,
+      "y": 155,
+      "w": 128,
       "h": 21
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/lucia/menu/hv_pl_f.png",
-      "x": 98,
-      "y": 160,
-      "w": 126,
+      "x": 92,
+      "y": 154,
+      "w": 130,
       "h": 23
      },
      "head_hat_t": {
@@ -8827,8 +8729,8 @@
      304
     ],
     "grip": {
-     "x": 125,
-     "y": 152,
+     "x": 92,
+     "y": 170,
      "order": "武器：柄の上に手を描き直す"
     },
     "offhand": {
@@ -8846,66 +8748,66 @@
      },
      "hand": {
       "file": "assets/characters/equip-pixels/lucia/back/hand.png",
-      "x": 106,
-      "y": 136,
-      "w": 39,
-      "h": 33
+      "x": 82,
+      "y": 158,
+      "w": 22,
+      "h": 25
      },
      "jf_cloth_t": {
       "file": "assets/characters/equip-pixels/lucia/back/jf_cloth_t.png",
-      "x": 82,
-      "y": 160,
-      "w": 194,
-      "h": 143
+      "x": 84,
+      "y": 215,
+      "w": 190,
+      "h": 88
      },
      "weapon_sword": {
       "file": "assets/characters/equip-pixels/lucia/back/weapon_sword.png",
-      "x": 107,
-      "y": 21,
+      "x": 74,
+      "y": 39,
       "w": 34,
       "h": 155
      },
      "weapon_dagger": {
       "file": "assets/characters/equip-pixels/lucia/back/weapon_dagger.png",
-      "x": 114,
-      "y": 100,
+      "x": 81,
+      "y": 118,
       "w": 21,
       "h": 69
      },
      "weapon_axe": {
       "file": "assets/characters/equip-pixels/lucia/back/weapon_axe.png",
-      "x": 111,
-      "y": 64,
+      "x": 78,
+      "y": 82,
       "w": 39,
       "h": 117
      },
      "weapon_spear": {
       "file": "assets/characters/equip-pixels/lucia/back/weapon_spear.png",
-      "x": 106,
+      "x": 72,
       "y": 2,
-      "w": 33,
-      "h": 275
+      "w": 34,
+      "h": 293
      },
      "weapon_bow": {
       "file": "assets/characters/equip-pixels/lucia/back/weapon_bow.png",
-      "x": 121,
-      "y": 86,
+      "x": 88,
+      "y": 104,
       "w": 27,
       "h": 131
      },
      "weapon_staff_t": {
       "file": "assets/characters/equip-pixels/lucia/back/weapon_staff_t.png",
-      "x": 117,
-      "y": 4,
+      "x": 84,
+      "y": 11,
       "w": 17,
       "h": 17
      },
      "weapon_staff_f": {
       "file": "assets/characters/equip-pixels/lucia/back/weapon_staff_f.png",
-      "x": 113,
-      "y": 0,
+      "x": 80,
+      "y": 4,
       "w": 25,
-      "h": 303
+      "h": 299
      },
      "base_helm": {
       "file": "assets/characters/equip-pixels/lucia/back/base_helm.png",
@@ -8972,16 +8874,16 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/lucia/back/jf_pl_t.png",
-      "x": 104,
-      "y": 166,
-      "w": 122,
+      "x": 98,
+      "y": 162,
+      "w": 134,
       "h": 20
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/lucia/back/jf_pl_f.png",
-      "x": 103,
-      "y": 165,
-      "w": 124,
+      "x": 97,
+      "y": 161,
+      "w": 136,
       "h": 22
      },
      "jf_mt_t": {
@@ -9011,20 +8913,6 @@
       "y": 166,
       "w": 41,
       "h": 69
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/lucia/back/hv_pl_t.png",
-      "x": 104,
-      "y": 166,
-      "w": 122,
-      "h": 20
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/lucia/back/hv_pl_f.png",
-      "x": 103,
-      "y": 165,
-      "w": 124,
-      "h": 22
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/lucia/back/head_hat_t.png",
@@ -9201,17 +9089,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_t.png",
-      "x": 32,
-      "y": 79,
-      "w": 176,
-      "h": 29
+      "x": 84,
+      "y": 70,
+      "w": 80,
+      "h": 13
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_f.png",
-      "x": 31,
-      "y": 78,
-      "w": 178,
-      "h": 31
+      "x": 83,
+      "y": 69,
+      "w": 82,
+      "h": 15
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/jf_mt_t.png",
@@ -9229,31 +9117,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/shield_gt.png",
-      "x": 117,
-      "y": 66,
-      "w": 71,
-      "h": 93
+      "x": 137,
+      "y": 92,
+      "w": 31,
+      "h": 41
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/shield_gf.png",
-      "x": 113,
-      "y": 62,
-      "w": 79,
-      "h": 101
+      "x": 133,
+      "y": 88,
+      "w": 39,
+      "h": 49
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_t.png",
-      "x": 32,
-      "y": 79,
-      "w": 176,
-      "h": 29
+      "x": 84,
+      "y": 70,
+      "w": 80,
+      "h": 13
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_f.png",
-      "x": 31,
-      "y": 78,
-      "w": 178,
-      "h": 31
+      "x": 83,
+      "y": 69,
+      "w": 82,
+      "h": 15
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/head_hat_t.png",
@@ -9428,17 +9316,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_t.png",
-      "x": 54,
-      "y": 105,
-      "w": 176,
-      "h": 29
+      "x": 106,
+      "y": 96,
+      "w": 80,
+      "h": 13
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_f.png",
-      "x": 53,
-      "y": 104,
-      "w": 178,
-      "h": 31
+      "x": 105,
+      "y": 95,
+      "w": 82,
+      "h": 15
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/jf_mt_t.png",
@@ -9456,31 +9344,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/shield_gt.png",
-      "x": 139,
-      "y": 92,
-      "w": 71,
-      "h": 93
+      "x": 159,
+      "y": 118,
+      "w": 31,
+      "h": 41
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/shield_gf.png",
-      "x": 135,
-      "y": 88,
-      "w": 79,
-      "h": 101
+      "x": 155,
+      "y": 114,
+      "w": 39,
+      "h": 49
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_t.png",
-      "x": 54,
-      "y": 105,
-      "w": 176,
-      "h": 29
+      "x": 106,
+      "y": 96,
+      "w": 80,
+      "h": 13
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_f.png",
-      "x": 53,
-      "y": 104,
-      "w": 178,
-      "h": 31
+      "x": 105,
+      "y": 95,
+      "w": 82,
+      "h": 15
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/menu/head_hat_t.png",
@@ -9655,17 +9543,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/back/jf_pl_t.png",
-      "x": 87,
-      "y": 104,
-      "w": 176,
-      "h": 29
+      "x": 131,
+      "y": 94,
+      "w": 98,
+      "h": 16
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/mochipoyo/back/jf_pl_f.png",
-      "x": 86,
-      "y": 103,
-      "w": 178,
-      "h": 31
+      "x": 130,
+      "y": 93,
+      "w": 100,
+      "h": 18
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/back/jf_mt_t.png",
@@ -9683,31 +9571,17 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/mochipoyo/back/shield_gt.png",
-      "x": 113,
-      "y": 104,
-      "w": 51,
-      "h": 92
+      "x": 125,
+      "y": 125,
+      "w": 27,
+      "h": 50
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/mochipoyo/back/shield_gf.png",
-      "x": 109,
-      "y": 100,
-      "w": 59,
-      "h": 101
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/mochipoyo/back/hv_pl_t.png",
-      "x": 87,
-      "y": 104,
-      "w": 176,
-      "h": 29
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/mochipoyo/back/hv_pl_f.png",
-      "x": 86,
-      "y": 103,
-      "w": 178,
-      "h": 31
+      "x": 121,
+      "y": 121,
+      "w": 35,
+      "h": 59
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/mochipoyo/back/head_hat_t.png",
@@ -9912,17 +9786,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/nagi/menu/jf_pl_t.png",
-      "x": 78,
-      "y": 135,
-      "w": 148,
-      "h": 24
+      "x": 83,
+      "y": 127,
+      "w": 134,
+      "h": 23
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/nagi/menu/jf_pl_f.png",
-      "x": 77,
-      "y": 134,
-      "w": 150,
-      "h": 26
+      "x": 82,
+      "y": 126,
+      "w": 136,
+      "h": 25
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/nagi/menu/jf_mt_t.png",
@@ -9940,31 +9814,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/nagi/menu/shield_gt.png",
-      "x": 185,
-      "y": 138,
-      "w": 59,
-      "h": 77
+      "x": 187,
+      "y": 141,
+      "w": 55,
+      "h": 71
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/nagi/menu/shield_gf.png",
-      "x": 181,
-      "y": 134,
-      "w": 67,
-      "h": 85
+      "x": 183,
+      "y": 137,
+      "w": 63,
+      "h": 79
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/nagi/menu/hv_pl_t.png",
-      "x": 78,
-      "y": 135,
-      "w": 148,
-      "h": 24
+      "x": 83,
+      "y": 127,
+      "w": 134,
+      "h": 23
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/nagi/menu/hv_pl_f.png",
-      "x": 77,
-      "y": 134,
-      "w": 150,
-      "h": 26
+      "x": 82,
+      "y": 126,
+      "w": 136,
+      "h": 25
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/nagi/menu/head_hat_t.png",
@@ -10167,17 +10041,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/nagi/menu/jf_pl_t.png",
-      "x": 78,
-      "y": 135,
-      "w": 148,
-      "h": 24
+      "x": 83,
+      "y": 127,
+      "w": 134,
+      "h": 23
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/nagi/menu/jf_pl_f.png",
-      "x": 77,
-      "y": 134,
-      "w": 150,
-      "h": 26
+      "x": 82,
+      "y": 126,
+      "w": 136,
+      "h": 25
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/nagi/menu/jf_mt_t.png",
@@ -10195,31 +10069,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/nagi/menu/shield_gt.png",
-      "x": 185,
-      "y": 138,
-      "w": 59,
-      "h": 77
+      "x": 187,
+      "y": 141,
+      "w": 55,
+      "h": 71
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/nagi/menu/shield_gf.png",
-      "x": 181,
-      "y": 134,
-      "w": 67,
-      "h": 85
+      "x": 183,
+      "y": 137,
+      "w": 63,
+      "h": 79
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/nagi/menu/hv_pl_t.png",
-      "x": 78,
-      "y": 135,
-      "w": 148,
-      "h": 24
+      "x": 83,
+      "y": 127,
+      "w": 134,
+      "h": 23
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/nagi/menu/hv_pl_f.png",
-      "x": 77,
-      "y": 134,
-      "w": 150,
-      "h": 26
+      "x": 82,
+      "y": 126,
+      "w": 136,
+      "h": 25
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/nagi/menu/head_hat_t.png",
@@ -10422,17 +10296,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/nagi/back/jf_pl_t.png",
-      "x": 86,
-      "y": 135,
-      "w": 148,
-      "h": 24
+      "x": 90,
+      "y": 127,
+      "w": 138,
+      "h": 23
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/nagi/back/jf_pl_f.png",
-      "x": 85,
-      "y": 134,
-      "w": 150,
-      "h": 26
+      "x": 89,
+      "y": 126,
+      "w": 140,
+      "h": 25
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/nagi/back/jf_mt_t.png",
@@ -10450,31 +10324,17 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/nagi/back/shield_gt.png",
-      "x": 88,
-      "y": 140,
-      "w": 41,
-      "h": 76
+      "x": 89,
+      "y": 142,
+      "w": 39,
+      "h": 72
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/nagi/back/shield_gf.png",
-      "x": 84,
-      "y": 136,
-      "w": 49,
-      "h": 85
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/nagi/back/hv_pl_t.png",
-      "x": 86,
-      "y": 135,
-      "w": 148,
-      "h": 24
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/nagi/back/hv_pl_f.png",
       "x": 85,
-      "y": 134,
-      "w": 150,
-      "h": 26
+      "y": 138,
+      "w": 47,
+      "h": 81
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/nagi/back/head_hat_t.png",
@@ -10679,17 +10539,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/ord/menu/jf_pl_t.png",
-      "x": 73,
-      "y": 100,
-      "w": 147,
-      "h": 29
+      "x": 84,
+      "y": 108,
+      "w": 125,
+      "h": 16
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/ord/menu/jf_pl_f.png",
-      "x": 72,
-      "y": 99,
-      "w": 149,
-      "h": 31
+      "x": 83,
+      "y": 107,
+      "w": 127,
+      "h": 18
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/ord/menu/jf_mt_t.png",
@@ -10707,31 +10567,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/ord/menu/shield_gt.png",
-      "x": 175,
-      "y": 145,
-      "w": 71,
-      "h": 91
+      "x": 192,
+      "y": 166,
+      "w": 37,
+      "h": 49
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/ord/menu/shield_gf.png",
-      "x": 171,
-      "y": 141,
-      "w": 79,
-      "h": 99
+      "x": 188,
+      "y": 162,
+      "w": 45,
+      "h": 57
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/ord/menu/hv_pl_t.png",
-      "x": 73,
-      "y": 100,
-      "w": 147,
-      "h": 29
+      "x": 84,
+      "y": 108,
+      "w": 125,
+      "h": 16
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/ord/menu/hv_pl_f.png",
-      "x": 72,
-      "y": 99,
-      "w": 149,
-      "h": 31
+      "x": 83,
+      "y": 107,
+      "w": 127,
+      "h": 18
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/ord/menu/head_hat_t.png",
@@ -10934,17 +10794,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/ord/menu/jf_pl_t.png",
-      "x": 73,
-      "y": 100,
-      "w": 147,
-      "h": 29
+      "x": 84,
+      "y": 108,
+      "w": 125,
+      "h": 16
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/ord/menu/jf_pl_f.png",
-      "x": 72,
-      "y": 99,
-      "w": 149,
-      "h": 31
+      "x": 83,
+      "y": 107,
+      "w": 127,
+      "h": 18
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/ord/menu/jf_mt_t.png",
@@ -10962,31 +10822,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/ord/menu/shield_gt.png",
-      "x": 175,
-      "y": 145,
-      "w": 71,
-      "h": 91
+      "x": 192,
+      "y": 166,
+      "w": 37,
+      "h": 49
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/ord/menu/shield_gf.png",
-      "x": 171,
-      "y": 141,
-      "w": 79,
-      "h": 99
+      "x": 188,
+      "y": 162,
+      "w": 45,
+      "h": 57
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/ord/menu/hv_pl_t.png",
-      "x": 73,
-      "y": 100,
-      "w": 147,
-      "h": 29
+      "x": 84,
+      "y": 108,
+      "w": 125,
+      "h": 16
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/ord/menu/hv_pl_f.png",
-      "x": 72,
-      "y": 99,
-      "w": 149,
-      "h": 31
+      "x": 83,
+      "y": 107,
+      "w": 127,
+      "h": 18
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/ord/menu/head_hat_t.png",
@@ -11210,17 +11070,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/ord/back/jf_pl_t.png",
-      "x": 87,
-      "y": 104,
-      "w": 163,
-      "h": 29
+      "x": 98,
+      "y": 112,
+      "w": 141,
+      "h": 16
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/ord/back/jf_pl_f.png",
-      "x": 86,
-      "y": 103,
-      "w": 165,
-      "h": 31
+      "x": 97,
+      "y": 111,
+      "w": 143,
+      "h": 18
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/ord/back/jf_mt_t.png",
@@ -11238,31 +11098,17 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/ord/back/shield_gt.png",
-      "x": 61,
-      "y": 154,
-      "w": 51,
-      "h": 92
+      "x": 73,
+      "y": 175,
+      "w": 27,
+      "h": 50
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/ord/back/shield_gf.png",
-      "x": 57,
-      "y": 150,
-      "w": 59,
-      "h": 101
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/ord/back/hv_pl_t.png",
-      "x": 87,
-      "y": 104,
-      "w": 163,
-      "h": 29
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/ord/back/hv_pl_f.png",
-      "x": 86,
-      "y": 103,
-      "w": 165,
-      "h": 31
+      "x": 69,
+      "y": 171,
+      "w": 35,
+      "h": 59
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/ord/back/head_hat_t.png",
@@ -11925,20 +11771,6 @@
       "y": 167,
       "w": 35,
       "h": 59
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/seris/back/hv_pl_t.png",
-      "x": 104,
-      "y": 186,
-      "w": 97,
-      "h": 16
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/seris/back/hv_pl_f.png",
-      "x": 103,
-      "y": 185,
-      "w": 99,
-      "h": 18
      }
     }
    }
@@ -12101,17 +11933,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/sophia/menu/jf_pl_t.png",
-      "x": 78,
-      "y": 135,
-      "w": 148,
-      "h": 24
+      "x": 123,
+      "y": 127,
+      "w": 96,
+      "h": 16
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/sophia/menu/jf_pl_f.png",
-      "x": 77,
-      "y": 134,
-      "w": 150,
-      "h": 26
+      "x": 122,
+      "y": 126,
+      "w": 98,
+      "h": 18
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/sophia/menu/jf_mt_t.png",
@@ -12129,31 +11961,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/sophia/menu/shield_gt.png",
-      "x": 149,
-      "y": 126,
-      "w": 59,
-      "h": 77
+      "x": 160,
+      "y": 140,
+      "w": 37,
+      "h": 49
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/sophia/menu/shield_gf.png",
-      "x": 145,
-      "y": 122,
-      "w": 67,
-      "h": 85
+      "x": 156,
+      "y": 136,
+      "w": 45,
+      "h": 57
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/sophia/menu/hv_pl_t.png",
-      "x": 78,
-      "y": 135,
-      "w": 148,
-      "h": 24
+      "x": 123,
+      "y": 127,
+      "w": 96,
+      "h": 16
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/sophia/menu/hv_pl_f.png",
-      "x": 77,
-      "y": 134,
-      "w": 150,
-      "h": 26
+      "x": 122,
+      "y": 126,
+      "w": 98,
+      "h": 18
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/sophia/menu/head_hat_t.png",
@@ -12328,17 +12160,17 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/sophia/menu/jf_pl_t.png",
-      "x": 78,
-      "y": 135,
-      "w": 148,
-      "h": 24
+      "x": 123,
+      "y": 127,
+      "w": 96,
+      "h": 16
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/sophia/menu/jf_pl_f.png",
-      "x": 77,
-      "y": 134,
-      "w": 150,
-      "h": 26
+      "x": 122,
+      "y": 126,
+      "w": 98,
+      "h": 18
      },
      "jf_mt_t": {
       "file": "assets/characters/equip-pixels/sophia/menu/jf_mt_t.png",
@@ -12356,31 +12188,31 @@
      },
      "shield_gt": {
       "file": "assets/characters/equip-pixels/sophia/menu/shield_gt.png",
-      "x": 149,
-      "y": 126,
-      "w": 59,
-      "h": 77
+      "x": 160,
+      "y": 140,
+      "w": 37,
+      "h": 49
      },
      "shield_gf": {
       "file": "assets/characters/equip-pixels/sophia/menu/shield_gf.png",
-      "x": 145,
-      "y": 122,
-      "w": 67,
-      "h": 85
+      "x": 156,
+      "y": 136,
+      "w": 45,
+      "h": 57
      },
      "hv_pl_t": {
       "file": "assets/characters/equip-pixels/sophia/menu/hv_pl_t.png",
-      "x": 78,
-      "y": 135,
-      "w": 148,
-      "h": 24
+      "x": 123,
+      "y": 127,
+      "w": 96,
+      "h": 16
      },
      "hv_pl_f": {
       "file": "assets/characters/equip-pixels/sophia/menu/hv_pl_f.png",
-      "x": 77,
-      "y": 134,
-      "w": 150,
-      "h": 26
+      "x": 122,
+      "y": 126,
+      "w": 98,
+      "h": 18
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/sophia/menu/head_hat_t.png",
@@ -12555,16 +12387,16 @@
      },
      "jf_pl_t": {
       "file": "assets/characters/equip-pixels/sophia/back/jf_pl_t.png",
-      "x": 100,
-      "y": 157,
-      "w": 130,
+      "x": 97,
+      "y": 151,
+      "w": 136,
       "h": 21
      },
      "jf_pl_f": {
       "file": "assets/characters/equip-pixels/sophia/back/jf_pl_f.png",
-      "x": 99,
-      "y": 156,
-      "w": 132,
+      "x": 96,
+      "y": 150,
+      "w": 138,
       "h": 23
      },
      "jf_mt_t": {
@@ -12594,20 +12426,6 @@
       "y": 153,
       "w": 43,
       "h": 75
-     },
-     "hv_pl_t": {
-      "file": "assets/characters/equip-pixels/sophia/back/hv_pl_t.png",
-      "x": 100,
-      "y": 157,
-      "w": 130,
-      "h": 21
-     },
-     "hv_pl_f": {
-      "file": "assets/characters/equip-pixels/sophia/back/hv_pl_f.png",
-      "x": 99,
-      "y": 156,
-      "w": 132,
-      "h": 23
      },
      "head_hat_t": {
       "file": "assets/characters/equip-pixels/sophia/back/head_hat_t.png",

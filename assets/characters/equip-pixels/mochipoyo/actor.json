@@ -382,18 +382,18 @@
      "h": 278
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_t.png?v=88d949f2",
-     "x": 32,
-     "y": 79,
-     "w": 176,
-     "h": 29
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_t.png?v=afd98115",
+     "x": 84,
+     "y": 70,
+     "w": 80,
+     "h": 13
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_f.png?v=27b9c808",
-     "x": 31,
-     "y": 78,
-     "w": 178,
-     "h": 31
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_f.png?v=1811ed94",
+     "x": 83,
+     "y": 69,
+     "w": 82,
+     "h": 15
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/mochipoyo/menu/jf_mt_t.png?v=dba10ed6",
@@ -410,32 +410,32 @@
      "h": 47
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/shield_gt.png?v=5544a52e",
-     "x": 117,
-     "y": 66,
-     "w": 71,
-     "h": 93
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/shield_gt.png?v=2adc67f5",
+     "x": 137,
+     "y": 92,
+     "w": 31,
+     "h": 41
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/shield_gf.png?v=ad43d07a",
-     "x": 113,
-     "y": 62,
-     "w": 79,
-     "h": 101
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/shield_gf.png?v=6407a47b",
+     "x": 133,
+     "y": 88,
+     "w": 39,
+     "h": 49
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_t.png?v=88d949f2",
-     "x": 32,
-     "y": 79,
-     "w": 176,
-     "h": 29
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_t.png?v=afd98115",
+     "x": 84,
+     "y": 70,
+     "w": 80,
+     "h": 13
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_f.png?v=27b9c808",
-     "x": 31,
-     "y": 78,
-     "w": 178,
-     "h": 31
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_f.png?v=1811ed94",
+     "x": 83,
+     "y": 69,
+     "w": 82,
+     "h": 15
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/mochipoyo/menu/head_hat_t.png?v=48090834",
@@ -620,18 +620,18 @@
      "h": 278
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_t.png?v=88d949f2",
-     "x": 54,
-     "y": 105,
-     "w": 176,
-     "h": 29
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_t.png?v=afd98115",
+     "x": 106,
+     "y": 96,
+     "w": 80,
+     "h": 13
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_f.png?v=27b9c808",
-     "x": 53,
-     "y": 104,
-     "w": 178,
-     "h": 31
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/jf_pl_f.png?v=1811ed94",
+     "x": 105,
+     "y": 95,
+     "w": 82,
+     "h": 15
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/mochipoyo/menu/jf_mt_t.png?v=dba10ed6",
@@ -648,32 +648,32 @@
      "h": 47
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/shield_gt.png?v=5544a52e",
-     "x": 139,
-     "y": 92,
-     "w": 71,
-     "h": 93
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/shield_gt.png?v=2adc67f5",
+     "x": 159,
+     "y": 118,
+     "w": 31,
+     "h": 41
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/shield_gf.png?v=ad43d07a",
-     "x": 135,
-     "y": 88,
-     "w": 79,
-     "h": 101
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/shield_gf.png?v=6407a47b",
+     "x": 155,
+     "y": 114,
+     "w": 39,
+     "h": 49
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_t.png?v=88d949f2",
-     "x": 54,
-     "y": 105,
-     "w": 176,
-     "h": 29
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_t.png?v=afd98115",
+     "x": 106,
+     "y": 96,
+     "w": 80,
+     "h": 13
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_f.png?v=27b9c808",
-     "x": 53,
-     "y": 104,
-     "w": 178,
-     "h": 31
+     "url": "assets/characters/equip-pixels/mochipoyo/menu/hv_pl_f.png?v=1811ed94",
+     "x": 105,
+     "y": 95,
+     "w": 82,
+     "h": 15
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/mochipoyo/menu/head_hat_t.png?v=48090834",
@@ -851,18 +851,18 @@
      "h": 276
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/mochipoyo/back/jf_pl_t.png?v=ebedb777",
-     "x": 87,
-     "y": 104,
-     "w": 176,
-     "h": 29
+     "url": "assets/characters/equip-pixels/mochipoyo/back/jf_pl_t.png?v=e2b0a44c",
+     "x": 131,
+     "y": 94,
+     "w": 98,
+     "h": 16
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/mochipoyo/back/jf_pl_f.png?v=0fa3015b",
-     "x": 86,
-     "y": 103,
-     "w": 178,
-     "h": 31
+     "url": "assets/characters/equip-pixels/mochipoyo/back/jf_pl_f.png?v=d8a30c5c",
+     "x": 130,
+     "y": 93,
+     "w": 100,
+     "h": 18
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/mochipoyo/back/jf_mt_t.png?v=bc9ae597",
@@ -879,32 +879,18 @@
      "h": 47
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/mochipoyo/back/shield_gt.png?v=ea262c90",
-     "x": 113,
-     "y": 104,
-     "w": 51,
-     "h": 92
+     "url": "assets/characters/equip-pixels/mochipoyo/back/shield_gt.png?v=d15d99ff",
+     "x": 125,
+     "y": 125,
+     "w": 27,
+     "h": 50
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/mochipoyo/back/shield_gf.png?v=16cd27e7",
-     "x": 109,
-     "y": 100,
-     "w": 59,
-     "h": 101
-    },
-    "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/mochipoyo/back/hv_pl_t.png?v=ebedb777",
-     "x": 87,
-     "y": 104,
-     "w": 176,
-     "h": 29
-    },
-    "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/mochipoyo/back/hv_pl_f.png?v=0fa3015b",
-     "x": 86,
-     "y": 103,
-     "w": 178,
-     "h": 31
+     "url": "assets/characters/equip-pixels/mochipoyo/back/shield_gf.png?v=571f8a72",
+     "x": 121,
+     "y": 121,
+     "w": 35,
+     "h": 59
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/mochipoyo/back/head_hat_t.png?v=52251b71",

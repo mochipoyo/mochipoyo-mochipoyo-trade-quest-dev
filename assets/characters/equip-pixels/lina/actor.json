@@ -800,20 +800,6 @@
      "w": 47,
      "h": 81
     },
-    "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/lina/back/hv_pl_t.png?v=db14a803",
-     "x": 95,
-     "y": 155,
-     "w": 116,
-     "h": 24
-    },
-    "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/lina/back/hv_pl_f.png?v=7fdfae6f",
-     "x": 94,
-     "y": 154,
-     "w": 118,
-     "h": 26
-    },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/lina/back/head_hat_t.png?v=300b1a52",
      "x": 61,

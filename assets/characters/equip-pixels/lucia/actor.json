@@ -249,25 +249,25 @@
    },
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/lucia/menu/base_plain.png?v=6bcd5891",
+     "url": "assets/characters/equip-pixels/lucia/menu/base_plain.png?v=a0121142",
      "x": 2,
      "y": 2,
      "w": 244,
      "h": 257
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/lucia/menu/hand.png?v=c7afdaad",
+     "url": "assets/characters/equip-pixels/lucia/menu/hand.png?v=359ab66d",
      "x": 174,
      "y": 120,
      "w": 33,
      "h": 37
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/lucia/menu/jf_cloth_t.png?v=ce1b8602",
-     "x": 2,
+     "url": "assets/characters/equip-pixels/lucia/menu/jf_cloth_t.png?v=ca4927dd",
+     "x": 4,
      "y": 112,
-     "w": 244,
-     "h": 147
+     "w": 242,
+     "h": 145
     },
     "weapon_sword": {
      "url": "assets/characters/equip-pixels/lucia/menu/weapon_sword.png?v=726a1666",
@@ -319,7 +319,7 @@
      "h": 258
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/lucia/menu/base_helm.png?v=690cc454",
+     "url": "assets/characters/equip-pixels/lucia/menu/base_helm.png?v=c39a9091",
      "x": 2,
      "y": 2,
      "w": 244,
@@ -340,7 +340,7 @@
      "h": 103
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/lucia/menu/base_cap.png?v=a4c074db",
+     "url": "assets/characters/equip-pixels/lucia/menu/base_cap.png?v=a2694110",
      "x": 2,
      "y": 2,
      "w": 244,
@@ -375,24 +375,24 @@
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/lucia/menu/base_hat.png?v=df14f25c",
+     "url": "assets/characters/equip-pixels/lucia/menu/base_hat.png?v=11f71b87",
      "x": 2,
      "y": 2,
      "w": 244,
      "h": 257
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/lucia/menu/jf_pl_t.png?v=331d93b3",
-     "x": 63,
-     "y": 118,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/lucia/menu/jf_pl_t.png?v=6135d6d6",
+     "x": 57,
+     "y": 112,
+     "w": 128,
      "h": 21
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/lucia/menu/jf_pl_f.png?v=462fe674",
-     "x": 62,
-     "y": 117,
-     "w": 126,
+     "url": "assets/characters/equip-pixels/lucia/menu/jf_pl_f.png?v=602a4076",
+     "x": 56,
+     "y": 111,
+     "w": 130,
      "h": 23
     },
     "jf_mt_t": {
@@ -424,17 +424,17 @@
      "h": 71
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/lucia/menu/hv_pl_t.png?v=331d93b3",
-     "x": 63,
-     "y": 118,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/lucia/menu/hv_pl_t.png?v=6135d6d6",
+     "x": 57,
+     "y": 112,
+     "w": 128,
      "h": 21
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/lucia/menu/hv_pl_f.png?v=462fe674",
-     "x": 62,
-     "y": 117,
-     "w": 126,
+     "url": "assets/characters/equip-pixels/lucia/menu/hv_pl_f.png?v=602a4076",
+     "x": 56,
+     "y": 111,
+     "w": 130,
      "h": 23
     },
     "head_hat_t": {
@@ -487,25 +487,25 @@
    "from": "menu",
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/lucia/menu/base_plain.png?v=6bcd5891",
+     "url": "assets/characters/equip-pixels/lucia/menu/base_plain.png?v=a0121142",
      "x": 38,
      "y": 45,
      "w": 244,
      "h": 257
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/lucia/menu/hand.png?v=c7afdaad",
+     "url": "assets/characters/equip-pixels/lucia/menu/hand.png?v=359ab66d",
      "x": 210,
      "y": 163,
      "w": 33,
      "h": 37
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/lucia/menu/jf_cloth_t.png?v=ce1b8602",
-     "x": 38,
+     "url": "assets/characters/equip-pixels/lucia/menu/jf_cloth_t.png?v=ca4927dd",
+     "x": 40,
      "y": 155,
-     "w": 244,
-     "h": 147
+     "w": 242,
+     "h": 145
     },
     "weapon_sword": {
      "url": "assets/characters/equip-pixels/lucia/menu/weapon_sword.png?v=726a1666",
@@ -557,7 +557,7 @@
      "h": 258
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/lucia/menu/base_helm.png?v=690cc454",
+     "url": "assets/characters/equip-pixels/lucia/menu/base_helm.png?v=c39a9091",
      "x": 38,
      "y": 45,
      "w": 244,
@@ -578,7 +578,7 @@
      "h": 103
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/lucia/menu/base_cap.png?v=a4c074db",
+     "url": "assets/characters/equip-pixels/lucia/menu/base_cap.png?v=a2694110",
      "x": 38,
      "y": 45,
      "w": 244,
@@ -613,24 +613,24 @@
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/lucia/menu/base_hat.png?v=df14f25c",
+     "url": "assets/characters/equip-pixels/lucia/menu/base_hat.png?v=11f71b87",
      "x": 38,
      "y": 45,
      "w": 244,
      "h": 257
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/lucia/menu/jf_pl_t.png?v=331d93b3",
-     "x": 99,
-     "y": 161,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/lucia/menu/jf_pl_t.png?v=6135d6d6",
+     "x": 93,
+     "y": 155,
+     "w": 128,
      "h": 21
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/lucia/menu/jf_pl_f.png?v=462fe674",
-     "x": 98,
-     "y": 160,
-     "w": 126,
+     "url": "assets/characters/equip-pixels/lucia/menu/jf_pl_f.png?v=602a4076",
+     "x": 92,
+     "y": 154,
+     "w": 130,
      "h": 23
     },
     "jf_mt_t": {
@@ -662,17 +662,17 @@
      "h": 71
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/lucia/menu/hv_pl_t.png?v=331d93b3",
-     "x": 99,
-     "y": 161,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/lucia/menu/hv_pl_t.png?v=6135d6d6",
+     "x": 93,
+     "y": 155,
+     "w": 128,
      "h": 21
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/lucia/menu/hv_pl_f.png?v=462fe674",
-     "x": 98,
-     "y": 160,
-     "w": 126,
+     "url": "assets/characters/equip-pixels/lucia/menu/hv_pl_f.png?v=602a4076",
+     "x": 92,
+     "y": 154,
+     "w": 130,
      "h": 23
     },
     "head_hat_t": {
@@ -707,8 +707,8 @@
     "y1": 304
    },
    "grip": {
-    "x": 125,
-    "y": 152,
+    "x": 92,
+    "y": 170,
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
@@ -718,77 +718,77 @@
    },
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/lucia/back/base_plain.png?v=cb90d783",
+     "url": "assets/characters/equip-pixels/lucia/back/base_plain.png?v=f76ce328",
      "x": 31,
      "y": 41,
      "w": 260,
      "h": 267
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/lucia/back/hand.png?v=a992f14e",
-     "x": 106,
-     "y": 136,
-     "w": 39,
-     "h": 33
+     "url": "assets/characters/equip-pixels/lucia/back/hand.png?v=350eea56",
+     "x": 82,
+     "y": 158,
+     "w": 22,
+     "h": 25
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/lucia/back/jf_cloth_t.png?v=46c7d319",
-     "x": 82,
-     "y": 160,
-     "w": 194,
-     "h": 143
+     "url": "assets/characters/equip-pixels/lucia/back/jf_cloth_t.png?v=951f9fcd",
+     "x": 84,
+     "y": 215,
+     "w": 190,
+     "h": 88
     },
     "weapon_sword": {
      "url": "assets/characters/equip-pixels/lucia/back/weapon_sword.png?v=725cd95d",
-     "x": 107,
-     "y": 21,
+     "x": 74,
+     "y": 39,
      "w": 34,
      "h": 155
     },
     "weapon_dagger": {
      "url": "assets/characters/equip-pixels/lucia/back/weapon_dagger.png?v=7c27dc78",
-     "x": 114,
-     "y": 100,
+     "x": 81,
+     "y": 118,
      "w": 21,
      "h": 69
     },
     "weapon_axe": {
      "url": "assets/characters/equip-pixels/lucia/back/weapon_axe.png?v=5296c8ac",
-     "x": 111,
-     "y": 64,
+     "x": 78,
+     "y": 82,
      "w": 39,
      "h": 117
     },
     "weapon_spear": {
-     "url": "assets/characters/equip-pixels/lucia/back/weapon_spear.png?v=86d4289b",
-     "x": 106,
+     "url": "assets/characters/equip-pixels/lucia/back/weapon_spear.png?v=d89b9bb0",
+     "x": 72,
      "y": 2,
-     "w": 33,
-     "h": 275
+     "w": 34,
+     "h": 293
     },
     "weapon_bow": {
      "url": "assets/characters/equip-pixels/lucia/back/weapon_bow.png?v=f7810ed0",
-     "x": 121,
-     "y": 86,
+     "x": 88,
+     "y": 104,
      "w": 27,
      "h": 131
     },
     "weapon_staff_t": {
      "url": "assets/characters/equip-pixels/lucia/back/weapon_staff_t.png?v=aa13fb05",
-     "x": 117,
-     "y": 4,
+     "x": 84,
+     "y": 11,
      "w": 17,
      "h": 17
     },
     "weapon_staff_f": {
-     "url": "assets/characters/equip-pixels/lucia/back/weapon_staff_f.png?v=d6eb32e3",
-     "x": 113,
-     "y": 0,
+     "url": "assets/characters/equip-pixels/lucia/back/weapon_staff_f.png?v=721b6c21",
+     "x": 80,
+     "y": 4,
      "w": 25,
-     "h": 303
+     "h": 299
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/lucia/back/base_helm.png?v=503e919d",
+     "url": "assets/characters/equip-pixels/lucia/back/base_helm.png?v=4edcb2b2",
      "x": 31,
      "y": 41,
      "w": 260,
@@ -809,7 +809,7 @@
      "h": 69
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/lucia/back/base_cap.png?v=ef7a19eb",
+     "url": "assets/characters/equip-pixels/lucia/back/base_cap.png?v=fca61e00",
      "x": 31,
      "y": 41,
      "w": 260,
@@ -844,24 +844,24 @@
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/lucia/back/base_hat.png?v=60b0d9c6",
+     "url": "assets/characters/equip-pixels/lucia/back/base_hat.png?v=a9b44c35",
      "x": 31,
      "y": 41,
      "w": 260,
      "h": 267
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/lucia/back/jf_pl_t.png?v=69ec337e",
-     "x": 104,
-     "y": 166,
-     "w": 122,
+     "url": "assets/characters/equip-pixels/lucia/back/jf_pl_t.png?v=41b2efb6",
+     "x": 98,
+     "y": 162,
+     "w": 134,
      "h": 20
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/lucia/back/jf_pl_f.png?v=f4a6cf98",
-     "x": 103,
-     "y": 165,
-     "w": 124,
+     "url": "assets/characters/equip-pixels/lucia/back/jf_pl_f.png?v=215b31a9",
+     "x": 97,
+     "y": 161,
+     "w": 136,
      "h": 22
     },
     "jf_mt_t": {
@@ -891,20 +891,6 @@
      "y": 166,
      "w": 41,
      "h": 69
-    },
-    "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/lucia/back/hv_pl_t.png?v=69ec337e",
-     "x": 104,
-     "y": 166,
-     "w": 122,
-     "h": 20
-    },
-    "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/lucia/back/hv_pl_f.png?v=f4a6cf98",
-     "x": 103,
-     "y": 165,
-     "w": 124,
-     "h": 22
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/lucia/back/head_hat_t.png?v=2fcb7878",

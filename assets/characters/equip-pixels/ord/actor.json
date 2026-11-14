@@ -410,18 +410,18 @@
      "h": 283
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/ord/menu/jf_pl_t.png?v=f0c99568",
-     "x": 73,
-     "y": 100,
-     "w": 147,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ord/menu/jf_pl_t.png?v=ebd38a40",
+     "x": 84,
+     "y": 108,
+     "w": 125,
+     "h": 16
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/ord/menu/jf_pl_f.png?v=4febe8cf",
-     "x": 72,
-     "y": 99,
-     "w": 149,
-     "h": 31
+     "url": "assets/characters/equip-pixels/ord/menu/jf_pl_f.png?v=f8d1f61e",
+     "x": 83,
+     "y": 107,
+     "w": 127,
+     "h": 18
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/ord/menu/jf_mt_t.png?v=c86944ed",
@@ -438,32 +438,32 @@
      "h": 47
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/ord/menu/shield_gt.png?v=fad43631",
-     "x": 175,
-     "y": 145,
-     "w": 71,
-     "h": 91
+     "url": "assets/characters/equip-pixels/ord/menu/shield_gt.png?v=7c77d32d",
+     "x": 192,
+     "y": 166,
+     "w": 37,
+     "h": 49
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/ord/menu/shield_gf.png?v=7ba2455b",
-     "x": 171,
-     "y": 141,
-     "w": 79,
-     "h": 99
+     "url": "assets/characters/equip-pixels/ord/menu/shield_gf.png?v=290e6a38",
+     "x": 188,
+     "y": 162,
+     "w": 45,
+     "h": 57
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/ord/menu/hv_pl_t.png?v=f0c99568",
-     "x": 73,
-     "y": 100,
-     "w": 147,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ord/menu/hv_pl_t.png?v=ebd38a40",
+     "x": 84,
+     "y": 108,
+     "w": 125,
+     "h": 16
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/ord/menu/hv_pl_f.png?v=4febe8cf",
-     "x": 72,
-     "y": 99,
-     "w": 149,
-     "h": 31
+     "url": "assets/characters/equip-pixels/ord/menu/hv_pl_f.png?v=f8d1f61e",
+     "x": 83,
+     "y": 107,
+     "w": 127,
+     "h": 18
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/ord/menu/head_hat_t.png?v=ab35fa5e",
@@ -676,18 +676,18 @@
      "h": 283
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/ord/menu/jf_pl_t.png?v=f0c99568",
-     "x": 73,
-     "y": 100,
-     "w": 147,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ord/menu/jf_pl_t.png?v=ebd38a40",
+     "x": 84,
+     "y": 108,
+     "w": 125,
+     "h": 16
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/ord/menu/jf_pl_f.png?v=4febe8cf",
-     "x": 72,
-     "y": 99,
-     "w": 149,
-     "h": 31
+     "url": "assets/characters/equip-pixels/ord/menu/jf_pl_f.png?v=f8d1f61e",
+     "x": 83,
+     "y": 107,
+     "w": 127,
+     "h": 18
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/ord/menu/jf_mt_t.png?v=c86944ed",
@@ -704,32 +704,32 @@
      "h": 47
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/ord/menu/shield_gt.png?v=fad43631",
-     "x": 175,
-     "y": 145,
-     "w": 71,
-     "h": 91
+     "url": "assets/characters/equip-pixels/ord/menu/shield_gt.png?v=7c77d32d",
+     "x": 192,
+     "y": 166,
+     "w": 37,
+     "h": 49
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/ord/menu/shield_gf.png?v=7ba2455b",
-     "x": 171,
-     "y": 141,
-     "w": 79,
-     "h": 99
+     "url": "assets/characters/equip-pixels/ord/menu/shield_gf.png?v=290e6a38",
+     "x": 188,
+     "y": 162,
+     "w": 45,
+     "h": 57
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/ord/menu/hv_pl_t.png?v=f0c99568",
-     "x": 73,
-     "y": 100,
-     "w": 147,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ord/menu/hv_pl_t.png?v=ebd38a40",
+     "x": 84,
+     "y": 108,
+     "w": 125,
+     "h": 16
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/ord/menu/hv_pl_f.png?v=4febe8cf",
-     "x": 72,
-     "y": 99,
-     "w": 149,
-     "h": 31
+     "url": "assets/characters/equip-pixels/ord/menu/hv_pl_f.png?v=f8d1f61e",
+     "x": 83,
+     "y": 107,
+     "w": 127,
+     "h": 18
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/ord/menu/head_hat_t.png?v=ab35fa5e",
@@ -956,18 +956,18 @@
      "h": 286
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/ord/back/jf_pl_t.png?v=6280c52a",
-     "x": 87,
-     "y": 104,
-     "w": 163,
-     "h": 29
+     "url": "assets/characters/equip-pixels/ord/back/jf_pl_t.png?v=ae2a0b66",
+     "x": 98,
+     "y": 112,
+     "w": 141,
+     "h": 16
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/ord/back/jf_pl_f.png?v=cb0e20ca",
-     "x": 86,
-     "y": 103,
-     "w": 165,
-     "h": 31
+     "url": "assets/characters/equip-pixels/ord/back/jf_pl_f.png?v=cbf63de2",
+     "x": 97,
+     "y": 111,
+     "w": 143,
+     "h": 18
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/ord/back/jf_mt_t.png?v=d275ae42",
@@ -984,32 +984,18 @@
      "h": 47
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/ord/back/shield_gt.png?v=ea262c90",
-     "x": 61,
-     "y": 154,
-     "w": 51,
-     "h": 92
+     "url": "assets/characters/equip-pixels/ord/back/shield_gt.png?v=d15d99ff",
+     "x": 73,
+     "y": 175,
+     "w": 27,
+     "h": 50
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/ord/back/shield_gf.png?v=16cd27e7",
-     "x": 57,
-     "y": 150,
-     "w": 59,
-     "h": 101
-    },
-    "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/ord/back/hv_pl_t.png?v=6280c52a",
-     "x": 87,
-     "y": 104,
-     "w": 163,
-     "h": 29
-    },
-    "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/ord/back/hv_pl_f.png?v=cb0e20ca",
-     "x": 86,
-     "y": 103,
-     "w": 165,
-     "h": 31
+     "url": "assets/characters/equip-pixels/ord/back/shield_gf.png?v=571f8a72",
+     "x": 69,
+     "y": 171,
+     "w": 35,
+     "h": 59
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/ord/back/head_hat_t.png?v=52251b71",

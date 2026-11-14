@@ -382,18 +382,18 @@
      "h": 286
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/aster/menu/jf_pl_t.png?v=dcc2ca82",
-     "x": 90,
-     "y": 147,
-     "w": 140,
-     "h": 23
+     "url": "assets/characters/equip-pixels/aster/menu/jf_pl_t.png?v=64e4c8e4",
+     "x": 107,
+     "y": 139,
+     "w": 112,
+     "h": 19
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/aster/menu/jf_pl_f.png?v=f552baa1",
-     "x": 89,
-     "y": 146,
-     "w": 142,
-     "h": 25
+     "url": "assets/characters/equip-pixels/aster/menu/jf_pl_f.png?v=8e10ab30",
+     "x": 106,
+     "y": 138,
+     "w": 114,
+     "h": 21
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/aster/menu/jf_mt_t.png?v=f04e28e0",
@@ -410,32 +410,32 @@
      "h": 38
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/aster/menu/shield_gt.png?v=9459b201",
-     "x": 219,
-     "y": 153,
-     "w": 55,
-     "h": 71
+     "url": "assets/characters/equip-pixels/aster/menu/shield_gt.png?v=3d4d576c",
+     "x": 224,
+     "y": 159,
+     "w": 45,
+     "h": 59
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/aster/menu/shield_gf.png?v=7acd7d6f",
-     "x": 215,
-     "y": 149,
-     "w": 63,
-     "h": 79
+     "url": "assets/characters/equip-pixels/aster/menu/shield_gf.png?v=73888cbc",
+     "x": 220,
+     "y": 155,
+     "w": 53,
+     "h": 67
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/aster/menu/hv_pl_t.png?v=dcc2ca82",
-     "x": 90,
-     "y": 147,
-     "w": 140,
-     "h": 23
+     "url": "assets/characters/equip-pixels/aster/menu/hv_pl_t.png?v=64e4c8e4",
+     "x": 107,
+     "y": 139,
+     "w": 112,
+     "h": 19
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/aster/menu/hv_pl_f.png?v=f552baa1",
-     "x": 89,
-     "y": 146,
-     "w": 142,
-     "h": 25
+     "url": "assets/characters/equip-pixels/aster/menu/hv_pl_f.png?v=8e10ab30",
+     "x": 106,
+     "y": 138,
+     "w": 114,
+     "h": 21
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/aster/menu/head_hat_t.png?v=59eade9f",
@@ -620,18 +620,18 @@
      "h": 286
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/aster/menu/jf_pl_t.png?v=dcc2ca82",
-     "x": 90,
-     "y": 147,
-     "w": 140,
-     "h": 23
+     "url": "assets/characters/equip-pixels/aster/menu/jf_pl_t.png?v=64e4c8e4",
+     "x": 107,
+     "y": 139,
+     "w": 112,
+     "h": 19
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/aster/menu/jf_pl_f.png?v=f552baa1",
-     "x": 89,
-     "y": 146,
-     "w": 142,
-     "h": 25
+     "url": "assets/characters/equip-pixels/aster/menu/jf_pl_f.png?v=8e10ab30",
+     "x": 106,
+     "y": 138,
+     "w": 114,
+     "h": 21
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/aster/menu/jf_mt_t.png?v=f04e28e0",
@@ -648,32 +648,32 @@
      "h": 38
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/aster/menu/shield_gt.png?v=9459b201",
-     "x": 219,
-     "y": 153,
-     "w": 55,
-     "h": 71
+     "url": "assets/characters/equip-pixels/aster/menu/shield_gt.png?v=3d4d576c",
+     "x": 224,
+     "y": 159,
+     "w": 45,
+     "h": 59
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/aster/menu/shield_gf.png?v=7acd7d6f",
-     "x": 215,
-     "y": 149,
-     "w": 63,
-     "h": 79
+     "url": "assets/characters/equip-pixels/aster/menu/shield_gf.png?v=73888cbc",
+     "x": 220,
+     "y": 155,
+     "w": 53,
+     "h": 67
     },
     "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/aster/menu/hv_pl_t.png?v=dcc2ca82",
-     "x": 90,
-     "y": 147,
-     "w": 140,
-     "h": 23
+     "url": "assets/characters/equip-pixels/aster/menu/hv_pl_t.png?v=64e4c8e4",
+     "x": 107,
+     "y": 139,
+     "w": 112,
+     "h": 19
     },
     "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/aster/menu/hv_pl_f.png?v=f552baa1",
-     "x": 89,
-     "y": 146,
-     "w": 142,
-     "h": 25
+     "url": "assets/characters/equip-pixels/aster/menu/hv_pl_f.png?v=8e10ab30",
+     "x": 106,
+     "y": 138,
+     "w": 114,
+     "h": 21
     },
     "head_hat_t": {
      "url": "assets/characters/equip-pixels/aster/menu/head_hat_t.png?v=59eade9f",
@@ -702,13 +702,13 @@
    ],
    "body": {
     "x0": 59,
-    "y0": 43,
-    "x1": 256,
+    "y0": 48,
+    "x1": 261,
     "y1": 304
    },
    "grip": {
-    "x": 226,
-    "y": 167,
+    "x": 230,
+    "y": 170,
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
@@ -718,151 +718,151 @@
    },
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/aster/back/base_plain.png?v=ea163af3",
+     "url": "assets/characters/equip-pixels/aster/back/base_plain.png?v=48b06641",
      "x": 55,
      "y": 29,
      "w": 215,
      "h": 279
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/aster/back/hand.png?v=829746cd",
-     "x": 219,
-     "y": 155,
-     "w": 14,
-     "h": 24
+     "url": "assets/characters/equip-pixels/aster/back/hand.png?v=344efe8f",
+     "x": 216,
+     "y": 158,
+     "w": 17,
+     "h": 25
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/aster/back/jf_cloth_t.png?v=8e165c5c",
+     "url": "assets/characters/equip-pixels/aster/back/jf_cloth_t.png?v=92598964",
      "x": 61,
      "y": 145,
-     "w": 192,
+     "w": 196,
      "h": 138
     },
     "weapon_sword": {
-     "url": "assets/characters/equip-pixels/aster/back/weapon_sword.png?v=3e97d922",
-     "x": 210,
-     "y": 26,
+     "url": "assets/characters/equip-pixels/aster/back/weapon_sword.png?v=87fd8f81",
+     "x": 214,
+     "y": 32,
      "w": 36,
-     "h": 166
+     "h": 163
     },
     "weapon_dagger": {
-     "url": "assets/characters/equip-pixels/aster/back/weapon_dagger.png?v=f645ec54",
-     "x": 217,
-     "y": 110,
-     "w": 22,
-     "h": 75
+     "url": "assets/characters/equip-pixels/aster/back/weapon_dagger.png?v=b82fce2d",
+     "x": 221,
+     "y": 114,
+     "w": 21,
+     "h": 74
     },
     "weapon_axe": {
-     "url": "assets/characters/equip-pixels/aster/back/weapon_axe.png?v=5b555782",
-     "x": 201,
-     "y": 72,
-     "w": 41,
-     "h": 126
+     "url": "assets/characters/equip-pixels/aster/back/weapon_axe.png?v=f5fd0425",
+     "x": 205,
+     "y": 77,
+     "w": 40,
+     "h": 123
     },
     "weapon_spear": {
-     "url": "assets/characters/equip-pixels/aster/back/weapon_spear.png?v=7e2da022",
-     "x": 212,
+     "url": "assets/characters/equip-pixels/aster/back/weapon_spear.png?v=266cc70b",
+     "x": 216,
      "y": 2,
      "w": 35,
-     "h": 299
+     "h": 300
     },
     "weapon_bow": {
-     "url": "assets/characters/equip-pixels/aster/back/weapon_bow.png?v=95e5758f",
-     "x": 202,
-     "y": 96,
-     "w": 29,
-     "h": 140
+     "url": "assets/characters/equip-pixels/aster/back/weapon_bow.png?v=d8410a48",
+     "x": 207,
+     "y": 100,
+     "w": 28,
+     "h": 138
     },
     "weapon_staff_t": {
      "url": "assets/characters/equip-pixels/aster/back/weapon_staff_t.png?v=5f234771",
-     "x": 217,
+     "x": 221,
      "y": 3,
      "w": 19,
      "h": 19
     },
     "weapon_staff_f": {
      "url": "assets/characters/equip-pixels/aster/back/weapon_staff_f.png?v=49af17a0",
-     "x": 213,
+     "x": 217,
      "y": 0,
      "w": 27,
      "h": 303
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/aster/back/base_helm.png?v=6d8979b8",
+     "url": "assets/characters/equip-pixels/aster/back/base_helm.png?v=08f3dba9",
      "x": 55,
      "y": 29,
      "w": 215,
      "h": 279
     },
     "head_helm_t": {
-     "url": "assets/characters/equip-pixels/aster/back/head_helm_t.png?v=912a796c",
-     "x": 117,
-     "y": 45,
-     "w": 98,
-     "h": 69
+     "url": "assets/characters/equip-pixels/aster/back/head_helm_t.png?v=01efe580",
+     "x": 116,
+     "y": 50,
+     "w": 84,
+     "h": 65
     },
     "head_helm_f": {
-     "url": "assets/characters/equip-pixels/aster/back/head_helm_f.png?v=5c0c1153",
-     "x": 116,
-     "y": 44,
-     "w": 100,
-     "h": 71
+     "url": "assets/characters/equip-pixels/aster/back/head_helm_f.png?v=785fd740",
+     "x": 115,
+     "y": 49,
+     "w": 86,
+     "h": 67
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/aster/back/base_cap.png?v=d41de054",
+     "url": "assets/characters/equip-pixels/aster/back/base_cap.png?v=fdd4e906",
      "x": 55,
      "y": 29,
      "w": 215,
      "h": 279
     },
     "head_cap_t": {
-     "url": "assets/characters/equip-pixels/aster/back/head_cap_t.png?v=8a87427f",
-     "x": 122,
-     "y": 43,
-     "w": 89,
-     "h": 57
+     "url": "assets/characters/equip-pixels/aster/back/head_cap_t.png?v=2ec25f5d",
+     "x": 120,
+     "y": 48,
+     "w": 77,
+     "h": 54
     },
     "head_cap_f": {
-     "url": "assets/characters/equip-pixels/aster/back/head_cap_f.png?v=a01e825e",
-     "x": 121,
-     "y": 42,
-     "w": 91,
-     "h": 59
+     "url": "assets/characters/equip-pixels/aster/back/head_cap_f.png?v=396f383e",
+     "x": 119,
+     "y": 47,
+     "w": 79,
+     "h": 56
     },
     "head_circlet_t": {
-     "url": "assets/characters/equip-pixels/aster/back/head_circlet_t.png?v=0d8ed527",
-     "x": 121,
-     "y": 92,
-     "w": 91,
+     "url": "assets/characters/equip-pixels/aster/back/head_circlet_t.png?v=b8094167",
+     "x": 119,
+     "y": 94,
+     "w": 79,
      "h": 12
     },
     "head_circlet_f": {
-     "url": "assets/characters/equip-pixels/aster/back/head_circlet_f.png?v=f2400f9c",
-     "x": 120,
-     "y": 91,
-     "w": 93,
+     "url": "assets/characters/equip-pixels/aster/back/head_circlet_f.png?v=f197ec09",
+     "x": 118,
+     "y": 93,
+     "w": 81,
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/aster/back/base_hat.png?v=f1a46604",
+     "url": "assets/characters/equip-pixels/aster/back/base_hat.png?v=f29a2e8d",
      "x": 55,
      "y": 29,
      "w": 215,
      "h": 279
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/aster/back/jf_pl_t.png?v=f0b8dee5",
-     "x": 98,
-     "y": 151,
-     "w": 134,
-     "h": 22
+     "url": "assets/characters/equip-pixels/aster/back/jf_pl_t.png?v=79d5495d",
+     "x": 99,
+     "y": 145,
+     "w": 119,
+     "h": 20
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/aster/back/jf_pl_f.png?v=a2459b62",
-     "x": 97,
-     "y": 150,
-     "w": 136,
-     "h": 24
+     "url": "assets/characters/equip-pixels/aster/back/jf_pl_f.png?v=f6808444",
+     "x": 98,
+     "y": 144,
+     "w": 121,
+     "h": 22
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/aster/back/jf_mt_t.png?v=103f637b",
@@ -879,46 +879,32 @@
      "h": 36
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/aster/back/shield_gt.png?v=34f78e41",
-     "x": 72,
-     "y": 146,
-     "w": 37,
-     "h": 68
+     "url": "assets/characters/equip-pixels/aster/back/shield_gt.png?v=432449f9",
+     "x": 74,
+     "y": 149,
+     "w": 33,
+     "h": 62
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/aster/back/shield_gf.png?v=28495a67",
-     "x": 68,
-     "y": 142,
-     "w": 45,
-     "h": 77
-    },
-    "hv_pl_t": {
-     "url": "assets/characters/equip-pixels/aster/back/hv_pl_t.png?v=f0b8dee5",
-     "x": 98,
-     "y": 151,
-     "w": 134,
-     "h": 22
-    },
-    "hv_pl_f": {
-     "url": "assets/characters/equip-pixels/aster/back/hv_pl_f.png?v=a2459b62",
-     "x": 97,
-     "y": 150,
-     "w": 136,
-     "h": 24
+     "url": "assets/characters/equip-pixels/aster/back/shield_gf.png?v=dd64fc5b",
+     "x": 70,
+     "y": 145,
+     "w": 41,
+     "h": 71
     },
     "head_hat_t": {
-     "url": "assets/characters/equip-pixels/aster/back/head_hat_t.png?v=a75d4a34",
-     "x": 86,
-     "y": 27,
-     "w": 161,
-     "h": 87
+     "url": "assets/characters/equip-pixels/aster/back/head_hat_t.png?v=9eae6ca7",
+     "x": 103,
+     "y": 44,
+     "w": 111,
+     "h": 67
     },
     "head_hat_f": {
-     "url": "assets/characters/equip-pixels/aster/back/head_hat_f.png?v=25a0811f",
-     "x": 85,
-     "y": 26,
-     "w": 163,
-     "h": 89
+     "url": "assets/characters/equip-pixels/aster/back/head_hat_f.png?v=a628347b",
+     "x": 102,
+     "y": 43,
+     "w": 113,
+     "h": 69
     }
    },
    "frame": {

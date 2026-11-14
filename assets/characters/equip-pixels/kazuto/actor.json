@@ -357,18 +357,18 @@
      "h": 258
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_t.png?v=4bafbf39",
-     "x": 42,
-     "y": 70,
-     "w": 164,
-     "h": 27
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_t.png?v=e2b0a44c",
+     "x": 78,
+     "y": 61,
+     "w": 98,
+     "h": 16
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_f.png?v=c6a840c2",
-     "x": 41,
-     "y": 69,
-     "w": 166,
-     "h": 29
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_f.png?v=d8a30c5c",
+     "x": 77,
+     "y": 60,
+     "w": 100,
+     "h": 18
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/kazuto/menu/jf_mt_t.png?v=587ffd08",
@@ -645,18 +645,18 @@
      "h": 258
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_t.png?v=4bafbf39",
-     "x": 82,
-     "y": 116,
-     "w": 164,
-     "h": 27
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_t.png?v=e2b0a44c",
+     "x": 118,
+     "y": 107,
+     "w": 98,
+     "h": 16
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_f.png?v=c6a840c2",
-     "x": 81,
-     "y": 115,
-     "w": 166,
-     "h": 29
+     "url": "assets/characters/equip-pixels/kazuto/menu/jf_pl_f.png?v=d8a30c5c",
+     "x": 117,
+     "y": 106,
+     "w": 100,
+     "h": 18
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/kazuto/menu/jf_mt_t.png?v=587ffd08",
@@ -945,18 +945,18 @@
      "h": 257
     },
     "jf_pl_t": {
-     "url": "assets/characters/equip-pixels/kazuto/back/jf_pl_t.png?v=88d949f2",
-     "x": 84,
-     "y": 105,
-     "w": 176,
-     "h": 29
+     "url": "assets/characters/equip-pixels/kazuto/back/jf_pl_t.png?v=846775cf",
+     "x": 120,
+     "y": 95,
+     "w": 92,
+     "h": 16
     },
     "jf_pl_f": {
-     "url": "assets/characters/equip-pixels/kazuto/back/jf_pl_f.png?v=27b9c808",
-     "x": 83,
-     "y": 104,
-     "w": 178,
-     "h": 31
+     "url": "assets/characters/equip-pixels/kazuto/back/jf_pl_f.png?v=3368876d",
+     "x": 119,
+     "y": 94,
+     "w": 94,
+     "h": 18
     },
     "jf_mt_t": {
      "url": "assets/characters/equip-pixels/kazuto/back/jf_mt_t.png?v=9a40ca89",

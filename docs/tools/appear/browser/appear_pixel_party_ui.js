@@ -332,7 +332,8 @@ let PG = null;
   S(ka.job === 'warrior' && !ka.equip.weapon && !ka.equip.armor && !ka.equip.head && ['oak_staff', 'robe', 'wizard_hat'].every((x) => N(i1, x) === N(i0, x) + 1) && m1[PT].parts === pv.parts, `セリス：戦士に確定：杖・ローブ・帽子は持ち物に戻り（所持数 +1）、なかまの画面（${m1[PT].parts}）＝直前のプレビュー`);
   const t4 = await tryOn(K, 'armor', 'iron_armor'), t5 = await tryOn(K, 'weapon', 'steel_sword'), t6 = await tryOn(K, 'shield', 'iron_shield'), t7 = await tryOn(K, 'head', 'iron_helm');
   S([t4, t5, t6, t7].every((t) => t.tp === t.head) && ['hv_pl_t', 'weapon_sword', 'shield_gt', 'head_helm_t'].every((k) => t7.head.indexOf(k) >= 0) && /^base_helm/.test(t7.head), `セリス（戦士）：鉄の鎧・鋼の剣・鉄の盾・鉄の兜を試着 → 確定（${t7.head}。兜のときは帽子を外して髪を補った素の絵）`);
-  await kScene('s2', 'セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜', { battle: true, has: ['base_helm', 'head_helm_t', 'weapon_sword', 'shield_gt', 'hv_pl_t'] });
+  // v9.10 仕様の変更：背面は重鎧の肩当て（hv_pl_t）を足さない（髪の上に浮いて見えたため）。以前の期待は 3 つの向きとも hv_pl_t あり。正面の肩当ては上の行（そうび画面）で確かめている
+  await kScene('s2', 'セリス 戦士：鉄の鎧＋鋼の剣＋鉄の盾＋鉄の兜（v9.10 から背面は肩当てなし。以前の期待：hv_pl_t も）', { battle: true, has: ['base_helm', 'head_helm_t', 'weapon_sword', 'shield_gt'] });
   const i2 = await kinv(); const ui1 = await equipVia(K, { weapon: null }); const i3 = await kinv();
   await kScene('s3', 'セリス 戦士：剣をはずす', { battle: true, has: ['head_helm_t', 'shield_gt'], not: ['weapon_sword'] });
   S(N(i3, 'steel_sword') === N(i2, 'steel_sword') + 1 && !/weapon_sword/.test(ui1.head), `剣をはずす：絵（なかま・そうび画面・戦闘・勝利）から剣が消え、持ち物に戻る（所持数 ${N(i2, 'steel_sword')} → ${N(i3, 'steel_sword')}）`);
