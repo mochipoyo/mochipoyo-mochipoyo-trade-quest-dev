@@ -185,9 +185,10 @@ EXTRA.update({
               'back': {'head': {'cx': 150, 'top': 70, 'brow': 140, 'rx': 50, 'neck': 185, 'face': None, 'hair': R(60, 20, 245, 146),
                                 'own': [(36, 10), (262, 10), (262, 150), (200, 165), (150, 152), (100, 162), (36, 152)], 'own_is_hat': True, 'hair_hsv': ((185, 215), (0.3, 1.1), (0.55, 1.1))},
                        'shoulders': [(118, 196, -1), (186, 196, 1)]}},
-    'ganes': {'menu': {'head': {'cx': 165, 'top': 30, 'brow': 72, 'rx': 34, 'neck': 112, 'face': R(134, 62, 198, 116), 'hair': R(120, 22, 212, 78)}, 'shoulders': [(102, 132, -1), (226, 132, 1)]},
+    'ganes': {'menu': {'head': {'cx': 165, 'top': 30, 'brow': 72, 'rx': 34, 'neck': 112, 'face': R(134, 62, 198, 116), 'hair': R(104, 14, 216, 78)}, 'shoulders': [(102, 132, -1), (226, 132, 1)]},
               'back': {'head': {'cx': 162, 'top': 30, 'brow': 84, 'rx': 36, 'neck': 112, 'face': None, 'hair': R(115, 22, 210, 92)}, 'shoulders': [(104, 134, -1), (222, 134, 1)]}},
-    'ord': {'menu': {'head': {'cx': 167, 'top': 30, 'brow': 62, 'rx': 32, 'neck': 98, 'face': R(140, 55, 196, 102), 'hair': R(128, 22, 206, 66)}, 'shoulders': [(110, 118, -1), (222, 118, 1)]},
+    # v9.9.1 オルドの正面の頭の位置を読み直した（以前は 30 ドットほど右にずれていて、兜・帽子・額の輪が頭の右に寄っていた）
+    'ord': {'menu': {'head': {'cx': 137, 'top': 26, 'brow': 62, 'rx': 32, 'neck': 98, 'face': R(112, 56, 166, 102), 'hair': R(100, 18, 176, 66)}, 'shoulders': [(98, 118, -1), (194, 118, 1)]},
             'back': {'head': {'cx': 168, 'top': 30, 'brow': 72, 'rx': 33, 'neck': 96, 'face': None, 'hair': R(128, 22, 208, 80)}, 'shoulders': [(112, 122, -1), (224, 122, 1)]}},
 })
 HS = lambda lo: ((25, 65), (0, 0.3), (0.62, 1.1), (lo, 999))
@@ -316,7 +317,10 @@ def kit_view(aid, A, vk, c, need):
             if hd.get('own'): out['base_nohat'] = base_h   # 元の帽子・頭巾の人：額の輪は帽子を外して髪を補った絵の上に
         if 'head_hat' in need:
             if hd.get('own') and hd.get('own_is_hat'):   # 元の絵がとんがり帽子の人（セリス）：その帽子を品の色で塗る
-                out['own_hat_t'] = HM.gray_of(b, P.poly_mask(b.shape[0], b.shape[1], hd['own']) & P.opaque(b) & ~hsv_mask(b, *hd['hair_hsv']))
+                # v9.9.1 前髪を塗らない：髪の色の幅を広げ（暗い髪の影も）、髪の中の細い線・影も髪として閉じる
+                import knight as KN
+                hair = hsv_mask(b, *hd['hair_hsv']) | hsv_mask(b, (180, 222), (0.25, 1.1), (0.38, 1.1)); hair = KN.close(hair, 3)
+                out['own_hat_t'] = HM.gray_of(b, P.poly_mask(b.shape[0], b.shape[1], hd['own']) & P.opaque(b) & ~hair)
             else:
                 bh, g, f = GK.witch(base_h, hd, back); out['base_hat'] = bh; out['head_hat_t'] = g; out['head_hat_f'] = f   # g・f は上へ TOP だけ大きい
     # v9.9 職業の輪郭：騎士の系統の肩当て（jf_pl）・軽装の系統の肩の短いマント（jf_mt）。全員に作る

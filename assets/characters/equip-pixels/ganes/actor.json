@@ -232,14 +232,14 @@
     318
    ],
    "body": {
-    "x0": 45,
+    "x0": 58,
     "y0": 26,
     "x1": 258,
     "y1": 304
    },
    "grip": {
-    "x": 62,
-    "y": 206,
+    "x": 74,
+    "y": 200,
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
@@ -249,28 +249,28 @@
    },
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_plain.png?v=d1581dfb",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_plain.png?v=2d050d82",
      "x": 24,
      "y": 24,
      "w": 262,
      "h": 284
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/ganes/menu/hand.png?v=421b81c0",
-     "x": 45,
-     "y": 188,
-     "w": 38,
-     "h": 35
+     "url": "assets/characters/equip-pixels/ganes/menu/hand.png?v=d0aecc04",
+     "x": 58,
+     "y": 178,
+     "w": 43,
+     "h": 47
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/jf_cloth_t.png?v=4065837f",
-     "x": 59,
+     "url": "assets/characters/equip-pixels/ganes/menu/jf_cloth_t.png?v=a455867a",
+     "x": 61,
      "y": 110,
-     "w": 199,
+     "w": 195,
      "h": 193
     },
     "jf_skirt_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/jf_skirt_t.png?v=0521830f",
+     "url": "assets/characters/equip-pixels/ganes/menu/jf_skirt_t.png?v=c821f8c6",
      "x": 71,
      "y": 182,
      "w": 170,
@@ -285,55 +285,55 @@
     },
     "weapon_sword": {
      "url": "assets/characters/equip-pixels/ganes/menu/weapon_sword.png?v=991b2f9a",
-     "x": 42,
-     "y": 56,
+     "x": 54,
+     "y": 50,
      "w": 39,
      "h": 177
     },
     "weapon_dagger": {
      "url": "assets/characters/equip-pixels/ganes/menu/weapon_dagger.png?v=20760dc1",
-     "x": 50,
-     "y": 145,
+     "x": 62,
+     "y": 139,
      "w": 23,
      "h": 80
     },
     "weapon_axe": {
      "url": "assets/characters/equip-pixels/ganes/menu/weapon_axe.png?v=c789c184",
-     "x": 48,
-     "y": 105,
+     "x": 60,
+     "y": 99,
      "w": 41,
      "h": 134
     },
     "weapon_spear": {
-     "url": "assets/characters/equip-pixels/ganes/menu/weapon_spear.png?v=0d599bae",
-     "x": 38,
+     "url": "assets/characters/equip-pixels/ganes/menu/weapon_spear.png?v=8ab76861",
+     "x": 51,
      "y": 2,
      "w": 37,
      "h": 317
     },
     "weapon_bow": {
      "url": "assets/characters/equip-pixels/ganes/menu/weapon_bow.png?v=b9eba1d1",
-     "x": 58,
-     "y": 130,
+     "x": 70,
+     "y": 124,
      "w": 30,
      "h": 150
     },
     "weapon_staff_t": {
      "url": "assets/characters/equip-pixels/ganes/menu/weapon_staff_t.png?v=79a861f8",
-     "x": 52,
-     "y": 23,
+     "x": 64,
+     "y": 17,
      "w": 21,
      "h": 21
     },
     "weapon_staff_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/weapon_staff_f.png?v=1424eb66",
-     "x": 48,
-     "y": 16,
+     "url": "assets/characters/equip-pixels/ganes/menu/weapon_staff_f.png?v=d54113eb",
+     "x": 60,
+     "y": 10,
      "w": 29,
-     "h": 287
+     "h": 293
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_helm.png?v=aff48ac8",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_helm.png?v=26d0e0d3",
      "x": 24,
      "y": 24,
      "w": 262,
@@ -354,7 +354,7 @@
      "h": 83
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_cap.png?v=e6af25a0",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_cap.png?v=f37de566",
      "x": 24,
      "y": 24,
      "w": 262,
@@ -389,7 +389,7 @@
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_hat.png?v=6b3c9eb4",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_hat.png?v=b8ad3342",
      "x": 24,
      "y": 24,
      "w": 262,
@@ -483,14 +483,14 @@
     304
    ],
    "body": {
-    "x0": 45,
+    "x0": 58,
     "y0": 26,
     "x1": 258,
     "y1": 304
    },
    "grip": {
-    "x": 62,
-    "y": 206,
+    "x": 74,
+    "y": 200,
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
@@ -501,28 +501,28 @@
    "from": "menu",
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_plain.png?v=d1581dfb",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_plain.png?v=2d050d82",
      "x": 24,
      "y": 24,
      "w": 262,
      "h": 284
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/ganes/menu/hand.png?v=421b81c0",
-     "x": 45,
-     "y": 188,
-     "w": 38,
-     "h": 35
+     "url": "assets/characters/equip-pixels/ganes/menu/hand.png?v=d0aecc04",
+     "x": 58,
+     "y": 178,
+     "w": 43,
+     "h": 47
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/jf_cloth_t.png?v=4065837f",
-     "x": 59,
+     "url": "assets/characters/equip-pixels/ganes/menu/jf_cloth_t.png?v=a455867a",
+     "x": 61,
      "y": 110,
-     "w": 199,
+     "w": 195,
      "h": 193
     },
     "jf_skirt_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/jf_skirt_t.png?v=0521830f",
+     "url": "assets/characters/equip-pixels/ganes/menu/jf_skirt_t.png?v=c821f8c6",
      "x": 71,
      "y": 182,
      "w": 170,
@@ -537,55 +537,55 @@
     },
     "weapon_sword": {
      "url": "assets/characters/equip-pixels/ganes/menu/weapon_sword.png?v=991b2f9a",
-     "x": 42,
-     "y": 56,
+     "x": 54,
+     "y": 50,
      "w": 39,
      "h": 177
     },
     "weapon_dagger": {
      "url": "assets/characters/equip-pixels/ganes/menu/weapon_dagger.png?v=20760dc1",
-     "x": 50,
-     "y": 145,
+     "x": 62,
+     "y": 139,
      "w": 23,
      "h": 80
     },
     "weapon_axe": {
      "url": "assets/characters/equip-pixels/ganes/menu/weapon_axe.png?v=c789c184",
-     "x": 48,
-     "y": 105,
+     "x": 60,
+     "y": 99,
      "w": 41,
      "h": 134
     },
     "weapon_spear": {
-     "url": "assets/characters/equip-pixels/ganes/menu/weapon_spear.png?v=0d599bae",
-     "x": 38,
+     "url": "assets/characters/equip-pixels/ganes/menu/weapon_spear.png?v=8ab76861",
+     "x": 51,
      "y": 2,
      "w": 37,
      "h": 317
     },
     "weapon_bow": {
      "url": "assets/characters/equip-pixels/ganes/menu/weapon_bow.png?v=b9eba1d1",
-     "x": 58,
-     "y": 130,
+     "x": 70,
+     "y": 124,
      "w": 30,
      "h": 150
     },
     "weapon_staff_t": {
      "url": "assets/characters/equip-pixels/ganes/menu/weapon_staff_t.png?v=79a861f8",
-     "x": 52,
-     "y": 23,
+     "x": 64,
+     "y": 17,
      "w": 21,
      "h": 21
     },
     "weapon_staff_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/weapon_staff_f.png?v=1424eb66",
-     "x": 48,
-     "y": 16,
+     "url": "assets/characters/equip-pixels/ganes/menu/weapon_staff_f.png?v=d54113eb",
+     "x": 60,
+     "y": 10,
      "w": 29,
-     "h": 287
+     "h": 293
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_helm.png?v=aff48ac8",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_helm.png?v=26d0e0d3",
      "x": 24,
      "y": 24,
      "w": 262,
@@ -606,7 +606,7 @@
      "h": 83
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_cap.png?v=e6af25a0",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_cap.png?v=f37de566",
      "x": 24,
      "y": 24,
      "w": 262,
@@ -641,7 +641,7 @@
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_hat.png?v=6b3c9eb4",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_hat.png?v=b8ad3342",
      "x": 24,
      "y": 24,
      "w": 262,
@@ -731,50 +731,50 @@
    "body": {
     "x0": 65,
     "y0": 26,
-    "x1": 282,
+    "x1": 264,
     "y1": 304
    },
    "grip": {
-    "x": 252,
+    "x": 246,
     "y": 196,
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
-    "x": 86,
-    "y": 192,
+    "x": 84,
+    "y": 196,
     "order": "盾：前腕の上"
    },
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/ganes/back/base_plain.png?v=d1986a25",
+     "url": "assets/characters/equip-pixels/ganes/back/base_plain.png?v=bfdba424",
      "x": 55,
      "y": 24,
      "w": 244,
      "h": 284
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/ganes/back/hand.png?v=ec85fe41",
-     "x": 236,
-     "y": 178,
-     "w": 33,
-     "h": 33
+     "url": "assets/characters/equip-pixels/ganes/back/hand.png?v=42eb69e7",
+     "x": 226,
+     "y": 174,
+     "w": 38,
+     "h": 42
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/ganes/back/jf_cloth_t.png?v=89d6804a",
+     "url": "assets/characters/equip-pixels/ganes/back/jf_cloth_t.png?v=a42eca19",
      "x": 66,
      "y": 110,
-     "w": 201,
+     "w": 197,
      "h": 194
     },
     "jf_skirt_t": {
-     "url": "assets/characters/equip-pixels/ganes/back/jf_skirt_t.png?v=5cd0d95c",
+     "url": "assets/characters/equip-pixels/ganes/back/jf_skirt_t.png?v=fc52c3f3",
      "x": 91,
      "y": 182,
      "w": 170,
      "h": 103
     },
     "jf_skirt_f": {
-     "url": "assets/characters/equip-pixels/ganes/back/jf_skirt_f.png?v=1265ef41",
+     "url": "assets/characters/equip-pixels/ganes/back/jf_skirt_f.png?v=fd01a25c",
      "x": 89,
      "y": 181,
      "w": 174,
@@ -782,55 +782,55 @@
     },
     "weapon_sword": {
      "url": "assets/characters/equip-pixels/ganes/back/weapon_sword.png?v=49c992f1",
-     "x": 234,
+     "x": 228,
      "y": 47,
      "w": 39,
      "h": 176
     },
     "weapon_dagger": {
      "url": "assets/characters/equip-pixels/ganes/back/weapon_dagger.png?v=97ed7aa7",
-     "x": 242,
+     "x": 236,
      "y": 137,
      "w": 23,
      "h": 78
     },
     "weapon_axe": {
      "url": "assets/characters/equip-pixels/ganes/back/weapon_axe.png?v=b8727fa9",
-     "x": 226,
+     "x": 220,
      "y": 95,
      "w": 41,
      "h": 134
     },
     "weapon_spear": {
      "url": "assets/characters/equip-pixels/ganes/back/weapon_spear.png?v=2eb20e6f",
-     "x": 239,
+     "x": 233,
      "y": 2,
      "w": 37,
      "h": 317
     },
     "weapon_bow": {
      "url": "assets/characters/equip-pixels/ganes/back/weapon_bow.png?v=826c7469",
-     "x": 227,
+     "x": 221,
      "y": 120,
      "w": 30,
      "h": 150
     },
     "weapon_staff_t": {
      "url": "assets/characters/equip-pixels/ganes/back/weapon_staff_t.png?v=79a861f8",
-     "x": 242,
+     "x": 236,
      "y": 13,
      "w": 21,
      "h": 21
     },
     "weapon_staff_f": {
      "url": "assets/characters/equip-pixels/ganes/back/weapon_staff_f.png?v=ec2a1fd5",
-     "x": 238,
+     "x": 232,
      "y": 6,
      "w": 29,
      "h": 297
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/ganes/back/base_helm.png?v=c97e5ead",
+     "url": "assets/characters/equip-pixels/ganes/back/base_helm.png?v=b926b08d",
      "x": 55,
      "y": 24,
      "w": 244,
@@ -851,7 +851,7 @@
      "h": 65
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/ganes/back/base_cap.png?v=bb09511f",
+     "url": "assets/characters/equip-pixels/ganes/back/base_cap.png?v=325b52cd",
      "x": 55,
      "y": 24,
      "w": 244,
@@ -886,7 +886,7 @@
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/ganes/back/base_hat.png?v=54ff08ec",
+     "url": "assets/characters/equip-pixels/ganes/back/base_hat.png?v=f5bf07ff",
      "x": 55,
      "y": 24,
      "w": 244,
@@ -922,15 +922,15 @@
     },
     "shield_gt": {
      "url": "assets/characters/equip-pixels/ganes/back/shield_gt.png?v=3a0de05f",
-     "x": 64,
-     "y": 150,
+     "x": 62,
+     "y": 154,
      "w": 45,
      "h": 84
     },
     "shield_gf": {
      "url": "assets/characters/equip-pixels/ganes/back/shield_gf.png?v=48f3b2e2",
-     "x": 60,
-     "y": 146,
+     "x": 58,
+     "y": 150,
      "w": 53,
      "h": 93
     },

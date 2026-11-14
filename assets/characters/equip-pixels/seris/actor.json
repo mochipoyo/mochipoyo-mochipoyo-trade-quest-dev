@@ -240,27 +240,27 @@
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
-    "x": 166,
-    "y": 182,
+    "x": 196,
+    "y": 160,
     "order": "盾：前腕の上"
    },
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_plain.png?v=451e4c8c",
+     "url": "assets/characters/equip-pixels/seris/menu/base_plain.png?v=0150bea2",
      "x": 6,
      "y": 2,
      "w": 206,
      "h": 276
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/seris/menu/hand.png?v=28f91a4b",
+     "url": "assets/characters/equip-pixels/seris/menu/hand.png?v=40ba18eb",
      "x": 28,
-     "y": 136,
+     "y": 139,
      "w": 25,
-     "h": 32
+     "h": 29
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/jf_cloth_t.png?v=b391c1d7",
+     "url": "assets/characters/equip-pixels/seris/menu/jf_cloth_t.png?v=41a07862",
      "x": 6,
      "y": 128,
      "w": 206,
@@ -316,7 +316,7 @@
      "h": 277
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=2f37fce3",
+     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=b156be04",
      "x": 6,
      "y": 49,
      "w": 206,
@@ -337,7 +337,7 @@
      "h": 83
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=2f37fce3",
+     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=44707fe5",
      "x": 6,
      "y": 49,
      "w": 206,
@@ -372,18 +372,18 @@
      "h": 14
     },
     "base_nohat": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_nohat.png?v=2f37fce3",
+     "url": "assets/characters/equip-pixels/seris/menu/base_nohat.png?v=54455f60",
      "x": 6,
      "y": 49,
      "w": 206,
      "h": 229
     },
     "own_hat_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/own_hat_t.png?v=e5f4e783",
-     "x": 20,
+     "url": "assets/characters/equip-pixels/seris/menu/own_hat_t.png?v=647826d1",
+     "x": 47,
      "y": 2,
-     "w": 179,
-     "h": 109
+     "w": 152,
+     "h": 106
     },
     "jf_pl_t": {
      "url": "assets/characters/equip-pixels/seris/menu/jf_pl_t.png?v=6aed3412",
@@ -414,17 +414,17 @@
      "h": 34
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/seris/menu/shield_gt.png?v=65e452ab",
-     "x": 142,
-     "y": 151,
-     "w": 49,
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gt.png?v=717fa113",
+     "x": 172,
+     "y": 129,
+     "w": 40,
      "h": 63
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/seris/menu/shield_gf.png?v=834d5d58",
-     "x": 138,
-     "y": 147,
-     "w": 57,
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gf.png?v=016442d8",
+     "x": 168,
+     "y": 125,
+     "w": 44,
      "h": 71
     },
     "hv_pl_t": {
@@ -470,28 +470,28 @@
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
-    "x": 220,
-    "y": 206,
+    "x": 250,
+    "y": 184,
     "order": "盾：前腕の上"
    },
    "from": "menu",
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_plain.png?v=451e4c8c",
+     "url": "assets/characters/equip-pixels/seris/menu/base_plain.png?v=0150bea2",
      "x": 60,
      "y": 26,
      "w": 206,
      "h": 276
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/seris/menu/hand.png?v=28f91a4b",
+     "url": "assets/characters/equip-pixels/seris/menu/hand.png?v=40ba18eb",
      "x": 82,
-     "y": 160,
+     "y": 163,
      "w": 25,
-     "h": 32
+     "h": 29
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/jf_cloth_t.png?v=b391c1d7",
+     "url": "assets/characters/equip-pixels/seris/menu/jf_cloth_t.png?v=41a07862",
      "x": 60,
      "y": 152,
      "w": 206,
@@ -547,7 +547,7 @@
      "h": 277
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=2f37fce3",
+     "url": "assets/characters/equip-pixels/seris/menu/base_helm.png?v=b156be04",
      "x": 60,
      "y": 73,
      "w": 206,
@@ -568,7 +568,7 @@
      "h": 83
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=2f37fce3",
+     "url": "assets/characters/equip-pixels/seris/menu/base_cap.png?v=44707fe5",
      "x": 60,
      "y": 73,
      "w": 206,
@@ -603,18 +603,18 @@
      "h": 14
     },
     "base_nohat": {
-     "url": "assets/characters/equip-pixels/seris/menu/base_nohat.png?v=2f37fce3",
+     "url": "assets/characters/equip-pixels/seris/menu/base_nohat.png?v=54455f60",
      "x": 60,
      "y": 73,
      "w": 206,
      "h": 229
     },
     "own_hat_t": {
-     "url": "assets/characters/equip-pixels/seris/menu/own_hat_t.png?v=e5f4e783",
-     "x": 74,
+     "url": "assets/characters/equip-pixels/seris/menu/own_hat_t.png?v=647826d1",
+     "x": 101,
      "y": 26,
-     "w": 179,
-     "h": 109
+     "w": 152,
+     "h": 106
     },
     "jf_pl_t": {
      "url": "assets/characters/equip-pixels/seris/menu/jf_pl_t.png?v=6aed3412",
@@ -645,17 +645,17 @@
      "h": 34
     },
     "shield_gt": {
-     "url": "assets/characters/equip-pixels/seris/menu/shield_gt.png?v=65e452ab",
-     "x": 196,
-     "y": 175,
-     "w": 49,
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gt.png?v=717fa113",
+     "x": 226,
+     "y": 153,
+     "w": 40,
      "h": 63
     },
     "shield_gf": {
-     "url": "assets/characters/equip-pixels/seris/menu/shield_gf.png?v=834d5d58",
-     "x": 192,
-     "y": 171,
-     "w": 57,
+     "url": "assets/characters/equip-pixels/seris/menu/shield_gf.png?v=016442d8",
+     "x": 222,
+     "y": 149,
+     "w": 44,
      "h": 71
     },
     "hv_pl_t": {
@@ -690,32 +690,32 @@
     "y1": 304
    },
    "grip": {
-    "x": 246,
-    "y": 192,
+    "x": 240,
+    "y": 176,
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
-    "x": 96,
-    "y": 186,
+    "x": 76,
+    "y": 196,
     "order": "盾：前腕の上"
    },
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/seris/back/base_plain.png?v=e1e07cdb",
+     "url": "assets/characters/equip-pixels/seris/back/base_plain.png?v=9ef7a0b1",
      "x": 46,
      "y": 24,
      "w": 236,
      "h": 283
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/seris/back/hand.png?v=fabbd1d0",
-     "x": 230,
-     "y": 178,
-     "w": 25,
+     "url": "assets/characters/equip-pixels/seris/back/hand.png?v=2041e4eb",
+     "x": 226,
+     "y": 164,
+     "w": 21,
      "h": 29
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/seris/back/jf_cloth_t.png?v=076346b3",
+     "url": "assets/characters/equip-pixels/seris/back/jf_cloth_t.png?v=80efb640",
      "x": 48,
      "y": 150,
      "w": 216,
@@ -723,55 +723,55 @@
     },
     "weapon_sword": {
      "url": "assets/characters/equip-pixels/seris/back/weapon_sword.png?v=49c992f1",
-     "x": 228,
-     "y": 43,
+     "x": 222,
+     "y": 27,
      "w": 39,
      "h": 176
     },
     "weapon_dagger": {
      "url": "assets/characters/equip-pixels/seris/back/weapon_dagger.png?v=97ed7aa7",
-     "x": 236,
-     "y": 133,
+     "x": 230,
+     "y": 117,
      "w": 23,
      "h": 78
     },
     "weapon_axe": {
      "url": "assets/characters/equip-pixels/seris/back/weapon_axe.png?v=b8727fa9",
-     "x": 220,
-     "y": 91,
+     "x": 214,
+     "y": 75,
      "w": 41,
      "h": 134
     },
     "weapon_spear": {
-     "url": "assets/characters/equip-pixels/seris/back/weapon_spear.png?v=1a927b9e",
-     "x": 233,
+     "url": "assets/characters/equip-pixels/seris/back/weapon_spear.png?v=b8077ed2",
+     "x": 225,
      "y": 2,
-     "w": 36,
+     "w": 37,
      "h": 317
     },
     "weapon_bow": {
      "url": "assets/characters/equip-pixels/seris/back/weapon_bow.png?v=826c7469",
-     "x": 221,
-     "y": 116,
+     "x": 215,
+     "y": 100,
      "w": 30,
      "h": 150
     },
     "weapon_staff_t": {
      "url": "assets/characters/equip-pixels/seris/back/weapon_staff_t.png?v=79a861f8",
-     "x": 236,
-     "y": 9,
+     "x": 230,
+     "y": 2,
      "w": 21,
      "h": 21
     },
     "weapon_staff_f": {
-     "url": "assets/characters/equip-pixels/seris/back/weapon_staff_f.png?v=927f07d7",
-     "x": 232,
-     "y": 2,
+     "url": "assets/characters/equip-pixels/seris/back/weapon_staff_f.png?v=07d56835",
+     "x": 226,
+     "y": 0,
      "w": 29,
-     "h": 301
+     "h": 303
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/seris/back/base_helm.png?v=9b8e9e0c",
+     "url": "assets/characters/equip-pixels/seris/back/base_helm.png?v=f1c30cf6",
      "x": 46,
      "y": 24,
      "w": 236,
@@ -792,7 +792,7 @@
      "h": 84
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/seris/back/base_cap.png?v=9b8e9e0c",
+     "url": "assets/characters/equip-pixels/seris/back/base_cap.png?v=3400c21e",
      "x": 46,
      "y": 24,
      "w": 236,
@@ -827,18 +827,18 @@
      "h": 14
     },
     "base_nohat": {
-     "url": "assets/characters/equip-pixels/seris/back/base_nohat.png?v=9b8e9e0c",
+     "url": "assets/characters/equip-pixels/seris/back/base_nohat.png?v=8d72f957",
      "x": 46,
      "y": 24,
      "w": 236,
      "h": 283
     },
     "own_hat_t": {
-     "url": "assets/characters/equip-pixels/seris/back/own_hat_t.png?v=fdf6dcbe",
+     "url": "assets/characters/equip-pixels/seris/back/own_hat_t.png?v=90690094",
      "x": 54,
      "y": 26,
-     "w": 174,
-     "h": 139
+     "w": 172,
+     "h": 135
     },
     "jf_pl_t": {
      "url": "assets/characters/equip-pixels/seris/back/jf_pl_t.png?v=10d1b5c8",
@@ -870,15 +870,15 @@
     },
     "shield_gt": {
      "url": "assets/characters/equip-pixels/seris/back/shield_gt.png?v=52456b6b",
-     "x": 83,
-     "y": 161,
+     "x": 63,
+     "y": 171,
      "w": 27,
      "h": 50
     },
     "shield_gf": {
      "url": "assets/characters/equip-pixels/seris/back/shield_gf.png?v=d2856f73",
-     "x": 79,
-     "y": 157,
+     "x": 59,
+     "y": 167,
      "w": 35,
      "h": 59
     },

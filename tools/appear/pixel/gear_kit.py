@@ -26,16 +26,28 @@ def hair_fill(base, head, hairm):
     Hh, Ww = base.shape[:2]; yy, xx = np.mgrid[0:Hh, 0:Ww].astype(float); b = base.copy()
     own = P.poly_mask(Hh, Ww, head['own']) & P.opaque(base)
     if head.get('face') is not None: own &= ~P.poly_mask(Hh, Ww, head['face'])   # 顔は残す
+    import knight as KN
+    # v9.9.1 帽子のつばの下に見えていた前髪・横の髪は残す（消すのは帽子の色の所だけ）。髪のつや（白っぽい画素）も、髪に囲まれていれば髪。
+    #        額より 34 ドット以上上は帽子・頭巾の飾りとみなして残さない
+    hb = hairm & P.opaque(base); hh, ss, vv = P.hsv(base)
+    hk = KN.close(hb, 2) | (KN.close(hb, 4) & (ss < 0.35) & (vv > 0.75))
+    own &= ~(hk & (yy >= head['brow'] - 34))
     b[own] = 0
     cx, rx = head['cx'], head['rx'] * 0.9; cy = head['brow'] + 2; ry = head['brow'] - head['top']
-    dome = (((xx - cx) / rx) ** 2 + ((yy - cy) / ry) ** 2 <= 1.0) & (yy <= cy + 4)
+    # v9.9.1 縁を毛先の房のように波打たせる（なめらかな半円だと帽子・兜に見えた）
+    ang = np.arctan2(xx - cx, -(yy - cy)); wav = 1.0 + 0.07 * np.abs(np.sin(ang * 6.5))
+    dome = ((((xx - cx) / rx) ** 2 + ((yy - cy) / ry) ** 2) <= wav ** 2 * 0.93) & (yy <= cy + 4)
     fill = dome & ~P.opaque(b)
     cols = base[hairm & P.opaque(base)][:, :3]
     if len(cols):
         L = cols.mean(1); qs = np.percentile(L, [10, 35, 60, 85]); ramp = [cols[np.argmin(np.abs(L - q))] for q in qs]
-        v = np.clip(0.72 - 0.38 * (xx - cx) / rx - 0.3 * (yy - (cy - ry)) / ry, 0, 0.999)
-        v = np.where((np.abs(((xx - cx) % 7) - 3.5) < 0.6) & (yy > cy - ry * 0.6), v - 0.22, v)   # 髪の筋（ゆるい縦の線）
-        idx = (v * 4).astype(int)
+        # v9.9.1 髪らしく：頭のてっぺん（つむじ）から放射状に流れる筋と、光の輪（つやの帯）。縦の縞は兜のように見えたのでやめた
+        v = np.clip(0.62 - 0.30 * (xx - cx) / rx - 0.18 * (yy - (cy - ry)) / ry, 0, 0.999)
+        th = np.arctan2(xx - cx, yy - (cy - ry * 1.08)); fr = (th * 11 / np.pi) % 1.0
+        r = np.sqrt(((xx - cx) / rx) ** 2 + ((yy - cy) / ry) ** 2)
+        v = np.where((r > 0.52) & (r < 0.66) & (yy < cy - ry * 0.25) & (fr > 0.18), 0.92, v)   # 光の輪
+        v = np.where((fr < 0.14) & (r > 0.2), v - 0.30, v)                                     # 筋
+        idx = (np.clip(v, 0, 0.999) * 4).astype(int)
         for k in range(4): mk = fill & (idx == k); b[mk, :3] = ramp[k]; b[mk, 3] = 255
     ring = P.neighbors4(P.opaque(b)) & ~P.opaque(b) & (dome | P.neighbors4(dome))
     b[ring] = (*OUTL, 255)

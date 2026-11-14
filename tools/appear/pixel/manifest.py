@@ -13,7 +13,7 @@ PLATE_REF = ['#3c3133', '#5e5054', '#837476', '#a89a98', '#e2d8cc']   # 主人�
 IRON_REF = ['#262022', '#40373a', '#615657', '#8b7f7d', '#cbbfb3']    # v9.8 ガルドの重鎧・盾の鉄の色（灰色の品はこの色）
 
 GLOBAL = {
-    'version': 'v9.9', 'pad': 48,
+    'version': 'v9.9.1', 'pad': 48,
     'note': '装備の外見（ドット絵の差分）。tools/appear/pixel/build_<人物ID>.py が部品を作り、manifest.py がまとめる。部品の座標は元の絵と同じ（x, y＝左上）',
     'ref': {'plate': PLATE_REF, 'iron': IRON_REF},
     # 部品の種類：装備の枠と形（ITEMS の type。帽子は形の細かい違い sub も）→ 種類。表にない形・その人に部品がない種類は「その部位だけ描かない」
