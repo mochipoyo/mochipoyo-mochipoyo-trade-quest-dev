@@ -63,7 +63,7 @@
     });
     return out;
   }
-  function signature(actor, layers, baseKey, direction) { return JSON.stringify([actor && actor.id, actor && actor.job, baseKey, direction, (layers || []).map(function (l) { return l.id; })]); }
+  function signature(actor, layers, baseKey, direction) { return JSON.stringify([actor && actor.id, actor && actor.job, costumeOf(actor) || '', baseKey, direction, (layers || []).map(function (l) { return l.id; })]); }
 
   /* ---------- 小さな描き道具（元の画像の座標で描く。ctx は 1/px に縮めてあり、線の太さ px＝1 ドット） ---------- */
   function P(ctx, px, pal, dir) { return { g: ctx, px: px, c: pal, dir: dir || 'front' }; }
@@ -550,11 +550,30 @@
   }
   var PIX_SLOTS = ['armor', 'head', 'shield', 'weapon', 'acc'];
   // 装備 → 重ね方 { ok, base, mats[{cls, m, layer}], skipped[] } ／ { ok: false, why }
+  /* v9.10 衣装セット（見た目だけ。装備の性能・所持数・職業は変えない）
+     ・選んだ衣装は、その人のデータの costume（衣装の ID。なし＝通常の外見）。旧セーブには項目がない＝通常の外見
+     ・対応表：actors.<人物ID>.costumes.<衣装> = { name, views: { front, back } }。衣装の向き（views['cos:<衣装>:front'] など）は、専用の握り・盾の位置・握る手と、その位置で作った武器・盾の部品を持つ
+     ・衣装のときは、鎧・頭・職業の服は描かない（衣装の絵に含まれる）。武器・盾だけを重ねる。メニューの立ち絵は衣装の正面 */
+  function costumeOf(actor) {
+    if (!actor) return null;
+    if (own(actor, 'costume')) return actor.costume || null;   // 写し（試着・プレビュー）が costume を持つときは、その値（'' ＝通常の外見）
+    var s = null; try { s = root.State && root.State.data && root.State.actor && actor.id ? root.State.actor(actor.id) : null; } catch (e) { s = null; }   // ゲームを始める前（タイトル）はデータがない
+    return s && s.costume ? s.costume : null;   // 戦闘などの写しは costume を持たない → 本人のデータから
+  }
+  function costumeList(actorId) { var M = PX(); var a = M && M.actors && own(M.actors, actorId) ? M.actors[actorId] : null; var c = (a && a.costumes) || {}; return Object.keys(c).map(function (k) { return { id: k, name: c[k].name }; }); }
+  function costumeView(actor, viewKey) {
+    var cid = costumeOf(actor); if (!cid) return null; var M = PX(); var a = M && M.actors && own(M.actors, actor.id) ? M.actors[actor.id] : null;
+    var c = a && a.costumes && own(a.costumes, cid) ? a.costumes[cid] : null; if (!c) return null;
+    var k = c.views[viewKey === 'back' ? 'back' : 'front']; return k && own(a.views, k) ? a.views[k] : null;
+  }
+  var COS_SLOTS = { weapon: true, shield: true };
   function pixelPlan(actor, viewKey, layers) {
     var view = pixelView(actor && actor.id, viewKey); if (!view) return { ok: false, why: '部品がない人物・向き' };
+    var cos = costumeView(actor, viewKey); if (cos) view = cos;
     layers = layers || resolve(actor); var eq = (actor && actor.equip) || {}; var mats = [], skipped = [], base = 'base_plain';
     for (var i = 0; i < PIX_SLOTS.length; i++) {
       var slot = PIX_SLOTS[i]; var id = eq[slot]; if (!id) continue;
+      if (cos && !COS_SLOTS[slot]) continue;   // 衣装：鎧・頭・装飾品は描かない（描かなかった品の記録にも入れない）
       var L = layers.filter(function (l) { return l.slot === slot; })[0];
       if (slot === 'acc') { skipped.push('acc:' + id); continue; }
       // v9.7.2 部品のない品は「その部位だけ描かない」（ほかの部位はそのまま着替える）。武器なら手は空のまま＝元の絵の剣は戻らない
@@ -569,7 +588,7 @@
       if (m.over && m.over.layers.every(function (q) { return q.optional || own(view.parts, q.part); })) mats.push({ cls: cls + ':over', m: m.over, layer: L });
     }
     // v9.8.6 職業の服装（主人公の狩人・盗賊）：対応表の actors.<人物ID>.jobs.<職業> の重ね絵を、素の絵のすぐ上に重ねる（その向きに部品があるときだけ）
-    var jo = jobOutfit(actor && actor.id, actor && actor.job);
+    var jo = cos ? null : jobOutfit(actor && actor.id, actor && actor.job);   // 衣装のときは職業の服を描かない
     var hasPart = function (L) { return L.optional || own(view.parts, L.part); };
     // v9.8.9 装備が覆う部位（covers：'sleeve'・'body'・'hem' など）の服の層は描かない（ローブを着たら、職業の服の袖は描かずローブの袖にする）
     var covered = {}; mats.forEach(function (mt) { (mt.m.covers || []).forEach(function (r) { covered[r] = true; }); });
@@ -582,7 +601,7 @@
       if (ov.length) mats.push({ cls: 'outfit:' + actor.job + ':over', m: Object.assign({}, jo.over, { layers: ov }), layer: jl });
     }
     mats.sort(function (a, b) { return (a.m.z || 0) - (b.m.z || 0); });
-    return { ok: true, view: view, base: base, mats: mats, skipped: skipped };
+    return { ok: true, view: view, base: base, mats: mats, skipped: skipped, costume: cos ? cos.costume : null };
   }
   // 品の色 → 5 段の色（暗い→明るい）。tools/appear/pixel/preview.py の ramp_for と同じ
   function mixc(a, b, t) { var A = hex(a), B = hex(b); return rgb([0, 1, 2].map(function (i) { return A[i] + (B[i] - A[i]) * t; })); }
@@ -612,7 +631,7 @@
     return c;
   }
   function pixelRequest(actor, viewKey, opts) {
-    var eqActor = opts.equip ? { id: actor.id, job: actor.job, equip: opts.equip } : actor;
+    var eqActor = opts.equip ? { id: actor.id, job: actor.job, equip: opts.equip, costume: costumeOf(actor) || '' } : actor;
     var layers = resolve(eqActor); var plan = pixelPlan(eqActor, viewKey, layers);
     if (!plan.ok) { if (actor) note(actor.id, viewKey, plan.why); return { state: 'none', why: plan.why }; }
     plan.skipped.forEach(function (w) { if (!/^acc:/.test(w)) note(actor.id, viewKey + '#' + w.split(':')[0], w); });   // 描かなかった部位を記録
@@ -690,11 +709,12 @@
     Array.prototype.forEach.call(list, function (host) {
       var id = host.getAttribute('data-ea-actor'); var actor = root.State.actor(id); if (!actor) return;
       var jobAs = host.getAttribute('data-ea-job'); if (jobAs && jobAs !== actor.job) actor = Object.assign({}, actor, { job: jobAs });   // v9.8.7 転職のプレビュー：別の職業になった姿（本人のデータは書き換えない。写しを使う）
+      var cosAs = host.getAttribute('data-ea-costume'); if (cosAs !== null) actor = Object.assign({}, actor, { costume: cosAs });   // v9.10 見た目の画面のプレビュー：別の衣装（'' ＝通常の外見）の姿（本人のデータは書き換えない）
       var eqTxt = host.getAttribute('data-ea-equip'); var eq = null; if (eqTxt) { try { eq = JSON.parse(eqTxt); } catch (e) { eq = null; } }
       var view = host.getAttribute('data-ea-view') || 'menu'; var vk = view === 'menu' ? menuView(actor) : view;
       if (!supports(actor, vk)) { host.setAttribute('data-ea-state', 'none'); return; }
       var opts = eq ? { equip: Object.assign({}, actor.equip || {}, eq) } : {};
-      var key = id + '|' + vk + '|' + JSON.stringify((opts.equip || actor.equip) || {}) + '|' + actor.job;
+      var key = id + '|' + vk + '|' + JSON.stringify((opts.equip || actor.equip) || {}) + '|' + actor.job + '|' + (costumeOf(actor) || '');
       if (host.getAttribute('data-ea-key') === key) return;
       host.setAttribute('data-ea-key', key); host.setAttribute('data-ea-state', 'loading');
       composeFor(actor, vk, opts).then(function (r) {
@@ -731,8 +751,8 @@
   function hostHtml(actorId, inner, o) {
     o = o || {}; var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
     // v9.7 枠のある向き（主人公の立ち絵）：合成ができる前の元の絵・部品のない品のときの元の絵も、同じ枠の大きさ・足もとで出す（--ea-f＝元の絵の高さ ÷ 枠の高さ）
-    var fr = ''; try { var A = root.State && root.State.actor && root.State.actor(actorId); var vk = A ? ((o.view || 'menu') === 'menu' ? menuView(A) : o.view) : null; var pv = MODE === 'pixel' && A ? pixelView(actorId, vk) : null; if (pv && pv.frame) fr = ' ea-frame" style="--ea-f:' + (pv.h / (pv.frame.y1 - pv.frame.y0)).toFixed(4); } catch (e) { fr = ''; }
-    return '<span class="ea-host' + (o.cls ? ' ' + o.cls : '') + fr + '" data-ea-actor="' + esc(actorId) + '" data-ea-view="' + esc(o.view || 'menu') + '"' + (o.equip ? ' data-ea-equip="' + esc(JSON.stringify(o.equip)) + '"' : '') + (o.h ? ' data-ea-h="' + (o.h | 0) + '"' : '') + (o.fit ? ' data-ea-fit="' + esc(o.fit) + '"' : '') + (o.job ? ' data-ea-job="' + esc(o.job) + '"' : '') + '>' + (inner || '') + '</span>';
+    var fr = ''; try { var A = root.State && root.State.actor && root.State.actor(actorId); var vk = A ? ((o.view || 'menu') === 'menu' ? menuView(A) : o.view) : null; var pv = MODE === 'pixel' && A ? pixelView(actorId, vk) : null; var cv = pv ? costumeView(o.costume != null ? Object.assign({}, A, { costume: o.costume }) : A, vk) : null; if (cv) pv = cv; if (pv && pv.frame) fr = ' ea-frame" style="--ea-f:' + (pv.h / (pv.frame.y1 - pv.frame.y0)).toFixed(4); } catch (e) { fr = ''; }
+    return '<span class="ea-host' + (o.cls ? ' ' + o.cls : '') + fr + '" data-ea-actor="' + esc(actorId) + '" data-ea-view="' + esc(o.view || 'menu') + '"' + (o.equip ? ' data-ea-equip="' + esc(JSON.stringify(o.equip)) + '"' : '') + (o.h ? ' data-ea-h="' + (o.h | 0) + '"' : '') + (o.fit ? ' data-ea-fit="' + esc(o.fit) + '"' : '') + (o.job ? ' data-ea-job="' + esc(o.job) + '"' : '') + (o.costume != null ? ' data-ea-costume="' + esc(o.costume) + '"' : '') + '>' + (inner || '') + '</span>';
   }
 
   var API = { slots: Object.freeze(slots.slice()), paths: paths, resolve: resolve, signature: signature, paint: paint, compose: compose,
@@ -741,7 +761,8 @@
     clearCache: function () { CACHE.clear(); MASKS.clear(); TINTS.clear(); },
     // v9.7 ドット絵の差分
     mode: function () { return MODE; }, setMode: function (m) { if (m === 'pixel' || m === 'vector') { MODE = m; CACHE.clear(); Object.keys(unsupported).forEach(function (k) { delete unsupported[k]; }); } return MODE; },
-    pixelClass: pixelClass, pixelPlan: function (actor, viewKey) { var p = pixelPlan(actor, viewKey); return p.ok ? { ok: true, base: p.base, mats: p.mats.map(function (m) { return m.cls; }), skipped: p.skipped } : p; },
+    pixelClass: pixelClass, pixelPlan: function (actor, viewKey) { var p = pixelPlan(actor, viewKey); return p.ok ? { ok: true, base: p.base, mats: p.mats.map(function (m) { return m.cls; }), skipped: p.skipped, costume: p.costume } : p; },
+    costumes: costumeList, costumeOf: costumeOf,
     pixelView: pixelView, rampFor: rampFor, orbRamp: orbRamp, menuCrop: menuCrop };
   root.EquipmentAppearance = Object.freeze(API);
   watch();

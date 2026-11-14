@@ -1083,6 +1083,280 @@
     "x1": 322,
     "y1": 320
    }
+  },
+  "cos:festival:front": {
+   "src": "tools/appear/pixel/art_src/costume_seris_festival_front.png",
+   "w": 320,
+   "h": 320,
+   "dir": "front",
+   "pivot": [
+    160,
+    304
+   ],
+   "costume": "festival",
+   "body": {
+    "x0": 60,
+    "y0": 52,
+    "x1": 279,
+    "y1": 302
+   },
+   "grip": {
+    "x": 100,
+    "y": 170,
+    "order": "武器：柄の上に手を描き直す（衣装の握り）"
+   },
+   "offhand": {
+    "x": 238,
+    "y": 178,
+    "order": "盾：前腕の上（衣装の盾の位置）"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/base_plain.png?v=be04ca68",
+     "x": 60,
+     "y": 52,
+     "w": 219,
+     "h": 250
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/hand.png?v=c8c7971a",
+     "x": 91,
+     "y": 155,
+     "w": 20,
+     "h": 30
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_sword.png?v=7786ec93",
+     "x": 82,
+     "y": 35,
+     "w": 35,
+     "h": 159
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_dagger.png?v=19265523",
+     "x": 89,
+     "y": 116,
+     "w": 21,
+     "h": 71
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_axe.png?v=db2a3aa2",
+     "x": 86,
+     "y": 79,
+     "w": 39,
+     "h": 121
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_spear.png?v=6b4c6c8e",
+     "x": 80,
+     "y": 2,
+     "w": 34,
+     "h": 297
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_bow.png?v=afef0866",
+     "x": 96,
+     "y": 102,
+     "w": 27,
+     "h": 135
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_staff_t.png?v=aa13fb05",
+     "x": 92,
+     "y": 7,
+     "w": 17,
+     "h": 17
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_staff_f.png?v=fdd763d4",
+     "x": 88,
+     "y": 0,
+     "w": 25,
+     "h": 301
+    },
+    "shield_gt": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/shield_gt.png?v=e24b0d11",
+     "x": 217,
+     "y": 151,
+     "w": 43,
+     "h": 55
+    },
+    "shield_gf": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/shield_gf.png?v=346bd3eb",
+     "x": 213,
+     "y": 147,
+     "w": 51,
+     "h": 63
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/art_sword_knight__cos_festival_front.png?v=af1b5d0c",
+     "x": 71,
+     "y": 34,
+     "w": 54,
+     "h": 161
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/art_staff_sage__cos_festival_front.png?v=c551b5b4",
+     "x": 54,
+     "y": 0,
+     "w": 92,
+     "h": 302
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/art_axe_battle__cos_festival_front.png?v=a752072f",
+     "x": 72,
+     "y": 76,
+     "w": 71,
+     "h": 125
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_front/art_shield_knight__cos_festival_front.png?v=7748e532",
+     "x": 215,
+     "y": 146,
+     "w": 48,
+     "h": 66
+    }
+   },
+   "frame": {
+    "x0": -2,
+    "y0": -2,
+    "x1": 322,
+    "y1": 320
+   }
+  },
+  "cos:festival:back": {
+   "src": "tools/appear/pixel/art_src/costume_seris_festival_back.png",
+   "w": 320,
+   "h": 320,
+   "dir": "back",
+   "pivot": [
+    160,
+    304
+   ],
+   "costume": "festival",
+   "body": {
+    "x0": 70,
+    "y0": 33,
+    "x1": 283,
+    "y1": 307
+   },
+   "grip": {
+    "x": 255,
+    "y": 160,
+    "order": "武器：柄の上に手を描き直す（衣装の握り）"
+   },
+   "offhand": {
+    "x": 86,
+    "y": 186,
+    "order": "盾：前腕の上（衣装の盾の位置）"
+   },
+   "parts": {
+    "base_plain": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/base_plain.png?v=316b34e1",
+     "x": 70,
+     "y": 33,
+     "w": 213,
+     "h": 274
+    },
+    "hand": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/hand.png?v=88563099",
+     "x": 246,
+     "y": 149,
+     "w": 19,
+     "h": 22
+    },
+    "weapon_sword": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_sword.png?v=2eb7d1dc",
+     "x": 238,
+     "y": 13,
+     "w": 38,
+     "h": 174
+    },
+    "weapon_dagger": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_dagger.png?v=f9f9cb16",
+     "x": 245,
+     "y": 101,
+     "w": 23,
+     "h": 77
+    },
+    "weapon_axe": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_axe.png?v=29e05a01",
+     "x": 229,
+     "y": 61,
+     "w": 41,
+     "h": 131
+    },
+    "weapon_spear": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_spear.png?v=901bb90c",
+     "x": 241,
+     "y": 2,
+     "w": 35,
+     "h": 299
+    },
+    "weapon_bow": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_bow.png?v=609e0d9c",
+     "x": 230,
+     "y": 86,
+     "w": 30,
+     "h": 147
+    },
+    "weapon_staff_t": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_staff_t.png?v=79a861f8",
+     "x": 245,
+     "y": 2,
+     "w": 21,
+     "h": 21
+    },
+    "weapon_staff_f": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_staff_f.png?v=b7287354",
+     "x": 241,
+     "y": 0,
+     "w": 29,
+     "h": 306
+    },
+    "shield_gt": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/shield_gt.png?v=05ed17be",
+     "x": 76,
+     "y": 165,
+     "w": 21,
+     "h": 42
+    },
+    "shield_gf": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/shield_gf.png?v=3b07b23c",
+     "x": 72,
+     "y": 161,
+     "w": 29,
+     "h": 51
+    },
+    "art_sword_knight": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/art_sword_knight__cos_festival_back.png?v=24131d69",
+     "x": 227,
+     "y": 12,
+     "w": 60,
+     "h": 176
+    },
+    "art_staff_sage": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/art_staff_sage__cos_festival_back.png?v=cc4b8510",
+     "x": 208,
+     "y": 0,
+     "w": 94,
+     "h": 307
+    },
+    "art_axe_battle": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/art_axe_battle__cos_festival_back.png?v=dd089662",
+     "x": 208,
+     "y": 58,
+     "w": 78,
+     "h": 135
+    },
+    "art_shield_knight": {
+     "url": "assets/characters/equip-pixels/seris/cos_festival_back/art_shield_knight__cos_festival_back.png?v=c69e35de",
+     "x": 68,
+     "y": 160,
+     "w": 38,
+     "h": 54
+    }
+   }
   }
  },
  "jobs": {
@@ -1621,5 +1895,14 @@
   "shield_gf",
   "hv_pl_t",
   "hv_pl_f"
- ]
+ ],
+ "costumes": {
+  "festival": {
+   "name": "祭りの晴れ着",
+   "views": {
+    "front": "cos:festival:front",
+    "back": "cos:festival:back"
+   }
+  }
+ }
 }

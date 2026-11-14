@@ -13453,6 +13453,264 @@
       "h": 121
      }
     }
+   },
+   "cos:festival:front": {
+    "src": "tools/appear/pixel/art_src/costume_seris_festival_front.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "front",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 100,
+     "y": 170,
+     "order": "武器：柄の上に手を描き直す（衣装の握り）"
+    },
+    "offhand": {
+     "x": 238,
+     "y": 178,
+     "order": "盾：前腕の上（衣装の盾の位置）"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/base_plain.png",
+      "x": 60,
+      "y": 52,
+      "w": 219,
+      "h": 250
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/hand.png",
+      "x": 91,
+      "y": 155,
+      "w": 20,
+      "h": 30
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_sword.png",
+      "x": 82,
+      "y": 35,
+      "w": 35,
+      "h": 159
+     },
+     "weapon_dagger": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_dagger.png",
+      "x": 89,
+      "y": 116,
+      "w": 21,
+      "h": 71
+     },
+     "weapon_axe": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_axe.png",
+      "x": 86,
+      "y": 79,
+      "w": 39,
+      "h": 121
+     },
+     "weapon_spear": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_spear.png",
+      "x": 80,
+      "y": 2,
+      "w": 34,
+      "h": 297
+     },
+     "weapon_bow": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_bow.png",
+      "x": 96,
+      "y": 102,
+      "w": 27,
+      "h": 135
+     },
+     "weapon_staff_t": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_staff_t.png",
+      "x": 92,
+      "y": 7,
+      "w": 17,
+      "h": 17
+     },
+     "weapon_staff_f": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/weapon_staff_f.png",
+      "x": 88,
+      "y": 0,
+      "w": 25,
+      "h": 301
+     },
+     "shield_gt": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/shield_gt.png",
+      "x": 217,
+      "y": 151,
+      "w": 43,
+      "h": 55
+     },
+     "shield_gf": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/shield_gf.png",
+      "x": 213,
+      "y": 147,
+      "w": 51,
+      "h": 63
+     },
+     "art_sword_knight": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/art_sword_knight__cos_festival_front.png",
+      "x": 71,
+      "y": 34,
+      "w": 54,
+      "h": 161
+     },
+     "art_staff_sage": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/art_staff_sage__cos_festival_front.png",
+      "x": 54,
+      "y": 0,
+      "w": 92,
+      "h": 302
+     },
+     "art_axe_battle": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/art_axe_battle__cos_festival_front.png",
+      "x": 72,
+      "y": 76,
+      "w": 71,
+      "h": 125
+     },
+     "art_shield_knight": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_front/art_shield_knight__cos_festival_front.png",
+      "x": 215,
+      "y": 146,
+      "w": 48,
+      "h": 66
+     }
+    }
+   },
+   "cos:festival:back": {
+    "src": "tools/appear/pixel/art_src/costume_seris_festival_back.png",
+    "size": [
+     320,
+     320
+    ],
+    "dir": "back",
+    "pivot": [
+     160,
+     304
+    ],
+    "grip": {
+     "x": 255,
+     "y": 160,
+     "order": "武器：柄の上に手を描き直す（衣装の握り）"
+    },
+    "offhand": {
+     "x": 86,
+     "y": 186,
+     "order": "盾：前腕の上（衣装の盾の位置）"
+    },
+    "parts": {
+     "base_plain": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/base_plain.png",
+      "x": 70,
+      "y": 33,
+      "w": 213,
+      "h": 274
+     },
+     "hand": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/hand.png",
+      "x": 246,
+      "y": 149,
+      "w": 19,
+      "h": 22
+     },
+     "weapon_sword": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_sword.png",
+      "x": 238,
+      "y": 13,
+      "w": 38,
+      "h": 174
+     },
+     "weapon_dagger": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_dagger.png",
+      "x": 245,
+      "y": 101,
+      "w": 23,
+      "h": 77
+     },
+     "weapon_axe": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_axe.png",
+      "x": 229,
+      "y": 61,
+      "w": 41,
+      "h": 131
+     },
+     "weapon_spear": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_spear.png",
+      "x": 241,
+      "y": 2,
+      "w": 35,
+      "h": 299
+     },
+     "weapon_bow": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_bow.png",
+      "x": 230,
+      "y": 86,
+      "w": 30,
+      "h": 147
+     },
+     "weapon_staff_t": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_staff_t.png",
+      "x": 245,
+      "y": 2,
+      "w": 21,
+      "h": 21
+     },
+     "weapon_staff_f": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/weapon_staff_f.png",
+      "x": 241,
+      "y": 0,
+      "w": 29,
+      "h": 306
+     },
+     "shield_gt": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/shield_gt.png",
+      "x": 76,
+      "y": 165,
+      "w": 21,
+      "h": 42
+     },
+     "shield_gf": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/shield_gf.png",
+      "x": 72,
+      "y": 161,
+      "w": 29,
+      "h": 51
+     },
+     "art_sword_knight": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/art_sword_knight__cos_festival_back.png",
+      "x": 227,
+      "y": 12,
+      "w": 60,
+      "h": 176
+     },
+     "art_staff_sage": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/art_staff_sage__cos_festival_back.png",
+      "x": 208,
+      "y": 0,
+      "w": 94,
+      "h": 307
+     },
+     "art_axe_battle": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/art_axe_battle__cos_festival_back.png",
+      "x": 208,
+      "y": 58,
+      "w": 78,
+      "h": 135
+     },
+     "art_shield_knight": {
+      "file": "assets/characters/equip-pixels/seris/cos_festival_back/art_shield_knight__cos_festival_back.png",
+      "x": 68,
+      "y": 160,
+      "w": 38,
+      "h": 54
+     }
+    }
    }
   },
   "sophia": {
@@ -14286,6 +14544,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14346,6 +14606,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14406,6 +14668,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14466,6 +14730,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14526,6 +14792,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14586,6 +14854,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14646,6 +14916,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14706,6 +14978,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14766,6 +15040,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14826,6 +15102,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14886,6 +15164,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -14946,6 +15226,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15006,6 +15288,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15066,6 +15350,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15126,6 +15412,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15186,6 +15474,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15246,6 +15536,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15306,6 +15598,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15366,6 +15660,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15426,6 +15722,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15486,6 +15784,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -15546,6 +15846,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -15606,6 +15908,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -15666,6 +15970,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -15726,6 +16032,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -15786,6 +16094,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -15846,6 +16156,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15906,6 +16218,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -15966,6 +16280,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16026,6 +16342,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16086,6 +16404,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16146,6 +16466,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16206,6 +16528,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16266,6 +16590,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16326,6 +16652,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16386,6 +16714,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16446,6 +16776,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16506,6 +16838,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16566,6 +16900,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16626,6 +16962,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16686,6 +17024,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16746,6 +17086,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16806,6 +17148,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16866,6 +17210,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -16926,6 +17272,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17042,6 +17390,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17102,6 +17452,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17162,6 +17514,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17222,6 +17576,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17282,6 +17638,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17342,6 +17700,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17402,6 +17762,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17462,6 +17824,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17522,6 +17886,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17582,6 +17948,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17642,6 +18010,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17702,6 +18072,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17762,6 +18134,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -17822,6 +18196,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -17882,6 +18258,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -17942,6 +18320,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18002,6 +18382,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18062,6 +18444,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18122,6 +18506,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18182,6 +18568,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18250,6 +18638,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18310,6 +18700,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18370,6 +18762,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18430,6 +18824,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18490,6 +18886,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18550,6 +18948,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18610,6 +19010,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18670,6 +19072,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18730,6 +19134,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18790,6 +19196,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18850,6 +19258,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -18974,6 +19384,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19034,6 +19446,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19094,6 +19508,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19154,6 +19570,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19214,6 +19632,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19274,6 +19694,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19334,6 +19756,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19394,6 +19818,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19454,6 +19880,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19514,6 +19942,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19574,6 +20004,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19634,6 +20066,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19694,6 +20128,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19754,6 +20190,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -19814,6 +20252,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19874,6 +20314,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19934,6 +20376,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -19994,6 +20438,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20054,6 +20500,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20114,6 +20562,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20174,6 +20624,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20242,6 +20694,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20302,6 +20756,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -20362,6 +20818,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20422,6 +20880,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20482,6 +20942,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20550,6 +21012,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20634,6 +21098,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20702,6 +21168,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20762,6 +21230,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20822,6 +21292,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20882,6 +21354,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -20942,6 +21416,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21002,6 +21478,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21078,6 +21556,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21138,6 +21618,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21198,6 +21680,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21258,6 +21742,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21318,6 +21804,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21378,6 +21866,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21438,6 +21928,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21498,6 +21990,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21558,6 +22052,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21618,6 +22114,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21678,6 +22176,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21738,6 +22238,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21798,6 +22300,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21858,6 +22362,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21918,6 +22424,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -21978,6 +22486,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -22038,6 +22548,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -22098,6 +22610,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -22158,6 +22672,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -22218,6 +22734,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -22278,6 +22796,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -22338,6 +22858,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -22398,6 +22920,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -22458,6 +22982,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -22518,6 +23044,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -22578,6 +23106,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -22638,6 +23168,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -22698,6 +23230,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -22758,6 +23292,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -22818,6 +23354,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -22878,6 +23416,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -22938,6 +23478,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -22998,6 +23540,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23058,6 +23602,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23118,6 +23664,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23178,6 +23726,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23238,6 +23788,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23298,6 +23850,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23358,6 +23912,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23418,6 +23974,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23478,6 +24036,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23538,6 +24098,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23598,6 +24160,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23658,6 +24222,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23718,6 +24284,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23778,6 +24346,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23838,6 +24408,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23898,6 +24470,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -23958,6 +24532,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24018,6 +24594,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24078,6 +24656,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24138,6 +24718,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24198,6 +24780,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24258,6 +24842,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24318,6 +24904,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24378,6 +24966,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24438,6 +25028,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24498,6 +25090,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24558,6 +25152,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24618,6 +25214,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24838,6 +25436,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24906,6 +25506,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -24966,6 +25568,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25026,6 +25630,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25086,6 +25692,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25146,6 +25754,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25206,6 +25816,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25282,6 +25894,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25342,6 +25956,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25410,6 +26026,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -25478,6 +26096,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25538,6 +26158,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25598,6 +26220,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25658,6 +26282,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25718,6 +26344,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25778,6 +26406,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25838,6 +26468,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25906,6 +26538,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -25966,6 +26600,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26026,6 +26662,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26086,6 +26724,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26146,6 +26786,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26206,6 +26848,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -26266,6 +26910,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26334,6 +26980,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26402,6 +27050,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26462,6 +27112,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26522,6 +27174,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26582,6 +27236,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26642,6 +27298,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26702,6 +27360,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -26762,6 +27422,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26822,6 +27484,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26882,6 +27546,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -26942,6 +27608,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27002,6 +27670,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27062,6 +27732,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27122,6 +27794,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27182,6 +27856,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27242,6 +27918,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27302,6 +27980,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27362,6 +28042,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27422,6 +28104,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -27482,6 +28166,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27542,6 +28228,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27602,6 +28290,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27662,6 +28352,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27722,6 +28414,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27782,6 +28476,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27842,6 +28538,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27902,6 +28600,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -27962,6 +28662,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -28022,6 +28724,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28082,6 +28786,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28142,6 +28848,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28202,6 +28910,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28262,6 +28972,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28322,6 +29034,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28382,6 +29096,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28442,6 +29158,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28502,6 +29220,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28562,6 +29282,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28622,6 +29344,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28682,6 +29406,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28742,6 +29468,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28802,6 +29530,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28862,6 +29592,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28922,6 +29654,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -28982,6 +29716,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29042,6 +29778,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29102,6 +29840,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29162,6 +29902,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29222,6 +29964,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -29282,6 +30026,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29342,6 +30088,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29402,6 +30150,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29462,6 +30212,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29522,6 +30274,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29582,6 +30336,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29642,6 +30398,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29702,6 +30460,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -29762,6 +30522,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -29822,6 +30584,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29882,6 +30646,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -29942,6 +30708,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30002,6 +30770,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30062,6 +30832,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30122,6 +30894,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30182,6 +30956,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30242,6 +31018,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30302,6 +31080,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30362,6 +31142,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30422,6 +31204,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30482,6 +31266,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -30542,6 +31328,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -30602,6 +31390,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30662,6 +31452,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30722,6 +31514,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30782,6 +31576,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30842,6 +31638,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30902,6 +31700,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -30970,6 +31770,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31030,6 +31832,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31090,6 +31894,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31150,6 +31956,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31210,6 +32018,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31270,6 +32080,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31338,6 +32150,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31398,6 +32212,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31466,6 +32282,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31526,6 +32344,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31594,6 +32414,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31654,6 +32476,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31722,6 +32546,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31782,6 +32608,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31866,6 +32694,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31926,6 +32756,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -31986,6 +32818,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32046,6 +32880,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32106,6 +32942,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32166,6 +33004,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32226,6 +33066,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32294,6 +33136,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32354,6 +33198,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32414,6 +33260,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32482,6 +33330,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32542,6 +33392,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32602,6 +33454,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32662,6 +33516,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32722,6 +33578,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32782,6 +33640,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32842,6 +33702,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -32902,6 +33764,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -32962,6 +33826,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33022,6 +33888,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33082,6 +33950,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -33142,6 +34012,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33202,6 +34074,8 @@
     "seris/menu": false,
     "seris/front": false,
     "seris/back": false,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": false,
     "sophia/front": false,
     "sophia/back": false
@@ -33262,6 +34136,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33322,6 +34198,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33398,6 +34276,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33458,6 +34338,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33518,6 +34400,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33578,6 +34462,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33638,6 +34524,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": true,
+    "seris/cos:festival:back": true,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33698,6 +34586,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33758,6 +34648,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true
@@ -33850,6 +34742,8 @@
     "seris/menu": true,
     "seris/front": true,
     "seris/back": true,
+    "seris/cos:festival:front": false,
+    "seris/cos:festival:back": false,
     "sophia/menu": true,
     "sophia/front": true,
     "sophia/back": true

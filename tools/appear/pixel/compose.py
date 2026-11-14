@@ -43,9 +43,13 @@ def job_outfit(M, actor, job):
 
 def plan(M, actor, vk, equip, data):
     view = M['actors'][actor]['views'][vk]; mats = []; skipped = []; base = 'base_plain'
+    # v9.10 衣装（equip の '_costume'。ゲームの pixelPlan と同じ：衣装の向きを使い、武器・盾だけを重ねる。職業の服は描かない）
+    cos = (M['actors'][actor].get('costumes') or {}).get(equip.get('_costume') or '')
+    if cos: view = M['actors'][actor]['views'][cos['views']['back' if vk == 'back' else 'front']]
     for slot in SLOTS:
         iid = equip.get(slot)
         if not iid: continue
+        if cos and slot not in ('weapon', 'shield'): continue
         if slot == 'acc': skipped.append('acc:' + iid); continue
         rec = data.get(iid); cls = pixel_class(M, slot, rec)
         m = material(M, actor, view, 'item:' + iid) or material(M, actor, view, cls)   # v9.8.9 固有装備の専用差分が先
@@ -55,7 +59,7 @@ def plan(M, actor, vk, equip, data):
         ov = m.get('over')   # v9.8.9 装備の手前の層（ローブの袖口など）
         if ov and all(L.get('optional') or L['part'] in view['parts'] for L in ov['layers']): mats.append((ov, PV.pal_of(rec)))
     # v9.8.6 職業の服装（equip の '_job'。ゲームの pixelPlan と同じ：素の絵のすぐ上に重ねる）
-    jo = job_outfit(M, actor, equip.get('_job'))
+    jo = None if cos else job_outfit(M, actor, equip.get('_job'))
     covered = set(r for m, _ in mats for r in (m.get('covers') or []))   # v9.8.9 装備が覆う部位の服の層は描かない
     keep = lambda L: not (L.get('region') in covered) and L['part'] in view['parts']
     if jo and all(L.get('optional') or L['part'] in view['parts'] for L in jo['layers']):

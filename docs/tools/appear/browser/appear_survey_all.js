@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 8894; const ROOT = path.resolve(__dirname, '../
     const out = { pet: pet ? { id: pet, note: '4 人のパーティとは別枠（d.party に入らない）。装備の枠なし' } : null, jobs: {}, chars: {} };
     JOB_LIST.forEach((j) => { out.jobs[j] = { name: JOBS[j].name, weapons: JOBS[j].weapons, armors: JOBS[j].armors, unlock: unlockText(j) }; });
     for (const c of chars) {
-      const A = PX.actors[c.id] || null; const views = A ? Object.keys(A.views) : [];
+      const A = PX.actors[c.id] || null; const views = A ? Object.keys(A.views).filter((k) => !/^cos:/.test(k)) : [];   // v9.10 衣装の向きは数えない（武器・盾だけを重ねる決まり）
       const rec = { name: c.name, job: c.job, views, hasParts: !!A, jobs: {}, items: {} };
       for (const j of JOB_LIST) {
         const look = A ? (A.jobs && A.jobs[j] ? 'outfit' : (A.menuBase === 'job:' + j || (c.id !== 'hero' && j === c.base) ? 'base' : 'missing')) : 'noparts';

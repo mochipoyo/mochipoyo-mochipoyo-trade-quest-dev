@@ -54,6 +54,8 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | seris | menu | assets/characters/companions/seris.png | 106, 278 | 36, 150（武器：柄の上に手を描き直す） | 190, 160（盾：前腕の上） |
 | seris | front | assets/characters/party-directions-v3/sprites/seris/front.png | 160, 304 | 90, 174（武器：柄の上に手を描き直す） | 244, 184（盾：前腕の上） |
 | seris | back | assets/characters/party-directions-v3/sprites/seris/back.png | 160, 304 | 240, 176（武器：柄の上に手を描き直す） | 76, 196（盾：前腕の上） |
+| seris | cos:festival:front | tools/appear/pixel/art_src/costume_seris_festival_front.png | 160, 304 | 100, 170（武器：柄の上に手を描き直す（衣装の握り）） | 238, 178（盾：前腕の上（衣装の盾の位置）） |
+| seris | cos:festival:back | tools/appear/pixel/art_src/costume_seris_festival_back.png | 160, 304 | 255, 160（武器：柄の上に手を描き直す（衣装の握り）） | 86, 186（盾：前腕の上（衣装の盾の位置）） |
 | sophia | menu | assets/characters/party-directions-v3/sprites/sophia/front.png | 160, 318 | 90, 154（武器：柄の上に手を描き直す） | 178, 164（盾：前腕の上） |
 | sophia | front | assets/characters/party-directions-v3/sprites/sophia/front.png | 160, 304 | 90, 154（武器：柄の上に手を描き直す） | 178, 164（盾：前腕の上） |
 | sophia | back | assets/characters/party-directions-v3/sprites/sophia/back.png | 160, 304 | 214, 179（武器：柄の上に手を描き直す） | 100, 190（盾：前腕の上） |

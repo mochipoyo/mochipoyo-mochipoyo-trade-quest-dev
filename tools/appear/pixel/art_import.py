@@ -109,10 +109,10 @@ def run():
                 if bu in done:   # 勝利の正面＝メニュー正面と同じ部品をずらして使う（同じ絵のファイル）
                     v0 = A['views'][done[bu]]; r0 = v0['parts'][part]; b0, b1 = v0['parts']['base_plain'], v['parts']['base_plain']
                     v['parts'][part] = dict(r0, x=r0['x'] + b1['x'] - b0['x'], y=r0['y'] + b1['y'] - b0['y']); got[vk] = m; continue
-                im = src(D.get('src_back') if vk == 'back' and D.get('src_back') else D['src'])
+                back = v.get('dir') == 'back' or vk == 'back'; im = src(D.get('src_back') if back and D.get('src_back') else D['src'])
                 if D['slot'] == 'weapon': arr = weapon(im, mask, v.get('grip'), v['w'], v['h'], upright=D.get('upright', False))
                 elif D['slot'] == 'shield': arr = shield(im, mask, v['w'], v['h'])
-                else: arr = head(im, mask, v['w'], v['h'], back=(vk == 'back'))
+                else: arr = head(im, mask, v['w'], v['h'], back=back)
                 cimg, x, y = P.crop_layer(arr)
                 if cimg is None: continue
                 d = os.path.join(ROOT, os.path.dirname(v['parts']['base_plain']['url'])); fn = '%s__%s.png' % (part, vk.replace(':', '_'))

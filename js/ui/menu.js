@@ -529,7 +529,8 @@
       node.querySelector('.pt-body').innerHTML = tab === 0 ? Menu.partyHtml.status(a) : tab === 1 ? Menu.partyHtml.equip(a) : Menu.partyHtml.skills(a);
       var pos = d.party.indexOf(a.id); var canMove = pos >= 1;
       node.querySelector('.pt-acts').innerHTML = (canMove ? '<span class="pt-btn" data-mv="-1"' + (pos <= 1 ? ' data-off="1"' : '') + '>▲ 隊列で前へ</span><span class="pt-btn" data-mv="1"' + (pos >= d.party.length - 1 ? ' data-off="1"' : '') + '>▼ 隊列で後ろへ</span>' : '<span class="muted small">' + (a.id === 'hero' ? '主人公は隊列の先頭です' : '待機メンバーとの入れ替えは酒場で行えます') + '</span>') +
-        (pos >= 0 ? '<span class="pt-btn pt-go" data-go="equip">そうびを変える</span>' : '');   // v9.2 この仲間の装備の画面へ（閉じると、なかまの画面へ戻る）
+        (pos >= 0 ? '<span class="pt-btn pt-go" data-go="equip">そうびを変える</span>' : '') +   // v9.2 この仲間の装備の画面へ（閉じると、なかまの画面へ戻る）
+        (Menu.hasLooks(a) ? '<span class="pt-btn pt-go pt-look" data-go="look">見た目</span>' : '');   // v9.10 衣装のある仲間だけ：見た目（衣装）を選ぶ画面へ
       node.querySelectorAll('.pt-row').forEach(function (r) { r.addEventListener('click', function (e) { e.stopPropagation(); if (busy) return; var i = order.indexOf(r.getAttribute('data-id')); if (i >= 0) { sel = i; render(); } }); });
       node.querySelectorAll('.pt-btn').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); if (busy || b.getAttribute('data-off')) return; if (b.getAttribute('data-go')) { if (done) done({ go: b.getAttribute('data-go') }); return; } move(parseInt(b.getAttribute('data-mv'), 10)); }); });   // v9.2 隊列の確認（小さい窓）を開いている間は、後ろの画面を押しても動かない
       var cr = node.querySelector('.pt-row.cur'); if (cr && cr.scrollIntoView) try { cr.scrollIntoView({ block: 'nearest' }); } catch (e) { }
@@ -545,9 +546,38 @@
         onKey: function (k) { if (busy) return; if (k === 'up') { sel = (sel + order.length - 1) % order.length; render(); } else if (k === 'down') { sel = (sel + 1) % order.length; render(); } else if (k === 'left') { tab = (tab + PT_TABS.length - 1) % PT_TABS.length; render(); } else if (k === 'right') { tab = (tab + 1) % PT_TABS.length; render(); } },
         onPage: function (dd) { if (busy) return; sel = (sel + dd + order.length) % order.length; render(); },   // v9.2 Q・E でも仲間を切り替える（ほかの画面とそろえる）
         setup: function (n, fin) { node = n; done = fin; n.querySelectorAll('.pt-tab').forEach(function (t) { t.addEventListener('click', function (e) { e.stopPropagation(); if (busy) return; tab = parseInt(t.getAttribute('data-t'), 10); render(); }); }); n.querySelector('.pt-close').addEventListener('click', function (e) { e.stopPropagation(); if (busy) return; fin(-1); }); render(); } });
+      if (res && res.go === 'look') { var la = cur(); if (la) await Menu.look(la); continue; }   // v9.10 見た目を選んで、なかまの画面へ戻る
       if (res && res.go === 'equip') { var ea = cur(); if (ea && d.party.indexOf(ea.id) >= 0) { await Menu.equip(ea); order = Menu.partyOrder(); var si = order.indexOf(Menu._member); if (si >= 0) sel = si; } continue; }   // v9.2 装備の画面で切り替えた仲間のまま戻る
       return;
     }
+  };
+
+  /* v9.10 見た目（衣装セット）：なかま → 見た目。見た目だけを替える（装備・能力値・所持数・職業は変えない）
+     ・一覧：「通常の外見」（いまの職業と装備の姿）と、その人の衣装。カーソルを合わせると左に立ち絵のプレビュー（本人のデータは書き換えない）
+     ・Enter／タップで決める → その人のデータの costume に保存（通常の外見は項目を消す。旧セーブは項目がない＝通常の外見）。Esc・「やめる」は何も変えない */
+  Menu.hasLooks = function (a) { var EA = root.EquipmentAppearance; return !!(a && EA && EA.costumes && EA.costumes(a.id).length); };
+  Menu.setLook = function (a, cid) { if (!a) return false; var ok = !cid || (root.EquipmentAppearance && root.EquipmentAppearance.costumes(a.id).some(function (c) { return c.id === cid; })); if (!ok) return false; if (cid) a.costume = cid; else delete a.costume; return true; };
+  Menu.look = async function (a) {
+    var EA = root.EquipmentAppearance; if (!Menu.hasLooks(a)) return false;
+    var list = [{ id: '', name: '通常の外見', note: 'いまの職業と装備の姿' }].concat(EA.costumes(a.id).map(function (c) { return { id: c.id, name: c.name, note: '衣装（武器・盾だけ重ねて表示）' }; }));
+    var now = a.costume || ''; var sel = Math.max(0, list.map(function (c) { return c.id; }).indexOf(now)); var node = null, done = null;
+    function render() {
+      if (!node) return; var c = list[sel];
+      var tag = root.Assets ? root.Assets.portraitTagFor(a, 'portrait pt-portrait', 300) : '';
+      node.querySelector('.lk-art').innerHTML = '<div class="pt-artbox">' + EA.hostHtml(a.id, tag || '<div class="pt-noart">立ち絵なし</div>', { view: 'menu', fit: 'body', cls: 'ea-pt', costume: c.id }) + '</div><div class="pt-name">' + esc(a.name) + '</div><div class="pt-job">' + esc(c.name) + '</div>';
+      node.querySelector('.lk-list').innerHTML = list.map(function (x, i) { return '<div class="lk-row' + (i === sel ? ' cur' : '') + '" data-i="' + i + '" role="button" tabindex="0"><b>' + esc(x.name) + '</b>' + (x.id === now ? '<span class="lk-now">いまの見た目</span>' : '') + '<div class="muted small">' + esc(x.note) + '</div></div>'; }).join('');
+      node.querySelectorAll('.lk-row').forEach(function (r) { r.addEventListener('click', function (e) { e.stopPropagation(); var i = parseInt(r.getAttribute('data-i'), 10); if (i === sel) { done(sel); return; } sel = i; render(); }); });
+    }
+    var html = '<div class="lk-wrap"><div class="lk-art pt-art"></div><div class="lk-side"><div class="lk-head">' + esc(a.name) + 'の見た目</div><div class="lk-list"></div><div class="muted small lk-help">見た目だけが変わります（装備・能力値・持ち物はそのまま）。衣装のあいだ、鎧・頭の装備と職業の服は表示されません。</div>' +
+      '<div class="pt-acts"><span class="pt-btn lk-ok">この見た目にする</span><span class="pt-btn lk-cancel">やめる</span></div></div></div><div class="pt-foot"><span class="muted small">↑↓ えらぶ　Enter 決める　Esc やめる</span></div>';
+    var res = await Win.panel(html, { cls: 'look-screen rw-tall', noClose: true,
+      onCancel: function () { if (done) done(-1); }, onOk: function () { if (done) done(sel); },
+      onKey: function (k) { if (k === 'up') { sel = (sel + list.length - 1) % list.length; render(); } else if (k === 'down') { sel = (sel + 1) % list.length; render(); } },
+      setup: function (n, fin) { node = n; done = fin; n.querySelector('.lk-ok').addEventListener('click', function (e) { e.stopPropagation(); fin(sel); }); n.querySelector('.lk-cancel').addEventListener('click', function (e) { e.stopPropagation(); fin(-1); }); render(); } });
+    if (typeof res !== 'number' || res < 0) return false;
+    var changed = (list[res].id || '') !== now; Menu.setLook(a, list[res].id);
+    if (changed && root.World && root.World.updateHud) root.World.updateHud();
+    return changed;
   };
 
   Menu.quests = async function () {

@@ -1204,3 +1204,14 @@ body.mobile.m-land .rw-list.cmd-list .rw-item { min-height: 36px; padding-top: 3
 @keyframes emoResolve { 0% { transform: scale(1); } 100% { transform: scale(1.04); } }
 @media (prefers-reduced-motion: reduce) { .rw-msg[class*="emo-"] .rw-portrait { animation: none !important; } }
 @media (max-width: 720px) { .bond-list .bond-portrait { height: 72px !important; } .bond-status, .bond-book { font-size: 12px; line-height: 1.45; } .bond-row .k { min-width: 6.5em; } }
+
+/* v9.10 見た目（衣装セット）の画面：左に立ち絵のプレビュー、右に一覧 */
+.look-screen .lk-wrap { display: flex; gap: 14px; align-items: flex-start; }
+.look-screen .lk-art { flex: 0 0 46%; text-align: center; }
+.look-screen .lk-side { flex: 1; min-width: 0; }
+.look-screen .lk-head { color: var(--gold); font-weight: bold; margin-bottom: 8px; }
+.look-screen .lk-row { border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; cursor: pointer; }
+.look-screen .lk-row.cur { border-color: var(--gold); background: rgba(240, 200, 90, 0.12); }
+.look-screen .lk-now { margin-left: 8px; font-size: 11px; color: #8fe0a8; border: 1px solid #8fe0a8; border-radius: 3px; padding: 0 4px; }
+.look-screen .lk-help { margin: 8px 0; }
+@media (max-width: 640px) { .look-screen .lk-wrap { flex-direction: column; align-items: stretch; } .look-screen .lk-art { flex: none; } }
