@@ -471,7 +471,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -753,7 +753,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -803,7 +803,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -2231,7 +2231,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -2242,7 +2242,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -4207,7 +4207,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -4714,7 +4714,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -4741,7 +4741,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -5304,7 +5304,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -7795,7 +7795,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -8077,7 +8077,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -8127,7 +8127,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -9555,7 +9555,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -9566,7 +9566,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -11531,7 +11531,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -12038,7 +12038,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -12065,7 +12065,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -12628,7 +12628,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -15119,7 +15119,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -15401,7 +15401,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -15451,7 +15451,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -16879,7 +16879,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -16890,7 +16890,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -18855,7 +18855,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -19362,7 +19362,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -19389,7 +19389,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -19952,7 +19952,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -22443,7 +22443,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -22725,7 +22725,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -22775,7 +22775,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -24203,7 +24203,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -24214,7 +24214,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -26179,7 +26179,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -26686,7 +26686,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -26713,7 +26713,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -27276,7 +27276,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -29767,7 +29767,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -30049,7 +30049,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -30099,7 +30099,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -31527,7 +31527,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -31538,7 +31538,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -33503,7 +33503,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -34010,7 +34010,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -34037,7 +34037,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -34600,7 +34600,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -37091,7 +37091,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -37373,7 +37373,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -37423,7 +37423,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -38851,7 +38851,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -38862,7 +38862,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -40827,7 +40827,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -41334,7 +41334,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -41361,7 +41361,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -41924,7 +41924,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -44415,7 +44415,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -44697,7 +44697,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -44747,7 +44747,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -46175,7 +46175,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -46186,7 +46186,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -48151,7 +48151,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -48658,7 +48658,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -48685,7 +48685,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -49248,7 +49248,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -51739,7 +51739,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -52021,7 +52021,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -52071,7 +52071,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -53499,7 +53499,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -53510,7 +53510,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -55475,7 +55475,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -55982,7 +55982,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -56009,7 +56009,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -56572,7 +56572,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -59063,7 +59063,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -59345,7 +59345,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -59395,7 +59395,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -60823,7 +60823,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -60834,7 +60834,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -62799,7 +62799,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -63306,7 +63306,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -63333,7 +63333,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -63896,7 +63896,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -66387,7 +66387,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -66669,7 +66669,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -66719,7 +66719,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -68147,7 +68147,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -68158,7 +68158,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -70123,7 +70123,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -70630,7 +70630,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -70657,7 +70657,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -71220,7 +71220,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -73711,7 +73711,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -73993,7 +73993,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -74043,7 +74043,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -75471,7 +75471,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -75482,7 +75482,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -77447,7 +77447,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -77954,7 +77954,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -77981,7 +77981,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -78544,7 +78544,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -81035,7 +81035,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -81317,7 +81317,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -81367,7 +81367,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -82795,7 +82795,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -82806,7 +82806,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -84771,7 +84771,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -85278,7 +85278,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -85305,7 +85305,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -85868,7 +85868,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -88359,7 +88359,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -88641,7 +88641,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -88691,7 +88691,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -90119,7 +90119,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -90130,7 +90130,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -92095,7 +92095,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -92602,7 +92602,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -92629,7 +92629,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -93192,7 +93192,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -95683,7 +95683,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -95965,7 +95965,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -96015,7 +96015,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -97443,7 +97443,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -97454,7 +97454,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -99419,7 +99419,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -99926,7 +99926,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -99953,7 +99953,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -100516,7 +100516,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -103007,7 +103007,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -103289,7 +103289,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -103339,7 +103339,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -104767,7 +104767,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -104778,7 +104778,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -106743,7 +106743,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -107250,7 +107250,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -107277,7 +107277,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -107840,7 +107840,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -110331,7 +110331,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -110613,7 +110613,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -110663,7 +110663,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -112091,7 +112091,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -112102,7 +112102,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -114067,7 +114067,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -114574,7 +114574,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -114601,7 +114601,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -115164,7 +115164,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",
@@ -117655,7 +117655,7 @@
      "slot": "weapon",
      "shape": "sword",
      "cls": "weapon_sword",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "thief",
@@ -117937,7 +117937,7 @@
      "slot": "shield",
      "shape": "shield",
      "cls": "shield",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "priest",
@@ -117987,7 +117987,7 @@
      "slot": "head",
      "shape": "helm",
      "cls": "head_helm",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "knight",
@@ -119415,7 +119415,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -119426,7 +119426,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -121391,7 +121391,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -121898,7 +121898,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -121925,7 +121925,7 @@
      "slot": "weapon",
      "shape": "axe",
      "cls": "weapon_axe",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "warrior",
       "merchant",
@@ -122488,7 +122488,7 @@
      "slot": "weapon",
      "shape": "staff",
      "cls": "weapon_staff",
-     "st": "missing",
+     "st": "ok",
      "jobs": [
       "mage",
       "priest",

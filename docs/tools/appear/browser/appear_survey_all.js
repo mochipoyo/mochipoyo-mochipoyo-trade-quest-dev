@@ -32,7 +32,7 @@ const PORT = process.env.PORT || 8894; const ROOT = path.resolve(__dirname, '../
           else if (!cls) st = 'spec';
           else if (!A) st = 'missing';
           else {
-            const ok = views.every((vk) => { const q = EA.pixelPlan({ id: c.id, job: j, equip: { [slot]: id } }, vk); return q.ok && q.mats.indexOf(cls) >= 0; });
+            const ok = views.every((vk) => { const q = EA.pixelPlan({ id: c.id, job: j, equip: { [slot]: id } }, vk); return q.ok && (q.mats.indexOf(cls) >= 0 || q.mats.indexOf('item:' + id) >= 0); });   // v9.10 用意された絵の品は、品ごとの重ね方 item:<装備ID> に解決する（これも「描く」）
             st = ok ? 'ok' : 'missing';
           }
           rec.items[id] = { slot, shape: L ? L.shape + (L.shape === 'hat' ? '/' + L.sub : '') : '?', cls, st, jobs: [j] };
