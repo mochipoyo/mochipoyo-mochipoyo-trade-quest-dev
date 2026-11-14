@@ -9,8 +9,8 @@ const { chromium, devices } = require('playwright'); const fs = require('fs');
 const PORT = process.env.PORT || 8894; const VIEW = process.env.VIEW || 'pc'; const OUT = process.env.OUT || '/home/claude/envwork/docs/appear/pixel/';
 const URL0 = `http://localhost:${PORT}/3d/index.html?nosw`;
 const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.log((ok ? '  OK  ' : '  NG  ') + m); };
-// v9.9 代表の仲間（PT=kyle｜seris）
-const PT = process.env.PT || 'kyle'; const PTN = { kyle: 'カイル', seris: 'セリス' }; const WHO = { hero: 'もち', [PT]: PTN[PT] }; const JOBN = { warrior: '戦士', hunter: '狩人', thief: '盗賊', mage: '魔法使い' }; const IDS = Object.keys(WHO);
+// v9.9 代表の仲間（PT=kyle｜seris）。v9.9.1 素体を直したオルド・ガネス（PT=ord｜ganes：加入時の職業のまま、装備できる品で試着・確定・頭の付け替え・はずす・キャンセル）
+const PT = process.env.PT || 'kyle'; const PTN = { kyle: 'カイル', seris: 'セリス', ord: 'オルド', ganes: 'ガネス' }; const WHO = { hero: 'もち', [PT]: PTN[PT] }; const JOBN = { warrior: '戦士', hunter: '狩人', thief: '盗賊', mage: '魔法使い' }; const IDS = Object.keys(WHO);
 const SLOT_LABEL = { weapon: '武器', armor: '鎧', shield: '盾', head: '頭' };
 let PG = null;
 (async () => {
@@ -26,7 +26,7 @@ let PG = null;
     const T = Win.toast; Win.toast = function (m) { (window.__toasts = window.__toasts || []).push(String(m)); return T.apply(this, arguments); };
     document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay);
     State.newGame('もち', 'warrior'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.settings.soundAsk93 = true; d.gold = 20000;
-    [['iron_armor', 1], ['steel_sword', 1], ['iron_shield', 1], ['iron_helm', 1], ['oak_staff', 1], ['robe', 1], ['wizard_hat', 1], ['dagger', 1]].forEach((x) => State.addItem(x[0], x[1])); State.joinCompanion(window.__PT);
+    [['iron_armor', 1], ['steel_sword', 1], ['iron_shield', 1], ['iron_helm', 1], ['oak_staff', 1], ['robe', 1], ['wizard_hat', 1], ['dagger', 1], ['leather_cap', 1], ['iron_axe', 1], ['short_bow', 1], ['iron_spear', 1]].filter((x) => ITEMS[x[0]]).forEach((x) => State.addItem(x[0], x[1])); State.joinCompanion(window.__PT);
     World.start(); const H = d.hero;
     return { party: d.party.slice(), job: H.job, equip: Object.assign({}, H.equip), can: { hunter: Actors.jobUnlocked(H, 'hunter', d.flags), thief: Actors.jobUnlocked(H, 'thief', d.flags), mage: Actors.jobUnlocked(H, 'mage', d.flags) },
       w: { hunter: JOBS.hunter.weapons, thief: JOBS.thief.weapons, warrior: JOBS.warrior.weapons, mage: JOBS.mage.weapons }, a: { mage: JOBS.mage.armors, thief: JOBS.thief.armors, hunter: JOBS.hunter.armors }, starter: STARTER_WEAPON.mage };
@@ -248,11 +248,11 @@ let PG = null;
   const kScene = async (key, name, opt) => {
     const m = await shotParty(key); const bt = opt.battle ? await battle(key) : null; const m2 = bt ? await shotParty(key, '_after') : null;
     rec[key] = { name, menu: m, battle: bt, after: m2 }; const mm = m[PT];
-    S(mm.st === 'ok' && (!opt.parts || mm.parts === opt.parts) && (!opt.has || opt.has.every((k) => (' ' + mm.parts + ' ').indexOf(' ' + k + ' ') >= 0)) && (!opt.not || opt.not.every((k) => (' ' + mm.parts + ' ').indexOf(' ' + k + ' ') < 0)), `［${name}］カイル：なかまの画面 ${mm.parts}（職業 ${mm.job}・装備 ${JSON.stringify(mm.equip)}）`);
+    S(mm.st === 'ok' && (!opt.parts || mm.parts === opt.parts) && (!opt.has || opt.has.every((k) => (' ' + mm.parts + ' ').indexOf(' ' + k + ' ') >= 0)) && (!opt.not || opt.not.every((k) => (' ' + mm.parts + ' ').indexOf(' ' + k + ' ') < 0)), `［${name}］${WHO[PT]}：なかまの画面 ${mm.parts}（職業 ${mm.job}・装備 ${JSON.stringify(mm.equip)}）`);
     if (bt) {
       const x = bt[PT], v = bt.victory && bt.victory[PT];
-      S(x && /dir:back/.test(x.model || '') && bt.px && bt.px.sig === x.ea && !bt.fell.length && (!opt.has || opt.has.every((k) => (' ' + bt.px.parts + ' ').indexOf(' ' + k + ' ') >= 0)) && (!opt.not || opt.not.every((k) => (' ' + bt.px.parts + ' ').indexOf(' ' + k + ' ') < 0)), `［${name}］カイル：戦闘の背面（${x && x.model}・部品 ${bt.px && bt.px.parts}）`);
-      S(v && /dir:front/.test(v.model || '') && bt.vpx && bt.vpx.sig === v.ea && (!opt.has || opt.has.every((k) => (' ' + bt.vpx.parts + ' ').indexOf(' ' + k + ' ') >= 0)), `［${name}］カイル：勝利の正面（${v && v.model}・部品 ${bt.vpx && bt.vpx.parts}）`);
+      S(x && /dir:back/.test(x.model || '') && bt.px && bt.px.sig === x.ea && !bt.fell.length && (!opt.has || opt.has.every((k) => (' ' + bt.px.parts + ' ').indexOf(' ' + k + ' ') >= 0)) && (!opt.not || opt.not.every((k) => (' ' + bt.px.parts + ' ').indexOf(' ' + k + ' ') < 0)), `［${name}］${WHO[PT]}：戦闘の背面（${x && x.model}・部品 ${bt.px && bt.px.parts}）`);
+      S(v && /dir:front/.test(v.model || '') && bt.vpx && bt.vpx.sig === v.ea && (!opt.has || opt.has.every((k) => (' ' + bt.vpx.parts + ' ').indexOf(' ' + k + ' ') >= 0)), `［${name}］${WHO[PT]}：勝利の正面（${v && v.model}・部品 ${bt.vpx && bt.vpx.parts}）`);
       S(m2[PT].parts === mm.parts && bt.ended, `［${name}］戦闘のあとのなかまの画面も同じ（${m2[PT].parts}）。戦闘の大きさ：背面 ${bt.rects && bt.rects[PT] ? bt.rects[PT].w + '×' + bt.rects[PT].h : '?'}（CSS の画素）`);
     }
     return rec[key];
@@ -288,6 +288,29 @@ let PG = null;
   S(N(i3, 'oak_staff') === N(i2, 'oak_staff') + 1 && !/weapon_staff/.test(ui1.head), `杖をはずす：絵（なかま・そうび画面・戦闘・勝利）から杖が消え、持ち物に戻る（所持数 ${N(i2, 'oak_staff')} → ${N(i3, 'oak_staff')}）`);
   const i4 = await kinv(); const cx = await cancelVia(K, '鎧'); const i5 = await kinv();
   S(cx.same && cx.back && cx.head0 === cx.head1 && JSON.stringify(i4) === JSON.stringify(i5), `キャンセル（そうび → 鎧 → 品の一覧で Esc）：装備・所持数・絵が変わらない（${cx.head1}）`);
+  } else if (PT === 'ord' || PT === 'ganes') {
+  // ---- v9.9.1 オルド・ガネス（元の絵の盾・剣／槌・やっとこを切り離した素体。加入時の職業のまま）----
+  const can = await p.evaluate((id) => { const A = State.actor(id); const c = (l) => l.filter((x) => ITEMS[x] && Actors.canEquip(A, x));
+    return { job: A.job, equip: Object.assign({}, A.equip), weapon: c(['steel_sword', 'iron_axe', 'iron_spear', 'dagger', 'oak_staff', 'short_bow']), shield: c(['iron_shield']), head: c(['iron_helm', 'leather_cap', 'wizard_hat']), armor: c(['iron_armor', 'robe']) }; }, PT);
+  const WP = { steel_sword: 'weapon_sword', iron_axe: 'weapon_axe', iron_spear: 'weapon_spear', dagger: 'weapon_dagger', oak_staff: 'weapon_staff_t', short_bow: 'weapon_bow' };
+  const HP = { iron_helm: 'head_helm_t', leather_cap: 'head_cap_t', wizard_hat: 'head_hat_t' };
+  // 頭の付け替え（兜 → 帽子など）は、この職業で装備できる頭が 2 種類以上あるときだけ（騎士・職人は兜だけ。頭の付け替えはセリスの手順で確かめる）
+  S(can.weapon.length && can.head.length, `${WHO[PT]}（${can.job}）：装備できる品（武器 ${can.weapon.join('・')}／盾 ${can.shield.join('・') || 'なし'}／頭 ${can.head.join('・')}／鎧 ${can.armor.join('・') || 'なし'}）。加入時の装備 ${JSON.stringify(can.equip)}`);
+  const w0 = can.weapon[0], h0 = can.head[0], h1 = can.head[1];
+  const tr = [await tryOn(K, 'weapon', w0)]; if (can.shield.length) tr.push(await tryOn(K, 'shield', can.shield[0])); tr.push(await tryOn(K, 'head', h0));
+  const need = [WP[w0], HP[h0]].concat(can.shield.length ? ['shield_gt'] : []); const last = tr[tr.length - 1].head;
+  S(tr.every((t) => t.tp && t.tp === t.head) && need.every((k) => last.indexOf(k) >= 0) && /hand/.test(last), `${WHO[PT]}：そうび画面で試着（選んだだけの枠の絵）＝ 確定のあとの絵（${tr.map((t) => t.tp).join('／')}）`);
+  await kScene(PT[0] + '0', `${WHO[PT]}：${w0}＋${can.shield[0] || '盾なし'}＋${h0}`, { battle: true, has: need.concat(['hand']) });
+  if (h1) {
+    const t2 = await tryOn(K, 'head', h1);
+    S(t2.tp === t2.head && t2.head.indexOf(HP[h1]) >= 0 && t2.head.indexOf(HP[h0]) < 0, `${WHO[PT]}：頭を ${h0} → ${h1} に付け替え（${t2.head}）`);
+    await kScene(PT[0] + '1', `${WHO[PT]}：頭を ${h1} に`, { battle: true, has: [HP[h1]], not: [HP[h0]] });
+  }
+  const i2 = await kinv(); const ui1 = await equipVia(K, { weapon: null }); const i3 = await kinv();
+  await kScene(PT[0] + '2', `${WHO[PT]}：武器をはずす`, { battle: true, not: [WP[w0]] });
+  S(N(i3, w0) === N(i2, w0) + 1 && ui1.head.indexOf(WP[w0]) < 0, `武器をはずす：絵（なかま・そうび画面・戦闘・勝利）から武器が消え、持ち物に戻る（所持数 ${N(i2, w0)} → ${N(i3, w0)}）`);
+  const i4 = await kinv(); const cx = await cancelVia(K, '頭'); const i5 = await kinv();
+  S(cx.same && cx.back && cx.head0 === cx.head1 && JSON.stringify(i4) === JSON.stringify(i5), `キャンセル（そうび → 頭 → 品の一覧で Esc）：装備・所持数・絵が変わらない（${cx.head1}）`);
   } else {
   // ---- v9.9 セリス（魔法使い。元の絵の杖・本を切り離した素体。帽子は元の絵のとんがり帽子）----
   const t1 = await tryOn(K, 'weapon', 'oak_staff'), t2 = await tryOn(K, 'armor', 'robe'), t3 = await tryOn(K, 'head', 'wizard_hat');

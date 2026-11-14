@@ -333,63 +333,63 @@
      "h": 293
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_helm.png?v=26d0e0d3",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_helm.png?v=c6b73412",
      "x": 24,
      "y": 24,
      "w": 262,
      "h": 284
     },
     "head_helm_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_helm_t.png?v=67007480",
-     "x": 131,
-     "y": 30,
-     "w": 68,
-     "h": 81
-    },
-    "head_helm_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_helm_f.png?v=fa6f607d",
+     "url": "assets/characters/equip-pixels/ganes/menu/head_helm_t.png?v=f98f2d84",
      "x": 130,
-     "y": 29,
-     "w": 71,
+     "y": 28,
+     "w": 74,
      "h": 83
     },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/ganes/menu/head_helm_f.png?v=695a2213",
+     "x": 129,
+     "y": 27,
+     "w": 77,
+     "h": 85
+    },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_cap.png?v=f37de566",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_cap.png?v=8f7dfece",
      "x": 24,
      "y": 24,
      "w": 262,
      "h": 284
     },
     "head_cap_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_cap_t.png?v=6b2fecfe",
+     "url": "assets/characters/equip-pixels/ganes/menu/head_cap_t.png?v=0d6c3c0e",
      "x": 132,
-     "y": 28,
-     "w": 67,
-     "h": 45
-    },
-    "head_cap_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_cap_f.png?v=c6dde9be",
-     "x": 131,
-     "y": 27,
-     "w": 69,
+     "y": 26,
+     "w": 71,
      "h": 47
     },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/ganes/menu/head_cap_f.png?v=a6079690",
+     "x": 131,
+     "y": 25,
+     "w": 73,
+     "h": 49
+    },
     "head_circlet_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_circlet_t.png?v=11b530ff",
-     "x": 132,
+     "url": "assets/characters/equip-pixels/ganes/menu/head_circlet_t.png?v=82f728eb",
+     "x": 131,
      "y": 61,
-     "w": 67,
+     "w": 73,
      "h": 12
     },
     "head_circlet_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_circlet_f.png?v=f21a3224",
-     "x": 131,
+     "url": "assets/characters/equip-pixels/ganes/menu/head_circlet_f.png?v=ec993f4a",
+     "x": 130,
      "y": 60,
-     "w": 69,
+     "w": 75,
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_hat.png?v=b8ad3342",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_hat.png?v=968a21e3",
      "x": 24,
      "y": 24,
      "w": 262,
@@ -452,18 +452,18 @@
      "h": 29
     },
     "head_hat_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_hat_t.png?v=c2b5cdc7",
-     "x": 119,
+     "url": "assets/characters/equip-pixels/ganes/menu/head_hat_t.png?v=fc34cd3a",
+     "x": 116,
      "y": 11,
-     "w": 93,
-     "h": 66
+     "w": 103,
+     "h": 67
     },
     "head_hat_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_hat_f.png?v=013f7e19",
-     "x": 118,
+     "url": "assets/characters/equip-pixels/ganes/menu/head_hat_f.png?v=f5f8daad",
+     "x": 115,
      "y": 10,
-     "w": 95,
-     "h": 68
+     "w": 105,
+     "h": 69
     }
    },
    "frame": {
@@ -585,63 +585,63 @@
      "h": 293
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_helm.png?v=26d0e0d3",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_helm.png?v=c6b73412",
      "x": 24,
      "y": 24,
      "w": 262,
      "h": 284
     },
     "head_helm_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_helm_t.png?v=67007480",
-     "x": 131,
-     "y": 30,
-     "w": 68,
-     "h": 81
-    },
-    "head_helm_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_helm_f.png?v=fa6f607d",
+     "url": "assets/characters/equip-pixels/ganes/menu/head_helm_t.png?v=f98f2d84",
      "x": 130,
-     "y": 29,
-     "w": 71,
+     "y": 28,
+     "w": 74,
      "h": 83
     },
+    "head_helm_f": {
+     "url": "assets/characters/equip-pixels/ganes/menu/head_helm_f.png?v=695a2213",
+     "x": 129,
+     "y": 27,
+     "w": 77,
+     "h": 85
+    },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_cap.png?v=f37de566",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_cap.png?v=8f7dfece",
      "x": 24,
      "y": 24,
      "w": 262,
      "h": 284
     },
     "head_cap_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_cap_t.png?v=6b2fecfe",
+     "url": "assets/characters/equip-pixels/ganes/menu/head_cap_t.png?v=0d6c3c0e",
      "x": 132,
-     "y": 28,
-     "w": 67,
-     "h": 45
-    },
-    "head_cap_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_cap_f.png?v=c6dde9be",
-     "x": 131,
-     "y": 27,
-     "w": 69,
+     "y": 26,
+     "w": 71,
      "h": 47
     },
+    "head_cap_f": {
+     "url": "assets/characters/equip-pixels/ganes/menu/head_cap_f.png?v=a6079690",
+     "x": 131,
+     "y": 25,
+     "w": 73,
+     "h": 49
+    },
     "head_circlet_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_circlet_t.png?v=11b530ff",
-     "x": 132,
+     "url": "assets/characters/equip-pixels/ganes/menu/head_circlet_t.png?v=82f728eb",
+     "x": 131,
      "y": 61,
-     "w": 67,
+     "w": 73,
      "h": 12
     },
     "head_circlet_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_circlet_f.png?v=f21a3224",
-     "x": 131,
+     "url": "assets/characters/equip-pixels/ganes/menu/head_circlet_f.png?v=ec993f4a",
+     "x": 130,
      "y": 60,
-     "w": 69,
+     "w": 75,
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/ganes/menu/base_hat.png?v=b8ad3342",
+     "url": "assets/characters/equip-pixels/ganes/menu/base_hat.png?v=968a21e3",
      "x": 24,
      "y": 24,
      "w": 262,
@@ -704,18 +704,18 @@
      "h": 29
     },
     "head_hat_t": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_hat_t.png?v=c2b5cdc7",
-     "x": 119,
+     "url": "assets/characters/equip-pixels/ganes/menu/head_hat_t.png?v=fc34cd3a",
+     "x": 116,
      "y": 11,
-     "w": 93,
-     "h": 66
+     "w": 103,
+     "h": 67
     },
     "head_hat_f": {
-     "url": "assets/characters/equip-pixels/ganes/menu/head_hat_f.png?v=013f7e19",
-     "x": 118,
+     "url": "assets/characters/equip-pixels/ganes/menu/head_hat_f.png?v=f5f8daad",
+     "x": 115,
      "y": 10,
-     "w": 95,
-     "h": 68
+     "w": 105,
+     "h": 69
     }
    }
   },

@@ -55,6 +55,10 @@ run "ブラウザ v9.8.9 仲間（カイル）の職業の服・装備（試着�
 run "ブラウザ v9.8.9 仲間（カイル）スマホ縦（390×664）" env VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
 run "ブラウザ v9.9 仲間（セリス：素体・帽子・兜・盾・重鎧、転職の持ち越し／外れる・試着・着脱・キャンセル・以前の版のセーブ）PC" env PT=seris VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
 run "ブラウザ v9.9 仲間（セリス）スマホ縦（390×664）" env PT=seris VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.9.1 仲間（オルド：盾・剣を切り離した素体、加入時の職業で武器・盾・兜の試着・確定・武器をはずす・キャンセル）PC" env PT=ord VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.9.1 仲間（オルド）スマホ縦（390×664）" env PT=ord VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.9.1 仲間（ガネス：槌・やっとこを切り離した素体、加入時の職業で武器・盾・兜の試着・確定・武器をはずす・キャンセル）PC" env PT=ganes VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.9.1 仲間（ガネス）スマホ縦（390×664）" env PT=ganes VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
 run "ブラウザ 別のサイト pixel 3d cors" env MODE=pixel KIND=3d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 3d nocors" env MODE=pixel KIND=3d XMODE=nocors XPORT=8896 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 2d cors" env MODE=pixel KIND=2d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
@@ -71,4 +75,5 @@ python3 docs/tools/appear/pixel_sheets_comp.py mina >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_comp.py herojob >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_comp.py mage >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_party.py >> "$LOG" 2>&1
+python3 docs/tools/appear/pixel_sheets_fix.py after >> "$LOG" 2>&1
 echo "--- まとめ" >> "$LOG"; echo "NG・失敗の行：$(grep -cE '^  NG  |終了コード|CRASH|FAIL' "$LOG")" >> "$LOG"
