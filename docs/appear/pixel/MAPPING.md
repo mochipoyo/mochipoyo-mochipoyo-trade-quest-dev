@@ -83,7 +83,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | head_circlet（hero） | 21 | —（変えない） | head_circlet_t（tint:main）、head_circlet_f |  |
 | item:knight_sword（hero） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（hero） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（hero） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（hero） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（hero） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（hero） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（hero） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（hero） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（hero） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（hero） | 20 | base_helm | art_helm_knight |  |
 | armor_light（lina） | 10 | —（変えない） | armor_light_t（tint:main） |  |
@@ -94,7 +98,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_heavy（lina） | 10 | —（変えない） | jf_cloth_t（tint:main・灰色の品は元の鎧の色）、hv_pl_t（tint:main・灰色の品は元の鎧の色）、hv_pl_f |  |
 | item:knight_sword（lina） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（lina） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（lina） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（lina） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（lina） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（lina） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（lina） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（lina） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（lina） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（lina） | 20 | base_helm | art_helm_knight |  |
 | armor_light（gald） | 10 | —（変えない） | armor_light_t（tint:main） |  |
@@ -107,7 +115,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_robe（gald） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
 | item:knight_sword（gald） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（gald） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（gald） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（gald） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（gald） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（gald） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（gald） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（gald） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（gald） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（gald） | 20 | base_helm | art_helm_knight |  |
 | shield（kyle） | 30 | —（変えない） | shield_f、shield_t（tint:main・灰色の品は塗らない）、shield_e |  |
@@ -117,7 +129,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_robe（kyle） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
 | item:knight_sword（kyle） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（kyle） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（kyle） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（kyle） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（kyle） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（kyle） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（kyle） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（kyle） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（kyle） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（kyle） | 20 | base_helm | art_helm_knight |  |
 | shield（kazuto） | 30 | —（変えない） | shield_f、shield_t（tint:main・灰色の品は塗らない）、shield_e |  |
@@ -127,7 +143,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_robe（kazuto） | 10 | —（変えない） | jf_x（消す）、jf_capehem_f、jf_cloth_t（tint:main）、jf_skirt_t（tint:main）、jf_skirt_f |  |
 | item:knight_sword（kazuto） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（kazuto） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（kazuto） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（kazuto） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（kazuto） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（kazuto） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（kazuto） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（kazuto） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（kazuto） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（kazuto） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（mina） | 40 | —（変えない） | weapon_sword | はい |
@@ -141,7 +161,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（mina） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（mina） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（mina） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（mina） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（mina） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（mina） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（mina） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（mina） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（mina） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（mina） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（mina） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（aster） | 40 | —（変えない） | weapon_sword | はい |
@@ -160,7 +184,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（aster） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（aster） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（aster） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（aster） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（aster） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（aster） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（aster） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（aster） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（aster） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（aster） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（aster） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（elna） | 40 | —（変えない） | weapon_sword | はい |
@@ -179,7 +207,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（elna） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（elna） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（elna） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（elna） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（elna） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（elna） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（elna） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（elna） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（elna） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（elna） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（elna） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（ganes） | 40 | —（変えない） | weapon_sword | はい |
@@ -198,7 +230,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（ganes） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（ganes） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（ganes） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（ganes） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（ganes） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（ganes） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（ganes） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（ganes） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（ganes） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（ganes） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（ganes） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（io） | 40 | —（変えない） | weapon_sword | はい |
@@ -217,7 +253,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（io） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（io） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（io） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（io） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（io） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（io） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（io） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（io） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（io） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（io） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（io） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（iris） | 40 | —（変えない） | weapon_sword | はい |
@@ -236,7 +276,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（iris） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（iris） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（iris） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（iris） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（iris） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（iris） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（iris） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（iris） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（iris） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（iris） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（iris） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（lucia） | 40 | —（変えない） | weapon_sword | はい |
@@ -255,7 +299,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（lucia） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（lucia） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（lucia） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（lucia） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（lucia） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（lucia） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（lucia） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（lucia） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（lucia） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（lucia） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（lucia） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（mochipoyo） | 40 | —（変えない） | weapon_sword | はい |
@@ -274,7 +322,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（mochipoyo） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（mochipoyo） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（mochipoyo） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（mochipoyo） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（mochipoyo） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（mochipoyo） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（mochipoyo） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（mochipoyo） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（mochipoyo） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（mochipoyo） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（mochipoyo） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（nagi） | 40 | —（変えない） | weapon_sword | はい |
@@ -293,7 +345,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（nagi） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（nagi） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（nagi） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（nagi） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（nagi） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（nagi） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（nagi） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（nagi） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（nagi） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（nagi） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（nagi） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（ord） | 40 | —（変えない） | weapon_sword | はい |
@@ -312,7 +368,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（ord） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（ord） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（ord） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（ord） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（ord） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（ord） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（ord） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（ord） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（ord） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（ord） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（ord） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（seris） | 40 | —（変えない） | weapon_sword | はい |
@@ -331,7 +391,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（seris） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（seris） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（seris） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（seris） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（seris） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（seris） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（seris） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（seris） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（seris） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（seris） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（seris） | 20 | base_helm | art_helm_knight |  |
 | weapon_sword（sophia） | 40 | —（変えない） | weapon_sword | はい |
@@ -350,7 +414,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | armor_light（sophia） | 10 | —（変えない） | jf_cloth_t（tint:main） |  |
 | item:knight_sword（sophia） | 40 | —（変えない） | art_sword_knight | はい |
 | item:sage_staff（sophia） | 40 | —（変えない） | art_staff_sage | はい |
-| item:battle_axe（sophia） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crater_axe（sophia） | 40 | —（変えない） | art_axe_battle | はい |
+| item:crash_axe（sophia） | 40 | —（変えない） | art_axe_battle | はい |
+| item:t68_dark_axe（sophia） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_garon_axe（sophia） | 40 | —（変えない） | art_axe_battle | はい |
+| item:bu_zarg_chainbreaker（sophia） | 40 | —（変えない） | art_axe_battle | はい |
 | item:knight_shield（sophia） | 30 | —（変えない） | art_shield_knight |  |
 | item:knight_helm（sophia） | 20 | base_helm | art_helm_knight |  |
 

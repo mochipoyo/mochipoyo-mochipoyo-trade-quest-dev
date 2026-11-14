@@ -19,7 +19,8 @@ OUTLINE = (24, 20, 30)
 DESIGNS = {
     'sword_knight': {'slot': 'weapon', 'cls': 'weapon_sword', 'items': ['knight_sword'], 'src': 'sword_knight.png'},
     'staff_sage': {'slot': 'weapon', 'cls': 'weapon_staff', 'items': ['sage_staff'], 'src': 'staff_sage.png', 'upright': True},
-    'axe_battle': {'slot': 'weapon', 'cls': 'weapon_axe', 'items': ['battle_axe'], 'src': 'axe_battle.png'},
+    # 戦斧の形（battleaxe）の品。「戦斧」そのもの（battle_axe）は、多くの確かめが今の形を前提にしているので、絵がそろって確かめをまとめて書き換えるときに替える
+    'axe_battle': {'slot': 'weapon', 'cls': 'weapon_axe', 'items': ['crater_axe', 'crash_axe', 't68_dark_axe', 'bu_garon_axe', 'bu_zarg_chainbreaker'], 'src': 'axe_battle.png'},
     'shield_knight': {'slot': 'shield', 'cls': 'shield', 'items': ['knight_shield'], 'src': 'shield_knight.png'},
     'helm_knight': {'slot': 'head', 'cls': 'head_helm', 'items': ['knight_helm'], 'src': 'helm_knight_front.png', 'src_back': 'helm_knight_back.png'},
 }

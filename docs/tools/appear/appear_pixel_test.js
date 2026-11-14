@@ -11,7 +11,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   console.log('== ' + (two ? '2D 版' : '3D 版と同じ読み込み') + '　読み込みのエラー ' + A.errors.length);
   T(A.errors.length === 0, '読み込みのエラーなし');
   const EA0 = w.EquipmentAppearance, I = w.ITEMS, PXM = w.EQUIP_PIXELS;
-  // v9.10 仕様の変更：絵を用意した品（騎士の剣・賢者の杖・戦斧・騎士の盾・騎士の兜）は、種類の重ね方（weapon_sword など）ではなく、品ごとの重ね方（item:<装備ID>・部品 art_<絵の名前>）に解決する。
+  // v9.10 仕様の変更：絵を用意した品（騎士の剣・賢者の杖・火口の戦斧など戦斧の形 5 品・騎士の盾・騎士の兜）は、種類の重ね方（weapon_sword など）ではなく、品ごとの重ね方（item:<装備ID>・部品 art_<絵の名前>）に解決する。
   //   以前の期待（種類の名前で書いた確かめ）はそのまま残し、品ごとの重ね方の名前を、その絵の種類の名前に読み替えて確かめる。品ごとの重ね方そのものは、下の「v9.10 絵の品」で確かめる
   const ART_CLS = { sword_knight: 'weapon_sword', staff_sage: 'weapon_staff', axe_battle: 'weapon_axe', shield_knight: 'shield', helm_knight: 'head_helm' };
   const artOf = (aid, cls) => { const m = /^item:/.test(cls) && PXM.actors[aid] && PXM.actors[aid].materials && PXM.actors[aid].materials[cls]; return m && m.art ? m.art : null; };
@@ -155,10 +155,10 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   }
   T(!tot.bad.length && !tot.missing && Object.keys(EXPECT_MISSING).length === 17 && Object.keys(EXPECT_MISSING).every((id) => PXM.actors[id]), `主人公＋仲間 ${Object.keys(EXPECT_MISSING).length - 1} 人 × ${w.JOB_LIST.length} 職業 × 装備できる品：外見に解決 ${tot.ok} 組・残った未対応（その部位だけ描かない）${tot.missing} 組・仕様で描かない（装飾品・こん棒・爪）${tot.spec} 組。未対応の一覧の外で解決しない組 ${tot.bad.length}` + (tot.bad.length ? '：' + tot.bad.slice(0, 5).join(' ') : ''));
   T(!jobBad.length, `職業の服：${Object.keys(EXPECT_MISSING).length} 人 × ${w.JOB_LIST.length} 職業、加入時の職業（主人公は戦士）は元の絵・ほかは 3 つの向きとも服の重ね絵に解決` + (jobBad.length ? '：' + jobBad.slice(0, 6).join(' ') : ''));
-  { const ARTI = { knight_sword: ['weapon', 'art_sword_knight'], sage_staff: ['weapon', 'art_staff_sage'], battle_axe: ['weapon', 'art_axe_battle'], knight_shield: ['shield', 'art_shield_knight'], knight_helm: ['head', 'art_helm_knight'] }; const bad = [];
+  { const ARTI = { knight_sword: ['weapon', 'art_sword_knight'], sage_staff: ['weapon', 'art_staff_sage'], crater_axe: ['weapon', 'art_axe_battle'], knight_shield: ['shield', 'art_shield_knight'], knight_helm: ['head', 'art_helm_knight'] }; const bad = [];
     Object.entries(PXM.actors).forEach(([aid, a]) => Object.keys(a.views).forEach((vk) => Object.entries(ARTI).forEach(([id, [slot, part]]) => { const q = EA0.pixelPlan({ id: aid, job: 'warrior', equip: { [slot]: id } }, vk); const m = a.materials && a.materials['item:' + id];
       if (!(q.ok && q.mats.indexOf('item:' + id) >= 0 && !q.skipped.length && m && m.art && m.layers.some((L) => L.part === part) && a.views[vk].parts[part] && (slot !== 'weapon' || m.hand))) bad.push(aid + '/' + vk + '/' + id); })));
-    T(!bad.length, 'v9.10 絵の品（騎士の剣・賢者の杖・戦斧・騎士の盾・騎士の兜）：17 人 × 3 つの向きで、品ごとの重ね方 item:<装備ID>（部品 art_*。武器は柄の上に手）に解決する' + (bad.length ? '（だめ：' + bad.slice(0, 6).join(' ') + '）' : '')); }
+    T(!bad.length, 'v9.10 絵の品（騎士の剣・賢者の杖・火口の戦斧・騎士の盾・騎士の兜）：17 人 × 3 つの向きで、品ごとの重ね方 item:<装備ID>（部品 art_*。武器は柄の上に手）に解決する' + (bad.length ? '（だめ：' + bad.slice(0, 6).join(' ') + '）' : '')); }
   const rb = EA.pixelPlan({ id: 'kyle', job: 'mage', equip: { armor: 'robe' } }, 'menu'); const rb2 = EA.pixelPlan({ id: 'hero', job: 'mage', equip: { armor: 'silk_robe' } }, 'back');
   T(rb.mats.join() === 'outfit:mage,armor_robe,armor_robe:over' && rb2.mats.join() === 'outfit:mage,armor_robe,armor_robe:over,outfit:mage:over', 'ローブの品は一着：職業の服の胴・袖（region body・sleeve）は描かず、品の袖（armor_robe:over）を手前に（カイル ' + rb.mats.join() + '／主人公の背面 ' + rb2.mats.join() + '。主人公の背面の outfit:mage:over はマントの裾だけ）');
   T(['knight', 'merchant', 'priest'].every((j) => PXM.actors.hero.jobs[j].like && PXM.actors.hero.jobs[j].pal && PXM.actors.hero.jobs[j].pal2) && PXM.actors.hero.jobs._robe.over.layers[0].region === 'sleeve', '職業の服は系統（_robe・_coat・_cape）の形を共有し、職業ごとの配色（pal・pal2）で塗る');

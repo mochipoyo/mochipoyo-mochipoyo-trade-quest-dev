@@ -240,7 +240,47 @@
    ],
    "hand": true
   },
-  "item:battle_axe": {
+  "item:crater_axe": {
+   "z": 40,
+   "art": "axe_battle",
+   "layers": [
+    {
+     "part": "art_axe_battle"
+    }
+   ],
+   "hand": true
+  },
+  "item:crash_axe": {
+   "z": 40,
+   "art": "axe_battle",
+   "layers": [
+    {
+     "part": "art_axe_battle"
+    }
+   ],
+   "hand": true
+  },
+  "item:t68_dark_axe": {
+   "z": 40,
+   "art": "axe_battle",
+   "layers": [
+    {
+     "part": "art_axe_battle"
+    }
+   ],
+   "hand": true
+  },
+  "item:bu_garon_axe": {
+   "z": 40,
+   "art": "axe_battle",
+   "layers": [
+    {
+     "part": "art_axe_battle"
+    }
+   ],
+   "hand": true
+  },
+  "item:bu_zarg_chainbreaker": {
    "z": 40,
    "art": "axe_battle",
    "layers": [

@@ -25,7 +25,7 @@
   },
   {
    "ok": true,
-   "m": "kyle［騎士の鎧・剣・盾（色のある品）］装備 {\"weapon\":\"knight_sword\",\"armor\":\"knight_armor\",\"shield\":\"knight_shield\"} → 部品：base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword"
+   "m": "kyle［騎士の鎧・剣・盾（色のある品）］装備 {\"weapon\":\"knight_sword\",\"armor\":\"knight_armor\",\"shield\":\"knight_shield\"} → 部品：base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand"
   },
   {
    "ok": true,
@@ -57,7 +57,7 @@
   },
   {
    "ok": true,
-   "m": "kyle：色のある品は品の色（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword／革の鎧・木の盾 base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword）"
+   "m": "kyle：色のある品は品の色、絵のある品は絵（v9.10 から騎士の盾は絵 art_shield_knight。以前の期待：shield_t）（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand／革の鎧・木の盾 base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword）"
   },
   {
    "ok": true,
@@ -121,7 +121,7 @@
   },
   {
    "ok": true,
-   "m": "kazuto［騎士の鎧・剣・盾（色のある品）］装備 {\"weapon\":\"knight_sword\",\"armor\":\"knight_armor\",\"shield\":\"knight_shield\"} → 部品：base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword"
+   "m": "kazuto［騎士の鎧・剣・盾（色のある品）］装備 {\"weapon\":\"knight_sword\",\"armor\":\"knight_armor\",\"shield\":\"knight_shield\"} → 部品：base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand"
   },
   {
    "ok": true,
@@ -153,7 +153,7 @@
   },
   {
    "ok": true,
-   "m": "kazuto：色のある品は品の色（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword／革の鎧 base_plain armor_shape_f armor_light_t weapon_axe hand）"
+   "m": "kazuto：色のある品は品の色、絵のある品は絵（v9.10 から騎士の盾は絵 art_shield_knight。以前の期待：shield_t）（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand／革の鎧 base_plain armor_shape_f armor_light_t weapon_axe hand）"
   },
   {
    "ok": true,
@@ -344,7 +344,7 @@
       "element": "none"
      },
      "st": "ok",
-     "parts": "base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword",
+     "parts": "base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand",
      "skipped": null,
      "bottom": 335.3,
      "cx": 460.4,
@@ -482,10 +482,9 @@
         "base_plain",
         "armor_shape_f",
         "armor_heavy_t",
-        "shield_f",
-        "shield_t",
-        "shield_e",
-        "weapon_sword"
+        "art_shield_knight",
+        "art_sword_knight",
+        "hand"
        ],
        "skipped": []
       },
@@ -600,10 +599,9 @@
         "base_plain",
         "armor_shape_f",
         "armor_heavy_t",
-        "shield_f",
-        "shield_t",
-        "shield_e",
-        "weapon_sword"
+        "art_shield_knight",
+        "art_sword_knight",
+        "hand"
        ],
        "skipped": []
       },
@@ -718,10 +716,9 @@
         "base_plain",
         "armor_shape_f",
         "armor_heavy_t",
-        "shield_f",
-        "shield_t",
-        "shield_e",
-        "weapon_sword"
+        "art_shield_knight",
+        "art_sword_knight",
+        "hand"
        ],
        "skipped": []
       },
@@ -928,7 +925,7 @@
       "element": "none"
      },
      "st": "ok",
-     "parts": "base_plain armor_shape_f armor_heavy_t shield_f shield_t shield_e weapon_sword",
+     "parts": "base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand",
      "skipped": null,
      "bottom": 335.3,
      "cx": 460.4,
@@ -1081,10 +1078,9 @@
         "base_plain",
         "armor_shape_f",
         "armor_heavy_t",
-        "shield_f",
-        "shield_t",
-        "shield_e",
-        "weapon_sword"
+        "art_shield_knight",
+        "art_sword_knight",
+        "hand"
        ],
        "skipped": []
       },
@@ -1212,10 +1208,9 @@
         "base_plain",
         "armor_shape_f",
         "armor_heavy_t",
-        "shield_f",
-        "shield_t",
-        "shield_e",
-        "weapon_sword"
+        "art_shield_knight",
+        "art_sword_knight",
+        "hand"
        ],
        "skipped": []
       },
@@ -1343,10 +1338,9 @@
         "base_plain",
         "armor_shape_f",
         "armor_heavy_t",
-        "shield_f",
-        "shield_t",
-        "shield_e",
-        "weapon_sword"
+        "art_shield_knight",
+        "art_sword_knight",
+        "hand"
        ],
        "skipped": []
       },

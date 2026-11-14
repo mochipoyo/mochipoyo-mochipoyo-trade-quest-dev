@@ -1,10 +1,10 @@
-v9.8 の確かめ 2026-11-14 18:32 版 5215d8aa22
+v9.8 の確かめ 2026-11-14 21:33 版 9f22d6fd48
 === appear/appear_pixel_test.js（jsdom・3D と同じ読み込み）
-結果：OK 74 / NG 0
+結果：OK 75 / NG 0
 === ブラウザ 主人公と仲間の装備できる品と、描く／描かない品（docs/appear/pixel/SURVEY.md）
 結果 survey：hero 描く 169 / 描かない 0　lina 描く 125 / 描かない 14　gald 描く 169 / 描かない 0　kyle 描く 157 / 描かない 0　kazuto 描く 169 / 描かない 0　mina 描く 121 / 描かない 0
 === appear/appear_pixel_test.js 2d
-結果：OK 74 / NG 0
+結果：OK 75 / NG 0
 === appear/appear_test.js（v9.6 の描き足し vector）
 結果：OK 28 / NG 0
 === appear/appear_test.js 2d（vector）
@@ -36,7 +36,7 @@ v9.8 の確かめ 2026-11-14 18:32 版 5215d8aa22
   OK  ［リーナ：＋革の帽子／ガルド：斧→剣＋盾］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 332px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 334px）
 結果 pixel ui comp pc：OK 70 / NG 0
 === ブラウザ 仲間 ふつうの手順 スマホ縦（390×664）
   OK  ［装備なし（加入したまま）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
@@ -47,16 +47,22 @@ v9.8 の確かめ 2026-11-14 18:32 版 5215d8aa22
   OK  ［リーナ：＋革の帽子／ガルド：斧→剣＋盾］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］リーナ：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［武器をはずす（2 人とも）］ガルド：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜303px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 317px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜301px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・lina 0%／0%・gald 0%／0%。装備の先のいちばん上 317px）
 結果 pixel ui comp phone：OK 70 / NG 0
 === ブラウザ 仲間 そうび画面（上の立ち絵・品の一覧の試着の枠）PC
 結果 pixel ui comp equip pc：OK 5 / NG 0
 === ブラウザ 仲間 そうび画面 スマホ縦
 結果 pixel ui comp equip phone：OK 5 / NG 0
 === ブラウザ v9.8.2 カイル・カズト 開発用の切り替え 3d
-結果 pixel knight 3d：OK 50 / NG 0
+  NG  kyle：色のある品は品の色（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand／革の鎧・木の盾 base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword）
+  NG  kazuto：色のある品は品の色（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand／革の鎧 base_plain armor_shape_f armor_light_t weapon_axe hand）
+結果 pixel knight 3d：OK 48 / NG 2
+（終了コード 1）
 === ブラウザ v9.8.2 カイル・カズト 開発用の切り替え 2d
-結果 pixel knight 2d：OK 50 / NG 0
+  NG  kyle：色のある品は品の色（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand／革の鎧・木の盾 base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword）
+  NG  kazuto：色のある品は品の色（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand／革の鎧 base_plain armor_shape_f armor_light_t weapon_axe hand）
+結果 pixel knight 2d：OK 48 / NG 2
+（終了コード 1）
 === ブラウザ v9.8.2 カイル・カズト ふつうの手順（確定・解除・キャンセル → 戦闘 → 勝利 → メニュー）PC
   OK  ［装備なし（加入したまま）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［装備なし（加入したまま）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
@@ -68,7 +74,7 @@ v9.8 の確かめ 2026-11-14 18:32 版 5215d8aa22
   OK  ［武器をはずす（2 人とも）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・12〜190px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 323px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail・12〜247px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 327px）
 結果 pixel ui knight pc：OK 86 / NG 0
 === ブラウザ v9.8.2 カイル・カズト ふつうの手順 スマホ縦（390×664）
   OK  ［装備なし（加入したまま）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
@@ -81,7 +87,7 @@ v9.8 の確かめ 2026-11-14 18:32 版 5215d8aa22
   OK  ［武器をはずす（2 人とも）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カイル：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
   OK  ［2 人とも：鉄の兜をかぶる（＋剣・盾）］カズト：勝利の結果の窓を出したまま → 窓は画面の上（rw-panel result-victory result-simple rs-top・4〜217px）。人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・装備の先まで 0%）
-  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜305px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 319px）
+  OK  レベルアップの勝利：詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more・4〜303px）を出したまま、人物に重ならない（人物の矩形／装備の先までの矩形に重なる割合：hero 0%／0%・kyle 0%／0%・kazuto 0%／0%。装備の先のいちばん上 324px）
 結果 pixel ui knight phone：OK 86 / NG 0
 === ブラウザ v9.8.2 カイル・カズト そうび画面 PC
 結果 pixel ui knight equip pc：OK 5 / NG 0
@@ -89,8 +95,8 @@ v9.8 の確かめ 2026-11-14 18:32 版 5215d8aa22
 結果 pixel ui knight equip phone：OK 5 / NG 0
 === ブラウザ v9.8.4 結果の窓：4 人編成・複数人のレベルアップ PC
   OK  ［2 人がレベルアップ（主人公・リーナ）］詳しい結果の窓（rw-panel result-victory rs-top rs-detail）。仲間の行 4・レベルアップ 2 人
-  OK  ［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail）。仲間の行 4・レベルアップ 4 人
-結果 result4 pc：OK 14 / NG 0
+  OK  ［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more）。仲間の行 4・レベルアップ 4 人
+結果 result4 pc：OK 18 / NG 0
 === ブラウザ v9.8.4 結果の窓：4 人編成・複数人のレベルアップ スマホ縦
   OK  ［2 人がレベルアップ（主人公・リーナ）］詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more）。仲間の行 4・レベルアップ 2 人
   OK  ［4 人ともレベルアップ］詳しい結果の窓（rw-panel result-victory rs-top rs-detail rs-more）。仲間の行 4・レベルアップ 4 人
@@ -150,7 +156,7 @@ v9.8 の確かめ 2026-11-14 18:32 版 5215d8aa22
   OK  ［魔法使い：杖をはずす（装備なし）］勝利の結果の窓を出したまま → 人物の矩形の 0% が窓に重なる（頭の上 30% は 0%・杖の先まで 0%）
 結果 pixel ui mage phone：OK 44 / NG 0
 === ブラウザ v9.8.9 全員の職業・装備ID の調べ（docs/appear/pixel/SURVEY_ALL.md）
-結果 survey all：hero 描く 287/足りない 0/仕様 99・服 21/21　lina 描く 287/足りない 0/仕様 99・服 21/21　kyle 描く 287/足りない 0/仕様 99・服 21/21　mina 描く 287/足りない 0/仕様 99・服 21/21　seris 描く 287/足りない 0/仕様 99・服 21/21　gald 描く 287/足りない 0/仕様 99・服 21/21　lucia 描く 287/足りない 0/仕様 99・服 21/21　elna 描く 287/足りない 0/仕様 99・服 21/21　nagi 描く 287/足りない 0/仕様 99・服 21/21　iris 描く 287/足りない 0/仕様 99・服 21/21　sophia 描く 287/足りない 0/仕様 99・服 21/21　io 描く 287/足りない 0/仕様 99・服 21/21　ganes 描く 287/足りない 0/仕様 99・服 21/21　aster 描く 287/足りない 0/仕様 99・服 21/21　ord 描く 287/足りない 0/仕様 99・服 21/21　kazuto 描く 287/足りない 0/仕様 99・服 21/21　mochipoyo 描く 287/足りない 0/仕様 99・服 21/21
+結果 survey all：hero 描く 278/足りない 9/仕様 99・服 21/21　lina 描く 278/足りない 9/仕様 99・服 21/21　kyle 描く 278/足りない 9/仕様 99・服 21/21　mina 描く 278/足りない 9/仕様 99・服 21/21　seris 描く 278/足りない 9/仕様 99・服 21/21　gald 描く 278/足りない 9/仕様 99・服 21/21　lucia 描く 278/足りない 9/仕様 99・服 21/21　elna 描く 278/足りない 9/仕様 99・服 21/21　nagi 描く 278/足りない 9/仕様 99・服 21/21　iris 描く 278/足りない 9/仕様 99・服 21/21　sophia 描く 278/足りない 9/仕様 99・服 21/21　io 描く 278/足りない 9/仕様 99・服 21/21　ganes 描く 278/足りない 9/仕様 99・服 21/21　aster 描く 278/足りない 9/仕様 99・服 21/21　ord 描く 278/足りない 9/仕様 99・服 21/21　kazuto 描く 278/足りない 9/仕様 99・服 21/21　mochipoyo 描く 278/足りない 9/仕様 99・服 21/21
 === ブラウザ v9.8.9 仲間（カイル）の職業の服・装備（試着・確定・プレビュー・転職・ローブ・杖の着脱・キャンセル・以前の版のセーブ）PC
 結果 pixel ui party kyle pc：OK 31 / NG 0
 === ブラウザ v9.8.9 仲間（カイル）スマホ縦（390×664）
@@ -166,9 +172,9 @@ v9.8 の確かめ 2026-11-14 18:32 版 5215d8aa22
 === ブラウザ v9.9.1 仲間（ガネス：槌・やっとこを切り離した素体、加入時の職業で武器・盾・兜の試着・確定・武器をはずす・キャンセル）PC
 結果 pixel ui party ganes pc：OK 21 / NG 0
 === ブラウザ v9.9.1 仲間（ガネス）スマホ縦（390×664）
-=== 続き 2026-11-14 20:32 版 5215d8aa22（一式の作業の時間の上限で止まったため、「ブラウザ v9.9.1 仲間（ガネス）スマホ縦」から続けた）
-=== ブラウザ v9.9.1 仲間（ガネス）スマホ縦（390×664）
 結果 pixel ui party ganes phone：OK 21 / NG 0
+=== ブラウザ 別のサイト pixel 3d cors
+=== 続き 2026-11-14 23:34 版 9f22d6fd48（一式の作業の時間の上限で止まったため、「ブラウザ 別のサイト pixel 3d cors」から続けた）
 === ブラウザ 別のサイト pixel 3d cors
 結果 xorigin pixel 3d cors：OK 5 / NG 0
 === ブラウザ 別のサイト pixel 3d nocors
@@ -199,21 +205,21 @@ compare_comp_phone.jpg (2436, 3298)
 pixel_comp_sets_hero.jpg (8270, 1824)
 pixel_comp_sets_lina.jpg (3692, 2142)
 pixel_comp_sets_gald.jpg (4978, 2188)
-compare_knight_pc.jpg (2281, 5058)
-compare_knight_phone.jpg (2459, 3298)
+compare_knight_pc.jpg (2277, 5058)
+compare_knight_phone.jpg (2463, 3298)
 pixel_comp_sets_kyle.jpg (5160, 2222)
 pixel_comp_sets_kazuto.jpg (6290, 2172)
 compare_mina_pc.jpg (2056, 3204)
 compare_mina_phone.jpg (2328, 2104)
 pixel_comp_sets_mina.jpg (3764, 2228)
-compare_herojob_pc.jpg (1976, 4440)
+compare_herojob_pc.jpg (1982, 4440)
 compare_herojob_phone.jpg (2272, 2900)
 compare_mage_pc.jpg (1980, 3204)
 compare_mage_phone.jpg (2272, 2104)
-lineup_mage_pc_css.png (1135, 441)
-lineup_mage_pc_x2.png (1520, 747)
+lineup_mage_pc_css.png (1135, 440)
+lineup_mage_pc_x2.png (1520, 746)
 lineup_mage_phone_css.png (1135, 378)
-lineup_mage_phone_x2.png (1520, 623)
+lineup_mage_phone_x2.png (1520, 624)
 pixel_comp_sets_hero.jpg (8270, 1824)
 lineup_party_pc_css.png (2414, 410)
 jobs_scaled_pc.png (3640, 5626)
@@ -226,4 +232,113 @@ all17_phone.png (870, 4543)
 fix_after_pc.png (2294, 2759)
 fix_after_phone.png (1517, 1957)
 --- まとめ
-NG・失敗の行：0
+NG・失敗の行：6
+--- やり直し（確かめの期待を v9.10 の仕様に書き換えたあと：騎士の盾は絵 art_shield_knight）2026-11-14 23:41
+=== ブラウザ v9.8.2 カイル・カズト 開発用の切り替え 3d（やり直し）
+  OK  kyle［装備なし］装備 {} → 部品：base_plain
+  OK  kyle［重鎧＋剣と盾］装備 {"weapon":"steel_sword","armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_sword
+  OK  kyle［重鎧＋槍と盾（剣から持ち替え）］装備 {"weapon":"iron_spear","armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_spear hand
+  OK  kyle［重鎧＋盾（武器をはずす）］装備 {"armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e
+  OK  kyle［騎士の鎧・剣・盾（色のある品）］装備 {"weapon":"knight_sword","armor":"knight_armor","shield":"knight_shield"} → 部品：base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand
+  OK  kyle［革の鎧（軽装）＋木の剣＋木の盾］装備 {"weapon":"wooden_sword","armor":"leather_armor","shield":"wooden_shield"} → 部品：base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword
+  OK  kyle［重鎧＋鉄の兜（v9.8.3 から描く）］装備 {"armor":"iron_armor","head":"iron_helm"} → 部品：base_helm armor_shape_f head_helm_t head_helm_f
+  OK  kyle：なかまの画面の足もと・左右の中心・1 ドットの大きさが 7 つとも同じ（335.3/460.4/1.1029）
+  OK  kyle：部品のない品は部位ごと（ は描かない。鎧は着替える：base_helm armor_shape_f head_helm_t head_helm_f）
+  OK  kyle：v9.8.3 鉄の兜を描く（兜用の素の絵＋兜：base_helm armor_shape_f head_helm_t head_helm_f）
+  OK  kyle：装備なし＝素の絵（鎧下・手ぶら）。重鎧＋剣と盾＝元の絵の装い（base_plain armor_shape_f shield_f shield_e weapon_sword）
+  OK  kyle：剣から槍に持ち替えても重鎧・盾はそのまま（base_plain armor_shape_f shield_f shield_e weapon_spear hand）。武器をはずすと手ぶら（base_plain armor_shape_f shield_f shield_e）
+  OK  kyle：色のある品は品の色、絵のある品は絵（v9.10 から騎士の盾は絵 art_shield_knight。以前の期待：shield_t）（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand／革の鎧・木の盾 base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword）
+  OK  kyle menu：7 つの組み合わせとも、合成の絵の大きさは同じ（314×361＝元の絵＋まわり 48）
+  OK  kyle menu：足もとの行が元の絵と同じ（310）：plain 310・sword 310・spear 310・unarmed 310・knight 310・light 310・nopart 310
+  OK  kyle menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kyle back：7 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）
+  OK  kyle back：足もとの行が元の絵と同じ（351）：plain 351・sword 351・spear 351・unarmed 351・knight 351・light 351・nopart 351
+  OK  kyle back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kyle front：7 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）
+  OK  kyle front：足もとの行が元の絵と同じ（349）：plain 349・sword 349・spear 349・unarmed 349・knight 349・light 349・nopart 349
+  OK  kyle front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kyle：勝利の正面の合成＝メニュー正面の合成を (51, 39) ずらしたもの（重鎧＋剣と盾：違うドット 0 / 57770）
+  OK  kazuto［装備なし］装備 {} → 部品：base_plain
+  OK  kazuto［重鎧＋剣と盾］装備 {"weapon":"steel_sword","armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_sword
+  OK  kazuto［重鎧＋戦斧（剣と盾から持ち替え）］装備 {"weapon":"battle_axe","armor":"iron_armor"} → 部品：base_plain armor_shape_f weapon_axe hand
+  OK  kazuto［重鎧＋槍と盾］装備 {"weapon":"iron_spear","armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_spear hand
+  OK  kazuto［重鎧＋盾（武器をはずす）］装備 {"armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e
+  OK  kazuto［騎士の鎧・剣・盾（色のある品）］装備 {"weapon":"knight_sword","armor":"knight_armor","shield":"knight_shield"} → 部品：base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand
+  OK  kazuto［革の鎧（軽装）＋手斧］装備 {"weapon":"hand_axe","armor":"leather_armor"} → 部品：base_plain armor_shape_f armor_light_t weapon_axe hand
+  OK  kazuto［重鎧＋鉄の兜（v9.8.3 から描く）］装備 {"armor":"iron_armor","head":"iron_helm"} → 部品：base_helm armor_shape_f head_helm_t head_helm_f
+  OK  kazuto：なかまの画面の足もと・左右の中心・1 ドットの大きさが 8 つとも同じ（335.3/460.4/1.0453）
+  OK  kazuto：部品のない品は部位ごと（ は描かない。鎧は着替える：base_helm armor_shape_f head_helm_t head_helm_f）
+  OK  kazuto：v9.8.3 鉄の兜を描く（兜用の素の絵＋兜：base_helm armor_shape_f head_helm_t head_helm_f）
+  OK  kazuto：装備なし＝素の絵（鎧下・手ぶら）。重鎧＋剣と盾＝元の絵の装い（base_plain armor_shape_f shield_f shield_e weapon_sword）
+  OK  kazuto：剣から斧に持ち替えても重鎧はそのまま（base_plain armor_shape_f weapon_axe hand）。武器をはずすと手ぶら（base_plain armor_shape_f shield_f shield_e）
+  OK  kazuto：色のある品は品の色、絵のある品は絵（v9.10 から騎士の盾は絵 art_shield_knight。以前の期待：shield_t）（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand／革の鎧 base_plain armor_shape_f armor_light_t weapon_axe hand）
+  OK  kazuto menu：8 つの組み合わせとも、合成の絵の大きさは同じ（345×354＝元の絵＋まわり 48）
+  OK  kazuto menu：足もとの行が元の絵と同じ（305）：plain 305・sword 305・axe 305・spear 305・unarmed 305・knight 305・light 305・nopart 305
+  OK  kazuto menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・axe 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kazuto back：8 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）
+  OK  kazuto back：足もとの行が元の絵と同じ（351）：plain 351・sword 351・axe 351・spear 351・unarmed 351・knight 351・light 351・nopart 351
+  OK  kazuto back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・axe 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kazuto front：8 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）
+  OK  kazuto front：足もとの行が元の絵と同じ（351）：plain 351・sword 351・axe 351・spear 351・unarmed 351・knight 351・light 351・nopart 351
+  OK  kazuto front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・axe 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kazuto：勝利の正面の合成＝メニュー正面の合成を (40, 46) ずらしたもの（重鎧＋剣と盾：違うドット 0 / 64242）
+  OK  横向き（左右）は従来の絵。メニューは本人の立ち絵（menu）。セーブに外見を書かない
+  OK  ページのエラーなし
+  OK  読み込みの失敗（404 など）なし
+結果 pixel knight 3d：OK 50 / NG 0
+（終了コード 0）
+=== ブラウザ v9.8.2 カイル・カズト 開発用の切り替え 2d（やり直し）
+  OK  kyle［装備なし］装備 {} → 部品：base_plain
+  OK  kyle［重鎧＋剣と盾］装備 {"weapon":"steel_sword","armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_sword
+  OK  kyle［重鎧＋槍と盾（剣から持ち替え）］装備 {"weapon":"iron_spear","armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_spear hand
+  OK  kyle［重鎧＋盾（武器をはずす）］装備 {"armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e
+  OK  kyle［騎士の鎧・剣・盾（色のある品）］装備 {"weapon":"knight_sword","armor":"knight_armor","shield":"knight_shield"} → 部品：base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand
+  OK  kyle［革の鎧（軽装）＋木の剣＋木の盾］装備 {"weapon":"wooden_sword","armor":"leather_armor","shield":"wooden_shield"} → 部品：base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword
+  OK  kyle［重鎧＋鉄の兜（v9.8.3 から描く）］装備 {"armor":"iron_armor","head":"iron_helm"} → 部品：base_helm armor_shape_f head_helm_t head_helm_f
+  OK  kyle：なかまの画面の足もと・左右の中心・1 ドットの大きさが 7 つとも同じ（335.3/460.4/1.1029）
+  OK  kyle：部品のない品は部位ごと（ は描かない。鎧は着替える：base_helm armor_shape_f head_helm_t head_helm_f）
+  OK  kyle：v9.8.3 鉄の兜を描く（兜用の素の絵＋兜：base_helm armor_shape_f head_helm_t head_helm_f）
+  OK  kyle：装備なし＝素の絵（鎧下・手ぶら）。重鎧＋剣と盾＝元の絵の装い（base_plain armor_shape_f shield_f shield_e weapon_sword）
+  OK  kyle：剣から槍に持ち替えても重鎧・盾はそのまま（base_plain armor_shape_f shield_f shield_e weapon_spear hand）。武器をはずすと手ぶら（base_plain armor_shape_f shield_f shield_e）
+  OK  kyle：色のある品は品の色、絵のある品は絵（v9.10 から騎士の盾は絵 art_shield_knight。以前の期待：shield_t）（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand／革の鎧・木の盾 base_plain armor_shape_f armor_light_t shield_f shield_t shield_e weapon_sword）
+  OK  kyle menu：7 つの組み合わせとも、合成の絵の大きさは同じ（314×361＝元の絵＋まわり 48）
+  OK  kyle menu：足もとの行が元の絵と同じ（310）：plain 310・sword 310・spear 310・unarmed 310・knight 310・light 310・nopart 310
+  OK  kyle menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kyle back：7 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）
+  OK  kyle back：足もとの行が元の絵と同じ（351）：plain 351・sword 351・spear 351・unarmed 351・knight 351・light 351・nopart 351
+  OK  kyle back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kyle front：7 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）
+  OK  kyle front：足もとの行が元の絵と同じ（349）：plain 349・sword 349・spear 349・unarmed 349・knight 349・light 349・nopart 349
+  OK  kyle front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kyle：勝利の正面の合成＝メニュー正面の合成を (51, 39) ずらしたもの（重鎧＋剣と盾：違うドット 0 / 57770）
+  OK  kazuto［装備なし］装備 {} → 部品：base_plain
+  OK  kazuto［重鎧＋剣と盾］装備 {"weapon":"steel_sword","armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_sword
+  OK  kazuto［重鎧＋戦斧（剣と盾から持ち替え）］装備 {"weapon":"battle_axe","armor":"iron_armor"} → 部品：base_plain armor_shape_f weapon_axe hand
+  OK  kazuto［重鎧＋槍と盾］装備 {"weapon":"iron_spear","armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e weapon_spear hand
+  OK  kazuto［重鎧＋盾（武器をはずす）］装備 {"armor":"iron_armor","shield":"iron_shield"} → 部品：base_plain armor_shape_f shield_f shield_e
+  OK  kazuto［騎士の鎧・剣・盾（色のある品）］装備 {"weapon":"knight_sword","armor":"knight_armor","shield":"knight_shield"} → 部品：base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand
+  OK  kazuto［革の鎧（軽装）＋手斧］装備 {"weapon":"hand_axe","armor":"leather_armor"} → 部品：base_plain armor_shape_f armor_light_t weapon_axe hand
+  OK  kazuto［重鎧＋鉄の兜（v9.8.3 から描く）］装備 {"armor":"iron_armor","head":"iron_helm"} → 部品：base_helm armor_shape_f head_helm_t head_helm_f
+  OK  kazuto：なかまの画面の足もと・左右の中心・1 ドットの大きさが 8 つとも同じ（335.3/460.4/1.0453）
+  OK  kazuto：部品のない品は部位ごと（ は描かない。鎧は着替える：base_helm armor_shape_f head_helm_t head_helm_f）
+  OK  kazuto：v9.8.3 鉄の兜を描く（兜用の素の絵＋兜：base_helm armor_shape_f head_helm_t head_helm_f）
+  OK  kazuto：装備なし＝素の絵（鎧下・手ぶら）。重鎧＋剣と盾＝元の絵の装い（base_plain armor_shape_f shield_f shield_e weapon_sword）
+  OK  kazuto：剣から斧に持ち替えても重鎧はそのまま（base_plain armor_shape_f weapon_axe hand）。武器をはずすと手ぶら（base_plain armor_shape_f shield_f shield_e）
+  OK  kazuto：色のある品は品の色、絵のある品は絵（v9.10 から騎士の盾は絵 art_shield_knight。以前の期待：shield_t）（騎士の鎧・盾 base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand／革の鎧 base_plain armor_shape_f armor_light_t weapon_axe hand）
+  OK  kazuto menu：8 つの組み合わせとも、合成の絵の大きさは同じ（345×354＝元の絵＋まわり 48）
+  OK  kazuto menu：足もとの行が元の絵と同じ（305）：plain 305・sword 305・axe 305・spear 305・unarmed 305・knight 305・light 305・nopart 305
+  OK  kazuto menu：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・axe 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kazuto back：8 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）
+  OK  kazuto back：足もとの行が元の絵と同じ（351）：plain 351・sword 351・axe 351・spear 351・unarmed 351・knight 351・light 351・nopart 351
+  OK  kazuto back：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・axe 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kazuto front：8 つの組み合わせとも、合成の絵の大きさは同じ（416×416＝元の絵＋まわり 48）
+  OK  kazuto front：足もとの行が元の絵と同じ（351）：plain 351・sword 351・axe 351・spear 351・unarmed 351・knight 351・light 351・nopart 351
+  OK  kazuto front：武器を持たない組み合わせに、元の武器のドットが残っていない（plain 0・sword 0・axe 0・spear 0・unarmed 0・knight 0・light 0・nopart 0。鎧・法衣の部品の輪郭と同じ色のドットは鎧のもの）
+  OK  kazuto：勝利の正面の合成＝メニュー正面の合成を (40, 46) ずらしたもの（重鎧＋剣と盾：違うドット 0 / 64242）
+  OK  横向き（左右）は従来の絵。メニューは本人の立ち絵（menu）。セーブに外見を書かない
+  OK  ページのエラーなし
+  OK  読み込みの失敗（404 など）なし
+結果 pixel knight 2d：OK 50 / NG 0
+（終了コード 0）
+--- まとめ（やり直しのあと）
+NG・失敗の行：0（上の 6 行＝カイル・カズトの開発用の切り替え 3d・2d の NG 4 行と終了コード 2 行は、期待を書き換える前のもの。やり直しは 3d・2d とも NG 0）

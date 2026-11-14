@@ -101,7 +101,7 @@
   },
   {
    "ok": true,
-   "m": "gald［騎士の鎧・剣・盾（色のある品）］装備 {\"weapon\":\"knight_sword\",\"armor\":\"knight_armor\",\"shield\":\"knight_shield\"} → 部品：base_plain armor_shape_f armor_heavy_t shield_t shield_f weapon_sword hand"
+   "m": "gald［騎士の鎧・剣・盾（色のある品）］装備 {\"weapon\":\"knight_sword\",\"armor\":\"knight_armor\",\"shield\":\"knight_shield\"} → 部品：base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand"
   },
   {
    "ok": true,
@@ -786,7 +786,7 @@
       "element": "none"
      },
      "st": "ok",
-     "parts": "base_plain armor_shape_f armor_heavy_t shield_t shield_f weapon_sword hand",
+     "parts": "base_plain armor_shape_f armor_heavy_t art_shield_knight art_sword_knight hand",
      "skipped": null,
      "bottom": 335.3,
      "cx": 460.4,
@@ -923,9 +923,8 @@
         "base_plain",
         "armor_shape_f",
         "armor_heavy_t",
-        "shield_t",
-        "shield_f",
-        "weapon_sword",
+        "art_shield_knight",
+        "art_sword_knight",
         "hand"
        ],
        "skipped": []
@@ -1037,9 +1036,8 @@
         "base_plain",
         "armor_shape_f",
         "armor_heavy_t",
-        "shield_t",
-        "shield_f",
-        "weapon_sword",
+        "art_shield_knight",
+        "art_sword_knight",
         "hand"
        ],
        "skipped": []
@@ -1151,9 +1149,8 @@
         "base_plain",
         "armor_shape_f",
         "armor_heavy_t",
-        "shield_t",
-        "shield_f",
-        "weapon_sword",
+        "art_shield_knight",
+        "art_sword_knight",
         "hand"
        ],
        "skipped": []

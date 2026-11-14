@@ -13,7 +13,7 @@
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 4〜306px。主人公 上端 326px（すき間 20px・重なり 0%）・カイル 上端 336px（すき間 30px・重なり 0%）・カズト 上端 333px（すき間 27px・重なり 0%）・リーナ 上端 335px（すき間 29px・重なり 0%）"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 4〜310px。主人公 上端 326px（すき間 16px・重なり 0%）・カイル 上端 336px（すき間 26px・重なり 0%）・カズト 上端 333px（すき間 23px・重なり 0%）・リーナ 上端 335px（すき間 25px・重なり 0%）"
   },
   {
    "ok": true,
@@ -21,19 +21,19 @@
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］「次へ」が窓と画面の中に見える（253〜297px・高さ 44px。窓の左右 12〜378／画面の幅 390）"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］「次へ」が窓と画面の中に見える（257〜301px・高さ 44px。窓の左右 12〜378／画面の幅 390）"
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］詳細が欄に入りきらない（欄 124px／中身 363px）→「つづきあり」の印が出る"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］詳細が欄に入りきらない（欄 128px／中身 363px）→「つづきあり」の印が出る"
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］タッチのドラッグで詳細がスクロールする（位置 0 → 59）"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］タッチのドラッグで詳細がスクロールする（位置 0 → 62）"
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］↓ キーでいちばん下まで行ける（位置 223＋欄 140＝中身 363）。いちばん下では「つづきあり」の印が消える"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］↓ キーでいちばん下まで行ける（位置 219＋欄 144＝中身 363）。いちばん下では「つづきあり」の印が消える"
   },
   {
    "ok": true,
@@ -53,7 +53,7 @@
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 4〜308px。主人公 上端 326px（すき間 18px・重なり 0%）・カイル 上端 336px（すき間 28px・重なり 0%）・カズト 上端 333px（すき間 25px・重なり 0%）・リーナ 上端 335px（すき間 27px・重なり 0%）"
+   "m": "［4 人ともレベルアップ］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 4〜310px。主人公 上端 326px（すき間 16px・重なり 0%）・カイル 上端 336px（すき間 26px・重なり 0%）・カズト 上端 333px（すき間 23px・重なり 0%）・リーナ 上端 335px（すき間 25px・重なり 0%）"
   },
   {
    "ok": true,
@@ -61,19 +61,19 @@
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］「次へ」が窓と画面の中に見える（255〜299px・高さ 44px。窓の左右 12〜378／画面の幅 390）"
+   "m": "［4 人ともレベルアップ］「次へ」が窓と画面の中に見える（257〜301px・高さ 44px。窓の左右 12〜378／画面の幅 390）"
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］詳細が欄に入りきらない（欄 126px／中身 401px）→「つづきあり」の印が出る"
+   "m": "［4 人ともレベルアップ］詳細が欄に入りきらない（欄 128px／中身 401px）→「つづきあり」の印が出る"
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］タッチのドラッグで詳細がスクロールする（位置 0 → 61）"
+   "m": "［4 人ともレベルアップ］タッチのドラッグで詳細がスクロールする（位置 0 → 62）"
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］↓ キーでいちばん下まで行ける（位置 259＋欄 142＝中身 401）。いちばん下では「つづきあり」の印が消える"
+   "m": "［4 人ともレベルアップ］↓ キーでいちばん下まで行ける（位置 257＋欄 144＝中身 401）。いちばん下では「つづきあり」の印が消える"
   },
   {
    "ok": true,
@@ -98,7 +98,7 @@
    "first": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 306,
+    "bottom": 310,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -111,18 +111,18 @@
     },
     "scroll": {
      "top": 0,
-     "h": 124,
+     "h": 128,
      "all": 363,
      "x": 195,
-     "y": 171,
+     "y": 173,
      "yTop": 109,
-     "yBot": 234
+     "yBot": 238
     },
     "close": {
      "x": 195,
-     "y": 275,
-     "top": 253,
-     "bottom": 297,
+     "y": 279,
+     "top": 257,
+     "bottom": 301,
      "h": 44,
      "in": true
     },
@@ -137,7 +137,7 @@
       "left": 133,
       "right": 184,
       "covered": 0,
-      "gap": 20,
+      "gap": 16,
       "clip": false,
       "front": true,
       "ea": true
@@ -148,7 +148,7 @@
       "left": 187,
       "right": 255,
       "covered": 0,
-      "gap": 30,
+      "gap": 26,
       "clip": false,
       "front": true,
       "ea": true
@@ -159,7 +159,7 @@
       "left": 252,
       "right": 324,
       "covered": 0,
-      "gap": 27,
+      "gap": 23,
       "clip": false,
       "front": true,
       "ea": true
@@ -170,7 +170,7 @@
       "left": 317,
       "right": 375,
       "covered": 0,
-      "gap": 29,
+      "gap": 25,
       "clip": false,
       "front": true,
       "ea": true
@@ -180,7 +180,7 @@
    "wheel": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 306,
+    "bottom": 310,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -192,19 +192,19 @@
      "right": 390
     },
     "scroll": {
-     "top": 59,
-     "h": 124,
+     "top": 62,
+     "h": 128,
      "all": 363,
      "x": 195,
-     "y": 171,
+     "y": 173,
      "yTop": 109,
-     "yBot": 234
+     "yBot": 238
     },
     "close": {
      "x": 195,
-     "y": 275,
-     "top": 253,
-     "bottom": 297,
+     "y": 279,
+     "top": 257,
+     "bottom": 301,
      "h": 44,
      "in": true
     },
@@ -219,7 +219,7 @@
       "left": 133,
       "right": 185,
       "covered": 0,
-      "gap": 21,
+      "gap": 17,
       "clip": false,
       "front": true,
       "ea": true
@@ -228,9 +228,9 @@
       "top": 336,
       "bottom": 408,
       "left": 188,
-      "right": 256,
+      "right": 255,
       "covered": 0,
-      "gap": 30,
+      "gap": 26,
       "clip": false,
       "front": true,
       "ea": true
@@ -241,7 +241,7 @@
       "left": 253,
       "right": 325,
       "covered": 0,
-      "gap": 27,
+      "gap": 23,
       "clip": false,
       "front": true,
       "ea": true
@@ -252,7 +252,7 @@
       "left": 317,
       "right": 376,
       "covered": 0,
-      "gap": 29,
+      "gap": 25,
       "clip": false,
       "front": true,
       "ea": true
@@ -262,7 +262,7 @@
    "bottom": {
     "cls": "rw-panel result-victory rs-top rs-detail",
     "top": 4,
-    "bottom": 306,
+    "bottom": 310,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -274,19 +274,19 @@
      "right": 390
     },
     "scroll": {
-     "top": 223,
-     "h": 140,
+     "top": 219,
+     "h": 144,
      "all": 363,
      "x": 195,
-     "y": 179,
+     "y": 181,
      "yTop": 109,
-     "yBot": 249
+     "yBot": 253
     },
     "close": {
      "x": 195,
-     "y": 275,
-     "top": 253,
-     "bottom": 297,
+     "y": 279,
+     "top": 257,
+     "bottom": 301,
      "h": 44,
      "in": true
     },
@@ -299,9 +299,9 @@
       "top": 327,
       "bottom": 406,
       "left": 133,
-      "right": 184,
+      "right": 185,
       "covered": 0,
-      "gap": 21,
+      "gap": 17,
       "clip": false,
       "front": true,
       "ea": true
@@ -312,7 +312,7 @@
       "left": 188,
       "right": 256,
       "covered": 0,
-      "gap": 30,
+      "gap": 26,
       "clip": false,
       "front": true,
       "ea": true
@@ -323,7 +323,7 @@
       "left": 253,
       "right": 325,
       "covered": 0,
-      "gap": 27,
+      "gap": 23,
       "clip": false,
       "front": true,
       "ea": true
@@ -332,9 +332,9 @@
       "top": 334,
       "bottom": 405,
       "left": 317,
-      "right": 375,
+      "right": 376,
       "covered": 0,
-      "gap": 28,
+      "gap": 24,
       "clip": false,
       "front": true,
       "ea": true
@@ -344,7 +344,7 @@
    "back": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 306,
+    "bottom": 310,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -357,18 +357,18 @@
     },
     "scroll": {
      "top": 0,
-     "h": 124,
+     "h": 128,
      "all": 363,
      "x": 195,
-     "y": 171,
+     "y": 173,
      "yTop": 109,
-     "yBot": 234
+     "yBot": 238
     },
     "close": {
      "x": 195,
-     "y": 275,
-     "top": 253,
-     "bottom": 297,
+     "y": 279,
+     "top": 257,
+     "bottom": 301,
      "h": 44,
      "in": true
     },
@@ -383,7 +383,7 @@
       "left": 133,
       "right": 184,
       "covered": 0,
-      "gap": 21,
+      "gap": 17,
       "clip": false,
       "front": true,
       "ea": true
@@ -394,7 +394,7 @@
       "left": 188,
       "right": 255,
       "covered": 0,
-      "gap": 30,
+      "gap": 26,
       "clip": false,
       "front": true,
       "ea": true
@@ -405,18 +405,18 @@
       "left": 252,
       "right": 325,
       "covered": 0,
-      "gap": 27,
+      "gap": 23,
       "clip": false,
       "front": true,
       "ea": true
      },
      "lina": {
-      "top": 335,
+      "top": 334,
       "bottom": 405,
       "left": 317,
       "right": 375,
       "covered": 0,
-      "gap": 29,
+      "gap": 24,
       "clip": false,
       "front": true,
       "ea": true
@@ -433,7 +433,7 @@
    "first": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 308,
+    "bottom": 310,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -446,18 +446,18 @@
     },
     "scroll": {
      "top": 0,
-     "h": 126,
+     "h": 128,
      "all": 401,
      "x": 195,
-     "y": 172,
+     "y": 173,
      "yTop": 109,
-     "yBot": 236
+     "yBot": 238
     },
     "close": {
      "x": 195,
-     "y": 277,
-     "top": 255,
-     "bottom": 299,
+     "y": 279,
+     "top": 257,
+     "bottom": 301,
      "h": 44,
      "in": true
     },
@@ -472,7 +472,7 @@
       "left": 133,
       "right": 184,
       "covered": 0,
-      "gap": 18,
+      "gap": 16,
       "clip": false,
       "front": true,
       "ea": true
@@ -483,7 +483,7 @@
       "left": 187,
       "right": 255,
       "covered": 0,
-      "gap": 28,
+      "gap": 26,
       "clip": false,
       "front": true,
       "ea": true
@@ -494,7 +494,7 @@
       "left": 252,
       "right": 324,
       "covered": 0,
-      "gap": 25,
+      "gap": 23,
       "clip": false,
       "front": true,
       "ea": true
@@ -505,7 +505,7 @@
       "left": 317,
       "right": 375,
       "covered": 0,
-      "gap": 27,
+      "gap": 25,
       "clip": false,
       "front": true,
       "ea": true
@@ -515,7 +515,7 @@
    "wheel": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 308,
+    "bottom": 310,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -527,19 +527,19 @@
      "right": 390
     },
     "scroll": {
-     "top": 61,
-     "h": 126,
+     "top": 62,
+     "h": 128,
      "all": 401,
      "x": 195,
-     "y": 172,
+     "y": 173,
      "yTop": 109,
-     "yBot": 236
+     "yBot": 238
     },
     "close": {
      "x": 195,
-     "y": 277,
-     "top": 255,
-     "bottom": 299,
+     "y": 279,
+     "top": 257,
+     "bottom": 301,
      "h": 44,
      "in": true
     },
@@ -554,7 +554,7 @@
       "left": 133,
       "right": 185,
       "covered": 0,
-      "gap": 19,
+      "gap": 17,
       "clip": false,
       "front": true,
       "ea": true
@@ -565,7 +565,7 @@
       "left": 188,
       "right": 255,
       "covered": 0,
-      "gap": 28,
+      "gap": 26,
       "clip": false,
       "front": true,
       "ea": true
@@ -576,7 +576,7 @@
       "left": 253,
       "right": 325,
       "covered": 0,
-      "gap": 25,
+      "gap": 23,
       "clip": false,
       "front": true,
       "ea": true
@@ -587,7 +587,7 @@
       "left": 317,
       "right": 376,
       "covered": 0,
-      "gap": 27,
+      "gap": 25,
       "clip": false,
       "front": true,
       "ea": true
@@ -597,7 +597,7 @@
    "bottom": {
     "cls": "rw-panel result-victory rs-top rs-detail",
     "top": 4,
-    "bottom": 308,
+    "bottom": 310,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -609,19 +609,19 @@
      "right": 390
     },
     "scroll": {
-     "top": 259,
-     "h": 142,
+     "top": 257,
+     "h": 144,
      "all": 401,
      "x": 195,
-     "y": 180,
+     "y": 181,
      "yTop": 109,
-     "yBot": 251
+     "yBot": 253
     },
     "close": {
      "x": 195,
-     "y": 277,
-     "top": 255,
-     "bottom": 299,
+     "y": 279,
+     "top": 257,
+     "bottom": 301,
      "h": 44,
      "in": true
     },
@@ -636,7 +636,7 @@
       "left": 133,
       "right": 185,
       "covered": 0,
-      "gap": 19,
+      "gap": 17,
       "clip": false,
       "front": true,
       "ea": true
@@ -647,7 +647,7 @@
       "left": 188,
       "right": 256,
       "covered": 0,
-      "gap": 28,
+      "gap": 26,
       "clip": false,
       "front": true,
       "ea": true
@@ -658,7 +658,7 @@
       "left": 253,
       "right": 325,
       "covered": 0,
-      "gap": 25,
+      "gap": 23,
       "clip": false,
       "front": true,
       "ea": true
@@ -669,7 +669,7 @@
       "left": 317,
       "right": 376,
       "covered": 0,
-      "gap": 26,
+      "gap": 24,
       "clip": false,
       "front": true,
       "ea": true
@@ -679,7 +679,7 @@
    "back": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 308,
+    "bottom": 310,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -692,18 +692,18 @@
     },
     "scroll": {
      "top": 0,
-     "h": 126,
+     "h": 128,
      "all": 401,
      "x": 195,
-     "y": 172,
+     "y": 173,
      "yTop": 109,
-     "yBot": 236
+     "yBot": 238
     },
     "close": {
      "x": 195,
-     "y": 277,
-     "top": 255,
-     "bottom": 299,
+     "y": 279,
+     "top": 257,
+     "bottom": 301,
      "h": 44,
      "in": true
     },
@@ -718,7 +718,7 @@
       "left": 133,
       "right": 184,
       "covered": 0,
-      "gap": 19,
+      "gap": 17,
       "clip": false,
       "front": true,
       "ea": true
@@ -729,7 +729,7 @@
       "left": 188,
       "right": 255,
       "covered": 0,
-      "gap": 28,
+      "gap": 26,
       "clip": false,
       "front": true,
       "ea": true
@@ -740,7 +740,7 @@
       "left": 252,
       "right": 325,
       "covered": 0,
-      "gap": 25,
+      "gap": 23,
       "clip": false,
       "front": true,
       "ea": true
@@ -751,7 +751,7 @@
       "left": 317,
       "right": 375,
       "covered": 0,
-      "gap": 26,
+      "gap": 24,
       "clip": false,
       "front": true,
       "ea": true
