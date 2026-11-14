@@ -234,12 +234,12 @@
    "body": {
     "x0": 80,
     "y0": 50,
-    "x1": 244,
+    "x1": 260,
     "y1": 304
    },
    "grip": {
-    "x": 66,
-    "y": 184,
+    "x": 91,
+    "y": 172,
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
@@ -249,24 +249,24 @@
    },
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/iris/menu/base_plain.png?v=00d03248",
+     "url": "assets/characters/equip-pixels/iris/menu/base_plain.png?v=442f515a",
      "x": 67,
      "y": 47,
      "w": 197,
      "h": 258
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/iris/menu/hand.png?v=a4a22b27",
+     "url": "assets/characters/equip-pixels/iris/menu/hand.png?v=4b8c0884",
      "x": 80,
-     "y": 166,
-     "w": 9,
-     "h": 37
+     "y": 156,
+     "w": 27,
+     "h": 39
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/iris/menu/jf_cloth_t.png?v=d6a2f849",
+     "url": "assets/characters/equip-pixels/iris/menu/jf_cloth_t.png?v=ee80aca4",
      "x": 89,
      "y": 141,
-     "w": 132,
+     "w": 170,
      "h": 158
     },
     "jf_skirt_t": {
@@ -285,55 +285,55 @@
     },
     "weapon_sword": {
      "url": "assets/characters/equip-pixels/iris/menu/weapon_sword.png?v=df74187b",
-     "x": 47,
-     "y": 47,
+     "x": 72,
+     "y": 35,
      "w": 36,
      "h": 162
     },
     "weapon_dagger": {
      "url": "assets/characters/equip-pixels/iris/menu/weapon_dagger.png?v=e10963c1",
-     "x": 55,
-     "y": 129,
+     "x": 80,
+     "y": 117,
      "w": 21,
      "h": 72
     },
     "weapon_axe": {
      "url": "assets/characters/equip-pixels/iris/menu/weapon_axe.png?v=a253e1e9",
-     "x": 52,
-     "y": 92,
+     "x": 77,
+     "y": 80,
      "w": 40,
      "h": 122
     },
     "weapon_spear": {
-     "url": "assets/characters/equip-pixels/iris/menu/weapon_spear.png?v=e1115628",
-     "x": 45,
+     "url": "assets/characters/equip-pixels/iris/menu/weapon_spear.png?v=83b94f6d",
+     "x": 70,
      "y": 2,
      "w": 36,
-     "h": 313
+     "h": 301
     },
     "weapon_bow": {
      "url": "assets/characters/equip-pixels/iris/menu/weapon_bow.png?v=96f114f3",
-     "x": 62,
-     "y": 115,
+     "x": 87,
+     "y": 103,
      "w": 28,
      "h": 136
     },
     "weapon_staff_t": {
      "url": "assets/characters/equip-pixels/iris/menu/weapon_staff_t.png?v=5f234771",
-     "x": 57,
-     "y": 17,
+     "x": 82,
+     "y": 5,
      "w": 19,
      "h": 19
     },
     "weapon_staff_f": {
-     "url": "assets/characters/equip-pixels/iris/menu/weapon_staff_f.png?v=0b890ec3",
-     "x": 53,
-     "y": 10,
+     "url": "assets/characters/equip-pixels/iris/menu/weapon_staff_f.png?v=65fa0d64",
+     "x": 78,
+     "y": 0,
      "w": 27,
-     "h": 293
+     "h": 303
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/iris/menu/base_helm.png?v=3e57d8ac",
+     "url": "assets/characters/equip-pixels/iris/menu/base_helm.png?v=4533cae8",
      "x": 67,
      "y": 47,
      "w": 197,
@@ -354,7 +354,7 @@
      "h": 89
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/iris/menu/base_cap.png?v=49b7baad",
+     "url": "assets/characters/equip-pixels/iris/menu/base_cap.png?v=eba94ee1",
      "x": 67,
      "y": 47,
      "w": 197,
@@ -389,7 +389,7 @@
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/iris/menu/base_hat.png?v=a385f360",
+     "url": "assets/characters/equip-pixels/iris/menu/base_hat.png?v=6d785c81",
      "x": 67,
      "y": 47,
      "w": 197,
@@ -485,12 +485,12 @@
    "body": {
     "x0": 80,
     "y0": 50,
-    "x1": 244,
+    "x1": 260,
     "y1": 304
    },
    "grip": {
-    "x": 66,
-    "y": 184,
+    "x": 91,
+    "y": 172,
     "order": "武器：柄の上に手を描き直す"
    },
    "offhand": {
@@ -501,24 +501,24 @@
    "from": "menu",
    "parts": {
     "base_plain": {
-     "url": "assets/characters/equip-pixels/iris/menu/base_plain.png?v=00d03248",
+     "url": "assets/characters/equip-pixels/iris/menu/base_plain.png?v=442f515a",
      "x": 67,
      "y": 47,
      "w": 197,
      "h": 258
     },
     "hand": {
-     "url": "assets/characters/equip-pixels/iris/menu/hand.png?v=a4a22b27",
+     "url": "assets/characters/equip-pixels/iris/menu/hand.png?v=4b8c0884",
      "x": 80,
-     "y": 166,
-     "w": 9,
-     "h": 37
+     "y": 156,
+     "w": 27,
+     "h": 39
     },
     "jf_cloth_t": {
-     "url": "assets/characters/equip-pixels/iris/menu/jf_cloth_t.png?v=d6a2f849",
+     "url": "assets/characters/equip-pixels/iris/menu/jf_cloth_t.png?v=ee80aca4",
      "x": 89,
      "y": 141,
-     "w": 132,
+     "w": 170,
      "h": 158
     },
     "jf_skirt_t": {
@@ -537,55 +537,55 @@
     },
     "weapon_sword": {
      "url": "assets/characters/equip-pixels/iris/menu/weapon_sword.png?v=df74187b",
-     "x": 47,
-     "y": 47,
+     "x": 72,
+     "y": 35,
      "w": 36,
      "h": 162
     },
     "weapon_dagger": {
      "url": "assets/characters/equip-pixels/iris/menu/weapon_dagger.png?v=e10963c1",
-     "x": 55,
-     "y": 129,
+     "x": 80,
+     "y": 117,
      "w": 21,
      "h": 72
     },
     "weapon_axe": {
      "url": "assets/characters/equip-pixels/iris/menu/weapon_axe.png?v=a253e1e9",
-     "x": 52,
-     "y": 92,
+     "x": 77,
+     "y": 80,
      "w": 40,
      "h": 122
     },
     "weapon_spear": {
-     "url": "assets/characters/equip-pixels/iris/menu/weapon_spear.png?v=e1115628",
-     "x": 45,
+     "url": "assets/characters/equip-pixels/iris/menu/weapon_spear.png?v=83b94f6d",
+     "x": 70,
      "y": 2,
      "w": 36,
-     "h": 313
+     "h": 301
     },
     "weapon_bow": {
      "url": "assets/characters/equip-pixels/iris/menu/weapon_bow.png?v=96f114f3",
-     "x": 62,
-     "y": 115,
+     "x": 87,
+     "y": 103,
      "w": 28,
      "h": 136
     },
     "weapon_staff_t": {
      "url": "assets/characters/equip-pixels/iris/menu/weapon_staff_t.png?v=5f234771",
-     "x": 57,
-     "y": 17,
+     "x": 82,
+     "y": 5,
      "w": 19,
      "h": 19
     },
     "weapon_staff_f": {
-     "url": "assets/characters/equip-pixels/iris/menu/weapon_staff_f.png?v=0b890ec3",
-     "x": 53,
-     "y": 10,
+     "url": "assets/characters/equip-pixels/iris/menu/weapon_staff_f.png?v=65fa0d64",
+     "x": 78,
+     "y": 0,
      "w": 27,
-     "h": 293
+     "h": 303
     },
     "base_helm": {
-     "url": "assets/characters/equip-pixels/iris/menu/base_helm.png?v=3e57d8ac",
+     "url": "assets/characters/equip-pixels/iris/menu/base_helm.png?v=4533cae8",
      "x": 67,
      "y": 47,
      "w": 197,
@@ -606,7 +606,7 @@
      "h": 89
     },
     "base_cap": {
-     "url": "assets/characters/equip-pixels/iris/menu/base_cap.png?v=49b7baad",
+     "url": "assets/characters/equip-pixels/iris/menu/base_cap.png?v=eba94ee1",
      "x": 67,
      "y": 47,
      "w": 197,
@@ -641,7 +641,7 @@
      "h": 14
     },
     "base_hat": {
-     "url": "assets/characters/equip-pixels/iris/menu/base_hat.png?v=a385f360",
+     "url": "assets/characters/equip-pixels/iris/menu/base_hat.png?v=6d785c81",
      "x": 67,
      "y": 47,
      "w": 197,

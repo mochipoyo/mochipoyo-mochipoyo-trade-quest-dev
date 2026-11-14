@@ -33,11 +33,11 @@ appear_pixel_test.js が js/data/equip-pixels.js とゲームの装備（ITEMS�
 | ganes | menu | assets/characters/party-directions-v3/sprites/ganes/front.png | 160, 318 | 74, 200（武器：柄の上に手を描き直す） | 236, 200（盾：前腕の上） |
 | ganes | front | assets/characters/party-directions-v3/sprites/ganes/front.png | 160, 304 | 74, 200（武器：柄の上に手を描き直す） | 236, 200（盾：前腕の上） |
 | ganes | back | assets/characters/party-directions-v3/sprites/ganes/back.png | 160, 304 | 246, 196（武器：柄の上に手を描き直す） | 84, 196（盾：前腕の上） |
-| io | menu | assets/characters/party-directions-v3/sprites/io/front.png | 160, 318 | 206, 200（武器：柄の上に手を描き直す） | 88, 215（盾：前腕の上） |
-| io | front | assets/characters/party-directions-v3/sprites/io/front.png | 160, 304 | 206, 200（武器：柄の上に手を描き直す） | 88, 215（盾：前腕の上） |
-| io | back | assets/characters/party-directions-v3/sprites/io/back.png | 160, 304 | 106, 202（武器：柄の上に手を描き直す） | 270, 238（盾：前腕の上） |
-| iris | menu | assets/characters/party-directions-v3/sprites/iris/front.png | 160, 318 | 66, 184（武器：柄の上に手を描き直す） | 228, 214（盾：前腕の上） |
-| iris | front | assets/characters/party-directions-v3/sprites/iris/front.png | 160, 304 | 66, 184（武器：柄の上に手を描き直す） | 228, 214（盾：前腕の上） |
+| io | menu | assets/characters/party-directions-v3/sprites/io/front.png | 160, 318 | 210, 193（武器：柄の上に手を描き直す） | 88, 215（盾：前腕の上） |
+| io | front | assets/characters/party-directions-v3/sprites/io/front.png | 160, 304 | 210, 193（武器：柄の上に手を描き直す） | 88, 215（盾：前腕の上） |
+| io | back | assets/characters/party-directions-v3/sprites/io/back.png | 160, 304 | 110, 196（武器：柄の上に手を描き直す） | 232, 214（盾：前腕の上） |
+| iris | menu | assets/characters/party-directions-v3/sprites/iris/front.png | 160, 318 | 91, 172（武器：柄の上に手を描き直す） | 228, 214（盾：前腕の上） |
+| iris | front | assets/characters/party-directions-v3/sprites/iris/front.png | 160, 304 | 91, 172（武器：柄の上に手を描き直す） | 228, 214（盾：前腕の上） |
 | iris | back | assets/characters/party-directions-v3/sprites/iris/back.png | 160, 304 | 231, 222（武器：柄の上に手を描き直す） | 90, 176（盾：前腕の上） |
 | lucia | menu | assets/characters/companions/lucia.png | 124, 259 | 190, 138（武器：柄の上に手を描き直す） | 85, 162（盾：前腕の上） |
 | lucia | front | assets/characters/party-directions-v3/sprites/lucia/front.png | 160, 304 | 226, 181（武器：柄の上に手を描き直す） | 121, 205（盾：前腕の上） |
