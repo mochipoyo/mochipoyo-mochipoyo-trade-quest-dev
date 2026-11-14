@@ -13,27 +13,27 @@
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 4〜310px。主人公 上端 326px（すき間 16px・重なり 0%）・カイル 上端 336px（すき間 26px・重なり 0%）・カズト 上端 333px（すき間 23px・重なり 0%）・リーナ 上端 335px（すき間 25px・重なり 0%）"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 4〜308px。主人公 上端 326px（すき間 18px・重なり 0%）・カイル 上端 336px（すき間 28px・重なり 0%）・カズト 上端 333px（すき間 25px・重なり 0%）・リーナ 上端 335px（すき間 27px・重なり 0%）"
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］人物（装備の先まで）が 3D の画面の外へ見切れない（画面 0〜390×0〜468。主人公 133〜184×326〜405・カイル 188〜255×336〜408・カズト 252〜325×333〜408・リーナ 317〜375×335〜405）"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］人物（装備の先まで）が 3D の画面の外へ見切れない（画面 0〜390×0〜468。主人公 133〜184×326〜405・カイル 187〜255×336〜408・カズト 252〜324×333〜408・リーナ 317〜375×335〜405）"
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］「次へ」が窓と画面の中に見える（257〜301px・高さ 44px。窓の左右 12〜378／画面の幅 390）"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］「次へ」が窓と画面の中に見える（255〜299px・高さ 44px。窓の左右 12〜378／画面の幅 390）"
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］詳細が欄に入りきらない（欄 128px／中身 331px）→「つづきあり」の印が出る"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］詳細が欄に入りきらない（欄 126px／中身 331px）→「つづきあり」の印が出る"
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］タッチのドラッグで詳細がスクロールする（位置 0 → 62）"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］タッチのドラッグで詳細がスクロールする（位置 0 → 61）"
   },
   {
    "ok": true,
-   "m": "［2 人がレベルアップ（主人公・リーナ）］↓ キーでいちばん下まで行ける（位置 187＋欄 144＝中身 331）。いちばん下では「つづきあり」の印が消える"
+   "m": "［2 人がレベルアップ（主人公・リーナ）］↓ キーでいちばん下まで行ける（位置 189＋欄 142＝中身 331）。いちばん下では「つづきあり」の印が消える"
   },
   {
    "ok": true,
@@ -53,7 +53,7 @@
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 4〜309px。主人公 上端 326px（すき間 17px・重なり 0%）・カイル 上端 336px（すき間 27px・重なり 0%）・カズト 上端 333px（すき間 24px・重なり 0%）・リーナ 上端 335px（すき間 26px・重なり 0%）"
+   "m": "［4 人ともレベルアップ］顔・兜・武器の先（装備の先までの矩形）が窓に重ならない：窓 4〜308px。主人公 上端 326px（すき間 18px・重なり 0%）・カイル 上端 336px（すき間 28px・重なり 0%）・カズト 上端 333px（すき間 25px・重なり 0%）・リーナ 上端 335px（すき間 27px・重なり 0%）"
   },
   {
    "ok": true,
@@ -61,11 +61,11 @@
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］「次へ」が窓と画面の中に見える（256〜300px・高さ 44px。窓の左右 12〜378／画面の幅 390）"
+   "m": "［4 人ともレベルアップ］「次へ」が窓と画面の中に見える（255〜299px・高さ 44px。窓の左右 12〜378／画面の幅 390）"
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］詳細が欄に入りきらない（欄 127px／中身 401px）→「つづきあり」の印が出る"
+   "m": "［4 人ともレベルアップ］詳細が欄に入りきらない（欄 126px／中身 401px）→「つづきあり」の印が出る"
   },
   {
    "ok": true,
@@ -73,7 +73,7 @@
   },
   {
    "ok": true,
-   "m": "［4 人ともレベルアップ］↓ キーでいちばん下まで行ける（位置 258＋欄 143＝中身 401）。いちばん下では「つづきあり」の印が消える"
+   "m": "［4 人ともレベルアップ］↓ キーでいちばん下まで行ける（位置 259＋欄 142＝中身 401）。いちばん下では「つづきあり」の印が消える"
   },
   {
    "ok": true,
@@ -98,7 +98,7 @@
    "first": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 310,
+    "bottom": 308,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -111,18 +111,18 @@
     },
     "scroll": {
      "top": 0,
-     "h": 128,
+     "h": 126,
      "all": 331,
      "x": 195,
-     "y": 173,
+     "y": 172,
      "yTop": 109,
-     "yBot": 238
+     "yBot": 236
     },
     "close": {
      "x": 195,
-     "y": 279,
-     "top": 257,
-     "bottom": 301,
+     "y": 277,
+     "top": 255,
+     "bottom": 299,
      "h": 44,
      "in": true
     },
@@ -137,7 +137,7 @@
       "left": 133,
       "right": 184,
       "covered": 0,
-      "gap": 16,
+      "gap": 18,
       "clip": false,
       "front": true,
       "ea": true
@@ -145,10 +145,10 @@
      "kyle": {
       "top": 336,
       "bottom": 408,
-      "left": 188,
+      "left": 187,
       "right": 255,
       "covered": 0,
-      "gap": 26,
+      "gap": 28,
       "clip": false,
       "front": true,
       "ea": true
@@ -157,9 +157,9 @@
       "top": 333,
       "bottom": 408,
       "left": 252,
-      "right": 325,
+      "right": 324,
       "covered": 0,
-      "gap": 23,
+      "gap": 25,
       "clip": false,
       "front": true,
       "ea": true
@@ -170,7 +170,7 @@
       "left": 317,
       "right": 375,
       "covered": 0,
-      "gap": 25,
+      "gap": 27,
       "clip": false,
       "front": true,
       "ea": true
@@ -180,7 +180,7 @@
    "wheel": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 310,
+    "bottom": 308,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -192,19 +192,19 @@
      "right": 390
     },
     "scroll": {
-     "top": 62,
-     "h": 128,
+     "top": 61,
+     "h": 126,
      "all": 331,
      "x": 195,
-     "y": 173,
+     "y": 172,
      "yTop": 109,
-     "yBot": 238
+     "yBot": 236
     },
     "close": {
      "x": 195,
-     "y": 279,
-     "top": 257,
-     "bottom": 301,
+     "y": 277,
+     "top": 255,
+     "bottom": 299,
      "h": 44,
      "in": true
     },
@@ -214,12 +214,12 @@
     "members": 4,
     "who": {
      "hero": {
-      "top": 327,
-      "bottom": 406,
+      "top": 326,
+      "bottom": 405,
       "left": 133,
       "right": 185,
       "covered": 0,
-      "gap": 17,
+      "gap": 18,
       "clip": false,
       "front": true,
       "ea": true
@@ -228,9 +228,9 @@
       "top": 336,
       "bottom": 408,
       "left": 188,
-      "right": 256,
+      "right": 255,
       "covered": 0,
-      "gap": 26,
+      "gap": 28,
       "clip": false,
       "front": true,
       "ea": true
@@ -238,10 +238,10 @@
      "kazuto": {
       "top": 333,
       "bottom": 408,
-      "left": 253,
+      "left": 252,
       "right": 325,
       "covered": 0,
-      "gap": 23,
+      "gap": 25,
       "clip": false,
       "front": true,
       "ea": true
@@ -252,7 +252,7 @@
       "left": 317,
       "right": 376,
       "covered": 0,
-      "gap": 25,
+      "gap": 27,
       "clip": false,
       "front": true,
       "ea": true
@@ -262,7 +262,7 @@
    "bottom": {
     "cls": "rw-panel result-victory rs-top rs-detail",
     "top": 4,
-    "bottom": 310,
+    "bottom": 308,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -274,19 +274,19 @@
      "right": 390
     },
     "scroll": {
-     "top": 187,
-     "h": 144,
+     "top": 189,
+     "h": 142,
      "all": 331,
      "x": 195,
-     "y": 181,
+     "y": 180,
      "yTop": 109,
-     "yBot": 253
+     "yBot": 251
     },
     "close": {
      "x": 195,
-     "y": 279,
-     "top": 257,
-     "bottom": 301,
+     "y": 277,
+     "top": 255,
+     "bottom": 299,
      "h": 44,
      "in": true
     },
@@ -301,7 +301,7 @@
       "left": 133,
       "right": 185,
       "covered": 0,
-      "gap": 17,
+      "gap": 19,
       "clip": false,
       "front": true,
       "ea": true
@@ -312,7 +312,7 @@
       "left": 188,
       "right": 256,
       "covered": 0,
-      "gap": 26,
+      "gap": 28,
       "clip": false,
       "front": true,
       "ea": true
@@ -323,18 +323,18 @@
       "left": 253,
       "right": 325,
       "covered": 0,
-      "gap": 23,
+      "gap": 25,
       "clip": false,
       "front": true,
       "ea": true
      },
      "lina": {
-      "top": 334,
+      "top": 335,
       "bottom": 405,
       "left": 317,
       "right": 376,
       "covered": 0,
-      "gap": 24,
+      "gap": 27,
       "clip": false,
       "front": true,
       "ea": true
@@ -344,7 +344,7 @@
    "back": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 310,
+    "bottom": 308,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -357,18 +357,18 @@
     },
     "scroll": {
      "top": 0,
-     "h": 128,
+     "h": 126,
      "all": 331,
      "x": 195,
-     "y": 173,
+     "y": 172,
      "yTop": 109,
-     "yBot": 238
+     "yBot": 236
     },
     "close": {
      "x": 195,
-     "y": 279,
-     "top": 257,
-     "bottom": 301,
+     "y": 277,
+     "top": 255,
+     "bottom": 299,
      "h": 44,
      "in": true
     },
@@ -383,7 +383,7 @@
       "left": 133,
       "right": 184,
       "covered": 0,
-      "gap": 17,
+      "gap": 19,
       "clip": false,
       "front": true,
       "ea": true
@@ -394,7 +394,7 @@
       "left": 188,
       "right": 255,
       "covered": 0,
-      "gap": 26,
+      "gap": 28,
       "clip": false,
       "front": true,
       "ea": true
@@ -405,7 +405,7 @@
       "left": 252,
       "right": 325,
       "covered": 0,
-      "gap": 23,
+      "gap": 25,
       "clip": false,
       "front": true,
       "ea": true
@@ -416,7 +416,7 @@
       "left": 317,
       "right": 375,
       "covered": 0,
-      "gap": 24,
+      "gap": 26,
       "clip": false,
       "front": true,
       "ea": true
@@ -433,7 +433,7 @@
    "first": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 309,
+    "bottom": 308,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -446,18 +446,18 @@
     },
     "scroll": {
      "top": 0,
-     "h": 127,
+     "h": 126,
      "all": 401,
      "x": 195,
-     "y": 173,
+     "y": 172,
      "yTop": 109,
-     "yBot": 237
+     "yBot": 236
     },
     "close": {
      "x": 195,
-     "y": 278,
-     "top": 256,
-     "bottom": 300,
+     "y": 277,
+     "top": 255,
+     "bottom": 299,
      "h": 44,
      "in": true
     },
@@ -472,7 +472,7 @@
       "left": 133,
       "right": 184,
       "covered": 0,
-      "gap": 17,
+      "gap": 18,
       "clip": false,
       "front": true,
       "ea": true
@@ -483,7 +483,7 @@
       "left": 187,
       "right": 255,
       "covered": 0,
-      "gap": 27,
+      "gap": 28,
       "clip": false,
       "front": true,
       "ea": true
@@ -494,7 +494,7 @@
       "left": 252,
       "right": 324,
       "covered": 0,
-      "gap": 24,
+      "gap": 25,
       "clip": false,
       "front": true,
       "ea": true
@@ -505,7 +505,7 @@
       "left": 317,
       "right": 375,
       "covered": 0,
-      "gap": 26,
+      "gap": 27,
       "clip": false,
       "front": true,
       "ea": true
@@ -515,7 +515,7 @@
    "wheel": {
     "cls": "rw-panel result-victory rs-top rs-detail rs-more",
     "top": 4,
-    "bottom": 309,
+    "bottom": 308,
     "left": 12,
     "right": 378,
     "vw": 390,
@@ -528,182 +528,18 @@
     },
     "scroll": {
      "top": 61,
-     "h": 127,
+     "h": 126,
      "all": 401,
      "x": 195,
-     "y": 173,
+     "y": 172,
      "yTop": 109,
-     "yBot": 237
+     "yBot": 236
     },
     "close": {
      "x": 195,
-     "y": 278,
-     "top": 256,
-     "bottom": 300,
-     "h": 44,
-     "in": true
-    },
-    "more": true,
-    "hint": true,
-    "ups": 4,
-    "members": 4,
-    "who": {
-     "hero": {
-      "top": 327,
-      "bottom": 406,
-      "left": 133,
-      "right": 185,
-      "covered": 0,
-      "gap": 18,
-      "clip": false,
-      "front": true,
-      "ea": true
-     },
-     "kyle": {
-      "top": 336,
-      "bottom": 408,
-      "left": 188,
-      "right": 255,
-      "covered": 0,
-      "gap": 27,
-      "clip": false,
-      "front": true,
-      "ea": true
-     },
-     "kazuto": {
-      "top": 333,
-      "bottom": 408,
-      "left": 253,
-      "right": 325,
-      "covered": 0,
-      "gap": 24,
-      "clip": false,
-      "front": true,
-      "ea": true
-     },
-     "lina": {
-      "top": 335,
-      "bottom": 405,
-      "left": 317,
-      "right": 376,
-      "covered": 0,
-      "gap": 26,
-      "clip": false,
-      "front": true,
-      "ea": true
-     }
-    }
-   },
-   "bottom": {
-    "cls": "rw-panel result-victory rs-top rs-detail",
-    "top": 4,
-    "bottom": 309,
-    "left": 12,
-    "right": 378,
-    "vw": 390,
-    "vh": 664,
-    "canvas": {
-     "top": 0,
-     "bottom": 468,
-     "left": 0,
-     "right": 390
-    },
-    "scroll": {
-     "top": 258,
-     "h": 143,
-     "all": 401,
-     "x": 195,
-     "y": 181,
-     "yTop": 109,
-     "yBot": 252
-    },
-    "close": {
-     "x": 195,
-     "y": 278,
-     "top": 256,
-     "bottom": 300,
-     "h": 44,
-     "in": true
-    },
-    "more": false,
-    "hint": false,
-    "ups": 4,
-    "members": 4,
-    "who": {
-     "hero": {
-      "top": 327,
-      "bottom": 406,
-      "left": 133,
-      "right": 185,
-      "covered": 0,
-      "gap": 18,
-      "clip": false,
-      "front": true,
-      "ea": true
-     },
-     "kyle": {
-      "top": 336,
-      "bottom": 408,
-      "left": 188,
-      "right": 256,
-      "covered": 0,
-      "gap": 27,
-      "clip": false,
-      "front": true,
-      "ea": true
-     },
-     "kazuto": {
-      "top": 333,
-      "bottom": 408,
-      "left": 253,
-      "right": 325,
-      "covered": 0,
-      "gap": 24,
-      "clip": false,
-      "front": true,
-      "ea": true
-     },
-     "lina": {
-      "top": 334,
-      "bottom": 405,
-      "left": 317,
-      "right": 376,
-      "covered": 0,
-      "gap": 25,
-      "clip": false,
-      "front": true,
-      "ea": true
-     }
-    }
-   },
-   "back": {
-    "cls": "rw-panel result-victory rs-top rs-detail rs-more",
-    "top": 4,
-    "bottom": 309,
-    "left": 12,
-    "right": 378,
-    "vw": 390,
-    "vh": 664,
-    "canvas": {
-     "top": 0,
-     "bottom": 468,
-     "left": 0,
-     "right": 390
-    },
-    "scroll": {
-     "top": 0,
-     "h": 127,
-     "all": 401,
-     "x": 195,
-     "y": 173,
-     "yTop": 109,
-     "yBot": 237
-    },
-    "close": {
-     "x": 195,
-     "y": 278,
-     "top": 256,
-     "bottom": 300,
+     "y": 277,
+     "top": 255,
+     "bottom": 299,
      "h": 44,
      "in": true
     },
@@ -718,18 +554,18 @@
       "left": 133,
       "right": 184,
       "covered": 0,
-      "gap": 18,
+      "gap": 19,
       "clip": false,
       "front": true,
       "ea": true
      },
      "kyle": {
       "top": 336,
-      "bottom": 409,
-      "left": 188,
+      "bottom": 408,
+      "left": 187,
       "right": 255,
       "covered": 0,
-      "gap": 27,
+      "gap": 28,
       "clip": false,
       "front": true,
       "ea": true
@@ -740,7 +576,171 @@
       "left": 252,
       "right": 325,
       "covered": 0,
-      "gap": 24,
+      "gap": 25,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "lina": {
+      "top": 335,
+      "bottom": 405,
+      "left": 317,
+      "right": 375,
+      "covered": 0,
+      "gap": 27,
+      "clip": false,
+      "front": true,
+      "ea": true
+     }
+    }
+   },
+   "bottom": {
+    "cls": "rw-panel result-victory rs-top rs-detail",
+    "top": 4,
+    "bottom": 308,
+    "left": 12,
+    "right": 378,
+    "vw": 390,
+    "vh": 664,
+    "canvas": {
+     "top": 0,
+     "bottom": 468,
+     "left": 0,
+     "right": 390
+    },
+    "scroll": {
+     "top": 259,
+     "h": 142,
+     "all": 401,
+     "x": 195,
+     "y": 180,
+     "yTop": 109,
+     "yBot": 251
+    },
+    "close": {
+     "x": 195,
+     "y": 277,
+     "top": 255,
+     "bottom": 299,
+     "h": 44,
+     "in": true
+    },
+    "more": false,
+    "hint": false,
+    "ups": 4,
+    "members": 4,
+    "who": {
+     "hero": {
+      "top": 327,
+      "bottom": 406,
+      "left": 133,
+      "right": 185,
+      "covered": 0,
+      "gap": 19,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kyle": {
+      "top": 336,
+      "bottom": 408,
+      "left": 188,
+      "right": 256,
+      "covered": 0,
+      "gap": 28,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
+      "top": 333,
+      "bottom": 408,
+      "left": 253,
+      "right": 325,
+      "covered": 0,
+      "gap": 25,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "lina": {
+      "top": 334,
+      "bottom": 405,
+      "left": 317,
+      "right": 376,
+      "covered": 0,
+      "gap": 26,
+      "clip": false,
+      "front": true,
+      "ea": true
+     }
+    }
+   },
+   "back": {
+    "cls": "rw-panel result-victory rs-top rs-detail rs-more",
+    "top": 4,
+    "bottom": 308,
+    "left": 12,
+    "right": 378,
+    "vw": 390,
+    "vh": 664,
+    "canvas": {
+     "top": 0,
+     "bottom": 468,
+     "left": 0,
+     "right": 390
+    },
+    "scroll": {
+     "top": 0,
+     "h": 126,
+     "all": 401,
+     "x": 195,
+     "y": 172,
+     "yTop": 109,
+     "yBot": 236
+    },
+    "close": {
+     "x": 195,
+     "y": 277,
+     "top": 255,
+     "bottom": 299,
+     "h": 44,
+     "in": true
+    },
+    "more": true,
+    "hint": true,
+    "ups": 4,
+    "members": 4,
+    "who": {
+     "hero": {
+      "top": 327,
+      "bottom": 406,
+      "left": 133,
+      "right": 184,
+      "covered": 0,
+      "gap": 19,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kyle": {
+      "top": 336,
+      "bottom": 409,
+      "left": 188,
+      "right": 255,
+      "covered": 0,
+      "gap": 28,
+      "clip": false,
+      "front": true,
+      "ea": true
+     },
+     "kazuto": {
+      "top": 333,
+      "bottom": 408,
+      "left": 252,
+      "right": 325,
+      "covered": 0,
+      "gap": 25,
       "clip": false,
       "front": true,
       "ea": true
@@ -751,7 +751,7 @@
       "left": 317,
       "right": 375,
       "covered": 0,
-      "gap": 25,
+      "gap": 26,
       "clip": false,
       "front": true,
       "ea": true

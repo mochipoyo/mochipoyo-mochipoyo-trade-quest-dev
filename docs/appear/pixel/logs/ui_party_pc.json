@@ -236,7 +236,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -256,7 +256,7 @@
      "sprite": "kyle",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -282,20 +282,20 @@
      }
     },
     "px": {
-     "sig": "[\"kyle\",\"knight\",\"px:v9.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "sig": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
      "parts": "base_plain armor_shape_f shield_f shield_e weapon_sword",
      "st": "ok"
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 378.7,
+      "x": 380,
       "y": 348.1,
       "w": 100.3,
       "h": 121.2
      },
      "kyle": {
-      "x": 479,
+      "x": 480.3,
       "y": 340.2,
       "w": 132.9,
       "h": 130.3
@@ -313,7 +313,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -333,7 +333,7 @@
       "sprite": "kyle",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -345,20 +345,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 385.2,
-      "y": 338.9,
+      "x": 377.4,
+      "y": 342.8,
       "w": 89.9,
       "h": 119.9
      },
      "kyle": {
-      "x": 486.8,
-      "y": 332.4,
+      "x": 480.3,
+      "y": 336.3,
       "w": 118.6,
       "h": 127.7
      }
     },
     "vpx": {
-     "sig": "[\"kyle\",\"knight\",\"px:v9.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "sig": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
      "parts": "base_plain armor_shape_f shield_f shield_e weapon_sword",
      "st": "ok"
     },
@@ -376,10 +376,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 338,
+      "fullTop": 334,
       "rect": {
-       "x": 387,
-       "y": 338,
+       "x": 379,
+       "y": 334,
        "w": 90,
        "h": 121
       }
@@ -388,11 +388,11 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 327,
       "rect": {
-       "x": 489,
-       "y": 331,
-       "w": 119,
+       "x": 482,
+       "y": 327,
+       "w": 120,
        "h": 128
       }
      }
@@ -412,15 +412,15 @@
     },
     "vrects2": {
      "hero": {
-      "x": 413.9,
-      "y": 341.5,
+      "x": 398.2,
+      "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "kyle": {
-      "x": 516.8,
-      "y": 333.7,
-      "w": 119.9,
+      "x": 501.2,
+      "y": 332.4,
+      "w": 118.6,
       "h": 127.7
      }
     },
@@ -625,7 +625,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -645,7 +645,7 @@
      "sprite": "hero_mage",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"mage\",\"px:v9.9\",\"back\",[\"oak_staff\",\"robe\"]]",
+     "ea": "[\"kyle\",\"mage\",\"px:v9.9.1\",\"back\",[\"oak_staff\",\"robe\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -671,20 +671,20 @@
      }
     },
     "px": {
-     "sig": "[\"kyle\",\"mage\",\"px:v9.9\",\"back\",[\"oak_staff\",\"robe\"]]",
+     "sig": "[\"kyle\",\"mage\",\"px:v9.9.1\",\"back\",[\"oak_staff\",\"robe\"]]",
      "parts": "base_plain jf_x jf_capeup_t jf_x jf_capehem_f jf_cloth_t jf_skirt_t jf_skirt_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f jf_capehem_t",
      "st": "ok"
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 377.4,
+      "x": 380,
       "y": 348.1,
       "w": 100.3,
       "h": 121.2
      },
      "kyle": {
-      "x": 477.7,
+      "x": 481.6,
       "y": 340.2,
       "w": 132.9,
       "h": 130.3
@@ -702,7 +702,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -722,7 +722,7 @@
       "sprite": "hero_mage",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"mage\",\"px:v9.9\",\"front\",[\"oak_staff\",\"robe\"]]",
+      "ea": "[\"kyle\",\"mage\",\"px:v9.9.1\",\"front\",[\"oak_staff\",\"robe\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -734,20 +734,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 383.9,
-      "y": 333.7,
+      "x": 378.7,
+      "y": 337.6,
       "w": 89.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 486.8,
-      "y": 327.2,
-      "w": 119.9,
+      "x": 481.6,
+      "y": 331.1,
+      "w": 118.6,
       "h": 127.7
      }
     },
     "vpx": {
-     "sig": "[\"kyle\",\"mage\",\"px:v9.9\",\"front\",[\"oak_staff\",\"robe\"]]",
+     "sig": "[\"kyle\",\"mage\",\"px:v9.9.1\",\"front\",[\"oak_staff\",\"robe\"]]",
      "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f weapon_staff_t weapon_staff_f hand jf_sleeve_t jf_sleeve_f",
      "st": "ok"
     },
@@ -765,10 +765,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 332,
       "rect": {
-       "x": 385,
-       "y": 331,
+       "x": 380,
+       "y": 332,
        "w": 90,
        "h": 121
       }
@@ -777,10 +777,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 323,
+      "fullTop": 325,
       "rect": {
-       "x": 489,
-       "y": 325,
+       "x": 483,
+       "y": 326,
        "w": 120,
        "h": 129
       }
@@ -801,15 +801,15 @@
     },
     "vrects2": {
      "hero": {
-      "x": 413.9,
-      "y": 341.5,
+      "x": 399.5,
+      "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "kyle": {
-      "x": 516.8,
-      "y": 333.7,
-      "w": 119.9,
+      "x": 502.5,
+      "y": 332.4,
+      "w": 118.6,
       "h": 127.7
      }
     },
@@ -1014,7 +1014,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1034,7 +1034,7 @@
      "sprite": "hero_mage",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"mage\",\"px:v9.9\",\"back\",[\"robe\"]]",
+     "ea": "[\"kyle\",\"mage\",\"px:v9.9.1\",\"back\",[\"robe\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1060,20 +1060,20 @@
      }
     },
     "px": {
-     "sig": "[\"kyle\",\"mage\",\"px:v9.9\",\"back\",[\"robe\"]]",
+     "sig": "[\"kyle\",\"mage\",\"px:v9.9.1\",\"back\",[\"robe\"]]",
      "parts": "base_plain jf_x jf_capeup_t jf_x jf_capehem_f jf_cloth_t jf_skirt_t jf_skirt_f jf_sleeve_t jf_sleeve_f jf_capehem_t",
      "st": "ok"
     },
     "fell": [],
     "rects": {
      "hero": {
-      "x": 378.7,
+      "x": 381.3,
       "y": 348.1,
       "w": 100.3,
       "h": 121.2
      },
      "kyle": {
-      "x": 480.3,
+      "x": 481.6,
       "y": 340.2,
       "w": 132.9,
       "h": 130.3
@@ -1091,7 +1091,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1111,7 +1111,7 @@
       "sprite": "hero_mage",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"mage\",\"px:v9.9\",\"front\",[\"robe\"]]",
+      "ea": "[\"kyle\",\"mage\",\"px:v9.9.1\",\"front\",[\"robe\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1123,20 +1123,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 383.9,
-      "y": 331.1,
+      "x": 376.1,
+      "y": 336.3,
       "w": 89.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 486.8,
-      "y": 324.6,
+      "x": 479,
+      "y": 329.8,
       "w": 119.9,
-      "h": 129
+      "h": 127.7
      }
     },
     "vpx": {
-     "sig": "[\"kyle\",\"mage\",\"px:v9.9\",\"front\",[\"robe\"]]",
+     "sig": "[\"kyle\",\"mage\",\"px:v9.9.1\",\"front\",[\"robe\"]]",
      "parts": "base_plain jf_capeup_t jf_cloth_t jf_skirt_t jf_skirt_f jf_sleeve_t jf_sleeve_f",
      "st": "ok"
     },
@@ -1154,22 +1154,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 339,
+      "fullTop": 338,
       "rect": {
-       "x": 387,
-       "y": 339,
+       "x": 377,
+       "y": 338,
        "w": 90,
-       "h": 120
+       "h": 121
       }
      },
      "kyle": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 332,
+      "fullTop": 331,
       "rect": {
-       "x": 489,
-       "y": 332,
+       "x": 480,
+       "y": 331,
        "w": 119,
        "h": 128
       }
@@ -1190,15 +1190,15 @@
     },
     "vrects2": {
      "hero": {
-      "x": 413.9,
+      "x": 396.9,
       "y": 340.2,
       "w": 88.6,
       "h": 119.9
      },
      "kyle": {
-      "x": 516.8,
+      "x": 499.9,
       "y": 333.7,
-      "w": 119.9,
+      "w": 118.6,
       "h": 127.7
      }
     },

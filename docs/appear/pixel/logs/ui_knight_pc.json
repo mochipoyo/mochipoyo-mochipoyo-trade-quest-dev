@@ -294,7 +294,7 @@
   },
   {
    "ok": true,
-   "m": "カイル：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 5.1px・高さ比 1.076／Δ足もと 6.5px・高さ比 1.076／Δ足もと 6.5px・高さ比 1.076／Δ足もと 6.5px・高さ比 1.076／Δ足もと 6.5px・高さ比 1.076）"
+   "m": "カイル：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 6.5px・高さ比 1.076／Δ足もと 6.5px・高さ比 1.076／Δ足もと 6.5px・高さ比 1.076／Δ足もと 6.5px・高さ比 1.076／Δ足もと 5.2px・高さ比 1.076）"
   },
   {
    "ok": true,
@@ -310,7 +310,7 @@
   },
   {
    "ok": true,
-   "m": "カズト：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと -1.4px・高さ比 1.087／Δ足もと -1.3px・高さ比 1.087／Δ足もと 0px・高さ比 1.087／Δ足もと 0px・高さ比 1.087／Δ足もと 0px・高さ比 1.087）"
+   "m": "カズト：勝利の正面の画面の足もと・高さが組み合わせで同じ（同じ瞬間の主人公との差・比：Δ足もと 0px・高さ比 1.087／Δ足もと 0px・高さ比 1.087／Δ足もと 0px・高さ比 1.087／Δ足もと -1.3px・高さ比 1.087／Δ足もと -1.3px・高さ比 1.087）"
   },
   {
    "ok": true,
@@ -458,7 +458,7 @@
      "sprite": "kyle",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -478,7 +478,7 @@
      "sprite": "kazuto",
      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
      "pd": "ok",
-     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -498,7 +498,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -526,21 +526,21 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 326.6,
+      "x": 325.3,
       "y": 348.1,
       "w": 102.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 420.4,
+      "x": 417.8,
       "y": 344.1,
       "w": 134.2,
       "h": 131.6
      },
      "kazuto": {
-      "x": 542.9,
-      "y": 340.2,
-      "w": 135.5,
+      "x": 541.6,
+      "y": 341.5,
+      "w": 134.2,
       "h": 130.3
      }
     },
@@ -556,7 +556,7 @@
       "sprite": "kyle",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -576,7 +576,7 @@
       "sprite": "kazuto",
       "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
       "pd": "ok",
-      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -596,7 +596,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -608,20 +608,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 346.1,
-      "y": 329.8,
+      "x": 335.7,
+      "y": 336.3,
       "w": 92.5,
       "h": 121.2
      },
      "kyle": {
-      "x": 441.2,
-      "y": 327.2,
+      "x": 432.1,
+      "y": 335,
       "w": 121.2,
-      "h": 130.3
+      "h": 129
      },
      "kazuto": {
-      "x": 544.2,
-      "y": 319.4,
+      "x": 535.1,
+      "y": 327.2,
       "w": 144.6,
       "h": 131.6
      }
@@ -640,11 +640,11 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 334,
+      "fullTop": 331,
       "rect": {
-       "x": 347,
-       "y": 334,
-       "w": 91,
+       "x": 337,
+       "y": 331,
+       "w": 93,
        "h": 121
       }
      },
@@ -652,22 +652,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 329,
       "rect": {
-       "x": 444,
-       "y": 331,
+       "x": 432,
+       "y": 329,
        "w": 121,
-       "h": 129
+       "h": 130
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 323,
+      "fullTop": 322,
       "rect": {
-       "x": 545,
-       "y": 323,
+       "x": 535,
+       "y": 322,
        "w": 145,
        "h": 132
       }
@@ -688,21 +688,21 @@
     },
     "vrects2": {
      "hero": {
-      "x": 378.7,
-      "y": 346.8,
-      "w": 89.9,
+      "x": 364.4,
+      "y": 341.5,
+      "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 476.4,
-      "y": 342.8,
-      "w": 119.9,
+      "x": 460.8,
+      "y": 338.9,
+      "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 575.5,
-      "y": 335,
-      "w": 146,
+      "x": 561.1,
+      "y": 331.1,
+      "w": 144.6,
       "h": 130.3
      }
     },
@@ -941,7 +941,7 @@
      "sprite": "kyle",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -961,7 +961,7 @@
      "sprite": "kazuto",
      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
      "pd": "ok",
-     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -981,7 +981,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1009,21 +1009,21 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 329.2,
+      "x": 326.6,
       "y": 348.1,
       "w": 102.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 421.7,
+      "x": 420.4,
       "y": 344.1,
       "w": 134.2,
       "h": 131.6
      },
      "kazuto": {
-      "x": 544.2,
+      "x": 542.9,
       "y": 340.2,
-      "w": 135.5,
+      "w": 134.2,
       "h": 130.3
      }
     },
@@ -1039,7 +1039,7 @@
       "sprite": "kyle",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1059,7 +1059,7 @@
       "sprite": "kazuto",
       "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
       "pd": "ok",
-      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1079,7 +1079,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1091,21 +1091,21 @@
     },
     "vrects": {
      "hero": {
-      "x": 337,
-      "y": 335,
+      "x": 331.8,
+      "y": 340.2,
       "w": 92.5,
-      "h": 121.2
+      "h": 119.9
      },
      "kyle": {
-      "x": 432.1,
-      "y": 332.4,
+      "x": 426.9,
+      "y": 338.9,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 535.1,
-      "y": 324.6,
-      "w": 144.6,
+      "x": 529.9,
+      "y": 331.1,
+      "w": 143.3,
       "h": 131.6
      }
     },
@@ -1123,34 +1123,34 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 338,
+      "fullTop": 331,
       "rect": {
-       "x": 338,
-       "y": 338,
+       "x": 332,
+       "y": 331,
        "w": 93,
-       "h": 120
+       "h": 121
       }
      },
      "kyle": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 336,
+      "fullTop": 329,
       "rect": {
-       "x": 433,
-       "y": 336,
+       "x": 427,
+       "y": 329,
        "w": 121,
-       "h": 129
+       "h": 130
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 329,
+      "fullTop": 322,
       "rect": {
-       "x": 536,
-       "y": 329,
+       "x": 530,
+       "y": 322,
        "w": 145,
        "h": 132
       }
@@ -1171,21 +1171,21 @@
     },
     "vrects2": {
      "hero": {
-      "x": 372.2,
-      "y": 344.1,
-      "w": 89.9,
+      "x": 357.8,
+      "y": 340.2,
+      "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 468.6,
-      "y": 341.5,
+      "x": 454.3,
+      "y": 337.6,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 568.9,
-      "y": 332.4,
-      "w": 146,
+      "x": 555.9,
+      "y": 329.8,
+      "w": 144.6,
       "h": 130.3
      }
     },
@@ -1421,7 +1421,7 @@
      "sprite": "kyle",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"back\",[\"iron_spear\",\"iron_armor\",\"iron_shield\"]]",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"back\",[\"iron_spear\",\"iron_armor\",\"iron_shield\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1441,7 +1441,7 @@
      "sprite": "kazuto",
      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
      "pd": "ok",
-     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"back\",[\"battle_axe\",\"iron_armor\"]]",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"back\",[\"battle_axe\",\"iron_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1461,7 +1461,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1489,21 +1489,21 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 326.6,
+      "x": 327.9,
       "y": 348.1,
       "w": 102.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 419.1,
+      "x": 420.4,
       "y": 344.1,
       "w": 134.2,
       "h": 131.6
      },
      "kazuto": {
-      "x": 541.6,
-      "y": 341.5,
-      "w": 134.2,
+      "x": 542.9,
+      "y": 340.2,
+      "w": 135.5,
       "h": 130.3
      }
     },
@@ -1519,7 +1519,7 @@
       "sprite": "kyle",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"front\",[\"iron_spear\",\"iron_armor\",\"iron_shield\"]]",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"front\",[\"iron_spear\",\"iron_armor\",\"iron_shield\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1539,7 +1539,7 @@
       "sprite": "kazuto",
       "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
       "pd": "ok",
-      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"front\",[\"battle_axe\",\"iron_armor\"]]",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"front\",[\"battle_axe\",\"iron_armor\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1559,7 +1559,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -1571,21 +1571,21 @@
     },
     "vrects": {
      "hero": {
-      "x": 342.2,
-      "y": 332.4,
+      "x": 329.2,
+      "y": 338.9,
       "w": 92.5,
-      "h": 121.2
+      "h": 119.9
      },
      "kyle": {
-      "x": 438.6,
-      "y": 329.8,
+      "x": 424.3,
+      "y": 336.3,
       "w": 121.2,
-      "h": 130.3
+      "h": 129
      },
      "kazuto": {
-      "x": 540.3,
-      "y": 322,
-      "w": 144.6,
+      "x": 528.5,
+      "y": 328.5,
+      "w": 143.3,
       "h": 131.6
      }
     },
@@ -1605,7 +1605,7 @@
       "fullCovered": 0,
       "fullTop": 331,
       "rect": {
-       "x": 344,
+       "x": 329,
        "y": 331,
        "w": 93,
        "h": 121
@@ -1615,10 +1615,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 329,
+      "fullTop": 330,
       "rect": {
-       "x": 440,
-       "y": 329,
+       "x": 426,
+       "y": 330,
        "w": 121,
        "h": 130
       }
@@ -1629,7 +1629,7 @@
       "fullCovered": 0,
       "fullTop": 322,
       "rect": {
-       "x": 542,
+       "x": 529,
        "y": 322,
        "w": 145,
        "h": 132
@@ -1651,21 +1651,21 @@
     },
     "vrects2": {
      "hero": {
-      "x": 374.8,
-      "y": 344.1,
-      "w": 89.9,
+      "x": 356.5,
+      "y": 340.2,
+      "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 471.2,
-      "y": 341.5,
-      "w": 119.9,
+      "x": 453,
+      "y": 337.6,
+      "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 571.5,
-      "y": 333.7,
-      "w": 146,
+      "x": 554.6,
+      "y": 329.8,
+      "w": 144.6,
       "h": 130.3
      }
     },
@@ -1885,7 +1885,7 @@
      "sprite": "kyle",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"back\",[\"iron_armor\",\"iron_shield\"]]",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"back\",[\"iron_armor\",\"iron_shield\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1905,7 +1905,7 @@
      "sprite": "kazuto",
      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
      "pd": "ok",
-     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"back\",[\"iron_armor\"]]",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"back\",[\"iron_armor\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1925,7 +1925,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -1983,7 +1983,7 @@
       "sprite": "kyle",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"front\",[\"iron_armor\",\"iron_shield\"]]",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"front\",[\"iron_armor\",\"iron_shield\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2003,7 +2003,7 @@
       "sprite": "kazuto",
       "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
       "pd": "ok",
-      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"front\",[\"iron_armor\"]]",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"front\",[\"iron_armor\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2023,7 +2023,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2035,20 +2035,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 340.9,
-      "y": 340.2,
-      "w": 91.2,
-      "h": 119.9
+      "x": 333.1,
+      "y": 335,
+      "w": 92.5,
+      "h": 121.2
      },
      "kyle": {
-      "x": 436,
-      "y": 337.6,
+      "x": 429.5,
+      "y": 332.4,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 539,
-      "y": 329.8,
+      "x": 532.5,
+      "y": 325.9,
       "w": 144.6,
       "h": 131.6
      }
@@ -2069,9 +2069,9 @@
       "fullCovered": 0,
       "fullTop": 340,
       "rect": {
-       "x": 342,
+       "x": 334,
        "y": 340,
-       "w": 91,
+       "w": 93,
        "h": 120
       }
      },
@@ -2081,7 +2081,7 @@
       "fullCovered": 0,
       "fullTop": 338,
       "rect": {
-       "x": 437,
+       "x": 430,
        "y": 338,
        "w": 121,
        "h": 129
@@ -2093,7 +2093,7 @@
       "fullCovered": 0,
       "fullTop": 330,
       "rect": {
-       "x": 540,
+       "x": 532,
        "y": 330,
        "w": 145,
        "h": 132
@@ -2115,20 +2115,20 @@
     },
     "vrects2": {
      "hero": {
-      "x": 369.6,
-      "y": 342.8,
-      "w": 89.9,
+      "x": 361.7,
+      "y": 341.5,
+      "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 466,
-      "y": 340.2,
+      "x": 458.2,
+      "y": 338.9,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 566.3,
-      "y": 332.4,
+      "x": 558.5,
+      "y": 329.8,
       "w": 144.6,
       "h": 130.3
      }
@@ -2367,7 +2367,7 @@
      "sprite": "kyle",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2387,7 +2387,7 @@
      "sprite": "kazuto",
      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
      "pd": "ok",
-     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2407,7 +2407,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2435,21 +2435,21 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 324,
+      "x": 327.9,
       "y": 348.1,
       "w": 102.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 416.5,
+      "x": 420.4,
       "y": 344.1,
       "w": 134.2,
       "h": 131.6
      },
      "kazuto": {
-      "x": 540.3,
-      "y": 341.5,
-      "w": 134.2,
+      "x": 542.9,
+      "y": 340.2,
+      "w": 135.5,
       "h": 130.3
      }
     },
@@ -2465,7 +2465,7 @@
       "sprite": "kyle",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2485,7 +2485,7 @@
       "sprite": "kazuto",
       "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
       "pd": "ok",
-      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2505,7 +2505,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2517,20 +2517,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 338.3,
-      "y": 335,
+      "x": 334.4,
+      "y": 338.9,
       "w": 92.5,
-      "h": 121.2
+      "h": 119.9
      },
      "kyle": {
-      "x": 434.7,
-      "y": 332.4,
+      "x": 429.5,
+      "y": 336.3,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 537.7,
-      "y": 325.9,
+      "x": 532.5,
+      "y": 328.5,
       "w": 144.6,
       "h": 131.6
      }
@@ -2549,34 +2549,34 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 340,
       "rect": {
-       "x": 340,
-       "y": 331,
+       "x": 336,
+       "y": 340,
        "w": 93,
-       "h": 121
+       "h": 120
       }
      },
      "kyle": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 332,
+      "fullTop": 342,
       "rect": {
-       "x": 436,
-       "y": 329,
+       "x": 431,
+       "y": 338,
        "w": 121,
-       "h": 130
+       "h": 129
       }
      },
      "kazuto": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 322,
+      "fullTop": 331,
       "rect": {
-       "x": 539,
-       "y": 321,
+       "x": 534,
+       "y": 330,
        "w": 145,
        "h": 132
       }
@@ -2597,20 +2597,20 @@
     },
     "vrects2": {
      "hero": {
-      "x": 370.9,
-      "y": 342.8,
-      "w": 89.9,
+      "x": 360.4,
+      "y": 341.5,
+      "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 467.3,
-      "y": 340.2,
+      "x": 456.9,
+      "y": 337.6,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 567.6,
-      "y": 332.4,
+      "x": 558.5,
+      "y": 329.8,
       "w": 144.6,
       "h": 130.3
      }
@@ -2841,7 +2841,7 @@
      "sprite": "kyle",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/back.png?v=7f42942fcf",
      "pd": "ok",
-     "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"back\",[\"iron_spear\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"back\",[\"iron_spear\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2861,7 +2861,7 @@
      "sprite": "kazuto",
      "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/back.png?v=f71160e7c0",
      "pd": "ok",
-     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"back\",[\"battle_axe\",\"iron_armor\",\"iron_helm\"]]",
+     "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"back\",[\"battle_axe\",\"iron_armor\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2881,7 +2881,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -2909,21 +2909,21 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 326.6,
+      "x": 329.2,
       "y": 348.1,
       "w": 102.9,
       "h": 121.2
      },
      "kyle": {
-      "x": 419.1,
+      "x": 421.7,
       "y": 344.1,
       "w": 134.2,
       "h": 131.6
      },
      "kazuto": {
-      "x": 541.6,
-      "y": 341.5,
-      "w": 134.2,
+      "x": 544.2,
+      "y": 340.2,
+      "w": 135.5,
       "h": 130.3
      }
     },
@@ -2939,7 +2939,7 @@
       "sprite": "kyle",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/kyle/front.png?v=f19981c129",
       "pd": "ok",
-      "ea": "[\"kyle\",\"knight\",\"px:v9.9\",\"front\",[\"iron_spear\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
+      "ea": "[\"kyle\",\"knight\",\"px:v9.9.1\",\"front\",[\"iron_spear\",\"iron_armor\",\"iron_shield\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2959,7 +2959,7 @@
       "sprite": "kazuto",
       "url": "http://localhost:8894/assets/characters/party-directions-add68/sprites/kazuto/front.png?v=02eb6948d1",
       "pd": "ok",
-      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9\",\"front\",[\"battle_axe\",\"iron_armor\",\"iron_helm\"]]",
+      "ea": "[\"kazuto\",\"warrior\",\"px:v9.9.1\",\"front\",[\"battle_axe\",\"iron_armor\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2979,7 +2979,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -2991,19 +2991,19 @@
     },
     "vrects": {
      "hero": {
-      "x": 338.3,
+      "x": 333.1,
       "y": 331.1,
       "w": 92.5,
       "h": 121.2
      },
      "kyle": {
-      "x": 433.4,
+      "x": 428.2,
       "y": 328.5,
       "w": 121.2,
       "h": 130.3
      },
      "kazuto": {
-      "x": 536.4,
+      "x": 532.5,
       "y": 320.7,
       "w": 144.6,
       "h": 131.6
@@ -3025,7 +3025,7 @@
       "fullCovered": 0,
       "fullTop": 334,
       "rect": {
-       "x": 340,
+       "x": 334,
        "y": 334,
        "w": 93,
        "h": 121
@@ -3035,12 +3035,12 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 335,
+      "fullTop": 334,
       "rect": {
-       "x": 435,
+       "x": 430,
        "y": 331,
        "w": 121,
-       "h": 129
+       "h": 130
       }
      },
      "kazuto": {
@@ -3049,7 +3049,7 @@
       "fullCovered": 0,
       "fullTop": 325,
       "rect": {
-       "x": 538,
+       "x": 532,
        "y": 323,
        "w": 145,
        "h": 132
@@ -3075,21 +3075,21 @@
     },
     "vrects2": {
      "hero": {
-      "x": 373.5,
-      "y": 344.1,
-      "w": 89.9,
+      "x": 361.7,
+      "y": 341.5,
+      "w": 91.2,
       "h": 119.9
      },
      "kyle": {
-      "x": 469.9,
-      "y": 341.5,
+      "x": 458.2,
+      "y": 338.9,
       "w": 121.2,
       "h": 129
      },
      "kazuto": {
-      "x": 570.2,
-      "y": 332.4,
-      "w": 146,
+      "x": 559.8,
+      "y": 329.8,
+      "w": 144.6,
       "h": 130.3
      }
     },

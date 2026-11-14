@@ -1,0 +1,1014 @@
+{
+ "VIEW": "phone",
+ "isPhone": true,
+ "ok": 21,
+ "ng": 0,
+ "steps": [
+  {
+   "ok": true,
+   "m": "準備：主人公（戦士）＋オルド。職業のデータ：魔法使い 武器 staff・dagger・防具 robe・hat・acc（はじめの武器 oak_staff）／戦士 sword・axe・spear／狩人 bow・dagger・spear／盗賊 dagger・sword・bow。狩人・盗賊・魔法使いへ転職できる"
+  },
+  {
+   "ok": true,
+   "m": "オルド（oath_knight）：装備できる品（武器 steel_sword・iron_spear／盾 iron_shield／頭 iron_helm／鎧 iron_armor）。加入時の装備 {\"weapon\":null,\"armor\":null,\"shield\":null,\"head\":null,\"acc\":null}"
+  },
+  {
+   "ok": true,
+   "m": "オルド：そうび画面で試着（選んだだけの枠の絵）＝ 確定のあとの絵（base_plain weapon_sword hand／base_plain shield_gt shield_gf weapon_sword hand／base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand）"
+  },
+  {
+   "ok": true,
+   "m": "［オルド：steel_sword＋iron_shield＋iron_helm］オルド：なかまの画面 base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand（職業 oath_knight・装備 {\"weapon\":\"steel_sword\",\"armor\":null,\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［オルド：steel_sword＋iron_shield＋iron_helm］オルド：戦闘の背面（pixel:dir:back・部品 base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand）"
+  },
+  {
+   "ok": true,
+   "m": "［オルド：steel_sword＋iron_shield＋iron_helm］オルド：勝利の正面（pixel:dir:front・部品 base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand）"
+  },
+  {
+   "ok": true,
+   "m": "［オルド：steel_sword＋iron_shield＋iron_helm］戦闘のあとのなかまの画面も同じ（base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand）。戦闘の大きさ：背面 81×99.9（CSS の画素）"
+  },
+  {
+   "ok": true,
+   "m": "［オルド：武器をはずす］オルド：なかまの画面 base_helm head_helm_t head_helm_f shield_gt shield_gf（職業 oath_knight・装備 {\"weapon\":null,\"armor\":null,\"shield\":\"iron_shield\",\"head\":\"iron_helm\",\"acc\":null}）"
+  },
+  {
+   "ok": true,
+   "m": "［オルド：武器をはずす］オルド：戦闘の背面（pixel:dir:back・部品 base_helm head_helm_t head_helm_f shield_gt shield_gf）"
+  },
+  {
+   "ok": true,
+   "m": "［オルド：武器をはずす］オルド：勝利の正面（pixel:dir:front・部品 base_helm head_helm_t head_helm_f shield_gt shield_gf）"
+  },
+  {
+   "ok": true,
+   "m": "［オルド：武器をはずす］戦闘のあとのなかまの画面も同じ（base_helm head_helm_t head_helm_f shield_gt shield_gf）。戦闘の大きさ：背面 81×99.9（CSS の画素）"
+  },
+  {
+   "ok": true,
+   "m": "武器をはずす：絵（なかま・そうび画面・戦闘・勝利）から武器が消え、持ち物に戻る（所持数 0 → 1）"
+  },
+  {
+   "ok": true,
+   "m": "キャンセル（そうび → 頭 → 品の一覧で Esc）：装備・所持数・絵が変わらない（base_helm head_helm_t head_helm_f shield_gt shield_gf）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v983（8861f81）：パーティ・全員の装備ID・所持数・所持金が作ったときと同じ"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v983（8861f81）：加入時の職業のままの仲間は職業の服の重ね絵なし（元の絵の姿）で、装備は 3 つの向きとも外見に解決（hero＝armor_heavy head_helm weapon_sword／lina＝armor_robe head_cap weapon_staff／mina＝weapon_sword／kyle＝armor_heavy shield weapon_spear）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v983（8861f81）：読んだだけではセーブを書き換えない"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v972（4ed959b）：パーティ・全員の装備ID・所持数・所持金が作ったときと同じ"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v972（4ed959b）：加入時の職業のままの仲間は職業の服の重ね絵なし（元の絵の姿）で、装備は 3 つの向きとも外見に解決（hero＝armor_heavy head_helm weapon_sword／lina＝armor_robe head_cap weapon_staff／mina＝weapon_sword／kyle＝armor_heavy shield weapon_spear）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v972（4ed959b）：読んだだけではセーブを書き換えない"
+  },
+  {
+   "ok": true,
+   "m": "ページのエラーなし"
+  },
+  {
+   "ok": true,
+   "m": "読み込みの失敗なし"
+  }
+ ],
+ "rec": {
+  "o0": {
+   "name": "オルド：steel_sword＋iron_shield＋iron_helm",
+   "menu": {
+    "hero": {
+     "actor": "hero",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "job:warrior",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 138.7,
+      "right": 251.3,
+      "w": 112.6,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.8407,
+     "pxw": 0.8406,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 34,
+      "maxMp": 10,
+      "atk": 9,
+      "def": 8,
+      "agi": 5,
+      "mag": 2,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "ord": {
+     "actor": "ord",
+     "st": "ok",
+     "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "oath_knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 99.4,
+      "right": 290.6,
+      "w": 191.2,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.5901,
+     "pxw": 0.59,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "steel_sword",
+      "armor": null,
+      "shield": "iron_shield",
+      "head": "iron_helm",
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 174,
+      "maxMp": 48,
+      "atk": 62,
+      "def": 69,
+      "agi": 17,
+      "mag": 15,
+      "mdef": 5,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "battle": {
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "ord": {
+     "id": "ord",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "oath_knight",
+     "sprite": "guard",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/ord/back.png?v=d8b52dd831",
+     "pd": "ok",
+     "ea": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.95,
+      "h": 1.29
+     }
+    },
+    "equip": {
+     "hero": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "ord": {
+      "weapon": "steel_sword",
+      "armor": null,
+      "shield": "iron_shield",
+      "head": "iron_helm",
+      "acc": null
+     }
+    },
+    "px": {
+     "sig": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
+     "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand",
+     "st": "ok"
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 171.8,
+      "y": 330.9,
+      "w": 72.5,
+      "h": 90.2
+     },
+     "ord": {
+      "x": 254.1,
+      "y": 321.1,
+      "w": 81,
+      "h": 99.9
+     }
+    },
+    "victory": {
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     },
+     "ord": {
+      "id": "ord",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "oath_knight",
+      "sprite": "guard",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/ord/front.png?v=8d4018c127",
+      "pd": "ok",
+      "ea": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.09,
+       "h": 1.29
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 173.7,
+      "y": 324.2,
+      "w": 64.6,
+      "h": 89.6
+     },
+     "ord": {
+      "x": 243.8,
+      "y": 313.2,
+      "w": 93.2,
+      "h": 101.2
+     }
+    },
+    "vpx": {
+     "sig": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
+     "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand",
+     "st": "ok"
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory result-simple rs",
+       "x": 12,
+       "y": 4,
+       "w": 367,
+       "h": 189
+      }
+     ],
+     "hero": {
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 331,
+      "rect": {
+       "x": 174,
+       "y": 331,
+       "w": 65,
+       "h": 89
+      }
+     },
+     "ord": {
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 319,
+      "rect": {
+       "x": 244,
+       "y": 320,
+       "w": 93,
+       "h": 101
+      }
+     }
+    },
+    "panel": {
+     "cls": "rw-panel result-victory result-simple rs-top",
+     "top": 4,
+     "bottom": 193,
+     "h": 189,
+     "scroll": null,
+     "close": {
+      "top": 140,
+      "bottom": 184,
+      "in": true
+     },
+     "more": false
+    },
+    "vrects2": {
+     "hero": {
+      "x": 174.3,
+      "y": 331.5,
+      "w": 64.6,
+      "h": 89.6
+     },
+     "ord": {
+      "x": 244.4,
+      "y": 320.5,
+      "w": 93.2,
+      "h": 100.5
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "hero": {
+     "actor": "hero",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "job:warrior",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 138.7,
+      "right": 251.3,
+      "w": 112.6,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.8407,
+     "pxw": 0.8406,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 34,
+      "maxMp": 10,
+      "atk": 9,
+      "def": 8,
+      "agi": 5,
+      "mag": 2,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "ord": {
+     "actor": "ord",
+     "st": "ok",
+     "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand",
+     "skipped": null,
+     "view": "menu",
+     "job": "oath_knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 99.4,
+      "right": 290.6,
+      "w": 191.2,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.5901,
+     "pxw": 0.59,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": "steel_sword",
+      "armor": null,
+      "shield": "iron_shield",
+      "head": "iron_helm",
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 174,
+      "maxMp": 48,
+      "atk": 62,
+      "def": 69,
+      "agi": 17,
+      "mag": 15,
+      "mdef": 5,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   }
+  },
+  "o2": {
+   "name": "オルド：武器をはずす",
+   "menu": {
+    "hero": {
+     "actor": "hero",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "job:warrior",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 138.7,
+      "right": 251.3,
+      "w": 112.6,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.8407,
+     "pxw": 0.8406,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 34,
+      "maxMp": 10,
+      "atk": 9,
+      "def": 8,
+      "agi": 5,
+      "mag": 2,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "ord": {
+     "actor": "ord",
+     "st": "ok",
+     "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf",
+     "skipped": null,
+     "view": "menu",
+     "job": "oath_knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 99.4,
+      "right": 290.6,
+      "w": 191.2,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.5901,
+     "pxw": 0.59,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": "iron_shield",
+      "head": "iron_helm",
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 174,
+      "maxMp": 48,
+      "atk": 40,
+      "def": 69,
+      "agi": 17,
+      "mag": 15,
+      "mdef": 5,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   },
+   "battle": {
+    "hero": {
+     "id": "hero",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "warrior",
+     "sprite": "hero_warrior",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
+     "pd": "ok",
+     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.84,
+      "h": 1.17
+     }
+    },
+    "ord": {
+     "id": "ord",
+     "model": "pixel:dir:back",
+     "ready": true,
+     "anim": "Idle",
+     "dead": false,
+     "status": "2D",
+     "job": "oath_knight",
+     "sprite": "guard",
+     "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/ord/back.png?v=d8b52dd831",
+     "pd": "ok",
+     "ea": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"back\",[\"iron_shield\",\"iron_helm\"]]",
+     "eaWait": false,
+     "eaModel": null,
+     "vis": true,
+     "size": {
+      "w": 0.95,
+      "h": 1.29
+     }
+    },
+    "equip": {
+     "hero": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "ord": {
+      "weapon": null,
+      "armor": null,
+      "shield": "iron_shield",
+      "head": "iron_helm",
+      "acc": null
+     }
+    },
+    "px": {
+     "sig": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"back\",[\"iron_shield\",\"iron_helm\"]]",
+     "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf",
+     "st": "ok"
+    },
+    "fell": [],
+    "rects": {
+     "hero": {
+      "x": 171.8,
+      "y": 330.9,
+      "w": 72.5,
+      "h": 90.2
+     },
+     "ord": {
+      "x": 254.1,
+      "y": 321.1,
+      "w": 81,
+      "h": 99.9
+     }
+    },
+    "victory": {
+     "hero": {
+      "id": "hero",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "warrior",
+      "sprite": "hero_warrior",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
+      "pd": "ok",
+      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 0.75,
+       "h": 1.15
+      }
+     },
+     "ord": {
+      "id": "ord",
+      "model": "pixel:dir:front",
+      "ready": true,
+      "anim": "Idle",
+      "dead": false,
+      "status": "2D",
+      "job": "oath_knight",
+      "sprite": "guard",
+      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/ord/front.png?v=8d4018c127",
+      "pd": "ok",
+      "ea": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"front\",[\"iron_shield\",\"iron_helm\"]]",
+      "eaWait": false,
+      "eaModel": null,
+      "vis": true,
+      "size": {
+       "w": 1.09,
+       "h": 1.29
+      }
+     }
+    },
+    "vrects": {
+     "hero": {
+      "x": 174.3,
+      "y": 326.6,
+      "w": 64.6,
+      "h": 89.6
+     },
+     "ord": {
+      "x": 243.8,
+      "y": 315.7,
+      "w": 93.2,
+      "h": 100.5
+     }
+    },
+    "vpx": {
+     "sig": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"front\",[\"iron_shield\",\"iron_helm\"]]",
+     "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf",
+     "st": "ok"
+    },
+    "cover": {
+     "wins": [
+      {
+       "cls": "rw-panel result-victory result-simple rs",
+       "x": 12,
+       "y": 4,
+       "w": 367,
+       "h": 189
+      }
+     ],
+     "hero": {
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 329,
+      "rect": {
+       "x": 174,
+       "y": 329,
+       "w": 65,
+       "h": 90
+      }
+     },
+     "ord": {
+      "covered": 0,
+      "headCovered": 0,
+      "fullCovered": 0,
+      "fullTop": 317,
+      "rect": {
+       "x": 244,
+       "y": 318,
+       "w": 93,
+       "h": 101
+      }
+     }
+    },
+    "panel": {
+     "cls": "rw-panel result-victory result-simple rs-top",
+     "top": 4,
+     "bottom": 193,
+     "h": 189,
+     "scroll": null,
+     "close": {
+      "top": 140,
+      "bottom": 184,
+      "in": true
+     },
+     "more": false
+    },
+    "vrects2": {
+     "hero": {
+      "x": 174.3,
+      "y": 331.5,
+      "w": 64.6,
+      "h": 89.6
+     },
+     "ord": {
+      "x": 244.4,
+      "y": 320.5,
+      "w": 93.2,
+      "h": 100.5
+     }
+    },
+    "ended": true
+   },
+   "after": {
+    "hero": {
+     "actor": "hero",
+     "st": "ok",
+     "parts": "base_plain",
+     "skipped": null,
+     "view": "job:warrior",
+     "job": "warrior",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 138.7,
+      "right": 251.3,
+      "w": 112.6,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.8407,
+     "pxw": 0.8406,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": null,
+      "head": null,
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 34,
+      "maxMp": 10,
+      "atk": 9,
+      "def": 8,
+      "agi": 5,
+      "mag": 2,
+      "mdef": 1,
+      "immune": [],
+      "element": "none"
+     }
+    },
+    "ord": {
+     "actor": "ord",
+     "st": "ok",
+     "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf",
+     "skipped": null,
+     "view": "menu",
+     "job": "oath_knight",
+     "rect": {
+      "top": 80.9,
+      "bottom": 270.9,
+      "left": 99.4,
+      "right": 290.6,
+      "w": 191.2,
+      "h": 190,
+      "cx": 195
+     },
+     "px": 0.5901,
+     "pxw": 0.59,
+     "clip": {
+      "top": false,
+      "bottom": false,
+      "left": false,
+      "right": false,
+      "screen": false
+     },
+     "ov": null,
+     "equip": {
+      "weapon": null,
+      "armor": null,
+      "shield": "iron_shield",
+      "head": "iron_helm",
+      "acc": null
+     },
+     "stats": {
+      "maxHp": 174,
+      "maxMp": 48,
+      "atk": 40,
+      "def": 69,
+      "agi": 17,
+      "mag": 15,
+      "mdef": 5,
+      "immune": [],
+      "element": "none"
+     }
+    }
+   }
+  },
+  "old": {
+   "v983": {
+    "party": [
+     "hero",
+     "lina",
+     "mina",
+     "kyle"
+    ],
+    "res": {
+     "hero": {
+      "job": "warrior",
+      "equip": {
+       "weapon": "steel_sword",
+       "armor": "iron_armor",
+       "shield": null,
+       "head": "iron_helm",
+       "acc": null
+      },
+      "plans": [
+       "armor_heavy head_helm weapon_sword",
+       "armor_heavy head_helm weapon_sword",
+       "armor_heavy head_helm weapon_sword"
+      ]
+     },
+     "lina": {
+      "job": "priest",
+      "equip": {
+       "weapon": "oak_staff",
+       "armor": "robe_skip",
+       "shield": null,
+       "head": "leather_cap",
+       "acc": null
+      },
+      "plans": [
+       "armor_robe head_cap weapon_staff",
+       "armor_robe head_cap weapon_staff",
+       "armor_robe head_cap weapon_staff"
+      ]
+     },
+     "mina": {
+      "job": "thief",
+      "equip": {
+       "weapon": "copper_sword",
+       "armor": null,
+       "shield": null,
+       "head": null,
+       "acc": null
+      },
+      "plans": [
+       "weapon_sword",
+       "weapon_sword",
+       "weapon_sword"
+      ]
+     },
+     "kyle": {
+      "job": "knight",
+      "equip": {
+       "weapon": "iron_spear",
+       "armor": "iron_armor",
+       "shield": "iron_shield",
+       "head": null,
+       "acc": null
+      },
+      "plans": [
+       "armor_heavy shield weapon_spear",
+       "armor_heavy shield weapon_spear",
+       "armor_heavy shield weapon_spear"
+      ]
+     }
+    }
+   },
+   "v972": {
+    "party": [
+     "hero",
+     "lina",
+     "mina",
+     "kyle"
+    ],
+    "res": {
+     "hero": {
+      "job": "warrior",
+      "equip": {
+       "weapon": "steel_sword",
+       "armor": "iron_armor",
+       "shield": null,
+       "head": "iron_helm",
+       "acc": null
+      },
+      "plans": [
+       "armor_heavy head_helm weapon_sword",
+       "armor_heavy head_helm weapon_sword",
+       "armor_heavy head_helm weapon_sword"
+      ]
+     },
+     "lina": {
+      "job": "priest",
+      "equip": {
+       "weapon": "oak_staff",
+       "armor": "robe_skip",
+       "shield": null,
+       "head": "leather_cap",
+       "acc": null
+      },
+      "plans": [
+       "armor_robe head_cap weapon_staff",
+       "armor_robe head_cap weapon_staff",
+       "armor_robe head_cap weapon_staff"
+      ]
+     },
+     "mina": {
+      "job": "thief",
+      "equip": {
+       "weapon": "copper_sword",
+       "armor": null,
+       "shield": null,
+       "head": null,
+       "acc": null
+      },
+      "plans": [
+       "weapon_sword",
+       "weapon_sword",
+       "weapon_sword"
+      ]
+     },
+     "kyle": {
+      "job": "knight",
+      "equip": {
+       "weapon": "iron_spear",
+       "armor": "iron_armor",
+       "shield": "iron_shield",
+       "head": null,
+       "acc": null
+      },
+      "plans": [
+       "armor_heavy shield weapon_spear",
+       "armor_heavy shield weapon_spear",
+       "armor_heavy shield weapon_spear"
+      ]
+     }
+    }
+   }
+  }
+ }
+}
