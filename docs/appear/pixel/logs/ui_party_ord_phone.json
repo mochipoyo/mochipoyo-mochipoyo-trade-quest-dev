@@ -306,13 +306,13 @@
     "vrects": {
      "hero": {
       "x": 173.7,
-      "y": 324.2,
+      "y": 325.4,
       "w": 64.6,
       "h": 89.6
      },
      "ord": {
       "x": 243.8,
-      "y": 313.2,
+      "y": 314.4,
       "w": 93.2,
       "h": 101.2
      }
@@ -336,22 +336,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 327,
       "rect": {
        "x": 174,
-       "y": 331,
+       "y": 327,
        "w": 65,
-       "h": 89
+       "h": 90
       }
      },
      "ord": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 319,
+      "fullTop": 316,
       "rect": {
        "x": 244,
-       "y": 320,
+       "y": 316,
        "w": 93,
        "h": 101
       }
@@ -695,13 +695,13 @@
     "vrects": {
      "hero": {
       "x": 174.3,
-      "y": 326.6,
+      "y": 329.1,
       "w": 64.6,
       "h": 89.6
      },
      "ord": {
       "x": 243.8,
-      "y": 315.7,
+      "y": 318.7,
       "w": 93.2,
       "h": 100.5
      }
@@ -725,10 +725,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 329,
+      "fullTop": 324,
       "rect": {
        "x": 174,
-       "y": 329,
+       "y": 324,
        "w": 65,
        "h": 90
       }
@@ -737,10 +737,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 317,
+      "fullTop": 313,
       "rect": {
        "x": 244,
-       "y": 318,
+       "y": 314,
        "w": 93,
        "h": 101
       }

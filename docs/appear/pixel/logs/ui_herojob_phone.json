@@ -354,7 +354,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 216.9,
+      "x": 216.3,
       "y": 330.9,
       "w": 71.9,
       "h": 90.2
@@ -385,9 +385,9 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 326.6,
+      "y": 331.5,
       "w": 63.4,
-      "h": 89.6
+      "h": 89
      }
     },
     "cover": {
@@ -601,9 +601,9 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 331.5,
-      "w": 63.4,
-      "h": 89
+      "y": 318.7,
+      "w": 64,
+      "h": 90.2
      }
     },
     "cover": {
@@ -620,11 +620,11 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 328,
+      "fullTop": 321,
       "rect": {
        "x": 219,
-       "y": 328,
-       "w": 63,
+       "y": 321,
+       "w": 64,
        "h": 90
       }
      }
@@ -713,7 +713,7 @@
       "short_bow": 1,
       "dagger": 1
      },
-     "gold": 20004
+     "gold": 20003
     },
     "after": {
      "job": "hunter",
@@ -732,7 +732,7 @@
       "steel_sword": 1,
       "iron_armor": 1
      },
-     "gold": 19904
+     "gold": 19903
     },
     "off": [
      "iron_armor",
@@ -872,7 +872,7 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 328.5,
+      "y": 327.8,
       "w": 63.4,
       "h": 89.6
      }
@@ -891,12 +891,12 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 327,
+      "fullTop": 331,
       "rect": {
        "x": 219,
-       "y": 327,
+       "y": 331,
        "w": 63,
-       "h": 90
+       "h": 89
       }
      }
     },
@@ -1114,12 +1114,12 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 331,
+      "fullTop": 330,
       "rect": {
        "x": 219,
-       "y": 331,
+       "y": 330,
        "w": 63,
-       "h": 89
+       "h": 90
       }
      }
     },
@@ -1263,10 +1263,10 @@
       "dagger": 1,
       "steel_sword": 1,
       "iron_armor": 1,
-      "herb": 2,
-      "short_bow": 1
+      "short_bow": 1,
+      "herb": 1
      },
-     "gold": 19916
+     "gold": 19914
     },
     "after": {
      "job": "thief",
@@ -1283,10 +1283,10 @@
       "dagger": 1,
       "steel_sword": 1,
       "iron_armor": 1,
-      "herb": 2,
-      "short_bow": 1
+      "short_bow": 1,
+      "herb": 1
      },
-     "gold": 19816
+     "gold": 19814
     },
     "off": [],
     "msg": "もちは盗賊になった！▼履歴"
@@ -1423,7 +1423,7 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 329.7,
+      "y": 323.6,
       "w": 63.4,
       "h": 89.6
      }
@@ -1639,9 +1639,9 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 330.9,
+      "y": 326.6,
       "w": 63.4,
-      "h": 89
+      "h": 89.6
      }
     },
     "cover": {
@@ -1658,10 +1658,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 328,
+      "fullTop": 325,
       "rect": {
        "x": 219,
-       "y": 328,
+       "y": 325,
        "w": 63,
        "h": 90
       }
@@ -1751,8 +1751,8 @@
      "inv": {
       "steel_sword": 1,
       "iron_armor": 1,
-      "herb": 3,
-      "short_bow": 1
+      "short_bow": 1,
+      "herb": 1
      },
      "saved": true,
      "bad": false
@@ -1769,8 +1769,8 @@
      "inv": {
       "steel_sword": 1,
       "iron_armor": 1,
-      "herb": 3,
-      "short_bow": 1
+      "short_bow": 1,
+      "herb": 1
      }
     },
     "msg": "スロット1にセーブした。▼履歴"
@@ -1860,7 +1860,7 @@
     "fell": [],
     "rects": {
      "hero": {
-      "x": 216.9,
+      "x": 216.3,
       "y": 330.9,
       "w": 71.9,
       "h": 90.2
@@ -1891,9 +1891,9 @@
     "vrects": {
      "hero": {
       "x": 218.8,
-      "y": 329.7,
-      "w": 63.4,
-      "h": 89.6
+      "y": 318.1,
+      "w": 64,
+      "h": 90.2
      }
     },
     "cover": {
@@ -1910,11 +1910,11 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 328,
+      "fullTop": 320,
       "rect": {
        "x": 219,
-       "y": 328,
-       "w": 63,
+       "y": 320,
+       "w": 64,
        "h": 90
       }
      }
@@ -2002,10 +2002,10 @@
      "inv": {
       "steel_sword": 1,
       "iron_armor": 1,
-      "herb": 3,
-      "short_bow": 1
+      "short_bow": 1,
+      "herb": 1
      },
-     "gold": 19823
+     "gold": 19822
     },
     "after": {
      "job": "warrior",
@@ -2021,11 +2021,11 @@
      "inv": {
       "steel_sword": 1,
       "iron_armor": 1,
-      "herb": 3,
       "short_bow": 1,
+      "herb": 1,
       "dagger": 1
      },
-     "gold": 19723
+     "gold": 19722
     },
     "off": [
      "dagger"
