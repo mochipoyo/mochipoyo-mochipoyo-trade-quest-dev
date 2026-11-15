@@ -1,7 +1,7 @@
 {
  "VIEW": "phone",
  "isPhone": true,
- "ok": 21,
+ "ok": 23,
  "ng": 0,
  "steps": [
   {
@@ -66,6 +66,10 @@
   },
   {
    "ok": true,
+   "m": "以前の版のセーブ v983（8861f81）：衣装の項目がない＝全員が通常の外見で読み込まれる"
+  },
+  {
+   "ok": true,
    "m": "以前の版のセーブ v983（8861f81）：読んだだけではセーブを書き換えない"
   },
   {
@@ -75,6 +79,10 @@
   {
    "ok": true,
    "m": "以前の版のセーブ v972（4ed959b）：加入時の職業のままの仲間は職業の服の重ね絵なし（元の絵の姿）で、装備は 3 つの向きとも外見に解決（hero＝armor_heavy head_helm weapon_sword／lina＝armor_robe head_cap weapon_staff／mina＝weapon_sword／kyle＝armor_heavy shield weapon_spear）"
+  },
+  {
+   "ok": true,
+   "m": "以前の版のセーブ v972（4ed959b）：衣装の項目がない＝全員が通常の外見で読み込まれる"
   },
   {
    "ok": true,
@@ -196,7 +204,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -216,7 +224,7 @@
      "sprite": "guard",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/ord/back.png?v=d8b52dd831",
      "pd": "ok",
-     "ea": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"ord\",\"oath_knight\",\"\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -242,7 +250,7 @@
      }
     },
     "px": {
-     "sig": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
+     "sig": "[\"ord\",\"oath_knight\",\"\",\"px:v9.9.1\",\"back\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
      "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand",
      "st": "ok"
     },
@@ -273,7 +281,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -293,7 +301,7 @@
       "sprite": "guard",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/ord/front.png?v=8d4018c127",
       "pd": "ok",
-      "ea": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
+      "ea": "[\"ord\",\"oath_knight\",\"\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -306,19 +314,19 @@
     "vrects": {
      "hero": {
       "x": 173.7,
-      "y": 326,
+      "y": 325.4,
       "w": 64.6,
       "h": 89.6
      },
      "ord": {
       "x": 243.8,
-      "y": 315,
+      "y": 314.4,
       "w": 93.2,
       "h": 101.2
      }
     },
     "vpx": {
-     "sig": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
+     "sig": "[\"ord\",\"oath_knight\",\"\",\"px:v9.9.1\",\"front\",[\"steel_sword\",\"iron_shield\",\"iron_helm\"]]",
      "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf weapon_sword hand",
      "st": "ok"
     },
@@ -336,10 +344,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 330,
+      "fullTop": 324,
       "rect": {
        "x": 174,
-       "y": 330,
+       "y": 324,
        "w": 65,
        "h": 90
       }
@@ -348,10 +356,10 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 319,
+      "fullTop": 313,
       "rect": {
        "x": 244,
-       "y": 320,
+       "y": 313,
        "w": 93,
        "h": 101
       }
@@ -585,7 +593,7 @@
      "sprite": "hero_warrior",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/back.png?v=d12d883c98",
      "pd": "ok",
-     "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"back\",[]]",
+     "ea": "[\"hero\",\"warrior\",\"\",\"px:v9.9.1\",\"back\",[]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -605,7 +613,7 @@
      "sprite": "guard",
      "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/ord/back.png?v=d8b52dd831",
      "pd": "ok",
-     "ea": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"back\",[\"iron_shield\",\"iron_helm\"]]",
+     "ea": "[\"ord\",\"oath_knight\",\"\",\"px:v9.9.1\",\"back\",[\"iron_shield\",\"iron_helm\"]]",
      "eaWait": false,
      "eaModel": null,
      "vis": true,
@@ -631,7 +639,7 @@
      }
     },
     "px": {
-     "sig": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"back\",[\"iron_shield\",\"iron_helm\"]]",
+     "sig": "[\"ord\",\"oath_knight\",\"\",\"px:v9.9.1\",\"back\",[\"iron_shield\",\"iron_helm\"]]",
      "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf",
      "st": "ok"
     },
@@ -662,7 +670,7 @@
       "sprite": "hero_warrior",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/hero/front.png?v=67103f3a18",
       "pd": "ok",
-      "ea": "[\"hero\",\"warrior\",\"px:v9.9.1\",\"front\",[]]",
+      "ea": "[\"hero\",\"warrior\",\"\",\"px:v9.9.1\",\"front\",[]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -682,7 +690,7 @@
       "sprite": "guard",
       "url": "http://localhost:8894/assets/characters/party-directions-v3/sprites/ord/front.png?v=8d4018c127",
       "pd": "ok",
-      "ea": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"front\",[\"iron_shield\",\"iron_helm\"]]",
+      "ea": "[\"ord\",\"oath_knight\",\"\",\"px:v9.9.1\",\"front\",[\"iron_shield\",\"iron_helm\"]]",
       "eaWait": false,
       "eaModel": null,
       "vis": true,
@@ -694,20 +702,20 @@
     },
     "vrects": {
      "hero": {
-      "x": 174.3,
-      "y": 327.8,
+      "x": 173.7,
+      "y": 324.2,
       "w": 64.6,
       "h": 89.6
      },
      "ord": {
       "x": 243.8,
-      "y": 316.9,
+      "y": 313.2,
       "w": 93.2,
-      "h": 100.5
+      "h": 101.2
      }
     },
     "vpx": {
-     "sig": "[\"ord\",\"oath_knight\",\"px:v9.9.1\",\"front\",[\"iron_shield\",\"iron_helm\"]]",
+     "sig": "[\"ord\",\"oath_knight\",\"\",\"px:v9.9.1\",\"front\",[\"iron_shield\",\"iron_helm\"]]",
      "parts": "base_helm head_helm_t head_helm_f shield_gt shield_gf",
      "st": "ok"
     },
@@ -725,22 +733,22 @@
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 324,
+      "fullTop": 332,
       "rect": {
        "x": 174,
-       "y": 324,
+       "y": 332,
        "w": 65,
-       "h": 90
+       "h": 89
       }
      },
      "ord": {
       "covered": 0,
       "headCovered": 0,
       "fullCovered": 0,
-      "fullTop": 313,
+      "fullTop": 320,
       "rect": {
        "x": 244,
-       "y": 313,
+       "y": 321,
        "w": 93,
        "h": 101
       }
@@ -879,6 +887,7 @@
     "res": {
      "hero": {
       "job": "warrior",
+      "cos": false,
       "equip": {
        "weapon": "steel_sword",
        "armor": "iron_armor",
@@ -894,6 +903,7 @@
      },
      "lina": {
       "job": "priest",
+      "cos": false,
       "equip": {
        "weapon": "oak_staff",
        "armor": "robe_skip",
@@ -909,6 +919,7 @@
      },
      "mina": {
       "job": "thief",
+      "cos": false,
       "equip": {
        "weapon": "copper_sword",
        "armor": null,
@@ -924,6 +935,7 @@
      },
      "kyle": {
       "job": "knight",
+      "cos": false,
       "equip": {
        "weapon": "iron_spear",
        "armor": "iron_armor",
@@ -949,6 +961,7 @@
     "res": {
      "hero": {
       "job": "warrior",
+      "cos": false,
       "equip": {
        "weapon": "steel_sword",
        "armor": "iron_armor",
@@ -964,6 +977,7 @@
      },
      "lina": {
       "job": "priest",
+      "cos": false,
       "equip": {
        "weapon": "oak_staff",
        "armor": "robe_skip",
@@ -979,6 +993,7 @@
      },
      "mina": {
       "job": "thief",
+      "cos": false,
       "equip": {
        "weapon": "copper_sword",
        "armor": null,
@@ -994,6 +1009,7 @@
      },
      "kyle": {
       "job": "knight",
+      "cos": false,
       "equip": {
        "weapon": "iron_spear",
        "armor": "iron_armor",
