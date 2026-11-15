@@ -1136,11 +1136,11 @@
      "h": 66
     },
     "art_helm_knight": {
-     "url": "assets/characters/equip-pixels/ganes/back/art_helm_knight__back.png?v=d19d5cf6",
-     "x": 125,
+     "url": "assets/characters/equip-pixels/ganes/back/art_helm_knight__back.png?v=1ed5521d",
+     "x": 122,
      "y": 26,
-     "w": 75,
-     "h": 88
+     "w": 81,
+     "h": 77
     }
    },
    "frame": {

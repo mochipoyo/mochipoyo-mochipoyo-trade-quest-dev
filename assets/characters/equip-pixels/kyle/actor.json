@@ -1188,11 +1188,11 @@
      "h": 107
     },
     "art_helm_knight": {
-     "url": "assets/characters/equip-pixels/kyle/back/art_helm_knight__back.png?v=39516580",
-     "x": 120,
+     "url": "assets/characters/equip-pixels/kyle/back/art_helm_knight__back.png?v=f8f798f7",
+     "x": 116,
      "y": 50,
-     "w": 81,
-     "h": 97
+     "w": 89,
+     "h": 85
     }
    }
   }

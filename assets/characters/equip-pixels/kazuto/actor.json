@@ -1174,11 +1174,11 @@
      "h": 193
     },
     "art_helm_knight": {
-     "url": "assets/characters/equip-pixels/kazuto/back/art_helm_knight__back.png?v=1c20392a",
-     "x": 134,
+     "url": "assets/characters/equip-pixels/kazuto/back/art_helm_knight__back.png?v=2e4013d7",
+     "x": 131,
      "y": 40,
-     "w": 65,
-     "h": 77
+     "w": 71,
+     "h": 68
     }
    }
   }

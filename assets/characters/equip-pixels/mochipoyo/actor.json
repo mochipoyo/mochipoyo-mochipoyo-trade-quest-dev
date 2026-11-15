@@ -1094,11 +1094,11 @@
      "h": 62
     },
     "art_helm_knight": {
-     "url": "assets/characters/equip-pixels/mochipoyo/back/art_helm_knight__back.png?v=1f3acde7",
-     "x": 146,
+     "url": "assets/characters/equip-pixels/mochipoyo/back/art_helm_knight__back.png?v=8c055718",
+     "x": 143,
      "y": 26,
-     "w": 69,
-     "h": 82
+     "w": 75,
+     "h": 72
     }
    },
    "frame": {

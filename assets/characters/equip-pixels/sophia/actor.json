@@ -1094,11 +1094,11 @@
      "h": 78
     },
     "art_helm_knight": {
-     "url": "assets/characters/equip-pixels/sophia/back/art_helm_knight__back.png?v=7fead22c",
-     "x": 117,
+     "url": "assets/characters/equip-pixels/sophia/back/art_helm_knight__back.png?v=9343edf1",
+     "x": 113,
      "y": 48,
-     "w": 97,
-     "h": 115
+     "w": 105,
+     "h": 100
     }
    },
    "frame": {

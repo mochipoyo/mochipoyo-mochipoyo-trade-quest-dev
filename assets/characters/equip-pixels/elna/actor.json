@@ -1094,11 +1094,11 @@
      "h": 72
     },
     "art_helm_knight": {
-     "url": "assets/characters/equip-pixels/elna/back/art_helm_knight__back.png?v=8defd36d",
-     "x": 128,
+     "url": "assets/characters/equip-pixels/elna/back/art_helm_knight__back.png?v=42bf35d0",
+     "x": 124,
      "y": 30,
-     "w": 79,
-     "h": 95
+     "w": 87,
+     "h": 83
     }
    },
    "frame": {

@@ -10,7 +10,11 @@ const PORT = process.env.PORT || 8894; const VIEW = process.env.VIEW || 'pc'; co
 const URL0 = `http://localhost:${PORT}/3d/index.html?nosw`;
 const steps = []; const S = (ok, m) => { steps.push({ ok: !!ok, m }); console.log((ok ? '  OK  ' : '  NG  ') + m); };
 // v9.9 代表の仲間（PT=kyle｜seris）。v9.9.1 素体を直したオルド・ガネス（PT=ord｜ganes：加入時の職業のまま、装備できる品で試着・確定・頭の付け替え・はずす・キャンセル）
-const PT = process.env.PT || 'kyle'; const PTN = { kyle: 'カイル', seris: 'セリス', ord: 'オルド', ganes: 'ガネス' }; const WHO = { hero: 'もち', [PT]: PTN[PT] }; const JOBN = { warrior: '戦士', hunter: '狩人', thief: '盗賊', mage: '魔法使い' }; const IDS = Object.keys(WHO);
+// v9.10 FLOW=art：用意された絵の品（騎士の剣・賢者の杖・騎士の盾・騎士の兜・火口の戦斧）を、装備できる人の通常の装備画面から試着・確定 → 戦闘の背面 → 勝利の正面（PT=kyle｜seris｜kazuto）
+//        FLOW=cos：衣装（なかま → 見た目）。セリスの「通常の外見」「祭りの晴れ着」（PT=seris）
+const FLOW = process.env.FLOW || '';
+const PTS = FLOW ? 'pt_' + FLOW + '_' + (process.env.PT || 'kyle') : 'pt';   // 画面写真の名前（流れ・人ごとに分ける）
+const PT = process.env.PT || 'kyle'; const PTN = { kyle: 'カイル', seris: 'セリス', ord: 'オルド', ganes: 'ガネス', kazuto: 'カズト', gald: 'ガルド' }; const WHO = { hero: 'もち', [PT]: PTN[PT] }; const JOBN = { warrior: '戦士', hunter: '狩人', thief: '盗賊', mage: '魔法使い' }; const IDS = Object.keys(WHO);
 const SLOT_LABEL = { weapon: '武器', armor: '鎧', shield: '盾', head: '頭' };
 let PG = null;
 (async () => {
@@ -26,7 +30,7 @@ let PG = null;
     const T = Win.toast; Win.toast = function (m) { (window.__toasts = window.__toasts || []).push(String(m)); return T.apply(this, arguments); };
     document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay);
     State.newGame('もち', 'warrior'); const d = State.data; d.flags.s3121_new_prologue = true; d.flags.s3121_prologue_phase = 'done'; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.settings.soundAsk93 = true; d.gold = 20000;
-    [['iron_armor', 1], ['steel_sword', 1], ['iron_shield', 1], ['iron_helm', 1], ['oak_staff', 1], ['robe', 1], ['wizard_hat', 1], ['dagger', 1], ['leather_cap', 1], ['iron_axe', 1], ['short_bow', 1], ['iron_spear', 1]].filter((x) => ITEMS[x[0]]).forEach((x) => State.addItem(x[0], x[1])); State.joinCompanion(window.__PT);
+    [['iron_armor', 1], ['steel_sword', 1], ['iron_shield', 1], ['iron_helm', 1], ['oak_staff', 1], ['robe', 1], ['wizard_hat', 1], ['dagger', 1], ['leather_cap', 1], ['knight_sword', 1], ['knight_shield', 1], ['knight_helm', 1], ['sage_staff', 1], ['crater_axe', 1], ['iron_axe', 1], ['short_bow', 1], ['iron_spear', 1]].filter((x) => ITEMS[x[0]]).forEach((x) => State.addItem(x[0], x[1])); State.joinCompanion(window.__PT);
     World.start(); const H = d.hero;
     return { party: d.party.slice(), job: H.job, equip: Object.assign({}, H.equip), can: { hunter: Actors.jobUnlocked(H, 'hunter', d.flags), thief: Actors.jobUnlocked(H, 'thief', d.flags), mage: Actors.jobUnlocked(H, 'mage', d.flags) },
       w: { hunter: JOBS.hunter.weapons, thief: JOBS.thief.weapons, warrior: JOBS.warrior.weapons, mage: JOBS.mage.weapons }, a: { mage: JOBS.mage.armors, thief: JOBS.thief.armors, hunter: JOBS.hunter.armors }, starter: STARTER_WEAPON.mage };
@@ -97,8 +101,8 @@ let PG = null;
           rect: r && { top: +r.top.toFixed(1), bottom: +r.bottom.toFixed(1), left: +r.left.toFixed(1), right: +r.right.toFixed(1), w: +r.width.toFixed(1), h: +r.height.toFixed(1), cx: +((r.left + r.right) / 2).toFixed(1) }, px: r && f ? +(r.height / (f.y1 - f.y0)).toFixed(4) : null, pxw: r && f ? +(r.width / (f.x1 - f.x0)).toFixed(4) : null, clip, ov,
           equip: Object.assign({}, A.equip), stats: Actors.stats(A) };
       }, id);
-      const el = await p.$('#ui .party-screen .pt-artbox') || await p.$('#ui .party-screen .pt-art'); if (el) await el.screenshot({ path: `${OUT}shots/ui_${VIEW}_pt_menu${tag || ''}_${id}_${key}.png` });
-      if (!tag && key === 'equip') await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_pt_menu_full_${id}_${key}.jpg`, type: 'jpeg', quality: 80 });
+      const el = await p.$('#ui .party-screen .pt-artbox') || await p.$('#ui .party-screen .pt-art'); if (el) await el.screenshot({ path: `${OUT}shots/ui_${VIEW}_${PTS}_menu${tag || ''}_${id}_${key}.png` });
+      if (!tag && key === 'equip') await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_${PTS}_menu_full_${id}_${key}.jpg`, type: 'jpeg', quality: 80 });
       out[id] = m;
     }
     await closeAll(); return out;
@@ -143,7 +147,7 @@ let PG = null;
     const b = await info(); b.equip = await p.evaluate((ids) => Object.fromEntries(ids.map((id) => [id, Object.assign({}, State.actor(id).equip)])), IDS); b.px = await pxOf('back', PT);
     b.fell = await p.evaluate(() => (window.__toasts || []).filter((t) => /3Dの戦闘を表示できない/.test(t)));
     b.rects = await rects();
-    await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_pt_battle_${key}.jpg`, type: 'jpeg', quality: 72 });
+    await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_${PTS}_battle_${key}.jpg`, type: 'jpeg', quality: 72 });
     await p.evaluate(() => { const bt = BattleUI.battle; bt.enemies.forEach((e) => { e.hp = 1; }); State.data.settings.autoBattle = true; });
     await p.keyboard.press('Enter');
     b.victory = null;
@@ -155,9 +159,9 @@ let PG = null;
           await p.waitForTimeout(600); b.victory = await info(); b.vrects = await rects(); b.vpx = await pxOf('front', PT);
           b.cover = await coverage();   // 結果の窓を出したまま：人物がどこまで見えるか
           b.panel = await p.evaluate(() => { const n = document.querySelector('#ui .rw-panel.result-victory'); if (!n) return null; const r = n.getBoundingClientRect(); const sc = n.querySelector('.rs-scroll'); const cl = n.querySelector('.rw-panel-close'); const cr = cl && cl.getBoundingClientRect(); const before = sc ? sc.scrollTop : 0; if (sc) sc.scrollTop = 99999; const moved = sc ? sc.scrollTop : 0; if (sc) sc.scrollTop = before; return { cls: n.className, top: Math.round(r.top), bottom: Math.round(r.bottom), h: Math.round(r.height), scroll: sc ? { h: sc.clientHeight, all: sc.scrollHeight, can: moved > 0 || sc.scrollHeight <= sc.clientHeight + 2 } : null, close: cr ? { top: Math.round(cr.top), bottom: Math.round(cr.bottom), in: cr.bottom <= r.bottom + 1 && cr.bottom <= innerHeight && cr.height > 10 } : null, more: /rs-more/.test(n.className) }; });
-          await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_pt_victory_ui_${key}.jpg`, type: 'jpeg', quality: 72 });
+          await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_${PTS}_victory_ui_${key}.jpg`, type: 'jpeg', quality: 72 });
           await p.evaluate(() => { const u = document.getElementById('ui'); if (u) u.style.visibility = 'hidden'; }); await p.waitForTimeout(120);
-          await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_pt_victory_${key}.jpg`, type: 'jpeg', quality: 72 });
+          await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_${PTS}_victory_${key}.jpg`, type: 'jpeg', quality: 72 });
           await p.evaluate(() => { const u = document.getElementById('ui'); if (u) u.style.visibility = ''; });
           await p.waitForTimeout(1200); b.vrects2 = await rects();   // 勝利のカメラが止まってから、もう一度（足もとの比べに使う）
         }
@@ -241,7 +245,7 @@ let PG = null;
     await row.asElement().scrollIntoViewIfNeeded(); await row.asElement().click(); await p.waitForTimeout(300);
     await p.waitForFunction(() => { const h = document.querySelector('#ui .eq-try .ea-host'); return h && /ok|error|none/.test(h.getAttribute('data-ea-state') || ''); }, null, { timeout: 20000 }).catch(() => null); await p.waitForTimeout(200);
     const tp = await p.evaluate(() => { const h = document.querySelector('#ui .eq-try .ea-host'); const n = h && h.querySelector('canvas'); return n ? n.getAttribute('data-ea-parts') : null; });
-    await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_pt_try_${item}.jpg`, type: 'jpeg', quality: 75 });
+    await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_${PTS}_try_${item}.jpg`, type: 'jpeg', quality: 75 });
     const ok = await t.$('.rw-ok'); if (ok) await ok.click(); else await row.asElement().click(); await p.waitForTimeout(400);
     const head = await headParts(); await closeAll(); return { tp, head };
   };
@@ -257,7 +261,81 @@ let PG = null;
     }
     return rec[key];
   };
-  if (PT === 'kyle') {
+  const lookOf = (parts) => !/(^| )(jf_|own_hat|head_|base_helm|base_hat|base_cap|base_nohat|armor_|hv_|outfit)/.test(parts || '');   // 衣装の姿：職業の服・鎧・頭の部品がない
+  if (FLOW === 'art') {
+  // ---- v9.10 絵の品：通常の装備画面から試着 → 確定 → なかま → 戦闘の背面 → 勝利の正面 → はずす → キャンセル ----
+  const ARTSET = { kyle: { weapon: 'knight_sword', shield: 'knight_shield', head: 'knight_helm' }, seris: { weapon: 'sage_staff' }, kazuto: { weapon: 'crater_axe' }, gald: { weapon: 'crater_axe' } }[PT];
+  const APART = { knight_sword: 'art_sword_knight', knight_shield: 'art_shield_knight', knight_helm: 'art_helm_knight', sage_staff: 'art_staff_sage', crater_axe: 'art_axe_battle' };
+  const CPART = { knight_sword: 'weapon_sword', knight_shield: 'shield_gt', knight_helm: 'head_helm_t', sage_staff: 'weapon_staff_t', crater_axe: 'weapon_axe' };   // 今までの形の部品（出てはいけない）
+  const can = await p.evaluate((a) => { const A = State.actor(a[0]); const o = { job: A.job }; Object.values(a[1]).forEach((id) => { o[id] = Actors.canEquip(A, id); }); return o; }, [PT, ARTSET]);
+  const ids = Object.values(ARTSET);
+  S(ids.every((id) => can[id]), `${WHO[PT]}（${can.job}）：絵の品（${ids.join('・')}）を装備できる`);
+  const tr = []; for (const slot of Object.keys(ARTSET)) tr.push(Object.assign({ id: ARTSET[slot] }, await tryOn(K, slot, ARTSET[slot])));
+  const last = tr[tr.length - 1].head; const has = ids.map((id) => APART[id]);
+  S(tr.every((t) => t.tp && t.tp === t.head && (' ' + t.tp + ' ').indexOf(' ' + APART[t.id] + ' ') >= 0) && has.every((k) => last.indexOf(k) >= 0) && ids.every((id) => (' ' + last + ' ').indexOf(' ' + CPART[id] + ' ') < 0) && /hand/.test(last), `${WHO[PT]}：そうび画面で絵の品を試着（選んだだけの枠の絵）＝ 確定のあとの絵。用意された絵の部品（${has.join('・')}）で描き、今までの形の部品は出ない（${last}）`);
+  await kScene('a0', `${WHO[PT]}：${ids.join('＋')}（用意された絵）`, { battle: true, has: has.concat(['hand']), not: ids.map((id) => CPART[id]) });
+  const i2 = await kinv(); const u1 = await equipVia(K, { weapon: null }); const i3 = await kinv();
+  await kScene('a1', `${WHO[PT]}：絵の武器をはずす`, { battle: true, not: [APART[ARTSET.weapon]] });
+  S(N(i3, ARTSET.weapon) === N(i2, ARTSET.weapon) + 1 && u1.head.indexOf(APART[ARTSET.weapon]) < 0, `絵の武器をはずす：絵から消え、持ち物に戻る（所持数 ${N(i2, ARTSET.weapon)} → ${N(i3, ARTSET.weapon)}）`);
+  const t9 = await tryOn(K, 'weapon', ARTSET.weapon); const i4 = await kinv(); const cx = await cancelVia(K, '武器'); const i5 = await kinv();
+  S(t9.tp === t9.head && cx.same && cx.back && cx.head0 === cx.head1 && JSON.stringify(i4) === JSON.stringify(i5) && cx.head1.indexOf(APART[ARTSET.weapon]) >= 0, `もう一度装備 → キャンセル（そうび → 武器 → 品の一覧で Esc）：装備・所持数・絵が変わらない（${cx.head1}）`);
+  } else if (FLOW === 'cos') {
+  // ---- v9.10 衣装：なかま → 見た目（通常の外見／祭りの晴れ着）。見た目だけが変わる ----
+  const cst = () => p.evaluate((id) => { const d = State.data, A = State.actor(id); return { costume: A.costume === undefined ? null : A.costume, has: Object.prototype.hasOwnProperty.call(A, 'costume'), job: A.job, snap: JSON.stringify({ job: A.job, level: A.level, equip: A.equip, stats: Actors.stats(A), hp: A.hp, mp: A.mp, inv: d.inventory, gold: d.gold, hero: d.hero.equip }) }; }, PT);
+  const openLook = async () => {
+    await openMenu(); await tab('パーティ'); await pick(/メニュー/, /^なかま/); await p.waitForSelector('#ui .party-screen .pt-art', { timeout: 30000 });
+    const row = await p.$(`#ui .party-screen .pt-row[data-id="${PT}"]`); await row.click(); await p.waitForTimeout(300);
+    const heroBtn = await p.evaluate(() => { const r = document.querySelector('#ui .party-screen .pt-row[data-id="hero"]'); return !!r; });
+    const btn = await p.$('#ui .party-screen .pt-btn[data-go="look"]'); if (!btn) return false; await btn.click(); await p.waitForSelector('#ui .look-screen .lk-row', { timeout: 20000 }); await p.waitForTimeout(300); return heroBtn;
+  };
+  const lookInfo = async (tag) => {
+    await p.waitForFunction(() => { const h = document.querySelector('#ui .look-screen .lk-art .ea-host'); return h && /ok|error|none/.test(h.getAttribute('data-ea-state') || ''); }, null, { timeout: 30000 }).catch(() => null); await p.waitForTimeout(300);
+    if (tag) await p.screenshot({ path: `${OUT}shots/ui_${VIEW}_look_${tag}.jpg`, type: 'jpeg', quality: 80 });
+    return p.evaluate(() => { const L = document.querySelector('#ui .look-screen'); const h = L.querySelector('.lk-art .ea-host'); const cv = h && h.querySelector('canvas.ea-canvas'); const r = cv && cv.getBoundingClientRect();
+      return { rows: [...L.querySelectorAll('.lk-row')].map((x) => x.querySelector('b').textContent.trim() + (x.classList.contains('cur') ? '*' : '') + (x.querySelector('.lk-now') ? '!' : '')), as: h && h.getAttribute('data-ea-costume'), st: h && h.getAttribute('data-ea-state'), parts: cv && cv.getAttribute('data-ea-parts'), inView: !!r && r.top >= 0 && r.bottom <= innerHeight + 1 && r.left >= 0 && r.right <= innerWidth + 1 && r.height > 40, h: r && Math.round(r.height) }; });
+  };
+  const lookRow = async (i) => { const rows = await p.$$('#ui .look-screen .lk-row'); await rows[i].click(); await p.waitForTimeout(300); };
+  const lookOk = async () => { const b = await p.$('#ui .look-screen .lk-ok'); await b.click(); await p.waitForTimeout(500); await closeAll(); };
+  // 0 準備：賢者の杖・ローブ・魔法使いの帽子（通常の外見）
+  const e0 = await equipVia(K, { weapon: 'sage_staff', armor: 'robe', head: 'wizard_hat' }); const r0 = await kScene('c0', 'セリス 通常の外見＋賢者の杖＋旅人のローブ＋魔法使いの帽子', { battle: true, has: ['art_staff_sage', 'hand'] }); const m0 = r0.menu; const c0 = await cst();   // 比べる元（戦闘のあとの値）
+  S(c0.costume === null && !c0.has && !lookOf(m0[PT].parts) && /art_staff_sage/.test(m0[PT].parts), `はじめ：衣装の項目なし＝通常の外見（${m0[PT].parts}）`);
+  // 主人公（衣装のない人）には「見た目」のボタンが出ない
+  const heroBtn = await (async () => { await openMenu(); await tab('パーティ'); await pick(/メニュー/, /^なかま/); await p.waitForSelector('#ui .party-screen .pt-art', { timeout: 30000 }); const r = await p.$('#ui .party-screen .pt-row[data-id="hero"]'); await r.click(); await p.waitForTimeout(300); const b = await p.$('#ui .party-screen .pt-btn[data-go="look"]'); await closeAll(); return !!b; })();
+  // 1 見た目の画面：一覧・プレビュー → Esc（何も変わらない）
+  await openLook(); const l0 = await lookInfo('c_normal'); await lookRow(1); const l1 = await lookInfo('c_festival'); const cMid = await cst();
+  await p.keyboard.press('Escape'); await p.waitForTimeout(400); await closeAll(); const c1 = await cst();
+  S(!heroBtn && l0.rows.join('｜') === '通常の外見*!｜祭りの晴れ着' && l0.as === '' && l0.parts === m0[PT].parts && l1.rows.join('｜') === '通常の外見!｜祭りの晴れ着*' && l1.as === 'festival' && l1.st === 'ok' && lookOf(l1.parts) && /art_staff_sage/.test(l1.parts) && /hand/.test(l1.parts) && l0.inView && l1.inView,
+    `なかま → 見た目：一覧（${l0.rows.join('｜')}）。「祭りの晴れ着」を選ぶとプレビューが晴れ着＋賢者の杖（${l1.parts}。鎧・頭・職業の服の部品なし）。主人公には「見た目」のボタンなし。プレビューは画面の中`);
+  S(cMid.snap === c0.snap && cMid.costume === null && c1.snap === c0.snap && c1.costume === null && !c1.has, '見た目の画面で選んだだけ・Esc：衣装も装備・能力値・所持数も変わらない');
+  await openLook(); await lookRow(1); const bc = await p.$('#ui .look-screen .lk-cancel'); await bc.click(); await p.waitForTimeout(400); await closeAll(); const c1b = await cst();
+  S(c1b.snap === c0.snap && c1b.costume === null, '「やめる」：何も変わらない');
+  // 2 晴れ着に決める → 晴れ着＋杖（メニュー・戦闘・勝利）
+  await openLook(); await lookRow(1); await lookOk(); const c2 = await cst();
+  S(c2.costume === 'festival' && c2.snap === c0.snap, `「祭りの晴れ着」に決める：その人のデータの costume＝${c2.costume}。装備・能力値・HP/MP・所持数・所持金は同じ`);
+  const r1 = await kScene('c1', 'セリス 晴れ着＋賢者の杖（ローブ・帽子は装備したまま、絵には出ない）', { battle: true, has: ['art_staff_sage', 'hand'], not: ['own_hat_t', 'weapon_staff_t'] });
+  S(lookOf(r1.menu[PT].parts) && lookOf(r1.battle.px.parts) && lookOf(r1.battle.vpx.parts) && r1.menu[PT].equip.armor === 'robe' && r1.menu[PT].equip.head === 'wizard_hat', `晴れ着：メニュー・戦闘の背面・勝利の正面とも、鎧・頭・職業の服の部品なし（背面 ${r1.battle.px.parts}）。装備はそのまま（${JSON.stringify(r1.menu[PT].equip)}）`);
+  // 試着（晴れ着のまま樫の杖を選ぶ → 枠の絵は晴れ着＋樫の杖）
+  const tO = await tryOn(K, 'weapon', 'oak_staff'); S(tO.tp === tO.head && lookOf(tO.tp) && /weapon_staff_t/.test(tO.tp), `晴れ着のまま そうび画面で樫の杖を試着 → 確定（${tO.head}）`);
+  // 3 保存：書き出し → 読み込みで衣装が残る。衣装の情報は costume の 1 項目だけ
+  const sv = await p.evaluate((id) => { const j = State.exportJSON(); const d = State.importJSON(j); return { cos: d.companions[id].costume, n: (j.match(/"costume"/g) || []).length, bad: /equip-pixels|cos:festival|base_plain|data:image/.test(j), equip: JSON.stringify(d.companions[id].equip) === JSON.stringify(State.actor(id).equip) }; }, PT);
+  S(sv.cos === 'festival' && sv.n === 1 && !sv.bad && sv.equip, `セーブの書き出し → 読み込み：衣装（${sv.cos}）がキャラごとに残る。セーブに足すのは costume の 1 項目だけ（部品の情報は書かない）`);
+  // 4 戦士に転職（装備できる職業）→ 晴れ着＋鋼の剣・鉄の盾、晴れ着＋騎士の剣・騎士の盾
+  const i0 = await kinv(); await kOpenJobs(); const pv = await kLook('warrior'); await pick(/の転職先/, /^戦士/); await pick(/に転職する？/, /^転職する/); await p.waitForTimeout(500); await leaveGuild(); const c3 = await cst();
+  S(c3.job === 'warrior' && c3.costume === 'festival' && lookOf(pv.parts), `戦士に転職：衣装は晴れ着のまま（転職のプレビューも晴れ着 ${pv.parts}）`);
+  const canW = await p.evaluate((id) => { const A = State.actor(id); return ['steel_sword', 'iron_shield', 'iron_armor', 'iron_helm', 'knight_sword', 'knight_shield'].filter((x) => Actors.canEquip(A, x)); }, PT);
+  await equipVia(K, { weapon: 'steel_sword', armor: 'iron_armor', shield: 'iron_shield', head: 'iron_helm' }); const c4 = await cst();
+  const r2 = await kScene('c2', 'セリス（戦士）晴れ着＋鋼の剣＋鉄の盾（鉄の鎧・鉄の兜は装備したまま、絵には出ない）', { battle: true, has: ['weapon_sword', 'shield_gt', 'hand'], not: ['head_helm_t', 'hv_pl_t'] });
+  S(c4.costume === 'festival' && lookOf(r2.menu[PT].parts) && lookOf(r2.battle.px.parts) && lookOf(r2.battle.vpx.parts) && r2.menu[PT].equip.armor === 'iron_armor' && r2.menu[PT].equip.head === 'iron_helm', `晴れ着＋剣・盾：3 つの向きとも衣装の姿（背面 ${r2.battle.px.parts}）。装備できた品 ${canW.join('・')}`);
+  if (canW.indexOf('knight_sword') >= 0 && canW.indexOf('knight_shield') >= 0) {
+    await equipVia(K, { weapon: 'knight_sword', shield: 'knight_shield' });
+    const r3 = await kScene('c3', 'セリス（戦士）晴れ着＋騎士の剣＋騎士の盾（用意された絵）', { battle: true, has: ['art_sword_knight', 'art_shield_knight', 'hand'], not: ['weapon_sword', 'shield_gt'] });
+    S(lookOf(r3.menu[PT].parts) && lookOf(r3.battle.px.parts), `晴れ着＋絵の剣・盾：衣装の握り・盾の位置に置いた絵の部品（背面 ${r3.battle.px.parts}）`);
+  } else S(false, '戦士のセリスが騎士の剣・騎士の盾を装備できない（' + canW.join('・') + '）');
+  // 5 通常の外見に戻す → いまの職業と装備の姿
+  const c5 = await cst(); await openLook(); const l5 = await lookInfo(); await lookRow(0); const l6 = await lookInfo('c_back_normal'); await lookOk(); const c6 = await cst();
+  const r4 = await kScene('c4', 'セリス（戦士）通常の外見に戻す', { battle: true, has: ['art_sword_knight', 'art_shield_knight', 'head_helm_t', 'jf_cloth_t'] });   // 肩当て hv_pl_t は正面だけ（背面は足さない決まり）
+  S(l5.rows.join('｜') === '通常の外見｜祭りの晴れ着*!' && c6.costume === null && !c6.has && c6.snap === c5.snap && !lookOf(r4.menu[PT].parts) && r4.menu[PT].parts === l6.parts && /^base_helm/.test(r4.menu[PT].parts), `「通常の外見」に戻す：costume の項目が消え、いまの職業（戦士）と装備（鉄の鎧・鉄の兜・騎士の剣・騎士の盾）の姿（${r4.menu[PT].parts}）＝直前のプレビュー。装備・能力値・所持数は同じ`);
+  } else if (PT === 'kyle') {
   // 1 騎士：試着 → 確定（鉄の鎧＋鋼の剣＋鉄の盾）
   const t1 = await tryOn(K, 'armor', 'iron_armor'), t2 = await tryOn(K, 'weapon', 'steel_sword'), t3 = await tryOn(K, 'shield', 'iron_shield');
   S([t1, t2, t3].every((t) => t.tp && t.tp === t.head) && /armor_shape_f/.test(t3.head) && /shield/.test(t3.head) && /weapon_sword/.test(t3.head), `騎士：そうび画面で試着（選んだだけの枠の絵）＝ 確定のあとの絵（鎧 ${t1.tp}／剣 ${t2.tp}／盾 ${t3.tp}）`);
@@ -350,23 +428,24 @@ let PG = null;
       const d = State.load(1); if (!d) return null; document.querySelectorAll('#ui > *').forEach((n) => n.remove()); Engine.scenes = Engine.scenes.filter((s) => !s.overlay);
       State.data = d; d.settings.textSpeed = 'instant'; d.settings.mute = true; d.settings.soundAsk93 = true; World.start();
       const EA = EquipmentAppearance; const res = {};
-      d.party.forEach((id) => { const A = State.actor(id); res[id] = { job: A.job, equip: Object.assign({}, A.equip), plans: ['menu', 'back', 'front'].map((dir) => { const q = EA.pixelPlan(A, dir === 'menu' ? EA.menuView(A) : dir); return q.ok ? q.mats.join(' ') + (q.skipped.length ? ' !' + q.skipped.join(',') : '') : 'x'; }) }; });
+      d.party.forEach((id) => { const A = State.actor(id); res[id] = { job: A.job, cos: Object.prototype.hasOwnProperty.call(A, 'costume') || !!EA.costumeOf(A), equip: Object.assign({}, A.equip), plans: ['menu', 'back', 'front'].map((dir) => { const q = EA.pixelPlan(A, dir === 'menu' ? EA.menuView(A) : dir); return q.ok ? q.mats.join(' ') + (q.skipped.length ? ' !' + q.skipped.join(',') : '') : 'x'; }) }; });
       const keys = {}; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); keys[k] = localStorage.getItem(k); }
       return { party: d.party.slice(), res, inventory: JSON.parse(JSON.stringify(d.inventory)), gold: d.gold, keys };
     });
     const ex = fx.expect; const tag = `以前の版のセーブ ${fxName}（${fx.madeWith.commit}）`;
     S(o && JSON.stringify(o.party) === JSON.stringify(ex.party) && o.party.every((id) => JSON.stringify(o.res[id].equip) === JSON.stringify(ex.equip[id])) && JSON.stringify(o.inventory) === JSON.stringify(ex.inventory) && o.gold === ex.gold, `${tag}：パーティ・全員の装備ID・所持数・所持金が作ったときと同じ`);
     S(o && o.party.every((id) => o.res[id].plans.every((x) => x !== 'x' && x.indexOf('outfit:') < 0)), `${tag}：加入時の職業のままの仲間は職業の服の重ね絵なし（元の絵の姿）で、装備は 3 つの向きとも外見に解決（` + (o ? o.party.map((id) => id + '＝' + o.res[id].plans[0]).join('／') : '') + '）');
+    S(o && o.party.every((id) => !o.res[id].cos), `${tag}：衣装の項目がない＝全員が通常の外見で読み込まれる`);
     S(o && Object.keys(fx.localStorage).every((k) => o.keys[k] === fx.localStorage[k]) && crypto.createHash('sha256').update(fs.readFileSync(fp, 'utf8')).digest('hex') === sha0, `${tag}：読んだだけではセーブを書き換えない`);
     rec.old[fxName] = o && { party: o.party, res: o.res };
   }
   S(errs.length === 0, 'ページのエラーなし' + (errs.length ? '：' + errs.slice(0, 3).join(' / ') : ''));
   S(bad.length === 0, '読み込みの失敗なし' + (bad.length ? '：' + bad.slice(0, 4).join(' / ') : ''));
   const ng = steps.filter((x) => !x.ok).length;
-  fs.writeFileSync(`${OUT}logs/ui_party${PT === 'kyle' ? '' : '_' + PT}_${VIEW}.json`, JSON.stringify({ VIEW, isPhone, ok: steps.length - ng, ng, steps, rec }, null, 1));
-  console.log(`結果 pixel ui party ${PT} ${VIEW}：OK ${steps.length - ng} / NG ${ng}`); await br.close(); process.exit(ng ? 1 : 0);
+  fs.writeFileSync(`${OUT}logs/ui_party${FLOW ? '_' + FLOW : ''}${PT === 'kyle' && !FLOW ? '' : '_' + PT}_${VIEW}.json`, JSON.stringify({ VIEW, isPhone, ok: steps.length - ng, ng, steps, rec }, null, 1));
+  console.log(`結果 pixel ui party ${FLOW ? FLOW + ' ' : ''}${PT} ${VIEW}：OK ${steps.length - ng} / NG ${ng}`); await br.close(); process.exit(ng ? 1 : 0);
 })().catch(async (e) => {
   console.error('FAIL', e && e.stack ? e.stack.split('\n').slice(0, 3).join(' ') : e);
-  try { await PG.screenshot({ path: `${OUT}shots/ui_${VIEW}_pt_error.jpg`, type: 'jpeg', quality: 70 }); console.error('UI', await PG.evaluate(() => [...document.querySelectorAll('#ui > *')].map((n) => n.className + ':' + (n.textContent || '').slice(0, 120)).join(' | '))); } catch (e2) { }
+  try { await PG.screenshot({ path: `${OUT}shots/ui_${VIEW}_${PTS}_error.jpg`, type: 'jpeg', quality: 70 }); console.error('UI', await PG.evaluate(() => [...document.querySelectorAll('#ui > *')].map((n) => n.className + ':' + (n.textContent || '').slice(0, 120)).join(' | '))); } catch (e2) { }
   process.exit(2);
 });

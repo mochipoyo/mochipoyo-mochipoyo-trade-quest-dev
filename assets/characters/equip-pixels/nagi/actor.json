@@ -1178,11 +1178,11 @@
      "h": 84
     },
     "art_helm_knight": {
-     "url": "assets/characters/equip-pixels/nagi/back/art_helm_knight__back.png?v=4debfd5c",
-     "x": 112,
+     "url": "assets/characters/equip-pixels/nagi/back/art_helm_knight__back.png?v=baefc2c2",
+     "x": 108,
      "y": 35,
-     "w": 95,
-     "h": 112
+     "w": 103,
+     "h": 98
     }
    },
    "frame": {

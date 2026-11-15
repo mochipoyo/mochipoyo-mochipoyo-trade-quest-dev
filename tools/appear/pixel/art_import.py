@@ -15,6 +15,7 @@ import manifest as MF
 import compose as CP
 ROOT = MF.ROOT; SRC = os.path.join(HERE, 'art_src'); EP = MF.PARTS
 OUTLINE = (24, 20, 30)
+HEAD_BACK_MAX = 1.0   # 頭の背面の絵の、縦 ÷ 横の上限
 # 絵 → 使う装備。cls＝物差しにする種類。試しの 5 品（形のまとまりは、絵がそろってから広げる）
 DESIGNS = {
     'sword_knight': {'slot': 'weapon', 'cls': 'weapon_sword', 'items': ['knight_sword'], 'src': 'sword_knight.png'},
@@ -22,8 +23,38 @@ DESIGNS = {
     # 戦斧の形（battleaxe）の品。「戦斧」そのもの（battle_axe）は、多くの確かめが今の形を前提にしているので、絵がそろって確かめをまとめて書き換えるときに替える
     'axe_battle': {'slot': 'weapon', 'cls': 'weapon_axe', 'items': ['crater_axe', 'crash_axe', 't68_dark_axe', 'bu_garon_axe', 'bu_zarg_chainbreaker'], 'src': 'axe_battle.png'},
     'shield_knight': {'slot': 'shield', 'cls': 'shield', 'items': ['knight_shield'], 'src': 'shield_knight.png'},
-    'helm_knight': {'slot': 'head', 'cls': 'head_helm', 'items': ['knight_helm'], 'src': 'helm_knight_front.png', 'src_back': 'helm_knight_back.png'},
+    'helm_knight': {'slot': 'head', 'cls': 'head_helm', 'items': ['knight_helm'], 'src': 'helm_knight_front.png', 'src_back': 'helm_knight_back_short.png'},   # 背面は首当てを短くした差し替え（届いた絵 helm_knight_back.png の首当てを 160 ドット詰めたもの）
 }
+# 絵が届いたら使う割り当て（CHATGPT_PROMPTS.md の残りの品。絵のファイルが art_src/ にあるものだけ取り込む。ない絵は「まだない絵」として知らせる）
+#   置き方・縮め方は、試しの 5 つ（上）と同じ決まり。頭は正面・背面の 2 枚で、背面は HEAD_BACK_MAX の基準
+#   ※ 木の剣・短剣・手斧・鉄の槍・短弓・長弓・樫の杖・木の盾・鉄の盾・戦斧は、今の形の部品の名前を前提にした確かめが多い。割り当てるときに、確かめの期待をまとめて書き換える（以前の期待は文に残す）
+MORE = {
+    'sword_wood': {'slot': 'weapon', 'cls': 'weapon_sword', 'items': ['wooden_sword'], 'src': 'sword_wood.png'},
+    'sword_great': {'slot': 'weapon', 'cls': 'weapon_sword', 'items': ['dow_greatsword', 'dow_greatsword_2', 'bu_valen_oathblade'], 'src': 'sword_great.png'},
+    'sword_curved': {'slot': 'weapon', 'cls': 'weapon_sword', 'items': ['scimitar', 'captain_saber'], 'src': 'sword_curved.png'},
+    'sword_legend': {'slot': 'weapon', 'cls': 'weapon_sword', 'items': ['archeion_blade', 'equilibrium_sword', 'bu_open_future_blade', 'azure_sword', 'fate_blade'], 'src': 'sword_legend.png'},
+    'dagger_iron': {'slot': 'weapon', 'cls': 'weapon_dagger', 'items': ['dagger', 'bronze_dagger', 'td_scalper_knife'], 'src': 'dagger_iron.png'},
+    'dagger_assassin': {'slot': 'weapon', 'cls': 'weapon_dagger', 'items': ['assassin_dagger', 'void_dagger', 'silent_knife'], 'src': 'dagger_assassin.png'},
+    'axe_hand': {'slot': 'weapon', 'cls': 'weapon_axe', 'items': ['hand_axe'], 'src': 'axe_hand.png'},
+    'spear_iron': {'slot': 'weapon', 'cls': 'weapon_spear', 'items': ['spear', 'iron_spear'], 'src': 'spear_iron.png', 'upright': True},
+    'spear_halberd': {'slot': 'weapon', 'cls': 'weapon_spear', 'items': ['halberd', 'td_breakout_halberd'], 'src': 'spear_halberd.png', 'upright': True},
+    'bow_short': {'slot': 'weapon', 'cls': 'weapon_bow', 'items': ['short_bow', 'hunter_bow'], 'src': 'bow_short.png', 'upright': True},
+    'bow_long': {'slot': 'weapon', 'cls': 'weapon_bow', 'items': ['long_bow', 'azure_longbow', 'td_swing_longbow', 'b19_amber_memory_bow'], 'src': 'bow_long.png', 'upright': True},
+    'staff_oak': {'slot': 'weapon', 'cls': 'weapon_staff', 'items': ['oak_staff'], 'src': 'staff_oak.png', 'upright': True},
+    'staff_holy': {'slot': 'weapon', 'cls': 'weapon_staff', 'items': [], 'src': 'staff_holy.png', 'upright': True},   # 使う品は未定（聖職者の杖に当たる品を決めてから）
+    'club_wood': {'slot': 'weapon', 'cls': 'weapon_axe', 'items': ['club'], 'src': 'club_wood.png'},                  # こん棒は今は描かない種類。斧の握り・長さを物差しに置く
+    'shield_wood': {'slot': 'shield', 'cls': 'shield', 'items': ['wooden_shield'], 'src': 'shield_wood.png'},
+    'shield_iron': {'slot': 'shield', 'cls': 'shield', 'items': ['iron_shield'], 'src': 'shield_iron.png'},
+    'shield_legend': {'slot': 'shield', 'cls': 'shield', 'items': ['aegis_shield', 'golden_shield'], 'src': 'shield_legend.png'},
+    'helm_horned': {'slot': 'head', 'cls': 'head_helm', 'items': [], 'src': 'helm_horned_front.png', 'src_back': 'helm_horned_back.png'},
+    'cap_leather': {'slot': 'head', 'cls': 'head_cap', 'items': ['leather_cap'], 'src': 'cap_leather_front.png', 'src_back': 'cap_leather_back.png'},
+    'cap_feather': {'slot': 'head', 'cls': 'head_cap', 'items': ['feather_hat'], 'src': 'cap_feather_front.png', 'src_back': 'cap_feather_back.png'},
+    'hat_witch': {'slot': 'head', 'cls': 'head_hat', 'items': ['wizard_hat'], 'src': 'hat_witch_front.png', 'src_back': 'hat_witch_back.png'},
+    'circlet_gold': {'slot': 'head', 'cls': 'head_circlet', 'items': [], 'src': 'circlet_gold_front.png', 'src_back': 'circlet_gold_back.png'},
+}
+_have = lambda D: os.path.exists(os.path.join(SRC, D['src'])) and (not D.get('src_back') or os.path.exists(os.path.join(SRC, D['src_back'])))
+PENDING = sorted(k for k, D in MORE.items() if not _have(D))
+DESIGNS.update({k: D for k, D in MORE.items() if _have(D) and D['items']})
 _src = {}
 
 
@@ -87,8 +118,11 @@ def shield(im, mask, W, H):
 
 
 def head(im, mask, W, H, back=False):
-    # 背面の絵は後ろ首まであるので、少し小さく
-    x0, y0, x1, y1 = P.bbox(mask); x1 += 1; w = (x1 - x0) * (0.92 if back else 1.06); h = w * im.height / im.width; cx = (x0 + x1) / 2.0
+    # 頭の取り込みの基準（v9.10 騎士の兜の背面の比べ shots/helm_back_compare.png から）：
+    #   ・幅：正面は今の兜の幅 × 1.06、背面は × 1.00。上端は今の兜の上端 − 2
+    #   ・背面の絵は、縦 ÷ 横が 1.0 以下（帯の下の首当ては短く。長いと襟足・後ろ髪・襟が全部隠れて頭が大きく見える）。超える絵は HEAD_BACK_MAX で知らせる
+    x0, y0, x1, y1 = P.bbox(mask); x1 += 1; w = (x1 - x0) * (1.00 if back else 1.06); h = w * im.height / im.width; cx = (x0 + x1) / 2.0
+    if back and im.height / im.width > HEAD_BACK_MAX: print('  ※ 頭の背面の絵が縦に長い（縦 ÷ 横 %.2f ＞ %.2f）：首当て・後ろの垂れを短くした絵に差し替える' % (im.height / im.width, HEAD_BACK_MAX))
     return boxed(im, cx - w / 2, y0 - 2, cx + w / 2, y0 - 2 + h, W, H)
 
 
@@ -129,6 +163,7 @@ def run():
             for iid in D['items']: mats['item:' + iid] = item
         json.dump(A, open(ap, 'w', encoding='utf8'), ensure_ascii=False, indent=1)
     print('art_import', len(DESIGNS), 'designs', n, 'parts')
+    if PENDING: print('  まだない絵（art_src/ に置くと取り込む）：' + ' '.join(PENDING))
     MF.write()
 
 

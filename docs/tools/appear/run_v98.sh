@@ -59,6 +59,14 @@ run "ブラウザ v9.9.1 仲間（オルド：盾・剣を切り離した素体�
 run "ブラウザ v9.9.1 仲間（オルド）スマホ縦（390×664）" env PT=ord VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
 run "ブラウザ v9.9.1 仲間（ガネス：槌・やっとこを切り離した素体、加入時の職業で武器・盾・兜の試着・確定・武器をはずす・キャンセル）PC" env PT=ganes VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
 run "ブラウザ v9.9.1 仲間（ガネス）スマホ縦（390×664）" env PT=ganes VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.10 絵の品（カイル：騎士の剣・騎士の盾・騎士の兜を通常の装備画面から試着・確定 → 戦闘 → 勝利 → はずす → キャンセル）PC" env FLOW=art PT=kyle VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.10 絵の品（カイル）スマホ縦" env FLOW=art PT=kyle VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.10 絵の品（セリス：賢者の杖）PC" env FLOW=art PT=seris VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.10 絵の品（セリス：賢者の杖）スマホ縦" env FLOW=art PT=seris VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.10 絵の品（カズト：火口の戦斧）PC" env FLOW=art PT=kazuto VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.10 絵の品（カズト：火口の戦斧）スマホ縦" env FLOW=art PT=kazuto VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.10 衣装（セリス：なかま → 見た目。通常の外見／祭りの晴れ着、晴れ着＋杖、戦士に転職して晴れ着＋剣・盾、通常に戻す）PC" env FLOW=cos PT=seris VIEW=pc PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
+run "ブラウザ v9.10 衣装（セリス）スマホ縦" env FLOW=cos PT=seris VIEW=phone PORT=8894 node docs/tools/appear/browser/appear_pixel_party_ui.js
 run "ブラウザ 別のサイト pixel 3d cors" env MODE=pixel KIND=3d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 3d nocors" env MODE=pixel KIND=3d XMODE=nocors XPORT=8896 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
 run "ブラウザ 別のサイト pixel 2d cors" env MODE=pixel KIND=2d XMODE=cors XPORT=8895 PORT=8894 OUT=$RG node docs/tools/appear/browser/appear_xorigin.js
@@ -76,4 +84,8 @@ python3 docs/tools/appear/pixel_sheets_comp.py herojob >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_comp.py mage >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_party.py >> "$LOG" 2>&1
 python3 docs/tools/appear/pixel_sheets_fix.py after >> "$LOG" 2>&1
+python3 docs/tools/appear/pixel_sheets_pilot.py >> "$LOG" 2>&1
+python3 docs/tools/appear/pixel_sheets_helm.py >> "$LOG" 2>&1
+python3 docs/tools/appear/pixel_sheets_cos_ui.py pc >> "$LOG" 2>&1
+python3 docs/tools/appear/pixel_sheets_cos_ui.py phone >> "$LOG" 2>&1
 echo "--- まとめ" >> "$LOG"; echo "NG・失敗の行：$(grep -cE '^  NG  |終了コード|CRASH|FAIL' "$LOG")" >> "$LOG"

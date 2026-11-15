@@ -1070,11 +1070,11 @@
      "h": 62
     },
     "art_helm_knight": {
-     "url": "assets/characters/equip-pixels/seris/back/art_helm_knight__back.png?v=e017c142",
-     "x": 99,
+     "url": "assets/characters/equip-pixels/seris/back/art_helm_knight__back.png?v=21f043e9",
+     "x": 95,
      "y": 66,
-     "w": 103,
-     "h": 121
+     "w": 111,
+     "h": 106
     }
    },
    "frame": {

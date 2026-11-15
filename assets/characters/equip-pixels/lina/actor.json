@@ -1002,11 +1002,11 @@
      "h": 84
     },
     "art_helm_knight": {
-     "url": "assets/characters/equip-pixels/lina/back/art_helm_knight__back.png?v=4d46d06d",
-     "x": 99,
+     "url": "assets/characters/equip-pixels/lina/back/art_helm_knight__back.png?v=879f4586",
+     "x": 95,
      "y": 62,
-     "w": 99,
-     "h": 117
+     "w": 107,
+     "h": 102
     }
    }
   }
