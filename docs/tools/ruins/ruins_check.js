@@ -33,6 +33,11 @@ const per = Object.entries(by).map(([k, l]) => [k, l.length]).sort((a, b) => b[1
 ok(per[0][1] <= 260, '1 つの地図に多すぎない（最大 ' + per[0][1] + '）');
 // タイル・セーブは変えない
 const before = JSON.stringify(w.State.data); R.reset(); R.all(); ok(JSON.stringify(w.State.data) === before, 'セーブのデータを書き換えない');
+const ant = all.filter((e) => !e.site && L.latOf(e.gy + 0.5) < -58); ok(!ant.length, '南極にまばらな残骸を置いていない（名のある残骸だけ）');
+// 地球の世界でないとき（2D 版・設定「地域ごと」）は何も置かない
+{ const keep = W.earth; W.earth = false; R.reset(); ok(R.all().length === 0 && R.forMap('world').length === 0, '地球の世界でないときは何も置かない（2D 版）'); W.earth = keep; R.reset(); }
+// 形の種類：一覧の種類は、3D の形（three-src/src/world/Ruins3121.js）に全部ある
+{ const src = require('fs').readFileSync(require('path').join(__dirname, '../../../three-src/src/world/Ruins3121.js'), 'utf8'); const have = new Set([...src.matchAll(/^  ([a-z_]+)\(k\) \{/gm)].map((m) => m[1])); const lack = [...new Set(R.all().map((e) => e.kind))].filter((k) => !have.has(k)); ok(!lack.length, '一覧の種類の形が全部ある ' + lack.join(' ')); }
 const kinds = {}; all.forEach((e) => { kinds[e.kind] = (kinds[e.kind] || 0) + 1; }); console.log('    種類：' + Object.entries(kinds).sort((a, b) => b[1] - a[1]).map((x) => x.join('=')).join(' '));
 if (process.argv[2] === 'dump') require('fs').writeFileSync(process.argv[3], JSON.stringify({ W: S.w, H: S.h, all }));
 console.log(`結果 ruins check：NG ${ng.length}`); process.exit(ng.length ? 1 : 0);

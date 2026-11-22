@@ -49,7 +49,7 @@
     ['sydney', 150.8, -33.7, 9], ['melbourne', 145.0, -37.8, 7], ['perth', 115.9, -31.9, 5], ['auckland', 174.8, -36.9, 4], ['novosibirsk', 82.9, 55.0, 5], ['anchorage', -149.9, 61.2, 3]
   ];
   // まばらな残骸：1 マスあたりの確率（陸）。地面の種類ごとの重み
-  R.SCATTER = { land: 1 / 260, shallow: 1 / 420, weights: { grass: 1, grass2: 1, sand: 0.8, snow: 0.6, ash: 1.1, darkland: 0.7, hill: 0.5 } };
+  R.SCATTER = { land: 1 / 230, shallow: 1 / 420, weights: { grass: 1, grass2: 1, sand: 0.8, snow: 0.5, ash: 1.1, darkland: 0.7, hill: 0.5 } };
   R.SCATTER_KINDS = [['car', 22], ['bus', 6], ['pylon', 12], ['lamp', 8], ['billboard', 6], ['container', 6], ['tank', 4], ['overpass', 6], ['house', 9], ['turbine', 5], ['plane', 2], ['antenna', 5], ['pipe', 4], ['truck', 5]];
   R.SEA_KINDS = [['wreck', 10], ['buoy', 3], ['wreck_small', 6]];
   R.CITY_KINDS = [['tower', 30], ['tower_glass', 16], ['tower_lean', 12], ['block', 18], ['overpass', 8], ['frame', 10], ['billboard', 3], ['bus', 3]];
@@ -112,10 +112,13 @@
       if (!got) miss.push('city:' + c[0]);
     });
     var sc = R.SCATTER;
+    // まばらな残骸の濃さ：大都市の跡の近く（40 マス＝経度 10° 以内）は濃く、遠い所は薄く。南極（南緯 58° より南）と北の果て（北緯 72° より北）には置かない
+    var cityT = R.CITIES.map(function (c) { return L.tile(c[1], c[2]); });
+    var dens = function (gx, gy) { var lat = L.latOf(gy + 0.5); if (lat < -58 || lat > 72) return 0; var best = 1e9; for (var i = 0; i < cityT.length; i++) { var dx = W.dxWrap ? W.dxWrap(gx - cityT[i].x) : gx - cityT[i].x, dy = gy - cityT[i].y, d = dx * dx + dy * dy; if (d < best) best = d; } best = Math.sqrt(best); return best < 14 ? 2.2 : best < 40 ? 1.3 : best < 90 ? 0.7 : 0.35; };
     for (var gy = 3; gy < WH - 3; gy++) for (var gx = 0; gx < WW; gx++) {
       var n = name(gx, gy), h = hash(gx, gy, 21);
-      if (sc.weights[n]) { if (h >= sc.land * sc.weights[n] || isBusy(gx, gy)) continue; var k = pick(R.SCATTER_KINDS, hash(gx, gy, 22)), rad = R.RADIUS[k] || R.RADIUS._small; if (!foot(gx, gy, rad, okLand) || !free(gx, gy, rad)) continue; place('s' + gx + '_' + gy, k, gx, gy, { rot: Math.floor(hash(gx, gy, 23) * 360) }); }
-      else if (n === 'shallow') { if (h >= sc.shallow || !okShore(gx, gy)) continue; var k2 = pick(R.SEA_KINDS, hash(gx, gy, 22)), rad2 = R.RADIUS[k2] || R.RADIUS._small; if (!free(gx, gy, rad2)) continue; place('s' + gx + '_' + gy, k2, gx, gy, { rot: Math.floor(hash(gx, gy, 23) * 360) }); }
+      if (sc.weights[n]) { if (h >= sc.land * sc.weights[n] * dens(gx, gy) || isBusy(gx, gy)) continue; var k = pick(R.SCATTER_KINDS, hash(gx, gy, 22)), rad = R.RADIUS[k] || R.RADIUS._small; if (!foot(gx, gy, rad, okLand) || !free(gx, gy, rad)) continue; place('s' + gx + '_' + gy, k, gx, gy, { rot: Math.floor(hash(gx, gy, 23) * 360) }); }
+      else if (n === 'shallow') { if (h >= sc.shallow * Math.min(1, dens(gx, gy)) || !okShore(gx, gy)) continue; var k2 = pick(R.SEA_KINDS, hash(gx, gy, 22)), rad2 = R.RADIUS[k2] || R.RADIUS._small; if (!free(gx, gy, rad2)) continue; place('s' + gx + '_' + gy, k2, gx, gy, { rot: Math.floor(hash(gx, gy, 23) * 360) }); }
     }
     var by = {}; out.forEach(function (e) { (by[e.map] || (by[e.map] = [])).push(e); });
     return { all: out, by: by, miss: miss };
