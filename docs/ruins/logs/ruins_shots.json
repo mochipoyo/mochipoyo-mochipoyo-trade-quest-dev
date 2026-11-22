@@ -1,0 +1,348 @@
+{
+ "liberty": {
+  "e": {
+   "id": "liberty",
+   "kind": "liberty",
+   "map": "world_meridian",
+   "x": 66.5,
+   "y": 35.5,
+   "gx": 386,
+   "gy": 245,
+   "r": 2.2,
+   "rot": 200,
+   "seed": 606637,
+   "ground": "shallow",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   62,
+   35
+  ],
+  "stats": {
+   "count": 58,
+   "failed": [],
+   "tris": 34428,
+   "meshes": 16,
+   "sites": [
+    "liberty",
+    "capitol",
+    "cn_tower"
+   ]
+  }
+ },
+ "giza": {
+  "e": {
+   "id": "giza",
+   "kind": "pyramids",
+   "map": "w78_18_9",
+   "x": 72.5,
+   "y": 28.5,
+   "gx": 792,
+   "gy": 298,
+   "r": 4.2,
+   "rot": 172,
+   "seed": 827112,
+   "ground": "sand",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   66,
+   28
+  ],
+  "stats": {
+   "count": 8,
+   "failed": [],
+   "tris": 4508,
+   "meshes": 6,
+   "sites": [
+    "giza"
+   ]
+  }
+ },
+ "tokyo_tower": {
+  "e": {
+   "id": "tokyo_tower",
+   "kind": "lattice_red",
+   "map": "world_neon",
+   "x": 111.5,
+   "y": 56.5,
+   "gx": 1231,
+   "gy": 266,
+   "r": 2,
+   "rot": 248,
+   "seed": 664366,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   111,
+   59
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "eiffel": {
+  "e": {
+   "id": "eiffel",
+   "kind": "lattice",
+   "map": "world",
+   "x": 87.5,
+   "y": 58.5,
+   "gx": 687,
+   "gy": 208,
+   "r": 2.2,
+   "rot": 89,
+   "seed": 411587,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   87,
+   62
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "colosseum": {
+  "e": {
+   "id": "colosseum",
+   "kind": "colosseum",
+   "map": "world_grania",
+   "x": 5.5,
+   "y": 31.5,
+   "gx": 725,
+   "gy": 241,
+   "r": 3,
+   "rot": 25,
+   "seed": 580691,
+   "ground": "ash",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   9,
+   31
+  ],
+  "stats": {
+   "count": 33,
+   "failed": [],
+   "tris": 21584,
+   "meshes": 17,
+   "sites": [
+    "colosseum",
+    "parthenon",
+    "hagia",
+    "neuschwanstein"
+   ]
+  }
+ },
+ "abu_simbel": {
+  "e": {
+   "id": "abu_simbel",
+   "kind": "colossi",
+   "map": "world_tempus",
+   "x": 2.5,
+   "y": 59.5,
+   "gx": 802,
+   "gy": 329,
+   "r": 2.2,
+   "rot": 113,
+   "seed": 916717,
+   "ground": "sand",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   2,
+   63
+  ],
+  "stats": {
+   "count": 72,
+   "failed": [],
+   "tris": 33256,
+   "meshes": 24,
+   "sites": [
+    "abu_simbel",
+    "burj",
+    "petra",
+    "suez_ship",
+    "kaaba_towers"
+   ]
+  }
+ },
+ "petra": {
+  "e": {
+   "id": "petra",
+   "kind": "colossi",
+   "map": "world_tempus",
+   "x": 17.5,
+   "y": 26.5,
+   "gx": 817,
+   "gy": 296,
+   "r": 2.2,
+   "rot": 125,
+   "seed": 654609,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   17,
+   30
+  ],
+  "stats": {
+   "count": 72,
+   "failed": [],
+   "tris": 33256,
+   "meshes": 24,
+   "sites": [
+    "abu_simbel",
+    "burj",
+    "petra",
+    "suez_ship",
+    "kaaba_towers"
+   ]
+  }
+ },
+ "city:new_york": {
+  "e": {
+   "id": "new_york_0",
+   "kind": "tower",
+   "map": "world_meridian",
+   "x": 70.5,
+   "y": 33.5,
+   "gx": 390,
+   "gy": 243,
+   "r": 1.3,
+   "rot": 58,
+   "seed": 275825,
+   "ground": "grass",
+   "site": false,
+   "city": "new_york"
+  },
+  "pos": [
+   73,
+   33
+  ],
+  "stats": {
+   "count": 58,
+   "failed": [],
+   "tris": 34428,
+   "meshes": 16,
+   "sites": [
+    "liberty",
+    "capitol",
+    "cn_tower"
+   ]
+  }
+ },
+ "city:tokyo": {
+  "e": {
+   "id": "tokyo_0",
+   "kind": "bus",
+   "map": "world_neon",
+   "x": 107.5,
+   "y": 55.5,
+   "gx": 1227,
+   "gy": 265,
+   "r": 0.7,
+   "rot": 91,
+   "seed": 88320,
+   "ground": "hill",
+   "site": false,
+   "city": "tokyo"
+  },
+  "pos": [
+   107,
+   57
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "kind:tower": {
+  "e": {
+   "id": "new_york_0",
+   "kind": "tower",
+   "map": "world_meridian",
+   "x": 70.5,
+   "y": 33.5,
+   "gx": 390,
+   "gy": 243,
+   "r": 1.3,
+   "rot": 58,
+   "seed": 275825,
+   "ground": "grass",
+   "site": false,
+   "city": "new_york"
+  },
+  "pos": [
+   73,
+   33
+  ],
+  "stats": {
+   "count": 58,
+   "failed": [],
+   "tris": 34428,
+   "meshes": 16,
+   "sites": [
+    "liberty",
+    "capitol",
+    "cn_tower"
+   ]
+  }
+ }
+}
