@@ -31,73 +31,523 @@
    ]
   }
  },
- "giza": {
+ "golden_gate": {
   "e": {
-   "id": "giza",
-   "kind": "pyramids",
-   "map": "w78_18_9",
-   "x": 72.5,
-   "y": 28.5,
-   "gx": 792,
-   "gy": 298,
-   "r": 4.2,
-   "rot": 172,
-   "seed": 827112,
-   "ground": "sand",
+   "id": "golden_gate",
+   "kind": "suspension",
+   "map": "w78_4_8",
+   "x": 26.5,
+   "y": 21.5,
+   "gx": 186,
+   "gy": 261,
+   "r": 4.5,
+   "rot": 90,
+   "seed": 165301,
+   "ground": "shallow",
    "site": true,
    "city": null
   },
   "pos": [
-   66,
-   28
+   28,
+   27
   ],
   "stats": {
-   "count": 8,
+   "count": 59,
    "failed": [],
-   "tris": 4508,
-   "meshes": 6,
+   "tris": 34088,
+   "meshes": 26,
    "sites": [
-    "giza"
+    "golden_gate",
+    "gateway_arch",
+    "gulf_rig",
+    "vegas",
+    "teotihuacan"
    ]
   }
  },
- "tokyo_tower": {
+ "capitol": {
   "e": {
-   "id": "tokyo_tower",
-   "kind": "lattice_red",
-   "map": "world_neon",
-   "x": 111.5,
-   "y": 56.5,
-   "gx": 1231,
-   "gy": 266,
-   "r": 2,
-   "rot": 248,
-   "seed": 664366,
+   "id": "capitol",
+   "kind": "dome",
+   "map": "world_meridian",
+   "x": 47.5,
+   "y": 47.5,
+   "gx": 367,
+   "gy": 257,
+   "r": 2.2,
+   "rot": 4,
+   "seed": 673018,
    "ground": "grass",
    "site": true,
    "city": null
   },
   "pos": [
-   111,
-   59
+   47,
+   51
   ],
   "stats": {
-   "count": 90,
+   "count": 58,
    "failed": [],
-   "tris": 53096,
-   "meshes": 30,
+   "tris": 34428,
+   "meshes": 16,
    "sites": [
-    "great_wall_a",
-    "great_wall_b",
-    "tokyo_tower",
-    "skytree",
-    "daibutsu",
-    "torii",
-    "osaka_castle",
-    "pearl",
-    "seoul_tower",
-    "hk_carrier",
-    "taipei"
+    "liberty",
+    "capitol",
+    "cn_tower"
+   ]
+  }
+ },
+ "gateway_arch": {
+  "e": {
+   "id": "gateway_arch",
+   "kind": "arch",
+   "map": "w78_4_8",
+   "x": 155.5,
+   "y": 17.5,
+   "gx": 315,
+   "gy": 257,
+   "r": 2.2,
+   "rot": 321,
+   "seed": 238470,
+   "ground": "forest",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   155,
+   21
+  ],
+  "stats": {
+   "count": 59,
+   "failed": [],
+   "tris": 34088,
+   "meshes": 26,
+   "sites": [
+    "golden_gate",
+    "gateway_arch",
+    "gulf_rig",
+    "vegas",
+    "teotihuacan"
+   ]
+  }
+ },
+ "launch_pad": {
+  "e": {
+   "id": "launch_pad",
+   "kind": "rocket",
+   "map": "w78_8_10",
+   "x": 33.5,
+   "y": 2.5,
+   "gx": 353,
+   "gy": 302,
+   "r": 2.2,
+   "rot": 64,
+   "seed": 2909,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   33,
+   6
+  ],
+  "stats": {
+   "count": 37,
+   "failed": [],
+   "tris": 19354,
+   "meshes": 20,
+   "sites": [
+    "launch_pad",
+    "chichen_itza",
+    "arecibo",
+    "panama"
+   ]
+  }
+ },
+ "chichen_itza": {
+  "e": {
+   "id": "chichen_itza",
+   "kind": "stepped",
+   "map": "w78_8_10",
+   "x": 1.5,
+   "y": 36.5,
+   "gx": 321,
+   "gy": 336,
+   "r": 2.2,
+   "rot": 85,
+   "seed": 76141,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   1,
+   40
+  ],
+  "stats": {
+   "count": 37,
+   "failed": [],
+   "tris": 19354,
+   "meshes": 20,
+   "sites": [
+    "launch_pad",
+    "chichen_itza",
+    "arecibo",
+    "panama"
+   ]
+  }
+ },
+ "arecibo": {
+  "e": {
+   "id": "arecibo",
+   "kind": "dish",
+   "map": "w78_8_10",
+   "x": 89.5,
+   "y": 45.5,
+   "gx": 409,
+   "gy": 345,
+   "r": 2.2,
+   "rot": 193,
+   "seed": 601541,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   89,
+   45
+  ],
+  "stats": {
+   "count": 37,
+   "failed": [],
+   "tris": 19354,
+   "meshes": 20,
+   "sites": [
+    "launch_pad",
+    "chichen_itza",
+    "arecibo",
+    "panama"
+   ]
+  }
+ },
+ "needle": {
+  "e": {
+   "id": "needle",
+   "kind": "needle",
+   "map": "w78_4_4",
+   "x": 26.5,
+   "y": 93.5,
+   "gx": 186,
+   "gy": 213,
+   "r": 2.2,
+   "rot": 196,
+   "seed": 498692,
+   "ground": "hill",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   26,
+   97
+  ],
+  "stats": {
+   "count": 40,
+   "failed": [],
+   "tris": 15504,
+   "meshes": 37,
+   "sites": [
+    "needle",
+    "mt_heads"
+   ]
+  }
+ },
+ "cn_tower": {
+  "e": {
+   "id": "cn_tower",
+   "kind": "needle",
+   "map": "world_meridian",
+   "x": 38.5,
+   "y": 23.5,
+   "gx": 358,
+   "gy": 233,
+   "r": 2.2,
+   "rot": 346,
+   "seed": 796579,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   38,
+   27
+  ],
+  "stats": {
+   "count": 58,
+   "failed": [],
+   "tris": 34428,
+   "meshes": 16,
+   "sites": [
+    "liberty",
+    "capitol",
+    "cn_tower"
+   ]
+  }
+ },
+ "mt_heads": {
+  "e": {
+   "id": "mt_heads",
+   "kind": "heads",
+   "map": "w78_4_4",
+   "x": 102.5,
+   "y": 112.5,
+   "gx": 262,
+   "gy": 232,
+   "r": 2.2,
+   "rot": 18,
+   "seed": 202973,
+   "ground": "sand",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   102,
+   116
+  ],
+  "stats": {
+   "count": 40,
+   "failed": [],
+   "tris": 15504,
+   "meshes": 37,
+   "sites": [
+    "needle",
+    "mt_heads"
+   ]
+  }
+ },
+ "gulf_rig": {
+  "e": {
+   "id": "gulf_rig",
+   "kind": "rig",
+   "map": "w78_4_8",
+   "x": 154.5,
+   "y": 66.5,
+   "gx": 314,
+   "gy": 306,
+   "r": 2.4,
+   "rot": 321,
+   "seed": 342668,
+   "ground": "deep",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   154,
+   70
+  ],
+  "stats": {
+   "count": 59,
+   "failed": [],
+   "tris": 34088,
+   "meshes": 26,
+   "sites": [
+    "golden_gate",
+    "gateway_arch",
+    "gulf_rig",
+    "vegas",
+    "teotihuacan"
+   ]
+  }
+ },
+ "vegas": {
+  "e": {
+   "id": "vegas",
+   "kind": "sign",
+   "map": "w78_4_8",
+   "x": 55.5,
+   "y": 28.5,
+   "gx": 215,
+   "gy": 268,
+   "r": 2.2,
+   "rot": 293,
+   "seed": 113869,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   55,
+   32
+  ],
+  "stats": {
+   "count": 59,
+   "failed": [],
+   "tris": 34088,
+   "meshes": 26,
+   "sites": [
+    "golden_gate",
+    "gateway_arch",
+    "gulf_rig",
+    "vegas",
+    "teotihuacan"
+   ]
+  }
+ },
+ "teotihuacan": {
+  "e": {
+   "id": "teotihuacan",
+   "kind": "stepped",
+   "map": "w78_4_8",
+   "x": 120.5,
+   "y": 100.5,
+   "gx": 280,
+   "gy": 340,
+   "r": 2.2,
+   "rot": 237,
+   "seed": 795174,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   120,
+   104
+  ],
+  "stats": {
+   "count": 59,
+   "failed": [],
+   "tris": 34088,
+   "meshes": 26,
+   "sites": [
+    "golden_gate",
+    "gateway_arch",
+    "gulf_rig",
+    "vegas",
+    "teotihuacan"
+   ]
+  }
+ },
+ "christ": {
+  "e": {
+   "id": "christ",
+   "kind": "christ",
+   "map": "w78_12_16",
+   "x": 22.5,
+   "y": 33.5,
+   "gx": 502,
+   "gy": 513,
+   "r": 2.2,
+   "rot": 7,
+   "seed": 688242,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   18,
+   33
+  ],
+  "stats": {
+   "count": 14,
+   "failed": [],
+   "tris": 8896,
+   "meshes": 6,
+   "sites": [
+    "christ",
+    "brasilia"
+   ]
+  }
+ },
+ "machu": {
+  "e": {
+   "id": "machu",
+   "kind": "terraces",
+   "map": "w78_8_14",
+   "x": 65.5,
+   "y": 47.5,
+   "gx": 385,
+   "gy": 467,
+   "r": 2.2,
+   "rot": 1,
+   "seed": 855021,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   65,
+   51
+  ],
+  "stats": {
+   "count": 24,
+   "failed": [],
+   "tris": 10960,
+   "meshes": 16,
+   "sites": [
+    "machu"
+   ]
+  }
+ },
+ "panama": {
+  "e": {
+   "id": "panama",
+   "kind": "locks",
+   "map": "w78_8_10",
+   "x": 33.5,
+   "y": 86.5,
+   "gx": 353,
+   "gy": 386,
+   "r": 2.2,
+   "rot": 341,
+   "seed": 902236,
+   "ground": "grass2",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   33,
+   90
+  ],
+  "stats": {
+   "count": 37,
+   "failed": [],
+   "tris": 19354,
+   "meshes": 20,
+   "sites": [
+    "launch_pad",
+    "chichen_itza",
+    "arecibo",
+    "panama"
+   ]
+  }
+ },
+ "brasilia": {
+  "e": {
+   "id": "brasilia",
+   "kind": "dome",
+   "map": "w78_12_16",
+   "x": 4.5,
+   "y": 3.5,
+   "gx": 484,
+   "gy": 483,
+   "r": 2.2,
+   "rot": 252,
+   "seed": 438351,
+   "ground": "hill",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   4,
+   7
+  ],
+  "stats": {
+   "count": 14,
+   "failed": [],
+   "tris": 8896,
+   "meshes": 6,
+   "sites": [
+    "christ",
+    "brasilia"
    ]
   }
  },
@@ -120,6 +570,123 @@
   "pos": [
    87,
    62
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "big_ben": {
+  "e": {
+   "id": "big_ben",
+   "kind": "clocktower",
+   "map": "world",
+   "x": 75.5,
+   "y": 43.5,
+   "gx": 675,
+   "gy": 193,
+   "r": 2.2,
+   "rot": 236,
+   "seed": 401063,
+   "ground": "forest",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   75,
+   39
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "london_eye": {
+  "e": {
+   "id": "london_eye",
+   "kind": "ferris",
+   "map": "world",
+   "x": 79.5,
+   "y": 45.5,
+   "gx": 679,
+   "gy": 195,
+   "r": 2.2,
+   "rot": 339,
+   "seed": 652144,
+   "ground": "grass2",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   75,
+   45
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "stonehenge": {
+  "e": {
+   "id": "stonehenge",
+   "kind": "henge",
+   "map": "world",
+   "x": 68.5,
+   "y": 45.5,
+   "gx": 668,
+   "gy": 195,
+   "r": 2.2,
+   "rot": 76,
+   "seed": 510168,
+   "ground": "grass2",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   72,
+   45
   ],
   "stats": {
    "count": 66,
@@ -173,6 +740,461 @@
    ]
   }
  },
+ "pisa": {
+  "e": {
+   "id": "pisa",
+   "kind": "leaning",
+   "map": "world",
+   "x": 117.5,
+   "y": 83.5,
+   "gx": 717,
+   "gy": 233,
+   "r": 2.2,
+   "rot": 122,
+   "seed": 634203,
+   "ground": "ash",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   117,
+   87
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "parthenon": {
+  "e": {
+   "id": "parthenon",
+   "kind": "parthenon",
+   "map": "world_grania",
+   "x": 50.5,
+   "y": 49.5,
+   "gx": 770,
+   "gy": 259,
+   "r": 2.2,
+   "rot": 326,
+   "seed": 427504,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   50,
+   49
+  ],
+  "stats": {
+   "count": 33,
+   "failed": [],
+   "tris": 21584,
+   "meshes": 17,
+   "sites": [
+    "colosseum",
+    "parthenon",
+    "hagia",
+    "neuschwanstein"
+   ]
+  }
+ },
+ "sagrada": {
+  "e": {
+   "id": "sagrada",
+   "kind": "spires",
+   "map": "world",
+   "x": 82.5,
+   "y": 94.5,
+   "gx": 682,
+   "gy": 244,
+   "r": 2.4,
+   "rot": 193,
+   "seed": 51362,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   78,
+   94
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "brandenburg": {
+  "e": {
+   "id": "brandenburg",
+   "kind": "gate",
+   "map": "world_kalion",
+   "x": 10.5,
+   "y": 69.5,
+   "gx": 730,
+   "gy": 189,
+   "r": 2.2,
+   "rot": 31,
+   "seed": 771468,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   10,
+   73
+  ],
+  "stats": {
+   "count": 40,
+   "failed": [],
+   "tris": 19920,
+   "meshes": 14,
+   "sites": [
+    "brandenburg",
+    "chernobyl"
+   ]
+  }
+ },
+ "windmills": {
+  "e": {
+   "id": "windmills",
+   "kind": "windmill",
+   "map": "world",
+   "x": 98.5,
+   "y": 34.5,
+   "gx": 698,
+   "gy": 184,
+   "r": 2.2,
+   "rot": 281,
+   "seed": 824910,
+   "ground": "grass2",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   98,
+   38
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "kremlin": {
+  "e": {
+   "id": "kremlin",
+   "kind": "onion",
+   "map": "world_snow",
+   "x": 26.5,
+   "y": 110.5,
+   "gx": 826,
+   "gy": 170,
+   "r": 2.2,
+   "rot": 164,
+   "seed": 237620,
+   "ground": "forest",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   26,
+   114
+  ],
+  "stats": {
+   "count": 33,
+   "failed": [],
+   "tris": 14636,
+   "meshes": 24,
+   "sites": [
+    "kremlin"
+   ]
+  }
+ },
+ "north_sea_rig": {
+  "e": {
+   "id": "north_sea_rig",
+   "kind": "rig",
+   "map": "world",
+   "x": 86.5,
+   "y": 12.5,
+   "gx": 686,
+   "gy": 162,
+   "r": 2.4,
+   "rot": 108,
+   "seed": 333878,
+   "ground": "deep",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   86,
+   16
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "chernobyl": {
+  "e": {
+   "id": "chernobyl",
+   "kind": "cooling",
+   "map": "world_kalion",
+   "x": 79.5,
+   "y": 71.5,
+   "gx": 799,
+   "gy": 191,
+   "r": 3,
+   "rot": 61,
+   "seed": 301296,
+   "ground": "snow",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   78,
+   75
+  ],
+  "stats": {
+   "count": 40,
+   "failed": [],
+   "tris": 19920,
+   "meshes": 14,
+   "sites": [
+    "brandenburg",
+    "chernobyl"
+   ]
+  }
+ },
+ "hagia": {
+  "e": {
+   "id": "hagia",
+   "kind": "mosque",
+   "map": "world_grania",
+   "x": 73.5,
+   "y": 36.5,
+   "gx": 793,
+   "gy": 246,
+   "r": 2.2,
+   "rot": 298,
+   "seed": 623095,
+   "ground": "ash",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   73,
+   40
+  ],
+  "stats": {
+   "count": 33,
+   "failed": [],
+   "tris": 21584,
+   "meshes": 17,
+   "sites": [
+    "colosseum",
+    "parthenon",
+    "hagia",
+    "neuschwanstein"
+   ]
+  }
+ },
+ "arc": {
+  "e": {
+   "id": "arc",
+   "kind": "gate",
+   "map": "world",
+   "x": 85.5,
+   "y": 63.5,
+   "gx": 685,
+   "gy": 213,
+   "r": 2.2,
+   "rot": 258,
+   "seed": 615392,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   83,
+   67
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "atomium": {
+  "e": {
+   "id": "atomium",
+   "kind": "atomium",
+   "map": "world",
+   "x": 98.5,
+   "y": 50.5,
+   "gx": 698,
+   "gy": 200,
+   "r": 2.2,
+   "rot": 27,
+   "seed": 289133,
+   "ground": "grass2",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   99,
+   54
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "neuschwanstein": {
+  "e": {
+   "id": "neuschwanstein",
+   "kind": "onion",
+   "map": "world_grania",
+   "x": 4.5,
+   "y": 1.5,
+   "gx": 724,
+   "gy": 211,
+   "r": 2.2,
+   "rot": 30,
+   "seed": 530134,
+   "ground": "hill",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   6,
+   5
+  ],
+  "stats": {
+   "count": 33,
+   "failed": [],
+   "tris": 21584,
+   "meshes": 17,
+   "sites": [
+    "colosseum",
+    "parthenon",
+    "hagia",
+    "neuschwanstein"
+   ]
+  }
+ },
+ "giza": {
+  "e": {
+   "id": "giza",
+   "kind": "pyramids",
+   "map": "w78_18_9",
+   "x": 72.5,
+   "y": 28.5,
+   "gx": 792,
+   "gy": 298,
+   "r": 4.2,
+   "rot": 172,
+   "seed": 827112,
+   "ground": "sand",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   66,
+   28
+  ],
+  "stats": {
+   "count": 8,
+   "failed": [],
+   "tris": 4508,
+   "meshes": 6,
+   "sites": [
+    "giza"
+   ]
+  }
+ },
  "abu_simbel": {
   "e": {
    "id": "abu_simbel",
@@ -192,6 +1214,40 @@
   "pos": [
    2,
    63
+  ],
+  "stats": {
+   "count": 72,
+   "failed": [],
+   "tris": 33256,
+   "meshes": 24,
+   "sites": [
+    "abu_simbel",
+    "burj",
+    "petra",
+    "suez_ship",
+    "kaaba_towers"
+   ]
+  }
+ },
+ "burj": {
+  "e": {
+   "id": "burj",
+   "kind": "spire",
+   "map": "world_tempus",
+   "x": 98.5,
+   "y": 45.5,
+   "gx": 898,
+   "gy": 315,
+   "r": 2.2,
+   "rot": 50,
+   "seed": 300879,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   98,
+   49
   ],
   "stats": {
    "count": 72,
@@ -238,6 +1294,1072 @@
     "petra",
     "suez_ship",
     "kaaba_towers"
+   ]
+  }
+ },
+ "suez_ship": {
+  "e": {
+   "id": "suez_ship",
+   "kind": "tanker",
+   "map": "world_tempus",
+   "x": 7.5,
+   "y": 20.5,
+   "gx": 807,
+   "gy": 290,
+   "r": 3.5,
+   "rot": 22,
+   "seed": 156472,
+   "ground": "shallow",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   7,
+   25
+  ],
+  "stats": {
+   "count": 72,
+   "failed": [],
+   "tris": 33256,
+   "meshes": 24,
+   "sites": [
+    "abu_simbel",
+    "burj",
+    "petra",
+    "suez_ship",
+    "kaaba_towers"
+   ]
+  }
+ },
+ "kilwa": {
+  "e": {
+   "id": "kilwa",
+   "kind": "dish",
+   "map": "w78_19_16",
+   "x": 28.5,
+   "y": 47.5,
+   "gx": 788,
+   "gy": 527,
+   "r": 2.2,
+   "rot": 357,
+   "seed": 938470,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   28,
+   51
+  ],
+  "stats": {
+   "count": 24,
+   "failed": [],
+   "tris": 11866,
+   "meshes": 10,
+   "sites": [
+    "kilwa"
+   ]
+  }
+ },
+ "lagos_rig": {
+  "e": {
+   "id": "lagos_rig",
+   "kind": "rig",
+   "map": "w78_16_13",
+   "x": 52.5,
+   "y": 12.5,
+   "gx": 692,
+   "gy": 402,
+   "r": 2.4,
+   "rot": 146,
+   "seed": 133313,
+   "ground": "deep",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   52,
+   16
+  ],
+  "stats": {
+   "count": 36,
+   "failed": [],
+   "tris": 16400,
+   "meshes": 18,
+   "sites": [
+    "lagos_rig"
+   ]
+  }
+ },
+ "table_mt": {
+  "e": {
+   "id": "table_mt",
+   "kind": "cooling",
+   "map": "w78_16_17",
+   "x": 109.5,
+   "y": 49.5,
+   "gx": 749,
+   "gy": 559,
+   "r": 3,
+   "rot": 29,
+   "seed": 733428,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   113,
+   49
+  ],
+  "stats": {
+   "count": 1,
+   "failed": [],
+   "tris": 1068,
+   "meshes": 1,
+   "sites": [
+    "table_mt"
+   ]
+  }
+ },
+ "taj": {
+  "e": {
+   "id": "taj",
+   "kind": "taj",
+   "map": "world_magicka",
+   "x": 68.5,
+   "y": 36.5,
+   "gx": 988,
+   "gy": 306,
+   "r": 3,
+   "rot": 42,
+   "seed": 869934,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   68,
+   40
+  ],
+  "stats": {
+   "count": 61,
+   "failed": [],
+   "tris": 35114,
+   "meshes": 22,
+   "sites": [
+    "taj",
+    "potala",
+    "gateway_india"
+   ]
+  }
+ },
+ "great_wall_a": {
+  "e": {
+   "id": "great_wall_a",
+   "kind": "wall",
+   "map": "world_neon",
+   "x": 22.5,
+   "y": 38.5,
+   "gx": 1142,
+   "gy": 248,
+   "r": 5,
+   "rot": 70,
+   "seed": 453755,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   22,
+   44
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "great_wall_b": {
+  "e": {
+   "id": "great_wall_b",
+   "kind": "wall",
+   "map": "world_neon",
+   "x": 0.5,
+   "y": 44.5,
+   "gx": 1120,
+   "gy": 254,
+   "r": 5,
+   "rot": 100,
+   "seed": 81406,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   1,
+   50
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "great_wall_c": {
+  "e": {
+   "id": "great_wall_c",
+   "kind": "wall",
+   "map": "w78_24_8",
+   "x": 132.5,
+   "y": 18.5,
+   "gx": 1092,
+   "gy": 258,
+   "r": 5,
+   "rot": 80,
+   "seed": 151753,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   132,
+   24
+  ],
+  "stats": {
+   "count": 14,
+   "failed": [],
+   "tris": 5560,
+   "meshes": 10,
+   "sites": [
+    "great_wall_c"
+   ]
+  }
+ },
+ "tokyo_tower": {
+  "e": {
+   "id": "tokyo_tower",
+   "kind": "lattice_red",
+   "map": "world_neon",
+   "x": 111.5,
+   "y": 56.5,
+   "gx": 1231,
+   "gy": 266,
+   "r": 2,
+   "rot": 248,
+   "seed": 664366,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   111,
+   59
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "skytree": {
+  "e": {
+   "id": "skytree",
+   "kind": "needle",
+   "map": "world_neon",
+   "x": 116.5,
+   "y": 52.5,
+   "gx": 1236,
+   "gy": 262,
+   "r": 2.2,
+   "rot": 131,
+   "seed": 423331,
+   "ground": "grass2",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   116,
+   56
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "daibutsu": {
+  "e": {
+   "id": "daibutsu",
+   "kind": "buddha",
+   "map": "world_neon",
+   "x": 108.5,
+   "y": 59.5,
+   "gx": 1228,
+   "gy": 269,
+   "r": 2.2,
+   "rot": 65,
+   "seed": 982013,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   108,
+   63
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "torii": {
+  "e": {
+   "id": "torii",
+   "kind": "torii",
+   "map": "world_neon",
+   "x": 85.5,
+   "y": 67.5,
+   "gx": 1205,
+   "gy": 277,
+   "r": 2.2,
+   "rot": 323,
+   "seed": 689824,
+   "ground": "shallow",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   86,
+   71
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "osaka_castle": {
+  "e": {
+   "id": "osaka_castle",
+   "kind": "pagoda",
+   "map": "world_neon",
+   "x": 96.5,
+   "y": 61.5,
+   "gx": 1216,
+   "gy": 271,
+   "r": 2.2,
+   "rot": 113,
+   "seed": 197381,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   96,
+   65
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "pearl": {
+  "e": {
+   "id": "pearl",
+   "kind": "pearl",
+   "map": "world_neon",
+   "x": 35.5,
+   "y": 74.5,
+   "gx": 1155,
+   "gy": 284,
+   "r": 2.2,
+   "rot": 261,
+   "seed": 811639,
+   "ground": "grass2",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   35,
+   78
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "petronas": {
+  "e": {
+   "id": "petronas",
+   "kind": "twin",
+   "map": "world_dragon",
+   "x": 42.5,
+   "y": 46.5,
+   "gx": 1082,
+   "gy": 406,
+   "r": 2.2,
+   "rot": 74,
+   "seed": 457042,
+   "ground": "ash",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   42,
+   51
+  ],
+  "stats": {
+   "count": 36,
+   "failed": [],
+   "tris": 20188,
+   "meshes": 24,
+   "sites": [
+    "petronas",
+    "angkor",
+    "marina"
+   ]
+  }
+ },
+ "angkor": {
+  "e": {
+   "id": "angkor",
+   "kind": "angkor",
+   "map": "world_dragon",
+   "x": 51.5,
+   "y": 5.5,
+   "gx": 1091,
+   "gy": 365,
+   "r": 3,
+   "rot": 329,
+   "seed": 879100,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   52,
+   9
+  ],
+  "stats": {
+   "count": 36,
+   "failed": [],
+   "tris": 20188,
+   "meshes": 24,
+   "sites": [
+    "petronas",
+    "angkor",
+    "marina"
+   ]
+  }
+ },
+ "marina": {
+  "e": {
+   "id": "marina",
+   "kind": "boat_roof",
+   "map": "world_dragon",
+   "x": 51.5,
+   "y": 52.5,
+   "gx": 1091,
+   "gy": 412,
+   "r": 2.2,
+   "rot": 296,
+   "seed": 101814,
+   "ground": "hill",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   47,
+   52
+  ],
+  "stats": {
+   "count": 36,
+   "failed": [],
+   "tris": 20188,
+   "meshes": 24,
+   "sites": [
+    "petronas",
+    "angkor",
+    "marina"
+   ]
+  }
+ },
+ "seoul_tower": {
+  "e": {
+   "id": "seoul_tower",
+   "kind": "needle",
+   "map": "world_neon",
+   "x": 63.5,
+   "y": 52.5,
+   "gx": 1183,
+   "gy": 262,
+   "r": 2.2,
+   "rot": 48,
+   "seed": 854038,
+   "ground": "grass2",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   63,
+   56
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "hk_carrier": {
+  "e": {
+   "id": "hk_carrier",
+   "kind": "carrier",
+   "map": "world_neon",
+   "x": 12.5,
+   "y": 119.5,
+   "gx": 1132,
+   "gy": 329,
+   "r": 4,
+   "rot": 105,
+   "seed": 872866,
+   "ground": "shallow",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   12,
+   114
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "baikonur": {
+  "e": {
+   "id": "baikonur",
+   "kind": "rocket",
+   "map": "w78_22_7",
+   "x": 49.5,
+   "y": 12.5,
+   "gx": 929,
+   "gy": 222,
+   "r": 2.2,
+   "rot": 327,
+   "seed": 457423,
+   "ground": "grass2",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   49,
+   16
+  ],
+  "stats": {
+   "count": 16,
+   "failed": [],
+   "tris": 7392,
+   "meshes": 12,
+   "sites": [
+    "baikonur"
+   ]
+  }
+ },
+ "potala": {
+  "e": {
+   "id": "potala",
+   "kind": "terraces",
+   "map": "world_magicka",
+   "x": 118.5,
+   "y": 21.5,
+   "gx": 1038,
+   "gy": 291,
+   "r": 2.2,
+   "rot": 125,
+   "seed": 397598,
+   "ground": "hill",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   118,
+   25
+  ],
+  "stats": {
+   "count": 61,
+   "failed": [],
+   "tris": 35114,
+   "meshes": 22,
+   "sites": [
+    "taj",
+    "potala",
+    "gateway_india"
+   ]
+  }
+ },
+ "borobudur": {
+  "e": {
+   "id": "borobudur",
+   "kind": "stepped",
+   "map": "w78_26_15",
+   "x": 76.5,
+   "y": 0.5,
+   "gx": 1116,
+   "gy": 450,
+   "r": 2.2,
+   "rot": 108,
+   "seed": 8805,
+   "ground": "ash",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   76,
+   4
+  ],
+  "stats": {
+   "count": 26,
+   "failed": [],
+   "tris": 12276,
+   "meshes": 11,
+   "sites": [
+    "borobudur"
+   ]
+  }
+ },
+ "taipei": {
+  "e": {
+   "id": "taipei",
+   "kind": "pagoda",
+   "map": "world_neon",
+   "x": 42.5,
+   "y": 107.5,
+   "gx": 1162,
+   "gy": 317,
+   "r": 2.2,
+   "rot": 341,
+   "seed": 138616,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   42,
+   111
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "gateway_india": {
+  "e": {
+   "id": "gateway_india",
+   "kind": "gate",
+   "map": "world_magicka",
+   "x": 47.5,
+   "y": 71.5,
+   "gx": 967,
+   "gy": 341,
+   "r": 2.2,
+   "rot": 195,
+   "seed": 138545,
+   "ground": "grass",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   48,
+   75
+  ],
+  "stats": {
+   "count": 61,
+   "failed": [],
+   "tris": 35114,
+   "meshes": 22,
+   "sites": [
+    "taj",
+    "potala",
+    "gateway_india"
+   ]
+  }
+ },
+ "kaaba_towers": {
+  "e": {
+   "id": "kaaba_towers",
+   "kind": "clocktower",
+   "map": "world_tempus",
+   "x": 35.5,
+   "y": 60.5,
+   "gx": 835,
+   "gy": 330,
+   "r": 2.2,
+   "rot": 199,
+   "seed": 711247,
+   "ground": "sand",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   35,
+   64
+  ],
+  "stats": {
+   "count": 72,
+   "failed": [],
+   "tris": 33256,
+   "meshes": 24,
+   "sites": [
+    "abu_simbel",
+    "burj",
+    "petra",
+    "suez_ship",
+    "kaaba_towers"
+   ]
+  }
+ },
+ "opera": {
+  "e": {
+   "id": "opera",
+   "kind": "opera",
+   "map": "w78_31_16",
+   "x": 41.5,
+   "y": 80.5,
+   "gx": 1281,
+   "gy": 560,
+   "r": 2.6,
+   "rot": 20,
+   "seed": 663950,
+   "ground": "shallow",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   37,
+   80
+  ],
+  "stats": {
+   "count": 30,
+   "failed": [],
+   "tris": 17826,
+   "meshes": 14,
+   "sites": [
+    "opera",
+    "harbour_bridge",
+    "nz_tanker"
+   ]
+  }
+ },
+ "harbour_bridge": {
+  "e": {
+   "id": "harbour_bridge",
+   "kind": "archbridge",
+   "map": "w78_31_16",
+   "x": 43.5,
+   "y": 77.5,
+   "gx": 1283,
+   "gy": 557,
+   "r": 4.5,
+   "rot": 0,
+   "seed": 791776,
+   "ground": "shallow",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   37,
+   77
+  ],
+  "stats": {
+   "count": 30,
+   "failed": [],
+   "tris": 17826,
+   "meshes": 14,
+   "sites": [
+    "opera",
+    "harbour_bridge",
+    "nz_tanker"
+   ]
+  }
+ },
+ "uluru_dish": {
+  "e": {
+   "id": "uluru_dish",
+   "kind": "dish",
+   "map": "w78_30_15",
+   "x": 8.5,
+   "y": 73.5,
+   "gx": 1208,
+   "gy": 523,
+   "r": 2.2,
+   "rot": 320,
+   "seed": 532670,
+   "ground": "sand",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   8,
+   77
+  ],
+  "stats": {
+   "count": 18,
+   "failed": [],
+   "tris": 5522,
+   "meshes": 12,
+   "sites": [
+    "uluru_dish"
+   ]
+  }
+ },
+ "nz_tanker": {
+  "e": {
+   "id": "nz_tanker",
+   "kind": "tanker",
+   "map": "w78_31_16",
+   "x": 134.5,
+   "y": 115.5,
+   "gx": 1374,
+   "gy": 595,
+   "r": 3.5,
+   "rot": 16,
+   "seed": 394043,
+   "ground": "shallow",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   129,
+   115
+  ],
+  "stats": {
+   "count": 30,
+   "failed": [],
+   "tris": 17826,
+   "meshes": 14,
+   "sites": [
+    "opera",
+    "harbour_bridge",
+    "nz_tanker"
+   ]
+  }
+ },
+ "mcmurdo": {
+  "e": {
+   "id": "mcmurdo",
+   "kind": "station",
+   "map": "w78_31_24",
+   "x": 102.5,
+   "y": 100.5,
+   "gx": 1342,
+   "gy": 820,
+   "r": 2.2,
+   "rot": 352,
+   "seed": 986692,
+   "ground": "snow",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   102,
+   104
+  ],
+  "stats": {
+   "count": 1,
+   "failed": [],
+   "tris": 932,
+   "meshes": 2,
+   "sites": [
+    "mcmurdo"
+   ]
+  }
+ },
+ "antarctic_plane": {
+  "e": {
+   "id": "antarctic_plane",
+   "kind": "plane",
+   "map": "world_dark",
+   "x": 36.5,
+   "y": 54.5,
+   "gx": 676,
+   "gy": 774,
+   "r": 1.6,
+   "rot": 19,
+   "seed": 977839,
+   "ground": "darkland",
+   "site": true,
+   "city": null
+  },
+  "pos": [
+   36,
+   57
+  ],
+  "stats": {
+   "count": 1,
+   "failed": [],
+   "tris": 560,
+   "meshes": 2,
+   "sites": [
+    "antarctic_plane"
    ]
   }
  },
@@ -313,6 +2435,175 @@
    ]
   }
  },
+ "city:london": {
+  "e": {
+   "id": "london_0",
+   "kind": "billboard",
+   "map": "world",
+   "x": 62.5,
+   "y": 42.5,
+   "gx": 662,
+   "gy": 192,
+   "r": 0.7,
+   "rot": 171,
+   "seed": 805618,
+   "ground": "grass",
+   "site": false,
+   "city": "london"
+  },
+  "pos": [
+   62,
+   45
+  ],
+  "stats": {
+   "count": 66,
+   "failed": [],
+   "tris": 39316,
+   "meshes": 26,
+   "sites": [
+    "eiffel",
+    "big_ben",
+    "london_eye",
+    "stonehenge",
+    "pisa",
+    "sagrada",
+    "windmills",
+    "north_sea_rig",
+    "arc",
+    "atomium"
+   ]
+  }
+ },
+ "city:shanghai": {
+  "e": {
+   "id": "shanghai_0",
+   "kind": "block",
+   "map": "world_neon",
+   "x": 28.5,
+   "y": 79.5,
+   "gx": 1148,
+   "gy": 289,
+   "r": 1.3,
+   "rot": 102,
+   "seed": 962145,
+   "ground": "grass",
+   "site": false,
+   "city": "shanghai"
+  },
+  "pos": [
+   28,
+   82
+  ],
+  "stats": {
+   "count": 90,
+   "failed": [],
+   "tris": 53096,
+   "meshes": 30,
+   "sites": [
+    "great_wall_a",
+    "great_wall_b",
+    "tokyo_tower",
+    "skytree",
+    "daibutsu",
+    "torii",
+    "osaka_castle",
+    "pearl",
+    "seoul_tower",
+    "hk_carrier",
+    "taipei"
+   ]
+  }
+ },
+ "kind:car": {
+  "e": {
+   "id": "s787_74",
+   "kind": "car",
+   "map": "w78_16_0",
+   "x": 147.5,
+   "y": 74.5,
+   "gx": 787,
+   "gy": 74,
+   "r": 0.7,
+   "rot": 184,
+   "seed": 637442,
+   "ground": "snow",
+   "site": false,
+   "city": null
+  },
+  "pos": [
+   147,
+   76
+  ],
+  "stats": {
+   "count": 7,
+   "failed": [],
+   "tris": 1972,
+   "meshes": 8,
+   "sites": []
+  }
+ },
+ "kind:tank": {
+  "e": {
+   "id": "s1093_68",
+   "kind": "tank",
+   "map": "w78_24_0",
+   "x": 133.5,
+   "y": 68.5,
+   "gx": 1093,
+   "gy": 68,
+   "r": 0.7,
+   "rot": 343,
+   "seed": 160715,
+   "ground": "snow",
+   "site": false,
+   "city": null
+  },
+  "pos": [
+   133,
+   70
+  ],
+  "stats": {
+   "count": 9,
+   "failed": [],
+   "tris": 2824,
+   "meshes": 10,
+   "sites": []
+  }
+ },
+ "kind:overpass": {
+  "e": {
+   "id": "mexico_city_1",
+   "kind": "overpass",
+   "map": "w78_4_8",
+   "x": 124.5,
+   "y": 104.5,
+   "gx": 284,
+   "gy": 344,
+   "r": 1.8,
+   "rot": 61,
+   "seed": 427578,
+   "ground": "grass",
+   "site": false,
+   "city": "mexico_city"
+  },
+  "pos": [
+   124,
+   107
+  ],
+  "stats": {
+   "count": 59,
+   "failed": [],
+   "tris": 34088,
+   "meshes": 26,
+   "sites": [
+    "golden_gate",
+    "gateway_arch",
+    "gulf_rig",
+    "vegas",
+    "teotihuacan"
+   ]
+  }
+ },
  "kind:tower": {
   "e": {
    "id": "new_york_0",
@@ -343,6 +2634,120 @@
     "capitol",
     "cn_tower"
    ]
+  }
+ },
+ "kind:plane": {
+  "e": {
+   "id": "s63_132",
+   "kind": "plane",
+   "map": "w78_0_4",
+   "x": 63.5,
+   "y": 12.5,
+   "gx": 63,
+   "gy": 132,
+   "r": 1.6,
+   "rot": 78,
+   "seed": 23962,
+   "ground": "hill",
+   "site": false,
+   "city": null
+  },
+  "pos": [
+   63,
+   15
+  ],
+  "stats": {
+   "count": 29,
+   "failed": [],
+   "tris": 10372,
+   "meshes": 12,
+   "sites": []
+  }
+ },
+ "kind:wreck": {
+  "e": {
+   "id": "s570_73",
+   "kind": "wreck",
+   "map": "w78_12_0",
+   "x": 90.5,
+   "y": 73.5,
+   "gx": 570,
+   "gy": 73,
+   "r": 1.6,
+   "rot": 276,
+   "seed": 116038,
+   "ground": "shallow",
+   "site": false,
+   "city": null
+  },
+  "pos": [
+   90,
+   76
+  ],
+  "stats": {
+   "count": 4,
+   "failed": [],
+   "tris": 792,
+   "meshes": 6,
+   "sites": []
+  }
+ },
+ "kind:pylon": {
+  "e": {
+   "id": "s802_83",
+   "kind": "pylon",
+   "map": "world_snow",
+   "x": 2.5,
+   "y": 23.5,
+   "gx": 802,
+   "gy": 83,
+   "r": 0.7,
+   "rot": 12,
+   "seed": 183953,
+   "ground": "grass2",
+   "site": false,
+   "city": null
+  },
+  "pos": [
+   2,
+   25
+  ],
+  "stats": {
+   "count": 33,
+   "failed": [],
+   "tris": 14636,
+   "meshes": 24,
+   "sites": [
+    "kremlin"
+   ]
+  }
+ },
+ "kind:house": {
+  "e": {
+   "id": "s1126_69",
+   "kind": "house",
+   "map": "w78_28_0",
+   "x": 6.5,
+   "y": 69.5,
+   "gx": 1126,
+   "gy": 69,
+   "r": 0.7,
+   "rot": 160,
+   "seed": 322208,
+   "ground": "grass2",
+   "site": false,
+   "city": null
+  },
+  "pos": [
+   6,
+   71
+  ],
+  "stats": {
+   "count": 7,
+   "failed": [],
+   "tris": 2652,
+   "meshes": 13,
+   "sites": []
   }
  }
 }

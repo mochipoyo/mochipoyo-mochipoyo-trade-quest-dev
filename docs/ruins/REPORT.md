@@ -45,14 +45,14 @@
 | 確認 | 結果 |
 |---|---|
 | `node docs/tools/ruins/ruins_check.js`（配置の決まり・2D では置かない・形がそろっている） | NG 0 |
-| `PORT=8894 QUALITY=low node docs/tools/ruins/ruins_shots.js <全 ID>`（3D 版で 1 つずつ表示。形の作り損ない・ページのエラーを見る） | 本文末尾の「撮影の結果」を参照 |
+| `PORT=8894 QUALITY=low node docs/tools/ruins/ruins_shots.js <全 ID>`（3D 版で 1 つずつ表示。形の作り損ない・ページのエラーを見る） | 81 か所（名のある残骸 69・都市 4・種類 8）で NG 0・ページのエラーなし |
 | 同 `QUALITY=high` で 10 か所（liberty・giza・tokyo_tower・eiffel・colosseum・abu_simbel・petra・new_york・tokyo・tower） | NG 0・ページのエラーなし |
 | `node docs/tools/v78/earth78_check.js` | すべて OK |
 | `node docs/tools/v78/earth78_save.js` | すべて OK |
 | `node docs/tools/appear/appear_pixel_test.js`／同 `2d` | OK 77 / NG 0（両方） |
 | `node tools/stamp-version.js --check` | 版 caeb67d04a・272 ファイル |
 
-画像：`docs/ruins/shots/ruin_<ID>.jpg`
+画像：`docs/ruins/shots/ruin_<ID>.jpg`（低画質・全 81 か所）、`docs/ruins/shots_high/`（高画質・8 か所）
 
 ## 5. 未検証
 
