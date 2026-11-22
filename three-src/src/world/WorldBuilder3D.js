@@ -21,6 +21,7 @@ import { voidMaterial, floatingRocks } from '../environment/Space76.js';
 import { themeFor } from './themes.js';
 import { FIELD82, buildFloating82, buildFieldCastle82 } from './Field82.js';
 import { Nature81 } from './Nature81.js';
+import { buildRuins, ruinZones } from './Ruins3121.js';
 
 function hash2(x, y) { let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
 function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y); const xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf); const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; }
@@ -357,6 +358,8 @@ export class WorldBuilder3D {
     // v6.6 目印（町・城・洞窟・塔）の建物が立つ範囲：木・小物を置かない（LandmarkBuilder3D と同じ中心＝入口から正面の反対へ 0.5 マス）
     const LW = window.World; const lmZones = [];
     if (field && map.def && map.def.locations && window.LocationDesign) for (const L of map.def.locations) { const wp = map.warpAt(L.x, L.y); const f = (LW && LW.landmarkFace && wp) ? LW.landmarkFace(map, wp) : [0, 1]; lmZones.push({ x: L.x + 0.5 - f[0] * 0.5, z: L.y + 0.5 - f[1] * 0.5, r: L.icon === 'tower_icon' ? 1.85 : 2.85 }); }
+    // v9.11 旧時代の廃墟（Ruins3121.js）の立つ範囲：木・山・小物を重ねない
+    let ruinZ = []; if (field) { try { ruinZ = ruinZones(map.id); } catch (e) { ruinZ = []; } for (const q of ruinZ) lmZones.push(q); }
     const nearLm = (x, z, k) => lmZones.length > 0 && lmZones.some((q) => (x - q.x) * (x - q.x) + (z - q.z) * (z - q.z) < q.r * q.r * (k || 1) * (k || 1));
     // 木（地域テーマ）
     const treeSet = theme.tree || ['pine', 'oak'];
@@ -453,6 +456,8 @@ export class WorldBuilder3D {
       if (dungeon && (t === 'cave_floor' || t === 'moss') && rnd() < 0.03) put('mushroom', M4(cx + (rnd() - 0.5) * 0.6, y, cz + (rnd() - 0.5) * 0.6, rnd() * 6.28, 0, 0, 0.8 + rnd() * 0.6), cx, cz);
       if (field && t === 'sand' && theme.region === 'desert' && rnd() < 0.012) put('cactus', M4(cx, y, cz, rnd() * 6.28, 0, 0, 0.8 + rnd() * 0.5), cx, cz);
     }
+    // v9.11 旧時代の廃墟（地球の世界のフィールドだけ。見た目だけ＝当たり判定・タイルは変えない）
+    if (field && ruinZ.length) { try { const rr = buildRuins(map.id, { heightAt, waterY: -0.2 }); group.add(rr.group); this.stats.ruins = rr.stats; } catch (e) { this.stats.ruins = { count: 0, failed: ['build: ' + (e && e.message)] }; } if (this.slice) await this.slice(); }
     // ダンジョン：壁ぎわのたいまつ（明かりの少ない場所の目安。2D版にない飾り）
     if (dungeon && P.torch) {
       let n = 0; for (let z = 1; z < H - 1; z++) for (let x = 1; x < W - 1; x++) {
